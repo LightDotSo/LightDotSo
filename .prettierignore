@@ -1,0 +1,12 @@
+.build
+.next
+dist
+vendor
+
+*.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+ios/fastlane
+ios/LightWalletSafariExtension/Resources
+ios/LightWalletDev.xcarchive

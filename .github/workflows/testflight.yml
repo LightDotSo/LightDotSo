@@ -1,0 +1,61 @@
+name: Testflight
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+jobs:
+  testflight:
+    runs-on: macos-12
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - run: |
+          printenv > ./packages/content/.env
+      - if: github.event_name == 'push'
+        run: |
+          pnpm run build
+        env:
+          JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
+      - if: github.event_name == 'pull_request'
+        run: |
+          pnpm run build:dev
+      - if: github.event_name == 'push'
+        run: |
+          bundle exec fastlane production
+        working-directory: ./ios
+        env:
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
+          GIT_AUTHORIZATION: ${{ secrets.BOT_TOKEN }}
+          TEMP_KEYCHAIN_PASSWORD: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
+          TEMP_KEYCHAIN_USER: ${{ secrets.TEMP_KEYCHAIN_USER }}
+          DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
+          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      - if: github.event_name == 'pull_request'
+        run: |
+          bundle exec fastlane dev
+        working-directory: ./ios
+        env:
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
+          GH_NUMBER: ${{ github.event.pull_request.number }}
+          GIT_AUTHORIZATION: ${{ secrets.BOT_TOKEN }}
+          TEMP_KEYCHAIN_PASSWORD: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
+          TEMP_KEYCHAIN_USER: ${{ secrets.TEMP_KEYCHAIN_USER }}
+          DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
+          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

@@ -1,0 +1,15 @@
+[workspace]
+resolver = "2"
+
+members = [
+  "crates/core",
+  "crates/keychain",
+  "tools/embedded-uniff-bindgen",
+  "tools/mpl-license-checker",
+]
+
+[profile.dev.build-override]
+opt-level = 3
+
+[profile.release]
+lto = "off"

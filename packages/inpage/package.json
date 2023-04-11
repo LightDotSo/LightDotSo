@@ -1,0 +1,26 @@
+{
+  "name": "@lightwallet/inpage",
+  "private": false,
+  "version": "0.0.1",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production node ./esbuild.config.js",
+    "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"
+  },
+  "dependencies": {
+    "@metamask/eth-sig-util": "^5.0.2",
+    "@types/firefox-webext-browser": "^111.0.0",
+    "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "events": "^3.3.0",
+    "isutf8": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

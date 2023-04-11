@@ -1,0 +1,51 @@
+name: iOS
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+env:
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+jobs:
+  ios-test:
+    runs-on: macos-12
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - run: |
+          pnpm run build
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "14.1"
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - run: |
+          bundle exec fastlane test
+        working-directory: ./ios
+        continue-on-error: true
+        env:
+          APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
+          APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
+          APPLE_KEY_CONTENT: ${{ secrets.APPLE_KEY_CONTENT }}
+          GIT_AUTHORIZATION: ${{ secrets.BOT_TOKEN }}
+          TEMP_KEYCHAIN_PASSWORD: ${{ secrets.TEMP_KEYCHAIN_PASSWORD }}
+          TEMP_KEYCHAIN_USER: ${{ secrets.TEMP_KEYCHAIN_USER }}
+          DEVELOPER_APP_ID: ${{ secrets.DEVELOPER_APP_ID }}
+          DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
+          PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      - if: github.event_name == 'pull_request'
+        uses: mobile-dev-inc/action-maestro-cloud@main
+        continue-on-error: true
+        with:
+          api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
+          name: ${{ github.sha }}
+          app-file: ios/LightWalletDev.xcarchive/Products/Applications/LightWalletDev.app
+          workspace: ios/.mobiledev
