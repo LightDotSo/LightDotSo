@@ -35,8 +35,10 @@ runs:
     - if: runner.os == 'macOS'
       uses: actions/cache@v3
       with:
-        path: ios/LightWalletCore/.build
-        key: ${{ runner.os }}-spm-${{ hashFiles('**/ios/LightWalletCore/Package.swift') }}
+        path: |
+          ios/LightWalletBuildTools/.build
+          ios/LightWalletCore/.build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-
     - if: runner.os == 'macOS'
