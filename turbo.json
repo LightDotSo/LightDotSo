@@ -1,0 +1,208 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": ["NODE_ENV"]
+    },
+    "build:dev": {
+      "dependsOn": ["^build"]
+    },
+    "@lightwallet/background#build": {
+      "dependsOn": ["^build"],
+      "env": ["NODE_ENV"],
+      "inputs": ["**"],
+      "outputs": ["../../ios/LightWalletSafariExtension/Resources/background.js"]
+    },
+    "@lightwallet/background#build:dev": {
+      "dependsOn": ["^build"],
+      "env": ["NODE_ENV"],
+      "inputs": ["**"],
+      "outputs": ["../../ios/LightWalletSafariExtension/Resources/background.js"]
+    },
+    "@lightwallet/core#build": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**/*.rs",
+        "src/LightWalletCore.udl",
+        "build.rs",
+        "Cargo.toml",
+        "../../Cargo.lock",
+        "../../Cargo.toml",
+        "../../Makefile"
+      ],
+      "outputs": [
+        "../../ios/LightWalletCore/Sources/Generated/**",
+        "../../ios/LightWalletCoreFFI.xcframework/**"
+      ]
+    },
+    "@lightwallet/core#build:dev": {
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**/*.rs",
+        "src/LightWalletCore.udl",
+        "build.rs",
+        "Cargo.toml",
+        "../Cargo.lock",
+        "../Cargo.toml",
+        "../Makefile"
+      ],
+      "outputs": [
+        "../../ios/LightWalletCore/Sources/Generated/**",
+        "../../ios/LightWalletCoreFFI.xcframework/**"
+      ]
+    },
+    "@lightwallet/chains#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "@lightwallet/content#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "env": ["CI", "JITSU_JS_KEY"],
+      "outputs": [
+        "public/**",
+        "../../ios/LightWalletSafariExtension/Resources/content.js"
+      ]
+    },
+    "@lightwallet/content#build:dev": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "env": ["CI", "JITSU_JS_KEY"],
+      "outputs": [
+        "public/**",
+        "../../ios/LightWalletSafariExtension/Resources/content.js"
+      ]
+    },
+    "@lightwallet/ethereum#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "outputs": [
+        "../../ios/LightWalletSafariExtension/Resources/ethereum.js"
+      ]
+    },
+    "@lightwallet/ethereum#build:dev": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "outputs": [
+        "../../ios/LightWalletSafariExtension/Resources/ethereum.js"
+      ]
+    },
+    "@lightwallet/inpage#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "outputs": [
+        "../../ios/LightWalletSafariExtension/Resources/inpage.js"
+      ]
+    },
+    "@lightwallet/inpage#build:dev": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "outputs": [
+        "../../ios/LightWalletSafariExtension/Resources/inpage.js"
+      ]
+    },
+    "@lightwallet/popup#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "env": ["CI", "JITSU_JS_KEY", "VERCEL"],
+      "outputs": [
+        ".next/**",
+        "../../ios/LightWalletSafariExtension/Resources/popup/**",
+        "../../ios/LightWalletSafariExtension/Resources/popup.html"
+      ]
+    },
+    "@lightwallet/popup#build:dev": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "env": ["CI", "JITSU_JS_KEY", "VERCEL"],
+      "outputs": [
+        ".next",
+        "../../ios/LightWalletSafariExtension/Resources/popup/**",
+        "../../ios/LightWalletSafariExtension/Resources/popup.html"
+      ]
+    },
+    "@lightwallet/provider#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "@lightwallet/wallet#build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "env": ["BLOWFISH_API_KEY", "COHERENT_API_KEY", "COVALENT_API_KEY"],
+      "outputs": [
+        ".next/**"
+      ]
+    },
+    "storybook": {
+      "dependsOn": ["^storybook"]
+    },
+    "//#lint:eslint": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": [
+        "packages/**/src/**/*.ts",
+        "packages/**/src/**/*.tsx"
+      ]
+    },
+    "//#lint:prettier": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": ["**"]
+    },
+    "//#lint:swiftlint": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": [
+        "ios/LightWallet/**/Sources/**/*.swift",
+        "ios/LightWalletCore/**/Sources/**/*.swift",
+        "ios/LightWalletCore/**/Tests/**/*.swift",
+        "ios/LightWalletSafariExtension/**/Sources/**/*.swift",
+        "ios/LightWalletTests/**/*.swift",
+        "ios/LightWalletUITests/**/*.swift"
+      ]
+    },
+    "//#lint:swift-format": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": [
+        "ios/LightWallet/**/Sources/**/*.swift",
+        "ios/LightWalletCore/**/Sources/**/*.swift",
+        "ios/LightWalletCore/**/Tests/**/*.swift",
+        "ios/LightWalletSafariExtension/**/Sources/**/*.swift",
+        "ios/LightWalletTests/**/*.swift",
+        "ios/LightWalletUITests/**/*.swift"
+      ]
+    },
+    "//#lint": {
+      "dependsOn": ["lint:eslint", "lint:prettier", "lint:swift-format"],
+      "outputs": [],
+      "inputs": ["**"]
+    },
+    "//#fastlane:build": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": [
+        "ios/**",
+        "packages/background/**",
+        "packages/content/**",
+        "packages/ethereum/**",
+        "packages/popup/**",
+        "pnpm-lock.yaml"
+      ]
+    },
+    "//#fastlane:test": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": [
+        "ios/**"
+      ]
+    }
+  }
+}

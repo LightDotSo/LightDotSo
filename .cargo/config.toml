@@ -1,0 +1,6 @@
+[alias]
+uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
+mpl-license-checker = ["run", "--package", "mpl-license-checker", "--"]
+
+[target.aarch64-apple-darwin]
+rustflags = ["-C", "link-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld"]

@@ -1,0 +1,34 @@
+appId: io.magic.light.dev
+---
+- runFlow: onboarding.yaml
+- openLink: https://wallet.light.so
+- tapOn:
+    point: "10%,90%"
+- tapOn:
+    text: "Manage Extensions"
+- tapOn:
+    point: "78%,23%"
+- tapOn:
+    text: "Done"
+- tapOn:
+    point: "10%,90%"
+- tapOn:
+    text: "Light Wallet"
+- tapOn:
+    above:
+      text: "Cancel"
+    optional: true
+- tapOn:
+    above:
+      text: "Cancel"
+    optional: true
+- tapOn:
+    text: "I've enabled the extension"
+- tapOn:
+    text: "I've allowed website permissions"
+- tapOn:
+    text: "Testing Wallet Connection"
+- tapOn:
+    text: "Connect"
+- assertVisible:
+    text: "Success!"

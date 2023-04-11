@@ -1,0 +1,2 @@
+storage_mode("git")
+git_url("https://github.com/LightDotSo/ios-signing.git")

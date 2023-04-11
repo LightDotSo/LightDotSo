@@ -1,0 +1,54 @@
+name: Setup
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - if: runner.os == 'macOS'
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: "14.1"
+    - uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+    - uses: pnpm/action-setup@v2
+    - uses: actions/setup-node@v3
+      with:
+        node-version-file: ".nvmrc"
+        cache: "pnpm"
+    - uses: pnpm/action-setup@v2
+      with:
+        run_install: true
+    - uses: Swatinem/rust-cache@v2
+      continue-on-error: true
+      with:
+        cache-on-failure: true
+    - shell: bash
+      run: |
+        rustup update
+    - if: runner.os == 'macOS'
+      id: mint
+      uses: actions/cache@v3
+      with:
+        path: .mint
+        key: ${{ runner.os }}-mint-${{ hashFiles('**/Mintfile') }}
+        restore-keys: ${{ runner.os }}-mint-
+    - if: runner.os == 'macOS'
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{ github.workspace }}/ios/LightWalletBuildTools/.build
+          ${{ github.workspace }}/ios/LightWalletCore/.build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
+    - if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        brew bundle install
+    - if: runner.os == 'macOS' && steps.mint.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        mint bootstrap
+      env:
+        MINT_PATH: .mint/lib
+        MINT_LINK_PATH: .mint/bin

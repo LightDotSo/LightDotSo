@@ -1,0 +1,1255 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A644BFDB29CF528500A3FFF7 /* LightWalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644BFDA29CF528500A3FFF7 /* LightWalletApp.swift */; };
+		A644BFDD29CF528500A3FFF7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644BFDC29CF528500A3FFF7 /* ContentView.swift */; };
+		A644BFDF29CF528600A3FFF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A644BFDE29CF528600A3FFF7 /* Assets.xcassets */; };
+		A644BFE329CF528600A3FFF7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A644BFE229CF528600A3FFF7 /* Preview Assets.xcassets */; };
+		A644BFED29CF528600A3FFF7 /* LightWalletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644BFEC29CF528600A3FFF7 /* LightWalletTests.swift */; };
+		A644BFF729CF528600A3FFF7 /* LightWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644BFF629CF528600A3FFF7 /* LightWalletUITests.swift */; };
+		A644BFF929CF528600A3FFF7 /* LightWalletUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644BFF829CF528600A3FFF7 /* LightWalletUITestsLaunchTests.swift */; };
+		A64C874929CF632B001D18B3 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = A64C874829CF632B001D18B3 /* Core */; };
+		A6A395B729CF985800C9477B /* LightWalletCoreFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D4FF9C29CF684400000CB7 /* LightWalletCoreFFI.xcframework */; };
+		A6A395BA29CF985C00C9477B /* LightWalletCoreFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D4FF9C29CF684400000CB7 /* LightWalletCoreFFI.xcframework */; };
+		A6A395C929CF9BD800C9477B /* popup in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C229CF9BD700C9477B /* popup */; };
+		A6A395CA29CF9BD800C9477B /* popup in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C229CF9BD700C9477B /* popup */; };
+		A6A395CB29CF9BD800C9477B /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C329CF9BD700C9477B /* _locales */; };
+		A6A395CC29CF9BD800C9477B /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C329CF9BD700C9477B /* _locales */; };
+		A6A395CD29CF9BD800C9477B /* inpage.js in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C429CF9BD700C9477B /* inpage.js */; };
+		A6A395CE29CF9BD800C9477B /* inpage.js in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C429CF9BD700C9477B /* inpage.js */; };
+		A6A395CF29CF9BD800C9477B /* images in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C529CF9BD700C9477B /* images */; };
+		A6A395D029CF9BD800C9477B /* images in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C529CF9BD700C9477B /* images */; };
+		A6A395D129CF9BD800C9477B /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C629CF9BD700C9477B /* manifest.json */; };
+		A6A395D229CF9BD800C9477B /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C629CF9BD700C9477B /* manifest.json */; };
+		A6A395D329CF9BD800C9477B /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C729CF9BD800C9477B /* background.js */; };
+		A6A395D429CF9BD800C9477B /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C729CF9BD800C9477B /* background.js */; };
+		A6A395D529CF9BD800C9477B /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C829CF9BD800C9477B /* content.js */; };
+		A6A395D629CF9BD800C9477B /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = A6A395C829CF9BD800C9477B /* content.js */; };
+		A6A395DB29CF9C0300C9477B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		A6A395DC29CF9C0300C9477B /* (null) in Resources */ = {isa = PBXBuildFile; };
+		A6A8720429D47DA1007A0EAD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A644BFDE29CF528600A3FFF7 /* Assets.xcassets */; };
+		A6D400B029CF7D8E00000CB7 /* LightWalletApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644BFDA29CF528500A3FFF7 /* LightWalletApp.swift */; };
+		A6D400B129CF7D9500000CB7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A644BFDC29CF528500A3FFF7 /* ContentView.swift */; };
+		A6D400B229CF7D9E00000CB7 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DF7F8429CF56520037F2C5 /* SafariWebExtensionHandler.swift */; };
+		A6D400B429CF7E7900000CB7 /* LightWalletSafariExtensionDev.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A6D4007229CF7B6A00000CB7 /* LightWalletSafariExtensionDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A6D400B929CF7E7C00000CB7 /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = A6D400B829CF7E7C00000CB7 /* Core */; };
+		A6D400BA29CF7E8500000CB7 /* LightWalletCoreFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D4FF9C29CF684400000CB7 /* LightWalletCoreFFI.xcframework */; };
+		A6D400BE29CF7E9600000CB7 /* Extension in Frameworks */ = {isa = PBXBuildFile; productRef = A6D400BD29CF7E9600000CB7 /* Extension */; };
+		A6D400C129CF804B00000CB7 /* Configuration in Resources */ = {isa = PBXBuildFile; fileRef = A6D400C029CF804B00000CB7 /* Configuration */; };
+		A6D400C229CF804B00000CB7 /* Configuration in Resources */ = {isa = PBXBuildFile; fileRef = A6D400C029CF804B00000CB7 /* Configuration */; };
+		A6D400C329CF804B00000CB7 /* Configuration in Resources */ = {isa = PBXBuildFile; fileRef = A6D400C029CF804B00000CB7 /* Configuration */; };
+		A6D400C429CF804B00000CB7 /* Configuration in Resources */ = {isa = PBXBuildFile; fileRef = A6D400C029CF804B00000CB7 /* Configuration */; };
+		A6D4FF9D29CF684400000CB7 /* LightWalletCoreFFI.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D4FF9C29CF684400000CB7 /* LightWalletCoreFFI.xcframework */; };
+		A6D4FFA029CF6EE600000CB7 /* Extension in Frameworks */ = {isa = PBXBuildFile; productRef = A6D4FF9F29CF6EE600000CB7 /* Extension */; };
+		A6D4FFD229CF737900000CB7 /* LightWalletSafariExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A6D4FFC929CF72B400000CB7 /* LightWalletSafariExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A6DF7F8529CF56520037F2C5 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6DF7F8429CF56520037F2C5 /* SafariWebExtensionHandler.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A6A395DD29CFADDA00C9477B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A644BFCF29CF528500A3FFF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A6D4004329CF7B5900000CB7;
+			remoteInfo = LightWalletDev;
+		};
+		A6A395DF29CFADDD00C9477B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A644BFCF29CF528500A3FFF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A6D4004329CF7B5900000CB7;
+			remoteInfo = LightWalletDev;
+		};
+		A6D400B529CF7E7A00000CB7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A644BFCF29CF528500A3FFF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A6D4007129CF7B6900000CB7;
+			remoteInfo = LightWalletSafariExtensionDev;
+		};
+		A6DF7F9829CF56520037F2C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A644BFCF29CF528500A3FFF7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A6DF7F8129CF56520037F2C5;
+			remoteInfo = LightWalletSafariExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A6D400B729CF7E7A00000CB7 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A6D400B429CF7E7900000CB7 /* LightWalletSafariExtensionDev.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6DF7F9E29CF56520037F2C5 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A6D4FFD229CF737900000CB7 /* LightWalletSafariExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A644BFDA29CF528500A3FFF7 /* LightWalletApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightWalletApp.swift; sourceTree = "<group>"; };
+		A644BFDC29CF528500A3FFF7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A644BFDE29CF528600A3FFF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A644BFE229CF528600A3FFF7 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A644BFEC29CF528600A3FFF7 /* LightWalletTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightWalletTests.swift; sourceTree = "<group>"; };
+		A644BFF629CF528600A3FFF7 /* LightWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightWalletUITests.swift; sourceTree = "<group>"; };
+		A644BFF829CF528600A3FFF7 /* LightWalletUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightWalletUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		A66A13F329E5BB6100F3A3D3 /* LightWalletBuildTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = LightWalletBuildTools; sourceTree = "<group>"; };
+		A6A395C229CF9BD700C9477B /* popup */ = {isa = PBXFileReference; lastKnownFileType = text; path = popup; sourceTree = "<group>"; };
+		A6A395C329CF9BD700C9477B /* _locales */ = {isa = PBXFileReference; lastKnownFileType = text; path = _locales; sourceTree = "<group>"; };
+		A6A395C429CF9BD700C9477B /* inpage.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = inpage.js; sourceTree = "<group>"; };
+		A6A395C529CF9BD700C9477B /* images */ = {isa = PBXFileReference; lastKnownFileType = text; path = images; sourceTree = "<group>"; };
+		A6A395C629CF9BD700C9477B /* manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
+		A6A395C729CF9BD800C9477B /* background.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = background.js; sourceTree = "<group>"; };
+		A6A395C829CF9BD800C9477B /* content.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = content.js; sourceTree = "<group>"; };
+		A6D4004429CF7B5900000CB7 /* LightWalletDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightWalletDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6D4007229CF7B6A00000CB7 /* LightWalletSafariExtensionDev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LightWalletSafariExtensionDev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6D400C029CF804B00000CB7 /* Configuration */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Configuration; sourceTree = "<group>"; };
+		A6D4FF9C29CF684400000CB7 /* LightWalletCoreFFI.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = LightWalletCoreFFI.xcframework; sourceTree = "<group>"; };
+		A6D4FFC929CF72B400000CB7 /* LightWalletSafariExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LightWalletSafariExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6D4FFD329CF737900000CB7 /* LightWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6D4FFDB29CF74E500000CB7 /* LightWalletTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LightWalletTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6D4FFDC29CF74E500000CB7 /* LightWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LightWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6DF7F8429CF56520037F2C5 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		A6DF7F9729CF56520037F2C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A6DF7FB329CF60AC0037F2C5 /* LightWalletCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = LightWalletCore; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A644BFD429CF528500A3FFF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6D4FF9D29CF684400000CB7 /* LightWalletCoreFFI.xcframework in Frameworks */,
+				A64C874929CF632B001D18B3 /* Core in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A644BFE529CF528600A3FFF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A644BFEF29CF528600A3FFF7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6D4004129CF7B5900000CB7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6D400BA29CF7E8500000CB7 /* LightWalletCoreFFI.xcframework in Frameworks */,
+				A6D400B929CF7E7C00000CB7 /* Core in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6D4006F29CF7B6900000CB7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6A395BA29CF985C00C9477B /* LightWalletCoreFFI.xcframework in Frameworks */,
+				A6D400BE29CF7E9600000CB7 /* Extension in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6DF7F7F29CF56520037F2C5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6A395B729CF985800C9477B /* LightWalletCoreFFI.xcframework in Frameworks */,
+				A6D4FFA029CF6EE600000CB7 /* Extension in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A644BFCE29CF528500A3FFF7 = {
+			isa = PBXGroup;
+			children = (
+				A66A13F329E5BB6100F3A3D3 /* LightWalletBuildTools */,
+				A6DF7FB329CF60AC0037F2C5 /* LightWalletCore */,
+				A644BFD929CF528500A3FFF7 /* LightWallet */,
+				A644BFEB29CF528600A3FFF7 /* LightWalletTests */,
+				A644BFF529CF528600A3FFF7 /* LightWalletUITests */,
+				A6DF7F8329CF56520037F2C5 /* LightWalletSafariExtension */,
+				A6D4FFD329CF737900000CB7 /* LightWallet.app */,
+				A6D4FFC929CF72B400000CB7 /* LightWalletSafariExtension.appex */,
+				A6D4004429CF7B5900000CB7 /* LightWalletDev.app */,
+				A6D4007229CF7B6A00000CB7 /* LightWalletSafariExtensionDev.appex */,
+				A6D4FFDB29CF74E500000CB7 /* LightWalletTests.xctest */,
+				A6D4FFDC29CF74E500000CB7 /* LightWalletUITests.xctest */,
+				A6D4FF9C29CF684400000CB7 /* LightWalletCoreFFI.xcframework */,
+			);
+			sourceTree = "<group>";
+		};
+		A644BFD929CF528500A3FFF7 /* LightWallet */ = {
+			isa = PBXGroup;
+			children = (
+				A6D400C029CF804B00000CB7 /* Configuration */,
+				A644BFE129CF528600A3FFF7 /* Preview Content */,
+				A6DBFCAB29D6A0A3000668FD /* Sources */,
+				A644BFDE29CF528600A3FFF7 /* Assets.xcassets */,
+			);
+			path = LightWallet;
+			sourceTree = "<group>";
+		};
+		A644BFE129CF528600A3FFF7 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				A644BFE229CF528600A3FFF7 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A644BFEB29CF528600A3FFF7 /* LightWalletTests */ = {
+			isa = PBXGroup;
+			children = (
+				A644BFEC29CF528600A3FFF7 /* LightWalletTests.swift */,
+			);
+			path = LightWalletTests;
+			sourceTree = "<group>";
+		};
+		A644BFF529CF528600A3FFF7 /* LightWalletUITests */ = {
+			isa = PBXGroup;
+			children = (
+				A644BFF629CF528600A3FFF7 /* LightWalletUITests.swift */,
+				A644BFF829CF528600A3FFF7 /* LightWalletUITestsLaunchTests.swift */,
+			);
+			path = LightWalletUITests;
+			sourceTree = "<group>";
+		};
+		A6DBFCAB29D6A0A3000668FD /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A644BFDA29CF528500A3FFF7 /* LightWalletApp.swift */,
+				A644BFDC29CF528500A3FFF7 /* ContentView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		A6DBFCAC29D6A0D9000668FD /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A6DF7F8429CF56520037F2C5 /* SafariWebExtensionHandler.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		A6DBFCAE29D6A1C2000668FD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A6A395C329CF9BD700C9477B /* _locales */,
+				A6A395C729CF9BD800C9477B /* background.js */,
+				A6A395C829CF9BD800C9477B /* content.js */,
+				A6A395C529CF9BD700C9477B /* images */,
+				A6A395C429CF9BD700C9477B /* inpage.js */,
+				A6A395C629CF9BD700C9477B /* manifest.json */,
+				A6A395C229CF9BD700C9477B /* popup */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A6DF7F8329CF56520037F2C5 /* LightWalletSafariExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A6DBFCAE29D6A1C2000668FD /* Resources */,
+				A6DBFCAC29D6A0D9000668FD /* Sources */,
+				A6DF7F9729CF56520037F2C5 /* Info.plist */,
+			);
+			path = LightWalletSafariExtension;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A644BFD629CF528500A3FFF7 /* LightWallet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A644BFFC29CF528600A3FFF7 /* Build configuration list for PBXNativeTarget "LightWallet" */;
+			buildPhases = (
+				A644BFD329CF528500A3FFF7 /* Sources */,
+				A644BFD429CF528500A3FFF7 /* Frameworks */,
+				A644BFD529CF528500A3FFF7 /* Resources */,
+				A6DF7F9E29CF56520037F2C5 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A6DF7F9929CF56520037F2C5 /* PBXTargetDependency */,
+			);
+			name = LightWallet;
+			packageProductDependencies = (
+				A64C874829CF632B001D18B3 /* Core */,
+			);
+			productName = light;
+			productReference = A6D4FFD329CF737900000CB7 /* LightWallet.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A644BFE729CF528600A3FFF7 /* LightWalletTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A644BFFF29CF528600A3FFF7 /* Build configuration list for PBXNativeTarget "LightWalletTests" */;
+			buildPhases = (
+				A644BFE429CF528600A3FFF7 /* Sources */,
+				A644BFE529CF528600A3FFF7 /* Frameworks */,
+				A644BFE629CF528600A3FFF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A6A395DE29CFADDA00C9477B /* PBXTargetDependency */,
+			);
+			name = LightWalletTests;
+			productName = lightTests;
+			productReference = A6D4FFDB29CF74E500000CB7 /* LightWalletTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A644BFF129CF528600A3FFF7 /* LightWalletUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A644C00229CF528600A3FFF7 /* Build configuration list for PBXNativeTarget "LightWalletUITests" */;
+			buildPhases = (
+				A644BFEE29CF528600A3FFF7 /* Sources */,
+				A644BFEF29CF528600A3FFF7 /* Frameworks */,
+				A644BFF029CF528600A3FFF7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A6A395E029CFADDD00C9477B /* PBXTargetDependency */,
+			);
+			name = LightWalletUITests;
+			productName = lightUITests;
+			productReference = A6D4FFDC29CF74E500000CB7 /* LightWalletUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		A6D4004329CF7B5900000CB7 /* LightWalletDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6D4006529CF7B5B00000CB7 /* Build configuration list for PBXNativeTarget "LightWalletDev" */;
+			buildPhases = (
+				A6D4004029CF7B5900000CB7 /* Sources */,
+				A6D4004129CF7B5900000CB7 /* Frameworks */,
+				A6D4004229CF7B5900000CB7 /* Resources */,
+				A6D400B729CF7E7A00000CB7 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A6D400B629CF7E7A00000CB7 /* PBXTargetDependency */,
+			);
+			name = LightWalletDev;
+			packageProductDependencies = (
+				A6D400B829CF7E7C00000CB7 /* Core */,
+			);
+			productName = LightWalletDev;
+			productReference = A6D4004429CF7B5900000CB7 /* LightWalletDev.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A6D4007129CF7B6900000CB7 /* LightWalletSafariExtensionDev */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6D4008B29CF7B6A00000CB7 /* Build configuration list for PBXNativeTarget "LightWalletSafariExtensionDev" */;
+			buildPhases = (
+				A6D4006E29CF7B6900000CB7 /* Sources */,
+				A6D4006F29CF7B6900000CB7 /* Frameworks */,
+				A6D4007029CF7B6900000CB7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LightWalletSafariExtensionDev;
+			packageProductDependencies = (
+				A6D400BD29CF7E9600000CB7 /* Extension */,
+			);
+			productName = LightWalletSafariExtensionDev;
+			productReference = A6D4007229CF7B6A00000CB7 /* LightWalletSafariExtensionDev.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		A6DF7F8129CF56520037F2C5 /* LightWalletSafariExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6DF7F9B29CF56520037F2C5 /* Build configuration list for PBXNativeTarget "LightWalletSafariExtension" */;
+			buildPhases = (
+				A6DF7F7E29CF56520037F2C5 /* Sources */,
+				A6DF7F7F29CF56520037F2C5 /* Frameworks */,
+				A6DF7F8029CF56520037F2C5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LightWalletSafariExtension;
+			packageProductDependencies = (
+				A6D4FF9F29CF6EE600000CB7 /* Extension */,
+			);
+			productName = LightWalletSafariExtension;
+			productReference = A6D4FFC929CF72B400000CB7 /* LightWalletSafariExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A644BFCF29CF528500A3FFF7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = NO;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					A644BFD629CF528500A3FFF7 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					A644BFE729CF528600A3FFF7 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = A6D4004329CF7B5900000CB7;
+					};
+					A644BFF129CF528600A3FFF7 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = A6D4004329CF7B5900000CB7;
+					};
+					A6D4004329CF7B5900000CB7 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					A6D4007129CF7B6900000CB7 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					A6DF7F8129CF56520037F2C5 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = A644BFD229CF528500A3FFF7 /* Build configuration list for PBXProject "LightWallet" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A644BFCE29CF528500A3FFF7;
+			productRefGroup = A644BFCE29CF528500A3FFF7;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A644BFD629CF528500A3FFF7 /* LightWallet */,
+				A6DF7F8129CF56520037F2C5 /* LightWalletSafariExtension */,
+				A6D4004329CF7B5900000CB7 /* LightWalletDev */,
+				A6D4007129CF7B6900000CB7 /* LightWalletSafariExtensionDev */,
+				A644BFE729CF528600A3FFF7 /* LightWalletTests */,
+				A644BFF129CF528600A3FFF7 /* LightWalletUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A644BFD529CF528500A3FFF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6D400C129CF804B00000CB7 /* Configuration in Resources */,
+				A644BFE329CF528600A3FFF7 /* Preview Assets.xcassets in Resources */,
+				A644BFDF29CF528600A3FFF7 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A644BFE629CF528600A3FFF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A644BFF029CF528600A3FFF7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6D4004229CF7B5900000CB7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6A8720429D47DA1007A0EAD /* Assets.xcassets in Resources */,
+				A6D400C329CF804B00000CB7 /* Configuration in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6D4007029CF7B6900000CB7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6A395D629CF9BD800C9477B /* content.js in Resources */,
+				A6A395D029CF9BD800C9477B /* images in Resources */,
+				A6A395CE29CF9BD800C9477B /* inpage.js in Resources */,
+				A6A395D429CF9BD800C9477B /* background.js in Resources */,
+				A6A395DC29CF9C0300C9477B /* (null) in Resources */,
+				A6A395CC29CF9BD800C9477B /* _locales in Resources */,
+				A6D400C429CF804B00000CB7 /* Configuration in Resources */,
+				A6A395D229CF9BD800C9477B /* manifest.json in Resources */,
+				A6A395CA29CF9BD800C9477B /* popup in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6DF7F8029CF56520037F2C5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6A395D529CF9BD800C9477B /* content.js in Resources */,
+				A6A395CF29CF9BD800C9477B /* images in Resources */,
+				A6A395CD29CF9BD800C9477B /* inpage.js in Resources */,
+				A6A395D329CF9BD800C9477B /* background.js in Resources */,
+				A6A395DB29CF9C0300C9477B /* (null) in Resources */,
+				A6A395CB29CF9BD800C9477B /* _locales in Resources */,
+				A6D400C229CF804B00000CB7 /* Configuration in Resources */,
+				A6A395D129CF9BD800C9477B /* manifest.json in Resources */,
+				A6A395C929CF9BD800C9477B /* popup in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A644BFD329CF528500A3FFF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A644BFDD29CF528500A3FFF7 /* ContentView.swift in Sources */,
+				A644BFDB29CF528500A3FFF7 /* LightWalletApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A644BFE429CF528600A3FFF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A644BFED29CF528600A3FFF7 /* LightWalletTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A644BFEE29CF528600A3FFF7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A644BFF729CF528600A3FFF7 /* LightWalletUITests.swift in Sources */,
+				A644BFF929CF528600A3FFF7 /* LightWalletUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6D4004029CF7B5900000CB7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6D400B129CF7D9500000CB7 /* ContentView.swift in Sources */,
+				A6D400B029CF7D8E00000CB7 /* LightWalletApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6D4006E29CF7B6900000CB7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6D400B229CF7D9E00000CB7 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A6DF7F7E29CF56520037F2C5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6DF7F8529CF56520037F2C5 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A6A395DE29CFADDA00C9477B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A6D4004329CF7B5900000CB7 /* LightWalletDev */;
+			targetProxy = A6A395DD29CFADDA00C9477B /* PBXContainerItemProxy */;
+		};
+		A6A395E029CFADDD00C9477B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A6D4004329CF7B5900000CB7 /* LightWalletDev */;
+			targetProxy = A6A395DF29CFADDD00C9477B /* PBXContainerItemProxy */;
+		};
+		A6D400B629CF7E7A00000CB7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A6D4007129CF7B6900000CB7 /* LightWalletSafariExtensionDev */;
+			targetProxy = A6D400B529CF7E7A00000CB7 /* PBXContainerItemProxy */;
+		};
+		A6DF7F9929CF56520037F2C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A6DF7F8129CF56520037F2C5 /* LightWalletSafariExtension */;
+			targetProxy = A6DF7F9829CF56520037F2C5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A644BFFA29CF528600A3FFF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A644BFFB29CF528600A3FFF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		A644BFFD29CF528600A3FFF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconProd;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWallet.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightWallet/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = LightWallet;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development io.magic.light";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A644BFFE29CF528600A3FFF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconProd;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWallet.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightWallet/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = LightWallet;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore io.magic.light";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A644C00029CF528600A3FFF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LightWalletDev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LightWalletDev";
+			};
+			name = Debug;
+		};
+		A644C00129CF528600A3FFF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LightWalletDev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LightWalletDev";
+			};
+			name = Release;
+		};
+		A644C00329CF528600A3FFF7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z47XRX22C;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = LightWalletDev;
+			};
+			name = Debug;
+		};
+		A644C00429CF528600A3FFF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4Z47XRX22C;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light.UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = LightWalletDev;
+			};
+			name = Release;
+		};
+		A6D4006629CF7B5B00000CB7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWalletDev.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightWallet/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_CFBundleDisplayName = LightWalletDev;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light.dev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development io.magic.light.dev";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A6D4006729CF7B5B00000CB7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDev;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWalletDev.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightWallet/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "";
+				INFOPLIST_KEY_CFBundleDisplayName = LightWalletDev;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.magic.light.dev;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore io.magic.light.dev";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A6D4008C29CF7B6A00000CB7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWalletSafariExtensionDev.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LightWalletSafariExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LightWalletSafariExtensionDev;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.magic.light.dev.Light-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development io.magic.light.dev.Light-Safari-Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A6D4008D29CF7B6A00000CB7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWalletSafariExtensionDev.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LightWalletSafariExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LightWalletSafariExtensionDev;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.magic.light.dev.Light-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore io.magic.light.dev.Light-Safari-Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A6DF7F9C29CF56520037F2C5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWalletSafariExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LightWalletSafariExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LightWalletSafariExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.magic.light.Light-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match Development io.magic.light.Light-Safari-Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A6DF7F9D29CF56520037F2C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = LightWallet/Configuration/LightWalletSafariExtension.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 4Z47XRX22C;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LightWalletSafariExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LightWalletSafariExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 2.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.magic.light.Light-Safari-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore io.magic.light.Light-Safari-Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A644BFD229CF528500A3FFF7 /* Build configuration list for PBXProject "LightWallet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A644BFFA29CF528600A3FFF7 /* Debug */,
+				A644BFFB29CF528600A3FFF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A644BFFC29CF528600A3FFF7 /* Build configuration list for PBXNativeTarget "LightWallet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A644BFFD29CF528600A3FFF7 /* Debug */,
+				A644BFFE29CF528600A3FFF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A644BFFF29CF528600A3FFF7 /* Build configuration list for PBXNativeTarget "LightWalletTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A644C00029CF528600A3FFF7 /* Debug */,
+				A644C00129CF528600A3FFF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A644C00229CF528600A3FFF7 /* Build configuration list for PBXNativeTarget "LightWalletUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A644C00329CF528600A3FFF7 /* Debug */,
+				A644C00429CF528600A3FFF7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A6D4006529CF7B5B00000CB7 /* Build configuration list for PBXNativeTarget "LightWalletDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6D4006629CF7B5B00000CB7 /* Debug */,
+				A6D4006729CF7B5B00000CB7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A6D4008B29CF7B6A00000CB7 /* Build configuration list for PBXNativeTarget "LightWalletSafariExtensionDev" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6D4008C29CF7B6A00000CB7 /* Debug */,
+				A6D4008D29CF7B6A00000CB7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A6DF7F9B29CF56520037F2C5 /* Build configuration list for PBXNativeTarget "LightWalletSafariExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A6DF7F9C29CF56520037F2C5 /* Debug */,
+				A6DF7F9D29CF56520037F2C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A64C874829CF632B001D18B3 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		A6D400B829CF7E7C00000CB7 /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		A6D400BD29CF7E9600000CB7 /* Extension */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Extension;
+		};
+		A6D4FF9F29CF6EE600000CB7 /* Extension */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Extension;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A644BFCF29CF528500A3FFF7 /* Project object */;
+}

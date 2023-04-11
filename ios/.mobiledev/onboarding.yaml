@@ -1,0 +1,9 @@
+appId: io.magic.light.dev
+---
+- clearKeychain
+- clearState
+- launchApp
+- tapOn:
+    text: "Get Started"
+- tapOn:
+    text: "Create New Wallet"

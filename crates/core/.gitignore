@@ -1,0 +1,3 @@
+src/LightWalletCoreFFI.modulemap
+src/LightWalletCore.swift
+src/LightWalletCoreFFI.h

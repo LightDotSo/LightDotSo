@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2021", "dom"],
+    "module": "commonjs",
+  }    
+}
