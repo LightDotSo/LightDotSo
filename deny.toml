@@ -5,11 +5,10 @@ notice = "deny"
 unsound = "deny"
 ignore = ["RUSTSEC-2021-0145"]
 
-
 [bans]
 multiple-versions = "deny"
 deny = []
-skip = [{ name = "syn", version = "=2.0.11" }]
+skip = [{ name = "syn", version = "=2.0.14" }]
 skip-tree = []
 allow = []
 
@@ -22,6 +21,6 @@ unlicensed = "deny"
 allow-osi-fsf-free = "neither"
 copyleft = "deny"
 confidence-threshold = 0.93
-allow = ["Apache-2.0", "BSD-3-Clause", "MIT", "MPL-2.0"]
+allow = ["Apache-2.0", "MIT", "MPL-2.0"]
 deny = []
 exceptions = [{ allow = ["Unicode-DFS-2016"], name = "unicode-ident" }]
