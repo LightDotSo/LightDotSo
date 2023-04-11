@@ -65,7 +65,7 @@ jobs:
         with:
           args: --all --all-features
           name: rust-lint
-          token: ${{ secrets.BOT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: EmbarkStudios/cargo-deny-action@v1
         with:
           log-level: warn
