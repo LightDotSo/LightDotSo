@@ -36,8 +36,8 @@ runs:
       uses: actions/cache@v3
       with:
         path: |
-          ios/LightWalletBuildTools/.build
-          ios/LightWalletCore/.build
+          ${{ github.workspace }}/ios/LightWalletBuildTools/.build
+          ${{ github.workspace }}/ios/LightWalletCore/.build
         key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-
