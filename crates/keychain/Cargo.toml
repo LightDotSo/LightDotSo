@@ -1,5 +1,5 @@
 [package]
-name = "lightwallet_keychain"
+name = "light-wallet-keychain"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,3 +8,6 @@ license = "MPL-2.0"
 [dependencies]
 core-foundation = "0.9.3"
 core-foundation-sys = "0.8.3"
+ethers-core = { workspace = true }
+ethers-signers = { workspace = true }
+tokio = { workspace = true, features = ["macros", "rt"] }

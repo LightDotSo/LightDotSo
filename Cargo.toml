@@ -13,3 +13,8 @@ opt-level = 3
 
 [profile.release]
 lto = "off"
+
+[workspace.dependencies]
+ethers-core = "2.0.2"
+ethers-signers = "2.0.2"
+tokio = "1.27"
