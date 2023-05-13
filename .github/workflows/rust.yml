@@ -9,68 +9,79 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  RUSTFLAGS: -D warnings
+  CARGO_TERM_COLOR: always
 jobs:
-  rust-build:
-    runs-on: ${{ matrix.os }}
+  rust:
     strategy:
       matrix:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            test: true
+          # - os: ubuntu-latest
+          #   target: x86_64-linux-android
           - os: macos-latest
-            target: aarch64-apple-ios
-          - os: macos-latest
-            target: aarch64-apple-ios-sim
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup
-      - uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --all-features --target ${{ matrix.target }}
-  rust-test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
+            target: x86_64-apple-ios
+            test: false
           - os: macos-latest
             target: x86_64-apple-darwin
-    timeout-minutes: 45
+            test: true
+          # - os: windows-latest
+          #   target: x86_64-pc-windows-msvc
+    env:
+      RUSTFLAGS: -D warnings
+      SCCACHE_GHA_ENABLED: "true"
+      RUSTC_WRAPPER: "sccache"
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup
-      - uses: actions-rs/cargo@v1
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Rust Install
+        uses: ./.github/actions/rust-install
         with:
-          command: test
-          args: --target ${{ matrix.target }}
-  rust-lint:
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/setup
-      - uses: dtolnay/rust-toolchain@nightly
-        with:
-          components: rustfmt, clippy
-      - uses: actions-rs/cargo@v1
+          sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
+          sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
+          sccache_secret: ${{ secrets.SCCACHE_SECRET }}
+      - name: Rust Format Check
+        uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all --check
-      - uses: actions-rs/clippy-check@v1
+      - name: License Check
+        uses: actions-rs/cargo@v1
         with:
-          args: --all --all-features
-          name: rust-lint
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: EmbarkStudios/cargo-deny-action@v1
+          command: run
+          args: --package mpl-license-checker
+      - name: Rust Build
+        uses: actions-rs/cargo@v1
         with:
-          log-level: warn
-          command: check
-          arguments: --all-features
-          command-arguments: ""
-      - run: |
-          cargo mpl-license-checker
+          command: build
+          args: --target ${{ matrix.target }}
+      - if: matrix.test
+        name: Rust Test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --target ${{ matrix.target }}
+      - if: matrix.test
+        name: Rust Coverage Install
+        uses: taiki-e/install-action@cargo-llvm-cov
+      - if: matrix.test
+        name: Rust Coverage
+        run: |
+          cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+      - if: matrix.test
+        name: Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
+          fail_ci_if_error: false
+      - name: Rust Clippy Check
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
+      - name: Rust Finish
+        uses: ./.github/actions/rust-finish
