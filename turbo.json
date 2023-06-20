@@ -10,6 +10,11 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "//#ci": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": ["**"]
     }
   }
 }
