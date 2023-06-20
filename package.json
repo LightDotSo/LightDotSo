@@ -1,4 +1,5 @@
 {
+  "name": "lightdotso",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -13,6 +14,5 @@
     "prettier": "^2.5.1",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@7.15.0",
-  "name": "LightDotSo"
+  "packageManager": "pnpm@7.15.0"
 }
