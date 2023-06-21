@@ -1,0 +1,10 @@
+name: PR
+on:
+  pull_request_target:
+jobs:
+  pr:
+    name: PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR Validate
+        uses: wallet-rs/wallet-rs/.github/actions/pr-validate
