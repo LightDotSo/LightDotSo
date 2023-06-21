@@ -10,16 +10,17 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "echo \"Error: no test specified\""
   },
+  "dependencies": {
+    "expo": "^48.0.7"
+  },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
     "eslint": "^7.32.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "^2.5.1",
-    "rome": "12.1.3",
-    "turbo": "latest"
+    "rome": "^12.1.3",
+    "turbo": "^1.10.4",
+    "vercel": "^30.2.3"
   },
-  "packageManager": "pnpm@7.15.0",
-  "dependencies": {
-    "expo": "^48.0.7"
-  }
+  "packageManager": "pnpm@7.15.0"
 }
