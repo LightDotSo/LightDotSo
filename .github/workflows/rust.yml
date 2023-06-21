@@ -38,7 +38,7 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v3
       - name: Rust Install
-        uses: ./.github/actions/rust-install
+        uses: wallet-rs/wallet-rs/.github/actions/rust-install
         with:
           sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
           sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
@@ -79,7 +79,7 @@ jobs:
           command: clippy
           args: -- -D warnings
       - name: Rust Finish
-        uses: ./.github/actions/rust-finish
+        uses: wallet-rs/wallet-rs/.github/actions/rust-finish
   rust-check:
     if: always()
     needs:
