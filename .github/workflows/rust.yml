@@ -50,6 +50,11 @@ jobs:
         with:
           command: fmt
           args: --all --check
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Node Build
+        run: |
+          pnpm run build
       - name: Rust Build
         uses: actions-rs/cargo@v1
         with:
