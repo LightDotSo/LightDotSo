@@ -8,16 +8,22 @@
     "lint": "turbo run lint",
     "ci": "rome ci .",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "test": "echo \"Error: no test specified\""
+    "test": "echo \"Error: no test specified\"",
+    "ncu:check": "ncu--packageFile 'packages/**/package.json'",
+    "ncu:upgrade:monorepo": "ncu --packageFile 'packages/**/package.json' -u",
+    "ncu:upgrade:root": "ncu --packageFile package.json -u",
+    "ncu:upgrade": "concurrently 'pnpm:ncu:upgrade:*'"
   },
   "dependencies": {
-    "expo": "^48.0.7"
+    "expo": "^48.0.19"
   },
   "devDependencies": {
-    "@turbo/gen": "^1.9.7",
-    "eslint": "^7.32.0",
+    "@turbo/gen": "^1.10.4",
+    "concurrently": "^8.2.0",
+    "eslint": "^8.43.0",
     "eslint-config-custom": "workspace:*",
-    "prettier": "^2.5.1",
+    "npm-check-updates": "^16.10.12",
+    "prettier": "^2.8.8",
     "rome": "^12.1.3",
     "turbo": "^1.10.4",
     "vercel": "^30.2.3"
