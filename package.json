@@ -6,7 +6,8 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "ci": "rome ci .",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "echo \"Error: no test specified\""
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
