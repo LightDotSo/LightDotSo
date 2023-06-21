@@ -167,7 +167,7 @@ importers:
         specifier: ^4.5.3
         version: 4.9.5
 
-  apps/expo:
+  apps/mobile:
     dependencies:
       '@babel/runtime':
         specifier: ^7.18.9
@@ -395,7 +395,7 @@ packages:
     engines: {node: '>=6.0.0'}
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
-      '@jridgewell/trace-mapping': 0.3.9
+      '@jridgewell/trace-mapping': 0.3.18
 
   /@babel/code-frame@7.10.4:
     resolution: {integrity: sha512-vG6SvB6oYEhvgisZNFRmRCUkLz11c7rp+tbNTynGqc6mS1d5ATd/sGyV6W0KZZnXRKMTzZDRgQT3Ou9jhpAfUg==}
@@ -3338,7 +3338,7 @@ packages:
       '@babel/runtime': 7.21.5
       '@expo/code-signing-certificates': 0.0.5
       '@expo/config': 8.0.2
-      '@expo/config-plugins': 6.0.1
+      '@expo/config-plugins': 6.0.2
       '@expo/dev-server': 0.2.3
       '@expo/devcert': 1.1.0
       '@expo/json-file': 8.2.37
@@ -3958,9 +3958,9 @@ packages:
     resolution: {integrity: sha512-0C+wjmmQ0usySdhtzeRp0yYuf9zkUZ/kNgA6AHQ9N7eG4JIr0DM1c87g119smxcJTbd8N+//mv5znPxSJqBqmg==}
     engines: {node: '>=12'}
     dependencies:
-      '@babel/core': 7.17.9
+      '@babel/core': 7.22.5
       '@expo/config': 6.0.20
-      babel-loader: 8.3.0(@babel/core@7.17.9)(webpack@5.87.0)
+      babel-loader: 8.3.0(@babel/core@7.22.5)(webpack@5.87.0)
       chalk: 4.1.2
       clean-webpack-plugin: 4.0.0(webpack@5.87.0)
       copy-webpack-plugin: 10.2.4(webpack@5.87.0)
@@ -4127,6 +4127,7 @@ packages:
   /@jridgewell/resolve-uri@3.1.1:
     resolution: {integrity: sha512-dSYZh7HhCDtCKm4QakX0xFpsRDqjjtZf/kjI/v3T3Nwt5r8/qz/M19F9ySyOqU94SXBmeG9ttTul+YnR4LOxFA==}
     engines: {node: '>=6.0.0'}
+    dev: true
 
   /@jridgewell/set-array@1.1.2:
     resolution: {integrity: sha512-xnkseuNADM0gt2bs+BvhO0p78Mk762YnZdsuzFV018NoG1Sj1SCQvpSqa7XUaTam5vAGasABV9qXASMKnFMwMw==}
@@ -4155,6 +4156,7 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: true
 
   /@leichtgewicht/ip-codec@2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
@@ -6057,14 +6059,14 @@ packages:
       - supports-color
     dev: true
 
-  /babel-loader@8.3.0(@babel/core@7.17.9)(webpack@5.87.0):
+  /babel-loader@8.3.0(@babel/core@7.22.5)(webpack@5.87.0):
     resolution: {integrity: sha512-H8SvsMF+m9t15HNLMipppzkC+Y2Yq+v3SonZyU70RBL/h1gxPkH08Ot8pEE9Z4Kd+czyWJClmFS8qzIP9OZ04Q==}
     engines: {node: '>= 8.9'}
     peerDependencies:
       '@babel/core': ^7.0.0
       webpack: '>=2'
     dependencies:
-      '@babel/core': 7.17.9
+      '@babel/core': 7.22.5
       find-cache-dir: 3.3.2
       loader-utils: 2.0.4
       make-dir: 3.1.0
@@ -13456,7 +13458,7 @@ packages:
     dependencies:
       object-assign: 4.1.1
       react: 18.2.0
-      react-is: 17.0.2
+      react-is: 18.2.0
     dev: false
 
   /react@17.0.2:
