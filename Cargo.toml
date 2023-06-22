@@ -4,3 +4,14 @@ resolver = "2"
 members = [
   "apps/desktop/src-tauri",
 ]
+
+# Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
+
+[profile.dev]
+opt-level = 0
+codegen-units = 16
+
+[profile.release]
+lto = true
+opt-level = 2
+codegen-units = 16
