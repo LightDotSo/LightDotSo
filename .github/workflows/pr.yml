@@ -9,4 +9,4 @@ jobs:
       - name: PR Validate
         uses: wallet-rs/wallet-rs/.github/actions/pr-validate@main
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
