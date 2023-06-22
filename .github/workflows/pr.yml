@@ -7,4 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: PR Validate
-        uses: wallet-rs/wallet-rs/.github/actions/pr-validate
+        uses: wallet-rs/wallet-rs/.github/actions/pr-validate@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
