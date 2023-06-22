@@ -5,7 +5,7 @@
   "private": true,
   "sideEffects": ["*.css"],
   "dependencies": {
-    "ui": "workspace:*",
+    "@lightdotso/ui": "workspace:*",
     "@tamagui/animations-react-native": "latest",
     "@tamagui/colors": "latest",
     "@tamagui/font-inter": "latest",
