@@ -1,0 +1,14 @@
+comment:
+  require_changes: true
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: null
+        informational: true
+    patch:
+      default:
+        target: auto
+        threshold: null
+        informational: true
