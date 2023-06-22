@@ -11,7 +11,27 @@ concurrency:
 env:
   RUSTFLAGS: -D warnings
   CARGO_TERM_COLOR: always
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 jobs:
+  node-build:
+    env:
+      RUSTFLAGS: -D warnings
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Install Rust Toolchain (nightly)
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Node Build
+        run: |
+          pnpm run build
   node-lint:
     env:
       RUSTFLAGS: -D warnings
@@ -49,6 +69,7 @@ jobs:
   node-check:
     if: always()
     needs:
+      - node-build
       - node-lint
       - node-test
     runs-on: ubuntu-latest
