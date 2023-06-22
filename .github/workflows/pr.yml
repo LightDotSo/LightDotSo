@@ -1,9 +1,23 @@
 name: PR
 on:
-  pull_request_target:
-permissions:
-  pull-requests: write
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 jobs:
+  contracts:
+    uses: ./.github/workflows/contracts.yml
+    secrets: inherit
+  node:
+    uses: ./.github/workflows/node.yml
+    secrets: inherit
+  rust:
+    uses: ./.github/workflows/rust.yml
+    secrets: inherit
   pr-lint:
     name: PR
     runs-on: ubuntu-latest
