@@ -47,7 +47,7 @@ jobs:
           forge install
       - name: Contracts Lint
         run: |
-          pnpm fmt --check
+          forge fmt --check
   contracts-test:
     runs-on: ubuntu-20.04
     steps:
