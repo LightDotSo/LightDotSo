@@ -1,12 +1,26 @@
 name: PR
 on:
   pull_request_target:
+permissions:
+  pull-requests: write
 jobs:
-  pr:
+  pr-lint:
     name: PR
     runs-on: ubuntu-latest
     steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
       - name: PR Validate
         uses: wallet-rs/wallet-rs/.github/actions/pr-validate@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+  pr-check:
+    if: always()
+    needs:
+      - pr-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
