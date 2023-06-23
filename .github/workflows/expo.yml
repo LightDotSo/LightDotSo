@@ -1,5 +1,8 @@
 name: Expo
 on:
+  issue_comment:
+    types:
+      - created
   push:
     branches:
       - main
@@ -8,6 +11,8 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
+env:
+  EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 jobs:
   expo:
     runs-on: ubuntu-latest
@@ -23,22 +28,21 @@ jobs:
         working-directory: apps/mobile
         run: |
           pnpm eas submit --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - if: github.event.issue.pull_request && contains(github.event.comment.body, '/expo')
+        name: Build app
+        working-directory: apps/mobile
+        run: |
+          pnpm eas build --non-interactive
       - if: github.event_name == 'merge_group'
         name: Build app
         working-directory: apps/mobile
         run: |
           pnpm eas build --non-interactive
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       - if: github.event_name == 'pull_request'
         name: Publish to Expo
         working-directory: apps/mobile
         run: |
           pnpm eas update --channel=pr-${{ github.event.number }} --non-interactive --auto
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
   expo-check:
     if: always()
     needs:
