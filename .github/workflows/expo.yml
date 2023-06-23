@@ -1,0 +1,37 @@
+name: Expo
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Node Install
+        uses:  wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: 🚀 Build app
+        run: |
+          eas build --non-interactive
+      - if: github.event_name == 'pull_request'
+        name: Publish to Expo
+        run: |
+          expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+      - if: github.event_name == 'pull_request'
+        name: Comment in preview
+        uses: expo/expo-github-action/preview-comment@v8
+        with:
+          channel: pr-${{ github.event.number }}
