@@ -32,12 +32,12 @@ jobs:
         name: Build app
         working-directory: apps/mobile
         run: |
-          pnpm eas build --non-interactive
+          pnpm eas build --platform ios --non-interactive
       - if: github.event_name == 'merge_group'
         name: Build app
         working-directory: apps/mobile
         run: |
-          pnpm eas build --non-interactive
+          pnpm eas build --platform ios --non-interactive
       - if: github.event_name == 'pull_request'
         name: Publish to Expo
         working-directory: apps/mobile
