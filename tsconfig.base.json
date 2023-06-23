@@ -19,6 +19,7 @@
     "noUnusedParameters": false,
     "experimentalDecorators": true,
     "useUnknownInCatchVariables": false,
+    "outDir": "dist",
     "preserveConstEnums": true,
     // DONT DO THIS so jsdoc will remain
     "removeComments": false,

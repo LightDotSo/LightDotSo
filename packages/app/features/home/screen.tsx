@@ -1,13 +1,9 @@
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, useToastController, XStack, YStack } from "@my/ui";
 import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import { useLink } from "solito/link";
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToastController } from "ui";
 
 export function HomeScreen() {
-  const linkProps = useLink({
-    href: "/user/nate",
-  });
-
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
@@ -29,10 +25,6 @@ export function HomeScreen() {
           </Anchor>
         </Paragraph>
       </YStack>
-
-      <XStack>
-        <Button {...linkProps}>Link to user</Button>
-      </XStack>
 
       <SheetDemo />
     </YStack>

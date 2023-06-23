@@ -1,8 +1,8 @@
+import { CustomToast, TamaguiProvider, TamaguiProviderProps, ToastProvider } from "@my/ui";
 import { useColorScheme } from "react-native";
-import { CustomToast, TamaguiProvider, TamaguiProviderProps, ToastProvider } from "ui";
 
-import config from "../tamagui.config";
 import { ToastViewport } from "./ToastViewport";
+import config from "../tamagui.config";
 
 export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, "config">) {
   const scheme = useColorScheme();

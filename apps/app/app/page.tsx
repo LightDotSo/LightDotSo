@@ -1,10 +1,5 @@
-import { Button, Header } from "ui";
+"use client";
 
-export default function Page() {
-  return (
-    <>
-      <Header text="Web" />
-      <Button />
-    </>
-  );
-}
+import { HomeScreen } from "app/features/home/screen";
+
+export default HomeScreen;
