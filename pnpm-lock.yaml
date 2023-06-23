@@ -372,6 +372,15 @@ importers:
       '@tamagui/react-native-media-driver':
         specifier: ^1.35.8
         version: 1.35.8(react-native@0.71.11)(react@18.2.0)
+      '@tamagui/toast':
+        specifier: ^1.35.8
+        version: 1.35.8(@types/react@18.2.13)(burnt@0.10.0)(react-native@0.71.11)(react@18.2.0)
+      '@tanstack/react-virtual':
+        specifier: 3.0.0-alpha.0
+        version: 3.0.0-alpha.0(react@18.2.0)
+      jotai:
+        specifier: ^2.2.1
+        version: 2.2.1(react@18.2.0)
       tamagui:
         specifier: ^1.35.8
         version: 1.35.8(@types/react@18.2.13)(react-dom@18.2.0)(react-native-web@0.18.12)(react-native@0.71.11)(react@18.2.0)
@@ -2593,7 +2602,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.5.0
       '@jest/types': 29.5.0
-      '@types/node': 20.3.1
+      '@types/node': 18.16.18
       jest-mock: 29.5.0
 
   /@jest/fake-timers@29.5.0:
@@ -2602,7 +2611,7 @@ packages:
     dependencies:
       '@jest/types': 29.5.0
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 20.3.1
+      '@types/node': 18.16.18
       jest-message-util: 29.5.0
       jest-mock: 29.5.0
       jest-util: 29.5.0
@@ -2619,7 +2628,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 20.3.1
+      '@types/node': 18.16.18
       '@types/yargs': 15.0.15
       chalk: 4.1.2
 
@@ -2640,7 +2649,7 @@ packages:
       '@jest/schemas': 29.4.3
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 20.3.1
+      '@types/node': 18.16.18
       '@types/yargs': 17.0.24
       chalk: 4.1.2
 
@@ -2899,6 +2908,10 @@ packages:
       '@babel/runtime': 7.22.5
       '@types/react': 18.2.13
       react: 18.2.0
+    dev: false
+
+  /@reach/observe-rect@1.2.0:
+    resolution: {integrity: sha512-Ba7HmkFgfQxZqqaeIWWkNK0rEhpxVQHIoVyW1YDSkGsGIXzcaW4deC8B0pZrNSSyLTdIk7y+5olKt5+g0GmFIQ==}
     dev: false
 
   /@react-native-community/cli-clean@10.1.1:
@@ -4187,6 +4200,31 @@ packages:
       - react
     dev: false
 
+  /@tamagui/toast@1.35.8(@types/react@18.2.13)(burnt@0.10.0)(react-native@0.71.11)(react@18.2.0):
+    resolution: {integrity: sha512-A67R2gTL0moqBVAjDxHvDBi5ntDSyLaKEZ6QYqgNto6gZzE0eAEgpTsfy5X2H1kTgVtlQF3eglxYnz/ELIs6dQ==}
+    peerDependencies:
+      burnt: ^0.10.0
+      react: '*'
+      react-native: '*'
+    dependencies:
+      '@tamagui/animate-presence': 1.35.8(react@18.2.0)
+      '@tamagui/compose-refs': 1.35.8(react@18.2.0)
+      '@tamagui/core': 1.35.8(react@18.2.0)
+      '@tamagui/create-context': 1.35.8(react@18.2.0)
+      '@tamagui/dismissable': 1.35.8(@types/react@18.2.13)(react@18.2.0)
+      '@tamagui/polyfill-dev': 1.35.8
+      '@tamagui/portal': 1.35.8(react-native@0.71.11)(react@18.2.0)
+      '@tamagui/stacks': 1.35.8(react@18.2.0)
+      '@tamagui/text': 1.35.8(react-native@0.71.11)(react@18.2.0)
+      '@tamagui/use-controllable-state': 1.35.8(react@18.2.0)
+      '@tamagui/visually-hidden': 1.35.8(react@18.2.0)
+      burnt: 0.10.0(expo@48.0.19)(react-native@0.71.11)(react@18.2.0)
+      react: 18.2.0
+      react-native: 0.71.11(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(react@18.2.0)
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
   /@tamagui/toggle-group@1.35.8(react-native@0.71.11)(react@18.2.0):
     resolution: {integrity: sha512-jWDb3/HEbmJrnA4tuxav+5K/We+W3j4qKQ5wGtlYmzcjaqoEqodqHuO3h80qKdbvMsI9fDGbVjwVG3OTjszCqw==}
     peerDependencies:
@@ -4345,6 +4383,17 @@ packages:
       '@tamagui/use-event': 1.35.8(react@18.2.0)
       '@tamagui/use-force-update': 1.35.8(react@18.2.0)
       react: 18.2.0
+
+  /@tanstack/react-virtual@3.0.0-alpha.0(react@18.2.0):
+    resolution: {integrity: sha512-WpHU/dt34NwZZ8qtiE05TF+nX/b1W6qrWZarO+s8jJFpPVicrTbJKp5Bjt4eSJuk7aYw272oEfsH3ABBRgj+3A==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+    dependencies:
+      '@babel/runtime': 7.22.5
+      '@reach/observe-rect': 1.2.0
+      react: 18.2.0
+    dev: false
 
   /@tauri-apps/api@1.4.0:
     resolution: {integrity: sha512-Jd6HPoTM1PZSFIzq7FB8VmMu3qSSyo/3lSwLpoapW+lQ41CL5Dow2KryLg+gyazA/58DRWI9vu/XpEeHK4uMdw==}
@@ -4716,7 +4765,7 @@ packages:
   /@types/through@0.0.30:
     resolution: {integrity: sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg==}
     dependencies:
-      '@types/node': 20.3.1
+      '@types/node': 18.16.18
     dev: true
 
   /@types/ws@8.5.5:
@@ -9231,7 +9280,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.5.0
-      '@types/node': 20.3.1
+      '@types/node': 18.16.18
       jest-util: 29.5.0
 
   /jest-regex-util@27.5.1:
@@ -9261,7 +9310,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.5.0
-      '@types/node': 20.3.1
+      '@types/node': 18.16.18
       chalk: 4.1.2
       ci-info: 3.8.0
       graceful-fs: 4.2.11
@@ -9313,6 +9362,18 @@ packages:
 
   /join-component@1.1.0:
     resolution: {integrity: sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==}
+    dev: false
+
+  /jotai@2.2.1(react@18.2.0):
+    resolution: {integrity: sha512-Gz4tpbRQy9OiFgBwF9F7TieDn0UTE3C0IFSDuxHjOIvgn2tACH30UKz6p/wIlfoZROXSTCIxEvYEa7Y25WM+8g==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /js-tokens@4.0.0:

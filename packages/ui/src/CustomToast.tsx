@@ -1,12 +1,12 @@
-import Constants, { ExecutionEnvironment } from 'expo-constants'
-import { NativeToast as Toast } from './NativeToast'
+import { NativeToast as Toast } from "./NativeToast";
+import Constants, { ExecutionEnvironment } from "expo-constants";
 
-const isExpo = Constants.executionEnvironment === ExecutionEnvironment.StoreClient
+const isExpo = Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
 
 export const CustomToast = () => {
   if (isExpo) {
-    return null
+    return null;
   } else {
-    return <Toast />
+    return <Toast />;
   }
-}
+};

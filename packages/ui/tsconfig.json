@@ -4,6 +4,7 @@
     "src"
   ],
   "compilerOptions": {
+    "outDir": "dist",
     "composite": true,
     "jsx": "react-jsx"
   },
