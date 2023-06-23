@@ -7,6 +7,7 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "ci": "rome ci .",
+    "rome:format": "rome format . --write",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "test": "echo \"Error: no test specified\""
   },
