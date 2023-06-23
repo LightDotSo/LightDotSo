@@ -9,7 +9,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
-  preview:
+  expo:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -21,9 +21,12 @@ jobs:
       - name: Setup Expo
         uses: expo/expo-github-action@v8
         with:
+          expo-cache: true
+          eas-version: latest
           expo-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-      - name: 🚀 Build app
+      - if: github.event_name == 'push'
+        name: Build app
         run: |
           eas build --non-interactive
       - if: github.event_name == 'pull_request'
