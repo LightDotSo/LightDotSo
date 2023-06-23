@@ -1,27 +1,42 @@
-"use client";
-
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToastController } from "@lightdotso/ui";
-import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
-import React, { useState } from "react";
+import {
+  Anchor,
+  Button,
+  H1,
+  Paragraph,
+  Separator,
+  Sheet,
+  useToastController,
+  XStack,
+  YStack,
+} from '@my/ui'
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
+import React, { useState } from 'react'
+import { useLink } from 'solito/link'
 
 export function HomeScreen() {
+
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>
         <H1 ta="center">Welcome to Tamagui.</H1>
         <Paragraph ta="center">
-          Heres a basic starter to show navigating from one screen to another. This screen uses the same code on Next.js
-          and React Native.
+          Here's a basic starter to show navigating from one screen to another. This screen uses the
+          same code on Next.js and React Native.
         </Paragraph>
 
         <Separator />
         <Paragraph ta="center">
-          Made by{" "}
+          Made by{' '}
           <Anchor color="$color12" href="https://twitter.com/natebirdman" target="_blank">
             @natebirdman
           </Anchor>
-          ,{" "}
-          <Anchor color="$color12" href="https://github.com/tamagui/tamagui" target="_blank" rel="noreferrer">
+          ,{' '}
+          <Anchor
+            color="$color12"
+            href="https://github.com/tamagui/tamagui"
+            target="_blank"
+            rel="noreferrer"
+          >
             give it a ⭐️
           </Anchor>
         </Paragraph>
@@ -29,17 +44,22 @@ export function HomeScreen() {
 
       <SheetDemo />
     </YStack>
-  );
+  )
 }
 
 function SheetDemo() {
-  const [open, setOpen] = useState(false);
-  const [position, setPosition] = useState(0);
-  const toast = useToastController();
+  const [open, setOpen] = useState(false)
+  const [position, setPosition] = useState(0)
+  const toast = useToastController()
 
   return (
     <>
-      <Button size="$6" icon={open ? ChevronDown : ChevronUp} circular onPress={() => setOpen((x) => !x)} />
+      <Button
+        size="$6"
+        icon={open ? ChevronDown : ChevronUp}
+        circular
+        onPress={() => setOpen((x) => !x)}
+      />
       <Sheet
         modal
         open={open}
@@ -57,14 +77,14 @@ function SheetDemo() {
             circular
             icon={ChevronDown}
             onPress={() => {
-              setOpen(false);
-              toast.show("Sheet closed!", {
-                message: "Just showing how toast works...",
-              });
+              setOpen(false)
+              toast.show('Sheet closed!', {
+                message: 'Just showing how toast works...',
+              })
             }}
           />
         </Sheet.Frame>
       </Sheet>
     </>
-  );
+  )
 }

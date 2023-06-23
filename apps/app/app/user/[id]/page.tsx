@@ -1,5 +1,5 @@
-"use client";
+'use client'
 
-import { UserDetailScreen } from "@lightdotso/screens/features/user/detail-screen";
+import { UserDetailScreen } from 'app/features/user/detail-screen'
 
-export default UserDetailScreen;
+export default UserDetailScreen

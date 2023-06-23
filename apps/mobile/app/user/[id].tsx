@@ -1,4 +1,4 @@
-import { UserDetailScreen } from "@lightdotso/screens/features/user/detail-screen";
+import { UserDetailScreen } from "app/features/user/detail-screen";
 import { Stack } from "expo-router";
 
 export default function Screen() {

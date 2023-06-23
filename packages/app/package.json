@@ -1,11 +1,11 @@
 {
   "version": "0.0.0",
-  "name": "@lightdotso/screens",
+  "name": "app",
   "main": "index.ts",
   "private": true,
   "sideEffects": ["*.css"],
   "dependencies": {
-    "@lightdotso/ui": "workspace:*",
+    "@my/ui": "0.0.1",
     "@tamagui/animations-react-native": "latest",
     "@tamagui/colors": "latest",
     "@tamagui/font-inter": "latest",
@@ -16,7 +16,7 @@
     "expo-constants": "^14.2.1",
     "expo-linking": "^4.0.1",
     "react-native-safe-area-context": "^4.5.2",
-    "solito": "canary"
+    "solito": "^3.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

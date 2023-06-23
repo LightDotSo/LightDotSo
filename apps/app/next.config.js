@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
-const { withTamagui } = require("@tamagui/next-plugin");
-const { join } = require("path");
+const { withTamagui } = require('@tamagui/next-plugin')
+const { join } = require('path')
 
 const boolVals = {
   true: true,
   false: false,
-};
+}
 
-const disableExtraction = boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === "development";
+const disableExtraction =
+  boolVals[process.env.DISABLE_EXTRACTION] ?? process.env.NODE_ENV === 'development'
 
 console.log(`
 
@@ -32,26 +33,26 @@ concurrent mode support as well.
 
 Remove this log in next.config.js.
 
-`);
+`)
 
 const plugins = [
   withTamagui({
-    config: "./tamagui.config.ts",
-    components: ["tamagui", "@lightdotso/ui"],
-    importsWhitelist: ["constants.js", "colors.js"],
-    outputCSS: process.env.NODE_ENV === "production" ? "./public/tamagui.css" : null,
+    config: './tamagui.config.ts',
+    components: ['tamagui', '@my/ui'],
+    importsWhitelist: ['constants.js', 'colors.js'],
+    outputCSS: process.env.NODE_ENV === 'production' ? './public/tamagui.css' : null,
     logTimings: true,
     disableExtraction,
     // experiment - reduced bundle size react-native-web
-    useReactNativeWebLite: false,
+    useReactNativeWebLite: true,
     shouldExtract: (path) => {
-      if (path.includes(join("packages", "screens"))) {
-        return true;
+      if (path.includes(join('packages', 'app'))) {
+        return true
       }
     },
-    excludeReactNativeWebExports: ["Switch", "ProgressBar", "Picker", "CheckBox", "Touchable"],
+    excludeReactNativeWebExports: ['Switch', 'ProgressBar', 'Picker', 'CheckBox', 'Touchable'],
   }),
-];
+]
 
 module.exports = function () {
   /** @type {import('next').NextConfig} */
@@ -60,13 +61,18 @@ module.exports = function () {
       ignoreBuildErrors: true,
     },
     modularizeImports: {
-      "@tamagui/lucide-icons": {
-        // rome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+      '@tamagui/lucide-icons': {
         transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
         skipDefaultConversion: true,
       },
     },
-    transpilePackages: ["solito", "react-native-web", "expo-linking", "expo-constants", "expo-modules-core"],
+    transpilePackages: [
+      'solito',
+      'react-native-web',
+      'expo-linking',
+      'expo-constants',
+      'expo-modules-core',
+    ],
     experimental: {
       /*
        A few notes before enabling app directory:
@@ -81,14 +87,14 @@ module.exports = function () {
       scrollRestoration: true,
       legacyBrowsers: false,
     },
-  };
+  }
 
   for (const plugin of plugins) {
     config = {
       ...config,
       ...plugin(config),
-    };
+    }
   }
 
-  return config;
-};
+  return config
+}

@@ -1,13 +1,11 @@
-"use client";
-
-import { Toast, useToastState } from "@tamagui/toast";
-import { YStack } from "tamagui";
+import { Toast, useToastState } from '@tamagui/toast'
+import { YStack } from 'tamagui'
 
 export const NativeToast = () => {
-  const currentToast = useToastState();
+  const currentToast = useToastState()
 
   if (!currentToast || currentToast.isHandledNatively) {
-    return null;
+    return null
   }
 
   return (
@@ -27,5 +25,5 @@ export const NativeToast = () => {
         {!!currentToast.message && <Toast.Description>{currentToast.message}</Toast.Description>}
       </YStack>
     </Toast>
-  );
-};
+  )
+}
