@@ -29,7 +29,7 @@ jobs:
         name: Publish to Expo
         working-directory: apps/mobile
         run: |
-          pnpm expo publish --release-channel=pr-${{ github.event.number }} --non-interactive
+          pnpm eas update --channel=pr-${{ github.event.number }} --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
       - if: github.event_name == 'pull_request'
