@@ -32,8 +32,3 @@ jobs:
           pnpm eas update --channel=pr-${{ github.event.number }} --non-interactive --auto
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
-      - if: github.event_name == 'pull_request'
-        name: Comment in preview
-        uses: expo/expo-github-action/preview-comment@v8
-        with:
-          channel: pr-${{ github.event.number }}
