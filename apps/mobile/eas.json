@@ -1,4 +1,7 @@
 {
+  "cli": {
+    "version": ">= 0.53.1"
+  },
   "build": {
     "development": {
       "distribution": "internal",
