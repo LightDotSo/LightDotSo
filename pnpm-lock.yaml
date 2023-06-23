@@ -232,12 +232,18 @@ importers:
       expo-linking:
         specifier: ^4.0.1
         version: 4.0.1(expo@48.0.19)
+      expo-random:
+        specifier: ~13.1.1
+        version: 13.1.1(expo@48.0.19)
       expo-router:
         specifier: ^1.5.3
         version: 1.5.3(expo-constants@14.2.1)(expo-linking@4.0.1)(expo-modules-autolinking@1.2.0)(expo-status-bar@1.4.4)(expo@48.0.19)(metro@0.76.7)(react-dom@18.2.0)(react-native-gesture-handler@2.9.0)(react-native-reanimated@2.14.4)(react-native-safe-area-context@4.5.0)(react-native-screens@3.20.0)(react-native@0.71.8)(react@18.2.0)
       expo-splash-screen:
         specifier: ^0.18.2
         version: 0.18.2(expo-modules-autolinking@1.2.0)(expo@48.0.19)
+      expo-standard-web-crypto:
+        specifier: ^1.5.0
+        version: 1.5.0(expo-crypto@12.2.2)(expo-random@13.1.1)
       expo-status-bar:
         specifier: ^1.4.4
         version: 1.4.4
@@ -271,6 +277,9 @@ importers:
       react-native-web:
         specifier: ^0.18.12
         version: 0.18.12(react-dom@18.2.0)(react@18.2.0)
+      uuid:
+        specifier: ^3.4.0
+        version: 3.4.0
     devDependencies:
       '@babel/core':
         specifier: ^7.22.5
@@ -9060,6 +9069,15 @@ packages:
       - supports-color
     dev: false
 
+  /expo-crypto@12.2.2(expo@48.0.19):
+    resolution: {integrity: sha512-83SZju/l0UL4n+Dgt+T1csiySa0gwCeE6BKKHzlO+4lJ6B8xXZ5ypu97ttWATBsqcpF/bj1RmYPbfbKsZ+4ixA==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      base64-js: 1.5.1
+      expo: 48.0.19(@babel/core@7.22.5)
+    dev: false
+
   /expo-dev-client@2.2.1(expo@48.0.19):
     resolution: {integrity: sha512-BDhKyni82LiT6PypgBns1/FLqo3cGDBluaj4/Pojx9P7x9iwOFcesepO8r6BCWb4LuBjdB+z2yQ1fMXxzNC3qQ==}
     peerDependencies:
@@ -9196,6 +9214,15 @@ packages:
       - encoding
     dev: false
 
+  /expo-random@13.1.1(expo@48.0.19):
+    resolution: {integrity: sha512-+KkhGp7xW45GvMRzlcSOzvDwzTgyXo6C84GaG4GI43rOdECBQ2lGUJ12st39OtfZm1lORNskpi66DjnuJ73g9w==}
+    peerDependencies:
+      expo: '*'
+    dependencies:
+      base64-js: 1.5.1
+      expo: 48.0.19(@babel/core@7.22.5)
+    dev: false
+
   /expo-router@1.5.3(expo-constants@14.2.1)(expo-linking@4.0.1)(expo-modules-autolinking@1.2.0)(expo-status-bar@1.4.4)(expo@48.0.19)(metro@0.76.7)(react-dom@18.2.0)(react-native-gesture-handler@2.9.0)(react-native-reanimated@2.14.4)(react-native-safe-area-context@4.5.0)(react-native-screens@3.20.0)(react-native@0.71.8)(react@18.2.0):
     resolution: {integrity: sha512-rZEoRpXjXpfcx549/MI7YRitaBGFOHpIGLO+cb18ecsShl3PzGPIDaBGMnTo0m1h7ip0sAIQg1EFrSAtM4LXLA==}
     peerDependencies:
@@ -9256,6 +9283,19 @@ packages:
       - encoding
       - expo-modules-autolinking
       - supports-color
+    dev: false
+
+  /expo-standard-web-crypto@1.5.0(expo-crypto@12.2.2)(expo-random@13.1.1):
+    resolution: {integrity: sha512-lgtnJh/1st89D0BMiv4dZG27dSJlIJs5weNzetg1oBVkm94+LjwhJQkWiukA48UUPve4vrnWSRV20ihfXoVkQA==}
+    peerDependencies:
+      expo-crypto: ^12.2.1
+      expo-random: '*'
+    peerDependenciesMeta:
+      expo-random:
+        optional: true
+    dependencies:
+      expo-crypto: 12.2.2(expo@48.0.19)
+      expo-random: 13.1.1(expo@48.0.19)
     dev: false
 
   /expo-status-bar@1.4.4:
