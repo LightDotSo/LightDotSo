@@ -1,3 +1,5 @@
+"use client";
+
 import { NativeToast as Toast } from "./NativeToast";
 import Constants, { ExecutionEnvironment } from "expo-constants";
 

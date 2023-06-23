@@ -79,3 +79,5 @@ export const config = createTamagui({
     pointerCoarse: { pointer: "coarse" },
   }),
 });
+
+export default config;

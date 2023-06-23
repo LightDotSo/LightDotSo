@@ -12,6 +12,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
       "suspicious": {
         "noEmptyInterface": "off",
         "noExplicitAny": "off"

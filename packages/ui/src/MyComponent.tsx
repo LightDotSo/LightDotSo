@@ -1,3 +1,5 @@
+"use client";
+
 import { YStack, styled } from "tamagui";
 
 export const MyComponent = styled(YStack, {

@@ -1,11 +1,13 @@
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+"use client";
+
+import { TamaguiProvider } from "@lightdotso/ui";
+
+export default function RootLayout({ children }: { children: any }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <TamaguiProvider>{children}</TamaguiProvider>
+      </body>
     </html>
   );
 }

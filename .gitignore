@@ -186,3 +186,6 @@ dist
 
 # Typings
 types
+
+# Tamagui
+.tamagui
