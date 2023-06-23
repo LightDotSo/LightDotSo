@@ -1,7 +1,7 @@
+import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToastController } from "@lightdotso/ui";
 import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 import { useLink } from "solito/link";
-import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToastController } from "ui";
 
 export function HomeScreen() {
   const linkProps = useLink({

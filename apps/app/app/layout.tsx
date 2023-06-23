@@ -1,8 +1,8 @@
 "use client";
 
-import { TamaguiProvider } from "@lightdotso/ui";
+import { TamaguiProvider } from "./TamaguiProvider";
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>

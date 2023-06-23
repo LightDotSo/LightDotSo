@@ -42,18 +42,36 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@tamagui/config':
+        specifier: ^1.35.8
+        version: 1.35.8(react-native@0.71.11)(react@18.2.0)
       '@tamagui/next-plugin':
         specifier: ^1.35.8
         version: 1.35.8(@babel/core@7.22.5)(next@13.4.7)(react-dom@18.2.0)(react@18.2.0)(webpack@5.88.0)
+      '@tamagui/next-theme':
+        specifier: latest
+        version: 1.35.8(react@18.2.0)
       next:
-        specifier: ^13.4.7
+        specifier: ^13.2.4
         version: 13.4.7(@babel/core@7.22.5)(react-dom@18.2.0)(react@18.2.0)
+      raf:
+        specifier: ^3.4.1
+        version: 3.4.1
       react:
         specifier: ^18.2.0
         version: 18.2.0
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-native:
+        specifier: ^0.71.4
+        version: 0.71.11(@babel/core@7.22.5)(@babel/preset-env@7.22.5)(react@18.2.0)
+      react-native-web:
+        specifier: ^0.18.12
+        version: 0.18.12(react-dom@18.2.0)(react@18.2.0)
+      react-native-web-lite:
+        specifier: latest
+        version: 1.35.8(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@types/node':
         specifier: ^17.0.45
@@ -11409,6 +11427,10 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
+  /performance-now@2.1.0:
+    resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
+    dev: false
+
   /performant-array-to-tree@1.11.0:
     resolution: {integrity: sha512-YwCqIDvnaebXaKuKQhI5yJD6ryDc3FxvoeX/5ougXTKDUWb7s5S2BuBgIyftCa4sBe1+ZU5Kmi4RJy+pjjjrpw==}
     dev: false
@@ -11978,6 +12000,12 @@ packages:
     resolution: {integrity: sha512-iHZWu+q3IdFZFX36ro/lKBkSvfkztY5Y7HMiPlOUjhupPcG2JMfst2KKEpu5XndviX/3UhFbRngUPNKtgvtZiA==}
     dependencies:
       inherits: 2.0.4
+    dev: false
+
+  /raf@3.4.1:
+    resolution: {integrity: sha512-Sq4CW4QhwOHE8ucn6J34MqtZCeWFP2aQSmrlroYgqAV1PjStIhJXxYuTgUIfkEk7zTLjmIjLmU5q+fbD1NnOJA==}
+    dependencies:
+      performance-now: 2.1.0
     dev: false
 
   /randombytes@2.1.0:

@@ -61,6 +61,7 @@ module.exports = function () {
     },
     modularizeImports: {
       "@tamagui/lucide-icons": {
+        // rome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
         transform: `@tamagui/lucide-icons/dist/esm/icons/{{kebabCase member}}`,
         skipDefaultConversion: true,
       },
