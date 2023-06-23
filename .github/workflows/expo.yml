@@ -24,7 +24,7 @@ jobs:
       - name: Node Install
         uses:  wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: github.event_name == 'push'
-        name: Build app
+        name: Submit app
         working-directory: apps/mobile
         run: |
           pnpm eas submit --non-interactive
