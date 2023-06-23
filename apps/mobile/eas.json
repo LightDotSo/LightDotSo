@@ -1,11 +1,11 @@
 {
   "cli": {
     "appVersionSource": "remote",
-    "autoIncrement": true,
     "version": ">= 0.53.1"
   },
   "build": {
     "development": {
+      "autoIncrement": true,
       "distribution": "internal",
       "android": {
         "buildType": "apk"
@@ -19,6 +19,7 @@
       }
     },
     "production": {
+      "autoIncrement": true,
       "distribution": "store",
       "android": {
         "buildType": "app-bundle"
