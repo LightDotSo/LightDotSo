@@ -4,7 +4,7 @@ import { Anchor, Button, H1, Paragraph, Separator, Sheet, XStack, YStack, useToa
 import { ChevronDown, ChevronUp } from "@tamagui/lucide-icons";
 import React, { useState } from "react";
 
-export default function HomeScreen() {
+export function HomeScreen() {
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
       <YStack space="$4" maw={600}>

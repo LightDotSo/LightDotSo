@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@tamagui/config": "^1.35.8",
+    "@tamagui/core": "^1.35.8",
     "@tamagui/next-theme": "^1.35.8",
     "@tamagui/react-native-media-driver": "^1.35.8",
     "@tamagui/toast": "^1.35.8",
