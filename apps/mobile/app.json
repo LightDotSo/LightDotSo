@@ -34,6 +34,9 @@
         "projectId": "bd67b7f9-50a5-4aaa-92e0-190e89fc5f79"
       }
     },
+    "runtimeVersion": {
+      "policy": "nativeVersion"
+    },
     "owner": "lightdotso",
     "updates": {
       "url": "https://u.expo.dev/bd67b7f9-50a5-4aaa-92e0-190e89fc5f79"

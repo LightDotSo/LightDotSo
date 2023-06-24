@@ -38,11 +38,11 @@ jobs:
         working-directory: apps/mobile
         run: |
           pnpm eas build --platform ios --non-interactive
-      - if: github.event_name == 'pull_request'
-        name: Publish to Expo
-        working-directory: apps/mobile
-        run: |
-          pnpm eas update --channel=pr-${{ github.event.number }} --non-interactive --auto
+      # - if: github.event_name == 'pull_request'
+      #   name: Publish to Expo
+      #   working-directory: apps/mobile
+      #   run: |
+      #     pnpm eas update --channel=pr-${{ github.event.number }} --non-interactive --auto
   expo-check:
     if: always()
     needs:
