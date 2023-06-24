@@ -35,7 +35,7 @@
       }
     },
     "runtimeVersion": {
-      "policy": "appVersion"
+      "policy": "sdkVersion"
     },
     "owner": "lightdotso",
     "updates": {

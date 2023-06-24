@@ -16,7 +16,8 @@
       },
       "env": {
         "TAMAGUI_TARGET": "native"
-      }
+      },
+      "channel": "development"
     },
     "production": {
       "autoIncrement": true,
@@ -26,7 +27,8 @@
       },
       "env": {
         "TAMAGUI_TARGET": "native"
-      }
+      },
+      "channel": "production"
     }
   }
 }
