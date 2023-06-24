@@ -35,7 +35,7 @@
       }
     },
     "runtimeVersion": {
-      "policy": "sdkVersion"
+      "policy": "nativeVersion"
     },
     "owner": "lightdotso",
     "updates": {
