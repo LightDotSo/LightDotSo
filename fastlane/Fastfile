@@ -308,7 +308,7 @@ platform :ios do
       scheme: "LightWalletDev",
       skip_archive: false,
       skip_package_ipa: true,
-      destination: "platform=iOS Simulator,name=iPhone 8",
+      destination: "platform=iOS Simulator,name=iPhone 8,OS=9.3",
       configuration: "Debug",
       build_path: ".",
       archive_path: "LightWalletDev.xcarchive",
