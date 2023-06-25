@@ -227,3 +227,11 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# XCode
+*.ipa
+*.app.dSYM.zip
+*.xcframework
+*.xcarchive
+
+UserInterfaceState.xcuserstate

@@ -1,7 +1,0 @@
-# XCode
-*.ipa
-*.app.dSYM.zip
-*.xcframework
-*.xcarchive
-
-UserInterfaceState.xcuserstate
