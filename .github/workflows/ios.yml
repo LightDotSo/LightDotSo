@@ -64,7 +64,6 @@ jobs:
         run: |
           make ios
       - name: Run Unit Tests
-        working-directory: ./ios
         run: |
           bundle exec fastlane test
   ios-check:
