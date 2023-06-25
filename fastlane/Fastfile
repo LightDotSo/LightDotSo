@@ -119,28 +119,6 @@ platform :ios do
         readonly: false,
         api_key: api_key
       )
-
-      match(
-        keychain_name: KEYCHAIN_NAME,
-        keychain_password: KEYCHAIN_PASSWORD,
-        git_branch: "main",
-        type: "development",
-        app_identifier: "io.magic.light.dev",
-        git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
-        readonly: false,
-        api_key: api_key
-      )
-
-      match(
-        keychain_name: KEYCHAIN_NAME,
-        keychain_password: KEYCHAIN_PASSWORD,
-        git_branch: "main",
-        type: "development",
-        app_identifier: "io.magic.light.dev.Light-Safari-Extension",
-        git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
-        readonly: false,
-        api_key: api_key
-      )
     end
 
     gym(
@@ -151,18 +129,6 @@ platform :ios do
       export_options: {
         provisioningProfiles: {
           DEVELOPER_APP_ID => "match AppStore io.magic.light"
-        }
-      },
-    )
-
-    gym(
-      configuration: "Release",
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWalletDev",
-      export_method: "app-store",
-      export_options: {
-        provisioningProfiles: {
-          DEVELOPER_APP_ID => "match AppStore io.magic.light.dev"
         }
       },
     )
