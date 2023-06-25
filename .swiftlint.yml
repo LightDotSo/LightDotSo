@@ -1,0 +1,26 @@
+included:
+  - ios/WalletCoreSource/Sources
+  - ios/WalletCoreSource/Tests
+excluded:
+  - crates/core/src/WalletCore.swift
+  - ios/WalletCore/.build
+  - ios/WalletCoreSource/Sources/Generated/WalletCore.swift
+disabled_rules:
+  - unused_optional_binding
+  - closure_parameter_position
+  - cyclomatic_complexity
+  - discouraged_direct_init
+  - for_where
+  - file_length
+  - function_body_length
+  - function_parameter_count
+  - identifier_name
+  - inclusive_language
+  - large_tuple
+  - line_length
+  - multiple_closures_with_trailing_closure
+  - opening_brace
+  - nesting
+  - redundant_string_enum_value
+  - trailing_comma
+  - type_body_length
