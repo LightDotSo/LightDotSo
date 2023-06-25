@@ -3,6 +3,8 @@ resolver = "2"
 
 members = [
   "apps/desktop/src-tauri",
+  "crates/core",
+  "crates/signer",
 ]
 
 # Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
