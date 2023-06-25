@@ -51,10 +51,15 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: "14.1"
+      - name: Node Build
+        run: |
+          pnpm run build
       - name: Make iOS
         run: |
           make ios
