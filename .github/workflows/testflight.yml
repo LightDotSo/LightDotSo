@@ -44,7 +44,7 @@ jobs:
         #   JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
       - if: github.event_name == 'push'
         run: |
-          bundle exec fastlane production
+          bundle exec fastlane build
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -58,7 +58,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       - if: github.event_name == 'merge_group'
         run: |
-          bundle exec fastlane build
+          bundle exec fastlane production
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
