@@ -80,7 +80,7 @@ def apply_prod_xcconfig
 end
 
 before_all do |lane, options|
-  # Dotenv.overload("./.env")
+  Dotenv.overload("./.env")
   XCODE_PROJECT_PATH = "./ios/LightWallet.xcodeproj"
   XCODE_WORKSPACE_PATH = "./ios/LightWallet.xcworkspace"
 end
@@ -136,7 +136,7 @@ platform :ios do
 
     gym(
       configuration: "Release",
-      workspace: ENV["XCODE_WORKSPACE_PATH"],
+      workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWalletDev",
       export_method: "app-store",
       export_options: {
@@ -200,7 +200,7 @@ platform :ios do
 
     gym(
       configuration: "Release",
-      workspace: ENV["XCODE_WORKSPACE_PATH"],
+      workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWallet",
       export_method: "app-store",
       export_options: {
@@ -261,7 +261,7 @@ platform :ios do
     end
 
     gym(
-      workspace: ENV["XCODE_WORKSPACE_PATH"],
+      workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWalletDev",
       skip_archive: false,
       skip_package_ipa: true,
@@ -277,11 +277,11 @@ platform :ios do
       },
     )
 
-    run_tests(workspace: ENV["XCODE_WORKSPACE_PATH"],
+    run_tests(workspace: "./ios/LightWallet.xcworkspace",
               devices: ["iPhone 8"],
               scheme: "LightWalletTests")
 
-    run_tests(workspace: ENV["XCODE_WORKSPACE_PATH"],
+    run_tests(workspace: "./ios/LightWallet.xcworkspace",
               devices: ["iPhone 8"],
               scheme: "LightWalletUITests")
   end
