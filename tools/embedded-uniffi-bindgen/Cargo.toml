@@ -1,0 +1,12 @@
+[package]
+name = "embedded-uniffi-bindgen"
+version = "0.1.0"
+authors = ["The Firefox Sync Developers <sync-team@mozilla.com>"]
+edition = "2021"
+
+license = "MPL-2.0"
+
+publish = false
+
+[dependencies]
+uniffi = { workspace = true, features = ["cli"] }

@@ -1,5 +1,5 @@
 [package]
-name = "lightwallet_keychain"
+name = "lightwallet-keychain"
 version = "0.1.0"
 edition = "2021"
 

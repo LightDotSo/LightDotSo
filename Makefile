@@ -10,9 +10,9 @@ ios:
 	@make cp-xcframework-source
 
 build-targets:
-	cargo build --release --target x86_64-apple-ios
-	cargo +nightly build --release --target aarch64-apple-ios-sim
-	cargo build --release --target aarch64-apple-ios
+	cargo build --release --target x86_64-apple-ios --package lightwallet-core
+	cargo +nightly build --release --target aarch64-apple-ios-sim --package lightwallet-core
+	cargo build --release --target aarch64-apple-ios --package lightwallet-core
 
 bindgen-swift:
 	cargo uniffi-bindgen generate crates/core/src/LightWalletCore.udl --language swift
