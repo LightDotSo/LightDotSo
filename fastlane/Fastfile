@@ -67,7 +67,7 @@ def prepare_environment(name, api_key, live)
   )
   increment_build_number(
     build_number: number + 1,
-    xcodeproj: ENV["XCODE_PROJECT_NAME"]
+    xcodeproj: "./ios/LightWallet.xcodeproj"
   )
 end
 
@@ -100,13 +100,13 @@ platform :ios do
 
     increment_version_number_in_xcodeproj(
       version_number: GH_NUMBER,
-      xcodeproj: ENV["XCODE_PROJECT_NAME"],
+      xcodeproj: "./ios/LightWallet.xcodeproj",
       target: "LightWalletDev"
     )
 
     increment_version_number_in_xcodeproj(
       version_number: GH_NUMBER,
-      xcodeproj: ENV["XCODE_PROJECT_NAME"],
+      xcodeproj: "./ios/LightWallet.xcodeproj",
       target: "LightWalletDevSafariExtension"
     )
 
@@ -165,12 +165,12 @@ platform :ios do
 
     increment_version_number_in_xcodeproj(
       version_number: "1.0",
-      xcodeproj: ENV["XCODE_PROJECT_NAME"],
+      xcodeproj: "./ios/LightWallet.xcodeproj",
       target: "LightWallet"
     )
     increment_version_number_in_xcodeproj(
       version_number: "1.0",
-      xcodeproj: ENV["XCODE_PROJECT_NAME"],
+      xcodeproj: "./ios/LightWallet.xcodeproj",
       target: "LightWalletSafariExtension"
     )
 
