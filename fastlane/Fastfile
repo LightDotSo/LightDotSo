@@ -80,7 +80,7 @@ def apply_prod_xcconfig
 end
 
 before_all do |lane, options|
-  Dotenv.overload("./.env")
+  # Dotenv.overload("./.env")
   XCODE_PROJECT_PATH = "./ios/LightWallet.xcodeproj"
   XCODE_WORKSPACE_PATH = "./ios/LightWallet.xcworkspace"
 end
