@@ -87,14 +87,60 @@ end
 
 platform :ios do
 
-  lane :build do
+  lane :keychain do
     keychain_name = KEYCHAIN_NAME
     keychain_password = KEYCHAIN_PASSWORD
     ensure_temp_keychain(keychain_name, keychain_password)
   end
 
+  lane :build do
+    if is_ci
+      keychain
+      api_key = app_store_api_key
+
+      match(
+        keychain_name: KEYCHAIN_NAME,
+        keychain_password: KEYCHAIN_PASSWORD,
+        git_branch: "main",
+        type: "development",
+        app_identifier: "io.magic.light.dev",
+        git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
+        readonly: false,
+        api_key: api_key
+      )
+
+      match(
+        keychain_name: KEYCHAIN_NAME,
+        keychain_password: KEYCHAIN_PASSWORD,
+        git_branch: "main",
+        type: "development",
+        app_identifier: "io.magic.light.dev.Light-Safari-Extension",
+        git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
+        readonly: false,
+        api_key: api_key
+      )
+    end
+
+    gym(
+      workspace: "./ios/LightWallet.xcworkspace",
+      scheme: "LightWalletDev",
+      skip_archive: false,
+      skip_package_ipa: true,
+      destination: "platform=iOS Simulator,name=iPhone 8",
+      configuration: "Debug",
+      keychain_path: ".",
+      archive_path: "LightWalletDev.xcarchive",
+      export_method: "ad-hoc",
+      export_options: {
+        provisioningProfiles: {
+          DEVELOPER_APP_ID => "match Development io.magic.light.dev"
+        }
+      },
+    )
+  end
+
   lane :dev do
-    build
+    keychain
     api_key = app_store_api_key
     # apply_dev_xcconfig
 
@@ -159,7 +205,7 @@ platform :ios do
   end
 
   lane :production do
-    build
+    keychain
     api_key = app_store_api_key
     # apply_prod_xcconfig
 
@@ -234,7 +280,7 @@ platform :ios do
 
   lane :test do
     if is_ci
-      build
+      keychain
       api_key = app_store_api_key
 
       match(
