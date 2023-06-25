@@ -44,7 +44,7 @@ end
 
 def update_dev_xcconfig(name, new_value)
   update_xcconfig_value(
-    path: './LightWallet/Configuration/Light.Development.xcconfig',
+    path: "./LightWallet/Configuration/Light.Development.xcconfig",
     name: name,
     value: new_value
   )
@@ -52,7 +52,7 @@ end
 
 def update_prod_xcconfig(name, new_value)
   update_xcconfig_value(
-    path: './LightWallet/Configuration/Light.Production.xcconfig',
+    path: "./LightWallet/Configuration/Light.Production.xcconfig",
     name: name,
     value: new_value
   )
@@ -67,18 +67,23 @@ def prepare_environment(name, api_key, live)
   )
   increment_build_number(
     build_number: number + 1,
-    xcodeproj: 'LightWallet.xcodeproj'
+    xcodeproj: "./ios/LightWallet.xcodeproj"
   )
 end
 
 def apply_dev_xcconfig
-  # update_dev_xcconfig('NEXT_PUBLIC_ZERION_API_KEY', NEXT_PUBLIC_ZERION_API_KEY)
+  # update_dev_xcconfig("NEXT_PUBLIC_ZERION_API_KEY", NEXT_PUBLIC_ZERION_API_KEY)
 end
 
 def apply_prod_xcconfig
-  # update_prod_xcconfig('NEXT_PUBLIC_ZERION_API_KEY', NEXT_PUBLIC_ZERION_API_KEY)
+  # update_prod_xcconfig("NEXT_PUBLIC_ZERION_API_KEY", NEXT_PUBLIC_ZERION_API_KEY)
 end
 
+before_all do |lane, options|
+  # Dotenv.overload("./.env")
+  # XCODE_PROJECT_PATH = "./ios/LightWallet.xcodeproj"
+  # XCODE_WORKSPACE_PATH = "./ios/LightWallet.xcworkspace"
+end
 
 platform :ios do
 
@@ -87,22 +92,22 @@ platform :ios do
     keychain_password = KEYCHAIN_PASSWORD
     ensure_temp_keychain(keychain_name, keychain_password)
   end
-  
+
   lane :dev do
     build
     api_key = app_store_api_key
     # apply_dev_xcconfig
 
     increment_version_number_in_xcodeproj(
-      version_number: GH_NUMBER, 
-      xcodeproj: 'LightWallet.xcodeproj',
-      target: 'LightWalletDev'
+      version_number: GH_NUMBER,
+      xcodeproj: "./ios/LightWallet.xcodeproj",
+      target: "LightWalletDev"
     )
 
     increment_version_number_in_xcodeproj(
-      version_number: GH_NUMBER, 
-      xcodeproj: 'LightWallet.xcodeproj',
-      target: 'LightWalletDevSafariExtension'
+      version_number: GH_NUMBER,
+      xcodeproj: "./ios/LightWallet.xcodeproj",
+      target: "LightWalletDevSafariExtension"
     )
 
     prepare_environment("io.magic.light.dev", api_key, false)
@@ -111,7 +116,7 @@ platform :ios do
       keychain_name: KEYCHAIN_NAME,
       keychain_password: KEYCHAIN_PASSWORD,
       git_branch: "main",
-      type: 'appstore',
+      type: "appstore",
       app_identifier: "io.magic.light.dev",
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
       readonly: false,
@@ -122,7 +127,7 @@ platform :ios do
       keychain_name: KEYCHAIN_NAME,
       keychain_password: KEYCHAIN_PASSWORD,
       git_branch: "main",
-      type: 'appstore',
+      type: "appstore",
       app_identifier: "io.magic.light.dev.Light-Safari-Extension",
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
       readonly: false,
@@ -131,7 +136,7 @@ platform :ios do
 
     gym(
       configuration: "Release",
-      workspace: "LightWallet.xcworkspace",
+      workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWalletDev",
       export_method: "app-store",
       export_options: {
@@ -159,14 +164,14 @@ platform :ios do
     # apply_prod_xcconfig
 
     increment_version_number_in_xcodeproj(
-      version_number: "1.0", 
-      xcodeproj: 'LightWallet.xcodeproj',
-      target: 'LightWallet'
+      version_number: "1.0",
+      xcodeproj: "./ios/LightWallet.xcodeproj",
+      target: "LightWallet"
     )
     increment_version_number_in_xcodeproj(
-      version_number: "1.0", 
-      xcodeproj: 'LightWallet.xcodeproj',
-      target: 'LightWalletSafariExtension'
+      version_number: "1.0",
+      xcodeproj: "./ios/LightWallet.xcodeproj",
+      target: "LightWalletSafariExtension"
     )
 
     prepare_environment("io.magic.light", api_key, false)
@@ -175,7 +180,7 @@ platform :ios do
       keychain_name: KEYCHAIN_NAME,
       keychain_password: KEYCHAIN_PASSWORD,
       git_branch: "main",
-      type: 'appstore',
+      type: "appstore",
       app_identifier: "io.magic.light",
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
       readonly: false,
@@ -186,7 +191,7 @@ platform :ios do
       keychain_name: KEYCHAIN_NAME,
       keychain_password: KEYCHAIN_PASSWORD,
       git_branch: "main",
-      type: 'appstore',
+      type: "appstore",
       app_identifier: "io.magic.light.Light-Safari-Extension",
       git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
       readonly: false,
@@ -195,7 +200,7 @@ platform :ios do
 
     gym(
       configuration: "Release",
-      workspace: "LightWallet.xcworkspace",
+      workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWallet",
       export_method: "app-store",
       export_options: {
@@ -220,10 +225,10 @@ platform :ios do
 
   lane :change_app_icon do
     appicon(
-      appicon_image_file: 'Resources/AppIconDev.png',
+      appicon_image_file: "Resources/AppIconDev.png",
       appicon_devices: [:iphone, :ios_marketing],
-      appicon_path: './LightWallet/Resources/Assets.xcassets',
-      appicon_name: 'AppIcon-Prod.appiconset'
+      appicon_path: "./ios/LightWallet/Resources/Assets.xcassets",
+      appicon_name: "AppIcon-Prod.appiconset"
     )
   end
 
@@ -236,7 +241,7 @@ platform :ios do
         keychain_name: KEYCHAIN_NAME,
         keychain_password: KEYCHAIN_PASSWORD,
         git_branch: "main",
-        type: 'development',
+        type: "development",
         app_identifier: "io.magic.light.dev",
         git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
         readonly: false,
@@ -247,7 +252,7 @@ platform :ios do
         keychain_name: KEYCHAIN_NAME,
         keychain_password: KEYCHAIN_PASSWORD,
         git_branch: "main",
-        type: 'development',
+        type: "development",
         app_identifier: "io.magic.light.dev.Light-Safari-Extension",
         git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
         readonly: false,
@@ -256,7 +261,7 @@ platform :ios do
     end
 
     gym(
-      workspace: "LightWallet.xcworkspace",
+      workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWalletDev",
       skip_archive: false,
       skip_package_ipa: true,
@@ -272,12 +277,12 @@ platform :ios do
       },
     )
 
-    run_tests(workspace: "LightWallet.xcworkspace",
-              devices: ['iPhone 8'],
+    run_tests(workspace: "./ios/LightWallet.xcworkspace",
+              devices: ["iPhone 8"],
               scheme: "LightWalletTests")
 
-    run_tests(workspace: "LightWallet.xcworkspace",
-              devices: ['iPhone 8'],
+    run_tests(workspace: "./ios/LightWallet.xcworkspace",
+              devices: ["iPhone 8"],
               scheme: "LightWalletUITests")
   end
 
