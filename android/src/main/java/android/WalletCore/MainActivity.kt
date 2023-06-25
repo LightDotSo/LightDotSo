@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import android.WalletCore.ui.theme.WalletCoreTheme
-import android.WalletCore.uniffi.rustGreeting
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting(rustGreeting("Android"))
+                    Greeting(uniffi.LightWalletCore.rustGreeting("Android"))
                 }
             }
         }
