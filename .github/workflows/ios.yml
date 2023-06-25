@@ -84,7 +84,7 @@ jobs:
         with:
           api-key: ${{ secrets.MAESTRO_CLOUD_API_KEY }}
           name: ${{ github.sha }}
-          app-file: ios/LightWalletDev.xcarchive/Products/Applications/LightWalletDev.app
+          app-file: LightWalletDev.xcarchive/Products/Applications/LightWalletDev.app
           workspace: ios/.mobiledev
   ios-check:
     if: always()
