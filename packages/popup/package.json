@@ -1,0 +1,36 @@
+{
+  "name": "@lightwallet/popup",
+  "private": false,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "next dev",
+    "build": "cross-env NODE_ENV=production next build && next export -o '../../ios/LightWalletSafariExtension/Resources/popup' && cp '../../ios/LightWalletSafariExtension/Resources/popup/index.html' '../../ios/LightWalletSafariExtension/Resources/popup.html'",
+    "build:dev": "cross-env NODE_ENV=development next build && next export -o '../../ios/LightWalletSafariExtension/Resources/popup' && cp '../../ios/LightWalletSafariExtension/Resources/popup/index.html' '../../ios/LightWalletSafariExtension/Resources/popup.html'",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@metamask/eth-sig-util": "^5.1.0",
+    "@types/firefox-webext-browser": "^111.0.1",
+    "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "events": "^3.3.0",
+    "isutf8": "^4.0.0",
+    "next": "^13.4.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.18",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2",
+    "typescript": "5.0.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "outputs": ["../../ios/LightWalletSafariExtension/Resources/inpage.js"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "clean": {
+      "cache": false
+    }
+  }
+}

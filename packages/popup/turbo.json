@@ -1,0 +1,24 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["**"],
+      "env": ["CI", "JITSU_JS_KEY", "VERCEL"],
+      "outputs": [
+        ".next/**",
+        "../../ios/LightWalletSafariExtension/Resources/popup/**",
+        "../../ios/LightWalletSafariExtension/Resources/popup.html"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "clean": {
+      "cache": false
+    }
+  }
+}
