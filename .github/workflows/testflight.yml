@@ -35,14 +35,10 @@ jobs:
       - name: Make iOS
         run: |
           make ios
-      - if: github.event_name == 'push'
-        run: |
+      - run: |
           pnpm run build
-        env:
-          JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
-      - if: github.event_name == 'pull_request'
-        run: |
-          pnpm run build:dev
+        # env:
+        #   JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
       - if: github.event_name == 'push'
         run: |
           bundle exec fastlane production
