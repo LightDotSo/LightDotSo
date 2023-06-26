@@ -1,4 +1,4 @@
-name: Testflight
+name: Fastlane
 on:
   push:
     branches:
@@ -9,12 +9,56 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
+  RUSTFLAGS: -D warnings
+  CARGO_TERM_COLOR: always
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 jobs:
-  testflight:
-    runs-on: macos-12
+  fastlane-android:
+    runs-on: ubuntu-latest
     timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Install Rust Toolchain (nightly)
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - name: Install Ruby Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Java Install
+        uses: wallet-rs/wallet-rs/.github/actions/java-install@main
+      - name: Export Play Store Key
+        run: |
+          echo $PLAY_STORE_JSON_KEY > play_store_key.json
+        env:
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+      - name: Android Build
+        if: github.event_name == 'push'
+        run: |
+          bundle exec fastlane android build
+      - name: Android Production
+        if: github.event_name == 'merge_group'
+        continue-on-error: true
+        run: |
+          bundle exec fastlane android production
+      - name: Android Dev
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          bundle exec fastlane android dev
+        env:
+          GH_NUMBER: ${{ github.event.pull_request.number }}
+  fastlane-ios:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+      RUSTC_WRAPPER: "sccache"
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -42,9 +86,10 @@ jobs:
           pnpm run build
         # env:
         #   JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
-      - if: github.event_name == 'push'
+      - name: iOS Build
+        if: github.event_name == 'push'
         run: |
-          bundle exec fastlane build
+          bundle exec fastlane ios build
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -56,9 +101,10 @@ jobs:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      - if: github.event_name == 'merge_group'
+      - name: iOS Production
+        if: github.event_name == 'merge_group'
         run: |
-          bundle exec fastlane production
+          bundle exec fastlane ios production
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -70,9 +116,10 @@ jobs:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      - if: github.event_name == 'pull_request'
+      - name: iOS Dev
+        if: github.event_name == 'pull_request'
         run: |
-          bundle exec fastlane dev
+          bundle exec fastlane ios dev
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -85,11 +132,13 @@ jobs:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-  testflight-check:
+  fastlane-check:
     if: always()
     needs:
-      - testflight
+      - fastlane-android
+      - fastlane-ios
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1

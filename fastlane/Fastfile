@@ -58,7 +58,22 @@ def update_prod_xcconfig(name, new_value)
   )
 end
 
-def prepare_environment(name, api_key, live)
+def prepare_android_environment(app_id)
+  previous_build_number = google_play_track_version_codes(
+    package_name: app_id,
+    track: "internal",
+    json_key: "./play_store_key.json",
+  )[0]
+
+  current_build_number = previous_build_number + 1
+
+  increment_version_code(
+    gradle_file_path: "./android/build.gradle",
+    version_code: current_build_number
+  )
+end
+
+def prepare_ios_environment(name, api_key, live)
   number = app_store_build_number(
     initial_build_number: 0,
     app_identifier: name,
@@ -85,7 +100,62 @@ before_all do |lane, options|
   # XCODE_WORKSPACE_PATH = "./ios/LightWallet.xcworkspace"
 end
 
+platform :android do
+  before_all do
+    if is_ci
+      validate_play_store_json_key(
+        json_key: "./play_store_key.json"
+      )
+    end
+  end
+
+  lane :build do
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+  end
+
+  lane :dev do
+    increment_version_name(
+      gradle_file_path: "./android/build.gradle",
+      version_name: GH_NUMBER,
+    )
+
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+
+    upload_to_play_store(
+      package_name: "io.magic.light.dev",
+      track: "alpha",
+      json_key: "./play_store_key.json"
+    )
+  end
+
+  lane :production do
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+
+    upload_to_play_store(
+      package_name: "io.magic.light",
+      track: "beta",
+      json_key: "./play_store_key.json"
+    )
+  end
+end
+
 platform :ios do
+  before_all do
+  end
 
   lane :keychain do
     keychain_name = KEYCHAIN_NAME
@@ -151,7 +221,7 @@ platform :ios do
       target: "LightWalletDevSafariExtension"
     )
 
-    prepare_environment("io.magic.light.dev", api_key, false)
+    prepare_ios_environment("io.magic.light.dev", api_key, false)
 
     match(
       keychain_name: KEYCHAIN_NAME,
@@ -204,7 +274,7 @@ platform :ios do
     api_key = app_store_api_key
     # apply_prod_xcconfig
 
-    prepare_environment("io.magic.light", api_key, false)
+    prepare_ios_environment("io.magic.light", api_key, false)
 
     match(
       keychain_name: KEYCHAIN_NAME,

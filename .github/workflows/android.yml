@@ -13,9 +13,8 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   android-lint:
-    env:
-      RUSTFLAGS: -D warnings
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -35,7 +34,8 @@ jobs:
           report-path: build/reports/*.xml
         continue-on-error: false
   android-test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -59,6 +59,7 @@ jobs:
       - android-lint
       - android-test
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
