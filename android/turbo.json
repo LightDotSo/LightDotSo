@@ -3,11 +3,11 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "cache": false,
       "inputs": [
-        "src/**/**",
-        "../crates/**/**",
-        "../gradle/**/**",
+        "src/**",
+        "../crates/**",
+        "../gradle/**",
         "../build.gradle",
         "../Cargo.lock",
         "../Cargo.toml",

@@ -1,6 +1,7 @@
 packages:
-  - "android/*"
+  - "android"
   - "apps/*"
   - "configurations/*"
-  - "ios/*"
+  - "contracts"
+  - "ios"
   - "packages/*"
