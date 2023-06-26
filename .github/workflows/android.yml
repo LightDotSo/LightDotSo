@@ -74,6 +74,7 @@ jobs:
         run: |
           ./gradlew test
       - name: Status Action
+        if: failure()
         uses: Sibz/github-status-action@v1
         with:
           authToken: ${{ secrets.GITHUB_TOKEN }}
