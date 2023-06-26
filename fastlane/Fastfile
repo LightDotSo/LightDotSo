@@ -116,7 +116,7 @@ platform :android do
   lane :dev do
     increment_version_name(
       gradle_file_path: "./android/build.gradle",
-      version_number: GH_NUMBER,
+      version_name: GH_NUMBER,
     )
 
     gradle(task: 'assemble', build_type: 'Release')

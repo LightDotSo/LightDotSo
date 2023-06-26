@@ -47,6 +47,8 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           bundle exec fastlane android dev
+        env:
+          GH_NUMBER: ${{ github.event.pull_request.number }}
   fastlane-ios:
     runs-on: macos-latest
     timeout-minutes: 90
