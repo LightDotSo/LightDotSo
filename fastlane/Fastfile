@@ -114,8 +114,6 @@ platform :android do
   end
 
   lane :dev do
-    package_name("io.magic.light.dev")
-
     increment_version_name(
       gradle_file_path: "./android/build.gradle",
       version_name: GH_NUMBER,
@@ -127,20 +125,20 @@ platform :android do
     )
 
     upload_to_play_store(
+      package_name: "io.magic.light.dev",
       track: "alpha",
       json_key: "./play_store_key.json"
     )
   end
 
   lane :production do
-    package_name("io.magic.light")
-
     gradle(
       task: "assemble",
       build_type: "Release"
     )
 
     upload_to_play_store(
+      package_name: "io.magic.light",
       track: "beta",
       json_key: "./play_store_key.json"
     )
