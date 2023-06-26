@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Greeting(uniffi.LightWalletCore.rustGreeting("Android"))
+                    Greeting(uniffi.LightWalletCore.rustGreeting("Light"))
                 }
             }
         }
