@@ -14,7 +14,8 @@
     "@lightdotso/background": "workspace:*",
     "@lightdotso/content": "workspace:*",
     "@lightdotso/inpage": "workspace:*",
-    "@lightdotso/popup": "workspace:*"
+    "@lightdotso/popup": "workspace:*",
+    "@lightdotso/resources": "workspace:*"
   },
   "devDependencies": {
     "crx": "^5.0.1",
