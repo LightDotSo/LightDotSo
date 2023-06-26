@@ -3,7 +3,7 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "clean"],
       "inputs": ["_locales", "images"],
       "outputs": [
         "../../ios/LightWalletSafariExtension/Resources/_locales/**",
@@ -13,6 +13,9 @@
         "../../apps/extension/firefox/_locales/**",
         "../../apps/extension/firefox/images/**"
       ]
+    },
+    "clean": {
+      "cache": false
     }
   }
 }

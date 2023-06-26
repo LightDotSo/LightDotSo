@@ -11,6 +11,15 @@
     "cp:locales:firefox": "cp -r ./_locales ../../apps/extension/firefox",
     "cp:images:ios": "cp -r ./images ../../ios/LightWalletSafariExtension/Resources",
     "cp:images:chrome": "cp -r ./images ../../apps/extension/chrome",
-    "cp:images:firefox": "cp -r ./images ../../apps/extension/firefox"
+    "cp:images:firefox": "cp -r ./images ../../apps/extension/firefox",
+    "clean": "pnpm run clean:locales && pnpm run clean:images",
+    "clean:locales": "pnpm run clean:locales:ios && pnpm run clean:locales:chrome && pnpm run clean:locales:firefox",
+    "clean:images": "pnpm run clean:images:ios && pnpm run clean:images:chrome && pnpm run clean:images:firefox",
+    "clean:locales:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/_locales",
+    "clean:locales:chrome": "rimraf ../../apps/extension/chrome/_locales",
+    "clean:locales:firefox": "rimraf ../../apps/extension/firefox/_locales",
+    "clean:images:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/images",
+    "clean:images:chrome": "rimraf ../../apps/extension/chrome/images",
+    "clean:images:firefox": "rimraf ../../apps/extension/firefox/images"
   }
 }
