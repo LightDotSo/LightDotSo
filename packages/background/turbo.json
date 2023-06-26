@@ -4,9 +4,11 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV"],
-      "inputs": ["**"],
-      "outputs": ["../../ios/LightWalletSafariExtension/Resources/background.js"]
+      "outputs": [
+        "../../ios/LightWalletSafariExtension/Resources/background.js",
+        "../../apps/extension/chrome/background.js",
+        "../../apps/extension/firefox/background.js"
+      ]
     },
     "dev": {
       "cache": false,

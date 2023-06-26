@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build", "clean"],
+      "inputs": ["_locales", "images"],
+      "outputs": [
+        "../../ios/LightWalletSafariExtension/Resources/_locales/**",
+        "../../ios/LightWalletSafariExtension/Resources/images/**",
+        "../../apps/extension/chrome/_locales/**",
+        "../../apps/extension/chrome/images/**",
+        "../../apps/extension/firefox/_locales/**",
+        "../../apps/extension/firefox/images/**"
+      ]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}
