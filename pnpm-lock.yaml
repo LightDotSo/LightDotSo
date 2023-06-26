@@ -267,6 +267,9 @@ importers:
       '@lightdotso/popup':
         specifier: workspace:*
         version: link:../../packages/popup
+      '@lightdotso/resources':
+        specifier: workspace:*
+        version: link:../../packages/resources
     devDependencies:
       crx:
         specifier: ^5.0.1
