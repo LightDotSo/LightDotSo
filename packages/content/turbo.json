@@ -4,9 +4,11 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["**"],
-      "env": ["CI", "JITSU_JS_KEY"],
-      "outputs": ["public/**", "../../ios/LightWalletSafariExtension/Resources/content.js"]
+      "outputs": [
+        "../../ios/LightWalletSafariExtension/Resources/content.js",
+        "../../apps/extension/chrome/content.js",
+        "../../apps/extension/firefox/content.js"
+      ]
     },
     "dev": {
       "cache": false,

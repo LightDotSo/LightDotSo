@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "pnpm run build:chrome && pnpm run build:firefox",
+    "build:chrome": "crx pack chrome --zip-output chrome.zip",
+    "build:firefox": "web-ext build -s firefox"
   },
   "dependencies": {
     "@lightdotso/background": "workspace:*",
@@ -15,11 +14,10 @@
     "@lightdotso/popup": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^17.0.45",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
+    "crx": "^5.0.1",
     "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "web-ext": "^7.6.2"
   }
 }
