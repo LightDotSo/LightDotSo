@@ -110,7 +110,7 @@ platform :android do
   end
 
   lane :build do
-    gradle(task: 'assemble', build_type: 'Release')
+    gradle(task: "assemble", build_type: "Release")
   end
 
   lane :dev do
@@ -119,13 +119,27 @@ platform :android do
       version_name: GH_NUMBER,
     )
 
-    gradle(task: 'assemble', build_type: 'Release')
-    upload_to_play_store(track: 'alpha')
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+
+    upload_to_play_store(
+      track: "alpha",
+      json_key: "./play_store_key.json"
+    )
   end
 
   lane :production do
-    gradle(task: 'assemble', build_type: 'Release')
-    upload_to_play_store(track: 'beta')
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+
+    upload_to_play_store(
+      track: "beta",
+      json_key: "./play_store_key.json"
+    )
   end
 end
 
