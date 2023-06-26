@@ -12,7 +12,7 @@ env:
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 jobs:
-  extension-build:
+  extension:
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Head
@@ -22,18 +22,30 @@ jobs:
       - name: Node Build
         run: |
           pnpm run build --filter={apps/extension}
-      - name: Chrome upload
+      - if: github.event_name == 'push'
+        name: Chrome upload
         uses: mnao305/chrome-extension-upload@v4.0.1
         with:
           file-path: apps/extension/chrome.zip
           extension-id: emflafmoooolgldefbdhjeifjnhhhedc
+          publish-target: trustedTesters
+          client-id: ${{ secrets.EXTENSION_CLIENT_ID }}
+          client-secret: ${{ secrets.EXTENSION_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.EXTENSION_REFRESH_TOKEN }}
+      - if: github.event_name == 'merge_group'
+        name: Chrome upload
+        uses: mnao305/chrome-extension-upload@v4.0.1
+        with:
+          file-path: apps/extension/chrome.zip
+          extension-id: emflafmoooolgldefbdhjeifjnhhhedc
+          publish-target: trustedTesters
           client-id: ${{ secrets.EXTENSION_CLIENT_ID }}
           client-secret: ${{ secrets.EXTENSION_CLIENT_SECRET }}
           refresh-token: ${{ secrets.EXTENSION_REFRESH_TOKEN }}
   extension-check:
     if: always()
     needs:
-      - extension-build
+      - extension
     runs-on: ubuntu-latest
     steps:
       - name: Check All Green
