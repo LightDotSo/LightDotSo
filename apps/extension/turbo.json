@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "outputs": ["chrome.zip"],
-      "dependsOn": ["^build", "clean"]
+      "dependsOn": ["^clean", "^build"]
     },
     "dev": {
       "cache": false,
