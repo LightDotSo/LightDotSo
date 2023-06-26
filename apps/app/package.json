@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "@lightdotso/app",
   "version": "1.0.0",
   "private": true,
   "scripts": {
