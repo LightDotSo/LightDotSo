@@ -43,10 +43,12 @@ jobs:
           bundle exec fastlane android build
       - name: Android Production
         if: github.event_name == 'merge_group'
+        continue-on-error: true
         run: |
           bundle exec fastlane android production
       - name: Android Dev
         if: github.event_name == 'pull_request'
+        continue-on-error: true
         run: |
           bundle exec fastlane android dev
         env:

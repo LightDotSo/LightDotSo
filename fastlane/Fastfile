@@ -110,7 +110,15 @@ platform :android do
   end
 
   lane :build do
-    gradle(task: "assemble", build_type: "Release")
+    gradle(
+      task: "assemble",
+      build_type: "Release"
+    )
+
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
   end
 
   lane :dev do
