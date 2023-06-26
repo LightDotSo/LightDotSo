@@ -24,21 +24,29 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
+      - name: Install Ruby Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
-      - run: |
+      - name: Export Play Store Key
+        run: |
           echo $PLAY_STORE_JSON_KEY > play_store_key.json
         env:
           PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
-      - if: github.event_name == 'push'
+      - name: Android Build
+        if: github.event_name == 'push'
         run: |
-          bundle exec fastlane build
-      - if: github.event_name == 'merge_group'
+          bundle exec fastlane android build
+      - name: Android Production
+        if: github.event_name == 'merge_group'
         run: |
-          bundle exec fastlane production
-      - if: github.event_name == 'pull_request'
+          bundle exec fastlane android production
+      - name: Android Dev
+        if: github.event_name == 'pull_request'
         run: |
-          bundle exec fastlane dev
+          bundle exec fastlane android dev
   fastlane-ios:
     runs-on: macos-latest
     timeout-minutes: 90
@@ -69,7 +77,8 @@ jobs:
           pnpm run build
         # env:
         #   JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
-      - if: github.event_name == 'push'
+      - name: iOS Build
+        if: github.event_name == 'push'
         run: |
           bundle exec fastlane ios build
         env:
@@ -83,7 +92,8 @@ jobs:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      - if: github.event_name == 'merge_group'
+      - name: iOS Production
+        if: github.event_name == 'merge_group'
         run: |
           bundle exec fastlane ios production
         env:
@@ -97,7 +107,8 @@ jobs:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      - if: github.event_name == 'pull_request'
+      - name: iOS Dev
+        if: github.event_name == 'pull_request'
         run: |
           bundle exec fastlane ios dev
         env:
