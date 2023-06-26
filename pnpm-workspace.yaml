@@ -1,4 +1,6 @@
 packages:
+  - "android/*"
   - "apps/*"
   - "configurations/*"
+  - "ios/*"
   - "packages/*"
