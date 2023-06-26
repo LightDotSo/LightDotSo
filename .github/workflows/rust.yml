@@ -92,6 +92,7 @@ jobs:
     needs:
       - rust
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1

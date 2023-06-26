@@ -9,6 +9,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
+  RUSTFLAGS: -D warnings
+  CARGO_TERM_COLOR: always
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 jobs:
@@ -52,6 +54,9 @@ jobs:
   fastlane-ios:
     runs-on: macos-latest
     timeout-minutes: 90
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+      RUSTC_WRAPPER: "sccache"
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -131,6 +136,7 @@ jobs:
       - fastlane-android
       - fastlane-ios
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1

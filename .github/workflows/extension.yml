@@ -14,6 +14,7 @@ env:
 jobs:
   extension:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -49,6 +50,7 @@ jobs:
     needs:
       - extension
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1

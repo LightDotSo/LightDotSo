@@ -9,6 +9,7 @@ jobs:
   pr:
     name: PR
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: PR Validate
         uses: wallet-rs/wallet-rs/.github/actions/pr-validate@main

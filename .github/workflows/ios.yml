@@ -8,12 +8,10 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
-env:
-  RUSTFLAGS: -D warnings
-  CARGO_TERM_COLOR: always
 jobs:
   ios-lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -38,6 +36,10 @@ jobs:
           swift-format lint --recursive .
   ios-test:
     runs-on: macos-latest
+    timeout-minutes: 90
+    env:
+      RUSTFLAGS: -D warnings
+      CARGO_TERM_COLOR: always
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -92,6 +94,7 @@ jobs:
       - ios-lint
       - ios-test
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
