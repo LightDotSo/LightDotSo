@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "../crates/**",
+        "../gradle/**",
+        "../build.gradle",
+        "../Cargo.toml",
+        "../gradlew",
+        "../gradle.properties",
+        "../settings.gradle"
+      ],
+      "outputs": ["build/**"]
+    }
+  }
+}

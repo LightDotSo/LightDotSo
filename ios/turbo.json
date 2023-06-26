@@ -1,0 +1,24 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "inputs": [
+        "LightWallet/**",
+        "LightWallet.xcodeproj/**",
+        "LightWallet.xcworkspace/**",
+        "LightWalletBuildTools/**",
+        "LightWalletCore/**",
+        "LightWalletSafariExtension/**",
+        "LightWalletTests/**",
+        "LightWalletUITests/**",
+        "../crates/**",
+        "../Cargo.toml",
+        "../Cargo.lock"
+      ],
+      "outputs": ["build/**"]
+    }
+  }
+}
