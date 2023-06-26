@@ -25,7 +25,7 @@ jobs:
       - name: Turbo
         id: turbo
         run: |
-          echo "trigger=false" >> "$GITHUB_OUTPUT"
+          npx turbo-ignore @lightdotso/android && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
   android-lint:
     needs:
       - android-turbo
