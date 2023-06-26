@@ -4,8 +4,9 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "next dev",
-    "build": "cross-env NODE_ENV=production next build && next export -o '../../ios/LightWalletSafariExtension/Resources/popup' && cp '../../ios/LightWalletSafariExtension/Resources/popup/index.html' '../../ios/LightWalletSafariExtension/Resources/popup.html'",
-    "build:dev": "cross-env NODE_ENV=development next build && next export -o '../../ios/LightWalletSafariExtension/Resources/popup' && cp '../../ios/LightWalletSafariExtension/Resources/popup/index.html' '../../ios/LightWalletSafariExtension/Resources/popup.html'",
+    "build": "cross-env NODE_ENV=production next build && next export && pnpm run cp:ios",
+    "build:dev": "cross-env NODE_ENV=development next build && next export && pnpm run cp:ios",
+    "cp:ios": "cp '../../ios/LightWalletSafariExtension/Resources/popup/index.html' '../../ios/LightWalletSafariExtension/Resources/popup.html'",
     "start": "next start"
   },
   "dependencies": {
