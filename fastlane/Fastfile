@@ -58,7 +58,7 @@ def update_prod_xcconfig(name, new_value)
   )
 end
 
-def prepare_android_environment()
+def prepare_android_environment(app_id)
   previous_build_number = google_play_track_version_codes(
     package_name: app_id,
     track: "internal",
@@ -68,7 +68,7 @@ def prepare_android_environment()
   current_build_number = previous_build_number + 1
 
   increment_version_code(
-    gradle_file_path: gradle_file_path,
+    gradle_file_path: "./android/build.gradle",
     version_code: current_build_number
   )
 end
