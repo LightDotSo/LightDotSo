@@ -5,9 +5,9 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": [
-        "src/**",
-        "../crates/**",
-        "../gradle/**",
+        "src/**/**",
+        "../crates/**/**",
+        "../gradle/**/**",
         "../build.gradle",
         "../Cargo.lock",
         "../Cargo.toml",
