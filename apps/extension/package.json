@@ -1,0 +1,25 @@
+{
+  "name": "extension",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@lightdotso/background": "workspace:*",
+    "@lightdotso/content": "workspace:*",
+    "@lightdotso/inpage": "workspace:*",
+    "@lightdotso/popup": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.45",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
+    "typescript": "^4.9.5"
+  }
+}

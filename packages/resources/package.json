@@ -1,0 +1,16 @@
+{
+  "name": "@lightdotso/resources",
+  "private": false,
+  "version": "0.0.1",
+  "scripts": {
+    "build": "pnpm run build:locales && pnpm run build:images",
+    "build:locales": "pnpm run cp:locales:ios && pnpm run cp:locales:chrome && pnpm run cp:locales:firefox",
+    "build:images": "pnpm run cp:images:ios && pnpm run cp:images:chrome && pnpm run cp:images:firefox",
+    "cp:locales:ios": "cp -r ./_locales ../../ios/LightWalletSafariExtension/Resources",
+    "cp:locales:chrome": "cp -r ./_locales ../../apps/extension/chrome",
+    "cp:locales:firefox": "cp -r ./_locales ../../apps/extension/firefox",
+    "cp:images:ios": "cp -r ./images ../../ios/LightWalletSafariExtension/Resources",
+    "cp:images:chrome": "cp -r ./images ../../apps/extension/chrome",
+    "cp:images:firefox": "cp -r ./images ../../apps/extension/firefox"
+  }
+}
