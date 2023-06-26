@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
       - name: Turbo
         id: turbo
         run: |
@@ -72,6 +74,8 @@ jobs:
         run: |
           ./gradlew test
   android-check:
+    needs:
+      - android-turbo
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 3
