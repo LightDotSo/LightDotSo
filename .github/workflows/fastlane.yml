@@ -1,4 +1,4 @@
-name: Testflight
+name: Fastlane
 on:
   push:
     branches:
@@ -12,8 +12,35 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 jobs:
-  testflight:
-    runs-on: macos-12
+  fastlane-android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Install Rust Toolchain (nightly)
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: true
+      - name: Java Install
+        uses: wallet-rs/wallet-rs/.github/actions/java-install@main
+      - run: |
+          cat $PLAY_STORE_JSON_KEY > play_store_key.json
+        env:
+          PLAY_STORE_JSON_KEY: ${{ secrets.PLAY_STORE_JSON_KEY }}
+      - if: github.event_name == 'push'
+        run: |
+          bundle exec fastlane build
+      - if: github.event_name == 'merge_group'
+        run: |
+          bundle exec fastlane production
+      - if: github.event_name == 'pull_request'
+        run: |
+          bundle exec fastlane dev
+  fastlane-ios:
+    runs-on: macos-latest
     timeout-minutes: 90
     steps:
       - name: Fetch Head
@@ -85,10 +112,11 @@ jobs:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-  testflight-check:
+  fastlane-check:
     if: always()
     needs:
-      - testflight
+      - fastlane-android
+      - fastlane-ios
     runs-on: ubuntu-latest
     steps:
       - name: Check All Green
