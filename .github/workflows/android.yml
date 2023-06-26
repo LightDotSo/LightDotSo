@@ -73,6 +73,13 @@ jobs:
       - name: Gradle Test
         run: |
           ./gradlew test
+      - name: Status Action
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          sha: ${{ github.event.pull_request.head.sha || github.sha }}
+          context: 'android-check'
+          state: 'failure'
   android-check:
     needs:
       - android-turbo
