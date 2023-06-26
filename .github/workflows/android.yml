@@ -11,6 +11,8 @@ concurrency:
 env:
   RUSTFLAGS: -D warnings
   CARGO_TERM_COLOR: always
+permissions:
+  statuses: write
 jobs:
   android-turbo:
     runs-on: ubuntu-latest
