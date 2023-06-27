@@ -2,6 +2,16 @@
   "name": "@lightdotso/content",
   "version": "0.0.1",
   "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
   "scripts": {
     "build": "cross-env NODE_ENV=production node ./esbuild.config.js",
     "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"
