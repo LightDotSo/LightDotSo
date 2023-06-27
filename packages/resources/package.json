@@ -1,25 +1,35 @@
 {
   "name": "@lightdotso/resources",
-  "private": false,
   "version": "0.0.1",
+  "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
   "scripts": {
     "build": "pnpm run build:locales && pnpm run build:images",
-    "build:locales": "pnpm run cp:locales:ios && pnpm run cp:locales:chrome && pnpm run cp:locales:firefox",
     "build:images": "pnpm run cp:images:ios && pnpm run cp:images:chrome && pnpm run cp:images:firefox",
-    "cp:locales:ios": "cp -r ./_locales ../../ios/LightWalletSafariExtension/Resources",
-    "cp:locales:chrome": "cp -r ./_locales ../../apps/extension/chrome",
-    "cp:locales:firefox": "cp -r ./_locales ../../apps/extension/firefox",
-    "cp:images:ios": "cp -r ./images ../../ios/LightWalletSafariExtension/Resources",
-    "cp:images:chrome": "cp -r ./images ../../apps/extension/chrome",
-    "cp:images:firefox": "cp -r ./images ../../apps/extension/firefox",
+    "build:locales": "pnpm run cp:locales:ios && pnpm run cp:locales:chrome && pnpm run cp:locales:firefox",
     "clean": "pnpm run clean:locales && pnpm run clean:images",
-    "clean:locales": "pnpm run clean:locales:ios && pnpm run clean:locales:chrome && pnpm run clean:locales:firefox",
     "clean:images": "pnpm run clean:images:ios && pnpm run clean:images:chrome && pnpm run clean:images:firefox",
-    "clean:locales:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/_locales",
+    "clean:images:chrome": "rimraf ../../apps/extension/chrome/images",
+    "clean:images:firefox": "rimraf ../../apps/extension/firefox/images",
+    "clean:images:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/images",
+    "clean:locales": "pnpm run clean:locales:ios && pnpm run clean:locales:chrome && pnpm run clean:locales:firefox",
     "clean:locales:chrome": "rimraf ../../apps/extension/chrome/_locales",
     "clean:locales:firefox": "rimraf ../../apps/extension/firefox/_locales",
-    "clean:images:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/images",
-    "clean:images:chrome": "rimraf ../../apps/extension/chrome/images",
-    "clean:images:firefox": "rimraf ../../apps/extension/firefox/images"
+    "clean:locales:ios": "rimraf ../../ios/LightWalletSafariExtension/Resources/_locales",
+    "cp:images:chrome": "cp -r ./images ../../apps/extension/chrome",
+    "cp:images:firefox": "cp -r ./images ../../apps/extension/firefox",
+    "cp:images:ios": "cp -r ./images ../../ios/LightWalletSafariExtension/Resources",
+    "cp:locales:chrome": "cp -r ./_locales ../../apps/extension/chrome",
+    "cp:locales:firefox": "cp -r ./_locales ../../apps/extension/firefox",
+    "cp:locales:ios": "cp -r ./_locales ../../ios/LightWalletSafariExtension/Resources"
   }
 }

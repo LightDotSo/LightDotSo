@@ -21,8 +21,8 @@ const options = [
   {
     outdir: "../../apps/extension/firefox",
   },
-].map((specificOptions) => ({ ...commonOptions, ...specificOptions }));
+].map(specificOptions => ({ ...commonOptions, ...specificOptions }));
 
-Promise.all(options.map((option) => build(option))).catch(() => {
+Promise.all(options.map(option => build(option))).catch(() => {
   return process.exit(1);
 });

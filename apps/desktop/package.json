@@ -1,11 +1,21 @@
 {
   "name": "@lightdotso/desktop",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
+    "dev": "vite",
     "preview": "vite preview",
     "tauri": "tauri"
   },
@@ -22,5 +32,8 @@
     "@vitejs/plugin-react": "^3.1.0",
     "typescript": "^4.9.5",
     "vite": "^4.3.9"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

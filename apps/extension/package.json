@@ -2,6 +2,16 @@
   "name": "@lightdotso/extension",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
   "scripts": {
     "build": "pnpm run build:chrome && pnpm run build:firefox",
     "build:chrome": "crx pack chrome --zip-output chrome.zip",
@@ -18,10 +28,13 @@
     "@lightdotso/resources": "workspace:*"
   },
   "devDependencies": {
+    "@lightdotso/eslint-config": "workspace:*",
+    "@lightdotso/tsconfig": "workspace:*",
     "crx": "^5.0.1",
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
     "typescript": "^4.9.5",
     "web-ext": "^7.6.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

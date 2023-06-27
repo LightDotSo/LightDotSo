@@ -24,7 +24,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Build
         run: |
-          pnpm run build
+          pnpm turbo run build
   node-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -35,7 +35,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Lint
         run: |
-          pnpm run lint
+          pnpm turbo run lint
   node-test:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -43,10 +43,10 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v3
       - name: Node Install
-        uses:  wallet-rs/wallet-rs/.github/actions/node-install@main
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Test
         run: |
-          pnpm run test
+          pnpm turbo run test
   node-check:
     if: always()
     needs:

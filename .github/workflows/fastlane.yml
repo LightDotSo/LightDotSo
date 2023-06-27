@@ -100,7 +100,7 @@ jobs:
           make ios
       - name: Node Build
         run: |
-          pnpm run build
+          pnpm turbo run build
         # env:
         #   JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
       - name: iOS Build

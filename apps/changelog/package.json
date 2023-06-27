@@ -2,11 +2,21 @@
   "name": "@lightdotso/changelog",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
   "scripts": {
-    "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev --port 3001",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "next": "^13.4.7",
@@ -14,11 +24,14 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@lightdotso/eslint-config": "workspace:*",
+    "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^17.0.45",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
     "typescript": "^4.9.5"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

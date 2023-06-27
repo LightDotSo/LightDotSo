@@ -4,13 +4,23 @@
     "build": {
       "dependsOn": ["^build"]
     },
-    "lint": {},
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "//#ci": {
       "cache": false
+    },
+    "//#lint": {
+      "dependsOn": [],
+      "outputs": [],
+      "inputs": ["apps/**", "configurations/**", "contracts/**", "crates/**", "fastlane/**", "packages/**"]
     }
   }
 }

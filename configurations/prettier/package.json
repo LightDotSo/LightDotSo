@@ -1,7 +1,7 @@
 {
-  "name": "@lightdotso/contracts",
-  "version": "1.0.0",
-  "private": true,
+  "name": "@lightdotso/prettier",
+  "version": "1.0.1",
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -12,7 +12,15 @@
   },
   "license": "GPL-3.0",
   "author": "Light, Inc.",
-  "scripts": {
-    "build": "echo 'Empty build script for turborepo trigger'"
+  "main": "src/index.js",
+  "files": [
+    "src/index.js"
+  ],
+  "dependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
