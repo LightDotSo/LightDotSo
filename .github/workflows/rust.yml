@@ -20,13 +20,9 @@ jobs:
     outputs:
       trigger: ${{ steps.turbo.outputs.trigger }}
     steps:
-      - name: Fetch Head
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
       - name: Turbo Trigger
         id: turbo
-        uses: ./.github/actions/turbo-trigger
+        uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/crates"
   rust:
