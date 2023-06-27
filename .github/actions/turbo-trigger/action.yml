@@ -4,7 +4,7 @@ inputs:
     description: Name for npm package name
     required: true
 outputs:
-  random-number:
+  trigger:
     description: "Boolean value to trigger or not trigger the workflow"
     value: ${{ steps.turbo.outputs.trigger }}
 runs:
