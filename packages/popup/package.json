@@ -1,14 +1,14 @@
 {
   "name": "@lightdotso/popup",
-  "private": false,
   "version": "0.0.1",
+  "private": false,
   "scripts": {
-    "dev": "next dev",
     "build": "cross-env NODE_ENV=production next build && pnpm run cp:ios",
     "build:dev": "cross-env NODE_ENV=development next build && pnpm run cp:ios",
     "cp:ios": "pnpm run cp:ios:popup && pnpm run cp:ios:index",
-    "cp:ios:popup": "cp -r 'out' '../../ios/LightWalletSafariExtension/Resources/popup'",
     "cp:ios:index": "cp '../../ios/LightWalletSafariExtension/Resources/popup/index.html' '../../ios/LightWalletSafariExtension/Resources/popup.html'",
+    "cp:ios:popup": "cp -r 'out' '../../ios/LightWalletSafariExtension/Resources/popup'",
+    "dev": "next dev",
     "start": "next start"
   },
   "dependencies": {

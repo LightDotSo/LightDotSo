@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/inpage",
-  "private": false,
   "version": "0.0.1",
+  "private": false,
   "scripts": {
     "build": "cross-env NODE_ENV=production node ./esbuild.config.js",
     "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"

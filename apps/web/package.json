@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev",
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "next": "^13.4.7",
@@ -14,11 +14,11 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@lightdotso/eslint-config": "workspace:*",
+    "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^17.0.45",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "@lightdotso/eslint-config": "workspace:*",
-    "@lightdotso/tsconfig": "workspace:*",
     "typescript": "^4.9.5"
   }
 }

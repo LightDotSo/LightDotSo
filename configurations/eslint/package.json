@@ -1,8 +1,8 @@
 {
   "name": "@lightdotso/eslint-config",
   "version": "2.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "index.js",
   "dependencies": {
     "eslint-config-next": "^13.4.7",
     "eslint-config-prettier": "^8.8.0",

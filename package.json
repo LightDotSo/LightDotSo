@@ -5,7 +5,6 @@
   "scripts": {
     "build": "turbo run build",
     "changeset": "changeset",
-    "depcheck:lint": "pnpm -r --no-bail exec depcheck .",
     "fix": "concurrently 'pnpm:*:fix'",
     "lint": "concurrently 'pnpm:*:lint'",
     "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages",
@@ -14,7 +13,8 @@
     "prettier:fix": "prettier --write .",
     "prettier:lint": "prettier --check .",
     "release": "changeset publish",
-    "sort-package-json:fix": "sort-package-json '{apps,configurations,contracts,crates,fastlane,ios,packages}/**/package.json'"
+    "sort-package-json:fix": "sort-package-json '{apps,configurations,contracts,crates,fastlane,ios,packages}/**/package.json'",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",

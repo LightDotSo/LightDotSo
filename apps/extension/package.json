@@ -18,9 +18,9 @@
     "@lightdotso/resources": "workspace:*"
   },
   "devDependencies": {
-    "crx": "^5.0.1",
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
+    "crx": "^5.0.1",
     "typescript": "^4.9.5",
     "web-ext": "^7.6.2"
   }
