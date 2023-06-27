@@ -36,6 +36,3 @@ cp-xcframework-source:
 swift-lint:
 	swift build -c release --package-path ios/LightWalletBuildTools --product swiftlint
 	./ios/LightWalletBuildTools/.build/release/swiftlint ios
-
-license-checker:
-	cargo mpl-license-checker

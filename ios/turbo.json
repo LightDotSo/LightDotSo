@@ -6,6 +6,12 @@
       "cache": false,
       "dependsOn": ["^build"],
       "inputs": [
+        "../.swift-format",
+        "../.swift-version",
+        "../.swiftlint.yml",
+        "../Brewfile",
+        "../Brewfile.lock.json",
+        "../Makefile",
         "LightWallet/**",
         "LightWallet.xcodeproj/**",
         "LightWallet.xcworkspace/**",

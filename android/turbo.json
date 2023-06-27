@@ -5,12 +5,16 @@
     "build": {
       "cache": false,
       "inputs": [
-        "src/**",
         "../gradle/**",
         "../build.gradle",
-        "../gradlew",
         "../gradle.properties",
-        "../settings.gradle"
+        "../gradlew",
+        "../gradlew.bat",
+        "../Makefile",
+        "../settings.gradle",
+        "./build.gradle",
+        "./proguard-rules.pro",
+        "src/**"
       ],
       "outputs": ["build/**"]
     }
