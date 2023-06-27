@@ -6,6 +6,7 @@
     "build": "echo 'Empty build script for turborepo trigger'"
   },
   "dependencies": {
-    "@lightdotso/crates": "workspace:*"
+    "@lightdotso/crates": "workspace:*",
+    "@lightdotso/extension": "workspace:*"
   }
 }
