@@ -21,7 +21,7 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v3
         with:
-          fetch-depth: 3
+          fetch-depth: 2
       - name: Turbo Trigger
         id: turbo
         uses: ./.github/actions/turbo-trigger
