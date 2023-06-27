@@ -10,9 +10,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - shell: bash
-      run: |
-        git log
     - name: Turbo Pull Request
       id: turbo
       shell: bash
