@@ -28,6 +28,8 @@ jobs:
         with:
           workspace: "@lightdotso/fastlane"
   fastlane-android:
+    needs:
+      - fastlane-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: needs.fastlane-turbo.outputs.trigger == 'true'
@@ -68,6 +70,8 @@ jobs:
         env:
           GH_NUMBER: ${{ github.event.pull_request.number }}
   fastlane-ios:
+    needs:
+      - fastlane-turbo
     runs-on: macos-latest
     timeout-minutes: 90
     if: needs.fastlane-turbo.outputs.trigger == 'true'

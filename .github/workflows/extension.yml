@@ -26,6 +26,8 @@ jobs:
         with:
           workspace: "@lightdotso/extension"
   extension:
+    needs:
+      - extension-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: needs.extension-turbo.outputs.trigger == 'true'
