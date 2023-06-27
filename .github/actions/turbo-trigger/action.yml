@@ -21,13 +21,12 @@ runs:
       with:
         ref: ${{ github.base_ref }}
     - name: Turbo Pull Request
-      if: github.event_name == 'pull_request'
       id: turbo
       shell: bash
       run: |
         if [ ${{ github.event_name }} == 'merge_group' ]; then
           npx turbo-ignore ${{ inputs.workspace }} --fallback ${{ github.merge_group.base_sha }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
-        elif [ ${{ github.event_name }} == 'push' ]; then
+        elif [ ${{ github.event_name }} == 'pull_request' ]; then
           npx turbo-ignore ${{ inputs.workspace }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
         else
           echo "trigger=true" >> "$GITHUB_OUTPUT"
