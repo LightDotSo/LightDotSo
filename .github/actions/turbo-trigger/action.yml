@@ -14,5 +14,6 @@ runs:
       id: turbo
       shell: bash
       run: |
+        git rev-parse HEAD
         git log
         npx turbo-ignore ${{ inputs.workspace }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
