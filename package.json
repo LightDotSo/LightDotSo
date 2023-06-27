@@ -12,7 +12,7 @@
     "fastlane:build": "cd ios && bundle exec fastlane build",
     "fastlane:test": "cd ios && bundle exec fastlane test",
     "fix": "concurrently 'pnpm:*:fix'",
-    "lint": "echo \"Error: no lint specified\" && exit 0",
+    "lint": "echo 'Error: no lint specified' && exit 0",
     "lint:eslint": "pnpm run eslint:lint",
     "lint:license": "make license-checker",
     "lint:prettier": "pnpm run prettier:lint",

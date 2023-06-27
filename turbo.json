@@ -1,11 +1,8 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": ["DISABLE_EXTRACTION", "NODE_ENV", "EAS_BUILD_PLATFORM"],
   "pipeline": {
     "build": {
-      "env": ["DISABLE_EXTRACTION", "NODE_ENV", "EAS_BUILD_PLATFORM"],
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "build/**", "node_modules/.cache/metro/**"]
+      "dependsOn": ["^build"]
     },
     "lint": {},
     "dev": {
@@ -13,9 +10,7 @@
       "persistent": true
     },
     "//#ci": {
-      "dependsOn": [],
-      "outputs": [],
-      "inputs": ["**"]
+      "cache": false
     }
   }
 }
