@@ -1,4 +1,4 @@
 module.exports = {
-  extends: "next",
+  extends: "@lightdotso",
   root: true,
 };

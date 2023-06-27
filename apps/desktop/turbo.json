@@ -3,8 +3,12 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "outputs": ["dist/**"],
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "env": [
+        "TAURI_PLATFORM",
+        "TAURI_DEBUG"
+      ],
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,

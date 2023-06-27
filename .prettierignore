@@ -1,12 +1,16 @@
-.build
-.next
-dist
-vendor
-
 *.json
+
 pnpm-lock.yaml
 pnpm-workspace.yaml
 
-ios/fastlane
-ios/LightWalletSafariExtension/Resources
-ios/LightWalletDev.xcarchive
+.build
+.next
+build
+debug
+dist
+lib
+out
+
+apps/extension/**
+ios/LightWalletSafariExtension/Resources/**
+fastlane

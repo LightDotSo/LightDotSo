@@ -4,6 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build", "clean"],
+      "env": ["NODE_ENV"],
       "inputs": ["_locales", "images"],
       "outputs": [
         "../../ios/LightWalletSafariExtension/Resources/_locales/**",

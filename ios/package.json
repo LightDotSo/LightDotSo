@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "echo 'Empty build script for turborepo trigger'"
+    "build": "echo 'Empty build script for turborepo trigger'",
+    "swiftlint:cmd": "mint run swiftlint",
+    "swiftlint:fix": "mint run swiftlint --fix",
+    "swiftlint:lint": "mint run swiftlint",
+    "swift-format:cmd": "mint run swift-format --in-place --recursive --parallel --ignore-unparsable-files",
+    "swift-format:fix": "mint run swift-format --in-place --recursive --parallel --ignore-unparsable-files ios/**/Sources/**",
+    "swift-format:lint": "mint run swift-format --recursive --parallel --ignore-unparsable-files ios/**/Sources/**"
   },
   "dependencies": {
     "@lightdotso/crates": "workspace:*",

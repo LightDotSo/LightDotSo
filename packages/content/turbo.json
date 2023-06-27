@@ -4,6 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["NODE_ENV"],
       "outputs": [
         "../../ios/LightWalletSafariExtension/Resources/content.js",
         "../../apps/extension/chrome/content.js",

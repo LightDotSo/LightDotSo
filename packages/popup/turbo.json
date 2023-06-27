@@ -4,8 +4,8 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "env": ["CI", "JITSU_JS_KEY", "NODE_ENV", "VERCEL"],
       "inputs": ["**"],
-      "env": ["CI", "JITSU_JS_KEY", "VERCEL"],
       "outputs": [
         ".next/**",
         "../../ios/LightWalletSafariExtension/Resources/popup/**",
