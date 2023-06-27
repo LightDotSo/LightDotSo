@@ -126,7 +126,11 @@ importers:
         specifier: ^28.20.0
         version: 28.20.0(@types/node@20.3.1)(ts-node@10.9.1)
 
-  android: {}
+  android:
+    dependencies:
+      '@lightdotso/crates':
+        specifier: workspace:*
+        version: link:../crates
 
   apps/app:
     dependencies:
@@ -336,6 +340,25 @@ importers:
         version: 7.28.0(eslint@8.43.0)
 
   configurations/tsconfig: {}
+
+  contracts: {}
+
+  crates: {}
+
+  fastlane:
+    dependencies:
+      '@lightdotso/android':
+        specifier: workspace:*
+        version: link:../android
+      '@lightdotso/ios':
+        specifier: workspace:*
+        version: link:../ios
+
+  ios:
+    dependencies:
+      '@lightdotso/crates':
+        specifier: workspace:*
+        version: link:../crates
 
   packages/background:
     dependencies:

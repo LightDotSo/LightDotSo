@@ -14,24 +14,23 @@ env:
 jobs:
   android-turbo:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 3
     outputs:
       trigger: ${{ steps.turbo.outputs.trigger }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 3
-      - name: Turbo
+      - name: Turbo Trigger
         id: turbo
-        run: |
-          npx turbo-ignore @lightdotso/android && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
+        uses: ./.github/actions/turbo-trigger
+        with:
+          workspace: "@lightdotso/android"
   android-lint:
     needs:
       - android-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: ${{ needs.android-turbo.outputs.trigger == 'true' }}
+    if: needs.android-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -55,7 +54,7 @@ jobs:
       - android-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: ${{ needs.android-turbo.outputs.trigger == 'true' }}
+    if: needs.android-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -75,6 +74,7 @@ jobs:
           ./gradlew test
   android-check:
     needs:
+      - android-turbo
       - android-lint
       - android-test
     if: always()

@@ -1,0 +1,21 @@
+name: Turbo Trigger
+inputs:
+  workspace:
+    description: Name for npm package name
+    required: true
+outputs:
+  trigger:
+    description: "Boolean value to trigger or not trigger the workflow"
+    value: ${{ steps.turbo.outputs.trigger }}
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch Head
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 3
+    - name: Turbo
+      id: turbo
+      shell: bash
+      run: |
+        npx turbo-ignore ${{ inputs.workspace }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"

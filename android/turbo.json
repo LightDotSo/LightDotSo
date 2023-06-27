@@ -6,15 +6,10 @@
       "cache": false,
       "inputs": [
         "src/**",
-        "../crates/**",
         "../gradle/**",
         "../build.gradle",
-        "../Cargo.lock",
-        "../Cargo.toml",
         "../gradlew",
         "../gradle.properties",
-        "../rust-toolchain.toml",
-        "../rustfmt.toml",
         "../settings.gradle"
       ],
       "outputs": ["build/**"]

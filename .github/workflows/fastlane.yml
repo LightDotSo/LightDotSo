@@ -14,9 +14,23 @@ env:
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 jobs:
+  fastlane-turbo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      trigger: ${{ steps.turbo.outputs.trigger }}
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Turbo Trigger
+        id: turbo
+        uses: ./.github/actions/turbo-trigger
+        with:
+          workspace: "@lightdotso/fastlane"
   fastlane-android:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    if: needs.fastlane-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -56,6 +70,7 @@ jobs:
   fastlane-ios:
     runs-on: macos-latest
     timeout-minutes: 90
+    if: needs.fastlane-turbo.outputs.trigger == 'true'
     env:
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
@@ -135,6 +150,7 @@ jobs:
   fastlane-check:
     if: always()
     needs:
+      - fastlane-turbo
       - fastlane-android
       - fastlane-ios
     runs-on: ubuntu-latest
@@ -143,4 +159,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
+          allowed-skips: fastlane-android,fastlane-ios
           jobs: ${{ toJSON(needs) }}
