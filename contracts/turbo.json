@@ -4,11 +4,7 @@
   "pipeline": {
     "build": {
       "cache": false,
-      "inputs": [
-        "src/**",
-        "test/**",
-        "../lib/**"
-      ],
+      "inputs": ["src/**", "test/**", "../lib/**", "../.gitmodules", "../foundry.toml", "../remappings.txt"],
       "outputs": ["../out", "../.gas-snapshot", "../foundry.toml"]
     }
   }
