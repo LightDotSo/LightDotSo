@@ -11,10 +11,29 @@ runs:
   using: "composite"
   steps:
     - name: Fetch Head
+      if: github.event_name == 'push' || github.event_name == 'pull_request'
       uses: actions/checkout@v3
       with:
         fetch-depth: 3
-    - name: Turbo
+    - name: Fetch Head
+      if: github.event_name == 'merge_group'
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.base_ref }}
+    - name: Turbo Push
+      if: github.event_name == 'push'
+      id: turbo
+      shell: bash
+      run: |
+        echo "trigger=true" >> "$GITHUB_OUTPUT"
+    - name: Turbo Merge Group
+      if: github.event_name == 'merge_group'
+      id: turbo
+      shell: bash
+      run: |
+        npx turbo-ignore ${{ inputs.workspace }} --fallback ${{ github.merge_group.base_sha }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
+    - name: Turbo Pull Request
+      if: github.event_name == 'pull_request'
       id: turbo
       shell: bash
       run: |
