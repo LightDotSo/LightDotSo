@@ -337,6 +337,19 @@ importers:
 
   configurations/tsconfig: {}
 
+  contracts: {}
+
+  fastlane:
+    dependencies:
+      '@lightdotso/android':
+        specifier: workspace:*
+        version: link:../android
+      '@lightdotso/ios':
+        specifier: workspace:*
+        version: link:../ios
+
+  ios: {}
+
   packages/background:
     dependencies:
       '@types/firefox-webext-browser':

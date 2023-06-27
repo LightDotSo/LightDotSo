@@ -3,5 +3,6 @@ packages:
   - "apps/*"
   - "configurations/*"
   - "contracts"
+  - "fastlane"
   - "ios"
   - "packages/*"
