@@ -1,2 +1,2 @@
 [profile.default]
-src = "packages/contracts"
+src = "contracts"

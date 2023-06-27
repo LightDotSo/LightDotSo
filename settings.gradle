@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "WalletCore"
+rootProject.name = "LightWallet"
 include ':android'

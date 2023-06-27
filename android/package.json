@@ -1,0 +1,8 @@
+{
+  "name": "@lightdotso/android",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Empty build script for turborepo trigger'"
+  }
+}

@@ -12,9 +12,26 @@ env:
   RUSTFLAGS: -D warnings
   CARGO_TERM_COLOR: always
 jobs:
-  android-lint:
+  android-turbo:
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    outputs:
+      trigger: ${{ steps.turbo.outputs.trigger }}
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
+      - name: Turbo
+        id: turbo
+        run: |
+          npx turbo-ignore @lightdotso/android && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
+  android-lint:
+    needs:
+      - android-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    if: ${{ needs.android-turbo.outputs.trigger == 'true' }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -34,8 +51,11 @@ jobs:
           report-path: build/reports/*.xml
         continue-on-error: false
   android-test:
+    needs:
+      - android-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    if: ${{ needs.android-turbo.outputs.trigger == 'true' }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -54,14 +74,15 @@ jobs:
         run: |
           ./gradlew test
   android-check:
-    if: always()
     needs:
       - android-lint
       - android-test
+    if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
+          allowed-skips: android-lint,android-test
           jobs: ${{ toJSON(needs) }}
