@@ -3,6 +3,10 @@ inputs:
   workspace:
     description: Name for npm package name
     required: true
+outputs:
+  random-number:
+    description: "Boolean value to trigger or not trigger the workflow"
+    value: ${{ steps.turbo.outputs.trigger }}
 runs:
   using: "composite"
   steps:
@@ -12,5 +16,6 @@ runs:
         fetch-depth: 3
     - name: Turbo
       id: turbo
+      shell: bash
       run: |
         npx turbo-ignore ${{ inputs.workspace }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
