@@ -13,10 +13,7 @@
         "LightWalletCore/**",
         "LightWalletSafariExtension/**",
         "LightWalletTests/**",
-        "LightWalletUITests/**",
-        "../crates/**",
-        "../Cargo.toml",
-        "../Cargo.lock"
+        "LightWalletUITests/**"
       ],
       "outputs": ["build/**"]
     }

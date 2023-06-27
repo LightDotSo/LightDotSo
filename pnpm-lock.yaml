@@ -128,9 +128,9 @@ importers:
 
   android:
     dependencies:
-      '@lightdotso/ios':
+      '@lightdotso/crates':
         specifier: workspace:*
-        version: link:../ios
+        version: link:../crates
 
   apps/app:
     dependencies:
@@ -356,9 +356,9 @@ importers:
 
   ios:
     dependencies:
-      '@lightdotso/ios':
+      '@lightdotso/crates':
         specifier: workspace:*
-        version: 'link:'
+        version: link:../crates
 
   packages/background:
     dependencies:
