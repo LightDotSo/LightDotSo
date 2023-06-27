@@ -36,7 +36,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Build
         run: |
-          pnpm run build --filter={apps/extension}
+          pnpm turbo run build --filter={apps/extension}
       - if: github.event_name == 'pull_request'
         name: Chrome upload
         uses: mnao305/chrome-extension-upload@v4.0.1

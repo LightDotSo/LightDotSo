@@ -69,7 +69,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Build
         run: |
-          pnpm run build
+          pnpm turbo run build
       - name: Rust Build
         uses: actions-rs/cargo@v1
         with:
