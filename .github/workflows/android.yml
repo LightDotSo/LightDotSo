@@ -24,7 +24,7 @@ jobs:
         id: turbo
         uses: ./.github/actions/turbo-trigger
         with:
-          workflow: "@lightdotso/android"
+          workspace: "@lightdotso/android"
   android-lint:
     needs:
       - android-turbo
