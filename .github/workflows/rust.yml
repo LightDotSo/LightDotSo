@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
       - name: Turbo Trigger
         id: turbo
         uses: ./.github/actions/turbo-trigger
@@ -48,6 +50,8 @@ jobs:
       RUSTFLAGS: -D warnings
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
+    needs:
+      - rust-turbo
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     if: needs.rust-turbo.outputs.trigger == 'true'

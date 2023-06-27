@@ -17,12 +17,16 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
       - name: Turbo Trigger
         id: turbo
         uses: ./.github/actions/turbo-trigger
         with:
           workspace: "@lightdotso/ios"
   ios-lint:
+    needs:
+      - ios-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: needs.ios-turbo.outputs.trigger == 'true'
@@ -49,6 +53,8 @@ jobs:
         run: |
           swift-format lint --recursive .
   ios-test:
+    needs:
+      - ios-turbo
     runs-on: macos-latest
     timeout-minutes: 90
     if: needs.ios-turbo.outputs.trigger == 'true'

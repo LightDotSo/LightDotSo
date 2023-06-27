@@ -17,12 +17,16 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 3
       - name: Turbo Trigger
         id: turbo
         uses: ./.github/actions/turbo-trigger
         with:
           workspace: "@lightdotso/contracts"
   contracts-build:
+    needs:
+      - contracts-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: needs.contracts-turbo.outputs.trigger == 'true'
@@ -40,6 +44,8 @@ jobs:
         run: |
           forge build
   contracts-lint:
+    needs:
+      - contracts-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: needs.contracts-turbo.outputs.trigger == 'true'
@@ -57,6 +63,8 @@ jobs:
         run: |
           forge fmt --check
   contracts-test:
+    needs:
+      - contracts-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
     if: needs.contracts-turbo.outputs.trigger == 'true'
