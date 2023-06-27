@@ -14,6 +14,10 @@ runs:
       id: turbo
       shell: bash
       run: |
-        git rev-parse HEAD
-        git log
-        npx turbo-ignore ${{ inputs.workspace }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
+        if [ ${{ github.event_name }} == 'merge_group' ]; then
+          npx turbo-ignore ${{ inputs.workspace }} --fallback ${{ github.merge_group.base_sha }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
+        elif [ ${{ github.event_name }} == 'pull_request' ]; then
+          npx turbo-ignore ${{ inputs.workspace }} && echo "trigger=false" >> "$GITHUB_OUTPUT" || echo "trigger=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "trigger=true" >> "$GITHUB_OUTPUT"
+        fi
