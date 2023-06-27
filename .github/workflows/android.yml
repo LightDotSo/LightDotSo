@@ -18,6 +18,8 @@ jobs:
     outputs:
       trigger: ${{ steps.turbo.outputs.trigger }}
     steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
       - name: Turbo Trigger
         id: turbo
         uses: ./.github/actions/turbo-trigger

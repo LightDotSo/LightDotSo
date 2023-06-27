@@ -126,7 +126,11 @@ importers:
         specifier: ^28.20.0
         version: 28.20.0(@types/node@20.3.1)(ts-node@10.9.1)
 
-  android: {}
+  android:
+    dependencies:
+      '@lightdotso/ios':
+        specifier: workspace:*
+        version: link:../ios
 
   apps/app:
     dependencies:
@@ -339,6 +343,8 @@ importers:
 
   contracts: {}
 
+  crates: {}
+
   fastlane:
     dependencies:
       '@lightdotso/android':
@@ -348,7 +354,11 @@ importers:
         specifier: workspace:*
         version: link:../ios
 
-  ios: {}
+  ios:
+    dependencies:
+      '@lightdotso/ios':
+        specifier: workspace:*
+        version: 'link:'
 
   packages/background:
     dependencies:
