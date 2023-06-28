@@ -1,0 +1,33 @@
+{
+  "name": "@lightdotso/tailwindcss",
+  "version": "1.0.1",
+  "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
+  "main": "src/index.js",
+  "files": [
+    "src/index.js"
+  ],
+  "scripts": {
+    "tailwind-config-viewer": "tailwind-config-viewer -o"
+  },
+  "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@tailwindcss/typography": "^0.5.9",
+    "tailwind-config-viewer": "^1.7.2",
+    "tailwindcss": "^3.3.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
