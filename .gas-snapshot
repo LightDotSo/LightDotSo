@@ -1,4 +1,5 @@
 TestContract:testBar() (gas: 291)
 TestContract:testFoo(uint256) (runs: 256, μ: 3367, ~: 3367)
 TestSafeProxyFactory:test_proxyCreationCode() (gas: 109397)
-TestSimpleAccountFactory:test_predictedCreateAccount() (gas: 249640)
+TestSimpleAccountFactory:test_UUPSUpgradeTo() (gas: 1741590)
+TestSimpleAccountFactory:test_predictedCreateAccount() (gas: 249685)

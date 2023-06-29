@@ -23,7 +23,7 @@ jobs:
           commit: "chore: changesets version package"
           title: "chore: changesets pr"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
   changesets-release:
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -37,7 +37,7 @@ jobs:
       - name: Publish to NPM
         uses: changesets/action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   changesets-check:
     if: always()
