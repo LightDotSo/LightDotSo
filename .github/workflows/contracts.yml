@@ -74,6 +74,9 @@ jobs:
       - name: Install Deps
         run: |
           forge install
+      - name: Run Build
+        run: |
+          forge build
       - name: Storage Check
         run: |
           ./contracts/storage.sh
