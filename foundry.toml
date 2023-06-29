@@ -1,5 +1,6 @@
 [profile.default]
-src = "contracts"
+src = "contracts/src"
+test= "contracts/test"
 solc = "0.8.13"
 
 [profile.local]

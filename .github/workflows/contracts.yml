@@ -76,7 +76,16 @@ jobs:
           forge install
       - name: Check gas snapshots
         run: |
+          forge coverage --report lcov
+      - name: Upload coverage
+        run: |
           forge snapshot --check
+      - name: Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
+          fail_ci_if_error: false
   contracts-check:
     if: always()
     needs:
