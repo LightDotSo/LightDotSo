@@ -22,7 +22,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Check for changeset
         run: |
-          pnpm changeset status --since=main
+          pnpm changeset status
   changesets-pr:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -45,6 +45,9 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -52,6 +55,9 @@ jobs:
           fetch-depth: 0
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Node Build
+        run: |
+          pnpm turbo run build
       - name: Publish to NPM
         uses: changesets/action@v1
         env:
