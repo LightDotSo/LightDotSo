@@ -16,7 +16,7 @@
     "build": "turbo run build",
     "changeset": "changeset",
     "fix": "concurrently 'pnpm:*:fix'",
-    "forge:snapshot:cmd": "FOUNDRY_PROFILE=local forge snapshot",
+    "forge:snapshot:cmd": "FOUNDRY_PROFILE=local forge snapshot && echo",
     "lint": "concurrently 'pnpm:*:lint'",
     "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages",
     "pnpm:upgrade": "pnpm upgrade --recursive",
