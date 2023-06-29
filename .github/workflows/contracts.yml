@@ -75,9 +75,8 @@ jobs:
         run: |
           forge install
       - name: Storage Check
-        working-directory: contracts
         run: |
-          ./storage.sh
+          ./contracts/storage.sh
       - name: Check Storage Changes
         run: |
           git diff --quiet
