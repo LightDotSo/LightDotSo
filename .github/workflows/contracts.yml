@@ -79,7 +79,7 @@ jobs:
           forge build
       - name: Storage Check
         run: |
-          ./contracts/storage.sh
+          make storage-layout
       - name: Check Storage Changes
         run: |
           git diff --quiet
