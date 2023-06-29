@@ -1,2 +1,3 @@
 forge-std/=lib/forge-std/src/
+@safe-global/safe-contracts/=lib/safe-contracts/
 @/=contracts/src/
