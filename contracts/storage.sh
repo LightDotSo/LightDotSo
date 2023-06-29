@@ -26,5 +26,5 @@ for CONTRACT in src/**/*.sol; do
     # Print the contract name to the output file
     echo " ➡ $CONTRACT_NAME" >> "$OUTPUT_FILE"
     # Run the storage layout inspection on the contract and append output to output file
-    FOUNDRY_PROFILE=contracts forge inspect --pretty "$CONTRACT_NAME" storage-layout >> "$OUTPUT_FILE"
+    forge inspect --pretty "$CONTRACT_NAME" storage-layout >> "$OUTPUT_FILE"
 done
