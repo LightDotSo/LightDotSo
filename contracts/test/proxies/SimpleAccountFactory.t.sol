@@ -38,6 +38,10 @@ contract TestSimpleAccountFactory is Test {
         SimpleAccount createdAccount = factory.createAccount(address(this), 0);
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(createdAccount));
+        // Get the immutable implementation in the factory
+        SimpleAccount implementation = factory.accountImplementation();
+        // Assert that the implementation of the created account is the SimpleAccount
+        assertEq(proxyUtils.getProxyImplementation(address(createdAccount)),  address(implementation));
     }
 
     function test_UUPSUpgradeTo() public {
