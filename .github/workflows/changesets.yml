@@ -20,7 +20,8 @@ jobs:
           fetch-depth: 0
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Check for changeset
+      - if: github.actor != 'LightDotSoBot'
+        name: Check for changeset
         run: |
           pnpm changeset status
   changesets-pr:
