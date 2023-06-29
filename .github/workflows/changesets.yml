@@ -48,7 +48,6 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    continue-on-error: true
     env:
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -64,6 +63,7 @@ jobs:
           pnpm turbo run build
       - name: Publish to NPM
         uses: changesets/action@v1
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
