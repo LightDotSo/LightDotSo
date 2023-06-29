@@ -2,32 +2,43 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️ 
 ============================
 =======================
- ➡ Contract
+ ➡ EntryPoint
+| Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
+|---------------------|------------------------------------------------------|------|--------|-------|------------------------------------------------------------------|
+| deposits            | mapping(address => struct IStakeManager.DepositInfo) | 0    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+| nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+| _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+=======================
+ ➡ TokenPaymaster
+| Name         | Type                                            | Slot | Offset | Bytes | Contract                                                                    |
+|--------------|-------------------------------------------------|------|--------|-------|-----------------------------------------------------------------------------|
+| _owner       | address                                         | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _balances    | mapping(address => uint256)                     | 1    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _allowances  | mapping(address => mapping(address => uint256)) | 2    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _totalSupply | uint256                                         | 3    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _name        | string                                          | 4    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _symbol      | string                                          | 5    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+=======================
+ ➡ SafeProxy
+| Name      | Type    | Slot | Offset | Bytes | Contract                                                     |
+|-----------|---------|------|--------|-------|--------------------------------------------------------------|
+| singleton | address | 0    | 0      | 20    | lib/safe-contracts/contracts/proxies/SafeProxy.sol:SafeProxy |
+=======================
+ ➡ SafeProxyFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ Safe
-| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                   |
-|----------------------------|-------------------------------------------------|------|--------|-------|--------------------------------------------|
-| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
-| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+ ➡ SimpleAccount
+| Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
+|---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
+| _initialized  | uint8   | 0    | 0      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| _initializing | bool    | 0    | 1      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
 =======================
- ➡ SafeL2
-| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
-|----------------------------|-------------------------------------------------|------|--------|-------|------------------------------------------------|
-| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+ ➡ SimpleAccountFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ UniversalSigValidator
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
