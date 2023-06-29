@@ -3,6 +3,7 @@
 pragma solidity ^0.8.13;
 
 import "@/contracts/core/EntryPoint.sol";
+import "@/contracts/proxies/ImmutableProxy.sol";
 import "@/contracts/proxies/SimpleAccount.sol";
 import "@/contracts/proxies/SimpleAccountFactory.sol";
 import "@/test/utils/ProxyUtils.sol";
@@ -53,6 +54,20 @@ contract TestSimpleAccountFactory is Test {
         createdAccount.upgradeTo(address(accountV2));
         // Assert that the account is now the new version
         assertEq(proxyUtils.getProxyImplementation(address(createdAccount)), address(accountV2));
+    }
+
+    function test_UpgradeToImmutable() public {
+        // Create the account using the factory w/ nonce 0
+        SimpleAccount createdAccount = factory.createAccount(address(this), 0);
+        // Deploy new version of SimpleAccount
+        ImmutableProxy immutableProxy = new ImmutableProxy();
+        // Upgrade the account to the immutable version
+        createdAccount.upgradeTo(address(immutableProxy));
+        // Assert that the account is now immutable
+        assertEq(proxyUtils.getProxyImplementation(address(createdAccount)), address(immutableProxy));
+        // Assert that the account cannot be upgraded again
+        vm.expectRevert();
+        createdAccount.upgradeTo(address(account));
     }
 
     function test_noProxyAdmin() public {
