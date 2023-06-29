@@ -66,7 +66,7 @@ contract TestSimpleAccountFactory is Test {
         // Assert that the account is now immutable
         assertEq(proxyUtils.getProxyImplementation(address(createdAccount)), address(immutableProxy));
         // Assert that the account cannot be upgraded again
-        vm.expectRevert();
+        vm.expectRevert("Upgrades are disabled");
         createdAccount.upgradeTo(address(account));
     }
 
