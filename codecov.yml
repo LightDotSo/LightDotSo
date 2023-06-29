@@ -23,3 +23,7 @@ component_management:
       name: Core
       paths:
         - crates/core/**
+    - component_id: ios
+      name: iOS
+      paths:
+        - ios/LightWalletCore/**
