@@ -22,6 +22,7 @@
     "@commitlint/config-conventional": "^17.6.6",
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/prettier": "workspace:*",
+    "@lightdotso/tsconfig": "workspace:*",
     "@release-it/keep-a-changelog": "^3.1.0",
     "@types/node": "^20.3.2",
     "@types/react": "^18.2.14",
@@ -50,7 +51,7 @@
     "eslint-plugin-tailwindcss": "3.10.1",
     "git-cz": "^4.9.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
+    "lint-staged": "^13.2.3",
     "npm-package-json-lint": "^6.4.0",
     "npm-package-json-lint-config-default": "^5.0.0",
     "postcss": "^8.4.24",
@@ -61,7 +62,7 @@
     "sort-package-json": "^1.57.0",
     "tailwindcss": "^3.3.2",
     "turbo": "^1.10.6",
-    "typescript": "^5.1.5",
+    "typescript": "^5.1.6",
     "vercel": "^28.20.0"
   },
   "packageManager": "pnpm@8.6.3"
