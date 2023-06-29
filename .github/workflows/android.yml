@@ -24,11 +24,11 @@ jobs:
         with:
           workspace: "@lightdotso/android"
   android-lint:
+    if: needs.android-turbo.outputs.trigger == 'true'
     needs:
       - android-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: needs.android-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -48,11 +48,11 @@ jobs:
           report-path: build/reports/*.xml
         continue-on-error: false
   android-test:
+    if: needs.android-turbo.outputs.trigger == 'true'
     needs:
       - android-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: needs.android-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
