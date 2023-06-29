@@ -3,11 +3,28 @@ on:
   push:
     branches:
       - main
+  pull_request:
+  merge_group:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  changesets-status:
+    if: github.action == 'pull_request' || github.action == 'merge_group'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Check for changeset
+        run: |
+          pnpm changeset status --since=main
   changesets-pr:
+    if: github.action == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -25,6 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
   changesets-release:
+    if: github.action == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -42,6 +60,7 @@ jobs:
   changesets-check:
     if: always()
     needs:
+      - changesets-status
       - changesets-pr
       - changesets-release
     runs-on: ubuntu-latest
@@ -50,4 +69,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
+          allowed-skips: changesets-status,changesets-pr,changesets-release
           jobs: ${{ toJSON(needs) }}
