@@ -1,11 +1,22 @@
 {
   "name": "lightdotso",
+  "version": "0.0.0",
   "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
   "license": "GPL-3.0",
+  "author": "Light, Inc.",
   "scripts": {
     "build": "turbo run build",
     "changeset": "changeset",
     "fix": "concurrently 'pnpm:*:fix'",
+    "forge:snapshot:cmd": "FOUNDRY_PROFILE=local forge snapshot",
     "lint": "concurrently 'pnpm:*:lint'",
     "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages",
     "pnpm:upgrade": "pnpm upgrade --recursive",
@@ -13,6 +24,9 @@
     "prettier:fix": "prettier --write .",
     "prettier:lint": "prettier --check .",
     "release": "changeset publish",
+    "solhint:cmd": "solhint 'contracts/**/*.sol'",
+    "solhint:fix": "solhint 'contracts/**/*.sol' --fix",
+    "solhint:lint": "solhint 'contracts/**/*.sol'",
     "sort-package-json:fix": "sort-package-json '{apps,configurations,contracts,crates,fastlane,ios,packages}/**/package.json'",
     "test": "echo \"Error: no test specified\" && exit 0"
   },

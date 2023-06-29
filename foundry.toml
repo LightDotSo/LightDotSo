@@ -1,3 +1,6 @@
 [profile.default]
 src = "contracts"
 solc = "0.8.13"
+
+[profile.local]
+no_match_test = "testForkRun"
