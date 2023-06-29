@@ -2,4 +2,4 @@
 
 pragma solidity ^0.8.13;
 
-contract Contract {}
+import "@safe-global/safe-contracts/contracts/Safe.sol";
