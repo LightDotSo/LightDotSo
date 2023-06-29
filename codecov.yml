@@ -1,4 +1,5 @@
 comment:
+  layout: "reach, files, flags, components"
   require_changes: true
 coverage:
   status:
@@ -12,3 +13,13 @@ coverage:
         target: auto
         threshold: null
         informational: true
+component_management:
+  individual_components:
+    - component_id: contracts
+      name: Contracts
+      paths:
+        - contracts/src/**
+    - component_id: core
+      name: Core
+      paths:
+        - crates/core/**
