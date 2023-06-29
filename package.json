@@ -20,6 +20,7 @@
     "lint": "concurrently 'pnpm:*:lint'",
     "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages",
     "pnpm:upgrade": "pnpm upgrade --recursive",
+    "prepare": "husky install",
     "prettier:cmd": "prettier",
     "prettier:fix": "prettier --write .",
     "prettier:lint": "prettier --check .",
