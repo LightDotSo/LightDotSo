@@ -117,6 +117,7 @@ jobs:
     needs:
       - contracts-build
       - contracts-lint
+      - contracts-storage
       - contracts-test
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -124,5 +125,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: contracts-build,contracts-lint,contracts-test
+          allowed-skips: contracts-build,contracts-lint,contracts-storage,contracts-test
           jobs: ${{ toJSON(needs) }}
