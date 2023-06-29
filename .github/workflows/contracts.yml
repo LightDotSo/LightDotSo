@@ -83,6 +83,10 @@ jobs:
       - name: Check Storage Changes
         run: |
           git diff --quiet
+      - if: failure()
+        name: Show Storage Changes
+        run: |
+          git diff
   contracts-test:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
