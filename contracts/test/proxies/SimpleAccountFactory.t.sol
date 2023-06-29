@@ -48,6 +48,13 @@ contract TestSimpleAccountFactory is Test {
         // Upgrade the account to the new version
         createdAccount.upgradeTo(address(accountV2));
         // Assert that the account is now the new version
-        assertEq(proxyUtils.getImplementation(address(createdAccount)), address(accountV2));
+        assertEq(proxyUtils.getProxyImplementation(address(createdAccount)), address(accountV2));
+    }
+
+    function test_noProxyAdmin() public {
+        // Create the account using the factory w/ nonce 0
+        SimpleAccount createdAccount = factory.createAccount(address(this), 0);
+        // Assert that the account has no proxy admin
+        assertEq(proxyUtils.getProxyAdmin(address(createdAccount)), address(0));
     }
 }
