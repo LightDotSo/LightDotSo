@@ -1,0 +1,33 @@
+============================
+👁️ STORAGE LAYOUT SNAPSHOT 👁️ 
+============================
+=======================
+ ➡ Contract
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ Safe
+| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                   |
+|----------------------------|-------------------------------------------------|------|--------|-------|--------------------------------------------|
+| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+=======================
+ ➡ SafeL2
+| Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
+|----------------------------|-------------------------------------------------|------|--------|-------|------------------------------------------------|
+| singleton                  | address                                         | 0    | 0      | 20    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| modules                    | mapping(address => address)                     | 1    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| owners                     | mapping(address => address)                     | 2    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| ownerCount                 | uint256                                         | 3    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| threshold                  | uint256                                         | 4    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| nonce                      | uint256                                         | 5    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
+| approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |

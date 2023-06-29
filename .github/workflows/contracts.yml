@@ -58,6 +58,29 @@ jobs:
       - name: Contracts Lint
         run: |
           forge fmt --check
+  contracts-storage:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
+    needs:
+      - contracts-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Install Deps
+        run: |
+          forge install
+      - name: Storage Check
+        working-directory: contracts
+        run: |
+          ./storage.sh
+      - name: Check Storage Changes
+        run: |
+          git diff --quiet
   contracts-test:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
@@ -74,12 +97,15 @@ jobs:
       - name: Install Deps
         run: |
           forge install
-      - name: Check gas snapshots
+      - name: Run Test
         run: |
-          forge coverage --report lcov
-      - name: Upload coverage
+          forge test
+      - name: Check Gas Snapshots
         run: |
           forge snapshot --check
+      - name: Run Coverage
+        run: |
+          forge coverage --report lcov
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:
