@@ -3,11 +3,6 @@
 ============================
 =======================
  ➡ EntryPoint
-| Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
-|---------------------|------------------------------------------------------|------|--------|-------|------------------------------------------------------------------|
-| deposits            | mapping(address => struct IStakeManager.DepositInfo) | 0    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
-| _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 =======================
  ➡ TokenPaymaster
 | Name         | Type                                            | Slot | Offset | Bytes | Contract                                                                    |
@@ -18,6 +13,10 @@
 | _totalSupply | uint256                                         | 3    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
 | _name        | string                                          | 4    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
 | _symbol      | string                                          | 5    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+=======================
+ ➡ ImmutableProxy
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
 =======================
  ➡ SafeProxy
 | Name      | Type    | Slot | Offset | Bytes | Contract                                                     |
