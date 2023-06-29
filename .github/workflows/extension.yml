@@ -24,11 +24,11 @@ jobs:
         with:
           workspace: "@lightdotso/extension"
   extension:
+    if: needs.extension-turbo.outputs.trigger == 'true'
     needs:
       - extension-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: needs.extension-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3

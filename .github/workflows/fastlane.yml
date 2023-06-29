@@ -26,11 +26,11 @@ jobs:
         with:
           workspace: "@lightdotso/fastlane"
   fastlane-android:
+    if: needs.fastlane-turbo.outputs.trigger == 'true'
     needs:
       - fastlane-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: needs.fastlane-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -68,11 +68,11 @@ jobs:
         env:
           GH_NUMBER: ${{ github.event.pull_request.number }}
   fastlane-ios:
+    if: needs.fastlane-turbo.outputs.trigger == 'true'
     needs:
       - fastlane-turbo
     runs-on: macos-latest
     timeout-minutes: 90
-    if: needs.fastlane-turbo.outputs.trigger == 'true'
     env:
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"

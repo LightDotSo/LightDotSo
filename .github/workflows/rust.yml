@@ -46,11 +46,11 @@ jobs:
       RUSTFLAGS: -D warnings
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
+    if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
-    if: needs.rust-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3

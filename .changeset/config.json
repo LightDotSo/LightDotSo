@@ -8,5 +8,5 @@
   ],
   "commit": false,
   "access": "public",
-  "baseBranch": "main"
+  "baseBranch": "origin/main"
 }

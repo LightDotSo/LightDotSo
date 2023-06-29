@@ -21,11 +21,11 @@ jobs:
         with:
           workspace: "@lightdotso/contracts"
   contracts-build:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
       - contracts-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: needs.contracts-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -40,11 +40,11 @@ jobs:
         run: |
           forge build
   contracts-lint:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
       - contracts-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: needs.contracts-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -59,11 +59,11 @@ jobs:
         run: |
           forge fmt --check
   contracts-test:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
       - contracts-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
-    if: needs.contracts-turbo.outputs.trigger == 'true'
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
