@@ -1,3 +1,5 @@
 forge-std/=lib/forge-std/src/
+@eth-infinitism/account-abstraction/=lib/account-abstraction/
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
 @safe-global/safe-contracts/=lib/safe-contracts/
 @/=contracts/src/
