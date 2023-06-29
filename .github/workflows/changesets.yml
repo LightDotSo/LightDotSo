@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   changesets-status:
-    if: github.action == 'pull_request' || github.action == 'merge_group'
+    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -24,7 +24,7 @@ jobs:
         run: |
           pnpm changeset status --since=main
   changesets-pr:
-    if: github.action == 'push'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -42,7 +42,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
   changesets-release:
-    if: github.action == 'push'
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
