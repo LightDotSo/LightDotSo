@@ -390,13 +390,19 @@ platform :ios do
       },
     )
 
-    run_tests(workspace: "./ios/LightWallet.xcworkspace",
-              devices: ["iPhone 8"],
-              scheme: "LightWalletTests")
+    run_tests(
+      workspace: "./ios/LightWallet.xcworkspace",
+      devices: ["iPhone 8"],
+      scheme: "LightWalletTests",
+      code_coverage: true
+    )
 
-    run_tests(workspace: "./ios/LightWallet.xcworkspace",
-              devices: ["iPhone 8"],
-              scheme: "LightWalletUITests")
+    run_tests(
+      workspace: "./ios/LightWallet.xcworkspace",
+      devices: ["iPhone 8"],
+      scheme: "LightWalletUITests",
+      code_coverage: true
+    )
   end
 
   lane :update_devices do
