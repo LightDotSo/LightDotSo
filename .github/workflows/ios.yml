@@ -29,19 +29,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
-      - name: Cache Homebrew packages
-        uses: actions/cache@v2
-        with:
-          path: /home/linuxbrew/.linuxbrew/Homebrew/Library/Homebrew/vendor
-          key: ${{ runner.os }}-brew-${{ hashFiles('**/Brewfile.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-brew-
-      - name: Install Homebrew dependencies
-        run: |
-          brew update
-          brew bundle --file=./Brewfile
+      - name: Brew Install
+        uses: wallet-rs/wallet-rs/.github/actions/brew-install@main
       - name: Run swiftlint
         run: |
           swiftlint
@@ -60,6 +49,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+      - name: Brew Install
+        uses: wallet-rs/wallet-rs/.github/actions/brew-install@main
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
