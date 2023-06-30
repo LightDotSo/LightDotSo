@@ -99,7 +99,6 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: cobertura.xml
           fail_ci_if_error: false
       - if: github.event_name == 'pull_request'
         uses: mobile-dev-inc/action-maestro-cloud@main
