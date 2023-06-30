@@ -19,3 +19,6 @@
 [submodule "lib/solady"]
 	path = lib/solady
 	url = https://github.com/Vectorized/solady
+[submodule "lib/etherspot-prime-contracts"]
+	path = lib/etherspot-prime-contracts
+	url = https://github.com/etherspot/etherspot-prime-contracts
