@@ -8,6 +8,7 @@
         "**",
         "../.cargo/**",
         "../crates/**",
+        "../.clippy.toml",
         "../Cargo.lock",
         "../Cargo.toml",
         "../rust-toolchain.toml",
