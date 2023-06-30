@@ -1,4 +1,6 @@
 forge-std/=lib/forge-std/src/
+solady/=lib/solady/src/
+solmate/=lib/solmate/src/
 @eth-infinitism/account-abstraction/=lib/account-abstraction/
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
 @openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
