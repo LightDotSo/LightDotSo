@@ -1,9 +1,8 @@
 coverage_service: cobertura_xml
 xcodeproj: ios/LightWallet.xcodeproj
-workspace: ios/LightWallet.xcworkspace
 scheme: LightWalletTests
 source_directory: ios/LightWalletCore/Sources
-output_directory: ios/coverage
+output_directory: ios/reports
 ignore:
   - ios/LightWalletTests/*
   - ios/LightWalletUITests/*

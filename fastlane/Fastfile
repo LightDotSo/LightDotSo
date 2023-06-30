@@ -390,23 +390,26 @@ platform :ios do
     #   },
     # )
 
-    # run_tests(
-    #   workspace: "./ios/LightWallet.xcworkspace",
-    #   devices: ["iPhone 8"],
-    #   scheme: "LightWalletTests",
-    #   code_coverage: true
-    # )
+    scan(
+      workspace: "./ios/LightWallet.xcworkspace",
+      scheme: "LightWalletTests",
+      code_coverage: true
+    )
 
     slather(
       workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWalletTests",
     )
 
-    run_tests(
+    scan(
       workspace: "./ios/LightWallet.xcworkspace",
-      devices: ["iPhone 8"],
       scheme: "LightWalletUITests",
       code_coverage: true
+    )
+
+    slather(
+      workspace: "./ios/LightWallet.xcworkspace",
+      scheme: "LightWalletUITests",
     )
   end
 
