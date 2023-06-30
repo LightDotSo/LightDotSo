@@ -2,15 +2,21 @@
 
 pragma solidity ^0.8.13;
 
+import "@/contracts/core/EntryPoint.sol";
+import "@/contracts/LightWallet.sol";
 import "forge-std/Test.sol";
 
-import "@/contracts/Contract.sol";
-
 contract TestContract is Test {
-    Contract c;
+    // EntryPoint from eth-inifinitism
+    EntryPoint entryPoint;
+    // LightWallet core contract
+    LightWallet wallet;
 
     function setUp() public {
-        c = new Contract();
+        // Deploy the EntryPoint
+        entryPoint = new EntryPoint();
+        // Deploy the LightWallet
+        wallet = new LightWallet(entryPoint);
     }
 
     function testBar() public {
