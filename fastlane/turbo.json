@@ -3,7 +3,13 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "dependsOn": ["^build"]
+      "cache": false,
+      "dependsOn": ["^build"],
+      "inputs": [
+        "**",
+        "../Gemfile",
+        "../Gemfile.lock"
+      ]
     }
   }
 }

@@ -346,55 +346,60 @@ platform :ios do
   end
 
   lane :test do
-    if is_ci
-      keychain
-      api_key = app_store_api_key
+    # if is_ci
+    #   keychain
+    #   api_key = app_store_api_key
 
-      match(
-        keychain_name: KEYCHAIN_NAME,
-        keychain_password: KEYCHAIN_PASSWORD,
-        git_branch: "main",
-        type: "development",
-        app_identifier: "io.magic.light.dev",
-        git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
-        readonly: false,
-        api_key: api_key
-      )
+    #   match(
+    #     keychain_name: KEYCHAIN_NAME,
+    #     keychain_password: KEYCHAIN_PASSWORD,
+    #     git_branch: "main",
+    #     type: "development",
+    #     app_identifier: "io.magic.light.dev",
+    #     git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
+    #     readonly: false,
+    #     api_key: api_key
+    #   )
 
-      match(
-        keychain_name: KEYCHAIN_NAME,
-        keychain_password: KEYCHAIN_PASSWORD,
-        git_branch: "main",
-        type: "development",
-        app_identifier: "io.magic.light.dev.Light-Safari-Extension",
-        git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
-        readonly: false,
-        api_key: api_key
-      )
-    end
+    #   match(
+    #     keychain_name: KEYCHAIN_NAME,
+    #     keychain_password: KEYCHAIN_PASSWORD,
+    #     git_branch: "main",
+    #     type: "development",
+    #     app_identifier: "io.magic.light.dev.Light-Safari-Extension",
+    #     git_basic_authorization: Base64.strict_encode64(GIT_AUTHORIZATION),
+    #     readonly: false,
+    #     api_key: api_key
+    #   )
+    # end
 
-    gym(
+    # gym(
+    #   workspace: "./ios/LightWallet.xcworkspace",
+    #   scheme: "LightWalletDev",
+    #   skip_archive: false,
+    #   skip_package_ipa: true,
+    #   destination: "platform=iOS Simulator,name=iPhone 8",
+    #   configuration: "Debug",
+    #   build_path: ".",
+    #   archive_path: "LightWalletDev.xcarchive",
+    #   export_method: "ad-hoc",
+    #   export_options: {
+    #     provisioningProfiles: {
+    #       DEVELOPER_APP_ID => "match Development io.magic.light.dev"
+    #     }
+    #   },
+    # )
+
+    # run_tests(
+    #   workspace: "./ios/LightWallet.xcworkspace",
+    #   devices: ["iPhone 8"],
+    #   scheme: "LightWalletTests",
+    #   code_coverage: true
+    # )
+
+    slather(
       workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWalletDev",
-      skip_archive: false,
-      skip_package_ipa: true,
-      destination: "platform=iOS Simulator,name=iPhone 8",
-      configuration: "Debug",
-      build_path: ".",
-      archive_path: "LightWalletDev.xcarchive",
-      export_method: "ad-hoc",
-      export_options: {
-        provisioningProfiles: {
-          DEVELOPER_APP_ID => "match Development io.magic.light.dev"
-        }
-      },
-    )
-
-    run_tests(
-      workspace: "./ios/LightWallet.xcworkspace",
-      devices: ["iPhone 8"],
       scheme: "LightWalletTests",
-      code_coverage: true
     )
 
     run_tests(
