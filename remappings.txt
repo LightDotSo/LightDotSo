@@ -1,6 +1,8 @@
 forge-std/=lib/forge-std/src/
+hardhat/=lib/hardhat/packages/hardhat-core/
 solady/=lib/solady/src/
 solmate/=lib/solmate/src/
+@etherspot/prime-contracts/=lib/etherspot-prime-contracts/src/
 @eth-infinitism/account-abstraction/=lib/account-abstraction/
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
 @openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
