@@ -1,0 +1,43 @@
+============================
+👁️ STORAGE LAYOUT SNAPSHOT 👁️ 
+============================
+=======================
+ ➡ EntryPoint
+=======================
+ ➡ TokenPaymaster
+| Name         | Type                                            | Slot | Offset | Bytes | Contract                                                                    |
+|--------------|-------------------------------------------------|------|--------|-------|-----------------------------------------------------------------------------|
+| _owner       | address                                         | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _balances    | mapping(address => uint256)                     | 1    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _allowances  | mapping(address => mapping(address => uint256)) | 2    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _totalSupply | uint256                                         | 3    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _name        | string                                          | 4    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| _symbol      | string                                          | 5    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+=======================
+ ➡ ImmutableProxy
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ SafeProxy
+| Name      | Type    | Slot | Offset | Bytes | Contract                                                     |
+|-----------|---------|------|--------|-------|--------------------------------------------------------------|
+| singleton | address | 0    | 0      | 20    | lib/safe-contracts/contracts/proxies/SafeProxy.sol:SafeProxy |
+=======================
+ ➡ SafeProxyFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ SimpleAccount
+| Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
+|---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
+| _initialized  | uint8   | 0    | 0      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| _initializing | bool    | 0    | 1      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+=======================
+ ➡ SimpleAccountFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ UniversalSigValidator
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|

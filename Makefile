@@ -36,3 +36,6 @@ cp-xcframework-source:
 swift-lint:
 	swift build -c release --package-path ios/LightWalletBuildTools --product swiftlint
 	./ios/LightWalletBuildTools/.build/release/swiftlint ios
+
+storage-layout:
+	./contracts/storage.sh
