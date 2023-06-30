@@ -99,7 +99,7 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
         }
     }
 
-    /// @dev Check if a signature is valid based on the owner's address
+    /// @notice Check if a signature is valid based on the owner's address
     /// Comaptible with ERC1271
     function isValidSignature(bytes32 hash, bytes calldata signature) external view returns (bytes4 magicValue) {
         address recoveredOwner = ECDSA.recover(hash, signature);
@@ -109,20 +109,20 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
         return bytes4(0xffffffff);
     }
 
-    /// @dev The _entryPoint member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
+    /// @notice The _entryPoint member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
     /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
     /// the implementation by calling `upgradeTo()`
     function initialize(address anOwner) public virtual initializer {
         _initialize(anOwner);
     }
 
-    /// @dev Sets the owner of this account, and emits an event
+    /// @notice Sets the owner of this account, and emits an event
     function _initialize(address anOwner) internal virtual {
         owner = anOwner;
         emit LightWalletInitialized(_entryPoint, owner);
     }
 
-    /// @dev Require the function call went through EntryPoint or owner
+    /// @notice Require the function call went through EntryPoint or owner
     function _requireFromEntryPointOrOwner() internal view {
         require(msg.sender == address(entryPoint()) || msg.sender == owner, "account: not Owner or EntryPoint");
     }
