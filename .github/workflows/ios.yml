@@ -97,10 +97,18 @@ jobs:
           DEVELOPER_APP_IDENTIFIER: ${{ secrets.DEVELOPER_APP_IDENTIFIER }}
           PROVISIONING_PROFILE_SPECIFIER: ${{ secrets.PROVISIONING_PROFILE_SPECIFIER }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      - name: Upload Test Results
+        uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: |
+            fastlane/test_output/LightWalletTests.xcresult
+            fastlane/test_output/LightWalletUITests.xcresult
+          show-passed-tests: false
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          files: cobertura.xml
           fail_ci_if_error: false
       - if: github.event_name == 'pull_request'
         uses: mobile-dev-inc/action-maestro-cloud@main

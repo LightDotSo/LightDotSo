@@ -393,8 +393,13 @@ platform :ios do
     scan(
       workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWalletTests",
-      code_coverage: true
+      destination: "platform=iOS Simulator,name=iPhone 8",
+      result_bundle: true,
+      code_coverage: true,
+      output_types: "junit"
     )
+
+    sh("xcresultparser -o cobertura fastlane/test_output/LightWalletTests.xcresult > cobertura.xml")
 
     slather(
       workspace: "./ios/LightWallet.xcworkspace",
@@ -404,13 +409,13 @@ platform :ios do
     scan(
       workspace: "./ios/LightWallet.xcworkspace",
       scheme: "LightWalletUITests",
-      code_coverage: true
+      destination: "platform=iOS Simulator,name=iPhone 8",
+      result_bundle: true,
+      code_coverage: true,
+      output_types: "junit"
     )
 
-    slather(
-      workspace: "./ios/LightWallet.xcworkspace",
-      scheme: "LightWalletUITests",
-    )
+    sh("xcresultparser -o cobertura fastlane/test_output/LightWalletUITests.xcresult > cobertura.xml")
   end
 
   lane :update_devices do
