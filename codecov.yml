@@ -27,3 +27,5 @@ component_management:
       name: iOS
       paths:
         - ios/LightWalletCore/**
+ignore:
+  - "tools/**"
