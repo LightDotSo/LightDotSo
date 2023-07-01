@@ -35,7 +35,7 @@ contract LightWalletFactoryTest is BaseFactoryTest {
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));
         // Get the immutable implementation in the factory
-        LightWallet implementation = factory.ACCOUNT_IMPLEMENTATION();
+        LightWallet implementation = factory.accountImplementation();
         // Assert that the implementation of the created account is the LightWallet
         assertEq(proxyUtils.getProxyImplementation(address(account)), address(implementation));
     }

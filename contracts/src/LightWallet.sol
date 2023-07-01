@@ -36,7 +36,7 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
     // -------------------------------------------------------------------------
 
     /// @notice The entry point contract for this account
-    IEntryPoint private immutable _ENTRY_POINT;
+    IEntryPoint private immutable _entryPoint;
 
     // -------------------------------------------------------------------------
     // Storage
@@ -67,7 +67,7 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
 
     /// @inheritdoc BaseAccount
     function entryPoint() public view virtual override returns (IEntryPoint) {
-        return _ENTRY_POINT;
+        return _entryPoint;
     }
 
     // solhint-disable-next-line no-empty-blocks
@@ -77,7 +77,7 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
     /// @dev Should be set to the address of the EntryPoint contract
     /// The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
     constructor(IEntryPoint anEntryPoint) {
-        _ENTRY_POINT = anEntryPoint;
+        _entryPoint = anEntryPoint;
         _disableInitializers();
     }
 
@@ -112,7 +112,7 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
         return bytes4(0xffffffff);
     }
 
-    /// @notice The _ENTRY_POINT member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
+    /// @notice The _entryPoint member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
     /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
     /// the implementation by calling `upgradeTo()`
     function initialize(address anOwner) public virtual initializer {
@@ -122,7 +122,7 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
     /// @notice Sets the owner of this account, and emits an event
     function _initialize(address anOwner) internal virtual {
         owner = anOwner;
-        emit LightWalletInitialized(_ENTRY_POINT, owner);
+        emit LightWalletInitialized(_entryPoint, owner);
     }
 
     /// @notice Require the function call went through EntryPoint or owner
