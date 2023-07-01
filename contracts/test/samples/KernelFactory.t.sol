@@ -36,20 +36,28 @@ contract TestKernelFactory is BaseFactoryTest {
         account = ecdsaFactory.createAccount(address(0), 0);
     }
 
-    function test_simple_upgradeToUUPS() public {
+    function test_kernel_upgradeToUUPS() public {
         // Deploy new version of Kernel
         Kernel accountV2 = new Kernel(entryPoint);
         // Check that the account is the new implementation
         _upgradeToUUPS(address(account), address(accountV2));
     }
 
-    function test_simple_upgradeToImmutable() public {
+    function test_kernel_upgradeToImmutable() public {
+        // Start the prank
+        vm.startPrank(address(0));
         // Check that upgrade to immutable works
         _upgradeToImmutable(address(account));
+        // Stop the prank
+        vm.stopPrank();
     }
 
-    function test_simple_noProxyAdmin() public {
+    function test_kernel_noProxyAdmin() public {
+        // Start the prank
+        vm.startPrank(address(0));
         // Check that no proxy admin exists
         _noProxyAdmin(address(account));
+        // Stop the prank
+        vm.stopPrank();
     }
 }
