@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.13;
 
-import "@/contracts/core/EntryPoint.sol";
-import "@/contracts/samples/SimpleAccount.sol";
-import "@/contracts/samples/SimpleAccountFactory.sol";
-import "@/test/base/FactoryTest.sol";
-import "@/test/utils/ProxyUtils.sol";
-import "forge-std/Test.sol";
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {SimpleAccount} from "@/contracts/samples/SimpleAccount.sol";
+import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
+import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
+import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract TestSimpleAccountFactory is BaseFactoryTest {
     // EntryPoint from eth-inifinitism

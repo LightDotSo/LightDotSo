@@ -2,11 +2,11 @@
 
 pragma solidity ^0.8.13;
 
-import "@/contracts/core/EntryPoint.sol";
-import "@/contracts/LightWallet.sol";
-import "@/contracts/LightWalletFactory.sol";
-import "@/contracts/utils/UniversalSigValidator.sol";
-import "forge-std/Test.sol";
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightWallet} from "@/contracts/LightWallet.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
+import {Test} from "forge-std/Test.sol";
 
 /// @notice Unit tests for `LightWallet`, organized by functions.
 contract LightWalletTest is Test {

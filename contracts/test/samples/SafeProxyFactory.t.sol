@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.13;
 
-import "@safe-global/safe-contracts/contracts/proxies/SafeProxy.sol";
-import "@safe-global/safe-contracts/contracts/proxies/SafeProxyFactory.sol";
-import "forge-std/Test.sol";
+import {SafeProxy} from "@safe-global/safe-contracts/contracts/proxies/SafeProxy.sol";
+import {SafeProxyFactory} from "@safe-global/safe-contracts/contracts/proxies/SafeProxyFactory.sol";
+import {Test} from "forge-std/Test.sol";
 
 contract TestSafeProxyFactory is Test {
     SafeProxyFactory factory;
