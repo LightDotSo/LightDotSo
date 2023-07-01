@@ -2,6 +2,17 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️ 
 ============================
 =======================
+ ➡ LightWallet
+| Name          | Type    | Slot | Offset | Bytes | Contract                                  |
+|---------------|---------|------|--------|-------|-------------------------------------------|
+| _initialized  | uint8   | 0    | 0      | 1     | contracts/src/LightWallet.sol:LightWallet |
+| _initializing | bool    | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
+| owner         | address | 0    | 2      | 20    | contracts/src/LightWallet.sol:LightWallet |
+=======================
+ ➡ LightWalletFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ EntryPoint
 | Name                | Type                                                 | Slot | Offset | Bytes | Contract                                                         |
 |---------------------|------------------------------------------------------|------|--------|-------|------------------------------------------------------------------|
@@ -19,18 +30,11 @@
 | _name        | string                                          | 4    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
 | _symbol      | string                                          | 5    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
 =======================
- ➡ UniversalSigValidator
+ ➡ IERC1271
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ LightWallet
-| Name          | Type    | Slot | Offset | Bytes | Contract                                  |
-|---------------|---------|------|--------|-------|-------------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | contracts/src/LightWallet.sol:LightWallet |
-| _initializing | bool    | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
-| owner         | address | 0    | 2      | 20    | contracts/src/LightWallet.sol:LightWallet |
-=======================
- ➡ SimpleAccountFactory
+ ➡ ImmutableProxy
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
@@ -47,13 +51,6 @@
 | signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 =======================
- ➡ SimpleAccount
-| Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
-|---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-| _initializing | bool    | 0    | 1      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-| owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
-=======================
  ➡ SafeL2
 | Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
 |----------------------------|-------------------------------------------------|------|--------|-------|------------------------------------------------|
@@ -67,14 +64,17 @@
 | signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 =======================
- ➡ ImmutableProxy
+ ➡ SimpleAccount
+| Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
+|---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
+| _initialized  | uint8   | 0    | 0      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| _initializing | bool    | 0    | 1      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+=======================
+ ➡ SimpleAccountFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ LightWalletFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
-=======================
- ➡ IERC1271
+ ➡ UniversalSigValidator
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
