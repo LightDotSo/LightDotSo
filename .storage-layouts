@@ -30,6 +30,10 @@
 | _initializing | bool    | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
 | owner         | address | 0    | 2      | 20    | contracts/src/LightWallet.sol:LightWallet |
 =======================
+ ➡ SimpleAccountFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ Safe
 | Name                       | Type                                            | Slot | Offset | Bytes | Contract                                   |
 |----------------------------|-------------------------------------------------|------|--------|-------|--------------------------------------------|
@@ -42,6 +46,13 @@
 | _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 | signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
+=======================
+ ➡ SimpleAccount
+| Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
+|---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
+| _initialized  | uint8   | 0    | 0      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| _initializing | bool    | 0    | 1      | 1     | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
+| owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
 =======================
  ➡ SafeL2
 | Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
@@ -57,6 +68,10 @@
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 =======================
  ➡ ImmutableProxy
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ LightWalletFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
