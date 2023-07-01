@@ -6,7 +6,7 @@ import {SafeProxy} from "@safe-global/safe-contracts/contracts/proxies/SafeProxy
 import {SafeProxyFactory} from "@safe-global/safe-contracts/contracts/proxies/SafeProxyFactory.sol";
 import {Test} from "forge-std/Test.sol";
 
-contract TestSafeProxyFactory is Test {
+contract SafeProxyFactoryTest is Test {
     SafeProxyFactory factory;
 
     function setUp() public {

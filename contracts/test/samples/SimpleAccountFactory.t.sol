@@ -9,7 +9,7 @@ import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-contract TestSimpleAccountFactory is BaseFactoryTest {
+contract SimpleAccountFactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
     EntryPoint entryPoint;
     // SimpleAccount from eth-inifinitism

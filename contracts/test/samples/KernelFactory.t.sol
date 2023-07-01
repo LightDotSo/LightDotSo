@@ -10,10 +10,9 @@ import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-contract TestKernelFactory is BaseFactoryTest {
+contract KernelFactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
     EntryPoint entryPoint;
-
     // Kernel from kernel
     EIP1967Proxy account;
     // KernelFactory from kernel

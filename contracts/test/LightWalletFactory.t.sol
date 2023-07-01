@@ -9,7 +9,8 @@ import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-contract TestLightWalletFactory is BaseFactoryTest {
+/// @notice Unit tests for `LightWalletFactory`, organized by functions.
+contract LightWalletFactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
     EntryPoint entryPoint;
     // LightWallet from eth-inifinitism
