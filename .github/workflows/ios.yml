@@ -43,6 +43,8 @@ jobs:
       - ios-turbo
     runs-on: macos-latest
     timeout-minutes: 90
+    permissions:
+      checks: write
     env:
       RUSTFLAGS: -D warnings
       CARGO_TERM_COLOR: always
