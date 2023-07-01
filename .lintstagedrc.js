@@ -4,7 +4,6 @@ module.exports = {
     "yarn run forge:fmt:cmd",
     "yarn run forge:snapshot:cmd",
     "yarn run solhint:cmd --fix",
-    "git add",
   ],
   "package.json": [
     "pnpm run npm-package-json:lint",
