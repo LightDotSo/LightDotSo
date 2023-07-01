@@ -4,6 +4,9 @@ pragma solidity ^0.8.13;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {Kernel} from "@/contracts/samples/Kernel.sol";
+import {ECDSAValidator} from "@/contracts/samples/KernelECDSAValidator.sol";
+import {ECDSAValidator} from "@/contracts/samples/KernelECDSAValidator.sol";
+import {EIP1967Proxy} from "@/contracts/samples/KernelProxy.sol";
 import {KernelFactory} from "@/contracts/samples/KernelFactory.sol";
 import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
@@ -12,10 +15,13 @@ import {Test} from "forge-std/Test.sol";
 contract TestKernelFactory is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
     EntryPoint entryPoint;
-    // Kernel from eth-inifinitism
-    Kernel account;
-    // KernelFactory from eth-inifinitism
+
+    // Kernel from kernel
+    EIP1967Proxy account;
+    // KernelFactory from kernel
     KernelFactory factory;
+    // Validator from kernel
+    ECDSAValidator validator;
 
     function setUp() public {
         // Deploy the EntryPoint
@@ -24,8 +30,12 @@ contract TestKernelFactory is BaseFactoryTest {
         factory = new KernelFactory(entryPoint);
         // Deploy the ProxyUtils utility contract
         proxyUtils = new ProxyUtils();
-        // Create the account using the factory w/ nonce 0
-        account = factory.createAccount(address(this), 0);
+        // Deploy the default validator
+        validator = new ECDSAValidator();
+        // Deploy the default ECDSAFactory
+        ecdsaFactory = new ECDSAKernelFactory(factory, validator, entryPoint);
+
+        account = ecdsaFactory.createAccount(owner, 0);
     }
 
     function test_simple_upgradeToUUPS() public {
