@@ -154,8 +154,8 @@ jobs:
           urlTemplate: https://github.com/ScopeLift/scopelint/releases/download/{{version}}/scopelint-x86_64-linux.tar.xz
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Scopelint Check
-        working-directory: contracts
         run: |
+          scopelint --version
           scopelint check
   contracts-slither:
     if: needs.contracts-turbo.outputs.trigger == 'true'
