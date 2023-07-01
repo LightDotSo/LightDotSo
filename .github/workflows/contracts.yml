@@ -144,7 +144,7 @@ jobs:
         with:
           version: nightly
       - name: Install Scopelint
-        uses: engineerd/configurator@v0.0.8
+        uses: engineerd/configurator@v0.0.10
         with:
           name: scopelint
           repo: ScopeLift/scopelint
@@ -157,6 +157,31 @@ jobs:
         working-directory: contracts
         run: |
           scopelint check
+  contracts-slither:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
+    needs:
+      - contracts-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.0
+        id: slither
+        with:
+          fail-on: none
+          sarif: results.sarif
+          slither-args: --filter-paths "./lib|./test" --exclude naming-convention
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.slither.outputs.sarif }}
   contracts-check:
     if: always()
     needs:
@@ -165,6 +190,7 @@ jobs:
       - contracts-storage
       - contracts-test
       - contracts-scopelint
+      - contracts-slither
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
