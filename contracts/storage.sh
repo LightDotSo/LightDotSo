@@ -14,7 +14,7 @@ echo "👁️ STORAGE LAYOUT SNAPSHOT 👁️ ">> "$OUTPUT_FILE"
 echo "============================" >> "$OUTPUT_FILE"
 
 # Loop through each contract in the directory
-for CONTRACT in contracts/src/**/*.sol; do
+for CONTRACT in $(find contracts/src -name "*.sol" | sort); do
     # Get the contract name by removing the directory path and file extension
     CONTRACT_NAME=$(basename "$CONTRACT" .sol)
     echo "Contract name: $CONTRACT_NAME"

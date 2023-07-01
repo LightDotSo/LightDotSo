@@ -4,8 +4,8 @@ pragma solidity ^0.8.13;
 
 import "@/contracts/core/EntryPoint.sol";
 import "@/contracts/proxies/ImmutableProxy.sol";
-import "@/contracts/proxies/SimpleAccount.sol";
-import "@/contracts/proxies/SimpleAccountFactory.sol";
+import "@/contracts/samples/SimpleAccount.sol";
+import "@/contracts/samples/SimpleAccountFactory.sol";
 import "@/test/utils/ProxyUtils.sol";
 import "forge-std/Test.sol";
 
