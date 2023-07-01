@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.18;
 
-import "@safe-global/safe-contracts/contracts/proxies/SafeProxy.sol";
-import "@safe-global/safe-contracts/contracts/proxies/SafeProxyFactory.sol";
-import "forge-std/Test.sol";
+import {SafeProxy} from "@safe-global/safe-contracts/contracts/proxies/SafeProxy.sol";
+import {SafeProxyFactory} from "@safe-global/safe-contracts/contracts/proxies/SafeProxyFactory.sol";
+import {Test} from "forge-std/Test.sol";
 
-contract TestSafeProxyFactory is Test {
+contract SafeProxyFactoryTest is Test {
     SafeProxyFactory factory;
 
     function setUp() public {

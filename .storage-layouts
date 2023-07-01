@@ -21,14 +21,16 @@
 | _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 =======================
  ➡ TokenPaymaster
-| Name         | Type                                            | Slot | Offset | Bytes | Contract                                                                    |
-|--------------|-------------------------------------------------|------|--------|-------|-----------------------------------------------------------------------------|
-| _owner       | address                                         | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| _balances    | mapping(address => uint256)                     | 1    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| _allowances  | mapping(address => mapping(address => uint256)) | 2    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| _totalSupply | uint256                                         | 3    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| _name        | string                                          | 4    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| _symbol      | string                                          | 5    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| Name                     | Type                                       | Slot | Offset | Bytes | Contract                                                                    |
+|--------------------------|--------------------------------------------|------|--------|-------|-----------------------------------------------------------------------------|
+| _owner                   | address                                    | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| uniswapHelperConfig      | struct UniswapHelper.UniswapHelperConfig   | 1    | 0      | 64    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| cachedPrice              | uint256                                    | 3    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| cachedPriceTimestamp     | uint256                                    | 4    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| oracleHelperConfig       | struct OracleHelper.OracleHelperConfig     | 5    | 0      | 128   | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| tokenOracleDecimalPower  | uint256                                    | 9    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| nativeOracleDecimalPower | uint256                                    | 10   | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
+| tokenPaymasterConfig     | struct TokenPaymaster.TokenPaymasterConfig | 11   | 0      | 128   | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
 =======================
  ➡ IERC1271
 | Name | Type | Slot | Offset | Bytes | Contract |
@@ -37,6 +39,22 @@
  ➡ ImmutableProxy
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
+=======================
+ ➡ Kernel
+| Name             | Type   | Slot | Offset | Bytes | Contract                         |
+|------------------|--------|------|--------|-------|----------------------------------|
+| _nameFallback    | string | 0    | 0      | 32    | lib/kernel/src/Kernel.sol:Kernel |
+| _versionFallback | string | 1    | 0      | 32    | lib/kernel/src/Kernel.sol:Kernel |
+=======================
+ ➡ KernelECDSAFactory
+=======================
+ ➡ KernelECDSAValidator
+=======================
+ ➡ KernelFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ KernelProxy
 =======================
  ➡ Safe
 | Name                       | Type                                            | Slot | Offset | Bytes | Contract                                   |

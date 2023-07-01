@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.12;
 
-import "@openzeppelin/contracts/utils/Create2.sol";
-import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
-
-import "./LightWallet.sol";
+import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
+import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
+import {LightWallet} from "./LightWallet.sol";
 
 /// @title LightWalletFactory
 /// @author shunkakinoki
-/// @notice A factory contract for LightWallet
+/// @notice A factory contract for `LightWallet`
 /// @dev A UserOperations "initCode" holds the address of the factory, and a method call (to createAccount, in this sample factory).
 /// The factory's createAccount returns the target account address even if it is already installed.
 /// This way, the entryPoint.getSenderAddress() can be called either before or after the account is created.

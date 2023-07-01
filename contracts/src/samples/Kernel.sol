@@ -2,4 +2,4 @@
 
 pragma solidity ^0.8.18;
 
-import "@safe-global/safe-contracts/contracts/Safe.sol";
+import "@zerodevapp/contracts/Kernel.sol";
