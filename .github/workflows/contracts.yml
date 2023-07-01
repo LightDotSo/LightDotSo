@@ -79,7 +79,9 @@ jobs:
           forge build
       - name: Storage Check
         run: |
-          make storage-layout
+          for ((i=1; i<=3; i++));
+            do make storage-layout;
+          done
       - name: Check Storage Changes
         run: |
           git diff --quiet
