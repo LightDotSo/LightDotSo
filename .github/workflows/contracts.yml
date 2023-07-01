@@ -128,6 +128,31 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov.info
           fail_ci_if_error: false
+  contracts-slither:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
+    needs:
+      - contracts-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.0
+        id: slither
+        with:
+          fail-on: none
+          sarif: results.sarif
+          target: contracts/src/
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ steps.slither.outputs.sarif }}
   contracts-check:
     if: always()
     needs:
@@ -135,6 +160,7 @@ jobs:
       - contracts-lint
       - contracts-storage
       - contracts-test
+      - contracts-slither
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:

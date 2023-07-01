@@ -5,6 +5,7 @@ members = [
   "apps/desktop/src-tauri",
   "crates/core",
   "crates/keychain",
+  "tools/embedded-scopelint",
   "tools/embedded-uniffi-bindgen"
 ]
 
