@@ -2,7 +2,7 @@
 src = "contracts/src"
 test= "contracts/test"
 libs = ["lib"]
-solc = "0.8.13"
+solc = "0.8.18"
 auto_detect_remappings = false
 
 [profile.local]

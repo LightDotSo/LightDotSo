@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {Kernel} from "@/contracts/samples/Kernel.sol";
-import {ECDSAValidator} from "@/contracts/samples/KernelECDSAValidator.sol";
-import {ECDSAValidator} from "@/contracts/samples/KernelECDSAValidator.sol";
+import "@/contracts/samples/KernelECDSAFactory.sol";
 import {EIP1967Proxy} from "@/contracts/samples/KernelProxy.sol";
 import {KernelFactory} from "@/contracts/samples/KernelFactory.sol";
 import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
@@ -22,20 +20,20 @@ contract TestKernelFactory is BaseFactoryTest {
     KernelFactory factory;
     // Validator from kernel
     ECDSAValidator validator;
+    // ECDSAFactory from kernel
+    ECDSAKernelFactory ecdsaFactory;
 
     function setUp() public {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
         // Deploy the KernelFactory w/ EntryPoint
         factory = new KernelFactory(entryPoint);
-        // Deploy the ProxyUtils utility contract
-        proxyUtils = new ProxyUtils();
         // Deploy the default validator
         validator = new ECDSAValidator();
         // Deploy the default ECDSAFactory
         ecdsaFactory = new ECDSAKernelFactory(factory, validator, entryPoint);
 
-        account = ecdsaFactory.createAccount(owner, 0);
+        account = ecdsaFactory.createAccount(address(0), 0);
     }
 
     function test_simple_upgradeToUUPS() public {

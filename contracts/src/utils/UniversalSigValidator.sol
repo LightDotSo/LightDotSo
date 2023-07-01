@@ -5,7 +5,7 @@
 // Link: https://eips.ethereum.org/EIPS/eip-6492
 // License: CC-BY-SA-4.0
 
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.18;
 
 // As per ERC-1271
 interface IERC1271Wallet {
