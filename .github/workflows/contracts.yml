@@ -177,7 +177,8 @@ jobs:
         with:
           fail-on: none
           sarif: results.sarif
-          slither-args: --filter-paths "./lib|./test" --exclude naming-convention
+          target: contracts/src/
+          slither-args: --filter-paths "./lib|./contracts/test" --exclude naming-convention
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with:
