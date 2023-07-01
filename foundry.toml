@@ -1,7 +1,9 @@
 [profile.default]
 src = "contracts/src"
 test= "contracts/test"
+libs = ["lib"]
 solc = "0.8.13"
+auto_detect_remappings = false
 
 [profile.local]
 no_match_test = "testForkRun"

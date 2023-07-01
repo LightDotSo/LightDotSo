@@ -1,10 +1,14 @@
+account-abstraction/=lib/account-abstraction/contracts/
+ds-test/=lib/ds-test/src/
 forge-std/=lib/forge-std/src/
+openzeppelin-contracts/contracts/=lib/openzeppelin-contracts/contracts/
 solady/=lib/solady/src/
 solmate/=lib/solmate/src/
 @eth-infinitism/account-abstraction/=lib/account-abstraction/
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
 @openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
 @safe-global/safe-contracts/=lib/safe-contracts/
+@zerodevapp/contracts/=lib/kernel/src/
 @/script/=contracts/script/
 @/contracts/=contracts/src/
 @/test/=contracts/test/

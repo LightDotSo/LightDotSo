@@ -22,3 +22,6 @@
 [submodule "lib/kernel"]
 	path = lib/kernel
 	url = https://github.com/zerodevapp/kernel
+[submodule "lib/ds-test"]
+	path = lib/ds-test
+	url = https://github.com/dapphub/ds-test
