@@ -49,8 +49,6 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Brew Install
-        uses: wallet-rs/wallet-rs/.github/actions/brew-install@main
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
