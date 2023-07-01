@@ -18,10 +18,10 @@ import {LightWallet} from "./LightWallet.sol";
 /// The factory's createAccount returns the target account address even if it is already installed.
 /// This way, the entryPoint.getSenderAddress() can be called either before or after the account is created.
 contract LightWalletFactory {
-    LightWallet public immutable accountImplementation;
+    LightWallet public immutable ACCOUNT_IMPLEMENTATION;
 
     constructor(IEntryPoint _entryPoint) {
-        accountImplementation = new LightWallet(_entryPoint);
+        ACCOUNT_IMPLEMENTATION = new LightWallet(_entryPoint);
     }
 
     /// @notice Creates an account, and return its address.
@@ -36,7 +36,7 @@ contract LightWalletFactory {
         ret = LightWallet(
             payable(
                 new ERC1967Proxy{salt : bytes32(salt)}(
-                address(accountImplementation),
+                address(ACCOUNT_IMPLEMENTATION),
                 abi.encodeCall(LightWallet.initialize, (owner))
                 )
             )
@@ -50,7 +50,7 @@ contract LightWalletFactory {
             keccak256(
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
-                    abi.encode(address(accountImplementation), abi.encodeCall(LightWallet.initialize, (owner)))
+                    abi.encode(address(ACCOUNT_IMPLEMENTATION), abi.encodeCall(LightWallet.initialize, (owner)))
                 )
             )
         );

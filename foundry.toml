@@ -1,19 +1,19 @@
 [profile.default]
-src = "contracts/src"
-test= "contracts/test"
-libs = [
-  "lib/account-abstraction",
-  "lib/ds-test",
-  "lib/forge-std",
-  "lib/kernel",
-  "lib/openzeppelin-contracts",
-  "lib/openzeppelin-contracts-upgradeable",
-  "lib/safe-contracts",
-  "lib/solady",
-  "lib/solmate",
-  "lib/v3-periphery"
-]
-solc = "0.8.18"
+  libs = [
+    "lib/account-abstraction",
+    "lib/ds-test",
+    "lib/forge-std",
+    "lib/kernel",
+    "lib/openzeppelin-contracts",
+    "lib/openzeppelin-contracts-upgradeable",
+    "lib/safe-contracts",
+    "lib/solady",
+    "lib/solmate",
+    "lib/v3-periphery",
+  ]
+  solc = "0.8.18"
+  src = "contracts/src"
+  test = "contracts/test"
 
 [profile.local]
-no_match_test = "testForkRun"
+  no_match_test = "testForkRun"
