@@ -47,12 +47,6 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
     address public owner;
 
     // -------------------------------------------------------------------------
-    // Events
-    // -------------------------------------------------------------------------
-
-    event LightWalletInitialized(IEntryPoint indexed entryPoint, address indexed owner);
-
-    // -------------------------------------------------------------------------
     // Modifiers
     // -------------------------------------------------------------------------
 
