@@ -5,6 +5,10 @@ pragma solidity ^0.8.18;
 import {LightWallet} from "../LightWallet.sol";
 
 interface ILightWalletFactory {
+    // -------------------------------------------------------------------------
+    // Actions
+    // -------------------------------------------------------------------------
+
     /// @notice Gets the address of the account implementation contract
     function accountImplementation() external view returns (LightWallet);
 
