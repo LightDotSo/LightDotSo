@@ -101,6 +101,10 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
+ ➡ SoulWallet
+=======================
+ ➡ SoulWalletFactory
+=======================
  ➡ UniversalSigValidator
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
