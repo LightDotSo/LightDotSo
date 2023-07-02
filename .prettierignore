@@ -1,4 +1,5 @@
 *.json
+*.xcarchive
 
 pnpm-lock.yaml
 pnpm-workspace.yaml

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0
 
+pragma solidity ^0.8.18;
+
 // LightWallet.sol -- LightWallet initial implementation
 // Modified implementation on SimpleAccount.sol from @eth-infinitism/account-abstraction
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
 // License: GPL-3.0
-
-pragma solidity ^0.8.18;
 
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
@@ -15,12 +15,12 @@ import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfa
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {TokenCallbackHandler} from
     "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
-import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
+import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightWallet
 /// @author shunkakinoki
 /// @notice LightWallet is a simple account abstraction contract
-contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initializable, IERC1271 {
+contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initializable {
     using ECDSA for bytes32;
 
     // -------------------------------------------------------------------------
@@ -66,7 +66,7 @@ contract LightWallet is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Init
     // -------------------------------------------------------------------------
 
     /// @inheritdoc BaseAccount
-    function entryPoint() public view virtual override returns (IEntryPoint) {
+    function entryPoint() public view virtual override(BaseAccount, ILightWallet) returns (IEntryPoint) {
         return _entryPoint;
     }
 
