@@ -47,9 +47,6 @@ interface ILightWallet is IERC1271 {
     /// @notice Withdraws value from the account's deposit.
     function withdrawDepositTo(address payable withdrawAddress, uint256 amount) external;
 
-    /// @notice Upgrades the implementation to a new contract address.
-    function upgradeTo(address newImplementation) external;
-
     /// @notice Returns the entry point contract address for this account.
     function entryPoint() external view returns (IEntryPoint);
 }

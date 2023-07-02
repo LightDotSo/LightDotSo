@@ -87,11 +87,6 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
         require(msg.sender == owner || msg.sender == address(this), "only owner");
     }
 
-    /// @notice Upgrade the implementation of this contract
-    function upgradeTo(address newImplementation) public override(ILightWallet, UUPSUpgradeable) onlyOwner {
-        _upgradeTo(newImplementation);
-    }
-
     /// @notice Executes a transaction (called directly from owner, or by entryPoint)
     function execute(address dest, uint256 value, bytes calldata func) external {
         _requireFromEntryPointOrOwner();
