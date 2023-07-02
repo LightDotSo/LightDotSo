@@ -57,7 +57,7 @@ contract LightWalletFactoryTest is BaseFactoryTest {
         _noProxyAdmin(address(account));
     }
 
-    function test_light_initializable() public {
+    function test_light_noInitializeTwice() public {
         // Check that the account is not initializable twice
         _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(address)", address(this)));
     }
