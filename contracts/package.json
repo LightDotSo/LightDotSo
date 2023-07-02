@@ -16,5 +16,8 @@
     "compile": "cd .. && hardhat compile",
     "hh-test": "cd .. && hardhat test",
     "lint": "cd .. && pnpm solhint 'contracts/**/*.sol'"
+  },
+  "dependencies": {
+    "ethers": "^6.6.2"
   }
 }
