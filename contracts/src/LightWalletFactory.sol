@@ -32,9 +32,11 @@ contract LightWalletFactory is ILightWalletFactory {
     function createAccount(address owner, uint256 salt) public returns (LightWallet ret) {
         address addr = getAddress(owner, salt);
         uint256 codeSize = addr.code.length;
+        // If the account already exists, return it
         if (codeSize > 0) {
             return LightWallet(payable(addr));
         }
+        // Initializes the account
         ret = LightWallet(
             payable(
                 new ERC1967Proxy{salt : bytes32(salt)}(
@@ -47,6 +49,7 @@ contract LightWalletFactory is ILightWalletFactory {
 
     /// @notice calculate the counterfactual address of this account as it would be returned by createAccount()
     function getAddress(address owner, uint256 salt) public view returns (address) {
+        // Computes the address with the given `salt`and the contract address `addressImplementation`, and with `initialize` method w/ `owner`
         return Create2.computeAddress(
             bytes32(salt),
             keccak256(
