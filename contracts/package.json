@@ -16,16 +16,5 @@
     "build": "hardhat compile",
     "lint": "cd .. && pnpm solhint 'contracts/**/*.sol'",
     "test": "hardhat test"
-  },
-  "dependencies": {
-    "glob": "7.2.0"
-  },
-  "devDependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.0.1",
-    "@nomicfoundation/hardhat-foundry": "^1.0.2",
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "chai": "^4.3.7",
-    "hardhat": "^2.16.1",
-    "toml": "^3.0.0"
   }
 }

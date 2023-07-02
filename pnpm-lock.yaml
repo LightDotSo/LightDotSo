@@ -470,30 +470,7 @@ importers:
 
   configurations/tsconfig: {}
 
-  contracts:
-    dependencies:
-      glob:
-        specifier: 7.2.0
-        version: 7.2.0
-    devDependencies:
-      '@nomicfoundation/hardhat-chai-matchers':
-        specifier: ^2.0.1
-        version: 2.0.1(@nomicfoundation/hardhat-ethers@3.0.3)(chai@4.3.7)(ethers@6.6.2)(hardhat@2.16.1)
-      '@nomicfoundation/hardhat-foundry':
-        specifier: ^1.0.2
-        version: 1.0.2(hardhat@2.16.1)
-      '@nomicfoundation/hardhat-toolbox':
-        specifier: ^3.0.0
-        version: 3.0.0(@nomicfoundation/hardhat-chai-matchers@2.0.1)(@nomicfoundation/hardhat-ethers@3.0.3)(@nomicfoundation/hardhat-network-helpers@1.0.8)(@nomicfoundation/hardhat-verify@1.0.3)(@typechain/ethers-v6@0.4.0)(@typechain/hardhat@8.0.0)(@types/chai@4.3.5)(@types/mocha@10.0.1)(@types/node@20.3.2)(chai@4.3.7)(ethers@6.6.2)(hardhat-gas-reporter@1.0.9)(hardhat@2.16.1)(solidity-coverage@0.8.3)(ts-node@10.9.1)(typechain@8.2.0)(typescript@5.1.6)
-      chai:
-        specifier: ^4.3.7
-        version: 4.3.7
-      hardhat:
-        specifier: ^2.16.1
-        version: 2.16.1(ts-node@10.9.1)(typescript@5.1.6)
-      toml:
-        specifier: ^3.0.0
-        version: 3.0.0
+  contracts: {}
 
   crates: {}
 
