@@ -50,7 +50,7 @@ contract LightWalletTest is Test {
 
     // Ref: https://eips.ethereum.org/EIPS/eip-1271
     // Ref: https://eips.ethereum.org/EIPS/eip-6492
-    function test_light_eip1271_6492() public {
+    function test_light_eip_1271_6492() public {
         // Create an EOA address of the owner
         address alice = vm.addr(1);
         // Create a LightWallet w/ the factory
