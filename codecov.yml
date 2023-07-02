@@ -28,4 +28,6 @@ component_management:
       paths:
         - ios/LightWalletCore/**
 ignore:
+  - "contracts/src/samples/**"
+  - "contracts/test/**"
   - "tools/**"

@@ -5,3 +5,4 @@
 
 git diff --cached --name-status
 pnpm lint-staged --allow-empty
+git add .gas-snapshot

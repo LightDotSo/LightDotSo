@@ -40,4 +40,13 @@ contract BaseFactoryTest is Test {
         // Assert that the proxy admin is the zero address
         assertEq(proxyUtils.getProxyAdmin(_proxy), address(0));
     }
+
+    // Why Initialize is required: https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor
+    function _noInitializeTwice(address _proxy, bytes memory _calldata) internal {
+        vm.expectRevert(bytes("Initializable: contract is already initialized"));
+        // Check that the account is initializable
+        (bool success,) = _proxy.call(_calldata);
+        // Assert that the code was not reverted
+        assertEq(success, true);
+    }
 }
