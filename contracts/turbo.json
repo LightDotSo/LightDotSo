@@ -9,6 +9,9 @@
     },
     "lint": {
       "dependsOn": ["build"]
+    },
+    "test-hh": {
+      "dependsOn": ["build"]
     }
   }
 }

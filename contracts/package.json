@@ -14,8 +14,8 @@
   "author": "Light, Inc.",
   "scripts": {
     "compile": "cd .. && hardhat compile",
-    "hh-test": "cd .. && hardhat test",
-    "lint": "cd .. && pnpm solhint 'contracts/**/*.sol'"
+    "lint": "cd .. && pnpm solhint 'contracts/**/*.sol'",
+    "test-hh": "cd .. && hardhat test"
   },
   "dependencies": {
     "ethers": "^6.6.2"
