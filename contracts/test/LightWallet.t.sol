@@ -67,7 +67,7 @@ contract LightWalletTest is Test {
     }
 
     function test_light_transfer_eth() public {
-        // Example UserOperation to send 0 ETH to the address zero
+        // Example UserOperation to send 0 ETH to the address one
         UserOperation memory op = entryPoint.fillUserOp(
             address(account), abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""))
         );
@@ -75,8 +75,10 @@ contract LightWalletTest is Test {
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
         entryPoint.handleOps(ops, beneficiary);
-
+        // Assert that the balance of the account is 1
         assertEq(address(1).balance, 1);
+        // Assert the balance of the account is the Deposit - Gas
+        assertEq(address(entryPoint).balance, 1_002_500_000_000 - 159_325);
     }
 
     // Ref: https://eips.ethereum.org/EIPS/eip-1271
