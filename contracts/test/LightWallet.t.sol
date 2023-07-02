@@ -3,10 +3,14 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet} from "@/contracts/LightWallet.sol";
+import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
+import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Test} from "forge-std/Test.sol";
+
+// From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
+using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet`, organized by functions.
 contract LightWalletTest is Test {
@@ -22,6 +26,13 @@ contract LightWalletTest is Test {
     // UniversalSigValidator
     UniversalSigValidator validator;
 
+    // Address of the owner of the account
+    address user;
+    // Private key of the owner of the account
+    uint256 userKey;
+    // Address of the beneficiary of the account
+    address payable beneficiary;
+
     function setUp() public {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
@@ -29,8 +40,15 @@ contract LightWalletTest is Test {
         factory = new LightWalletFactory(entryPoint);
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
+        // Set the user and userKey
+        (user, userKey) = makeAddrAndKey("user");
         // Create the account using the factory w/ nonce 0
-        account = factory.createAccount(address(this), 0);
+        account = factory.createAccount(user, 0);
+        // Set the beneficiary
+        beneficiary = payable(address(makeAddr("beneficiary")));
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
     }
 
     function test_light_initialize() public {
@@ -48,16 +66,25 @@ contract LightWalletTest is Test {
         account.initialize(address(this));
     }
 
+    function test_light_transfer_eth() public {
+        // Example UserOperation to send 0 ETH to the address zero
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account), abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""))
+        );
+        op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        entryPoint.handleOps(ops, beneficiary);
+
+        assertEq(address(1).balance, 1);
+    }
+
     // Ref: https://eips.ethereum.org/EIPS/eip-1271
     // Ref: https://eips.ethereum.org/EIPS/eip-6492
     function test_light_eip_1271_6492() public {
-        // Create an EOA address of the owner
-        address alice = vm.addr(1);
-        // Create a LightWallet w/ the factory
-        account = factory.createAccount(alice, uint256(0));
-        // Obtain the signature w/ the EOA
-        bytes32 hashed = keccak256("Signed by Alice");
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(1, hashed);
+        // Obtain the signature w/ the EOA by the user
+        bytes32 hashed = keccak256("Signed by user");
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
         bytes memory signature = abi.encodePacked(r, s, v);
 
         // Test the signature w/ EIP-1271
