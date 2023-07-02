@@ -13,8 +13,8 @@
   "license": "GPL-3.0",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "hardhat compile",
+    "build": "cd .. && hardhat compile",
     "lint": "cd .. && pnpm solhint 'contracts/**/*.sol'",
-    "test": "hardhat test"
+    "test": "cd .. && hardhat test"
   }
 }
