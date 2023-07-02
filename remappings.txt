@@ -1,7 +1,7 @@
 account-abstraction/=lib/account-abstraction/contracts/
 ds-test/=lib/ds-test/src/
 forge-std/=lib/forge-std/src/
-openzeppelin-contracts/contracts/=lib/openzeppelin-contracts/contracts/
+openzeppelin-contracts/contracts/=lib/openzeppelin-contracts/
 solady/=lib/solady/src/
 solmate/=lib/solmate/src/
 src/=lib/kernel/src/
