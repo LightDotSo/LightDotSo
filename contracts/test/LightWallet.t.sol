@@ -17,6 +17,10 @@ contract LightWalletTest is Test {
     // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
     event Initialized(uint8 version);
 
+    // ERC6492 Detection Suffix
+    bytes32 private constant ERC6492_DETECTION_SUFFIX =
+        0x6492649264926492649264926492649264926492649264926492649264926492;
+
     // EntryPoint from eth-inifinitism
     EntryPoint entryPoint;
     // LightWallet core contract
@@ -51,6 +55,7 @@ contract LightWalletTest is Test {
         vm.deal(address(account), 1e30);
     }
 
+    // Tests that the account is initialized properly
     function test_light_initialize() public {
         vm.expectEmit(true, true, true, true);
         emit Initialized(255);
@@ -58,6 +63,7 @@ contract LightWalletTest is Test {
         account = new LightWallet(entryPoint);
     }
 
+    // Tests that the account can not be initialized twice
     function test_light_implementation_noInitialize() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
@@ -66,6 +72,7 @@ contract LightWalletTest is Test {
         account.initialize(address(this));
     }
 
+    // Tests that the account can correctly transfer ETH
     function test_light_transfer_eth() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation memory op = entryPoint.fillUserOp(
@@ -81,6 +88,7 @@ contract LightWalletTest is Test {
         assertEq(address(entryPoint).balance, 1_002_500_000_000 - 159_325);
     }
 
+    // Tests that the account complies w/ EIP-1271 and EIP-6492
     // Ref: https://eips.ethereum.org/EIPS/eip-1271
     // Ref: https://eips.ethereum.org/EIPS/eip-6492
     function test_light_eip_1271_6492() public {
@@ -96,5 +104,30 @@ contract LightWalletTest is Test {
         assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
         assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
         assertEq(validator.isValidSig(address(account), hashed, signature), true);
+    }
+
+    // Tests that a predeployed contract complies w/ EIP-6492
+    function test_light_predeployed_6492() public {
+        // Obtain the original signature w/ the EOA by the user
+        bytes32 hashed = keccak256("Signed by user");
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
+        bytes memory signature = abi.encodePacked(r, s, v);
+
+        // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
+        // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
+        bytes memory sig_6492 = abi.encodePacked(
+            abi.encode(
+                // Nonce is 1 (does not exist)
+                address(factory),
+                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, user, 1),
+                signature
+            ),
+            ERC6492_DETECTION_SUFFIX
+        );
+
+        // Test the signature w/ EIP-6492
+        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
+        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
+        assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }
 }
