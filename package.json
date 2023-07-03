@@ -32,6 +32,9 @@
     "sort-package-json:fix": "sort-package-json '{apps,configurations,contracts,crates,fastlane,ios,packages}/**/package.json'",
     "test": "echo \"Error: no test specified\" && exit 0"
   },
+  "dependencies": {
+    "@grafbase/sdk": "^0.1.0"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
