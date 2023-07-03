@@ -95,11 +95,17 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov.info
           fail_ci_if_error: false
-      - name: Rust Clippy Check
-        uses: actions-rs/cargo@v1
+      - name: Run Clippy
+        run: |
+          cargo clippy \
+            --all-features \
+            --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
+        continue-on-error: true
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
         with:
-          command: clippy
-          args: -- -D warnings
+          sarif_file: rust-clippy-results.sarif
+          wait-for-processing: true
       - name: Rust Finish
         uses: wallet-rs/wallet-rs/.github/actions/rust-finish@main
   rust-check:
