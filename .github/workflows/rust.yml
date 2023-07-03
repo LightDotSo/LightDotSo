@@ -77,7 +77,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --target ${{ matrix.target }}
+          args: --target ${{ matrix.target }} --workspace
       - name: Deny Check
         run: |
           cargo deny check
@@ -86,7 +86,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }}
+          args: --target ${{ matrix.target }} --workspace
       - if: matrix.test
         name: Rust Coverage Install
         uses: taiki-e/install-action@cargo-llvm-cov
@@ -105,6 +105,7 @@ jobs:
         run: |
           cargo clippy \
             --all-features \
+            --workspace \
             --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
         continue-on-error: true
       - name: Upload SARIF file
