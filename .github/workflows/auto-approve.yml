@@ -1,0 +1,11 @@
+name: Auto Approve
+on: pull_request_target
+jobs:
+  auto-approve:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto Approve
+        if: github.actor == 'shunkakinoki' || github.actor == 'dependabot[bot]'
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.BOT_TOKEN }}
