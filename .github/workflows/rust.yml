@@ -78,6 +78,9 @@ jobs:
         with:
           command: build
           args: --target ${{ matrix.target }}
+      - name: Deny Check
+        run: |
+          cargo deny check
       - if: matrix.test
         name: Rust Test
         uses: actions-rs/cargo@v1
