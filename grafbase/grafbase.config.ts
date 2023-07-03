@@ -7,7 +7,7 @@ import { g, auth, config } from "@grafbase/sdk";
 
 const authProvider = auth.JWT({
   issuer: g.env("ISSUER_URL"),
-  secret: g.env("JWT_SECRET"),
+  secret: g.env("NEXTAUTH_SECRET"),
 });
 
 //
