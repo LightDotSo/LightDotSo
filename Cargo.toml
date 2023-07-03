@@ -2,12 +2,15 @@
 resolver = "2"
 
 members = [
+  "bin",
   "apps/desktop/src-tauri",
   "crates/core",
   "crates/keychain",
   "tools/embedded-scopelint",
   "tools/embedded-uniffi-bindgen"
 ]
+
+default-members = ["bin"]
 
 # Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
 
@@ -21,4 +24,7 @@ opt-level = 2
 codegen-units = 16
 
 [workspace.dependencies]
+anyhow = "1.0.71"
+axum = "0.6.18"
+tokio = { version = "1", features = ["full"] }
 uniffi = "0.23.0"
