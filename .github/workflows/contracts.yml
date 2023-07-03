@@ -178,7 +178,6 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: ${{ steps.slither.outputs.sarif }}
-          wait-for-processing: true
   contracts-check:
     if: always()
     needs:
