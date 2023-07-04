@@ -16,12 +16,13 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Docker Wait
-        uses: lewagon/wait-on-check-action@master
+        uses: lewagon/wait-on-check-action@v1.3.1
         with:
           ref: ${{ github.ref }}
           check-name: docker-check
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
+          allowed-conclusions: success
   k8s-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
