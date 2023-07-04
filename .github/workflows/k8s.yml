@@ -1,0 +1,29 @@
+name: Kubernetes
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+  release:
+    types: created
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  kubernetes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Scan repo with kube-linter
+        uses: stackrox/kube-linter-action@v1.0.4
+        with:
+          directory: pods
+          config: .kube-linter/config.yaml
+          format: sarif
+          output-file: kube-linter.sarif
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: kube-linter.sarif
