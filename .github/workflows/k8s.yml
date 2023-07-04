@@ -26,8 +26,8 @@ jobs:
           allowed-conclusions: success
   k8s-deploy-serve:
     runs-on: ubuntu-latest
-    needs:
-      - k8s-wait-docker
+    # needs:
+    # - k8s-wait-docker
     timeout-minutes: 90
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
@@ -39,7 +39,7 @@ jobs:
       - name: Install GCP Credentials
         uses: "google-github-actions/auth@v1"
         with:
-          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+          credentials_json: "${{ secrets.GOOGLE_CREDENTIALS }}"
       - name: Install GKE Credentials
         uses: "google-github-actions/get-gke-credentials@v1"
         with:
