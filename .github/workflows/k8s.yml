@@ -43,8 +43,8 @@ jobs:
       - name: Install GKE Credentials
         uses: "google-github-actions/get-gke-credentials@v1"
         with:
-          cluster_name: "my-cluster"
-          location: "us-central1-a"
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_CLUSTER_REGION }}
       - name: Set Image
         run: |
           kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:main
