@@ -11,6 +11,17 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
+  k8s-wait-docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Wait Docker
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.ref }}
+          check-name: docker-turbo
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
   k8s-deploy-serve:
     runs-on: ubuntu-latest
     timeout-minutes: 90
