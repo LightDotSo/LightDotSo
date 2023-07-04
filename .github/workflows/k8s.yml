@@ -2,7 +2,7 @@ name: Kubernetes
 on:
   workflow_run:
     workflows:
-      - docker
+      - Docker
     types:
       - completed
 jobs:
