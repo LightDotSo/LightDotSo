@@ -47,6 +47,8 @@ jobs:
             org.opencontainers.image.source=https://github.com/LightDotSo/LightDotSo
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
