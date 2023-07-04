@@ -34,15 +34,23 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Install Gcloud Plugin
+      - name: Install Kubectl
+        uses: azure/setup-kubectl@v3
+      - name: Install GCP Credentials
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+      - name: Install GKE Credentials
+        uses: "google-github-actions/get-gke-credentials@v1"
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_CLUSTER_REGION }}
+      - name: Set Image
         run: |
-          sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
-      - uses: actions-hub/kubectl@master
-        with:
-          args: set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:main
-      - uses: actions-hub/kubectl@master
-        with:
-          args: rollout status deployment/serve
+          kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:main
+      - name: Rollout Status
+        run: |
+          kubectl rollout status deployment/serve
   k8s-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
