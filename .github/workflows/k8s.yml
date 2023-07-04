@@ -48,7 +48,8 @@ jobs:
       - name: Set Image
         run: |
           kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:main
-      - run: |
+      - name: Rollout Status
+        run: |
           kubectl rollout status deployment/serve
   k8s-lint:
     runs-on: ubuntu-latest
