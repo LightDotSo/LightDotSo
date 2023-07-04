@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
-      - name: Wait for docker to build
+      - name: Docker Wait
         uses: lewagon/wait-on-check-action@master
         with:
           ref: ${{ github.ref }}
