@@ -72,6 +72,8 @@ jobs:
       - docker-build
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    permissions:
+      actions: write
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
