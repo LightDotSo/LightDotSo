@@ -22,8 +22,11 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/crates"
-  docker:
+  docker-build:
     runs-on: ubuntu-latest
+    if: needs.docker-turbo.outputs.trigger == 'true'
+    needs:
+      - docker-turbo
     timeout-minutes: 90
     steps:
       - name: Fetch Head
@@ -44,6 +47,8 @@ jobs:
             org.opencontainers.image.source=https://github.com/LightDotSo/LightDotSo
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
@@ -64,12 +69,19 @@ jobs:
     if: always()
     needs:
       - docker-turbo
-      - docker
+      - docker-build
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    permissions:
+      actions: write
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: rust
+          allowed-skips: docker-build
           jobs: ${{ toJSON(needs) }}
+      - name: Invoke Kubernetes Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: k8s.yml
+          ref: ${{ github.head_ref }}
