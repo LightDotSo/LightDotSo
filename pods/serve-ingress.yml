@@ -4,13 +4,13 @@ metadata:
   name: serve-ingress
 spec:
   rules:
-    - host: api.light.so
+    - host: dev.api.light.so
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: serve-service
+                name: serve
                 port:
                   number: 3002
