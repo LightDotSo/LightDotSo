@@ -22,7 +22,7 @@ jobs:
           check-name: docker
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
-          allowed-conclusions: skipped
+          allowed-conclusions: success,skipped
   k8s-deploy-serve:
     runs-on: ubuntu-latest
     timeout-minutes: 90
