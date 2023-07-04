@@ -13,7 +13,7 @@ spec:
         app: serve
     spec:
       containers:
-        - name: rust-app
+        - name: serve
           image: ghcr.io/lightdotso/lightdotso:sha-6aa86e7
           ports:
             - containerPort: 3002
@@ -24,6 +24,9 @@ spec:
             requests:
               cpu: 200m
               memory: 256Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
           readinessProbe:
             httpGet:
               path: /health
