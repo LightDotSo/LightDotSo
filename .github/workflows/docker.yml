@@ -78,3 +78,7 @@ jobs:
         with:
           allowed-skips: docker-build
           jobs: ${{ toJSON(needs) }}
+      - name: Invoke Kubernetes Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: k8s.yml

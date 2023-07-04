@@ -1,28 +1,7 @@
 name: Kubernetes
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-  merge_group:
-  release:
-    types: created
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
+  workflow_dispatch:
 jobs:
-  k8s-docker-wait:
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    steps:
-      - name: Docker Wait
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: ${{ github.ref }}
-          check-name: docker-check
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
-          allowed-conclusions: success
   k8s-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -45,7 +24,6 @@ jobs:
   k8s-check:
     if: always()
     needs:
-      - k8s-docker-wait
       - k8s-lint
     runs-on: ubuntu-latest
     timeout-minutes: 3
