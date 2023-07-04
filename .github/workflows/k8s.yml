@@ -12,6 +12,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   k8s-wait-docker:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -28,23 +29,22 @@ jobs:
     needs:
       - k8s-wait-docker
     timeout-minutes: 90
+    env:
+      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+      - name: Install Gcloud Plugin
+        run: |
+          sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin
       - uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
           args: set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:main
       - uses: actions-hub/kubectl@master
-        env:
-          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
           args: rollout status deployment/serve
   k8s-lint:
     runs-on: ubuntu-latest
-    needs:
-      - k8s-wait-docker
     timeout-minutes: 90
     permissions:
       contents: read
@@ -66,10 +66,13 @@ jobs:
     if: always()
     needs:
       - k8s-lint
+      - k8s-wait-docker
+      - k8s-deploy-serve
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
+          allowed-skips: k8s-wait-docker,k8s-deploy-serve
           jobs: ${{ toJSON(needs) }}
