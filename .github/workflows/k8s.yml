@@ -6,15 +6,22 @@ on:
     types:
       - completed
 jobs:
-  k8s-dev:
+  k8s-deploy-serve:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
       - uses: actions-hub/kubectl@master
         env:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
-          args: get pods
+          args: set image deployment serve serve=ghcr.io/lightdotso/lightdotso:main
+      - uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: rollout status service
   k8s-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
