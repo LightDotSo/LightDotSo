@@ -22,7 +22,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/crates"
-  docker:
+  docker-build:
     runs-on: ubuntu-latest
     if: needs.docker-turbo.outputs.trigger == 'true'
     needs:
@@ -69,7 +69,7 @@ jobs:
     if: always()
     needs:
       - docker-turbo
-      - docker
+      - docker-build
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
