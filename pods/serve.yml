@@ -14,19 +14,20 @@ spec:
     spec:
       containers:
         - name: serve
-          image: ghcr.io/lightdotso/lightdotso:sha-6aa86e7
+          image: ghcr.io/lightdotso/lightdotso:sha-96cdb97
+          command: ["/usr/local/bin/serve"]
           ports:
             - containerPort: 3002
           resources:
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: "1500m"
+              memory: "512Mi"
             requests:
-              cpu: 200m
-              memory: 256Mi
+              cpu: "900m"
+              memory: "512Mi"
           securityContext:
             readOnlyRootFilesystem: true
-            runAsNonRoot: true
+            runAsNonRoot: false
           readinessProbe:
             httpGet:
               path: /health
