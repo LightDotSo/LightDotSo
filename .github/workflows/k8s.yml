@@ -1,7 +1,20 @@
 name: Kubernetes
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Docker
+    types:
+      - completed
 jobs:
+  k8s-dev:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: get pods
   k8s-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
