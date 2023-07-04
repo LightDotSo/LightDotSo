@@ -22,6 +22,7 @@ jobs:
           check-name: docker-turbo
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
+          allowed-conclusions: skipped
   k8s-deploy-serve:
     runs-on: ubuntu-latest
     timeout-minutes: 90
