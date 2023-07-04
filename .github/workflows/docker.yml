@@ -72,16 +72,9 @@ jobs:
       - docker-build
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    permissions:
-      actions: write
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
           allowed-skips: docker-build
           jobs: ${{ toJSON(needs) }}
-      - name: Invoke Kubernetes Workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: k8s.yml
-          ref: ${{ github.head_ref }}
