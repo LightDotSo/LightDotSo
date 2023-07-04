@@ -84,4 +84,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: k8s.yml
-          ref: github.head_ref
+          ref: ${{ github.head_ref }}
