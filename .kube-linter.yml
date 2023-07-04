@@ -1,0 +1,4 @@
+checks:
+  addAllBuiltIn: false
+  exclude:
+    - "run-as-non-root"
