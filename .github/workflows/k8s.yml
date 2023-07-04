@@ -25,6 +25,8 @@ jobs:
           allowed-conclusions: success,skipped
   k8s-deploy-serve:
     runs-on: ubuntu-latest
+    needs:
+      - k8s-wait-docker
     timeout-minutes: 90
     steps:
       - name: Fetch Head
@@ -41,6 +43,8 @@ jobs:
           args: rollout status deployment/serve
   k8s-lint:
     runs-on: ubuntu-latest
+    needs:
+      - k8s-wait-docker
     timeout-minutes: 90
     permissions:
       contents: read
