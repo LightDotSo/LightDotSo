@@ -1,0 +1,75 @@
+name: Docker
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+  release:
+    types: created
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  docker-turbo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      trigger: ${{ steps.turbo.outputs.trigger }}
+    steps:
+      - name: Turbo Trigger
+        id: turbo
+        uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
+        with:
+          workspace: "@lightdotso/crates"
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Docker Qemu Setup
+        uses: docker/setup-qemu-action@v2
+      - name: Docker Buildx Setup
+        uses: docker/setup-buildx-action@v2
+      - name: Docker Metadata
+        uses: docker/metadata-action@v4
+        id: meta
+        with:
+          images: |
+            ghcr.io/LightDotSo/LightDotSo
+          labels: |
+            org.opencontainers.image.title=LightDotSo
+            org.opencontainers.image.description=LightDotSo/LightDotSo
+            org.opencontainers.image.source=https://github.com/LightDotSo/LightDotSo
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+      - name: Docker Login
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.BOT_TOKEN }}
+      - name: Docker Build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  docker-check:
+    if: always()
+    needs:
+      - docker-turbo
+      - docker
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: rust
+          jobs: ${{ toJSON(needs) }}

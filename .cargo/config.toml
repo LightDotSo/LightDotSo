@@ -7,6 +7,3 @@ rustflags = ["-C", "link-arg=-undefined", "-C", "link-arg=dynamic_lookup"]
 
 [target.aarch64-apple-darwin]
 rustflags = ["-C", "link-arg=-undefined", "-C", "link-arg=dynamic_lookup"]
-
-[target.'cfg(all(target_os = "linux", target_arch = "x86_64"))']
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]

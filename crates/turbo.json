@@ -7,7 +7,8 @@
       "inputs": [
         "**",
         "../.cargo/**",
-        "../crates/**",
+        "../apps/desktop/src-tauri/**",
+        "../bin/**",
         "../.clippy.toml",
         "../Cargo.lock",
         "../Cargo.toml",
