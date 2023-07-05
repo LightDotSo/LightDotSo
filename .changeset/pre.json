@@ -1,6 +1,6 @@
 {
   "mode": "pre",
-  "tag": "next",
+  "tag": "pre",
   "initialVersions": {
     "@lightdotso/android": "1.0.1",
     "@lightdotso/app": "1.0.0",
