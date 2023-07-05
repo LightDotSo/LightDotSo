@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/inpage",
   "version": "0.0.1",
-  "private": false,
+  "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -30,6 +30,6 @@
     "typescript": "^5.1.6"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   }
 }

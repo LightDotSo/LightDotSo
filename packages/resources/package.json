@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/resources",
   "version": "0.0.1",
-  "private": false,
+  "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -31,5 +31,8 @@
     "cp:locales:chrome": "cp -r ./_locales ../../apps/extension/chrome",
     "cp:locales:firefox": "cp -r ./_locales ../../apps/extension/firefox",
     "cp:locales:ios": "cp -r ./_locales ../../ios/LightWalletSafariExtension/Resources"
+  },
+  "publishConfig": {
+    "access": "restricted"
   }
 }

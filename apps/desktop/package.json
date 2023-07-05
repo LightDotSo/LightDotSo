@@ -38,6 +38,6 @@
     "vite": "^4.3.9"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   }
 }
