@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/android",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -19,6 +19,6 @@
     "@lightdotso/crates": "workspace:*"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

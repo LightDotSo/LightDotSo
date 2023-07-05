@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/desktop",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -38,6 +38,6 @@
     "vite": "^4.3.9"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

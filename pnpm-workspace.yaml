@@ -1,6 +1,7 @@
 packages:
   - "android"
   - "apps/*"
+  - "bin"
   - "configurations/*"
   - "contracts"
   - "crates"

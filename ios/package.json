@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/ios",
-  "version": "2.0.0-pre.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -26,6 +26,6 @@
     "@lightdotso/extension": "workspace:*"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
