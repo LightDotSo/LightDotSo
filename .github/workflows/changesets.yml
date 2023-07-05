@@ -65,6 +65,8 @@ jobs:
       - name: Publish to NPM
         uses: changesets/action@v1
         continue-on-error: true
+        with:
+          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
