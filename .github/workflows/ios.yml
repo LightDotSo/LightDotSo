@@ -67,6 +67,11 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: "14.1"
+      - name: Xcresultparser Install
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: a7ex/xcresultparser
+          extension: "xcresultparser.zip"
       - name: Node Build
         run: |
           pnpm turbo run build
