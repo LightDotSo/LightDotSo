@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/docs",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -36,6 +36,6 @@
     "typescript": "^4.9.5"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

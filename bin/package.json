@@ -1,5 +1,5 @@
 {
-  "name": "@lightdotso/contracts",
+  "name": "@lightdotso/bin",
   "version": "0.0.0",
   "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
@@ -13,12 +13,10 @@
   "license": "GPL-3.0",
   "author": "Light, Inc.",
   "scripts": {
-    "compile": "cd .. && hardhat compile",
-    "lint": "cd .. && pnpm solhint 'contracts/src/**/*.sol'",
-    "test-hh": "cd .. && hardhat test"
+    "build": "echo 'Empty build script for turborepo trigger'"
   },
   "dependencies": {
-    "ethers": "^6.6.2"
+    "@lightdotso/crates": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
