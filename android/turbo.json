@@ -16,8 +16,7 @@
         "./build.gradle",
         "./proguard-rules.pro",
         "src/**"
-      ],
-      "outputs": ["build/**"]
+      ]
     }
   }
 }
