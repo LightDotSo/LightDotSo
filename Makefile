@@ -41,29 +41,32 @@ ios: ## Build the project for iOS.
 	@make $(ARCHS_IOS)
 	@make $(LIB)
 	@make bindgen-swift
-	@make assemble-frameworks
 	@make xcframework
 	@make cp-xcframework-source
 
-.PHONY: $(ARCHS_IOS)
+##@ Cargo Build
+
+.PHONY: $(ARCHS_IOS) ## Build the project for iOS.
 $(ARCHS_IOS): %:
 	cargo build $(CARGO_PARAMS) --target $@ --release --lib
 
-.PHONY: $(ARCHS_IOS_ARM)
+.PHONY: $(ARCHS_IOS_ARM) ## Build the project for iOS (Specific structure).
 $(ARCHS_IOS_ARM): %:
 	cargo build $(CARGO_PARAMS) --target $@ --release --lib
 
-.PHONY: $(ARCHS_MAC)
+.PHONY: $(ARCHS_MAC) ## Build the project for macOS.
 $(ARCHS_MAC): %:
 	cargo build $(CARGO_PARAMS) --target $@ --release --lib
 
-$(LIB): $(ARCHS_IOS) $(ARCHS_MAC) aarch64-apple-ios
+##@ Apple Build
+
+$(LIB): $(ARCHS_IOS) $(ARCHS_IOS_ARM) $(ARCHS_MAC) ## Build the universal binary for iOS and macOS.
 	rm -rf $(TARGET_DIR)/lipo_macos $(TARGET_DIR)/lipo_ios_simulator || echo "Skip removing $(LIB)"
 	mkdir -p $(TARGET_DIR)/lipo_macos $(TARGET_DIR)/lipo_ios_simulator
-	lipo -create -output $(TARGET_DIR)/lipo_ios_simulator/libxmtp_rust_swift.a $(foreach arch,$(ARCHS_IOS),$(wildcard target/$(arch)/release/$(LIB)))
-	lipo -create -output $(TARGET_DIR)/lipo_macos/libxmtp_rust_swift.a $(foreach arch,$(ARCHS_MAC),$(wildcard target/$(arch)/release/$(LIB)))
+	lipo -create -output $(TARGET_DIR)/lipo_ios_simulator/$(LIB) $(foreach arch,$(ARCHS_IOS),$(wildcard target/$(arch)/release/$(LIB)))
+	lipo -create -output $(TARGET_DIR)/lipo_macos/$(LIB) $(foreach arch,$(ARCHS_MAC),$(wildcard target/$(arch)/release/$(LIB)))
 
-bindgen-swift:
+bindgen-swift: ## Generate the Swift bindings.
 	rm -rf $(TARGET_DIR)/Generated || echo "Skip removing Generated"
 	mkdir -p $(TARGET_DIR)/Generated
 	cp -r $(CRATES_DIR)/src $(TARGET_DIR)/Generated/
@@ -71,19 +74,17 @@ bindgen-swift:
 	cargo uniffi-bindgen generate $(CRATES_DIR)/src/LightWalletCore.udl --language swift
 	sed -i '' 's/module\ LightWalletCoreFFI/framework\ module\ LightWalletCoreFFI/' $(CRATES_DIR)/src/LightWalletCoreFFI.modulemap
 
-assemble-frameworks:
-	find . -type d -name LightWalletCoreFFI.framework -exec rm -rf {} \; || echo "rm failed"
-	cd target/x86_64-apple-ios/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules Resources && cp ../../../../$(CRATES_DIR)/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../$(CRATES_DIR)/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI && cp ../../../../$(CRATES_DIR)misc/apple/Info.plist ./Resources
-	cd target/aarch64-apple-ios-sim/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules Resources && cp ../../../../$(CRATES_DIR)/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../$(CRATES_DIR)/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI && cp ../../../../$(CRATES_DIR)misc/apple/Info.plist ./Resources
-	cd target/aarch64-apple-ios/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules Resources && cp ../../../../$(CRATES_DIR)/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../$(CRATES_DIR)/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI && cp ../../../../$(CRATES_DIR)misc/apple/Info.plist ./Resources
+xcframework: ## Build the xcframework for iOS and macOS.
+	rm -rf $(TARGET_DIR)/LightWalletCoreFFI.framework || echo "Skip removing framework"
+	xcodebuild -create-xcframework \
+		-library ./$(TARGET_DIR)/lipo_macos/$(LIB) \
+		-headers ./$(TARGET_DIR)/Generated/ \
+		-library ./$(TARGET_DIR)/lipo_ios_simulator/$(LIB) \
+		-headers ./$(TARGET_DIR)/Generated/ \
+		-output $(TARGET_DIR)/LightWalletCoreFFI.xcframework
 
-xcframework:
-	lipo -create target/x86_64-apple-ios/release/LightWalletCoreFFI.framework/LightWalletCoreFFI target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI -output target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI
-	rm -rf target/LightWalletCoreFFI.xcframework || echo "skip removing"
-	xcodebuild -create-xcframework -framework target/aarch64-apple-ios/release/LightWalletCoreFFI.framework -framework target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework -output target/LightWalletCoreFFI.xcframework
-
-cp-xcframework-source:
-	cp -r target/LightWalletCoreFFI.xcframework ios
+cp-xcframework-source: ## Copy the xcframework to the iOS project.
+	cp -r $(TARGET_DIR)/LightWalletCoreFFI.xcframework ios
 	cp $(CRATES_DIR)/src/LightWalletCore.swift ios/LightWalletCore/Sources/Generated
 
 ##@ Contracts
