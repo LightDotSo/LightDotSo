@@ -429,6 +429,12 @@ importers:
         specifier: ^4.9.5
         version: 4.9.5
 
+  bin:
+    dependencies:
+      '@lightdotso/crates':
+        specifier: workspace:*
+        version: link:../crates
+
   configurations/eslint:
     dependencies:
       eslint-config-next:
