@@ -8,5 +8,8 @@
   ],
   "commit": false,
   "access": "public",
-  "baseBranch": "origin/main"
+  "baseBranch": "origin/main",
+  "ignore": [
+    "@lightdotso/fastlane"
+  ]
 }
