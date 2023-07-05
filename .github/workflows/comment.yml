@@ -1,0 +1,28 @@
+name: Comment
+on:
+  issue_comment:
+    types:
+      - created
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  comment-approve:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/approve')
+    timeout-minutes: 3
+    steps:
+      - name: Get PR Branch
+        uses: xt0rted/pull-request-comment-branch@v1
+        id: comment-branch
+      - name: Fetch Head w/ Token
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ steps.comment-branch.outputs.head_ref }}
+          token: ${{ secrets.BOT_TOKEN }}
+      - name: Commit and Push
+        run: |
+          git config --local user.name 'github-actions[bot]'
+          git config --local user.email 'github-actions[bot]@users.noreply.github.com'
+          git commit --allow-empty -m "chore: trigger workflow"
+          git push
