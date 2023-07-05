@@ -25,6 +25,8 @@ help: ## Display this help.
 
 ##@ Install
 
+install: ios-setup mac-setup ## Install all dependencies.
+
 ios-setup: ## Install iOS dependencies.
 	rustup target add $(ARCHS_IOS)
 	rustup target add $(ARCHS_IOS_ARM)
@@ -47,14 +49,22 @@ ios: ## Build the project for iOS.
 $(ARCHS_IOS): %:
 	cargo build $(CARGO_PARAMS) --target $@ --release --lib
 
+.PHONY: $(ARCHS_IOS_ARM)
+$(ARCHS_IOS_ARM): %:
+	cargo build $(CARGO_PARAMS) --target $@ --release --lib
+
+.PHONY: $(ARCHS_MAC)
+$(ARCHS_MAC): %:
+	cargo build $(CARGO_PARAMS) --target $@ --release --lib
+
 $(LIB): $(ARCHS_IOS) $(ARCHS_MAC) aarch64-apple-ios
-	rm -rf $(TARGET_DIR)/lipo_macos $(TARGET_DIR)/lipo_ios_simulator || echo "skip removin $(LIB)"
+	rm -rf $(TARGET_DIR)/lipo_macos $(TARGET_DIR)/lipo_ios_simulator || echo "Skip removing $(LIB)"
 	mkdir -p $(TARGET_DIR)/lipo_macos $(TARGET_DIR)/lipo_ios_simulator
 	lipo -create -output $(TARGET_DIR)/lipo_ios_simulator/libxmtp_rust_swift.a $(foreach arch,$(ARCHS_IOS),$(wildcard target/$(arch)/release/$(LIB)))
 	lipo -create -output $(TARGET_DIR)/lipo_macos/libxmtp_rust_swift.a $(foreach arch,$(ARCHS_MAC),$(wildcard target/$(arch)/release/$(LIB)))
 
 bindgen-swift:
-	rm -rf $(TARGET_DIR)/Generated || echo "skip removin Generated"
+	rm -rf $(TARGET_DIR)/Generated || echo "Skip removing Generated"
 	mkdir -p $(TARGET_DIR)/Generated
 	cp -r $(CRATES_DIR)/src $(TARGET_DIR)/Generated/
 	find $(TARGET_DIR)/Generated -type f -name "*.swift" -delete
