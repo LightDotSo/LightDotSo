@@ -29,12 +29,12 @@
     "dotenv": "^16.3.1",
     "events": "^3.3.0",
     "isutf8": "^4.0.0",
-    "next": "^13.4.7",
+    "next": "^13.4.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@types/node": "^18.16.18",
+    "@types/node": "^18.16.19",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "autoprefixer": "^10.4.14",
