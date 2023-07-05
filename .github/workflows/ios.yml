@@ -51,6 +51,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+      - name: Brew Install
+        uses: wallet-rs/wallet-rs/.github/actions/brew-install@main
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
@@ -95,11 +97,20 @@ jobs:
             fastlane/test_output/LightWalletTests.xcresult
             fastlane/test_output/LightWalletUITests.xcresult
           show-passed-tests: false
+      - name: Convert Xcresult
+        run: |
+          xcresultparser \
+            --output-format cobertura \
+            LightWalletTests.xcresult > LightWalletTests.xml
+          xcresultparser \
+            --output-format cobertura \
+            LightWalletUITests.xcresult > LightWalletUITests.xml
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
+          files: LightWalletTests.xml,LightWalletUITests.xml
       - if: github.event_name == 'pull_request'
         uses: mobile-dev-inc/action-maestro-cloud@main
         continue-on-error: true
