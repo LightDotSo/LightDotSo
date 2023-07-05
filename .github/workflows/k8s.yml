@@ -32,19 +32,12 @@ jobs:
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
-      - name: Fetch Head
-        uses: actions/checkout@v3
-      - name: Install Kubectl
-        uses: azure/setup-kubectl@v3
-      - name: Install GCP Credentials
-        uses: "google-github-actions/auth@v1"
+      - name: Kubernetes Install
+        uses: wallet-rs/wallet-rs/.github/actions/k8s-install@main
         with:
-          credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
-      - name: Install GKE Credentials
-        uses: "google-github-actions/get-gke-credentials@v1"
-        with:
-          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
-          location: ${{ secrets.GKE_CLUSTER_REGION }}
+          google_credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
+          gke_cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          gke_cluster_region: ${{ secrets.GKE_CLUSTER_REGION }}
       - name: Set Image
         run: |
           kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:${{ github.sha }}
