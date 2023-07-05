@@ -14,5 +14,8 @@
   "author": "Light, Inc.",
   "scripts": {
     "build": "echo 'Empty build script for turborepo trigger'"
+  },
+  "publishConfig": {
+    "access": "restricted"
   }
 }
