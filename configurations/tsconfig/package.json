@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/tsconfig",
   "version": "1.0.0",
-  "private": false,
+  "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -13,6 +13,6 @@
   "license": "GPL-3.0",
   "author": "Light, Inc.",
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   }
 }

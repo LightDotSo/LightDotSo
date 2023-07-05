@@ -24,5 +24,8 @@
   "dependencies": {
     "@lightdotso/crates": "workspace:*",
     "@lightdotso/extension": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "restricted"
   }
 }

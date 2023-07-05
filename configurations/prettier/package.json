@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/prettier",
   "version": "1.0.1",
-  "private": false,
+  "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -21,6 +21,6 @@
     "prettier-plugin-tailwindcss": "^0.3.0"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "restricted"
   }
 }
