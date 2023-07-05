@@ -20,11 +20,15 @@ codegen-units = 16
 
 # https://stackoverflow.com/a/54842093
 [profile.release]
-opt-level = 'z'
+# opt-level = 'z'
+# lto = true
+# codegen-units = 1
+# panic = 'abort'
+# strip = true
+
 lto = true
-codegen-units = 1
-panic = 'abort'
-strip = true
+opt-level = 2
+codegen-units = 16
 
 [workspace.dependencies]
 anyhow = "1.0.71"
