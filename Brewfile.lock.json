@@ -73,6 +73,11 @@
         "version": "1.4.2",
         "bottle": false
       }
+    },
+    "tap": {
+      "a7ex/formulae": {
+        "revision": "8377031b27fce0ab64422187187e404d55e531c8"
+      }
     }
   },
   "system": {
