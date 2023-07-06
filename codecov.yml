@@ -26,7 +26,7 @@ component_management:
     - component_id: ios
       name: iOS
       paths:
-        - ios/LightWalletCore/**
+        - ios/**
 ignore:
   - "contracts/src/samples/**"
   - "contracts/test/**"

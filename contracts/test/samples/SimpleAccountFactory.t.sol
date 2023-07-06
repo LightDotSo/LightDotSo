@@ -11,11 +11,11 @@ import {Test} from "forge-std/Test.sol";
 
 contract SimpleAccountFactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
-    EntryPoint entryPoint;
+    EntryPoint private entryPoint;
     // SimpleAccount from eth-inifinitism
-    SimpleAccount account;
+    SimpleAccount private account;
     // SimpleAccountFactory from eth-inifinitism
-    SimpleAccountFactory factory;
+    SimpleAccountFactory private factory;
 
     function setUp() public {
         // Deploy the EntryPoint

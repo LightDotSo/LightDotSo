@@ -12,11 +12,11 @@ import {Test} from "forge-std/Test.sol";
 /// @notice Unit tests for `LightWalletFactory`, organized by functions.
 contract LightWalletFactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
-    EntryPoint entryPoint;
+    EntryPoint private entryPoint;
     // LightWallet from eth-inifinitism
-    LightWallet account;
+    LightWallet private account;
     // LightWalletFactory from eth-inifinitism
-    LightWalletFactory factory;
+    LightWalletFactory private factory;
 
     function setUp() public {
         // Deploy the EntryPoint
