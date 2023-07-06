@@ -167,6 +167,7 @@ jobs:
         with:
           toolchain: v0.6.0
       - name: Run Test
+        working-directory: contracts/circuits
         run: |
           nargo test
   contracts-slither:
