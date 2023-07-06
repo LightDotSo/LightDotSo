@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 0.0.1-pre.1
+
+### Patch Changes
+
+- [#125](https://github.com/LightDotSo/LightDotSo/pull/125) [`d1968ab`](https://github.com/LightDotSo/LightDotSo/commit/d1968ab108623aafe29da732770557adb0ce8505) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add noir contracts
+
 ## 0.0.1-pre.0
 
 ### Patch Changes
