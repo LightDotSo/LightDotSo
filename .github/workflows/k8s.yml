@@ -40,7 +40,7 @@ jobs:
           gke_cluster_region: ${{ secrets.GKE_CLUSTER_REGION }}
       - name: Set Image
         run: |
-          kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:${{ github.sha }}
+          kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:sha-${{ github.sha }}
       - name: Rollout Status
         run: |
           kubectl rollout status deployment/serve
