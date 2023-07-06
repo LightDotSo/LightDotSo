@@ -1,5 +1,5 @@
 ============================
-👁️ STORAGE LAYOUT SNAPSHOT 👁️ 
+👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
  ➡ LightWallet
@@ -119,8 +119,6 @@
  ➡ SoulWalletFactory
 =======================
  ➡ Wallet
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
 =======================
  ➡ WalletFactory
 =======================
