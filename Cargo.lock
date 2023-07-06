@@ -1905,6 +1905,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-tracing"
+version = "0.1.0"
+dependencies = [
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "lightwallet-core"
 version = "0.1.0"
 dependencies = [

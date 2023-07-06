@@ -1,10 +1,12 @@
 [package]
 name = "embedded-uniffi-bindgen"
-version = "0.1.0"
-authors = ["The Firefox Sync Developers <sync-team@mozilla.com>"]
-edition = "2021"
 
-license = "GPL-3.0"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
 
 publish = false
 

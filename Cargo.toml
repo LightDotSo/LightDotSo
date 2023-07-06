@@ -6,11 +6,20 @@ members = [
   "apps/desktop/src-tauri",
   "crates/core",
   "crates/keychain",
+  "crates/tracing",
   "tools/embedded-scopelint",
   "tools/embedded-uniffi-bindgen"
 ]
 
 default-members = ["bin"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70"
+license = "GPL-3.0"
+homepage = "https://github.com/LightDotSo/LightDotSo"
+repository = "https://github.com/LightDotSo/LightDotSo"
 
 # Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
 
@@ -30,4 +39,11 @@ strip = true
 anyhow = "1.0.71"
 axum = "0.6.18"
 tokio = { version = "1", features = ["full"] }
+tracing = "0.1.37"
+tracing-subscriber = { version = "0.3.17", features = [
+  "env-filter",
+  "fmt",
+  "json",
+  "std",
+] }
 uniffi = "0.23.0"
