@@ -19,5 +19,6 @@ src/=lib/kernel/src/
 @uniswap/v3-periphery/=lib/v3-periphery/
 @zerodevapp/contracts/=lib/kernel/src/
 @/script/=contracts/script/
+@/circuits/=contracts/circuits/
 @/contracts/=contracts/src/
 @/test/=contracts/test/

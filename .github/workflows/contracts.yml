@@ -153,6 +153,22 @@ jobs:
       - name: Hardhat Test
         run: |
           pnpm turbo run test-hh
+  contracts-nargo:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
+    needs:
+      - contracts-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Install Nargo
+        uses: noir-lang/noirup@v0.1.2
+        with:
+          toolchain: v0.6.0
+      - name: Run Test
+        run: |
+          nargo test
   contracts-slither:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
@@ -186,6 +202,7 @@ jobs:
       - contracts-storage
       - contracts-test
       - contracts-hardhat
+      - contracts-nargo
       - contracts-slither
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -193,5 +210,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: contracts-build,contracts-lint,contracts-storage,contracts-test,contracts-hardhat,contracts-slither
+          allowed-skips: contracts-build,contracts-lint,contracts-storage,contracts-test,contracts-hardhat,contracts-nargo,contracts-slither
           jobs: ${{ toJSON(needs) }}

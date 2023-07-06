@@ -19,6 +19,7 @@
   test = "contracts/test"
   verbosity = 3
   via_ir = false
+  fs_permissions = [{ access = "read", path = "contracts/circuits/proofs"}]
 
 [profile.local]
   no_match_test = "testForkRun"
