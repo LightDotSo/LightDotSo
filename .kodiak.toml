@@ -1,0 +1,7 @@
+# .kodiak.toml
+version = 1
+
+[update]
+always = true # default: false
+require_automerge_label = false # default: true
+usernames = ["LightDotSoBot"]
