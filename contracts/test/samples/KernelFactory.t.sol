@@ -12,15 +12,15 @@ import {Test} from "forge-std/Test.sol";
 
 contract KernelFactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
-    EntryPoint entryPoint;
+    EntryPoint private entryPoint;
     // Kernel from kernel
-    EIP1967Proxy account;
+    EIP1967Proxy private account;
     // KernelFactory from kernel
-    KernelFactory factory;
+    KernelFactory private factory;
     // Validator from kernel
-    ECDSAValidator validator;
+    ECDSAValidator private validator;
     // ECDSAFactory from kernel
-    ECDSAKernelFactory ecdsaFactory;
+    ECDSAKernelFactory private ecdsaFactory;
 
     function setUp() public {
         // Deploy the EntryPoint

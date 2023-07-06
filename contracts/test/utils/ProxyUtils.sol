@@ -25,4 +25,20 @@ contract ProxyUtils is Test {
             addr := mload(0)
         }
     }
+
+    function getCreationCode(address proxyAddress) external view returns (bytes memory) {
+        bytes memory code;
+        assembly {
+            // Size of the creation code
+            let size := extcodesize(proxyAddress)
+
+            // Allocate memory for the creation code
+            code := mload(0x40)
+            mstore(0x40, add(code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
+
+            // Retrieve the creation code
+            extcodecopy(proxyAddress, add(code, 0x20), 0, size)
+        }
+        return code;
+    }
 }
