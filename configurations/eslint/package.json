@@ -14,9 +14,9 @@
   "author": "Light, Inc.",
   "main": "index.js",
   "dependencies": {
-    "eslint-config-next": "^13.4.7",
+    "eslint-config-next": "^13.4.8",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-config-turbo": "^1.10.6",
+    "eslint-config-turbo": "^1.10.7",
     "eslint-plugin-react": "7.28.0"
   },
   "publishConfig": {
