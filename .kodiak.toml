@@ -2,8 +2,8 @@
 version = 1
 
 [update]
-always = true # default: false
-require_automerge_label = false # default: true
+always = false
+require_automerge_label = false
 
 [merge.automerge_dependencies]
 usernames = ["LightDotSoBot"]
