@@ -25,6 +25,7 @@
     "@lightdotso/bin": "0.0.0"
   },
   "changesets": [
-    "fast-coins-tie"
+    "fast-coins-tie",
+    "grumpy-berries-sniff"
   ]
 }
