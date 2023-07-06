@@ -34,3 +34,12 @@
 [submodule "lib/soul-wallet-contract"]
 	path = lib/soul-wallet-contract
 	url = https://github.com/proofofsoulprotocol/soul-wallet-contract
+[submodule "lib/wallet-contracts"]
+	path = lib/wallet-contracts
+	url = https://github.com/0xsequence/wallet-contracts
+[submodule "lib/seaport"]
+	path = lib/seaport
+	url = https://github.com/ProjectOpenSea/seaport
+[submodule "lib/scw-contracts"]
+	path = lib/scw-contracts
+	url = https://github.com/bcnmy/scw-contracts

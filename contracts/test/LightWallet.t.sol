@@ -22,20 +22,20 @@ contract LightWalletTest is Test {
         0x6492649264926492649264926492649264926492649264926492649264926492;
 
     // EntryPoint from eth-inifinitism
-    EntryPoint entryPoint;
+    EntryPoint private entryPoint;
     // LightWallet core contract
-    LightWallet account;
+    LightWallet private account;
     // LightWalletFactory core contract
-    LightWalletFactory factory;
+    LightWalletFactory private factory;
     // UniversalSigValidator
-    UniversalSigValidator validator;
+    UniversalSigValidator private validator;
 
     // Address of the owner of the account
-    address user;
+    address private user;
     // Private key of the owner of the account
-    uint256 userKey;
+    uint256 private userKey;
     // Address of the beneficiary of the account
-    address payable beneficiary;
+    address payable private beneficiary;
 
     function setUp() public {
         // Deploy the EntryPoint
