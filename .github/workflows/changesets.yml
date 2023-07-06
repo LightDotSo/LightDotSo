@@ -24,27 +24,6 @@ jobs:
         name: Check for changeset
         run: |
           pnpm changeset status
-  changesets-pr:
-    if: github.event_name == 'push'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    permissions:
-      contents: write
-      pull-requests: write
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Node Install
-        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Create Pull Request
-        uses: changesets/action@v1
-        with:
-          commit: "chore: changesets version package"
-          title: "chore: changesets pr"
-        env:
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
   changesets-release:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -67,15 +46,16 @@ jobs:
         uses: changesets/action@v1
         continue-on-error: true
         with:
+          commit: "chore: changesets version package"
+          title: "chore: changesets pr"
           publish: pnpm run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   changesets-check:
     if: always()
     needs:
       - changesets-status
-      - changesets-pr
       - changesets-release
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -83,5 +63,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: changesets-status,changesets-pr,changesets-release
+          allowed-skips: changesets-status,changesets-release
           jobs: ${{ toJSON(needs) }}
