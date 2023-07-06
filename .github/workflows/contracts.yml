@@ -164,6 +164,12 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
       - name: Install Nargo
         uses: noir-lang/noirup@v0.1.2
         with:
