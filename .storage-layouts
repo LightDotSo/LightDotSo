@@ -1,5 +1,5 @@
 ============================
-👁️ STORAGE LAYOUT SNAPSHOT 👁️ 
+👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
  ➡ LightWallet
@@ -90,6 +90,15 @@
 | signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 =======================
+ ➡ SafeProxy
+| Name      | Type    | Slot | Offset | Bytes | Contract                                                     |
+|-----------|---------|------|--------|-------|--------------------------------------------------------------|
+| singleton | address | 0    | 0      | 20    | lib/safe-contracts/contracts/proxies/SafeProxy.sol:SafeProxy |
+=======================
+ ➡ SafeProxyFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ SimpleAccount
 | Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
 |---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
@@ -101,9 +110,19 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
+ ➡ SmartAccount
+=======================
+ ➡ SmartAccountFactory
+=======================
  ➡ SoulWallet
 =======================
  ➡ SoulWalletFactory
+=======================
+ ➡ Wallet
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ WalletFactory
 =======================
  ➡ UniversalSigValidator
 | Name | Type | Slot | Offset | Bytes | Contract |
