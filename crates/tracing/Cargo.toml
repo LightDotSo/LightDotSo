@@ -1,5 +1,5 @@
 [package]
-name = "lightwallet-keychain"
+name = "lightdotso-tracing"
 
 version.workspace = true
 edition.workspace = true
@@ -9,5 +9,5 @@ homepage.workspace = true
 repository.workspace = true
 
 [dependencies]
-core-foundation = "0.9.3"
-core-foundation-sys = "0.8.3"
+tracing = { workspace = true }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["env-filter", "fmt"] }

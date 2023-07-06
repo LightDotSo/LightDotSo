@@ -2,12 +2,12 @@
 name = "lightdotso-bin"
 description = "A bin library for wallet-rs"
 version = "0.1.0"
-edition = "2021"
 
-authors = ["Shun Kakinoki"]
-license = "GPL-3.0"
-repository = "https://github.com/LightDotSo/LightDotSo"
-readme = "README.md"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
 
 [dependencies]
 anyhow = { workspace = true }
