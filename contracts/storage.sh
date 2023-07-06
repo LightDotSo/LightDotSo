@@ -10,7 +10,7 @@ OUTPUT_FILE=.storage-layouts
 
 echo "" > "$OUTPUT_FILE"
 echo "============================" > "$OUTPUT_FILE"
-echo "👁️ STORAGE LAYOUT SNAPSHOT 👁️ ">> "$OUTPUT_FILE"
+echo "👁️ STORAGE LAYOUT SNAPSHOT 👁️">> "$OUTPUT_FILE"
 echo "============================" >> "$OUTPUT_FILE"
 
 # Loop through each contract in the directory
