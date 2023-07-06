@@ -159,6 +159,8 @@ jobs:
       - contracts-turbo
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      FOUNDRY_PROFILE: noir
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -170,6 +172,12 @@ jobs:
         working-directory: contracts/circuits
         run: |
           nargo test
+      - name: Install Deps
+        run: |
+          forge install
+      - name: Run Test
+        run: |
+          forge test
   contracts-slither:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:

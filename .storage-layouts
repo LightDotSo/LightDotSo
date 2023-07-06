@@ -1,11 +1,8 @@
 ============================
-👁️ STORAGE LAYOUT SNAPSHOT 👁️ 
+👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
  ➡ LightVerifier
-| Name     | Type                   | Slot | Offset | Bytes | Contract                                      |
-|----------|------------------------|------|--------|-------|-----------------------------------------------|
-| verifier | contract UltraVerifier | 0    | 0      | 20    | contracts/src/LightVerifier.sol:LightVerifier |
 =======================
  ➡ LightWallet
 | Name          | Type    | Slot | Offset | Bytes | Contract                                  |
