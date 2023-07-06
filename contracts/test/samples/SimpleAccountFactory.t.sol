@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.20;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {SimpleAccount} from "@/contracts/samples/SimpleAccount.sol";
