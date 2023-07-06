@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.18;
 
 import {SafeProxy} from "@/contracts/samples/SafeProxy.sol";
 import {SafeProxyFactory} from "@/contracts/samples/SafeProxyFactory.sol";

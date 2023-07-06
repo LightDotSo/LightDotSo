@@ -4,7 +4,7 @@
 // Link: https://github.com/noir-lang/noir-starter/blob/dff860c69eb235df64bfbdfe86fdc03cbc8f97cb/with-foundry/test/Starter.t.sol
 // License: MIT
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.18;
 
 import {UltraVerifier} from "@/circuits/contract/plonk_vk.sol";
 import {LightVerifier} from "@/contracts/LightVerifier.sol";

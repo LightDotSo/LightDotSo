@@ -4,7 +4,7 @@
 // From: https://eips.ethereum.org/EIPS/eip-1271
 // License: CC-BY-SA-4.0
 
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.18;
 
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
