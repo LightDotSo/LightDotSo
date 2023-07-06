@@ -52,7 +52,8 @@ jobs:
     env:
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-    permissions: write-all
+    permissions:
+      contents: write
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
