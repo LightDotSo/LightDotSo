@@ -27,3 +27,4 @@
 [profile.ci]
   fuzz = { runs = 5000 }
   invariant = { runs = 1000 }
+  via_ir = true
