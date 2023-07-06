@@ -21,9 +21,11 @@
     "@lightdotso/content": "0.0.1",
     "@lightdotso/inpage": "0.0.1",
     "@lightdotso/popup": "0.0.1",
-    "@lightdotso/resources": "0.0.1"
+    "@lightdotso/resources": "0.0.1",
+    "@lightdotso/bin": "0.0.0"
   },
   "changesets": [
-    "chilly-humans-sort"
+    "chilly-humans-sort",
+    "dull-forks-sell"
   ]
 }
