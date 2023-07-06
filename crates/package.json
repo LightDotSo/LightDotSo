@@ -1,7 +1,7 @@
 {
   "name": "@lightdotso/crates",
-  "version": "1.0.0",
-  "private": true,
+  "version": "0.0.0",
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -16,6 +16,6 @@
     "build": "echo 'Empty build script for turborepo trigger'"
   },
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }
