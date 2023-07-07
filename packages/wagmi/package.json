@@ -13,7 +13,7 @@
   "license": "GPL-3.0",
   "author": "Light, Inc.",
   "scripts": {
-    "wagmi": "cd ../.. && pnpm wagmi generate"
+    "wagmi": "cd ../.. && pnpm wagmi:generate"
   },
   "dependencies": {
     "wagmi": "^1.3.8"
