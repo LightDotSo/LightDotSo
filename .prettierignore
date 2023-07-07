@@ -1,16 +1,23 @@
-*.json
+geenrated.ts
+*.html
 *.xcarchive
 
 pnpm-lock.yaml
 pnpm-workspace.yaml
 
 .build
+.changeset
 .next
+.rustc_info.json
+
+ios/LightWallet
 build
 debug
 dist
 lib
 out
+out-wagmi
+target
 
 apps/extension/**
 ios/LightWalletSafariExtension/Resources/**

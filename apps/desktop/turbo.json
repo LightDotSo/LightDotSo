@@ -4,10 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": [
-        "TAURI_PLATFORM",
-        "TAURI_DEBUG"
-      ],
+      "env": ["TAURI_PLATFORM", "TAURI_DEBUG"],
       "outputs": ["dist/**"]
     },
     "dev": {

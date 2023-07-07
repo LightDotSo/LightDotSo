@@ -9,7 +9,5 @@
   "commit": false,
   "access": "public",
   "baseBranch": "origin/main",
-  "ignore": [
-    "@lightdotso/fastlane"
-  ]
+  "ignore": ["@lightdotso/fastlane"]
 }

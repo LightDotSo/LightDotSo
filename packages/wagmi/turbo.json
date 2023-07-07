@@ -3,9 +3,7 @@
   "extends": ["//"],
   "pipeline": {
     "wagmi": {
-      "outputs": [
-        "src/generated.ts"
-      ]
+      "outputs": ["src/generated.ts"]
     },
     "dev": {
       "cache": false,

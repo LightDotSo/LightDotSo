@@ -5,5 +5,5 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "[json]": {
     "editor.defaultFormatter": "JuanBlanco.solidity"
-  },
+  }
 }

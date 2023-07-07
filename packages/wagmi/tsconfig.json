@@ -3,7 +3,5 @@
     "module": "commonjs",
     "target": "ES2021"
   },
-  "include": [
-    "src/generated.ts"
-  ]
+  "include": ["src/generated.ts"]
 }

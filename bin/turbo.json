@@ -5,11 +5,7 @@
     "build": {
       "cache": false,
       "dependsOn": ["^build"],
-      "inputs": [
-        "**",
-        "../.dockerignore",
-        "../Dockerfile"
-      ]
+      "inputs": ["**", "../.dockerignore", "../Dockerfile"]
     }
   }
 }
