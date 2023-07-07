@@ -6,12 +6,12 @@ coverage:
     project:
       default:
         target: auto
-        threshold: null
+        threshold: "0%"
         informational: true
     patch:
       default:
         target: auto
-        threshold: null
+        threshold: "0%"
         informational: true
 component_management:
   individual_components:
@@ -19,14 +19,29 @@ component_management:
       name: Contracts
       paths:
         - contracts/src/**
-    - component_id: core
-      name: Core
+    - component_id: rust
+      name: Rust
       paths:
-        - crates/core/**
+        - bin/**
+        - crates/**
     - component_id: ios
       name: iOS
       paths:
         - ios/**
+flags:
+  contracts:
+    paths:
+      - contracts/src/**
+    carryforward: true
+  rust:
+    paths:
+      - bin/**
+      - crates/**
+    carryforward: true
+  ios:
+    paths:
+      - ios/**
+    carryforward: true
 ignore:
   - "contracts/src/samples/**"
   - "contracts/test/**"
