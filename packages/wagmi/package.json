@@ -12,6 +12,10 @@
   },
   "license": "GPL-3.0",
   "author": "Light, Inc.",
+  "main": "src/generated.ts",
+  "files": [
+    "src/generated.ts"
+  ],
   "scripts": {
     "wagmi": "cd ../.. && pnpm wagmi:generate"
   },
