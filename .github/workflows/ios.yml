@@ -111,6 +111,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
           files: LightWalletTests.xml,LightWalletUITests.xml
+          flags: ios
       - if: github.event_name == 'pull_request'
         uses: mobile-dev-inc/action-maestro-cloud@main
         continue-on-error: true

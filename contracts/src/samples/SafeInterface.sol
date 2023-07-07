@@ -10,26 +10,16 @@ import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfa
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 
-interface ILightWallet is IERC1271 {
-    // -------------------------------------------------------------------------
-    // Errors
-    // -------------------------------------------------------------------------
-
-    /// @notice Emitted when the action is invoked not by an owner.
-    error OnlyOwner();
-
+interface SafeInterface is IERC1271 {
     // -------------------------------------------------------------------------
     // Events
     // -------------------------------------------------------------------------
 
-    event LightWalletInitialized(IEntryPoint indexed entryPoint, address indexed owner);
+    event SafeL3Initialized(IEntryPoint indexed entryPoint, bytes32 indexed has);
 
     // -------------------------------------------------------------------------
     // Actions
     // -------------------------------------------------------------------------
-
-    /// @notice Check if the caller is the owner.
-    function owner() external view returns (address);
 
     /// @notice Check current account deposit in the entryPoint.
     function getDeposit() external view returns (uint256);
@@ -37,24 +27,29 @@ interface ILightWallet is IERC1271 {
     /// @notice Deposit more funds for this account in the entryPoint.
     function addDeposit() external payable;
 
-    /// @notice Executes a transaction (called directly from owner, or by entryPoint).
+    /// @notice Executes a transaction (called directly by entryPoint).
     function execute(address dest, uint256 value, bytes calldata func) external;
 
-    /// @notice Executes a sequence of transactions (called directly from owner, or by entryPoint).
+    /// @notice Executes a sequence of transactions (called directly by entryPoint).
     function executeBatch(address[] calldata dest, bytes[] calldata func) external;
 
     /// @notice Check if a signature is valid based on the owner's address.
     /// Compatible with ERC1271
     function isValidSignature(bytes32 _hash, bytes calldata _signatures) external view returns (bytes4);
 
-    /// Compatibility with ERC165
+    /// @notice Compatibility with ERC165
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 
-    /// @notice Sets the owner of this account, and emits an event.
-    function initialize(address anOwner) external;
+    /// @notice Sets the hash of this account, and emits an event.
+    function initialize(bytes32 _imageHash) external;
 
     /// @notice Withdraws value from the account's deposit.
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) external;
+    function withdrawDepositTo(
+        address payable withdrawAddress,
+        uint256 amount,
+        bytes32 _hash,
+        bytes calldata _signatures
+    ) external;
 
     /// @notice Returns the entry point contract address for this account.
     function entryPoint() external view returns (IEntryPoint);

@@ -9,8 +9,8 @@ import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {SimpleAccount, UserOperation} from "@/contracts/samples/SimpleAccount.sol";
+import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Test} from "forge-std/Test.sol";
@@ -19,8 +19,8 @@ import {Test} from "forge-std/Test.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Unit tests for `LightWallet`, organized by functions.
-contract LightWalletTest is Test {
+/// @notice Unit tests for `SimpleAccount`, organized by functions.
+contract SimpleAccountTest is Test {
     // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
     event Initialized(uint8 version);
 
@@ -30,10 +30,10 @@ contract LightWalletTest is Test {
 
     // EntryPoint from eth-inifinitism
     EntryPoint private entryPoint;
-    // LightWallet core contract
-    LightWallet private account;
-    // LightWalletFactory core contract
-    LightWalletFactory private factory;
+    // SimpleAccount core contract
+    SimpleAccount private account;
+    // SimpleAccountFactory core contract
+    SimpleAccountFactory private factory;
     // UniversalSigValidator
     UniversalSigValidator private validator;
 
@@ -47,8 +47,8 @@ contract LightWalletTest is Test {
     function setUp() public {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
-        // Deploy the LightWalletFactory w/ EntryPoint
-        factory = new LightWalletFactory(entryPoint);
+        // Deploy the SimpleAccountFactory w/ EntryPoint
+        factory = new SimpleAccountFactory(entryPoint);
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
         // Set the user and userKey
@@ -63,27 +63,27 @@ contract LightWalletTest is Test {
     }
 
     // Tests that the account is initialized properly
-    function test_light_initialize() public {
+    function test_simple_initialize() public {
         vm.expectEmit(true, true, true, true);
         emit Initialized(255);
         // Create a new account for the implementation
-        account = new LightWallet(entryPoint);
+        account = new SimpleAccount(entryPoint);
     }
 
     // Tests that the account can not be initialized twice
-    function test_light_implementation_noInitialize() public {
+    function test_simple_implementation_noInitialize() public {
         // Create a new account for the implementation
-        account = new LightWallet(entryPoint);
+        account = new SimpleAccount(entryPoint);
         // Ensure that the account is not initializable on the implementation contract
         vm.expectRevert(bytes("Initializable: contract is already initialized"));
         account.initialize(address(this));
     }
 
     // Tests that the account can correctly transfer ETH
-    function test_light_transfer_eth() public {
+    function test_simple_transfer_eth() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation memory op = entryPoint.fillUserOp(
-            address(account), abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""))
+            address(account), abi.encodeWithSelector(SimpleAccount.execute.selector, address(1), 1, bytes(""))
         );
         op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
@@ -92,11 +92,11 @@ contract LightWalletTest is Test {
         // Assert that the balance of the account is 1
         assertEq(address(1).balance, 1);
         // Assert the balance of the account is the Deposit - Gas
-        assertEq(address(entryPoint).balance, 1_002_500_000_000 - 159_329);
+        assertEq(address(entryPoint).balance, 1_002_500_000_000 - 159_348);
     }
 
     // Tests that the account can correctly transfer ERC20
-    function test_light_transfer_erc20() public {
+    function test_simple_transfer_erc20() public {
         // Deploy a new MockERC20
         MockERC20 token = new MockERC20("Test", "TEST", 18);
 
@@ -108,7 +108,7 @@ contract LightWalletTest is Test {
         UserOperation memory op = entryPoint.fillUserOp(
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                SimpleAccount.execute.selector,
                 address(token),
                 0,
                 abi.encodeWithSelector(IERC20.transfer.selector, address(1), 1)
@@ -126,7 +126,7 @@ contract LightWalletTest is Test {
     }
 
     // Tests that the account can correctly transfer ERC721
-    function test_light_transfer_erc721() public {
+    function test_simple_transfer_erc721() public {
         // Deploy a new MockERC721
         MockERC721 nft = new MockERC721("Test", "TEST");
 
@@ -138,7 +138,7 @@ contract LightWalletTest is Test {
         UserOperation memory op = entryPoint.fillUserOp(
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                SimpleAccount.execute.selector,
                 address(nft),
                 0,
                 abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1)
@@ -156,7 +156,7 @@ contract LightWalletTest is Test {
     }
 
     // Tests that the account can correctly transfer ERC1155
-    function test_light_transfer_erc1155() public {
+    function test_simple_transfer_erc1155() public {
         // Deploy a new MockERC1155
         MockERC1155 multi = new MockERC1155();
 
@@ -168,7 +168,7 @@ contract LightWalletTest is Test {
         UserOperation memory op = entryPoint.fillUserOp(
             address(account),
             abi.encodeWithSelector(
-                LightWallet.execute.selector,
+                SimpleAccount.execute.selector,
                 address(multi),
                 0,
                 abi.encodeWithSelector(IERC1155.safeTransferFrom.selector, address(account), address(1), 1, 1, "")
@@ -183,48 +183,5 @@ contract LightWalletTest is Test {
         assertEq(multi.balanceOf(address(1), 1), 1);
         // Assert that the balance of the account decreased by 1
         assertEq(multi.balanceOf(address(account), 1), 9);
-    }
-
-    // Tests that the account complies w/ EIP-1271 and EIP-6492
-    // Ref: https://eips.ethereum.org/EIPS/eip-1271
-    // Ref: https://eips.ethereum.org/EIPS/eip-6492
-    function test_light_eip_1271_6492() public {
-        // Obtain the signature w/ the EOA by the user
-        bytes32 hashed = keccak256("Signed by user");
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
-        bytes memory signature = abi.encodePacked(r, s, v);
-
-        // Test the signature w/ EIP-1271
-        assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
-
-        // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
-        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
-        assertEq(validator.isValidSig(address(account), hashed, signature), true);
-    }
-
-    // Tests that a predeployed contract complies w/ EIP-6492
-    function test_light_predeployed_6492() public {
-        // Obtain the original signature w/ the EOA by the user
-        bytes32 hashed = keccak256("Signed by user");
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
-        bytes memory signature = abi.encodePacked(r, s, v);
-
-        // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
-        // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
-        bytes memory sig_6492 = abi.encodePacked(
-            abi.encode(
-                // Nonce is 1 (does not exist)
-                address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, user, 1),
-                signature
-            ),
-            ERC6492_DETECTION_SUFFIX
-        );
-
-        // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
-        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
-        assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }
 }

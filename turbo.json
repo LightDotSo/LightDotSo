@@ -21,7 +21,14 @@
     "//#lint": {
       "dependsOn": [],
       "outputs": [],
-      "inputs": ["apps/**", "configurations/**", "contracts/**", "crates/**", "fastlane/**", "packages/**"]
+      "inputs": [
+        "apps/**",
+        "configurations/**",
+        "contracts/**",
+        "crates/**",
+        "fastlane/**",
+        "packages/**"
+      ]
     }
   }
 }

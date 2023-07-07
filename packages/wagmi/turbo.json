@@ -2,10 +2,8 @@
   "$schema": "https://turbo.build/schema.json",
   "extends": ["//"],
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "env": ["TAURI_PLATFORM", "TAURI_DEBUG"],
-      "outputs": ["dist/**"]
+    "wagmi": {
+      "outputs": ["src/generated.ts"]
     },
     "dev": {
       "cache": false,

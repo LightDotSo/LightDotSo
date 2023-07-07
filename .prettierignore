@@ -1,17 +1,24 @@
-*.json
+generated.ts
+*.html
 *.xcarchive
 
 pnpm-lock.yaml
 pnpm-workspace.yaml
 
 .build
+.changeset
 .next
+.rustc_info.json
+
 build
 debug
 dist
+fastlane
 lib
 out
+out-wagmi
+target
 
 apps/extension/**
+ios/LightWallet
 ios/LightWalletSafariExtension/Resources/**
-fastlane

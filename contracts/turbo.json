@@ -4,7 +4,15 @@
   "pipeline": {
     "build": {
       "cache": false,
-      "inputs": ["src/**", "test/**", "../lib/**", "../.gitmodules", "../hardhat.config.ts", "../foundry.toml", "../remappings.txt"],
+      "inputs": [
+        "src/**",
+        "test/**",
+        "../lib/**",
+        "../.gitmodules",
+        "../hardhat.config.ts",
+        "../foundry.toml",
+        "../remappings.txt"
+      ],
       "outputs": ["../out", "../.gas-snapshot", "../foundry.toml"]
     },
     "lint": {

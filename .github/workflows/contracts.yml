@@ -85,12 +85,15 @@ jobs:
       - name: Run Build
         run: |
           forge build
+      - name: Size Check
+        run: |
+          make contracts-size
       - name: Storage Check
         run: |
           for ((i=1; i<=3; i++));
-            do make storage-layout;
+            do make contracts-storage;
           done
-      - name: Check Storage Changes
+      - name: Check Changes
         run: |
           git diff --quiet
       - if: failure()
@@ -128,8 +131,9 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: lcov.info
           fail_ci_if_error: false
+          files: lcov.info
+          flags: contracts
   contracts-hardhat:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
