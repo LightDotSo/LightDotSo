@@ -10,6 +10,9 @@ artifacts
 coverage
 lcov.info
 
+# foundry
+out-wagmi
+
 # next.js
 .next/
 out/

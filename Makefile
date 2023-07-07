@@ -27,10 +27,12 @@ help: ## Display this help.
 
 install: ios-setup mac-setup ## Install all dependencies.
 
+.PHONY: ios-setup
 ios-setup: ## Install iOS dependencies.
 	rustup target add $(ARCHS_IOS)
 	rustup target add $(ARCHS_IOS_ARM)
 
+.PHONY: mac-setup
 mac-setup: ## Install macOS dependencies.
 	rustup target add $(ARCHS_MAC)
 
@@ -60,12 +62,14 @@ $(ARCHS_MAC): %:
 
 ##@ Apple Build
 
+.PHONY: $(STATIC_LIB_NAME)
 $(STATIC_LIB_NAME): $(ARCHS_IOS) $(ARCHS_IOS_ARM) $(ARCHS_MAC) ## Build the universal binary for iOS and macOS.
 	rm -rf $(TARGET_DIR)/lipo_macos $(TARGET_DIR)/lipo_ios_simulator || echo "Skip removing $(STATIC_LIB_NAME)"
 	mkdir -p $(TARGET_DIR)/lipo_macos $(TARGET_DIR)/lipo_ios_simulator
 	lipo -create -output $(TARGET_DIR)/lipo_ios_simulator/$(STATIC_LIB_NAME) $(foreach arch,$(ARCHS_IOS),$(wildcard target/$(arch)/release/$(STATIC_LIB_NAME)))
 	lipo -create -output $(TARGET_DIR)/lipo_macos/$(STATIC_LIB_NAME) $(foreach arch,$(ARCHS_MAC),$(wildcard target/$(arch)/release/$(STATIC_LIB_NAME)))
 
+.PHONY: bindgen-swift
 bindgen-swift: ## Generate the Swift bindings.
 	rm -rf $(TARGET_DIR)/Generated || echo "Skip removing Generated"
 	mkdir -p $(TARGET_DIR)/Generated
@@ -74,6 +78,7 @@ bindgen-swift: ## Generate the Swift bindings.
 	cargo uniffi-bindgen generate $(CRATES_DIR)/src/LightWalletCore.udl --language swift
 	sed -i '' 's/module\ LightWalletCoreFFI/framework\ module\ LightWalletCoreFFI/' $(CRATES_DIR)/src/LightWalletCoreFFI.modulemap
 
+.PHONY: xcframework
 xcframework: ## Build the xcframework for iOS and macOS.
 	rm -rf $(TARGET_DIR)/LightWalletCoreFFI.framework || echo "Skip removing framework"
 	xcodebuild -create-xcframework \
@@ -83,22 +88,33 @@ xcframework: ## Build the xcframework for iOS and macOS.
 		-headers ./$(TARGET_DIR)/Generated/ \
 		-output $(TARGET_DIR)/LightWalletCoreFFI.xcframework
 
+.PHONY: cp-xcframework-source
 cp-xcframework-source: ## Copy the xcframework to the iOS project.
 	cp -r $(TARGET_DIR)/LightWalletCoreFFI.xcframework ios
 	cp $(CRATES_DIR)/src/LightWalletCore.swift ios/LightWalletCore/Sources/Generated
 
 ##@ Old Overrides
 
+.PHONY: assemble-frameworks
 assemble-frameworks: # Temporary override for old build system
 	find . -type d -name LightWalletCoreFFI.framework -exec rm -rf {} \; || echo "rm failed"
 	cd target/x86_64-apple-ios/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI
 	cd target/aarch64-apple-ios-sim/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI
 	cd target/aarch64-apple-ios/release && mkdir -p LightWalletCoreFFI.framework && cd LightWalletCoreFFI.framework && mkdir Headers Modules && cp ../../../../crates/core/src/LightWalletCoreFFI.modulemap ./Modules/module.modulemap && cp ../../../../crates/core/src/LightWalletCoreFFI.h ./Headers/LightWalletCoreFFI.h && cp ../$(STATIC_LIB_NAME) ./LightWalletCoreFFI
 
+.PHONY: xcframework
 xcframework:  # Temporary override for old build system
 	lipo -create target/x86_64-apple-ios/release/LightWalletCoreFFI.framework/LightWalletCoreFFI target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI -output target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework/LightWalletCoreFFI
 	rm -rf target/LightWalletCoreFFI.xcframework || echo "skip removing"
 	xcodebuild -create-xcframework -framework target/aarch64-apple-ios/release/LightWalletCoreFFI.framework -framework target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework -output target/LightWalletCoreFFI.xcframework
+
+.PHONY: contracts-size
+contracts-size: ## Omits the current code size layout from the current contracts with foundry
+	./contracts/size.sh
+
+.PHONY: contracts-wagmi
+contracts-wagmi: ## Copies over certain directory for wagmi generation
+	./contracts/wagmi.sh
 
 .PHONY: storage-layout
 storage-layout: ## Omits the current storage layout from the current contracts with foundry

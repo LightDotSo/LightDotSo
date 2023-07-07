@@ -85,6 +85,9 @@ jobs:
       - name: Run Build
         run: |
           forge build
+      - name: Size Check
+        run: |
+          make contracts-size
       - name: Storage Check
         run: |
           for ((i=1; i<=3; i++));

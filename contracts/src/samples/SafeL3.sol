@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.18;
 
-// LightWallet.sol -- LightWallet initial implementation
+// SafeL3.sol -- SafeL3 initial implementation
 // Modified implementation on SimpleAccount.sol from @eth-infinitism/account-abstraction
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
 // License: GPL-3.0
@@ -15,12 +15,21 @@ import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfa
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {TokenCallbackHandler} from
     "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
-import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
+import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
+import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
+import {SafeInterface} from "@/contracts/samples/SafeInterface.sol";
 
-/// @title LightWallet
+/// @title SafeL3
 /// @author shunkakinoki
-/// @notice LightWallet is a simple account abstraction contract
-contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initializable {
+/// @notice SafeL3 is a composable account abstraction contract
+contract SafeL3 is
+    SafeInterface,
+    ModuleAuthUpgradable,
+    BaseAccount,
+    TokenCallbackHandler,
+    UUPSUpgradeable,
+    Initializable
+{
     using ECDSA for bytes32;
 
     // -------------------------------------------------------------------------
@@ -39,19 +48,13 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
     IEntryPoint private immutable _entryPoint;
 
     // -------------------------------------------------------------------------
-    // Storage
-    // -------------------------------------------------------------------------
-
-    /// @notice The owner of this account
-    /// @dev The owner is the EOA that is the owner of this account
-    address public owner;
-
-    // -------------------------------------------------------------------------
     // Modifiers
     // -------------------------------------------------------------------------
 
-    modifier onlyOwner() {
-        _onlyOwner();
+    /// @param _hash The hash to validate the signature against.
+    /// @param _signatures The signatures to validate.
+    modifier onlyValidSignature(bytes32 _hash, bytes calldata _signatures) {
+        _requireValidSignature(_hash, _signatures);
         _;
     }
 
@@ -59,8 +62,12 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
+    function owner() public view returns (address) {
+        return address(0);
+    }
+
     /// @inheritdoc BaseAccount
-    function entryPoint() public view virtual override(BaseAccount, ILightWallet) returns (IEntryPoint) {
+    function entryPoint() public view virtual override(BaseAccount, SafeInterface) returns (IEntryPoint) {
         return _entryPoint;
     }
 
@@ -75,17 +82,11 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
         _disableInitializers();
     }
 
-    /// @notice Check if the caller is the owner
-    function _onlyOwner() internal view {
-        // Directly from EOA owner, or through the account itself (which gets redirected through execute())
-        require(msg.sender == owner || msg.sender == address(this), "only owner");
-    }
-
     /// @param dest The address of the target contract to call.
     /// @param func The calldata to send to the target contract.
     /// @notice Executes a transaction (called directly from owner, or by entryPoint)
     function execute(address dest, uint256 value, bytes calldata func) external {
-        _requireFromEntryPointOrOwner();
+        _requireFromEntryPoint();
         _call(dest, value, func);
     }
 
@@ -93,43 +94,51 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
     /// @param func The array of calldata to send to the target contract.
     /// @notice Executes a sequence of transactions (called directly from owner, or by entryPoint)
     function executeBatch(address[] calldata dest, bytes[] calldata func) external {
-        _requireFromEntryPointOrOwner();
+        _requireFromEntryPoint();
         require(dest.length == func.length, "wrong array lengths");
         for (uint256 i = 0; i < dest.length; i++) {
             _call(dest[i], 0, func[i]);
         }
     }
 
-    /// @param hash The hash of the user operation
-    /// @param signature The signature of the user operation
-    /// @notice Check if a signature is valid based on the owner's address
-    /// Comaptible with ERC1271
-    function isValidSignature(bytes32 hash, bytes calldata signature) external view returns (bytes4 magicValue) {
-        address recoveredOwner = ECDSA.recover(hash, signature);
-        if (owner == recoveredOwner) {
-            return ERC1271_SUCCESS;
-        }
-        return bytes4(0xffffffff);
+    /// @inheritdoc ModuleAuth
+    function isValidSignature(bytes32 _hash, bytes calldata _signatures)
+        public
+        view
+        override(SafeInterface, ModuleAuth)
+        returns (bytes4)
+    {
+        super.isValidSignature(_hash, _signatures);
     }
 
-    /// @param anOwner The address of the owner of this account
+    /// @param _imageHash The hash to validate the signature against.
     /// @notice The _entryPoint member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
     /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
     /// the implementation by calling `upgradeTo()`
-    function initialize(address anOwner) public virtual initializer {
-        _initialize(anOwner);
+    function initialize(bytes32 _imageHash) public virtual initializer {
+        _initialize(_imageHash);
     }
 
-    /// @param anOwner The address of the owner of this account
-    /// @notice Sets the owner of this account, and emits an event
-    function _initialize(address anOwner) internal virtual {
-        owner = anOwner;
-        emit LightWalletInitialized(_entryPoint, owner);
+    /// @param _imageHash The hash to validate the signature against.
+    /// @notice Emits an event for the initialization of the contract
+    function _initialize(bytes32 _imageHash) internal virtual {
+        _updateImageHash(_imageHash);
+        // emit LightWalletInitialized(_entryPoint);
+        emit SafeL3Initialized(_entryPoint, _imageHash);
     }
 
-    /// @notice Require the function call went through EntryPoint or owner
-    function _requireFromEntryPointOrOwner() internal view {
-        require(msg.sender == address(entryPoint()) || msg.sender == owner, "account: not Owner or EntryPoint");
+    /// @param _hash The hash to validate the signature against.
+    /// @param _signatures The signatures to validate.
+    function _requireValidSignature(bytes32 _hash, bytes calldata _signatures) internal view {
+        (bool isValid,) = _signatureValidation(_hash, _signatures);
+        require(isValid, "account: not valid signature");
+    }
+
+    /// @param _hash The hash to validate the signature against.
+    /// @param _signatures The signatures to validate.
+    function _requireFromEntryPointOrValidSignature(bytes32 _hash, bytes calldata _signatures) internal view {
+        (bool isValid,) = _signatureValidation(_hash, _signatures);
+        require(isValid || msg.sender == address(entryPoint()), "account: not EntryPoint or valid signature");
     }
 
     /// @inheritdoc BaseAccount
@@ -140,7 +149,8 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
         returns (uint256 validationData)
     {
         bytes32 hash = userOpHash.toEthSignedMessageHash();
-        if (owner != hash.recover(userOp.signature)) {
+        (bool isValid,) = _signatureValidation(hash, userOp.signature);
+        if (!isValid) {
             return SIG_VALIDATION_FAILED;
         }
         return 0;
@@ -175,18 +185,27 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
     /// @notice Withdraws value from the account's deposit
     /// @param withdrawAddress target to send to
     /// @param amount to withdraw
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlyOwner {
+    /// @param hash hash of the message
+    /// @param signatures signatures of the message
+    function withdrawDepositTo(address payable withdrawAddress, uint256 amount, bytes32 hash, bytes calldata signatures)
+        public
+        onlyValidSignature(hash, signatures)
+    {
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
 
     /// @inheritdoc UUPSUpgradeable
     function _authorizeUpgrade(address newImplementation) internal view override {
         (newImplementation);
-        _onlyOwner();
     }
 
-    function supportsInterface(bytes4) public pure override(ILightWallet, TokenCallbackHandler) returns (bool) {
-        return false;
-        // super.supportsInterface(interfaceId);
+    /// @inheritdoc ModuleAuthUpgradable
+    function supportsInterface(bytes4 interfaceId)
+        public
+        pure
+        override(SafeInterface, ModuleAuthUpgradable, TokenCallbackHandler)
+        returns (bool)
+    {
+        super.supportsInterface(interfaceId);
     }
 }

@@ -10,19 +10,12 @@ import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfa
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 
-interface ILightWallet is IERC1271 {
-    // -------------------------------------------------------------------------
-    // Errors
-    // -------------------------------------------------------------------------
-
-    /// @notice Emitted when the action is invoked not by an owner.
-    error OnlyOwner();
-
+interface SafeInterface is IERC1271 {
     // -------------------------------------------------------------------------
     // Events
     // -------------------------------------------------------------------------
 
-    event LightWalletInitialized(IEntryPoint indexed entryPoint, address indexed owner);
+    event SafeL3Initialized(IEntryPoint indexed entryPoint, bytes32 indexed has);
 
     // -------------------------------------------------------------------------
     // Actions
@@ -51,10 +44,15 @@ interface ILightWallet is IERC1271 {
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 
     /// @notice Sets the owner of this account, and emits an event.
-    function initialize(address anOwner) external;
+    function initialize(bytes32 _imageHash) external;
 
     /// @notice Withdraws value from the account's deposit.
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) external;
+    function withdrawDepositTo(
+        address payable withdrawAddress,
+        uint256 amount,
+        bytes32 _hash,
+        bytes calldata _signatures
+    ) external;
 
     /// @notice Returns the entry point contract address for this account.
     function entryPoint() external view returns (IEntryPoint);
