@@ -108,14 +108,16 @@ xcframework:  # Temporary override for old build system
 	rm -rf target/LightWalletCoreFFI.xcframework || echo "skip removing"
 	xcodebuild -create-xcframework -framework target/aarch64-apple-ios/release/LightWalletCoreFFI.framework -framework target/aarch64-apple-ios-sim/release/LightWalletCoreFFI.framework -output target/LightWalletCoreFFI.xcframework
 
+##@ Contracts
+
 .PHONY: contracts-size
 contracts-size: ## Omits the current code size layout from the current contracts with foundry
 	./contracts/size.sh
 
+.PHONY: contracts-storage
+contracts-storage: ## Omits the current storage layout from the current contracts with foundry
+	./contracts/storage.sh
+
 .PHONY: contracts-wagmi
 contracts-wagmi: ## Copies over certain directory for wagmi generation
 	./contracts/wagmi.sh
-
-.PHONY: storage-layout
-storage-layout: ## Omits the current storage layout from the current contracts with foundry
-	./contracts/storage.sh

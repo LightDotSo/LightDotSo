@@ -21,29 +21,26 @@ interface SafeInterface is IERC1271 {
     // Actions
     // -------------------------------------------------------------------------
 
-    /// @notice Check if the caller is the owner.
-    function owner() external view returns (address);
-
     /// @notice Check current account deposit in the entryPoint.
     function getDeposit() external view returns (uint256);
 
     /// @notice Deposit more funds for this account in the entryPoint.
     function addDeposit() external payable;
 
-    /// @notice Executes a transaction (called directly from owner, or by entryPoint).
+    /// @notice Executes a transaction (called directly by entryPoint).
     function execute(address dest, uint256 value, bytes calldata func) external;
 
-    /// @notice Executes a sequence of transactions (called directly from owner, or by entryPoint).
+    /// @notice Executes a sequence of transactions (called directly by entryPoint).
     function executeBatch(address[] calldata dest, bytes[] calldata func) external;
 
     /// @notice Check if a signature is valid based on the owner's address.
     /// Compatible with ERC1271
     function isValidSignature(bytes32 _hash, bytes calldata _signatures) external view returns (bytes4);
 
-    /// Compatibility with ERC165
+    /// @notice Compatibility with ERC165
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 
-    /// @notice Sets the owner of this account, and emits an event.
+    /// @notice Sets the hash of this account, and emits an event.
     function initialize(bytes32 _imageHash) external;
 
     /// @notice Withdraws value from the account's deposit.

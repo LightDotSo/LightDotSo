@@ -77,6 +77,14 @@
 | signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 =======================
+ ➡ SafeFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ SafeInterface
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
  ➡ SafeL2
 | Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
 |----------------------------|-------------------------------------------------|------|--------|-------|------------------------------------------------|
@@ -91,11 +99,10 @@
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 =======================
  ➡ SafeL3
-| Name          | Type    | Slot | Offset | Bytes | Contract                                |
-|---------------|---------|------|--------|-------|-----------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | contracts/src/samples/SafeL3.sol:SafeL3 |
-| _initializing | bool    | 0    | 1      | 1     | contracts/src/samples/SafeL3.sol:SafeL3 |
-| owner         | address | 0    | 2      | 20    | contracts/src/samples/SafeL3.sol:SafeL3 |
+| Name          | Type  | Slot | Offset | Bytes | Contract                                |
+|---------------|-------|------|--------|-------|-----------------------------------------|
+| _initialized  | uint8 | 0    | 0      | 1     | contracts/src/samples/SafeL3.sol:SafeL3 |
+| _initializing | bool  | 0    | 1      | 1     | contracts/src/samples/SafeL3.sol:SafeL3 |
 =======================
  ➡ SafeProxy
 | Name      | Type    | Slot | Offset | Bytes | Contract                                                     |

@@ -91,9 +91,9 @@ jobs:
       - name: Storage Check
         run: |
           for ((i=1; i<=3; i++));
-            do make storage-layout;
+            do make contracts-storage;
           done
-      - name: Check Storage Changes
+      - name: Check Changes
         run: |
           git diff --quiet
       - if: failure()

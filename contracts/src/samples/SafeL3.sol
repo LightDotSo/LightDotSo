@@ -62,10 +62,6 @@ contract SafeL3 is
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
-    function owner() public view returns (address) {
-        return address(0);
-    }
-
     /// @inheritdoc BaseAccount
     function entryPoint() public view virtual override(BaseAccount, SafeInterface) returns (IEntryPoint) {
         return _entryPoint;
@@ -84,7 +80,7 @@ contract SafeL3 is
 
     /// @param dest The address of the target contract to call.
     /// @param func The calldata to send to the target contract.
-    /// @notice Executes a transaction (called directly from owner, or by entryPoint)
+    /// @notice Executes a transaction (called directly by entryPoint)
     function execute(address dest, uint256 value, bytes calldata func) external {
         _requireFromEntryPoint();
         _call(dest, value, func);
@@ -92,7 +88,7 @@ contract SafeL3 is
 
     /// @param dest The array of address of the target contract to call.
     /// @param func The array of calldata to send to the target contract.
-    /// @notice Executes a sequence of transactions (called directly from owner, or by entryPoint)
+    /// @notice Executes a sequence of transactions (called directly by entryPoint)
     function executeBatch(address[] calldata dest, bytes[] calldata func) external {
         _requireFromEntryPoint();
         require(dest.length == func.length, "wrong array lengths");
