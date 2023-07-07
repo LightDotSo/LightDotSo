@@ -14,7 +14,7 @@ ARCHS_MAC = x86_64-apple-darwin aarch64-apple-darwin
 
 CRATES_DIR = "crates/core"
 
-CARGO_PARAMS = --no-default-features --package lightwallet-core --crate-type=cdylib
+CARGO_PARAMS = --package lightwallet-core --crate-type=cdylib
 TARGET_DIR = target
 
 ##@ Help
@@ -50,15 +50,15 @@ ios: ## Build the project for iOS.
 
 .PHONY: $(ARCHS_IOS) ## Build the project for iOS.
 $(ARCHS_IOS): %:
-	cargo build $(CARGO_PARAMS) --target $@ --release
+	cargo rustc $(CARGO_PARAMS) --target $@ --release
 
 .PHONY: $(ARCHS_IOS_ARM) ## Build the project for iOS (Specific structure).
 $(ARCHS_IOS_ARM): %:
-	cargo build $(CARGO_PARAMS) --target $@ --release
+	cargo rustc $(CARGO_PARAMS) --target $@ --release
 
 .PHONY: $(ARCHS_MAC) ## Build the project for macOS.
 $(ARCHS_MAC): %:
-	cargo build $(CARGO_PARAMS) --target $@ --release
+	cargo rustc $(CARGO_PARAMS) --target $@ --release
 
 ##@ Apple Build
 
