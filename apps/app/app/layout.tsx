@@ -1,3 +1,5 @@
+import { Button } from "@lightdotso/ui";
+
 export default function RootLayout({
   children,
 }: {
@@ -5,7 +7,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Button />
+        {children}
+      </body>
     </html>
   );
 }

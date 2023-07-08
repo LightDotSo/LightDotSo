@@ -3,7 +3,16 @@
   "editor.formatOnSave": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "[json]": {
+  "[solidity]": {
     "editor.defaultFormatter": "JuanBlanco.solidity"
-  }
+  },
+  "eslint.workingDirectories": [
+    { "pattern": "apps/*/" },
+    { "pattern": "configurations/*/" },
+    { "pattern": "packages/*/" }
+  ],
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ]
 }

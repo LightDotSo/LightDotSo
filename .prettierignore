@@ -1,4 +1,7 @@
 generated.ts
+
+apps/ui/src/components/**
+
 *.html
 *.xcarchive
 
