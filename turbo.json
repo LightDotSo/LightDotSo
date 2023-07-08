@@ -19,7 +19,8 @@
       "cache": false
     },
     "//#hardhat:compile": {
-      "cache": false
+      "outputs": ["artifacts/**"],
+      "inputs": ["contracts/src/**"]
     },
     "//#lint": {
       "dependsOn": [],

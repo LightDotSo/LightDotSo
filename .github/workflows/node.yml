@@ -53,6 +53,13 @@ jobs:
       - name: Node Test
         run: |
           pnpm turbo run test
+      - name: Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+          files: coverage/lcov.info
+          flags: contracts
   node-check:
     if: always()
     needs:
