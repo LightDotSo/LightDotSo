@@ -1,5 +1,14 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.3
+
+### Patch Changes
+
+- [#134](https://github.com/LightDotSo/LightDotSo/pull/134) [`e51dccf`](https://github.com/LightDotSo/LightDotSo/commit/e51dccfc813d8fa65a0db172806a4e7db5b46683) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: ini vitest w/ hardhat
+
+- Updated dependencies [[`e51dccf`](https://github.com/LightDotSo/LightDotSo/commit/e51dccfc813d8fa65a0db172806a4e7db5b46683)]:
+  - @lightdotso/wagmi@0.1.0-pre.1
+
 ## 0.1.0-pre.2
 
 ### Minor Changes
