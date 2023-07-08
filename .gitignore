@@ -14,7 +14,9 @@ lcov.info
 out-wagmi
 
 # hardhat
+coverage.json
 coverage-data.json
+typechain-types
 
 # next.js
 .next/

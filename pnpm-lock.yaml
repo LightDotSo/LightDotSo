@@ -188,6 +188,9 @@ importers:
       vitest:
         specifier: ^0.33.0
         version: 0.33.0
+      vitest-solidity-coverage:
+        specifier: ^0.1.3
+        version: 0.1.3(hardhat@2.16.1)(solidity-coverage@0.8.4)(vitest@0.33.0)
 
   android:
     dependencies:
@@ -18651,6 +18654,18 @@ packages:
       rollup: 3.26.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /vitest-solidity-coverage@0.1.3(hardhat@2.16.1)(solidity-coverage@0.8.4)(vitest@0.33.0):
+    resolution: {integrity: sha512-4nAXuh+en3we2u3Azjg80d8TZTPsoCDfMqGyE/Tg7gdDll1be7zOVmCpxrmFTxbc1uE9z1WUN8knx5sK3da1mw==}
+    peerDependencies:
+      hardhat: ^2.16.1
+      solidity-coverage: ^0.8.3
+      vitest: ^0.32.2
+    dependencies:
+      hardhat: 2.16.1(ts-node@10.9.1)(typescript@5.1.6)
+      solidity-coverage: 0.8.4(hardhat@2.16.1)
+      vitest: 0.33.0
     dev: true
 
   /vitest@0.33.0:

@@ -18,6 +18,9 @@
     "//#ci": {
       "cache": false
     },
+    "//#hardhat:compile": {
+      "cache": false
+    },
     "//#lint": {
       "dependsOn": [],
       "outputs": [],
@@ -29,6 +32,9 @@
         "fastlane/**",
         "packages/**"
       ]
+    },
+    "//#test": {
+      "dependsOn": ["hardhat:compile"]
     }
   }
 }
