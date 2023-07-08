@@ -35,6 +35,7 @@
 | SafeMath                     | 0.086     | 24.49       |
 | SafeProxy                    | 0.161     | 24.415      |
 | SafeProxyFactory             | 2.393     | 22.183      |
+| SafeUtils                    | 0.063     | 24.513      |
 | SenderCreator                | 0.531     | 24.045      |
 | SequenceBaseSig              | 0.086     | 24.49       |
 | SequenceDynamicSig           | 0.086     | 24.49       |

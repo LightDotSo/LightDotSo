@@ -5,6 +5,7 @@
 
 ## Constants
 
+WORKSPACE = lightdotso
 NAME = libuniffi_lightwallet_core
 STATIC_LIB_NAME = $(NAME).a
 SHARED_LIB_NAME = $(NAME).so
@@ -121,3 +122,7 @@ contracts-storage: ## Omits the current storage layout from the current contract
 .PHONY: contracts-wagmi
 contracts-wagmi: ## Copies over certain directory for wagmi generation
 	./contracts/wagmi.sh
+
+#@ zellij
+shell:
+	zellij --layout zellij.kdl a $(WORKSPACE) || zellij --layout zellij.kdl -s $(WORKSPACE)

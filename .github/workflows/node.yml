@@ -42,11 +42,24 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
       - name: Node Test
         run: |
-          pnpm turbo run test
+          pnpm turbo run test:coverage
+      - name: Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+          files: coverage/lcov.info
+          flags: contracts
   node-check:
     if: always()
     needs:

@@ -14,10 +14,11 @@
   "author": "Light, Inc.",
   "scripts": {
     "compile": "cd .. && hardhat compile",
-    "lint": "cd .. && pnpm solhint 'contracts/src/**/*.sol'",
-    "test-hh": "cd .. && hardhat test"
+    "lint": "cd .. && pnpm run solhint:lint",
+    "test-hh": "cd .. && pnpm run hardhat:test"
   },
   "dependencies": {
+    "@lightdotso/wagmi": "workspace:*",
     "ethers": "^6.6.2"
   },
   "publishConfig": {

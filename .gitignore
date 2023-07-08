@@ -13,6 +13,11 @@ lcov.info
 # foundry
 out-wagmi
 
+# hardhat
+coverage.json
+coverage-data.json
+typechain-types
+
 # next.js
 .next/
 out/

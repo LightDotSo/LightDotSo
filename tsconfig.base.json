@@ -10,7 +10,7 @@
     "preserveSymlinks": true,
     "incremental": true,
     "jsx": "react-jsx",
-    "module": "system",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": false,
     "noImplicitAny": false,
@@ -21,6 +21,7 @@
     "useUnknownInCatchVariables": false,
     "outDir": "dist",
     "preserveConstEnums": true,
+    "resolveJsonModule": true,
     // DONT DO THIS so jsdoc will remain
     "removeComments": false,
     "skipLibCheck": true,
@@ -28,7 +29,11 @@
     "strictNullChecks": true,
     "target": "es2020",
     "types": ["node", "jest"],
-    "lib": ["dom", "esnext"]
+    "lib": ["dom", "esnext"],
+    "paths": {
+      "@/artifacts/*": ["artifacts/*"],
+      "@/contracts/*": ["contracts/spec/*"]
+    }
   },
   "exclude": ["_"],
   "typeAcquisition": {

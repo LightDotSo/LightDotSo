@@ -18,6 +18,14 @@
     "//#ci": {
       "cache": false
     },
+    "//#hardhat:compile": {
+      "outputs": ["artifacts/**"],
+      "inputs": ["contracts/src/**"]
+    },
+    "//#hardhat:compile:coverage": {
+      "outputs": ["artifacts/**", "coverage-data.json"],
+      "inputs": ["contracts/src/**"]
+    },
     "//#lint": {
       "dependsOn": [],
       "outputs": [],
@@ -29,6 +37,12 @@
         "fastlane/**",
         "packages/**"
       ]
+    },
+    "//#test": {
+      "dependsOn": ["hardhat:compile"]
+    },
+    "//#test:coverage": {
+      "dependsOn": ["hardhat:compile:coverage"]
     }
   }
 }
