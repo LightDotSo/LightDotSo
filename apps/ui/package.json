@@ -16,7 +16,7 @@
   "types": "./index.tsx",
   "scripts": {
     "add": "shadcn-ui add",
-    "build": "storybook build",
+    "build": "storybook build -o public",
     "dev": "storybook dev -p 6006",
     "diff": "shadcn-ui diff"
   },
