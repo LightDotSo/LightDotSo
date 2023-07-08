@@ -27,7 +27,7 @@ out/
 build
 
 # storybook
-storybook-static
+apps/ui/public
 
 # misc
 .DS_Store
