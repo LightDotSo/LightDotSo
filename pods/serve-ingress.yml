@@ -2,12 +2,26 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: serve-ingress
+  # From: https://cert-manager.io/docs/tutorials/getting-started-with-cert-manager-on-google-kubernetes-engine-using-lets-encrypt-for-ingress-ssl/#3-create-a-static-external-ip-address
+  annotations:
+    # This tells Google Cloud to create an External Load Balancer to realize this Ingress
+    kubernetes.io/ingress.class: gce
+    # This enables HTTP connections from Internet clients
+    kubernetes.io/ingress.allow-http: "true"
+    # This tells Google Cloud to associate the External Load Balancer with the static IP which we created earlier
+    kubernetes.io/ingress.global-static-ip-name: web-ip
+    # Add this annotation for cert-manager integration
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  tls:
+    - hosts:
+        - api.light.so
+      secretName: light-so-tls
   rules:
-    - host: dev.api.light.so
+    - host: api.light.so
       http:
         paths:
-          - path: /
+          - path: /*
             pathType: Prefix
             backend:
               service:

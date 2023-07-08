@@ -1,0 +1,20 @@
+# From: https://cert-manager.io/docs/configuration/acme/dns01/google/
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: light-so-issuer
+  namespace: cert-manager
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt
+    solvers:
+      - dns01:
+          cloudDNS:
+            # The ID of the GCP project
+            project: lightdotso
+            # This is the secret used to access the service account
+            serviceAccountSecretRef:
+              name: clouddns-dns01-solver-svc-acct
+              key: key.json

@@ -8,3 +8,4 @@ packages:
   - "fastlane"
   - "ios"
   - "packages/*"
+  - "pods"

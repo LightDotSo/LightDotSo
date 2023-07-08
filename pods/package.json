@@ -1,0 +1,21 @@
+{
+  "name": "@lightdotso/pods",
+  "version": "0.0.0",
+  "private": false,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
+  "scripts": {
+    "build": "echo 'Empty build script for turborepo trigger'"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
