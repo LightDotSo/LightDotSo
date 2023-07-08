@@ -13,6 +13,9 @@ lcov.info
 # foundry
 out-wagmi
 
+# hardhat
+coverage-data.json
+
 # next.js
 .next/
 out/

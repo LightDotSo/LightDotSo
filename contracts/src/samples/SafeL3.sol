@@ -119,7 +119,6 @@ contract SafeL3 is
     /// @notice Emits an event for the initialization of the contract
     function _initialize(bytes32 _imageHash) internal virtual {
         _updateImageHash(_imageHash);
-        // emit LightWalletInitialized(_entryPoint);
         emit SafeL3Initialized(_entryPoint, _imageHash);
     }
 
@@ -191,6 +190,7 @@ contract SafeL3 is
     }
 
     /// @inheritdoc UUPSUpgradeable
+    // TODO: Add proper overrides for upgrades
     function _authorizeUpgrade(address newImplementation) internal view override {
         (newImplementation);
     }

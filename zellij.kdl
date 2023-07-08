@@ -1,0 +1,55 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    pane_template name="node" {
+        pane split_direction="horizontal" {
+            children
+            pane command="nu" {}
+        }
+    }
+    pane_template name="cargo" {
+        pane split_direction="horizontal" {
+            children
+            pane command="nu" {}
+        }
+    }
+    pane_template name="contracts" {
+        pane split_direction="horizontal" {
+            children
+            pane command="nu" {}
+        }
+    }
+    tab_template name="lightdotso_tab" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="Vertical" {
+            pane size="15%" {
+                plugin location="zellij:strider"
+            }
+            children
+        }
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    lightdotso_tab name="Home" focus=true {
+        pane split_direction="vertical" command="nu" {}
+    }
+    lightdotso_tab name="Node" focus=false {
+        node split_direction="vertical" {}
+    }
+    lightdotso_tab name="Rust" focus=false {
+        cargo split_direction="vertical" {}
+    }
+    lightdotso_tab name="Contracts" focus=false {
+        contracts split_direction="vertical" {}
+    }
+}
