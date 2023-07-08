@@ -34,6 +34,7 @@
     "solhint:lint": "solhint 'contracts/**/*.sol'",
     "sort-package-json:fix": "sort-package-json '{apps,configurations,contracts,crates,fastlane,ios,packages}/**/package.json'",
     "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "wagmi:generate": "wagmi generate"
   },
   "devDependencies": {

@@ -34,7 +34,7 @@
         "packages/**"
       ]
     },
-    "//#test": {
+    "//#test:coverage": {
       "dependsOn": ["hardhat:compile"]
     }
   }
