@@ -23,7 +23,7 @@ jobs:
           workspace: "@lightdotso/crates"
   docker-build:
     runs-on: ubuntu-latest
-    if: needs.docker-turbo.outputs.trigger == 'true'
+    if: needs.docker-turbo.outputs.trigger == 'true' || startsWith(github.ref, 'refs/tags/@lightdotso/bin')
     needs:
       - docker-turbo
     timeout-minutes: 90

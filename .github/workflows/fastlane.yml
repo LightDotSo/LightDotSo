@@ -28,7 +28,7 @@ jobs:
         with:
           workspace: "@lightdotso/fastlane"
   fastlane-android:
-    if: needs.fastlane-turbo.outputs.trigger == 'true' || startsWith(github.ref, 'refs/tags/v')
+    if: needs.fastlane-turbo.outputs.trigger == 'true' || startsWith(github.ref, 'refs/tags/@lightdotso/android')
     needs:
       - fastlane-turbo
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
         env:
           GH_NUMBER: ${{ github.event.pull_request.number }}
   fastlane-ios:
-    if: needs.fastlane-turbo.outputs.trigger == 'true' || startsWith(github.ref, 'refs/tags/v')
+    if: needs.fastlane-turbo.outputs.trigger == 'true' || startsWith(github.ref, 'refs/tags/@lightdotso/ios')
     needs:
       - fastlane-turbo
     runs-on: macos-latest
