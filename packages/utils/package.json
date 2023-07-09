@@ -1,0 +1,39 @@
+{
+  "name": "@lightdotso/utils",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Light, Inc.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf -rf dist"
+  },
+  "dependencies": {
+    "@types/firefox-webext-browser": "^111.0.1",
+    "clsx": "^1.2.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "tailwind-merge": "^1.13.2"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@types/node": "^18.16.19",
+    "typescript": "^5.1.6"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}
