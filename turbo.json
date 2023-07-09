@@ -42,7 +42,8 @@
       "dependsOn": ["hardhat:compile"]
     },
     "//#test:coverage": {
-      "dependsOn": ["hardhat:compile:coverage"]
+      "dependsOn": ["hardhat:compile:coverage"],
+      "outputs": ["coverage/**"]
     }
   }
 }
