@@ -28,7 +28,7 @@ jobs:
         with:
           workspace: "@lightdotso/fastlane"
   fastlane-android:
-    if: needs.fastlane-turbo.outputs.trigger == 'true' || startsWith(github.ref, 'refs/tags/@lightdotso/android')
+    if: needs.fastlane-turbo.outputs.trigger == 'true' && github.event_name != 'release' || startsWith(github.ref, 'refs/tags/@lightdotso/android') && github.event_name == 'release'
     needs:
       - fastlane-turbo
     runs-on: ubuntu-latest
@@ -70,7 +70,7 @@ jobs:
         env:
           GH_NUMBER: ${{ github.event.pull_request.number }}
   fastlane-ios:
-    if: needs.fastlane-turbo.outputs.trigger == 'true' || startsWith(github.ref, 'refs/tags/@lightdotso/ios')
+    if: needs.fastlane-turbo.outputs.trigger == 'true' && github.event_name != 'release' || startsWith(github.ref, 'refs/tags/@lightdotso/ios') && github.event_name == 'release'
     needs:
       - fastlane-turbo
     runs-on: macos-latest
