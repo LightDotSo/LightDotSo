@@ -1,6 +1,6 @@
-# @lightdotso/android
+# @lightdotso/extension
 
-## 0.1.0-pre.1
+## 1.1.0-pre.0
 
 ### Minor Changes
 
@@ -9,11 +9,8 @@
 ### Patch Changes
 
 - Updated dependencies [[`1aab6d8`](https://github.com/LightDotSo/LightDotSo/commit/1aab6d87fc1d2c5ebf274c14c1ac0e386b54b7a1)]:
-  - @lightdotso/crates@0.1.0-pre.1
-
-## 0.0.1-pre.0
-
-### Patch Changes
-
-- Updated dependencies [[`89bd35e`](https://github.com/LightDotSo/LightDotSo/commit/89bd35e0bf82e0fcb89ad0e235963d8efc7a8109)]:
-  - @lightdotso/crates@0.0.1-pre.0
+  - @lightdotso/background@0.1.0-pre.0
+  - @lightdotso/resources@0.1.0-pre.0
+  - @lightdotso/content@0.1.0-pre.0
+  - @lightdotso/inpage@0.1.0-pre.0
+  - @lightdotso/popup@0.1.0-pre.0
