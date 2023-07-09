@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Contract to validate signatures using EIP-1271 and EIP-6492
 // Source from the official EIP

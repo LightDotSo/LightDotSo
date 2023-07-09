@@ -1,11 +1,11 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 pragma solidity ^0.8.18;
 
 // SafeL3.sol -- SafeL3 initial implementation
 // Modified implementation on SimpleAccount.sol from @eth-infinitism/account-abstraction
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
-// License: GPL-3.0
+// License: AGPL-3.0-or-later
 
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";

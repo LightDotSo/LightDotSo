@@ -17,7 +17,7 @@ default-members = ["bin"]
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.70"
-license = "GPL-3.0"
+license = "AGPL-3.0-or-later"
 homepage = "https://github.com/LightDotSo/LightDotSo"
 repository = "https://github.com/LightDotSo/LightDotSo"
 
