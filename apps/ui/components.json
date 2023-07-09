@@ -11,6 +11,6 @@
   },
   "aliases": {
     "components": "@lightdotso/ui/components/",
-    "utils": "@lightdotso/ui/utils"
+    "utils": "@lightdotso/utils"
   }
 }
