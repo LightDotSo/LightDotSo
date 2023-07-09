@@ -5,6 +5,7 @@ import { publicClient, walletClient } from "@/contracts/utils";
 
 import { bytecode as lightWalletBytecode } from "@/artifacts/contracts/src/LightWallet.sol/LightWallet.json";
 import { lightWalletABI } from "@lightdotso/wagmi";
+import { WagmiMintExample } from "../src/WagmiMintExample.sol";
 
 beforeAll(() => {
   run("node");
@@ -12,6 +13,7 @@ beforeAll(() => {
 
 describe("LightWallet", function () {
   it("Should return run correct function parameters on hardhat", async function () {
+    console.log(WagmiMintExample);
     console.log(await publicClient.getBlockNumber());
     const accounts = await walletClient.getAddresses();
     const [account, ...other] = accounts;
@@ -24,7 +26,7 @@ describe("LightWallet", function () {
     });
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
     const data = await publicClient.readContract({
-      address: receipt.contractAddress,
+      address: receipt.contractAddress as `0x${string}`,
       abi: lightWalletABI,
       functionName: "proxiableUUID",
     });
