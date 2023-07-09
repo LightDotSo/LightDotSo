@@ -13,7 +13,7 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "echo 'Empty build script for turborepo trigger'"
+    "build": "exit 0"
   },
   "publishConfig": {
     "access": "public"
