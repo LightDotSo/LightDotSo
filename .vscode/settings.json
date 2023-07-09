@@ -14,6 +14,7 @@
   // From: https://github.com/joe-bell/cva/discussions/85#discussioncomment-5014769
   "tailwindCSS.experimental.classRegex": [
     // enable autocomplete in cx(...)
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     // enable autocomplete in cva(...)
     ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
