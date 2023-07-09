@@ -24,12 +24,16 @@
     "@lightdotso/resources": "0.0.1",
     "@lightdotso/bin": "0.0.0",
     "@lightdotso/wagmi": "0.0.1",
-    "@lightdotso/pods": "0.0.0"
+    "@lightdotso/pods": "0.0.0",
+    "@lightdotso/ui": "1.0.0",
+    "@lightdotso/styles": "1.0.1",
+    "@lightdotso/utils": "0.0.0"
   },
   "changesets": [
     "eleven-beds-heal",
     "fast-coins-tie",
     "grumpy-berries-sniff",
+    "lazy-glasses-type",
     "sharp-cameras-speak",
     "tender-doors-dance",
     "thick-beds-drive",
