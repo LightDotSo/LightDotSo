@@ -1,5 +1,5 @@
 {
-  "name": "@lightdotso/changelog",
+  "name": "@lightdotso/docs",
   "version": "1.0.0",
   "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
@@ -30,9 +30,9 @@
     "@types/node": "^20.4.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.25",
-    "tailwindcss": "^3.3.2",
+    "autoprefixer": "10.4.14",
+    "postcss": "8.4.25",
+    "tailwindcss": "3.3.2",
     "typescript": "^5.1.6"
   },
   "publishConfig": {

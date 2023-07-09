@@ -17,7 +17,7 @@
     "eslint-config-next": "^13.4.9",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-turbo": "^1.10.7",
-    "eslint-plugin-react": "7.28.0"
+    "eslint-plugin-react": "7.32.2"
   },
   "publishConfig": {
     "access": "restricted"
