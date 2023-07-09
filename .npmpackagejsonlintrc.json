@@ -28,6 +28,7 @@
     "repository-type": "error",
     "scripts-type": "error",
     "version-type": "error",
+    "valid-values-license": ["error", ["AGPL-3.0-or-later"]],
     "valid-values-author": ["error", ["Light, Inc."]],
     "name-format": "error",
     "version-format": "error"

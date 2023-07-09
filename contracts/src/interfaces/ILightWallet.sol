@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Interface for IERC1271
 // From: https://eips.ethereum.org/EIPS/eip-1271
