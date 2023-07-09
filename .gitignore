@@ -26,9 +26,6 @@ typechain-types
 out/
 build
 
-# storybook
-apps/ui/public
-
 # misc
 .DS_Store
 *.pem
