@@ -1,7 +1,7 @@
 {
-  "name": "@lightdotso/eslint-config",
-  "version": "2.0.0",
-  "private": true,
+  "name": "@lightdotso/styles",
+  "version": "1.0.1",
+  "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
     "url": "https://github.com/LightDotSo/LightDotSo/issues"
@@ -12,14 +12,10 @@
   },
   "license": "GPL-3.0",
   "author": "Light, Inc.",
-  "main": "index.js",
-  "dependencies": {
-    "eslint-config-next": "^13.4.9",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-config-turbo": "^1.10.7",
-    "eslint-plugin-react": "7.32.2"
-  },
+  "files": [
+    "global.css"
+  ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "@lightdotso/content",
-  "version": "0.0.1",
+  "name": "@lightdotso/utils",
+  "version": "0.0.0",
   "private": true,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -12,16 +12,25 @@
   },
   "license": "GPL-3.0",
   "author": "Light, Inc.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production node ./esbuild.config.js",
-    "build:dev": "cross-env NODE_ENV=development node ./esbuild.config.js"
+    "build": "tsup",
+    "clean": "rimraf -rf dist"
   },
   "dependencies": {
     "@types/firefox-webext-browser": "^111.0.1",
+    "clsx": "^1.2.1",
     "cross-env": "^7.0.3",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "tailwind-merge": "^1.13.2"
   },
   "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.4.1",
     "typescript": "^5.1.6"
   },

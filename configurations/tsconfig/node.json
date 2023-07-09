@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2020"],
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "es5"
+  },
+  "extends": "./base.json"
+}
