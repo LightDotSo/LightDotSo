@@ -5,17 +5,12 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["NODE_ENV"],
-      "outputs": [
-        "../../ios/LightWalletSafariExtension/Resources/content.js",
-        "../../apps/extension/chrome/content.js",
-        "../../apps/extension/firefox/content.js"
-      ]
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
     "clean": {
       "cache": false
     }

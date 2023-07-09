@@ -209,6 +209,9 @@ importers:
 
   apps/app:
     dependencies:
+      '@lightdotso/styles':
+        specifier: workspace:*
+        version: link:../../configurations/styles
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
@@ -378,6 +381,9 @@ importers:
 
   apps/ui:
     dependencies:
+      '@lightdotso/styles':
+        specifier: workspace:*
+        version: link:../../configurations/styles
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../../packages/utils

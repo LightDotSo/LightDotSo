@@ -1,5 +1,4 @@
-// import "tailwindcss/tailwind.css";
-import "../src/styles/globals.css";
+import "@lightdotso/styles/global.css";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },

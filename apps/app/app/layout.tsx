@@ -1,4 +1,5 @@
 import { Button } from "@lightdotso/ui";
+import "@lightdotso/styles/global.css";
 
 export default function RootLayout({
   children,
