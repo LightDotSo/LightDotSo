@@ -30,6 +30,7 @@
     "@lightdotso/utils": "0.0.0"
   },
   "changesets": [
+    "clean-spiders-lie",
     "eleven-beds-heal",
     "fast-coins-tie",
     "four-rockets-explain",
