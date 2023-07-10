@@ -85,7 +85,7 @@
     "append": ""
   },
   "licenseFormats": {
-    "js|ts|tsx|rs|sol|swift|nr|udl": {
+    "js|ts|tsx|rs|sol|swift|kt|nr|udl": {
       "eachLine": {
         "prepend": "// "
       },
