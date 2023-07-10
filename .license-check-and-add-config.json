@@ -96,7 +96,7 @@
       "prepend": "{/*",
       "append": "*/}\n"
     },
-    "noir|sol|swift": {
+    "sol|swift|nr|udl": {
       "eachLine": {
         "prepend": "// "
       },
