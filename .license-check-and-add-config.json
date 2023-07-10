@@ -101,6 +101,12 @@
         "prepend": "// "
       },
       "append": ""
+    },
+    "sh": {
+      "eachLine": {
+        "prepend": "# "
+      },
+      "append": ""
     }
   },
   "trailingWhitespace": "TRIM"
