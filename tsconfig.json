@@ -17,7 +17,8 @@
     ],
     "paths": {
       "@/artifacts/*": ["artifacts/*"],
-      "@/contracts/*": ["contracts/spec/*"]
+      "@/contracts/*": ["contracts/src/*"],
+      "@/contracts/spec/*": ["contracts/spec/*"]
     }
   },
   "extends": "./tsconfig.base"

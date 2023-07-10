@@ -16,8 +16,9 @@
 import { beforeAll, describe, it, expect } from "vitest";
 import { run } from "hardhat";
 // import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
-import { publicClient, walletClient } from "@/contracts/utils";
-import { LightWallet } from "../src/LightWallet.sol";
+import { publicClient, walletClient } from "@/contracts/spec/utils";
+//@ts-expect-error
+import { LightWallet } from "@/contracts/LightWallet.sol";
 
 beforeAll(() => {
   run("node");
