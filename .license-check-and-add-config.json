@@ -86,7 +86,7 @@
     "append": ""
   },
   "licenseFormats": {
-    "js|ts|tsx|rs": {
+    "js|ts|tsx|rs|sol|swift|nr|udl": {
       "eachLine": {
         "prepend": "/// "
       },
@@ -95,12 +95,6 @@
     "mdx": {
       "prepend": "{/*",
       "append": "*/}\n"
-    },
-    "sol|swift|nr|udl": {
-      "eachLine": {
-        "prepend": "// "
-      },
-      "append": ""
     },
     "sh": {
       "eachLine": {
