@@ -1,7 +1,25 @@
 {
   "compilerOptions": {
-    "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true
+    "plugins": [
+      {
+        "name": "@evmts/ts-plugin",
+        "deployments": [
+          {
+            "name": "LightWallet",
+            "addresses": {
+              "31337": "0x5fbdb2315678afecb367f032d93f642f64180aa3"
+            }
+          }
+        ],
+        "forge": true,
+        "solcVersion": "0.8.18"
+      }
+    ],
+    "paths": {
+      "@/artifacts/*": ["artifacts/*"],
+      "@/contracts/*": ["contracts/src/*"],
+      "@/contracts/spec/*": ["contracts/spec/*"]
+    }
   },
   "extends": "./tsconfig.base"
 }
