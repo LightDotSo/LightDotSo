@@ -1,0 +1,107 @@
+{
+  "$schema": "https://raw.githubusercontent.com/awjh/license-check-and-add/master/config-schema.json",
+  "ignore": [
+    "**/CHANGELOG.md",
+    "**/README.md",
+    "**/.DS_STORE",
+    "**/generated.ts",
+    "**/plonk_vk.sol",
+    "**/Package.swift",
+    "**/.gitkeep",
+    "**/.gitignore",
+    "**/.*rc.js",
+    "**/.*ignore",
+    "**/.gradle*",
+    "**/.pnpm*",
+    "**/*.css",
+    "**/*.config.js",
+    "**/*.config.cjs",
+    "**/*.config.ts",
+    "**/*.entitlements",
+    "**/*.gradle",
+    "**/*.html",
+    "**/*.icns",
+    "**/*.lock",
+    "**/*.pbxproj",
+    "**/*.png",
+    "**/*.pro",
+    "**/*.proof",
+    "**/*.toml",
+    "**/*.plist",
+    "**/*.resolved",
+    "**/*.svg",
+    "**/*.xcscheme",
+    "**/*.xcsettings",
+    "**/*.xcuserstate",
+    "**/*.xcworkspacedata",
+    "**/*.xml",
+    "**/*.webp",
+    "**/next-env.d.ts",
+    "**/vite-env.d.ts",
+    "gradle*",
+    "pnpm*",
+    "*.gradle",
+    "*file",
+    ".*",
+    "*.config.ts",
+    "*.json",
+    "*.kdl",
+    "*.md",
+    "*.toml",
+    "*.txt",
+    "*.yml",
+    "**/*.app/**",
+    "**/.cargo/**",
+    "**/.changeset/**",
+    "**/.husky/**",
+    "**/.github/**",
+    "**/.mobiledev/**",
+    "**/.storybook/**",
+    "**/_next/**",
+    "**/*.appex/**",
+    "**/*.xcframework/**",
+    "**/.build/**",
+    "**/.gradle/**",
+    "**/.idea/**",
+    "**/.next/**",
+    "**/.swiftpm/**",
+    "**/.turbo/**",
+    "**/android/**",
+    "**/build/**",
+    "**/coverage/**",
+    "**/debug/**",
+    "**/fastlane/**",
+    "**/gradle/**",
+    "**/lib/**",
+    "**/pods/**",
+    "**/scripts/**",
+    "**/target/**",
+    "**/tools/**"
+  ],
+  "license": "LICENSE.header",
+  "defaultFormat": {
+    "eachLine": {
+      "prepend": "# "
+    },
+    "append": ""
+  },
+  "licenseFormats": {
+    "js|ts|tsx|rs": {
+      "eachLine": {
+        "prepend": "/// "
+      },
+      "append": ""
+    },
+    "mdx": {
+      "prepend": "{/*",
+      "append": "*/}\n"
+    },
+    "noir|sol|swift": {
+      "eachLine": {
+        "prepend": "// "
+      },
+      "append": ""
+    }
+  },
+  "trailingWhitespace": "TRIM"
+}
