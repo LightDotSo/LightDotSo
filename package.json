@@ -38,6 +38,8 @@
     "sort-package-json:fix": "sort-package-json '{apps,configurations,contracts,crates,fastlane,ios,packages,pods}/**/package.json'",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
+    "test:typecheck": "vitest typecheck",
+    "test:ui": "vitest dev --ui",
     "wagmi:generate": "wagmi generate"
   },
   "devDependencies": {
@@ -67,6 +69,8 @@
     "@types/react-dom": "^18.2.6",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
+    "@viem/anvil": "0.0.6",
+    "@vitest/ui": "^0.33.0",
     "@wagmi/cli": "^1.3.0",
     "autoprefixer": "^10.4.14",
     "chai": "^4.3.7",

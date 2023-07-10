@@ -18,8 +18,7 @@
     "test-hh": "cd .. && pnpm run hardhat:test"
   },
   "dependencies": {
-    "@lightdotso/wagmi": "workspace:*",
-    "ethers": "^6.6.2"
+    "@lightdotso/wagmi": "workspace:*"
   },
   "publishConfig": {
     "access": "public"
