@@ -1,5 +1,14 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.5
+
+### Patch Changes
+
+- [#149](https://github.com/LightDotSo/LightDotSo/pull/149) [`5142911`](https://github.com/LightDotSo/LightDotSo/commit/51429114636eff5d0a0553af96dc2d0f5120a702) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate to AGPLv3
+
+- Updated dependencies [[`5142911`](https://github.com/LightDotSo/LightDotSo/commit/51429114636eff5d0a0553af96dc2d0f5120a702)]:
+  - @lightdotso/wagmi@0.1.0-pre.3
+
 ## 0.1.0-pre.4
 
 ### Minor Changes

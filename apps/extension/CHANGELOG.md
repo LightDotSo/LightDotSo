@@ -1,5 +1,15 @@
 # @lightdotso/extension
 
+## 1.1.0-pre.1
+
+### Patch Changes
+
+- Updated dependencies [[`5142911`](https://github.com/LightDotSo/LightDotSo/commit/51429114636eff5d0a0553af96dc2d0f5120a702)]:
+  - @lightdotso/background@0.1.0-pre.1
+  - @lightdotso/content@0.1.0-pre.1
+  - @lightdotso/inpage@0.1.0-pre.1
+  - @lightdotso/popup@0.1.0-pre.1
+
 ## 1.1.0-pre.0
 
 ### Minor Changes

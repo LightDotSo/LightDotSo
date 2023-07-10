@@ -1,5 +1,11 @@
 # @lightdotso/utils
 
+## 0.1.0-pre.2
+
+### Patch Changes
+
+- [#149](https://github.com/LightDotSo/LightDotSo/pull/149) [`5142911`](https://github.com/LightDotSo/LightDotSo/commit/51429114636eff5d0a0553af96dc2d0f5120a702) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate to AGPLv3
+
 ## 0.1.0-pre.1
 
 ### Minor Changes
