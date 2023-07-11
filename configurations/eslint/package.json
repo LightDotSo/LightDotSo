@@ -32,7 +32,8 @@
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^8.0.0",
-    "eslint-plugin-tailwindcss": "3.6.2"
+    "eslint-plugin-tailwindcss": "3.6.2",
+    "next": "^13.4.9"
   },
   "publishConfig": {
     "access": "restricted"

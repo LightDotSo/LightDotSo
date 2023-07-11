@@ -29,9 +29,15 @@ module.exports = {
     "plugin:tailwindcss/recommended",
     "plugin:turbo/recommended",
   ],
-  rules: {
-    "@next/next/no-html-link-for-pages": "off",
-  },
+  ignorePatterns: [
+    "**/lib/**",
+    "**/__next/**",
+    "**/_next/**",
+    "generated.ts",
+    "apps/ui/src/components/ui/**",
+    "apps/extension/*/**.js",
+    "ios/LightWalletSafariExtension/Resources/**",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     babelOptions: {
@@ -46,11 +52,18 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
+    "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": "warn",
     "react/react-in-jsx-scope": "off",
   },
   overrides: [
+    {
+      files: ["*.js"],
+      rules: {
+        "no-undef": "off",
+      },
+    },
     {
       files: ["*.ts", "*.tsx"],
       rules: {
@@ -61,6 +74,9 @@ module.exports = {
   settings: {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"],
+    },
+    "import/resolver": {
+      typescript: {},
     },
     react: {
       version: "detect",

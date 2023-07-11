@@ -18,6 +18,7 @@ browser.runtime.sendMessage({ greeting: "hello" }).then(response => {
   console.log("Received response: ", response);
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // eslint-disable-next-line no-console
   console.log("Received request: ", request);

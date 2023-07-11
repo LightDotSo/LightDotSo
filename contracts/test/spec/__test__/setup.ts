@@ -15,7 +15,7 @@
 
 import { fetchLogs } from "@viem/anvil";
 import { testClient } from "@/contracts/test/spec/utils";
-import { afterAll, afterEach, beforeAll, beforeEach, vi } from "vitest";
+import { afterAll, afterEach, vi } from "vitest";
 import { setAutomine, setIntervalMining } from "viem/test";
 
 afterAll(async () => {
@@ -52,6 +52,8 @@ afterEach(context => {
       } else {
         console.log(...logs);
       }
-    } catch {}
+    } catch {
+      /* empty */
+    }
   });
 });
