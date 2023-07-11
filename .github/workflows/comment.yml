@@ -13,7 +13,7 @@ jobs:
     timeout-minutes: 3
     steps:
       - name: Get PR Branch
-        uses: xt0rted/pull-request-comment-branch@v1
+        uses: xt0rted/pull-request-comment-branch@v2
         id: comment-branch
       - name: Fetch Head w/ Token
         uses: actions/checkout@v3

@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.6
+
+### Patch Changes
+
+- [#147](https://github.com/LightDotSo/LightDotSo/pull/147) [`b51701f`](https://github.com/LightDotSo/LightDotSo/commit/b51701f851c4f1b3d6b288ef7b11a3d8691c9193) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add evmts
+
 ## 0.1.0-pre.5
 
 ### Patch Changes
