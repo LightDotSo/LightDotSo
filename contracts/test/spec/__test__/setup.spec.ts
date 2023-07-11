@@ -13,8 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { anvil } from "./anvil";
-export * from "./constants";
-export { publicClient } from "./publicClient";
-export { testClient } from "./testClient";
-export { walletClient } from "./walletClient";
+import { expect, test } from "vitest";
+import { publicClient, testClient } from "@/contracts/test/spec/utils";
+import { accounts } from "@/contracts/test/spec/utils/constants";
+import { setBalance } from "viem/test";
+
+const targetAccount = accounts[0];
+
+async function setup() {
+  await setBalance(testClient, {
+    address: targetAccount.address,
+    value: targetAccount.balance,
+  });
+}
+
+test("sends transaction", async () => {
+  await setup();
+
+  expect(
+    await publicClient.getBalance({ address: targetAccount.address }),
+  ).toMatchInlineSnapshot("10000000000000000000000n");
+});

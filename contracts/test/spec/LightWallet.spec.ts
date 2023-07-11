@@ -13,27 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { beforeAll, describe, it, expect, test } from "vitest";
-import { run } from "hardhat";
-// import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers";
-import { publicClient, walletClient } from "contracts/test/spec/utils";
+import { describe, it, expect, test } from "vitest";
+import { publicClient, walletClient } from "@/contracts/test/spec/utils";
+import { accounts } from "@/contracts/test/spec/utils/constants";
 //@ts-expect-error
 import { LightWallet } from "@/contracts/LightWallet.sol";
-
-beforeAll(() => {
-  run("node");
-});
 
 describe("LightWallet", function () {
   it("Should return run correct function parameters on hardhat", async function () {
     console.log(await publicClient.getBlockNumber());
-    const accounts = await walletClient.getAddresses();
-    const [account, ...other] = accounts;
-    console.log(await publicClient.getBalance({ address: account }));
+    const account = accounts[0].address;
     const hash = await walletClient.deployContract({
       abi: LightWallet.abi,
       bytecode: LightWallet.bytecode as `0x${string}`,
-      account: accounts[0],
+      account: account,
       args: [account],
     });
     const receipt = await publicClient.waitForTransactionReceipt({ hash });

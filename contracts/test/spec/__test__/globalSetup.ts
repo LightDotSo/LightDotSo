@@ -13,8 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { anvil } from "./anvil";
-export * from "./constants";
-export { publicClient } from "./publicClient";
-export { testClient } from "./testClient";
-export { walletClient } from "./walletClient";
+// From: https://github.com/wagmi-dev/anvil.js/blob/main/examples/example-vitest/tests/globalSetup.ts
+import { startProxy } from "@viem/anvil";
+
+export default async function () {
+  // Start a proxy server on port 8545
+  return await startProxy({
+    port: 8545,
+    host: "::",
+  });
+}

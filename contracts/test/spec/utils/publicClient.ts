@@ -14,9 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { createPublicClient, http } from "viem";
-import { hardhat } from "viem/chains";
+import { anvil } from "@/contracts/test/spec/utils";
 
 export const publicClient = createPublicClient({
-  chain: hardhat,
+  chain: anvil,
   transport: http(),
 });

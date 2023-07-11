@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [tsconfigPaths(), vitePluginEvmts()],
   test: {
     include: ["contracts/test/spec/**/*.spec.ts"],
-    setupFiles: ["contracts/test/spec/__test__/setup.ts"],
+    setupFiles: ["dotenv/config", "contracts/test/spec/__test__/setup.ts"],
+    globalSetup: ["contracts/test/spec/__test__/globalSetup.ts"],
+    environment: "node",
+    testTimeout: 30_000,
     coverage: {
       provider: "custom",
       customProviderModule: "vitest-solidity-coverage",
