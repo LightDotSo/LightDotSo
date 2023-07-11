@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createPublicClient, http } from "viem";
-import { hardhat } from "viem/chains";
+import { createWalletClient, http } from "viem";
+import { anvil } from "@/contracts/test/spec/utils";
 
-export const publicClient = createPublicClient({
-  chain: hardhat,
+export const walletClient = createWalletClient({
+  chain: anvil,
   transport: http(),
 });

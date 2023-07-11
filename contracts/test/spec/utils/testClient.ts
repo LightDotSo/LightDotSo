@@ -13,5 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { publicClient } from "./publicClient";
-export { walletClient } from "./walletClient";
+import { createTestClient, http } from "viem";
+import { anvil } from "@/contracts/test/spec/utils";
+
+// Create a test client that uses the foundry chain and the anvil mode.
+export const testClient = createTestClient({
+  chain: anvil,
+  mode: "anvil",
+  transport: http(),
+});
