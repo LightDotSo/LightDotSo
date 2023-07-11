@@ -10,5 +10,9 @@ export default defineConfig({
     globalSetup: ["contracts/test/spec/__test__/globalSetup.ts"],
     environment: "node",
     testTimeout: 30_000,
+    // coverage: {
+    //   provider: "custom",
+    //   customProviderModule: "vitest-solidity-coverage",
+    // },
   },
 });
