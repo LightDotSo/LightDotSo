@@ -20,7 +20,6 @@
     "forge:snapshot:cmd": "forge snapshot && echo",
     "hardhat:compile": "hardhat compile",
     "hardhat:compile:coverage": "hardhat compile-for-coverage",
-    "hardhat:node": "hardhat node",
     "license:cmd": "license-check-and-add -f .license-check-and-add-config.json",
     "license:fix": "license-check-and-add -f .license-check-and-add-config.json add",
     "license:lint": "license-check-and-add -f .license-check-and-add-config.json check",
