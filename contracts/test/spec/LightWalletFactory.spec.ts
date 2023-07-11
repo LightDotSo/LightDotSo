@@ -15,7 +15,7 @@
 
 import { describe, it, expect, test } from "vitest";
 //@ts-expect-error
-import { LightWalletFactory } from "@/contracts/LightWalletfactory.sol";
+import { LightWalletFactory } from "@/contracts/LightWalletFactory.sol";
 
 test("LightWalletFactory: Correct humanReadableAbi", () => {
   expect(Object.values(LightWalletFactory.humanReadableAbi))
