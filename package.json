@@ -24,7 +24,7 @@
     "license:fix": "license-check-and-add -f .license-check-and-add-config.json add",
     "license:lint": "license-check-and-add -f .license-check-and-add-config.json check",
     "lint": "concurrently 'pnpm:*:lint'",
-    "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages",
+    "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages ./pods",
     "pnpm:upgrade": "pnpm update --latest --recursive",
     "prepare": "husky install",
     "prettier:cmd": "prettier",
