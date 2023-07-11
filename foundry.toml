@@ -15,6 +15,7 @@
   optimizer = true
   optimizer_runs = 10_000
   solc = "0.8.18"
+  evm_version = "london"
   src = "contracts/src"
   test = "contracts/test"
   verbosity = 3
