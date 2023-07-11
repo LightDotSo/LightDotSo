@@ -41,10 +41,10 @@ describe("LightWallet", function () {
   });
 });
 
-test("Checks correct humanReadableAbi", () => {
+test("LightWallet: Correct humanReadableAbi", () => {
   expect(Object.values(LightWallet.humanReadableAbi)).toMatchInlineSnapshot(`
     [
-      "constructor(address anEntryPoint)",
+      "constructor(address _anEntryPoint)",
       "error OnlyOwner()",
       "event AdminChanged(address previousAdmin, address newAdmin)",
       "event BeaconUpgraded(address indexed beacon)",
