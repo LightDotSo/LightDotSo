@@ -205,27 +205,10 @@ contract SafeL3 is
     }
 
     /// @notice Permanently disabled from this particular function due to parameter count restrictions
+    /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
-    function _authorizeUpgrade(address newImplementation) internal pure override {
+    function _authorizeUpgrade(address newImplementation) internal view override onlySelf {
         (newImplementation);
-        revert("Disabled");
-    }
-
-    /// @dev Upgrade the implementation of the proxy to `newImplementation`
-    function upgradeTo(address newImplementation, bytes calldata _signatures) public virtual onlyProxy {
-        _requireValidSignature(keccak256("upgradeTo(address)"), _signatures);
-        _upgradeTo(newImplementation);
-    }
-
-    /// @dev Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`.
-    function upgradeToAndCall(address newImplementation, bytes memory data, bytes calldata _signatures)
-        public
-        payable
-        virtual
-        onlyProxy
-    {
-        _requireValidSignature(keccak256("upgradeTo(address)"), _signatures);
-        _upgradeToAndCallUUPS(newImplementation, data, true);
     }
 
     // TODO: Refactor interfaces to be compatible with OpenZeppelin's ERC165
