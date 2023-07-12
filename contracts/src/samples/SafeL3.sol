@@ -63,17 +63,6 @@ contract SafeL3 is
     IEntryPoint private immutable _entryPoint;
 
     // -------------------------------------------------------------------------
-    // Modifiers
-    // -------------------------------------------------------------------------
-
-    /// @param _hash The hash to validate the signature against.
-    /// @param _signatures The signatures to validate.
-    modifier onlyValidSignature(bytes32 _hash, bytes calldata _signatures) {
-        _requireValidSignature(_hash, _signatures);
-        _;
-    }
-
-    // -------------------------------------------------------------------------
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
@@ -137,20 +126,6 @@ contract SafeL3 is
         emit SafeL3Initialized(_entryPoint, _imageHash);
     }
 
-    /// @param _hash The hash to validate the signature against.
-    /// @param _signatures The signatures to validate.
-    function _requireValidSignature(bytes32 _hash, bytes calldata _signatures) internal view {
-        (bool isValid,) = _signatureValidation(_hash, _signatures);
-        require(isValid, "account: not valid signature");
-    }
-
-    /// @param _hash The hash to validate the signature against.
-    /// @param _signatures The signatures to validate.
-    function _requireFromEntryPointOrValidSignature(bytes32 _hash, bytes calldata _signatures) internal view {
-        (bool isValid,) = _signatureValidation(_hash, _signatures);
-        require(isValid || msg.sender == address(entryPoint()), "account: not EntryPoint or valid signature");
-    }
-
     /// @inheritdoc BaseAccount
     function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
         internal
@@ -199,7 +174,7 @@ contract SafeL3 is
     /// @param signatures signatures of the message
     function withdrawDepositTo(address payable withdrawAddress, uint256 amount, bytes32 hash, bytes calldata signatures)
         public
-        onlyValidSignature(hash, signatures)
+        onlySelf
     {
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
