@@ -153,8 +153,8 @@ importers:
         specifier: ^6.7.1
         version: 6.7.1(eslint@8.44.0)
       eslint-plugin-prettier:
-        specifier: 5.0.0-alpha.2
-        version: 5.0.0-alpha.2(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@3.0.0)
+        specifier: 5.0.0
+        version: 5.0.0(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@3.0.0)
       eslint-plugin-react:
         specifier: ^7.32.2
         version: 7.32.2(eslint@8.44.0)
@@ -709,8 +709,8 @@ importers:
         specifier: ^6.7.1
         version: 6.7.1(eslint@8.44.0)
       eslint-plugin-prettier:
-        specifier: 5.0.0-alpha.2
-        version: 5.0.0-alpha.2(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@3.0.0)
+        specifier: 5.0.0
+        version: 5.0.0(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@3.0.0)
       eslint-plugin-react:
         specifier: 7.32.2
         version: 7.32.2(eslint@8.44.0)
@@ -13928,8 +13928,8 @@ packages:
       eslint: 8.36.0
     dev: true
 
-  /eslint-plugin-prettier@5.0.0-alpha.2(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@3.0.0):
-    resolution: {integrity: sha512-F6YBCbrRzvZwcINw3crm1+/uX/i+rJYaFErPtwCfUoPLywRfY7pwBtI3yMe5OpIotuaiws8cd29oM80ca6NQSQ==}
+  /eslint-plugin-prettier@5.0.0(eslint-config-prettier@8.8.0)(eslint@8.44.0)(prettier@3.0.0):
+    resolution: {integrity: sha512-AgaZCVuYDXHUGxj/ZGu1u8H8CYgDY3iG6w5kUFw4AzMVXzB7VvbKgYR4nATIN+OvUrghMbiDLeimVjVY5ilq3w==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       '@types/eslint': '>=8.0.0'
@@ -14075,7 +14075,7 @@ packages:
       doctrine: 3.0.0
       escape-string-regexp: 4.0.0
       eslint-scope: 7.2.0
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.1
       espree: 9.5.0
       esquery: 1.5.0
       esutils: 2.0.3
@@ -14158,7 +14158,7 @@ packages:
     dependencies:
       acorn: 8.10.0
       acorn-jsx: 5.3.2(acorn@8.10.0)
-      eslint-visitor-keys: 3.3.0
+      eslint-visitor-keys: 3.4.1
     dev: true
 
   /espree@9.6.0:
