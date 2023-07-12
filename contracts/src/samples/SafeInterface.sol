@@ -30,7 +30,7 @@ interface SafeInterface is IERC1271 {
     // Events
     // -------------------------------------------------------------------------
 
-    event SafeL3Initialized(IEntryPoint indexed entryPoint, bytes32 indexed has);
+    event SafeL3Initialized(IEntryPoint indexed entryPoint, bytes32 indexed hash);
 
     // -------------------------------------------------------------------------
     // Actions

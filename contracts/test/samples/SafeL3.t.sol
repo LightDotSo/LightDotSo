@@ -29,7 +29,7 @@ import {SafeFactory} from "@/contracts/samples/SafeFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {StorageUtils} from "@/test/utils/StorageUtils.sol";
-import {console, Test} from "forge-std/Test.sol";
+import {Test} from "forge-std/Test.sol";
 
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
@@ -116,24 +116,52 @@ contract SafeL3Test is Test {
 
     // Tests that the account can correctly transfer ETH
     // function test_safe_transfer_eth() public {
+    //     // Parameters for the signature
+    //     uint8 weight = uint8(1);
+    //     uint16 threshold = uint16(1);
+    //     uint32 checkpoint = uint32(0);
+
+    //     // Calculate the image hash
+    //     bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
+    //     expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
+    //     expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(checkpoint)));
+
+    //     // Create the account using the factory w/ nonce 0
+    //     account = factory.createAccount(expectedImageHash, 0);
+
+    //     // Deposit 1e30 ETH into the account
+    //     vm.deal(address(account), 1e30);
+
     //     // Example UserOperation to send 0 ETH to the address one
     //     UserOperation memory op = entryPoint.fillUserOp(
     //         address(account), abi.encodeWithSelector(SafeL3.execute.selector, address(1), 1, bytes(""))
     //     );
 
+    //     // Get the hash of the UserOperation
     //     bytes32 hash = entryPoint.getUserOpHash(op);
-    //     bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(this), hash));
-    //     bytes1 legacy = hex"00";
-    //     bytes1 signatureFlag = hex"00";
-    //     op.signature = abi.encodePacked(legacy, signatureFlag);
 
+    //     // Create the subdigest
+    //     bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
+
+    //     // Create the signature w/ the subdigest
+    //     (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
+
+    //     // Pack the signature w/ EIP-712 flag
+    //     bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
+
+    //     // Pack the signature
+    //     uint8 signatureFlag = uint8(0);
+    //     bytes memory encoded = abi.encodePacked(threshold, checkpoint, signatureFlag, weight, sig);
+    //     console.logBytes(encoded);
+
+    //     // Execute the UserOperation
     //     UserOperation[] memory ops = new UserOperation[](1);
     //     ops[0] = op;
+    //     op.signature = encoded;
     //     entryPoint.handleOps(ops, beneficiary);
+
     //     // Assert that the balance of the account is 1
     //     assertEq(address(1).balance, 1);
-    //     // Assert the balance of the account is the Deposit - Gas
-    //     assertEq(address(entryPoint).balance, 1_002_500_000_000 - 159_329);
     // }
 
     // // Tests that the account can correctly transfer ERC20
