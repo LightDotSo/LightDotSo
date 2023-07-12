@@ -20,7 +20,7 @@ pragma solidity ^0.8.18;
 // SafeL3.sol -- SafeL3 initial implementation
 // Modified implementation on SimpleAccount.sol from @eth-infinitism/account-abstraction
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
-// License: AGPL-3.0-or-later
+// License: GPL-3.0
 
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
