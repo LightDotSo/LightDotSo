@@ -18,8 +18,9 @@
     "lint": {
       "dependsOn": ["build"]
     },
-    "test-hh": {
-      "dependsOn": ["build"]
+    "test": {
+      "dependsOn": ["build"],
+      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     }
   }
 }

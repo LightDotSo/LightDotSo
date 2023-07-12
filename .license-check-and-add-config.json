@@ -50,6 +50,8 @@
     "*.toml",
     "*.txt",
     "*.yml",
+    "apps/extension/**/*.js",
+    "ios/LightWalletSafariExtension/Resources/**/*.js",
     "**/*.app/**",
     "**/.cargo/**",
     "**/.changeset/**",

@@ -20,6 +20,9 @@
   "dependencies": {
     "@lightdotso/wagmi": "workspace:*"
   },
+  "devDependencies": {
+    "@lightdotso/eslint-config": "workspace:*"
+  },
   "publishConfig": {
     "access": "public"
   }

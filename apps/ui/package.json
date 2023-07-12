@@ -34,7 +34,7 @@
     "react-dom": "^18.2.0",
     "tailwind-merge": "^1.13.2",
     "tailwindcss-animate": "^1.0.6",
-    "vite": "^4.4.2"
+    "vite": "^4.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.22.8",

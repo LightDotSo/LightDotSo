@@ -39,9 +39,11 @@
       ]
     },
     "//#test": {
+      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
       "dependsOn": ["hardhat:compile"]
     },
     "//#test:coverage": {
+      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
       "dependsOn": ["hardhat:compile:coverage"],
       "outputs": ["coverage/**"]
     }

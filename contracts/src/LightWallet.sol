@@ -82,11 +82,11 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
     // solhint-disable-next-line no-empty-blocks
     receive() external payable {}
 
-    /// @param anEntryPoint The address of the entrypoint contract.
+    /// @param _anEntryPoint The address of the entrypoint contract.
     /// @dev Should be set to the address of the EntryPoint contract
     /// The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
-    constructor(IEntryPoint anEntryPoint) {
-        _entryPoint = anEntryPoint;
+    constructor(IEntryPoint _anEntryPoint) {
+        _entryPoint = _anEntryPoint;
         _disableInitializers();
     }
 
