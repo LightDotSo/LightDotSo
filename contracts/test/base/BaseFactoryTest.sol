@@ -26,36 +26,49 @@ contract BaseFactoryTest is Test {
     // Testing utility contract
     ProxyUtils proxyUtils;
 
+    // ImmutableProxy contract
+    ImmutableProxy immutableProxy;
+
+    // Upgrade the account to the new implementation and assert that the implementation is correct
     function _upgradeToUUPS(address _proxy, address _newImplementation) internal {
-        // ProxyUtils utility contract
-        proxyUtils = new ProxyUtils();
         // Upgrade the account to the new implementation
-        UUPSUpgradeable(_proxy).upgradeTo(address(_newImplementation));
+        _upgradeTo(_proxy, address(_newImplementation));
         // Assert that the account is now the new version
         assertEq(proxyUtils.getProxyImplementation(address(_proxy)), address(_newImplementation));
     }
 
+    // Upgrade the account to the immutable version and assert that the implementation is correct
     function _upgradeToImmutable(address _proxy) internal {
-        // ProxyUtils utility contract
-        proxyUtils = new ProxyUtils();
         // Deploy the immutable proxy
-        ImmutableProxy immutableProxy = new ImmutableProxy();
+        _deployImmutable();
         // Upgrade the account to the immutable version
-        UUPSUpgradeable(_proxy).upgradeTo(address(immutableProxy));
+        _upgradeTo(_proxy, address(immutableProxy));
         // Assert that the account is now immutable
         assertEq(proxyUtils.getProxyImplementation(address(_proxy)), address(immutableProxy));
         // Assert that the account cannot be upgraded again
         vm.expectRevert("Upgrades are disabled");
-        UUPSUpgradeable(_proxy).upgradeTo(address(0));
+        _upgradeTo(_proxy, address(0));
     }
 
+    // Just the plain upgradeTo function from UUPSUpgradeable
+    function _upgradeTo(address _proxy, address _newImplementation) internal {
+        // Upgrade the account to the new implementation
+        UUPSUpgradeable(_proxy).upgradeTo(address(_newImplementation));
+    }
+
+    // Deploy the immutable proxy
+    function _deployImmutable() internal {
+        // Deploy the immutable proxy
+        immutableProxy = new ImmutableProxy();
+    }
+
+    // Assert that the proxy admin is the zero address
     function _noProxyAdmin(address _proxy) internal {
-        // ProxyUtils utility contract
-        proxyUtils = new ProxyUtils();
         // Assert that the proxy admin is the zero address
         assertEq(proxyUtils.getProxyAdmin(_proxy), address(0));
     }
 
+    // Check that the account is not initializable twice
     // Why Initialize is required: https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor
     function _noInitializeTwice(address _proxy, bytes memory _calldata) internal {
         vm.expectRevert(bytes("Initializable: contract is already initialized"));

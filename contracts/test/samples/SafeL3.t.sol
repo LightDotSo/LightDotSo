@@ -28,7 +28,8 @@ import {SafeL3, UserOperation} from "@/contracts/samples/SafeL3.sol";
 import {SafeFactory} from "@/contracts/samples/SafeFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-import {Test} from "forge-std/Test.sol";
+import {StorageUtils} from "@/test/utils/StorageUtils.sol";
+import {console, Test} from "forge-std/Test.sol";
 
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
@@ -52,6 +53,9 @@ contract SafeL3Test is Test {
     // UniversalSigValidator
     UniversalSigValidator private validator;
 
+    // Storage utility contract
+    StorageUtils storageUtils;
+
     // Address of the owner of the account
     address private user;
     // Private key of the owner of the account
@@ -73,6 +77,9 @@ contract SafeL3Test is Test {
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
 
+        // Deploy the StorageUtils utility contract
+        storageUtils = new StorageUtils();
+
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);
     }
@@ -85,6 +92,19 @@ contract SafeL3Test is Test {
         account = new SafeL3(entryPoint);
     }
 
+    // Tests the account slot implementation
+    function test_safe_image_hash() public {
+        // Create a new account for the implementation
+        account = new SafeL3(entryPoint);
+
+        // Assert that the image hash is correct
+        assertEq(
+            // keccak256("org.arcadeum.module.auth.upgradable.image.hash");
+            storageUtils.readBytes32(bytes32(0xea7157fa25e3aa17d0ae2d5280fa4e24d421c61842aa85e45194e1145aa72bf8)),
+            bytes32(uint256(0))
+        );
+    }
+
     // Tests that the account can not be initialized twice
     function test_safe_implementation_noInitialize() public {
         // Create a new account for the implementation
@@ -94,7 +114,7 @@ contract SafeL3Test is Test {
         account.initialize(bytes32(uint256(1)));
     }
 
-    // // Tests that the account can correctly transfer ETH
+    // Tests that the account can correctly transfer ETH
     // function test_safe_transfer_eth() public {
     //     // Example UserOperation to send 0 ETH to the address one
     //     UserOperation memory op = entryPoint.fillUserOp(
@@ -102,7 +122,10 @@ contract SafeL3Test is Test {
     //     );
 
     //     bytes32 hash = entryPoint.getUserOpHash(op);
-    //     // op.signature =
+    //     bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(this), hash));
+    //     bytes1 legacy = hex"00";
+    //     bytes1 signatureFlag = hex"00";
+    //     op.signature = abi.encodePacked(legacy, signatureFlag);
 
     //     UserOperation[] memory ops = new UserOperation[](1);
     //     ops[0] = op;

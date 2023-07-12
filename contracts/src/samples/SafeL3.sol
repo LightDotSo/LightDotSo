@@ -204,12 +204,31 @@ contract SafeL3 is
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
 
+    /// @notice Permanently disabled from this particular function due to parameter count restrictions
     /// @inheritdoc UUPSUpgradeable
-    // TODO: Add proper overrides for upgrades
-    function _authorizeUpgrade(address newImplementation) internal view override {
+    function _authorizeUpgrade(address newImplementation) internal pure override {
         (newImplementation);
+        revert("Disabled");
     }
 
+    /// @dev Upgrade the implementation of the proxy to `newImplementation`
+    function upgradeTo(address newImplementation, bytes calldata _signatures) public virtual onlyProxy {
+        _requireValidSignature(keccak256("upgradeTo(address)"), _signatures);
+        _upgradeTo(newImplementation);
+    }
+
+    /// @dev Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`.
+    function upgradeToAndCall(address newImplementation, bytes memory data, bytes calldata _signatures)
+        public
+        payable
+        virtual
+        onlyProxy
+    {
+        _requireValidSignature(keccak256("upgradeTo(address)"), _signatures);
+        _upgradeToAndCallUUPS(newImplementation, data, true);
+    }
+
+    // TODO: Refactor interfaces to be compatible with OpenZeppelin's ERC165
     /// @inheritdoc ModuleAuthUpgradable
     function supportsInterface(bytes4 interfaceId)
         public

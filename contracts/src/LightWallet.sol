@@ -200,6 +200,7 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
         _onlyOwner();
     }
 
+    // TODO: Refactor interfaces to be compatible with OpenZeppelin's ERC165
     function supportsInterface(bytes4) public pure override(ILightWallet, TokenCallbackHandler) returns (bool) {
         return false;
         // super.supportsInterface(interfaceId);
