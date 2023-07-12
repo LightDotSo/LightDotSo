@@ -152,7 +152,6 @@ contract SafeL3Test is Test {
     //     // Pack the signature
     //     uint8 signatureFlag = uint8(0);
     //     bytes memory encoded = abi.encodePacked(threshold, checkpoint, signatureFlag, weight, sig);
-    //     console.logBytes(encoded);
 
     //     // Execute the UserOperation
     //     UserOperation[] memory ops = new UserOperation[](1);

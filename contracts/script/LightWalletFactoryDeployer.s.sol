@@ -34,8 +34,8 @@ contract SeaportDeployer is Script {
         ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
 
     function run() public {
-        // Use the private key to start a broadcast
-        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+        // Start the broadcast
+        vm.startBroadcast();
 
         // TODO: Specify salt for deterministic deployment
         bytes32 salt = 0x0;
