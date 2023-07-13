@@ -1,0 +1,16 @@
+name: Sync
+on:
+  schedule:
+    - cron: "15 */4 * * *"
+  workflow_dispatch:
+jobs:
+  sync-submodules:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+          token: ${{ secrets.BOT_TOKEN }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
