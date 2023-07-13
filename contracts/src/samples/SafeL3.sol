@@ -133,8 +133,7 @@ contract SafeL3 is
         override
         returns (uint256 validationData)
     {
-        bytes32 hash = userOpHash.toEthSignedMessageHash();
-        (bool isValid,) = _signatureValidation(hash, userOp.signature);
+        (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
         if (!isValid) {
             return SIG_VALIDATION_FAILED;
         }

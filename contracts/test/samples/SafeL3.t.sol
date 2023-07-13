@@ -29,6 +29,7 @@ import {SafeFactory} from "@/contracts/samples/SafeFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {StorageUtils} from "@/test/utils/StorageUtils.sol";
+// import {console} from "forge-std/console.sol";
 import {Test} from "forge-std/Test.sol";
 
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
@@ -119,12 +120,14 @@ contract SafeL3Test is Test {
     //     // Parameters for the signature
     //     uint8 weight = uint8(1);
     //     uint16 threshold = uint16(1);
-    //     uint32 checkpoint = uint32(0);
+    //     uint32 checkpoint = uint32(1);
 
     //     // Calculate the image hash
     //     bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
     //     expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
     //     expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(checkpoint)));
+
+    //     console.logBytes32(expectedImageHash);
 
     //     // Create the account using the factory w/ nonce 0
     //     account = factory.createAccount(expectedImageHash, 0);
@@ -139,6 +142,7 @@ contract SafeL3Test is Test {
 
     //     // Get the hash of the UserOperation
     //     bytes32 hash = entryPoint.getUserOpHash(op);
+    //     console.logBytes32(hash);
 
     //     // Create the subdigest
     //     bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
@@ -152,6 +156,7 @@ contract SafeL3Test is Test {
     //     // Pack the signature
     //     uint8 signatureFlag = uint8(0);
     //     bytes memory encoded = abi.encodePacked(threshold, checkpoint, signatureFlag, weight, sig);
+    //     console.logBytes(encoded);
 
     //     // Execute the UserOperation
     //     UserOperation[] memory ops = new UserOperation[](1);
