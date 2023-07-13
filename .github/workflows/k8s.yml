@@ -24,26 +24,26 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
           allowed-conclusions: success
-  k8s-deploy-serve:
-    runs-on: ubuntu-latest
-    needs:
-      - k8s-wait-docker
-    timeout-minutes: 90
-    env:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-    steps:
-      - name: Kubernetes Install
-        uses: wallet-rs/wallet-rs/.github/actions/k8s-install@main
-        with:
-          google_credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
-          gke_cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
-          gke_cluster_region: ${{ secrets.GKE_CLUSTER_REGION }}
-      - name: Set Image
-        run: |
-          kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:sha-${{ github.sha }}
-      - name: Rollout Status
-        run: |
-          kubectl rollout status deployment/serve
+  # k8s-deploy-serve:
+  #   runs-on: ubuntu-latest
+  #   needs:
+  #     - k8s-wait-docker
+  #   timeout-minutes: 90
+  #   env:
+  #     KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+  #   steps:
+  #     - name: Kubernetes Install
+  #       uses: wallet-rs/wallet-rs/.github/actions/k8s-install@main
+  #       with:
+  #         google_credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
+  #         gke_cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+  #         gke_cluster_region: ${{ secrets.GKE_CLUSTER_REGION }}
+  #     - name: Set Image
+  #       run: |
+  #         kubectl set image deployment/serve serve=ghcr.io/lightdotso/lightdotso:sha-${{ github.sha }}
+  #     - name: Rollout Status
+  #       run: |
+  #         kubectl rollout status deployment/serve
   k8s-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -68,12 +68,12 @@ jobs:
     needs:
       - k8s-lint
       - k8s-wait-docker
-      - k8s-deploy-serve
+      # - k8s-deploy-serve
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: k8s-wait-docker,k8s-deploy-serve
+          allowed-skips: k8s-wait-docker
           jobs: ${{ toJSON(needs) }}
