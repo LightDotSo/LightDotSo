@@ -36,11 +36,11 @@
     },
     "//#test": {
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "dependsOn": ["^build:test"]
+      "dependsOn": ["build:test"]
     },
     "//#test:coverage": {
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "dependsOn": ["^build:test"],
+      "dependsOn": ["build:test"],
       "outputs": ["coverage/**"]
     }
   }
