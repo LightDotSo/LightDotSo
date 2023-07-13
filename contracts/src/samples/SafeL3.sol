@@ -196,7 +196,7 @@ contract SafeL3 is
     function supportsInterface(bytes4 interfaceId)
         public
         pure
-        override(SafeInterface, ModuleAuthUpgradable, TokenCallbackHandler)
+        override(SafeInterface, TokenCallbackHandler, ModuleAuthUpgradable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

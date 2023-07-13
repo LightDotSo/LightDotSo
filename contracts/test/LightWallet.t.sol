@@ -263,7 +263,7 @@ contract LightWalletTest is Test {
         // ERC165 interface id
         bytes4 interfaceId = 0x01ffc9a7;
 
-        // Test that the account supports ERC165
+        // Test that the account supports interfaces
         assertEq(account.supportsInterface(interfaceId), true);
     }
 }
