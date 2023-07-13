@@ -100,19 +100,15 @@ contract SafeL3 is
             _call(dest[i], 0, func[i]);
         }
     }
-
     /// @inheritdoc ModuleAuth
+
     function isValidSignature(bytes32 _hash, bytes calldata _signatures)
         public
         view
         override(SafeInterface, ModuleAuth)
         returns (bytes4)
     {
-        (bool isValid,) = _signatureValidation(_hash, _signatures);
-        if (isValid) {
-            return ERC1271_SUCCESS;
-        }
-        return 0;
+        return super.isValidSignature(_hash, _signatures);
     }
 
     /// @param _imageHash The hash to validate the signature against.
@@ -182,7 +178,6 @@ contract SafeL3 is
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
 
-    /// @notice Permanently disabled from this particular function due to parameter count restrictions
     /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
     function _authorizeUpgrade(address newImplementation) internal view override onlySelf {
