@@ -22,7 +22,6 @@ pragma solidity ^0.8.18;
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
 // License: GPL-3.0
 
-import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
@@ -45,8 +44,6 @@ contract SafeL3 is
     UUPSUpgradeable,
     Initializable
 {
-    using ECDSA for bytes32;
-
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -119,6 +116,10 @@ contract SafeL3 is
         _initialize(_imageHash);
     }
 
+    // -------------------------------------------------------------------------
+    // Entry Point
+    // -------------------------------------------------------------------------
+
     /// @param _imageHash The hash to validate the signature against.
     /// @notice Emits an event for the initialization of the contract
     function _initialize(bytes32 _imageHash) internal virtual {
@@ -156,6 +157,10 @@ contract SafeL3 is
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Entry Point
+    // -------------------------------------------------------------------------
+
     /// @notice check current account deposit in the entryPoint
     function getDeposit() public view returns (uint256) {
         return entryPoint().balanceOf(address(this));
@@ -169,14 +174,13 @@ contract SafeL3 is
     /// @notice Withdraws value from the account's deposit
     /// @param withdrawAddress target to send to
     /// @param amount to withdraw
-    /// @param hash hash of the message
-    /// @param signatures signatures of the message
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount, bytes32 hash, bytes calldata signatures)
-        public
-        onlySelf
-    {
+    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlySelf {
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
+
+    // -------------------------------------------------------------------------
+    // Upgrades
+    // -------------------------------------------------------------------------
 
     /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
@@ -184,7 +188,10 @@ contract SafeL3 is
         (newImplementation);
     }
 
-    // TODO: Refactor interfaces to be compatible with OpenZeppelin's ERC165
+    // -------------------------------------------------------------------------
+    // Compatibility
+    // -------------------------------------------------------------------------
+
     /// @inheritdoc ModuleAuthUpgradable
     function supportsInterface(bytes4 interfaceId)
         public
@@ -192,6 +199,6 @@ contract SafeL3 is
         override(SafeInterface, ModuleAuthUpgradable, TokenCallbackHandler)
         returns (bool)
     {
-        super.supportsInterface(interfaceId);
+        return super.supportsInterface(interfaceId);
     }
 }

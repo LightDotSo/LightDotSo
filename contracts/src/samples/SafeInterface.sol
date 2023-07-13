@@ -53,18 +53,13 @@ interface SafeInterface is IERC1271 {
     function isValidSignature(bytes32 _hash, bytes calldata _signatures) external view returns (bytes4);
 
     /// @notice Compatibility with ERC165
-    function supportsInterface(bytes4 interfaceId) external view returns (bool);
+    function supportsInterface(bytes4 interfaceId) external pure returns (bool);
 
     /// @notice Sets the hash of this account, and emits an event.
     function initialize(bytes32 _imageHash) external;
 
     /// @notice Withdraws value from the account's deposit.
-    function withdrawDepositTo(
-        address payable withdrawAddress,
-        uint256 amount,
-        bytes32 _hash,
-        bytes calldata _signatures
-    ) external;
+    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) external;
 
     /// @notice Returns the entry point contract address for this account.
     function entryPoint() external view returns (IEntryPoint);

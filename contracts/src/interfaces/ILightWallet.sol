@@ -62,9 +62,6 @@ interface ILightWallet is IERC1271 {
     /// Compatible with ERC1271
     function isValidSignature(bytes32 _hash, bytes calldata _signatures) external view returns (bytes4);
 
-    /// Compatibility with ERC165
-    function supportsInterface(bytes4 interfaceId) external view returns (bool);
-
     /// @notice Sets the owner of this account, and emits an event.
     function initialize(address anOwner) external;
 

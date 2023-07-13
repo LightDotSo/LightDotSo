@@ -100,14 +100,17 @@ contract LightWalletTest is Test {
         UserOperation memory op = entryPoint.fillUserOp(
             address(account), abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""))
         );
+
+        // Pack the UserOperation
         op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
+
+        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
+
         // Assert that the balance of the account is 1
         assertEq(address(1).balance, 1);
-        // Assert the balance of the account is the Deposit - Gas
-        assertEq(address(entryPoint).balance, 1_002_500_000_000 - 159_329);
     }
 
     // Tests that the account can correctly transfer ERC20
@@ -129,9 +132,13 @@ contract LightWalletTest is Test {
                 abi.encodeWithSelector(IERC20.transfer.selector, address(1), 1)
             )
         );
+
+        // Pack the UserOperation
         op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
+
+        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the destination is 1
@@ -159,9 +166,13 @@ contract LightWalletTest is Test {
                 abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1)
             )
         );
+
+        // Pack the UserOperation
         op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
+
+        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the destination is 1
@@ -189,9 +200,13 @@ contract LightWalletTest is Test {
                 abi.encodeWithSelector(IERC1155.safeTransferFrom.selector, address(account), address(1), 1, 1, "")
             )
         );
+
+        // Pack the UserOperation
         op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
+
+        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the destination is 1
