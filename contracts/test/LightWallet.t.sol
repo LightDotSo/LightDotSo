@@ -257,4 +257,13 @@ contract LightWalletTest is Test {
         assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
         assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }
+
+    // Tests that the account complies w/ ERC-165
+    function test_light_erc_165() public {
+        // ERC165 interface id
+        bytes4 interfaceId = 0x01ffc9a7;
+
+        // Test that the account supports ERC165
+        assertEq(account.supportsInterface(interfaceId), true);
+    }
 }

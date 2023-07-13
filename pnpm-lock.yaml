@@ -766,6 +766,9 @@ importers:
 
   contracts:
     dependencies:
+      '@lightdotso/solutions':
+        specifier: workspace:*
+        version: link:../packages/solutions
       '@lightdotso/wagmi':
         specifier: workspace:*
         version: link:../packages/wagmi
@@ -920,7 +923,7 @@ importers:
 
   packages/resources: {}
 
-  packages/solution:
+  packages/solutions:
     dependencies:
       viem:
         specifier: ^1.2.13
