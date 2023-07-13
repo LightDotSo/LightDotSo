@@ -64,7 +64,7 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "function onERC721Received(address, address, uint256, bytes) pure returns (bytes4)",
       "function owner() view returns (address)",
       "function proxiableUUID() view returns (bytes32)",
-      "function supportsInterface(bytes4) pure returns (bool)",
+      "function supportsInterface(bytes4 interfaceId) view returns (bool)",
       "function tokensReceived(address, address, address, uint256, bytes, bytes) pure",
       "function upgradeTo(address newImplementation)",
       "function upgradeToAndCall(address newImplementation, bytes data) payable",
