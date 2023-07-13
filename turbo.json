@@ -15,7 +15,7 @@
       "cache": false,
       "persistent": true
     },
-    "//#build": {
+    "//#build:test": {
       "outputs": ["artifacts/**", "coverage-data.json"],
       "inputs": ["contracts/src/**"]
     },
@@ -36,11 +36,11 @@
     },
     "//#test": {
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build:test"]
     },
     "//#test:coverage": {
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build:test"],
       "outputs": ["coverage/**"]
     }
   }

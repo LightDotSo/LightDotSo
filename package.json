@@ -13,7 +13,7 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "concurrently 'pnpm:*:compile'",
+    "build:test": "concurrently 'pnpm:*:compile'",
     "build:turbo": "turbo run build",
     "changeset": "changeset",
     "eslint:cmd": "eslint --config .eslintrc.js --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint",
