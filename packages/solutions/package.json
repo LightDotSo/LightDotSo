@@ -1,6 +1,6 @@
 {
-  "name": "@lightdotso/changelog",
-  "version": "1.1.0-pre.1",
+  "name": "@lightdotso/solutions",
+  "version": "0.1.0",
   "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
   "bugs": {
@@ -12,27 +12,22 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
   "scripts": {
-    "build": "next build",
-    "dev": "next dev --port 3001",
-    "lint": "next lint",
-    "start": "next start"
+    "build": "tsup",
+    "clean": "rimraf -rf dist"
   },
   "dependencies": {
-    "next": "^13.4.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "viem": "^1.2.14"
   },
   "devDependencies": {
-    "@lightdotso/eslint-config": "workspace:*",
-    "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.4.2",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.7",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.25",
-    "tailwindcss": "^3.3.2",
     "typescript": "^5.1.6"
   },
   "publishConfig": {

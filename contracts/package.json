@@ -18,6 +18,7 @@
     "test-hh": "cd .. && pnpm run hardhat:test"
   },
   "dependencies": {
+    "@lightdotso/solutions": "workspace:*",
     "@lightdotso/wagmi": "workspace:*"
   },
   "devDependencies": {

@@ -18,7 +18,7 @@
 | LibBytes                     | 0.086     | 24.49       |
 | LibBytesPointer              | 0.086     | 24.49       |
 | LibOptim                     | 0.086     | 24.49       |
-| LightWallet                  | 8.818     | 15.758      |
+| LightWallet                  | 9.044     | 15.532      |
 | LightWalletFactory           | 3.206     | 21.37       |
 | Math                         | 0.086     | 24.49       |
 | MockERC1155                  | 7.697     | 16.879      |
@@ -31,11 +31,10 @@
 | SafeERC20                    | 0.086     | 24.49       |
 | SafeFactory                  | 3.129     | 21.447      |
 | SafeL2                       | 15.137    | 9.439       |
-| SafeL3                       | 12.875    | 11.701      |
+| SafeL3                       | 12.834    | 11.742      |
 | SafeMath                     | 0.086     | 24.49       |
 | SafeProxy                    | 0.161     | 24.415      |
 | SafeProxyFactory             | 2.393     | 22.183      |
-| SafeUtils                    | 0.063     | 24.513      |
 | SenderCreator                | 0.531     | 24.045      |
 | SequenceBaseSig              | 0.086     | 24.49       |
 | SequenceDynamicSig           | 0.086     | 24.49       |

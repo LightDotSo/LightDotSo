@@ -135,6 +135,10 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
         _initialize(anOwner);
     }
 
+    // -------------------------------------------------------------------------
+    // Internal Functions
+    // -------------------------------------------------------------------------
+
     /// @param anOwner The address of the owner of this account
     /// @notice Sets the owner of this account, and emits an event
     function _initialize(address anOwner) internal virtual {
@@ -177,6 +181,10 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
         }
     }
 
+    // -------------------------------------------------------------------------
+    // Entry Point
+    // -------------------------------------------------------------------------
+
     /// @notice check current account deposit in the entryPoint
     function getDeposit() public view returns (uint256) {
         return entryPoint().balanceOf(address(this));
@@ -194,14 +202,13 @@ contract LightWallet is ILightWallet, BaseAccount, TokenCallbackHandler, UUPSUpg
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
 
+    // -------------------------------------------------------------------------
+    // Upgrades
+    // -------------------------------------------------------------------------
+
     /// @inheritdoc UUPSUpgradeable
     function _authorizeUpgrade(address newImplementation) internal view override {
         (newImplementation);
         _onlyOwner();
-    }
-
-    function supportsInterface(bytes4) public pure override(ILightWallet, TokenCallbackHandler) returns (bool) {
-        return false;
-        // super.supportsInterface(interfaceId);
     }
 }

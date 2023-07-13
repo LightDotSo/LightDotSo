@@ -47,6 +47,10 @@ contract KernelFactoryTest is BaseFactoryTest {
         // Deploy the default ECDSAFactory
         ecdsaFactory = new ECDSAKernelFactory(factory, validator, entryPoint);
 
+        // ProxyUtils utility contract
+        proxyUtils = new ProxyUtils();
+
+        // Create the account using the factory w/ nonce 0
         account = ecdsaFactory.createAccount(address(1), 0);
     }
 

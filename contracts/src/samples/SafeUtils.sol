@@ -17,7 +17,46 @@
 
 pragma solidity ^0.8.18;
 
+import {Test} from "forge-std/Test.sol";
+
 /// @title SafeUtils
 /// @author shunkakinoki
 /// @notice SafeUtils is a utility contract for the Safe
-contract SafeUtils {}
+contract SafeUtils is Test {
+    // Parameters for the signature
+    uint8 private weight = uint8(1);
+    uint16 private threshold = uint16(1);
+    uint32 private checkpoint = uint32(1);
+
+    function getExpectedImageHash(address user) public view returns (bytes32) {
+        // Calculate the image hash
+        bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
+        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
+        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(checkpoint)));
+
+        return expectedImageHash;
+    }
+
+    function signDigest(bytes32 hash, address account, uint256 userKey) public view returns (bytes memory) {
+        // Create the subdigest
+        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
+
+        // Create the signature w/ the subdigest
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
+
+        // Pack the signature w/ EIP-712 flag
+        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
+
+        return sig;
+    }
+
+    function packLegacySignature(bytes memory sig) public view returns (bytes memory) {
+        // Flag for legacy signature
+        uint8 legacySignatureFlag = uint8(0);
+
+        // Pack the signature w/ flag, weight, threshold, checkpoint
+        bytes memory encoded = abi.encodePacked(threshold, checkpoint, legacySignatureFlag, weight, sig);
+
+        return encoded;
+    }
+}
