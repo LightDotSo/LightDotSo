@@ -29,7 +29,6 @@ import {SafeFactory} from "@/contracts/samples/SafeFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {StorageUtils} from "@/test/utils/StorageUtils.sol";
-// import {console} from "forge-std/console.sol";
 import {Test} from "forge-std/Test.sol";
 
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
@@ -116,57 +115,53 @@ contract SafeL3Test is Test {
     }
 
     // Tests that the account can correctly transfer ETH
-    // function test_safe_transfer_eth() public {
-    //     // Parameters for the signature
-    //     uint8 weight = uint8(1);
-    //     uint16 threshold = uint16(1);
-    //     uint32 checkpoint = uint32(1);
+    function test_safe_transfer_eth() public {
+        // Parameters for the signature
+        uint8 weight = uint8(1);
+        uint16 threshold = uint16(1);
+        uint32 checkpoint = uint32(1);
 
-    //     // Calculate the image hash
-    //     bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
-    //     expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
-    //     expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(checkpoint)));
+        // Calculate the image hash
+        bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
+        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
+        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(checkpoint)));
 
-    //     console.logBytes32(expectedImageHash);
+        // Create the account using the factory w/ nonce 0
+        account = factory.createAccount(expectedImageHash, 0);
 
-    //     // Create the account using the factory w/ nonce 0
-    //     account = factory.createAccount(expectedImageHash, 0);
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
 
-    //     // Deposit 1e30 ETH into the account
-    //     vm.deal(address(account), 1e30);
+        // Example UserOperation to send 0 ETH to the address one
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account), abi.encodeWithSelector(SafeL3.execute.selector, address(1), 1, bytes(""))
+        );
 
-    //     // Example UserOperation to send 0 ETH to the address one
-    //     UserOperation memory op = entryPoint.fillUserOp(
-    //         address(account), abi.encodeWithSelector(SafeL3.execute.selector, address(1), 1, bytes(""))
-    //     );
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
 
-    //     // Get the hash of the UserOperation
-    //     bytes32 hash = entryPoint.getUserOpHash(op);
-    //     console.logBytes32(hash);
+        // Create the subdigest
+        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
 
-    //     // Create the subdigest
-    //     bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
+        // Create the signature w/ the subdigest
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
 
-    //     // Create the signature w/ the subdigest
-    //     (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
+        // Pack the signature w/ EIP-712 flag
+        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
 
-    //     // Pack the signature w/ EIP-712 flag
-    //     bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
+        // Pack the signature
+        uint8 signatureFlag = uint8(0);
+        bytes memory encoded = abi.encodePacked(threshold, checkpoint, signatureFlag, weight, sig);
 
-    //     // Pack the signature
-    //     uint8 signatureFlag = uint8(0);
-    //     bytes memory encoded = abi.encodePacked(threshold, checkpoint, signatureFlag, weight, sig);
-    //     console.logBytes(encoded);
+        // Execute the UserOperation
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        op.signature = encoded;
+        entryPoint.handleOps(ops, beneficiary);
 
-    //     // Execute the UserOperation
-    //     UserOperation[] memory ops = new UserOperation[](1);
-    //     ops[0] = op;
-    //     op.signature = encoded;
-    //     entryPoint.handleOps(ops, beneficiary);
-
-    //     // Assert that the balance of the account is 1
-    //     assertEq(address(1).balance, 1);
-    // }
+        // Assert that the balance of the account is 1
+        assertEq(address(1).balance, 1);
+    }
 
     // // Tests that the account can correctly transfer ERC20
     // function test_safe_transfer_erc20() public {
