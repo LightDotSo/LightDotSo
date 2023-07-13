@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { describe, it, expect, test } from "vitest";
+import { subdigestOf } from "@lightdotso/solutions";
 import { publicClient, walletClient } from "@/contracts/test/spec/utils";
 import { accounts } from "@/contracts/test/spec/utils/constants";
 //@ts-expect-error
@@ -28,6 +29,7 @@ describe("LightWallet", function () {
       bytecode: LightWallet.bytecode as `0x${string}`,
       account: account,
       args: [account],
+      chain: undefined,
     });
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
     const data = await publicClient.readContract({
@@ -73,4 +75,9 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "receive() external payable",
     ]
   `);
+});
+
+test("Should return correct subdigest", () => {
+  const ls = subdigestOf(`0x${"00".repeat(20)}`, new Uint8Array(32), 1n);
+  console.log(ls);
 });

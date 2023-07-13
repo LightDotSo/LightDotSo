@@ -25,10 +25,6 @@ import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
 contract SafeFactoryTest is BaseFactoryTest {
-    // Event emitted when not called by self
-    // From: https://github.com/0xsequence/wallet-contracts/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/ModuleSelfAuth.sol#L6
-    error OnlySelfAuth(address _sender, address _self);
-
     // EntryPoint from eth-inifinitism
     EntryPoint private entryPoint;
     // SafeL3 from eth-inifinitism
@@ -62,7 +58,7 @@ contract SafeFactoryTest is BaseFactoryTest {
         // Deploy new version of SafeL3
         SafeL3 accountV2 = new SafeL3(entryPoint);
         // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSelector(OnlySelfAuth.selector, address(this), address(account)));
+        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
         // Check that the account is the new implementation
         _upgradeTo(address(account), address(accountV2));
     }
@@ -71,7 +67,7 @@ contract SafeFactoryTest is BaseFactoryTest {
         // Deploy the Immutable
         _deployImmutable();
         // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSelector(OnlySelfAuth.selector, address(this), address(account)));
+        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
         // Check that upgrade to immutable works
         _upgradeTo(address(account), address(immutableProxy));
     }
