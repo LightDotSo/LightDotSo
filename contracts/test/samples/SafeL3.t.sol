@@ -26,6 +26,7 @@ import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {SafeL3, UserOperation} from "@/contracts/samples/SafeL3.sol";
 import {SafeFactory} from "@/contracts/samples/SafeFactory.sol";
+import {SafeUtils} from "@/contracts/samples/SafeUtils.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {StorageUtils} from "@/test/utils/StorageUtils.sol";
@@ -53,6 +54,8 @@ contract SafeL3Test is Test {
     // UniversalSigValidator
     UniversalSigValidator private validator;
 
+    // Safe utility contract
+    SafeUtils safeUtils;
     // Storage utility contract
     StorageUtils storageUtils;
 
@@ -77,6 +80,8 @@ contract SafeL3Test is Test {
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
 
+        // Deploy the SafeUtils utility contract
+        safeUtils = new SafeUtils();
         // Deploy the StorageUtils utility contract
         storageUtils = new StorageUtils();
 
@@ -116,17 +121,10 @@ contract SafeL3Test is Test {
 
     // Tests that the account can correctly transfer ETH
     function test_safe_transfer_eth() public {
-        // Parameters for the signature
-        uint8 weight = uint8(1);
-        uint16 threshold = uint16(1);
-        uint32 checkpoint = uint32(1);
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
 
-        // Calculate the image hash
-        bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
-        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
-        expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(checkpoint)));
-
-        // Create the account using the factory w/ nonce 0
+        // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
 
         // Deposit 1e30 ETH into the account
@@ -140,118 +138,171 @@ contract SafeL3Test is Test {
         // Get the hash of the UserOperation
         bytes32 hash = entryPoint.getUserOpHash(op);
 
-        // Create the subdigest
-        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
-
-        // Create the signature w/ the subdigest
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
-
-        // Pack the signature w/ EIP-712 flag
-        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
 
         // Pack the signature
-        uint8 signatureFlag = uint8(0);
-        bytes memory encoded = abi.encodePacked(threshold, checkpoint, signatureFlag, weight, sig);
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
 
-        // Execute the UserOperation
+        // Pack the UserOperation
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
-        op.signature = encoded;
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the account is 1
         assertEq(address(1).balance, 1);
     }
 
-    // // Tests that the account can correctly transfer ERC20
-    // function test_safe_transfer_erc20() public {
-    //     // Deploy a new MockERC20
-    //     MockERC20 token = new MockERC20("Test", "TEST", 18);
+    // Tests that the account can correctly transfer ERC20
+    function test_safe_transfer_erc20() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
 
-    //     // Mint 1e18 tokens to the account
-    //     token.mint(address(account), 1e18);
-    //     assertEq(token.balanceOf(address(account)), 1e18);
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
 
-    //     // Example UserOperation to send 1 ERC20 to the address one
-    //     UserOperation memory op = entryPoint.fillUserOp(
-    //         address(account),
-    //         abi.encodeWithSelector(
-    //             SafeL3.execute.selector,
-    //             address(token),
-    //             0,
-    //             abi.encodeWithSelector(IERC20.transfer.selector, address(1), 1)
-    //         )
-    //     );
-    //     op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
-    //     UserOperation[] memory ops = new UserOperation[](1);
-    //     ops[0] = op;
-    //     entryPoint.handleOps(ops, beneficiary);
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
 
-    //     // Assert that the balance of the destination is 1
-    //     assertEq(token.balanceOf(address(1)), 1);
-    //     // Assert that the balance of the account decreased by 1
-    //     assertEq(token.balanceOf(address(account)), 1e18 - 1);
-    // }
+        // Deploy a new MockERC20
+        MockERC20 token = new MockERC20("Test", "TEST", 18);
 
-    // // Tests that the account can correctly transfer ERC721
-    // function test_safe_transfer_erc721() public {
-    //     // Deploy a new MockERC721
-    //     MockERC721 nft = new MockERC721("Test", "TEST");
+        // Mint 1e18 tokens to the account
+        token.mint(address(account), 1e18);
+        assertEq(token.balanceOf(address(account)), 1e18);
 
-    //     // Mint 1e18 tokens to the account
-    //     nft.mint(address(account), 1);
-    //     assertEq(nft.balanceOf(address(account)), 1);
+        // Example UserOperation to send 1 ERC20 to the address one
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account),
+            abi.encodeWithSelector(
+                SafeL3.execute.selector,
+                address(token),
+                0,
+                abi.encodeWithSelector(IERC20.transfer.selector, address(1), 1)
+            )
+        );
 
-    //     // Example UserOperation to send 1 ERC721 to the address one
-    //     UserOperation memory op = entryPoint.fillUserOp(
-    //         address(account),
-    //         abi.encodeWithSelector(
-    //             SafeL3.execute.selector,
-    //             address(nft),
-    //             0,
-    //             abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1)
-    //         )
-    //     );
-    //     op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
-    //     UserOperation[] memory ops = new UserOperation[](1);
-    //     ops[0] = op;
-    //     entryPoint.handleOps(ops, beneficiary);
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
 
-    //     // Assert that the balance of the destination is 1
-    //     assertEq(nft.balanceOf(address(1)), 1);
-    //     // Assert that the balance of the account is 0
-    //     assertEq(nft.balanceOf(address(account)), 0);
-    // }
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
 
-    // // Tests that the account can correctly transfer ERC1155
-    // function test_safe_transfer_erc1155() public {
-    //     // Deploy a new MockERC1155
-    //     MockERC1155 multi = new MockERC1155();
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
 
-    //     // Mint 10 tokens of id:1 to the account
-    //     multi.mint(address(account), 1, 10, "");
-    //     assertEq(multi.balanceOf(address(account), 1), 10);
+        // Pack the UserOperation
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        entryPoint.handleOps(ops, beneficiary);
 
-    //     // Example UserOperation to send 1 ERC1155 of id:1 to the address one
-    //     UserOperation memory op = entryPoint.fillUserOp(
-    //         address(account),
-    //         abi.encodeWithSelector(
-    //             SafeL3.execute.selector,
-    //             address(multi),
-    //             0,
-    //             abi.encodeWithSelector(IERC1155.safeTransferFrom.selector, address(account), address(1), 1, 1, "")
-    //         )
-    //     );
-    //     op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
-    //     UserOperation[] memory ops = new UserOperation[](1);
-    //     ops[0] = op;
-    //     entryPoint.handleOps(ops, beneficiary);
+        // Assert that the balance of the destination is 1
+        assertEq(token.balanceOf(address(1)), 1);
+        // Assert that the balance of the account decreased by 1
+        assertEq(token.balanceOf(address(account)), 1e18 - 1);
+    }
 
-    //     // Assert that the balance of the destination is 1
-    //     assertEq(multi.balanceOf(address(1), 1), 1);
-    //     // Assert that the balance of the account decreased by 1
-    //     assertEq(multi.balanceOf(address(account), 1), 9);
-    // }
+    // Tests that the account can correctly transfer ERC721
+    function test_safe_transfer_erc721() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
+        // Deploy a new MockERC721
+        MockERC721 nft = new MockERC721("Test", "TEST");
+
+        // Mint 1e18 tokens to the account
+        nft.mint(address(account), 1);
+        assertEq(nft.balanceOf(address(account)), 1);
+
+        // Example UserOperation to send 1 ERC721 to the address one
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account),
+            abi.encodeWithSelector(
+                SafeL3.execute.selector,
+                address(nft),
+                0,
+                abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1)
+            )
+        );
+
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
+        // Pack the UserOperation
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Assert that the balance of the destination is 1
+        assertEq(nft.balanceOf(address(1)), 1);
+        // Assert that the balance of the account is 0
+        assertEq(nft.balanceOf(address(account)), 0);
+    }
+
+    // Tests that the account can correctly transfer ERC1155
+    function test_safe_transfer_erc1155() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
+        // Deploy a new MockERC1155
+        MockERC1155 multi = new MockERC1155();
+
+        // Mint 10 tokens of id:1 to the account
+        multi.mint(address(account), 1, 10, "");
+        assertEq(multi.balanceOf(address(account), 1), 10);
+
+        // Example UserOperation to send 1 ERC1155 of id:1 to the address one
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account),
+            abi.encodeWithSelector(
+                SafeL3.execute.selector,
+                address(multi),
+                0,
+                abi.encodeWithSelector(IERC1155.safeTransferFrom.selector, address(account), address(1), 1, 1, "")
+            )
+        );
+
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
+        // Pack the UserOperation
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Assert that the balance of the destination is 1
+        assertEq(multi.balanceOf(address(1), 1), 1);
+        // Assert that the balance of the account decreased by 1
+        assertEq(multi.balanceOf(address(account), 1), 9);
+    }
 
     // // Tests that the account complies w/ EIP-1271 and EIP-6492
     // // Ref: https://eips.ethereum.org/EIPS/eip-1271
