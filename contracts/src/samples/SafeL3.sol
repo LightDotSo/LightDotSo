@@ -108,7 +108,11 @@ contract SafeL3 is
         override(SafeInterface, ModuleAuth)
         returns (bytes4)
     {
-        super.isValidSignature(_hash, _signatures);
+        (bool isValid,) = _signatureValidation(_hash, _signatures);
+        if (isValid) {
+            return ERC1271_SUCCESS;
+        }
+        return 0;
     }
 
     /// @param _imageHash The hash to validate the signature against.

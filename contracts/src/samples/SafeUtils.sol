@@ -51,8 +51,11 @@ contract SafeUtils is Test {
     }
 
     function packLegacySignature(bytes memory sig) public view returns (bytes memory) {
-        uint8 signatureFlag = uint8(0);
-        bytes memory encoded = abi.encodePacked(threshold, checkpoint, signatureFlag, weight, sig);
+        // Flag for legacy signature
+        uint8 legacySignatureFlag = uint8(0);
+
+        // Pack the signature w/ flag, weight, threshold, checkpoint
+        bytes memory encoded = abi.encodePacked(threshold, checkpoint, legacySignatureFlag, weight, sig);
 
         return encoded;
     }

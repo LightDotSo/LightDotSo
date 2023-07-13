@@ -304,46 +304,66 @@ contract SafeL3Test is Test {
         assertEq(multi.balanceOf(address(account), 1), 9);
     }
 
-    // // Tests that the account complies w/ EIP-1271 and EIP-6492
-    // // Ref: https://eips.ethereum.org/EIPS/eip-1271
-    // // Ref: https://eips.ethereum.org/EIPS/eip-6492
-    // function test_safe_eip_1271_6492() public {
-    //     // Obtain the signature w/ the EOA by the user
-    //     bytes32 hashed = keccak256("Signed by user");
-    //     (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
-    //     bytes memory signature = abi.encodePacked(r, s, v);
+    // Tests that the account complies w/ EIP-1271 and EIP-6492
+    // Ref: https://eips.ethereum.org/EIPS/eip-1271
+    // Ref: https://eips.ethereum.org/EIPS/eip-6492
+    function test_safe_eip_1271_6492() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
 
-    //     // Test the signature w/ EIP-1271
-    //     assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
 
-    //     // Test the signature w/ EIP-6492
-    //     assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
-    //     assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
-    //     assertEq(validator.isValidSig(address(account), hashed, signature), true);
-    // }
+        // Hash of the message
+        bytes32 hashed = keccak256("Signed by user");
 
-    // // Tests that a predeployed contract complies w/ EIP-6492
-    // function test_safe_predeployed_6492() public {
-    //     // Obtain the original signature w/ the EOA by the user
-    //     bytes32 hashed = keccak256("Signed by user");
-    //     (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
-    //     bytes memory signature = abi.encodePacked(r, s, v);
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hashed, address(account), userKey);
 
-    //     // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
-    //     // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
-    //     bytes memory sig_6492 = abi.encodePacked(
-    //         abi.encode(
-    //             // Nonce is 1 (does not exist)
-    //             address(factory),
-    //             abi.encodeWithSelector(SafeL3Factory.createAccount.selector, user, 1),
-    //             signature
-    //         ),
-    //         ERC6492_DETECTION_SUFFIX
-    //     );
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
 
-    //     // Test the signature w/ EIP-6492
-    //     assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
-    //     assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
-    //     assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
-    // }
+        // Test the signature w/ EIP-1271
+        assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
+
+        // Test the signature w/ EIP-6492
+        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
+        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
+        assertEq(validator.isValidSig(address(account), hashed, signature), true);
+    }
+
+    // Tests that a predeployed contract complies w/ EIP-6492
+    function test_safe_predeployed_6492() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Obtain the original signature w/ the EOA by the user
+        bytes32 hashed = keccak256("Signed by user");
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hashed, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+
+        // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
+        // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
+        bytes memory sig_6492 = abi.encodePacked(
+            abi.encode(
+                // Nonce is 1 (does not exist)
+                address(factory),
+                abi.encodeWithSelector(SafeFactory.createAccount.selector, expectedImageHash, 1),
+                signature
+            ),
+            ERC6492_DETECTION_SUFFIX
+        );
+
+        // Test the signature w/ EIP-6492
+        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
+        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
+        assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
+    }
 }
