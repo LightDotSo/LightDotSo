@@ -1,5 +1,5 @@
-import "@lightdotso/styles/global.css";
 import type { Preview } from "@storybook/react";
+import "@lightdotso/styles/global.css";
 
 const preview: Preview = {
   parameters: {
