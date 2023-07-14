@@ -94,6 +94,10 @@
       },
       "append": ""
     },
+    "mdx": {
+      "prepend": "{/*",
+      "append": "*/}\n"
+    },
     "sh": {
       "eachLine": {
         "prepend": "# "
