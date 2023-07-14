@@ -16,8 +16,11 @@
       "persistent": true
     },
     "//#build:test": {
-      "outputs": ["artifacts/**", "coverage-data.json"],
-      "inputs": ["contracts/src/**"]
+      "outputs": [
+        "artifacts/**",
+        "coverage-data.json",
+        "packages/solutions/dist/**"
+      ]
     },
     "//#ci": {
       "cache": false
