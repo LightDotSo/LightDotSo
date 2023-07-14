@@ -3,7 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["!package.json"]
+      "inputs": ["!package.json", "!pnpm-lock.yaml"]
     },
     "lint": {
       "dependsOn": ["^lint"]
