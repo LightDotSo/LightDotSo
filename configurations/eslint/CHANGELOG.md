@@ -1,5 +1,11 @@
 # @lightdotso/eslint-config
 
+## 2.1.0-pre.2
+
+### Minor Changes
+
+- [#159](https://github.com/LightDotSo/LightDotSo/pull/159) [`e2b76af`](https://github.com/LightDotSo/LightDotSo/commit/e2b76af8b2aba9da0ccd1d107cff3ee87d3e5388) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update esling config w/ plugins
+
 ## 2.1.0-pre.1
 
 ### Patch Changes

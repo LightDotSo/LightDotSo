@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.7
+
+### Patch Changes
+
+- [#154](https://github.com/LightDotSo/LightDotSo/pull/154) [`4d140bf`](https://github.com/LightDotSo/LightDotSo/commit/4d140bf17b5791938f91a26bc2ad2a945f1f7356) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Added vitest testing w/ anvil.js and viem
+
 ## 0.1.0-pre.6
 
 ### Patch Changes

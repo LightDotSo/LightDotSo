@@ -1,5 +1,11 @@
 # @lightdotso/ui
 
+## 1.1.0-pre.3
+
+### Minor Changes
+
+- [#170](https://github.com/LightDotSo/LightDotSo/pull/170) [`bb793e5`](https://github.com/LightDotSo/LightDotSo/commit/bb793e593d9d9e68150c706d37b96fd04fe2e73d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add @shadcn/ui components
+
 ## 1.1.0-pre.2
 
 ### Patch Changes
