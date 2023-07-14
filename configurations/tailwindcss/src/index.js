@@ -22,6 +22,8 @@ module.exports = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
     "../../apps/ui/src/components/**/*.{ts,tsx}",
+    "../../apps/ui/.storybook/**/*.{ts,tsx}",
+    "../../apps/ui/stories/**/*.{ts,tsx}",
   ],
   theme: {
     container: {
