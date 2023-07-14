@@ -1,5 +1,12 @@
 # @lightdotso/extension
 
+## 1.1.0-pre.2
+
+### Patch Changes
+
+- Updated dependencies [[`ecb7d14`](https://github.com/LightDotSo/LightDotSo/commit/ecb7d148012f692ce0365d2c10b7163e99c8fe18)]:
+  - @lightdotso/popup@0.1.0-pre.2
+
 ## 1.1.0-pre.1
 
 ### Patch Changes

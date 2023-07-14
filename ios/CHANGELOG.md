@@ -1,5 +1,12 @@
 # @lightdotso/ios
 
+## 2.0.0-pre.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @lightdotso/extension@1.1.0-pre.2
+
 ## 2.0.0-pre.3
 
 ### Patch Changes
