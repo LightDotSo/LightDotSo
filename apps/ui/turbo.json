@@ -3,6 +3,7 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
+      "env": ["NODE_ENV"],
       "outputs": ["dist/**"],
       "dependsOn": ["^build"]
     },
