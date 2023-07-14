@@ -15,16 +15,12 @@
       "cache": false,
       "persistent": true
     },
-    "//#ci": {
-      "cache": false
-    },
-    "//#hardhat:compile": {
-      "outputs": ["artifacts/**"],
-      "inputs": ["contracts/src/**"]
-    },
-    "//#hardhat:compile:coverage": {
+    "//#build:test": {
       "outputs": ["artifacts/**", "coverage-data.json"],
       "inputs": ["contracts/src/**"]
+    },
+    "//#ci": {
+      "cache": false
     },
     "//#lint": {
       "dependsOn": [],
@@ -40,11 +36,11 @@
     },
     "//#test": {
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "dependsOn": ["hardhat:compile"]
+      "dependsOn": ["build:test"]
     },
     "//#test:coverage": {
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "dependsOn": ["hardhat:compile:coverage"],
+      "dependsOn": ["build:test"],
       "outputs": ["coverage/**"]
     }
   }
