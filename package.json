@@ -41,6 +41,7 @@
     "solhint:lint": "solhint 'contracts/**/*.sol'",
     "sort-package-json:fix": "sort-package-json '{apps,configurations,contracts,crates,fastlane,ios,packages,pods}/**/package.json'",
     "test": "vitest",
+    "test:compile": "turbo run build --filter @lightdotso/contracts",
     "test:coverage": "vitest --coverage --single-thread",
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
