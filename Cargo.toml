@@ -6,6 +6,7 @@ members = [
   "apps/desktop/src-tauri",
   "crates/core",
   "crates/keychain",
+  "crates/indexer",
   "crates/tracing",
   "tools/embedded-scopelint",
   "tools/embedded-uniffi-bindgen"
@@ -38,6 +39,9 @@ strip = true
 [workspace.dependencies]
 anyhow = "1.0.71"
 axum = "0.6.18"
+clap = "4.3.12"
+eyre = "0.6.8"
+lightdotso-indexer = { path = "./crates/indexer" }
 lightdotso-tracing = { path = "./crates/tracing" }
 tokio = { version = "1", features = ["full"] }
 tracing = "0.1.37"

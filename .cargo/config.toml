@@ -1,3 +1,4 @@
 [alias]
+cli= ["run", "--"]
 scopelint = ["run", "--package", "embedded-scopelint", "--"]
 uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
