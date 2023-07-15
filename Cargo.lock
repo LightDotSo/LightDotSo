@@ -3018,10 +3018,12 @@ dependencies = [
 name = "lightdotso-indexer"
 version = "0.1.0"
 dependencies = [
+ "axum",
  "clap 4.3.12",
  "eyre",
  "lightdotso-prisma",
  "lightdotso-tracing",
+ "prisma-client-rust",
 ]
 
 [[package]]
