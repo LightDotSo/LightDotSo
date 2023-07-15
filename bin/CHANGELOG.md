@@ -1,5 +1,16 @@
 # @lightdotso/bin
 
+## 0.1.0-pre.5
+
+### Minor Changes
+
+- [#178](https://github.com/LightDotSo/LightDotSo/pull/178) [`1a646de`](https://github.com/LightDotSo/LightDotSo/commit/1a646de5aaab926dd60c96659b70e05020aaf339) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add version w/ vergen
+
+### Patch Changes
+
+- Updated dependencies [[`1a646de`](https://github.com/LightDotSo/LightDotSo/commit/1a646de5aaab926dd60c96659b70e05020aaf339)]:
+  - @lightdotso/crates@0.1.0-pre.3
+
 ## 0.1.0-pre.4
 
 ### Patch Changes
