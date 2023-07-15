@@ -13,3 +13,6 @@ repository.workspace = true
 anyhow = { workspace = true }
 axum = { workspace = true }
 tokio = { workspace = true }
+
+[build-dependencies]
+vergen = { version = "8.0.0", features = ["build", "cargo", "git", "gitcl"] }

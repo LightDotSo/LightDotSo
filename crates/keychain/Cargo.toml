@@ -7,7 +7,3 @@ rust-version.workspace = true
 license.workspace = true
 homepage.workspace = true
 repository.workspace = true
-
-[dependencies]
-core-foundation = "0.9.3"
-core-foundation-sys = "0.8.3"
