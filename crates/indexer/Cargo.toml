@@ -9,3 +9,6 @@ homepage.workspace = true
 repository.workspace = true
 
 [dependencies]
+clap = { workspace = true, features = ["derive"] }
+eyre = { workspace = true }
+lightdotso-tracing = { workspace = true }

@@ -25,8 +25,8 @@ WORKDIR /app
 RUN apt update && apt install -y libssl1.1 ca-certificates
 
 COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
+COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/serve /usr/local/bin
-# COPY --from=builder /app/target/release/eth-analysis /usr/local/bin
 # COPY --from=builder /app/target/release/phoenix-service /usr/local/bin
 # COPY --from=builder /app/target/release/record-eth-price /usr/local/bin
 # COPY --from=builder /app/target/release/serve /usr/local/bin
