@@ -73,6 +73,9 @@ jobs:
       - name: Node Build
         run: |
           pnpm turbo run build
+      - name: Make Prisma
+        run: |
+          make prisma
       - name: Rust Build
         uses: actions-rs/cargo@v1
         with:

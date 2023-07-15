@@ -14,7 +14,7 @@ jobs:
   fly-wait-docker:
     if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') && github.event_name == 'release'
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - name: Sleep for 30 seconds
         run: |
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - fly-wait-docker
-    timeout-minutes: 90
+    timeout-minutes: 30
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - fly-wait-docker
-    timeout-minutes: 90
+    timeout-minutes: 30
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3

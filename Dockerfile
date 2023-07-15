@@ -6,17 +6,22 @@ FROM lukemathwalker/cargo-chef:latest-rust-latest AS chef
 WORKDIR /app
 
 FROM chef AS planner
+
 COPY . .
+
 # Figure out if dependencies have changed.
-RUN cargo chef prepare --recipe-path recipe.json
+RUN cargo chef prepare --recipe-path recipe.json && cargo generate
 
 FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
+
 # Build dependencies - this layer is cached for massive speed up.
 RUN cargo chef cook --release --recipe-path recipe.json
+
 # Build application - this should be re-done every time we update our src.
 COPY . .
-RUN cargo generate
+COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
+
 RUN cargo build --release
 
 FROM debian:bullseye-slim AS runtime
