@@ -12,6 +12,7 @@ repository.workspace = true
 [dependencies]
 anyhow = { workspace = true }
 axum = { workspace = true }
+lightdotso-tracing = { workspace = true }
 tokio = { workspace = true }
 
 [build-dependencies]
