@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Sleep for 30 seconds
+        run: |
+          sleep 30s
       - name: Wait Docker
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
