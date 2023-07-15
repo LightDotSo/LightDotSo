@@ -26,7 +26,7 @@ jobs:
           check-name: docker-build
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
-          allowed-conclusions: success
+          allowed-conclusions: success,skipped,cancelled
   # k8s-deploy-serve:
   #   runs-on: ubuntu-latest
   #   needs:
