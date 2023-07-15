@@ -18,9 +18,11 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY . .
 
+# Install nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
-      apt update && apt install -y nodejs && \
       npm install -g turbo@1.10.7 && \
       npm turbo run prisma
 
