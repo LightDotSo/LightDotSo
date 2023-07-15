@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
+      - name: Sleep for 30 seconds
+        run: |
+          sleep 30s
       - name: Wait Docker
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
@@ -32,6 +35,8 @@ jobs:
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -47,6 +52,8 @@ jobs:
     env:
       KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
