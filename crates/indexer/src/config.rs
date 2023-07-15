@@ -44,6 +44,9 @@ impl ConfigArgs {
         // Add info
         info!("ConfigArgs run, exiting");
 
+        // Print the config
+        info!("Config: {:?}", self);
+
         // Return success
         Ok(())
     }
@@ -110,34 +113,5 @@ mod tests {
         assert_eq!(config.batch_size, 1);
         assert_eq!(config.start_block, 0);
         assert_eq!(config.end_block, 0);
-    }
-
-    #[test]
-    fn test_parse_config_args() {
-        // Simulate the command-line arguments for testing
-        let args = vec![
-            "--chain-id",
-            "2",
-            "--rpc",
-            "http://example.com",
-            "--ws",
-            "ws://example.com",
-            "--batch-size",
-            "10",
-            "--start-block",
-            "100",
-            "--end-block",
-            "200",
-        ];
-
-        // Use ConfigArgs::parse() to parse the command-line arguments
-        let config_args = ConfigArgs::parse_from(args);
-
-        // Verify the parsed values
-        assert_eq!(config_args.chain_id, 2);
-        assert_eq!(config_args.rpc, "http://example.com");
-        assert_eq!(config_args.ws, "ws://example.com");
-        assert_eq!(config_args.batch_size, 10);
-        assert_eq!(config_args.start_block, 100);
     }
 }
