@@ -65,11 +65,25 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+  docker-lint:
+    runs-on: ubuntu-latest
+    if: needs.docker-turbo.outputs.trigger == 'true'
+    needs:
+      - docker-turbo
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
   docker-check:
     if: always()
     needs:
       - docker-turbo
       - docker-build
+      - docker-lint
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
