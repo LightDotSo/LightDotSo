@@ -13,28 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use anyhow::Result;
-use axum::{routing::get, Router};
-use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-
-async fn health_check() -> &'static str {
-    "OK"
-}
-
-pub async fn start_server() -> Result<()> {
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check));
-
-    let socket_addr = "0.0.0.0:3002".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
-
-    Ok(())
-}
-
-#[tokio::main]
-pub async fn main() -> Result<(), anyhow::Error> {
-    println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
-    start_server().await?;
-    Ok(())
-}
+pub mod version;
