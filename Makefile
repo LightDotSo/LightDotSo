@@ -124,6 +124,16 @@ contracts-storage: ## Omits the current storage layout from the current contract
 contracts-wagmi: ## Copies over certain directory for wagmi generation
 	./contracts/wagmi.sh
 
+##@ Prisma
+
+.PHONY: cargo-generate
+cargo-generate:
+	cargo generate
+
+.PHONY: prisma
+prisma: cargo-generate ## Run clippy.
+	./scripts/add_clippy_ignore.sh
+
 #@ zellij
 shell:
 	zellij --layout zellij.kdl a $(WORKSPACE) || zellij --layout zellij.kdl -s $(WORKSPACE)

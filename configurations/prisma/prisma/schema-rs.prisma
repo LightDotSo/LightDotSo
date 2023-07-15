@@ -1,6 +1,6 @@
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["metrics", "tracing"]
+generator prisma {
+	provider      = "cargo prisma"
+	output        = "../../../crates/prisma/src/lib.rs"
 }
 
 datasource db {

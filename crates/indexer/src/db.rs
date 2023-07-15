@@ -13,17 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars, import/no-unresolved
-import { prisma } from "@lightdotso/prisma";
+use lightdotso_prisma::{user, PrismaClient};
+use std::sync::Arc;
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+pub async fn find_user(client: &Arc<PrismaClient>) -> Vec<user::Data> {
+    let users: Vec<user::Data> =
+        client.user().find_many(vec![user::id::equals("Id".to_string())]).exec().await.unwrap();
+
+    users
 }

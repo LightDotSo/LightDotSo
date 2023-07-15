@@ -1,6 +1,7 @@
 {
   "files.exclude": {
-    "**/plonk_vk.sol": true
+    "**/plonk_vk.sol": true,
+    "**/crates/prisma/src/lib.rs": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
