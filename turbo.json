@@ -37,6 +37,12 @@
         "packages/**"
       ]
     },
+    "//#prisma": {
+      "env": ["CI", "DOCKER"],
+      "dependsOn": [],
+      "outputs": ["crates/prisma/src/lib.rs"],
+      "inputs": ["configurations/prisma/prisma/schema.prisma"]
+    },
     "//#test": {
       "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
       "dependsOn": ["build:test"]

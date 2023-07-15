@@ -35,6 +35,8 @@
     "prettier:cmd": "prettier",
     "prettier:fix": "prettier --write .",
     "prettier:lint": "prettier --check .",
+    "prisma": "make prisma",
+    "prisma:turbo": "turbo run prisma",
     "release": "changeset publish",
     "solhint:cmd": "solhint 'contracts/**/*.sol'",
     "solhint:fix": "solhint 'contracts/**/*.sol' --fix",

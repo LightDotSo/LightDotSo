@@ -7,10 +7,22 @@ WORKDIR /app
 
 FROM chef AS planner
 
+# Specify the target we're building for.
+ENV docker=true
+
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
+
 COPY . .
 
 # Figure out if dependencies have changed.
-RUN cargo chef prepare --recipe-path recipe.json && cargo generate
+RUN cargo chef prepare --recipe-path recipe.json && \
+      apt update && apt install -y nodejs && \
+      npm install -g turbo@1.10.7 && \
+      npm turbo run prisma
 
 FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
