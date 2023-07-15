@@ -1,0 +1,47 @@
+{
+  "name": "@lightdotso/prisma",
+  "version": "1.0.1",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Light, Inc.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "prebuild": "npm run generate",
+    "build": "tsup",
+    "clean": "rimraf .turbo node_modules dist",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "predev": "npm run generate",
+    "dev": "tsup --watch",
+    "format": "prisma format",
+    "generate": "prisma generate",
+    "lint": "eslint \"src/**/*.ts\"",
+    "studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "prisma": "^5.0.0"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@types/node": "^20.4.2",
+    "typescript": "^5.1.6"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

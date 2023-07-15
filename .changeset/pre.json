@@ -28,7 +28,8 @@
     "@lightdotso/ui": "1.0.0",
     "@lightdotso/styles": "1.0.1",
     "@lightdotso/utils": "0.0.0",
-    "@lightdotso/solutions": "0.1.0"
+    "@lightdotso/solutions": "0.1.0",
+    "@lightdotso/solutions": "1.0.1"
   },
   "changesets": [
     "calm-stingrays-bathe",
