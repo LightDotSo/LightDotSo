@@ -1925,10 +1925,6 @@ dependencies = [
 [[package]]
 name = "lightwallet-keychain"
 version = "0.1.0"
-dependencies = [
- "core-foundation",
- "core-foundation-sys",
-]
 
 [[package]]
 name = "line-wrap"

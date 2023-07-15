@@ -1,5 +1,5 @@
 [package]
-name = "lightdotso-tracing"
+name = "lightdotso-indexer"
 
 version.workspace = true
 edition.workspace = true
@@ -9,5 +9,3 @@ homepage.workspace = true
 repository.workspace = true
 
 [dependencies]
-tracing = { workspace = true }
-tracing-subscriber = { version = "0.3", default-features = false, features = ["ansi", "env-filter", "fmt"] }
