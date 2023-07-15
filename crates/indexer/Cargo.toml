@@ -11,4 +11,5 @@ repository.workspace = true
 [dependencies]
 clap = { workspace = true, features = ["derive"] }
 eyre = { workspace = true }
+lightdotso-prisma = { workspace = true }
 lightdotso-tracing = { workspace = true }

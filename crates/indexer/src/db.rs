@@ -13,5 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod db;
+use lightdotso_prisma::{user, PrismaClient};
+use std::sync::Arc;
+
+pub async fn find_user(client: &Arc<PrismaClient>) -> Vec<user::Data> {
+    let users: Vec<user::Data> =
+        client.user().find_many(vec![user::id::equals("Id".to_string())]).exec().await.unwrap();
+
+    users
+}
