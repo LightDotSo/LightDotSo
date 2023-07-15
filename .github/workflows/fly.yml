@@ -32,8 +32,6 @@ jobs:
     needs:
       - fly-wait-docker
     timeout-minutes: 90
-    env:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -49,8 +47,6 @@ jobs:
     needs:
       - fly-wait-docker
     timeout-minutes: 90
-    env:
-      KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
