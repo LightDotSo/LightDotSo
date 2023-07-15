@@ -1,3 +1,18 @@
+// Copyright (C) 2023 Light, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 /// Main entry point for the wallet cli.
 /// Structue of the CLI is extremely influenced from reth.
 /// https://github.com/paradigmxyz/reth/tree/main/bin/reth
@@ -32,7 +47,7 @@ pub enum Commands {
 }
 
 #[derive(Parser)]
-#[command(author, version = "0.1", about = "lightdotso-bin-cli", long_about = None)]
+#[command(author, version = "0.1", about = "lightdotso", long_about = None)]
 struct Cli {
     /// The command to run
     #[clap(subcommand)]
@@ -95,17 +110,20 @@ async fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use clap::CommandFactory;
     use eyre::Result;
     use std::process::Command;
 
+    /// Test that the CLI can be parsed from command line arguments
     #[test]
     fn test_cli_parse() -> Result<()> {
         // Test that the Cli struct can be parsed from command line arguments
-        let cli = Cli::parse_from(["lightdotso-bin-cli", "indexer"]);
+        let cli = Cli::parse_from(["lightdotso-bin", "indexer"]);
         assert!(matches!(cli.command, Commands::Indexer(_)));
         Ok(())
     }
 
+    /// Test that the verbosity level is correctly parsed
     #[test]
     fn test_verbosity() {
         // Test that the verbosity level is correctly parsed
@@ -128,6 +146,7 @@ mod tests {
         assert_eq!(verbosity.directive(), LevelFilter::OFF.into());
     }
 
+    /// Test that the CLI can be parsed from command line arguments
     #[test]
     fn test_main() {
         // Run the CLI with no arguments
@@ -140,6 +159,26 @@ mod tests {
 
         // Check that the CLI printed the help message
         let stderr = String::from_utf8_lossy(&output.stderr);
-        assert!(stderr.contains("lightdotso-bin-cli"));
+        assert!(stderr.contains("lightdotso"));
+    }
+
+    /// From reth: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/bin/reth/src/cli.rs#L181
+    /// Tests that the help message is parsed correctly. This ensures that clap args are configured
+    /// correctly and no conflicts are introduced via attributes that would result in a panic at
+    /// runtime
+    #[test]
+    fn test_parse_help_all_subcommands() {
+        let reth = Cli::command();
+        for sub_command in reth.get_subcommands() {
+            let err = Cli::try_parse_from(["lightdotso", sub_command.get_name(), "--help"])
+                .err()
+                .unwrap_or_else(|| {
+                    panic!("Failed to parse help message {}", sub_command.get_name())
+                });
+
+            // --help is treated as error, but
+            // > Not a true "error" as it means --help or similar was used. The help message will be sent to stdout.
+            assert_eq!(err.kind(), clap::error::ErrorKind::DisplayHelp);
+        }
     }
 }
