@@ -15,7 +15,7 @@ ARCHS_MAC = x86_64-apple-darwin aarch64-apple-darwin
 
 CRATES_DIR = "crates/core"
 
-CARGO_PARAMS = --package lightwallet-core --crate-type=cdylib
+CARGO_PARAMS = --package lightwallet-core --crate-type=staticlib
 TARGET_DIR = target
 
 ##@ Help

@@ -9,9 +9,15 @@ license.workspace = true
 homepage.workspace = true
 repository.workspace = true
 
+default-run = "cli"
+
 [dependencies]
 anyhow = { workspace = true }
 axum = { workspace = true }
+eyre = { workspace = true }
+clap = { workspace = true }
+lightdotso-indexer = { workspace = true }
+lightdotso-tracing = { workspace = true }
 tokio = { workspace = true }
 
 [build-dependencies]

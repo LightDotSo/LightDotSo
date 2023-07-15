@@ -13,13 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// All resources are from reth: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
+// All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
 // Thank you for providing such an awesome library!
 
 use tracing::Subscriber;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
 };
+
+// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L28-L30
+// Re-export tracing crates
+pub use tracing;
+pub use tracing_subscriber;
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L32
 /// A boxed tracing [Layer].
@@ -70,25 +75,4 @@ pub fn init_test_tracing() {
         .with_env_filter(EnvFilter::from_default_env())
         .with_writer(std::io::stderr)
         .try_init();
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use tracing::{info, Level};
-
-    #[ignore = "This test can only be run on the local machine"]
-    #[test]
-    fn test_stdout_layer() {
-        let layers = vec![stdout(Level::INFO)];
-        init(layers);
-        info!("This is a test log message");
-    }
-
-    #[ignore = "This test can only be run on the local machine"]
-    #[test]
-    fn test_init_test_tracing() {
-        init_test_tracing();
-        info!("This is a test log message");
-    }
 }

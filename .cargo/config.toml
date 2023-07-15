@@ -1,3 +1,6 @@
 [alias]
+build-all = ["build", "--workspace"]
+cli= ["run", "--"]
 scopelint = ["run", "--package", "embedded-scopelint", "--"]
 uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
+test-all = ["test", "--workspace"]

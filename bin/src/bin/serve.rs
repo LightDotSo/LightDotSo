@@ -16,12 +16,15 @@
 use anyhow::Result;
 use axum::{routing::get, Router};
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
+use lightdotso_tracing::{init, stdout, tracing::Level};
 
 async fn health_check() -> &'static str {
     "OK"
 }
 
 pub async fn start_server() -> Result<()> {
+    init(vec![stdout(Level::INFO)]);
+
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
         .route("/health", get(health_check));
