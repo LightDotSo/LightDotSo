@@ -124,6 +124,12 @@ contracts-storage: ## Omits the current storage layout from the current contract
 contracts-wagmi: ## Copies over certain directory for wagmi generation
 	./contracts/wagmi.sh
 
+##@ Docker
+
+.PHONY: docker
+docker:
+	docker build -t lightdotso .
+
 ##@ Prisma
 
 .PHONY: cargo-generate
