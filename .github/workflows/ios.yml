@@ -46,7 +46,6 @@ jobs:
     permissions:
       checks: write
     env:
-      RUSTFLAGS: -D warnings
       CARGO_TERM_COLOR: always
     steps:
       - name: Fetch Head

@@ -6,7 +6,7 @@
       "dependsOn": ["^build"],
       "env": ["NODE_ENV"],
       "inputs": ["src/**", "prisma/schema.prisma"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "prisma/schema-rs.prisma"]
     },
     "dev": {
       "cache": false,

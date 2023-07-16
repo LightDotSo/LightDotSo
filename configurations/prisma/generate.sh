@@ -22,4 +22,4 @@ cp -f prisma/schema.prisma prisma/schema-rs.prisma
 tail -n +5 prisma/schema-rs.prisma > prisma/schema-rs-updated.prisma && mv prisma/schema-rs-updated.prisma prisma/schema-rs.prisma
 
 # Adding generator configuration to the top of prisma/schema-rs.prisma
-echo -e "generator prisma {\n\tprovider      = \"cargo prisma\"\n\toutput        = \"../../crates/prisma/src/lib.rs\"\n}\n$(cat prisma/schema-rs.prisma)" > prisma/schema-rs.prisma
+echo -e "generator prisma {\n  provider      = \"cargo prisma\"\n  output        = \"../../../crates/prisma/src/lib.rs\"\n  previewFeatures = [\"fullTextSearch\"]\n}\n$(cat prisma/schema-rs.prisma)" > prisma/schema-rs.prisma

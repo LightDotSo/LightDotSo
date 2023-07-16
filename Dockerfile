@@ -6,16 +6,37 @@ FROM lukemathwalker/cargo-chef:latest-rust-latest AS chef
 WORKDIR /app
 
 FROM chef AS planner
+
+# Specify the target we're building for.
+ENV docker=true
+
+ARG TURBO_TEAM
+ENV TURBO_TEAM=$TURBO_TEAM
+
+ARG TURBO_TOKEN
+ENV TURBO_TOKEN=$TURBO_TOKEN
+
 COPY . .
+
+# Install nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt install -y nodejs
+
 # Figure out if dependencies have changed.
-RUN cargo chef prepare --recipe-path recipe.json
+RUN cargo chef prepare --recipe-path recipe.json && \
+      npm install -g turbo@1.10.7 pnpm@8.6.6 && \
+      turbo run prisma
 
 FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
+
 # Build dependencies - this layer is cached for massive speed up.
 RUN cargo chef cook --release --recipe-path recipe.json
+
 # Build application - this should be re-done every time we update our src.
 COPY . .
+COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
+
 RUN cargo build --release
 
 FROM debian:bullseye-slim AS runtime

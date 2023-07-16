@@ -3,7 +3,6 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "cache": false,
       "dependsOn": ["^build"],
       "inputs": [
         "../.swift-format",
@@ -20,7 +19,8 @@
         "LightWalletSafariExtension/**",
         "LightWalletTests/**",
         "LightWalletUITests/**"
-      ]
+      ],
+      "outputs": []
     }
   }
 }

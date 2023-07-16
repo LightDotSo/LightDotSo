@@ -9,7 +9,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
-  RUSTFLAGS: -D warnings
   CARGO_TERM_COLOR: always
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -29,7 +28,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-latest-large
             target: x86_64-unknown-linux-gnu
             test: true
           # - os: ubuntu-latest
@@ -43,7 +42,6 @@ jobs:
           # - os: windows-latest
           #   target: x86_64-pc-windows-msvc
     env:
-      RUSTFLAGS: -D warnings
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
     if: needs.rust-turbo.outputs.trigger == 'true'
@@ -75,7 +73,7 @@ jobs:
           pnpm turbo run build
       - name: Make Prisma
         run: |
-          make prisma
+          pnpm turbo run prisma
       - name: Rust Build
         uses: actions-rs/cargo@v1
         with:

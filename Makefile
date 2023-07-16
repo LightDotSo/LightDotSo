@@ -124,14 +124,26 @@ contracts-storage: ## Omits the current storage layout from the current contract
 contracts-wagmi: ## Copies over certain directory for wagmi generation
 	./contracts/wagmi.sh
 
+##@ Docker
+
+.PHONY: docker
+docker: ## Build the docker image.
+	docker build -t lightdotso .
+
+.PHONY: docker-upgrade
+docker-upgrade: ## Upgrade dependencies in the docker image.
+	./scripts/dockerfile_version_update.sh
+
 ##@ Prisma
 
 .PHONY: cargo-generate
 cargo-generate:
 	cargo generate
+	cargo fmt
 
 .PHONY: prisma
 prisma: cargo-generate ## Run clippy.
+	pnpm turbo run build --filter=prisma
 	./scripts/add_clippy_ignore.sh
 
 #@ zellij

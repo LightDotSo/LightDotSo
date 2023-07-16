@@ -24,10 +24,10 @@
   },
   "dependencies": {
     "@types/firefox-webext-browser": "^111.0.1",
-    "clsx": "^1.2.1",
+    "clsx": "^2.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
-    "tailwind-merge": "^1.13.2"
+    "tailwind-merge": "^1.14.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",

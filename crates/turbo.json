@@ -3,7 +3,6 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "cache": false,
       "inputs": [
         "**",
         "../.cargo/**",
@@ -14,7 +13,8 @@
         "../Cargo.toml",
         "../rust-toolchain.toml",
         "../rustfmt.toml"
-      ]
+      ],
+      "cache": false
     }
   }
 }
