@@ -5,6 +5,7 @@ temp_file="temp.rs"
 
 # Create a temporary file with the desired line at the top
 echo "#[allow(clippy::all)]" > "$temp_file"
+echo "#[allow(unused_imports)]" > "$temp_file"
 cat "$file_path" >> "$temp_file"
 
 # Overwrite the original file with the temporary file

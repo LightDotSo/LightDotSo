@@ -139,6 +139,7 @@ docker-upgrade: ## Upgrade dependencies in the docker image.
 .PHONY: cargo-generate
 cargo-generate:
 	cargo generate
+	cargo fmt
 
 .PHONY: prisma
 prisma: cargo-generate ## Run clippy.
