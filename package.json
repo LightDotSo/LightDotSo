@@ -24,6 +24,7 @@
     "forge:snapshot:cmd": "forge snapshot && echo",
     "hardhat:compile": "hardhat compile",
     "hardhat:compile:coverage": "hardhat compile-for-coverage",
+    "hardhat:docgen": "hardhat docgen",
     "license:cmd": "license-check-and-add -f .license-check-and-add-config.json",
     "license:fix": "license-check-and-add -f .license-check-and-add-config.json add",
     "license:lint": "license-check-and-add -f .license-check-and-add-config.json check",
@@ -49,15 +50,18 @@
     "test:ui": "vitest dev --ui",
     "wagmi:generate": "wagmi generate"
   },
+  "dependencies": {
+    "solidity-docgen": "0.6.0-beta.35"
+  },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
     "@commitlint/config-conventional": "^17.6.6",
-    "@evmts/config": "^0.5.0",
-    "@evmts/core": "^0.5.0",
-    "@evmts/ts-plugin": "^0.5.0",
-    "@evmts/vite-plugin": "^0.5.0",
-    "@evmts/webpack-plugin": "^0.5.0",
+    "@evmts/config": "^0.5.6",
+    "@evmts/core": "^0.5.6",
+    "@evmts/ts-plugin": "^0.5.6",
+    "@evmts/vite-plugin": "^0.5.6",
+    "@evmts/webpack-plugin": "^0.5.6",
     "@lightdotso/eslint-config": "workspace:*",
     "@lightdotso/prettier": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
