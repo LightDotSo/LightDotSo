@@ -25,7 +25,7 @@ RUN apt install -y nodejs
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
       npm install -g turbo@1.10.7 && \
-      npm turbo run prisma
+      turbo run prisma
 
 FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
