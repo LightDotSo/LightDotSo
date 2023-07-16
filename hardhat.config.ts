@@ -11,7 +11,7 @@ const config = {
   },
   docgen: {
     outputDir: "apps/docs/src/pages/posts",
-    exclude: ["samples", "utils"],
+    exclude: ["proxies", "samples", "utils"],
     pages: "items",
     pageExtension: ".mdx",
   },

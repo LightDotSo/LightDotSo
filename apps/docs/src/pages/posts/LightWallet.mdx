@@ -46,11 +46,11 @@ The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| _anEntryPoint | contract IEntryPoint | The address of the entrypoint contract. |
+| Name           | Type                 | Description                             |
+| -------------- | -------------------- | --------------------------------------- |
+| \_anEntryPoint | contract IEntryPoint | The address of the entrypoint contract. |
 
-### _onlyOwner
+### \_onlyOwner
 
 ```solidity
 function _onlyOwner() internal view
@@ -68,11 +68,11 @@ Executes a transaction (called directly from owner, or by entryPoint)
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| dest | address | The address of the target contract to call. |
-| value | uint256 |  |
-| func | bytes | The calldata to send to the target contract. |
+| Name  | Type    | Description                                  |
+| ----- | ------- | -------------------------------------------- |
+| dest  | address | The address of the target contract to call.  |
+| value | uint256 |                                              |
+| func  | bytes   | The calldata to send to the target contract. |
 
 ### executeBatch
 
@@ -84,10 +84,10 @@ Executes a sequence of transactions (called directly from owner, or by entryPoin
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| dest | address[] | The array of address of the target contract to call. |
-| func | bytes[] | The array of calldata to send to the target contract. |
+| Name | Type      | Description                                           |
+| ---- | --------- | ----------------------------------------------------- |
+| dest | address[] | The array of address of the target contract to call.  |
+| func | bytes[]   | The array of calldata to send to the target contract. |
 
 ### isValidSignature
 
@@ -100,10 +100,10 @@ Comaptible with ERC1271
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| hash | bytes32 | The hash of the user operation |
-| signature | bytes | The signature of the user operation |
+| Name      | Type    | Description                         |
+| --------- | ------- | ----------------------------------- |
+| hash      | bytes32 | The hash of the user operation      |
+| signature | bytes   | The signature of the user operation |
 
 ### initialize
 
@@ -111,17 +111,17 @@ Comaptible with ERC1271
 function initialize(address anOwner) public virtual
 ```
 
-The _entryPoint member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
+The \_entryPoint member is immutable, to reduce gas consumption. To upgrade EntryPoint,
 a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
 the implementation by calling `upgradeTo()`
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type    | Description                              |
+| ------- | ------- | ---------------------------------------- |
 | anOwner | address | The address of the owner of this account |
 
-### _initialize
+### \_initialize
 
 ```solidity
 function _initialize(address anOwner) internal virtual
@@ -131,11 +131,11 @@ Sets the owner of this account, and emits an event
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name    | Type    | Description                              |
+| ------- | ------- | ---------------------------------------- |
 | anOwner | address | The address of the owner of this account |
 
-### _requireFromEntryPointOrOwner
+### \_requireFromEntryPointOrOwner
 
 ```solidity
 function _requireFromEntryPointOrOwner() internal view
@@ -143,7 +143,7 @@ function _requireFromEntryPointOrOwner() internal view
 
 Require the function call went through EntryPoint or owner
 
-### _validateSignature
+### \_validateSignature
 
 ```solidity
 function _validateSignature(struct UserOperation userOp, bytes32 userOpHash) internal virtual returns (uint256 validationData)
@@ -153,18 +153,12 @@ validate the signature is valid for this message.
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| userOp | struct UserOperation | validate the userOp.signature field |
-| userOpHash | bytes32 | convenient field: the hash of the request, to check the signature against          (also hashes the entrypoint and chain id) |
+| Name       | Type                 | Description                                                                                                         |
+| ---------- | -------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| userOp     | struct UserOperation | validate the userOp.signature field                                                                                 |
+| userOpHash | bytes32              | convenient field: the hash of the request, to check the signature against (also hashes the entrypoint and chain id) |
 
-#### Return Values
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| validationData | uint256 | signature and time-range of this operation      <20-byte> sigAuthorizer - 0 for valid signature, 1 to mark signature failure,         otherwise, an address of an "authorizer" contract.      <6-byte> validUntil - last timestamp this operation is valid. 0 for "indefinite"      <6-byte> validAfter - first timestamp this operation is valid      If the account doesn't use time-range, it is enough to return SIG_VALIDATION_FAILED value (1) for signature failure.      Note that the validation code cannot use block.timestamp (or block.number) directly. |
-
-### _call
+### \_call
 
 ```solidity
 function _call(address target, uint256 value, bytes data) internal
@@ -178,11 +172,11 @@ If the call is not successful, it reverts the transaction and provides the error
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| target | address | The address of the target contract to call. |
-| value | uint256 | The amount of Wei (ETH) to send along with the call. |
-| data | bytes | The data payload to send along with the call. |
+| Name   | Type    | Description                                          |
+| ------ | ------- | ---------------------------------------------------- |
+| target | address | The address of the target contract to call.          |
+| value  | uint256 | The amount of Wei (ETH) to send along with the call. |
+| data   | bytes   | The data payload to send along with the call.        |
 
 ### getDeposit
 
@@ -210,23 +204,17 @@ Withdraws value from the account's deposit
 
 #### Parameters
 
-| Name | Type | Description |
-| ---- | ---- | ----------- |
+| Name            | Type            | Description       |
+| --------------- | --------------- | ----------------- |
 | withdrawAddress | address payable | target to send to |
-| amount | uint256 | to withdraw |
+| amount          | uint256         | to withdraw       |
 
-### _authorizeUpgrade
+### \_authorizeUpgrade
 
 ```solidity
 function _authorizeUpgrade(address newImplementation) internal view
 ```
 
-_Function that should revert when `msg.sender` is not authorized to upgrade the contract. Called by
-{upgradeTo} and {upgradeToAndCall}.
-
-Normally, this function will use an xref:access.adoc[access control] modifier such as {Ownable-onlyOwner}.
-
 ```solidity
 function _authorizeUpgrade(address) internal override onlyOwner {}
-```_
-
+```
