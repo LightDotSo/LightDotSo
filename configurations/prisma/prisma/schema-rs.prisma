@@ -1,6 +1,7 @@
 generator prisma {
-	provider      = "cargo prisma"
-	output        = "../../../crates/prisma/src/lib.rs"
+  provider      = "cargo prisma"
+  output        = "../../../crates/prisma/src/lib.rs"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {

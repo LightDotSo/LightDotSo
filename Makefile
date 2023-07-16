@@ -143,6 +143,7 @@ cargo-generate:
 
 .PHONY: prisma
 prisma: cargo-generate ## Run clippy.
+	pnpm turbo run build --filter=prisma
 	./scripts/add_clippy_ignore.sh
 
 #@ zellij
