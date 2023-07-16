@@ -3,7 +3,6 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "cache": false,
       "dependsOn": ["^build"],
       "inputs": [
         "../gradle/**",
@@ -16,7 +15,8 @@
         "./build.gradle",
         "./proguard-rules.pro",
         "src/**"
-      ]
+      ],
+      "outputs": []
     }
   }
 }
