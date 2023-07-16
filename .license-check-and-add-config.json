@@ -55,6 +55,7 @@
     "*.txt",
     "*.yml",
     "apps/extension/**/*.js",
+    "apps/docs/src/pages/posts/**/*.mdx",
     "ios/LightWalletSafariExtension/Resources/**/*.js",
     "**/*.app/**",
     "**/.cargo/**",
