@@ -24,6 +24,7 @@
     "forge:snapshot:cmd": "forge snapshot && echo",
     "hardhat:compile": "hardhat compile",
     "hardhat:compile:coverage": "hardhat compile-for-coverage",
+    "hardhat:docgen": "hardhat docgen",
     "license:cmd": "license-check-and-add -f .license-check-and-add-config.json",
     "license:fix": "license-check-and-add -f .license-check-and-add-config.json add",
     "license:lint": "license-check-and-add -f .license-check-and-add-config.json check",
@@ -48,6 +49,9 @@
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
     "wagmi:generate": "wagmi generate"
+  },
+  "dependencies": {
+    "solidity-docgen": "0.6.0-beta.35"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",

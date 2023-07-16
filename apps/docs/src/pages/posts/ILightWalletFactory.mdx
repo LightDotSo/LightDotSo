@@ -1,0 +1,28 @@
+# Solidity API
+
+## ILightWalletFactory
+
+### accountImplementation
+
+```solidity
+function accountImplementation() external view returns (contract LightWallet)
+```
+
+Gets the address of the account implementation contract
+
+### createAccount
+
+```solidity
+function createAccount(address owner, uint256 salt) external returns (contract LightWallet)
+```
+
+Creates an account and returns its address
+
+### getAddress
+
+```solidity
+function getAddress(address owner, uint256 salt) external view returns (address)
+```
+
+Calculates the counterfactual address of an account
+

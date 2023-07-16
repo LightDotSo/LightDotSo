@@ -1,0 +1,91 @@
+# Solidity API
+
+## ILightWallet
+
+### OnlyOwner
+
+```solidity
+error OnlyOwner()
+```
+
+Emitted when the action is invoked not by an owner.
+
+### LightWalletInitialized
+
+```solidity
+event LightWalletInitialized(contract IEntryPoint entryPoint, address owner)
+```
+
+### owner
+
+```solidity
+function owner() external view returns (address)
+```
+
+Check if the caller is the owner.
+
+### getDeposit
+
+```solidity
+function getDeposit() external view returns (uint256)
+```
+
+Check current account deposit in the entryPoint.
+
+### addDeposit
+
+```solidity
+function addDeposit() external payable
+```
+
+Deposit more funds for this account in the entryPoint.
+
+### execute
+
+```solidity
+function execute(address dest, uint256 value, bytes func) external
+```
+
+Executes a transaction (called directly from owner, or by entryPoint).
+
+### executeBatch
+
+```solidity
+function executeBatch(address[] dest, bytes[] func) external
+```
+
+Executes a sequence of transactions (called directly from owner, or by entryPoint).
+
+### isValidSignature
+
+```solidity
+function isValidSignature(bytes32 _hash, bytes _signatures) external view returns (bytes4)
+```
+
+Check if a signature is valid based on the owner's address.
+Compatible with ERC1271
+
+### initialize
+
+```solidity
+function initialize(address anOwner) external
+```
+
+Sets the owner of this account, and emits an event.
+
+### withdrawDepositTo
+
+```solidity
+function withdrawDepositTo(address payable withdrawAddress, uint256 amount) external
+```
+
+Withdraws value from the account's deposit.
+
+### entryPoint
+
+```solidity
+function entryPoint() external view returns (contract IEntryPoint)
+```
+
+Returns the entry point contract address for this account.
+
