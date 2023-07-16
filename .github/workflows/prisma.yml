@@ -42,11 +42,6 @@ jobs:
           sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
           sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
           sccache_secret: ${{ secrets.SCCACHE_SECRET }}
-      - name: Rust Format Check
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all --check
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Make Prisma
