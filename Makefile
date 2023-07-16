@@ -127,8 +127,12 @@ contracts-wagmi: ## Copies over certain directory for wagmi generation
 ##@ Docker
 
 .PHONY: docker
-docker:
+docker: ## Build the docker image.
 	docker build -t lightdotso .
+
+.PHONY: docker-upgrade
+docker-upgrade: ## Upgrade dependencies in the docker image.
+	./scripts/dockerfile_version_update.sh
 
 ##@ Prisma
 
