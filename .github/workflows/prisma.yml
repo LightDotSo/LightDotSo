@@ -1,0 +1,74 @@
+name: Prisma
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+env:
+  CARGO_TERM_COLOR: always
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+jobs:
+  prisma-turbo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      trigger: ${{ steps.turbo.outputs.trigger }}
+    steps:
+      - name: Turbo Trigger
+        id: turbo
+        uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
+        with:
+          workspace: "@lightdotso/prisma"
+  prisma-build:
+    runs-on: ubuntu-latest
+    if: needs.prisma-turbo.outputs.trigger == 'true'
+    needs:
+      - prisma-turbo
+    timeout-minutes: 90
+    env:
+      SCCACHE_GHA_ENABLED: "true"
+      RUSTC_WRAPPER: "sccache"
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Rust Install
+        uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
+        with:
+          sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
+          sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
+          sccache_secret: ${{ secrets.SCCACHE_SECRET }}
+      - name: Rust Format Check
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all --check
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Make Prisma
+        run: |
+          pnpm turbo run prisma
+      - name: Check Changes
+        run: |
+          git diff --quiet
+      - if: failure()
+        name: Show Storage Changes
+        run: |
+          git diff
+  prisma-check:
+    if: always()
+    needs:
+      - prisma-turbo
+      - prisma-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: prisma-build
+          jobs: ${{ toJSON(needs) }}
