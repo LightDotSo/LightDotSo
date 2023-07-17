@@ -26,70 +26,19 @@ import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {SafeUtils} from "@/contracts/samples/SafeUtils.sol";
-import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
+import {BaseTest} from "@/test/base/BaseTest.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-import {StorageUtils} from "@/test/utils/StorageUtils.sol";
-import {Test} from "forge-std/Test.sol";
-
-// From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
 using ERC4337Utils for EntryPoint;
+// From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
 /// @notice Unit tests for `LightWallet`, organized by functions.
-contract LightWalletTest is Test {
-    // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
-    event Initialized(uint8 version);
-
-    // ERC6492 Detection Suffix
-    bytes32 private constant ERC6492_DETECTION_SUFFIX =
-        0x6492649264926492649264926492649264926492649264926492649264926492;
-
-    // EntryPoint from eth-inifinitism
-    EntryPoint private entryPoint;
-    // LightWallet core contract
-    LightWallet private account;
-    // LightWalletFactory core contract
-    LightWalletFactory private factory;
-    // UniversalSigValidator
-    UniversalSigValidator private validator;
-
-    // Safe utility contract
-    SafeUtils safeUtils;
-    // Storage utility contract
-    StorageUtils storageUtils;
-
-    // Address of the owner of the account
-    address private user;
-    // Private key of the owner of the account
-    uint256 private userKey;
-    // Address of the beneficiary of the account
-    address payable private beneficiary;
-
+contract LightWalletTest is BaseTest {
     function setUp() public {
-        // Deploy the EntryPoint
-        entryPoint = new EntryPoint();
-        // Deploy the LightWalletFactory w/ EntryPoint
-        factory = new LightWalletFactory(entryPoint);
-        // Deploy the UniversalSigValidator
-        validator = new UniversalSigValidator();
-        // Set the user and userKey
-        (user, userKey) = makeAddrAndKey("user");
-        // Create the account using the factory w/ hash 1, nonce 0
-        account = factory.createAccount(bytes32(uint256(1)), 0);
-        // Set the beneficiary
-        beneficiary = payable(address(makeAddr("beneficiary")));
-
-        // Deploy the SafeUtils utility contract
-        safeUtils = new SafeUtils();
-        // Deploy the StorageUtils utility contract
-        storageUtils = new StorageUtils();
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
+        _setUpBase();
     }
 
-    // Tests that the account is initialized properly
+    /// Tests that the account is initialized properly
     function test_light_initialize() public {
         vm.expectEmit(true, true, true, true);
         emit Initialized(255);
@@ -97,7 +46,7 @@ contract LightWalletTest is Test {
         account = new LightWallet(entryPoint);
     }
 
-    // Tests the account slot implementation
+    /// Tests the account slot implementation
     function test_light_image_hash() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
@@ -110,7 +59,7 @@ contract LightWalletTest is Test {
         );
     }
 
-    // Tests that the account can not be initialized twice
+    /// Tests that the account can not be initialized twice
     function test_light_implementation_noInitialize() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
@@ -119,7 +68,7 @@ contract LightWalletTest is Test {
         account.initialize(bytes32(uint256(1)));
     }
 
-    // Tests that the account can correctly transfer ETH
+    /// Tests that the account can correctly transfer ETH
     function test_light_transfer_eth() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -154,7 +103,7 @@ contract LightWalletTest is Test {
         assertEq(address(1).balance, 1);
     }
 
-    // Tests that the account can correctly transfer ERC20
+    /// Tests that the account can correctly transfer ERC20
     function test_light_transfer_erc20() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -204,7 +153,7 @@ contract LightWalletTest is Test {
         assertEq(token.balanceOf(address(account)), 1e18 - 1);
     }
 
-    // Tests that the account can correctly transfer ERC721
+    /// Tests that the account can correctly transfer ERC721
     function test_light_transfer_erc721() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -254,7 +203,7 @@ contract LightWalletTest is Test {
         assertEq(nft.balanceOf(address(account)), 0);
     }
 
-    // Tests that the account can correctly transfer ERC1155
+    /// Tests that the account can correctly transfer ERC1155
     function test_light_transfer_erc1155() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -304,9 +253,53 @@ contract LightWalletTest is Test {
         assertEq(multi.balanceOf(address(account), 1), 9);
     }
 
-    // Tests that the account complies w/ EIP-1271 and EIP-6492
-    // Ref: https://eips.ethereum.org/EIPS/eip-1271
-    // Ref: https://eips.ethereum.org/EIPS/eip-6492
+    /// Tests that the account can correctly update its image hash
+    function test_light_updateImageHash() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
+        // Expect that the image hash is the expected one
+        assertEq(account.imageHash(), expectedImageHash);
+
+        // Example UserOperation to update the account to immutable address one
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account),
+            abi.encodeWithSelector(
+                LightWallet.execute.selector,
+                address(account),
+                0,
+                abi.encodeWithSignature("updateImageHash(bytes32)", bytes32(uint256(1)))
+            )
+        );
+
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
+        // Pack the UserOperation
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Expect that the image hash is the updated one
+        assertEq(account.imageHash(), bytes32(uint256(1)));
+    }
+
+    /// Tests that the account complies w/ EIP-1271 and EIP-6492
+    /// Ref: https://eips.ethereum.org/EIPS/eip-1271
+    /// Ref: https://eips.ethereum.org/EIPS/eip-6492
     function test_light_eip_1271_6492() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -332,7 +325,7 @@ contract LightWalletTest is Test {
         assertEq(validator.isValidSig(address(account), hashed, signature), true);
     }
 
-    // Tests that a predeployed contract complies w/ EIP-6492
+    /// Tests that a predeployed contract complies w/ EIP-6492
     function test_light_predeployed_6492() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -367,7 +360,7 @@ contract LightWalletTest is Test {
         assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }
 
-    // Tests that the account complies w/ ERC-165
+    /// Tests that the account complies w/ ERC-165
     function test_light_erc_165() public {
         // ERC165 interface id
         bytes4 interfaceId165 = 0x01ffc9a7;

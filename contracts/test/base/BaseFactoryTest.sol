@@ -29,6 +29,11 @@ contract BaseFactoryTest is Test {
     // ImmutableProxy contract
     ImmutableProxy immutableProxy;
 
+    function _setUpBaseFactory() internal {
+        // Deploy the ProxyUtils utility contract
+        proxyUtils = new ProxyUtils();
+    }
+
     // Upgrade the account to the new implementation and assert that the implementation is correct
     function _upgradeToUUPS(address _proxy, address _newImplementation) internal {
         // Upgrade the account to the new implementation
