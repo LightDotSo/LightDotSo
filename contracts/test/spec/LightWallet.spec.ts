@@ -17,16 +17,17 @@ import { describe, it, expect, test } from "vitest";
 import { subdigestOf } from "@lightdotso/solutions";
 import { publicClient, walletClient } from "@/contracts/test/spec/utils";
 import { accounts } from "@/contracts/test/spec/utils/constants";
-//@ts-expect-error
-import { LightWallet } from "@/contracts/LightWallet.sol";
+import { lightWalletABI } from "@lightdotso/wagmi";
+import { bytecode as lightWalletBytecode } from "@/out/LightWallet.sol/LightWallet.json";
+import { formatAbi } from "abitype";
 
 describe("LightWallet", function () {
   it("Should return run correct function parameters on hardhat", async function () {
     console.log(await publicClient.getBlockNumber());
     const account = accounts[0].address;
     const hash = await walletClient.deployContract({
-      abi: LightWallet.abi,
-      bytecode: LightWallet.bytecode as `0x${string}`,
+      abi: lightWalletABI,
+      bytecode: lightWalletBytecode.object as `0x${string}`,
       account: account,
       args: [account],
       chain: undefined,
@@ -34,7 +35,7 @@ describe("LightWallet", function () {
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
     const data = await publicClient.readContract({
       address: receipt.contractAddress as `0x${string}`,
-      abi: LightWallet.abi,
+      abi: lightWalletABI,
       functionName: "proxiableUUID",
     });
     expect(data).to.equal(
@@ -44,30 +45,48 @@ describe("LightWallet", function () {
 });
 
 test("LightWallet: Correct humanReadableAbi", () => {
-  expect(Object.values(LightWallet.humanReadableAbi)).toMatchInlineSnapshot(`
+  console.log(Object.values(formatAbi(lightWalletABI)));
+  expect(Object.values(formatAbi(lightWalletABI))).toMatchInlineSnapshot(`
     [
-      "constructor(address _anEntryPoint)",
-      "error OnlyOwner()",
+      "constructor(address anEntryPoint)",
+      "error EmptySignature()",
+      "error ImageHashIsZero()",
+      "error InvalidNestedSignature(bytes32 _hash, address _addr, bytes _signature)",
+      "error InvalidSValue(bytes _signature, bytes32 _s)",
+      "error InvalidSignatureFlag(uint256 _flag)",
+      "error InvalidSignatureLength(bytes _signature)",
+      "error InvalidSignatureType(bytes1 _type)",
+      "error InvalidVValue(bytes _signature, uint256 _v)",
+      "error LowWeightChainedSignature(bytes _signature, uint256 threshold, uint256 _weight)",
+      "error OnlySelfAuth(address _sender, address _self)",
+      "error SignerIsAddress0(bytes _signature)",
+      "error UnsupportedSignatureType(bytes _signature, uint256 _type, bool _recoverMode)",
+      "error WrongChainedCheckpointOrder(uint256 _current, uint256 _prev)",
       "event AdminChanged(address previousAdmin, address newAdmin)",
       "event BeaconUpgraded(address indexed beacon)",
+      "event ImageHashUpdated(bytes32 newImageHash)",
       "event Initialized(uint8 version)",
-      "event LightWalletInitialized(address indexed entryPoint, address indexed owner)",
+      "event LightWalletInitialized(address indexed entryPoint, bytes32 indexed hash)",
       "event Upgraded(address indexed implementation)",
+      "function SET_IMAGE_HASH_TYPE_HASH() view returns (bytes32)",
       "function addDeposit() payable",
       "function entryPoint() view returns (address)",
       "function execute(address dest, uint256 value, bytes func)",
       "function executeBatch(address[] dest, bytes[] func)",
       "function getDeposit() view returns (uint256)",
       "function getNonce() view returns (uint256)",
-      "function initialize(address anOwner)",
-      "function isValidSignature(bytes32 hash, bytes signature) view returns (bytes4 magicValue)",
+      "function imageHash() view returns (bytes32)",
+      "function initialize(bytes32 _imageHash)",
+      "function isValidSignature(bytes32 _hash, bytes _signatures) view returns (bytes4)",
+      "function isValidSignature(bytes _data, bytes _signatures) view returns (bytes4)",
       "function onERC1155BatchReceived(address, address, uint256[], uint256[], bytes) pure returns (bytes4)",
       "function onERC1155Received(address, address, uint256, uint256, bytes) pure returns (bytes4)",
       "function onERC721Received(address, address, uint256, bytes) pure returns (bytes4)",
-      "function owner() view returns (address)",
       "function proxiableUUID() view returns (bytes32)",
-      "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+      "function signatureRecovery(bytes32 _digest, bytes _signature) view returns (uint256 threshold, uint256 weight, bytes32 imageHash, bytes32 subdigest, uint256 checkpoint)",
+      "function supportsInterface(bytes4 interfaceId) pure returns (bool)",
       "function tokensReceived(address, address, address, uint256, bytes, bytes) pure",
+      "function updateImageHash(bytes32 _imageHash)",
       "function upgradeTo(address newImplementation)",
       "function upgradeToAndCall(address newImplementation, bytes data) payable",
       "function validateUserOp((address sender, uint256 nonce, bytes initCode, bytes callData, uint256 callGasLimit, uint256 verificationGasLimit, uint256 preVerificationGas, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas, bytes paymasterAndData, bytes signature) userOp, bytes32 userOpHash, uint256 missingAccountFunds) returns (uint256 validationData)",

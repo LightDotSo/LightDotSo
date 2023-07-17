@@ -14,17 +14,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { expect, test } from "vitest";
-//@ts-expect-error
-import { LightWalletFactory } from "@/contracts/LightWalletFactory.sol";
+import { lightWalletFactoryABI } from "@lightdotso/wagmi";
+import { formatAbi } from "abitype";
 
 test("LightWalletFactory: Correct humanReadableAbi", () => {
-  expect(Object.values(LightWalletFactory.humanReadableAbi))
+  expect(Object.values(formatAbi(lightWalletFactoryABI)))
     .toMatchInlineSnapshot(`
     [
       "constructor(address _entryPoint)",
       "function accountImplementation() view returns (address)",
-      "function createAccount(address owner, uint256 salt) returns (address ret)",
-      "function getAddress(address owner, uint256 salt) view returns (address)",
+      "function createAccount(bytes32 hash, uint256 salt) returns (address ret)",
+      "function getAddress(bytes32 hash, uint256 salt) view returns (address)",
     ]
   `);
 });
