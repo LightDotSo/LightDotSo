@@ -43,3 +43,6 @@
 [submodule "lib/scw-contracts"]
 	path = lib/scw-contracts
 	url = https://github.com/bcnmy/scw-contracts
+[submodule "wiki"]
+	path = wiki
+	url = https://github.com/LightDotSo/LightDotSo.wiki.git
