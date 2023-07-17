@@ -1,5 +1,11 @@
 # @lightdotso/crates
 
+## 0.1.0-pre.4
+
+### Minor Changes
+
+- [#186](https://github.com/LightDotSo/LightDotSo/pull/186) [`58e2264`](https://github.com/LightDotSo/LightDotSo/commit/58e2264e5866f53e14da8da434ce1140abe72597) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add rust prisma
+
 ## 0.1.0-pre.3
 
 ### Minor Changes

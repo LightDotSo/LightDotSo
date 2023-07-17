@@ -1,5 +1,11 @@
 # @lightdotso/docs
 
+## 1.1.0-pre.3
+
+### Minor Changes
+
+- [#190](https://github.com/LightDotSo/LightDotSo/pull/190) [`d99f6a0`](https://github.com/LightDotSo/LightDotSo/commit/d99f6a05366c5464924f4ced0d4ec6ce68731bef) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add docgen
+
 ## 1.1.0-pre.2
 
 ### Patch Changes

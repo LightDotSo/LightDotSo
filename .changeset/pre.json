@@ -29,7 +29,8 @@
     "@lightdotso/styles": "1.0.1",
     "@lightdotso/utils": "0.0.0",
     "@lightdotso/solutions": "0.1.0",
-    "@lightdotso/prisma": "1.0.1"
+    "@lightdotso/prisma": "1.0.1",
+    "@lightdotso/api": "1.0.0"
   },
   "changesets": [
     "calm-stingrays-bathe",
@@ -38,6 +39,7 @@
     "empty-maps-change",
     "fast-coins-tie",
     "four-rockets-explain",
+    "friendly-islands-sin",
     "grumpy-berries-sniff",
     "healthy-items-carry",
     "heavy-ligers-kiss",
@@ -45,6 +47,7 @@
     "lazy-glasses-type",
     "seven-rings-change",
     "sharp-cameras-speak",
+    "shiny-yaks-do",
     "strange-cherries-provide",
     "tender-doors-dance",
     "thick-beds-drive",

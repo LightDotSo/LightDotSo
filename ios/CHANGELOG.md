@@ -1,5 +1,12 @@
 # @lightdotso/ios
 
+## 2.0.0-pre.6
+
+### Patch Changes
+
+- Updated dependencies [[`58e2264`](https://github.com/LightDotSo/LightDotSo/commit/58e2264e5866f53e14da8da434ce1140abe72597)]:
+  - @lightdotso/crates@0.1.0-pre.4
+
 ## 2.0.0-pre.5
 
 ### Patch Changes
