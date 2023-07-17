@@ -20,7 +20,7 @@
       }
     ],
     "paths": {
-      "@/artifacts/*": ["artifacts/*"],
+      "@/out/*": ["out/*"],
       "@/contracts/*": ["contracts/src/*"],
       "@/contracts/test/spec/*": ["contracts/test/spec/*"]
     }

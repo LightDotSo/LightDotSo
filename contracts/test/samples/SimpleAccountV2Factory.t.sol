@@ -18,67 +18,62 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {SafeL3} from "@/contracts/samples/SafeL3.sol";
-import {SafeFactory} from "@/contracts/samples/SafeFactory.sol";
+import {SimpleAccountV2} from "@/contracts/samples/SimpleAccountV2.sol";
+import {SimpleAccountV2Factory} from "@/contracts/samples/SimpleAccountV2Factory.sol";
 import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-contract SafeFactoryTest is BaseFactoryTest {
+/// @notice Unit tests for `SimpleAccountV2Factory`, organized by functions.
+contract SimpleAccountV2FactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
     EntryPoint private entryPoint;
-    // SafeL3 from eth-inifinitism
-    SafeL3 private account;
-    // SafeFactory from eth-inifinitism
-    SafeFactory private factory;
+    // SimpleAccountV2 from eth-inifinitism
+    SimpleAccountV2 private account;
+    // SimpleAccountV2Factory from eth-inifinitism
+    SimpleAccountV2Factory private factory;
 
     function setUp() public {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
-        // Deploy the SafeFactory w/ EntryPoint
-        factory = new SafeFactory(entryPoint);
+        // Deploy the SimpleAccountV2Factory w/ EntryPoint
+        factory = new SimpleAccountV2Factory(entryPoint);
         // Deploy the ProxyUtils utility contract
         proxyUtils = new ProxyUtils();
         // Create the account using the factory w/ nonce 0
-        account = factory.createAccount(bytes32(uint256(1)), 0);
+        account = factory.createAccount(address(this), 0);
     }
 
-    function test_safe_predictedCreateAccount() public {
+    function test_simplev2_predictedCreateAccount() public {
         // Get the predicted address of the new account
-        address predicted = factory.getAddress(bytes32(uint256(1)), 0);
+        address predicted = factory.getAddress(address(this), 0);
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));
         // Get the immutable implementation in the factory
-        SafeL3 implementation = factory.accountImplementation();
-        // Assert that the implementation of the created account is the SafeL3
+        SimpleAccountV2 implementation = factory.accountImplementation();
+        // Assert that the implementation of the created account is the SimpleAccountV2
         assertEq(proxyUtils.getProxyImplementation(address(account)), address(implementation));
     }
 
-    function test_safe_revertDisabledUpgradeToUUPS() public {
-        // Deploy new version of SafeL3
-        SafeL3 accountV2 = new SafeL3(entryPoint);
-        // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
+    function test_simplev2_upgradeToUUPS() public {
+        // Deploy new version of SimpleAccountV2
+        SimpleAccountV2 accountV2 = new SimpleAccountV2(entryPoint);
         // Check that the account is the new implementation
-        _upgradeTo(address(account), address(accountV2));
+        _upgradeToUUPS(address(account), address(accountV2));
     }
 
-    function test_safe_revertDisabledUpgradeToImmutable() public {
-        // Deploy the Immutable
-        _deployImmutable();
-        // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
+    function test_simplev2_upgradeToImmutable() public {
         // Check that upgrade to immutable works
-        _upgradeTo(address(account), address(immutableProxy));
+        _upgradeToImmutable(address(account));
     }
 
-    function test_safe_noProxyAdmin() public {
+    function test_simplev2_noProxyAdmin() public {
         // Check that no proxy admin exists
         _noProxyAdmin(address(account));
     }
 
-    function test_safe_noInitializeTwice() public {
+    function test_simplev2_noInitializeTwice() public {
         // Check that the account is not initializable twice
-        _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
+        _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(address)", address(this)));
     }
 }

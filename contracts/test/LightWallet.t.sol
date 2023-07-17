@@ -26,8 +26,10 @@ import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {SafeUtils} from "@/contracts/samples/SafeUtils.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
+import {StorageUtils} from "@/test/utils/StorageUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
@@ -52,6 +54,11 @@ contract LightWalletTest is Test {
     // UniversalSigValidator
     UniversalSigValidator private validator;
 
+    // Safe utility contract
+    SafeUtils safeUtils;
+    // Storage utility contract
+    StorageUtils storageUtils;
+
     // Address of the owner of the account
     address private user;
     // Private key of the owner of the account
@@ -68,10 +75,15 @@ contract LightWalletTest is Test {
         validator = new UniversalSigValidator();
         // Set the user and userKey
         (user, userKey) = makeAddrAndKey("user");
-        // Create the account using the factory w/ nonce 0
-        account = factory.createAccount(user, 0);
+        // Create the account using the factory w/ hash 1, nonce 0
+        account = factory.createAccount(bytes32(uint256(1)), 0);
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
+
+        // Deploy the SafeUtils utility contract
+        safeUtils = new SafeUtils();
+        // Deploy the StorageUtils utility contract
+        storageUtils = new StorageUtils();
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);
@@ -85,28 +97,57 @@ contract LightWalletTest is Test {
         account = new LightWallet(entryPoint);
     }
 
+    // Tests the account slot implementation
+    function test_light_image_hash() public {
+        // Create a new account for the implementation
+        account = new LightWallet(entryPoint);
+
+        // Assert that the image hash is correct
+        assertEq(
+            // keccak256("org.arcadeum.module.auth.upgradable.image.hash");
+            storageUtils.readBytes32(bytes32(0xea7157fa25e3aa17d0ae2d5280fa4e24d421c61842aa85e45194e1145aa72bf8)),
+            bytes32(uint256(0))
+        );
+    }
+
     // Tests that the account can not be initialized twice
     function test_light_implementation_noInitialize() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
         // Ensure that the account is not initializable on the implementation contract
         vm.expectRevert(bytes("Initializable: contract is already initialized"));
-        account.initialize(address(this));
+        account.initialize(bytes32(uint256(1)));
     }
 
     // Tests that the account can correctly transfer ETH
     function test_light_transfer_eth() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
         // Example UserOperation to send 0 ETH to the address one
         UserOperation memory op = entryPoint.fillUserOp(
             address(account), abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""))
         );
 
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
         // Pack the UserOperation
-        op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
-
-        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the account is 1
@@ -115,6 +156,15 @@ contract LightWalletTest is Test {
 
     // Tests that the account can correctly transfer ERC20
     function test_light_transfer_erc20() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
         // Deploy a new MockERC20
         MockERC20 token = new MockERC20("Test", "TEST", 18);
 
@@ -133,12 +183,19 @@ contract LightWalletTest is Test {
             )
         );
 
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
         // Pack the UserOperation
-        op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
-
-        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the destination is 1
@@ -149,6 +206,15 @@ contract LightWalletTest is Test {
 
     // Tests that the account can correctly transfer ERC721
     function test_light_transfer_erc721() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
         // Deploy a new MockERC721
         MockERC721 nft = new MockERC721("Test", "TEST");
 
@@ -167,12 +233,19 @@ contract LightWalletTest is Test {
             )
         );
 
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
         // Pack the UserOperation
-        op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
-
-        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the destination is 1
@@ -183,6 +256,15 @@ contract LightWalletTest is Test {
 
     // Tests that the account can correctly transfer ERC1155
     function test_light_transfer_erc1155() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
         // Deploy a new MockERC1155
         MockERC1155 multi = new MockERC1155();
 
@@ -201,12 +283,19 @@ contract LightWalletTest is Test {
             )
         );
 
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
         // Pack the UserOperation
-        op.signature = abi.encodePacked(entryPoint.signUserOpHash(vm, userKey, op));
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
-
-        // Handle the UserOperation
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the destination is 1
@@ -219,10 +308,20 @@ contract LightWalletTest is Test {
     // Ref: https://eips.ethereum.org/EIPS/eip-1271
     // Ref: https://eips.ethereum.org/EIPS/eip-6492
     function test_light_eip_1271_6492() public {
-        // Obtain the signature w/ the EOA by the user
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Hash of the message
         bytes32 hashed = keccak256("Signed by user");
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
-        bytes memory signature = abi.encodePacked(r, s, v);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hashed, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
 
         // Test the signature w/ EIP-1271
         assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
@@ -235,10 +334,20 @@ contract LightWalletTest is Test {
 
     // Tests that a predeployed contract complies w/ EIP-6492
     function test_light_predeployed_6492() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
         // Obtain the original signature w/ the EOA by the user
         bytes32 hashed = keccak256("Signed by user");
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashed);
-        bytes memory signature = abi.encodePacked(r, s, v);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hashed, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
 
         // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
         // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
@@ -246,7 +355,7 @@ contract LightWalletTest is Test {
             abi.encode(
                 // Nonce is 1 (does not exist)
                 address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, user, 1),
+                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 1),
                 signature
             ),
             ERC6492_DETECTION_SUFFIX
@@ -261,9 +370,15 @@ contract LightWalletTest is Test {
     // Tests that the account complies w/ ERC-165
     function test_light_erc_165() public {
         // ERC165 interface id
-        bytes4 interfaceId = 0x01ffc9a7;
+        bytes4 interfaceId165 = 0x01ffc9a7;
+        // ERC721 interface id
+        bytes4 interfaceId721 = 0x150b7a02;
+        // ERC1155 interface id
+        bytes4 interfaceId1155 = 0x4e2312e0;
 
         // Test that the account supports interfaces
-        assertEq(account.supportsInterface(interfaceId), true);
+        assertEq(account.supportsInterface(interfaceId165), true);
+        assertEq(account.supportsInterface(interfaceId721), true);
+        assertEq(account.supportsInterface(interfaceId1155), true);
     }
 }

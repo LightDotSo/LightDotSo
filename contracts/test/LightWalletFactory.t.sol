@@ -24,7 +24,6 @@ import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-/// @notice Unit tests for `LightWalletFactory`, organized by functions.
 contract LightWalletFactoryTest is BaseFactoryTest {
     // EntryPoint from eth-inifinitism
     EntryPoint private entryPoint;
@@ -41,12 +40,12 @@ contract LightWalletFactoryTest is BaseFactoryTest {
         // Deploy the ProxyUtils utility contract
         proxyUtils = new ProxyUtils();
         // Create the account using the factory w/ nonce 0
-        account = factory.createAccount(address(this), 0);
+        account = factory.createAccount(bytes32(uint256(1)), 0);
     }
 
     function test_light_predictedCreateAccount() public {
         // Get the predicted address of the new account
-        address predicted = factory.getAddress(address(this), 0);
+        address predicted = factory.getAddress(bytes32(uint256(1)), 0);
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));
         // Get the immutable implementation in the factory
@@ -55,16 +54,22 @@ contract LightWalletFactoryTest is BaseFactoryTest {
         assertEq(proxyUtils.getProxyImplementation(address(account)), address(implementation));
     }
 
-    function test_light_upgradeToUUPS() public {
+    function test_light_revertDisabledUpgradeToUUPS() public {
         // Deploy new version of LightWallet
         LightWallet accountV2 = new LightWallet(entryPoint);
+        // Revert for conventional upgrades w/o signature
+        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
         // Check that the account is the new implementation
-        _upgradeToUUPS(address(account), address(accountV2));
+        _upgradeTo(address(account), address(accountV2));
     }
 
-    function test_light_upgradeToImmutable() public {
+    function test_light_revertDisabledUpgradeToImmutable() public {
+        // Deploy the Immutable
+        _deployImmutable();
+        // Revert for conventional upgrades w/o signature
+        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
         // Check that upgrade to immutable works
-        _upgradeToImmutable(address(account));
+        _upgradeTo(address(account), address(immutableProxy));
     }
 
     function test_light_noProxyAdmin() public {
@@ -74,6 +79,6 @@ contract LightWalletFactoryTest is BaseFactoryTest {
 
     function test_light_noInitializeTwice() public {
         // Check that the account is not initializable twice
-        _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(address)", address(this)));
+        _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
     }
 }
