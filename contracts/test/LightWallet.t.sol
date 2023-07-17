@@ -26,67 +26,16 @@ import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {SafeUtils} from "@/contracts/samples/SafeUtils.sol";
-import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
+import {BaseTest} from "@/test/base/BaseTest.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
-import {StorageUtils} from "@/test/utils/StorageUtils.sol";
-import {Test} from "forge-std/Test.sol";
-
-// From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
 using ERC4337Utils for EntryPoint;
+// From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
 /// @notice Unit tests for `LightWallet`, organized by functions.
-contract LightWalletTest is Test {
-    // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
-    event Initialized(uint8 version);
-
-    // ERC6492 Detection Suffix
-    bytes32 private constant ERC6492_DETECTION_SUFFIX =
-        0x6492649264926492649264926492649264926492649264926492649264926492;
-
-    // EntryPoint from eth-inifinitism
-    EntryPoint private entryPoint;
-    // LightWallet core contract
-    LightWallet private account;
-    // LightWalletFactory core contract
-    LightWalletFactory private factory;
-    // UniversalSigValidator
-    UniversalSigValidator private validator;
-
-    // Safe utility contract
-    SafeUtils safeUtils;
-    // Storage utility contract
-    StorageUtils storageUtils;
-
-    // Address of the owner of the account
-    address private user;
-    // Private key of the owner of the account
-    uint256 private userKey;
-    // Address of the beneficiary of the account
-    address payable private beneficiary;
-
+contract LightWalletTest is BaseTest {
     function setUp() public {
-        // Deploy the EntryPoint
-        entryPoint = new EntryPoint();
-        // Deploy the LightWalletFactory w/ EntryPoint
-        factory = new LightWalletFactory(entryPoint);
-        // Deploy the UniversalSigValidator
-        validator = new UniversalSigValidator();
-        // Set the user and userKey
-        (user, userKey) = makeAddrAndKey("user");
-        // Create the account using the factory w/ hash 1, nonce 0
-        account = factory.createAccount(bytes32(uint256(1)), 0);
-        // Set the beneficiary
-        beneficiary = payable(address(makeAddr("beneficiary")));
-
-        // Deploy the SafeUtils utility contract
-        safeUtils = new SafeUtils();
-        // Deploy the StorageUtils utility contract
-        storageUtils = new StorageUtils();
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
+        _setUpBase();
     }
 
     // Tests that the account is initialized properly
@@ -302,6 +251,49 @@ contract LightWalletTest is Test {
         assertEq(multi.balanceOf(address(1), 1), 1);
         // Assert that the balance of the account decreased by 1
         assertEq(multi.balanceOf(address(account), 1), 9);
+    }
+
+    function test_light_updateImageHash() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
+        // Expect that the image hash is the expected one
+        assertEq(account.imageHash(), expectedImageHash);
+
+        // Example UserOperation to update the account to immutable address one
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account),
+            abi.encodeWithSelector(
+                LightWallet.execute.selector,
+                address(account),
+                0,
+                abi.encodeWithSignature("updateImageHash(bytes32)", bytes32(uint256(1)))
+            )
+        );
+
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
+        // Pack the UserOperation
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Expect that the image hash is the updated one
+        assertEq(account.imageHash(), bytes32(uint256(1)));
     }
 
     // Tests that the account complies w/ EIP-1271 and EIP-6492

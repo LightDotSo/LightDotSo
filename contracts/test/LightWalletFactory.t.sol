@@ -18,29 +18,21 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {SafeUtils} from "@/contracts/samples/SafeUtils.sol";
+import {BaseTest} from "@/test/base/BaseTest.sol";
 import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
-import {Test} from "forge-std/Test.sol";
+import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
-contract LightWalletFactoryTest is BaseFactoryTest {
-    // EntryPoint from eth-inifinitism
-    EntryPoint private entryPoint;
-    // LightWallet from eth-inifinitism
-    LightWallet private account;
-    // LightWalletFactory from eth-inifinitism
-    LightWalletFactory private factory;
+using ERC4337Utils for EntryPoint;
 
+contract LightWalletFactoryTest is BaseTest, BaseFactoryTest {
     function setUp() public {
-        // Deploy the EntryPoint
-        entryPoint = new EntryPoint();
-        // Deploy the LightWalletFactory w/ EntryPoint
-        factory = new LightWalletFactory(entryPoint);
-        // Deploy the ProxyUtils utility contract
-        proxyUtils = new ProxyUtils();
-        // Create the account using the factory w/ nonce 0
-        account = factory.createAccount(bytes32(uint256(1)), 0);
+        // Setup the base tests
+        _setUpBase();
+        // Setup the base factory tests
+        _setUpBaseFactory();
     }
 
     function test_light_predictedCreateAccount() public {
@@ -52,6 +44,13 @@ contract LightWalletFactoryTest is BaseFactoryTest {
         LightWallet implementation = factory.accountImplementation();
         // Assert that the implementation of the created account is the LightWallet
         assertEq(proxyUtils.getProxyImplementation(address(account)), address(implementation));
+    }
+
+    function test_light_revertBytesZeroCreateAccount() public {
+        // Revert for conventional upgrades w/o signature
+        vm.expectRevert(abi.encodeWithSignature("ImageHashIsZero()"));
+        // Get the predicted address of the new account
+        account = factory.createAccount(bytes32(0), 0);
     }
 
     function test_light_revertDisabledUpgradeToUUPS() public {
@@ -80,5 +79,49 @@ contract LightWalletFactoryTest is BaseFactoryTest {
     function test_light_noInitializeTwice() public {
         // Check that the account is not initializable twice
         _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
+    }
+
+    // Tests that the account can correctly transfer ERC1155
+    function test_light_upgradeToImmutable() public {
+        // Get the expected image hash
+        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(account), 1e30);
+
+        // Deploy the immutable proxy
+        _deployImmutable();
+
+        // Example UserOperation to update the account to immutable address one
+        UserOperation memory op = entryPoint.fillUserOp(
+            address(account),
+            abi.encodeWithSelector(
+                LightWallet.execute.selector,
+                address(account),
+                0,
+                abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
+            )
+        );
+
+        // Get the hash of the UserOperation
+        bytes32 hash = entryPoint.getUserOpHash(op);
+
+        // Sign the hash
+        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+
+        // Pack the signature
+        bytes memory signature = safeUtils.packLegacySignature(sig);
+        op.signature = signature;
+
+        // Pack the UserOperation
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+        entryPoint.handleOps(ops, beneficiary);
+
+        // Assert that the account is now immutable
+        assertEq(proxyUtils.getProxyImplementation(address(account)), address(immutableProxy));
     }
 }
