@@ -3,11 +3,10 @@
 ============================
 =======================
  ➡ LightWallet
-| Name          | Type    | Slot | Offset | Bytes | Contract                                  |
-|---------------|---------|------|--------|-------|-------------------------------------------|
-| _initialized  | uint8   | 0    | 0      | 1     | contracts/src/LightWallet.sol:LightWallet |
-| _initializing | bool    | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
-| owner         | address | 0    | 2      | 20    | contracts/src/LightWallet.sol:LightWallet |
+| Name          | Type  | Slot | Offset | Bytes | Contract                                  |
+|---------------|-------|------|--------|-------|-------------------------------------------|
+| _initialized  | uint8 | 0    | 0      | 1     | contracts/src/LightWallet.sol:LightWallet |
+| _initializing | bool  | 0    | 1      | 1     | contracts/src/LightWallet.sol:LightWallet |
 =======================
  ➡ LightWalletFactory
 | Name | Type | Slot | Offset | Bytes | Contract |
@@ -77,14 +76,6 @@
 | signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/Safe.sol:Safe |
 =======================
- ➡ SafeFactory
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
-=======================
- ➡ SafeInterface
-| Name | Type | Slot | Offset | Bytes | Contract |
-|------|------|------|--------|-------|----------|
-=======================
  ➡ SafeL2
 | Name                       | Type                                            | Slot | Offset | Bytes | Contract                                       |
 |----------------------------|-------------------------------------------------|------|--------|-------|------------------------------------------------|
@@ -97,12 +88,6 @@
 | _deprecatedDomainSeparator | bytes32                                         | 6    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 | signedMessages             | mapping(bytes32 => uint256)                     | 7    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
 | approvedHashes             | mapping(address => mapping(bytes32 => uint256)) | 8    | 0      | 32    | lib/safe-contracts/contracts/SafeL2.sol:SafeL2 |
-=======================
- ➡ SafeL3
-| Name          | Type  | Slot | Offset | Bytes | Contract                                |
-|---------------|-------|------|--------|-------|-----------------------------------------|
-| _initialized  | uint8 | 0    | 0      | 1     | contracts/src/samples/SafeL3.sol:SafeL3 |
-| _initializing | bool  | 0    | 1      | 1     | contracts/src/samples/SafeL3.sol:SafeL3 |
 =======================
  ➡ SafeProxy
 | Name      | Type    | Slot | Offset | Bytes | Contract                                                     |
@@ -146,6 +131,17 @@
 | owner         | address | 0    | 2      | 20    | lib/account-abstraction/contracts/samples/SimpleAccount.sol:SimpleAccount |
 =======================
  ➡ SimpleAccountFactory
+| Name | Type | Slot | Offset | Bytes | Contract |
+|------|------|------|--------|-------|----------|
+=======================
+ ➡ SimpleAccountV2
+| Name          | Type    | Slot | Offset | Bytes | Contract                                                  |
+|---------------|---------|------|--------|-------|-----------------------------------------------------------|
+| _initialized  | uint8   | 0    | 0      | 1     | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
+| _initializing | bool    | 0    | 1      | 1     | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
+| owner         | address | 0    | 2      | 20    | contracts/src/samples/SimpleAccountV2.sol:SimpleAccountV2 |
+=======================
+ ➡ SimpleAccountV2Factory
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================

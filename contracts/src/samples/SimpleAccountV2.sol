@@ -17,11 +17,12 @@
 
 pragma solidity ^0.8.18;
 
-// SafeL3.sol -- SafeL3 initial implementation
+// SimpleAccountV2.sol -- SimpleAccountV2 initial implementation
 // Modified implementation on SimpleAccount.sol from @eth-infinitism/account-abstraction
 // Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
 // License: GPL-3.0
 
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
@@ -29,21 +30,13 @@ import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfa
 import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {TokenCallbackHandler} from
     "@eth-infinitism/account-abstraction/contracts/samples/callback/TokenCallbackHandler.sol";
-import {ModuleAuth} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuth.sol";
-import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modules/commons/ModuleAuthUpgradable.sol";
-import {SafeInterface} from "@/contracts/samples/SafeInterface.sol";
 
-/// @title SafeL3
+/// @title SimpleAccountV2
 /// @author shunkakinoki
-/// @notice SafeL3 is a composable account abstraction contract
-contract SafeL3 is
-    SafeInterface,
-    ModuleAuthUpgradable,
-    BaseAccount,
-    TokenCallbackHandler,
-    UUPSUpgradeable,
-    Initializable
-{
+/// @notice SimpleAccountV2 is a simple account abstraction contract
+contract SimpleAccountV2 is BaseAccount, TokenCallbackHandler, UUPSUpgradeable, Initializable {
+    using ECDSA for bytes32;
+
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -60,71 +53,100 @@ contract SafeL3 is
     IEntryPoint private immutable _entryPoint;
 
     // -------------------------------------------------------------------------
+    // Storage
+    // -------------------------------------------------------------------------
+
+    /// @notice The owner of this account
+    /// @dev The owner is the EOA that is the owner of this account
+    address public owner;
+
+    // -------------------------------------------------------------------------
+    // Modifiers
+    // -------------------------------------------------------------------------
+
+    modifier onlyOwner() {
+        _onlyOwner();
+        _;
+    }
+
+    // -------------------------------------------------------------------------
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
     /// @inheritdoc BaseAccount
-    function entryPoint() public view virtual override(BaseAccount, SafeInterface) returns (IEntryPoint) {
+    function entryPoint() public view virtual override(BaseAccount) returns (IEntryPoint) {
         return _entryPoint;
     }
 
     // solhint-disable-next-line no-empty-blocks
     receive() external payable {}
 
-    /// @param anEntryPoint The address of the entrypoint contract.
+    /// @param _anEntryPoint The address of the entrypoint contract.
     /// @dev Should be set to the address of the EntryPoint contract
     /// The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
-    constructor(IEntryPoint anEntryPoint) {
-        _entryPoint = anEntryPoint;
+    constructor(IEntryPoint _anEntryPoint) {
+        _entryPoint = _anEntryPoint;
         _disableInitializers();
+    }
+
+    /// @notice Check if the caller is the owner
+    function _onlyOwner() internal view {
+        // Directly from EOA owner, or through the account itself (which gets redirected through execute())
+        require(msg.sender == owner || msg.sender == address(this), "only owner");
     }
 
     /// @param dest The address of the target contract to call.
     /// @param func The calldata to send to the target contract.
-    /// @notice Executes a transaction (called directly by entryPoint)
+    /// @notice Executes a transaction (called directly from owner, or by entryPoint)
     function execute(address dest, uint256 value, bytes calldata func) external {
-        _requireFromEntryPoint();
+        _requireFromEntryPointOrOwner();
         _call(dest, value, func);
     }
 
     /// @param dest The array of address of the target contract to call.
     /// @param func The array of calldata to send to the target contract.
-    /// @notice Executes a sequence of transactions (called directly by entryPoint)
+    /// @notice Executes a sequence of transactions (called directly from owner, or by entryPoint)
     function executeBatch(address[] calldata dest, bytes[] calldata func) external {
-        _requireFromEntryPoint();
+        _requireFromEntryPointOrOwner();
         require(dest.length == func.length, "wrong array lengths");
         for (uint256 i = 0; i < dest.length; i++) {
             _call(dest[i], 0, func[i]);
         }
     }
-    /// @inheritdoc ModuleAuth
 
-    function isValidSignature(bytes32 _hash, bytes calldata _signatures)
-        public
-        view
-        override(SafeInterface, ModuleAuth)
-        returns (bytes4)
-    {
-        return super.isValidSignature(_hash, _signatures);
+    /// @param hash The hash of the user operation
+    /// @param signature The signature of the user operation
+    /// @notice Check if a signature is valid based on the owner's address
+    /// Comaptible with ERC1271
+    function isValidSignature(bytes32 hash, bytes calldata signature) external view returns (bytes4 magicValue) {
+        address recoveredOwner = ECDSA.recover(hash, signature);
+        if (owner == recoveredOwner) {
+            return ERC1271_SUCCESS;
+        }
+        return bytes4(0xffffffff);
     }
 
-    /// @param _imageHash The hash to validate the signature against.
+    /// @param anOwner The address of the owner of this account
     /// @notice The _entryPoint member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
     /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
     /// the implementation by calling `upgradeTo()`
-    function initialize(bytes32 _imageHash) public virtual initializer {
-        _initialize(_imageHash);
+    function initialize(address anOwner) public virtual initializer {
+        _initialize(anOwner);
     }
 
     // -------------------------------------------------------------------------
-    // Entry Point
+    // Internal Functions
     // -------------------------------------------------------------------------
 
-    /// @param _imageHash The hash to validate the signature against.
-    /// @notice Emits an event for the initialization of the contract
-    function _initialize(bytes32 _imageHash) internal virtual {
-        _updateImageHash(_imageHash);
-        emit SafeL3Initialized(_entryPoint, _imageHash);
+    /// @param anOwner The address of the owner of this account
+    /// @notice Sets the owner of this account, and emits an event
+    function _initialize(address anOwner) internal virtual {
+        owner = anOwner;
+    }
+
+    /// @notice Require the function call went through EntryPoint or owner
+    function _requireFromEntryPointOrOwner() internal view {
+        require(msg.sender == address(entryPoint()) || msg.sender == owner, "account: not Owner or EntryPoint");
     }
 
     /// @inheritdoc BaseAccount
@@ -134,8 +156,8 @@ contract SafeL3 is
         override
         returns (uint256 validationData)
     {
-        (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
-        if (!isValid) {
+        bytes32 hash = userOpHash.toEthSignedMessageHash();
+        if (owner != hash.recover(userOp.signature)) {
             return SIG_VALIDATION_FAILED;
         }
         return 0;
@@ -174,7 +196,7 @@ contract SafeL3 is
     /// @notice Withdraws value from the account's deposit
     /// @param withdrawAddress target to send to
     /// @param amount to withdraw
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlySelf {
+    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) public onlyOwner {
         entryPoint().withdrawTo(withdrawAddress, amount);
     }
 
@@ -182,23 +204,9 @@ contract SafeL3 is
     // Upgrades
     // -------------------------------------------------------------------------
 
-    /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
-    function _authorizeUpgrade(address newImplementation) internal view override onlySelf {
+    function _authorizeUpgrade(address newImplementation) internal view override {
         (newImplementation);
-    }
-
-    // -------------------------------------------------------------------------
-    // Compatibility
-    // -------------------------------------------------------------------------
-
-    /// @inheritdoc ModuleAuthUpgradable
-    function supportsInterface(bytes4 interfaceId)
-        public
-        pure
-        override(SafeInterface, TokenCallbackHandler, ModuleAuthUpgradable)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
+        _onlyOwner();
     }
 }
