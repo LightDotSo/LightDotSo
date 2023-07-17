@@ -25,6 +25,7 @@
     "**/*.html",
     "**/*.icns",
     "**/*.lock",
+    "**/*.mdx",
     "**/*.pbxproj",
     "**/*.png",
     "**/*.pro",
@@ -92,15 +93,17 @@
     "append": ""
   },
   "licenseFormats": {
-    "js|ts|tsx|rs|sol|swift|kt|nr|udl": {
+    "js|cjs|mjs|ts|tsx|rs|sol|swift|kt|nr|udl": {
       "eachLine": {
         "prepend": "// "
       },
       "append": ""
     },
     "mdx": {
-      "prepend": "{/*",
-      "append": "*/}\n"
+      "eachLine": {
+        "prepend": "{/*",
+        "append": "*/}"
+      }
     },
     "sh": {
       "eachLine": {
