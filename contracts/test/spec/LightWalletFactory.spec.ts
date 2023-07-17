@@ -14,11 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { expect, test } from "vitest";
-import { lightWalletFactoryABI } from "@lightdotso/wagmi";
-import { formatAbi } from "abitype";
+//@ts-expect-error
+import { LightWalletFactory } from "@/contracts/LightWalletFactory.sol";
 
 test("LightWalletFactory: Correct humanReadableAbi", () => {
-  expect(Object.values(formatAbi(lightWalletFactoryABI)))
+  expect(Object.values(LightWalletFactory.humanReadableAbi))
     .toMatchInlineSnapshot(`
     [
       "constructor(address _entryPoint)",

@@ -17,17 +17,16 @@ import { describe, it, expect, test } from "vitest";
 import { subdigestOf } from "@lightdotso/solutions";
 import { publicClient, walletClient } from "@/contracts/test/spec/utils";
 import { accounts } from "@/contracts/test/spec/utils/constants";
-import { lightWalletABI } from "@lightdotso/wagmi";
-import { bytecode as lightWalletBytecode } from "@/out/LightWallet.sol/LightWallet.json";
-import { formatAbi } from "abitype";
+//@ts-expect-error
+import { LightWallet } from "@/contracts/LightWallet.sol";
 
 describe("LightWallet", function () {
   it("Should return run correct function parameters on hardhat", async function () {
     console.log(await publicClient.getBlockNumber());
     const account = accounts[0].address;
     const hash = await walletClient.deployContract({
-      abi: lightWalletABI,
-      bytecode: lightWalletBytecode.object as `0x${string}`,
+      abi: LightWallet.abi,
+      bytecode: LightWallet.bytecode as `0x${string}`,
       account: account,
       args: [account],
       chain: undefined,
@@ -35,7 +34,7 @@ describe("LightWallet", function () {
     const receipt = await publicClient.waitForTransactionReceipt({ hash });
     const data = await publicClient.readContract({
       address: receipt.contractAddress as `0x${string}`,
-      abi: lightWalletABI,
+      abi: LightWallet.abi,
       functionName: "proxiableUUID",
     });
     expect(data).to.equal(
@@ -45,8 +44,7 @@ describe("LightWallet", function () {
 });
 
 test("LightWallet: Correct humanReadableAbi", () => {
-  console.log(Object.values(formatAbi(lightWalletABI)));
-  expect(Object.values(formatAbi(lightWalletABI))).toMatchInlineSnapshot(`
+  expect(Object.values(LightWallet.humanReadableAbi)).toMatchInlineSnapshot(`
     [
       "constructor(address anEntryPoint)",
       "error EmptySignature()",
