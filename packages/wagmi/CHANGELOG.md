@@ -1,5 +1,11 @@
 # @lightdotso/wagmi
 
+## 0.1.0-pre.4
+
+### Minor Changes
+
+- [#198](https://github.com/LightDotSo/LightDotSo/pull/198) [`234fdc8`](https://github.com/LightDotSo/LightDotSo/commit/234fdc882d684c34f2e101ee4ef9b967c33857b9) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini light wallet
+
 ## 0.1.0-pre.3
 
 ### Patch Changes
