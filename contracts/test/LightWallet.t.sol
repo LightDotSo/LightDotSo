@@ -38,7 +38,7 @@ contract LightWalletTest is BaseTest {
         _setUpBase();
     }
 
-    // Tests that the account is initialized properly
+    /// Tests that the account is initialized properly
     function test_light_initialize() public {
         vm.expectEmit(true, true, true, true);
         emit Initialized(255);
@@ -46,7 +46,7 @@ contract LightWalletTest is BaseTest {
         account = new LightWallet(entryPoint);
     }
 
-    // Tests the account slot implementation
+    /// Tests the account slot implementation
     function test_light_image_hash() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
@@ -59,7 +59,7 @@ contract LightWalletTest is BaseTest {
         );
     }
 
-    // Tests that the account can not be initialized twice
+    /// Tests that the account can not be initialized twice
     function test_light_implementation_noInitialize() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
@@ -68,7 +68,7 @@ contract LightWalletTest is BaseTest {
         account.initialize(bytes32(uint256(1)));
     }
 
-    // Tests that the account can correctly transfer ETH
+    /// Tests that the account can correctly transfer ETH
     function test_light_transfer_eth() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -103,7 +103,7 @@ contract LightWalletTest is BaseTest {
         assertEq(address(1).balance, 1);
     }
 
-    // Tests that the account can correctly transfer ERC20
+    /// Tests that the account can correctly transfer ERC20
     function test_light_transfer_erc20() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -153,7 +153,7 @@ contract LightWalletTest is BaseTest {
         assertEq(token.balanceOf(address(account)), 1e18 - 1);
     }
 
-    // Tests that the account can correctly transfer ERC721
+    /// Tests that the account can correctly transfer ERC721
     function test_light_transfer_erc721() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -203,7 +203,7 @@ contract LightWalletTest is BaseTest {
         assertEq(nft.balanceOf(address(account)), 0);
     }
 
-    // Tests that the account can correctly transfer ERC1155
+    /// Tests that the account can correctly transfer ERC1155
     function test_light_transfer_erc1155() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -253,6 +253,7 @@ contract LightWalletTest is BaseTest {
         assertEq(multi.balanceOf(address(account), 1), 9);
     }
 
+    /// Tests that the account can correctly update its image hash
     function test_light_updateImageHash() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -296,9 +297,9 @@ contract LightWalletTest is BaseTest {
         assertEq(account.imageHash(), bytes32(uint256(1)));
     }
 
-    // Tests that the account complies w/ EIP-1271 and EIP-6492
-    // Ref: https://eips.ethereum.org/EIPS/eip-1271
-    // Ref: https://eips.ethereum.org/EIPS/eip-6492
+    /// Tests that the account complies w/ EIP-1271 and EIP-6492
+    /// Ref: https://eips.ethereum.org/EIPS/eip-1271
+    /// Ref: https://eips.ethereum.org/EIPS/eip-6492
     function test_light_eip_1271_6492() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -324,7 +325,7 @@ contract LightWalletTest is BaseTest {
         assertEq(validator.isValidSig(address(account), hashed, signature), true);
     }
 
-    // Tests that a predeployed contract complies w/ EIP-6492
+    /// Tests that a predeployed contract complies w/ EIP-6492
     function test_light_predeployed_6492() public {
         // Get the expected image hash
         bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
@@ -359,7 +360,7 @@ contract LightWalletTest is BaseTest {
         assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }
 
-    // Tests that the account complies w/ ERC-165
+    /// Tests that the account complies w/ ERC-165
     function test_light_erc_165() public {
         // ERC165 interface id
         bytes4 interfaceId165 = 0x01ffc9a7;
