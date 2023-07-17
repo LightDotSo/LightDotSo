@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for lightdotso-serve on 2023-07-14T21:36:24-07:00
+# fly.toml app configuration file generated for lightdotso-serve on 2023-07-17T01:35:58-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -13,7 +13,6 @@ kill_timeout = "5s"
 
 [build]
   image = "ghcr.io/lightdotso/lightdotso:latest"
-  auto_rollback = true
 
 [http_service]
   internal_port = 3002
@@ -28,10 +27,10 @@ kill_timeout = "5s"
 
 [checks]
   [checks.health]
-    grace_period = "30s"
+    port = 3002
+    type = "http"
     interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
     method = "get"
     path = "/health"
-    port = 3002
-    timeout = "10s"
-    type = "http"
