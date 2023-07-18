@@ -27,6 +27,8 @@ pragma solidity ^0.8.18;
 // Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
 // License: Apache-2.0
 
+// Thank you to both teams for the ever amazing work!
+
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {BaseAccount} from "@eth-infinitism/account-abstraction/contracts/core/BaseAccount.sol";
@@ -40,7 +42,7 @@ import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightWallet
 /// @author @shunkakinoki
-/// @notice LightWallet is a composable account abstraction contract
+/// @notice LightWallet is an account abstraction contract
 contract LightWallet is
     ILightWallet,
     ModuleAuthUpgradable,

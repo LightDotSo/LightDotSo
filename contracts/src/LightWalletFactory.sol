@@ -26,6 +26,7 @@ import {Create2} from "@openzeppelin/contracts/utils/Create2.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
+import {ILightWalletFactory} from "@/contracts/interfaces/ILightWalletFactory.sol";
 
 /// @title LightWalletFactory
 /// @author @shunkakinoki
@@ -33,7 +34,7 @@ import {LightWallet} from "@/contracts/LightWallet.sol";
 /// @dev A UserOperations "initCode" holds the address of the factory, and a method call (to createAccount, in this sample factory).
 /// The factory's createAccount returns the target account address even if it is already installed.
 /// This way, the entryPoint.getSenderAddress() can be called either before or after the account is created.
-contract LightWalletFactory {
+contract LightWalletFactory is ILightWalletFactory {
     // -------------------------------------------------------------------------
     // Immutable Storage
     // -------------------------------------------------------------------------
