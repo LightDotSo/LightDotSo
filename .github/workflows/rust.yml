@@ -31,18 +31,21 @@ jobs:
           - os: ubuntu-latest-large
             target: x86_64-unknown-linux-gnu
             package: --workspace
-            test: true
             clippy: true
+            deny: true
+            test: true
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --package lightwallet-core
-            test: false
             clippy: false
+            deny: false
+            test: false
           - os: macos-latest
             target: x86_64-apple-darwin
             package: --package lightwallet-core
+            clippy: false
+            deny: false
             test: true
-            cli: false
     env:
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
@@ -81,7 +84,8 @@ jobs:
         with:
           command: build
           args: --target ${{ matrix.target }}
-      - name: Deny Check
+      - if: matrix.deny
+        name: Deny Check
         run: |
           cargo deny check
       - if: matrix.test
