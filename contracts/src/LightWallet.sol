@@ -18,9 +18,14 @@
 pragma solidity ^0.8.18;
 
 // LightWallet.sol -- LightWallet initial implementation
+
 // Modified implementation on SimpleAccount.sol from @eth-infinitism/account-abstraction
-// Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
+// Link: https://github.com/eth-infinitism/account-abstraction/blob/19918cda7c4f0d2095dac52f4da98444f17fa11b/contracts/samples/SimpleAccount.sol
 // License: GPL-3.0
+
+// Core is heavily based by the work of @0xsequence (especially @Agusx1211)
+// Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
+// License: Apache-2.0
 
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
@@ -34,7 +39,7 @@ import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modul
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightWallet
-/// @author shunkakinoki
+/// @author @shunkakinoki
 /// @notice LightWallet is a composable account abstraction contract
 contract LightWallet is
     ILightWallet,

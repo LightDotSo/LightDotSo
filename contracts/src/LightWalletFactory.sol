@@ -28,13 +28,21 @@ import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfa
 import {LightWallet} from "@/contracts/LightWallet.sol";
 
 /// @title LightWalletFactory
-/// @author shunkakinoki
+/// @author @shunkakinoki
 /// @notice A factory contract for `LightWallet`
 /// @dev A UserOperations "initCode" holds the address of the factory, and a method call (to createAccount, in this sample factory).
 /// The factory's createAccount returns the target account address even if it is already installed.
 /// This way, the entryPoint.getSenderAddress() can be called either before or after the account is created.
 contract LightWalletFactory {
+    // -------------------------------------------------------------------------
+    // Immutable Storage
+    // -------------------------------------------------------------------------
+
     LightWallet public immutable accountImplementation;
+
+    // -------------------------------------------------------------------------
+    // Constructor + Functions
+    // -------------------------------------------------------------------------
 
     constructor(IEntryPoint _entryPoint) {
         accountImplementation = new LightWallet(_entryPoint);
