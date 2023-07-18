@@ -297,52 +297,6 @@ contract LightWalletTest is BaseTest {
         assertEq(account.imageHash(), bytes32(uint256(1)));
     }
 
-    /// Tests that the account can correctly update its image hash
-    function test_light_withdrawEntrypointFlow() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
-        // Deposit 1e30 ETH into the testing contract for testing
-        vm.deal(address(this), 1e30);
-        account.addDeposit{value: 1e10}();
-        assertEq(account.getDeposit(), 1e10);
-
-        // // Example UserOperation to update the account to immutable address one
-        // UserOperation memory op = entryPoint.fillUserOp(
-        //     address(account),
-        //     abi.encodeWithSelector(
-        //         LightWallet.execute.selector,
-        //         address(account),
-        //         0,
-        //         abi.encodeWithSignature("withdrawDepositTo(address,uint256)", address(1), uint256(1e10))
-        //     )
-        // );
-
-        // // Get the hash of the UserOperation
-        // bytes32 hash = entryPoint.getUserOpHash(op);
-
-        // // Sign the hash
-        // bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
-
-        // // Pack the signature
-        // bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-        // op.signature = signature;
-
-        // // Pack the UserOperation
-        // UserOperation[] memory ops = new UserOperation[](1);
-        // ops[0] = op;
-        // entryPoint.handleOps(ops, beneficiary);
-
-        // // Assert that the balance of the account is 1
-        // assertEq(address(1).balance, 1);
-    }
-
     /// Tests that the account complies w/ EIP-1271 and EIP-6492
     /// Ref: https://eips.ethereum.org/EIPS/eip-1271
     /// Ref: https://eips.ethereum.org/EIPS/eip-6492

@@ -36,12 +36,6 @@ interface ILightWallet is IERC1271 {
     // Actions
     // -------------------------------------------------------------------------
 
-    /// @notice Check current account deposit in the entryPoint.
-    function getDeposit() external view returns (uint256);
-
-    /// @notice Deposit more funds for this account in the entryPoint.
-    function addDeposit() external payable;
-
     /// @notice Executes a transaction (called directly by entryPoint).
     function execute(address dest, uint256 value, bytes calldata func) external;
 
@@ -57,9 +51,6 @@ interface ILightWallet is IERC1271 {
 
     /// @notice Sets the hash of this account, and emits an event.
     function initialize(bytes32 _imageHash) external;
-
-    /// @notice Withdraws value from the account's deposit.
-    function withdrawDepositTo(address payable withdrawAddress, uint256 amount) external;
 
     /// @notice Returns the entry point contract address for this account.
     function entryPoint() external view returns (IEntryPoint);

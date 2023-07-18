@@ -8,7 +8,7 @@
 | EIP1967Proxy                 | 0.136     | 24.44       |
 | ERC1967Proxy                 | 0.833     | 23.743      |
 | ERC4337Utils                 | 0.086     | 24.49       |
-| EntryPoint                   | 18.05     | 6.526       |
+| EntryPoint                   | 18.359    | 6.217       |
 | Exec                         | 0.086     | 24.49       |
 | ISignatureValidatorConstants | 0.063     | 24.513      |
 | ImmutableProxy               | 3.424     | 21.152      |
@@ -18,7 +18,7 @@
 | LibBytes                     | 0.086     | 24.49       |
 | LibBytesPointer              | 0.086     | 24.49       |
 | LibOptim                     | 0.086     | 24.49       |
-| LightWallet                  | 12.834    | 11.742      |
+| LightWallet                  | 12.164    | 12.412      |
 | LightWalletFactory           | 3.129     | 21.447      |
 | Math                         | 0.086     | 24.49       |
 | MockERC1155                  | 7.697     | 16.879      |
