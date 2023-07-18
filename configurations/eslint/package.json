@@ -17,11 +17,11 @@
     "src/index.js"
   ],
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
     "eslint": "^8.45.0",
     "eslint-config-next": "^13.4.10",
-    "eslint-config-turbo": "^1.10.7",
+    "eslint-config-turbo": "^1.10.8",
     "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-editorconfig": "^4.0.3",

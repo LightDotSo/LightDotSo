@@ -51,7 +51,7 @@ jobs:
         run: |
           git diff --quiet
       - if: failure()
-        name: Show Storage Changes
+        name: Show Prisma Changes
         run: |
           git diff
   prisma-check:
