@@ -52,8 +52,8 @@ contract LightWalletFactory is ILightWalletFactory {
     /// @notice Creates an account, and return its address.
     /// @dev Note that during UserOperation execution, this method is called only if the account is not deployed.
     /// This method returns an existing account address so that entryPoint.getSenderAddress() would work even after account creation
-    function createAccount(bytes32 hash, uint256 salt) public returns (LightWallet ret) {
-        address addr = getAddress(hash, salt);
+    function createAccount(bytes32 _hash, uint256 _salt) public returns (LightWallet ret) {
+        address addr = getAddress(_hash, _salt);
         uint256 codeSize = addr.code.length;
         // If the account already exists, return it
         if (codeSize > 0) {
@@ -62,23 +62,23 @@ contract LightWalletFactory is ILightWalletFactory {
         // Initializes the account
         ret = LightWallet(
             payable(
-                new ERC1967Proxy{salt : bytes32(salt)}(
+                new ERC1967Proxy{salt : bytes32(_salt)}(
                   address(accountImplementation),
-                  abi.encodeCall(LightWallet.initialize, (hash))
+                  abi.encodeCall(LightWallet.initialize, (_hash))
                 )
             )
         );
     }
 
     /// @notice calculate the counterfactual address of this account as it would be returned by createAccount()
-    function getAddress(bytes32 hash, uint256 salt) public view returns (address) {
+    function getAddress(bytes32 _hash, uint256 _salt) public view returns (address) {
         // Computes the address with the given `salt`and the contract address `addressImplementation`, and with `initialize` method w/ `owner`
         return Create2.computeAddress(
-            bytes32(salt),
+            bytes32(_salt),
             keccak256(
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
-                    abi.encode(address(accountImplementation), abi.encodeCall(LightWallet.initialize, (hash)))
+                    abi.encode(address(accountImplementation), abi.encodeCall(LightWallet.initialize, (_hash)))
                 )
             )
         );

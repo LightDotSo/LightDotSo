@@ -70,11 +70,11 @@ contract LightWallet is
     // solhint-disable-next-line no-empty-blocks
     receive() external payable {}
 
-    /// @param anEntryPoint The address of the entrypoint contract.
+    /// @param _anEntryPoint The address of the entrypoint contract.
     /// @dev Should be set to the address of the EntryPoint contract
     /// The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
-    constructor(IEntryPoint anEntryPoint) {
-        _entryPoint = anEntryPoint;
+    constructor(IEntryPoint _anEntryPoint) {
+        _entryPoint = _anEntryPoint;
         _disableInitializers();
     }
 
@@ -96,8 +96,8 @@ contract LightWallet is
             _call(dest[i], 0, func[i]);
         }
     }
-    /// @inheritdoc ModuleAuth
 
+    /// @inheritdoc ModuleAuth
     function isValidSignature(bytes32 _hash, bytes calldata _signatures)
         public
         view
@@ -127,13 +127,13 @@ contract LightWallet is
     }
 
     /// @inheritdoc BaseAccount
-    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
+    function _validateSignature(UserOperation calldata _userOp, bytes32 _userOpHash)
         internal
         virtual
         override
         returns (uint256 validationData)
     {
-        (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
+        (bool isValid,) = _signatureValidation(_userOpHash, _userOp.signature);
         if (!isValid) {
             return SIG_VALIDATION_FAILED;
         }
@@ -162,8 +162,8 @@ contract LightWallet is
 
     /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
-    function _authorizeUpgrade(address newImplementation) internal view override onlySelf {
-        (newImplementation);
+    function _authorizeUpgrade(address _newImplementation) internal view override onlySelf {
+        (_newImplementation);
     }
 
     // -------------------------------------------------------------------------
@@ -171,12 +171,12 @@ contract LightWallet is
     // -------------------------------------------------------------------------
 
     /// @inheritdoc ModuleAuthUpgradable
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(bytes4 _interfaceId)
         public
         pure
         override(ILightWallet, TokenCallbackHandler, ModuleAuthUpgradable)
         returns (bool)
     {
-        return super.supportsInterface(interfaceId);
+        return super.supportsInterface(_interfaceId);
     }
 }
