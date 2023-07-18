@@ -30,9 +30,6 @@ jobs:
     needs:
       - prisma-turbo
     timeout-minutes: 90
-    env:
-      SCCACHE_GHA_ENABLED: "true"
-      RUSTC_WRAPPER: "sccache"
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
