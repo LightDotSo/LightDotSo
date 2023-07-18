@@ -19,10 +19,10 @@ pragma solidity ^0.8.18;
 
 import {Test} from "forge-std/Test.sol";
 
-/// @title SafeUtils
+/// @title LightWalletUtils
 /// @author shunkakinoki
-/// @notice SafeUtils is a utility contract for the Safe
-contract SafeUtils is Test {
+/// @notice LightWalletUtils is a utility contract for the Safe
+contract LightWalletUtils is Test {
     // Parameters for the signature
     uint8 private weight = uint8(1);
     uint16 private threshold = uint16(1);

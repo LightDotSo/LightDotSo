@@ -45,14 +45,6 @@ contract LightWallet is
     Initializable
 {
     // -------------------------------------------------------------------------
-    // Constants
-    // -------------------------------------------------------------------------
-
-    /// @notice The ERC1271 compatibility magic value
-    /// @dev See https://eips.ethereum.org/EIPS/eip-1271 for more information
-    bytes4 private constant ERC1271_SUCCESS = 0x1626ba7e;
-
-    // -------------------------------------------------------------------------
     // Immutable Storage
     // -------------------------------------------------------------------------
 
@@ -109,7 +101,7 @@ contract LightWallet is
     }
 
     /// @param _imageHash The hash to validate the signature against.
-    /// @notice The _entryPoint member is immutable, to reduce gas consumption.  To upgrade EntryPoint,
+    /// @notice The _entryPoint member is immutable, to reduce gas consumption. To upgrade EntryPoint,
     /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
     /// the implementation by calling `upgradeTo()`
     function initialize(bytes32 _imageHash) public virtual initializer {

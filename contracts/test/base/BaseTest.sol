@@ -21,7 +21,7 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
-import {SafeUtils} from "@/contracts/samples/SafeUtils.sol";
+import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
 import {StorageUtils} from "@/test/utils/StorageUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Test} from "forge-std/Test.sol";
@@ -46,7 +46,7 @@ contract BaseTest is Test {
     UniversalSigValidator internal validator;
 
     // Safe utility contract
-    SafeUtils internal safeUtils;
+    LightWalletUtils internal lightWalletUtils;
     // Storage utility contract
     StorageUtils internal storageUtils;
 
@@ -71,8 +71,8 @@ contract BaseTest is Test {
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
 
-        // Deploy the SafeUtils utility contract
-        safeUtils = new SafeUtils();
+        // Deploy the LightWalletUtils utility contract
+        lightWalletUtils = new LightWalletUtils();
         // Deploy the StorageUtils utility contract
         storageUtils = new StorageUtils();
 
