@@ -67,11 +67,9 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "event LightWalletInitialized(address indexed entryPoint, bytes32 indexed hash)",
       "event Upgraded(address indexed implementation)",
       "function SET_IMAGE_HASH_TYPE_HASH() view returns (bytes32)",
-      "function addDeposit() payable",
       "function entryPoint() view returns (address)",
       "function execute(address dest, uint256 value, bytes func)",
       "function executeBatch(address[] dest, bytes[] func)",
-      "function getDeposit() view returns (uint256)",
       "function getNonce() view returns (uint256)",
       "function imageHash() view returns (bytes32)",
       "function initialize(bytes32 _imageHash)",
@@ -88,7 +86,6 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "function upgradeTo(address newImplementation)",
       "function upgradeToAndCall(address newImplementation, bytes data) payable",
       "function validateUserOp((address sender, uint256 nonce, bytes initCode, bytes callData, uint256 callGasLimit, uint256 verificationGasLimit, uint256 preVerificationGas, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas, bytes paymasterAndData, bytes signature) userOp, bytes32 userOpHash, uint256 missingAccountFunds) returns (uint256 validationData)",
-      "function withdrawDepositTo(address withdrawAddress, uint256 amount)",
       "receive() external payable",
     ]
   `);

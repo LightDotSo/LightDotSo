@@ -19,7 +19,7 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {SafeUtils} from "@/contracts/samples/SafeUtils.sol";
+import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
 import {BaseTest} from "@/test/base/BaseTest.sol";
 import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
@@ -90,7 +90,7 @@ contract LightWalletFactoryTest is BaseTest, BaseFactoryTest {
     /// Tests that the account can upgrade to a immutable proxy
     function test_light_upgradeToImmutable() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -116,10 +116,10 @@ contract LightWalletFactoryTest is BaseTest, BaseFactoryTest {
         bytes32 hash = entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
         op.signature = signature;
 
         // Pack the UserOperation

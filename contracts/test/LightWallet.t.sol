@@ -71,7 +71,7 @@ contract LightWalletTest is BaseTest {
     /// Tests that the account can correctly transfer ETH
     function test_light_transfer_eth() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -88,10 +88,10 @@ contract LightWalletTest is BaseTest {
         bytes32 hash = entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
         op.signature = signature;
 
         // Pack the UserOperation
@@ -106,7 +106,7 @@ contract LightWalletTest is BaseTest {
     /// Tests that the account can correctly transfer ERC20
     function test_light_transfer_erc20() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -136,10 +136,10 @@ contract LightWalletTest is BaseTest {
         bytes32 hash = entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
         op.signature = signature;
 
         // Pack the UserOperation
@@ -156,7 +156,7 @@ contract LightWalletTest is BaseTest {
     /// Tests that the account can correctly transfer ERC721
     function test_light_transfer_erc721() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -186,10 +186,10 @@ contract LightWalletTest is BaseTest {
         bytes32 hash = entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
         op.signature = signature;
 
         // Pack the UserOperation
@@ -206,7 +206,7 @@ contract LightWalletTest is BaseTest {
     /// Tests that the account can correctly transfer ERC1155
     function test_light_transfer_erc1155() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -236,10 +236,10 @@ contract LightWalletTest is BaseTest {
         bytes32 hash = entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
         op.signature = signature;
 
         // Pack the UserOperation
@@ -256,7 +256,7 @@ contract LightWalletTest is BaseTest {
     /// Tests that the account can correctly update its image hash
     function test_light_updateImageHash() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -282,10 +282,10 @@ contract LightWalletTest is BaseTest {
         bytes32 hash = entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hash, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
         op.signature = signature;
 
         // Pack the UserOperation
@@ -302,7 +302,7 @@ contract LightWalletTest is BaseTest {
     /// Ref: https://eips.ethereum.org/EIPS/eip-6492
     function test_light_eip_1271_6492() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -311,10 +311,10 @@ contract LightWalletTest is BaseTest {
         bytes32 hashed = keccak256("Signed by user");
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hashed, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
 
         // Test the signature w/ EIP-1271
         assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
@@ -328,7 +328,7 @@ contract LightWalletTest is BaseTest {
     /// Tests that a predeployed contract complies w/ EIP-6492
     function test_light_predeployed_6492() public {
         // Get the expected image hash
-        bytes32 expectedImageHash = safeUtils.getExpectedImageHash(user);
+        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
@@ -337,10 +337,10 @@ contract LightWalletTest is BaseTest {
         bytes32 hashed = keccak256("Signed by user");
 
         // Sign the hash
-        bytes memory sig = safeUtils.signDigest(hashed, address(account), userKey);
+        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = safeUtils.packLegacySignature(sig);
+        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
 
         // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
         // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)

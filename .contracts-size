@@ -18,7 +18,7 @@
 | LibBytes                     | 0.086     | 24.49       |
 | LibBytesPointer              | 0.086     | 24.49       |
 | LibOptim                     | 0.086     | 24.49       |
-| LightWallet                  | 12.834    | 11.742      |
+| LightWallet                  | 12.164    | 12.412      |
 | LightWalletFactory           | 3.129     | 21.447      |
 | Math                         | 0.086     | 24.49       |
 | MockERC1155                  | 7.697     | 16.879      |
@@ -61,4 +61,3 @@
 | stdMath                      | 0.086     | 24.49       |
 | stdStorage                   | 0.086     | 24.49       |
 | stdStorageSafe               | 0.086     | 24.49       |
-

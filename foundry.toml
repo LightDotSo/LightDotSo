@@ -12,6 +12,7 @@
     # "lib/soul-wallet-contract",
     "lib/v3-periphery",
   ]
+  auto_detect_remappings = false
   optimizer = true
   optimizer_runs = 10_000
   solc = "0.8.18"

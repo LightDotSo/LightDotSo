@@ -98,31 +98,6 @@
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
 =======================
- ➡ SafeUtils
-| Name                       | Type                                      | Slot | Offset | Bytes | Contract                                      |
-|----------------------------|-------------------------------------------|------|--------|-------|-----------------------------------------------|
-| IS_TEST                    | bool                                      | 0    | 0      | 1     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _failed                    | bool                                      | 0    | 1      | 1     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| stdChainsInitialized       | bool                                      | 0    | 2      | 1     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| chains                     | mapping(string => struct StdChains.Chain) | 1    | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| defaultRpcUrls             | mapping(string => string)                 | 2    | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| idToAlias                  | mapping(uint256 => string)                | 3    | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| fallbackToDefaultRpcUrls   | bool                                      | 4    | 0      | 1     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| gasMeteringOff             | bool                                      | 4    | 1      | 1     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| stdstore                   | struct StdStorage                         | 5    | 0      | 224   | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _excludedContracts         | address[]                                 | 12   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _excludedSenders           | address[]                                 | 13   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _targetedContracts         | address[]                                 | 14   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _targetedSenders           | address[]                                 | 15   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _excludedArtifacts         | string[]                                  | 16   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _targetedArtifacts         | string[]                                  | 17   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _targetedArtifactSelectors | struct StdInvariant.FuzzSelector[]        | 18   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| _targetedSelectors         | struct StdInvariant.FuzzSelector[]        | 19   | 0      | 32    | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| stdstore                   | struct StdStorage                         | 20   | 0      | 224   | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| weight                     | uint8                                     | 27   | 0      | 1     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| threshold                  | uint16                                    | 27   | 1      | 2     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-| checkpoint                 | uint32                                    | 27   | 3      | 4     | contracts/src/samples/SafeUtils.sol:SafeUtils |
-=======================
  ➡ SimpleAccount
 | Name          | Type    | Slot | Offset | Bytes | Contract                                                                  |
 |---------------|---------|------|--------|-------|---------------------------------------------------------------------------|
@@ -156,6 +131,31 @@
  ➡ Wallet
 =======================
  ➡ WalletFactory
+=======================
+ ➡ LightWalletUtils
+| Name                       | Type                                      | Slot | Offset | Bytes | Contract                                                  |
+|----------------------------|-------------------------------------------|------|--------|-------|-----------------------------------------------------------|
+| IS_TEST                    | bool                                      | 0    | 0      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _failed                    | bool                                      | 0    | 1      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| stdChainsInitialized       | bool                                      | 0    | 2      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| chains                     | mapping(string => struct StdChains.Chain) | 1    | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| defaultRpcUrls             | mapping(string => string)                 | 2    | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| idToAlias                  | mapping(uint256 => string)                | 3    | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| fallbackToDefaultRpcUrls   | bool                                      | 4    | 0      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| gasMeteringOff             | bool                                      | 4    | 1      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| stdstore                   | struct StdStorage                         | 5    | 0      | 224   | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _excludedContracts         | address[]                                 | 12   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _excludedSenders           | address[]                                 | 13   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _targetedContracts         | address[]                                 | 14   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _targetedSenders           | address[]                                 | 15   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _excludedArtifacts         | string[]                                  | 16   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _targetedArtifacts         | string[]                                  | 17   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _targetedArtifactSelectors | struct StdInvariant.FuzzSelector[]        | 18   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| _targetedSelectors         | struct StdInvariant.FuzzSelector[]        | 19   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| stdstore                   | struct StdStorage                         | 20   | 0      | 224   | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| weight                     | uint8                                     | 27   | 0      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| threshold                  | uint16                                    | 27   | 1      | 2     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
+| checkpoint                 | uint32                                    | 27   | 3      | 4     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
 =======================
  ➡ UniversalSigValidator
 | Name | Type | Slot | Offset | Bytes | Contract |
