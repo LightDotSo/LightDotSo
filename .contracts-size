@@ -8,7 +8,7 @@
 | EIP1967Proxy                 | 0.136     | 24.44       |
 | ERC1967Proxy                 | 0.833     | 23.743      |
 | ERC4337Utils                 | 0.086     | 24.49       |
-| EntryPoint                   | 18.359    | 6.217       |
+| EntryPoint                   | 18.05     | 6.526       |
 | Exec                         | 0.086     | 24.49       |
 | ISignatureValidatorConstants | 0.063     | 24.513      |
 | ImmutableProxy               | 3.424     | 21.152      |
@@ -61,4 +61,3 @@
 | stdMath                      | 0.086     | 24.49       |
 | stdStorage                   | 0.086     | 24.49       |
 | stdStorageSafe               | 0.086     | 24.49       |
-
