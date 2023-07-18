@@ -30,17 +30,22 @@ jobs:
         include:
           - os: ubuntu-latest-large
             target: x86_64-unknown-linux-gnu
+            package: --workspace
+            clippy: true
+            deny: true
             test: true
-          # - os: ubuntu-latest
-          #   target: x86_64-linux-android
-          # - os: macos-latest
-          #   target: x86_64-apple-ios
-          #   test: false
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: --package lightwallet-core
+            clippy: false
+            deny: false
+            test: false
           - os: macos-latest
             target: x86_64-apple-darwin
+            package: --package lightwallet-core
+            clippy: false
+            deny: false
             test: true
-          # - os: windows-latest
-          #   target: x86_64-pc-windows-msvc
     env:
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
@@ -78,8 +83,9 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --target ${{ matrix.target }} --workspace
-      - name: Deny Check
+          args: --target ${{ matrix.target }}
+      - if: matrix.deny
+        name: Deny Check
         run: |
           cargo deny check
       - if: matrix.test
@@ -87,14 +93,14 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: test
-          args: --target ${{ matrix.target }} --workspace
+          args: --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.test
         name: Rust Coverage Install
         uses: taiki-e/install-action@cargo-llvm-cov
       - if: matrix.test
         name: Rust Coverage
         run: |
-          cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+          cargo llvm-cov --all-features ${{ matrix.package }} --lcov --output-path lcov.info
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
@@ -103,15 +109,18 @@ jobs:
           fail_ci_if_error: false
           files: lcov.info
           flags: rust
-      - name: Run Clippy
+      - if: matrix.clippy
+        name: Run Clippy
         run: |
           cargo clippy \
             --all-features \
-            --workspace \
+            ${{ matrix.package }} \
             --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
         continue-on-error: true
-      - name: Upload SARIF file
+      - if: matrix.clippy
+        name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
+        continue-on-error: true
         with:
           sarif_file: rust-clippy-results.sarif
       - name: Rust Finish
