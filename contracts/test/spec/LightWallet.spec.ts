@@ -46,7 +46,7 @@ describe("LightWallet", function () {
 test("LightWallet: Correct humanReadableAbi", () => {
   expect(Object.values(LightWallet.humanReadableAbi)).toMatchInlineSnapshot(`
     [
-      "constructor(address anEntryPoint)",
+      "constructor(address _anEntryPoint)",
       "error EmptySignature()",
       "error ImageHashIsZero()",
       "error InvalidNestedSignature(bytes32 _hash, address _addr, bytes _signature)",
@@ -64,7 +64,7 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "event BeaconUpgraded(address indexed beacon)",
       "event ImageHashUpdated(bytes32 newImageHash)",
       "event Initialized(uint8 version)",
-      "event LightWalletInitialized(address indexed entryPoint, bytes32 indexed hash)",
+      "event LightWalletInitialized(address indexed _entryPoint, bytes32 indexed _hash)",
       "event Upgraded(address indexed implementation)",
       "function SET_IMAGE_HASH_TYPE_HASH() view returns (bytes32)",
       "function entryPoint() view returns (address)",
@@ -80,7 +80,7 @@ test("LightWallet: Correct humanReadableAbi", () => {
       "function onERC721Received(address, address, uint256, bytes) pure returns (bytes4)",
       "function proxiableUUID() view returns (bytes32)",
       "function signatureRecovery(bytes32 _digest, bytes _signature) view returns (uint256 threshold, uint256 weight, bytes32 imageHash, bytes32 subdigest, uint256 checkpoint)",
-      "function supportsInterface(bytes4 interfaceId) pure returns (bool)",
+      "function supportsInterface(bytes4 _interfaceId) pure returns (bool)",
       "function tokensReceived(address, address, address, uint256, bytes, bytes) pure",
       "function updateImageHash(bytes32 _imageHash)",
       "function upgradeTo(address newImplementation)",
