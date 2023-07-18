@@ -1,5 +1,13 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.10
+
+### Patch Changes
+
+- [#201](https://github.com/LightDotSo/LightDotSo/pull/201) [`71707ae`](https://github.com/LightDotSo/LightDotSo/commit/71707aec4b1867552d7e5a30898966cd3ded9b98) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Added base tests
+
+- [#203](https://github.com/LightDotSo/LightDotSo/pull/203) [`b5daf7e`](https://github.com/LightDotSo/LightDotSo/commit/b5daf7ebdc0abf5a58fb67d6cd669de2fe918bb2) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add base test
+
 ## 0.1.0-pre.9
 
 ### Minor Changes
