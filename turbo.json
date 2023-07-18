@@ -16,6 +16,7 @@
       "persistent": true
     },
     "//#build:test": {
+      "inputs": ["contracts/src/**", "packages/solutions/src/**"],
       "outputs": [
         "artifacts/**",
         "coverage-data.json",
