@@ -163,6 +163,7 @@ contract LightWallet is
 
     /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
+    // slither-disable-next-line naming-convention
     function _authorizeUpgrade(address _newImplementation) internal view override onlySelf {
         (_newImplementation);
     }
@@ -172,6 +173,7 @@ contract LightWallet is
     // -------------------------------------------------------------------------
 
     /// @inheritdoc ModuleAuthUpgradable
+    // slither-disable-next-line naming-convention
     function supportsInterface(bytes4 _interfaceId)
         public
         pure
