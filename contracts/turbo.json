@@ -5,8 +5,7 @@
     "build": {
       "cache": false,
       "inputs": [
-        "src/**",
-        "test/**",
+        "**",
         "../lib/**",
         "../.gitmodules",
         "../hardhat.config.ts",

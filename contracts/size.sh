@@ -22,4 +22,8 @@ OUTPUT_FILE=.contracts-size
 forge build --sizes > $OUTPUT_FILE
 
 # Remove the first and last lines of the output
-sed -i "" -e '2,$!d' -e '$d' $OUTPUT_FILE
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i "" -e '2,$!d' -e '$d' $OUTPUT_FILE
+else
+    sed -i -e '2,$!d' -e '$d' $OUTPUT_FILE
+fi
