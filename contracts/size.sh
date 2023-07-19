@@ -18,10 +18,8 @@
 # Create a new file to hold all of the storage layouts
 OUTPUT_FILE=.contracts-size
 
-forge build --sizes > "$OUTPUT_FILE"
+# Build the contracts and output the storage layouts
+forge build --sizes > $OUTPUT_FILE
 
-# Remove the "No files changed, compilation skipped" line
-sed -i -e '/No files changed, compilation skipped/d' "$OUTPUT_FILE"
-
-# Delete the last line of the file
-sed -i '$ d' "$OUTPUT_FILE"
+# Remove the first and last lines of the output
+sed -i "" -e '2,$!d' -e '$d' $OUTPUT_FILE
