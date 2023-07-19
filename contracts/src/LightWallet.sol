@@ -18,9 +18,16 @@
 pragma solidity ^0.8.18;
 
 // LightWallet.sol -- LightWallet initial implementation
+
 // Modified implementation on SimpleAccount.sol from @eth-infinitism/account-abstraction
-// Link: https://github.com/eth-infinitism/account-abstraction/blob/develop/contracts/samples/SimpleAccount.sol
+// Link: https://github.com/eth-infinitism/account-abstraction/blob/19918cda7c4f0d2095dac52f4da98444f17fa11b/contracts/samples/SimpleAccount.sol
 // License: GPL-3.0
+
+// Core is heavily based by the work of @0xsequence (especially @Agusx1211)
+// Link: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/MainModuleUpgradable.sol
+// License: Apache-2.0
+
+// Thank you to both teams for the ever amazing work!
 
 import {Initializable} from "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
@@ -34,8 +41,8 @@ import {ModuleAuthUpgradable} from "@0xsequence/wallet-contracts/contracts/modul
 import {ILightWallet} from "@/contracts/interfaces/ILightWallet.sol";
 
 /// @title LightWallet
-/// @author shunkakinoki
-/// @notice LightWallet is a composable account abstraction contract
+/// @author @shunkakinoki
+/// @notice LightWallet is an account abstraction contract
 contract LightWallet is
     ILightWallet,
     ModuleAuthUpgradable,
@@ -63,11 +70,11 @@ contract LightWallet is
     // solhint-disable-next-line no-empty-blocks
     receive() external payable {}
 
-    /// @param anEntryPoint The address of the entrypoint contract.
+    /// @param _anEntryPoint The address of the entrypoint contract.
     /// @dev Should be set to the address of the EntryPoint contract
     /// The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
-    constructor(IEntryPoint anEntryPoint) {
-        _entryPoint = anEntryPoint;
+    constructor(IEntryPoint _anEntryPoint) {
+        _entryPoint = _anEntryPoint;
         _disableInitializers();
     }
 
@@ -89,8 +96,8 @@ contract LightWallet is
             _call(dest[i], 0, func[i]);
         }
     }
-    /// @inheritdoc ModuleAuth
 
+    /// @inheritdoc ModuleAuth
     function isValidSignature(bytes32 _hash, bytes calldata _signatures)
         public
         view
@@ -120,13 +127,13 @@ contract LightWallet is
     }
 
     /// @inheritdoc BaseAccount
-    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
+    function _validateSignature(UserOperation calldata _userOp, bytes32 _userOpHash)
         internal
         virtual
         override
         returns (uint256 validationData)
     {
-        (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
+        (bool isValid,) = _signatureValidation(_userOpHash, _userOp.signature);
         if (!isValid) {
             return SIG_VALIDATION_FAILED;
         }
@@ -140,6 +147,7 @@ contract LightWallet is
     /// @dev This internal function uses the `call` function to make an external call to the target contract
     /// with the specified value and data. It captures the success status and returned data of the call.
     /// If the call is not successful, it reverts the transaction and provides the error message from the target contract.
+    // slither-disable-next-line naming-convention
     function _call(address target, uint256 value, bytes memory data) internal {
         (bool success, bytes memory result) = target.call{value: value}(data);
         if (!success) {
@@ -155,8 +163,9 @@ contract LightWallet is
 
     /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
-    function _authorizeUpgrade(address newImplementation) internal view override onlySelf {
-        (newImplementation);
+    // slither-disable-next-line naming-convention
+    function _authorizeUpgrade(address _newImplementation) internal view override onlySelf {
+        (_newImplementation);
     }
 
     // -------------------------------------------------------------------------
@@ -164,12 +173,13 @@ contract LightWallet is
     // -------------------------------------------------------------------------
 
     /// @inheritdoc ModuleAuthUpgradable
-    function supportsInterface(bytes4 interfaceId)
+    // slither-disable-next-line naming-convention
+    function supportsInterface(bytes4 _interfaceId)
         public
         pure
         override(ILightWallet, TokenCallbackHandler, ModuleAuthUpgradable)
         returns (bool)
     {
-        return super.supportsInterface(interfaceId);
+        return super.supportsInterface(_interfaceId);
     }
 }

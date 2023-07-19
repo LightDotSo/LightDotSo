@@ -13,5 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { calculateImageHash } from "./calculateImageHash";
-export { subdigestOf } from "./subdigestOf";
+import { expect, test } from "vitest";
+import { calculateImageHash } from "../../src";
+import type { Signer } from "../../src";
+
+test("calculateImageHash", () => {
+  const signers: Signer[] = [
+    {
+      address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D",
+      weight: 1n,
+    },
+  ];
+
+  const hash = calculateImageHash(1n, 1n, signers);
+  console.log(hash);
+  expect(hash).toBe(
+    "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
+  );
+});

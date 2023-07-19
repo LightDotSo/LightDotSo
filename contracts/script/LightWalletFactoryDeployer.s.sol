@@ -27,7 +27,8 @@ interface ImmutableCreate2Factory {
         returns (address deploymentAddress);
 }
 
-contract SeaportDeployer is Script {
+// LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
+contract LightWalletFactoryDeployer is Script {
     address private constant EXPECTED_LIGHT_FACTORY_ADDRESS = address(0);
     address private constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
     ImmutableCreate2Factory private constant IMMUTABLE_CREATE2_FACTORY =

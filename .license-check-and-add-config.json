@@ -83,7 +83,8 @@
     "**/pods/**",
     "**/scripts/**",
     "**/target/**",
-    "**/tools/**"
+    "**/tools/**",
+    "**/wiki/**"
   ],
   "license": "LICENSE.header",
   "defaultFormat": {
