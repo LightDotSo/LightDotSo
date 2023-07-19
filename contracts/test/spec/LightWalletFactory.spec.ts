@@ -23,8 +23,8 @@ test("LightWalletFactory: Correct humanReadableAbi", () => {
     [
       "constructor(address _entryPoint)",
       "function accountImplementation() view returns (address)",
-      "function createAccount(bytes32 hash, uint256 salt) returns (address ret)",
-      "function getAddress(bytes32 hash, uint256 salt) view returns (address)",
+      "function createAccount(bytes32 _hash, uint256 _salt) returns (address ret)",
+      "function getAddress(bytes32 _hash, uint256 _salt) view returns (address)",
     ]
   `);
 });
