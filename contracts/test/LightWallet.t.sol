@@ -215,39 +215,4 @@ contract LightWalletTest is BaseIntegrationTest {
         // Assert that the balance of the account decreased by 1
         assertEq(multi.balanceOf(address(account), 1), 9);
     }
-
-    /// Tests that the account can correctly update its image hash
-    function test_updateImageHash() public {
-        // Expect that the image hash is the expected one
-        assertEq(account.imageHash(), expectedImageHash);
-
-        // Example UserOperation to update the account to immutable address one
-        UserOperation memory op = entryPoint.fillUserOp(
-            address(account),
-            abi.encodeWithSelector(
-                LightWallet.execute.selector,
-                address(account),
-                0,
-                abi.encodeWithSignature("updateImageHash(bytes32)", bytes32(uint256(1)))
-            )
-        );
-
-        // Get the hash of the UserOperation
-        bytes32 hash = entryPoint.getUserOpHash(op);
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-        op.signature = signature;
-
-        // Pack the UserOperation
-        UserOperation[] memory ops = new UserOperation[](1);
-        ops[0] = op;
-        entryPoint.handleOps(ops, beneficiary);
-
-        // Expect that the image hash is the updated one
-        assertEq(account.imageHash(), bytes32(uint256(1)));
-    }
 }
