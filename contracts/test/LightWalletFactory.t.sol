@@ -34,10 +34,12 @@ contract LightWalletFactoryTest is BaseFactoryTest {
 
     /// Tests that the factory can create a new account at the predicted address
     function test_predictedCreateAccount() public {
+        // Create the account using the factory w/ hash 1, nonce 0
+        _testCreateAccountWithNonceZero();
+
         // Get the predicted address of the new account
         address predicted = factory.getAddress(bytes32(uint256(1)), 0);
-        // Create the account using the factory w/ hash 1, nonce 0
-        account = factory.createAccount(bytes32(uint256(1)), 0);
+
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));
         // Get the immutable implementation in the factory

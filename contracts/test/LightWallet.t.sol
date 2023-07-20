@@ -25,16 +25,16 @@ import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {BaseTest} from "@/test/base/BaseTest.t.sol";
+import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
 /// @notice Unit tests for `LightWallet`, organized by functions.
-contract LightWalletTest is BaseTest {
+contract LightWalletTest is BaseIntegrationTest {
     function setUp() public virtual override {
-        BaseTest.setUp();
+        BaseIntegrationTest.setUp();
     }
 
     /// Tests that the account is initialized properly

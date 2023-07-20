@@ -23,6 +23,9 @@ import {BaseTest} from "@/test/base/BaseTest.t.sol";
 contract ERC165UnitTest is BaseTest {
     /// Tests that the account complies w/ ERC-165
     function test_erc_165() public {
+        // Create the account using the factory w/ hash 1, nonce 0
+        _testCreateAccountWithNonceZero();
+
         // ERC165 interface id
         bytes4 interfaceId165 = 0x01ffc9a7;
         // ERC721 interface id

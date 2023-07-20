@@ -49,19 +49,6 @@ abstract contract BaseTest is Test {
         0x6492649264926492649264926492649264926492649264926492649264926492;
 
     // -------------------------------------------------------------------------
-    // Storages
-    // -------------------------------------------------------------------------
-
-    // Address of the owner of the account
-    address internal user;
-    // Private key of the owner of the account
-    uint256 internal userKey;
-    // Address of the beneficiary of the account
-    address payable internal beneficiary;
-    // Hash of the expected image
-    bytes32 internal expectedImageHash;
-
-    // -------------------------------------------------------------------------
     // Contracts
     // -------------------------------------------------------------------------
 
@@ -71,8 +58,6 @@ abstract contract BaseTest is Test {
     LightWallet internal account;
     // LightWalletFactory core contract
     LightWalletFactory internal factory;
-    // UniversalSigValidator
-    UniversalSigValidator internal validator;
 
     // -------------------------------------------------------------------------
     // Utility Contracts
@@ -82,6 +67,8 @@ abstract contract BaseTest is Test {
     LightWalletUtils internal lightWalletUtils;
     // Storage utility contract
     StorageUtils internal storageUtils;
+    // UniversalSigValidator
+    UniversalSigValidator internal validator;
 
     // -------------------------------------------------------------------------
     // Setup
@@ -92,24 +79,17 @@ abstract contract BaseTest is Test {
         entryPoint = new EntryPoint();
         // Deploy the LightWalletFactory w/ EntryPoint
         factory = new LightWalletFactory(entryPoint);
-        // Deploy the UniversalSigValidator
-        validator = new UniversalSigValidator();
 
         // Deploy the LightWalletUtils utility contract
         lightWalletUtils = new LightWalletUtils();
         // Deploy the StorageUtils utility contract
         storageUtils = new StorageUtils();
+        // Deploy the UniversalSigValidator
+        validator = new UniversalSigValidator();
+    }
 
-        // Set the user and userKey
-        (user, userKey) = makeAddrAndKey("user");
-        // Set the beneficiary
-        beneficiary = payable(address(makeAddr("beneficiary")));
-        // Get the expected image hash
-        expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
+    function _testCreateAccountWithNonceZero() internal {
+        // Create the account using the factory w/ hash 1, nonce 0
+        account = factory.createAccount(bytes32(uint256(1)), 0);
     }
 }

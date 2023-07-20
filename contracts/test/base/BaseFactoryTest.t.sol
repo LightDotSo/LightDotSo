@@ -19,11 +19,11 @@ pragma solidity ^0.8.18;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
-import {BaseTest} from "@/test/base/BaseTest.t.sol";
+import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-abstract contract BaseFactoryTest is BaseTest {
+abstract contract BaseFactoryTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Utility Contracts
     // -------------------------------------------------------------------------
@@ -39,8 +39,8 @@ abstract contract BaseFactoryTest is BaseTest {
     // -------------------------------------------------------------------------
 
     function setUp() public virtual override {
-        // Base test setup
-        BaseTest.setUp();
+        // BaseIntegrationTest test setup
+        BaseIntegrationTest.setUp();
 
         // Deploy the ProxyUtils utility contract
         proxyUtils = new ProxyUtils();
