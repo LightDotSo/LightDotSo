@@ -21,8 +21,8 @@ pragma solidity ^0.8.18;
 // Thank you to the awesome folks at ZeroDev for this utility library!
 // License: MIT
 
-import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import "forge-std/Test.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {Vm} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
