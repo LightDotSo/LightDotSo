@@ -19,19 +19,26 @@ pragma solidity ^0.8.18;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
+import {BaseTest} from "@/test/base/BaseTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-contract BaseFactoryTest is Test {
+abstract contract BaseFactoryTest is BaseTest {
     // Testing utility contract
     ProxyUtils proxyUtils;
 
     // ImmutableProxy contract
     ImmutableProxy immutableProxy;
 
-    function _setUpBaseFactory() internal {
+    function setUp() public virtual override {
+        // Base test setup
+        BaseTest.setUp();
+
         // Deploy the ProxyUtils utility contract
         proxyUtils = new ProxyUtils();
+
+        // Deploy the immutable proxy
+        immutableProxy = new ImmutableProxy();
     }
 
     // Upgrade the account to the new implementation and assert that the implementation is correct
@@ -44,8 +51,6 @@ contract BaseFactoryTest is Test {
 
     // Upgrade the account to the immutable version and assert that the implementation is correct
     function _upgradeToImmutable(address _proxy) internal {
-        // Deploy the immutable proxy
-        _deployImmutable();
         // Upgrade the account to the immutable version
         _upgradeTo(_proxy, address(immutableProxy));
         // Assert that the account is now immutable
@@ -59,12 +64,6 @@ contract BaseFactoryTest is Test {
     function _upgradeTo(address _proxy, address _newImplementation) internal {
         // Upgrade the account to the new implementation
         UUPSUpgradeable(_proxy).upgradeTo(address(_newImplementation));
-    }
-
-    // Deploy the immutable proxy
-    function _deployImmutable() internal {
-        // Deploy the immutable proxy
-        immutableProxy = new ImmutableProxy();
     }
 
     // Assert that the proxy admin is the zero address

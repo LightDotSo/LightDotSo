@@ -20,19 +20,16 @@ pragma solidity ^0.8.18;
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
-import {BaseTest} from "@/test/base/BaseTest.sol";
 import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-contract LightWalletFactoryTest is BaseTest, BaseFactoryTest {
+contract LightWalletFactoryTest is BaseFactoryTest {
     function setUp() public virtual override {
-        // Setup the base tests
-        BaseTest.setUp();
         // Setup the base factory tests
-        _setUpBaseFactory();
+        BaseFactoryTest.setUp();
     }
 
     /// Tests that the factory can create a new account at the predicted address
@@ -67,8 +64,6 @@ contract LightWalletFactoryTest is BaseTest, BaseFactoryTest {
 
     /// Tests that the factory reverts when trying to upgrade to an immutable address
     function test_light_revertDisabledUpgradeToImmutable() public {
-        // Deploy the Immutable
-        _deployImmutable();
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
         // Check that upgrade to immutable works
@@ -97,9 +92,6 @@ contract LightWalletFactoryTest is BaseTest, BaseFactoryTest {
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);
-
-        // Deploy the immutable proxy
-        _deployImmutable();
 
         // Example UserOperation to update the account to immutable address one
         UserOperation memory op = entryPoint.fillUserOp(
