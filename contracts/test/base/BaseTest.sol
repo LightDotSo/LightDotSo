@@ -26,15 +26,42 @@ import {StorageUtils} from "@/test/utils/StorageUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Test} from "forge-std/Test.sol";
 
+// The structure of the base test is influenced by sabilier - https://github.com/sablier-labs/v2-core/blob/3df030516c7e9044742313c7cf17f15fdc1e9b05/test/Base.t.sol
+// License: UNLICENSED
+
 using ERC4337Utils for EntryPoint;
 
-contract BaseTest is Test {
+/// @notice BaseTest is a base contract for all tests
+abstract contract BaseTest is Test {
+    // -------------------------------------------------------------------------
+    // Events
+    // -------------------------------------------------------------------------
+
     // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
     event Initialized(uint8 version);
+
+    // -------------------------------------------------------------------------
+    // Constants
+    // -------------------------------------------------------------------------
 
     // ERC6492 Detection Suffix
     bytes32 internal constant ERC6492_DETECTION_SUFFIX =
         0x6492649264926492649264926492649264926492649264926492649264926492;
+
+    // -------------------------------------------------------------------------
+    // Storages
+    // -------------------------------------------------------------------------
+
+    // Address of the owner of the account
+    address internal user;
+    // Private key of the owner of the account
+    uint256 internal userKey;
+    // Address of the beneficiary of the account
+    address payable internal beneficiary;
+
+    // -------------------------------------------------------------------------
+    // Contracts
+    // -------------------------------------------------------------------------
 
     // EntryPoint from eth-inifinitism
     EntryPoint internal entryPoint;
@@ -45,29 +72,32 @@ contract BaseTest is Test {
     // UniversalSigValidator
     UniversalSigValidator internal validator;
 
+    // -------------------------------------------------------------------------
+    // Utility Contracts
+    // -------------------------------------------------------------------------
+
     // Safe utility contract
     LightWalletUtils internal lightWalletUtils;
     // Storage utility contract
     StorageUtils internal storageUtils;
 
-    // Address of the owner of the account
-    address internal user;
-    // Private key of the owner of the account
-    uint256 internal userKey;
-    // Address of the beneficiary of the account
-    address payable internal beneficiary;
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
 
-    function _setUpBase() internal {
+    function setUp() public virtual {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
         // Deploy the LightWalletFactory w/ EntryPoint
         factory = new LightWalletFactory(entryPoint);
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
-        // Set the user and userKey
-        (user, userKey) = makeAddrAndKey("user");
+
         // Create the account using the factory w/ hash 1, nonce 0
         account = factory.createAccount(bytes32(uint256(1)), 0);
+
+        // Set the user and userKey
+        (user, userKey) = makeAddrAndKey("user");
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
 

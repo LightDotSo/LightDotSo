@@ -28,9 +28,9 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 contract LightWalletFactoryTest is BaseTest, BaseFactoryTest {
-    function setUp() public {
+    function setUp() public virtual override {
         // Setup the base tests
-        _setUpBase();
+        BaseTest.setUp();
         // Setup the base factory tests
         _setUpBaseFactory();
     }

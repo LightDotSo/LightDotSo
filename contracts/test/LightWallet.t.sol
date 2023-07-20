@@ -34,8 +34,8 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet`, organized by functions.
 contract LightWalletTest is BaseTest {
-    function setUp() public {
-        _setUpBase();
+    function setUp() public virtual override {
+        BaseTest.setUp();
     }
 
     /// Tests that the account is initialized properly
