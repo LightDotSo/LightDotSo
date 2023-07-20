@@ -17,16 +17,22 @@
 
 pragma solidity ^0.8.18;
 
-import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
 
-contract ImmutableProxy is UUPSUpgradeable {
-    // -------------------------------------------------------------------------
-    // Internal
-    // -------------------------------------------------------------------------
+/// @notice Unit tests for `LightWallet`, organized by functions.
+contract CompatibilityTest is BaseTest {
+    /// Tests that the account complies w/ ERC-165
+    function test_light_erc_165() public {
+        // ERC165 interface id
+        bytes4 interfaceId165 = 0x01ffc9a7;
+        // ERC721 interface id
+        bytes4 interfaceId721 = 0x150b7a02;
+        // ERC1155 interface id
+        bytes4 interfaceId1155 = 0x4e2312e0;
 
-    function _authorizeUpgrade(address newImplementation) internal pure override {
-        (newImplementation);
-        // Permanently disable upgrades by invalidating the authorization
-        revert("Upgrades are disabled");
+        // Test that the account supports interfaces
+        assertEq(account.supportsInterface(interfaceId165), true);
+        assertEq(account.supportsInterface(interfaceId721), true);
+        assertEq(account.supportsInterface(interfaceId1155), true);
     }
 }

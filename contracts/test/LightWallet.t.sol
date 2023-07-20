@@ -26,7 +26,7 @@ import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {BaseTest} from "@/test/base/BaseTest.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
@@ -358,20 +358,5 @@ contract LightWalletTest is BaseTest {
         assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
         assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
         assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
-    }
-
-    /// Tests that the account complies w/ ERC-165
-    function test_light_erc_165() public {
-        // ERC165 interface id
-        bytes4 interfaceId165 = 0x01ffc9a7;
-        // ERC721 interface id
-        bytes4 interfaceId721 = 0x150b7a02;
-        // ERC1155 interface id
-        bytes4 interfaceId1155 = 0x4e2312e0;
-
-        // Test that the account supports interfaces
-        assertEq(account.supportsInterface(interfaceId165), true);
-        assertEq(account.supportsInterface(interfaceId721), true);
-        assertEq(account.supportsInterface(interfaceId1155), true);
     }
 }

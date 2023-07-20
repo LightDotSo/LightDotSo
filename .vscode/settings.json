@@ -21,6 +21,9 @@
   "[solidity]": {
     "editor.defaultFormatter": "JuanBlanco.solidity"
   },
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
   // Tailwind settings
   // From: https://github.com/joe-bell/cva/discussions/85#discussioncomment-5014769
   "tailwindCSS.experimental.classRegex": [

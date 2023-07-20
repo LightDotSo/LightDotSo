@@ -20,7 +20,7 @@ pragma solidity ^0.8.18;
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
-import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.sol";
+import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.t.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 

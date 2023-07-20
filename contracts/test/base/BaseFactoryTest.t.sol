@@ -19,7 +19,7 @@ pragma solidity ^0.8.18;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
-import {BaseTest} from "@/test/base/BaseTest.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
