@@ -22,7 +22,7 @@ import {BaseTest} from "@/test/base/BaseTest.t.sol";
 /// @notice Unit tests for `LightWallet`, organized by functions.
 contract CompatibilityTest is BaseTest {
     /// Tests that the account complies w/ ERC-165
-    function test_light_erc_165() public {
+    function test_erc_165() public {
         // ERC165 interface id
         bytes4 interfaceId165 = 0x01ffc9a7;
         // ERC721 interface id

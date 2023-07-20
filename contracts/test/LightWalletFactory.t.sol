@@ -33,7 +33,7 @@ contract LightWalletFactoryTest is BaseFactoryTest {
     }
 
     /// Tests that the factory can create a new account at the predicted address
-    function test_light_predictedCreateAccount() public {
+    function test_predictedCreateAccount() public {
         // Get the predicted address of the new account
         address predicted = factory.getAddress(bytes32(uint256(1)), 0);
         // Assert that the predicted address matches the created account
@@ -45,7 +45,7 @@ contract LightWalletFactoryTest is BaseFactoryTest {
     }
 
     /// Tests that the factory revert when creating an account with a nonce that is 0
-    function test_light_revertBytesZeroCreateAccount() public {
+    function test_revertBytesZeroCreateAccount() public {
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("ImageHashIsZero()"));
         // Get the predicted address of the new account
@@ -53,7 +53,7 @@ contract LightWalletFactoryTest is BaseFactoryTest {
     }
 
     /// Tests that the factory reverts when trying to upgrade from outside address
-    function test_light_revertDisabledUpgradeToUUPS() public {
+    function test_revertDisabledUpgradeToUUPS() public {
         // Deploy new version of LightWallet
         LightWallet accountV2 = new LightWallet(entryPoint);
         // Revert for conventional upgrades w/o signature
@@ -63,7 +63,7 @@ contract LightWalletFactoryTest is BaseFactoryTest {
     }
 
     /// Tests that the factory reverts when trying to upgrade to an immutable address
-    function test_light_revertDisabledUpgradeToImmutable() public {
+    function test_revertDisabledUpgradeToImmutable() public {
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
         // Check that upgrade to immutable works
@@ -71,19 +71,19 @@ contract LightWalletFactoryTest is BaseFactoryTest {
     }
 
     /// Tests that there is no proxy admin for the account
-    function test_light_noProxyAdmin() public {
+    function test_noProxyAdmin() public {
         // Check that no proxy admin exists
         _noProxyAdmin(address(account));
     }
 
     /// Tests that the account is not initializable twice
-    function test_light_noInitializeTwice() public {
+    function test_noInitializeTwice() public {
         // Check that the account is not initializable twice
         _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
     }
 
     /// Tests that the account can upgrade to a immutable proxy
-    function test_light_upgradeToImmutable() public {
+    function test_upgradeToImmutable() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 

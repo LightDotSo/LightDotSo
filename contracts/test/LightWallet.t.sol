@@ -39,7 +39,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account is initialized properly
-    function test_light_initialize() public {
+    function test_initialize() public {
         vm.expectEmit(true, true, true, true);
         emit Initialized(255);
         // Create a new account for the implementation
@@ -47,7 +47,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests the account slot implementation
-    function test_light_image_hash() public {
+    function test_image_hash() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
 
@@ -60,7 +60,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can not be initialized twice
-    function test_light_implementation_noInitialize() public {
+    function test_implementation_noInitialize() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
         // Ensure that the account is not initializable on the implementation contract
@@ -69,7 +69,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ETH
-    function test_light_transfer_eth() public {
+    function test_transfer_eth() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
@@ -104,7 +104,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ERC20
-    function test_light_transfer_erc20() public {
+    function test_transfer_erc20() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
@@ -154,7 +154,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ERC721
-    function test_light_transfer_erc721() public {
+    function test_transfer_erc721() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
@@ -204,7 +204,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ERC1155
-    function test_light_transfer_erc1155() public {
+    function test_transfer_erc1155() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
@@ -254,7 +254,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly update its image hash
-    function test_light_updateImageHash() public {
+    function test_updateImageHash() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
@@ -300,7 +300,7 @@ contract LightWalletTest is BaseTest {
     /// Tests that the account complies w/ EIP-1271 and EIP-6492
     /// Ref: https://eips.ethereum.org/EIPS/eip-1271
     /// Ref: https://eips.ethereum.org/EIPS/eip-6492
-    function test_light_eip_1271_6492() public {
+    function test_eip_1271_6492() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
@@ -326,7 +326,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that a predeployed contract complies w/ EIP-6492
-    function test_light_predeployed_6492() public {
+    function test_predeployed_6492() public {
         // Get the expected image hash
         bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
 
