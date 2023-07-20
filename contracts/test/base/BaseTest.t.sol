@@ -74,6 +74,7 @@ abstract contract BaseTest is Test {
     // Setup
     // -------------------------------------------------------------------------
 
+    /// @dev BaseTest setup
     function setUp() public virtual {
         // Deploy the EntryPoint
         entryPoint = new EntryPoint();
@@ -88,6 +89,7 @@ abstract contract BaseTest is Test {
         validator = new UniversalSigValidator();
     }
 
+    /// @dev Create the account using the factory w/ hash 1, nonce 0
     function _testCreateAccountWithNonceZero() internal {
         // Create the account using the factory w/ hash 1, nonce 0
         account = factory.createAccount(bytes32(uint256(1)), 0);

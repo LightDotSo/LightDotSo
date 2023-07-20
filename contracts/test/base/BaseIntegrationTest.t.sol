@@ -38,6 +38,7 @@ abstract contract BaseIntegrationTest is BaseTest {
     // Setup
     // -------------------------------------------------------------------------
 
+    /// @dev Base integration test setup
     function setUp() public virtual override {
         // Base test setup
         BaseTest.setUp();
