@@ -31,7 +31,7 @@
     "lint": "concurrently 'pnpm:*:lint'",
     "lint:turbo": "turbo run lint",
     "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages ./pods",
-    "pnpm:upgrade": "pnpm update --latest --recursive",
+    "pnpm:upgrade": "pnpm update --latest --recursive '!solc'",
     "prepare": "husky install",
     "prettier:cmd": "prettier",
     "prettier:fix": "prettier --write .",
