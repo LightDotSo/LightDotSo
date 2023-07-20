@@ -69,15 +69,6 @@ contract LightWalletTest is BaseTest {
 
     /// Tests that the account can correctly transfer ETH
     function test_transfer_eth() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
         // Example UserOperation to send 0 ETH to the address one
         UserOperation memory op = entryPoint.fillUserOp(
             address(account), abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""))
@@ -104,15 +95,6 @@ contract LightWalletTest is BaseTest {
 
     /// Tests that the account can correctly transfer ERC20
     function test_transfer_erc20() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
         // Deploy a new MockERC20
         MockERC20 token = new MockERC20("Test", "TEST", 18);
 
@@ -154,15 +136,6 @@ contract LightWalletTest is BaseTest {
 
     /// Tests that the account can correctly transfer ERC721
     function test_transfer_erc721() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
         // Deploy a new MockERC721
         MockERC721 nft = new MockERC721("Test", "TEST");
 
@@ -204,15 +177,6 @@ contract LightWalletTest is BaseTest {
 
     /// Tests that the account can correctly transfer ERC1155
     function test_transfer_erc1155() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
         // Deploy a new MockERC1155
         MockERC1155 multi = new MockERC1155();
 
@@ -254,15 +218,6 @@ contract LightWalletTest is BaseTest {
 
     /// Tests that the account can correctly update its image hash
     function test_updateImageHash() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
         // Expect that the image hash is the expected one
         assertEq(account.imageHash(), expectedImageHash);
 

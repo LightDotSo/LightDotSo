@@ -58,6 +58,8 @@ abstract contract BaseTest is Test {
     uint256 internal userKey;
     // Address of the beneficiary of the account
     address payable internal beneficiary;
+    // Hash of the expected image
+    bytes32 internal expectedImageHash;
 
     // -------------------------------------------------------------------------
     // Contracts
@@ -93,18 +95,19 @@ abstract contract BaseTest is Test {
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
 
-        // Create the account using the factory w/ hash 1, nonce 0
-        account = factory.createAccount(bytes32(uint256(1)), 0);
+        // Deploy the LightWalletUtils utility contract
+        lightWalletUtils = new LightWalletUtils();
+        // Deploy the StorageUtils utility contract
+        storageUtils = new StorageUtils();
 
         // Set the user and userKey
         (user, userKey) = makeAddrAndKey("user");
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
-
-        // Deploy the LightWalletUtils utility contract
-        lightWalletUtils = new LightWalletUtils();
-        // Deploy the StorageUtils utility contract
-        storageUtils = new StorageUtils();
+        // Get the expected image hash
+        expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
+        // Create the account using the factory w/ nonce 0 and hash
+        account = factory.createAccount(expectedImageHash, 0);
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);

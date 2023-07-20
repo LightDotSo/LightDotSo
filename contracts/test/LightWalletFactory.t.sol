@@ -36,6 +36,8 @@ contract LightWalletFactoryTest is BaseFactoryTest {
     function test_predictedCreateAccount() public {
         // Get the predicted address of the new account
         address predicted = factory.getAddress(bytes32(uint256(1)), 0);
+        // Create the account using the factory w/ hash 1, nonce 0
+        account = factory.createAccount(bytes32(uint256(1)), 0);
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));
         // Get the immutable implementation in the factory
@@ -84,15 +86,6 @@ contract LightWalletFactoryTest is BaseFactoryTest {
 
     /// Tests that the account can upgrade to a immutable proxy
     function test_upgradeToImmutable() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
         // Example UserOperation to update the account to immutable address one
         UserOperation memory op = entryPoint.fillUserOp(
             address(account),

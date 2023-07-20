@@ -26,12 +26,6 @@ contract SignatureIntegrationTest is BaseTest {
     /// Ref: https://eips.ethereum.org/EIPS/eip-1271
     /// Ref: https://eips.ethereum.org/EIPS/eip-6492
     function test_eip_1271_6492() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
         // Hash of the message
         bytes32 hashed = keccak256("Signed by user");
 
@@ -52,12 +46,6 @@ contract SignatureIntegrationTest is BaseTest {
 
     /// Tests that a predeployed contract complies w/ EIP-6492
     function test_predeployed_6492() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
         // Obtain the original signature w/ the EOA by the user
         bytes32 hashed = keccak256("Signed by user");
 
