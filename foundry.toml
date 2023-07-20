@@ -1,5 +1,7 @@
 [profile.default]
 auto_detect_remappings = false
+bytecode_hash = "none"
+cbor_metadata = false
 evm_version = "london"
 libs = [
   "lib/account-abstraction",
@@ -34,6 +36,11 @@ test = "contracts/circuits/test"
 fuzz = { runs = 5000 }
 invariant = { runs = 1000 }
 verbosity = 2
+
+[doc]
+ignore = ["**/*.t.sol"]
+out = "docs"
+repository = "https://github.com/LightDotSo/LightDotSo"
 
 [rpc_endpoints]
 mainnet = "${ETH_RPC_MAINNET}"
