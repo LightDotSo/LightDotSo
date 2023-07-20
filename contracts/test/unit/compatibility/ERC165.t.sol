@@ -20,7 +20,7 @@ pragma solidity ^0.8.18;
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 
 /// @notice Unit tests for `LightWallet` for compatibility w/ ERC-165
-contract CompatibilityUnitTest is BaseTest {
+contract ERC165UnitTest is BaseTest {
     /// Tests that the account complies w/ ERC-165
     function test_erc_165() public {
         // ERC165 interface id

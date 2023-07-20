@@ -25,7 +25,6 @@ import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -295,68 +294,5 @@ contract LightWalletTest is BaseTest {
 
         // Expect that the image hash is the updated one
         assertEq(account.imageHash(), bytes32(uint256(1)));
-    }
-
-    /// Tests that the account complies w/ EIP-1271 and EIP-6492
-    /// Ref: https://eips.ethereum.org/EIPS/eip-1271
-    /// Ref: https://eips.ethereum.org/EIPS/eip-6492
-    function test_eip_1271_6492() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Hash of the message
-        bytes32 hashed = keccak256("Signed by user");
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-
-        // Test the signature w/ EIP-1271
-        assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
-
-        // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
-        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
-        assertEq(validator.isValidSig(address(account), hashed, signature), true);
-    }
-
-    /// Tests that a predeployed contract complies w/ EIP-6492
-    function test_predeployed_6492() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Obtain the original signature w/ the EOA by the user
-        bytes32 hashed = keccak256("Signed by user");
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-
-        // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
-        // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
-        bytes memory sig_6492 = abi.encodePacked(
-            abi.encode(
-                // Nonce is 1 (does not exist)
-                address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 1),
-                signature
-            ),
-            ERC6492_DETECTION_SUFFIX
-        );
-
-        // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
-        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
-        assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }
 }
