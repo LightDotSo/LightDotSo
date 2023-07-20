@@ -116,7 +116,7 @@ contract LightWallet is
     }
 
     // -------------------------------------------------------------------------
-    // Entry Point
+    // Internal
     // -------------------------------------------------------------------------
 
     /// @param _imageHash The hash to validate the signature against.

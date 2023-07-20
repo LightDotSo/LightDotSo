@@ -24,11 +24,19 @@ import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
 abstract contract BaseFactoryTest is BaseTest {
+    // -------------------------------------------------------------------------
+    // Utility Contracts
+    // -------------------------------------------------------------------------
+
     // Testing utility contract
     ProxyUtils proxyUtils;
 
     // ImmutableProxy contract
     ImmutableProxy immutableProxy;
+
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
 
     function setUp() public virtual override {
         // Base test setup
@@ -40,6 +48,10 @@ abstract contract BaseFactoryTest is BaseTest {
         // Deploy the immutable proxy
         immutableProxy = new ImmutableProxy();
     }
+
+    // -------------------------------------------------------------------------
+    // Internal
+    // -------------------------------------------------------------------------
 
     // Upgrade the account to the new implementation and assert that the implementation is correct
     function _upgradeToUUPS(address _proxy, address _newImplementation) internal {
