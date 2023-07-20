@@ -1,4 +1,4 @@
-CompatibilityTest:test_erc_165() (gas: 13635)
+CompatibilityUnitTest:test_erc_165() (gas: 13635)
 LightWalletFactoryTest:test_noInitializeTwice() (gas: 16735)
 LightWalletFactoryTest:test_noProxyAdmin() (gas: 10851)
 LightWalletFactoryTest:test_predictedCreateAccount() (gas: 23838)
