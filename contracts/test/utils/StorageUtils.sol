@@ -17,9 +17,7 @@
 
 pragma solidity ^0.8.18;
 
-import {Test} from "forge-std/Test.sol";
-
-contract StorageUtils is Test {
+contract StorageUtils {
     function readBytes32(bytes32 _key) public view returns (bytes32 val) {
         assembly {
             val := sload(_key)
