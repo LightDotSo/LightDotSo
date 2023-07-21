@@ -22,6 +22,7 @@ import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
+import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {StorageUtils} from "@/test/utils/StorageUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Test} from "forge-std/Test.sol";
@@ -71,7 +72,8 @@ abstract contract BaseTest is Test {
     StorageUtils internal storageUtils;
     // UniversalSigValidator
     UniversalSigValidator internal validator;
-
+    // Testing utility contract
+    ProxyUtils proxyUtils;
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -89,6 +91,8 @@ abstract contract BaseTest is Test {
         storageUtils = new StorageUtils();
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
+        // Deploy the ProxyUtils utility contract
+        proxyUtils = new ProxyUtils();
     }
 
     /// @dev Create the account using the factory w/ hash 1, nonce 0

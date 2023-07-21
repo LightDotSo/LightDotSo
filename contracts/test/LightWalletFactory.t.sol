@@ -20,33 +20,17 @@ pragma solidity ^0.8.18;
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
-import {BaseFactoryTest} from "@/test/base/BaseFactoryTest.t.sol";
+import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWalletFactory`, organized by functions.
-contract LightWalletFactoryTest is BaseFactoryTest {
+contract LightWalletFactoryTest is BaseIntegrationTest {
     function setUp() public virtual override {
         // Setup the base factory tests
-        BaseFactoryTest.setUp();
-    }
-
-    /// Tests that the factory can create a new account at the predicted address
-    function test_predictedCreateAccount() public {
-        // Create the account using the factory w/ hash 1, nonce 0
-        _testCreateAccountWithNonceZero();
-
-        // Get the predicted address of the new account
-        address predicted = factory.getAddress(bytes32(uint256(1)), 0);
-
-        // Assert that the predicted address matches the created account
-        assertEq(predicted, address(account));
-        // Get the immutable implementation in the factory
-        LightWallet implementation = factory.accountImplementation();
-        // Assert that the implementation of the created account is the LightWallet
-        assertEq(proxyUtils.getProxyImplementation(address(account)), address(implementation));
+        BaseIntegrationTest.setUp();
     }
 
     /// Tests that the factory revert when creating an account with a nonce that is 0
