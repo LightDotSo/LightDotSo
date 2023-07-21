@@ -38,11 +38,18 @@ abstract contract BaseTest is Test {
     // Events
     // -------------------------------------------------------------------------
 
+    // Initialized Event from `LightWallet.sol`
+    event LightWalletInitialized(address entrypoint, bytes32 imageHash);
+
     // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
     event Initialized(uint8 version);
 
     // ImageHashUpdated Event from `IModuleAuth.sol` https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/interfaces/IModuleAuth.sol#L9
     event ImageHashUpdated(bytes32 imageHash);
+
+    // Upgraded Event from `ERC1967Upgrade.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/d00acef4059807535af0bd0dd0ddf619747a044b/contracts/proxy/ERC1967/ERC1967Upgrade.sol#L33
+    event Upgraded(address implementation);
+
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
