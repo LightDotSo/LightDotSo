@@ -37,6 +37,27 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
         BaseIntegrationTest.setUp();
     }
 
+    /// Tests that the account revert when sending ETH from a non-entrypoint
+    function test_revertWhenNotEntrypoint_transferEth() public {
+        vm.expectRevert(bytes("account: not from EntryPoint"));
+        (bool ok,) =
+            address(account).call(abi.encodeWithSelector(LightWallet.execute.selector, address(account), 1, bytes("")));
+    }
+
+    /// Tests that the account can correctly transfer ETH
+    function test_revertWhenInvalidSignature_transferEth() public {
+        // Example UserOperation to send 0 ETH to the address one
+        UserOperation[] memory ops = entryPoint.signPackUserOp(
+            lightWalletUtils,
+            address(account),
+            abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes("")),
+            userKey
+        );
+        ops[0].signature = bytes("invalid");
+        vm.expectRevert();
+        entryPoint.handleOps(ops, beneficiary);
+    }
+
     /// Tests that the account can correctly transfer ETH
     function test_transferEth() public {
         // Example UserOperation to send 0 ETH to the address one
