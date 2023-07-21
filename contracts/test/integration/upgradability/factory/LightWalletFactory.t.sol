@@ -43,6 +43,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     function test_createAccount_emitEvents() public {
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(bytes32(uint256(3)));
+        vm.expectEmit(true, true, true, true);
+        emit Initialized(1);
         factory.createAccount(bytes32(uint256(3)), 0);
     }
 
