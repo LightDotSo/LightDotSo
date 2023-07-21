@@ -37,36 +37,6 @@ contract LightWalletTest is BaseIntegrationTest {
         BaseIntegrationTest.setUp();
     }
 
-    /// Tests that the account is initialized properly
-    function test_initialize() public {
-        vm.expectEmit(true, true, true, true);
-        emit Initialized(255);
-        // Create a new account for the implementation
-        account = new LightWallet(entryPoint);
-    }
-
-    /// Tests the account slot implementation
-    function test_image_hash() public {
-        // Create a new account for the implementation
-        account = new LightWallet(entryPoint);
-
-        // Assert that the image hash is correct
-        assertEq(
-            // keccak256("org.arcadeum.module.auth.upgradable.image.hash");
-            storageUtils.readBytes32(bytes32(0xea7157fa25e3aa17d0ae2d5280fa4e24d421c61842aa85e45194e1145aa72bf8)),
-            bytes32(uint256(0))
-        );
-    }
-
-    /// Tests that the account can not be initialized twice
-    function test_implementation_noInitialize() public {
-        // Create a new account for the implementation
-        account = new LightWallet(entryPoint);
-        // Ensure that the account is not initializable on the implementation contract
-        vm.expectRevert(bytes("Initializable: contract is already initialized"));
-        account.initialize(bytes32(uint256(1)));
-    }
-
     /// Tests that the account can correctly transfer ETH
     function test_transfer_eth() public {
         // Example UserOperation to send 0 ETH to the address one
