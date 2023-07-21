@@ -53,6 +53,7 @@
     "*.kdl",
     "*.md",
     "*.toml",
+    "*.tree",
     "*.txt",
     "*.yml",
     "apps/extension/**/*.js",
