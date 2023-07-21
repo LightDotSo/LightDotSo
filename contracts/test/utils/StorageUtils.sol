@@ -17,7 +17,10 @@
 
 pragma solidity ^0.8.18;
 
+/// @notice Utility functions for storage
 contract StorageUtils {
+    /// @param _key The location of the uint256 in storage
+    /// @dev Reads a uint256 from storage
     function readBytes32(bytes32 _key) public view returns (bytes32 val) {
         assembly {
             val := sload(_key)

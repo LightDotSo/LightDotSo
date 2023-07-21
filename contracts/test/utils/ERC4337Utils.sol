@@ -30,7 +30,12 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
+/// @notice Utility functions for ERC4337
 library ERC4337Utils {
+    /// @dev Fills a UserOperation with default values
+    /// @param _entryPoint The entry point contract
+    /// @param _account The account to fill the UserOperation with
+    /// @param _data The data to fill the UserOperation with
     function fillUserOp(EntryPoint _entryPoint, address _account, bytes memory _data)
         internal
         view
@@ -46,6 +51,11 @@ library ERC4337Utils {
         op.maxPriorityFeePerGas = 1;
     }
 
+    /// @dev Signs the hash of a UserOperation
+    /// @param _entryPoint The entry point contract
+    /// @param _vm The VM contract
+    /// @param _key The user's private key to sign the UserOperation with
+    /// @param _op The UserOperation to sign
     function signUserOpHash(EntryPoint _entryPoint, Vm _vm, uint256 _key, UserOperation memory _op)
         internal
         view
@@ -56,21 +66,27 @@ library ERC4337Utils {
         signature = abi.encodePacked(r, s, v);
     }
 
+    /// @dev Signs a UserOperation with a user's key
+    /// @param _entryPoint The entry point contract
+    /// @param _lightWalletUtils The `LightWalletUtils` contract
+    /// @param _account The account to sign the UserOperation with
+    /// @param _data The data to fill the UserOperation with
+    /// @param _key The user's private key to sign the UserOperation with
     function signPackUserOp(
         EntryPoint _entryPoint,
         LightWalletUtils _lightWalletUtils,
         address _account,
-        bytes memory _op,
-        uint256 _userKey
+        bytes memory _data,
+        uint256 _key
     ) internal returns (UserOperation[] memory ops) {
         // Example UserOperation to update the account to immutable address one
-        UserOperation memory op = _entryPoint.fillUserOp(address(_account), _op);
+        UserOperation memory op = _entryPoint.fillUserOp(address(_account), _data);
 
         // Get the hash of the UserOperation
         bytes32 userOphash = _entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = _lightWalletUtils.signDigest(userOphash, _account, _userKey);
+        bytes memory sig = _lightWalletUtils.signDigest(userOphash, _account, _key);
 
         // Pack the signature
         bytes memory signature = _lightWalletUtils.packLegacySignature(sig);
