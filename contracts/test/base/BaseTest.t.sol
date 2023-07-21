@@ -40,6 +40,8 @@ abstract contract BaseTest is Test {
     // Initialzed Event from `Initializable.sol` https://github.com/OpenZeppelin/openzeppelin-contracts/blob/e50c24f5839db17f46991478384bfda14acfb830/contracts/proxy/utils/Initializable.sol#L73
     event Initialized(uint8 version);
 
+    // ImageHashUpdated Event from `IModuleAuth.sol` https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/interfaces/IModuleAuth.sol#L9
+    event ImageHashUpdated(bytes32 imageHash);
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
