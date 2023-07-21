@@ -15,4 +15,6 @@ SendEthIntegrationTest:test_revertWhenInvalidSignature_transferEth() (gas: 60078
 SendEthIntegrationTest:test_revertWhenNotEntrypoint_transferEth() (gas: 14973)
 SendEthIntegrationTest:test_transferEth() (gas: 195049)
 StorageUnitTest:test_imageHash() (gas: 322649)
-UpgradeToIntegrationTest:test_revertWhenNotSelf_upgradeTo() (gas: 2510425)
+UpgradeToIntegrationTest:test_revertWhenImmutable_upgradeToImmutable() (gas: 2693823)
+UpgradeToIntegrationTest:test_revertWhenNotSelf_upgradeTo() (gas: 2510491)
+UpgradeToIntegrationTest:test_upgradeToV2() (gas: 2669433)

@@ -4,9 +4,6 @@ UpgradeTo.t.sol
 │  └── It should revert on a {OnlySelfAuth} error
 └── When the caller is self
    └──  It should upgrade to a new implementation
-     ├── It should deploy a new LightWallet with the correct hash
-     ├── It should equal the {getAddress} function
-     ├── It should not have a proxy adminn
-     ├── It should not be able to initialize twice
-     ├── It should equal the {getAddress} function
-     └──
+     ├── It should have the correct implementation address
+     └──  It should upgrade to a immutable implmentation
+        └──  It should not be able to upgrade to a new implementation

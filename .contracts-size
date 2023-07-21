@@ -46,7 +46,6 @@
 | SimpleAccountV2Factory       | 3.206     | 21.37       |
 | StdStyle                     | 0.086     | 24.49       |
 | StorageSlot                  | 0.086     | 24.49       |
-| StorageUtils                 | 0.156     | 24.42       |
 | Strings                      | 0.086     | 24.49       |
 | TempKernel                   | 9.111     | 15.465      |
 | TokenCallbackHandler         | 1.489     | 23.087      |

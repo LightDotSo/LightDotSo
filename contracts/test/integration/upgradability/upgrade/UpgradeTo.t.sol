@@ -41,35 +41,55 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         _upgradeTo(address(account), address(accountV2));
     }
 
-    // /// Tests that the account can upgrade to a immutable proxy
-    // function test_upgradeToImmutable() public {
-    //     // Example UserOperation to update the account to immutable address one
-    //     UserOperation[] memory ops = entryPoint.signPackUserOp(
-    //         lightWalletUtils,
-    //         address(account),
-    //         abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy)),
-    //         userKey
-    //     );
-    //     entryPoint.handleOps(ops, beneficiary);
+    /// Tests that the account can upgrade to a v2 version of LightWallet
+    function test_upgradeToV2() public {
+        // Deploy new version of LightWallet to test upgrade to
+        LightWallet accountV2 = new LightWallet(entryPoint);
 
-    //     // Assert that the account is now immutable
-    //     assertEq(proxyUtils.getProxyImplementation(address(account)), address(immutableProxy));
-    // }
+        // Example UserOperation to update the account to immutable address one
+        UserOperation[] memory ops = entryPoint.signPackUserOp(
+            lightWalletUtils,
+            address(account),
+            abi.encodeWithSelector(
+                LightWallet.execute.selector,
+                address(account),
+                0,
+                abi.encodeWithSignature("upgradeTo(address)", address(accountV2))
+            ),
+            userKey
+        );
+        entryPoint.handleOps(ops, beneficiary);
 
-    // /// Tests that the factory reverts when trying to upgrade to an immutable address
-    // function test_revertWhen_upgradeToImmutable() public {
-    //     // Upgrade to immutable
-    //     test_upgradeToImmutable();
-    //     // Deploy new version of LightWallet
-    //     LightWallet accountV2 = new LightWallet(entryPoint);
+        // Assert that the account is now immutable
+        assertEq(proxyUtils.getProxyImplementation(address(account)), address(accountV2));
+    }
 
-    //     // Example UserOperation to update the account to immutable address one
-    //     UserOperation[] memory ops = entryPoint.signPackUserOp(
-    //         lightWalletUtils,
-    //         address(account),
-    //         abi.encodeWithSignature("upgradeTo(address)", address(accountV2)),
-    //         userKey
-    //     );
-    //     entryPoint.handleOps(ops, beneficiary);
-    // }
+    /// Tests that the factory reverts when trying to upgrade to an immutable address
+    function test_revertWhenImmutable_upgradeToImmutable() public {
+        // Example UserOperation to update the account to immutable address one
+        UserOperation[] memory ops = entryPoint.signPackUserOp(
+            lightWalletUtils,
+            address(account),
+            abi.encodeWithSelector(
+                LightWallet.execute.selector,
+                address(account),
+                0,
+                abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
+            ),
+            userKey
+        );
+        entryPoint.handleOps(ops, beneficiary);
+        // Deploy new version of LightWallet to test upgrade to
+        LightWallet accountV2 = new LightWallet(entryPoint);
+
+        // Example UserOperation to update the account to immutable address one
+        UserOperation[] memory opsv2 = entryPoint.signPackUserOp(
+            lightWalletUtils,
+            address(account),
+            abi.encodeWithSignature("upgradeTo(address)", address(accountV2)),
+            userKey
+        );
+        vm.expectRevert();
+        entryPoint.handleOps(opsv2, beneficiary);
+    }
 }
