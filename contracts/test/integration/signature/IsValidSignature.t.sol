@@ -21,7 +21,8 @@ import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 
 /// @notice Unit tests for `LightWallet` for compatibility w/ ERC-1271
-contract SignatureIntegrationTest is BaseIntegrationTest {
+/// @notice See `ERC1271FuzzTest` for fuzz tests
+contract IsValidSignatureIntegrationTest is BaseIntegrationTest {
     /// Tests that account revert when the signature is invalid  w/ EIP-1271 and EIP-6492
     function test_revertWhenInvalidSignature_isValidSignature_eip_1271_6492() public {
         // Hash of the message

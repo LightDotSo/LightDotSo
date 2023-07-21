@@ -1,4 +1,4 @@
-ImageHash.t.sol
+ImageHashUpgradabliity.t.sol
 ├── When the signature is invalid
 │  └── It should revert
 └── When the signature is invalid

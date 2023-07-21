@@ -25,6 +25,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
+/// @notice See `ERC1271FuzzTest` for fuzz tests
 contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
     /// Tests that the transaction reverts when the signature is invalid
     function test_revertWhenSignatureInvalid_updateImageHash() public {
