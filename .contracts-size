@@ -21,9 +21,6 @@
 | LightWallet                  | 12.164    | 12.412      |
 | LightWalletFactory           | 3.129     | 21.447      |
 | Math                         | 0.086     | 24.49       |
-| MockERC1155                  | 7.697     | 16.879      |
-| MockERC20                    | 3.561     | 21.015      |
-| MockERC721                   | 5.604     | 18.972      |
 | ModuleSelfAuth               | 0.063     | 24.513      |
 | ModuleStorage                | 0.086     | 24.49       |
 | NonceManager                 | 0.657     | 23.919      |
@@ -46,7 +43,6 @@
 | SimpleAccountV2Factory       | 3.206     | 21.37       |
 | StdStyle                     | 0.086     | 24.49       |
 | StorageSlot                  | 0.086     | 24.49       |
-| StorageUtils                 | 0.156     | 24.42       |
 | Strings                      | 0.086     | 24.49       |
 | TempKernel                   | 9.111     | 15.465      |
 | TokenCallbackHandler         | 1.489     | 23.087      |

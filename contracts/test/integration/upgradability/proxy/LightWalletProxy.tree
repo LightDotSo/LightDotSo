@@ -1,0 +1,7 @@
+LightWalletProxy.t.sol
+├── When the proxy is initialized
+│  ├── It should revert for initialize
+│  └── It should revert on a {Initializable} error
+└── When the proxy is not initialized
+   ├── It should initialize
+   └── It should emit a {Initialized} event

@@ -25,6 +25,7 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
+/// @notice See `ERC1271FuzzTest` for fuzz tests
 contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
     /// Tests that the transaction reverts when the signature is invalid
     function test_revertWhenSignatureInvalid_updateImageHash() public {
@@ -51,13 +52,38 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
-    /// Tests that the account can correctly update its image hash
 
+    /// Tests that the transaction reverts when the image hash is zero
+    function test_revertWhenImageHashZero_updateImageHash() public {
+        // Set the image hash to a random value
+        bytes32 hash = bytes32(uint256(0));
+
+        // Expect revert w/ `ImageHashIsZero` when the image hash is zero
+        vm.prank(address(entryPoint));
+        vm.expectRevert(bytes("ImageHashIsZero"));
+        (bool ok,) = address(account).call(
+            abi.encodeWithSelector(
+                LightWallet.execute.selector,
+                address(account),
+                0,
+                abi.encodeWithSignature("updateImageHash(bytes32)", hash)
+            )
+        );
+
+        // Expect that the transaction reverts
+        assertFalse(ok);
+        // Expect that the image hash is not zero
+        assertFalse(account.imageHash() == hash);
+    }
+
+    /// Tests that the account can correctly update its image hash
     function test_updateImageHash() public {
         // Set the image hash to a random value
         bytes32 hash = bytes32(uint256(1));
 
-        // Obtain the user operation w/ signature
+        // Expect emit the `ImageHashUpdated` event and handle the user operation
+        vm.expectEmit(true, true, true, true);
+        emit ImageHashUpdated(hash);
         UserOperation[] memory ops = entryPoint.signPackUserOp(
             lightWalletUtils,
             address(account),

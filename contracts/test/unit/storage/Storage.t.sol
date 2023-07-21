@@ -13,22 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 pragma solidity ^0.8.18;
 
-import {Test} from "forge-std/Test.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
 
-/// @notice Utility functions for storage
-contract StorageUtils is Test {
-    /// @param _addr The address of the contract
-    /// @param _slot The location of the bytes32 in storage
-    /// @dev Reads a uint256 from storage
-    function readBytes32(address _addr, bytes32 _slot) public view returns (bytes32 val) {
-        bytes32 storageSlot = vm.load(_addr, _slot);
-        assembly {
-            mstore(0, storageSlot)
-            val := mload(0)
-        }
+/// @notice Unit tests for `LightWallet` for storage
+contract StorageUnitTest is BaseTest {
+    /// Tests the account slot implementation
+    function test_imageHash() public {
+        // Create the account using the factory w/ hash 1, nonce 0
+        _testCreateAccountWithNonceZero();
+
+        // Assert that the image hash is correct
+        assertEq(
+            // keccak256("org.arcadeum.module.auth.upgradable.image.hash");
+            storageUtils.readBytes32(
+                address(account), bytes32(0xea7157fa25e3aa17d0ae2d5280fa4e24d421c61842aa85e45194e1145aa72bf8)
+            ),
+            bytes32(uint256(1))
+        );
     }
 }

@@ -1,0 +1,9 @@
+UpgradeTo.t.sol
+├── When the caller is not self
+│  ├── It should revert
+│  └── It should revert on a {OnlySelfAuth} error
+└── When the caller is self
+   └──  It should upgrade to a new implementation
+     ├── It should have the correct implementation address
+     └──  It should upgrade to a immutable implmentation
+        └──  It should not be able to upgrade to a new implementation

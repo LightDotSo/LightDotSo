@@ -20,12 +20,10 @@ pragma solidity ^0.8.18;
 import {BaseFuzzTest} from "@/test/base/BaseFuzzTest.t.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 
-/// @notice Unit tests for `LightWallet` for compatibility w/ ERC-1271
-contract SignatureFuzzTest is BaseFuzzTest {
-    /// Tests that the account complies w/ EIP-1271 and EIP-6492
-    /// Ref: https://eips.ethereum.org/EIPS/eip-1271
-    /// Ref: https://eips.ethereum.org/EIPS/eip-6492
-    function testFuzz_eip_1271_6492(bytes memory message) public {
+/// @notice Fuzz tests for `LightWallet` for compatibility w/ ERC-1271
+contract ERC1271FuzzTest is BaseFuzzTest {
+    /// Tests that the factory supports EIP-1271 and EIP-6492 w/ the account
+    function testFuzz_isValidSignature_eip_1271_6492(bytes memory message) public {
         // Hash of the message
         bytes32 hashed = keccak256(message);
 
@@ -45,7 +43,7 @@ contract SignatureFuzzTest is BaseFuzzTest {
     }
 
     /// Tests that a predeployed contract complies w/ EIP-6492
-    function testFuzz_predeployed_6492(bytes memory message) public {
+    function testFuzz_isValidSignature_predeployed_6492(bytes memory message) public {
         // Obtain the original signature w/ the EOA by the user
         bytes32 hashed = keccak256(message);
 

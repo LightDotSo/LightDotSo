@@ -44,5 +44,6 @@ flags:
     carryforward: true
 ignore:
   - "contracts/src/samples/**"
+  - "contracts/src/utils/**"
   - "contracts/test/**"
   - "tools/**"
