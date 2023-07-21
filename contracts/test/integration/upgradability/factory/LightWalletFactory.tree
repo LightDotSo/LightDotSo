@@ -1,0 +1,13 @@
+LightWalletFactory.t.sol
+├── When the sender is not `Entrypoint`
+│  ├── It should revert
+│  └── It should revert
+└── When the sender is Entrypoint
+   ├── When the signature is invalid
+   │  └── It should revert on a {ImageHashZero} error
+   └── When the signature is valid
+      ├── When the new image hash is zero
+      │  └── It should revert on a {ImageHashZero} error
+      └── When the new image hash is not zero
+         ├── It should set the new image hash
+         └── It should emit a {ImageHashUpdated} event
