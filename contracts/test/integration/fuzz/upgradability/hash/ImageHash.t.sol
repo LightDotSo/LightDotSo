@@ -27,8 +27,9 @@ using ERC4337Utils for EntryPoint;
 /// @notice Unit tests for `LightWallet` upgradeability
 contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
     /// Tests that the account can correctly update its image hash
-    function test_updateImageHash() public {
-        bytes32 hash = bytes32(0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef);
+    function testFuzz_updateImageHash(bytes32 hash) public {
+        // Assume that the hash is not 0
+        vm.assume(hash != bytes32(0));
 
         // Obtain the user operation w/ signature
         UserOperation[] memory ops = entryPoint.signPackUserOp(

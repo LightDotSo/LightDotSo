@@ -1,4 +1,6 @@
 ERC165UnitTest:test_erc_165() (gas: 318649)
+ImageHashUpgradabliityFuzzTest:test_updateImageHash() (gas: 166906)
+ImageHashUpgradabliityFuzzTest:test_updateImageHash() (gas: 166906)
 LightWalletFactoryTest:test_noInitializeTwice() (gas: 16735)
 LightWalletFactoryTest:test_noProxyAdmin() (gas: 10848)
 LightWalletFactoryTest:test_predictedCreateAccount() (gas: 314329)
