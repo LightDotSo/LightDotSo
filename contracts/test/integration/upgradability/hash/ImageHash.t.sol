@@ -19,16 +19,43 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {BaseFuzzTest} from "@/test/base/BaseFuzzTest.t.sol";
+import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
-contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
+contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
+    /// Tests that the transaction reverts when the signature is invalid
+    function test_revertWhenSignatureInvalid_updateImageHash() public {
+        // Set the image hash to a random value
+        bytes32 hash = bytes32(uint256(1));
+
+        // Obtain the user operation w/ signature
+        UserOperation[] memory ops = entryPoint.signPackUserOp(
+            lightWalletUtils,
+            address(account),
+            abi.encodeWithSelector(
+                LightWallet.execute.selector,
+                address(account),
+                0,
+                abi.encodeWithSignature("updateImageHash(bytes32)", hash)
+            ),
+            userKey
+        );
+
+        // Set the signature to an invalid value
+        ops[0].signature = bytes("invalid");
+
+        // Handle the user operation
+        vm.expectRevert();
+        entryPoint.handleOps(ops, beneficiary);
+    }
     /// Tests that the account can correctly update its image hash
+
     function test_updateImageHash() public {
-        bytes32 hash = bytes32(0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef);
+        // Set the image hash to a random value
+        bytes32 hash = bytes32(uint256(1));
 
         // Obtain the user operation w/ signature
         UserOperation[] memory ops = entryPoint.signPackUserOp(
