@@ -20,6 +20,10 @@ pragma solidity ^0.8.18;
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 
 contract ImmutableProxy is UUPSUpgradeable {
+    // -------------------------------------------------------------------------
+    // Internal
+    // -------------------------------------------------------------------------
+
     function _authorizeUpgrade(address newImplementation) internal pure override {
         (newImplementation);
         // Permanently disable upgrades by invalidating the authorization

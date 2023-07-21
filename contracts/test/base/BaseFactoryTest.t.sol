@@ -19,22 +19,42 @@ pragma solidity ^0.8.18;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
+import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
-contract BaseFactoryTest is Test {
+abstract contract BaseFactoryTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Utility Contracts
+    // -------------------------------------------------------------------------
+
     // Testing utility contract
     ProxyUtils proxyUtils;
 
     // ImmutableProxy contract
     ImmutableProxy immutableProxy;
 
-    function _setUpBaseFactory() internal {
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
+    /// @dev Base factory test setup
+    function setUp() public virtual override {
+        // BaseIntegrationTest test setup
+        BaseIntegrationTest.setUp();
+
         // Deploy the ProxyUtils utility contract
         proxyUtils = new ProxyUtils();
+
+        // Deploy the immutable proxy
+        immutableProxy = new ImmutableProxy();
     }
 
-    // Upgrade the account to the new implementation and assert that the implementation is correct
+    // -------------------------------------------------------------------------
+    // Internal
+    // -------------------------------------------------------------------------
+
+    /// @dev Upgrade the account to the new implementation and assert that the implementation is correct
     function _upgradeToUUPS(address _proxy, address _newImplementation) internal {
         // Upgrade the account to the new implementation
         _upgradeTo(_proxy, address(_newImplementation));
@@ -42,10 +62,8 @@ contract BaseFactoryTest is Test {
         assertEq(proxyUtils.getProxyImplementation(address(_proxy)), address(_newImplementation));
     }
 
-    // Upgrade the account to the immutable version and assert that the implementation is correct
+    /// @dev Upgrade the account to the immutable version and assert that the implementation is correct
     function _upgradeToImmutable(address _proxy) internal {
-        // Deploy the immutable proxy
-        _deployImmutable();
         // Upgrade the account to the immutable version
         _upgradeTo(_proxy, address(immutableProxy));
         // Assert that the account is now immutable
@@ -55,25 +73,19 @@ contract BaseFactoryTest is Test {
         _upgradeTo(_proxy, address(0));
     }
 
-    // Just the plain upgradeTo function from UUPSUpgradeable
+    /// @dev Just the plain upgradeTo function from UUPSUpgradeable
     function _upgradeTo(address _proxy, address _newImplementation) internal {
         // Upgrade the account to the new implementation
         UUPSUpgradeable(_proxy).upgradeTo(address(_newImplementation));
     }
 
-    // Deploy the immutable proxy
-    function _deployImmutable() internal {
-        // Deploy the immutable proxy
-        immutableProxy = new ImmutableProxy();
-    }
-
-    // Assert that the proxy admin is the zero address
+    /// @dev Assert that the proxy admin is the zero address
     function _noProxyAdmin(address _proxy) internal {
         // Assert that the proxy admin is the zero address
         assertEq(proxyUtils.getProxyAdmin(_proxy), address(0));
     }
 
-    // Check that the account is not initializable twice
+    /// @dev Check that the account is not initializable twice
     // Why Initialize is required: https://stackoverflow.com/questions/72475214/solidity-why-use-initialize-function-instead-of-constructor
     function _noInitializeTwice(address _proxy, bytes memory _calldata) internal {
         vm.expectRevert(bytes("Initializable: contract is already initialized"));

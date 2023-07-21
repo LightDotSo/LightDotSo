@@ -124,6 +124,14 @@ contracts-storage: ## Omits the current storage layout from the current contract
 contracts-wagmi: ## Copies over certain directory for wagmi generation
 	./contracts/wagmi.sh
 
+.PHONY: contracts-snapshot
+contracts-snapshot: ## Runs the snapshot generation script
+	forge snapshot --nmt "test(Fork)?(Fuzz)"
+
+.PHONY: contracts-snapshot-check
+contracts-snapshot-check: ## Runs the snapshot generation script w/ check
+	forge snapshot --nmt "test(Fork)?(Fuzz)" --check
+
 ##@ Docker
 
 .PHONY: docker

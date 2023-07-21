@@ -1,40 +1,44 @@
 [profile.default]
-  libs = [
-    "lib/account-abstraction",
-    "lib/ds-test",
-    "lib/forge-std",
-    # "lib/kernel",
-    "lib/openzeppelin-contracts",
-    "lib/openzeppelin-contracts-upgradeable",
-    "lib/safe-contracts",
-    "lib/solady",
-    "lib/solmate",
-    # "lib/soul-wallet-contract",
-    "lib/v3-periphery",
-  ]
-  auto_detect_remappings = false
-  optimizer = true
-  optimizer_runs = 10_000
-  solc = "0.8.18"
-  evm_version = "london"
-  src = "contracts/src"
-  test = "contracts/test"
-  verbosity = 3
-  via_ir = false
+auto_detect_remappings = false
+evm_version = "london"
+libs = [
+  "lib/account-abstraction",
+  "lib/ds-test",
+  "lib/forge-std",
+  # "lib/kernel",
+  "lib/openzeppelin-contracts",
+  "lib/openzeppelin-contracts-upgradeable",
+  "lib/safe-contracts",
+  "lib/solady",
+  "lib/solmate",
+  # "lib/soul-wallet-contract",
+  "lib/v3-periphery",
+]
+gas_reports = ["LightWallet", "LightWalletFactory"]
+optimizer = true
+optimizer_runs = 10_000
+solc = "0.8.18"
+src = "contracts/src"
+test = "contracts/test"
+verbosity = 3
+via_ir = false
 
 [profile.local]
-  no_match_test = "testForkRun"
+no_match_test = "testForkRun"
 
 [profile.noir]
-  test = "contracts/circuits/test"
-  fs_permissions = [
-    { access = "read", path = "contracts/circuits/proofs"}
-  ]
+fs_permissions = [{ access = "read", path = "contracts/circuits/proofs" }]
+test = "contracts/circuits/test"
 
 [profile.ci]
-  fuzz = { runs = 5000 }
-  invariant = { runs = 1000 }
-  verbosity = 2
+fuzz = { runs = 5000 }
+invariant = { runs = 1000 }
+verbosity = 2
+
+[doc]
+ignore = ["**/*.t.sol"]
+out = "docs"
+repository = "https://github.com/LightDotSo/LightDotSo"
 
 [rpc_endpoints]
 mainnet = "${ETH_RPC_MAINNET}"

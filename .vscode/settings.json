@@ -1,22 +1,30 @@
 {
+  // Exclude generated files
   "files.exclude": {
     "**/plonk_vk.sol": true,
     "**/crates/prisma/src/lib.rs": true
   },
+  // Formatter settings on save
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "eslint.validate": ["javascript", "javascriptreact"],
+  // Files linting
+  "files.associations": {
+    ".gas-snapshot": "julia"
+  },
+  // Npm settings
   "npm.exclude": "**/lib/**",
+  // Typescript settings
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  // Solidity settings
   "[solidity]": {
     "editor.defaultFormatter": "JuanBlanco.solidity"
   },
-  "eslint.workingDirectories": [
-    { "pattern": "apps/*/" },
-    { "pattern": "configurations/*/" },
-    { "pattern": "packages/*/" }
-  ],
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+  // Tailwind settings
   // From: https://github.com/joe-bell/cva/discussions/85#discussioncomment-5014769
   "tailwindCSS.experimental.classRegex": [
     // enable autocomplete in cx(...)

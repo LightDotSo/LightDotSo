@@ -25,21 +25,20 @@ import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {BaseTest} from "@/test/base/BaseTest.sol";
+import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 // From: https://github.com/zerodevapp/kernel/blob/daae3e246f628645a0c52db48710f025ca723189/test/foundry/Kernel.test.sol#L16
 
 /// @notice Unit tests for `LightWallet`, organized by functions.
-contract LightWalletTest is BaseTest {
-    function setUp() public {
-        _setUpBase();
+contract LightWalletTest is BaseIntegrationTest {
+    function setUp() public virtual override {
+        BaseIntegrationTest.setUp();
     }
 
     /// Tests that the account is initialized properly
-    function test_light_initialize() public {
+    function test_initialize() public {
         vm.expectEmit(true, true, true, true);
         emit Initialized(255);
         // Create a new account for the implementation
@@ -47,7 +46,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests the account slot implementation
-    function test_light_image_hash() public {
+    function test_image_hash() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
 
@@ -60,7 +59,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can not be initialized twice
-    function test_light_implementation_noInitialize() public {
+    function test_implementation_noInitialize() public {
         // Create a new account for the implementation
         account = new LightWallet(entryPoint);
         // Ensure that the account is not initializable on the implementation contract
@@ -69,16 +68,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ETH
-    function test_light_transfer_eth() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
+    function test_transfer_eth() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation memory op = entryPoint.fillUserOp(
             address(account), abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""))
@@ -104,16 +94,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ERC20
-    function test_light_transfer_erc20() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
+    function test_transfer_erc20() public {
         // Deploy a new MockERC20
         MockERC20 token = new MockERC20("Test", "TEST", 18);
 
@@ -154,16 +135,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ERC721
-    function test_light_transfer_erc721() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
+    function test_transfer_erc721() public {
         // Deploy a new MockERC721
         MockERC721 nft = new MockERC721("Test", "TEST");
 
@@ -204,16 +176,7 @@ contract LightWalletTest is BaseTest {
     }
 
     /// Tests that the account can correctly transfer ERC1155
-    function test_light_transfer_erc1155() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
+    function test_transfer_erc1155() public {
         // Deploy a new MockERC1155
         MockERC1155 multi = new MockERC1155();
 
@@ -251,127 +214,5 @@ contract LightWalletTest is BaseTest {
         assertEq(multi.balanceOf(address(1), 1), 1);
         // Assert that the balance of the account decreased by 1
         assertEq(multi.balanceOf(address(account), 1), 9);
-    }
-
-    /// Tests that the account can correctly update its image hash
-    function test_light_updateImageHash() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(account), 1e30);
-
-        // Expect that the image hash is the expected one
-        assertEq(account.imageHash(), expectedImageHash);
-
-        // Example UserOperation to update the account to immutable address one
-        UserOperation memory op = entryPoint.fillUserOp(
-            address(account),
-            abi.encodeWithSelector(
-                LightWallet.execute.selector,
-                address(account),
-                0,
-                abi.encodeWithSignature("updateImageHash(bytes32)", bytes32(uint256(1)))
-            )
-        );
-
-        // Get the hash of the UserOperation
-        bytes32 hash = entryPoint.getUserOpHash(op);
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-        op.signature = signature;
-
-        // Pack the UserOperation
-        UserOperation[] memory ops = new UserOperation[](1);
-        ops[0] = op;
-        entryPoint.handleOps(ops, beneficiary);
-
-        // Expect that the image hash is the updated one
-        assertEq(account.imageHash(), bytes32(uint256(1)));
-    }
-
-    /// Tests that the account complies w/ EIP-1271 and EIP-6492
-    /// Ref: https://eips.ethereum.org/EIPS/eip-1271
-    /// Ref: https://eips.ethereum.org/EIPS/eip-6492
-    function test_light_eip_1271_6492() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Hash of the message
-        bytes32 hashed = keccak256("Signed by user");
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-
-        // Test the signature w/ EIP-1271
-        assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
-
-        // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
-        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
-        assertEq(validator.isValidSig(address(account), hashed, signature), true);
-    }
-
-    /// Tests that a predeployed contract complies w/ EIP-6492
-    function test_light_predeployed_6492() public {
-        // Get the expected image hash
-        bytes32 expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
-
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
-
-        // Obtain the original signature w/ the EOA by the user
-        bytes32 hashed = keccak256("Signed by user");
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-
-        // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
-        // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)
-        bytes memory sig_6492 = abi.encodePacked(
-            abi.encode(
-                // Nonce is 1 (does not exist)
-                address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 1),
-                signature
-            ),
-            ERC6492_DETECTION_SUFFIX
-        );
-
-        // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
-        assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
-        assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
-    }
-
-    /// Tests that the account complies w/ ERC-165
-    function test_light_erc_165() public {
-        // ERC165 interface id
-        bytes4 interfaceId165 = 0x01ffc9a7;
-        // ERC721 interface id
-        bytes4 interfaceId721 = 0x150b7a02;
-        // ERC1155 interface id
-        bytes4 interfaceId1155 = 0x4e2312e0;
-
-        // Test that the account supports interfaces
-        assertEq(account.supportsInterface(interfaceId165), true);
-        assertEq(account.supportsInterface(interfaceId721), true);
-        assertEq(account.supportsInterface(interfaceId1155), true);
     }
 }

@@ -1,0 +1,9 @@
+ImageHash.t.sol
+├── When the signature is invalid
+│  └── It should revert
+└── When the signature is invalid
+   └── When the new image hash is zero
+   │  └── It should revert on a {ImageHashZero} error
+   └── When the new image hash is not zero
+      ├── It should set the new image hash
+      └── It should emit a {ImageHashUpdated} event

@@ -123,7 +123,7 @@ jobs:
           forge test
       - name: Check Gas Snapshots
         run: |
-          forge snapshot --check
+          make contracts-snapshot-check
       - name: Run Coverage
         run: |
           forge coverage --report lcov
