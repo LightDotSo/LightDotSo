@@ -41,11 +41,15 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the factory can create a new account at the predicted address
     function test_createAccount_emitEvents() public {
+        bytes32 hash = bytes32(uint256(3));
+
         vm.expectEmit(true, true, true, true);
-        emit ImageHashUpdated(bytes32(uint256(3)));
+        emit ImageHashUpdated(hash);
+        // vm.expectEmit(true, true, true, true);
+        // emit LightWalletInitialized(entryPoint, hash);
         vm.expectEmit(true, true, true, true);
         emit Initialized(1);
-        factory.createAccount(bytes32(uint256(3)), 0);
+        factory.createAccount(hash, 0);
     }
 
     /// Tests that the factory can create a new account at the predicted address
