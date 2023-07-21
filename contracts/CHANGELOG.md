@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.12
+
+### Patch Changes
+
+- [#212](https://github.com/LightDotSo/LightDotSo/pull/212) [`add7695`](https://github.com/LightDotSo/LightDotSo/commit/add76950d61a13ce9a8d368e41552da9caf3ade6) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Refactor test suite
+
 ## 0.1.0-pre.11
 
 ### Patch Changes
