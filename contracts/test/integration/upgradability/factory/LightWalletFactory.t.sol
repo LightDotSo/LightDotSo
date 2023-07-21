@@ -18,7 +18,7 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWallet} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -65,55 +65,5 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     function test_createAccount_noInitializeTwice() public {
         // Check that the account is not initializable twice
         _noInitializeTwice(address(account), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
-    }
-
-    /// Tests that the factory reverts when trying to upgrade from outside address
-    function test_revertDisabledUpgradeToUUPS() public {
-        // Deploy new version of LightWallet
-        LightWallet accountV2 = new LightWallet(entryPoint);
-        // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
-        // Check that the account is the new implementation
-        _upgradeTo(address(account), address(accountV2));
-    }
-
-    /// Tests that the factory reverts when trying to upgrade to an immutable address
-    function test_revertDisabledUpgradeToImmutable() public {
-        // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("OnlySelfAuth(address,address)", address(this), address(account)));
-        // Check that upgrade to immutable works
-        _upgradeTo(address(account), address(immutableProxy));
-    }
-
-    /// Tests that the account can upgrade to a immutable proxy
-    function test_upgradeToImmutable() public {
-        // Example UserOperation to update the account to immutable address one
-        UserOperation memory op = entryPoint.fillUserOp(
-            address(account),
-            abi.encodeWithSelector(
-                LightWallet.execute.selector,
-                address(account),
-                0,
-                abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
-            )
-        );
-
-        // Get the hash of the UserOperation
-        bytes32 hash = entryPoint.getUserOpHash(op);
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-        op.signature = signature;
-
-        // Pack the UserOperation
-        UserOperation[] memory ops = new UserOperation[](1);
-        ops[0] = op;
-        entryPoint.handleOps(ops, beneficiary);
-
-        // Assert that the account is now immutable
-        assertEq(proxyUtils.getProxyImplementation(address(account)), address(immutableProxy));
     }
 }

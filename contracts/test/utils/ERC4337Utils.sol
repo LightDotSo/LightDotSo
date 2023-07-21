@@ -78,7 +78,7 @@ library ERC4337Utils {
         address _account,
         bytes memory _data,
         uint256 _key
-    ) internal returns (UserOperation[] memory ops) {
+    ) internal view returns (UserOperation[] memory ops) {
         // Example UserOperation to update the account to immutable address one
         UserOperation memory op = _entryPoint.fillUserOp(address(_account), _data);
 
