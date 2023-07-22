@@ -36,7 +36,7 @@ interface ILightWallet is IERC1271 {
     // Events
     // -------------------------------------------------------------------------
 
-    event LightWalletInitialized(IEntryPoint indexed _entryPoint, bytes32 indexed _hash);
+    event LightWalletInitialized(IEntryPoint indexed entryPoint, bytes32 indexed hash);
 
     // -------------------------------------------------------------------------
     // Actions
@@ -50,13 +50,13 @@ interface ILightWallet is IERC1271 {
 
     /// @notice Check if a signature is valid based on the owner's address.
     /// Compatible with ERC1271
-    function isValidSignature(bytes32 _hash, bytes calldata _signatures) external view returns (bytes4);
+    function isValidSignature(bytes32 hash, bytes calldata signatures) external view returns (bytes4);
 
     /// @notice Compatibility with ERC165
-    function supportsInterface(bytes4 _interfaceId) external pure returns (bool);
+    function supportsInterface(bytes4 interfaceId) external pure returns (bool);
 
     /// @notice Sets the hash of this account, and emits an event.
-    function initialize(bytes32 _imageHash) external;
+    function initialize(bytes32 imageHash) external;
 
     /// @notice Returns the entry point contract address for this account.
     function entryPoint() external view returns (IEntryPoint);

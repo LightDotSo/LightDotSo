@@ -59,14 +59,6 @@ contract LightWallet is
     IEntryPoint private immutable _entryPoint;
 
     // -------------------------------------------------------------------------
-    // Modifier
-    // -------------------------------------------------------------------------
-
-    modifier onlyEntryPoint() {
-        _requireFromEntryPoint();
-        _;
-    }
-    // -------------------------------------------------------------------------
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
@@ -78,11 +70,11 @@ contract LightWallet is
     // solhint-disable-next-line no-empty-blocks
     receive() external payable {}
 
-    /// @param _anEntryPoint The address of the entrypoint contract.
+    /// @param anEntryPoint The address of the entrypoint contract.
     /// @dev Should be set to the address of the EntryPoint contract
     /// The official EntryPoint contract is at https://etherscan.io/address/0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789
-    constructor(IEntryPoint _anEntryPoint) {
-        _entryPoint = _anEntryPoint;
+    constructor(IEntryPoint anEntryPoint) {
+        _entryPoint = anEntryPoint;
         _disableInitializers();
     }
 
@@ -90,7 +82,8 @@ contract LightWallet is
     /// @param value The amount of Wei (ETH) to send along with the call.
     /// @param func The calldata to send to the target contract.
     /// @notice Executes a transaction (called directly by entryPoint)
-    function execute(address dest, uint256 value, bytes calldata func) external onlyEntryPoint {
+    function execute(address dest, uint256 value, bytes calldata func) external {
+        _requireFromEntryPoint();
         _call(dest, value, func);
     }
 
@@ -98,62 +91,51 @@ contract LightWallet is
     /// @param value The array of amount of Wei (ETH) to send along with the call.
     /// @param func The array of calldata to send to the target contract.
     /// @notice Executes a sequence of transactions (called directly by entryPoint)
-    function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func)
-        external
-        onlyEntryPoint
-    {
-        // Require that the length of the destination and function arrays are equal
-        if (!(dest.length == func.length && (value.length == 0 || value.length == func.length))) {
-            revert InvalidLength();
-        }
-        if (value.length == 0) {
-            for (uint256 i = 0; i < dest.length; i++) {
-                _call(dest[i], 0, func[i]);
-            }
-        } else {
-            for (uint256 i = 0; i < dest.length; i++) {
-                _call(dest[i], value[i], func[i]);
-            }
+    function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func) external {
+        _requireFromEntryPoint();
+        require(dest.length == func.length && (value.length == 0 || value.length == func.length), "wrong array lengths");
+        for (uint256 i = 0; i < dest.length; i++) {
+            _call(dest[i], 0, func[i]);
         }
     }
 
     /// @inheritdoc ModuleAuth
-    function isValidSignature(bytes32 _hash, bytes calldata _signatures)
+    function isValidSignature(bytes32 hash, bytes calldata signatures)
         public
         view
         override(ILightWallet, ModuleAuth)
         returns (bytes4)
     {
-        return super.isValidSignature(_hash, _signatures);
+        return super.isValidSignature(hash, signatures);
     }
 
-    /// @param _imageHash The hash to validate the signature against.
+    /// @param imageHash The hash to validate the signature against.
     /// @notice The _entryPoint member is immutable, to reduce gas consumption. To upgrade EntryPoint,
     /// a new implementation of SimpleAccount must be deployed with the new EntryPoint address, then upgrading
     /// the implementation by calling `upgradeTo()`
-    function initialize(bytes32 _imageHash) public virtual initializer {
-        _initialize(_imageHash);
+    function initialize(bytes32 imageHash) public virtual initializer {
+        _initialize(imageHash);
     }
 
     // -------------------------------------------------------------------------
     // Internal
     // -------------------------------------------------------------------------
 
-    /// @param _imageHash The hash to validate the signature against.
+    /// @param imageHash The hash to validate the signature against.
     /// @notice Emits an event for the initialization of the contract
-    function _initialize(bytes32 _imageHash) internal virtual {
-        _updateImageHash(_imageHash);
-        emit LightWalletInitialized(_entryPoint, _imageHash);
+    function _initialize(bytes32 imageHash) internal virtual {
+        _updateImageHash(imageHash);
+        emit LightWalletInitialized(_entryPoint, imageHash);
     }
 
     /// @inheritdoc BaseAccount
-    function _validateSignature(UserOperation calldata _userOp, bytes32 _userOpHash)
+    function _validateSignature(UserOperation calldata userOp, bytes32 userOpHash)
         internal
         virtual
         override
         returns (uint256 validationData)
     {
-        (bool isValid,) = _signatureValidation(_userOpHash, _userOp.signature);
+        (bool isValid,) = _signatureValidation(userOpHash, userOp.signature);
         if (!isValid) {
             return SIG_VALIDATION_FAILED;
         }
@@ -167,7 +149,7 @@ contract LightWallet is
     /// @dev This internal function uses the `call` function to make an external call to the target contract
     /// with the specified value and data. It captures the success status and returned data of the call.
     /// If the call is not successful, it reverts the transaction and provides the error message from the target contract.
-    // slither-disable-next-line naming-convention
+    // slither-disable-next-line arbitrary-send-eth
     function _call(address target, uint256 value, bytes memory data) internal {
         (bool success, bytes memory result) = target.call{value: value}(data);
         if (!success) {
@@ -183,9 +165,8 @@ contract LightWallet is
 
     /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
-    // slither-disable-next-line naming-convention
-    function _authorizeUpgrade(address _newImplementation) internal view override onlySelf {
-        (_newImplementation);
+    function _authorizeUpgrade(address newImplementation) internal view override onlySelf {
+        (newImplementation);
     }
 
     // -------------------------------------------------------------------------
@@ -194,12 +175,12 @@ contract LightWallet is
 
     /// @inheritdoc ModuleAuthUpgradable
     // slither-disable-next-line naming-convention
-    function supportsInterface(bytes4 _interfaceId)
+    function supportsInterface(bytes4 interfaceId)
         public
         pure
         override(ILightWallet, TokenCallbackHandler, ModuleAuthUpgradable)
         returns (bool)
     {
-        return super.supportsInterface(_interfaceId);
+        return super.supportsInterface(interfaceId);
     }
 }
