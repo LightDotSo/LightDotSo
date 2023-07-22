@@ -90,12 +90,19 @@ contract LightWallet is
     /// @param dest The array of address of the target contract to call.
     /// @param value The array of amount of Wei (ETH) to send along with the call.
     /// @param func The array of calldata to send to the target contract.
+    /// @dev to reduce gas consumption for trivial case (no value), use a zero-length array to mean zero value
     /// @notice Executes a sequence of transactions (called directly by entryPoint)
     function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func) external {
         _requireFromEntryPoint();
         require(dest.length == func.length && (value.length == 0 || value.length == func.length), "wrong array lengths");
-        for (uint256 i = 0; i < dest.length; i++) {
-            _call(dest[i], 0, func[i]);
+        if (value.length == 0) {
+            for (uint256 i = 0; i < dest.length; i++) {
+                _call(dest[i], 0, func[i]);
+            }
+        } else {
+            for (uint256 i = 0; i < dest.length; i++) {
+                _call(dest[i], value[i], func[i]);
+            }
         }
     }
 

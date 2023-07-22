@@ -33,6 +33,12 @@ flags:
     paths:
       - contracts/src/**
     carryforward: true
+  node:
+    paths:
+      - apps/**
+      - configurations/**
+      - packages/**
+    carryforward: true
   rust:
     paths:
       - bin/**
