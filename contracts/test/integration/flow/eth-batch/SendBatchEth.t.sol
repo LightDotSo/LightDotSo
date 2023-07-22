@@ -26,6 +26,10 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` batch sending ETH
 contract SendBatchEthIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Variables
+    // -------------------------------------------------------------------------
+
     address[] internal callAddresses;
     uint256[] internal callValues;
     bytes[] internal callDatas;
@@ -86,5 +90,6 @@ contract SendBatchEthIntegrationTest is BaseIntegrationTest {
         // Assert that the corresponding balance of the accounts are correct
         assertEq(address(1).balance, 1);
         assertEq(address(2).balance, 2);
+        assertEq(address(3).balance, 3);
     }
 }
