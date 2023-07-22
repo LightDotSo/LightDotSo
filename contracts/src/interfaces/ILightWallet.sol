@@ -27,6 +27,12 @@ import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 
 interface ILightWallet is IERC1271 {
     // -------------------------------------------------------------------------
+    // Errors
+    // -------------------------------------------------------------------------
+
+    error InvalidLength();
+
+    // -------------------------------------------------------------------------
     // Events
     // -------------------------------------------------------------------------
 
@@ -40,7 +46,7 @@ interface ILightWallet is IERC1271 {
     function execute(address dest, uint256 value, bytes calldata func) external;
 
     /// @notice Executes a sequence of transactions (called directly by entryPoint).
-    function executeBatch(address[] calldata dest, bytes[] calldata func) external;
+    function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func) external;
 
     /// @notice Check if a signature is valid based on the owner's address.
     /// Compatible with ERC1271

@@ -59,6 +59,14 @@ contract LightWallet is
     IEntryPoint private immutable _entryPoint;
 
     // -------------------------------------------------------------------------
+    // Modifier
+    // -------------------------------------------------------------------------
+
+    modifier onlyEntryPoint() {
+        _requireFromEntryPoint();
+        _;
+    }
+    // -------------------------------------------------------------------------
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
@@ -79,21 +87,33 @@ contract LightWallet is
     }
 
     /// @param dest The address of the target contract to call.
+    /// @param value The amount of Wei (ETH) to send along with the call.
     /// @param func The calldata to send to the target contract.
     /// @notice Executes a transaction (called directly by entryPoint)
-    function execute(address dest, uint256 value, bytes calldata func) external {
-        _requireFromEntryPoint();
+    function execute(address dest, uint256 value, bytes calldata func) external onlyEntryPoint {
         _call(dest, value, func);
     }
 
     /// @param dest The array of address of the target contract to call.
+    /// @param value The array of amount of Wei (ETH) to send along with the call.
     /// @param func The array of calldata to send to the target contract.
     /// @notice Executes a sequence of transactions (called directly by entryPoint)
-    function executeBatch(address[] calldata dest, bytes[] calldata func) external {
-        _requireFromEntryPoint();
-        require(dest.length == func.length, "wrong array lengths");
-        for (uint256 i = 0; i < dest.length; i++) {
-            _call(dest[i], 0, func[i]);
+    function executeBatch(address[] calldata dest, uint256[] calldata value, bytes[] calldata func)
+        external
+        onlyEntryPoint
+    {
+        // Require that the length of the destination and function arrays are equal
+        if (!(dest.length == func.length && (value.length == 0 || value.length == func.length))) {
+            revert InvalidLength();
+        }
+        if (value.length == 0) {
+            for (uint256 i = 0; i < dest.length; i++) {
+                _call(dest[i], 0, func[i]);
+            }
+        } else {
+            for (uint256 i = 0; i < dest.length; i++) {
+                _call(dest[i], value[i], func[i]);
+            }
         }
     }
 
