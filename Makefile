@@ -12,6 +12,7 @@ SHARED_LIB_NAME = $(NAME).so
 ARCHS_IOS = x86_64-apple-ios aarch64-apple-ios-sim
 ARCHS_IOS_ARM = aarch64-apple-ios
 ARCHS_MAC = x86_64-apple-darwin aarch64-apple-darwin
+SOLC_VERSION = 0.8.18
 
 CRATES_DIR = "crates/core"
 
@@ -131,6 +132,18 @@ contracts-snapshot: ## Runs the snapshot generation script
 .PHONY: contracts-snapshot-check
 contracts-snapshot-check: ## Runs the snapshot generation script w/ check
 	forge snapshot --nmt "test(Fork)?(Fuzz)" --check
+
+.PHONY: contracts-slither
+contracts-slither: ## Runs slither on the contracts
+	SOLC_VERSION=$(SOLC_VERSION) rye run slither contracts/src/ --config-file slither.config.json
+
+.PHONY: contracts-slither-install
+contracts-slither-install: ## Installs slither on the contracts w/ solc version
+	rye run solc-select install $(SOLC_VERSION)
+
+.PHONY: contracts-halmos
+contracts-halmos: ## Runs halmos on the contracts
+	rye run halmos
 
 ##@ Docker
 

@@ -1,0 +1,23 @@
+[project]
+name = "lightdotso"
+version = "0.1.0"
+description = "Add your description here"
+authors = [{ name = "Shun Kakinoki", email = "shunkakinoki@gmail.com" }]
+dependencies = [
+  "halmos <= 0.0.8",
+  "slither-analyzer <= 0.9.6",
+  "setuptools>=68.0.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev_dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
