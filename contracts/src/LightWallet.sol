@@ -149,15 +149,19 @@ contract LightWallet is
     /// @dev This internal function uses the `call` function to make an external call to the target contract
     /// with the specified value and data. It captures the success status and returned data of the call.
     /// If the call is not successful, it reverts the transaction and provides the error message from the target contract.
+    // slither-disable-start low-level-calls
     // slither-disable-next-line arbitrary-send-eth
     function _call(address target, uint256 value, bytes memory data) internal {
+        // slither-disable-next-line calls-loop
         (bool success, bytes memory result) = target.call{value: value}(data);
         if (!success) {
+            // slither-disable-next-line assembly
             assembly {
                 revert(add(result, 32), mload(result))
             }
         }
     }
+    // slither-disable-end low-level-calls
 
     // -------------------------------------------------------------------------
     // Upgrades
