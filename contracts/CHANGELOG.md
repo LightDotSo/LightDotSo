@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.13
+
+### Patch Changes
+
+- [#216](https://github.com/LightDotSo/LightDotSo/pull/216) [`09329e9`](https://github.com/LightDotSo/LightDotSo/commit/09329e97c332451e5aad1a3bf1eac3a58ae62c13) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update factory test path
+
 ## 0.1.0-pre.12
 
 ### Patch Changes
