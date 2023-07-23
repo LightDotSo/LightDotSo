@@ -17,8 +17,8 @@
 
 pragma solidity ^0.8.18;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -26,23 +26,16 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Integration tests for `LightWallet` batch sending ERC20
-contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
+/// @notice Integration tests for `LightWallet` sending ERC721
+contract SendERC721IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
 
-    // ERC20 token to send
-    MockERC20 internal token;
+    // ERC721 token to send
+    MockERC721 internal nft;
     // Internal operational callData to send
     bytes internal callData;
-
-    // Internal array of addresses to send ETH to
-    address[] internal callAddresses;
-    // Internal array of values to send ETH to
-    uint256[] internal callValues;
-    // Internal array of callDatas to send ETH to
-    bytes[] internal callDatas;
 
     // -------------------------------------------------------------------------
     // Setup
@@ -52,58 +45,50 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
 
-        // Deploy a new MockERC20
-        token = new MockERC20("Test", "TEST", 18);
+        // Deploy a new MockERC721
+        nft = new MockERC721("Test", "TEST");
 
-        // Mint 1e18 ERC20s to the account
-        token.mint(address(account), 1e18);
-        assertEq(token.balanceOf(address(account)), 1e18);
+        // Mint 1 ERC721 to the account
+        nft.mint(address(account), 1);
+        assertEq(nft.balanceOf(address(account)), 1);
 
-        // Set the callData to transfer tokens to the address one, two, and three
-        callAddresses = new address[](3);
-        callAddresses[0] = address(token);
-        callAddresses[1] = address(token);
-        callAddresses[2] = address(token);
-
-        callValues = new uint256[](0);
-
-        callDatas = new bytes[](3);
-        callDatas[0] = abi.encodeWithSelector(IERC20.transfer.selector, address(1), 1);
-        callDatas[1] = abi.encodeWithSelector(IERC20.transfer.selector, address(2), 2);
-        callDatas[2] = abi.encodeWithSelector(IERC20.transfer.selector, address(3), 3);
-
-        // Set the operational callData
-        callData = abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas);
+        // Set the callData to transfer 1 ERC721 to the address one
+        callData = abi.encodeWithSelector(
+            LightWallet.execute.selector,
+            address(nft),
+            0,
+            abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1)
+        );
     }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account revert when sending ERC20 from a non-entrypoint
-    function test_revertWhenNotEntrypoint_batchTransferERC20() public {
+    /// Tests that the account revert when sending ERC721 from a non-entrypoint
+    function test_revertWhenNotEntrypoint_transferERC721() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
         address(account).call(callData);
     }
 
-    /// Tests that the account can correctly transfer ERC20
-    function test_revertWhenInvalidSignature_batchTransferERC20() public {
-        // Example UserOperation to send 0 ERC20 to the address one
+    /// Tests that the account can correctly transfer ERC721
+    function test_revertWhenInvalidSignature_transferERC721() public {
+        // Example UserOperation to send 0 ERC721 to the address one
         UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
 
-    /// Tests that the account can correctly transfer ERC20
-    function test_batchTransferERC20() public {
+    /// Tests that the account can correctly transfer ERC721
+    function test_transferERC721() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the balance of the corresponding destinations are correct
-        assertEq(token.balanceOf(address(1)), 1);
-        assertEq(token.balanceOf(address(2)), 2);
-        assertEq(token.balanceOf(address(3)), 3);
+        // Assert that the balance of the destination is 1
+        assertEq(nft.balanceOf(address(1)), 1);
+        // Assert that the balance of the account is 0
+        assertEq(nft.balanceOf(address(account)), 0);
     }
 }

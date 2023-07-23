@@ -19,6 +19,12 @@ component_management:
       name: Contracts
       paths:
         - contracts/src/**
+    - component_id: js
+      name: Javascript
+      paths:
+        - apps/**
+        - configurations/**
+        - packages/**
     - component_id: rust
       name: Rust
       paths:

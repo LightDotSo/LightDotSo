@@ -80,47 +80,6 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
         assertEq(address(1).balance, 1);
     }
 
-    // /// Tests that the account can correctly transfer ERC20
-    // function test_transfer_erc20() public {
-    //     // Deploy a new MockERC20
-    //     MockERC20 token = new MockERC20("Test", "TEST", 18);
-
-    //     // Mint 1e18 tokens to the account
-    //     token.mint(address(account), 1e18);
-    //     assertEq(token.balanceOf(address(account)), 1e18);
-
-    //     // Example UserOperation to send 1 ERC20 to the address one
-    //     UserOperation memory op = entryPoint.fillUserOp(
-    //         address(account),
-    //         abi.encodeWithSelector(
-    //             LightWallet.execute.selector,
-    //             address(token),
-    //             0,
-    //             abi.encodeWithSelector(IERC20.transfer.selector, address(1), 1)
-    //         )
-    //     );
-
-    //     // Get the hash of the UserOperation
-    //     bytes32 hash = entryPoint.getUserOpHash(op);
-
-    //     // Sign the hash
-    //     bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
-
-    //     // Pack the signature
-    //     bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-    //     op.signature = signature;
-
-    //     // Pack the UserOperation
-    //     UserOperation[] memory ops = new UserOperation[](1);
-    //     ops[0] = op;
-    //     entryPoint.handleOps(ops, beneficiary);
-
-    //     // Assert that the balance of the destination is 1
-    //     assertEq(token.balanceOf(address(1)), 1);
-    //     // Assert that the balance of the account decreased by 1
-    //     assertEq(token.balanceOf(address(account)), 1e18 - 1);
-    // }
-
     // /// Tests that the account can correctly transfer ERC721
     // function test_transfer_erc721() public {
     //     // Deploy a new MockERC721
