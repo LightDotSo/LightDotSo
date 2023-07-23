@@ -22,6 +22,10 @@ import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 
 /// @notice Fuzz tests for `LightWallet` for compatibility w/ ERC-1271
 contract ERC1271FuzzTest is BaseFuzzTest {
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
     /// Tests that the factory supports EIP-1271 and EIP-6492 w/ the account
     function testFuzz_isValidSignature_eip_1271_6492(bytes memory message) public {
         // Hash of the message

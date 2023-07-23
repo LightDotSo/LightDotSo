@@ -26,10 +26,18 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
 contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
     function setUp() public virtual override {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
     }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
 
     /// Tests that the factory revert when creating an account with a nonce that is 0
     function test_revertWhenBytesZero_createAccount() public {

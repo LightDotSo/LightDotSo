@@ -32,10 +32,18 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` sending ETH
 contract SendEthIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
     function setUp() public virtual override {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
     }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
 
     /// Tests that the account revert when sending ETH from a non-entrypoint
     function test_revertWhenNotEntrypoint_transferEth() public {

@@ -26,6 +26,10 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
 contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
     /// Tests that the account can correctly update its image hash
     function testFuzz_updateImageHash(bytes32 hash) public {
         // Assume that the hash is not 0

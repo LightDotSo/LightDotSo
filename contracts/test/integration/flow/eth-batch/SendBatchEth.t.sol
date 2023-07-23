@@ -30,9 +30,16 @@ contract SendBatchEthIntegrationTest is BaseIntegrationTest {
     // Variables
     // -------------------------------------------------------------------------
 
+    // Internal array of addresses to send ETH to
     address[] internal callAddresses;
+    // Internal array of values to send ETH to
     uint256[] internal callValues;
+    // Internal array of callDatas to send ETH to
     bytes[] internal callDatas;
+
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
 
     function setUp() public virtual override {
         // Setup the base factory tests
@@ -54,10 +61,14 @@ contract SendBatchEthIntegrationTest is BaseIntegrationTest {
         callDatas[2] = bytes("");
     }
 
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
     /// Tests that the account revert when sending ETH from a non-entrypoint
     function test_revertWhenNotEntrypoint_transferBatchEth() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
-        (bool ok,) = address(account).call(
+        address(account).call(
             abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas)
         );
     }

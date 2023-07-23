@@ -32,6 +32,10 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Utility functions for ERC4337
 library ERC4337Utils {
+    // -------------------------------------------------------------------------
+    // Internal Functions
+    // -------------------------------------------------------------------------
+
     /// @dev Fills a UserOperation with default values
     /// @param _entryPoint The entry point contract
     /// @param _account The account to fill the UserOperation with

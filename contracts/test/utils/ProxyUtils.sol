@@ -25,6 +25,10 @@ import {Test} from "forge-std/Test.sol";
 
 /// @notice Utility functions for proxies
 contract ProxyUtils is Test {
+    // -------------------------------------------------------------------------
+    // Public Functions
+    // -------------------------------------------------------------------------
+
     /// @param _proxyAddress The address of the proxy
     /// @dev Gets the implementation address of a proxy
     function getProxyImplementation(address _proxyAddress) public view returns (address addr) {

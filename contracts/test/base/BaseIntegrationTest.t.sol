@@ -22,6 +22,7 @@ import {Test} from "forge-std/Test.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
 
+/// @notice Base integration test for `LightWallet`
 abstract contract BaseIntegrationTest is BaseTest {
     // -------------------------------------------------------------------------
     // Storages
