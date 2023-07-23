@@ -19,10 +19,9 @@ pragma solidity ^0.8.18;
 
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
-import {Test} from "forge-std/test.sol";
 
 /// @notice Unit tests for `LightWallet` for compatibility w/ ERC-721
-contract ERC1155UnitTest is BaseTest, Test {
+contract ERC1155UnitTest is BaseTest {
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
