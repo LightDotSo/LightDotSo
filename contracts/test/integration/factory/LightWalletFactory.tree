@@ -6,7 +6,7 @@ LightWalletFactory.t.sol
    ├── When the address already exists
    │  └── It should return the existing address
    └── When the address does not exist
-      ├──  It should deploy a new LightWallet
+      ├── It should deploy a new LightWallet
       ├── It should deploy a new LightWallet with the correct hash
       ├── It should equal the {getAddress} function
       ├── It should not have a proxy adminn
