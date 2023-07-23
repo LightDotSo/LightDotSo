@@ -16,7 +16,7 @@ export default defineWorkspace([
   {
     extends: "./vitest.config.ts",
     test: {
-      include: ["packages/solutions/test/**/*.spec.ts"],
+      include: ["packages/solutions/src/**/*.spec.ts"],
       name: "solutions",
       environment: "node",
     },

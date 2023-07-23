@@ -18,4 +18,5 @@ import type { Address } from "viem";
 export type Signer = {
   weight: bigint;
   address: Address;
+  signature?: Uint8Array;
 };
