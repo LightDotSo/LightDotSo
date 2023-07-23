@@ -1,5 +1,11 @@
 # @lightdotso/bin
 
+## 0.1.0-pre.7
+
+### Patch Changes
+
+- [#218](https://github.com/LightDotSo/LightDotSo/pull/218) [`46d1efc`](https://github.com/LightDotSo/LightDotSo/commit/46d1efc7257fd365289d1da9580d99855b4c7287) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Ini tui
+
 ## 0.1.0-pre.6
 
 ### Minor Changes
