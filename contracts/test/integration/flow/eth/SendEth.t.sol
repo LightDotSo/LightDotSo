@@ -17,12 +17,6 @@
 
 pragma solidity ^0.8.18;
 
-// import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-// import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-// import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
-// import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
-// import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
-// import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -79,44 +73,4 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
         // Assert that the balance of the account is 1
         assertEq(address(1).balance, 1);
     }
-    // /// Tests that the account can correctly transfer ERC1155
-    // function test_transfer_erc1155() public {
-    //     // Deploy a new MockERC1155
-    //     MockERC1155 multi = new MockERC1155();
-
-    //     // Mint 10 tokens of id:1 to the account
-    //     multi.mint(address(account), 1, 10, "");
-    //     assertEq(multi.balanceOf(address(account), 1), 10);
-
-    //     // Example UserOperation to send 1 ERC1155 of id:1 to the address one
-    //     UserOperation memory op = entryPoint.fillUserOp(
-    //         address(account),
-    //         abi.encodeWithSelector(
-    //             LightWallet.execute.selector,
-    //             address(multi),
-    //             0,
-    //             abi.encodeWithSelector(IERC1155.safeTransferFrom.selector, address(account), address(1), 1, 1, "")
-    //         )
-    //     );
-
-    //     // Get the hash of the UserOperation
-    //     bytes32 hash = entryPoint.getUserOpHash(op);
-
-    //     // Sign the hash
-    //     bytes memory sig = lightWalletUtils.signDigest(hash, address(account), userKey);
-
-    //     // Pack the signature
-    //     bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-    //     op.signature = signature;
-
-    //     // Pack the UserOperation
-    //     UserOperation[] memory ops = new UserOperation[](1);
-    //     ops[0] = op;
-    //     entryPoint.handleOps(ops, beneficiary);
-
-    //     // Assert that the balance of the destination is 1
-    //     assertEq(multi.balanceOf(address(1), 1), 1);
-    //     // Assert that the balance of the account decreased by 1
-    //     assertEq(multi.balanceOf(address(account), 1), 9);
-    // }
 }
