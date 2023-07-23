@@ -18,28 +18,33 @@
 pragma solidity ^0.8.18;
 
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
+import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 
-/// @notice Unit tests for `LightWallet` for compatibility w/ ERC-165
-contract ERC165UnitTest is BaseTest {
+/// @notice Unit tests for `LightWallet` for compatibility w/ ERC-721
+contract ERC721UnitTest is BaseTest {
+    // -------------------------------------------------------------------------
+    // Variables
+    // -------------------------------------------------------------------------
+
+    // ERC721 token to send
+    MockERC721 internal nft;
+
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
     /// Tests that the account complies w/ ERC-165
-    function test_erc165() public {
+    function test_erc721_onReceived() public {
         // Create the account using the factory w/ hash 1, nonce 0
         _testCreateAccountWithNonceZero();
 
-        // ERC165 interface id
-        bytes4 interfaceId165 = 0x01ffc9a7;
-        // ERC721 interface id
-        bytes4 interfaceId721 = 0x150b7a02;
-        // ERC1155 interface id
-        bytes4 interfaceId1155 = 0x4e2312e0;
+        // Deploy a new MockERC721
+        nft = new MockERC721("Test", "TEST");
 
-        // Test that the account supports interfaces
-        assertEq(account.supportsInterface(interfaceId165), true);
-        assertEq(account.supportsInterface(interfaceId721), true);
-        assertEq(account.supportsInterface(interfaceId1155), true);
+        // Mint 1 ERC721 to the account
+        nft.mint(address(this), 1);
+
+        // Check that the account supports ERC-721
+        nft.safeTransferFrom(address(this), address(account), 1);
     }
 }

@@ -18,28 +18,38 @@
 pragma solidity ^0.8.18;
 
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
+import {MockERC1155} from "solmate/test/utils/mocks/MockERC1155.sol";
+import {Test} from "forge-std/test.sol";
 
-/// @notice Unit tests for `LightWallet` for compatibility w/ ERC-165
-contract ERC165UnitTest is BaseTest {
+/// @notice Unit tests for `LightWallet` for compatibility w/ ERC-721
+contract ERC1155UnitTest is BaseTest, Test {
+    // -------------------------------------------------------------------------
+    // Variables
+    // -------------------------------------------------------------------------
+
+    // ERC1155 token to send
+    MockERC1155 internal multi;
+
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
     /// Tests that the account complies w/ ERC-165
-    function test_erc165() public {
+    function test_erc1155_onReceived() public {
         // Create the account using the factory w/ hash 1, nonce 0
         _testCreateAccountWithNonceZero();
 
-        // ERC165 interface id
-        bytes4 interfaceId165 = 0x01ffc9a7;
-        // ERC721 interface id
-        bytes4 interfaceId721 = 0x150b7a02;
-        // ERC1155 interface id
-        bytes4 interfaceId1155 = 0x4e2312e0;
+        // Deploy a new MockERC1155
+        multi = new MockERC1155();
 
-        // Test that the account supports interfaces
-        assertEq(account.supportsInterface(interfaceId165), true);
-        assertEq(account.supportsInterface(interfaceId721), true);
-        assertEq(account.supportsInterface(interfaceId1155), true);
+        // Make an address from
+        address from = makeAddr("from");
+
+        // Mint 10 tokens of id of 1 to this EOA
+        multi.mint(address(from), 1, 10, "");
+
+        // Check that the account supports ERC-721
+        vm.prank(from);
+        multi.safeTransferFrom(address(from), address(account), 1, 1, "");
     }
 }
