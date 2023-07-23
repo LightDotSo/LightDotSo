@@ -46,3 +46,6 @@
 [submodule "wiki"]
 	path = wiki
 	url = https://github.com/LightDotSo/LightDotSo.wiki.git
+[submodule "lib/halmos-cheatcodes"]
+	path = lib/halmos-cheatcodes
+	url = https://github.com/a16z/halmos-cheatcodes

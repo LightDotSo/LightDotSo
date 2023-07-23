@@ -59,6 +59,7 @@
     "apps/extension/**/*.js",
     "apps/docs/src/pages/posts/**/*.mdx",
     "ios/LightWalletSafariExtension/Resources/**/*.js",
+    "**/__snapshots__/**",
     "**/*.app/**",
     "**/.cargo/**",
     "**/.changeset/**",
