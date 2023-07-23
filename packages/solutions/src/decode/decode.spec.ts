@@ -14,12 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { expect, test } from "vitest";
-import { subdigestOf } from "../../src";
+import { decodeSignature } from ".";
+import { toBytes } from "viem";
 
-test("subdigestOf", () => {
-  const ls = subdigestOf(`0x${"00".repeat(20)}`, new Uint8Array(32), 1n);
-  console.log(ls);
-  expect(ls).toBe(
-    "0x4f8026b280821a8d35671eb214849f3d4ed6caf6418ca57be15a139a0d8cf4e5",
-  );
+test("decode", () => {
+  const sampleSignature1 =
+    "0x0001636911b800019fa7b7e8ed25088c413074818ac10ab3bbcddb120bbec85083f3ba254e5547d953fe615a6474fd365326244dedd7afa3911ad39c956ca096d721064d6b29055d1b02";
+
+  const topology = decodeSignature(toBytes(sampleSignature1));
+
+  expect(topology).toMatchSnapshot();
 });

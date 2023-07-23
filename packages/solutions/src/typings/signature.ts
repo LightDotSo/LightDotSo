@@ -13,6 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./signature";
-export * from "./signer";
-export * from "./topology";
+// From: https://github.com/0xsequence/sequence.js/blob/3fa8067a5df6332784501794a90af583254e5b88/packages/core/src/v2/signature.ts#L8-L13
+// License: Apache 2.0
+export enum SignatureType {
+  Legacy = 0,
+  Dynamic = 1,
+  NoChainIdDynamic = 2,
+  Chained = 3,
+}
+
+// From: https://github.com/0xsequence/sequence.js/blob/3fa8067a5df6332784501794a90af583254e5b88/packages/core/src/v2/signature.ts#L15-L23
+// License: Apache 2.0
+export enum SignaturePartType {
+  Signature = 0,
+  Address = 1,
+  DynamicSignature = 2,
+  Node = 3,
+  Branch = 4,
+  Subdigest = 5,
+  Nested = 6,
+}
