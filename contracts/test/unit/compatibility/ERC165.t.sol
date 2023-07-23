@@ -21,6 +21,10 @@ import {BaseTest} from "@/test/base/BaseTest.t.sol";
 
 /// @notice Unit tests for `LightWallet` for compatibility w/ ERC-165
 contract ERC165UnitTest is BaseTest {
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
     /// Tests that the account complies w/ ERC-165
     function test_erc_165() public {
         // Create the account using the factory w/ hash 1, nonce 0

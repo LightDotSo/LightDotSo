@@ -27,6 +27,10 @@ using ERC4337Utils for EntryPoint;
 /// @notice Unit tests for `LightWallet` upgradeability
 /// @notice See `ERC1271FuzzTest` for fuzz tests
 contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
     /// Tests that the transaction reverts when the signature is invalid
     function test_revertWhenSignatureInvalid_updateImageHash() public {
         // Set the image hash to a random value

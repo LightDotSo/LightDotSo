@@ -26,10 +26,18 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
 contract LightWalletProxyIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
     function setUp() public virtual override {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
     }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
 
     /// Tests that the account can not be initialized twice
     function test_revertWhenAlreadyInitialized_proxy() public {

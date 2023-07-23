@@ -26,10 +26,18 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
 contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
     function setUp() public virtual override {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
     }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
 
     /// Tests that the factory revert when creating an account with a nonce that is 0
     function test_revertWhenBytesZero_createAccount() public {
@@ -37,6 +45,16 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         vm.expectRevert(abi.encodeWithSignature("ImageHashIsZero()"));
         // Get the predicted address of the new account
         account = factory.createAccount(bytes32(0), 0);
+    }
+
+    /// Tests that the factory revert when creating an account with a nonce that is 0
+    function test_createAccount_alreadyExists() public {
+        // Create the account using the factory w/ hash 1, nonce 0
+        _testCreateAccountWithNonceZero();
+        // Get the already predicted address of the new account
+        address accountV2 = address(factory.createAccount(bytes32(uint256(1)), 0));
+        // Assert that the predicted address matches the created account
+        assertEq(accountV2, address(account));
     }
 
     /// Tests that the factory can create a new account at the predicted address

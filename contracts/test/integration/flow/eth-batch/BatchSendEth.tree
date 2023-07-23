@@ -1,0 +1,8 @@
+BatchSendEth.t.sol
+├── When the sender is not `Entrypoint`
+│  ├── It should revert
+└── When the sender is Entrypoint
+   ├── When the signature is invalid
+   │  └── It should revert on a {InvalidSignature} error
+   └── When the signature is valid
+      └── It should batch transfer the ETH to the recipient

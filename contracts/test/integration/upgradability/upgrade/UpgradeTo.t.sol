@@ -26,10 +26,18 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
 contract UpgradeToIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
     function setUp() public virtual override {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
     }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
 
     /// Tests that the factory reverts when trying to upgrade from outside address
     function test_revertWhenNotSelf_upgradeTo() public {

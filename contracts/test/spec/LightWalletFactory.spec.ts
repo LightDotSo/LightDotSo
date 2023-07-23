@@ -21,10 +21,10 @@ test("LightWalletFactory: Correct humanReadableAbi", () => {
   expect(Object.values(LightWalletFactory.humanReadableAbi))
     .toMatchInlineSnapshot(`
     [
-      "constructor(address _entryPoint)",
+      "constructor(address entryPoint)",
       "function accountImplementation() view returns (address)",
-      "function createAccount(bytes32 _hash, uint256 _salt) returns (address ret)",
-      "function getAddress(bytes32 _hash, uint256 _salt) view returns (address)",
+      "function createAccount(bytes32 hash, uint256 salt) returns (address ret)",
+      "function getAddress(bytes32 hash, uint256 salt) view returns (address)",
     ]
   `);
 });

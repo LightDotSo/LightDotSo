@@ -45,15 +45,17 @@ contract LightWalletFactory is ILightWalletFactory {
     // Constructor + Functions
     // -------------------------------------------------------------------------
 
-    constructor(IEntryPoint _entryPoint) {
-        accountImplementation = new LightWallet(_entryPoint);
+    constructor(IEntryPoint entryPoint) {
+        accountImplementation = new LightWallet(entryPoint);
     }
 
     /// @notice Creates an account, and return its address.
+    /// @param hash The hash of the account image.
+    /// @param salt The salt of the create2 call.
     /// @dev Note that during UserOperation execution, this method is called only if the account is not deployed.
     /// This method returns an existing account address so that entryPoint.getSenderAddress() would work even after account creation
-    function createAccount(bytes32 _hash, uint256 _salt) public returns (LightWallet ret) {
-        address addr = getAddress(_hash, _salt);
+    function createAccount(bytes32 hash, uint256 salt) public returns (LightWallet ret) {
+        address addr = getAddress(hash, salt);
         uint256 codeSize = addr.code.length;
         // If the account already exists, return it
         if (codeSize > 0) {
@@ -62,23 +64,26 @@ contract LightWalletFactory is ILightWalletFactory {
         // Initializes the account
         ret = LightWallet(
             payable(
-                new ERC1967Proxy{salt : bytes32(_salt)}(
+                new ERC1967Proxy{salt : bytes32(salt)}(
                   address(accountImplementation),
-                  abi.encodeCall(LightWallet.initialize, (_hash))
+                  abi.encodeCall(LightWallet.initialize, (hash))
                 )
             )
         );
     }
 
     /// @notice calculate the counterfactual address of this account as it would be returned by createAccount()
-    function getAddress(bytes32 _hash, uint256 _salt) public view returns (address) {
+    /// @param hash The hash of the account image.
+    /// @param salt The salt of the create2 call.
+    // slither-disable-next-line too-many-digits
+    function getAddress(bytes32 hash, uint256 salt) public view returns (address) {
         // Computes the address with the given `salt`and the contract address `addressImplementation`, and with `initialize` method w/ `owner`
         return Create2.computeAddress(
-            bytes32(_salt),
+            bytes32(salt),
             keccak256(
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
-                    abi.encode(address(accountImplementation), abi.encodeCall(LightWallet.initialize, (_hash)))
+                    abi.encode(address(accountImplementation), abi.encodeCall(LightWallet.initialize, (hash)))
                 )
             )
         );

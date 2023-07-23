@@ -19,4 +19,5 @@ pragma solidity ^0.8.18;
 
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
+/// @notice Base fuzz test for `LightWallet`
 abstract contract BaseFuzzTest is BaseIntegrationTest {}

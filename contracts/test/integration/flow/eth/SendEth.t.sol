@@ -32,27 +32,39 @@ using ERC4337Utils for EntryPoint;
 
 /// @notice Integration tests for `LightWallet` sending ETH
 contract SendEthIntegrationTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Variables
+    // -------------------------------------------------------------------------
+
+    // Internal operational callData to send
+    bytes internal callData;
+
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
     function setUp() public virtual override {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
+
+        // Set the operational callData
+        callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
     }
+
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
 
     /// Tests that the account revert when sending ETH from a non-entrypoint
     function test_revertWhenNotEntrypoint_transferEth() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
-        (bool ok,) =
-            address(account).call(abi.encodeWithSelector(LightWallet.execute.selector, address(account), 1, bytes("")));
+        (bool ok,) = address(account).call(callData);
     }
 
     /// Tests that the account can correctly transfer ETH
     function test_revertWhenInvalidSignature_transferEth() public {
         // Example UserOperation to send 0 ETH to the address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
-            lightWalletUtils,
-            address(account),
-            abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes("")),
-            userKey
-        );
+        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
@@ -61,12 +73,7 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ETH
     function test_transferEth() public {
         // Example UserOperation to send 0 ETH to the address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
-            lightWalletUtils,
-            address(account),
-            abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes("")),
-            userKey
-        );
+        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the account is 1

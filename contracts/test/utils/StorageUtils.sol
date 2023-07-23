@@ -21,6 +21,10 @@ import {Test} from "forge-std/Test.sol";
 
 /// @notice Utility functions for storage
 contract StorageUtils is Test {
+    // -------------------------------------------------------------------------
+    // Public Functions
+    // -------------------------------------------------------------------------
+
     /// @param _addr The address of the contract
     /// @param _slot The location of the bytes32 in storage
     /// @dev Reads a uint256 from storage

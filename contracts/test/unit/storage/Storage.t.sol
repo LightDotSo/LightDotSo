@@ -21,6 +21,10 @@ import {BaseTest} from "@/test/base/BaseTest.t.sol";
 
 /// @notice Unit tests for `LightWallet` for storage
 contract StorageUnitTest is BaseTest {
+    // -------------------------------------------------------------------------
+    // Tests
+    // -------------------------------------------------------------------------
+
     /// Tests the account slot implementation
     function test_imageHash() public {
         // Create the account using the factory w/ hash 1, nonce 0
