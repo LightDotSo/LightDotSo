@@ -17,6 +17,8 @@
 
 pragma solidity ^0.8.18;
 
+import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import {MockERC721} from "solmate/test/utils/mocks/MockERC721.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -24,12 +26,14 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Integration tests for `LightWallet` batch sending ETH
-contract BatchSendEthIntegrationTest is BaseIntegrationTest {
+/// @notice Integration tests for `LightWallet` sending ERC721
+contract BatchSendERC721IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
 
+    // ERC721 nft to send
+    MockERC721 internal nft;
     // Internal operational callData to send
     bytes internal callData;
 
@@ -48,21 +52,27 @@ contract BatchSendEthIntegrationTest is BaseIntegrationTest {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
 
-        // Set the callData to transfer ETH to the address one, two, and three
-        callAddresses = new address[](3);
-        callAddresses[0] = address(1);
-        callAddresses[1] = address(2);
-        callAddresses[2] = address(3);
+        // Deploy a new MockERC721
+        nft = new MockERC721("Test", "TEST");
 
-        callValues = new uint256[](3);
-        callValues[0] = uint256(1);
-        callValues[1] = uint256(2);
-        callValues[2] = uint256(3);
+        // Mint 3 ERC721s to the account
+        nft.mint(address(account), 1);
+        nft.mint(address(account), 2);
+        nft.mint(address(account), 3);
+        assertEq(nft.balanceOf(address(account)), 3);
+
+        // Set the callData to transfer nfts to the address one, two, and three
+        callAddresses = new address[](3);
+        callAddresses[0] = address(nft);
+        callAddresses[1] = address(nft);
+        callAddresses[2] = address(nft);
+
+        callValues = new uint256[](0);
 
         callDatas = new bytes[](3);
-        callDatas[0] = bytes("");
-        callDatas[1] = bytes("");
-        callDatas[2] = bytes("");
+        callDatas[0] = abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(1), 1);
+        callDatas[1] = abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(2), 2);
+        callDatas[2] = abi.encodeWithSelector(IERC721.transferFrom.selector, address(account), address(3), 3);
 
         // Set the operational callData
         callData = abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas);
@@ -72,30 +82,30 @@ contract BatchSendEthIntegrationTest is BaseIntegrationTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account revert when sending ETH from a non-entrypoint
-    function test_revertWhenNotEntrypoint_batchTransferEth() public {
+    /// Tests that the account revert when sending ERC721 from a non-entrypoint
+    function test_revertWhenNotEntrypoint_batchTransferERC721() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
         address(account).call(callData);
     }
 
-    /// Tests that the account can correctly transfer ETH
-    function test_revertWhenInvalidSignature_batchTransferEth() public {
-        // Example UserOperation to send 0 ETH to the address one
+    /// Tests that the account can correctly transfer ERC721
+    function test_revertWhenInvalidSignature_batchTransferERC721() public {
+        // Example UserOperation to send 0 ERC721 to the address one
         UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
 
-    /// Tests that the account can correctly transfer ETH
-    function test_batchTransferEth() public {
+    /// Tests that the account can correctly transfer ERC721
+    function test_batchTransferERC721() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the corresponding balance of the accounts are correct
-        assertEq(address(1).balance, 1);
-        assertEq(address(2).balance, 2);
-        assertEq(address(3).balance, 3);
+        // Assert that the balance of the corresponding destinations are correct
+        assertEq(nft.balanceOf(address(1)), 1);
+        assertEq(nft.balanceOf(address(2)), 1);
+        assertEq(nft.balanceOf(address(3)), 1);
     }
 }
