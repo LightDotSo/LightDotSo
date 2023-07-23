@@ -14,12 +14,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { expect, test } from "vitest";
-import { subdigestOf } from "../../src";
+import { calculateImageHash } from ".";
+import type { Signer } from "../typings";
 
-test("subdigestOf", () => {
-  const ls = subdigestOf(`0x${"00".repeat(20)}`, new Uint8Array(32), 1n);
-  console.log(ls);
-  expect(ls).toBe(
-    "0x4f8026b280821a8d35671eb214849f3d4ed6caf6418ca57be15a139a0d8cf4e5",
+test("calculateImageHash", () => {
+  const signers: Signer[] = [
+    {
+      address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D",
+      weight: 1n,
+    },
+  ];
+
+  const hash = calculateImageHash(1n, 1n, signers);
+  console.log(hash);
+  expect(hash).toBe(
+    "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
   );
 });

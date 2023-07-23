@@ -13,21 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { expect, test } from "vitest";
-import { calculateImageHash } from "../../src";
-import type { Signer } from "../../src";
+// From: https://github.com/0xsequence/sequence.js/blob/3fa8067a5df6332784501794a90af583254e5b88/packages/core/src/v2/signature.ts#L8-L13
+// License: Apache 2.0
+export enum SignatureType {
+  Legacy = 0,
+  Dynamic = 1,
+  NoChainIdDynamic = 2,
+  Chained = 3,
+}
 
-test("calculateImageHash", () => {
-  const signers: Signer[] = [
-    {
-      address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D",
-      weight: 1n,
-    },
-  ];
-
-  const hash = calculateImageHash(1n, 1n, signers);
-  console.log(hash);
-  expect(hash).toBe(
-    "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
-  );
-});
+// From: https://github.com/0xsequence/sequence.js/blob/3fa8067a5df6332784501794a90af583254e5b88/packages/core/src/v2/signature.ts#L15-L23
+// License: Apache 2.0
+export enum SignaturePartType {
+  Signature = 0,
+  Address = 1,
+  DynamicSignature = 2,
+  Node = 3,
+  Branch = 4,
+  Subdigest = 5,
+  Nested = 6,
+}

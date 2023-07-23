@@ -33,7 +33,7 @@ flags:
     paths:
       - contracts/src/**
     carryforward: true
-  node:
+  js:
     paths:
       - apps/**
       - configurations/**

@@ -13,6 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./signature";
-export * from "./signer";
-export * from "./topology";
+import { expect, test } from "vitest";
+import { decodeSignature } from ".";
+import { toBytes } from "viem";
+
+test("decode", () => {
+  const sampleSignature1 =
+    "0x0001636911b800019fa7b7e8ed25088c413074818ac10ab3bbcddb120bbec85083f3ba254e5547d953fe615a6474fd365326244dedd7afa3911ad39c956ca096d721064d6b29055d1b02";
+
+  const topology = decodeSignature(toBytes(sampleSignature1));
+
+  console.log(topology);
+  expect(topology).toEqual({});
+});
