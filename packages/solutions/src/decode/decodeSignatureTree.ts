@@ -19,7 +19,7 @@
 
 import type { RecoveryNode, RecoveryTopology } from "../typings";
 import { SignaturePartType } from "../typings";
-import { bytesToString } from "viem";
+import { bytesToString, bytesToHex } from "viem";
 
 export const SignaturePartTypeLength = 66;
 
@@ -93,7 +93,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
 
           // Append to the pointer.
           pointer = append(pointer, {
-            signature: bytesToString(signature),
+            signature: bytesToHex(signature),
             weight: BigInt(weight),
           });
         }
@@ -116,7 +116,7 @@ export const decodeSignatureTree = (bytes: Uint8Array): RecoveryTopology => {
           // Append to the pointer.
           pointer = append(pointer, {
             address,
-            signature: bytesToString(signature),
+            signature: bytesToHex(signature),
             weight: BigInt(weight),
           });
         }

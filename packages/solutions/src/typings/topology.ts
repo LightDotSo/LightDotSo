@@ -61,25 +61,38 @@ export type Topology = Node | Leaf;
 // -------------------------------------------------------------------------
 
 // An address leaf in a recovery phase.
-export type RecoveryAddressLeaf = Omit<SignatureLeaf, "signature">;
+// Unlike a signature leaf, an address leaf does not contain a signature.
+// Used for `SignaturePartType.Signature` recovery.
+export type RecoverySignatureLeaf = Omit<SignatureLeaf, "signature">;
 
 // A signer leaf in a recovery phase.
-export type RecoverySignerLeaf = Omit<SignatureLeaf, "address">;
+// Unlike a signature leaf, a signer leaf contains a signature with a hex.
+// Used for `SignaturePartType.DynamicSignature` recovery.
+export type RecoveryDynamicSignatureLeaf = Omit<
+  SignatureLeaf,
+  "address" | "signature"
+> & {
+  signature: `0x${string}`;
+};
 
 // A node leaf in a recovery phase.
+// Used for `SignaturePartType.Node` recovery.
 export type RecoveryNodeLeaf = NodeLeaf;
 
 // A subdigest leaf in a recovery phase.
+// Used for `SignaturePartType.Subdigest` recovery.
 export type RecoverySubdigestLeaf = SubdigestLeaf;
 
+// A nested leaf in a recovery phase.
+// Used for `SignaturePartType.Nested` recovery.
 export type RecoveryNestedLeaf = Omit<NestedLeaf, "tree"> & {
   tree: RecoveryTopology;
 };
 
 // A leaf in a recovery phase.
 export type RecoveryLeaf =
-  | RecoveryAddressLeaf
-  | RecoverySignerLeaf
+  | RecoverySignatureLeaf
+  | RecoveryDynamicSignatureLeaf
   | RecoveryNodeLeaf
   | RecoverySubdigestLeaf
   | RecoveryNestedLeaf;

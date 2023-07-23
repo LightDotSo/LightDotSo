@@ -23,6 +23,5 @@ test("decode", () => {
 
   const topology = decodeSignature(toBytes(sampleSignature1));
 
-  console.log(topology);
-  expect(topology).toEqual({});
+  expect(topology).toMatchSnapshot();
 });

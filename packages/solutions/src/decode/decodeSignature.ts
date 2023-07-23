@@ -26,7 +26,7 @@ export const decodeSignature = (signature: Uint8Array) => {
     case SignatureType.Legacy:
       return {
         type,
-        body: decodeSignatureBody(signature.slice(1)),
+        body: decodeSignatureBody(signature),
       };
     case SignatureType.Dynamic:
       return {
