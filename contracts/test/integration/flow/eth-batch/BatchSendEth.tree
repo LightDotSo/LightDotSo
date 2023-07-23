@@ -1,4 +1,4 @@
-SendBatchEth.t.sol
+BatchSendEth.t.sol
 ├── When the sender is not `Entrypoint`
 │  ├── It should revert
 └── When the sender is Entrypoint

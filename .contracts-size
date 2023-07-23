@@ -21,6 +21,7 @@
 | LightWallet                  | 12.367    | 12.209      |
 | LightWalletFactory           | 3.129     | 21.447      |
 | Math                         | 0.086     | 24.49       |
+| MockERC20                    | 3.561     | 21.015      |
 | ModuleSelfAuth               | 0.063     | 24.513      |
 | ModuleStorage                | 0.086     | 24.49       |
 | NonceManager                 | 0.657     | 23.919      |

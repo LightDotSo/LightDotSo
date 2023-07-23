@@ -17,6 +17,8 @@
 
 pragma solidity ^0.8.18;
 
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
@@ -24,11 +26,16 @@ import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
-/// @notice Integration tests for `LightWallet` batch sending ETH
-contract SendBatchEthIntegrationTest is BaseIntegrationTest {
+/// @notice Integration tests for `LightWallet` sending ERC20
+contract SendERC20IntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Variables
     // -------------------------------------------------------------------------
+
+    // ERC20 token to send
+    MockERC20 internal token;
+    // Internal operational callData to send
+    bytes internal callData;
 
     // Internal array of addresses to send ETH to
     address[] internal callAddresses;
@@ -45,62 +52,58 @@ contract SendBatchEthIntegrationTest is BaseIntegrationTest {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
 
-        callAddresses = new address[](3);
-        callAddresses[0] = address(1);
-        callAddresses[1] = address(2);
-        callAddresses[2] = address(3);
+        // Deploy a new MockERC20
+        token = new MockERC20("Test", "TEST", 18);
 
-        callValues = new uint256[](3);
-        callValues[0] = uint256(1);
-        callValues[1] = uint256(2);
-        callValues[2] = uint256(3);
+        // Mint 1e18 ERC20s to the account
+        token.mint(address(account), 1e18);
+        assertEq(token.balanceOf(address(account)), 1e18);
+
+        // Set the callData to transfer tokens to the address one, two, and three
+        callAddresses = new address[](3);
+        callAddresses[0] = address(token);
+        callAddresses[1] = address(token);
+        callAddresses[2] = address(token);
+
+        callValues = new uint256[](0);
 
         callDatas = new bytes[](3);
-        callDatas[0] = bytes("");
-        callDatas[1] = bytes("");
-        callDatas[2] = bytes("");
+        callDatas[0] = abi.encodeWithSelector(IERC20.transfer.selector, address(1), 1);
+        callDatas[1] = abi.encodeWithSelector(IERC20.transfer.selector, address(2), 2);
+        callDatas[2] = abi.encodeWithSelector(IERC20.transfer.selector, address(3), 3);
+
+        // Set the operational callData
+        callData = abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas);
     }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the account revert when sending ETH from a non-entrypoint
-    function test_revertWhenNotEntrypoint_transferBatchEth() public {
+    /// Tests that the account revert when sending ERC20 from a non-entrypoint
+    function test_revertWhenNotEntrypoint_batchTransferERC20() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
-        address(account).call(
-            abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas)
-        );
+        address(account).call(callData);
     }
 
-    /// Tests that the account can correctly transfer ETH
-    function test_revertWhenInvalidSignature_transferBatchEth() public {
-        // Example UserOperation to send 0 ETH to the address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
-            lightWalletUtils,
-            address(account),
-            abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas),
-            userKey
-        );
+    /// Tests that the account can correctly transfer ERC20
+    function test_revertWhenInvalidSignature_batchTransferERC20() public {
+        // Example UserOperation to send 0 ERC20 to the address one
+        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
     }
 
-    /// Tests that the account can correctly transfer ETH
-    function test_transferBatchEth() public {
+    /// Tests that the account can correctly transfer ERC20
+    function test_batchTransferERC20() public {
         // Example UserOperation to send 0 ETH to the address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
-            lightWalletUtils,
-            address(account),
-            abi.encodeWithSelector(LightWallet.executeBatch.selector, callAddresses, callValues, callDatas),
-            userKey
-        );
+        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
         entryPoint.handleOps(ops, beneficiary);
 
-        // Assert that the corresponding balance of the accounts are correct
-        assertEq(address(1).balance, 1);
-        assertEq(address(2).balance, 2);
-        assertEq(address(3).balance, 3);
+        // Assert that the balance of the corresponding destinations are correct
+        assertEq(token.balanceOf(address(1)), 1);
+        assertEq(token.balanceOf(address(2)), 2);
+        assertEq(token.balanceOf(address(3)), 3);
     }
 }
