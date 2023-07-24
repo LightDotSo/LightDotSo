@@ -1,11 +1,12 @@
 module.exports = {
-  "*.{js,ts,tsx}": ["yarn run eslint:cmd --fix"],
-  "*.{md,json,yml}": ["yarn run prettier:cmd --write"],
+  "*.{js,ts,tsx}": ["pnpm run eslint:cmd --fix"],
+  "*.{md,json,yml}": ["pnpm run prettier:cmd --write"],
   "*.sol": [
-    "yarn run forge:fmt:cmd",
-    "yarn run forge:snapshot:cmd",
-    "yarn run solhint:cmd --fix",
+    "pnpm run forge:fmt:cmd",
+    "pnpm run forge:snapshot:cmd",
+    "pnpm run solhint:cmd --fix",
   ],
+  "*.toml": ["pnpm run taplo:cmd"],
   "package.json": [
     "pnpm run npm-package-json:lint",
     "pnpm run sort-package-json:fix",
