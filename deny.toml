@@ -1,27 +1,27 @@
 [advisories]
-vulnerability = "allow"
-unmaintained = "allow"
-notice = "deny"
-unsound = "allow"
-ignore = ["RUSTSEC-2021-0145"]
+  vulnerability = "allow"
+  unmaintained = "allow"
+  notice = "deny"
+  unsound = "allow"
+  ignore = ["RUSTSEC-2021-0145"]
 
 [bans]
-multiple-versions = "allow"
-deny = []
-skip = []
-skip-tree = []
-allow = []
+  multiple-versions = "allow"
+  deny = []
+  skip = []
+  skip-tree = []
+  allow = []
 
 [sources]
-unknown-registry = "deny"
-unknown-git = "allow"
+  unknown-registry = "deny"
+  unknown-git = "allow"
 
 [licenses]
-unlicensed = "allow"
-allow-osi-fsf-free = "neither"
-copyleft = "allow"
-confidence-threshold = 0.93
-allow = [
+  unlicensed = "allow"
+  allow-osi-fsf-free = "neither"
+  copyleft = "allow"
+  confidence-threshold = 0.93
+  allow = [
     "Apache-2.0",
     "BSD-2-Clause",
     "BSD-3-Clause",
@@ -31,6 +31,6 @@ allow = [
     "Apache-2.0 WITH LLVM-exception",
     "AGPL-3.0",
     "ISC",
-]
-deny = []
-exceptions = [{ allow = ["Unicode-DFS-2016"], name = "unicode-ident" }]
+  ]
+  deny = []
+  exceptions = [{ allow = ["Unicode-DFS-2016"], name = "unicode-ident" }]
