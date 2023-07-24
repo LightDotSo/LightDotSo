@@ -1,5 +1,12 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.14
+
+### Patch Changes
+
+- Updated dependencies [[`53b6fcf`](https://github.com/LightDotSo/LightDotSo/commit/53b6fcf50bfe573a67b05cfb95256c748cd4e06c)]:
+  - @lightdotso/solutions@0.2.0-pre.2
+
 ## 0.1.0-pre.13
 
 ### Patch Changes
