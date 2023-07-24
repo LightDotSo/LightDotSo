@@ -1,13 +1,17 @@
 [package]
-name = "lightdotso-tracing"
+  name = "lightdotso-tracing"
 
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-homepage.workspace = true
-repository.workspace = true
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
 
 [dependencies]
-tracing = { workspace = true }
-tracing-subscriber = { version = "0.3", default-features = false, features = ["ansi", "env-filter", "fmt"] }
+  tracing = { workspace = true }
+  tracing-subscriber = { version = "0.3", default-features = false, features = [
+    "ansi",
+    "env-filter",
+    "fmt",
+  ] }

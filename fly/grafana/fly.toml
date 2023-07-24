@@ -10,7 +10,7 @@ primary_region = "sjc"
   image = "grafana/grafana:10.0.2"
 
 [env]
-  GF_FEATURE_TOGGLES_ENABLE="publicDashboards"
+  GF_FEATURE_TOGGLES_ENABLE = "publicDashboards"
   GF_INSTALL_PLUGINS = "grafana-worldmap-panel,grafana-clock-panel"
 
 [[mounts]]

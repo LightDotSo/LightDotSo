@@ -1,22 +1,22 @@
 [package]
-name = "lightwallet-core"
+  name = "lightwallet-core"
 
-version.workspace = true
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-homepage.workspace = true
-repository.workspace = true
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
 
 [lib]
-name = "uniffi_lightwallet_core"
-crate-type = ["staticlib"]
+  name = "uniffi_lightwallet_core"
+  crate-type = ["staticlib"]
 
 [dependencies]
-uniffi = "0.23.0"
-uniffi_macros = "0.23.0"
+  uniffi = "0.23.0"
+  uniffi_macros = "0.23.0"
 
-lightwallet-keychain = { path = "../keychain" }
+  lightwallet-keychain = { path = "../keychain" }
 
 [build-dependencies]
-uniffi_build = { version = "0.23.0", features = ["builtin-bindgen"] }
+  uniffi_build = { version = "0.23.0", features = ["builtin-bindgen"] }

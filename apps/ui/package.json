@@ -63,7 +63,7 @@
     "react-hook-form": "^7.45.2",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.6",
-    "vite": "^4.4.6",
+    "vite": "^4.4.7",
     "zod": "^3.21.4"
   },
   "devDependencies": {

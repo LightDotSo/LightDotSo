@@ -1,0 +1,19 @@
+[formatting]
+  align_comments       = true
+  align_entries        = false
+  array_auto_collapse  = true
+  array_auto_expand    = true
+  array_trailing_comma = true
+  compact_arrays       = true
+  compact_entries      = false
+  reorder_keys         = false
+  indent_entries       = true
+  indent_tables        = true
+  inline_table_expand  = true
+
+[[rule]]
+  include = [ "**/Cargo.toml" ]
+  keys    = [ "dependencies" ]
+
+  [rule.formatting]
+    reorder_keys = true

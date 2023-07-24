@@ -8,6 +8,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "eslint.validate": ["javascript", "javascriptreact"],
+  // Toml settings
+  "evenBetterToml.taplo.configFile.path": ".taplo.toml",
   // Files linting
   "files.associations": {
     ".gas-snapshot": "julia"
@@ -17,7 +19,7 @@
   // Typescript settings
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  // Solidity settings
+  // File specific settings
   "[solidity]": {
     "editor.defaultFormatter": "JuanBlanco.solidity"
   },
