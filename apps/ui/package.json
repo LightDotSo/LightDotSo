@@ -78,7 +78,7 @@
     "@storybook/addon-interactions": "^7.1.0",
     "@storybook/addon-links": "^7.1.0",
     "@storybook/addon-measure": "^7.1.0",
-    "@storybook/addon-outline": "^7.1.0",
+    "@storybook/addon-outline": "^7.1.1",
     "@storybook/addon-postcss": "^2.0.0",
     "@storybook/addons": "^7.1.0",
     "@storybook/channel-postmessage": "^7.1.0",
