@@ -3,7 +3,6 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "cache": false,
       "inputs": [
         "**",
         "../lib/**",
@@ -12,7 +11,7 @@
         "../foundry.toml",
         "../remappings.txt"
       ],
-      "outputs": ["../out", "../.gas-snapshot", "../foundry.toml"]
+      "outputs": []
     },
     "lint": {
       "dependsOn": ["build"]
