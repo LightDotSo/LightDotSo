@@ -33,5 +33,6 @@
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "tailwindCSS.experimental.configFile": "configurations/tailwindcss/src/index.js"
+  "tailwindCSS.experimental.configFile": "configurations/tailwindcss/src/index.js",
+  "evenBetterToml.taplo.configFile.path": ".taplo.toml"
 }
