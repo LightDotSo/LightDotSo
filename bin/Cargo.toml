@@ -31,4 +31,4 @@ tower = { workspace = true, features = [
 tower-http = { workspace = true, features = ["cors"] }
 
 [build-dependencies]
-vergen = { version = "8.0.0", features = ["build", "cargo", "git", "gitcl"] }
+vergen = { version = "8.2.4", features = ["build", "cargo", "git", "gitcl"] }
