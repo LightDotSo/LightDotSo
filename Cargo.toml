@@ -8,10 +8,11 @@ members = [
   "crates/keychain",
   "crates/indexer",
   "crates/prisma",
+  "crates/rpc",
   "crates/tracing",
   "tools/embedded-prisma",
   "tools/embedded-scopelint",
-  "tools/embedded-uniffi-bindgen"
+  "tools/embedded-uniffi-bindgen",
 ]
 
 default-members = ["bin"]
@@ -43,13 +44,16 @@ anyhow = "1.0.71"
 axum = "0.6.18"
 clap = "4.3.12"
 eyre = "0.6.8"
+http = "0.2.8"
 lightdotso-indexer = { path = "./crates/indexer" }
-lightdotso-prisma= { path = "./crates/prisma" }
+lightdotso-prisma = { path = "./crates/prisma" }
 lightdotso-tracing = { path = "./crates/tracing" }
 prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
 prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
 serde = "1.0.171"
 tokio = { version = "1", features = ["full"] }
+tower = { version = "0.4.12" }
+tower-http = { version = "0.4", features = ["trace"] }
 tracing = "0.1.37"
 tracing-subscriber = { version = "0.3.17", features = [
   "env-filter",

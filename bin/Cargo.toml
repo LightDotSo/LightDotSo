@@ -16,10 +16,19 @@ anyhow = { workspace = true }
 axum = { workspace = true }
 eyre = { workspace = true }
 clap = { workspace = true }
+http = { workspace = true }
 lightdotso-indexer = { workspace = true }
 lightdotso-tracing = { workspace = true }
 ratatui = { version = "0.22.0", features = ["all-widgets"] }
 tokio = { workspace = true }
+tower = { workspace = true, features = [
+  "full",
+  "util",
+  "timeout",
+  "load-shed",
+  "limit",
+] }
+tower-http = { workspace = true, features = ["cors"] }
 
 [build-dependencies]
 vergen = { version = "8.0.0", features = ["build", "cargo", "git", "gitcl"] }
