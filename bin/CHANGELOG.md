@@ -1,5 +1,11 @@
 # @lightdotso/bin
 
+## 0.1.0-pre.8
+
+### Minor Changes
+
+- [#228](https://github.com/LightDotSo/LightDotSo/pull/228) [`f0d5196`](https://github.com/LightDotSo/LightDotSo/commit/f0d51966a428223f4a8428870942cd774dd2de08) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add RPC crate
+
 ## 0.1.0-pre.7
 
 ### Patch Changes
