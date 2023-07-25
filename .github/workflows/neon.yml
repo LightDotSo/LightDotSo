@@ -85,7 +85,7 @@ jobs:
         working-directory: configurations/prisma
         run: |
           touch .env
-          echo DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb >> .env
+          echo DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb?pgbouncer=true >> .env
           echo DIRECT_DATABASE_URL=${{ steps.create_branch.outputs.db_url }}/neondb >> .env
           pnpm run build
           pnpm run db:migrate:deploy
