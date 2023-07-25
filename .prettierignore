@@ -1,6 +1,8 @@
 generated.ts
+
 apps/docs/src/pages/posts/**/*.mdx
 apps/ui/src/components/**
+configurations/prisma/src/zod/**
 
 *.html
 *.xcarchive

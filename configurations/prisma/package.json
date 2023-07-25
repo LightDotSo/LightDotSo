@@ -36,7 +36,9 @@
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
-    "prisma": "^5.0.0"
+    "prisma": "^5.0.0",
+    "zod": "^3.21.4",
+    "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
