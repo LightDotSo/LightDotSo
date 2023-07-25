@@ -70,6 +70,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
       - name: Get PR sha
         id: get_pull_request_sha
         run: |
@@ -93,6 +95,8 @@ jobs:
           echo DIRECT_DATABASE_URL=${{ steps.create_branch.outputs.db_url }}/neondb >> .env
           npx prisma generate
           npx prisma migrate deploy
+      - name: Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v4
   neon-check:
     if: always()
     needs:
