@@ -93,6 +93,7 @@ jobs:
           touch .env
           echo DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb >> .env
           echo DIRECT_DATABASE_URL=${{ steps.create_branch.outputs.db_url }}/neondb >> .env
+          npm install -g zod-prisma
           npx prisma generate
           npx prisma migrate deploy
       - name: Commit and Push
