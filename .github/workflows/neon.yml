@@ -91,6 +91,8 @@ jobs:
           pnpm vercel env rm DATABASE_URL preview ${{ steps.get_source_branch.outputs.branch }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Prisma Migrate Deploy
         working-directory: configurations/prisma
         run: |
@@ -118,6 +120,8 @@ jobs:
           pnpm vercel env pull --environment=preview --git-branch=${{ github.head_ref }} .env
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Prisma Migrate Deploy
         working-directory: configurations/prisma
         run: |
