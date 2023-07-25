@@ -35,3 +35,4 @@ const handler = (request: Request) => {
 
 export const GET = handler;
 export const POST = handler;
+export const runtime = "edge";

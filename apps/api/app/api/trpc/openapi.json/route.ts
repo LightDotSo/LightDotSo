@@ -21,3 +21,4 @@ const handler = () => {
 };
 
 export const GET = handler;
+export const runtime = "edge";
