@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Search branch by name
+      - name: Search branch by ref
         id: get_branch_id
         run: |
           branch_id=$(curl --silent \
@@ -54,17 +54,41 @@ jobs:
         uses: neondatabase/delete-branch-action@v2
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
-          branch_id: ${{ github.head_ref }}
+          branch_id: ${{ steps.get_branch_id.outputs.branch_id }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+      - name: Get merge queue commit SHA
+        id: get_merge_sha
+        run: |
+          echo sha="${{ github.event.before }}" | cut -c1-8 >> $GITHUB_OUTPUT
+      - name: Search merge branch by ref
+        id: get_merge_branch_id
+        run: |
+          branch_id=$(curl --silent \
+            "https://console.neon.tech/api/v2/projects/${{ secrets.NEON_PROJECT_ID }}/branches" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            | jq -r .branches \
+            | jq -c '.[] | select(.name | contains("'${{ steps.get_merge_sha.outputs.sha }}'")) .id' \
+            | jq -r \
+            ) \
+          echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
+      - name: Delete Neon Branch
+        uses: neondatabase/delete-branch-action@v2
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch_id: ${{ steps.get_merge_branch_id.outputs.branch_id }}
           api_key: ${{ secrets.NEON_API_KEY }}
       - name: Touch .env
         working-directory: configurations/prisma
         run: |
           touch .env
+          pnpm run build
           echo DATABASE_URL=${{ secrets.DATABASE_URL }}/neondb?pgbouncer=true&connect_timeout=10 >> .env
           echo DIRECT_DATABASE_URL=${{ secrets.DIRECT_DATABASE_URL }}/neondb?connect_timeout=10 >> .env
           pnpm run db:migrate:deploy
   neon-deploy-preview:
-    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == false && github.head_ref != ''
+    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == false
     needs:
       - neon-turbo
     runs-on: ubuntu-latest

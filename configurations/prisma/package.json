@@ -27,8 +27,10 @@
     "db:push": "prisma db push",
     "predev": "npm run generate",
     "dev": "tsup --watch",
-    "generate": "pnpm run shell:generate && pnpm run prisma:generate",
-    "prisma:format": "prisma format",
+    "generate": "pnpm run shell:generate && pnpm run prisma:generate && pnpm run prisma:format",
+    "prisma:format": "pnpm run prisma:format:main && pnpm run prisma:format:rs",
+    "prisma:format:main": "prisma format --schema=./prisma/schema.prisma",
+    "prisma:format:rs": "prisma format --schema=./prisma/schema-rs.prisma",
     "prisma:generate": "prisma generate",
     "shell:generate": "bash ./generate.sh",
     "studio": "prisma studio"
