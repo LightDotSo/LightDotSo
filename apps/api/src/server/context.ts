@@ -40,7 +40,6 @@ export const createContext = async ({ req, res }: CreateNextContextOptions) => {
   return {
     req,
     res,
-    prisma,
   };
 };
 
