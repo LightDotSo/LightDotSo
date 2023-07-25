@@ -13,25 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { nextHandler } from "@/server/handler";
 import { appRouter } from "@/routers/app";
 
-const handler = (request: Request) => {
-  console.log(`incoming request ${request.url}`);
-  return fetchRequestHandler({
-    endpoint: "/api/trpc",
-    req: request,
-    router: appRouter,
-    createContext: function (
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-      opts: FetchCreateContextFnOptions,
-    ): object | Promise<object> {
-      // empty context
-      return {};
-    },
-  });
-};
-
-export const GET = handler;
-export const POST = handler;
+export default nextHandler(appRouter);

@@ -21,7 +21,10 @@
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
+    "@trpc-limiter/core": "^0.0.8",
     "@trpc/server": "^10.35.0",
+    "@upstash/ratelimit": "^0.4.3",
+    "@upstash/redis": "^1.22.0",
     "fets": "^0.4.8",
     "next": "^13.4.12",
     "react": "^18.2.0",

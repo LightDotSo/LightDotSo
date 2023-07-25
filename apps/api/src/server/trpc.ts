@@ -27,8 +27,10 @@ import { initTRPC } from "@trpc/server";
 import { transformer } from "@/utils/transformer";
 import type { Context } from "./context";
 import type { OpenApiMeta } from "trpc-openapi";
+import { createTRPCUpstashLimiter } from "@/utils/rate-limit";
+import type { NextApiRequest } from "next";
 
-const t = initTRPC
+const root = initTRPC
   .meta<OpenApiMeta>()
   .context<Context>()
   .create({
@@ -48,20 +50,44 @@ const t = initTRPC
  * Create a router
  * @see https://trpc.io/docs/v10/router
  */
-export const router = t.router;
+export const router = root.router;
 
 /**
  * Create an unprotected procedure
  * @see https://trpc.io/docs/v10/procedures
  **/
-export const publicProcedure = t.procedure;
+export const publicProcedure = root.procedure;
 
 /**
  * @see https://trpc.io/docs/v10/middlewares
  */
-export const middleware = t.middleware;
+export const middleware = root.middleware;
 
 /**
  * @see https://trpc.io/docs/v10/merging-routers
  */
-export const mergeRouters = t.mergeRouters;
+export const mergeRouters = root.mergeRouters;
+
+const getFingerprint = (req: NextApiRequest) => {
+  const forwarded = req.headers["x-forwarded-for"];
+  const ip = forwarded
+    ? (typeof forwarded === "string" ? forwarded : forwarded[0])?.split(/, /)[0]
+    : req.socket.remoteAddress;
+  return ip || "127.0.0.1";
+};
+
+export const rateLimiter = createTRPCUpstashLimiter({
+  root,
+  fingerprint: ctx => getFingerprint(ctx.req),
+  windowMs: 20000,
+  message: hitInfo =>
+    `Too many requests, please try again later. ${Math.ceil(
+      (hitInfo.reset - Date.now()) / 1000,
+    )}`,
+  onLimit: hitInfo => {
+    console.log(hitInfo);
+  },
+  max: 5,
+});
+
+export const rateLimitedProcedure = publicProcedure.use(rateLimiter);

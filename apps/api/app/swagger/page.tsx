@@ -19,14 +19,10 @@ import SwaggerUI from "swagger-ui-react";
 import "swagger-ui-react/swagger-ui.css";
 
 // Url for local development, vercel deployment
-const url = () => {
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}/api/trpc/openapi.json`;
-  } else {
-    return "http://localhost:3000/api/trpc/openapi.json";
-  }
-};
+const url = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc/openapi.json`
+  : "http://localhost:3000/api/trpc/openapi.json";
 
 export default function Page() {
-  return <SwaggerUI url={url()} />;
+  return <SwaggerUI url={url} />;
 }
