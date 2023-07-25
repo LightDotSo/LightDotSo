@@ -35,49 +35,25 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Search branch by ref
-        id: get_branch_id
-        run: |
-          branch_id=$(curl --silent \
-            "https://console.neon.tech/api/v2/projects/${{ secrets.NEON_PROJECT_ID }}/branches" \
-            --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
-            --header "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
-            | jq -r .branches \
-            | jq -c '.[] | select(.name | contains("'${{ github.head_ref }}'")) .id' \
-            | jq -r \
-            ) \
-          echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
       - name: Delete Neon Branch
-        uses: neondatabase/delete-branch-action@v2
+        uses: neondatabase/delete-branch-action@v3
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
-          branch_id: ${{ steps.get_branch_id.outputs.branch_id }}
+          branch: ${{ github.head_ref }}
           api_key: ${{ secrets.NEON_API_KEY }}
       - name: Previous commit hash
         id: previous_commit_hash
         run: |
           echo "hash=$(git log --pretty=format:%H -n 1 HEAD^) >> $GITHUB_OUTPUT
-      - name: Search merge branch by ref
-        id: get_merge_branch_id
-        run: |
-          branch_id=$(curl --silent \
-            "https://console.neon.tech/api/v2/projects/${{ secrets.NEON_PROJECT_ID }}/branches" \
-            --header "Accept: application/json" \
-            --header "Content-Type: application/json" \
-            --header "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
-            | jq -r .branches \
-            | jq -c '.[] | select(.name | contains("'gh-readonly-queue/main/pr-${{ github.event.number }}-${{ steps.previous_commit_hash.outputs.hash }}'")) .id' \
-            | jq -r \
-            ) \
-          echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
       - name: Delete Neon Branch
-        uses: neondatabase/delete-branch-action@v2
+        uses: neondatabase/delete-branch-action@v3
         with:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
-          branch_id: ${{ steps.get_merge_branch_id.outputs.branch_id }}
+          branch: gh-readonly-queue/main/pr-${{ github.event.number }}-${{ steps.previous_commit_hash.outputs.hash }}
           api_key: ${{ secrets.NEON_API_KEY }}
       - name: Remove Vercel Environments
         run: |

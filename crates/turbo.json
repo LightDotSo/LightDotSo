@@ -3,7 +3,6 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "cache": false,
       "inputs": [
         "**",
         "../.cargo/**",
