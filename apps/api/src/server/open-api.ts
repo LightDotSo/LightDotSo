@@ -12,9 +12,14 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import { nextHandler } from "@/server/next-handler";
+
+import { generateOpenApiDocument } from "trpc-openapi";
+
 import { appRouter } from "@/routers/app";
 
-const handler = nextHandler(appRouter);
-
-export const GET = handler;
+export const openApiDocument = generateOpenApiDocument(appRouter, {
+  title: "Example CRUD API",
+  description: "OpenAPI compliant REST API built using tRPC with Next.js",
+  version: "1.0.0",
+  baseUrl: "http://localhost:3000/api",
+});

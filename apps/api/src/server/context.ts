@@ -14,34 +14,34 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type * as trpc from "@trpc/server";
-import type * as trpcNext from "@trpc/server/adapters/next";
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface CreateContextOptions {
-  // session: Session | null
-}
+import { type inferAsyncReturnType } from "@trpc/server";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 
 /**
- * Inner function for `createContext` where we create the context.
- * This is useful for testing when we don't want to mock Next.js' request/response
+ * Replace this with an object if you want to pass things to createContextInner
  */
+type CreateContextOptions = Record<string, never>;
+
+/** Use this helper for:
+ * - testing, so we dont have to mock Next.js' req/res
+ * - trpc's `createSSGHelpers` where we don't have req/res
+ * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
+ **/
 // eslint-disable-next-line no-unused-vars
-export async function createContextInner(_opts: CreateContextOptions) {
+export const createContextInner = async (opts: CreateContextOptions) => {
   return {};
-}
-
-export type Context = trpc.inferAsyncReturnType<typeof createContextInner>;
+};
 
 /**
- * Creates context for an incoming request
+ * This is the actual context you'll use in your router
  * @link https://trpc.io/docs/context
- */
-export async function createContext(
-  // eslint-disable-next-line no-unused-vars
-  opts: trpcNext.CreateNextContextOptions,
-): Promise<Context> {
-  // for API-response caching see https://trpc.io/docs/caching
+ **/
+export const createContext = async ({ req, res }: CreateNextContextOptions) => {
+  return {
+    req,
+    res,
+    prisma,
+  };
+};
 
-  return await createContextInner({});
-}
+export type Context = inferAsyncReturnType<typeof createContext>;

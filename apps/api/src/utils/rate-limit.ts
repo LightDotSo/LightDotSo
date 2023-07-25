@@ -13,13 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { generateOpenApiDocument } from "trpc-openapi";
+// From: https://github.com/OrJDev/trpc-limiter/blob/a4b6c38c9a3a04f042dd5a7b7b20af710ec4801f/packages/upstash/src/index.ts
+import { defineTRPCLimiter } from "@trpc-limiter/core";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
-import { appRouter } from "./routers/app";
-
-export const openApiDocument = generateOpenApiDocument(appRouter, {
-  title: "Example CRUD API",
-  description: "OpenAPI compliant REST API built using tRPC with Next.js",
-  version: "1.0.0",
-  baseUrl: "http://localhost:3000/api",
+export const createTRPCUpstashLimiter = defineTRPCLimiter({
+  store: opts =>
+    new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.fixedWindow(opts.max, `${opts.windowMs} ms`),
+    }),
+  async isBlocked(store, fingerprint) {
+    const { success, pending, ...rest } = await store.limit(fingerprint);
+    await pending;
+    return success ? null : rest;
+  },
 });

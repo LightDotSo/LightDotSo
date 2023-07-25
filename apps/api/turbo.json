@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["VERCEL_URL"],
+      "env": ["NEXT_PUBLIC_VERCEL_URL"],
       "inputs": ["**"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },

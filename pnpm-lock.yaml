@@ -273,9 +273,18 @@ importers:
       '@prisma/client':
         specifier: ^5.0.0
         version: 5.0.0(prisma@5.0.0)
+      '@trpc-limiter/core':
+        specifier: ^0.0.8
+        version: 0.0.8(@trpc/client@10.35.0)(@trpc/server@10.35.0)
       '@trpc/server':
         specifier: ^10.35.0
         version: 10.35.0
+      '@upstash/ratelimit':
+        specifier: ^0.4.3
+        version: 0.4.3
+      '@upstash/redis':
+        specifier: ^1.22.0
+        version: 1.22.0
       fets:
         specifier: ^0.4.8
         version: 0.4.8
@@ -9273,6 +9282,25 @@ packages:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}
     dev: true
 
+  /@trpc-limiter/core@0.0.8(@trpc/client@10.35.0)(@trpc/server@10.35.0):
+    resolution: {integrity: sha512-ptwRvjmCHIUow4mVh6O5JpDMVcDLMn+k1tpaB55ZLO/2YGFo705gN1KMM4tBWZNzp07hMyGZS7PXzn0MUxbxSQ==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@trpc/client': ^10.0.0-proxy-beta.21
+      '@trpc/server': ^10.0.0-proxy-beta.21
+    dependencies:
+      '@trpc/client': 10.35.0(@trpc/server@10.35.0)
+      '@trpc/server': 10.35.0
+    dev: false
+
+  /@trpc/client@10.35.0(@trpc/server@10.35.0):
+    resolution: {integrity: sha512-FyVNQGLLsNourpYq7bojvvvpM63woCPL9c+lJo9x1Yheop5fng2GEyiVcVjCmBNk5tVARHjG9bTG1UeNF5t8OQ==}
+    peerDependencies:
+      '@trpc/server': 10.35.0
+    dependencies:
+      '@trpc/server': 10.35.0
+    dev: false
+
   /@trpc/server@10.35.0:
     resolution: {integrity: sha512-UntbE9gG+kB2nEwuJ0hw7AmQuRWw67voKaVBPBA7Ow6+aGZc00gva7015Ey5BT7Qf1wq7xJMLUdgw4QiVU+VpQ==}
     dev: false
@@ -10035,6 +10063,31 @@ packages:
     dependencies:
       '@typescript-eslint/types': 6.2.0
       eslint-visitor-keys: 3.4.1
+
+  /@upstash/core-analytics@0.0.6:
+    resolution: {integrity: sha512-cpPSR0XJAJs4Ddz9nq3tINlPS5aLfWVCqhhtHnXt4p7qr5+/Znlt1Es736poB/9rnl1hAHrOsOvVj46NEXcVqA==}
+    engines: {node: '>=16.0.0'}
+    dependencies:
+      '@upstash/redis': 1.22.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /@upstash/ratelimit@0.4.3:
+    resolution: {integrity: sha512-Dsp9Mw09Flg28JRklKgFiCXqr3bqv8bbG0kgpUYoHjcgPPolFFyaYOj/I2HExvYLZiogl77NUavBoNvMOK0zUQ==}
+    dependencies:
+      '@upstash/core-analytics': 0.0.6
+    transitivePeerDependencies:
+      - encoding
+    dev: false
+
+  /@upstash/redis@1.22.0:
+    resolution: {integrity: sha512-sXoJDoEqqik0HbrNE7yRWckOySEFsoBxfRdCgOqkc0w6py19ZZG50SpGkDDEUXSnBqP8VgGYXhWAiBpqxrt5oA==}
+    dependencies:
+      isomorphic-fetch: 3.0.0
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /@vanilla-extract/babel-plugin-debug-ids@1.0.3:
     resolution: {integrity: sha512-vm4jYu1xhSa6ofQ9AhIpR3DkAp4c+eoR1Rpm8/TQI4DmWbmGbOjYRcqV0aWsfaIlNhN4kFuxFMKBNN9oG6iRzA==}
@@ -18890,6 +18943,15 @@ packages:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /isomorphic-fetch@3.0.0:
+    resolution: {integrity: sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==}
+    dependencies:
+      node-fetch: 2.6.12
+      whatwg-fetch: 3.6.17
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /isomorphic-ws@4.0.1(ws@7.5.9):
     resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
@@ -27955,6 +28017,10 @@ packages:
       - esbuild
       - uglify-js
     dev: true
+
+  /whatwg-fetch@3.6.17:
+    resolution: {integrity: sha512-c4ghIvG6th0eudYwKZY5keb81wtFz9/WeAHAoy8+r18kcWlitUIrmGFQ2rWEl4UCKUilD3zCLHOIPheHx5ypRQ==}
+    dev: false
 
   /whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
