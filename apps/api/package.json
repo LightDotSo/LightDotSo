@@ -15,13 +15,20 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "postinstall": "pnpm --filter @lightdotso/prisma generate",
     "lint": "next lint",
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "@trpc/server": "^10.35.0",
+    "fets": "^0.4.8",
     "next": "^13.4.12",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "superjson": "^1.13.1",
+    "trpc-openapi": "^1.2.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
@@ -29,7 +36,7 @@
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.4.4",
-    "@types/react": "^18.2.15",
+    "@types/react": "^18.2.16",
     "@types/react-dom": "^18.2.7",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.27",
