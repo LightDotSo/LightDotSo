@@ -21,6 +21,7 @@
     "**/*.config.cjs",
     "**/*.config.ts",
     "**/*.entitlements",
+    "**/*.env",
     "**/*.gradle",
     "**/*.html",
     "**/*.icns",

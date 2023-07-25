@@ -15,7 +15,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "postinstall": "pnpm --filter @lightdotso/prisma generate",
+    "postinstall": "pnpm --filter @lightdotso/prisma build",
     "lint": "next lint",
     "start": "next start"
   },
@@ -27,6 +27,7 @@
     "@upstash/redis": "^1.22.0",
     "fets": "^0.4.8",
     "next": "^13.4.12",
+    "prisma": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "superjson": "^1.13.1",
