@@ -1,0 +1,108 @@
+name: Neon
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+env:
+  FOUNDRY_PROFILE: ci
+jobs:
+  neon-turbo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      trigger: ${{ steps.turbo.outputs.trigger }}
+    steps:
+      - name: Turbo Trigger
+        id: turbo
+        uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
+        with:
+          workspace: "@lightdotso/prisma"
+  neon-deploy:
+    if: needs.neon-turbo.outputs.trigger == 'true' && github.event_name == 'push'
+    needs:
+      - neon-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Get last commit SHA
+        id: get_sha
+        run: |
+          echo sha="${{ github.event.before }}" | cut -c1-8 >> $GITHUB_OUTPUT
+      - name: Search branch by name
+        id: get_branch_id
+        run: |
+          branch_id=$(curl --silent \
+            "https://console.neon.tech/api/v2/projects/${{ secrets.NEON_PROJECT_ID }}/branches" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+            | jq -r .branches \
+            | jq -c '.[] | select(.name | contains("'${{ steps.get_sha.outputs.sha }}'")) .id' \
+            | jq -r \
+            ) \
+          echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
+      - name: Delete Neon Branch
+        uses: neondatabase/delete-branch-action@v2
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch_id: ${{ steps.get_branch_id.outputs.branch_id }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+      - name: Touch .env
+        working-directory: configurations/prisma
+        run: |
+          touch .env
+          echo DATABASE_URL=${{ secrets.DATABASE_URL }}/neondb >> .env
+          echo DIRECT_DATABASE_URL=${{ secrets.DIRECT_DATABASE_URL }}/neondb >> .env
+          npx prisma migrate deploy
+  neon-deploy-pr:
+    if: needs.neon-turbo.outputs.trigger == 'true' && github.event_name == 'pull_request'
+    needs:
+      - neon-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Get PR sha
+        id: get_pull_request_sha
+        run: |
+          pull_request_sha=$(jq --raw-output .pull_request.base.sha "$GITHUB_EVENT_PATH" | cut -c1-8)
+          echo "pull_request_sha=${pull_request_sha}" >> $GITHUB_OUTPUT
+          echo $pull_request_sha
+      - name: Neon Database Create Branch Action
+        uses: neondatabase/create-branch-action@v3
+        id: create_branch
+        with:
+          project_id: ${{ secrets.NEON_PROJECT_ID }}
+          branch_name: ${{steps.get_pull_request_sha.outputs.pull_request_sha}}
+          api_key: ${{ secrets.NEON_API_KEY }}
+          username: ${{ secrets.PG_USERNAME }}
+          password: ${{ secrets.PG_PASSWORD }}
+      - name: Touch .env
+        working-directory: configurations/prisma
+        run: |
+          touch .env
+          echo DATABASE_URL=${{ steps.create_branch.outputs.db_url_with_pooler }}/neondb >> .env
+          echo DIRECT_DATABASE_URL=${{ steps.create_branch.outputs.db_url }}/neondb >> .env
+          npx prisma generate
+          npx prisma migrate deploy
+  neon-check:
+    if: always()
+    needs:
+      - neon-deploy
+      - neon-deploy-pr
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: neon-deploy,neon-deploy-pr
+          jobs: ${{ toJSON(needs) }}
