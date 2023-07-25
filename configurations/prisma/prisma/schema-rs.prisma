@@ -4,18 +4,6 @@ generator prisma {
   previewFeatures = ["fullTextSearch"]
 }
 
-generator zod {
-  provider    = "zod-prisma"
-  output      = "../src/zod"
-  modelCase   = "PascalCase"
-  modelSuffix = "Model"
-
-  relationModel = true
-  useDecimalJs  = true
-
-  prismaJsonNullability = true
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")

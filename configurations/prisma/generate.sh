@@ -23,3 +23,10 @@ tail -n +5 prisma/schema-rs.prisma > prisma/schema-rs-updated.prisma && mv prism
 
 # Adding generator configuration to the top of prisma/schema-rs.prisma
 echo -e "generator prisma {\n  provider      = \"cargo prisma\"\n  output        = \"../../../crates/prisma/src/lib.rs\"\n  previewFeatures = [\"fullTextSearch\"]\n}\n$(cat prisma/schema-rs.prisma)" > prisma/schema-rs.prisma
+
+# Remove the zod-prisma generator configuration from prisma/schema-rs.prisma
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i "" -e '7,18d' prisma/schema-rs.prisma
+else
+    sed -i -e '7,18d' prisma/schema-rs.prisma
+fi
