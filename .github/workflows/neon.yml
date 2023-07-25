@@ -60,7 +60,7 @@ jobs:
           echo DIRECT_DATABASE_URL=${{ secrets.DIRECT_DATABASE_URL }}/neondb >> .env
           pnpm run db:migrate:deploy
   neon-deploy-preview:
-    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == false
+    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == false && github.head_ref != ''
     needs:
       - neon-turbo
     runs-on: ubuntu-latest
