@@ -19,7 +19,7 @@
   "scripts": {
     "tailwind-config-viewer": "tailwind-config-viewer -o"
   },
-  "devDependencies": {
+  "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.4",
     "@tailwindcss/line-clamp": "^0.4.4",
