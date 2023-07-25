@@ -26,19 +26,23 @@
 import { initTRPC } from "@trpc/server";
 import { transformer } from "@/utils/transformer";
 import type { Context } from "./context";
+import type { OpenApiMeta } from "trpc-openapi";
 
-const t = initTRPC.context<Context>().create({
-  /**
-   * @see https://trpc.io/docs/v10/data-transformers
-   */
-  transformer,
-  /**
-   * @see https://trpc.io/docs/v10/error-formatting
-   */
-  errorFormatter({ shape }) {
-    return shape;
-  },
-});
+const t = initTRPC
+  .meta<OpenApiMeta>()
+  .context<Context>()
+  .create({
+    /**
+     * @see https://trpc.io/docs/v10/data-transformers
+     */
+    transformer,
+    /**
+     * @see https://trpc.io/docs/v10/error-formatting
+     */
+    errorFormatter({ shape }) {
+      return shape;
+    },
+  });
 
 /**
  * Create a router
