@@ -81,8 +81,8 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
       - name: Remove Vercel Environments
         run: |
-          pnpm vercel env rm PGHOST preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }}
-          pnpm vercel env rm DATABASE_URL preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }}
+          pnpm vercel env rm --yes PGHOST preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }}
+          pnpm vercel env rm --yes DATABASE_URL preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -111,7 +111,7 @@ jobs:
       - name: Get Vercel Secrets
         working-directory: configurations/prisma
         run: |
-          pnpm vercel env pull --environment=preview --git-branch=${{ github.head_ref }} .env --token=${{ secrets.VERCEL_TOKEN }}
+          pnpm vercel env pull --yes --environment=preview --git-branch=${{ github.head_ref }} .env --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
