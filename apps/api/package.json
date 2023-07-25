@@ -15,6 +15,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start"
   },

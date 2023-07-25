@@ -2,6 +2,7 @@
   "extends": "@lightdotso/tsconfig/nextjs.json",
   "compilerOptions": {
     "plugins": [{ "name": "next" }],
+    "strict": true,
     "paths": {
       "@/*": ["./src/*"]
     }
