@@ -42,7 +42,7 @@ jobs:
       - name: Previous commit hash
         id: previous_commit_hash
         run: |
-          echo "hash=$(git log --pretty=format:%H -n 1 HEAD^) >> $GITHUB_OUTPUT
+          echo "hash=$(git log --pretty=format:%H -n 1 HEAD^)" >> $GITHUB_OUTPUT
       - name: Delete Neon Branch
         run: |
           pnpm neonctl branches delete ${{ github.head_ref }} --project-id ${{ secrets.NEON_PROJECT_ID }}
