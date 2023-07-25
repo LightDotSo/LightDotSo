@@ -43,13 +43,14 @@ export const nextHandler = (handler: AnyRouter) =>
       return {};
     },
     onError(opts) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       const { error, type, path, input, ctx, req } = opts;
       console.error("Error:", error);
-      console.error("Type:", type);
-      console.error("Path:", path);
-      console.error("Input:", input);
-      console.error("Context:", ctx);
-      console.error("Request:", req);
+      // console.error("Type:", type);
+      // console.error("Path:", path);
+      // console.error("Input:", input);
+      // console.error("Context:", ctx);
+      // console.error("Request:", req);
       if (error.code === "INTERNAL_SERVER_ERROR") {
         // send to bug reporting
       }
