@@ -12,9 +12,8 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import { nextHandler } from "@/server/next-handler";
+
+import { nextHandler } from "@/server/handler";
 import { appRouter } from "@/routers/app";
 
-const handler = nextHandler(appRouter);
-
-export const GET = handler;
+export default nextHandler(appRouter);
