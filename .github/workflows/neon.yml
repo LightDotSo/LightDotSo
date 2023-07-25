@@ -27,7 +27,7 @@ jobs:
         with:
           workspace: "@lightdotso/prisma"
   neon-deploy:
-    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == true || github.event_name == 'push'
+    if: github.event.pull_request.merged == true
     needs:
       - neon-turbo
     runs-on: ubuntu-latest
@@ -37,12 +37,6 @@ jobs:
         uses: actions/checkout@v3
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Get source branch
-        id: get_source_branch
-        run: |
-          export LATEST_LOG=$(git log -1 --pretty=%B)
-          export SOURCE_BRANCH=$(echo $LATESTLOG | awk -F '\\\\n' '{print $1}' |  awk -F '/' '{print $2}' | awk '{print $1}')
-          echo branch=$SOURCE_BRANCH  >> $GITHUB_OUTPUT
       - name: Search branch by ref
         id: get_branch_id
         run: |
@@ -52,7 +46,7 @@ jobs:
             --header "Content-Type: application/json" \
             --header "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
             | jq -r .branches \
-            | jq -c '.[] | select(.name | contains("'${{ steps.get_source_branch.outputs.branch }}'")) .id' \
+            | jq -c '.[] | select(.name | contains("'${{ github.head_ref }}'")) .id' \
             | jq -r \
             ) \
           echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
@@ -87,8 +81,8 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
       - name: Remove Vercel Environments
         run: |
-          pnpm vercel env rm PGHOST preview ${{ steps.get_source_branch.outputs.branch }} --token=${{ secrets.VERCEL_TOKEN }}
-          pnpm vercel env rm DATABASE_URL preview ${{ steps.get_source_branch.outputs.branch }} --token=${{ secrets.VERCEL_TOKEN }}
+          pnpm vercel env rm PGHOST preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }}
+          pnpm vercel env rm DATABASE_URL preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
