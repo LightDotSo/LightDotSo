@@ -1,20 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["!package.json", "!pnpm-lock.yaml"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "test": {
-      "dependsOn": ["^test"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
     "//#build:test": {
       "inputs": ["contracts/src/**", "packages/solutions/src/**"],
       "outputs": [
@@ -28,7 +14,6 @@
     },
     "//#lint": {
       "dependsOn": [],
-      "outputs": [],
       "inputs": [
         "apps/**",
         "configurations/**",
@@ -36,22 +21,37 @@
         "crates/**",
         "fastlane/**",
         "packages/**"
-      ]
+      ],
+      "outputs": []
     },
     "//#prisma": {
-      "env": ["CI", "DOCKER", "RUNNER_OS"],
       "dependsOn": [],
-      "outputs": ["crates/prisma/src/lib.rs"],
-      "inputs": ["configurations/prisma/prisma/schema-rs.prisma"]
+      "env": ["CI", "DOCKER", "RUNNER_OS"],
+      "inputs": ["configurations/prisma/prisma/schema-rs.prisma"],
+      "outputs": ["crates/prisma/src/lib.rs"]
     },
     "//#test": {
-      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
-      "dependsOn": ["build:test"]
+      "dependsOn": ["build:test"],
+      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"]
     },
     "//#test:coverage": {
-      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
       "dependsOn": ["build:test"],
+      "env": ["ETH_RPC_MAINNET", "VITEST_POOL_ID"],
       "outputs": ["coverage/**"]
+    },
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["!package.json", "!pnpm-lock.yaml"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
     }
   }
 }

@@ -3,16 +3,17 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
-      "outputs": ["chrome.zip"],
-      "dependsOn": ["^build", "clean"]
+      "dependsOn": ["^build", "clean"],
+      "inputs": ["**"],
+      "outputs": ["chrome.zip"]
+    },
+    "clean": {
+      "cache": false
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
-    "clean": {
-      "cache": false
-    }
+    "lint": {}
   }
 }

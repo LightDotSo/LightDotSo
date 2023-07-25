@@ -5,15 +5,16 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["TAURI_PLATFORM", "TAURI_DEBUG"],
+      "inputs": ["**"],
       "outputs": ["dist/**"]
+    },
+    "clean": {
+      "cache": false
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
-    "clean": {
-      "cache": false
-    }
+    "lint": {}
   }
 }

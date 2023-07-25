@@ -12,13 +12,13 @@
         "../../ios/LightWalletSafariExtension/Resources/popup.html"
       ]
     },
+    "clean": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
-    "clean": {
-      "cache": false
-    }
+    "lint": {}
   }
 }

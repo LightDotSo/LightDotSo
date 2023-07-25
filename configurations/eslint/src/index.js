@@ -71,6 +71,22 @@ module.exports = {
         "no-undef": "off",
       },
     },
+    {
+      files: ["turbo.json"],
+      parser: "jsonc-eslint-parser",
+      rules: {
+        "jsonc/sort-keys": [
+          "error",
+          "asc",
+          {
+            caseSensitive: true,
+            natural: false,
+            minKeys: 2,
+            allowLineSeparatedGroups: false,
+          },
+        ],
+      },
+    },
   ],
   settings: {
     "import/parsers": {
