@@ -107,6 +107,14 @@ jobs:
           token: ${{ secrets.BOT_TOKEN }}
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Get curent branches
+        run: |
+          echo $(curl --silent \
+            "https://console.neon.tech/api/v2/projects/${{ secrets.NEON_PROJECT_ID }}/branches" \
+            --header "Accept: application/json" \
+            --header "Content-Type: application/json" \
+            --header "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
+          )
       - name: Get Vercel Secrets
         working-directory: configurations/prisma
         run: |
