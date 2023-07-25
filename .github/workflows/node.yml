@@ -57,7 +57,7 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
-          files: coverage/lcov.info
+          files: coverage/clover.xml
           flags: js
   node-check:
     if: always()
