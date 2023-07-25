@@ -129,6 +129,9 @@ importers:
       dotenv:
         specifier: ^16.3.1
         version: 16.3.1
+      dotenv-cli:
+        specifier: ^7.2.1
+        version: 7.2.1
       esbuild:
         specifier: ^0.18.16
         version: 0.18.16
@@ -14561,6 +14564,16 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       is-obj: 2.0.0
+    dev: true
+
+  /dotenv-cli@7.2.1:
+    resolution: {integrity: sha512-ODHbGTskqRtXAzZapDPvgNuDVQApu4oKX8lZW7Y0+9hKA6le1ZJlyRS687oU9FXjOVEDU/VFV6zI125HzhM1UQ==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.3.1
+      dotenv-expand: 10.0.0
+      minimist: 1.2.8
     dev: true
 
   /dotenv-expand@10.0.0:
