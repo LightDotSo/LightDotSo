@@ -79,6 +79,8 @@ jobs:
         run: |
           pnpm vercel env rm --yes PGHOST preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }} || true
           pnpm vercel env rm --yes DATABASE_URL preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }} || true
+          pnpm vercel env rm --yes PGHOST preview gh-readonly-queue/main/pr-${{ github.event.number }}-${{ github.sha }} --token=${{ secrets.VERCEL_TOKEN }} || true
+          pnpm vercel env rm --yes DATABASE_URL preview gh-readonly-queue/main/pr-${{ github.event.number }}-${{ github.sha }} --token=${{ secrets.VERCEL_TOKEN }} || true
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
