@@ -56,6 +56,10 @@ jobs:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           branch_id: ${{ steps.get_branch_id.outputs.branch_id }}
           api_key: ${{ secrets.NEON_API_KEY }}
+      - name: Previous commit hash
+        id: previous_commit_hash
+        run: |
+          echo "hash=$(git log --pretty=format:%H -n 1 HEAD^) >> $GITHUB_OUTPUT
       - name: Search merge branch by ref
         id: get_merge_branch_id
         run: |
@@ -65,7 +69,7 @@ jobs:
             --header "Content-Type: application/json" \
             --header "Authorization: Bearer ${{ secrets.NEON_API_KEY }}" \
             | jq -r .branches \
-            | jq -c '.[] | select(.name | contains("'${{ github.event.before }}'")) .id' \
+            | jq -c '.[] | select(.name | contains("'gh-readonly-queue/main/pr-${{ github.event.number }}-${{ steps.previous_commit_hash.outputs.hash }}'")) .id' \
             | jq -r \
             ) \
           echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
@@ -79,8 +83,8 @@ jobs:
         run: |
           pnpm vercel env rm --yes PGHOST preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }} || true
           pnpm vercel env rm --yes DATABASE_URL preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }} || true
-          pnpm vercel env rm --yes PGHOST preview gh-readonly-queue/main/pr-${{ github.event.number }}-${{ github.sha }} --token=${{ secrets.VERCEL_TOKEN }} || true
-          pnpm vercel env rm --yes DATABASE_URL preview gh-readonly-queue/main/pr-${{ github.event.number }}-${{ github.sha }} --token=${{ secrets.VERCEL_TOKEN }} || true
+          pnpm vercel env rm --yes PGHOST preview gh-readonly-queue/main/pr-${{ github.event.number }}-${{ steps.previous_commit_hash.outputs.hash }} --token=${{ secrets.VERCEL_TOKEN }} || true
+          pnpm vercel env rm --yes DATABASE_URL preview gh-readonly-queue/main/pr-${{ github.event.number }}-${{ steps.previous_commit_hash.outputs.hash }} --token=${{ secrets.VERCEL_TOKEN }} || true
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
