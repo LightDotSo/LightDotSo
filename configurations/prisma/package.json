@@ -28,7 +28,6 @@
     "predev": "npm run generate",
     "dev": "tsup --watch",
     "generate": "pnpm run shell:generate && pnpm run prisma:generate",
-    "lint": "eslint .",
     "prisma:format": "prisma format",
     "prisma:generate": "prisma generate",
     "shell:generate": "bash ./generate.sh",
