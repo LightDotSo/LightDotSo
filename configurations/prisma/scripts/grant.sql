@@ -1,1 +1,2 @@
 GRANT USAGE ON SCHEMA public TO doppler;
+GRANT ALL PRIVILEGES ON SCHEMA public TO doppler;
