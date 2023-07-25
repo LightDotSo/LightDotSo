@@ -5,8 +5,8 @@ on:
       - main
   pull_request:
     types:
-      - closed
       - opened
+      - closed
       - synchronize
   merge_group:
 concurrency:
@@ -27,7 +27,7 @@ jobs:
         with:
           workspace: "@lightdotso/prisma"
   neon-deploy:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true || github.event.action == 'closed'
     needs:
       - neon-turbo
     runs-on: ubuntu-latest
@@ -87,7 +87,8 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      - name: Prisma Migrate Deploy
+      - if: github.event.pull_request.merged == true
+        name: Prisma Migrate Deploy
         working-directory: configurations/prisma
         run: |
           pnpm run build
