@@ -5,19 +5,20 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["NODE_ENV"],
+      "inputs": ["**"],
       "outputs": [
         "../../ios/LightWalletSafariExtension/Resources/content.js",
         "../../apps/extension/chrome/content.js",
         "../../apps/extension/firefox/content.js"
       ]
     },
+    "clean": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
-    "clean": {
-      "cache": false
-    }
+    "lint": {}
   }
 }

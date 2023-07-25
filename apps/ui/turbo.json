@@ -3,9 +3,10 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
+      "dependsOn": ["^build"],
       "env": ["NODE_ENV"],
-      "outputs": ["dist/**"],
-      "dependsOn": ["^build"]
+      "inputs": ["**"],
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,

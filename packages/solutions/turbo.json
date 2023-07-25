@@ -5,14 +5,15 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["NODE_ENV"],
+      "inputs": ["**"],
       "outputs": ["dist/**"]
+    },
+    "clean": {
+      "cache": false
     },
     "dev": {
       "cache": false,
       "persistent": true
-    },
-    "clean": {
-      "cache": false
     }
   }
 }

@@ -3,17 +3,17 @@
   "extends": ["//"],
   "pipeline": {
     "build": {
+      "dependsOn": ["^build"],
       "inputs": ["**"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-      "dependsOn": ["^build"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "clean": {
+      "cache": false
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
-    "clean": {
-      "cache": false
-    }
+    "lint": {}
   }
 }
