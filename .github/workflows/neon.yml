@@ -27,7 +27,7 @@ jobs:
         with:
           workspace: "@lightdotso/prisma"
   neon-deploy:
-    if: needs.neon-turbo.outputs.trigger == 'true' && github.event_name == 'push' || github.event.pull_request.merged == true
+    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == true || github.event_name == 'push'
     needs:
       - neon-turbo
     runs-on: ubuntu-latest
@@ -88,7 +88,7 @@ jobs:
           echo DIRECT_DATABASE_URL=${{ secrets.DIRECT_DATABASE_URL }}/neondb?connect_timeout=10 >> .env
           pnpm run db:migrate:deploy
   neon-deploy-preview:
-    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == false && github.event_name == 'pull_request'
+    if: needs.neon-turbo.outputs.trigger == 'true' && github.event.pull_request.merged == false || github.event_name == 'pull_request'
     needs:
       - neon-turbo
     runs-on: ubuntu-latest
