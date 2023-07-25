@@ -79,7 +79,7 @@ jobs:
           project_id: ${{ secrets.NEON_PROJECT_ID }}
           branch_id: ${{ steps.get_merge_branch_id.outputs.branch_id }}
           api_key: ${{ secrets.NEON_API_KEY }}
-      - name: Touch .env
+      - name: Prisma Migrate Deploy
         working-directory: configurations/prisma
         run: |
           pnpm run build
@@ -109,7 +109,7 @@ jobs:
           api_key: ${{ secrets.NEON_API_KEY }}
           username: ${{ secrets.PG_USERNAME }}
           password: ${{ secrets.PG_PASSWORD }}
-      - name: Touch .env
+      - name: Prisma Migrate Deploy
         working-directory: configurations/prisma
         run: |
           pnpm run build
