@@ -48,7 +48,7 @@ jobs:
         continue-on-error: true
         with:
           commit: "chore: changesets version package"
-          title: "chore: changesets pr"
+          title: "chore: changesets pr [skip ci]"
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
