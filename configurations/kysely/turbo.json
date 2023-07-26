@@ -6,10 +6,7 @@
       "dependsOn": ["^build"],
       "env": ["DATABASE_URL"],
       "inputs": ["src/**", "../prisma/prisma/schema.prisma"],
-      "outputs": [
-        "dist/**",
-        "./../../node_modules/.pnpm/*/node_modules/@prisma/client"
-      ]
+      "outputs": []
     },
     "dev": {
       "cache": false,
