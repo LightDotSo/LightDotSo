@@ -14,13 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { PrismaClient } from "@prisma/client";
-import { Pool } from "@neondatabase/serverless";
-import { Kysely, PostgresDialect } from "kysely";
-
-import type { DB } from "./src/db/types";
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = new Kysely<DB>({ dialect: new PostgresDialect({ pool }) });
 
 declare global {
   var prisma: PrismaClient | undefined;
