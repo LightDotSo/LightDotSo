@@ -17,7 +17,7 @@ generator zod {
 
 generator kysely {
   provider     = "prisma-kysely"
-  output       = "../src/db"
+  output       = "../../kysely/src/db"
   fileName     = "types.ts"
   enumFileName = "enums.ts"
 }

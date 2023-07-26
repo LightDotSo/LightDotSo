@@ -2,7 +2,7 @@
 
 # generated
 configurations/prisma/src/zod/**
-configurations/prisma/src/db/**
+configurations/kysely/src/db/**
 
 # secrets
 key.json

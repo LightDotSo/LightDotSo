@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
+    "@lightdotso/kysely": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
     "@lightdotso/trpc": "workspace:*",

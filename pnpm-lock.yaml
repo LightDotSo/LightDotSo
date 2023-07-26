@@ -386,6 +386,9 @@ importers:
       '@lightdotso/eslint-config':
         specifier: workspace:*
         version: link:../../configurations/eslint
+      '@lightdotso/kysely':
+        specifier: workspace:*
+        version: link:../../configurations/kysely
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
@@ -939,6 +942,28 @@ importers:
         specifier: ^13.4.12
         version: 13.4.12(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
 
+  configurations/kysely:
+    dependencies:
+      '@neondatabase/serverless':
+        specifier: ^0.5.6
+        version: 0.5.6
+      kysely:
+        specifier: ^0.26.1
+        version: 0.26.1
+    devDependencies:
+      '@lightdotso/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.4.4
+        version: 20.4.4
+      typescript:
+        specifier: ^5.1.6
+        version: 5.1.6
+
   configurations/prettier:
     dependencies:
       prettier:
@@ -950,15 +975,9 @@ importers:
 
   configurations/prisma:
     dependencies:
-      '@neondatabase/serverless':
-        specifier: ^0.5.6
-        version: 0.5.6
       '@prisma/client':
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0(prisma@5.0.0)
-      kysely:
-        specifier: ^0.26.1
-        version: 0.26.1
       prisma:
         specifier: ^5.0.0
         version: 5.0.0

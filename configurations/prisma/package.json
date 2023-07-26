@@ -35,9 +35,7 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.5.6",
-    "@prisma/client": "^5.0.0",
-    "kysely": "^0.26.1",
+    "@prisma/client": "5.0.0",
     "prisma": "^5.0.0",
     "prisma-kysely": "^1.5.0",
     "zod": "^3.21.4",

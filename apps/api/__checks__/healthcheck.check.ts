@@ -16,7 +16,7 @@
 import { ApiCheck, AssertionBuilder, CheckGroup } from "checkly/constructs";
 
 export const websiteGroup = new CheckGroup("api", {
-  name: "API Group",
+  name: "api",
   activated: true,
   muted: false,
   runtimeId: "2022.10",
