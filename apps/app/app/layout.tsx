@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Button />
+        <Button>Hello</Button>
         {children}
       </body>
     </html>
