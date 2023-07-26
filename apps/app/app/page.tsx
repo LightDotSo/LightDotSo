@@ -13,24 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { PrismaClient } from "@prisma/client";
-import { Pool } from "@neondatabase/serverless";
-import { Kysely, PostgresDialect } from "kysely";
+import { db } from "@lightdotso/prisma";
 
-import type { DB } from "./src/db/types";
+export default async function Page() {
+  const users = await db.selectFrom("User").selectAll().execute();
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = new Kysely<DB>({ dialect: new PostgresDialect({ pool }) });
-
-declare global {
-  var prisma: PrismaClient | undefined;
+  return (
+    <main className="text-red-500">
+      <ul>
+        {users.map(({ id, name }) => {
+          return <li key={id}>{name}</li>;
+        })}
+      </ul>
+    </main>
+  );
 }
-
-export const prisma =
-  global.prisma ||
-  new PrismaClient({ log: ["query", "info", "warn", "error"] });
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
-
-export * from "./src/client";
-// eslint-disable-next-line import/no-unresolved
-export * from "./src/zod";

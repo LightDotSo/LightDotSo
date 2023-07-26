@@ -26,9 +26,9 @@ echo -e "generator prisma {\n  provider        = \"cargo prisma\"\n  output     
 
 # Remove the zod-prisma generator configuration from prisma/schema-rs.prisma
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i "" -e '7,18d' prisma/schema-rs.prisma
+    sed -i "" -e '7,25d' prisma/schema-rs.prisma
     sed -i "" -e '10d' prisma/schema-rs.prisma
 else
-    sed -i -e '7,18d' prisma/schema-rs.prisma
+    sed -i -e '7,25d' prisma/schema-rs.prisma
     sed -i -e '10d' prisma/schema-rs.prisma
 fi
