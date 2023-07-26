@@ -13,6 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { appRouter, nextHandler } from "@lightdotso/trpc";
+import { publicProcedure, router } from "../server/trpc";
+import { userRouter } from "./user";
 
-export default nextHandler(appRouter);
+export const appRouter = router({
+  healthcheck: publicProcedure.query(() => "yay!"),
+  user: userRouter,
+});
+
+export type AppRouter = typeof appRouter;

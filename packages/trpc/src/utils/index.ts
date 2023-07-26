@@ -13,12 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { publicProcedure, router } from "@/server/trpc";
-import { userRouter } from "./user";
-
-export const appRouter = router({
-  healthcheck: publicProcedure.query(() => "yay!"),
-  user: userRouter,
-});
-
-export type AppRouter = typeof appRouter;
+export * from "./rate-limit";
+export * from "./transformer";
