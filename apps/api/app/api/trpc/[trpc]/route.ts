@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { appRouter, nextHandler } from "@lightdotso/trpc";
+import { appHandler } from "@lightdotso/trpc";
 
-export default nextHandler(appRouter);
+const handler = appHandler;
+
+export const GET = handler;
+export const POST = handler;

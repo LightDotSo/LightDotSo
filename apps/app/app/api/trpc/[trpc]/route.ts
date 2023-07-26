@@ -13,17 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { PrismaClient } from "@prisma/client/edge";
+import { appHandler } from "@lightdotso/trpc";
 
-declare global {
-  var prisma: PrismaClient | undefined;
-}
+const handler = appHandler;
 
-export const prisma =
-  global.prisma ||
-  new PrismaClient({ log: ["query", "info", "warn", "error"] });
-if (process.env.NODE_ENV !== "production") global.prisma = prisma;
-
-export * from "./src/client";
-// eslint-disable-next-line import/no-unresolved
-export * from "./src/zod";
+export const GET = handler;
+export const POST = handler;

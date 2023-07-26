@@ -15,7 +15,7 @@
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { type inferAsyncReturnType } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { type FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 
 /**
  * Replace this with an object if you want to pass things to createContextInner
@@ -36,10 +36,13 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * This is the actual context you'll use in your router
  * @link https://trpc.io/docs/context
  **/
-export const createContext = async ({ req, res }: CreateNextContextOptions) => {
+export const createContext = async ({
+  req,
+  resHeaders,
+}: FetchCreateContextFnOptions) => {
   return {
     req,
-    res,
+    resHeaders,
   };
 };
 
