@@ -47,6 +47,8 @@ jobs:
         run: |
           pnpm neonctl branches delete ${{ github.head_ref }} --project-id ${{ secrets.NEON_PROJECT_ID }}
           pnpm neonctl branches delete gh-readonly-queue/main/pr-${{ github.event.number }}-${{ steps.previous_commit_hash.outputs.hash }} --project-id ${{ secrets.NEON_PROJECT_ID }}
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
       - name: Remove Vercel Environments
         run: |
           pnpm vercel env rm --yes PGHOST preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }} || true
