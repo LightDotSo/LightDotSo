@@ -28,7 +28,7 @@ import { transformer } from "../utils/transformer";
 import type { Context } from "./context";
 import type { OpenApiMeta } from "trpc-openapi";
 import { createTRPCUpstashLimiter } from "../utils/rate-limit";
-import type { NextApiRequest } from "next";
+import type { NextRequest } from "next/server";
 
 const root = initTRPC
   .meta<OpenApiMeta>()
@@ -68,12 +68,8 @@ export const middleware = root.middleware;
  */
 export const mergeRouters = root.mergeRouters;
 
-const getFingerprint = (req: NextApiRequest) => {
-  const forwarded = req.headers["x-forwarded-for"];
-  const ip = forwarded
-    ? (typeof forwarded === "string" ? forwarded : forwarded[0])?.split(/, /)[0]
-    : req.socket.remoteAddress;
-  return ip || "127.0.0.1";
+const getFingerprint = (req: NextRequest) => {
+  return req.ip || "127.0.0.1";
 };
 
 export const rateLimiter = createTRPCUpstashLimiter({
