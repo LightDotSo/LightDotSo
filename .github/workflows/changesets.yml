@@ -47,8 +47,8 @@ jobs:
         uses: changesets/action@v1
         continue-on-error: true
         with:
-          commit: "chore: changesets version package"
-          title: "chore: changesets pr [skip ci]"
+          commit: "chore: changesets version package [skip ci]"
+          title: "chore: changesets pr"
           publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
