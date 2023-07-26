@@ -3,11 +3,29 @@ comment:
   require_changes: true
 coverage:
   status:
+    default_rules:
+      flag_coverage_not_uploaded_behavior: exclude
     project:
       default:
         target: auto
         threshold: "0%"
         informational: true
+      contracts:
+        target: auto
+        flags:
+          - contracts
+      js:
+        target: auto
+        flags:
+          - js
+      rust:
+        target: auto
+        flags:
+          - rust
+      ios:
+        target: auto
+        flags:
+          - ios
     patch:
       default:
         target: auto
