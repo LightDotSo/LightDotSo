@@ -13,20 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { db } from "@lightdotso/kysely";
+import { Pool } from "@neondatabase/serverless";
+import { Kysely, PostgresDialect } from "kysely";
 
-export default async function Page() {
-  const users = await db.selectFrom("User").selectAll().execute();
+import type { DB } from "./src/db/types";
 
-  return (
-    <main className="text-red-500">
-      <ul>
-        {users.map(({ id, name }) => {
-          return <li key={id}>{name}</li>;
-        })}
-      </ul>
-    </main>
-  );
-}
-
-export const runtime = "edge";
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+export const db = new Kysely<DB>({ dialect: new PostgresDialect({ pool }) });

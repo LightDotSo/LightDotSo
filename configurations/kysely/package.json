@@ -1,0 +1,33 @@
+{
+  "name": "@lightdotso/kysely",
+  "version": "0.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Light, Inc.",
+  "main": "index.ts",
+  "types": "index.d.ts",
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@neondatabase/serverless": "^0.5.6",
+    "kysely": "^0.26.1"
+  },
+  "devDependencies": {
+    "@lightdotso/prisma": "workspace:*",
+    "@lightdotso/tsconfig": "workspace:*",
+    "@types/node": "^20.4.4",
+    "typescript": "^5.1.6"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}
