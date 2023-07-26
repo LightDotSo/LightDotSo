@@ -13,20 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Button } from "@lightdotso/ui";
-import "@lightdotso/styles/global.css";
+import { db } from "@lightdotso/prisma";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function Page() {
+  const users = await db.selectFrom("User").selectAll().execute();
+
   return (
-    <html lang="en">
-      <body>
-        <Button>Hello</Button>
-        {children}
-      </body>
-    </html>
+    <main className="text-red-500">
+      <ul>
+        {users.map(({ id, name }) => {
+          return <li key={id}>{name}</li>;
+        })}
+      </ul>
+    </main>
   );
 }

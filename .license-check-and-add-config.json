@@ -60,6 +60,7 @@
     "*.yml",
     "apps/extension/**/*.js",
     "apps/docs/src/pages/posts/**/*.mdx",
+    "configurations/prisma/src/db/**/*.ts",
     "configurations/prisma/src/zod/**/*.ts",
     "ios/LightWalletSafariExtension/Resources/**/*.js",
     "**/__snapshots__/**",
