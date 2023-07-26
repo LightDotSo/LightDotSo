@@ -44,12 +44,14 @@ jobs:
         run: |
           echo "hash=$(git log --pretty=format:%H -n 1 HEAD^)" >> $GITHUB_OUTPUT
       - name: Delete Neon Branch
+        continue-on-error: true
         run: |
           pnpm neonctl branches delete ${{ github.head_ref }} --project-id ${{ secrets.NEON_PROJECT_ID }}
           pnpm neonctl branches delete gh-readonly-queue/main/pr-${{ github.event.number }}-${{ steps.previous_commit_hash.outputs.hash }} --project-id ${{ secrets.NEON_PROJECT_ID }}
         env:
           NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
       - name: Remove Vercel Environments
+        continue-on-error: true
         run: |
           pnpm vercel env rm --yes PGHOST preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }} || true
           pnpm vercel env rm --yes DATABASE_URL preview ${{ github.head_ref }} --token=${{ secrets.VERCEL_TOKEN }} || true
