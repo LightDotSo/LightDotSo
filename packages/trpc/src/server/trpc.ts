@@ -24,10 +24,10 @@
  */
 
 import { initTRPC } from "@trpc/server";
-import { transformer } from "@/utils/transformer";
+import { transformer } from "../utils/transformer";
 import type { Context } from "./context";
 import type { OpenApiMeta } from "trpc-openapi";
-import { createTRPCUpstashLimiter } from "@/utils/rate-limit";
+import { createTRPCUpstashLimiter } from "../utils/rate-limit";
 import type { NextApiRequest } from "next";
 
 const root = initTRPC

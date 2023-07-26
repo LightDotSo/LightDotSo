@@ -13,6 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { default as prisma } from "./client";
-// eslint-disable-next-line import/no-unresolved
-export * from "./zod";
+import { generateOpenApiDocument } from "trpc-openapi";
+
+import { appRouter } from "../routers/app";
+import type { OpenAPIV3 } from "openapi-types";
+
+export const openApiDocument: OpenAPIV3.Document = generateOpenApiDocument(
+  appRouter,
+  {
+    title: "Example CRUD API",
+    description: "OpenAPI compliant REST API built using tRPC with Next.js",
+    version: "1.0.0",
+    baseUrl: "http://localhost:3000/api",
+  },
+);

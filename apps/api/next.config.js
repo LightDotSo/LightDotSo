@@ -15,6 +15,7 @@ const nextConfig = {
     },
   },
   outputFileTracing: true,
+  transpilePackages: ["@lightdotso/trpc"],
 };
 
 module.exports = nextConfig;

@@ -12,22 +12,20 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "index.ts",
+  "types": "index.d.ts",
   "files": [
-    "dist/**"
+    "src"
   ],
   "scripts": {
     "prebuild": "npm run generate",
-    "build": "pnpm run generate && tsup",
+    "build": "pnpm run generate",
     "clean": "rimraf .turbo node_modules dist",
     "db:migrate:deploy": "dotenv prisma migrate deploy",
     "db:migrate:dev": "dotenv prisma migrate dev",
     "db:push": "prisma db push",
-    "predev": "npm run generate",
-    "dev": "tsup --watch",
     "generate": "pnpm run shell:copy && pnpm run shell:generate && pnpm run prisma:generate && pnpm run prisma:format",
+    "predev": "npm run generate",
     "prisma:format": "pnpm run prisma:format:main && pnpm run prisma:format:rs",
     "prisma:format:main": "prisma format --schema=./prisma/schema.prisma",
     "prisma:format:rs": "prisma format --schema=./prisma/schema-rs.prisma",

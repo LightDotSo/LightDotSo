@@ -17,7 +17,7 @@
  *
  * This is an example router, you can delete this file and then update `../pages/api/trpc/[trpc].tsx`
  */
-import { router, publicProcedure, rateLimitedProcedure } from "@/server/trpc";
+import { router, publicProcedure, rateLimitedProcedure } from "../server/trpc";
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
