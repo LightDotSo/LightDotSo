@@ -15,14 +15,15 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev --port 3001",
-    "postinstall": "pnpm --filter @lightdotso/prisma build",
     "lint": "next lint",
     "start": "next start"
   },
   "dependencies": {
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/ui": "workspace:*",
+    "@prisma/client": "^5.0.0",
     "next": "^13.4.12",
+    "prisma": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
