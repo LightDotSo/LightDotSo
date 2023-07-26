@@ -15,13 +15,13 @@
 
 import { ApiCheck, AssertionBuilder, CheckGroup } from "checkly/constructs";
 
-export const websiteGroup = new CheckGroup("api", {
-  name: "API Group",
+export const websiteGroup = new CheckGroup("app", {
+  name: "App Group",
   activated: true,
   muted: false,
   runtimeId: "2022.10",
   locations: ["us-east-1", "eu-west-1", "ap-northeast-1"],
-  tags: ["api", "group"],
+  tags: ["app", "group"],
   environmentVariables: [],
   apiCheckDefaults: {},
   concurrency: 100,
@@ -30,8 +30,8 @@ export const websiteGroup = new CheckGroup("api", {
 
 const targetUrl = process.env.ENVIRONMENT_URL || "https://api.light.so";
 
-new ApiCheck("api-healthcheck", {
-  name: "API Healthcheck",
+new ApiCheck("app-healthcheck", {
+  name: "App Healthcheck",
   group: websiteGroup,
   activated: true,
   muted: false,
