@@ -76,6 +76,10 @@ jobs:
           args: --all --check
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - if: matrix.deny
+        name: Solc Install
+        run: |
+          pip install solc-select && solc-select install 0.8.18 && solc-select use 0.8.18
       - name: Node Build
         run: |
           pnpm turbo run build

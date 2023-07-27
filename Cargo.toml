@@ -40,6 +40,9 @@
   strip = true
 
 [workspace.dependencies]
+  aa-bundler-grpc = { git = "https://github.com/Vid201/aa-bundler", rev = "30dbda1831bec8715a352a54e19ed96fe0c272f4" }
+  aa-bundler-primitives = { git = "https://github.com/Vid201/aa-bundler", rev = "30dbda1831bec8715a352a54e19ed96fe0c272f4" }
+  aa-bundler-rpc = { git = "https://github.com/Vid201/aa-bundler", rev = "30dbda1831bec8715a352a54e19ed96fe0c272f4" }
   anyhow = "1.0.71"
   axum = "0.6.18"
   clap = "4.3.12"
