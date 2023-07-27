@@ -2,7 +2,7 @@
 ## Thank you to the ultrasoundmoney team for the Dockerfile!
 ## Awesome work for the ethereum community!
 
-FROM ubuntu:18.04 AS base
+FROM ubuntu:20.04 AS base
 
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
