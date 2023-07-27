@@ -18,16 +18,13 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY . .
 
-# Install nodejs and solc
+# Install nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt install software-properties-common -y
-RUN add-apt-repository ppa:ethereum/ethereum && \
-  apt update && \
-  apt install -y nodejs solc
+RUN apt install -y nodejs
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
-      npm install -g turbo@1.10.7 pnpm@8.6.9 && \
+      npm install -g turbo@1.10.11 pnpm@8.6.9 solc@0.8.18 && \
       turbo run prisma
 
 FROM chef AS builder
