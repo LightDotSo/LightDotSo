@@ -33,22 +33,22 @@ jobs:
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
-            deny: true
             test: true
+            workspace: true
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --package lightwallet-core
             clippy: false
-            deny: false
             test: false
+            workspace: false
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
             package: --package lightwallet-core
             clippy: false
-            deny: false
             test: true
+            workspace: false
     env:
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
@@ -63,8 +63,6 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-        with:
-          submodules: recursive
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
@@ -78,7 +76,11 @@ jobs:
           args: --all --check
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - if: matrix.deny
+      - if: matrix.workspace
+        name: Thirdparty Submodule Update
+        run: |
+          git submodule update --init thirdparty/account-abstraction
+      - if: matrix.workspace
         name: Solc Install
         run: |
           pip install solc-select && solc-select install 0.8.18 && solc-select use 0.8.18
@@ -93,7 +95,7 @@ jobs:
         with:
           command: build
           args: --target ${{ matrix.target }}
-      - if: matrix.deny
+      - if: matrix.workspace
         name: Deny Check
         run: |
           cargo deny check
