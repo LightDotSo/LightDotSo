@@ -19,6 +19,14 @@ CRATES_DIR = "crates/core"
 CARGO_PARAMS = --package lightwallet-core --crate-type=staticlib
 TARGET_DIR = target
 
+ifdef CI
+  ifeq ($(CI),true)
+    INSTALL_PARAMS = ci-setup
+  endif
+  else
+    INSTALL_PARAMS = ios-setup mac-setup
+endif
+
 ##@ Help
 
 .PHONY: help
@@ -27,7 +35,12 @@ help: ## Display this help.
 
 ##@ Install
 
-install: ios-setup mac-setup ## Install all dependencies.
+install: $(INSTALL_PARAMS) ## Install all dependencies.
+
+.PHONY: ci-setup
+ci-setup: ## Install CI dependencies.
+	git submodule update --init thirdparty/account-abstraction
+	npm install -g solc@$(SOLC_VERSION)
 
 .PHONY: ios-setup
 ios-setup: ## Install iOS dependencies.
