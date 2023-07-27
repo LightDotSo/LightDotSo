@@ -40,7 +40,9 @@ install: $(INSTALL_PARAMS) ## Install all dependencies.
 .PHONY: ci-setup
 ci-setup: ## Install CI dependencies.
 	git submodule update --init thirdparty/account-abstraction
-	npm install --global solc@$(SOLC_VERSION)
+	pip3 install solc-select
+	solc-select install $(SOLC_VERSION)
+	solc-select use $(SOLC_VERSION)
 
 .PHONY: ios-setup
 ios-setup: ## Install iOS dependencies.
