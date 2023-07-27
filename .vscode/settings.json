@@ -17,6 +17,8 @@
   // Formatter settings on save
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "editor.rulers": [80, 100],
+  // Eslint settings
   "eslint.validate": [
     "javascript",
     "javascriptreact",
