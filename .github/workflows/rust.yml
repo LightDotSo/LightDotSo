@@ -76,7 +76,8 @@ jobs:
           args: --all --check
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Make Install
+      - if: matrix.workspace
+        name: Make Install
         run: |
           make install
       - name: Make Prisma
@@ -86,7 +87,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --target ${{ matrix.target }}
+          args: --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.workspace
         name: Deny Check
         run: |
