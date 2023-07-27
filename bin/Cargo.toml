@@ -20,7 +20,9 @@
   clap = { workspace = true }
   eyre = { workspace = true }
   http = { workspace = true }
+  lightdotso-bundler = { workspace = true }
   lightdotso-indexer = { workspace = true }
+  lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
   ratatui = { version = "0.22.0", features = ["all-widgets"] }
   tokio = { workspace = true }

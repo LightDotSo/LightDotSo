@@ -77,6 +77,10 @@ jobs:
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: matrix.workspace
+        name: Node Build
+        run: |
+          pnpm turbo run build
+      - if: matrix.workspace
         name: Make Install
         run: |
           make install
