@@ -20,7 +20,7 @@ COPY . .
 
 # Install nodejs and clang dependencies.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get update && apt-get -y upgrade && apt-get install -y libclang-dev pkg-config nodejs
+RUN apt-get update && apt-get -y upgrade && apt-get install -y build-essential software-properties-common curl git clang libclang-dev
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
