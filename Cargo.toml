@@ -51,8 +51,8 @@
   dotenvy = "0.15"
   ethers = "2.0.8"
   eyre = "0.6.8"
-  foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "12ea9f6" }
-  foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "12ea9f6" }
+  foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
+  foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   http = "0.2.8"
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-indexer = { path = "./crates/indexer" }

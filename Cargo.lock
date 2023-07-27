@@ -284,6 +284,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bddcadddf5e9015d310179a59bb28c4d4b9920ad0f11e8e14dbadf654890c9a6"
 
 [[package]]
+name = "ariadne"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "367fd0ad87307588d087544707bc5fbf4805ded96c7db922b70d368fa1cb5702"
+dependencies = [
+ "unicode-width",
+ "yansi 0.5.1",
+]
+
+[[package]]
 name = "array-init"
 version = "0.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3124,6 +3134,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b"
 
 [[package]]
+name = "forge-fmt"
+version = "0.2.0"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
+dependencies = [
+ "ariadne",
+ "ethers-core 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "foundry-config",
+ "itertools",
+ "semver 1.0.17",
+ "solang-parser 0.3.1",
+ "thiserror",
+ "tracing",
+]
+
+[[package]]
 name = "form_urlencoded"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3135,7 +3160,7 @@ dependencies = [
 [[package]]
 name = "foundry-abi"
 version = "0.1.0"
-source = "git+https://github.com/foundry-rs/foundry?rev=12ea9f6#12ea9f61a344087989f884d2ab735893c77ea576"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
 dependencies = [
  "ethers-contract 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "ethers-contract-abigen 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
@@ -3149,8 +3174,9 @@ dependencies = [
 [[package]]
 name = "foundry-common"
 version = "0.1.0"
-source = "git+https://github.com/foundry-rs/foundry?rev=12ea9f6#12ea9f61a344087989f884d2ab735893c77ea576"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
 dependencies = [
+ "auto_impl",
  "clap 4.3.12",
  "comfy-table",
  "dunce",
@@ -3162,7 +3188,7 @@ dependencies = [
  "eyre",
  "foundry-config",
  "foundry-macros",
- "is-terminal",
+ "globset",
  "once_cell",
  "regex",
  "reqwest",
@@ -3179,7 +3205,7 @@ dependencies = [
 [[package]]
 name = "foundry-config"
 version = "0.2.0"
-source = "git+https://github.com/foundry-rs/foundry?rev=12ea9f6#12ea9f61a344087989f884d2ab735893c77ea576"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
 dependencies = [
  "Inflector",
  "dirs-next",
@@ -3209,7 +3235,7 @@ dependencies = [
 [[package]]
 name = "foundry-evm"
 version = "0.2.0"
-source = "git+https://github.com/foundry-rs/foundry?rev=12ea9f6#12ea9f61a344087989f884d2ab735893c77ea576"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
 dependencies = [
  "auto_impl",
  "bytes",
@@ -3219,6 +3245,7 @@ dependencies = [
  "foundry-common",
  "foundry-config",
  "foundry-macros",
+ "foundry-utils",
  "futures",
  "hashbrown 0.13.2",
  "hex",
@@ -3242,8 +3269,8 @@ dependencies = [
 
 [[package]]
 name = "foundry-macros"
-version = "0.1.0"
-source = "git+https://github.com/foundry-rs/foundry?rev=12ea9f6#12ea9f61a344087989f884d2ab735893c77ea576"
+version = "0.2.0"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
 dependencies = [
  "ethers-core 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "foundry-macros-impl",
@@ -3254,11 +3281,39 @@ dependencies = [
 [[package]]
 name = "foundry-macros-impl"
 version = "0.0.0"
-source = "git+https://github.com/foundry-rs/foundry?rev=12ea9f6#12ea9f61a344087989f884d2ab735893c77ea576"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
 dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.26",
+]
+
+[[package]]
+name = "foundry-utils"
+version = "0.2.0"
+source = "git+https://github.com/foundry-rs/foundry?rev=0e33b3e4246482e21b7008a3e6fe115ed6dda85b#0e33b3e4246482e21b7008a3e6fe115ed6dda85b"
+dependencies = [
+ "dunce",
+ "ethers-addressbook 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "ethers-contract 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "ethers-core 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "ethers-etherscan 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "ethers-providers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "ethers-solc 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "eyre",
+ "forge-fmt",
+ "futures",
+ "glob",
+ "hex",
+ "once_cell",
+ "rand 0.8.5",
+ "reqwest",
+ "rlp",
+ "rustc-hex",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
