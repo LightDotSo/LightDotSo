@@ -19,6 +19,7 @@ use ethers::{
     core::types::Log,
     types::Bytes,
 };
+use eyre::Report;
 use foundry_config::Chain;
 use foundry_evm::{
     executor::{fork::CreateFork, opts::EvmOpts, Backend, Executor, ExecutorBuilder},
@@ -27,10 +28,22 @@ use foundry_evm::{
         node::CallTraceNode,
         CallTraceArena, CallTraceDecoder, CallTraceDecoderBuilder,
     },
+    CallKind,
 };
 use revm::{interpreter::InstructionResult, primitives::Env};
+use serde::{Deserialize, Serialize};
 
-use crate::{errors::EvmError, simulation::CallTrace};
+#[derive(Debug)]
+pub struct EvmError(pub Report);
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct CallTrace {
+    #[serde(rename = "callType")]
+    pub call_type: CallKind,
+    pub from: Address,
+    pub to: Address,
+    pub value: Uint,
+}
 
 #[derive(Debug, Clone)]
 pub struct CallRawResult {
@@ -62,7 +75,7 @@ pub struct Evm {
 }
 
 impl Evm {
-    pub fn new(
+    pub async fn new(
         env: Option<Env>,
         fork_url: String,
         fork_block_number: Option<u64>,
@@ -87,7 +100,7 @@ impl Evm {
         let fork_opts = CreateFork {
             url: fork_url,
             enable_caching: true,
-            env: evm_opts.evm_env_blocking().unwrap(),
+            env: evm_opts.local_evm_env(),
             evm_opts,
         };
 
@@ -102,7 +115,7 @@ impl Evm {
             builder = builder.with_config(fork_opts.env.clone());
         }
 
-        let executor = builder.build(db);
+        let executor = builder.build(db.await);
 
         let foundry_config =
             foundry_config::Config { etherscan_api_key: etherscan_key, ..Default::default() };
