@@ -18,9 +18,9 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY . .
 
-# Install nodejs
+# Install nodejs and clang dependencies.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt install -y nodejs
+RUN apt install -y nodejs build-essential software-properties-common clang libclang-dev
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
