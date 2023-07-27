@@ -2,10 +2,14 @@
 ## Thank you to the ultrasoundmoney team for the Dockerfile!
 ## Awesome work for the ethereum community!
 
-FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
+FROM ubuntu:18.04 AS base
+
+# We only pay the installation cost once,
+# it will be cached from the second build onwards
+RUN cargo install cargo-chef
 WORKDIR /app
 
-FROM chef AS planner
+FROM base AS planner
 
 # Specify the target we're building for.
 ENV docker=true
@@ -27,7 +31,7 @@ RUN cargo chef prepare --recipe-path recipe.json && \
       npm install -g turbo@1.10.11 pnpm@8.6.9 && \
       turbo run prisma
 
-FROM chef AS builder
+FROM base AS builder
 COPY --from=planner /app/recipe.json recipe.json
 
 # Build dependencies - this layer is cached for massive speed up.
@@ -49,16 +53,5 @@ COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/rpc /usr/local/bin
 COPY --from=builder /app/target/release/serve /usr/local/bin
-# COPY --from=builder /app/target/release/record-eth-price /usr/local/bin
-# COPY --from=builder /app/target/release/serve /usr/local/bin
-# COPY --from=builder /app/target/release/sync-beacon-states /usr/local/bin
-# COPY --from=builder /app/target/release/sync-execution-blocks /usr/local/bin
-# COPY --from=builder /app/target/release/sync-execution-supply-deltas /usr/local/bin
-# COPY --from=builder /app/target/release/update-effective-balance-sum /usr/local/bin
-# COPY --from=builder /app/target/release/update-issuance-breakdown /usr/local/bin
-# COPY --from=builder /app/target/release/update-issuance-estimate /usr/local/bin
-# COPY --from=builder /app/target/release/update-supply-projection-inputs /usr/local/bin
-# COPY --from=builder /app/target/release/update-validator-rewards /usr/local/bin
-
 EXPOSE 3002
 ENTRYPOINT ["/usr/local/bin/lightdotso-bin"]
