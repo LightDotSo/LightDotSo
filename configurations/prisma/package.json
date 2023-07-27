@@ -32,7 +32,8 @@
     "prisma:generate": "prisma generate",
     "shell:copy": "bash ./copy_env_variables.sh || true",
     "shell:generate": "bash ./generate.sh",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "studio:dev": "dotenv -e .env.development prisma studio"
   },
   "dependencies": {
     "@prisma/client": "5.0.0",

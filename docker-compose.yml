@@ -1,14 +1,23 @@
 version: "3"
 services:
-  db:
+  postgres:
     image: postgres:15.3
     restart: always
+    ports:
+      - "6500:5432"
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: neon
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-
+      - postgres-db:/var/lib/postgresql/data
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
 volumes:
-  postgres_data:
+  postgres-db:
+  redis:
