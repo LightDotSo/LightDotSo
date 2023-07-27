@@ -20,8 +20,10 @@ COPY . .
 
 # Install nodejs and clang dependencies.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-# From: https://docs.substrate.io/install/linux/
 RUN apt update && apt install -y \
+  # For: npm
+  nodejs \
+  # From: https://docs.substrate.io/install/linux/
   git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
 
 # Figure out if dependencies have changed.
