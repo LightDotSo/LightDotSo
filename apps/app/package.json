@@ -19,7 +19,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@lightdotso/auth": "workspace:*",
+    "@lightdotso/kysely": "workspace:*",
+    "@lightdotso/prisma": "workspace:*",
     "@lightdotso/styles": "workspace:*",
+    "@lightdotso/trpc": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@next-auth/prisma-adapter": "0.4.4-canary.81",
     "@prisma/client": "^5.0.0",
@@ -32,10 +36,7 @@
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
-    "@lightdotso/kysely": "workspace:*",
-    "@lightdotso/prisma": "workspace:*",
     "@lightdotso/tailwindcss": "workspace:*",
-    "@lightdotso/trpc": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.4.4",
     "@types/react": "^18.2.16",

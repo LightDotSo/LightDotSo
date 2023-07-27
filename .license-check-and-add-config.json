@@ -22,6 +22,8 @@
     "**/*.config.ts",
     "**/*.entitlements",
     "**/*.env",
+    "**/*.env.development",
+    "**/*.env.production",
     "**/*.gradle",
     "**/*.html",
     "**/*.icns",

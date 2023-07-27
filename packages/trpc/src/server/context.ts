@@ -13,14 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
+import { type Session } from "next-auth";
+import { getServerAuthSession } from "@lightdotso/auth";
 import { type inferAsyncReturnType } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { prisma } from "@lightdotso/prisma";
 
-/**
- * Replace this with an object if you want to pass things to createContextInner
- */
-type CreateContextOptions = Record<string, never>;
+type CreateContextOptions = {
+  req: CreateNextContextOptions["req"];
+  res: CreateNextContextOptions["res"];
+  session: Session | null;
+};
 
 /** Use this helper for:
  * - testing, so we dont have to mock Next.js' req/res
@@ -28,8 +31,13 @@ type CreateContextOptions = Record<string, never>;
  * @see https://create.t3.gg/en/usage/trpc#-servertrpccontextts
  **/
 // eslint-disable-next-line no-unused-vars
-export const createContextInner = async (opts: CreateContextOptions) => {
-  return {};
+export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
+  return {
+    req: opts.req,
+    res: opts.res,
+    session: opts.session,
+    prisma,
+  };
 };
 
 /**
@@ -37,10 +45,14 @@ export const createContextInner = async (opts: CreateContextOptions) => {
  * @link https://trpc.io/docs/context
  **/
 export const createContext = async ({ req, res }: CreateNextContextOptions) => {
-  return {
+  // Get the session from the server using the getServerSession wrapper function
+  const session = await getServerAuthSession({ req, res });
+
+  return createInnerTRPCContext({
     req,
     res,
-  };
+    session,
+  });
 };
 
 export type Context = inferAsyncReturnType<typeof createContext>;

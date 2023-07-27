@@ -29,6 +29,7 @@ import type { Context } from "./context";
 import type { OpenApiMeta } from "trpc-openapi";
 import { createTRPCUpstashLimiter } from "../utils/rate-limit";
 import type { NextApiRequest } from "next";
+import { ZodError } from "zod";
 
 const root = initTRPC
   .meta<OpenApiMeta>()
@@ -38,11 +39,18 @@ const root = initTRPC
      * @see https://trpc.io/docs/v10/data-transformers
      */
     transformer,
-    /**
-     * @see https://trpc.io/docs/v10/error-formatting
-     */
-    errorFormatter({ shape }) {
-      return shape;
+    // From: https://trpc.io/docs/server/error-formatting
+    errorFormatter({ shape, error }) {
+      return {
+        ...shape,
+        data: {
+          ...shape.data,
+          zodError:
+            error.code === "BAD_REQUEST" && error.cause instanceof ZodError
+              ? error.cause.flatten()
+              : null,
+        },
+      };
     },
   });
 
