@@ -2,7 +2,7 @@
 ## Thank you to the ultrasoundmoney team for the Dockerfile!
 ## Awesome work for the ethereum community!
 
-FROM lukemathwalker/cargo-chef:latest-rust-latest AS chef
+FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
 WORKDIR /app
 
 FROM chef AS planner
@@ -20,11 +20,7 @@ COPY . .
 
 # Install nodejs and clang dependencies.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt update && apt install -y \
-  # For: npm
-  nodejs \
-  # From: https://docs.substrate.io/install/linux/
-  git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
+RUN apt-get update && apt-get -y upgrade && apt-get install -y libclang-dev pkg-config nodejs
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
