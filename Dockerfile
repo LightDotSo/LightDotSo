@@ -28,7 +28,7 @@ RUN apt update && apt install -y \
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
-      npm install -g turbo@1.10.11 pnpm@8.6.9 solc@0.8.18 && \
+      npm install -g turbo@1.10.11 pnpm@8.6.9 && \
       turbo run prisma
 
 FROM chef AS builder
