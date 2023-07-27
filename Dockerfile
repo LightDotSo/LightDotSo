@@ -18,9 +18,10 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY . .
 
-# Install nodejs
+# Install nodejs and solc
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN  add-apt-repository ppa:ethereum/ethereum && \
+RUN apt install software-properties-common -y
+RUN add-apt-repository ppa:ethereum/ethereum && \
   apt update && \
   apt install -y nodejs solc
 
