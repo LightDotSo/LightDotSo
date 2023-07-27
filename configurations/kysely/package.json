@@ -18,11 +18,11 @@
     "src"
   ],
   "dependencies": {
+    "@lightdotso/prisma": "workspace:*",
     "@neondatabase/serverless": "^0.5.6",
     "kysely": "^0.26.1"
   },
   "devDependencies": {
-    "@lightdotso/prisma": "workspace:*",
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.4.4",
     "typescript": "^5.1.6"
