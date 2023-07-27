@@ -20,7 +20,9 @@ COPY . .
 
 # Install nodejs
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt update && apt install -y nodejs solc
+RUN  add-apt-repository ppa:ethereum/ethereum && \
+  apt update && \
+  apt install -y nodejs solc
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
