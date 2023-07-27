@@ -27,12 +27,15 @@
     "@lightdotso/ui": "workspace:*",
     "@next-auth/prisma-adapter": "0.4.4-canary.81",
     "@prisma/client": "^5.0.0",
+    "connectkit": "^1.5.0",
     "next": "^13.4.12",
     "next-auth": "^4.22.3",
     "prisma": "^5.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "siwe": "^2.1.4"
+    "siwe": "^2.1.4",
+    "viem": "^1.4.1",
+    "wagmi": "^1.3.9"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
