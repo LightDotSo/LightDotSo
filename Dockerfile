@@ -20,7 +20,9 @@ COPY . .
 
 # Install nodejs and clang dependencies.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt update && apt install -y git nodejs build-essential software-properties-common pkg-config libssl-dev git gcc build-essential clang libclang-dev
+# From: https://docs.substrate.io/install/linux/
+RUN apt update && apt install -y \
+  git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
