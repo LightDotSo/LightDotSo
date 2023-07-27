@@ -13,22 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { db } from "@lightdotso/kysely";
-import { Connect } from "./connect";
+"use client";
 
-export default async function Page() {
-  const users = await db.selectFrom("User").selectAll().execute();
+import { ConnectKitButton } from "connectkit";
 
-  return (
-    <main className="text-red-500">
-      <ul>
-        {users.map(({ id, name }) => {
-          return <li key={id}>{name}</li>;
-        })}
-      </ul>
-      <Connect />
-    </main>
-  );
+export function Connect() {
+  return <ConnectKitButton />;
 }
-
-export const runtime = "edge";

@@ -13,8 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import { Button } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
+import { WagmiConfig, createConfig } from "wagmi";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+
+const config = createConfig(
+  getDefaultConfig({
+    appName: "Light",
+    walletConnectProjectId: "id",
+  }),
+);
 
 export default function RootLayout({
   children,
@@ -24,8 +35,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Button>Hello</Button>
-        {children}
+        <WagmiConfig config={config}>
+          <ConnectKitProvider>
+            <Button>Hello</Button>
+            {children}
+          </ConnectKitProvider>
+        </WagmiConfig>
       </body>
     </html>
   );
