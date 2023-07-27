@@ -4,12 +4,22 @@
 
 FROM ubuntu:20.04 AS base
 
+WORKDIR /rust
+
+# Install nodejs and clang dependencies.
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+
+# Install rust and cargo chef.
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:$PATH"
+
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
 RUN cargo install cargo-chef
-WORKDIR /app
 
 FROM base AS planner
+
+WORKDIR /app
 
 # Specify the target we're building for.
 ENV docker=true
@@ -22,9 +32,11 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY . .
 
-# Install nodejs and clang dependencies.
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get update && apt-get -y upgrade && apt-get install -y build-essential software-properties-common curl git clang libclang-dev nodejs
+RUN apt-get update && \
+  apt-get -y upgrade && \
+  apt-get install -y build-essential software-properties-common curl git clang libclang-dev nodejs && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
