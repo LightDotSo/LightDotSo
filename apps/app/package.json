@@ -21,11 +21,14 @@
   "dependencies": {
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/ui": "workspace:*",
+    "@next-auth/prisma-adapter": "0.4.4-canary.81",
     "@prisma/client": "^5.0.0",
     "next": "^13.4.12",
+    "next-auth": "^4.22.3",
     "prisma": "^5.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "siwe": "^2.1.4"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",

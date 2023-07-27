@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["DATABASE_URL"],
+      "env": ["DATABASE_URL", "NEXTAUTH_URL", "NEXTAUTH_SECRET"],
       "inputs": ["**"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
