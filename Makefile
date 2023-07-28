@@ -26,7 +26,6 @@ ifdef CI
   else
     ifeq ($(DOCKER),true)
       INSTALL_PARAMS = docker-setup
-    endif
     else
       INSTALL_PARAMS = ios-setup mac-setup
     endif
