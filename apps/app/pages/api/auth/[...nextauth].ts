@@ -15,10 +15,10 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import { authOptions } from "@lightdotso/auth";
+import { nextAuthOptions } from "@lightdotso/auth";
 
 const Auth = (req: NextApiRequest, res: NextApiResponse) => {
-  const authOpts: NextAuthOptions = authOptions({ req });
+  const authOpts: NextAuthOptions = nextAuthOptions({ req });
 
   const isDefaultSigninPage =
     req.method === "GET" && req?.query?.nextauth?.includes("signin");
