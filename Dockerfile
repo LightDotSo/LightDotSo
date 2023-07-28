@@ -1,9 +1,9 @@
-## From: https://raw.githubusercontent.com/ultrasoundmoney/eth-analysis-rs/main/Dockerfile
-## Thank you to the ultrasoundmoney team for the Dockerfile!
-## Awesome work for the ethereum community!
+# From: https://raw.githubusercontent.com/ultrasoundmoney/eth-analysis-rs/main/Dockerfile
+# Thank you to the ultrasoundmoney team for the Dockerfile!
+# Awesome work for the ethereum community!
 
 # Specify the base image we're building from.
-FROM rust:1 AS builder
+FROM rust:1.70 AS chef
 
 WORKDIR /app
 
@@ -16,6 +16,11 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
+# We only pay the installation cost once,
+# it will be cached from the second build onwards
+# From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
+RUN cargo install cargo-chef
+
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
@@ -26,13 +31,33 @@ RUN apt install -y python3-pip nodejs
 COPY . .
 
 # Build the prisma dep.
-RUN npm install -g turbo@1.10.11 pnpm@8.6.9 && turbo run prisma
+RUN npm install -g turbo@1.10.11 pnpm@8.6.9
 
 # Install building dependencies.
-RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
+RUN apt-get update && \
+  apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 # Run the build.
-RUN make install && cargo build --release
+RUN make install
+
+FROM chef AS planner
+
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json && \
+  turbo run prisma
+
+FROM chef AS builder
+
+COPY --from=planner /app/recipe.json recipe.json
+COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
+# Build dependencies - this is the caching Docker layer!
+RUN cargo chef cook --release --recipe-path recipe.json
+
+# Build application
+COPY . .
+RUN cargo build --release
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
