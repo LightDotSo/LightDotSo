@@ -13,25 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { db } from "@lightdotso/kysely";
-import { Connect } from "./connect";
-import { getAuthServerSession } from "@lightdotso/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@lightdotso/auth";
+import { NextResponse } from "next/server";
 
-export default async function Page() {
-  const users = await db.selectFrom("User").selectAll().execute();
-  const session = await getAuthServerSession();
+export async function GET() {
+  const session = await getServerSession(authOptions);
 
-  return (
-    <main className="text-red-500">
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-      <ul>
-        {users.map(({ id, name }) => {
-          return <li key={id}>{name}</li>;
-        })}
-      </ul>
-      <Connect />
-    </main>
-  );
+  return NextResponse.json({
+    authenticated: !!session,
+    session,
+  });
 }
-
-// export const runtime = "edge";

@@ -4,7 +4,12 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NEXTAUTH_SECRET", "NEXTAUTH_URL"],
+      "env": [
+        "NEXTAUTH_SECRET",
+        "NEXTAUTH_URL",
+        "NEXT_PUBLIC_SIGNIN_MESSAGE",
+        "NODE_ENV"
+      ],
       "inputs": ["**"],
       "outputs": ["dist/**"]
     },
