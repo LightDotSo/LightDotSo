@@ -8,6 +8,7 @@ WORKDIR /app
 FROM chef AS planner
 
 # Specify the target we're building for.
+ENV CI=true
 ENV docker=true
 
 ARG TURBO_TEAM
@@ -36,10 +37,12 @@ RUN cargo chef prepare --recipe-path recipe.json && \
 FROM chef AS builder
 
 # Install building dependencies.
-RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler software-properties-common
+RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler python3-pip
 
-# Install solc.
-RUN add-apt-repository ppa:ethereum/ethereum && apt-get update && apt-get install -y solc
+COPY Makefile .
+
+# Install core dependencies.
+RUN make install
 
 COPY --from=planner /app/recipe.json recipe.json
 
