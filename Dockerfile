@@ -19,11 +19,13 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 # Install dependencies.
 RUN apt-get update && apt-get -y install llvm-dev nodejs npm
 
-# Install nodejs
+# Install nodejs.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
+# Copy over dir.
 COPY . .
 
+# Remove rust-toolchain.toml, which is not needed for building.
 RUN rm rust-toolchain.toml
 
 # Figure out if dependencies have changed.
