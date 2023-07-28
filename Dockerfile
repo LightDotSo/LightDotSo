@@ -2,11 +2,10 @@
 ## Thank you to the ultrasoundmoney team for the Dockerfile!
 ## Awesome work for the ethereum community!
 
-FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
+# Specify the base image we're building from.
+FROM rust:1 AS builder
 
 WORKDIR /app
-
-FROM chef AS planner
 
 # Specify the target we're building for.
 ENV DOCKER=true
@@ -31,40 +30,25 @@ RUN cargo chef prepare --recipe-path recipe.json && \
       npm install -g turbo@1.10.11 pnpm@8.6.9 && \
       turbo run prisma
 
-FROM chef AS builder
-
 # Install building dependencies.
-RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler python3-pip
+RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
 
-ENV DOCKER=true
+# Run the build.
+RUN make install && cargo build --release
 
-# Install core dependencies.
-COPY Makefile .
-RUN make install
-
-COPY --from=planner /app/recipe.json recipe.json
-
-# Build dependencies - this layer is cached for massive speed up.
-COPY .cargo .
-COPY thirdparty .
-RUN cargo chef cook --release --recipe-path recipe.json
-
-# Build application - this should be re-done every time we update our src.
-COPY . .
-COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
-
-RUN cargo build --release
-
+# Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
 WORKDIR /app
 
 # sqlx depends on native TLS, which is missing in buster-slim.
 RUN apt update && apt install -y libssl1.1 ca-certificates
 
+# Copy over the binaries.
 COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/rpc /usr/local/bin
 COPY --from=builder /app/target/release/serve /usr/local/bin
 
+# Run the binary.
 EXPOSE 3002
 ENTRYPOINT ["/usr/local/bin/lightdotso-bin"]
