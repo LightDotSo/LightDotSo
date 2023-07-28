@@ -37,10 +37,10 @@ FROM chef AS builder
 RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler python3-pip
 
 ENV DOCKER=true
+ENV CARGO_WORKSPACE_DIR=$(pwd)
 
 # Install core dependencies.
 COPY Makefile .
-COPY .cargo/ .
 RUN make install
 
 COPY --from=planner /app/recipe.json recipe.json
