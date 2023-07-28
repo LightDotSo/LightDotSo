@@ -2,31 +2,10 @@
 ## Thank you to the ultrasoundmoney team for the Dockerfile!
 ## Awesome work for the ethereum community!
 
-FROM ubuntu:20.04 AS base
-
-WORKDIR /rust
-
-# Install dependencies.
-RUN apt-get update && \
-  apt-get -y upgrade && \
-  apt-get install -y build-essential software-properties-common curl git clang libclang-dev nodejs && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
-
-# Install nodejs and clang dependencies.
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-
-# Install rust and cargo chef.
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-ENV PATH="/root/.cargo/bin:$PATH"
-
-# We only pay the installation cost once,
-# it will be cached from the second build onwards
-RUN cargo install cargo-chef
-
-FROM base AS planner
-
+FROM lukemathwalker/cargo-chef:latest-rust-latest AS chef
 WORKDIR /app
+
+FROM chef AS planner
 
 # Specify the target we're building for.
 ENV docker=true
@@ -37,14 +16,22 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
+# Install dependencies.
+RUN apt-get update && apt-get -y install llvm-dev nodejs npm
+
+# Install nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+
 COPY . .
+
+RUN rm rust-toolchain.toml
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
       npm install -g turbo@1.10.11 pnpm@8.6.9 && \
       turbo run prisma
 
-FROM base AS builder
+FROM chef AS builder
 COPY --from=planner /app/recipe.json recipe.json
 
 # Build dependencies - this layer is cached for massive speed up.
@@ -66,5 +53,6 @@ COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/rpc /usr/local/bin
 COPY --from=builder /app/target/release/serve /usr/local/bin
+
 EXPOSE 3002
 ENTRYPOINT ["/usr/local/bin/lightdotso-bin"]
