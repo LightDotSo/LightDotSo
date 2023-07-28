@@ -12,9 +12,6 @@
   default-run = "cli"
 
 [dependencies]
-  aa-bundler-grpc = { workspace = true }
-  aa-bundler-primitives = { workspace = true }
-  aa-bundler-rpc = { workspace = true }
   anyhow = { workspace = true }
   axum = { workspace = true }
   clap = { workspace = true }
@@ -25,6 +22,9 @@
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
   ratatui = { version = "0.22.0", features = ["all-widgets"] }
+  silius-grpc = { workspace = true }
+  silius-primitives = { workspace = true }
+  silius-rpc = { workspace = true }
   tokio = { workspace = true }
   tower = { workspace = true, features = [
     "full",

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use aa_bundler_primitives::Chain;
+use silius_primitives::Chain;
 
 fn main() {
     let chain = Chain::from(1);

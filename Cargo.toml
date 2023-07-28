@@ -42,9 +42,7 @@
   strip = true
 
 [workspace.dependencies]
-  aa-bundler-grpc = { git = "https://github.com/Vid201/aa-bundler", rev = "30dbda1831bec8715a352a54e19ed96fe0c272f4" }
-  aa-bundler-primitives = { git = "https://github.com/Vid201/aa-bundler", rev = "30dbda1831bec8715a352a54e19ed96fe0c272f4" }
-  aa-bundler-rpc = { git = "https://github.com/Vid201/aa-bundler", rev = "30dbda1831bec8715a352a54e19ed96fe0c272f4" }
+
   anyhow = "1.0.71"
   axum = "0.6.18"
   clap = "4.3.12"
@@ -70,6 +68,9 @@
     "optional_no_base_fee",
   ] }
   serde = "1.0.171"
+  silius-grpc = { git = "https://github.com/Vid201/silius", rev = "dea00f451f695da1d22f627ca204cab10e761ba8" }
+  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "dea00f451f695da1d22f627ca204cab10e761ba8" }
+  silius-rpc = { git = "https://github.com/Vid201/silius", rev = "dea00f451f695da1d22f627ca204cab10e761ba8" }
   tokio = { version = "1", features = ["full"] }
   tower = { version = "0.4.12" }
   tower-http = { version = "0.4", features = ["trace"] }
