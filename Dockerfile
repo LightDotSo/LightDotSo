@@ -16,8 +16,8 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
-# Install dependencies.
-RUN apt-get update && apt-get -y install llvm-dev nodejs npm
+# Install planning dependencies.
+RUN apt-get update && apt-get -y install nodejs npm
 
 # Install nodejs.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
@@ -34,6 +34,10 @@ RUN cargo chef prepare --recipe-path recipe.json && \
       turbo run prisma
 
 FROM chef AS builder
+
+# Install building dependencies.
+RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
+
 COPY --from=planner /app/recipe.json recipe.json
 
 # Build dependencies - this layer is cached for massive speed up.
