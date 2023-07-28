@@ -17,7 +17,6 @@
 
 import { useState, useEffect } from "react";
 import { SiweMessage } from "siwe";
-import { polygonMumbai } from "viem/chains";
 import { useAccount, useSignMessage } from "wagmi";
 import { getCsrfToken, signIn } from "next-auth/react";
 import { Button } from "@lightdotso/ui";
@@ -42,7 +41,6 @@ const AuthPage = () => {
         address: address as `0x${string}`,
         statement: process.env.NEXT_PUBLIC_SIGNIN_MESSAGE,
         nonce: await getCsrfToken(),
-        chainId: polygonMumbai.id,
       });
 
       const signedMessage = await signMessageAsync({

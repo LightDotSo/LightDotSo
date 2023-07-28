@@ -53,13 +53,18 @@ export const authOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
           const result = await siwe.verify({
             signature: credentials?.signature!,
             domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req }),
+            nonce: await getCsrfToken({ req: { headers: req?.headers } }),
           });
 
-          if (!result.success) throw new Error("Invalid Signature");
+          if (!result.success) {
+            throw new Error("Invalid Signature");
+          }
 
-          if (result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE)
+          if (
+            result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
+          ) {
             throw new Error("Statement Mismatch");
+          }
 
           if (result.success) {
             console.log("success");
