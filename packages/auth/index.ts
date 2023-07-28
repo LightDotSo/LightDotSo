@@ -28,6 +28,7 @@ export const authOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
 }) => ({
   providers: [
     CredentialsProvider({
+      id: "eth",
       name: "Ethereum",
       credentials: {
         message: {
@@ -42,6 +43,7 @@ export const authOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
         },
       },
       async authorize(credentials) {
+        // console.log(JSON.stringify(credentials, null, 2));
         try {
           const siwe = new SiweMessage(
             JSON.parse(credentials?.message || "{}"),
@@ -49,18 +51,26 @@ export const authOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
           const nextAuthUrl = new URL(process.env.NEXTAUTH_URL!);
 
           const result = await siwe.verify({
-            signature: credentials?.signature || "",
+            signature: credentials?.signature!,
             domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req: { headers: req?.headers } }),
+            nonce: await getCsrfToken({ req }),
           });
 
+          if (!result.success) throw new Error("Invalid Signature");
+
+          if (result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE)
+            throw new Error("Statement Mismatch");
+
           if (result.success) {
+            console.log("success");
+
             return {
               id: siwe.address,
             };
           }
           return null;
-        } catch (e) {
+        } catch (err) {
+          console.error(err);
           return null;
         }
       },
