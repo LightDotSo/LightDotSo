@@ -8,7 +8,6 @@ WORKDIR /app
 FROM chef AS planner
 
 # Specify the target we're building for.
-ENV CI=true
 ENV docker=true
 
 ARG TURBO_TEAM
@@ -39,8 +38,8 @@ FROM chef AS builder
 # Install building dependencies.
 RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
 
-# Install core dependencies.
-RUN make install
+# Install solc.
+RUN add-apt-repository ppa:ethereum/ethereum && apt-get update && apt-get install -y solc
 
 COPY --from=planner /app/recipe.json recipe.json
 
