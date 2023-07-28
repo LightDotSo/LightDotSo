@@ -47,6 +47,10 @@
       "cache": false,
       "persistent": true
     },
+    "dev:prisma": {
+      "cache": false,
+      "persistent": true
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
