@@ -6,6 +6,13 @@ FROM ubuntu:20.04 AS base
 
 WORKDIR /rust
 
+# Install dependencies.
+RUN apt-get update && \
+  apt-get -y upgrade && \
+  apt-get install -y build-essential software-properties-common curl git clang libclang-dev nodejs && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
 # Install nodejs and clang dependencies.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
@@ -31,12 +38,6 @@ ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
 COPY . .
-
-RUN apt-get update && \
-  apt-get -y upgrade && \
-  apt-get install -y build-essential software-properties-common curl git clang libclang-dev nodejs && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
 
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
