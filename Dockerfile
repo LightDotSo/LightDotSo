@@ -36,7 +36,7 @@ RUN cargo chef prepare --recipe-path recipe.json && \
 FROM chef AS builder
 
 # Install building dependencies.
-RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
+RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler software-properties-common
 
 # Install solc.
 RUN add-apt-repository ppa:ethereum/ethereum && apt-get update && apt-get install -y solc
