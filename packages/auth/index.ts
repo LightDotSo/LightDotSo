@@ -20,14 +20,91 @@ import { SiweMessage } from "siwe";
 import { prisma } from "@lightdotso/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, AuthOptions } from "next-auth";
 import { type GetServerSidePropsContext } from "next";
 
-export const authOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
-  req,
-}) => ({
+export const commonAuthOptions: Omit<AuthOptions, "providers"> = {
+  session: {
+    strategy: "jwt",
+  },
+  adapter: PrismaAdapter(prisma),
+  secret: process.env.NEXTAUTH_SECRET!,
+  callbacks: {
+    async session({ session, token }: { session: any; token: any }) {
+      session.address = token.sub;
+      session.user.name = token.sub;
+      session.user.image = "/";
+      return session;
+    },
+  },
+};
+
+export const authOptions: AuthOptions = {
+  ...commonAuthOptions,
   providers: [
     CredentialsProvider({
+      id: "eth",
+      name: "Ethereum",
+      credentials: {
+        message: {
+          label: "Message",
+          type: "text",
+          placeholder: "0x0",
+        },
+        signature: {
+          label: "Signature",
+          type: "text",
+          placeholder: "0x0",
+        },
+      },
+      async authorize(credentials, req) {
+        // console.log(JSON.stringify(credentials, null, 2));
+        try {
+          const siwe = new SiweMessage(
+            JSON.parse(credentials?.message || "{}"),
+          );
+          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL!);
+
+          const result = await siwe.verify({
+            signature: credentials?.signature!,
+            domain: nextAuthUrl.host,
+            nonce: await getCsrfToken({ req: { headers: req?.headers } }),
+          });
+
+          if (!result.success) {
+            throw new Error("Invalid Signature");
+          }
+
+          if (
+            result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
+          ) {
+            throw new Error("Statement Mismatch");
+          }
+
+          if (result.success) {
+            console.log("success");
+
+            return {
+              id: siwe.address,
+            };
+          }
+          return null;
+        } catch (err) {
+          console.error(err);
+          return null;
+        }
+      },
+    }),
+  ],
+};
+
+export const nextAuthOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
+  req,
+}) => ({
+  ...commonAuthOptions,
+  providers: [
+    CredentialsProvider({
+      id: "eth",
       name: "Ethereum",
       credentials: {
         message: {
@@ -42,6 +119,7 @@ export const authOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
         },
       },
       async authorize(credentials) {
+        // console.log(JSON.stringify(credentials, null, 2));
         try {
           const siwe = new SiweMessage(
             JSON.parse(credentials?.message || "{}"),
@@ -49,43 +127,47 @@ export const authOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
           const nextAuthUrl = new URL(process.env.NEXTAUTH_URL!);
 
           const result = await siwe.verify({
-            signature: credentials?.signature || "",
+            signature: credentials?.signature!,
             domain: nextAuthUrl.host,
             nonce: await getCsrfToken({ req: { headers: req?.headers } }),
           });
 
+          if (!result.success) {
+            throw new Error("Invalid Signature");
+          }
+
+          if (
+            result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
+          ) {
+            throw new Error("Statement Mismatch");
+          }
+
           if (result.success) {
+            console.log("success");
+
             return {
               id: siwe.address,
             };
           }
           return null;
-        } catch (e) {
+        } catch (err) {
+          console.error(err);
           return null;
         }
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
-  adapter: PrismaAdapter(prisma),
-  secret: process.env.NEXTAUTH_SECRET!,
-  callbacks: {
-    async session({ session, token }: { session: any; token: any }) {
-      session.address = token.sub;
-      session.user.name = token.sub;
-      session.user.image = "/";
-      return session;
-    },
-  },
 });
 
-export const getServerAuthSession = async (ctx: {
+export const getAuthServerSession = async () => {
+  return await getServerSession(authOptions);
+};
+
+export const getNextAuthServerSession = async (ctx: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
 }) => {
   // Changed from authOptions to authOption(ctx)
   // This allows use to retrieve the csrf token to verify as the nonce
-  return getServerSession(ctx.req, ctx.res, authOptions(ctx));
+  return getServerSession(ctx.req, ctx.res, nextAuthOptions(ctx));
 };

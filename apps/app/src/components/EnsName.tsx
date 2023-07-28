@@ -13,23 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import { nextAuthOptions } from "@lightdotso/auth";
+import { createPublicClient, http } from "viem";
+import { mainnet } from "viem/chains";
+import { cache } from "react";
 
-const Auth = (req: NextApiRequest, res: NextApiResponse) => {
-  const authOpts: NextAuthOptions = nextAuthOptions({ req });
+export const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+});
 
-  const isDefaultSigninPage =
-    req.method === "GET" && req?.query?.nextauth?.includes("signin");
+export const getEnsName = cache(async (address: `0x${string}`) => {
+  if (!address) return;
+  const ensName = await publicClient.getEnsName({
+    address,
+  });
+  return ensName;
+});
 
-  // Hide Sign-In with Ethereum from default sign page
-  if (isDefaultSigninPage) {
-    // Removes from the authOptions.providers array
-    authOpts.providers.pop();
-  }
-
-  return NextAuth(req, res, authOpts) as typeof NextAuth;
+export const preload = (address: `0x${string}`) => {
+  void getEnsName(address);
 };
 
-export default Auth;
+export async function EnsName({
+  params: { address },
+}: {
+  params: { address: `0x${string}` };
+}) {
+  const name = await getEnsName(address);
+  if (name) {
+    return <p>{name}</p>;
+  }
+}

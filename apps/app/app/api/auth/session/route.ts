@@ -13,23 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import { nextAuthOptions } from "@lightdotso/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@lightdotso/auth";
+import { NextResponse } from "next/server";
 
-const Auth = (req: NextApiRequest, res: NextApiResponse) => {
-  const authOpts: NextAuthOptions = nextAuthOptions({ req });
+export async function GET() {
+  const session = await getServerSession(authOptions);
 
-  const isDefaultSigninPage =
-    req.method === "GET" && req?.query?.nextauth?.includes("signin");
-
-  // Hide Sign-In with Ethereum from default sign page
-  if (isDefaultSigninPage) {
-    // Removes from the authOptions.providers array
-    authOpts.providers.pop();
-  }
-
-  return NextAuth(req, res, authOpts) as typeof NextAuth;
-};
-
-export default Auth;
+  return NextResponse.json({
+    authenticated: !!session,
+    session,
+  });
+}

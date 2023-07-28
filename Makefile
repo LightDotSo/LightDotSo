@@ -183,6 +183,16 @@ docker: ## Build the docker image.
 docker-upgrade: ## Upgrade dependencies in the docker image.
 	./scripts/dockerfile_version_update.sh
 
+##@ Docker-compose
+
+.PHONY: docker-compose-up
+docker-compose-up: ## Run the docker-compose.
+	docker-compose up
+
+.PHONY: docker-compose-restart
+docker-compose-restart: ## Restart the docker-compose.
+	docker-compose down --volumes && docker-compose up
+
 ##@ Prisma
 
 .PHONY: cargo-generate
