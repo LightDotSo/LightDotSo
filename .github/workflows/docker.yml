@@ -30,9 +30,6 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Make Install
-        run: |
-          make install
       - name: Docker Qemu Setup
         uses: docker/setup-qemu-action@v2
       - name: Docker Buildx Setup
