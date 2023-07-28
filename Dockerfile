@@ -9,7 +9,7 @@ WORKDIR /app
 FROM chef AS planner
 
 # Specify the target we're building for.
-ENV docker=true
+ENV DOCKER=true
 
 # Specify turborepo related args and envs.
 ARG TURBO_TEAM
@@ -37,7 +37,7 @@ FROM chef AS builder
 RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler python3-pip
 
 # Install core dependencies.
-ENV CI=true
+ENV DOCKER=true
 COPY Makefile .
 RUN make install
 

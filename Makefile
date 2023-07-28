@@ -24,7 +24,12 @@ ifdef CI
     INSTALL_PARAMS = ci-setup
   endif
   else
-    INSTALL_PARAMS = ios-setup mac-setup
+    ifeq ($(DOCKER),true)
+      INSTALL_PARAMS = docker-setup
+    endif
+    else
+      INSTALL_PARAMS = ios-setup mac-setup
+    endif
 endif
 
 ##@ Help
@@ -38,16 +43,25 @@ help: ## Display this help.
 install: $(INSTALL_PARAMS) ## Install all dependencies.
 
 .PHONY: ci-setup
-ci-setup: ## Install CI dependencies.
+ci-setup: solc-setup cargo-build-setup ## Install CI dependencies.
+
+.PHONY: docker-setup
+docker-setup: solc-setup ## Install docker dependencies.
+
+.PHONY: cargo-build-setup
+cargo-build-setup: ## Install cargo build dependencies.
 	git submodule update --init thirdparty/account-abstraction
-	pip3 install solc-select
-	solc-select install $(SOLC_VERSION)
-	solc-select use $(SOLC_VERSION)
 
 .PHONY: ios-setup
 ios-setup: ## Install iOS dependencies.
 	rustup target add $(ARCHS_IOS)
 	rustup target add $(ARCHS_IOS_ARM)
+
+.PHONY: ios-setup
+solc-setup: ## Install solc dependencies.
+	pip3 install solc-select
+	solc-select install $(SOLC_VERSION)
+	solc-select use $(SOLC_VERSION)
 
 .PHONY: mac-setup
 mac-setup: ## Install macOS dependencies.
