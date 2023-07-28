@@ -23,6 +23,7 @@ export const publicClient = createPublicClient({
 });
 
 export const getEnsName = cache(async (address: `0x${string}`) => {
+  if (!address) return;
   const ensName = await publicClient.getEnsName({
     address,
   });
@@ -39,5 +40,7 @@ export async function EnsName({
   params: { address: `0x${string}` };
 }) {
   const name = await getEnsName(address);
-  return <p>{name}</p>;
+  if (name) {
+    return <p>{name}</p>;
+  }
 }
