@@ -15,15 +15,19 @@
 
 import { db } from "@lightdotso/kysely";
 import { Connect } from "./connect";
+import { EnsName, preload } from "@/components/EnsName";
 import { getAuthServerSession } from "@lightdotso/auth";
 
 export default async function Page() {
   const users = await db.selectFrom("User").selectAll().execute();
   const session = await getAuthServerSession();
 
+  preload(session?.user?.name as `0x${string}`);
+
   return (
     <main className="text-red-500">
       <pre>{JSON.stringify(session, null, 2)}</pre>
+      <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
       <ul>
         {users.map(({ id, name }) => {
           return <li key={id}>{name}</li>;
