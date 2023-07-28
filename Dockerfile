@@ -9,7 +9,6 @@ WORKDIR /app
 
 # Specify the target we're building for.
 ENV DOCKER=true
-ENV RUSTC_WRAPPER="sccache"
 
 # Specify sccache related args and envs.
 ARG SCCACHE_KEY_ID
@@ -55,11 +54,15 @@ RUN make install
 
 FROM chef AS planner
 
+ENV RUSTC_WRAPPER="sccache"
+
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json && \
   turbo run prisma
 
 FROM chef AS builder
+
+ENV RUSTC_WRAPPER="sccache"
 
 COPY --from=planner /app/recipe.json recipe.json
 COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
