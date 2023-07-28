@@ -46,7 +46,7 @@ RUN make install
 COPY --from=planner /app/recipe.json recipe.json
 
 # Build dependencies - this layer is cached for massive speed up.
-RUN cargo chef cook --release --recipe-path recipe.json
+# RUN cargo chef cook --release --recipe-path recipe.json
 
 # Build application - this should be re-done every time we update our src.
 COPY . .
