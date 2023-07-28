@@ -33,22 +33,22 @@ jobs:
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
-            deny: true
             test: true
+            workspace: true
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --package lightwallet-core
             clippy: false
-            deny: false
             test: false
+            workspace: false
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
             package: --package lightwallet-core
             clippy: false
-            deny: false
             test: true
+            workspace: false
     env:
       SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
@@ -76,9 +76,14 @@ jobs:
           args: --all --check
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Node Build
+      - if: matrix.workspace
+        name: Node Build
         run: |
           pnpm turbo run build
+      - if: matrix.workspace
+        name: Make Install
+        run: |
+          make install
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
@@ -86,8 +91,8 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          args: --target ${{ matrix.target }}
-      - if: matrix.deny
+          args: --target ${{ matrix.target }} ${{ matrix.package }}
+      - if: matrix.workspace
         name: Deny Check
         run: |
           cargo deny check

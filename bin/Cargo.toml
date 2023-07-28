@@ -1,34 +1,39 @@
 [package]
-name = "lightdotso-bin"
-description = "A bin library for lightdotso"
-version = "0.1.0"
+  name = "lightdotso-bin"
+  description = "A bin library for lightdotso"
+  version = "0.1.0"
 
-edition.workspace = true
-rust-version.workspace = true
-license.workspace = true
-homepage.workspace = true
-repository.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
 
-default-run = "cli"
+  default-run = "cli"
 
 [dependencies]
-anyhow = { workspace = true }
-axum = { workspace = true }
-eyre = { workspace = true }
-clap = { workspace = true }
-http = { workspace = true }
-lightdotso-indexer = { workspace = true }
-lightdotso-tracing = { workspace = true }
-ratatui = { version = "0.22.0", features = ["all-widgets"] }
-tokio = { workspace = true }
-tower = { workspace = true, features = [
-  "full",
-  "util",
-  "timeout",
-  "load-shed",
-  "limit",
-] }
-tower-http = { workspace = true, features = ["cors"] }
+  anyhow = { workspace = true }
+  axum = { workspace = true }
+  clap = { workspace = true }
+  eyre = { workspace = true }
+  http = { workspace = true }
+  lightdotso-bundler = { workspace = true }
+  lightdotso-indexer = { workspace = true }
+  lightdotso-simulator = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  ratatui = { version = "0.22.0", features = ["all-widgets"] }
+  silius-grpc = { workspace = true }
+  silius-primitives = { workspace = true }
+  silius-rpc = { workspace = true }
+  tokio = { workspace = true }
+  tower = { workspace = true, features = [
+    "full",
+    "util",
+    "timeout",
+    "load-shed",
+    "limit",
+  ] }
+  tower-http = { workspace = true, features = ["cors"] }
 
 [build-dependencies]
-vergen = { version = "8.0.0", features = ["build", "cargo", "git", "gitcl"] }
+  vergen = { version = "8.0.0", features = ["build", "cargo", "git", "gitcl"] }

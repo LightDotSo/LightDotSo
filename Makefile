@@ -19,6 +19,18 @@ CRATES_DIR = "crates/core"
 CARGO_PARAMS = --package lightwallet-core --crate-type=staticlib
 TARGET_DIR = target
 
+ifdef CI
+  ifeq ($(CI),true)
+    INSTALL_PARAMS = ci-setup
+  endif
+  else
+    ifeq ($(DOCKER),true)
+      INSTALL_PARAMS = docker-setup
+    else
+      INSTALL_PARAMS = ios-setup mac-setup
+    endif
+endif
+
 ##@ Help
 
 .PHONY: help
@@ -27,12 +39,29 @@ help: ## Display this help.
 
 ##@ Install
 
-install: ios-setup mac-setup ## Install all dependencies.
+install: $(INSTALL_PARAMS) ## Install all dependencies.
+
+.PHONY: ci-setup
+ci-setup: solc-setup thirdparty-setup ## Install CI dependencies.
+
+.PHONY: docker-setup
+docker-setup: solc-setup ## Install docker dependencies.
 
 .PHONY: ios-setup
 ios-setup: ## Install iOS dependencies.
 	rustup target add $(ARCHS_IOS)
 	rustup target add $(ARCHS_IOS_ARM)
+
+.PHONY: thirdparty-setup
+thirdparty-setup: ## Install solc dependencies.
+	git submodule update --init thirdparty/account-abstraction
+	cd thirdparty/account-abstraction && yarn install --frozen-lockfile --immutable && yarn run compile && cd ../..
+
+.PHONY: solc-setup
+solc-setup: ## Install solc dependencies.
+	pip3 install solc-select
+	solc-select install $(SOLC_VERSION)
+	solc-select use $(SOLC_VERSION)
 
 .PHONY: mac-setup
 mac-setup: ## Install macOS dependencies.

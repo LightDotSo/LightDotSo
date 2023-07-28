@@ -1,8 +1,19 @@
 [alias]
-build-all = ["build", "--workspace"]
-cli= ["run", "--"]
-prisma= ["run", "--package", "embedded-prisma", "--"]
-generate = ["run", "--package", "embedded-prisma", "--", "generate", "--schema=configurations/prisma/prisma/schema-rs.prisma"]
-scopelint = ["run", "--package", "embedded-scopelint", "--"]
-uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
-test-all = ["test", "--workspace"]
+  build-all = ["build", "--workspace"]
+  cli = ["run", "--"]
+  prisma = ["run", "--package", "embedded-prisma", "--"]
+  generate = [
+    "run",
+    "--package",
+    "embedded-prisma",
+    "--",
+    "generate",
+    "--schema=configurations/prisma/prisma/schema-rs.prisma",
+  ]
+  scopelint = ["run", "--package", "embedded-scopelint", "--"]
+  uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
+  test-all = ["test", "--workspace"]
+
+[env]
+  RUSTC_BOOTSTRAP = "1"
+  CARGO_WORKSPACE_DIR = { value = "", relative = true }
