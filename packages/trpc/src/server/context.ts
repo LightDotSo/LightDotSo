@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { type Session } from "next-auth";
-import { getServerAuthSession } from "@lightdotso/auth";
+import { getNextAuthServerSession } from "@lightdotso/auth";
 import { type inferAsyncReturnType } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { prisma } from "@lightdotso/prisma";
@@ -46,7 +46,7 @@ export const createInnerTRPCContext = async (opts: CreateContextOptions) => {
  **/
 export const createContext = async ({ req, res }: CreateNextContextOptions) => {
   // Get the session from the server using the getServerSession wrapper function
-  const session = await getServerAuthSession({ req, res });
+  const session = await getNextAuthServerSession({ req, res });
 
   return createInnerTRPCContext({
     req,
