@@ -7,25 +7,29 @@ coverage:
       flag_coverage_not_uploaded_behavior: exclude
     project:
       default:
+        target: auto
+        threshold: "0%"
         informational: true
       contracts:
-        informational: true
+        target: auto
         flags:
           - contracts
       js:
-        informational: true
+        target: auto
         flags:
           - js
       rust:
-        informational: true
+        target: auto
         flags:
           - rust
       ios:
-        informational: true
+        target: auto
         flags:
           - ios
     patch:
       default:
+        target: auto
+        threshold: "0%"
         informational: true
 component_management:
   individual_components:
