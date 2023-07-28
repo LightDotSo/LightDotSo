@@ -58,9 +58,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.BOT_TOKEN }}
-      - name: Make Install
-        run: |
-          make install
       - name: Docker Build
         uses: docker/build-push-action@v4
         with:

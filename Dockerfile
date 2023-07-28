@@ -52,6 +52,7 @@ RUN cargo chef cook --release --recipe-path recipe.json
 
 # Build application - this should be re-done every time we update our src.
 COPY . .
+RUN rm rust-toolchain.toml
 COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
 
 RUN cargo build --release
