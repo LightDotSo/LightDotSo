@@ -66,6 +66,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
+            SCCACHE_ENDPOINT: ${{ secrets.SCCACHE_ENDPOINT }}
+            SCCACHE_KEY_ID: ${{ secrets.SCCACHE_KEY_ID }}
+            SCCACHE_SECRET: ${{ secrets.SCCACHE_SECRET }}
             TURBO_TEAM=${{ secrets.TURBO_TEAM }}
             TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
       - name: Docker Size

@@ -10,6 +10,14 @@ WORKDIR /app
 # Specify the target we're building for.
 ENV DOCKER=true
 
+# Specify sccache related args and envs.
+ARG SCCACHE_ENDPOINT
+ENV SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT
+ARG SCCACHE_KEY_ID
+ENV SCCACHE_KEY_ID=$SCCACHE_KEY_ID
+ARG SCCACHE_SECRET
+ENV SCCACHE_SECRET=$SCCACHE_SECRET
+
 # Specify turborepo related args and envs.
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
@@ -19,7 +27,7 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
 # From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
-RUN cargo install cargo-chef
+RUN cargo install cargo-chef sccache
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
