@@ -25,10 +25,8 @@ RUN apt install -y python3-pip nodejs
 # Copy over dir.
 COPY . .
 
-# Figure out if dependencies have changed.
-RUN cargo chef prepare --recipe-path recipe.json && \
-      npm install -g turbo@1.10.11 pnpm@8.6.9 && \
-      turbo run prisma
+# Build the prisma dep.
+RUN npm install -g turbo@1.10.11 pnpm@8.6.9 && turbo run prisma
 
 # Install building dependencies.
 RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler
