@@ -2,7 +2,8 @@
 ## Thank you to the ultrasoundmoney team for the Dockerfile!
 ## Awesome work for the ethereum community!
 
-FROM lukemathwalker/cargo-chef:latest-rust-latest AS chef
+FROM lukemathwalker/cargo-chef:latest-rust-1 AS chef
+
 WORKDIR /app
 
 FROM chef AS planner
@@ -17,14 +18,11 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
-# Purge unnecessary deps.
-RUN apt-get purge nodejs npm
-
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
 # Install planning dependencies.
-RUN apt-get update && apt-get -y install nodejs npm
+RUN apt install -y python3-pip nodejs
 
 # Copy over dir.
 COPY . .
