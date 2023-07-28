@@ -55,6 +55,7 @@ ios-setup: ## Install iOS dependencies.
 .PHONY: thirdparty-setup
 thirdparty-setup: ## Install solc dependencies.
 	git submodule update --init thirdparty/account-abstraction
+	cd thirdparty/account-abstraction && yarn install --frozen-lockfile --immutable && yarn run compile && cd ../..
 
 .PHONY: solc-setup
 solc-setup: ## Install solc dependencies.
