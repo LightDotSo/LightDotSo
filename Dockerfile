@@ -17,11 +17,11 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
+# Install nodejs 18.
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+
 # Install planning dependencies.
 RUN apt-get update && apt-get -y install nodejs npm
-
-# Install nodejs.
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
 # Copy over dir.
 COPY . .
