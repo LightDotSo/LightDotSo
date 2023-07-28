@@ -17,6 +17,9 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
+# Purge unnecessary deps.
+RUN apt-get purge nodejs npm
+
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
