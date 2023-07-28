@@ -31,12 +31,12 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Install Rust Toolchain (nightly)
-        uses: actions-rs/toolchain@v1
+      - name: Rust Install
+        uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
-          profile: minimal
-          toolchain: nightly
-          override: true
+          sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
+          sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
+          sccache_secret: ${{ secrets.SCCACHE_SECRET }}
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
       - name: Gradle Lint
@@ -55,12 +55,12 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Install Rust Toolchain (nightly)
-        uses: actions-rs/toolchain@v1
+      - name: Rust Install
+        uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
-          profile: minimal
-          toolchain: nightly
-          override: true
+          sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
+          sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
+          sccache_secret: ${{ secrets.SCCACHE_SECRET }}
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
       - name: Gradle Build
