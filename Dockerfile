@@ -9,12 +9,11 @@ WORKDIR /app
 FROM chef AS planner
 
 # Specify the target we're building for.
-ENV CI=true
 ENV docker=true
 
+# Specify turborepo related args and envs.
 ARG TURBO_TEAM
 ENV TURBO_TEAM=$TURBO_TEAM
-
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
@@ -37,9 +36,9 @@ FROM chef AS builder
 # Install building dependencies.
 RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler python3-pip
 
-COPY Makefile .
-
 # Install core dependencies.
+ENV CI=true
+COPY Makefile .
 RUN make install
 
 COPY --from=planner /app/recipe.json recipe.json
