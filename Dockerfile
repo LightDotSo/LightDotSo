@@ -37,7 +37,6 @@ FROM chef AS builder
 RUN apt-get update && apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler python3-pip
 
 ENV DOCKER=true
-ENV CARGO_WORKSPACE_DIR=$(pwd)
 
 # Install core dependencies.
 COPY Makefile .
@@ -46,6 +45,7 @@ RUN make install
 COPY --from=planner /app/recipe.json recipe.json
 
 # Build dependencies - this layer is cached for massive speed up.
+COPY .cargo .
 COPY third_party .
 RUN cargo chef cook --release --recipe-path recipe.json
 
