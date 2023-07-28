@@ -27,9 +27,6 @@ RUN apt install -y python3-pip nodejs
 # Copy over dir.
 COPY . .
 
-# Remove rust-toolchain.toml, which is not needed for building.
-RUN rm rust-toolchain.toml
-
 # Figure out if dependencies have changed.
 RUN cargo chef prepare --recipe-path recipe.json && \
       npm install -g turbo@1.10.11 pnpm@8.6.9 && \
@@ -52,7 +49,6 @@ RUN cargo chef cook --release --recipe-path recipe.json
 
 # Build application - this should be re-done every time we update our src.
 COPY . .
-RUN rm rust-toolchain.toml
 COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
 
 RUN cargo build --release
