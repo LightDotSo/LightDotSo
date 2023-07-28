@@ -14,9 +14,6 @@
   uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
   test-all = ["test", "--workspace"]
 
-[build]
-  rustc-wrapper = "sccache"
-
 [env]
   RUSTC_BOOTSTRAP = "1"
   CARGO_WORKSPACE_DIR = { value = "", relative = true }

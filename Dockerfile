@@ -9,6 +9,7 @@ WORKDIR /app
 
 # Specify the target we're building for.
 ENV DOCKER=true
+ENV RUSTC_WRAPPER="sccache"
 
 # Specify sccache related args and envs.
 ARG SCCACHE_KEY_ID
