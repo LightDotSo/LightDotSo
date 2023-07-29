@@ -70,9 +70,9 @@ RUN cargo chef prepare --recipe-path recipe.json && \
 
 FROM chef AS builder
 
+# Cook the recipe.
 COPY --from=planner /app/recipe.json recipe.json
 COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
-# Build dependencies - this is the caching Docker layer!
 RUN cargo chef cook --release --recipe-path recipe.json
 
 # Build application
