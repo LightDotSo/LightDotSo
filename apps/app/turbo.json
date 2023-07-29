@@ -10,7 +10,7 @@
         "NEXTAUTH_SECRET",
         "NEXT_PUBLIC_SIGNIN_MESSAGE"
       ],
-      "inputs": ["**"],
+      "inputs": ["app/**", "pages/**", "src/**"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "clean": {
@@ -21,6 +21,9 @@
       "persistent": true
     },
     "lint": {},
+    "start": {
+      "dependsOn": ["build"]
+    },
     "test": {
       "dependsOn": ["build"],
       "env": ["ENVIRONMENT_URL", "NODE_ENV"]

@@ -59,6 +59,9 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "start": {
+      "dependsOn": ["^start"]
+    },
     "test": {
       "dependsOn": ["^test"]
     }
