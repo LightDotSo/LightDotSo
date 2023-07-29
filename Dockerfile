@@ -61,6 +61,7 @@ RUN apt-get update && \
 # Run the build.
 RUN make install
 
+# Prepare planning stage.
 FROM chef AS planner
 
 # Prepare the recipe.
