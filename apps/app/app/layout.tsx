@@ -15,11 +15,15 @@
 
 "use client";
 
+import { useState } from "react";
 import { Button } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// From: https://tanstack.com/query/v5/docs/react/examples/react/nextjs-suspense-streaming
 
 const config = createConfig(
   getDefaultConfig({
@@ -33,17 +37,30 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 5 * 1000,
+          },
+        },
+      }),
+  );
+
   return (
     <html lang="en">
       <body>
-        <WagmiConfig config={config}>
-          <ConnectKitProvider>
-            <Button>Hello</Button>
-            <ReactQueryStreamedHydration>
-              {children}
-            </ReactQueryStreamedHydration>
-          </ConnectKitProvider>
-        </WagmiConfig>
+        <QueryClientProvider client={queryClient}>
+          <WagmiConfig config={config}>
+            <ConnectKitProvider>
+              <Button>Hello</Button>
+              <ReactQueryStreamedHydration>
+                {children}
+              </ReactQueryStreamedHydration>
+            </ConnectKitProvider>
+          </WagmiConfig>
+        </QueryClientProvider>
       </body>
     </html>
   );

@@ -9,13 +9,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
-  CARGO_TERM_COLOR: always
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 jobs:
   e2e-filter:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     outputs:
       api: ${{ steps.filter.outputs.api }}
+      app: ${{ steps.filter.outputs.app }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -28,3 +30,57 @@ jobs:
               - 'apps/api/**'
             app:
               - 'apps/app/**'
+  e2e-api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Playwright Install
+        run: |
+          npx playwright install
+      - name: Node Build
+        run: |
+          pnpm turbo run build
+      - name: Build the stack
+        run: |
+          docker-compose up -d --build
+      - name: Run E2E Api
+        run: |
+          pnpm run e2e:api:dev
+  e2e-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Playwright Install
+        run: |
+          npx playwright install
+      - name: Node Build
+        run: |
+          pnpm turbo run build
+      - name: Build the stack
+        run: |
+          docker-compose up -d --build
+      - name: Run E2E App
+        run: |
+          pnpm run e2e:app:dev
+  e2e-check:
+    if: always()
+    needs:
+      - e2e-filter
+      - e2e-api
+      - e2e-app
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: e2e-api,e2e-app
+          jobs: ${{ toJSON(needs) }}

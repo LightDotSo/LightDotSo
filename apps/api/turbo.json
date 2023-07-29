@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["NEXT_PUBLIC_VERCEL_URL"],
-      "inputs": ["**"],
+      "inputs": ["app/**", "pages/**", "src/**"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "clean": {
