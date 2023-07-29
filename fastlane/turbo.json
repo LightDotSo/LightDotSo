@@ -5,7 +5,9 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": [
-        "**",
+        "Appfile",
+        "Fastfile",
+        "Matchfile",
         "../Gemfile",
         "../Gemfile.lock"
       ],

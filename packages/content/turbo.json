@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["NODE_ENV"],
-      "inputs": ["**"],
+      "inputs": ["src/**"],
       "outputs": [
         "../../ios/LightWalletSafariExtension/Resources/content.js",
         "../../apps/extension/chrome/content.js",

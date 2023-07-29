@@ -10,7 +10,7 @@
         "NEXT_PUBLIC_SIGNIN_MESSAGE",
         "NODE_ENV"
       ],
-      "inputs": ["**"],
+      "inputs": ["index.ts"],
       "outputs": ["dist/**"]
     },
     "clean": {
