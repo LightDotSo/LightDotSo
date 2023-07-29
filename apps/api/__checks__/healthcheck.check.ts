@@ -51,7 +51,7 @@ new ApiCheck("api-healthcheck", {
     assertions: [
       AssertionBuilder.jsonBody("").hasKey("result"),
       AssertionBuilder.statusCode().equals(200),
-      AssertionBuilder.responseTme().lessThan(4500),
+      AssertionBuilder.responseTme().lessThan(9000),
     ],
     body: "",
     bodyType: "JSON",

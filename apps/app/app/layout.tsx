@@ -19,6 +19,7 @@ import { Button } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 
 const config = createConfig(
   getDefaultConfig({
@@ -38,7 +39,9 @@ export default function RootLayout({
         <WagmiConfig config={config}>
           <ConnectKitProvider>
             <Button>Hello</Button>
-            {children}
+            <ReactQueryStreamedHydration>
+              {children}
+            </ReactQueryStreamedHydration>
           </ConnectKitProvider>
         </WagmiConfig>
       </body>

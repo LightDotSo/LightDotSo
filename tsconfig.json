@@ -25,5 +25,12 @@
       "@/contracts/test/spec/*": ["contracts/test/spec/*"]
     }
   },
+  "include": [
+    "hardhat.config.ts",
+    "playwright.config.ts",
+    "vitest.config.ts",
+    "vitest.workspace.ts",
+    "wagmi.config.ts"
+  ],
   "extends": "./tsconfig.base"
 }
