@@ -15,8 +15,21 @@
 
 import { Pool } from "@neondatabase/serverless";
 import { Kysely, PostgresDialect } from "kysely";
+import { PostgresJSDialect } from "kysely-postgres-js";
+import postgres from "postgres";
 
 import type { DB } from "./src/db/types";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = new Kysely<DB>({ dialect: new PostgresDialect({ pool }) });
+export const db = new Kysely<DB>({
+  dialect:
+    process.env.NODE_ENV === "development"
+      ? new PostgresJSDialect({
+          connectionString: process.env.DATABASE_URL,
+          options: {
+            max: 10,
+          },
+          postgres,
+        })
+      : new PostgresDialect({ pool }),
+});

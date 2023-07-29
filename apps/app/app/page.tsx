@@ -15,11 +15,13 @@
 
 import { Connect } from "./connect";
 import { EnsName, preload } from "@/components/EnsName";
-import { prisma } from "@lightdotso/prisma";
+import { db } from "@lightdotso/kysely";
+// import { prisma } from "@lightdotso/prisma";
 import { getAuthServerSession } from "@lightdotso/auth";
 
 export default async function Page() {
-  const users = await prisma.user.findMany();
+  const users = await db.selectFrom("User").selectAll().execute();
+  // const users = await prisma.user.findMany();
   const session = await getAuthServerSession();
 
   preload(session?.user?.name as `0x${string}`);
