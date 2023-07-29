@@ -22,6 +22,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth";
 import type { NextAuthOptions, AuthOptions } from "next-auth";
 import { type GetServerSidePropsContext } from "next";
+import { getAddress } from "viem";
 
 export const commonAuthOptions: Omit<AuthOptions, "providers"> = {
   session: {
@@ -142,14 +143,58 @@ export const nextAuthOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
             throw new Error("Statement Mismatch");
           }
 
-          if (result.success) {
-            console.log("success");
+          // Get the address in checksum format
+          const address = getAddress(result.data.address);
 
+          // Check if the account already exists
+          const existingAccount = await prisma.account.findFirst({
+            where: {
+              providerAccountId: address,
+            },
+            select: {
+              userId: true,
+              providerAccountId: true,
+              user: {
+                select: {
+                  image: true,
+                  name: true,
+                },
+              },
+            },
+          });
+          if (existingAccount) {
             return {
-              id: siwe.address,
+              id: existingAccount.userId,
+              name: existingAccount.user.name,
+              image: existingAccount.user.image,
             };
           }
-          return null;
+
+          // Create new user and account sequentially
+          const { user } = await prisma.$transaction(async tx => {
+            const user = await tx.user.create({
+              data: {
+                name: address,
+              },
+            });
+            const account = await tx.account.create({
+              data: {
+                userId: user.id,
+                providerType: "credentials",
+                providerId: "eth",
+                providerAccountId: address,
+              },
+            });
+            return {
+              user,
+              account,
+            };
+          });
+
+          return {
+            id: user.id,
+            name: user.id,
+          };
         } catch (err) {
           console.error(err);
           return null;
