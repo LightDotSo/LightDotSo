@@ -39,6 +39,8 @@
   },
   "dependencies": {
     "@prisma/client": "5.0.0",
+    "kysely-postgres-js": "^1.1.1",
+    "postgres": "^3.3.5",
     "prisma": "^5.0.0",
     "prisma-kysely": "^1.5.0",
     "zod": "^3.21.4",
