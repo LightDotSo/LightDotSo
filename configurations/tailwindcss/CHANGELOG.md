@@ -1,5 +1,11 @@
 # @lightdotso/tailwindcss
 
+## 1.1.0-pre.3
+
+### Minor Changes
+
+- [#281](https://github.com/LightDotSo/LightDotSo/pull/281) [`5504b14`](https://github.com/LightDotSo/LightDotSo/commit/5504b14314e9f00b74738792de9fe4c66d21c02f) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Deprecate line clamp
+
 ## 1.1.0-pre.2
 
 ### Patch Changes
