@@ -19,7 +19,6 @@ WORKDIR /app
 
 # Specify the target we're building for.
 ENV DOCKER=true
-ENV RUSTC_WRAPPER="sccache"
 
 # Specify sccache related envs.
 ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
@@ -37,6 +36,9 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 # it will be cached from the second build onwards
 # From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
 RUN cargo install cargo-chef sccache
+
+# Specify sccache as the rustc wrapper for subsequent runs.
+ENV RUSTC_WRAPPER="sccache"
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
