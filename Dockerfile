@@ -3,9 +3,12 @@
 # Awesome work for the ethereum community!
 
 # Specify sccache related args
-ARG SCCACHE_KEY_ID
-ARG SCCACHE_SECRET
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
 ARG SCCACHE_ENDPOINT
+ARG SCCACHE_BUCKET=sccache
+ARG SCCACHE_REGION=auto
+ARG SCCACHE_S3_USE_SSL=true
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
@@ -16,6 +19,19 @@ WORKDIR /app
 
 # Specify the target we're building for.
 ENV DOCKER=true
+ENV RUSTC_WRAPPER="sccache"
+
+# Specify sccache related envs.
+ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+ENV SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT
+ENV SCCACHE_BUCKET=$SCCACHE_BUCKET
+ENV SCCACHE_REGION=$SCCACHE_REGION
+ENV SCCACHE_S3_USE_SSL=$SCCACHE_S3_USE_SSL
+
+# Specify turborepo related envs.
+ENV TURBO_TEAM=$TURBO_TEAM
+ENV TURBO_TOKEN=$TURBO_TOKEN
 
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
@@ -45,35 +61,11 @@ RUN make install
 
 FROM chef AS planner
 
-# Specify sccache related envs.
-ENV AWS_ACCESS_KEY_ID=$SCCACHE_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY=$SCCACHE_SECRET
-ENV SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT
-ENV SCCACHE_BUCKET=sccache
-ENV SCCACHE_REGION=auto
-
-# Specify turborepo related envs.
-ENV TURBO_TEAM=$TURBO_TEAM
-ENV TURBO_TOKEN=$TURBO_TOKEN
-
-# Specify rust related args
-ENV RUSTC_WRAPPER="sccache"
-
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json && \
   turbo run prisma
 
 FROM chef AS builder
-
-# Specify sccache related envs.
-ENV AWS_ACCESS_KEY_ID=$SCCACHE_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY=$SCCACHE_SECRET
-ENV SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT
-ENV SCCACHE_BUCKET=sccache
-ENV SCCACHE_REGION=auto
-
-# Specify rust related args
-ENV RUSTC_WRAPPER="sccache"
 
 COPY --from=planner /app/recipe.json recipe.json
 COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
