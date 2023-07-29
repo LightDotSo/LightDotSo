@@ -12,6 +12,11 @@
     "//#ci": {
       "cache": false
     },
+    "//#e2e": {
+      "dependsOn": [],
+      "env": ["CI", "PLAYWRIGHT_HEADLESS", "PLAYWRIGHT_TEST_BASE_URL"],
+      "outputs": []
+    },
     "//#lint": {
       "dependsOn": [],
       "inputs": [
