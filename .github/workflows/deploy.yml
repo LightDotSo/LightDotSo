@@ -1,0 +1,57 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+env:
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+jobs:
+  deploy-filter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      checkly: ${{ steps.filter.outputs.checkly }}
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Paths Filter
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            checkly:
+              - '**/__checks__/**'
+  deploy-checkly:
+    if: needs.deploy-filter.outputs.checkly == 'true'
+    needs:
+      - deploy-filter
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      CHECKLY_API_KEY: ${{ secrets.CHECKLY_API_KEY }}
+      CHECKLY_ACCOUNT_ID: ${{ secrets.CHECKLY_ACCOUNT_ID }}
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Deploy Checkly
+        run: |
+          pnpm run deploy:checkly
+  deploy-check:
+    if: always()
+    needs:
+      - deploy-filter
+      - deploy-checkly
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: deploy-checkly
+          jobs: ${{ toJSON(needs) }}

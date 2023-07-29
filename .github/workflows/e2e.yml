@@ -31,6 +31,9 @@ jobs:
             app:
               - 'apps/app/**'
   e2e-api:
+    if: needs.e2e-filter.outputs.api == 'true'
+    needs:
+      - e2e-filter
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -51,6 +54,9 @@ jobs:
         run: |
           pnpm run e2e:api:dev
   e2e-app:
+    if: needs.e2e-filter.outputs.app == 'true'
+    needs:
+      - e2e-filter
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
