@@ -30,9 +30,6 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Make Install
-        run: |
-          make install
       - name: Docker Qemu Setup
         uses: docker/setup-qemu-action@v2
       - name: Docker Buildx Setup
@@ -69,8 +66,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
+            AWS_ACCESS_KEY_ID: ${{ secrets.SCCACHE_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.SCCACHE_SECRET }}
+            SCCACHE_ENDPOINT: ${{ secrets.SCCACHE_ENDPOINT }}
             TURBO_TEAM=${{ secrets.TURBO_TEAM }}
             TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+      - name: Docker Size
+        run: |
+          docker history ${{ steps.meta.outputs.tags }}
   docker-lint:
     runs-on: ubuntu-latest
     if: needs.docker-turbo.outputs.trigger == 'true'

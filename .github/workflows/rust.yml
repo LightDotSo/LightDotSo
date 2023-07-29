@@ -50,7 +50,6 @@ jobs:
             test: true
             workspace: false
     env:
-      SCCACHE_GHA_ENABLED: "true"
       RUSTC_WRAPPER: "sccache"
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:

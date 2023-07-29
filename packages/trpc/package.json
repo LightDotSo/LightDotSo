@@ -18,7 +18,7 @@
     "@lightdotso/prisma": "workspace:*",
     "@prisma/client": "^5.0.0",
     "@trpc-limiter/core": "^0.0.8",
-    "@trpc/server": "^10.35.0",
+    "@trpc/server": "^10.36.0",
     "@upstash/ratelimit": "^0.4.3",
     "@upstash/redis": "^1.22.0",
     "next": "^13.4.12",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.4.4",
+    "@types/node": "^20.4.5",
     "typescript": "^5.1.6"
   },
   "publishConfig": {
