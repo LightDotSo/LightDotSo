@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["**"],
+      "inputs": ["src/**"],
       "outputs": []
     }
   }

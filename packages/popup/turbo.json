@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["CI", "JITSU_JS_KEY", "NODE_ENV", "VERCEL"],
-      "inputs": ["**"],
+      "inputs": ["src/**"],
       "outputs": [
         ".next/**",
         "../../ios/LightWalletSafariExtension/Resources/popup/**",

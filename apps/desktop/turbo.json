@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": ["TAURI_PLATFORM", "TAURI_DEBUG"],
-      "inputs": ["**"],
+      "inputs": ["public/**", "src/**"],
       "outputs": ["dist/**"]
     },
     "clean": {

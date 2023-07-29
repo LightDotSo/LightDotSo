@@ -4,7 +4,13 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["**", "../.dockerignore", "../Dockerfile"],
+      "inputs": [
+        "src/**",
+        "Cargo.toml",
+        "build.rs",
+        "../.dockerignore",
+        "../Dockerfile"
+      ],
       "outputs": []
     }
   }

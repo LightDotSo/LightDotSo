@@ -11,7 +11,7 @@
     },
     "lint": {},
     "wagmi": {
-      "inputs": ["**"],
+      "inputs": ["src/**"],
       "outputs": ["src/generated.ts"]
     }
   }

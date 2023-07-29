@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "inputs": [
-        "**",
+        "src/**",
         "../lib/**",
         "../.gitmodules",
         "../hardhat.config.ts",
