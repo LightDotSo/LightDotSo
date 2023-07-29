@@ -38,7 +38,7 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 RUN cargo install cargo-chef sccache
 
 # Specify sccache as the rustc wrapper for subsequent runs.
-ENV RUSTC_WRAPPER="sccache"
+# ENV RUSTC_WRAPPER="sccache"
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
