@@ -995,6 +995,12 @@ importers:
       kysely:
         specifier: ^0.26.1
         version: 0.26.1
+      kysely-postgres-js:
+        specifier: ^1.1.1
+        version: 1.1.1(kysely@0.26.1)(postgres@3.3.5)
+      postgres:
+        specifier: ^3.3.5
+        version: 3.3.5
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -1020,6 +1026,12 @@ importers:
       '@prisma/client':
         specifier: 5.0.0
         version: 5.0.0(prisma@5.0.0)
+      kysely-postgres-js:
+        specifier: ^1.1.1
+        version: 1.1.1(kysely@0.26.1)(postgres@3.3.5)
+      postgres:
+        specifier: ^3.3.5
+        version: 3.3.5
       prisma:
         specifier: ^5.0.0
         version: 5.0.0
