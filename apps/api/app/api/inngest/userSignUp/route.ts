@@ -14,9 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { inngest } from "@/inngest/client";
+import { NextResponse } from "next/server";
 
-const handler = () => {
-  return inngest.send({ name: "test/user.signed.up", data: {} });
+const handler = async () => {
+  await inngest.send({ name: "test/user.signed.up", data: {} });
+  return NextResponse.json({ user: "signUp" });
 };
 
 export const GET = handler;
