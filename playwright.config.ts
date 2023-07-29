@@ -33,6 +33,7 @@ const opts = {
   collectCoverage: !!process.env.PLAYWRIGHT_HEADLESS,
 };
 const config: PlaywrightTestConfig = {
+  retries: process.env.CI ? 3 : 0,
   projects: [
     {
       name: "@lightdotso/api",
