@@ -63,6 +63,7 @@ RUN make install
 
 FROM chef AS planner
 
+# Prepare the recipe.
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json && \
   turbo run prisma
