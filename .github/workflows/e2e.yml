@@ -46,7 +46,7 @@ jobs:
           docker-compose up -d --build
       - name: Run E2E Api
         run: |
-          pnpm turbo run e2e:api:dev
+          pnpm run e2e:api:dev
   e2e-app:
     runs-on: ubuntu-latest
     timeout-minutes: 90
@@ -63,7 +63,7 @@ jobs:
           docker-compose up -d --build
       - name: Run E2E App
         run: |
-          pnpm turbo run e2e:app:dev
+          pnpm run e2e:app:dev
   e2e-check:
     if: always()
     needs:
