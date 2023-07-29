@@ -13,7 +13,7 @@ ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
 # Specify the base image we're building from.
-FROM rust:1.70 AS chef
+FROM rust:1.70 AS builder
 
 WORKDIR /app
 
@@ -35,7 +35,7 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
 # From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
-RUN cargo install cargo-chef sccache
+RUN cargo install sccache
 
 # Specify sccache as the rustc wrapper for subsequent runs.
 # ENV RUSTC_WRAPPER="sccache"
@@ -59,25 +59,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 # Run the build.
-RUN make install
-
-FROM chef AS planner
-
-# Prepare the recipe.
-COPY . .
-RUN cargo chef prepare --recipe-path recipe.json && \
-  turbo run prisma
-
-FROM chef AS builder
-
-# Cook the recipe.
-COPY --from=planner /app/recipe.json recipe.json
-COPY --from=planner /app/crates/prisma/src/lib.rs crates/prisma/src/lib.rs
-RUN cargo chef cook --release --recipe-path recipe.json
-
-# Build application
-COPY . .
-RUN cargo build --release
+RUN make install && turbo run prisma && cargo build --release
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
