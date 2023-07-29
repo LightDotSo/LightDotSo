@@ -9,13 +9,15 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
-  CARGO_TERM_COLOR: always
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 jobs:
   e2e-filter:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     outputs:
       api: ${{ steps.filter.outputs.api }}
+      app: ${{ steps.filter.outputs.app }}
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -28,3 +30,17 @@ jobs:
               - 'apps/api/**'
             app:
               - 'apps/app/**'
+  e2e-api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Node Build
+        run: |
+          pnpm turbo run build
+      - name: Build the stack
+        run: |
+          docker-compose up -d --build
