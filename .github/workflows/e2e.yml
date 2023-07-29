@@ -1,0 +1,30 @@
+name: E2E
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+env:
+  CARGO_TERM_COLOR: always
+jobs:
+  e2e-filter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Paths Filter
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'apps/api/**'
+            app:
+              - 'apps/app/**'
