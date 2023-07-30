@@ -58,7 +58,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 # Specify sccache as the rustc wrapper for subsequent runs.
-ENV RUSTC_WRAPPER=$RUSTC_WRAPPER
+ENV RUSTC_WRAPPER=${RUSTC_WRAPPER}
 
 # Run the build.
 RUN make install && \
