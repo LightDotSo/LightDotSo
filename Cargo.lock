@@ -4919,6 +4919,7 @@ dependencies = [
  "http",
  "lightdotso-bundler",
  "lightdotso-indexer",
+ "lightdotso-prisma",
  "lightdotso-simulator",
  "lightdotso-tracing",
  "ratatui",

@@ -20,6 +20,11 @@ WORKDIR /app
 # Specify the target we're building for.
 ENV DOCKER=true
 
+# Specify rust related envs.
+ENV CARGO_INCREMENTAL=0
+ENV RUSTC_WRAPPER=sccache
+ENV SCCACHE_IDLE_TIMEOUT=0
+
 # Specify sccache related envs.
 ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
@@ -36,9 +41,6 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 # it will be cached from the second build onwards
 # From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
 RUN cargo install sccache
-
-# Specify sccache as the rustc wrapper for subsequent runs.
-# ENV RUSTC_WRAPPER="sccache"
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
