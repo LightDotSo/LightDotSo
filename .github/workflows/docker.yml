@@ -71,8 +71,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             RUSTC_WRAPPER=sccache
-            AWS_ACCESS_KEY_ID=${{ secrets.SCCACHE_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.SCCACHE_SECRET }}
+            AWS_ACCESS_KEY_ID=${{ secrets.SCCACHE_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
             SCCACHE_ENDPOINT=${{ secrets.SCCACHE_ENDPOINT }}
             TURBO_TEAM=${{ secrets.TURBO_TEAM }}
             TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
