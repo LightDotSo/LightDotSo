@@ -21,6 +21,6 @@ pub fn rust_hello_world() -> String {
     "Hello World".to_string()
 }
 
-pub use lightwallet_keychain::keychain_hello_world;
+pub use lightdotso_keychain::keychain_hello_world;
 
 uniffi_macros::include_scaffolding!("LightWalletCore");
