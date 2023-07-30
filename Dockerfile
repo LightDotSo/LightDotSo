@@ -53,7 +53,7 @@ RUN npm install -g turbo@1.10.11 pnpm@8.6.9
 
 # Install building dependencies.
 RUN apt-get update && \
-  apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler && \
+  apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler libssl1.1 ca-certificates && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
@@ -63,7 +63,6 @@ ENV RUSTC_WRAPPER=$RUSTC_WRAPPER
 # Run the build.
 RUN make install && \
     turbo run prisma && \
-    sccache --start-server || true && \
     cargo build --release && \
     sccache --show-stats
 
