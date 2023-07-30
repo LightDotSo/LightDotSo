@@ -22,7 +22,6 @@ ENV DOCKER=true
 
 # Specify rust related envs.
 ENV CARGO_INCREMENTAL=0
-ENV RUSTC_WRAPPER=sccache
 ENV SCCACHE_IDLE_TIMEOUT=0
 
 # Specify sccache related envs.
@@ -41,6 +40,9 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 # it will be cached from the second build onwards
 # From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
 RUN cargo install sccache
+
+# Specify sccache as the rustc wrapper for subsequent runs.
+ENV RUSTC_WRAPPER=sccache
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
@@ -61,7 +63,10 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 # Run the build.
-RUN make install && turbo run prisma && cargo build --release
+RUN make install && \
+    turbo run prisma && \
+    cargo build --release && \
+    sccache --show-stats
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
