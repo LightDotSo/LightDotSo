@@ -2,6 +2,9 @@
 # Thank you to the ultrasoundmoney team for the Dockerfile!
 # Awesome work for the ethereum community!
 
+# Specify the base image we're building from.
+FROM rust:1.70 AS builder
+
 # Specify sccache related args
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
@@ -9,9 +12,6 @@ ARG RUSTC_WRAPPER
 ARG SCCACHE_ENDPOINT
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
-
-# Specify the base image we're building from.
-FROM rust:1.70 AS builder
 
 WORKDIR /app
 
@@ -26,13 +26,13 @@ ENV SCCACHE_S3_USE_SSL=true
 ENV SCCACHE_IDLE_TIMEOUT=0
 
 # Specify sccache related envs.
-ENV AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-ENV SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV SCCACHE_ENDPOINT=${SCCACHE_ENDPOINT}
 
 # Specify turborepo related envs.
-ENV TURBO_TEAM=$TURBO_TEAM
-ENV TURBO_TOKEN=$TURBO_TOKEN
+ENV TURBO_TEAM=${TURBO_TEAM}
+ENV TURBO_TOKEN=${TURBO_TOKEN}
 
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
@@ -68,6 +68,7 @@ RUN make install && \
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
+
 WORKDIR /app
 
 # sqlx depends on native TLS, which is missing in buster-slim.
