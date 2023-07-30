@@ -48,13 +48,13 @@ jobs:
             clippy: false
             test: true
             workspace: false
-    env:
-      RUSTC_WRAPPER: "sccache"
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
+    env:
+      RUSTC_WRAPPER: "sccache"
     permissions:
       contents: read
       security-events: write
@@ -65,8 +65,8 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
           sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
-          sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
-          sccache_secret: ${{ secrets.SCCACHE_SECRET }}
+          sccache_key_id: ${{ secrets.SCCACHE_ACCESS_KEY_ID }}
+          sccache_secret: ${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
       - name: Rust Format Check
         uses: actions-rs/cargo@v1
         with:
