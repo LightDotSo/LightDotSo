@@ -47,7 +47,7 @@ jobs:
         uses: changesets/action@v1
         continue-on-error: true
         with:
-          commit: "chore: changesets version package [skip ci]"
+          commit: "chore: changesets version package]"
           title: "chore: changesets pr"
           publish: pnpm run release
         env:
