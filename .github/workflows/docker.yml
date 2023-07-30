@@ -70,6 +70,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
+            RUSTC_WRAPPER=sccache
             AWS_ACCESS_KEY_ID=${{ secrets.SCCACHE_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.SCCACHE_SECRET }}
             SCCACHE_ENDPOINT=${{ secrets.SCCACHE_ENDPOINT }}

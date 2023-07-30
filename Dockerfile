@@ -5,6 +5,7 @@
 # Specify sccache related args
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
+ARG RUSTC_WRAPPER
 ARG SCCACHE_ENDPOINT
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
@@ -57,7 +58,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
 # Specify sccache as the rustc wrapper for subsequent runs.
-ENV RUSTC_WRAPPER=sccache
+ENV RUSTC_WRAPPER=$RUSTC_WRAPPER
 
 # Run the build.
 RUN make install && \
