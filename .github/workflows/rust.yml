@@ -54,19 +54,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
     env:
-      RUSTC_WRAPPER: "sccache"
+      RUSTC_WRAPPER: sccache
+      SCCACHE_BUCKET: sccache
+      SCCACHE_ENDPOINT: ${{ secrets.SCCACHE_ENDPOINT }}
+      SCCACHE_REGION: auto
+      AWS_ACCESS_KEY_ID: ${{ secrets.SCCACHE_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
     permissions:
       contents: read
       security-events: write
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Rust Install
-        uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
-        with:
-          sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
-          sccache_key_id: ${{ secrets.SCCACHE_ACCESS_KEY_ID }}
-          sccache_secret: ${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
+      - name: Install Rust Toolchain
+        uses: mkroening/rust-toolchain-toml@main
       - name: Rust Format Check
         uses: actions-rs/cargo@v1
         with:
