@@ -129,7 +129,8 @@ jobs:
         continue-on-error: true
         with:
           sarif_file: rust-clippy-results.sarif
-      - name: Rust Finish
+      - if: always()
+        name: Rust Finish
         uses: wallet-rs/wallet-rs/.github/actions/rust-finish@main
   rust-check:
     if: always()
