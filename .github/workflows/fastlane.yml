@@ -11,7 +11,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
-  CARGO_TERM_COLOR: always
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 jobs:
@@ -35,12 +34,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Install Rust Toolchain (nightly)
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          override: true
+      - name: Install Rust Toolchain
+        uses: mkroening/rust-toolchain-toml@main
       - name: Install Ruby Bundler
         uses: ruby/setup-ruby@v1
         with:
@@ -84,8 +79,8 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
         with:
           sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
-          sccache_key_id: ${{ secrets.SCCACHE_KEY_ID }}
-          sccache_secret: ${{ secrets.SCCACHE_SECRET }}
+          sccache_key_id: ${{ secrets.SCCACHE_ACCESS_KEY_ID }}
+          sccache_secret: ${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
       - name: Install Ruby Bundler
         uses: ruby/setup-ruby@v1
         with:

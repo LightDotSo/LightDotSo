@@ -8,8 +8,6 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
-env:
-  CARGO_TERM_COLOR: always
 jobs:
   android-turbo:
     runs-on: ubuntu-latest
@@ -31,12 +29,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Install Rust Toolchain (nightly)
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          override: true
+      - name: Install Rust Toolchain
+        uses: mkroening/rust-toolchain-toml@main
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
       - name: Gradle Lint
@@ -55,12 +49,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Install Rust Toolchain (nightly)
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          override: true
+      - name: Install Rust Toolchain
+        uses: mkroening/rust-toolchain-toml@main
       - name: Java Install
         uses: wallet-rs/wallet-rs/.github/actions/java-install@main
       - name: Gradle Build

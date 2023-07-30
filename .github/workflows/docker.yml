@@ -66,15 +66,19 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
+          push: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/@') }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            AWS_ACCESS_KEY_ID: ${{ secrets.SCCACHE_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.SCCACHE_SECRET }}
-            SCCACHE_ENDPOINT: ${{ secrets.SCCACHE_ENDPOINT }}
+            RUSTC_WRAPPER=sccache
+            AWS_ACCESS_KEY_ID=${{ secrets.SCCACHE_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
+            SCCACHE_ENDPOINT=${{ secrets.SCCACHE_ENDPOINT }}
             TURBO_TEAM=${{ secrets.TURBO_TEAM }}
             TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+      - name: Docker List
+        run: |
+          docker image ls
   docker-lint:
     runs-on: ubuntu-latest
     if: needs.docker-turbo.outputs.trigger == 'true'

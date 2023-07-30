@@ -4919,6 +4919,7 @@ dependencies = [
  "http",
  "lightdotso-bundler",
  "lightdotso-indexer",
+ "lightdotso-prisma",
  "lightdotso-simulator",
  "lightdotso-tracing",
  "ratatui",
@@ -4946,6 +4947,10 @@ dependencies = [
  "lightdotso-tracing",
  "prisma-client-rust",
 ]
+
+[[package]]
+name = "lightdotso-keychain"
+version = "0.1.0"
 
 [[package]]
 name = "lightdotso-prisma"
@@ -4984,15 +4989,11 @@ dependencies = [
 name = "lightwallet-core"
 version = "0.1.0"
 dependencies = [
- "lightwallet-keychain",
+ "lightdotso-keychain",
  "uniffi",
  "uniffi_build",
  "uniffi_macros",
 ]
-
-[[package]]
-name = "lightwallet-keychain"
-version = "0.1.0"
 
 [[package]]
 name = "line-wrap"
