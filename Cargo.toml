@@ -27,19 +27,15 @@
     homepage = "https://github.com/LightDotSo/LightDotSo"
     repository = "https://github.com/LightDotSo/LightDotSo"
 
-    # Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
-
+# Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
 [profile.dev]
   opt-level = 0
   codegen-units = 16
 
-# https://stackoverflow.com/a/54842093
 [profile.release]
-  opt-level = 'z'
   lto = true
-  codegen-units = 1
-  panic = 'abort'
-  strip = true
+  opt-level = 2
+  codegen-units = 16
 
 [workspace.dependencies]
 
