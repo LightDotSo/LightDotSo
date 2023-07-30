@@ -10,7 +10,7 @@
 
 [lib]
   name = "uniffi_lightwallet_core"
-  crate-type = ["staticlib"]
+  crate-type = ["staticlib", "cdylib", "lib"]
 
 [dependencies]
   uniffi = "0.23.0"
