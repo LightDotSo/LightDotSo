@@ -8,8 +8,7 @@ FROM rust:1.70 AS builder
 # We only pay the installation cost once,
 # it will be cached from the second build onwards
 # From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
-# RUN cargo install sccache
-RUN echo "Building with sccache"
+RUN cargo install sccache
 
 # Specify sccache related args
 ARG AWS_ACCESS_KEY_ID
