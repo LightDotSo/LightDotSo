@@ -63,7 +63,7 @@ ENV RUSTC_WRAPPER=$RUSTC_WRAPPER
 # Run the build.
 RUN make install && \
     turbo run prisma && \
-    sccache --start-server && \
+    sccache --start-server || true && \
     cargo build --release && \
     sccache --show-stats
 
