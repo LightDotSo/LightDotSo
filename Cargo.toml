@@ -54,6 +54,7 @@
   http = "0.2.8"
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-indexer = { path = "./crates/indexer" }
+  lightdotso-keychain = { path = "./crates/indexer" }
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-tracing = { path = "./crates/tracing" }

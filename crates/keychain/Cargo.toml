@@ -1,5 +1,5 @@
 [package]
-  name = "lightwallet-keychain"
+  name = "lightdotso-keychain"
 
   version.workspace = true
   edition.workspace = true

@@ -4949,6 +4949,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-keychain"
+version = "0.1.0"
+
+[[package]]
 name = "lightdotso-prisma"
 version = "0.1.0"
 dependencies = [
@@ -4985,15 +4989,11 @@ dependencies = [
 name = "lightwallet-core"
 version = "0.1.0"
 dependencies = [
- "lightwallet-keychain",
+ "lightdotso-keychain",
  "uniffi",
  "uniffi_build",
  "uniffi_macros",
 ]
-
-[[package]]
-name = "lightwallet-keychain"
-version = "0.1.0"
 
 [[package]]
 name = "line-wrap"
