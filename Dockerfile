@@ -5,6 +5,12 @@
 # Specify the base image we're building from.
 FROM rust:1.70 AS builder
 
+# We only pay the installation cost once,
+# it will be cached from the second build onwards
+# From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
+# RUN cargo install sccache
+RUN echo "Building with sccache"
+
 # Specify sccache related args
 ARG AWS_ACCESS_KEY_ID
 ARG AWS_SECRET_ACCESS_KEY
@@ -33,11 +39,6 @@ ENV SCCACHE_ENDPOINT=${SCCACHE_ENDPOINT}
 # Specify turborepo related envs.
 ENV TURBO_TEAM=${TURBO_TEAM}
 ENV TURBO_TOKEN=${TURBO_TOKEN}
-
-# We only pay the installation cost once,
-# it will be cached from the second build onwards
-# From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
-RUN cargo install sccache
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
