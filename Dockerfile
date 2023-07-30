@@ -41,9 +41,6 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 # From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
 RUN cargo install sccache
 
-# Specify sccache as the rustc wrapper for subsequent runs.
-ENV RUSTC_WRAPPER=sccache
-
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
@@ -61,6 +58,9 @@ RUN apt-get update && \
   apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
+
+# Specify sccache as the rustc wrapper for subsequent runs.
+ENV RUSTC_WRAPPER=sccache
 
 # Run the build.
 RUN make install && \
