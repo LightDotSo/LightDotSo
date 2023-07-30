@@ -45,8 +45,6 @@ jobs:
     timeout-minutes: 90
     permissions:
       checks: write
-    env:
-      CARGO_TERM_COLOR: always
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
