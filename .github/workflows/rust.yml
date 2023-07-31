@@ -63,10 +63,8 @@ jobs:
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
       - name: Rust Format Check
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: --all --check
+        run: |
+          cargo fmt --all --check
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: matrix.workspace
@@ -81,20 +79,16 @@ jobs:
         run: |
           pnpm turbo run prisma
       - name: Rust Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          args: --target ${{ matrix.target }} ${{ matrix.package }}
+        run: |
+          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.workspace
         name: Deny Check
         run: |
           cargo deny check
       - if: matrix.test
         name: Rust Test
-        uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --target ${{ matrix.target }} ${{ matrix.package }}
+        run: |
+          cargo test --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.test
         name: Rust Coverage Install
         uses: taiki-e/install-action@cargo-llvm-cov
