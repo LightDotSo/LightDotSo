@@ -19,6 +19,7 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
@@ -38,6 +39,14 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
+
+    /// Tests that the factory revert when creating an account with a nonce that is 0
+    function test_revertWhenAddressZero_createAccount() public {
+        // Revert for a zero address
+        vm.expectRevert(abi.encodeWithSignature("EntrypointAddressZero()"));
+        // Deploy the factory w/ address 0
+        new LightWalletFactory(EntryPoint(payable(address(0))));
+    }
 
     /// Tests that the factory revert when creating an account with a nonce that is 0
     function test_revertWhenBytesZero_createAccount() public {
