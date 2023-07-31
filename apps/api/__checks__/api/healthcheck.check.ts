@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ApiCheck, AssertionBuilder } from "checkly/constructs";
-import { websiteGroup, targetUrl } from "__checks__";
+import { websiteGroup, targetUrl } from "..";
 
 new ApiCheck("api-healthcheck", {
   name: "API Healthcheck",
