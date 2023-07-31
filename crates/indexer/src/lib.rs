@@ -16,3 +16,25 @@
 pub mod config;
 pub mod db;
 pub mod error;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use anvil::NodeConfig;
+    use ethers::{prelude::Middleware, types::U256};
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_config_run() {
+        let config = NodeConfig::default();
+        let (api, handle) = anvil::spawn(config).await;
+        let block_num = api.block_number().unwrap();
+        assert_eq!(block_num, U256::zero());
+
+        let provider = handle.ws_provider().await;
+
+        let num = provider.get_block_number().await.unwrap();
+        assert_eq!(num, block_num.as_u64().into());
+
+        // let config = config::Config::default();
+    }
+}

@@ -14,7 +14,7 @@
 [dependencies]
   anyhow = { workspace = true }
   axum = { workspace = true }
-  clap = { workspace = true }
+  clap = { workspace = true, features = ["env"] }
   eyre = { workspace = true }
   http = { workspace = true }
   lightdotso-bundler = { workspace = true }
@@ -37,4 +37,9 @@
   tower-http = { workspace = true, features = ["cors"] }
 
 [build-dependencies]
-  vergen = { version = "8.0.0", features = ["build", "cargo", "git", "gitcl"] }
+  vergen = { version = "8.2.4", default-features = false, features = [
+    "build",
+    "cargo",
+    "git",
+    "git2",
+  ] }
