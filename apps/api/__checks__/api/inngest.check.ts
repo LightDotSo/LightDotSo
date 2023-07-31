@@ -17,7 +17,7 @@ import { ApiCheck, AssertionBuilder } from "checkly/constructs";
 import { websiteGroup, targetUrl } from "..";
 
 new ApiCheck("api-inngest", {
-  name: "API Healthcheck",
+  name: "Inngest Healthcheck",
   group: websiteGroup,
   activated: true,
   muted: false,
