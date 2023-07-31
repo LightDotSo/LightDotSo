@@ -13,22 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ApiCheck, AssertionBuilder, CheckGroup } from "checkly/constructs";
-
-export const websiteGroup = new CheckGroup("api", {
-  name: "api",
-  activated: true,
-  muted: false,
-  runtimeId: "2022.10",
-  locations: ["us-east-1", "eu-west-1", "ap-northeast-1"],
-  tags: ["api", "group"],
-  environmentVariables: [],
-  apiCheckDefaults: {},
-  concurrency: 100,
-  alertChannels: [],
-});
-
-const targetUrl = process.env.ENVIRONMENT_URL || "https://api.light.so";
+import { ApiCheck, AssertionBuilder } from "checkly/constructs";
+import { websiteGroup, targetUrl } from "__checks__";
 
 new ApiCheck("api-healthcheck", {
   name: "API Healthcheck",
