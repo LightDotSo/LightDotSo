@@ -86,7 +86,8 @@ contract BatchSendERC1155IntegrationTest is BaseIntegrationTest {
     /// Tests that the account revert when sending ERC1155 from a non-entrypoint
     function test_revertWhenNotEntrypoint_batchTransferERC1155() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
-        address(account).call(callData);
+        (bool success,) = address(account).call(callData);
+        assertEq(success, true);
     }
 
     /// Tests that the account can correctly transfer ERC1155

@@ -68,7 +68,8 @@ contract SendERC721IntegrationTest is BaseIntegrationTest {
     /// Tests that the account revert when sending ERC721 from a non-entrypoint
     function test_revertWhenNotEntrypoint_transferERC721() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
-        address(account).call(callData);
+        (bool success,) = address(account).call(callData);
+        assertEq(success, true);
     }
 
     /// Tests that the account can correctly transfer ERC721

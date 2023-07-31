@@ -40,7 +40,7 @@ contract IsValidSignatureIntegrationTest is BaseIntegrationTest {
 
         // Test the signature w/ EIP-6492
         vm.expectRevert();
-        validator.isValidSigImpl(address(account), hashed, signature, false);
+        validator.isValidSigImpl(address(account), hashed, signature, false, false);
         vm.expectRevert();
         validator.isValidSigWithSideEffects(address(account), hashed, signature);
         vm.expectRevert();
@@ -68,7 +68,7 @@ contract IsValidSignatureIntegrationTest is BaseIntegrationTest {
 
         // Test the signature w/ EIP-6492
         vm.expectRevert();
-        validator.isValidSigImpl(address(account), hashed, sig_6492, false);
+        validator.isValidSigImpl(address(account), hashed, sig_6492, false, false);
         vm.expectRevert();
         validator.isValidSigWithSideEffects(address(account), hashed, sig_6492);
         vm.expectRevert();
@@ -92,7 +92,7 @@ contract IsValidSignatureIntegrationTest is BaseIntegrationTest {
         assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
 
         // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
+        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false, false), true);
         assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
         assertEq(validator.isValidSig(address(account), hashed, signature), true);
     }
@@ -121,7 +121,7 @@ contract IsValidSignatureIntegrationTest is BaseIntegrationTest {
         );
 
         // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
+        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false, false), true);
         assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
         assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }

@@ -52,7 +52,8 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     /// Tests that the account revert when sending ETH from a non-entrypoint
     function test_revertWhenNotEntrypoint_transferEth() public {
         vm.expectRevert(bytes("account: not from EntryPoint"));
-        (bool ok,) = address(account).call(callData);
+        (bool success,) = address(account).call(callData);
+        assertEq(success, true);
     }
 
     /// Tests that the account can correctly transfer ETH
