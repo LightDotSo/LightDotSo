@@ -13,10 +13,10 @@
   crate-type = ["staticlib"]
 
 [dependencies]
-  uniffi = "0.23.0"
-  uniffi_macros = "0.23.0"
+  uniffi = "0.24.2"
+  uniffi_macros = "0.24.2"
 
   lightdotso-keychain = { path = "../keychain" }
 
 [build-dependencies]
-  uniffi_build = { version = "0.23.0", features = ["builtin-bindgen"] }
+  uniffi_build = { version = "0.24.2", features = ["builtin-bindgen"] }
