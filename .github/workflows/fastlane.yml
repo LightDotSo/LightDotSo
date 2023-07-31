@@ -69,18 +69,11 @@ jobs:
       - fastlane-turbo
     runs-on: macos-latest
     timeout-minutes: 90
-    env:
-      SCCACHE_GHA_ENABLED: "true"
-      RUSTC_WRAPPER: "sccache"
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
-        with:
-          sccache_endpoint: ${{ secrets.SCCACHE_ENDPOINT }}
-          sccache_key_id: ${{ secrets.SCCACHE_ACCESS_KEY_ID }}
-          sccache_secret: ${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
       - name: Install Ruby Bundler
         uses: ruby/setup-ruby@v1
         with:

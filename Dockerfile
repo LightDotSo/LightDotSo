@@ -5,35 +5,15 @@
 # Specify the base image we're building from.
 FROM rust:1.70 AS builder
 
-# We only pay the installation cost once,
-# it will be cached from the second build onwards
-# From: https://github.com/LukeMathWalker/cargo-chef#without-the-pre-built-image
-RUN cargo install sccache
-
-# Specify sccache related args
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG RUSTC_WRAPPER
-ARG SCCACHE_ENDPOINT
+# Specify turborepo related args
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
+# Specify the working directory.
 WORKDIR /app
 
 # Specify the target we're building for.
 ENV DOCKER=true
-
-# Specify rust related envs.
-ENV CARGO_INCREMENTAL=0
-ENV SCCACHE_BUCKET=sccache
-ENV SCCACHE_REGION=auto
-ENV SCCACHE_S3_USE_SSL=true
-ENV SCCACHE_IDLE_TIMEOUT=0
-
-# Specify sccache related envs.
-ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-ENV SCCACHE_ENDPOINT=${SCCACHE_ENDPOINT}
 
 # Specify turborepo related envs.
 ENV TURBO_TEAM=${TURBO_TEAM}
@@ -53,22 +33,19 @@ RUN npm install -g turbo@1.10.11 pnpm@8.6.9
 
 # Install building dependencies.
 RUN apt-get update && \
-  apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler libssl1.1 ca-certificates && \
+  apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
-
-# Specify sccache as the rustc wrapper for subsequent runs.
-ENV RUSTC_WRAPPER=${RUSTC_WRAPPER}
 
 # Run the build.
 RUN make install && \
     turbo run prisma && \
-    cargo build --release && \
-    sccache --show-stats
+    cargo build --release
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
 
+# Switch to the runtime directory.
 WORKDIR /app
 
 # sqlx depends on native TLS, which is missing in buster-slim.
