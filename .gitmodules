@@ -49,6 +49,3 @@
 [submodule "lib/halmos-cheatcodes"]
 	path = lib/halmos-cheatcodes
 	url = https://github.com/a16z/halmos-cheatcodes
-[submodule "thirdparty/account-abstraction"]
-	path = thirdparty/account-abstraction
-	url = https://github.com/eth-infinitism/account-abstraction
