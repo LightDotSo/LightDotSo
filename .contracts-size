@@ -28,7 +28,6 @@
 | ModuleStorage                | 0.086     | 24.49       |
 | NonceManager                 | 0.657     | 23.919      |
 | Safe                         | 14.67     | 9.906       |
-| SafeERC20                    | 0.086     | 24.49       |
 | SafeL2                       | 15.137    | 9.439       |
 | SafeMath                     | 0.086     | 24.49       |
 | SafeProxy                    | 0.161     | 24.415      |
@@ -49,8 +48,7 @@
 | Strings                      | 0.086     | 24.49       |
 | TempKernel                   | 9.111     | 15.465      |
 | TokenCallbackHandler         | 1.489     | 23.087      |
-| TokenPaymaster               | 9.39      | 15.186      |
-| UniversalSigValidator        | 3.346     | 21.23       |
+| UniversalSigValidator        | 3.479     | 21.097      |
 | UserOperationLib             | 0.086     | 24.49       |
 | ValidateSigOffchain          | 0.063     | 24.513      |
 | console                      | 0.086     | 24.49       |

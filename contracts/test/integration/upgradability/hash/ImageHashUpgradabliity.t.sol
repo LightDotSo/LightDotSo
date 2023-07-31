@@ -65,7 +65,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         // Expect revert w/ `ImageHashIsZero` when the image hash is zero
         vm.prank(address(entryPoint));
         vm.expectRevert(bytes("ImageHashIsZero"));
-        (bool ok,) = address(account).call(
+        (bool success,) = address(account).call(
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
                 address(account),
@@ -75,7 +75,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         );
 
         // Expect that the transaction reverts
-        assertFalse(ok);
+        assertFalse(success);
         // Expect that the image hash is not zero
         assertFalse(account.imageHash() == hash);
     }

@@ -21,10 +21,10 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
-import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
+import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
+import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
 import {StorageUtils} from "@/test/utils/StorageUtils.sol";
-import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Test} from "forge-std/Test.sol";
 
 // The structure of the base test is influenced by sabilier - https://github.com/sablier-labs/v2-core/blob/3df030516c7e9044742313c7cf17f15fdc1e9b05/test/Base.t.sol

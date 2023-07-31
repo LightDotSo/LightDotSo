@@ -19,18 +19,6 @@
 | nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 | _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 =======================
- ➡ TokenPaymaster
-| Name                     | Type                                       | Slot | Offset | Bytes | Contract                                                                    |
-|--------------------------|--------------------------------------------|------|--------|-------|-----------------------------------------------------------------------------|
-| _owner                   | address                                    | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| uniswapHelperConfig      | struct UniswapHelper.UniswapHelperConfig   | 1    | 0      | 64    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| cachedPrice              | uint256                                    | 3    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| cachedPriceTimestamp     | uint256                                    | 4    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| oracleHelperConfig       | struct OracleHelper.OracleHelperConfig     | 5    | 0      | 128   | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| tokenOracleDecimalPower  | uint256                                    | 9    | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| nativeOracleDecimalPower | uint256                                    | 10   | 0      | 32    | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-| tokenPaymasterConfig     | struct TokenPaymaster.TokenPaymasterConfig | 11   | 0      | 128   | lib/account-abstraction/contracts/samples/TokenPaymaster.sol:TokenPaymaster |
-=======================
  ➡ IERC1271
 | Name | Type | Slot | Offset | Bytes | Contract |
 |------|------|------|--------|-------|----------|
@@ -131,31 +119,6 @@
  ➡ Wallet
 =======================
  ➡ WalletFactory
-=======================
- ➡ LightWalletUtils
-| Name                       | Type                                      | Slot | Offset | Bytes | Contract                                                  |
-|----------------------------|-------------------------------------------|------|--------|-------|-----------------------------------------------------------|
-| IS_TEST                    | bool                                      | 0    | 0      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _failed                    | bool                                      | 0    | 1      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| stdChainsInitialized       | bool                                      | 0    | 2      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| chains                     | mapping(string => struct StdChains.Chain) | 1    | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| defaultRpcUrls             | mapping(string => string)                 | 2    | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| idToAlias                  | mapping(uint256 => string)                | 3    | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| fallbackToDefaultRpcUrls   | bool                                      | 4    | 0      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| gasMeteringOff             | bool                                      | 4    | 1      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| stdstore                   | struct StdStorage                         | 5    | 0      | 224   | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _excludedContracts         | address[]                                 | 12   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _excludedSenders           | address[]                                 | 13   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _targetedContracts         | address[]                                 | 14   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _targetedSenders           | address[]                                 | 15   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _excludedArtifacts         | string[]                                  | 16   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _targetedArtifacts         | string[]                                  | 17   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _targetedArtifactSelectors | struct StdInvariant.FuzzSelector[]        | 18   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| _targetedSelectors         | struct StdInvariant.FuzzSelector[]        | 19   | 0      | 32    | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| stdstore                   | struct StdStorage                         | 20   | 0      | 224   | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| weight                     | uint8                                     | 27   | 0      | 1     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| threshold                  | uint16                                    | 27   | 1      | 2     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
-| checkpoint                 | uint32                                    | 27   | 3      | 4     | contracts/src/utils/LightWalletUtils.sol:LightWalletUtils |
 =======================
  ➡ UniversalSigValidator
 | Name | Type | Slot | Offset | Bytes | Contract |

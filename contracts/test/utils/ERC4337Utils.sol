@@ -24,9 +24,9 @@ pragma solidity ^0.8.18;
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Vm} from "forge-std/Test.sol";
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWalletUtils} from "@/contracts/utils/LightWalletUtils.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
+import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 
 using ERC4337Utils for EntryPoint;
 

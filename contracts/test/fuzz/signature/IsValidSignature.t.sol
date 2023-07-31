@@ -41,7 +41,7 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
 
         // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false), true);
+        assertEq(validator.isValidSigImpl(address(account), hashed, signature, false, false), true);
         assertEq(validator.isValidSigWithSideEffects(address(account), hashed, signature), true);
         assertEq(validator.isValidSig(address(account), hashed, signature), true);
     }
@@ -70,7 +70,7 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         );
 
         // Test the signature w/ EIP-6492
-        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false), true);
+        assertEq(validator.isValidSigImpl(address(account), hashed, sig_6492, false, false), true);
         assertEq(validator.isValidSigWithSideEffects(address(account), hashed, sig_6492), true);
         assertEq(validator.isValidSig(address(account), hashed, sig_6492), true);
     }

@@ -46,6 +46,7 @@ contract LightWalletFactory is ILightWalletFactory {
     // -------------------------------------------------------------------------
 
     constructor(IEntryPoint entryPoint) {
+        if (address(entryPoint) == address(0)) revert EntrypointAddressZero();
         accountImplementation = new LightWallet(entryPoint);
     }
 
@@ -77,7 +78,7 @@ contract LightWalletFactory is ILightWalletFactory {
     /// @param salt The salt of the create2 call.
     // slither-disable-next-line too-many-digits
     function getAddress(bytes32 hash, uint256 salt) public view returns (address) {
-        // Computes the address with the given `salt`and the contract address `addressImplementation`, and with `initialize` method w/ `owner`
+        // Computes the address with the given `salt`and the contract address `accountImplementation`, and with `initialize` method w/ `hash`
         return Create2.computeAddress(
             bytes32(salt),
             keccak256(

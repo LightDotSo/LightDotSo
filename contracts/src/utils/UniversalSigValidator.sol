@@ -22,10 +22,7 @@
 
 pragma solidity ^0.8.18;
 
-// As per ERC-1271
-interface IERC1271Wallet {
-    function isValidSignature(bytes32 hash, bytes calldata signature) external view returns (bytes4 magicValue);
-}
+import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 
 error ERC1271Revert(bytes error);
 error ERC6492DeployFailed(bytes error);
@@ -35,10 +32,13 @@ contract UniversalSigValidator {
         0x6492649264926492649264926492649264926492649264926492649264926492;
     bytes4 private constant ERC1271_SUCCESS = 0x1626ba7e;
 
-    function isValidSigImpl(address _signer, bytes32 _hash, bytes calldata _signature, bool allowSideEffects)
-        public
-        returns (bool)
-    {
+    function isValidSigImpl(
+        address _signer,
+        bytes32 _hash,
+        bytes calldata _signature,
+        bool allowSideEffects,
+        bool tryPrepare
+    ) public returns (bool) {
         uint256 contractCodeLen = address(_signer).code.length;
         bytes memory sigToValidate;
         // The order here is striclty defined in https://eips.ethereum.org/EIPS/eip-6492
@@ -53,7 +53,7 @@ contract UniversalSigValidator {
             (create2Factory, factoryCalldata, sigToValidate) =
                 abi.decode(_signature[0:_signature.length - 32], (address, bytes, bytes));
 
-            if (contractCodeLen == 0) {
+            if (contractCodeLen == 0 || tryPrepare) {
                 (bool success, bytes memory err) = create2Factory.call(factoryCalldata);
                 if (!success) revert ERC6492DeployFailed(err);
             }
@@ -63,8 +63,13 @@ contract UniversalSigValidator {
 
         // Try ERC-1271 verification
         if (isCounterfactual || contractCodeLen > 0) {
-            try IERC1271Wallet(_signer).isValidSignature(_hash, sigToValidate) returns (bytes4 magicValue) {
+            try IERC1271(_signer).isValidSignature(_hash, sigToValidate) returns (bytes4 magicValue) {
                 bool isValid = magicValue == ERC1271_SUCCESS;
+
+                // retry, but this time assume the prefix is a prepare call
+                if (!isValid && !tryPrepare && contractCodeLen > 0) {
+                    return isValidSigImpl(_signer, _hash, _signature, allowSideEffects, true);
+                }
 
                 if (contractCodeLen == 0 && isCounterfactual && !allowSideEffects) {
                     // if the call had side effects we need to return the
@@ -77,6 +82,12 @@ contract UniversalSigValidator {
 
                 return isValid;
             } catch (bytes memory err) {
+                // retry, but this time assume the prefix is a prepare call
+                // if (!isValid && !tryPrepare && contractCodeLen > 0) {
+                if (!tryPrepare && contractCodeLen > 0) {
+                    return isValidSigImpl(_signer, _hash, _signature, allowSideEffects, true);
+                }
+
                 revert ERC1271Revert(err);
             }
         }
@@ -96,11 +107,11 @@ contract UniversalSigValidator {
         external
         returns (bool)
     {
-        return this.isValidSigImpl(_signer, _hash, _signature, true);
+        return this.isValidSigImpl(_signer, _hash, _signature, true, false);
     }
 
     function isValidSig(address _signer, bytes32 _hash, bytes calldata _signature) external returns (bool) {
-        try this.isValidSigImpl(_signer, _hash, _signature, false) returns (bool isValid) {
+        try this.isValidSigImpl(_signer, _hash, _signature, false, false) returns (bool isValid) {
             return isValid;
         } catch (bytes memory error) {
             // in order to avoid side effects from the contract getting deployed, the entire call will revert with a single byte result
