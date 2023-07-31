@@ -24,8 +24,7 @@ contract ImmutableProxy is UUPSUpgradeable {
     // Internal
     // -------------------------------------------------------------------------
 
-    function _authorizeUpgrade(address newImplementation) internal pure override {
-        (newImplementation);
+    function _authorizeUpgrade(address) internal pure override {
         // Permanently disable upgrades by invalidating the authorization
         revert("Upgrades are disabled");
     }
