@@ -42,7 +42,7 @@ help: ## Display this help.
 install: $(INSTALL_PARAMS) ## Install all dependencies.
 
 .PHONY: ci-setup
-ci-setup: solc-setup thirdparty-setup ## Install CI dependencies.
+ci-setup: solc-setup ## Install CI dependencies.
 
 .PHONY: docker-setup
 docker-setup: solc-setup ## Install docker dependencies.
@@ -51,11 +51,6 @@ docker-setup: solc-setup ## Install docker dependencies.
 ios-setup: ## Install iOS dependencies.
 	rustup target add $(ARCHS_IOS)
 	rustup target add $(ARCHS_IOS_ARM)
-
-.PHONY: thirdparty-setup
-thirdparty-setup: ## Install solc dependencies.
-	git submodule update --init thirdparty/account-abstraction
-	cd thirdparty/account-abstraction && yarn install --frozen-lockfile --immutable && yarn run compile && cd ../..
 
 .PHONY: solc-setup
 solc-setup: ## Install solc dependencies.

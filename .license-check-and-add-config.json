@@ -91,7 +91,6 @@
     "**/pods/**",
     "**/scripts/**",
     "**/target/**",
-    "**/thirdparty/**",
     "**/tools/**",
     "**/wiki/**"
   ],
