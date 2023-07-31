@@ -15,7 +15,7 @@
 
 use silius_primitives::Chain;
 
-fn main() {
+pub fn main() {
     let chain = Chain::from(1);
     println!("Chain: {:?}", chain);
 }
