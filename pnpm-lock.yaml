@@ -42,6 +42,9 @@ importers:
       '@lightdotso/prettier':
         specifier: workspace:*
         version: link:configurations/prettier
+      '@lightdotso/solutions':
+        specifier: workspace:*
+        version: link:packages/solutions
       '@lightdotso/tailwindcss':
         specifier: workspace:*
         version: link:configurations/tailwindcss

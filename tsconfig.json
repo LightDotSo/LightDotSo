@@ -26,6 +26,7 @@
     }
   },
   "include": [
+    "**/__checks__/**/*.ts",
     "contracts/test/spec/**/*.ts",
     "hardhat.config.ts",
     "playwright.config.ts",
