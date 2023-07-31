@@ -1,5 +1,12 @@
 # @lightdotso/bin
 
+## 0.1.0-pre.9
+
+### Patch Changes
+
+- Updated dependencies [[`6aeb839`](https://github.com/LightDotSo/LightDotSo/commit/6aeb8395fbcdd18c92c1fd300f7b5a56846c64e0)]:
+  - @lightdotso/crates@0.1.0-pre.5
+
 ## 0.1.0-pre.8
 
 ### Minor Changes
