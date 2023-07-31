@@ -1,6 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "//#build": {
+      "inputs": [
+        "**/__check__/**",
+        "contracts/src/**",
+        "packages/solutions/src/**"
+      ],
+      "outputs": []
+    },
     "//#build:test": {
       "inputs": ["contracts/src/**", "packages/solutions/src/**"],
       "outputs": [
