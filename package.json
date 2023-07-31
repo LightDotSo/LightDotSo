@@ -60,7 +60,7 @@
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
-    "solc": "0.8.18"
+    "solc": "0.8.21"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
@@ -91,8 +91,8 @@
     "@types/node": "^20.4.5",
     "@types/react": "^18.2.17",
     "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.2.0",
-    "@typescript-eslint/parser": "^6.2.0",
+    "@typescript-eslint/eslint-plugin": "^6.2.1",
+    "@typescript-eslint/parser": "^6.2.1",
     "@viem/anvil": "0.0.6",
     "@vitest/coverage-v8": "^0.33.0",
     "@vitest/ui": "^0.33.0",
@@ -100,7 +100,7 @@
     "abitype": "^0.9.6",
     "autoprefixer": "^10.4.14",
     "chai": "^4.3.7",
-    "checkly": "^4.0.12",
+    "checkly": "^4.0.13",
     "commitlint": "^17.6.7",
     "concurrently": "^8.2.0",
     "cross-env": "^7.0.3",
@@ -128,7 +128,7 @@
     "inngest-cli": "^0.15.6",
     "license-check-and-add": "^4.0.5",
     "lint-staged": "^13.2.3",
-    "neonctl": "^1.18.2",
+    "neonctl": "^1.19.0",
     "npm-package-json-lint": "^7.0.0",
     "npm-package-json-lint-config-default": "^6.0.0",
     "postcss": "^8.4.27",
