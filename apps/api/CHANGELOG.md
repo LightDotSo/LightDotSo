@@ -1,5 +1,11 @@
 # @lightdotso/api
 
+## 1.1.0-pre.2
+
+### Patch Changes
+
+- [#307](https://github.com/LightDotSo/LightDotSo/pull/307) [`b396b3a`](https://github.com/LightDotSo/LightDotSo/commit/b396b3a5ad71815f42f3b264a38f8dca2de5bd47) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add inngest check
+
 ## 1.1.0-pre.1
 
 ### Minor Changes
