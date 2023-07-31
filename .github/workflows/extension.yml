@@ -4,6 +4,7 @@ on:
     branches:
       - main
   pull_request:
+  pull_request_target:
   merge_group:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -28,6 +29,8 @@ jobs:
     needs:
       - extension-turbo
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     timeout-minutes: 90
     steps:
       - name: Fetch Head
