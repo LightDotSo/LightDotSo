@@ -176,9 +176,7 @@ contract LightWallet is
 
     /// @dev Only callable by the current contract
     /// @inheritdoc UUPSUpgradeable
-    function _authorizeUpgrade(address newImplementation) internal view override onlySelf {
-        (newImplementation);
-    }
+    function _authorizeUpgrade(address) internal view override onlySelf {}
 
     // -------------------------------------------------------------------------
     // Compatibility
