@@ -13,7 +13,3 @@
   scopelint = ["run", "--package", "embedded-scopelint", "--"]
   uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
   test-all = ["test", "--workspace"]
-
-[env]
-  RUSTC_BOOTSTRAP = "1"
-  CARGO_WORKSPACE_DIR = { value = "", relative = true }

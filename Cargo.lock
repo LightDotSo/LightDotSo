@@ -8825,7 +8825,7 @@ dependencies = [
 [[package]]
 name = "silius-bundler"
 version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=dea00f451f695da1d22f627ca204cab10e761ba8#dea00f451f695da1d22f627ca204cab10e761ba8"
+source = "git+https://github.com/Vid201/silius?rev=865801d0c0dfcd3860330549cd892221f30f2e12#865801d0c0dfcd3860330549cd892221f30f2e12"
 dependencies = [
  "anyhow",
  "ethers 2.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -8837,7 +8837,7 @@ dependencies = [
 [[package]]
 name = "silius-contracts"
 version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=dea00f451f695da1d22f627ca204cab10e761ba8#dea00f451f695da1d22f627ca204cab10e761ba8"
+source = "git+https://github.com/Vid201/silius?rev=865801d0c0dfcd3860330549cd892221f30f2e12#865801d0c0dfcd3860330549cd892221f30f2e12"
 dependencies = [
  "anyhow",
  "ethers 2.0.8 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -8853,7 +8853,7 @@ dependencies = [
 [[package]]
 name = "silius-grpc"
 version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=dea00f451f695da1d22f627ca204cab10e761ba8#dea00f451f695da1d22f627ca204cab10e761ba8"
+source = "git+https://github.com/Vid201/silius?rev=865801d0c0dfcd3860330549cd892221f30f2e12#865801d0c0dfcd3860330549cd892221f30f2e12"
 dependencies = [
  "anyhow",
  "arrayref",
@@ -8878,7 +8878,7 @@ dependencies = [
 [[package]]
 name = "silius-primitives"
 version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=dea00f451f695da1d22f627ca204cab10e761ba8#dea00f451f695da1d22f627ca204cab10e761ba8"
+source = "git+https://github.com/Vid201/silius?rev=865801d0c0dfcd3860330549cd892221f30f2e12#865801d0c0dfcd3860330549cd892221f30f2e12"
 dependencies = [
  "anyhow",
  "educe",
@@ -8899,7 +8899,7 @@ dependencies = [
 [[package]]
 name = "silius-rpc"
 version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=dea00f451f695da1d22f627ca204cab10e761ba8#dea00f451f695da1d22f627ca204cab10e761ba8"
+source = "git+https://github.com/Vid201/silius?rev=865801d0c0dfcd3860330549cd892221f30f2e12#865801d0c0dfcd3860330549cd892221f30f2e12"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -8919,7 +8919,7 @@ dependencies = [
 [[package]]
 name = "silius-uopool"
 version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=dea00f451f695da1d22f627ca204cab10e761ba8#dea00f451f695da1d22f627ca204cab10e761ba8"
+source = "git+https://github.com/Vid201/silius?rev=865801d0c0dfcd3860330549cd892221f30f2e12#865801d0c0dfcd3860330549cd892221f30f2e12"
 dependencies = [
  "anyhow",
  "educe",
