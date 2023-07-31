@@ -4935,6 +4935,9 @@ dependencies = [
 [[package]]
 name = "lightdotso-bundler"
 version = "0.1.0"
+dependencies = [
+ "silius-primitives",
+]
 
 [[package]]
 name = "lightdotso-indexer"
