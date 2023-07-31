@@ -1,5 +1,11 @@
 # @lightdotso/crates
 
+## 0.1.0-pre.5
+
+### Patch Changes
+
+- [#303](https://github.com/LightDotSo/LightDotSo/pull/303) [`6aeb839`](https://github.com/LightDotSo/LightDotSo/commit/6aeb8395fbcdd18c92c1fd300f7b5a56846c64e0) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add lightdotso keychain
+
 ## 0.1.0-pre.4
 
 ### Minor Changes
