@@ -38,7 +38,7 @@ new ApiCheck("api-inngest", {
       AssertionBuilder.jsonBody("").hasKey("message"),
       AssertionBuilder.jsonBody("").hasKey("isProd"),
       AssertionBuilder.jsonBody("").hasKey("skipDevServer"),
-      AssertionBuilder.statusCode().equals(200),
+      AssertionBuilder.statusCode().equals(403),
       AssertionBuilder.responseTme().lessThan(9000),
     ],
     body: "",
