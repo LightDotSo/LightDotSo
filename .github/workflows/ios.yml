@@ -4,6 +4,7 @@ on:
     branches:
       - main
   pull_request:
+  pull_request_target:
   merge_group:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -44,6 +45,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 90
     permissions:
+      contents: read
       checks: write
     steps:
       - name: Fetch Head
