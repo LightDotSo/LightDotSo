@@ -31,7 +31,7 @@ jobs:
       matrix:
         include:
           - name: Workspace
-            os: ubuntu-latest
+            os: ubuntu-latest-large
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
