@@ -24,6 +24,7 @@ import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experime
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // From: https://tanstack.com/query/v5/docs/react/examples/react/nextjs-suspense-streaming
+// Also: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
 
 const config = createConfig(
   getDefaultConfig({

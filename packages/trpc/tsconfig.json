@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
     "outDir": "./dist"
   },
   "exclude": ["dist", "build", "node_modules"],

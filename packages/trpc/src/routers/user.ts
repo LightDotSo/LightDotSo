@@ -17,7 +17,12 @@
  *
  * This is an example router, you can delete this file and then update `../pages/api/trpc/[trpc].tsx`
  */
-import { router, publicProcedure, rateLimitedProcedure } from "../server/trpc";
+import {
+  router,
+  publicProcedure,
+  rateLimitedProcedure,
+  protectedProcedure,
+} from "../server/trpc";
 import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
@@ -99,6 +104,20 @@ export const userRouter = router({
       }
       return user;
     }),
+  me: protectedProcedure.input(z.object({})).query(async ({ ctx }) => {
+    const { user: sessionUser } = ctx.session;
+    if (!sessionUser?.name) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: `No session user with ${sessionUser}`,
+      });
+    }
+    const user = await prisma.user.findUnique({
+      where: { id: sessionUser?.name },
+      select: defaultUserSelect,
+    });
+    return user;
+  }),
   add: publicProcedure
     .input(
       z.object({

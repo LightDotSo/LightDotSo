@@ -23,13 +23,16 @@
  * @see https://trpc.io/docs/v10/procedures
  */
 
-import { initTRPC } from "@trpc/server";
+import { headers } from "next/headers";
+import { getAuthSession } from "@lightdotso/auth";
+import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { transformer } from "../utils/transformer";
 import type { Context } from "./context";
 import type { OpenApiMeta } from "trpc-openapi";
 import { createTRPCUpstashLimiter } from "../utils/rate-limit";
-import type { NextApiRequest } from "next";
 import { ZodError } from "zod";
+import type { IncomingHttpHeaders } from "http";
 
 const root = initTRPC
   .meta<OpenApiMeta>()
@@ -76,17 +79,20 @@ export const middleware = root.middleware;
  */
 export const mergeRouters = root.mergeRouters;
 
-const getFingerprint = (req: NextApiRequest) => {
-  const forwarded = req.headers["x-forwarded-for"];
+const getFingerprint = (headers?: IncomingHttpHeaders) => {
+  if (!headers) {
+    return "127.0.0.1";
+  }
+  const forwarded = headers["x-forwarded-for"];
   const ip = forwarded
     ? (typeof forwarded === "string" ? forwarded : forwarded[0])?.split(/, /)[0]
-    : req.socket.remoteAddress;
-  return ip || "127.0.0.1";
+    : "127.0.0.1";
+  return ip;
 };
 
 export const rateLimiter = createTRPCUpstashLimiter({
   root,
-  fingerprint: ctx => getFingerprint(ctx.req),
+  fingerprint: ctx => getFingerprint(ctx.headers),
   windowMs: 20000,
   message: hitInfo =>
     `Too many requests, please try again later. ${Math.ceil(
@@ -98,4 +104,30 @@ export const rateLimiter = createTRPCUpstashLimiter({
   max: 5,
 });
 
+export const protectedProcedure = publicProcedure.use(opts => {
+  const { session } = opts.ctx;
+
+  if (!session?.user) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+    });
+  }
+
+  return opts.next({ ctx: { session } });
+});
+
 export const rateLimitedProcedure = publicProcedure.use(rateLimiter);
+
+export const createAction = experimental_createServerActionHandler(root, {
+  async createContext() {
+    const session = await getAuthSession();
+
+    return {
+      session,
+      headers: {
+        // Pass the cookie header to the API
+        cookies: headers().get("cookie") ?? "",
+      },
+    };
+  },
+});
