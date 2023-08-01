@@ -63,7 +63,7 @@ mod tests {
     use std::env;
 
     #[test]
-    fn test_config_default_values() {
+    fn test_config_values() {
         // Reset the env vars
         env::remove_var("CHAIN_ID");
         env::remove_var("INDEXER_RPC_URL");
@@ -75,6 +75,7 @@ mod tests {
         // Verify the default values
         assert_eq!(config_args.chain_id, 1);
         assert_eq!(config_args.rpc, "");
+        assert_eq!(config_args.ws, "");
         assert_eq!(config_args.batch_size, 1);
         assert_eq!(config_args.start_block, 0);
         assert_eq!(config_args.end_block, 0);
@@ -96,5 +97,19 @@ mod tests {
         env::remove_var("CHAIN_ID");
         env::remove_var("INDEXER_RPC_URL");
         env::remove_var("INDEXER_RPC_WS");
+    }
+
+    #[test]
+    fn test_config_default_values() {
+        // Create a Config with default values
+        let config_args = ConfigArgs::default();
+
+        // Verify the default values
+        assert_eq!(config_args.chain_id, 0);
+        assert_eq!(config_args.rpc, "");
+        assert_eq!(config_args.ws, "");
+        assert_eq!(config_args.batch_size, 0);
+        assert_eq!(config_args.start_block, 0);
+        assert_eq!(config_args.end_block, 0);
     }
 }

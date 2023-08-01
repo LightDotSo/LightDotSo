@@ -15,12 +15,12 @@
 
 use axum::{extract::Json, Extension};
 
-use crate::error::AppError;
+use crate::error::DbError;
 use lightdotso_prisma::{user, PrismaClient};
 use std::sync::Arc;
 
 type Database = Extension<Arc<PrismaClient>>;
-type AppResult<T> = Result<T, AppError>;
+type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
 
 pub async fn find_user(client: &Arc<PrismaClient>) -> Vec<user::Data> {

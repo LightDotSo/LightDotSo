@@ -23,29 +23,29 @@ use prisma_client_rust::{
     QueryError,
 };
 
-pub enum AppError {
+pub enum DbError {
     PrismaError(QueryError),
     NotFound,
 }
 
-impl From<QueryError> for AppError {
+impl From<QueryError> for DbError {
     fn from(error: QueryError) -> Self {
         match error {
-            e if e.is_prisma_error::<RecordNotFound>() => AppError::NotFound,
-            e => AppError::PrismaError(e),
+            e if e.is_prisma_error::<RecordNotFound>() => DbError::NotFound,
+            e => DbError::PrismaError(e),
         }
     }
 }
 
 // This centralizes all different errors from our app in one place
-impl IntoResponse for AppError {
+impl IntoResponse for DbError {
     fn into_response(self) -> Response {
         let status = match self {
-            AppError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
+            DbError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
                 StatusCode::CONFLICT
             }
-            AppError::PrismaError(_) => StatusCode::BAD_REQUEST,
-            AppError::NotFound => StatusCode::NOT_FOUND,
+            DbError::PrismaError(_) => StatusCode::BAD_REQUEST,
+            DbError::NotFound => StatusCode::NOT_FOUND,
         };
 
         status.into_response()

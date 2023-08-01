@@ -5185,6 +5185,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-db"
+version = "0.1.0"
+dependencies = [
+ "axum 0.6.19",
+ "eyre",
+ "lightdotso-prisma",
+ "prisma-client-rust",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-indexer"
 version = "0.1.0"
 dependencies = [
@@ -5193,6 +5204,7 @@ dependencies = [
  "clap",
  "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
+ "lightdotso-db",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "prisma-client-rust",
