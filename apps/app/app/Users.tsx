@@ -13,38 +13,53 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+// // Copyright (C) 2023 Light, Inc.
+// //
+// // This program is free software: you can redistribute it and/or modify
+// // it under the terms of the GNU Affero General Public License as published by
+// // the Free Software Foundation, either version 3 of the License, or
+// // (at your option) any later version.
+// //
+// // This program is distributed in the hope that it will be useful,
+// // but WITHOUT ANY WARRANTY; without even the implied warranty of
+// // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// // GNU Affero General Public License for more details.
+// //
+// // You should have received a copy of the GNU Affero General Public License
+// // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { RouterOutput } from "@lightdotso/trpc";
-import { trpc } from "@lightdotso/trpc";
+// "use client";
 
-type UserListOutput = RouterOutput["user"]["list"];
+// import type { RouterOutput } from "@lightdotso/trpc";
+// import { trpc } from "@lightdotso/trpc";
 
-function UsersItem(props: { users: UserListOutput }) {
-  return (
-    <ul className="text-red-300">
-      {props.users.items.map(({ id }) => {
-        return <li key={id}>{id}</li>;
-      })}
-    </ul>
-  );
-}
+// type UserListOutput = RouterOutput["user"]["list"];
 
-export function Users(props: { initialData: UserListOutput }) {
-  const userQuery = trpc.user.list.useQuery(
-    {},
-    { initialData: props.initialData },
-  );
+// function UsersItem(props: { users: UserListOutput }) {
+//   return (
+//     <ul className="text-red-300">
+//       {props.users.items.map(({ id }) => {
+//         return <li key={id}>{id}</li>;
+//       })}
+//     </ul>
+//   );
+// }
 
-  if (userQuery.error) {
-    return <div>{userQuery.error.message}</div>;
-  }
+// export function Users(props: { initialData: UserListOutput }) {
+//   const userQuery = trpc.user.list.useQuery(
+//     {},
+//     { initialData: props.initialData },
+//   );
 
-  if (userQuery.status !== "success") {
-    <div>Loading</div>;
-  }
+//   if (userQuery.error) {
+//     return <div>{userQuery.error.message}</div>;
+//   }
 
-  const { data } = userQuery;
+//   if (userQuery.status !== "success") {
+//     <div>Loading</div>;
+//   }
 
-  return data && <UsersItem users={data} />;
-}
+//   const { data } = userQuery;
+
+//   return data && <UsersItem users={data} />;
+// }

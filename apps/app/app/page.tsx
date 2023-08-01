@@ -15,12 +15,12 @@
 
 import { Connect } from "./connect";
 import { EnsName, preload } from "@/components/EnsName";
-import { http } from "@lightdotso/trpc";
+// import { http } from "@lightdotso/trpc";
 import { getAuthSession } from "@lightdotso/auth";
-import { use } from "react";
+// import { use } from "react";
 
 export default async function Page() {
-  const user = use(http.user.me.query({}));
+  // const user = http.user.me.query({});
 
   const session = await getAuthSession();
 
@@ -30,7 +30,7 @@ export default async function Page() {
     <main className="text-red-500">
       <pre>{JSON.stringify(session, null, 2)}</pre>
       <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      {/* <pre>{user && JSON.stringify(user, null, 2)}</pre> */}
       <Connect />
     </main>
   );
