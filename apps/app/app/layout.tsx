@@ -25,6 +25,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import superjson from "superjson";
 import { trpc } from "./trpc";
+import { getUrl } from "@lightdotso/trpc";
 
 // From: https://tanstack.com/query/v5/docs/react/examples/react/nextjs-suspense-streaming
 // Also: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
@@ -56,7 +57,7 @@ export default function RootLayout({
       transformer: superjson,
       links: [
         httpBatchLink({
-          url: "http://localhost:3001/api/trpc",
+          url: getUrl(),
         }),
       ],
     }),
