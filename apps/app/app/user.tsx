@@ -13,4 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./next";
+"use client";
+
+import { trpc } from "./trpc";
+
+export function User() {
+  const user = trpc.user.me.useQuery({ from: "useUser" });
+
+  return <>{user && user.data?.id}</>;
+}

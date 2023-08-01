@@ -22,6 +22,9 @@ import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { httpBatchLink } from "@trpc/client";
+import superjson from "superjson";
+import { trpc } from "./trpc";
 
 // From: https://tanstack.com/query/v5/docs/react/examples/react/nextjs-suspense-streaming
 // Also: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
@@ -48,20 +51,32 @@ export default function RootLayout({
         },
       }),
   );
+  const [trpcClient] = useState(() =>
+    trpc.createClient({
+      transformer: superjson,
+      links: [
+        httpBatchLink({
+          url: "http://localhost:3001/api/trpc",
+        }),
+      ],
+    }),
+  );
 
   return (
     <html lang="en">
       <body>
-        <QueryClientProvider client={queryClient}>
-          <WagmiConfig config={config}>
-            <ConnectKitProvider>
-              <Button>Hello</Button>
-              <ReactQueryStreamedHydration>
-                {children}
-              </ReactQueryStreamedHydration>
-            </ConnectKitProvider>
-          </WagmiConfig>
-        </QueryClientProvider>
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <WagmiConfig config={config}>
+              <ConnectKitProvider>
+                <Button>Hello</Button>
+                <ReactQueryStreamedHydration>
+                  {children}
+                </ReactQueryStreamedHydration>
+              </ConnectKitProvider>
+            </WagmiConfig>
+          </QueryClientProvider>
+        </trpc.Provider>
       </body>
     </html>
   );
