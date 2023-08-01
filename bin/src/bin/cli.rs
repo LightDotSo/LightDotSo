@@ -23,7 +23,7 @@ use lightdotso_tracing::{
 };
 
 /// Parse CLI options, set up logging and run the chosen command.
-pub async fn run() -> eyre::Result<()> {
+pub async fn run() -> anyhow::Result<()> {
     // Parse CLI options
     let opt = Cli::parse();
 
@@ -43,7 +43,7 @@ pub async fn run() -> eyre::Result<()> {
 pub enum Commands {
     /// Run the indexer command utilities
     #[command(name = "indexer")]
-    Indexer(lightdotso_indexer::config::ConfigArgs),
+    Indexer(lightdotso_indexer::config::IndexerArgs),
 }
 
 #[derive(Parser)]

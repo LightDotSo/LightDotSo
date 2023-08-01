@@ -9,7 +9,7 @@ kill_signal = "SIGINT"
 kill_timeout = "5s"
 
 [experimental]
-  entrypoint = ["/usr/local/bin/serve"]
+  entrypoint = ["/usr/local/bin/indexer"]
 
 [build]
   image = "ghcr.io/lightdotso/lightdotso:latest"

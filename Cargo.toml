@@ -6,6 +6,7 @@
     "bin",
     "crates/bundler",
     "crates/core",
+    "crates/db",
     "crates/indexer",
     "crates/keychain",
     "crates/prisma",
@@ -39,6 +40,7 @@
 
 [workspace.dependencies]
   anyhow = "1.0.71"
+  anvil = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   axum = "0.6.18"
   clap = "4.3.12"
   dotenvy = "0.15"
@@ -48,6 +50,7 @@
   foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   http = "0.2.8"
   lightdotso-bundler = { path = "./crates/bundler" }
+  lightdotso-db = { path = "./crates/db" }
   lightdotso-indexer = { path = "./crates/indexer" }
   lightdotso-keychain = { path = "./crates/indexer" }
   lightdotso-prisma = { path = "./crates/prisma" }
@@ -64,6 +67,8 @@
     "optional_no_base_fee",
   ] }
   serde = "1.0.177"
+  serenity = "0.11"
+  sled = "0.34.7"
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-primitives = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }

@@ -13,36 +13,45 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use anyhow::Result;
 use clap::Parser;
 use lightdotso_tracing::tracing::info;
-use std::env;
 
-#[derive(Parser, Debug)]
-pub struct ConfigArgs {
+#[derive(Debug, Clone, Parser, Default)]
+pub struct IndexerArgs {
     /// The chain id of the chain to index.
     #[arg(long, short, default_value_t = 1)]
+    #[clap(long, env)]
     pub chain_id: usize,
     /// The RPC endpoint to connect to.
     #[arg(long, short, default_value_t = String::from(""))]
+    #[clap(long, env = "INDEXER_RPC_URL")]
     pub rpc: String,
     /// The websocket RPC endpoint to connect to.
     #[arg(long, short, default_value_t = String::from(""))]
+    #[clap(long, env = "INDEXER_RPC_WS")]
     pub ws: String,
     /// The number of blocks of the batch to index.
     #[arg(long, short, default_value_t = 1)]
+    #[clap(long, env)]
     pub batch_size: usize,
     /// The start block to index.
     #[arg(long, short, default_value_t = 0)]
+    #[clap(long, env)]
     pub start_block: u64,
     /// The end block to index.
     #[arg(long, short, default_value_t = 0)]
+    #[clap(long, env)]
     pub end_block: u64,
 }
 
-impl ConfigArgs {
-    pub async fn run(&self) -> eyre::Result<()> {
+impl IndexerArgs {
+    pub async fn run(&self) -> Result<()> {
         // Add info
-        info!("ConfigArgs run, exiting");
+        info!("IndexerArgs run, exiting");
+
+        let db = sled::open("sled")?;
+        db.insert("my_key", "my_value")?;
 
         // Print the config
         info!("Config: {:?}", self);
@@ -52,66 +61,59 @@ impl ConfigArgs {
     }
 }
 
-#[derive(Debug, Clone)]
-pub struct Config {
-    // The chain id of the chain to index.
-    pub chain_id: usize,
-    // The number of blocks of the batch to index.
-    pub batch_size: usize,
-    // The start block to index.
-    pub start_block: u64,
-    // The end block to index.
-    pub end_block: u64,
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
-impl Config {
-    pub fn new() -> Self {
-        // Parse the command-line arguments
-        let args = ConfigArgs::parse();
-
-        let chain_id = env::var("CHAIN_ID")
-            .unwrap_or_else(|_| args.chain_id.to_string())
-            .parse::<usize>()
-            .expect("Invalid chain_id value");
-
-        let batch_size = env::var("BATCH_SIZE")
-            .unwrap_or_else(|_| args.batch_size.to_string())
-            .parse::<usize>()
-            .expect("Invalid batch_size value");
-
-        let start_block = env::var("START_BLOCK")
-            .unwrap_or_else(|_| args.start_block.to_string())
-            .parse::<u64>()
-            .expect("Invalid start_block value");
-
-        let end_block = env::var("START_BLOCK")
-            .unwrap_or_else(|_| args.end_block.to_string())
-            .parse::<u64>()
-            .expect("Invalid end_block value");
-
-        Self { chain_id, batch_size, start_block, end_block }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::env;
+
+    #[test]
+    fn test_config_values() {
+        // Reset the env vars
+        env::remove_var("CHAIN_ID");
+        env::remove_var("INDEXER_RPC_URL");
+        env::remove_var("INDEXER_RPC_WS");
+
+        // Create a Config with default values
+        let config_args = IndexerArgs::parse();
+
+        // Verify the default values
+        assert_eq!(config_args.chain_id, 1);
+        assert_eq!(config_args.rpc, "");
+        assert_eq!(config_args.ws, "");
+        assert_eq!(config_args.batch_size, 1);
+        assert_eq!(config_args.start_block, 0);
+        assert_eq!(config_args.end_block, 0);
+
+        // Set some env vars
+        env::set_var("CHAIN_ID", "5");
+        env::set_var("INDEXER_RPC_URL", "rpc");
+        env::set_var("INDEXER_RPC_WS", "ws");
+
+        // Create a Config with env values
+        let config_args = IndexerArgs::parse();
+
+        // Verify the new values from env
+        assert_eq!(config_args.chain_id, 5);
+        assert_eq!(config_args.rpc, "rpc");
+        assert_eq!(config_args.ws, "ws");
+
+        // Reset the env vars
+        env::remove_var("CHAIN_ID");
+        env::remove_var("INDEXER_RPC_URL");
+        env::remove_var("INDEXER_RPC_WS");
+    }
 
     #[test]
     fn test_config_default_values() {
         // Create a Config with default values
-        let config = Config::default();
+        let config_args = IndexerArgs::default();
 
         // Verify the default values
-        assert_eq!(config.chain_id, 1);
-        assert_eq!(config.batch_size, 1);
-        assert_eq!(config.start_block, 0);
-        assert_eq!(config.end_block, 0);
+        assert_eq!(config_args.chain_id, 0);
+        assert_eq!(config_args.rpc, "");
+        assert_eq!(config_args.ws, "");
+        assert_eq!(config_args.batch_size, 0);
+        assert_eq!(config_args.start_block, 0);
+        assert_eq!(config_args.end_block, 0);
     }
 }
