@@ -13,6 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { appRouter, nextHandler } from "@lightdotso/trpc";
+function getBaseUrl() {
+  if (typeof window !== "undefined") return "";
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
+}
 
-export default nextHandler(appRouter);
+export function getUrl() {
+  return getBaseUrl() + "/api/trpc";
+}

@@ -13,7 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./src/client";
-export * from "./src/routers";
-export * from "./src/server";
-export * from "./src/utils";
+export { experimental_revalidateEndpoint as POST } from "@trpc/next/app-dir/server";

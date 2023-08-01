@@ -13,23 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { NextApiRequest, NextApiResponse } from "next";
-import NextAuth, { type NextAuthOptions } from "next-auth";
-import { nextAuthOptions } from "@lightdotso/auth";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { createContext, appRouter } from "@lightdotso/trpc";
 
-const Auth = (req: NextApiRequest, res: NextApiResponse) => {
-  const authOpts: NextAuthOptions = nextAuthOptions({ req });
+// Add back once NextAuth v5 is released
+// export const runtime = 'edge';
 
-  const isDefaultSigninPage =
-    req.method === "GET" && req?.query?.nextauth?.includes("signin");
+const handler = (req: Request) =>
+  fetchRequestHandler({
+    endpoint: "/api/trpc",
+    req,
+    router: appRouter,
+    createContext,
+  });
 
-  // Hide Sign-In with Ethereum from default sign page
-  if (isDefaultSigninPage) {
-    // Removes from the authOptions.providers array
-    authOpts.providers.pop();
-  }
-
-  return NextAuth(req, res, authOpts) as typeof NextAuth;
-};
-
-export default Auth;
+export { handler as GET, handler as POST };

@@ -13,6 +13,7 @@ const nextConfig = {
         "./node_modules/terser",
       ],
     },
+    serverActions: true,
   },
   outputFileTracing: true,
   transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],

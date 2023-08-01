@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./src/client";
-export * from "./src/routers";
-export * from "./src/server";
-export * from "./src/utils";
+import { authOptions } from "@lightdotso/auth";
+import NextAuth from "next-auth";
+
+// Add back once NextAuth v5 is released
+// export const runtime = 'edge';
+
+const handlers = NextAuth(authOptions);
+export { handlers as GET, handlers as POST };

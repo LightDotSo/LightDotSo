@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV"],
+      "env": ["NODE_ENV", "PORT", "VERCEL_URL"],
       "inputs": ["src/**", "index.ts"],
       "outputs": ["dist/**"]
     },

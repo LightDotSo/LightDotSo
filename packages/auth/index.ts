@@ -21,7 +21,6 @@ import { prisma } from "@lightdotso/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth";
 import type { NextAuthOptions, AuthOptions } from "next-auth";
-import { type GetServerSidePropsContext } from "next";
 import { getAddress } from "viem";
 
 export const commonAuthOptions: Omit<AuthOptions, "providers"> = {
@@ -204,15 +203,6 @@ export const nextAuthOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
   ],
 });
 
-export const getAuthServerSession = async () => {
+export const getAuthSession = async () => {
   return await getServerSession(authOptions);
-};
-
-export const getNextAuthServerSession = async (ctx: {
-  req: GetServerSidePropsContext["req"];
-  res: GetServerSidePropsContext["res"];
-}) => {
-  // Changed from authOptions to authOption(ctx)
-  // This allows use to retrieve the csrf token to verify as the nonce
-  return getServerSession(ctx.req, ctx.res, nextAuthOptions(ctx));
 };

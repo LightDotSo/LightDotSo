@@ -15,14 +15,14 @@
 
 import { Connect } from "./connect";
 import { EnsName, preload } from "@/components/EnsName";
-import { db } from "@lightdotso/kysely";
-// import { prisma } from "@lightdotso/prisma";
-import { getAuthServerSession } from "@lightdotso/auth";
+import { http } from "@lightdotso/trpc";
+import { getAuthSession } from "@lightdotso/auth";
+// import { use } from "react";
 
 export default async function Page() {
-  const users = await db.selectFrom("User").selectAll().execute();
-  // const users = await prisma.user.findMany();
-  const session = await getAuthServerSession();
+  const user = http.user.me.query({});
+
+  const session = await getAuthSession();
 
   preload(session?.user?.name as `0x${string}`);
 
@@ -30,11 +30,7 @@ export default async function Page() {
     <main className="text-red-500">
       <pre>{JSON.stringify(session, null, 2)}</pre>
       <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
-      <ul className="text-red-300">
-        {users.map(({ id }) => {
-          return <li key={id}>{id}</li>;
-        })}
-      </ul>
+      <pre>{user && JSON.stringify(user, null, 2)}</pre>
       <Connect />
     </main>
   );

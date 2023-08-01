@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import * as trpcNext from "@trpc/server/adapters/next";
-import { createContext } from "./context";
+// import { createContext } from "./context";
 import type { AnyRouter } from "@trpc/server";
 
 // From: https://trpc.io/docs/server/caching
 export const nextHandler = (handler: AnyRouter) =>
   trpcNext.createNextApiHandler({
     router: handler,
-    createContext,
+    // createContext,
     responseMeta(opts) {
       const { ctx, paths, errors, type } = opts;
       // assuming you have all your public routes with the keyword `public` in them
