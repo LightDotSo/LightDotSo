@@ -10,6 +10,7 @@
 
 [dependencies]
   anvil = { workspace = true }
+  anyhow = { workspace = true }
   axum = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   ethers = { workspace = true }
@@ -18,4 +19,5 @@
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
+  sled = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }

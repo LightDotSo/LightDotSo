@@ -26,6 +26,7 @@
   silius-grpc = { workspace = true }
   silius-primitives = { workspace = true }
   silius-rpc = { workspace = true }
+  sled = { workspace = true }
   tokio = { workspace = true }
   tower = { workspace = true, features = [
     "full",

@@ -840,7 +840,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4114279215a005bc675e386011e594e1d9b800918cea18fcadadcce864a2046b"
 dependencies = [
  "borsh-derive",
- "hashbrown 0.11.2",
+ "hashbrown 0.13.2",
 ]
 
 [[package]]
@@ -5171,6 +5171,7 @@ dependencies = [
  "silius-grpc",
  "silius-primitives",
  "silius-rpc",
+ "sled",
  "tokio",
  "tower",
  "tower-http 0.4.3",
@@ -5200,6 +5201,7 @@ name = "lightdotso-indexer"
 version = "0.1.0"
 dependencies = [
  "anvil",
+ "anyhow",
  "axum 0.6.19",
  "clap",
  "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
@@ -5208,6 +5210,7 @@ dependencies = [
  "lightdotso-prisma",
  "lightdotso-tracing",
  "prisma-client-rust",
+ "sled",
  "tokio",
 ]
 
@@ -9315,6 +9318,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "sled"
+version = "0.34.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f96b4737c2ce5987354855aed3797279def4ebf734436c6aa4552cf8e169935"
+dependencies = [
+ "crc32fast",
+ "crossbeam-epoch",
+ "crossbeam-utils",
+ "fs2",
+ "fxhash",
+ "libc",
+ "log",
+ "parking_lot 0.11.2",
+]
+
+[[package]]
 name = "smallvec"
 version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -10924,7 +10943,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97fee6b57c6a41524a810daee9286c02d7752c4253064d0b05472833a438f675"
 dependencies = [
  "cfg-if",
- "rand 0.7.3",
+ "rand 0.8.5",
  "static_assertions",
 ]
 

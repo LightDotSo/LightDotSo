@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use anyhow::Result;
 use clap::Parser;
 use lightdotso_tracing::tracing::info;
 
 #[derive(Debug, Clone, Parser, Default)]
-pub struct ConfigArgs {
+pub struct IndexerArgs {
     /// The chain id of the chain to index.
     #[arg(long, short, default_value_t = 1)]
     #[clap(long, env)]
@@ -44,10 +45,13 @@ pub struct ConfigArgs {
     pub end_block: u64,
 }
 
-impl ConfigArgs {
-    pub async fn run(&self) -> eyre::Result<()> {
+impl IndexerArgs {
+    pub async fn run(&self) -> Result<()> {
         // Add info
-        info!("ConfigArgs run, exiting");
+        info!("IndexerArgs run, exiting");
+
+        let db = sled::open("sled")?;
+        db.insert("my_key", "my_value")?;
 
         // Print the config
         info!("Config: {:?}", self);
@@ -70,7 +74,7 @@ mod tests {
         env::remove_var("INDEXER_RPC_WS");
 
         // Create a Config with default values
-        let config_args = ConfigArgs::parse();
+        let config_args = IndexerArgs::parse();
 
         // Verify the default values
         assert_eq!(config_args.chain_id, 1);
@@ -86,7 +90,7 @@ mod tests {
         env::set_var("INDEXER_RPC_WS", "ws");
 
         // Create a Config with env values
-        let config_args = ConfigArgs::parse();
+        let config_args = IndexerArgs::parse();
 
         // Verify the new values from env
         assert_eq!(config_args.chain_id, 5);
@@ -102,7 +106,7 @@ mod tests {
     #[test]
     fn test_config_default_values() {
         // Create a Config with default values
-        let config_args = ConfigArgs::default();
+        let config_args = IndexerArgs::default();
 
         // Verify the default values
         assert_eq!(config_args.chain_id, 0);

@@ -68,6 +68,7 @@
   ] }
   serde = "1.0.177"
   serenity = "0.11"
+  sled = "0.34.7"
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-primitives = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
