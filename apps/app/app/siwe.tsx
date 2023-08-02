@@ -27,9 +27,7 @@ export const siweConfig: SIWEConfig = {
   getSession: async () => {
     const session = await getSession();
     if (!session) return null;
-    // TODO: Fixes this type error for session
-    // @ts-expect-error
-    return session.session as SIWESession;
+    return session.session;
   },
   getNonce: async () => {
     const nonce = await getCsrfToken();

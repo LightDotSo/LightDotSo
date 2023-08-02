@@ -74,11 +74,9 @@ export const authOptions: AuthOptions = {
           }
           const nextAuthHost = new URL(nextAuthUrl).host;
 
+          console.warn(req);
           // Get the nonce from the request
-          console.warn("req?.headers", req?.headers);
-          const nonce = await getCsrfToken({
-            req: { headers: req?.headers?.cookie },
-          });
+          const nonce = await getCsrfToken({ req });
 
           // Check if siwe is valid
           const result = await siwe.verify({
@@ -87,13 +85,13 @@ export const authOptions: AuthOptions = {
 
           // Check if the domain matches
           if (result.data.domain !== nextAuthHost) {
-            console.warn("Domain Mismatch", result.data.domain, nextAuthHost);
+            console.error("Domain Mismatch", result.data.domain, nextAuthHost);
             throw new Error("Domain Mismatch");
           }
 
           // Check if the nonce matches
           if (result.data.nonce !== nonce) {
-            console.warn("Nonce Mismatch", result.data.nonce, nonce);
+            console.error("Nonce Mismatch", result.data.nonce, nonce);
             throw new Error("Nonce Mismatch");
           }
 
@@ -101,6 +99,7 @@ export const authOptions: AuthOptions = {
           if (
             result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
           ) {
+            console.error("Statement Mismatch", result.data.statement);
             throw new Error("Statement Mismatch");
           }
 
