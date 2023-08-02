@@ -18,7 +18,7 @@ const nextConfig = {
   outputFileTracing: true,
   transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],
   webpack: config => {
-    config.externals.push("pino-pretty", "lokijs", "encoding");
+    config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
     config.resolve.fallback = { fs: false, net: false, tls: false };
 
     return config;
