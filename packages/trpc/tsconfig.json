@@ -2,6 +2,7 @@
   "compilerOptions": {
     "declaration": false,
     "declarationMap": false,
+    "lib": ["dom", "dom.iterable", "esnext"],
     "outDir": "./dist"
   },
   "exclude": ["dist", "build", "node_modules"],

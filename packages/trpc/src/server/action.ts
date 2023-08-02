@@ -13,11 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./action";
-export * from "./context";
-export * from "./http";
-export * from "./invoker";
-export * from "./nextHandler";
-export * from "./open-api";
-export * from "./shared";
-export * from "./trpc";
+"use server";
+
+import { headers } from "next/headers";
+import { getAuthSession } from "@lightdotso/auth";
+import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
+import { root } from "./trpc";
+
+export const createAction = experimental_createServerActionHandler(root, {
+  async createContext() {
+    const session = await getAuthSession();
+
+    return {
+      session,
+      headers: {
+        // Pass the cookie header to the API
+        cookies: headers().get("cookie") ?? "",
+      },
+    };
+  },
+});

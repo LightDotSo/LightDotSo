@@ -13,28 +13,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Connect } from "./connect";
-import { EnsName, preload } from "@/components/EnsName";
-import { invoker } from "@lightdotso/trpc";
-import { getAuthSession } from "@lightdotso/auth";
-import { User } from "./user";
+"use client";
 
-export default async function Page() {
-  const user = await invoker.user.me.query({});
+import { trpc } from "@lightdotso/trpc";
+import { useQueryClient } from "@tanstack/react-query";
+import React from "react";
 
-  const session = await getAuthSession();
+export function User() {
+  let { data: users, isLoading, isFetching } = trpc.user.me.useQuery({});
 
-  preload(session?.user?.name as `0x${string}`);
+  const queryClient = useQueryClient();
+
+  function handleClick() {
+    queryClient.refetchQueries([["user", "me"], { type: "query" }]);
+  }
+
+  if (isLoading || isFetching) {
+    return <p>Loading...</p>;
+  }
 
   return (
-    <main className="text-red-500">
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-      <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-      <Connect />
-      <User />
-    </main>
+    <>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          gap: 20,
+        }}
+      >
+        {JSON.stringify(users, null, 2)}
+      </div>
+      <button onClick={handleClick}>Click me</button>
+    </>
   );
 }
-
-// export const runtime = "edge";

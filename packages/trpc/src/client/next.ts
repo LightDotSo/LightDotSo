@@ -26,7 +26,7 @@ import type { AppRouter } from "../routers/app";
 import superjson from "superjson";
 import { getUrl } from "../server/shared";
 
-export const api = experimental_createTRPCNextAppDirClient<AppRouter>({
+export const next = experimental_createTRPCNextAppDirClient<AppRouter>({
   config() {
     return {
       transformer: superjson,

@@ -23,9 +23,6 @@
  * @see https://trpc.io/docs/v10/procedures
  */
 
-import { headers } from "next/headers";
-import { getAuthSession } from "@lightdotso/auth";
-import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { transformer } from "../utils/transformer";
 import type { Context } from "./context";
@@ -34,7 +31,7 @@ import { createTRPCUpstashLimiter } from "../utils/rate-limit";
 import { ZodError } from "zod";
 import type { IncomingHttpHeaders } from "http";
 
-const root = initTRPC
+export const root = initTRPC
   .meta<OpenApiMeta>()
   .context<Context>()
   .create({
@@ -117,17 +114,3 @@ export const protectedProcedure = publicProcedure.use(opts => {
 });
 
 export const rateLimitedProcedure = publicProcedure.use(rateLimiter);
-
-export const createAction = experimental_createServerActionHandler(root, {
-  async createContext() {
-    const session = await getAuthSession();
-
-    return {
-      session,
-      headers: {
-        // Pass the cookie header to the API
-        cookies: headers().get("cookie") ?? "",
-      },
-    };
-  },
-});

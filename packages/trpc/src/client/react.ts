@@ -13,11 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./action";
-export * from "./context";
-export * from "./http";
-export * from "./invoker";
-export * from "./nextHandler";
-export * from "./open-api";
-export * from "./shared";
-export * from "./trpc";
+"use client";
+
+import type { AppRouter } from "../routers/app";
+import { createTRPCReact } from "@trpc/react-query";
+
+export const trpc = createTRPCReact<AppRouter>();

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ApiCheck, AssertionBuilder, CheckGroup } from "checkly/constructs";
+import { CheckGroup } from "checkly/constructs";
 
 export const websiteGroup = new CheckGroup("app", {
   name: "app",
@@ -28,34 +28,4 @@ export const websiteGroup = new CheckGroup("app", {
   alertChannels: [],
 });
 
-const targetUrl = process.env.ENVIRONMENT_URL || "https://api.light.so";
-
-new ApiCheck("app-healthcheck", {
-  name: "App Healthcheck",
-  group: websiteGroup,
-  activated: true,
-  muted: false,
-  doubleCheck: true,
-  shouldFail: false,
-  locations: ["eu-west-1", "us-west-1"],
-  tags: ["api"],
-  frequency: 60,
-  environmentVariables: [],
-  maxResponseTime: 20000,
-  degradedResponseTime: 50000,
-  request: {
-    url: `${targetUrl}/api/trpc/healthcheck`,
-    method: "GET",
-    followRedirects: true,
-    skipSSL: false,
-    assertions: [
-      AssertionBuilder.jsonBody("").hasKey("result"),
-      AssertionBuilder.statusCode().equals(200),
-      AssertionBuilder.responseTme().lessThan(9000),
-    ],
-    body: "",
-    bodyType: "JSON",
-    headers: [],
-    queryParameters: [],
-  },
-});
+export const targetUrl = process.env.ENVIRONMENT_URL || "https://app.light.so";
