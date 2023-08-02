@@ -57,38 +57,58 @@ export const authOptions: AuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        // console.warn(JSON.stringify(credentials, null, 2));
         try {
+          // Convert the message to a siwe message
           const siwe = new SiweMessage(
             JSON.parse(credentials?.message || "{}"),
           );
+
+          // Get the next auth url
           const nextAuthUrl =
             process.env.VERCEL_ENV === "production" ||
             process.env.VERCEL_ENV === "development"
               ? process.env.NEXTAUTH_URL
               : `https://${process.env.VERCEL_URL}`;
-
           if (!nextAuthUrl) {
             throw new Error("Invalid URL");
           }
+          const nextAuthHost = new URL(nextAuthUrl).host;
 
+          // Get the nonce from the request
+          const nonce = await getCsrfToken({ req: { headers: req?.headers } });
+
+          // Check if siwe is valid
           const result = await siwe.verify({
             signature: credentials?.signature!,
-            domain: new URL(nextAuthUrl).host,
-            nonce: await getCsrfToken({ req: { headers: req?.headers } }),
           });
 
-          if (!result.success) {
-            throw new Error("Invalid Signature");
+          // Check if the domain matches
+          if (result.data.domain !== nextAuthHost) {
+            console.warn("Domain Mismatch", result.data.domain, nextAuthHost);
+            throw new Error("Domain Mismatch");
           }
 
-          console.warn("Success", result.success);
+          // Check if the nonce matches
+          if (result.data.nonce !== nonce) {
+            console.warn("Nonce Mismatch", result.data.nonce, nonce);
+            throw new Error("Nonce Mismatch");
+          }
 
+          // Check if the statement matches
           if (
             result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
           ) {
             throw new Error("Statement Mismatch");
           }
+
+          // Check if the signature is valid
+          if (!result.success) {
+            console.error("Invalid Signature", result.error);
+            throw new Error("Invalid Signature");
+          }
+
+          // Log the success
+          console.warn("Success", result.success);
 
           // Get the address in checksum format
           const address = getAddress(result.data.address);
@@ -110,6 +130,7 @@ export const authOptions: AuthOptions = {
             },
           });
 
+          // Return existing user and account
           if (existingAccount) {
             return {
               id: existingAccount.userId,
