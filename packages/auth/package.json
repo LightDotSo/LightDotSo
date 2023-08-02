@@ -18,7 +18,7 @@
     "@lightdotso/prisma": "workspace:*",
     "@next-auth/prisma-adapter": "0.4.4-canary.81",
     "next": "^13.4.12",
-    "next-auth": "^4.22.3",
+    "next-auth": "^4.20.1",
     "siwe": "^2.1.4"
   },
   "devDependencies": {
