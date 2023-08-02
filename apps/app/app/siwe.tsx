@@ -18,8 +18,6 @@
 import type { SIWEConfig, SIWESession } from "connectkit";
 import { useSIWE, useModal } from "connectkit";
 import { useAccount } from "wagmi";
-// import { useIsMounted } from "../hooks/useIsMounted";
-// import { trpc } from "@lightdotso/trpc";
 import { useState, useEffect } from "react";
 import { Button } from "@lightdotso/ui";
 import { SiweMessage } from "siwe";
@@ -29,8 +27,9 @@ export const siweConfig: SIWEConfig = {
   getSession: async () => {
     const session = await getSession();
     if (!session) return null;
-    console.warn(session);
-    return session;
+    // TODO: Fixes this type error for session
+    // @ts-expect-error
+    return session.session as SIWESession;
   },
   getNonce: async () => {
     const nonce = await getCsrfToken();

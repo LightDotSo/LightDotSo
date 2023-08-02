@@ -43,7 +43,7 @@ export default function RootLayout({
       <body>
         <TrpcProvider>
           <WagmiConfig config={config}>
-            <SIWEProvider {...siweConfig}>
+            <SIWEProvider {...siweConfig} signOutOnNetworkChange={false}>
               <ConnectKitProvider>
                 <Button>Hello</Button>
                 <ReactQueryStreamedHydration>
