@@ -63,10 +63,10 @@ export const authOptions: AuthOptions = {
             JSON.parse(credentials?.message || "{}"),
           );
           const nextAuthUrl =
-            process.env.NEXTAUTH_URL ||
-            (process.env.VERCEL_URL
-              ? `https://${process.env.VERCEL_URL}`
-              : null);
+            process.env.VERCEL_ENV === "production" ||
+            process.env.VERCEL_ENV === "development"
+              ? process.env.NEXTAUTH_URL
+              : `https://${process.env.VERCEL_URL}`;
 
           if (!nextAuthUrl) {
             throw new Error("Invalid URL");
