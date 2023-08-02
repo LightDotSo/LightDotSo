@@ -16,11 +16,7 @@
 "use client";
 
 import { loggerLink } from "@trpc/client";
-import {
-  experimental_createActionHook,
-  experimental_createTRPCNextAppDirClient,
-  experimental_serverActionLink,
-} from "@trpc/next/app-dir/client";
+import { experimental_createTRPCNextAppDirClient } from "@trpc/next/app-dir/client";
 import { experimental_nextHttpLink } from "@trpc/next/app-dir/links/nextHttp";
 import type { AppRouter } from "../routers/app";
 import superjson from "superjson";
@@ -46,9 +42,4 @@ export const next = experimental_createTRPCNextAppDirClient<AppRouter>({
       ],
     };
   },
-});
-
-export const useAction = experimental_createActionHook({
-  links: [loggerLink(), experimental_serverActionLink()],
-  transformer: superjson,
 });

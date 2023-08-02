@@ -15,7 +15,18 @@
 
 "use client";
 
+import { loggerLink } from "@trpc/client";
+import {
+  experimental_createActionHook,
+  experimental_serverActionLink,
+} from "@trpc/next/app-dir/client";
+import { experimental_createTRPCNextReactQuery } from "@trpc/next/app-dir/react";
 import type { AppRouter } from "../routers/app";
-import { createTRPCReact } from "@trpc/react-query";
+import superjson from "superjson";
 
-export const trpc = createTRPCReact<AppRouter>();
+export const api = experimental_createTRPCNextReactQuery<AppRouter>({});
+
+export const useAction = experimental_createActionHook({
+  links: [loggerLink(), experimental_serverActionLink()],
+  transformer: superjson,
+});

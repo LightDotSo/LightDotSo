@@ -20,7 +20,7 @@
     "@prisma/client": "^5.0.0",
     "@trpc-limiter/core": "^0.0.8",
     "@trpc/client": "^10.36.0",
-    "@trpc/next": "^10.36.0",
+    "@trpc/next": "^10.35.1-alpha-server-helpers-2023-07-23-20-35-45.4",
     "@trpc/react-query": "^10.36.0",
     "@trpc/server": "^10.36.0",
     "@upstash/ratelimit": "^0.4.3",
