@@ -18,6 +18,7 @@ import { EnsName, preload } from "@/components/EnsName";
 import { invoker } from "@lightdotso/trpc";
 import { getAuthSession } from "@lightdotso/auth";
 import { User } from "./user";
+import { SIWEButton } from "./siwe";
 
 export default async function Page() {
   const user = await invoker.user.me.query({});
@@ -33,6 +34,7 @@ export default async function Page() {
       <pre>{JSON.stringify(user, null, 2)}</pre>
       <Connect />
       <User />
+      <SIWEButton />
     </main>
   );
 }

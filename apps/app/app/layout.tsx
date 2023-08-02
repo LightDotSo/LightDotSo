@@ -18,9 +18,10 @@
 import { Button } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 import { WagmiConfig, createConfig } from "wagmi";
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
+import { ConnectKitProvider, getDefaultConfig, SIWEProvider } from "connectkit";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { TrpcProvider } from "./trpc-provider";
+import { siweConfig } from "./siwe";
 
 // From: https://tanstack.com/query/v5/docs/react/examples/react/nextjs-suspense-streaming
 // Also: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
@@ -28,7 +29,7 @@ import { TrpcProvider } from "./trpc-provider";
 const config = createConfig(
   getDefaultConfig({
     appName: "Light",
-    walletConnectProjectId: "id",
+    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
   }),
 );
 
@@ -42,12 +43,14 @@ export default function RootLayout({
       <body>
         <TrpcProvider>
           <WagmiConfig config={config}>
-            <ConnectKitProvider>
-              <Button>Hello</Button>
-              <ReactQueryStreamedHydration>
-                {children}
-              </ReactQueryStreamedHydration>
-            </ConnectKitProvider>
+            <SIWEProvider {...siweConfig}>
+              <ConnectKitProvider>
+                <Button>Hello</Button>
+                <ReactQueryStreamedHydration>
+                  {children}
+                </ReactQueryStreamedHydration>
+              </ConnectKitProvider>
+            </SIWEProvider>
           </WagmiConfig>
         </TrpcProvider>
       </body>

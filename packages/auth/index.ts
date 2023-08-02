@@ -35,6 +35,8 @@ export const authOptions: AuthOptions = {
       session.id = token.sub;
       session.user.address = session.user.name;
       session.user.image = "/";
+      session.address = session.user.name || "";
+      session.chainId = 1;
       return session;
     },
   },
@@ -60,17 +62,27 @@ export const authOptions: AuthOptions = {
           const siwe = new SiweMessage(
             JSON.parse(credentials?.message || "{}"),
           );
-          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL!);
+          const nextAuthUrl =
+            process.env.NEXTAUTH_URL ||
+            (process.env.VERCEL_URL
+              ? `https://${process.env.VERCEL_URL}`
+              : null);
+
+          if (!nextAuthUrl) {
+            throw new Error("Invalid URL");
+          }
 
           const result = await siwe.verify({
             signature: credentials?.signature!,
-            domain: nextAuthUrl.host,
+            domain: new URL(nextAuthUrl).host,
             nonce: await getCsrfToken({ req: { headers: req?.headers } }),
           });
 
           if (!result.success) {
             throw new Error("Invalid Signature");
           }
+
+          console.warn("Success", result.success);
 
           if (
             result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
