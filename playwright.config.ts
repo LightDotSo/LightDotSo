@@ -3,7 +3,7 @@
 import type { PlaywrightTestConfig } from "@playwright/test";
 
 const baseUrl = process.env.PLAYWRIGHT_TEST_BASE_URL || "http://localhost:3001";
-console.log(`Using base URL "${baseUrl}"`);
+console.warn(`Using base URL "${baseUrl}"`);
 
 // From: https://github.com/calcom/cal.com/blob/50d2dad62c5cc93b9ccfad6b9b0836062fd5f465/playwright.config.ts#L26
 const IS_API_TEST = process.argv.some(a =>

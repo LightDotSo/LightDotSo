@@ -50,7 +50,7 @@ afterEach(context => {
           "\n\nAnvil log output\n=======================================\n";
         error.message += `\n${logs.join("\n")}`;
       } else {
-        console.log(...logs);
+        console.warn(...logs);
       }
     } catch {
       /* empty */

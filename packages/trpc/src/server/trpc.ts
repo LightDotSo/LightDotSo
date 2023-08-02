@@ -96,7 +96,7 @@ export const rateLimiter = createTRPCUpstashLimiter({
       (hitInfo.reset - Date.now()) / 1000,
     )}`,
   onLimit: hitInfo => {
-    console.log(hitInfo);
+    console.warn(hitInfo);
   },
   max: 5,
 });
