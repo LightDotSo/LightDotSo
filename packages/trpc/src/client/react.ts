@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
+import type { AppRouter } from "../routers/app";
 import { createTRPCReact } from "@trpc/react-query";
-import type { AppRouter } from "@lightdotso/trpc";
+
 export const trpc = createTRPCReact<AppRouter>();

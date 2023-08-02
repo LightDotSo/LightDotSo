@@ -33,6 +33,7 @@ export default async function Page() {
       <pre>{JSON.stringify(user, null, 2)}</pre>
       <User />
       <Connect />
+      <User />
     </main>
   );
 }

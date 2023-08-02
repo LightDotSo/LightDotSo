@@ -12,7 +12,17 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "index.ts",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf -rf dist"
+  },
   "dependencies": {
     "@lightdotso/auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",

@@ -15,10 +15,35 @@
 
 "use client";
 
-import { trpc } from "./trpc";
+import { trpc } from "@lightdotso/trpc";
+import { useQueryClient } from "@tanstack/react-query";
+import React from "react";
 
 export function User() {
-  const user = trpc.user.me.useQuery({ from: "useUser" });
+  let { data: users, isLoading, isFetching } = trpc.user.me.useQuery({});
 
-  return <>{user && user.data?.id}</>;
+  const queryClient = useQueryClient();
+
+  function handleClick() {
+    queryClient.refetchQueries([["user", "me"], { type: "query" }]);
+  }
+
+  if (isLoading || isFetching) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          gap: 20,
+        }}
+      >
+        {JSON.stringify(users, null, 2)}
+      </div>
+      <button onClick={handleClick}>Click me</button>
+    </>
+  );
 }
