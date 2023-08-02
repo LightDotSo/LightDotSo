@@ -75,6 +75,7 @@ export const authOptions: AuthOptions = {
           const nextAuthHost = new URL(nextAuthUrl).host;
 
           // Get the nonce from the request
+          console.warn("req?.headers", req?.headers);
           const nonce = await getCsrfToken({ req: { headers: req?.headers } });
 
           // Check if siwe is valid

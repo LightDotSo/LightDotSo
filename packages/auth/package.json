@@ -12,6 +12,7 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
+  "sideEffects": false,
   "main": "index.ts",
   "dependencies": {
     "@lightdotso/prisma": "workspace:*",
