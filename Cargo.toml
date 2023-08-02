@@ -42,6 +42,8 @@
   anyhow = "1.0.71"
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   axum = "0.6.18"
+  byteorder = "1.4.3"
+  chrono = "0.4.26"
   clap = "4.3.12"
   dotenvy = "0.15"
   ethers = { git = "https://github.com/gakonst/ethers-rs" }
@@ -49,6 +51,9 @@
   foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   http = "0.2.8"
+  jsonrpsee = { version = "0.19.0", features = ["macros", "server"] }
+  jsonrpsee-http-client = "0.19.0"
+  jsonrpsee-ws-client = "0.19.0"
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-db = { path = "./crates/db" }
   lightdotso-indexer = { path = "./crates/indexer" }
@@ -86,3 +91,4 @@
   uniffi_macros = "0.24.2"
   uniffi_build = { version = "0.24.2", features = ["builtin-bindgen"] }
   uuid = { version = "1.3.4", features = ["v4", "fast-rng", "serde"] }
+  zerocopy = "0.6.1"
