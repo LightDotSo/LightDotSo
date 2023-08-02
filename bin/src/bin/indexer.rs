@@ -16,7 +16,7 @@
 use anyhow::Result;
 use axum::{routing::get, Router};
 use clap::Parser;
-use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
+use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_tracing::{
     init, stdout,

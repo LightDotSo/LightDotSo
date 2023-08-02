@@ -70,7 +70,7 @@ impl IndexerArgs {
             async move {
                 loop {
                     // Run the indexer
-                    indexer.run(&db).await;
+                    indexer.run().await;
 
                     // Sleep for 300ms
                     sleep(Duration::from_millis(300)).await;

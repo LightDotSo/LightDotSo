@@ -201,5 +201,10 @@ prisma: cargo-generate ## Add clippy ignore.
 	./scripts/add_clippy_ignore.sh
 
 #@ zellij
-shell:
+shell: ## Run zellij
 	zellij --layout zellij.kdl a $(WORKSPACE) || zellij --layout zellij.kdl -s $(WORKSPACE)
+
+##@ Test runs
+
+test-indexer-run: ## Run the indexer test
+	cargo run --bin indexer -- --ws ws://localhost:8545 --rpc http://localhost:8545 --chain-id 31337
