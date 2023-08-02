@@ -18,7 +18,7 @@ import { subdigestOf } from "..";
 
 test("subdigestOf", () => {
   const ls = subdigestOf(`0x${"00".repeat(20)}`, new Uint8Array(32), 1n);
-  console.log(ls);
+  console.warn(ls);
   expect(ls).toBe(
     "0x4f8026b280821a8d35671eb214849f3d4ed6caf6418ca57be15a139a0d8cf4e5",
   );

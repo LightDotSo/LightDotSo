@@ -57,7 +57,7 @@ export const authOptions: AuthOptions = {
         },
       },
       async authorize(credentials, req) {
-        // console.log(JSON.stringify(credentials, null, 2));
+        // console.warn(JSON.stringify(credentials, null, 2));
         try {
           const siwe = new SiweMessage(
             JSON.parse(credentials?.message || "{}"),

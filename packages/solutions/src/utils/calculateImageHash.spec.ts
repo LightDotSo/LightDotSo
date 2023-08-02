@@ -26,7 +26,7 @@ test("calculateImageHash", () => {
   ];
 
   const hash = calculateImageHash(1n, 1n, signers);
-  console.log(hash);
+  console.warn(hash);
   expect(hash).toBe(
     "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
   );

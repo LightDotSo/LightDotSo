@@ -22,7 +22,7 @@ import { LightWallet } from "@/contracts/LightWallet.sol";
 
 describe("LightWallet", function () {
   it("Should return run correct function parameters on hardhat", async function () {
-    console.log(await publicClient.getBlockNumber());
+    console.warn(await publicClient.getBlockNumber());
     const account = accounts[0].address;
     const hash = await walletClient.deployContract({
       abi: LightWallet.abi,
@@ -93,5 +93,5 @@ test("LightWallet: Correct humanReadableAbi", () => {
 
 test("Should return correct subdigest", () => {
   const ls = subdigestOf(`0x${"00".repeat(20)}`, new Uint8Array(32), 1n);
-  console.log(ls);
+  console.warn(ls);
 });

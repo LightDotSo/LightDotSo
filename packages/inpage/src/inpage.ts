@@ -14,4 +14,4 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // eslint-disable-next-line no-console
-console.log("inpage.ts");
+console.warn("inpage.ts");
