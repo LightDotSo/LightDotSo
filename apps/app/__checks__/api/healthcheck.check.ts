@@ -16,7 +16,7 @@
 import { ApiCheck, AssertionBuilder } from "checkly/constructs";
 import { websiteGroup, targetUrl } from "..";
 
-new ApiCheck("api-healthcheck", {
+new ApiCheck("app-healthcheck", {
   name: "API Healthcheck",
   group: websiteGroup,
   activated: true,

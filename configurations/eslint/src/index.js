@@ -52,6 +52,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
+    "no-console": ["error", { allow: ["warn", "error"] }],
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": "warn",

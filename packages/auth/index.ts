@@ -13,17 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { CtxOrReq } from "next-auth/client/_utils";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import { prisma } from "@lightdotso/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth";
-import type { NextAuthOptions, AuthOptions } from "next-auth";
+import type { AuthOptions } from "next-auth";
 import { getAddress } from "viem";
 
-export const commonAuthOptions: Omit<AuthOptions, "providers"> = {
+export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },
@@ -31,16 +30,16 @@ export const commonAuthOptions: Omit<AuthOptions, "providers"> = {
   secret: process.env.NEXTAUTH_SECRET!,
   callbacks: {
     async session({ session, token }: { session: any; token: any }) {
-      session.address = token.sub;
-      session.user.name = token.sub;
+      session.token = token;
+      session.token.expires = session.expires;
+      session.id = token.sub;
+      session.user.address = session.user.name;
       session.user.image = "/";
+      session.address = session.user.name || "";
+      session.chainId = 1;
       return session;
     },
   },
-};
-
-export const authOptions: AuthOptions = {
-  ...commonAuthOptions,
   providers: [
     CredentialsProvider({
       id: "eth",
@@ -63,15 +62,19 @@ export const authOptions: AuthOptions = {
           const siwe = new SiweMessage(
             JSON.parse(credentials?.message || "{}"),
           );
-          const nextAuthUrl = new URL(
-            process.env.VERCEL_ENV !== "preview"
-              ? process.env.NEXTAUTH_URL!
-              : `https://${process.env.VERCEL_URL}`,
-          );
+          const nextAuthUrl =
+            process.env.NEXTAUTH_URL ||
+            (process.env.VERCEL_URL
+              ? `https://${process.env.VERCEL_URL}`
+              : null);
+
+          if (!nextAuthUrl) {
+            throw new Error("Invalid URL");
+          }
 
           const result = await siwe.verify({
             signature: credentials?.signature!,
-            domain: nextAuthUrl.host,
+            domain: new URL(nextAuthUrl).host,
             nonce: await getCsrfToken({ req: { headers: req?.headers } }),
           });
 
@@ -79,66 +82,7 @@ export const authOptions: AuthOptions = {
             throw new Error("Invalid Signature");
           }
 
-          if (
-            result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
-          ) {
-            throw new Error("Statement Mismatch");
-          }
-
-          if (result.success) {
-            console.log("success");
-
-            return {
-              id: siwe.address,
-            };
-          }
-          return null;
-        } catch (err) {
-          console.error(err);
-          return null;
-        }
-      },
-    }),
-  ],
-};
-
-export const nextAuthOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
-  req,
-}) => ({
-  ...commonAuthOptions,
-  providers: [
-    CredentialsProvider({
-      id: "eth",
-      name: "Ethereum",
-      credentials: {
-        message: {
-          label: "Message",
-          type: "text",
-          placeholder: "0x0",
-        },
-        signature: {
-          label: "Signature",
-          type: "text",
-          placeholder: "0x0",
-        },
-      },
-      async authorize(credentials) {
-        // console.log(JSON.stringify(credentials, null, 2));
-        try {
-          const siwe = new SiweMessage(
-            JSON.parse(credentials?.message || "{}"),
-          );
-          const nextAuthUrl = new URL(process.env.NEXTAUTH_URL!);
-
-          const result = await siwe.verify({
-            signature: credentials?.signature!,
-            domain: nextAuthUrl.host,
-            nonce: await getCsrfToken({ req: { headers: req?.headers } }),
-          });
-
-          if (!result.success) {
-            throw new Error("Invalid Signature");
-          }
+          console.warn("Success", result.success);
 
           if (
             result.data.statement !== process.env.NEXT_PUBLIC_SIGNIN_MESSAGE
@@ -165,6 +109,7 @@ export const nextAuthOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
               },
             },
           });
+
           if (existingAccount) {
             return {
               id: existingAccount.userId,
@@ -196,7 +141,7 @@ export const nextAuthOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
 
           return {
             id: user.id,
-            name: user.id,
+            name: user.name,
           };
         } catch (err) {
           console.error(err);
@@ -205,7 +150,7 @@ export const nextAuthOptions: (ctxReq: CtxOrReq) => NextAuthOptions = ({
       },
     }),
   ],
-});
+};
 
 export const getAuthSession = async () => {
   return await getServerSession(authOptions);

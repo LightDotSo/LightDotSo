@@ -27,6 +27,7 @@ import { Prisma } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "@lightdotso/prisma";
+import { getAddress } from "viem";
 
 /**
  * Default selector for User.
@@ -108,8 +109,8 @@ export const userRouter = router({
     if (!ctx?.session?.user?.name) {
       return {};
     }
-    const user = await prisma.user.findUnique({
-      where: { id: ctx?.session?.user?.name },
+    const user = await prisma.user.findFirst({
+      where: { name: getAddress(ctx?.session?.user?.name) },
       select: defaultUserSelect,
     });
     return user;
