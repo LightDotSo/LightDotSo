@@ -105,12 +105,8 @@ export const userRouter = router({
       return user;
     }),
   me: publicProcedure.input(z.object({})).query(async ({ ctx }) => {
-    // const { user: sessionUser } = ctx.session;
     if (!ctx?.session?.user?.name) {
-      throw new TRPCError({
-        code: "NOT_FOUND",
-        message: "No session user",
-      });
+      return {};
     }
     const user = await prisma.user.findUnique({
       where: { id: ctx?.session?.user?.name },

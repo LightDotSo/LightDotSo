@@ -13,7 +13,7 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "sideEffects": false,
-  "main": "./dist/index.js",
+  "main": "./index.ts",
   "dependencies": {
     "@lightdotso/auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",

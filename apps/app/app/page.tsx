@@ -31,7 +31,6 @@ export default async function Page() {
       <pre>{JSON.stringify(session, null, 2)}</pre>
       <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
       <pre>{JSON.stringify(user, null, 2)}</pre>
-      <User />
       <Connect />
       <User />
     </main>
