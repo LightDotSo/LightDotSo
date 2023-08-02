@@ -76,7 +76,9 @@ export const authOptions: AuthOptions = {
 
           // Get the nonce from the request
           console.warn("req?.headers", req?.headers);
-          const nonce = await getCsrfToken({ req: { headers: req?.headers } });
+          const nonce = await getCsrfToken({
+            req: { headers: req?.headers?.cookie },
+          });
 
           // Check if siwe is valid
           const result = await siwe.verify({
