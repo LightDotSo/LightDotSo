@@ -74,7 +74,6 @@ export const authOptions: AuthOptions = {
           }
           const nextAuthHost = new URL(nextAuthUrl).host;
 
-          console.warn(req);
           // Get the nonce from the request
           const nonce = await getCsrfToken({ req });
 
@@ -110,7 +109,7 @@ export const authOptions: AuthOptions = {
           }
 
           // Log the success
-          console.warn("Success", result.success);
+          console.info("Success", result.success);
 
           // Get the address in checksum format
           const address = getAddress(result.data.address);

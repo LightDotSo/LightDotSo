@@ -44,7 +44,6 @@ export const siweConfig: SIWEConfig = {
     }
   },
   verifyMessage: async ({ message, signature }) => {
-    console.warn({ message, signature });
     const response = await signIn("eth", {
       message: JSON.stringify(message),
       redirect: false,
@@ -54,7 +53,6 @@ export const siweConfig: SIWEConfig = {
     if (response?.error) {
       console.error("Error occured:", response.error);
     }
-    console.warn(response);
     return response?.ok ?? false;
   },
   createMessage: ({ nonce, address, chainId }) =>
