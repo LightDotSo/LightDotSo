@@ -16,8 +16,8 @@
 import { ApiCheck, AssertionBuilder } from "checkly/constructs";
 import { websiteGroup, targetUrl } from "..";
 
-new ApiCheck("api-inngest", {
-  name: "Inngest Healthcheck",
+new ApiCheck("api-healthcheck", {
+  name: "API Healthcheck",
   group: websiteGroup,
   activated: true,
   muted: false,
@@ -30,15 +30,13 @@ new ApiCheck("api-inngest", {
   maxResponseTime: 20000,
   degradedResponseTime: 50000,
   request: {
-    url: `${targetUrl}/api/inngest`,
+    url: `${targetUrl}/api/trpc/healthcheck`,
     method: "GET",
     followRedirects: true,
     skipSSL: false,
     assertions: [
-      AssertionBuilder.jsonBody("").hasKey("message"),
-      AssertionBuilder.jsonBody("").hasKey("isProd"),
-      AssertionBuilder.jsonBody("").hasKey("skipDevServer"),
-      AssertionBuilder.statusCode().equals(403),
+      AssertionBuilder.jsonBody("").hasKey("result"),
+      AssertionBuilder.statusCode().equals(200),
       AssertionBuilder.responseTme().lessThan(9000),
     ],
     body: "",
