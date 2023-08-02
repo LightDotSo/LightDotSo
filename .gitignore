@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+#db
+sled
+
 # generated
 configurations/prisma/src/zod/**
 configurations/kysely/src/db/**
