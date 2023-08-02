@@ -16,8 +16,25 @@
 import { authOptions } from "@lightdotso/auth";
 import NextAuth from "next-auth";
 
+const handlers = (
+  req: Request,
+  { params }: { params: { nextauth: string[] } },
+) => {
+  console.log(params);
+  const isDefaultSigninPage =
+    req.method === "GET" && params?.nextauth?.includes("signin");
+
+  // Hide Sign-In with Ethereum from default sign page
+  if (isDefaultSigninPage) {
+    // Removes from the authOptions.providers array
+    authOptions.providers.pop();
+  }
+
+  return NextAuth(authOptions) as typeof NextAuth;
+};
+
 // Add back once NextAuth v5 is released
 // export const runtime = 'edge';
 
-const handlers = NextAuth(authOptions);
+// const handlers = NextAuth(authOptions);
 export { handlers as GET, handlers as POST };
