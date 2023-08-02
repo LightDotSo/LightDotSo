@@ -31,7 +31,7 @@ import { createTRPCUpstashLimiter } from "../utils/rate-limit";
 import { ZodError } from "zod";
 import type { IncomingHttpHeaders } from "http";
 
-const root = initTRPC
+export const root = initTRPC
   .meta<OpenApiMeta>()
   .context<Context>()
   .create({
