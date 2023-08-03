@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    config::IndexerArgs,
-    db::{insert, parse_str_u64},
-};
+use crate::{config::IndexerArgs, db::ReDb};
 use chrono::Utc;
 use ethers::types::{Block, TxHash};
 use jsonrpsee::core::{
@@ -25,7 +22,6 @@ use jsonrpsee::core::{
 };
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
 use lightdotso_tracing::tracing::info;
-use redb::Database;
 use std::sync::Arc;
 #[derive(Debug, Clone)]
 pub struct Indexer {
@@ -45,12 +41,11 @@ impl Indexer {
         Self { ws_client: Arc::new(ws_client) }
     }
 
-    pub async fn run(&self) -> Result<(), ()> {
+    pub async fn run(&self, db: &mut ReDb) -> Result<(), ()> {
         info!("Indexer run, starting");
 
         // Insert the current time
-        // insert(db, &parse_str_u64("time"), &parse_str_u64(Utc::now().to_rfc3339().as_str()))
-        //     .unwrap();
+        db.write("time", Utc::now().to_rfc3339().as_str()).unwrap();
 
         // From: https://github.com/matter-labs/zksync-era/blob/e575ec101fe88627ab541a52464ab5025c16e6b4/core/tests/cross_external_nodes_checker/src/pubsub_checker.rs#L103
         // License: Apache-2.0, MIT
@@ -120,9 +115,8 @@ mod tests {
         let indexer = Indexer::new(&config_args).await;
 
         // Run the indexer
-        // let redb = "indexer.redb";
-        // let db = open(redb);
-        let indexer_future = indexer.run();
+        let mut db = ReDb::new("indexer.redb");
+        let indexer_future = indexer.run(&mut db);
 
         // Wait for the block number to be 30
         let wait_number_future = async {

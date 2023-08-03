@@ -5387,6 +5387,7 @@ dependencies = [
  "lightdotso-tracing",
  "prisma-client-rust",
  "redb",
+ "serde",
  "serenity",
  "tokio",
  "zerocopy",

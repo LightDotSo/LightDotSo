@@ -13,45 +13,87 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use redb::{Database, Error, ReadableTable, TableDefinition};
+use redb::{Database, ReadableTable, TableDefinition};
+use std::error::Error;
 
-// From: https://github.com/cberner/redb/blob/e5ef57896ac023bc8d0c36e97d89fbcfce7cccf9/examples/int_keys.rs
+// From: https://raw.githubusercontent.com/thesimplekid/nostrrepo/bb2e3f635ff4f90b3f2648cfef34cd6900db60f8/portan/src/database.rs
+// License: Apache-2.0
 
-const TABLE: TableDefinition<u64, u64> = TableDefinition::new("indexer");
+const TABLE: TableDefinition<&str, &str> = TableDefinition::new("redb");
 
-pub fn insert(db: &Database, key: &u64, value: &u64) -> Result<(), Error> {
-    let write_txn = db.begin_write()?;
-    {
-        let mut table = write_txn.open_table(TABLE)?;
-        table.insert(key, value)?;
+pub struct ReDb {
+    db: Database,
+}
+
+impl ReDb {
+    pub fn new(value: &str) -> Self {
+        let db = Database::create(value).unwrap_or_else(|_| Database::open(value).unwrap());
+        let write_txn = db.begin_write().unwrap();
+        {
+            let mut _table = write_txn.open_table(TABLE).unwrap();
+        }
+        write_txn.commit().unwrap();
+
+        Self { db }
     }
-    write_txn.commit()?;
-    Ok(())
-}
 
-pub fn get(db: &Database, key: &u64) -> Result<u64, Error> {
-    let read_txn = db.begin_read()?;
-    let table = read_txn.open_table(TABLE)?;
-    let value = table.get(key)?.unwrap().value();
-    Ok(value)
-}
+    pub fn write(&mut self, key: &str, value: &str) -> Result<(), Box<dyn Error>> {
+        let write_txn = self.db.begin_write()?;
+        {
+            let mut table = write_txn.open_table(TABLE)?;
+            table.insert(key, value)?;
+        }
+        write_txn.commit()?;
+        Ok(())
+    }
 
-pub fn open(name: &str) -> Database {
-    Database::create(name).unwrap_or_else(|_| Database::open(name).unwrap())
-}
-
-pub fn parse_str_u64(s: &str) -> u64 {
-    s.parse::<u64>().unwrap()
+    pub fn read(&self, key: &str) -> Result<Option<String>, Box<dyn Error>> {
+        let read_txn = self.db.begin_read()?;
+        let table = read_txn.open_table(TABLE)?;
+        if let Some(name) = table.get(key)? {
+            return Ok(Some(name.value().to_owned()));
+        }
+        Ok(None)
+    }
 }
 
 #[cfg(test)]
 mod tests {
+    // Import necessary dependencies
     use super::*;
 
     #[test]
-    fn test_insert_success() {
-        let db = open("int_keys.redb");
-        let result = insert(&db, &1, &2);
+    fn test_new_db() {
+        ReDb::new("test.redb");
+        // Assert that the database is successfully created or opened twice
+        let mut db = ReDb::new("test_new.redb");
+        assert!(db.db.check_integrity().is_ok());
+    }
+
+    #[test]
+    fn test_write_and_read() {
+        let mut db = ReDb::new("test_write.redb");
+        let key = "key";
+        let name = "John Doe";
+
+        // Write data to the database
+        let result = db.write(key, name);
         assert!(result.is_ok());
+
+        // Read the written data from the database
+        let read_result = db.read(key);
+        assert!(read_result.is_ok());
+        assert_eq!(read_result.unwrap(), Some(name.to_owned()));
+    }
+
+    #[test]
+    fn test_read_nonexistent_key() {
+        let db = ReDb::new("test_none.redb");
+        let key = "nonexistent_key";
+
+        // Attempt to read a nonexistent value from the database
+        let read_result = db.read(key);
+        assert!(read_result.is_ok());
+        assert_eq!(read_result.unwrap(), None);
     }
 }
