@@ -19,14 +19,29 @@ use redb::{Database, Error, ReadableTable, TableDefinition};
 
 const TABLE: TableDefinition<u64, u64> = TableDefinition::new("indexer");
 
-pub fn insert(db: &Database, key: String, value: String) -> Result<(), Error> {
+pub fn insert(db: &Database, key: &u64, value: &u64) -> Result<(), Error> {
     let write_txn = db.begin_write()?;
     {
         let mut table = write_txn.open_table(TABLE)?;
-        table.insert(0, 0)?;
+        table.insert(key, value)?;
     }
     write_txn.commit()?;
     Ok(())
+}
+
+pub fn get(db: &Database, key: &u64) -> Result<u64, Error> {
+    let read_txn = db.begin_read()?;
+    let table = read_txn.open_table(TABLE)?;
+    let value = table.get(key)?.unwrap().value();
+    Ok(value)
+}
+
+pub fn open(name: &str) -> Database {
+    Database::create(name).unwrap_or_else(|_| Database::open(name).unwrap())
+}
+
+pub fn parse_str_u64(s: &str) -> u64 {
+    s.parse::<u64>().unwrap()
 }
 
 #[cfg(test)]
@@ -35,10 +50,8 @@ mod tests {
 
     #[test]
     fn test_insert_success() {
-        let db = Database::create("int_keys.redb").unwrap();
-        let key = "key".to_string();
-        let value = "value".to_string();
-        let result = insert(&db, key, value);
+        let db = open("int_keys.redb");
+        let result = insert(&db, &1, &2);
         assert!(result.is_ok());
     }
 }

@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{config::IndexerArgs, db::insert};
+use crate::{
+    config::IndexerArgs,
+    db::{insert, parse_str_u64},
+};
 use chrono::Utc;
 use ethers::types::{Block, TxHash};
 use jsonrpsee::core::{
@@ -22,7 +25,7 @@ use jsonrpsee::core::{
 };
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
 use lightdotso_tracing::tracing::info;
-use redb::{Database, Error, ReadableTable, TableDefinition};
+use redb::Database;
 use std::sync::Arc;
 #[derive(Debug, Clone)]
 pub struct Indexer {
@@ -42,11 +45,12 @@ impl Indexer {
         Self { ws_client: Arc::new(ws_client) }
     }
 
-    pub async fn run(&self, db: &Database) -> Result<(), ()> {
+    pub async fn run(&self) -> Result<(), ()> {
         info!("Indexer run, starting");
 
         // Insert the current time
-        insert(&db, "time".to_string(), Utc::now().to_rfc3339().as_str().to_string()).unwrap();
+        // insert(db, &parse_str_u64("time"), &parse_str_u64(Utc::now().to_rfc3339().as_str()))
+        //     .unwrap();
 
         // From: https://github.com/matter-labs/zksync-era/blob/e575ec101fe88627ab541a52464ab5025c16e6b4/core/tests/cross_external_nodes_checker/src/pubsub_checker.rs#L103
         // License: Apache-2.0, MIT
@@ -73,16 +77,14 @@ impl Indexer {
 #[cfg(test)]
 mod tests {
     use super::*;
+    // use crate::db::open;
     use anvil::NodeConfig;
     use clap::Parser;
     use ethers::{
         prelude::Middleware,
         types::{U256, U64},
     };
-    use lightdotso_tracing::{
-        init, stdout,
-        tracing::{info, Level},
-    };
+    use lightdotso_tracing::tracing::info;
     use std::{env, time::Duration};
 
     #[tokio::test(flavor = "multi_thread")]
@@ -118,8 +120,9 @@ mod tests {
         let indexer = Indexer::new(&config_args).await;
 
         // Run the indexer
-        let db = Database::create("indexer.redb").unwrap();
-        let indexer_future = indexer.run(&db);
+        // let redb = "indexer.redb";
+        // let db = open(redb);
+        let indexer_future = indexer.run();
 
         // Wait for the block number to be 30
         let wait_number_future = async {

@@ -19,7 +19,6 @@ use crate::indexer::Indexer;
 use anyhow::Result;
 use clap::Parser;
 use lightdotso_tracing::tracing::info;
-use redb::Database;
 use tokio::time::sleep;
 
 #[derive(Debug, Clone, Parser, Default)]
@@ -59,7 +58,7 @@ impl IndexerArgs {
         // Add info
         info!("IndexerArgs run, exiting");
 
-        let db = Database::create("indexer.redb").unwrap();
+        // let db = open("indexer.redb");
 
         // Print the config
         info!("Config: {:?}", self);
@@ -71,7 +70,7 @@ impl IndexerArgs {
             async move {
                 loop {
                     // Run the indexer
-                    let _ = indexer.run(&db).await;
+                    let _ = indexer.run().await;
 
                     // Sleep for 300ms
                     sleep(Duration::from_millis(300)).await;
