@@ -22,8 +22,8 @@ use jsonrpsee::core::{
 };
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
 use lightdotso_tracing::tracing::info;
+use redb::{Database, Error, ReadableTable, TableDefinition};
 use std::sync::Arc;
-
 #[derive(Debug, Clone)]
 pub struct Indexer {
     ws_client: Arc<WsClient>,
@@ -42,12 +42,11 @@ impl Indexer {
         Self { ws_client: Arc::new(ws_client) }
     }
 
-    pub async fn run(&self) -> Result<(), ()> {
+    pub async fn run(&self, db: &Database) -> Result<(), ()> {
         info!("Indexer run, starting");
 
         // Insert the current time
-        // insert(db, "time".to_string(), sled::IVec::from(Utc::now().to_rfc3339().as_bytes()))
-        //     .unwrap();
+        insert(&db, "time".to_string(), Utc::now().to_rfc3339().as_str().to_string()).unwrap();
 
         // From: https://github.com/matter-labs/zksync-era/blob/e575ec101fe88627ab541a52464ab5025c16e6b4/core/tests/cross_external_nodes_checker/src/pubsub_checker.rs#L103
         // License: Apache-2.0, MIT
@@ -80,10 +79,16 @@ mod tests {
         prelude::Middleware,
         types::{U256, U64},
     };
+    use lightdotso_tracing::{
+        init, stdout,
+        tracing::{info, Level},
+    };
     use std::{env, time::Duration};
 
     #[tokio::test(flavor = "multi_thread")]
     async fn test_config_run() {
+        // init(vec![stdout(Level::INFO)]);
+
         // Set the env vars for anvil
         let node_config = NodeConfig::default();
         let (api, handle) =
@@ -113,24 +118,21 @@ mod tests {
         let indexer = Indexer::new(&config_args).await;
 
         // Run the indexer
-        // let db = sled::open("sled").unwrap();
-        let indexer_future = indexer.run();
+        let db = Database::create("indexer.redb").unwrap();
+        let indexer_future = indexer.run(&db);
 
         // Wait for the block number to be 30
         let wait_number_future = async {
             loop {
                 let num = provider.get_block_number().await.unwrap();
                 if num == U64::from(10) {
-                    // panic!("Block number is 10")
-                    return Err("Block number is 30".to_string());
-                    // return Ok(());
-                    // Exit the loop
+                    info!("Block number is 10, exiting");
+                    break;
                 }
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
-            Ok(())
+            Ok::<(), ()>(())
         };
-        //  let a =
 
         tokio::select! {
             _ = indexer_future => {},

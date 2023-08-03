@@ -24,7 +24,7 @@
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
+  redb = { workspace = true }
   serenity = { workspace = true }
-  sled = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
   zerocopy = { workspace = true }

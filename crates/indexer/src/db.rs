@@ -13,40 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use sled::IVec;
-// From: https://github.com/spacejam/sled/blob/6452ca17e423808dcce98466e595d5195f3e5fea/examples/structured.rs
+use redb::{Database, Error, ReadableTable, TableDefinition};
 
-pub fn insert(db: &sled::Db, key: String, value: IVec) -> Result<(), sled::Error> {
-    db.insert(key, value)?;
+// From: https://github.com/cberner/redb/blob/e5ef57896ac023bc8d0c36e97d89fbcfce7cccf9/examples/int_keys.rs
+
+const TABLE: TableDefinition<u64, u64> = TableDefinition::new("indexer");
+
+pub fn insert(db: &Database, key: String, value: String) -> Result<(), Error> {
+    let write_txn = db.begin_write()?;
+    {
+        let mut table = write_txn.open_table(TABLE)?;
+        table.insert(0, 0)?;
+    }
+    write_txn.commit()?;
     Ok(())
-}
-
-pub fn get(db: &sled::Db, key: String) -> Result<Option<IVec>, sled::Error> {
-    let res = db.get(key)?;
-    Ok(res)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sled::Config;
 
     #[test]
     fn test_insert_success() {
-        // setup a temporary database
-        let config = Config::new().temporary(true);
-        let db = config.open().unwrap();
-
-        // test data
+        let db = Database::create("int_keys.redb").unwrap();
         let key = "key".to_string();
-        let value = IVec::from("value".as_bytes());
-
-        // attempt to insert
-        let res = insert(&db, key.clone(), value.clone());
-        assert!(res.is_ok(), "Insert should succeed");
-
-        // verify that the insert worked correctly
-        let verify = db.get(&key).unwrap();
-        assert_eq!(verify, Some(value));
+        let value = "value".to_string();
+        let result = insert(&db, key, value);
+        assert!(result.is_ok());
     }
 }

@@ -5339,10 +5339,10 @@ dependencies = [
  "lightdotso-simulator",
  "lightdotso-tracing",
  "ratatui",
+ "redb",
  "silius-grpc",
  "silius-primitives",
  "silius-rpc",
- "sled",
  "tokio",
  "tower",
  "tower-http 0.4.3",
@@ -5386,8 +5386,8 @@ dependencies = [
  "lightdotso-prisma",
  "lightdotso-tracing",
  "prisma-client-rust",
+ "redb",
  "serenity",
- "sled",
  "tokio",
  "zerocopy",
 ]
@@ -7602,6 +7602,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "pyo3-build-config"
+version = "0.19.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "076c73d0bc438f7a4ef6fdd0c3bb4732149136abd952b110ac93e4edb13a6ba5"
+dependencies = [
+ "once_cell",
+ "target-lexicon",
+]
+
+[[package]]
 name = "quaint"
 version = "0.2.0-alpha.13"
 source = "git+https://github.com/Brendonovich/quaint?tag=0.6.5#2bf0c3620f76d83982c17e567b71da6fc9d65d14"
@@ -7927,6 +7937,16 @@ dependencies = [
  "crossbeam-deque",
  "crossbeam-utils",
  "num_cpus",
+]
+
+[[package]]
+name = "redb"
+version = "1.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "717a806693d0e1ed6cc55b392066bf13e703dd835acf5c5888c74740f924d355"
+dependencies = [
+ "libc",
+ "pyo3-build-config",
 ]
 
 [[package]]
@@ -9531,22 +9551,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6528351c9bc8ab22353f9d776db39a20288e8d6c37ef8cfe3317cf875eecfc2d"
 dependencies = [
  "autocfg",
-]
-
-[[package]]
-name = "sled"
-version = "0.34.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f96b4737c2ce5987354855aed3797279def4ebf734436c6aa4552cf8e169935"
-dependencies = [
- "crc32fast",
- "crossbeam-epoch",
- "crossbeam-utils",
- "fs2",
- "fxhash",
- "libc",
- "log",
- "parking_lot 0.11.2",
 ]
 
 [[package]]
