@@ -28,4 +28,6 @@
   serde = { workspace = true }
   serenity = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
+  tracing = { workspace = true }
+  tracing-test = { workspace = true, features = ["no-env-filter"] }
   zerocopy = { workspace = true }

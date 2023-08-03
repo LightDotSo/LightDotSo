@@ -12,7 +12,6 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 use crate::{config::IndexerArgs, db::ReDb};
 use chrono::Utc;
 use ethers::types::{Block, TxHash};
@@ -21,8 +20,9 @@ use jsonrpsee::core::{
     rpc_params,
 };
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
-use lightdotso_tracing::tracing::info;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
+use tracing::info;
+
 #[derive(Debug, Clone)]
 pub struct Indexer {
     ws_client: Arc<WsClient>,
@@ -81,24 +81,25 @@ mod tests {
     };
     use lightdotso_tracing::tracing::info;
     use std::{env, time::Duration};
+    use tracing_test::traced_test;
 
+    #[traced_test]
     #[tokio::test(flavor = "multi_thread")]
     async fn test_config_run() {
-        // init(vec![stdout(Level::INFO)]);
-
         // Set the env vars for anvil
         let node_config = NodeConfig::default();
-        let (api, handle) =
-            anvil::spawn(node_config.with_blocktime(Some(Duration::from_secs(1)))).await;
+        let (api, handle) = anvil::spawn(
+            node_config.clone().with_blocktime(Some(Duration::from_secs(1))).with_tracing(false),
+        )
+        .await;
 
         // Check the block number is zero
         let block_num = api.block_number().unwrap();
         assert_eq!(block_num, U256::zero());
 
         // Set the node configs
-        let node_config = NodeConfig::default();
-        let http_url = format!("http://localhost:{}", node_config.port).to_string();
-        let ws_url = format!("ws://localhost:{}", node_config.port).to_string();
+        let http_url = format!("http://localhost:{}", node_config.clone().port).to_string();
+        let ws_url = format!("ws://localhost:{}", node_config.clone().port).to_string();
 
         // Check the websocket provider
         let provider = handle.ws_provider().await;
@@ -114,9 +115,16 @@ mod tests {
         let config_args = IndexerArgs::parse();
         let indexer = Indexer::new(&config_args).await;
 
-        // Run the indexer
+        // let indexer_future = async {
+        //     let mut guarded_db = db_ref_for_indexer.lock().unwrap();
+        //     indexer.run(&mut *guarded_db)
+        // };
+
+        // Create the indexer future w/ the db
         let mut db = ReDb::new("indexer.redb");
         let indexer_future = indexer.run(&mut db);
+
+        let db = Arc::new(Mutex::new(ReDb::new("indsexer.redb")));
 
         // Wait for the block number to be 30
         let wait_number_future = async {
@@ -126,6 +134,8 @@ mod tests {
                     info!("Block number is 10, exiting");
                     break;
                 }
+                let mut guarded_db = db.lock().unwrap();
+                let _ = guarded_db.write("block", &num.to_string());
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
             Ok::<(), ()>(())
@@ -135,5 +145,8 @@ mod tests {
             _ = indexer_future => {},
             _ = wait_number_future => {},
         }
+
+        // Check that the logs contain the word "vault" (logs on found)
+        assert!(logs_contain("Block number is 10, exiting"));
     }
 }

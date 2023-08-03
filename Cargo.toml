@@ -87,6 +87,7 @@
     "json",
     "std",
   ] }
+  tracing-test = "0.2.4"
   uniffi = "0.24.2"
   uniffi_macros = "0.24.2"
   uniffi_build = { version = "0.24.2", features = ["builtin-bindgen"] }

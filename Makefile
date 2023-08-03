@@ -206,5 +206,8 @@ shell: ## Run zellij
 
 ##@ Test runs
 
+test-anvil-run: ## Run the anvil for testing
+	anvil --block-time 3
+
 test-indexer-run: ## Run the indexer test
 	cargo run --bin indexer -- --ws ws://localhost:8545 --rpc http://localhost:8545 --chain-id 31337
