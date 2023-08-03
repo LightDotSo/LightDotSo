@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{db::ReDb, indexer::Indexer};
+use crate::indexer::Indexer;
 use anyhow::Result;
 use clap::Parser;
 use lightdotso_tracing::tracing::info;
@@ -57,8 +57,6 @@ impl IndexerArgs {
         // Add info
         info!("IndexerArgs run, exiting");
 
-        let mut db = ReDb::new("indexer.redb");
-
         // Print the config
         info!("Config: {:?}", self);
 
@@ -69,7 +67,7 @@ impl IndexerArgs {
             async move {
                 loop {
                     // Run the indexer
-                    let _ = indexer.run(&mut db).await;
+                    let _ = indexer.run().await;
 
                     // Sleep for 300ms
                     sleep(Duration::from_millis(300)).await;

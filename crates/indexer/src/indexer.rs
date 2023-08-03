@@ -12,17 +12,16 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-use crate::{config::IndexerArgs, db::ReDb};
-use chrono::Utc;
+
+use crate::config::IndexerArgs;
 use ethers::types::{Block, TxHash};
 use jsonrpsee::core::{
     client::{Subscription, SubscriptionClientT},
     rpc_params,
 };
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
+use lightdotso_tracing::tracing::info;
 use std::sync::Arc;
-use tracing::info;
-
 #[derive(Debug, Clone)]
 pub struct Indexer {
     ws_client: Arc<WsClient>,
@@ -41,11 +40,8 @@ impl Indexer {
         Self { ws_client: Arc::new(ws_client) }
     }
 
-    pub async fn run(&self, db: &mut ReDb) -> Result<(), ()> {
+    pub async fn run(&self) -> Result<(), ()> {
         info!("Indexer run, starting");
-
-        // Insert the current time
-        db.write("time", Utc::now().to_rfc3339().as_str()).unwrap();
 
         // From: https://github.com/matter-labs/zksync-era/blob/e575ec101fe88627ab541a52464ab5025c16e6b4/core/tests/cross_external_nodes_checker/src/pubsub_checker.rs#L103
         // License: Apache-2.0, MIT
@@ -81,35 +77,7 @@ mod tests {
     };
     use lightdotso_tracing::tracing::info;
     use std::{env, time::Duration};
-    use tokio::{task, time::sleep};
     use tracing_test::traced_test;
-
-    async fn task_one() -> String {
-        sleep(Duration::from_secs(3)).await;
-        println!("Task one completed!");
-        String::from("Result from task one!")
-    }
-
-    async fn task_two() -> String {
-        sleep(Duration::from_secs(5)).await;
-        println!("Task two completed!");
-        String::from("Result from task two!")
-    }
-
-    #[tokio::test(flavor = "multi_thread")]
-    async fn test_task_spawn() {
-        let t1 = task::spawn(task_one());
-        let t2 = task::spawn(task_two());
-
-        tokio::select! {
-            result = t1 => {
-                println!("{}", result.unwrap());
-            },
-            result = t2 => {
-                println!("{}", result.unwrap());
-            },
-        }
-    }
 
     #[traced_test]
     #[tokio::test(flavor = "multi_thread")]
@@ -127,8 +95,9 @@ mod tests {
         assert_eq!(block_num, U256::zero());
 
         // Set the node configs
-        let http_url = format!("http://localhost:{}", node_config.clone().port).to_string();
-        let ws_url = format!("ws://localhost:{}", node_config.clone().port).to_string();
+        let node_config = NodeConfig::default();
+        let http_url = format!("http://localhost:{}", node_config.port).to_string();
+        let ws_url = format!("ws://localhost:{}", node_config.port).to_string();
 
         // Check the websocket provider
         let provider = handle.ws_provider().await;
@@ -144,43 +113,27 @@ mod tests {
         let config_args = IndexerArgs::parse_from([""]);
         let indexer = Indexer::new(&config_args).await;
 
-        // Create the indexer future w/ the db
-        let db = Arc::new(tokio::sync::Mutex::new(ReDb::new("indsexer.redb")));
-        let db_ref_for_indexer = Arc::clone(&db);
-        let db_ref_for_provider = Arc::clone(&db);
-
-        let indexer_future = task::spawn(async move {
-            let mut guarded_db = db_ref_for_indexer.lock().await;
-            indexer.run(&mut guarded_db).await
-        });
+        // Run the indexer
+        let indexer_future = indexer.run();
 
         // Wait for the block number to be 30
-        let wait_number_future = task::spawn(async move {
-            info!("Waiting for block number to be 30");
+        let wait_number_future = async {
             loop {
                 let num = provider.get_block_number().await.unwrap();
-                info!("Block number: {}", num);
                 if num == U64::from(10) {
                     info!("Block number is 10, exiting");
                     break;
                 }
-                // {
-                //     let mut guarded_db = db_ref_for_provider.lock().await;
-                //     let _ = guarded_db.write("block", &num.to_string());
-                // }
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
             Ok::<(), ()>(())
-        });
+        };
 
-        // Run the futures in parallel
         tokio::select! {
-            result = indexer_future => {
-                println!("{:?}", result.unwrap());
-            },
-            result = wait_number_future => {
-                println!("{:?}", result.unwrap());
-            },
+            _ = indexer_future => {},
+            _ = wait_number_future => {},
         }
+
+        logs_contain("Block number is 10, exiting");
     }
 }
