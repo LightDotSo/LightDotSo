@@ -94,7 +94,7 @@ mod tests {
         env::remove_var("INDEXER_RPC_WS");
 
         // Create a Config with default values
-        let config_args = IndexerArgs::parse();
+        let config_args = IndexerArgs::parse_from([""]);
 
         // Verify the default values
         assert_eq!(config_args.chain_id, 1);
@@ -110,7 +110,7 @@ mod tests {
         env::set_var("INDEXER_RPC_WS", "ws");
 
         // Create a Config with env values
-        let config_args = IndexerArgs::parse();
+        let config_args = IndexerArgs::parse_from([""]);
 
         // Verify the new values from env
         assert_eq!(config_args.chain_id, 5);

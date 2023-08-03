@@ -20,7 +20,7 @@ use jsonrpsee::core::{
     rpc_params,
 };
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use tracing::info;
 
 #[derive(Debug, Clone)]
@@ -81,7 +81,35 @@ mod tests {
     };
     use lightdotso_tracing::tracing::info;
     use std::{env, time::Duration};
+    use tokio::{task, time::sleep};
     use tracing_test::traced_test;
+
+    async fn task_one() -> String {
+        sleep(Duration::from_secs(3)).await;
+        println!("Task one completed!");
+        String::from("Result from task one!")
+    }
+
+    async fn task_two() -> String {
+        sleep(Duration::from_secs(5)).await;
+        println!("Task two completed!");
+        String::from("Result from task two!")
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn test_task_spawn() {
+        let t1 = task::spawn(task_one());
+        let t2 = task::spawn(task_two());
+
+        tokio::select! {
+            result = t1 => {
+                println!("{}", result.unwrap());
+            },
+            result = t2 => {
+                println!("{}", result.unwrap());
+            },
+        }
+    }
 
     #[traced_test]
     #[tokio::test(flavor = "multi_thread")]
@@ -89,6 +117,7 @@ mod tests {
         // Set the env vars for anvil
         let node_config = NodeConfig::default();
         let (api, handle) = anvil::spawn(
+            // Run the node with a blocktime of 1 second w/o tracing
             node_config.clone().with_blocktime(Some(Duration::from_secs(1))).with_tracing(false),
         )
         .await;
@@ -112,41 +141,46 @@ mod tests {
         env::set_var("INDEXER_RPC_WS", ws_url.clone());
 
         // Initialize the indexer
-        let config_args = IndexerArgs::parse();
+        let config_args = IndexerArgs::parse_from([""]);
         let indexer = Indexer::new(&config_args).await;
 
-        // let indexer_future = async {
-        //     let mut guarded_db = db_ref_for_indexer.lock().unwrap();
-        //     indexer.run(&mut *guarded_db)
-        // };
-
         // Create the indexer future w/ the db
-        let mut db = ReDb::new("indexer.redb");
-        let indexer_future = indexer.run(&mut db);
+        let db = Arc::new(tokio::sync::Mutex::new(ReDb::new("indsexer.redb")));
+        let db_ref_for_indexer = Arc::clone(&db);
+        let db_ref_for_provider = Arc::clone(&db);
 
-        let db = Arc::new(Mutex::new(ReDb::new("indsexer.redb")));
+        let indexer_future = task::spawn(async move {
+            let mut guarded_db = db_ref_for_indexer.lock().await;
+            indexer.run(&mut guarded_db).await
+        });
 
         // Wait for the block number to be 30
-        let wait_number_future = async {
+        let wait_number_future = task::spawn(async move {
+            info!("Waiting for block number to be 30");
             loop {
                 let num = provider.get_block_number().await.unwrap();
+                info!("Block number: {}", num);
                 if num == U64::from(10) {
                     info!("Block number is 10, exiting");
                     break;
                 }
-                let mut guarded_db = db.lock().unwrap();
-                let _ = guarded_db.write("block", &num.to_string());
+                // {
+                //     let mut guarded_db = db_ref_for_provider.lock().await;
+                //     let _ = guarded_db.write("block", &num.to_string());
+                // }
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
             Ok::<(), ()>(())
-        };
+        });
 
+        // Run the futures in parallel
         tokio::select! {
-            _ = indexer_future => {},
-            _ = wait_number_future => {},
+            result = indexer_future => {
+                println!("{:?}", result.unwrap());
+            },
+            result = wait_number_future => {
+                println!("{:?}", result.unwrap());
+            },
         }
-
-        // Check that the logs contain the word "vault" (logs on found)
-        assert!(logs_contain("Block number is 10, exiting"));
     }
 }

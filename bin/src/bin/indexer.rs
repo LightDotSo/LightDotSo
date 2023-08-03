@@ -40,7 +40,7 @@ pub async fn main() -> Result<(), anyhow::Error> {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = IndexerArgs::parse();
+    let args = IndexerArgs::parse_from([""]);
 
     // Construct the futures
     let indexer_future = args.run();
