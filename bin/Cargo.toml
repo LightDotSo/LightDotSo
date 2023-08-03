@@ -23,10 +23,10 @@
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
   ratatui = { version = "0.22.0", features = ["all-widgets"] }
+  redb = { workspace = true }
   silius-grpc = { workspace = true }
   silius-primitives = { workspace = true }
   silius-rpc = { workspace = true }
-  sled = { workspace = true }
   tokio = { workspace = true }
   tower = { workspace = true, features = [
     "full",

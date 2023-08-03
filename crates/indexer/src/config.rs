@@ -13,9 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::indexer::Indexer;
 use anyhow::Result;
 use clap::Parser;
 use lightdotso_tracing::tracing::info;
+use std::time::Duration;
+use tokio::time::sleep;
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct IndexerArgs {
@@ -27,6 +30,10 @@ pub struct IndexerArgs {
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "INDEXER_RPC_URL")]
     pub rpc: String,
+    /// The websocket RPC endpoint to connect to.
+    #[arg(long, default_value_t = String::from(""))]
+    #[clap(long, env = "DISCORD_WEBHOOK")]
+    pub webhook: String,
     /// The websocket RPC endpoint to connect to.
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "INDEXER_RPC_WS")]
@@ -50,13 +57,24 @@ impl IndexerArgs {
         // Add info
         info!("IndexerArgs run, exiting");
 
-        let db = sled::open("sled")?;
-        db.insert("my_key", "my_value")?;
-
         // Print the config
         info!("Config: {:?}", self);
 
-        // Return success
+        let indexer = Indexer::new(self).await;
+
+        // Run the indexer in a loop
+        tokio::spawn({
+            async move {
+                loop {
+                    // Run the indexer
+                    let _ = indexer.run().await;
+
+                    // Sleep for 300ms
+                    sleep(Duration::from_millis(300)).await;
+                }
+            }
+        });
+
         Ok(())
     }
 }
@@ -74,7 +92,7 @@ mod tests {
         env::remove_var("INDEXER_RPC_WS");
 
         // Create a Config with default values
-        let config_args = IndexerArgs::parse();
+        let config_args = IndexerArgs::parse_from([""]);
 
         // Verify the default values
         assert_eq!(config_args.chain_id, 1);
@@ -90,7 +108,7 @@ mod tests {
         env::set_var("INDEXER_RPC_WS", "ws");
 
         // Create a Config with env values
-        let config_args = IndexerArgs::parse();
+        let config_args = IndexerArgs::parse_from([""]);
 
         // Verify the new values from env
         assert_eq!(config_args.chain_id, 5);

@@ -12,12 +12,23 @@
   anvil = { workspace = true }
   anyhow = { workspace = true }
   axum = { workspace = true }
+  byteorder = { workspace = true }
+  chrono = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   ethers = { workspace = true }
   eyre = { workspace = true }
+  futures = { workspace = true }
+  jsonrpsee = { workspace = true }
+  jsonrpsee-http-client = { workspace = true }
+  jsonrpsee-ws-client = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
-  sled = { workspace = true }
+  redb = { workspace = true }
+  serde = { workspace = true }
+  serenity = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
+  tracing = { workspace = true }
+  tracing-test = { workspace = true, features = ["no-env-filter"] }
+  zerocopy = { workspace = true }

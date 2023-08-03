@@ -42,13 +42,19 @@
   anyhow = "1.0.71"
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   axum = "0.6.18"
+  byteorder = "1.4.3"
+  chrono = "0.4.26"
   clap = "4.3.12"
   dotenvy = "0.15"
   ethers = { git = "https://github.com/gakonst/ethers-rs" }
   eyre = "0.6.8"
   foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
+  futures = "0.3.28"
   http = "0.2.8"
+  jsonrpsee = { version = "0.19.0", features = ["macros", "server"] }
+  jsonrpsee-http-client = "0.19.0"
+  jsonrpsee-ws-client = "0.19.0"
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-db = { path = "./crates/db" }
   lightdotso-indexer = { path = "./crates/indexer" }
@@ -58,6 +64,7 @@
   lightdotso-tracing = { path = "./crates/tracing" }
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
   prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
+  redb = "1.0.5"
   revm = { version = "3", default-features = false, features = [
     "std",
     "serde",
@@ -68,7 +75,6 @@
   ] }
   serde = "1.0.177"
   serenity = "0.11"
-  sled = "0.34.7"
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-primitives = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
@@ -82,7 +88,9 @@
     "json",
     "std",
   ] }
+  tracing-test = "0.2.4"
   uniffi = "0.24.2"
   uniffi_macros = "0.24.2"
   uniffi_build = { version = "0.24.2", features = ["builtin-bindgen"] }
   uuid = { version = "1.3.4", features = ["v4", "fast-rng", "serde"] }
+  zerocopy = "0.6.1"

@@ -16,9 +16,9 @@
 use anyhow::Result;
 use axum::{routing::get, Router};
 use clap::Parser;
-use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
+use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_indexer::config::IndexerArgs;
-use lightdotso_tracing::{init, stdout, tracing::Level};
+use lightdotso_tracing::tracing::{info, Level};
 
 async fn health_check() -> &'static str {
     "OK"
@@ -37,13 +37,10 @@ pub async fn start_server() -> Result<()> {
 
 #[tokio::main]
 pub async fn main() -> Result<(), anyhow::Error> {
-    println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
-
-    // Initialize the logger
-    init(vec![stdout(Level::INFO)]);
+    info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = IndexerArgs::parse();
+    let args = IndexerArgs::parse_from([""]);
 
     // Construct the futures
     let indexer_future = args.run();
