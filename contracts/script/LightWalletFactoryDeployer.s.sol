@@ -17,6 +17,7 @@
 
 pragma solidity ^0.8.18;
 
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import "forge-std/Script.sol";
 
@@ -29,6 +30,9 @@ interface ImmutableCreate2Factory {
 
 // LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
 contract LightWalletFactoryDeployer is Script {
+    EntryPoint private entryPoint;
+    LightWalletFactory private factory;
+
     address private constant EXPECTED_LIGHT_FACTORY_ADDRESS = address(0);
     address private constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
     ImmutableCreate2Factory private constant IMMUTABLE_CREATE2_FACTORY =
@@ -36,18 +40,25 @@ contract LightWalletFactoryDeployer is Script {
 
     function run() public {
         // Start the broadcast
-        vm.startBroadcast();
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         // TODO: Specify salt for deterministic deployment
         bytes32 salt = 0x0;
 
-        // Create LightWalletFactory
-        IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, type(LightWalletFactory).creationCode);
-        // address factory = IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, type(LightWalletFactory).creationCode);
+        // If testing on a local chain, use without a safe create2
+        if (block.chainid == 0x7a69) {
+            entryPoint = new EntryPoint();
+            factory = new LightWalletFactory(entryPoint);
+        } else {
+            // Create LightWalletFactory
+            factory =
+                LightWalletFactory(IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, type(LightWalletFactory).creationCode));
+            // address factory = IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, type(LightWalletFactory).creationCode);
 
-        // Assert that the factory is the expected address
-        // TODO: Add this assertion back in once we have a deterministic deployment
-        // assert(factory, EXPECTED_LIGHT_FACTORY_ADDRESS);
+            // Assert that the factory is the expected address
+            // TODO: Add this assertion back in once we have a deterministic deployment
+            // assert(factory, EXPECTED_LIGHT_FACTORY_ADDRESS);
+        }
 
         // Stop the broadcast
         vm.stopBroadcast();

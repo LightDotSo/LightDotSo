@@ -200,14 +200,22 @@ cargo-generate:
 prisma: cargo-generate ## Add clippy ignore.
 	./scripts/add_clippy_ignore.sh
 
+#@ anvil
+.PHONY: anvil
+anvil: ## Run anvil
+	anvil --block-time 3 --load-state anvil/state.json
+
 #@ zellij
+.PHONY: shell
 shell: ## Run zellij
 	zellij --layout zellij.kdl a $(WORKSPACE) || zellij --layout zellij.kdl -s $(WORKSPACE)
 
 ##@ Test runs
 
+.PHONY: test-anvil-run
 test-anvil-run: ## Run the anvil for testing
 	anvil --block-time 3
 
+.PHONY: test-indexer-run
 test-indexer-run: ## Run the indexer test
 	cargo run --bin indexer -- --ws ws://localhost:8545 --rpc http://localhost:8545 --chain-id 31337

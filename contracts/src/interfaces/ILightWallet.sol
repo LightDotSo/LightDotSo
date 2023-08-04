@@ -22,7 +22,6 @@
 pragma solidity ^0.8.18;
 
 import {IEntryPoint} from "@eth-infinitism/account-abstraction/contracts/interfaces/IEntryPoint.sol";
-import {UserOperation} from "@eth-infinitism/account-abstraction/contracts/interfaces/UserOperation.sol";
 import {IERC1271} from "@/contracts/interfaces/IERC1271.sol";
 
 interface ILightWallet is IERC1271 {
