@@ -669,6 +669,8 @@ importers:
         specifier: ^7.6.2
         version: 7.6.2
 
+  apps/open: {}
+
   apps/ui:
     dependencies:
       '@hookform/resolvers':
