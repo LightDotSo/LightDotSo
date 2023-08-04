@@ -14,7 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::config::IndexerArgs;
-use ethers::types::{Block, Trace, TxHash};
+use ethers::types::{
+    Action::{Call, Create, Reward, Suicide},
+    ActionType, Address, Block, Trace, TxHash, H160,
+};
 use jsonrpsee::core::{
     client::{ClientT, Subscription, SubscriptionClientT},
     rpc_params,
@@ -74,11 +77,28 @@ impl Indexer {
             info!("New block: {:?}", block_number.clone());
             let traced_block = self.get_traced_block(block_number.as_u64()).await;
 
+            // Filter the called traces
+            let called_traces: Vec<&Trace> =
+                traced_block.iter().filter(|trace| trace.action_type == ActionType::Call).collect();
+
+            // Loop over the called traces
+            for trace in called_traces {
+                info!("New called trace: {:?}", trace);
+            }
+
+            // Filter the traces
+            let created_traces: Vec<&Trace> = traced_block
+                .iter()
+                .filter(|trace| match &trace.action {
+                    Call(_) => true,
+                    Create(res) => res.from == Address::zero(),
+                    Reward(_) | Suicide(_) => false,
+                })
+                .collect();
+
             // Loop over the traces
-            for trace in traced_block {
-                // Get the transaction hash
-                let tx_hash = trace.transaction_hash.unwrap();
-                info!("New trace: {:?}", tx_hash.clone());
+            for trace in created_traces {
+                info!("New created trace: {:?}", trace);
             }
         }
     }
