@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::config::IndexerArgs;
+use crate::{config::IndexerArgs, constants::FACTORY_ADDRESSES};
 use ethers::types::{
     Action::{Call, Create, Reward, Suicide},
-    ActionType, Address, Block, Trace, TxHash, H160,
+    ActionType, Block, Trace, TxHash,
 };
 use jsonrpsee::core::{
     client::{ClientT, Subscription, SubscriptionClientT},
@@ -91,7 +91,7 @@ impl Indexer {
                 .iter()
                 .filter(|trace| match &trace.action {
                     Call(_) => true,
-                    Create(res) => res.from == Address::zero(),
+                    Create(res) => FACTORY_ADDRESSES.contains(&res.from),
                     Reward(_) | Suicide(_) => false,
                 })
                 .collect();

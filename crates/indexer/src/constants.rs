@@ -13,6 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod constants;
-pub mod indexer;
+use ethers::types::Address;
+use lazy_static::lazy_static;
+
+// The factory addresses
+lazy_static! {
+    pub static ref FACTORY_ADDRESSES: [Address; 2] = [
+        "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
+        "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
+    ];
+}

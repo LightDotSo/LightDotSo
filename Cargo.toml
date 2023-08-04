@@ -55,6 +55,7 @@
   jsonrpsee = { version = "0.19.0", features = ["macros", "server"] }
   jsonrpsee-http-client = "0.19.0"
   jsonrpsee-ws-client = "0.19.0"
+  lazy_static = "1.4.0"
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-db = { path = "./crates/db" }
   lightdotso-indexer = { path = "./crates/indexer" }
