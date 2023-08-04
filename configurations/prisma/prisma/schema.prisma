@@ -66,6 +66,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  wallets       Wallet[]
 }
 
 model VerificationRequest {
@@ -77,4 +78,16 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  chainId   String
+  userId    String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([chainId, address])
 }

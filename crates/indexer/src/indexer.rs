@@ -89,7 +89,10 @@ impl Indexer {
 
             // Loop over the traces
             for trace in created_traces {
-                info!("New created trace: {:?}", trace);
+                if let Create(res) = &trace.action {
+                    info!("New created trace: {:?}", res);
+                    info!("New init trace: {:?}", res.init)
+                }
             }
 
             // Filter the called traces
