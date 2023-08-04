@@ -16,14 +16,18 @@
 use crate::config::IndexerArgs;
 use ethers::types::{Block, TxHash};
 use jsonrpsee::core::{
-    client::{Subscription, SubscriptionClientT},
+    client::{ClientT, Subscription, SubscriptionClientT},
     rpc_params,
 };
+use jsonrpsee_http_client::{transport::HttpBackend, HttpClient, HttpClientBuilder};
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
 use lightdotso_tracing::tracing::info;
-use std::sync::Arc;
+use serde_json::Value;
+use std::{sync::Arc, time::Duration};
+
 #[derive(Debug, Clone)]
 pub struct Indexer {
+    http_client: HttpClient<HttpBackend>,
     ws_client: Arc<WsClient>,
 }
 
@@ -31,16 +35,22 @@ impl Indexer {
     pub async fn new(args: &IndexerArgs) -> Self {
         info!("Indexer new, starting");
 
+        let http_client = HttpClientBuilder::default()
+            .max_concurrent_requests(100000)
+            .request_timeout(Duration::from_secs(30))
+            .build(&args.rpc)
+            .unwrap();
+
         let ws_client = WsClientBuilder::default()
             .build(&args.ws)
             .await
             .expect("Failed to connect to the websocket endpoint");
 
         // Create the indexer
-        Self { ws_client: Arc::new(ws_client) }
+        Self { http_client, ws_client: Arc::new(ws_client) }
     }
 
-    pub async fn run(&self) -> Result<(), ()> {
+    pub async fn run(&self) {
         info!("Indexer run, starting");
 
         // From: https://github.com/matter-labs/zksync-era/blob/e575ec101fe88627ab541a52464ab5025c16e6b4/core/tests/cross_external_nodes_checker/src/pubsub_checker.rs#L103
@@ -58,10 +68,28 @@ impl Indexer {
             if block.is_err() {
                 continue;
             }
-            info!("New block: {:?}", block.unwrap().clone().number);
-        }
 
-        Ok(())
+            // Get the block number
+            let block_number = block.unwrap().number.unwrap();
+            info!("New block: {:?}", block_number.clone());
+
+            // Get the traced block
+            let raw_block: Result<Value, _> = self
+                .http_client
+                .to_owned()
+                .request("trace_block", rpc_params![format!("0x{:x}", block_number)])
+                .await;
+
+            // Depending on the result, execute logic
+            match raw_block {
+                Ok(block) => {
+                    info!("Traced block: {:?}", block);
+                }
+                Err(e) => {
+                    info!("Failed to trace block: {:?}", e);
+                }
+            }
+        }
     }
 }
 
@@ -126,7 +154,6 @@ mod tests {
                 }
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
-            Ok::<(), ()>(())
         };
 
         tokio::select! {

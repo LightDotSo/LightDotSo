@@ -5389,6 +5389,7 @@ dependencies = [
  "prisma-client-rust",
  "redb",
  "serde",
+ "serde_json",
  "serenity",
  "tokio",
  "tracing",

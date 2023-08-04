@@ -18,7 +18,7 @@
   ethers = { workspace = true }
   eyre = { workspace = true }
   futures = { workspace = true }
-  jsonrpsee = { workspace = true }
+  jsonrpsee = { workspace = true, features = ["macros", "server"] }
   jsonrpsee-http-client = { workspace = true }
   jsonrpsee-ws-client = { workspace = true }
   lightdotso-db = { workspace = true }
@@ -27,6 +27,7 @@
   prisma-client-rust = { workspace = true }
   redb = { workspace = true }
   serde = { workspace = true }
+  serde_json = { workspace = true }
   serenity = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
   tracing = { workspace = true }

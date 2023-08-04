@@ -18,7 +18,10 @@ use axum::{routing::get, Router};
 use clap::Parser;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_indexer::config::IndexerArgs;
-use lightdotso_tracing::tracing::{info, Level};
+use lightdotso_tracing::{
+    init, stdout,
+    tracing::{info, Level},
+};
 
 async fn health_check() -> &'static str {
     "OK"
@@ -36,11 +39,13 @@ pub async fn start_server() -> Result<()> {
 }
 
 #[tokio::main]
-pub async fn main() -> Result<(), anyhow::Error> {
+pub async fn main() {
+    init(vec![stdout(Level::INFO)]);
+
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = IndexerArgs::parse_from([""]);
+    let args = IndexerArgs::parse();
 
     // Construct the futures
     let indexer_future = args.run();
@@ -49,9 +54,9 @@ pub async fn main() -> Result<(), anyhow::Error> {
     // Run the futures concurrently
     let result = tokio::try_join!(indexer_future, server_future);
 
-    // Return the result accordingly
-    match result {
-        Ok((_, _)) => Ok(()),
-        Err(e) => Err(e),
+    // Exit with an error if either future failed
+    if let Err(e) = result {
+        eprintln!("Error: {:?}", e);
+        std::process::exit(1);
     }
 }

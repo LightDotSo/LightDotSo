@@ -74,6 +74,7 @@
     "optional_no_base_fee",
   ] }
   serde = "1.0.177"
+  serde_json = "1.0.104"
   serenity = "0.11"
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-primitives = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
