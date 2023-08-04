@@ -77,20 +77,11 @@ impl Indexer {
             info!("New block: {:?}", block_number.clone());
             let traced_block = self.get_traced_block(block_number.as_u64()).await;
 
-            // Filter the called traces
-            let called_traces: Vec<&Trace> =
-                traced_block.iter().filter(|trace| trace.action_type == ActionType::Call).collect();
-
-            // Loop over the called traces
-            for trace in called_traces {
-                info!("New called trace: {:?}", trace);
-            }
-
             // Filter the traces
             let created_traces: Vec<&Trace> = traced_block
                 .iter()
                 .filter(|trace| match &trace.action {
-                    Call(_) => true,
+                    Call(_) => false,
                     Create(res) => FACTORY_ADDRESSES.contains(&res.from),
                     Reward(_) | Suicide(_) => false,
                 })
@@ -99,6 +90,15 @@ impl Indexer {
             // Loop over the traces
             for trace in created_traces {
                 info!("New created trace: {:?}", trace);
+            }
+
+            // Filter the called traces
+            let called_traces: Vec<&Trace> =
+                traced_block.iter().filter(|trace| trace.action_type == ActionType::Call).collect();
+
+            // Loop over the called traces
+            for _ in called_traces {
+                // info!("New called trace: {:?}", trace);
             }
         }
     }

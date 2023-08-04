@@ -18,8 +18,10 @@ use lazy_static::lazy_static;
 
 // The factory addresses
 lazy_static! {
-    pub static ref FACTORY_ADDRESSES: [Address; 2] = [
+    pub static ref FACTORY_ADDRESSES: [Address; 1] = [
+        // v0.1.0
         "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
-        "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
+        // v0.2.0
+        // "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
     ];
 }
