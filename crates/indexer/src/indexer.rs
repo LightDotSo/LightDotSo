@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::config::IndexerArgs;
-use ethers::types::{Block, TxHash};
+use ethers::types::{Block, Trace, TxHash};
 use jsonrpsee::core::{
     client::{ClientT, Subscription, SubscriptionClientT},
     rpc_params,
 };
 use jsonrpsee_http_client::{transport::HttpBackend, HttpClient, HttpClientBuilder};
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{debug, error, info};
 use serde_json::Value;
 use std::{sync::Arc, time::Duration};
 
@@ -72,22 +72,50 @@ impl Indexer {
             // Get the block number
             let block_number = block.unwrap().number.unwrap();
             info!("New block: {:?}", block_number.clone());
+            let traced_block = self.get_traced_block(block_number.as_u64()).await;
 
-            // Get the traced block
-            let raw_block: Result<Value, _> = self
-                .http_client
-                .to_owned()
-                .request("trace_block", rpc_params![format!("0x{:x}", block_number)])
-                .await;
+            // Loop over the traces
+            for trace in traced_block {
+                // Get the transaction hash
+                let tx_hash = trace.transaction_hash.unwrap();
+                info!("New trace: {:?}", tx_hash.clone());
+            }
+        }
+    }
 
-            // Depending on the result, execute logic
-            match raw_block {
-                Ok(block) => {
-                    info!("Traced block: {:?}", block);
+    pub async fn get_traced_block(&self, block_number: u64) -> Vec<Trace> {
+        // Get the traced block
+        let raw_block: Result<Value, _> = self
+            .http_client
+            .to_owned()
+            .request("trace_block", rpc_params![format!("0x{:x}", block_number)])
+            .await;
+
+        // Depending on the result, execute logic
+        match raw_block {
+            Ok(block) => {
+                debug!("Traced block: {:?}", block);
+
+                // Parse the block
+                let traces: Result<Vec<Trace>, _> = serde_json::from_value(block);
+
+                // Depending on the result, execute logic
+                match traces {
+                    Ok(traces) => {
+                        debug!("Traces: {:?}", traces);
+                        traces
+                    }
+                    Err(e) => {
+                        // Return an empty vector on error
+                        error!("Failed to parse traces: {:?}", e);
+                        vec![]
+                    }
                 }
-                Err(e) => {
-                    info!("Failed to trace block: {:?}", e);
-                }
+            }
+            Err(e) => {
+                // Return an empty vector on error
+                error!("Failed to trace block: {:?}", e);
+                vec![]
             }
         }
     }
