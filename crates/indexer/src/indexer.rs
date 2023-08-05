@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{config::IndexerArgs, constants::FACTORY_ADDRESSES};
+use crate::{
+    config::IndexerArgs,
+    constants::{FACTORY_ADDRESSES, TESTNET_CHAIN_IDS},
+};
 use ethers::types::{
     Action::{Call, Create, Reward, Suicide},
     Block, Trace, TxHash, U256,
@@ -125,7 +128,14 @@ impl Indexer {
 
                     info!("New wallet address: {:?}", result.address);
 
-                    let _ = create_wallet(self.db_client.clone(), self.chain_id.to_string(), result.address.to_string(), res.init.to_string()).await;
+
+                    let _ = create_wallet(
+                        self.db_client.clone(),
+                        self.chain_id.to_string(),
+                        result.address.to_string(),
+                        res.init.to_string(),
+                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id))
+                    ).await;
                 }
             }
         }

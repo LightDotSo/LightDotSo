@@ -25,3 +25,13 @@ lazy_static! {
       "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab".parse().unwrap(),
     ];
 }
+
+// The testnet chain ids
+lazy_static! {
+  pub static ref TESTNET_CHAIN_IDS: [usize; 2] = [
+    // Local
+    31337,
+    // Sepolia
+    11155111
+  ];
+}
