@@ -24,12 +24,16 @@ use jsonrpsee::core::{
 };
 use jsonrpsee_http_client::{transport::HttpBackend, HttpClient, HttpClientBuilder};
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
+use lightdotso_db::db::{create_client, create_wallet};
+use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::{debug, error, info};
 use serde_json::Value;
 use std::{sync::Arc, time::Duration};
 
 #[derive(Debug, Clone)]
 pub struct Indexer {
+    chain_id: usize,
+    db_client: Arc<PrismaClient>,
     http_client: HttpClient<HttpBackend>,
     ws_client: Arc<WsClient>,
 }
@@ -38,19 +42,23 @@ impl Indexer {
     pub async fn new(args: &IndexerArgs) -> Self {
         info!("Indexer new, starting");
 
+        let db_client = Arc::new(create_client().await.unwrap());
+
         let http_client = HttpClientBuilder::default()
             .max_concurrent_requests(100000)
             .request_timeout(Duration::from_secs(30))
             .build(&args.rpc)
             .unwrap();
 
-        let ws_client = WsClientBuilder::default()
-            .build(&args.ws)
-            .await
-            .expect("Failed to connect to the websocket endpoint");
+        let ws_client = Arc::new(
+            WsClientBuilder::default()
+                .build(&args.ws)
+                .await
+                .expect("Failed to connect to the websocket endpoint"),
+        );
 
         // Create the indexer
-        Self { http_client, ws_client: Arc::new(ws_client) }
+        Self { chain_id: args.chain_id, db_client, http_client, ws_client }
     }
 
     pub async fn run(&self) {
@@ -101,6 +109,8 @@ impl Indexer {
                     info!("New init trace: {:?}", res.init);
 
                     info!("New wallet address: {:?}", result.address);
+
+                    let _ = create_wallet(self.db_client.clone(), self.chain_id.to_string(), result.address.to_string(), res.init.to_string()).await;
                 }
             }
         }

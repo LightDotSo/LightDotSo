@@ -13,19 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use axum::{extract::Json, Extension};
+use axum::extract::Json;
 
 use crate::error::DbError;
-use lightdotso_prisma::{user, PrismaClient};
+use lightdotso_prisma::{user, wallet, PrismaClient};
+use prisma_client_rust::NewClientError;
 use std::sync::Arc;
 
-type Database = Extension<Arc<PrismaClient>>;
+type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
 
-pub async fn find_user(client: &Arc<PrismaClient>) -> Vec<user::Data> {
+pub async fn create_client() -> Result<PrismaClient, NewClientError> {
+    let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder().build().await;
+
+    client
+}
+
+pub async fn find_user(db: Database) -> Vec<user::Data> {
     let users: Vec<user::Data> =
-        client.user().find_many(vec![user::id::equals("Id".to_string())]).exec().await.unwrap();
+        db.user().find_many(vec![user::id::equals("Id".to_string())]).exec().await.unwrap();
 
     users
 }
@@ -36,4 +43,15 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
     let users = db.user().find_many(vec![]).with(user::sessions::fetch(vec![])).exec().await?;
 
     Ok(Json::from(users))
+}
+
+pub async fn create_wallet(
+    db: Database,
+    chain_id: String,
+    address: String,
+    hash: String,
+) -> AppJsonResult<wallet::Data> {
+    let wallet = db.wallet().create(chain_id, address, hash, vec![]).exec().await?;
+
+    Ok(Json::from(wallet))
 }
