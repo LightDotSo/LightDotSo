@@ -23,6 +23,14 @@
   verbosity = 3
   via_ir = false
 
+[profile.deploy]
+  optimizer_runs = 4_294_967_295
+  # via_ir = true
+  out = 'optimized-out'
+  script = 'contracts'
+  bytecode_hash = 'none'
+  test = 'contracts'
+
 [profile.local]
   no_match_test = "testForkRun"
 

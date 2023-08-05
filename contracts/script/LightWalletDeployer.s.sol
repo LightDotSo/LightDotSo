@@ -23,17 +23,26 @@ import "forge-std/Script.sol";
 
 // LightWalletDeployer -- Deploys the LightWallet contract
 contract LightWalletDeployer is Script {
+    // -------------------------------------------------------------------------
+    // Storages
+    // -------------------------------------------------------------------------
     LightWallet private wallet;
     LightWalletFactory private factory;
 
     function run() public {
         // Start the broadcast
-        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         // If testing on a local chain, use the existing address
         if (block.chainid == 0x7a69) {
+            // Use private key
+            vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+
+            // Get the factory
             factory = LightWalletFactory(address(0x262aD6Becda7CE4B047a3130491978A8f35F9aeC));
+
+            // Create an account
             wallet = factory.createAccount(bytes32(uint256(1)), uint256(1));
+
             // solhint-disable-next-line no-console
             console.log("LightWallet deployed at address: %s", address(wallet));
         } else {}
