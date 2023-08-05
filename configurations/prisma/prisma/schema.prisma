@@ -85,6 +85,7 @@ model Wallet {
   address   String
   chainId   String
   hash      String
+  testnet   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   users     User[]
