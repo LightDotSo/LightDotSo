@@ -22,7 +22,7 @@ jobs:
       trigger: ${{ steps.turbo.outputs.trigger }}
     services:
       postgres:
-        image: postgres
+        image: postgres:15.3
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
