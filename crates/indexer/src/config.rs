@@ -26,6 +26,10 @@ pub struct IndexerArgs {
     #[arg(long, short, default_value_t = 1)]
     #[clap(long, env)]
     pub chain_id: usize,
+    /// The Database URL to connect to.
+    #[arg(long, short, default_value_t = String::from(""))]
+    #[clap(long, env = "DATABASE_URL")]
+    pub database_url: String,
     /// The RPC endpoint to connect to.
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "INDEXER_RPC_URL")]

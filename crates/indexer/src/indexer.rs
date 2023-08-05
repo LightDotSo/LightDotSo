@@ -42,7 +42,7 @@ impl Indexer {
     pub async fn new(args: &IndexerArgs) -> Self {
         info!("Indexer new, starting");
 
-        let db_client = Arc::new(create_client().await.unwrap());
+        let db_client = Arc::new(create_client(args.database_url.clone()).await.unwrap());
 
         let http_client = HttpClientBuilder::default()
             .max_concurrent_requests(100000)
@@ -195,6 +195,10 @@ mod tests {
 
         // Set the env vars
         env::set_var("CHAIN_ID", "31337");
+        env::set_var(
+            "DATABASE_URL",
+            "postgresql://postgres:password@localhost:6500/neon?schema=public",
+        );
         env::set_var("INDEXER_RPC_URL", http_url.clone());
         env::set_var("INDEXER_RPC_WS", ws_url.clone());
 

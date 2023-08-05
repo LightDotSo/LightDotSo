@@ -24,8 +24,9 @@ type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
 
-pub async fn create_client() -> Result<PrismaClient, NewClientError> {
-    let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder().build().await;
+pub async fn create_client(url: String) -> Result<PrismaClient, NewClientError> {
+    let client: Result<PrismaClient, NewClientError> =
+        PrismaClient::_builder().with_url(url).build().await;
 
     client
 }
