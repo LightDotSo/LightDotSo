@@ -16,7 +16,7 @@
 use crate::{config::IndexerArgs, constants::FACTORY_ADDRESSES};
 use ethers::types::{
     Action::{Call, Create, Reward, Suicide},
-    ActionType, Block, Trace, TxHash,
+    Block, Trace, TxHash,
 };
 use jsonrpsee::core::{
     client::{ClientT, Subscription, SubscriptionClientT},
@@ -78,30 +78,30 @@ impl Indexer {
             let traced_block = self.get_traced_block(block_number.as_u64()).await;
 
             // Filter the traces
-            let created_traces: Vec<&Trace> = traced_block
+            let traces: Vec<&Trace> = traced_block
                 .iter()
                 .filter(|trace| match &trace.action {
-                    Call(_) => false,
+                    Call(_) => true,
                     Create(res) => FACTORY_ADDRESSES.contains(&res.from),
                     Reward(_) | Suicide(_) => false,
                 })
                 .collect();
 
             // Loop over the traces
-            for trace in created_traces {
-                if let Create(res) = &trace.action {
-                    info!("New created trace: {:?}", res);
-                    info!("New init trace: {:?}", res.init)
+            for trace in traces {
+                if let Call(res) = &trace.action {
+                    let _ = res;
+                    // info!("New called trace: {:?}", res);
                 }
-            }
 
-            // Filter the called traces
-            let called_traces: Vec<&Trace> =
-                traced_block.iter().filter(|trace| trace.action_type == ActionType::Call).collect();
+                // Loop over traces that are create
+                if let Create(res) = &trace.action && let Some(ethers::types::Res::Create(result)) = &trace.result {
+                    info!("New created trace: {:?}", trace);
+                    info!("New create action: {:?}", res);
+                    info!("New init trace: {:?}", res.init);
 
-            // Loop over the called traces
-            for _ in called_traces {
-                // info!("New called trace: {:?}", trace);
+                    info!("New wallet address: {:?}", result.address);
+                }
             }
         }
     }
