@@ -51,8 +51,13 @@ pub async fn create_wallet(
     chain_id: String,
     address: String,
     hash: String,
+    testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
-    let wallet = db.wallet().create(chain_id, address, hash, vec![]).exec().await?;
+    let wallet = db
+        .wallet()
+        .create(chain_id, address, hash, vec![wallet::testnet::set(testnet.unwrap_or(false))])
+        .exec()
+        .await?;
 
     Ok(Json::from(wallet))
 }
