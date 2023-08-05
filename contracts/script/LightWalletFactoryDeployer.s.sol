@@ -19,6 +19,7 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightDeployer} from "@/script/LightDeployer.s.sol";
 import "forge-std/Script.sol";
 
 interface ImmutableCreate2Factory {
@@ -29,7 +30,7 @@ interface ImmutableCreate2Factory {
 }
 
 // LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
-contract LightWalletFactoryDeployer is Script {
+contract LightWalletFactoryDeployer is LightDeployer, Script {
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------
@@ -50,7 +51,6 @@ contract LightWalletFactoryDeployer is Script {
     // LightWalletFactory Utilities
     // -------------------------------------------------------------------------
 
-    address private constant EXPECTED_LIGHT_FACTORY_ADDRESS = address(0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab);
     bytes private byteCode = type(LightWalletFactory).creationCode;
     bytes private initCode = abi.encodePacked(byteCode, abi.encode(address(ENTRY_POINT_ADDRESS)));
 
@@ -78,7 +78,7 @@ contract LightWalletFactoryDeployer is Script {
             factory = LightWalletFactory(IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, initCode));
 
             // Assert that the factory is the expected address
-            assert(address(factory) == EXPECTED_LIGHT_FACTORY_ADDRESS);
+            assert(address(factory) == LIGHT_FACTORY_ADDRESS);
         }
 
         // Stop the broadcast

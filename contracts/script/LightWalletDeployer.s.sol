@@ -19,10 +19,12 @@ pragma solidity ^0.8.18;
 
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightDeployer} from "@/script/LightDeployer.s.sol";
 import "forge-std/Script.sol";
 
 // LightWalletDeployer -- Deploys the LightWallet contract
-contract LightWalletDeployer is Script {
+
+contract LightWalletDeployer is LightDeployer, Script {
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------
@@ -31,12 +33,10 @@ contract LightWalletDeployer is Script {
 
     function run() public {
         // Start the broadcast
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         // If testing on a local chain, use the existing address
         if (block.chainid == 0x7a69) {
-            // Use private key
-            vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-
             // Get the factory
             factory = LightWalletFactory(address(0x262aD6Becda7CE4B047a3130491978A8f35F9aeC));
 
@@ -45,7 +45,13 @@ contract LightWalletDeployer is Script {
 
             // solhint-disable-next-line no-console
             console.log("LightWallet deployed at address: %s", address(wallet));
-        } else {}
+        } else {
+            // Get the factory
+            factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
+
+            // Create an account
+            wallet = factory.createAccount(bytes32(uint256(1)), uint256(1));
+        }
 
         // Stop the broadcast
         vm.stopBroadcast();
