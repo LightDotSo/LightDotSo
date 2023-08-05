@@ -91,6 +91,21 @@ jobs:
         working-directory: ./fly/indexer
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-indexer-sepolia:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/indexer-sepolia
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-log-shipper:
     runs-on: ubuntu-latest
     needs:
@@ -114,11 +129,13 @@ jobs:
       - fly-deploy-rpc
       - fly-deploy-serve
       - fly-deploy-indexer
+      - fly-deploy-indexer-sepolia
+      - fly-deploy-log-shipper
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: fly-wait-docker,fly-deploy-grafana,fly-deploy-rpc,fly-deploy-serve,fly-deploy-indexer
+          allowed-skips: fly-wait-docker,fly-deploy-grafana,fly-deploy-rpc,fly-deploy-serve,fly-deploy-indexer,fly-deploy-indexer-sepolia,fly-deploy-log-shipper
           jobs: ${{ toJSON(needs) }}
