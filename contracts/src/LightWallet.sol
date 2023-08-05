@@ -52,6 +52,16 @@ contract LightWallet is
     Initializable
 {
     // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    /// @notice The name for this contract
+    string public constant NAME = "LightWallet";
+
+    /// @notice The version for this contract
+    string public constant VERSION = "0.0.0";
+
+    // -------------------------------------------------------------------------
     // Immutable Storage
     // -------------------------------------------------------------------------
 

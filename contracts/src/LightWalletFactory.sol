@@ -36,6 +36,16 @@ import {ILightWalletFactory} from "@/contracts/interfaces/ILightWalletFactory.so
 /// This way, the entryPoint.getSenderAddress() can be called either before or after the account is created.
 contract LightWalletFactory is ILightWalletFactory {
     // -------------------------------------------------------------------------
+    // Constant
+    // -------------------------------------------------------------------------
+
+    /// @notice The name for this contract
+    string public constant NAME = "LightWalletFactory";
+
+    /// @notice The version for this contract
+    string public constant VERSION = "0.0.0";
+
+    // -------------------------------------------------------------------------
     // Immutable Storage
     // -------------------------------------------------------------------------
 
