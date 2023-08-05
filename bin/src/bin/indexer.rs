@@ -16,6 +16,7 @@
 use anyhow::Result;
 use axum::{routing::get, Router};
 use clap::Parser;
+use dotenvy::dotenv;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_tracing::{
@@ -40,6 +41,8 @@ pub async fn start_server() -> Result<()> {
 
 #[tokio::main]
 pub async fn main() {
+    let _ = dotenv();
+
     init(vec![stdout(Level::INFO)]);
 
     info!("Starting server at {}", SHORT_VERSION);

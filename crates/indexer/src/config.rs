@@ -24,7 +24,7 @@ use tokio::time::sleep;
 pub struct IndexerArgs {
     /// The chain id of the chain to index.
     #[arg(long, short, default_value_t = 1)]
-    #[clap(long, env)]
+    #[clap(long, env = "CHAIN_ID")]
     pub chain_id: usize,
     /// The Database URL to connect to.
     #[arg(long, short, default_value_t = String::from(""))]

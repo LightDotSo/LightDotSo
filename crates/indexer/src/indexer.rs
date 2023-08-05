@@ -16,7 +16,7 @@
 use crate::{config::IndexerArgs, constants::FACTORY_ADDRESSES};
 use ethers::types::{
     Action::{Call, Create, Reward, Suicide},
-    Block, Trace, TxHash,
+    Block, Trace, TxHash, U256,
 };
 use jsonrpsee::core::{
     client::{ClientT, Subscription, SubscriptionClientT},
@@ -29,6 +29,7 @@ use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::{debug, error, info};
 use serde_json::Value;
 use std::{sync::Arc, time::Duration};
+use tokio::time::sleep;
 
 #[derive(Debug, Clone)]
 pub struct Indexer {
@@ -42,14 +43,24 @@ impl Indexer {
     pub async fn new(args: &IndexerArgs) -> Self {
         info!("Indexer new, starting");
 
+        // Create the db client
         let db_client = Arc::new(create_client(args.database_url.clone()).await.unwrap());
 
+        // Create the http client
         let http_client = HttpClientBuilder::default()
             .max_concurrent_requests(100000)
             .request_timeout(Duration::from_secs(30))
             .build(&args.rpc)
             .unwrap();
 
+        // Check if the chain ID matches the arg chain ID
+        let res: Value = http_client.request("eth_chainId", rpc_params![]).await.unwrap();
+        let chain_id: U256 = serde_json::from_value(res).unwrap();
+        if (chain_id.as_u64() as usize) != args.chain_id {
+            panic!("Chain ID mismatch: expected {}, got {}", args.chain_id, chain_id.as_u64());
+        }
+
+        // Create the websocket client
         let ws_client = Arc::new(
             WsClientBuilder::default()
                 .build(&args.ws)
@@ -83,7 +94,11 @@ impl Indexer {
             // Get the block number
             let block_number = block.unwrap().number.unwrap();
             info!("New block: {:?}", block_number.clone());
+
+            sleep(Duration::from_secs(3)).await;
+
             let traced_block = self.get_traced_block(block_number.as_u64()).await;
+            info!("Traced block length: {:?}", traced_block.len());
 
             // Filter the traces
             let traces: Vec<&Trace> = traced_block
@@ -117,18 +132,14 @@ impl Indexer {
     }
 
     pub async fn get_traced_block(&self, block_number: u64) -> Vec<Trace> {
-        // Get the traced block
         let raw_block: Result<Value, _> = self
             .http_client
-            .to_owned()
             .request("trace_block", rpc_params![format!("0x{:x}", block_number)])
             .await;
 
         // Depending on the result, execute logic
         match raw_block {
             Ok(block) => {
-                debug!("Traced block: {:?}", block);
-
                 // Parse the block
                 let traces: Result<Vec<Trace>, _> = serde_json::from_value(block);
 
