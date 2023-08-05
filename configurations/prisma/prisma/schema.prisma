@@ -57,6 +57,7 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
+  address       String?   @unique
   name          String?
   email         String?   @unique
   emailVerified DateTime?
@@ -65,6 +66,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  wallets       Wallet[]
 }
 
 model VerificationRequest {
@@ -76,4 +78,16 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+model Wallet {
+  id        String   @id @default(cuid())
+  address   String
+  chainId   String
+  hash      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+
+  @@unique([chainId, address])
 }

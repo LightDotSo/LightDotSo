@@ -13,17 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::config::IndexerArgs;
-use ethers::types::{Block, TxHash};
+use crate::{config::IndexerArgs, constants::FACTORY_ADDRESSES};
+use ethers::types::{
+    Action::{Call, Create, Reward, Suicide},
+    Block, Trace, TxHash,
+};
 use jsonrpsee::core::{
-    client::{Subscription, SubscriptionClientT},
+    client::{ClientT, Subscription, SubscriptionClientT},
     rpc_params,
 };
+use jsonrpsee_http_client::{transport::HttpBackend, HttpClient, HttpClientBuilder};
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
-use lightdotso_tracing::tracing::info;
-use std::sync::Arc;
+use lightdotso_db::db::{create_client, create_wallet};
+use lightdotso_prisma::PrismaClient;
+use lightdotso_tracing::tracing::{debug, error, info};
+use serde_json::Value;
+use std::{sync::Arc, time::Duration};
+
 #[derive(Debug, Clone)]
 pub struct Indexer {
+    chain_id: usize,
+    db_client: Arc<PrismaClient>,
+    http_client: HttpClient<HttpBackend>,
     ws_client: Arc<WsClient>,
 }
 
@@ -31,16 +42,26 @@ impl Indexer {
     pub async fn new(args: &IndexerArgs) -> Self {
         info!("Indexer new, starting");
 
-        let ws_client = WsClientBuilder::default()
-            .build(&args.ws)
-            .await
-            .expect("Failed to connect to the websocket endpoint");
+        let db_client = Arc::new(create_client(args.database_url.clone()).await.unwrap());
+
+        let http_client = HttpClientBuilder::default()
+            .max_concurrent_requests(100000)
+            .request_timeout(Duration::from_secs(30))
+            .build(&args.rpc)
+            .unwrap();
+
+        let ws_client = Arc::new(
+            WsClientBuilder::default()
+                .build(&args.ws)
+                .await
+                .expect("Failed to connect to the websocket endpoint"),
+        );
 
         // Create the indexer
-        Self { ws_client: Arc::new(ws_client) }
+        Self { chain_id: args.chain_id, db_client, http_client, ws_client }
     }
 
-    pub async fn run(&self) -> Result<(), ()> {
+    pub async fn run(&self) {
         info!("Indexer run, starting");
 
         // From: https://github.com/matter-labs/zksync-era/blob/e575ec101fe88627ab541a52464ab5025c16e6b4/core/tests/cross_external_nodes_checker/src/pubsub_checker.rs#L103
@@ -58,10 +79,78 @@ impl Indexer {
             if block.is_err() {
                 continue;
             }
-            info!("New block: {:?}", block.unwrap().clone().number);
-        }
 
-        Ok(())
+            // Get the block number
+            let block_number = block.unwrap().number.unwrap();
+            info!("New block: {:?}", block_number.clone());
+            let traced_block = self.get_traced_block(block_number.as_u64()).await;
+
+            // Filter the traces
+            let traces: Vec<&Trace> = traced_block
+                .iter()
+                .filter(|trace| match &trace.action {
+                    Call(_) => true,
+                    Create(res) => FACTORY_ADDRESSES.contains(&res.from),
+                    Reward(_) | Suicide(_) => false,
+                })
+                .collect();
+
+            // Loop over the traces
+            for trace in traces {
+                if let Call(res) = &trace.action {
+                    let _ = res;
+                    // info!("New called trace: {:?}", res);
+                }
+
+                // Loop over traces that are create
+                if let Create(res) = &trace.action && let Some(ethers::types::Res::Create(result)) = &trace.result {
+                    info!("New created trace: {:?}", trace);
+                    info!("New create action: {:?}", res);
+                    info!("New init trace: {:?}", res.init);
+
+                    info!("New wallet address: {:?}", result.address);
+
+                    let _ = create_wallet(self.db_client.clone(), self.chain_id.to_string(), result.address.to_string(), res.init.to_string()).await;
+                }
+            }
+        }
+    }
+
+    pub async fn get_traced_block(&self, block_number: u64) -> Vec<Trace> {
+        // Get the traced block
+        let raw_block: Result<Value, _> = self
+            .http_client
+            .to_owned()
+            .request("trace_block", rpc_params![format!("0x{:x}", block_number)])
+            .await;
+
+        // Depending on the result, execute logic
+        match raw_block {
+            Ok(block) => {
+                debug!("Traced block: {:?}", block);
+
+                // Parse the block
+                let traces: Result<Vec<Trace>, _> = serde_json::from_value(block);
+
+                // Depending on the result, execute logic
+                match traces {
+                    Ok(traces) => {
+                        debug!("Traces: {:?}", traces);
+                        traces
+                    }
+                    Err(e) => {
+                        // Return an empty vector on error
+                        error!("Failed to parse traces: {:?}", e);
+                        vec![]
+                    }
+                }
+            }
+            Err(e) => {
+                // Return an empty vector on error
+                error!("Failed to trace block: {:?}", e);
+                vec![]
+            }
+        }
     }
 }
 
@@ -106,6 +195,10 @@ mod tests {
 
         // Set the env vars
         env::set_var("CHAIN_ID", "31337");
+        env::set_var(
+            "DATABASE_URL",
+            "postgresql://postgres:password@localhost:6500/neon?schema=public",
+        );
         env::set_var("INDEXER_RPC_URL", http_url.clone());
         env::set_var("INDEXER_RPC_WS", ws_url.clone());
 
@@ -126,7 +219,6 @@ mod tests {
                 }
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
-            Ok::<(), ()>(())
         };
 
         tokio::select! {
