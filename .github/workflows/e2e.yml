@@ -52,7 +52,7 @@ jobs:
       - name: Node Build
         run: |
           pnpm turbo run build
-      - name: Build the stack
+      - name: Docker Compose Up
         run: |
           docker-compose up -d --build
       - name: Run E2E Api
@@ -77,7 +77,7 @@ jobs:
       - name: Node Build
         run: |
           pnpm turbo run build
-      - name: Build the stack
+      - name: Docker Compose Up
         run: |
           docker-compose up -d --build
       - name: Run E2E App
