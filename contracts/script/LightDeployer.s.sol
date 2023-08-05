@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::Address;
-use lazy_static::lazy_static;
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
-// The factory addresses
-lazy_static! {
-    pub static ref FACTORY_ADDRESSES: [Address; 2] = [
-      // Local
-      "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
-      // v0.0.0
-      "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab".parse().unwrap(),
-    ];
+pragma solidity ^0.8.18;
+
+// LightDeployer - Create abstract contract of just immutable storages
+abstract contract LightDeployer {
+    // -------------------------------------------------------------------------
+    // Immutable Storage
+    // -------------------------------------------------------------------------
+
+    address internal constant LIGHT_FACTORY_ADDRESS = address(0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab);
 }

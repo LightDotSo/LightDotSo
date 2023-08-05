@@ -21,6 +21,7 @@ coverage
 lcov.info
 
 # foundry
+optimized-out
 out-wagmi
 
 # hardhat
