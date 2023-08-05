@@ -20,18 +20,6 @@ jobs:
     timeout-minutes: 3
     outputs:
       trigger: ${{ steps.turbo.outputs.trigger }}
-    services:
-      postgres:
-        image: postgres:15.3
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: neon
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Turbo Trigger
         id: turbo
@@ -71,6 +59,18 @@ jobs:
     permissions:
       contents: read
       security-events: write
+    services:
+      postgres:
+        image: postgres:15.3
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: neon
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
