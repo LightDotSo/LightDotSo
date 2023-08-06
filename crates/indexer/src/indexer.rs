@@ -128,7 +128,6 @@ impl Indexer {
 
                     info!("New wallet address: {:?}", result.address);
 
-
                     let _ = create_wallet(
                         self.db_client.clone(),
                         self.chain_id.to_string(),
