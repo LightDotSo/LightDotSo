@@ -10,6 +10,9 @@ configurations/kysely/src/db/**
 # secrets
 key.json
 
+#tmp
+tmp*
+
 # dependencies
 node_modules
 .pnp
@@ -21,6 +24,7 @@ coverage
 lcov.info
 
 # foundry
+broadcast/*/31337/**.json
 optimized-out
 out-wagmi
 

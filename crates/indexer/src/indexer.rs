@@ -17,20 +17,19 @@ use crate::{
     config::IndexerArgs,
     constants::{FACTORY_ADDRESSES, TESTNET_CHAIN_IDS},
 };
-use ethers::types::{
-    Action::{Call, Create, Reward, Suicide},
-    Block, Trace, TxHash, U256,
+use ethers::{
+    prelude::Provider,
+    providers::{Http, Middleware, Ws},
+    types::{
+        Action::{Call, Create, Reward, Suicide},
+        BlockNumber, Filter, Trace,
+    },
 };
-use jsonrpsee::core::{
-    client::{ClientT, Subscription, SubscriptionClientT},
-    rpc_params,
-};
-use jsonrpsee_http_client::{transport::HttpBackend, HttpClient, HttpClientBuilder};
-use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
+use futures::StreamExt;
 use lightdotso_db::db::{create_client, create_wallet};
+use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
-use lightdotso_tracing::tracing::{debug, error, info};
-use serde_json::Value;
+use lightdotso_tracing::tracing::info;
 use std::{sync::Arc, time::Duration};
 use tokio::time::sleep;
 
@@ -38,8 +37,9 @@ use tokio::time::sleep;
 pub struct Indexer {
     chain_id: usize,
     db_client: Arc<PrismaClient>,
-    http_client: HttpClient<HttpBackend>,
-    ws_client: Arc<WsClient>,
+    http_client: Arc<Provider<Http>>,
+    ws_client: Arc<Provider<Ws>>,
+    webhook: String,
 }
 
 impl Indexer {
@@ -50,57 +50,47 @@ impl Indexer {
         let db_client = Arc::new(create_client(args.database_url.clone()).await.unwrap());
 
         // Create the http client
-        let http_client = HttpClientBuilder::default()
-            .max_concurrent_requests(100000)
-            .request_timeout(Duration::from_secs(30))
-            .build(&args.rpc)
-            .unwrap();
+        let http_client = Arc::new(Provider::<Http>::try_from(args.rpc.to_string()).unwrap());
 
         // Check if the chain ID matches the arg chain ID
-        let res: Value = http_client.request("eth_chainId", rpc_params![]).await.unwrap();
-        let chain_id: U256 = serde_json::from_value(res).unwrap();
+        let chain_id = http_client.get_chainid().await.unwrap();
         if (chain_id.as_u64() as usize) != args.chain_id {
             panic!("Chain ID mismatch: expected {}, got {}", args.chain_id, chain_id.as_u64());
         }
 
         // Create the websocket client
         let ws_client = Arc::new(
-            WsClientBuilder::default()
-                .build(&args.ws)
-                .await
-                .expect("Failed to connect to the websocket endpoint"),
+            Provider::<Ws>::connect_with_reconnects(args.ws.to_string(), usize::MAX).await.unwrap(),
         );
 
         // Create the indexer
-        Self { chain_id: args.chain_id, db_client, http_client, ws_client }
+        Self {
+            chain_id: args.chain_id,
+            webhook: args.webhook.clone(),
+            db_client,
+            http_client,
+            ws_client,
+        }
     }
 
     pub async fn run(&self) {
         info!("Indexer run, starting");
 
-        // From: https://github.com/matter-labs/zksync-era/blob/e575ec101fe88627ab541a52464ab5025c16e6b4/core/tests/cross_external_nodes_checker/src/pubsub_checker.rs#L103
-        // License: Apache-2.0, MIT
-        // Get the latest block
-        let params = rpc_params!["newHeads"];
-        let mut subscription: Subscription<Block<TxHash>> = self
-            .ws_client
-            .subscribe("eth_subscribe", params, "eth_unsubscribe")
-            .await
-            .expect("Failed to subscribe to newHeads");
+        // Initiate stream for new blocks
+        let mut stream = self.ws_client.subscribe_blocks().await.unwrap();
 
         // Loop over the blocks
-        while let Some(block) = subscription.next().await {
-            if block.is_err() {
-                continue;
-            }
-
+        while let Some(block) = stream.next().await {
             // Get the block number
-            let block_number = block.unwrap().number.unwrap();
-            info!("New block: {:?}", block_number.clone());
+            info!("New block: {:?}", block.clone().number.unwrap());
 
+            // Sleep for 3 seconds
             sleep(Duration::from_secs(3)).await;
 
-            let traced_block = self.get_traced_block(block_number.as_u64()).await;
+            // Get the traced block
+            let traced_block = self.get_traced_block(block.number.unwrap()).await;
+
+            // Log the traced block length
             info!("Traced block length: {:?}", traced_block.len());
 
             // Filter the traces
@@ -113,65 +103,83 @@ impl Indexer {
                 })
                 .collect();
 
+            // Log the result of filtered traces
+            info!("traces: {:?}", traces);
+
+            // Create new vec for addresses
+            let mut wallets: Vec<ethers::types::H160> = vec![];
+
             // Loop over the traces
             for trace in traces {
-                if let Call(res) = &trace.action {
-                    let _ = res;
-                    // info!("New called trace: {:?}", res);
-                }
-
                 // Loop over traces that are create
                 if let Create(res) = &trace.action && let Some(ethers::types::Res::Create(result)) = &trace.result {
                     info!("New created trace: {:?}", trace);
                     info!("New create action: {:?}", res);
                     info!("New init trace: {:?}", res.init);
 
+                    // Log the newly created wallet address
                     info!("New wallet address: {:?}", result.address);
 
+                    // Send webhook if exists
+                    if !self.webhook.is_empty(){
+                        notify_create_wallet(
+                            &self.webhook,
+                            &result.address.to_string(),
+                            &self.chain_id.to_string(),
+                            &trace.transaction_hash.unwrap().to_string()
+                        ).await;
+                    }
 
+                    // Push the address to the wallets vec
+                    wallets.push(result.address);
+                }
+
+                // Loop over the called traces
+                if let Call(res) = &trace.action && let Some(ethers::types::Res::Call(result)) = &trace.result {
+                    info!("New called trace: {:?}", res);
+                    info!("New called trace result: {:?}", result);
+                }
+            }
+
+            // Loop over the hashes
+            if !wallets.is_empty() {
+                // Get the logs for the newly created wallets
+                let logs = self.get_block_logs(block.number.unwrap(), wallets).await;
+                info!("logs: {:?}", logs);
+
+                for log in logs {
+                    info!("log: {:?}", log);
                     let _ = create_wallet(
                         self.db_client.clone(),
                         self.chain_id.to_string(),
-                        result.address.to_string(),
-                        res.init.to_string(),
-                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id))
-                    ).await;
+                        log.address.to_string(),
+                        log.data.to_string(),
+                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
+                    )
+                    .await;
                 }
             }
         }
     }
 
-    pub async fn get_traced_block(&self, block_number: u64) -> Vec<Trace> {
-        let raw_block: Result<Value, _> = self
-            .http_client
-            .request("trace_block", rpc_params![format!("0x{:x}", block_number)])
-            .await;
+    pub async fn get_block_logs(
+        &self,
+        block_number: ethers::types::U64,
+        addresses: Vec<ethers::types::H160>,
+    ) -> Vec<ethers::types::Log> {
+        // Create the filter for the logs
+        let filter = Filter::new()
+            .from_block(BlockNumber::Number(block_number))
+            .event("ImageHashUpdated(bytes32)")
+            .address(addresses);
 
-        // Depending on the result, execute logic
-        match raw_block {
-            Ok(block) => {
-                // Parse the block
-                let traces: Result<Vec<Trace>, _> = serde_json::from_value(block);
+        // Get the logs
+        self.http_client.get_logs(&filter).await.unwrap()
+    }
 
-                // Depending on the result, execute logic
-                match traces {
-                    Ok(traces) => {
-                        debug!("Traces: {:?}", traces);
-                        traces
-                    }
-                    Err(e) => {
-                        // Return an empty vector on error
-                        error!("Failed to parse traces: {:?}", e);
-                        vec![]
-                    }
-                }
-            }
-            Err(e) => {
-                // Return an empty vector on error
-                error!("Failed to trace block: {:?}", e);
-                vec![]
-            }
-        }
+    pub async fn get_traced_block(&self, block_number: ethers::types::U64) -> Vec<Trace> {
+        // Get the traced block
+        self.http_client.trace_block(BlockNumber::Number(block_number)).await.unwrap()
     }
 }
 
