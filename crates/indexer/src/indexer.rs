@@ -117,8 +117,10 @@ impl Indexer {
                     info!("New create action: {:?}", res);
                     info!("New init trace: {:?}", res.init);
 
+                    // Log the newly created wallet address
                     info!("New wallet address: {:?}", result.address);
 
+                    // Send webhook if exists
                     if !self.webhook.is_empty(){
                         notify_create_wallet(
                             &self.webhook,
@@ -128,14 +130,7 @@ impl Indexer {
                         ).await;
                     }
 
-                    let _ = create_wallet(
-                        self.db_client.clone(),
-                        self.chain_id.to_string(),
-                        result.address.to_string(),
-                        trace.transaction_hash.unwrap().to_string(),
-                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id))
-                    ).await;
-
+                    // Push the address to the wallets vec
                     wallets.push(result.address);
                 }
 
@@ -148,8 +143,21 @@ impl Indexer {
 
             // Loop over the hashes
             if !wallets.is_empty() {
-                let logs = self.get_block_logs(block.number.unwrap()).await;
+                // Get the logs for the newly created wallets
+                let logs = self.get_block_logs(block.number.unwrap(), wallets).await;
                 info!("logs: {:?}", logs);
+
+                for log in logs {
+                    info!("log: {:?}", log);
+                    let _ = create_wallet(
+                        self.db_client.clone(),
+                        self.chain_id.to_string(),
+                        log.address.to_string(),
+                        log.data.to_string(),
+                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
+                    )
+                    .await;
+                }
             }
         }
     }
@@ -157,12 +165,20 @@ impl Indexer {
     pub async fn get_block_logs(
         &self,
         block_number: ethers::types::U64,
+        addresses: Vec<ethers::types::H160>,
     ) -> Vec<ethers::types::Log> {
-        let filter = Filter::new().from_block(BlockNumber::Number(block_number));
+        // Create the filter for the logs
+        let filter = Filter::new()
+            .from_block(BlockNumber::Number(block_number))
+            .event("ImageHashUpdated(bytes32)")
+            .address(addresses);
+
+        // Get the logs
         self.http_client.get_logs(&filter).await.unwrap()
     }
 
     pub async fn get_traced_block(&self, block_number: ethers::types::U64) -> Vec<Trace> {
+        // Get the traced block
         self.http_client.trace_block(BlockNumber::Number(block_number)).await.unwrap()
     }
 }
