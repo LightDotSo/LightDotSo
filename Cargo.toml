@@ -56,9 +56,6 @@
   foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   futures = "0.3.28"
   http = "0.2.8"
-  jsonrpsee = { version = "0.19.0", features = ["macros", "server"] }
-  jsonrpsee-http-client = "0.19.0"
-  jsonrpsee-ws-client = "0.19.0"
   lazy_static = "1.4.0"
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-discord = { path = "./crates/discord" }
