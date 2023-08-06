@@ -7,11 +7,15 @@
     "crates/bundler",
     "crates/core",
     "crates/db",
+    "crates/discord",
     "crates/indexer",
+    "crates/kafka",
     "crates/keychain",
     "crates/prisma",
+    "crates/redis",
     "crates/rpc",
     "crates/simulator",
+    "crates/telegram",
     "crates/tracing",
     "tools/embedded-prisma",
     "tools/embedded-scopelint",
@@ -57,11 +61,15 @@
   jsonrpsee-ws-client = "0.19.0"
   lazy_static = "1.4.0"
   lightdotso-bundler = { path = "./crates/bundler" }
+  lightdotso-discord = { path = "./crates/discord" }
   lightdotso-db = { path = "./crates/db" }
   lightdotso-indexer = { path = "./crates/indexer" }
+  lightdotso-kafka = { path = "./crates/kafka" }
   lightdotso-keychain = { path = "./crates/indexer" }
   lightdotso-prisma = { path = "./crates/prisma" }
+  lightdotso-redis = { path = "./crates/redis" }
   lightdotso-simulator = { path = "./crates/simulator" }
+  lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
   prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
@@ -80,6 +88,7 @@
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-primitives = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
+  teloxide = { version = "0.12", features = ["macros"] }
   tokio = { version = "1", features = ["full"] }
   tower = { version = "0.4.12" }
   tower-http = { version = "0.4", features = ["trace"] }
