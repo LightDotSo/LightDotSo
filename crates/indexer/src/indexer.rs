@@ -82,7 +82,7 @@ impl Indexer {
         // Loop over the blocks
         while let Some(block) = stream.next().await {
             // Get the block number
-            info!("New block: {:?}", block.clone());
+            info!("New block: {:?}", block.clone().number.unwrap());
 
             // Sleep for 3 seconds
             sleep(Duration::from_secs(3)).await;
@@ -108,7 +108,6 @@ impl Indexer {
 
             // Create new vec for addresses
             let mut wallets: Vec<ethers::types::H160> = vec![];
-            let mut hashes: Vec<ethers::types::H256> = vec![];
 
             // Loop over the traces
             for trace in traces {
@@ -119,22 +118,25 @@ impl Indexer {
                     info!("New init trace: {:?}", res.init);
 
                     info!("New wallet address: {:?}", result.address);
-                    notify_create_wallet(
-                      &self.webhook,
-                      &result.address.to_string(),
-                      &self.chain_id.to_string(),
-                      &trace.transaction_hash.unwrap().to_string()
-                    ).await;
+
+                    if !self.webhook.is_empty(){
+                        notify_create_wallet(
+                            &self.webhook,
+                            &result.address.to_string(),
+                            &self.chain_id.to_string(),
+                            &trace.transaction_hash.unwrap().to_string()
+                        ).await;
+                    }
+
                     let _ = create_wallet(
-                      self.db_client.clone(),
-                      self.chain_id.to_string(),
-                      result.address.to_string(),
-                      trace.transaction_hash.unwrap().to_string(),
-                      Some(TESTNET_CHAIN_IDS.contains(&self.chain_id))
+                        self.db_client.clone(),
+                        self.chain_id.to_string(),
+                        result.address.to_string(),
+                        trace.transaction_hash.unwrap().to_string(),
+                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id))
                     ).await;
 
                     wallets.push(result.address);
-                    hashes.push(trace.transaction_hash.unwrap());
                 }
 
                 // Loop over the called traces
@@ -145,15 +147,18 @@ impl Indexer {
             }
 
             // Loop over the hashes
-            if !hashes.is_empty() {
-                let logs = self.get_block_logs(hashes[0]).await;
+            if !wallets.is_empty() {
+                let logs = self.get_block_logs(block.number.unwrap()).await;
                 info!("logs: {:?}", logs);
             }
         }
     }
 
-    pub async fn get_block_logs(&self, block_hash: ethers::types::H256) -> Vec<ethers::types::Log> {
-        let filter = Filter::new().at_block_hash(block_hash);
+    pub async fn get_block_logs(
+        &self,
+        block_number: ethers::types::U64,
+    ) -> Vec<ethers::types::Log> {
+        let filter = Filter::new().from_block(BlockNumber::Number(block_number));
         self.http_client.get_logs(&filter).await.unwrap()
     }
 

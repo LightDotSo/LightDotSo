@@ -41,7 +41,7 @@ contract LightWalletDeployer is LightDeployer, Script {
             factory = LightWalletFactory(address(0x262aD6Becda7CE4B047a3130491978A8f35F9aeC));
 
             // Create an account
-            wallet = factory.createAccount(bytes32(uint256(2323233)), uint256(1));
+            wallet = factory.createAccount(bytes32(uint256(1)), randMod());
 
             // solhint-disable-next-line no-console
             console.log("LightWallet deployed at address: %s", address(wallet));

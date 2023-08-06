@@ -24,4 +24,12 @@ abstract contract LightDeployer {
     // -------------------------------------------------------------------------
 
     address internal constant LIGHT_FACTORY_ADDRESS = address(0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab);
+
+    // -------------------------------------------------------------------------
+    // Utilities
+    // -------------------------------------------------------------------------
+
+    function randMod() internal view returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
+    }
 }
