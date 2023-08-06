@@ -23,13 +23,13 @@
   jsonrpsee-ws-client = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-db = { workspace = true }
+  lightdotso-discord = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
   redb = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
-  serenity = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
   tracing = { workspace = true }
   tracing-test = { workspace = true, features = ["no-env-filter"] }

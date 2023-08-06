@@ -13,6 +13,40 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub fn rust_greeting(to: String) -> String {
-    format!("Hello World, {}!", to)
+use serenity::{
+    http::Http,
+    json::Value,
+    model::{channel::Embed, webhook::Webhook},
+};
+
+pub async fn notify(webhook: &str, content: Value) {
+    // You don't need a token when you are only dealing with webhooks.
+    let http = Http::new("");
+    let webhook =
+        Webhook::from_url(&http, webhook).await.expect("Replace the webhook with your own");
+
+    webhook
+        .execute(&http, false, |w| {
+            w.content(content).username("LightDotSo").avatar_url("https://assets.light.so/icon.png")
+        })
+        .await
+        .expect("Could not execute webhook.");
+}
+
+pub async fn notify_create_wallet(
+    webhook: &str,
+    address: &str,
+    chain_id: &str,
+    transaction_hash: &str,
+) {
+    let embed = Embed::fake(|e| {
+        e.title("Wallet Created")
+            .description(format!(
+                "Address: {}\nChainid: {}\nHash: {}\n",
+                address, chain_id, transaction_hash
+            ))
+            .color(0x00ff00)
+    });
+
+    notify(webhook, embed).await;
 }

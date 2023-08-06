@@ -9,4 +9,4 @@
   repository.workspace = true
 
 [dependencies]
-  teloxide = { workspace = true }
+  teloxide = { version = "0.12", features = ["macros"] }

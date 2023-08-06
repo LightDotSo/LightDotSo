@@ -19,15 +19,17 @@ use crate::{
 };
 use ethers::types::{
     Action::{Call, Create, Reward, Suicide},
-    Block, Trace, TxHash, U256,
+    Block, Trace, TransactionReceipt, TxHash, U256,
 };
 use jsonrpsee::core::{
     client::{ClientT, Subscription, SubscriptionClientT},
+    params::ObjectParams,
     rpc_params,
 };
 use jsonrpsee_http_client::{transport::HttpBackend, HttpClient, HttpClientBuilder};
 use jsonrpsee_ws_client::{WsClient, WsClientBuilder};
 use lightdotso_db::db::{create_client, create_wallet};
+use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::{debug, error, info};
 use serde_json::Value;
@@ -112,14 +114,14 @@ impl Indexer {
                     Reward(_) | Suicide(_) => false,
                 })
                 .collect();
+            info!("traces: {:?}", traces);
+
+            // Create new vec for addresses
+            let mut wallets: Vec<ethers::types::H160> = vec![];
+            let mut hashes: Vec<ethers::types::H256> = vec![];
 
             // Loop over the traces
             for trace in traces {
-                if let Call(res) = &trace.action {
-                    let _ = res;
-                    // info!("New called trace: {:?}", res);
-                }
-
                 // Loop over traces that are create
                 if let Create(res) = &trace.action && let Some(ethers::types::Res::Create(result)) = &trace.result {
                     info!("New created trace: {:?}", trace);
@@ -127,15 +129,53 @@ impl Indexer {
                     info!("New init trace: {:?}", res.init);
 
                     info!("New wallet address: {:?}", result.address);
-
-                    let _ = create_wallet(
-                        self.db_client.clone(),
-                        self.chain_id.to_string(),
-                        result.address.to_string(),
-                        res.init.to_string(),
-                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id))
-                    ).await;
+                    wallets.push(result.address);
+                    hashes.push(trace.transaction_hash.unwrap());
                 }
+
+                // Loop over the called traces
+                if let Call(res) = &trace.action && let Some(ethers::types::Res::Call(result)) = &trace.result {
+                    info!("New called trace: {:?}", res);
+                    info!("New called trace result: {:?}", result);
+                }
+            }
+
+            // Loop over the hashes
+            if !hashes.is_empty() {
+                let logs = self.get_block_logs(hashes[0]).await;
+                info!("logs: {:?}", logs);
+            }
+        }
+    }
+
+    pub async fn get_block_logs(&self, block_hash: ethers::types::H256) -> Vec<TransactionReceipt> {
+        let mut params = ObjectParams::new();
+        params.insert("blockHash", block_hash).unwrap();
+        let raw_block: Result<Value, _> = self.http_client.request("eth_getLogs", params).await;
+
+        // Depending on the result, execute logic
+        match raw_block {
+            Ok(block) => {
+                // Parse the block
+                let logs: Result<Vec<TransactionReceipt>, _> = serde_json::from_value(block);
+
+                // Depending on the result, execute logic
+                match logs {
+                    Ok(logs) => {
+                        debug!("Traces: {:?}", logs);
+                        logs
+                    }
+                    Err(e) => {
+                        // Return an empty vector on error
+                        error!("Failed to parse traces: {:?}", e);
+                        vec![]
+                    }
+                }
+            }
+            Err(e) => {
+                // Return an empty vector on error
+                error!("Failed to get logs: {:?}", e);
+                vec![]
             }
         }
     }
