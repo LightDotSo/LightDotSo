@@ -18,9 +18,6 @@
   ethers = { workspace = true }
   eyre = { workspace = true }
   futures = { workspace = true }
-  jsonrpsee = { workspace = true, features = ["macros", "server"] }
-  jsonrpsee-http-client = { workspace = true }
-  jsonrpsee-ws-client = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-discord = { workspace = true }
