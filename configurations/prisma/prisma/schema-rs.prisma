@@ -33,7 +33,8 @@ model Session {
   accessToken  String   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -45,9 +46,10 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  wallets       Wallet[]
+
+  accounts Account[]
+  sessions Session[]
+  wallets  Wallet[]
 }
 
 model VerificationRequest {
@@ -69,8 +71,8 @@ model Wallet {
   testnet   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  logs      Log[]
-  users     User[]
+
+  users User[]
 
   @@unique([address, chainId])
 }
@@ -82,13 +84,62 @@ model Log {
   topics              String[]
   data                String
   blockHash           String?
-  blockNumber         BigInt?
+  blockNumber         String?
   transactionHash     String?
-  transactionIndex    BigInt?
-  logIndex            BigInt?
-  transactionLogIndex BigInt?
+  transactionIndex    String?
+  transactionLogIndex String?
+  logIndex            String?
   logType             String?
   removed             Boolean?
-  wallet              Wallet?  @relation(fields: [walletId], references: [id])
-  walletId            String?
+
+  transaction   Transaction? @relation(fields: [transactionId], references: [hash])
+  transactionId String?
+}
+
+model Receipt {
+  hash                String  @id
+  base_fee_per_gas    String?
+  burned_fees         String
+  chainId             String
+  contract_address    String?
+  cumulative_gas_used String
+  effective_gas_price String?
+  gas_used            String?
+  status              String
+
+  timestamp DateTime
+
+  transaction   Transaction @relation(fields: [transactionId], references: [hash])
+  transactionId String      @unique
+}
+
+model Transaction {
+  hash                     String  @id
+  nonce                    String
+  block_hash               String?
+  block_number             String?
+  transaction_index        String?
+  from                     String
+  to                       String?
+  value                    String
+  gas_price                String?
+  gas                      String
+  input                    String
+  v                        String
+  r                        String
+  s                        String
+  fee_currency             String?
+  gateway_fee_recipient    String?
+  gateway_fee              String?
+  transaction_type         String?
+  access_list              String?
+  max_priority_fee_per_gas String?
+  max_fee_per_gas          String?
+  chain_id                 String?
+  other                    String?
+
+  timestamp DateTime
+
+  logs    Log[]
+  Receipt Receipt?
 }

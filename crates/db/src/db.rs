@@ -47,8 +47,28 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
     Ok(Json::from(users))
 }
 
+pub async fn create_wallet(
+    db: Database,
+    log: ethers::types::Log,
+    chain_id: String,
+    testnet: Option<bool>,
+) -> AppJsonResult<wallet::Data> {
+    let wallet = db
+        .wallet()
+        .create(
+            log.address.to_string(),
+            chain_id,
+            log.data.to_string(),
+            vec![wallet::testnet::set(testnet.unwrap_or(false))],
+        )
+        .exec()
+        .await?;
+
+    Ok(Json::from(wallet))
+}
+
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
-pub async fn create_new_wallet(
+pub async fn create_wallet_with_log(
     db: Database,
     log: ethers::types::Log,
     chain_id: String,
@@ -76,7 +96,24 @@ pub async fn create_new_wallet(
                     address.clone(),
                     chain_id.clone(),
                     log.data.to_string(),
-                    vec![log::wallet::connect(wallet::id::equals(wallet.id.clone()))],
+                    vec![
+                        log::wallet::connect(wallet::id::equals(wallet.id.clone())),
+                        log::topics::set(
+                            log.topics.iter().map(|tx_hash| tx_hash.to_string()).collect(),
+                        ),
+                        log::block_hash::set(log.block_hash.map(|bh| bh.to_string())),
+                        log::block_number::set(log.block_number.map(|bn| bn.try_into().unwrap())),
+                        log::transaction_hash::set(log.transaction_hash.map(|th| th.to_string())),
+                        log::transaction_index::set(
+                            log.transaction_index.map(|ti| ti.try_into().unwrap()),
+                        ),
+                        log::transaction_log_index::set(
+                            log.transaction_log_index.map(|lti| lti.try_into().unwrap()),
+                        ),
+                        log::log_index::set(log.log_index.map(|li| li.try_into().unwrap())),
+                        log::log_type::set(log.log_type),
+                        log::removed::set(log.removed),
+                    ],
                 )
                 .exec()
                 .await

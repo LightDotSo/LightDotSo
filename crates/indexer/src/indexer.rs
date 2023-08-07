@@ -26,7 +26,7 @@ use ethers::{
     },
 };
 use futures::StreamExt;
-use lightdotso_db::db::create_new_wallet;
+use lightdotso_db::db::create_wallet;
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
@@ -141,12 +141,10 @@ impl Indexer {
 
                 for log in logs {
                     info!("log: {:?}", log);
-                    let _ = create_new_wallet(
+                    let _ = create_wallet(
                         db_client.clone(),
                         log.clone(),
                         self.chain_id.to_string(),
-                        log.address.to_string(),
-                        "".to_string(),
                         Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                     )
                     .await;
