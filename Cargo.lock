@@ -5396,6 +5396,7 @@ dependencies = [
  "eyre",
  "http",
  "lightdotso-bundler",
+ "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-prisma",
  "lightdotso-simulator",
@@ -7402,6 +7403,7 @@ dependencies = [
  "serde-value",
  "serde_json",
  "thiserror",
+ "tokio",
  "user-facing-errors",
  "uuid 1.4.1",
 ]

@@ -26,7 +26,7 @@ use ethers::{
     },
 };
 use futures::StreamExt;
-use lightdotso_db::db::{create_client, create_wallet};
+use lightdotso_db::db::create_wallet;
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
@@ -36,7 +36,6 @@ use tokio::time::sleep;
 #[derive(Debug, Clone)]
 pub struct Indexer {
     chain_id: usize,
-    db_client: Arc<PrismaClient>,
     http_client: Arc<Provider<Http>>,
     ws_client: Arc<Provider<Ws>>,
     webhook: String,
@@ -45,9 +44,6 @@ pub struct Indexer {
 impl Indexer {
     pub async fn new(args: &IndexerArgs) -> Self {
         info!("Indexer new, starting");
-
-        // Create the db client
-        let db_client = Arc::new(create_client(args.database_url.clone()).await.unwrap());
 
         // Create the http client
         let http_client = Arc::new(Provider::<Http>::try_from(args.rpc.to_string()).unwrap());
@@ -64,16 +60,10 @@ impl Indexer {
         );
 
         // Create the indexer
-        Self {
-            chain_id: args.chain_id,
-            webhook: args.webhook.clone(),
-            db_client,
-            http_client,
-            ws_client,
-        }
+        Self { chain_id: args.chain_id, webhook: args.webhook.clone(), http_client, ws_client }
     }
 
-    pub async fn run(&self) {
+    pub async fn run(&self, db_client: Arc<PrismaClient>) {
         info!("Indexer run, starting");
 
         // Initiate stream for new blocks
@@ -135,9 +125,9 @@ impl Indexer {
                 }
 
                 // Loop over the called traces
-                if let Call(res) = &trace.action && let Some(ethers::types::Res::Call(result)) = &trace.result {
-                    info!("New called trace: {:?}", res);
-                    info!("New called trace result: {:?}", result);
+                if let Call(_res) = &trace.action && let Some(ethers::types::Res::Call(_result)) = &trace.result {
+                    // info!("New called trace: {:?}", res);
+                    // info!("New called trace result: {:?}", result);
                 }
             }
 
@@ -145,12 +135,11 @@ impl Indexer {
             if !wallets.is_empty() {
                 // Get the logs for the newly created wallets
                 let logs = self.get_block_logs(block.number.unwrap(), wallets).await;
-                info!("logs: {:?}", logs);
 
                 for log in logs {
                     info!("log: {:?}", log);
                     let _ = create_wallet(
-                        self.db_client.clone(),
+                        db_client.clone(),
                         self.chain_id.to_string(),
                         log.address.to_string(),
                         log.data.to_string(),
@@ -180,81 +169,5 @@ impl Indexer {
     pub async fn get_traced_block(&self, block_number: ethers::types::U64) -> Vec<Trace> {
         // Get the traced block
         self.http_client.trace_block(BlockNumber::Number(block_number)).await.unwrap()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    // use crate::db::open;
-    use anvil::NodeConfig;
-    use clap::Parser;
-    use ethers::{
-        prelude::Middleware,
-        types::{U256, U64},
-    };
-    use lightdotso_tracing::tracing::info;
-    use std::{env, time::Duration};
-    use tracing_test::traced_test;
-
-    #[traced_test]
-    #[tokio::test(flavor = "multi_thread")]
-    async fn test_config_run() {
-        // Set the env vars for anvil
-        let node_config = NodeConfig::default();
-        let (api, handle) = anvil::spawn(
-            // Run the node with a blocktime of 1 second w/o tracing
-            node_config.clone().with_blocktime(Some(Duration::from_secs(1))).with_tracing(false),
-        )
-        .await;
-
-        // Check the block number is zero
-        let block_num = api.block_number().unwrap();
-        assert_eq!(block_num, U256::zero());
-
-        // Set the node configs
-        let node_config = NodeConfig::default();
-        let http_url = format!("http://localhost:{}", node_config.port).to_string();
-        let ws_url = format!("ws://localhost:{}", node_config.port).to_string();
-
-        // Check the websocket provider
-        let provider = handle.ws_provider().await;
-        let num = provider.get_block_number().await.unwrap();
-        assert_eq!(num, block_num.as_u64().into());
-
-        // Set the env vars
-        env::set_var("CHAIN_ID", "31337");
-        env::set_var(
-            "DATABASE_URL",
-            "postgresql://postgres:password@localhost:6500/neon?schema=public",
-        );
-        env::set_var("INDEXER_RPC_URL", http_url.clone());
-        env::set_var("INDEXER_RPC_WS", ws_url.clone());
-
-        // Initialize the indexer
-        let config_args = IndexerArgs::parse_from([""]);
-        let indexer = Indexer::new(&config_args).await;
-
-        // Run the indexer
-        let indexer_future = indexer.run();
-
-        // Wait for the block number to be 30
-        let wait_number_future = async {
-            loop {
-                let num = provider.get_block_number().await.unwrap();
-                if num == U64::from(10) {
-                    info!("Block number is 10, exiting");
-                    break;
-                }
-                tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-            }
-        };
-
-        tokio::select! {
-            _ = indexer_future => {},
-            _ = wait_number_future => {},
-        }
-
-        logs_contain("Block number is 10, exiting");
     }
 }

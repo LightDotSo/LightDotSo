@@ -13,11 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use std::sync::Arc;
+
 use anyhow::Result;
 use axum::{routing::get, Router};
 use clap::Parser;
 use dotenvy::dotenv;
 use lightdotso_bin::version::SHORT_VERSION;
+use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_tracing::{
     init, stdout,
@@ -50,8 +53,11 @@ pub async fn main() {
     // Parse the command line arguments
     let args = IndexerArgs::parse();
 
+    // Create the db client
+    let db = Arc::new(create_client().await.unwrap());
+
     // Construct the futures
-    let indexer_future = args.run();
+    let indexer_future = args.run(db);
     let server_future = start_server();
 
     // Run the futures concurrently

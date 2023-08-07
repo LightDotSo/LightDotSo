@@ -68,8 +68,12 @@
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
-  prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
-  prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8" }
+  prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+    "mocking",
+  ] }
+  prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+    "mocking",
+  ] }
   redb = "1.0.5"
   revm = { version = "3", default-features = false, features = [
     "std",
