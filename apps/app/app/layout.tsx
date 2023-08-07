@@ -22,6 +22,7 @@ import { ConnectKitProvider, getDefaultConfig, SIWEProvider } from "connectkit";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import { TrpcProvider } from "./trpc-provider";
 import { siweConfig } from "./siwe";
+import Script from "next/script";
 
 // From: https://tanstack.com/query/v5/docs/react/examples/react/nextjs-suspense-streaming
 // Also: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
@@ -54,6 +55,7 @@ export default function RootLayout({
           </WagmiConfig>
         </TrpcProvider>
       </body>
+      <Script async src="https://data.light.so/p.js" />
     </html>
   );
 }
