@@ -88,7 +88,26 @@ model Wallet {
   testnet   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  logs      Log[]
   users     User[]
 
-  @@unique([chainId, address])
+  @@unique([address, chainId])
+}
+
+model Log {
+  id                  String   @id @default(cuid())
+  address             String
+  chainId             String
+  topics              String[]
+  data                String
+  blockHash           String?
+  blockNumber         BigInt?
+  transactionHash     String?
+  transactionIndex    BigInt?
+  logIndex            BigInt?
+  transactionLogIndex BigInt?
+  logType             String?
+  removed             Boolean?
+  wallet              Wallet?  @relation(fields: [walletId], references: [id])
+  walletId            String?
 }

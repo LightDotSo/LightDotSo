@@ -16,7 +16,7 @@
 use axum::extract::Json;
 
 use crate::error::DbError;
-use lightdotso_prisma::{user, wallet, PrismaClient};
+use lightdotso_prisma::{log, user, wallet, PrismaClient};
 use prisma_client_rust::NewClientError;
 use std::sync::Arc;
 
@@ -24,12 +24,14 @@ type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
 
+/// Create a new Prisma client.
 pub async fn create_client() -> Result<PrismaClient, NewClientError> {
     let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder().build().await;
 
     client
 }
 
+/// Find a user by id.
 pub async fn find_user(db: Database) -> Vec<user::Data> {
     let users: Vec<user::Data> =
         db.user().find_many(vec![user::id::equals("Id".to_string())]).exec().await.unwrap();
@@ -37,7 +39,7 @@ pub async fn find_user(db: Database) -> Vec<user::Data> {
     users
 }
 
-/// GET /user
+/// Get a user by id.
 /// Taken from: https://github.com/Brendonovich/prisma-client-rust/blob/124e8216a9d093e9ae1feb8b9b84614bc3579f18/examples/axum-rest/src/routes.rs
 pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
     let users = db.user().find_many(vec![]).with(user::sessions::fetch(vec![])).exec().await?;
@@ -45,17 +47,42 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
     Ok(Json::from(users))
 }
 
-pub async fn create_wallet(
+/// Taken from: https://prisma.brendonovich.dev/extra/transactions
+pub async fn create_new_wallet(
     db: Database,
+    log: ethers::types::Log,
     chain_id: String,
     address: String,
     hash: String,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
-    let wallet = db
-        .wallet()
-        .create(address, chain_id, hash, vec![wallet::testnet::set(testnet.unwrap_or(false))])
-        .exec()
+    let (wallet, _log) = db
+        ._transaction()
+        .run(|client| async move {
+            let wallet = client
+                .wallet()
+                .create(
+                    address.clone(),
+                    chain_id.clone(),
+                    hash.clone(),
+                    vec![wallet::testnet::set(testnet.unwrap_or(false))],
+                )
+                .exec()
+                .await?;
+
+            client
+                .log()
+                .create(
+                    address.clone(),
+                    chain_id.clone(),
+                    log.data.to_string(),
+                    vec![log::wallet::connect(wallet::id::equals(wallet.id.clone()))],
+                )
+                .exec()
+                .await
+                // if query succeeds, return user + log from transaction
+                .map(|log| (wallet, log))
+        })
         .await?;
 
     Ok(Json::from(wallet))
