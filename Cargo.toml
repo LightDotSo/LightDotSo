@@ -5,6 +5,7 @@
     "apps/desktop/src-tauri",
     "bin",
     "crates/bundler",
+    "crates/consumer",
     "crates/core",
     "crates/db",
     "crates/discord",
@@ -58,6 +59,7 @@
   http = "0.2.8"
   lazy_static = "1.4.0"
   lightdotso-bundler = { path = "./crates/bundler" }
+  lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-discord = { path = "./crates/discord" }
   lightdotso-db = { path = "./crates/db" }
   lightdotso-indexer = { path = "./crates/indexer" }
@@ -74,6 +76,7 @@
   prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
     "mocking",
   ] }
+  rdkafka = "0.33.2"
   redb = "1.0.5"
   revm = { version = "3", default-features = false, features = [
     "std",
@@ -103,4 +106,3 @@
   uniffi_macros = "0.24.2"
   uniffi_build = { version = "0.24.2", features = ["builtin-bindgen"] }
   uuid = { version = "1.3.4", features = ["v4", "fast-rng", "serde"] }
-  zerocopy = "0.6.2"
