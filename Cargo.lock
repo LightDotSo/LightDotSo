@@ -5441,6 +5441,7 @@ dependencies = [
  "lightdotso-prisma",
  "prisma-client-rust",
  "tokio",
+ "tracing",
 ]
 
 [[package]]

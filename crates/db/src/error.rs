@@ -23,6 +23,7 @@ use prisma_client_rust::{
     QueryError,
 };
 
+#[derive(Debug)]
 pub enum DbError {
     PrismaError(QueryError),
     NotFound,

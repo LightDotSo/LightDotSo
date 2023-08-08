@@ -50,16 +50,6 @@ pub async fn main() {
 
     info!("Starting server at {}", SHORT_VERSION);
 
-    // Parse the command line arguments
-    let args = IndexerArgs::parse();
-
-    // Create the db client
-    let db = Arc::new(create_client().await.unwrap());
-
-    // Construct the futures
-    let indexer_future = args.run(db);
-    let server_future = start_server();
-
     // Run the test server if we're running in Fly
     if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-indexer") {
         let test_server_future = start_server();
@@ -69,6 +59,16 @@ pub async fn main() {
             std::process::exit(1)
         };
     }
+
+    // Parse the command line arguments
+    let args = IndexerArgs::parse();
+
+    // Create the db client
+    let db = Arc::new(create_client().await.unwrap());
+
+    // Construct the futures
+    let indexer_future = args.run(db);
+    let server_future = start_server();
 
     // Run the futures concurrently
     let result = tokio::try_join!(indexer_future, server_future);
