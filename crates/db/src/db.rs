@@ -60,7 +60,7 @@ pub async fn create_wallet(
     let wallet = db
         .wallet()
         .create(
-            log.address.to_string(),
+            format!("{:?}", log.address),
             chain_id,
             // Parse the log indexed data as a string.
             log.data.to_string(),
@@ -89,7 +89,7 @@ pub async fn create_transaction_with_log_receipt(
                 .create(
                     transaction.hash.to_string(),
                     transaction.nonce.to_string(),
-                    transaction.from.to_string(),
+                    format!("{:?}", transaction.from),
                     transaction.value.to_string(),
                     transaction.gas.to_string(),
                     transaction.input.to_string(),
@@ -113,7 +113,7 @@ pub async fn create_transaction_with_log_receipt(
                         transaction::transaction_index::set(
                             transaction.transaction_index.map(|ti| ti.to_string()),
                         ),
-                        transaction::to::set(transaction.to.map(|to| to.to_string())),
+                        transaction::to::set(transaction.to.map(|to| format!("{:?}", to))),
                         transaction::gas_price::set(transaction.gas_price.map(|gp| gp.to_string())),
                         transaction::transaction_type::set(
                             transaction.transaction_type.map(|gu| gu.to_string()),
@@ -133,7 +133,7 @@ pub async fn create_transaction_with_log_receipt(
                 .receipt()
                 .create(
                     receipt.transaction_index.to_string(),
-                    receipt.from.to_string(),
+                    format!("{:?}", receipt.from),
                     receipt.cumulative_gas_used.to_string(),
                     receipt.logs_bloom.to_string(),
                     prisma_client_rust::serde_json::to_value(receipt.other)
@@ -143,10 +143,10 @@ pub async fn create_transaction_with_log_receipt(
                         receipt::transaction_hash::set(receipt.transaction_hash.to_string()),
                         receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
                         receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
-                        receipt::to::set(receipt.to.map(|to| to.to_string())),
+                        receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
                         receipt::gas_used::set(receipt.gas_used.map(|gu| gu.to_string())),
                         receipt::contract_address::set(
-                            receipt.contract_address.map(|ca| ca.to_string()),
+                            receipt.contract_address.map(|ca| format!("{:?}", ca)),
                         ),
                         receipt::status::set(receipt.status.map(|s| s.to_string())),
                         receipt::transaction_type::set(
@@ -163,7 +163,7 @@ pub async fn create_transaction_with_log_receipt(
             client
                 .log()
                 .create(
-                    log.address.to_string(),
+                    format!("{:?}", log.address),
                     log.data.to_string(),
                     vec![
                         log::receipt::connect(receipt::transaction_hash::equals(tx.hash.clone())),
@@ -189,4 +189,16 @@ pub async fn create_transaction_with_log_receipt(
         .await?;
 
     Ok(Json::from(tx))
+}
+
+// Tests
+#[cfg(test)]
+mod tests {
+    use ethers::types::Address;
+
+    #[test]
+    fn test_display_address() {
+        let address = Address::zero();
+        assert_eq!(format!("{:?}", address), "0x0000000000000000000000000000000000000000");
+    }
 }
