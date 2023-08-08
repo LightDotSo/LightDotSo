@@ -1,5 +1,5 @@
 [package]
-  name = "lightdotso-kafka"
+  name = "lightdotso-consumer"
 
   version.workspace = true
   edition.workspace = true
@@ -9,5 +9,8 @@
   repository.workspace = true
 
 [dependencies]
-  lightdotso-tracing = { workspace = true }
+  anyhow = { workspace = true }
+  clap = { workspace = true, features = ["derive"] }
+  lightdotso-kafka = { workspace = true }
   rdkafka = { workspace = true }
+  tracing = { workspace = true }
