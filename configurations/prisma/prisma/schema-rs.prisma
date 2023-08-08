@@ -79,22 +79,23 @@ model Wallet {
 
 model Log {
   id                  String   @id @default(cuid())
-  chainId             String
+  address             String
   topics              String[]
   data                String
   blockHash           String?
   blockNumber         String?
+  transactionHash     String?
   transactionIndex    String?
-  transactionLogIndex String?
   logIndex            String?
+  transactionLogIndex String?
   logType             String?
   removed             Boolean?
 
-  receipt                Receipt? @relation(fields: [receiptTransactionHash], references: [transactionHash])
-  receiptTransactionHash String?
+  receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
 }
 
 model Receipt {
+  transactionHash   String  @id @unique
   transactionIndex  String
   blockHash         String?
   blockNumber       String?
@@ -108,18 +109,15 @@ model Receipt {
   logsBloom         String
   transactionType   String?
   effectiveGasPrice String?
-
-  other Json
+  other             Json?
 
   logs Log[]
 
-  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
-  transactionHash String      @id @unique
+  transaction Transaction @relation(fields: [transactionHash], references: [hash])
 }
 
 model Transaction {
   hash                 String  @id
-  chainId              String
   nonce                String
   blockHash            String?
   blockNumber          String?
@@ -140,8 +138,9 @@ model Transaction {
   accessList           String?
   maxPriorityFeePerGas String?
   maxFeePerGas         String?
-  other                String?
+  other                Json?
 
+  chainId   String
   timestamp DateTime
 
   Receipt Receipt?

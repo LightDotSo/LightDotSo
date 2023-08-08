@@ -101,9 +101,43 @@ pub async fn create_transaction_with_log_receipt(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
                         FixedOffset::east_opt(0).unwrap(),
                     ),
-                    vec![transaction::block_number::set(
-                        receipt.block_number.map(|n| n.to_string()),
-                    )],
+                    vec![
+                        transaction::block_hash::set(
+                            transaction.block_hash.map(|bh| bh.to_string()),
+                        ),
+                        transaction::block_number::set(
+                            transaction.block_number.map(|n| n.to_string()),
+                        ),
+                        transaction::transaction_index::set(
+                            transaction.transaction_index.map(|ti| ti.to_string()),
+                        ),
+                        transaction::to::set(transaction.to.map(|to| to.to_string())),
+                        transaction::gas_price::set(transaction.gas_price.map(|gp| gp.to_string())),
+                        transaction::fee_currency::set(
+                            transaction.fee_currency.map(|fc| fc.to_string()),
+                        ),
+                        transaction::gateway_fee_recipient::set(
+                            transaction.gateway_fee_recipient.map(|gfr| gfr.to_string()),
+                        ),
+                        transaction::gateway_fee::set(
+                            transaction.gateway_fee.map(|gf| gf.to_string()),
+                        ),
+                        transaction::transaction_type::set(
+                            transaction.transaction_type.map(|gu| gu.to_string()),
+                        ),
+                        transaction::access_list::set(
+                            transaction.access_list.map(|al| al.to_string()),
+                        ),
+                        transaction::max_priority_fee_per_gas::set(
+                            transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.to_string()),
+                        ),
+                        transaction::max_fee_per_gas::set(
+                            transaction.max_fee_per_gas.map(|mfpg| mfpg.to_string()),
+                        ),
+                        transaction::other::set(prisma_client_rust::serde_json::to_value(
+                            transaction.other,
+                        )),
+                    ],
                 )
                 .exec()
                 .await?;
@@ -115,8 +149,9 @@ pub async fn create_transaction_with_log_receipt(
                     receipt.from.to_string(),
                     receipt.cumulative_gas_used.to_string(),
                     receipt.logs_bloom.to_string(),
-                    prisma_client_rust::serde_json::to_value(receipt.other).unwrap(),
-                    transaction::UniqueWhereParam::HashEquals(tx.hash.clone()),
+                    receipt::transaction::connect(receipt::transaction_hash::equals(
+                        tx.hash.clone(),
+                    )),
                     vec![
                         receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
                         receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
@@ -126,6 +161,9 @@ pub async fn create_transaction_with_log_receipt(
                         receipt::transaction_type::set(
                             receipt.transaction_type.map(|tt| tt.to_string()),
                         ),
+                        receipt::other::set(prisma_client_rust::serde_json::to_value(
+                            receipt.other,
+                        )),
                     ],
                 )
                 .exec()
@@ -134,7 +172,7 @@ pub async fn create_transaction_with_log_receipt(
             client
                 .log()
                 .create(
-                    chain_id.to_string(),
+                    log.address.to_string(),
                     log.data.to_string(),
                     vec![
                         log::receipt::connect(receipt::transaction_hash::equals(tx.hash.clone())),
@@ -143,11 +181,12 @@ pub async fn create_transaction_with_log_receipt(
                         ),
                         log::block_hash::set(log.block_hash.map(|bh| bh.to_string())),
                         log::block_number::set(log.block_number.map(|bn| bn.to_string())),
+                        log::transaction_hash::set(log.transaction_hash.map(|th| th.to_string())),
                         log::transaction_index::set(log.transaction_index.map(|ti| ti.to_string())),
+                        log::log_index::set(log.log_index.map(|li| li.to_string())),
                         log::transaction_log_index::set(
                             log.transaction_log_index.map(|lti| lti.to_string()),
                         ),
-                        log::log_index::set(log.log_index.map(|li| li.to_string())),
                         log::log_type::set(log.log_type),
                         log::removed::set(log.removed),
                     ],
