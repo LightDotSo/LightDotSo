@@ -138,13 +138,7 @@ pub async fn create_transaction_with_log_receipt(
                     receipt.logs_bloom.to_string(),
                     prisma_client_rust::serde_json::to_value(receipt.other)
                         .unwrap_or(prisma_client_rust::serde_json::Value::Null),
-                    // receipt::transaction::connect(receipt::transaction_hash::equals(
-                    //     tx.hash.clone(),
-                    // )),
-                    // receipt::transaction::connect(receipt::transaction_hash::equals(
-                    //     tx.hash.clone(),
-                    // )),
-                    receipt::transaction::connect(transaction::hash::equals(tx.hash.clone())),
+                    transaction::UniqueWhereParam::HashEquals(tx.hash.clone()),
                     vec![
                         receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
                         receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
