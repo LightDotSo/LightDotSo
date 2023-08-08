@@ -62,7 +62,7 @@ mod tests {
 
         // Verify the default values
         assert_eq!(config_args.group, "");
-        assert_eq!(config_args.topics, vec![""]);
+        assert_eq!(config_args.topics, vec![] as Vec<String>);
 
         // Set some env vars
         env::set_var("KAFKA_GROUP", "one");
@@ -87,6 +87,6 @@ mod tests {
 
         // Verify the default values
         assert_eq!(config_args.group, "");
-        assert_eq!(config_args.topics, vec![""]);
+        assert_eq!(config_args.topics, vec![] as Vec<String>);
     }
 }
