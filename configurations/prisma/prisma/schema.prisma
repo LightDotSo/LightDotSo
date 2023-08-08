@@ -52,7 +52,8 @@ model Session {
   accessToken  String   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  user         User     @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model User {
@@ -64,9 +65,10 @@ model User {
   image         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  wallets       Wallet[]
+
+  accounts Account[]
+  sessions Session[]
+  wallets  Wallet[]
 }
 
 model VerificationRequest {
@@ -88,7 +90,73 @@ model Wallet {
   testnet   Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  users     User[]
 
-  @@unique([chainId, address])
+  users User[]
+
+  @@unique([address, chainId])
+}
+
+model Log {
+  id                  String   @id @default(cuid())
+  address             String
+  topics              String[]
+  data                String
+  blockHash           String?
+  blockNumber         String?
+  transactionHash     String?
+  transactionIndex    String?
+  logIndex            String?
+  transactionLogIndex String?
+  logType             String?
+  removed             Boolean?
+
+  receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
+}
+
+model Receipt {
+  transactionHash   String  @id @unique
+  transactionIndex  String
+  blockHash         String?
+  blockNumber       String?
+  from              String
+  to                String?
+  cumulativeGasUsed String
+  gas_used          String?
+  contractAddress   String?
+  status            String?
+  root              String?
+  logsBloom         String
+  transactionType   String?
+  effectiveGasPrice String?
+  other             Json
+
+  logs Log[]
+
+  transaction Transaction @relation(fields: [transactionHash], references: [hash])
+}
+
+model Transaction {
+  hash                 String  @id @unique
+  nonce                String
+  blockHash            String?
+  blockNumber          String?
+  transactionIndex     String?
+  from                 String
+  to                   String?
+  value                String
+  gas_price            String?
+  gas                  String
+  input                String
+  v                    String
+  r                    String
+  s                    String
+  transactionType      String?
+  maxPriorityFeePerGas String?
+  maxFeePerGas         String?
+  other                Json
+
+  chainId   String
+  timestamp DateTime
+
+  Receipt Receipt?
 }

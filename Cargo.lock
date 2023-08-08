@@ -5435,6 +5435,7 @@ name = "lightdotso-db"
 version = "0.1.0"
 dependencies = [
  "axum 0.6.20",
+ "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
  "lightdotso-prisma",
  "prisma-client-rust",

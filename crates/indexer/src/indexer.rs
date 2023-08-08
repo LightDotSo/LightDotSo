@@ -42,6 +42,7 @@ pub struct Indexer {
 }
 
 impl Indexer {
+    /// Constructs the new Indexer
     pub async fn new(args: &IndexerArgs) -> Self {
         info!("Indexer new, starting");
 
@@ -63,6 +64,7 @@ impl Indexer {
         Self { chain_id: args.chain_id, webhook: args.webhook.clone(), http_client, ws_client }
     }
 
+    /// Runs the indexer
     pub async fn run(&self, db_client: Arc<PrismaClient>) {
         info!("Indexer run, starting");
 
@@ -134,15 +136,15 @@ impl Indexer {
             // Loop over the hashes
             if !wallets.is_empty() {
                 // Get the logs for the newly created wallets
-                let logs = self.get_block_logs(block.number.unwrap(), wallets).await;
+                let logs = self.get_hash_logs(block.number.unwrap(), wallets).await;
+                info!("logs: {:?}", logs);
 
                 for log in logs {
                     info!("log: {:?}", log);
                     let _ = create_wallet(
                         db_client.clone(),
+                        log.clone(),
                         self.chain_id.to_string(),
-                        log.address.to_string(),
-                        log.data.to_string(),
                         Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                     )
                     .await;
@@ -151,7 +153,9 @@ impl Indexer {
         }
     }
 
-    pub async fn get_block_logs(
+    /// Get the logs for the given block number and addresses,
+    /// filtered by the ImageHashUpdated event
+    pub async fn get_hash_logs(
         &self,
         block_number: ethers::types::U64,
         addresses: Vec<ethers::types::H160>,
