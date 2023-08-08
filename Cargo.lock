@@ -5396,6 +5396,7 @@ dependencies = [
  "eyre",
  "http",
  "lightdotso-bundler",
+ "lightdotso-consumer",
  "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-prisma",

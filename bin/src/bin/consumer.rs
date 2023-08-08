@@ -13,15 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::sync::Arc;
-
 use anyhow::Result;
 use axum::{routing::get, Router};
 use clap::Parser;
 use dotenvy::dotenv;
 use lightdotso_bin::version::SHORT_VERSION;
-use lightdotso_db::db::create_client;
-use lightdotso_indexer::config::IndexerArgs;
+use lightdotso_consumer::config::ConsumerArgs;
 use lightdotso_tracing::{
     init, stdout,
     tracing::{info, Level},
@@ -51,17 +48,14 @@ pub async fn main() {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = IndexerArgs::parse();
-
-    // Create the db client
-    let db = Arc::new(create_client().await.unwrap());
+    let args = ConsumerArgs::parse();
 
     // Construct the futures
-    let indexer_future = args.run(db);
+    let consumer_future = args.run();
     let server_future = start_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(indexer_future, server_future);
+    let result = tokio::try_join!(consumer_future, server_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {
