@@ -140,13 +140,20 @@ pub async fn create_transaction_with_log_receipt(
                         .unwrap_or(prisma_client_rust::serde_json::Value::Null),
                     transaction::UniqueWhereParam::HashEquals(tx.hash.clone()),
                     vec![
+                        receipt::transaction_hash::set(receipt.transaction_hash.to_string()),
                         receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
                         receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
-                        receipt::transaction_hash::set(receipt.transaction_hash.to_string()),
+                        receipt::to::set(receipt.to.map(|to| to.to_string())),
                         receipt::gas_used::set(receipt.gas_used.map(|gu| gu.to_string())),
+                        receipt::contract_address::set(
+                            receipt.contract_address.map(|ca| ca.to_string()),
+                        ),
                         receipt::status::set(receipt.status.map(|s| s.to_string())),
                         receipt::transaction_type::set(
                             receipt.transaction_type.map(|tt| tt.to_string()),
+                        ),
+                        receipt::effective_gas_price::set(
+                            receipt.effective_gas_price.map(|egp| egp.to_string()),
                         ),
                     ],
                 )
