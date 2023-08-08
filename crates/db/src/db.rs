@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use axum::extract::Json;
-
 use crate::error::DbError;
+use axum::extract::Json;
 use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     NewClientError,
 };
 use std::sync::Arc;
+use tracing::info;
 
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
@@ -57,6 +57,8 @@ pub async fn create_wallet(
     chain_id: String,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
+    info!("Creating wallet");
+
     let wallet = db
         .wallet()
         .create(
@@ -81,6 +83,8 @@ pub async fn create_transaction_with_log_receipt(
     chain_id: String,
     timestamp: ethers::types::U256,
 ) -> AppJsonResult<transaction::Data> {
+    info!("Creating transaction with log and receipt");
+
     let (tx, _receipt, _log) = db
         ._transaction()
         .run(|client| async move {

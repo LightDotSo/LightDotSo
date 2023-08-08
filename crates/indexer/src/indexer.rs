@@ -32,6 +32,7 @@ use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
 use std::{sync::Arc, time::Duration};
 use tokio::time::sleep;
+use tracing::error;
 
 #[derive(Debug, Clone)]
 pub struct Indexer {
@@ -143,7 +144,7 @@ impl Indexer {
                     info!("log: {:?}", log);
 
                     // Create the wallet
-                    let _ = create_wallet(
+                    let res = create_wallet(
                         db_client.clone(),
                         log.clone(),
                         self.chain_id.to_string(),
@@ -151,12 +152,18 @@ impl Indexer {
                     )
                     .await;
 
+                    // Log if error
+                    if res.is_err() {
+                        error!("create_wallet error: {:?}", res);
+                    }
+
                     // Get the tx receipt
                     let tx_receipt = self
                         .http_client
                         .get_transaction_receipt(log.transaction_hash.unwrap())
                         .await
                         .unwrap();
+                    info!("tx_receipt: {:?}", tx_receipt);
 
                     // Get the tx
                     let tx = self
@@ -164,10 +171,11 @@ impl Indexer {
                         .get_transaction(log.transaction_hash.unwrap())
                         .await
                         .unwrap();
+                    info!("tx: {:?}", tx);
 
                     // Create the transaction with log receipt if both are not empty
                     if tx_receipt.is_some() && tx.is_some() {
-                        let _ = create_transaction_with_log_receipt(
+                        let res = create_transaction_with_log_receipt(
                             db_client.clone(),
                             tx.unwrap(),
                             log.clone(),
@@ -176,6 +184,11 @@ impl Indexer {
                             block.timestamp,
                         )
                         .await;
+
+                        // Log if error
+                        if res.is_err() {
+                            error!("create_transaction_with_log_receipt error: {:?}", res);
+                        }
                     }
                 }
             }
