@@ -58,6 +58,7 @@
     "test:coverage": "vitest --coverage --single-thread",
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
+    "tsc:lint": "tsc --noEmit",
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {

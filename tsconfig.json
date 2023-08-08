@@ -8,11 +8,11 @@
           "solcVersion": "0.8.18"
         },
         "localContracts": {
-          "deployments": [
+          "contracts": [
             {
-              "name": "LightWallet",
+              "name": "LightWalletFactory",
               "addresses": {
-                "31337": "0x5fbdb2315678afecb367f032d93f642f64180aa3"
+                "31337": "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab"
               }
             }
           ]
