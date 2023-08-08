@@ -19,6 +19,7 @@
   eyre = { workspace = true }
   http = { workspace = true }
   lightdotso-bundler = { workspace = true }
+  lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-simulator = { workspace = true }

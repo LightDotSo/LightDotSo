@@ -5396,6 +5396,7 @@ dependencies = [
  "eyre",
  "http",
  "lightdotso-bundler",
+ "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-prisma",
  "lightdotso-simulator",
@@ -5423,6 +5424,7 @@ name = "lightdotso-db"
 version = "0.1.0"
 dependencies = [
  "axum 0.6.20",
+ "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
  "lightdotso-prisma",
  "prisma-client-rust",
@@ -7402,6 +7404,7 @@ dependencies = [
  "serde-value",
  "serde_json",
  "thiserror",
+ "tokio",
  "user-facing-errors",
  "uuid 1.4.1",
 ]

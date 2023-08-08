@@ -16,8 +16,9 @@
 use crate::indexer::Indexer;
 use anyhow::Result;
 use clap::Parser;
+use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
-use std::time::Duration;
+use std::{sync::Arc, time::Duration};
 use tokio::time::sleep;
 
 #[derive(Debug, Clone, Parser, Default)]
@@ -26,10 +27,6 @@ pub struct IndexerArgs {
     #[arg(long, short, default_value_t = 1)]
     #[clap(long, env = "CHAIN_ID")]
     pub chain_id: usize,
-    /// The Database URL to connect to.
-    #[arg(long, short, default_value_t = String::from(""))]
-    #[clap(long, env = "DATABASE_URL")]
-    pub database_url: String,
     /// The RPC endpoint to connect to.
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "INDEXER_RPC_URL")]
@@ -57,7 +54,7 @@ pub struct IndexerArgs {
 }
 
 impl IndexerArgs {
-    pub async fn run(&self) -> Result<()> {
+    pub async fn run(&self, db: Arc<PrismaClient>) -> Result<()> {
         // Add info
         info!("IndexerArgs run, exiting");
 
@@ -71,7 +68,7 @@ impl IndexerArgs {
             async move {
                 loop {
                     // Run the indexer
-                    let _ = indexer.run().await;
+                    let _ = indexer.run(Arc::clone(&db)).await;
 
                     // Sleep for 300ms
                     sleep(Duration::from_millis(300)).await;

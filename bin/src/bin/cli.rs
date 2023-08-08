@@ -13,15 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use std::sync::Arc;
+
 /// Main entry point for the wallet cli.
 /// Structue of the CLI is extremely influenced from reth.
 /// https://github.com/paradigmxyz/reth/tree/main/bin/reth
 use clap::{ArgAction, Args, Parser, Subcommand};
+use lightdotso_db::db::create_client;
 use lightdotso_tracing::{
     tracing::{metadata::LevelFilter, Level},
     tracing_subscriber::{filter::Directive, EnvFilter},
 };
-
 /// Parse CLI options, set up logging and run the chosen command.
 pub async fn run() -> anyhow::Result<()> {
     // Parse CLI options
@@ -32,9 +34,12 @@ pub async fn run() -> anyhow::Result<()> {
         EnvFilter::builder().with_default_directive(opt.verbosity.directive()).from_env_lossy();
     lightdotso_tracing::tracing_subscriber::fmt().with_env_filter(filter).init();
 
+    // Create the db client
+    let db = Arc::new(create_client().await.unwrap());
+
     // Run the chosen command
     match opt.command {
-        Commands::Indexer(m) => m.run().await,
+        Commands::Indexer(m) => m.run(db).await,
     }
 }
 
