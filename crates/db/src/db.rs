@@ -16,9 +16,7 @@
 use axum::extract::Json;
 
 use crate::error::DbError;
-use lightdotso_prisma::{
-    account::access_token::equals, log, receipt, transaction, user, wallet, PrismaClient,
-};
+use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     NewClientError,
@@ -64,6 +62,7 @@ pub async fn create_wallet(
         .create(
             log.address.to_string(),
             chain_id,
+            // Parse the log indexed data as a string.
             log.data.to_string(),
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
         )
@@ -82,7 +81,7 @@ pub async fn create_transaction_with_log_receipt(
     chain_id: ethers::types::U256,
     timestamp: ethers::types::U256,
 ) -> AppJsonResult<transaction::Data> {
-    let (tx, _log) = db
+    let (tx, _receipt, _log) = db
         ._transaction()
         .run(|client| async move {
             let tx = client
@@ -100,7 +99,7 @@ pub async fn create_transaction_with_log_receipt(
                     transaction.s.to_string(),
                     DateTime::<FixedOffset>::from_utc(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
-                        FixedOffset { local_minus_utc: 0 },
+                        FixedOffset::east_opt(0).unwrap(),
                     ),
                     vec![transaction::block_number::set(
                         receipt.block_number.map(|n| n.to_string()),
@@ -112,13 +111,22 @@ pub async fn create_transaction_with_log_receipt(
             let receipt = client
                 .receipt()
                 .create(
+                    receipt.transaction_index.to_string(),
                     receipt.from.to_string(),
                     receipt.cumulative_gas_used.to_string(),
                     receipt.logs_bloom.to_string(),
                     prisma_client_rust::serde_json::to_value(receipt.other).unwrap(),
-                    // receipt::transaction_hash::equals(tx.hash.clone()),
-                    // receipt.transaction
-                    vec![],
+                    transaction::UniqueWhereParam::HashEquals(tx.hash.clone()),
+                    vec![
+                        receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
+                        receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
+                        receipt::transaction_hash::set(receipt.transaction_hash.to_string()),
+                        receipt::gas_used::set(receipt.gas_used.map(|gu| gu.to_string())),
+                        receipt::status::set(receipt.status.map(|s| s.to_string())),
+                        receipt::transaction_type::set(
+                            receipt.transaction_type.map(|tt| tt.to_string()),
+                        ),
+                    ],
                 )
                 .exec()
                 .await?;
@@ -146,9 +154,7 @@ pub async fn create_transaction_with_log_receipt(
                 )
                 .exec()
                 .await
-                .map(|log| (tx, log))
-
-            // let receipt = client
+                .map(|log| (tx, receipt, log))
         })
         .await?;
 

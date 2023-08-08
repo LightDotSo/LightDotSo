@@ -95,7 +95,7 @@ model Log {
 }
 
 model Receipt {
-  transactionIndex  String?
+  transactionIndex  String
   blockHash         String?
   blockNumber       String?
   from              String
