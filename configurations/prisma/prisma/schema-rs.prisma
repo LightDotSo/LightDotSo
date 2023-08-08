@@ -79,67 +79,71 @@ model Wallet {
 
 model Log {
   id                  String   @id @default(cuid())
-  address             String
   chainId             String
   topics              String[]
   data                String
   blockHash           String?
   blockNumber         String?
-  transactionHash     String?
   transactionIndex    String?
   transactionLogIndex String?
   logIndex            String?
   logType             String?
   removed             Boolean?
 
-  transaction   Transaction? @relation(fields: [transactionId], references: [hash])
-  transactionId String?
+  receipt                Receipt? @relation(fields: [receiptTransactionHash], references: [transactionHash])
+  receiptTransactionHash String?
 }
 
 model Receipt {
-  hash                String  @id
-  base_fee_per_gas    String?
-  burned_fees         String
-  chainId             String
-  contract_address    String?
-  cumulative_gas_used String
-  effective_gas_price String?
-  gas_used            String?
-  status              String
+  transactionHash   String  @id
+  transactionIndex  String
+  blockHash         String?
+  blockNumber       String?
+  from              String
+  to                String?
+  cumulativeGasUsed String
+  gas_used          String?
+  contractAddress   String?
+  status            String?
+  root              String?
+  logsBloom         String
+  transactionType   String?
+  effectiveGasPrice String?
 
-  timestamp DateTime
+  other Json
+
+  logs Log[]
 
   transaction   Transaction @relation(fields: [transactionId], references: [hash])
   transactionId String      @unique
 }
 
 model Transaction {
-  hash                     String  @id
-  nonce                    String
-  block_hash               String?
-  block_number             String?
-  transaction_index        String?
-  from                     String
-  to                       String?
-  value                    String
-  gas_price                String?
-  gas                      String
-  input                    String
-  v                        String
-  r                        String
-  s                        String
-  fee_currency             String?
-  gateway_fee_recipient    String?
-  gateway_fee              String?
-  transaction_type         String?
-  access_list              String?
-  max_priority_fee_per_gas String?
-  max_fee_per_gas          String?
-  chain_id                 String?
-  other                    String?
+  hash                 String  @id
+  chainId              String
+  nonce                String
+  blockHash            String?
+  blockNumber          String?
+  transactionIndex     String?
+  from                 String
+  to                   String?
+  value                String
+  gas_price            String?
+  gas                  String
+  input                String
+  v                    String
+  r                    String
+  s                    String
+  feeCurrency          String?
+  gatewayFeeRecipient  String?
+  gatewayFee           String?
+  transactionType      String?
+  accessList           String?
+  maxPriorityFeePerGas String?
+  maxFeePerGas         String?
+  other                String?
 
   timestamp DateTime
 
-  logs    Log[]
   Receipt Receipt?
 }

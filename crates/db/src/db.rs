@@ -16,8 +16,11 @@
 use axum::extract::Json;
 
 use crate::error::DbError;
-use lightdotso_prisma::{log, user, wallet, PrismaClient};
-use prisma_client_rust::NewClientError;
+use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
+use prisma_client_rust::{
+    chrono::{DateTime, FixedOffset, NaiveDateTime},
+    NewClientError,
+};
 use std::sync::Arc;
 
 type Database = Arc<PrismaClient>;
@@ -47,6 +50,7 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
     Ok(Json::from(users))
 }
 
+/// Create a new user.
 pub async fn create_wallet(
     db: Database,
     log: ethers::types::Log,
@@ -68,24 +72,55 @@ pub async fn create_wallet(
 }
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
-pub async fn create_wallet_with_log(
+pub async fn create_transaction_with_log_receipt(
     db: Database,
+    transaction: ethers::types::Transaction,
     log: ethers::types::Log,
-    chain_id: String,
-    address: String,
-    hash: String,
-    testnet: Option<bool>,
-) -> AppJsonResult<wallet::Data> {
-    let (wallet, _log) = db
+    receipt: ethers::types::TransactionReceipt,
+    chain_id: ethers::types::U256,
+    timestamp: ethers::types::U256,
+) -> AppJsonResult<transaction::Data> {
+    let (tx, _log) = db
         ._transaction()
         .run(|client| async move {
-            let wallet = client
-                .wallet()
+            let tx = client
+                .transaction()
                 .create(
-                    address.clone(),
-                    chain_id.clone(),
-                    hash.clone(),
-                    vec![wallet::testnet::set(testnet.unwrap_or(false))],
+                    transaction.hash.to_string(),
+                    chain_id.to_string(),
+                    transaction.nonce.to_string(),
+                    transaction.from.to_string(),
+                    transaction.value.to_string(),
+                    transaction.gas.to_string(),
+                    transaction.input.to_string(),
+                    transaction.v.to_string(),
+                    transaction.r.to_string(),
+                    transaction.s.to_string(),
+                    DateTime::<FixedOffset>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
+                        FixedOffset { local_minus_utc: 0 },
+                    ),
+                    vec![transaction::block_number::set(
+                        receipt.block_number.map(|n| n.to_string()),
+                    )],
+                )
+                .exec()
+                .await?;
+
+            client
+                .receipt()
+                .create(
+                    transaction.hash.to_string(),
+                    chain_id.to_string(),
+                    receipt.block_hash.map(|bh| bh.to_string()),
+                    receipt.cumulative_gas_used.to_string(),
+                    receipt.status.map(|s| s.to_string()),
+                    DateTime::<FixedOffset>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
+                        FixedOffset { local_minus_utc: 0 },
+                    ),
+                    // receipt::transaction::connect(transaction::hash::equals(tx.hash.clone())),
+                    vec![],
                 )
                 .exec()
                 .await?;
@@ -93,34 +128,32 @@ pub async fn create_wallet_with_log(
             client
                 .log()
                 .create(
-                    address.clone(),
-                    chain_id.clone(),
+                    chain_id.to_string(),
                     log.data.to_string(),
                     vec![
-                        log::wallet::connect(wallet::id::equals(wallet.id.clone())),
+                        log::transaction::connect(transaction::hash::equals(tx.hash.clone())),
                         log::topics::set(
                             log.topics.iter().map(|tx_hash| tx_hash.to_string()).collect(),
                         ),
                         log::block_hash::set(log.block_hash.map(|bh| bh.to_string())),
-                        log::block_number::set(log.block_number.map(|bn| bn.try_into().unwrap())),
+                        log::block_number::set(log.block_number.map(|bn| bn.to_string())),
                         log::transaction_hash::set(log.transaction_hash.map(|th| th.to_string())),
-                        log::transaction_index::set(
-                            log.transaction_index.map(|ti| ti.try_into().unwrap()),
-                        ),
+                        log::transaction_index::set(log.transaction_index.map(|ti| ti.to_string())),
                         log::transaction_log_index::set(
-                            log.transaction_log_index.map(|lti| lti.try_into().unwrap()),
+                            log.transaction_log_index.map(|lti| lti.to_string()),
                         ),
-                        log::log_index::set(log.log_index.map(|li| li.try_into().unwrap())),
+                        log::log_index::set(log.log_index.map(|li| li.to_string())),
                         log::log_type::set(log.log_type),
                         log::removed::set(log.removed),
                     ],
                 )
                 .exec()
                 .await
-                // if query succeeds, return user + log from transaction
-                .map(|log| (wallet, log))
+                .map(|log| (tx, log))
+
+            // let receipt = client
         })
         .await?;
 
-    Ok(Json::from(wallet))
+    Ok(Json::from(tx))
 }
