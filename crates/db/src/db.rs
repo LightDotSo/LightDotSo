@@ -194,11 +194,86 @@ pub async fn create_transaction_with_log_receipt(
 // Tests
 #[cfg(test)]
 mod tests {
-    use ethers::types::Address;
+    use super::*;
+    use ethers::types::{Address, Log};
+    use lightdotso_prisma::PrismaClient;
 
     #[test]
     fn test_display_address() {
         let address = Address::zero();
         assert_eq!(format!("{:?}", address), "0x0000000000000000000000000000000000000000");
+    }
+
+    #[tokio::test]
+    async fn test_create_wallet() {
+        let log = Log {
+            address: Address::zero(),
+            block_hash: Some(
+                "0x1d59ff54b1eb26b013ce3cb5fc9dab3705b415a67127a003c3e61eb445bb8df2"
+                    .parse()
+                    .unwrap(),
+            ),
+            block_number: Some(0x5daf3b.into()),
+            data: "0x68656c6c6f21".parse().unwrap(),
+            transaction_hash: Some(
+                "0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b"
+                    .parse()
+                    .unwrap(),
+            ),
+            transaction_index: Some(0x41.into()),
+            log_index: Some(0x1.into()),
+            transaction_log_index: Some(0x0.into()),
+            log_type: None,
+            removed: Some(false),
+            topics: vec![
+                "bd9bb67345a2fcc8ef3b0857e7e2901f5a0dcfc7fe5e3c10dc984f02842fb7ba".parse().unwrap(),
+                "000000000000000000000000000000000000000000000000000000000000007b".parse().unwrap(),
+            ],
+        };
+
+        // Set the mocked db client
+        let (client, _mock) = PrismaClient::_mock();
+        let client = Arc::new(client);
+
+        // Check the wallet is created
+        _mock
+            .expect(
+                client.wallet().create(
+                    format!("{:?}", log.address),
+                    "3".to_string(),
+                    log.data.to_string(),
+                    vec![wallet::testnet::set(false)],
+                ),
+                wallet::Data {
+                    id: "".to_string(),
+                    address: format!("{:?}", Address::zero()),
+                    chain_id: "3".to_string(),
+                    hash: "".to_string(),
+                    testnet: false,
+                    created_at: DateTime::<FixedOffset>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(0_i64, 0).unwrap(),
+                        FixedOffset::east_opt(0).unwrap(),
+                    ),
+                    updated_at: DateTime::<FixedOffset>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(0_i64, 0).unwrap(),
+                        FixedOffset::east_opt(0).unwrap(),
+                    ),
+                    users: Some(vec![]),
+                },
+            )
+            .await;
+
+        // Create a wallet
+        let wallet = create_wallet(client, log, "3".to_string(), Some(false)).await;
+
+        if let Ok(wallet) = wallet {
+            assert_eq!(wallet.address, format!("{:?}", Address::zero()));
+            assert_eq!(wallet.chain_id, "3".to_string());
+            assert_eq!(wallet.hash, "".to_string());
+            assert!(!wallet.testnet);
+            assert_eq!(wallet.created_at.timestamp(), 0);
+            assert_eq!(wallet.updated_at.timestamp(), 0);
+            assert_eq!(wallet.users.clone().unwrap().len(), 0);
+        }
     }
 }

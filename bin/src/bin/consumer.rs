@@ -47,13 +47,6 @@ pub async fn main() {
 
     info!("Starting server at {}", SHORT_VERSION);
 
-    // Parse the command line arguments
-    let args = ConsumerArgs::parse();
-
-    // Construct the futures
-    let consumer_future = args.run();
-    let server_future = start_server();
-
     // Run the test server if we're running in Fly
     if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-consumer") {
         let test_server_future = start_server();
@@ -63,6 +56,13 @@ pub async fn main() {
             std::process::exit(1)
         };
     }
+
+    // Parse the command line arguments
+    let args = ConsumerArgs::parse();
+
+    // Construct the futures
+    let consumer_future = args.run();
+    let server_future = start_server();
 
     // Run the futures concurrently
     let result = tokio::try_join!(consumer_future, server_future);
