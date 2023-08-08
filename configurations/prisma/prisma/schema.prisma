@@ -128,7 +128,7 @@ model Receipt {
   logsBloom         String
   transactionType   String?
   effectiveGasPrice String?
-  other             Json?
+  other             Json
 
   logs Log[]
 
@@ -136,7 +136,7 @@ model Receipt {
 }
 
 model Transaction {
-  hash                 String  @id
+  hash                 String  @id @unique
   nonce                String
   blockHash            String?
   blockNumber          String?
@@ -150,14 +150,10 @@ model Transaction {
   v                    String
   r                    String
   s                    String
-  feeCurrency          String?
-  gatewayFeeRecipient  String?
-  gatewayFee           String?
   transactionType      String?
-  accessList           String?
   maxPriorityFeePerGas String?
   maxFeePerGas         String?
-  other                Json?
+  other                Json
 
   chainId   String
   timestamp DateTime
