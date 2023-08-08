@@ -19,6 +19,7 @@
     "changeset": "changeset",
     "deploy:checkly": "checkly deploy",
     "dev:prisma": "make docker-compose-up",
+    "dev:prisma:studio": "pnpm run studio:dev --filter @lightdotso/prisma",
     "e2e:api:dev": "PLAYWRIGHT_TEST_BASE_URL=http://localhost:3000 playwright test --project=@lightdotso/api",
     "e2e:app:dev": "PLAYWRIGHT_TEST_BASE_URL=http://localhost:3001 playwright test --project=@lightdotso/app",
     "eslint:cmd": "eslint --config .eslintrc.js --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint",
