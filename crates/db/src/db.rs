@@ -16,7 +16,9 @@
 use axum::extract::Json;
 
 use crate::error::DbError;
-use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
+use lightdotso_prisma::{
+    account::access_token::equals, log, receipt, transaction, user, wallet, PrismaClient,
+};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     NewClientError,
@@ -107,19 +109,15 @@ pub async fn create_transaction_with_log_receipt(
                 .exec()
                 .await?;
 
-            client
+            let receipt = client
                 .receipt()
                 .create(
-                    transaction.hash.to_string(),
-                    chain_id.to_string(),
-                    receipt.block_hash.map(|bh| bh.to_string()),
+                    receipt.from.to_string(),
                     receipt.cumulative_gas_used.to_string(),
-                    receipt.status.map(|s| s.to_string()),
-                    DateTime::<FixedOffset>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
-                        FixedOffset { local_minus_utc: 0 },
-                    ),
-                    // receipt::transaction::connect(transaction::hash::equals(tx.hash.clone())),
+                    receipt.logs_bloom.to_string(),
+                    prisma_client_rust::serde_json::to_value(receipt.other).unwrap(),
+                    // receipt::transaction_hash::equals(tx.hash.clone()),
+                    // receipt.transaction
                     vec![],
                 )
                 .exec()
@@ -131,13 +129,12 @@ pub async fn create_transaction_with_log_receipt(
                     chain_id.to_string(),
                     log.data.to_string(),
                     vec![
-                        log::transaction::connect(transaction::hash::equals(tx.hash.clone())),
+                        log::receipt::connect(receipt::transaction_hash::equals(tx.hash.clone())),
                         log::topics::set(
                             log.topics.iter().map(|tx_hash| tx_hash.to_string()).collect(),
                         ),
                         log::block_hash::set(log.block_hash.map(|bh| bh.to_string())),
                         log::block_number::set(log.block_number.map(|bn| bn.to_string())),
-                        log::transaction_hash::set(log.transaction_hash.map(|th| th.to_string())),
                         log::transaction_index::set(log.transaction_index.map(|ti| ti.to_string())),
                         log::transaction_log_index::set(
                             log.transaction_log_index.map(|lti| lti.to_string()),

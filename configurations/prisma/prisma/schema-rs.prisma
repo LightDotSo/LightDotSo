@@ -95,8 +95,7 @@ model Log {
 }
 
 model Receipt {
-  transactionHash   String  @id
-  transactionIndex  String
+  transactionIndex  String?
   blockHash         String?
   blockNumber       String?
   from              String
@@ -114,8 +113,8 @@ model Receipt {
 
   logs Log[]
 
-  transaction   Transaction @relation(fields: [transactionId], references: [hash])
-  transactionId String      @unique
+  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
+  transactionHash String      @id @unique
 }
 
 model Transaction {
