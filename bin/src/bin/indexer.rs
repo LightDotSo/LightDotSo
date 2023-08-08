@@ -60,6 +60,16 @@ pub async fn main() {
     let indexer_future = args.run(db);
     let server_future = start_server();
 
+    // Run the test server if we're running in Fly
+    if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-indexer") {
+        let test_server_future = start_server();
+        let result = test_server_future.await;
+
+        if result.is_err() {
+            std::process::exit(1)
+        };
+    }
+
     // Run the futures concurrently
     let result = tokio::try_join!(indexer_future, server_future);
 
