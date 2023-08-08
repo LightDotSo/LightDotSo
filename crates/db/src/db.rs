@@ -78,7 +78,7 @@ pub async fn create_transaction_with_log_receipt(
     transaction: ethers::types::Transaction,
     log: ethers::types::Log,
     receipt: ethers::types::TransactionReceipt,
-    chain_id: ethers::types::U256,
+    chain_id: String,
     timestamp: ethers::types::U256,
 ) -> AppJsonResult<transaction::Data> {
     let (tx, _receipt, _log) = db
@@ -98,7 +98,7 @@ pub async fn create_transaction_with_log_receipt(
                     transaction.s.to_string(),
                     prisma_client_rust::serde_json::to_value(transaction.other)
                         .unwrap_or(prisma_client_rust::serde_json::Value::Null),
-                    chain_id.to_string(),
+                    chain_id,
                     DateTime::<FixedOffset>::from_utc(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
                         FixedOffset::east_opt(0).unwrap(),

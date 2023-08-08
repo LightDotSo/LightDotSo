@@ -26,7 +26,7 @@ use ethers::{
     },
 };
 use futures::StreamExt;
-use lightdotso_db::db::create_wallet;
+use lightdotso_db::db::{create_transaction_with_log_receipt, create_wallet};
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
@@ -141,6 +141,8 @@ impl Indexer {
 
                 for log in logs {
                     info!("log: {:?}", log);
+
+                    // Create the wallet
                     let _ = create_wallet(
                         db_client.clone(),
                         log.clone(),
@@ -148,6 +150,33 @@ impl Indexer {
                         Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                     )
                     .await;
+
+                    // Get the tx receipt
+                    let tx_receipt = self
+                        .http_client
+                        .get_transaction_receipt(log.transaction_hash.unwrap())
+                        .await
+                        .unwrap();
+
+                    // Get the tx
+                    let tx = self
+                        .http_client
+                        .get_transaction(log.transaction_hash.unwrap())
+                        .await
+                        .unwrap();
+
+                    // Create the transaction with log receipt if both are not empty
+                    if tx_receipt.is_some() && tx.is_some() {
+                        let _ = create_transaction_with_log_receipt(
+                            db_client.clone(),
+                            tx.unwrap(),
+                            log.clone(),
+                            tx_receipt.unwrap(),
+                            self.chain_id.to_string(),
+                            block.timestamp,
+                        )
+                        .await;
+                    }
                 }
             }
         }
