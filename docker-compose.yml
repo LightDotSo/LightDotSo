@@ -21,7 +21,7 @@ services:
   prometheus:
     image: prom/prometheus:latest
     ports:
-      - "9091:9091"
+      - "9092:9092"
     volumes:
       - prometheus-data:/prometheus-data
 volumes:
