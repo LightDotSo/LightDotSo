@@ -16,6 +16,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
+use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
 use clap::Parser;
 use dotenvy::dotenv;
@@ -23,18 +24,22 @@ use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_tracing::{
-    init, stdout,
+    init, otel, stdout,
     tracing::{info, Level},
 };
 
+#[autometrics]
 async fn health_check() -> &'static str {
     "OK"
 }
 
 pub async fn start_server() -> Result<()> {
+    prometheus_exporter::init();
+
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check));
+        .route("/health", get(health_check))
+        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
 
     let socket_addr = "0.0.0.0:3002".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
@@ -46,7 +51,7 @@ pub async fn start_server() -> Result<()> {
 pub async fn main() {
     let _ = dotenv();
 
-    init(vec![stdout(Level::INFO)]);
+    init(vec![stdout(Level::INFO), otel()]);
 
     info!("Starting server at {}", SHORT_VERSION);
 

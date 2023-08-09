@@ -1,0 +1,32 @@
+name: Android
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  pull_request_target:
+    types:
+      - labeled
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      issues: write
+      pull-requests: write
+      repository-projects: read
+      contents: read
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Diff Metrics
+        uses: autometrics-dev/diff-metrics@v1
+        with:
+          gh-token: ${{ secrets.GITHUB_TOKEN }}
+          rust-roots: |
+            bin
+            crates/db
+            crates/indexer
