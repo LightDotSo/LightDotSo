@@ -1,1 +1,5 @@
 pushgateway-enabled = true
+
+[[endpoint]]
+  job-name = "indexer"
+  url = "http://localhost:3002"

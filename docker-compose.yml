@@ -18,6 +18,13 @@ services:
       - "6379:6379"
     volumes:
       - redis:/data
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9091:9091"
+    volumes:
+      - prometheus-data:/prometheus-data
 volumes:
   postgres-db:
   redis:
+  prometheus-data:
