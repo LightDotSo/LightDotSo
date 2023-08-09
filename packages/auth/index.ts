@@ -29,7 +29,20 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET!,
   callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.warn("signIn", { user, account, profile, email, credentials });
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      console.warn("redirect", { url, baseUrl });
+      return baseUrl;
+    },
+    async jwt({ token, user, account, profile }) {
+      console.warn("jwt", { token, user, account, profile });
+      return token;
+    },
     async session({ session, token }: { session: any; token: any }) {
+      console.warn("session", { session, token });
       session.token = token;
       session.token.expires = session.expires;
       session.id = token.sub;
@@ -57,6 +70,8 @@ export const authOptions: AuthOptions = {
         },
       },
       async authorize(credentials, req) {
+        console.info("authorize", { credentials, req });
+
         try {
           // Convert the message to a siwe message
           const siwe = new SiweMessage(
