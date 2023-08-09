@@ -24,10 +24,10 @@ import { getUrl, api } from "@lightdotso/trpc";
 import { useState } from "react";
 import superjson from "superjson";
 
-export function TRPCProvider(props: {
+export const TrpcProvider = (props: {
   children: React.ReactNode;
   headers?: Headers;
-}) {
+}) => {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -80,4 +80,4 @@ export function TRPCProvider(props: {
       </QueryClientProvider>
     </api.Provider>
   );
-}
+};
