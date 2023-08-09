@@ -147,7 +147,7 @@ impl Indexer {
                     let res = create_wallet(
                         db_client.clone(),
                         log.clone(),
-                        self.chain_id.to_string(),
+                        self.chain_id as i64,
                         Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                     )
                     .await;
@@ -179,7 +179,7 @@ impl Indexer {
                             tx.clone().unwrap(),
                             tx_receipt.clone().unwrap().logs,
                             tx_receipt.clone().unwrap(),
-                            self.chain_id.to_string(),
+                            self.chain_id as i64,
                             block.timestamp,
                         )
                         .await;

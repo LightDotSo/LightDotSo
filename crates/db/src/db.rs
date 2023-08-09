@@ -54,7 +54,7 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
 pub async fn create_wallet(
     db: Database,
     log: ethers::types::Log,
-    chain_id: String,
+    chain_id: i64,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
     info!("Creating wallet");
@@ -80,7 +80,7 @@ pub async fn create_transaction_with_log_receipt(
     transaction: ethers::types::Transaction,
     logs: Vec<ethers::types::Log>,
     receipt: ethers::types::TransactionReceipt,
-    chain_id: String,
+    chain_id: i64,
     timestamp: ethers::types::U256,
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
@@ -92,7 +92,7 @@ pub async fn create_transaction_with_log_receipt(
                 .transaction()
                 .create(
                     format!("{:?}", transaction.hash),
-                    transaction.nonce.to_string(),
+                    transaction.nonce.as_u64() as i64,
                     format!("{:?}", transaction.from),
                     transaction.value.to_string(),
                     transaction.gas.to_string(),
@@ -110,21 +110,23 @@ pub async fn create_transaction_with_log_receipt(
                             transaction.block_hash.map(|bh| format!("{:?}", bh)),
                         ),
                         transaction::block_number::set(
-                            transaction.block_number.map(|n| n.to_string()),
+                            transaction.block_number.map(|n| n.as_u32() as i32),
                         ),
                         transaction::transaction_index::set(
-                            transaction.transaction_index.map(|ti| ti.to_string()),
+                            transaction.transaction_index.map(|ti| ti.as_u32() as i32),
                         ),
                         transaction::to::set(transaction.to.map(|to| format!("{:?}", to))),
-                        transaction::gas_price::set(transaction.gas_price.map(|gp| gp.to_string())),
+                        transaction::gas_price::set(
+                            transaction.gas_price.map(|gp| gp.as_u64() as i64),
+                        ),
                         transaction::transaction_type::set(
-                            transaction.transaction_type.map(|gu| gu.to_string()),
+                            transaction.transaction_type.map(|gu| gu.as_u32() as i32),
                         ),
                         transaction::max_priority_fee_per_gas::set(
-                            transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.to_string()),
+                            transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.as_u64() as i64),
                         ),
                         transaction::max_fee_per_gas::set(
-                            transaction.max_fee_per_gas.map(|mfpg| mfpg.to_string()),
+                            transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
                         ),
                     ],
                 )
@@ -137,24 +139,26 @@ pub async fn create_transaction_with_log_receipt(
                 .receipt()
                 .create(
                     format!("{:?}", receipt.transaction_hash),
-                    receipt.transaction_index.to_string(),
+                    receipt.transaction_index.as_u32() as i32,
                     format!("{:?}", receipt.from),
-                    receipt.cumulative_gas_used.to_string(),
+                    receipt.cumulative_gas_used.as_u64() as i64,
                     receipt.logs_bloom.to_string(),
                     vec![
                         receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
-                        receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
+                        receipt::block_number::set(
+                            receipt.block_number.map(|bn| bn.as_u32() as i32),
+                        ),
                         receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
-                        receipt::gas_used::set(receipt.gas_used.map(|gu| gu.to_string())),
+                        receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
                         receipt::contract_address::set(
                             receipt.contract_address.map(|ca| format!("{:?}", ca)),
                         ),
-                        receipt::status::set(receipt.status.map(|s| s.to_string())),
+                        receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
                         receipt::transaction_type::set(
-                            receipt.transaction_type.map(|tt| tt.to_string()),
+                            receipt.transaction_type.map(|tt| tt.as_u32() as i32),
                         ),
                         receipt::effective_gas_price::set(
-                            receipt.effective_gas_price.map(|egp| egp.to_string()),
+                            receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
                         ),
                     ],
                 )
@@ -181,16 +185,16 @@ pub async fn create_transaction_with_log_receipt(
                                 log.topics.iter().map(|topic| format!("{:?}", topic)).collect(),
                             ),
                             log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
-                            log::block_number::set(log.block_number.map(|bn| bn.to_string())),
+                            log::block_number::set(log.block_number.map(|bn| bn.as_u32() as i32)),
                             log::transaction_hash::set(
                                 log.transaction_hash.map(|th| format!("{:?}", th)),
                             ),
                             log::transaction_index::set(
-                                log.transaction_index.map(|ti| ti.to_string()),
+                                log.transaction_index.map(|ti| ti.as_u32() as i32),
                             ),
-                            log::log_index::set(log.log_index.map(|li| li.to_string())),
+                            log::log_index::set(log.log_index.map(|li| li.as_u64() as i64)),
                             log::transaction_log_index::set(
-                                log.transaction_log_index.map(|lti| lti.to_string()),
+                                log.transaction_log_index.map(|lti| lti.as_u64() as i64),
                             ),
                             log::log_type::set(log.clone().log_type),
                             log::removed::set(log.removed),
@@ -255,14 +259,14 @@ mod tests {
             .expect(
                 client.wallet().create(
                     format!("{:?}", log.address),
-                    "3".to_string(),
+                    3_i64,
                     log.data.to_string(),
                     vec![wallet::testnet::set(false)],
                 ),
                 wallet::Data {
                     id: "".to_string(),
                     address: format!("{:?}", Address::zero()),
-                    chain_id: "3".to_string(),
+                    chain_id: 3_i64,
                     hash: "".to_string(),
                     testnet: false,
                     created_at: DateTime::<FixedOffset>::from_utc(
@@ -279,11 +283,11 @@ mod tests {
             .await;
 
         // Create a wallet
-        let wallet = create_wallet(client, log, "3".to_string(), Some(false)).await;
+        let wallet = create_wallet(client, log, 3_i64, Some(false)).await;
 
         if let Ok(wallet) = wallet {
             assert_eq!(wallet.address, format!("{:?}", Address::zero()));
-            assert_eq!(wallet.chain_id, "3".to_string());
+            assert_eq!(wallet.chain_id, 3_i64,);
             assert_eq!(wallet.hash, "".to_string());
             assert!(!wallet.testnet);
             assert_eq!(wallet.created_at.timestamp(), 0);

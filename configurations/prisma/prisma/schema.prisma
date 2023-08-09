@@ -85,7 +85,7 @@ model VerificationRequest {
 model Wallet {
   id        String   @id @default(cuid())
   address   String
-  chainId   String
+  chainId   BigInt
   hash      String
   testnet   Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -96,66 +96,178 @@ model Wallet {
   @@unique([address, chainId])
 }
 
+/// ethers-rs Log struct converted to Prisma model.
+/// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/log.rs#L6-L62
 model Log {
   id                  String   @id @default(cuid())
+  /// H160. the contract that emitted the log
+  /// pub address: Address
   address             String
+  /// topics: Array of 0 to 4 32 Bytes of indexed log arguments.
+  /// (In solidity: The first topic is the hash of the signature of the event
+  /// (e.g. `Deposit(address,bytes32,uint256)`), except you declared the event
+  /// with the anonymous specifier.)
+  /// pub topics: Vec<H256>
   topics              String[]
+  /// Data
+  /// pub data: Bytes
   data                String
+  /// Block Hash
+  /// pub block_hash: Option<H256>
   blockHash           String?
-  blockNumber         String?
+  /// Block Number
+  /// pub block_number: Option<U64>
+  blockNumber         Int?
+  /// Transaction Hash
+  /// pub transaction_hash: Option<H256>
   transactionHash     String?
-  transactionIndex    String?
-  logIndex            String?
-  transactionLogIndex String?
+  /// Transaction Index
+  /// pub transaction_index: Option<U64>
+  transactionIndex    Int?
+  /// Integer of the log index position in the block. None if it's a pending log.
+  /// pub log_index: Option<U256>
+  logIndex            BigInt?
+  /// Integer of the transactions index position log was created from.
+  /// None when it's a pending log.
+  /// pub transaction_log_index: Option<U256>
+  transactionLogIndex BigInt?
+  /// Log Type
+  /// pub log_type: Option<String>
   logType             String?
+  /// True when the log was removed, due to a chain reorganization.
+  /// false if it's a valid log.
+  /// pub removed: Option<bool>
   removed             Boolean?
 
   receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
 }
 
+/// ethers-rs TransactionReceipt struct converted to Prisma model.
+/// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L388-440
 model Receipt {
+  /// Transaction hash.
+  /// pub transaction_hash: H256
   transactionHash   String  @id
-  transactionIndex  String
+  /// Index within the block.
+  /// pub transaction_index: U64
+  transactionIndex  Int
+  /// Hash of the block this transaction was included within.
+  /// pub block_hash: Option<H256>
   blockHash         String?
-  blockNumber       String?
+  /// Number of the block this transaction was included within.
+  /// pub block_number: Option<U64>
+  blockNumber       Int?
+  /// address of the sender.
+  /// pub from: Address
   from              String
+  /// address of the receiver. null when its a contract creation transaction.
+  /// pub to: Option<Address>
   to                String?
-  cumulativeGasUsed String
-  gas_used          String?
+  /// Cumulative gas used within the block after this was executed.
+  /// pub cumulative_gas_used: U256
+  cumulativeGasUsed BigInt
+  /// Gas used by this transaction alone.
+  ///
+  /// Gas used is `None` if the the client is running in light client mode.
+  /// pub gas_used: Option<U256>
+  gas_used          BigInt?
+  /// Contract address created, or `None` if not a deployment.
+  /// pub contract_address: Option<Address>
   contractAddress   String?
-  status            String?
+  /// Status: either 1 (success) or 0 (failure). Only present after activation of [EIP-658](https://eips.ethereum.org/EIPS/eip-658)
+  /// pub status: Option<U64>
+  status            Int?
+  /// State root. Only present before activation of [EIP-658](https://eips.ethereum.org/EIPS/eip-658)
+  /// pub root: Option<H256>
   root              String?
+  /// Logs bloom
+  /// pub logs_bloom: Bloom
   logsBloom         String
-  transactionType   String?
-  effectiveGasPrice String?
-  // other             Json?
+  /// Transaction type, Some(1) for AccessList transaction, None for Legacy
+  /// pub transaction_type: Option<U64>
+  transactionType   Int?
+  /// The price paid post-execution by the transaction (i.e. base fee + priority fee).
+  /// Both fields in 1559-style transactions are *maximums* (max fee + max priority fee), the
+  /// amount that's actually paid by users can only be determined post-execution
+  /// pub effective_gas_price: Option<U256>
+  effectiveGasPrice BigInt?
 
+  /// Logs generated within this transaction.
+  /// pub logs: Vec<Log>
   logs Log[]
 
   transaction Transaction? @relation(fields: [transactionHash], references: [hash])
 }
 
+/// ethers-rs Transactionstruct converted to Prisma model.
+/// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L17-L123
 model Transaction {
+  /// The transaction's hash
+  /// pub hash: H256
   hash                 String  @id
-  nonce                String
+  /// The transaction's nonce
+  /// pub nonce: U256
+  nonce                BigInt
+  /// Block hash. None when pending.
+  /// pub block_hash: Option<H256>
   blockHash            String?
-  blockNumber          String?
-  transactionIndex     String?
+  /// Block number. None when pending.
+  ///pub block_number: Option<U64>
+  blockNumber          Int?
+  /// Transaction Index. None when pending.
+  /// pub transaction_index: Option<U64>
+  transactionIndex     Int?
+  /// Sender
+  ///pub from: Address
   from                 String
+  /// Recipient (None when contract creation)
+  /// pub to: Option<Address>
   to                   String?
+  /// Transferred value
+  /// pub value: U256
   value                String
-  gas_price            String?
+  /// Gas Price, null for Type 2 transactions
+  /// pub gas_price: Option<U256>
+  gas_price            BigInt?
+  /// Gas amount
+  /// pub gas: U256
   gas                  String
+  /// Input data
+  /// pub input: Bytes
   input                String
+  /// ECDSA recovery id
+  /// pub v: U64
   v                    String
+  /// ECDSA signature r
+  /// pub r: U256
   r                    String
+  /// ECDSA signature s
+  /// pub s: U256
   s                    String
-  transactionType      String?
-  maxPriorityFeePerGas String?
-  maxFeePerGas         String?
-  // other                Json?
+  /// EIP2718
+  /// Transaction type, Some(2) for EIP-1559 transaction,
+  /// Some(1) for AccessList transaction, None for Legacy
+  ///  ub transaction_type: Option<U64>
+  transactionType      Int?
+  /// Represents the maximum tx fee that will go to the miner as part of the user's
+  /// fee payment. It serves 3 purposes:
+  /// 1. Compensates miners for the uncle/ommer risk + fixed costs of including transaction in a
+  /// block; 2. Allows users with high opportunity costs to pay a premium to miners;
+  /// 3. In times where demand exceeds the available block space (i.e. 100% full, 30mm gas),
+  /// this component allows first price auctions (i.e. the pre-1559 fee model) to happen on the
+  /// priority fee.
+  ///
+  /// More context [here](https://hackmd.io/@q8X_WM2nTfu6nuvAzqXiTQ/1559-wallets)
+  /// pub max_priority_fee_per_gas: Option<U256>
+  maxPriorityFeePerGas BigInt?
+  /// Represents the maximum amount that a user is willing to pay for their tx (inclusive of
+  /// baseFeePerGas and maxPriorityFeePerGas). The difference between maxFeePerGas and
+  /// baseFeePerGas + maxPriorityFeePerGas is “refunded” to the user.
+  /// pub max_fee_per_gas: Option<U256>
+  maxFeePerGas         BigInt?
 
-  chainId   String
+  /// pub chain_id: Option<U256>
+  chainId   BigInt
   timestamp DateTime
 
   Receipt Receipt?
