@@ -431,7 +431,7 @@ importers:
         specifier: ^13.4.13
         version: 13.4.13(@babel/core@7.22.10)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: ^4.22.5
+        specifier: ^4.20.1
         version: 4.22.5(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
       postgres:
         specifier: ^3.3.5
@@ -1156,7 +1156,7 @@ importers:
         specifier: ^13.4.13
         version: 13.4.13(@babel/core@7.22.10)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: ^4.22.5
+        specifier: ^4.20.1
         version: 4.22.5(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
       siwe:
         specifier: ^2.1.4
@@ -1350,7 +1350,7 @@ importers:
         specifier: ^13.4.13
         version: 13.4.13(@babel/core@7.22.10)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
-        specifier: ^4.22.5
+        specifier: ^4.20.1
         version: 4.22.5(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
       openapi-types:
         specifier: ^12.1.3
