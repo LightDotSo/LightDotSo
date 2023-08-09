@@ -18,6 +18,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { experimental_nextHttpLink } from "@trpc/next/app-dir/links/nextHttp";
 import { getUrl, api } from "@lightdotso/trpc";
@@ -48,14 +49,14 @@ export const TrpcProvider = (props: {
             process.env.NODE_ENV === "development" ||
             (opts.direction === "down" && opts.result instanceof Error),
         }),
-        unstable_httpBatchStreamLink({
-          url: getUrl(),
-          headers() {
-            const headers = new Map(props.headers);
-            headers.set("x-trpc-source", "nextjs-react");
-            return Object.fromEntries(headers);
-          },
-        }),
+        // unstable_httpBatchStreamLink({
+        //   url: getUrl(),
+        //   headers() {
+        //     const headers = new Map(props.headers);
+        //     headers.set("x-trpc-source", "nextjs-react");
+        //     return Object.fromEntries(headers);
+        //   },
+        // }),
         experimental_nextHttpLink({
           batch: true,
           unstable_stream: true,
