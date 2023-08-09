@@ -5442,6 +5442,7 @@ dependencies = [
  "prisma-client-rust",
  "tokio",
  "tracing",
+ "tracing-futures",
 ]
 
 [[package]]
