@@ -21,8 +21,8 @@ use prisma_client_rust::{
     NewClientError,
 };
 use std::sync::Arc;
-use tracing::info;
-
+use tracing::{info, trace};
+use tracing_futures::Instrument;
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
@@ -78,20 +78,20 @@ pub async fn create_wallet(
 pub async fn create_transaction_with_log_receipt(
     db: Database,
     transaction: ethers::types::Transaction,
-    log: ethers::types::Log,
+    logs: Vec<ethers::types::Log>,
     receipt: ethers::types::TransactionReceipt,
     chain_id: String,
     timestamp: ethers::types::U256,
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
-    let (tx, _receipt, _log) = db
+    let (tx, _receipt) = db
         ._transaction()
         .run(|client| async move {
-            let tx = client
+            let tx_data = client
                 .transaction()
                 .create(
-                    transaction.hash.to_string(),
+                    format!("{:?}", transaction.hash),
                     transaction.nonce.to_string(),
                     format!("{:?}", transaction.from),
                     transaction.value.to_string(),
@@ -100,8 +100,6 @@ pub async fn create_transaction_with_log_receipt(
                     transaction.v.to_string(),
                     transaction.r.to_string(),
                     transaction.s.to_string(),
-                    prisma_client_rust::serde_json::to_value(transaction.other)
-                        .unwrap_or(prisma_client_rust::serde_json::Value::Null),
                     chain_id,
                     DateTime::<FixedOffset>::from_utc(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
@@ -109,7 +107,7 @@ pub async fn create_transaction_with_log_receipt(
                     ),
                     vec![
                         transaction::block_hash::set(
-                            transaction.block_hash.map(|bh| bh.to_string()),
+                            transaction.block_hash.map(|bh| format!("{:?}", bh)),
                         ),
                         transaction::block_number::set(
                             transaction.block_number.map(|n| n.to_string()),
@@ -131,21 +129,20 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
+                .instrument(tracing::info_span!("create_transaction"))
                 .await?;
+            trace!(?tx_data);
 
-            let receipt = client
+            client
                 .receipt()
                 .create(
+                    format!("{:?}", receipt.transaction_hash),
                     receipt.transaction_index.to_string(),
                     format!("{:?}", receipt.from),
                     receipt.cumulative_gas_used.to_string(),
                     receipt.logs_bloom.to_string(),
-                    prisma_client_rust::serde_json::to_value(receipt.other)
-                        .unwrap_or(prisma_client_rust::serde_json::Value::Null),
-                    transaction::UniqueWhereParam::HashEquals(tx.hash.clone()),
                     vec![
-                        receipt::transaction_hash::set(receipt.transaction_hash.to_string()),
-                        receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
+                        receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
                         receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
                         receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
                         receipt::gas_used::set(receipt.gas_used.map(|gu| gu.to_string())),
@@ -162,33 +159,47 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
-                .await?;
-
-            client
-                .log()
-                .create(
-                    format!("{:?}", log.address),
-                    log.data.to_string(),
-                    vec![
-                        log::receipt::connect(receipt::transaction_hash::equals(tx.hash.clone())),
-                        log::topics::set(
-                            log.topics.iter().map(|tx_hash| tx_hash.to_string()).collect(),
-                        ),
-                        log::block_hash::set(log.block_hash.map(|bh| bh.to_string())),
-                        log::block_number::set(log.block_number.map(|bn| bn.to_string())),
-                        log::transaction_hash::set(log.transaction_hash.map(|th| th.to_string())),
-                        log::transaction_index::set(log.transaction_index.map(|ti| ti.to_string())),
-                        log::log_index::set(log.log_index.map(|li| li.to_string())),
-                        log::transaction_log_index::set(
-                            log.transaction_log_index.map(|lti| lti.to_string()),
-                        ),
-                        log::log_type::set(log.log_type),
-                        log::removed::set(log.removed),
-                    ],
-                )
-                .exec()
+                .instrument(tracing::info_span!("create_receipt"))
                 .await
-                .map(|log| (tx, receipt, log))
+                .map(|op| (tx_data, op))
+        })
+        .await?;
+
+    // FIXME: This is a workaround for the fact that the log batch creation cannot be batched w/
+    // transaction and receipt
+    let _ = db
+        ._transaction()
+        .run(|client| async move {
+            let logs_create_items = logs
+                .iter()
+                .map(|log| {
+                    client.log().create(
+                        format!("{:?}", log.address),
+                        log.data.to_string(),
+                        vec![
+                            log::topics::set(
+                                log.topics.iter().map(|topic| format!("{:?}", topic)).collect(),
+                            ),
+                            log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
+                            log::block_number::set(log.block_number.map(|bn| bn.to_string())),
+                            log::transaction_hash::set(
+                                log.transaction_hash.map(|th| format!("{:?}", th)),
+                            ),
+                            log::transaction_index::set(
+                                log.transaction_index.map(|ti| ti.to_string()),
+                            ),
+                            log::log_index::set(log.log_index.map(|li| li.to_string())),
+                            log::transaction_log_index::set(
+                                log.transaction_log_index.map(|lti| lti.to_string()),
+                            ),
+                            log::log_type::set(log.clone().log_type),
+                            log::removed::set(log.removed),
+                        ],
+                    )
+                })
+                .collect::<Vec<_>>();
+
+            client._batch(logs_create_items).await
         })
         .await?;
 

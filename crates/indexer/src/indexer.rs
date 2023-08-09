@@ -171,15 +171,14 @@ impl Indexer {
                         .get_transaction(log.transaction_hash.unwrap())
                         .await
                         .unwrap();
-                    info!("tx: {:?}", tx);
 
                     // Create the transaction with log receipt if both are not empty
                     if tx_receipt.is_some() && tx.is_some() {
                         let res = create_transaction_with_log_receipt(
                             db_client.clone(),
-                            tx.unwrap(),
-                            log.clone(),
-                            tx_receipt.unwrap(),
+                            tx.clone().unwrap(),
+                            tx_receipt.clone().unwrap().logs,
+                            tx_receipt.clone().unwrap(),
                             self.chain_id.to_string(),
                             block.timestamp,
                         )

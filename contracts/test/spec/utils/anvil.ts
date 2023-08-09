@@ -28,13 +28,13 @@ export const anvil = {
     // These rpc urls are automatically used in the transports.
     default: {
       // Note how we append the worker id to the local rpc urls.
-      http: [`http://127.0.0.1:8545/${pool}`],
-      webSocket: [`ws://127.0.0.1:8545/${pool}`],
+      http: [`http://127.0.0.1:8585/${pool}`],
+      webSocket: [`ws://127.0.0.1:8585/${pool}`],
     },
     public: {
       // Note how we append the worker id to the local rpc urls.
-      http: [`http://127.0.0.1:8545/${pool}`],
-      webSocket: [`ws://127.0.0.1:8545/${pool}`],
+      http: [`http://127.0.0.1:8585/${pool}`],
+      webSocket: [`ws://127.0.0.1:8585/${pool}`],
     },
   },
 } as const satisfies Chain;

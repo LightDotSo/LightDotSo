@@ -95,6 +95,7 @@
   tower = { version = "0.4.12" }
   tower-http = { version = "0.4", features = ["trace"] }
   tracing = "0.1.37"
+  tracing-futures = "0.2.5"
   tracing-subscriber = { version = "0.3.17", features = [
     "env-filter",
     "fmt",
