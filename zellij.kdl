@@ -26,6 +26,17 @@ layout {
             pane command="nu" {}
         }
     }
+    tab_template name="plain_tab" {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="Vertical" {
+            children
+        }
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
     tab_template name="lightdotso_tab" {
         pane size=1 borderless=true {
             plugin location="zellij:tab-bar"
@@ -43,13 +54,38 @@ layout {
     lightdotso_tab name="Home" focus=true {
         pane split_direction="vertical" command="nu" {}
     }
+    lightdotso_tab name="Contracts" focus=false {
+        pane split_direction="vertical" command="nu" {}
+    }
     lightdotso_tab name="Node" focus=false {
         node split_direction="vertical" {}
     }
     lightdotso_tab name="Rust" focus=false {
         cargo split_direction="vertical" {}
     }
-    lightdotso_tab name="Contracts" focus=false {
-        contracts split_direction="vertical" {}
+    lightdotso_tab name="Indexer" focus=false {
+        pane split_direction="vertical" command="nu" {
+            args "-c" " $env.RUST_BACKTRACE = 1; cargo watch -c -w crates -x 'run --bin indexer'"
+        }
+    }
+    plain_tab name="Anvil" focus=false {
+        pane split_direction="vertical" command="nu" {
+            args "-c" "make anvil"
+        }
+    }
+    plain_tab name="Autometrics" focus=false {
+        pane split_direction="vertical" command="nu" {
+            args "-c" "make autometrics"
+        }
+    }
+    plain_tab name="Prisma" focus=false {
+        pane split_direction="vertical" command="nu" {
+            args "-c" "cd configurations/prisma; pnpm run studio:dev"
+        }
+    }
+    plain_tab name="Docker Compose" focus=false {
+        pane split_direction="vertical" command="nu" {
+            args "-c" "make docker-compose-up"
+        }
     }
 }

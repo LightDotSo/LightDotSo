@@ -9,8 +9,16 @@
   repository.workspace = true
 
 [dependencies]
+  autometrics = { workspace = true, features = [
+    "prometheus-client-0_21",
+    "prometheus-exporter",
+    "exemplars-tracing",
+  ] }
   axum = { workspace = true }
+  ethers = { workspace = true }
   eyre = { workspace = true }
   lightdotso-prisma = { workspace = true }
   prisma-client-rust = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
+  tracing = { workspace = true }
+  tracing-futures = { workspace = true }

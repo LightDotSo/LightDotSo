@@ -74,6 +74,10 @@ jobs:
         run: |
           pnpm turbo run build
       - if: matrix.workspace
+        name: Docker Compose Up
+        run: |
+          docker-compose up -d --build
+      - if: matrix.workspace
         name: Make Install
         run: |
           make install

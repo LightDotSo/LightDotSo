@@ -35,7 +35,7 @@ afterEach(context => {
   context.onTestFailed(async result => {
     try {
       const poolId = Number(process.env.VITEST_POOL_ID ?? 1);
-      const response = await fetchLogs("http://127.0.0.1:8545", poolId);
+      const response = await fetchLogs("http://127.0.0.1:8585", poolId);
       const logs = response.slice(-20);
 
       if (logs.length === 0) {

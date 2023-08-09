@@ -3,7 +3,7 @@
 # Awesome work for the ethereum community!
 
 # Specify the base image we're building from.
-FROM rust:1.70 AS builder
+FROM rust:1.71 AS builder
 
 # Specify turborepo related args
 ARG TURBO_TEAM
@@ -54,6 +54,7 @@ RUN apt update && apt install -y libssl1.1 ca-certificates
 # Copy over the binaries.
 COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
+COPY --from=builder /app/target/release/consumer /usr/local/bin
 COPY --from=builder /app/target/release/indexer /usr/local/bin
 COPY --from=builder /app/target/release/rpc /usr/local/bin
 COPY --from=builder /app/target/release/serve /usr/local/bin

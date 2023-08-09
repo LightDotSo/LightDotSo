@@ -13,21 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use std::sync::Arc;
+
 use anyhow::Result;
+use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
 use clap::Parser;
-use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
+use dotenvy::dotenv;
+use lightdotso_bin::version::SHORT_VERSION;
+use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
-use lightdotso_tracing::{init, stdout, tracing::Level};
+use lightdotso_tracing::{
+    init, otel, stdout,
+    tracing::{info, Level},
+};
 
+#[autometrics]
 async fn health_check() -> &'static str {
     "OK"
 }
 
 pub async fn start_server() -> Result<()> {
+    prometheus_exporter::init();
+
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check));
+        .route("/health", get(health_check))
+        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
 
     let socket_addr = "0.0.0.0:3002".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
@@ -36,25 +48,39 @@ pub async fn start_server() -> Result<()> {
 }
 
 #[tokio::main]
-pub async fn main() -> Result<(), anyhow::Error> {
-    println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
+pub async fn main() {
+    let _ = dotenv();
 
-    // Initialize the logger
-    init(vec![stdout(Level::INFO)]);
+    init(vec![stdout(Level::INFO), otel()]);
+
+    info!("Starting server at {}", SHORT_VERSION);
+
+    // Run the test server if we're running in Fly
+    if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-indexer") {
+        let test_server_future = start_server();
+        let result = test_server_future.await;
+
+        if result.is_err() {
+            std::process::exit(1)
+        };
+    }
 
     // Parse the command line arguments
     let args = IndexerArgs::parse();
 
+    // Create the db client
+    let db = Arc::new(create_client().await.unwrap());
+
     // Construct the futures
-    let indexer_future = args.run();
+    let indexer_future = args.run(db);
     let server_future = start_server();
 
     // Run the futures concurrently
     let result = tokio::try_join!(indexer_future, server_future);
 
-    // Return the result accordingly
-    match result {
-        Ok((_, _)) => Ok(()),
-        Err(e) => Err(e),
+    // Exit with an error if either future failed
+    if let Err(e) = result {
+        eprintln!("Error: {:?}", e);
+        std::process::exit(1);
     }
 }

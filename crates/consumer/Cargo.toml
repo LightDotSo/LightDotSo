@@ -1,0 +1,16 @@
+[package]
+  name = "lightdotso-consumer"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  anyhow = { workspace = true }
+  clap = { workspace = true, features = ["derive"] }
+  lightdotso-kafka = { workspace = true }
+  rdkafka = { workspace = true }
+  tracing = { workspace = true }

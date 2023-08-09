@@ -23,7 +23,7 @@
     "clean": "rimraf .turbo node_modules dist",
     "db:migrate:deploy": "dotenv prisma migrate deploy",
     "db:migrate:deploy:dev": "dotenv -e .env.development prisma migrate deploy",
-    "db:migrate:dev": "dotenv prisma migrate dev",
+    "db:migrate:dev": "dotenv prisma migrate dev --create-only",
     "db:push": "prisma db push",
     "dev:prisma": "pnpm run db:migrate:deploy:dev && pnpm run studio:dev",
     "generate": "pnpm run shell:copy && pnpm run shell:generate && pnpm run prisma:generate && pnpm run prisma:format",
@@ -38,17 +38,17 @@
     "studio:dev": "dotenv -e .env.development prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "5.0.0",
+    "@prisma/client": "5.1.1",
     "kysely-postgres-js": "^1.1.1",
     "postgres": "^3.3.5",
-    "prisma": "^5.0.0",
+    "prisma": "^5.1.1",
     "prisma-kysely": "^1.5.0",
     "zod": "^3.21.4",
     "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.4.5",
+    "@types/node": "^20.4.9",
     "typescript": "^5.1.6"
   },
   "publishConfig": {

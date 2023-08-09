@@ -13,20 +13,28 @@
 
 [dependencies]
   anyhow = { workspace = true }
+  autometrics = { workspace = true, features = [
+    "prometheus-client-0_21",
+    "prometheus-exporter",
+    "exemplars-tracing",
+  ] }
   axum = { workspace = true }
   clap = { workspace = true, features = ["env"] }
+  dotenvy = { workspace = true }
   eyre = { workspace = true }
   http = { workspace = true }
   lightdotso-bundler = { workspace = true }
+  lightdotso-consumer = { workspace = true }
+  lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
   ratatui = { version = "0.22.0", features = ["all-widgets"] }
+  redb = { workspace = true }
   silius-grpc = { workspace = true }
   silius-primitives = { workspace = true }
   silius-rpc = { workspace = true }
-  sled = { workspace = true }
   tokio = { workspace = true }
   tower = { workspace = true, features = [
     "full",

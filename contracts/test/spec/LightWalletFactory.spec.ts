@@ -23,6 +23,8 @@ test("LightWalletFactory: Correct humanReadableAbi", () => {
     [
       "constructor(address entryPoint)",
       "error EntrypointAddressZero()",
+      "function NAME() view returns (string)",
+      "function VERSION() view returns (string)",
       "function accountImplementation() view returns (address)",
       "function createAccount(bytes32 hash, uint256 salt) returns (address ret)",
       "function getAddress(bytes32 hash, uint256 salt) view returns (address)",
