@@ -88,10 +88,10 @@ pub async fn create_transaction_with_log_receipt(
     let (tx, _receipt, _log) = db
         ._transaction()
         .run(|client| async move {
-            let tx = client
+            let tx_data = client
                 .transaction()
                 .create(
-                    transaction.hash.to_string(),
+                    format!("{:?}", transaction.hash),
                     transaction.nonce.to_string(),
                     format!("{:?}", transaction.from),
                     transaction.value.to_string(),
@@ -100,8 +100,6 @@ pub async fn create_transaction_with_log_receipt(
                     transaction.v.to_string(),
                     transaction.r.to_string(),
                     transaction.s.to_string(),
-                    prisma_client_rust::serde_json::to_value(transaction.other)
-                        .unwrap_or(prisma_client_rust::serde_json::Value::Null),
                     chain_id,
                     DateTime::<FixedOffset>::from_utc(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
@@ -109,7 +107,7 @@ pub async fn create_transaction_with_log_receipt(
                     ),
                     vec![
                         transaction::block_hash::set(
-                            transaction.block_hash.map(|bh| bh.to_string()),
+                            transaction.block_hash.map(|bh| format!("{:?}", bh)),
                         ),
                         transaction::block_number::set(
                             transaction.block_number.map(|n| n.to_string()),
@@ -132,23 +130,18 @@ pub async fn create_transaction_with_log_receipt(
                 )
                 .exec()
                 .await?;
-            trace!(?tx);
+            trace!(?tx_data);
 
-            let receipt = client
+            let receipt_data = client
                 .receipt()
                 .create(
-                    receipt.transaction_hash.to_string(),
+                    format!("{:?}", receipt.transaction_hash),
                     receipt.transaction_index.to_string(),
                     format!("{:?}", receipt.from),
                     receipt.cumulative_gas_used.to_string(),
                     receipt.logs_bloom.to_string(),
-                    prisma_client_rust::serde_json::to_value(receipt.other)
-                        .unwrap_or(prisma_client_rust::serde_json::Value::Null),
                     vec![
-                        // receipt::transaction::connect(transaction::hash::equals(tx.hash.
-                        // clone())),
-                        receipt::transaction_hash::set(receipt.transaction_hash.to_string()),
-                        receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
+                        receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
                         receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
                         receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
                         receipt::gas_used::set(receipt.gas_used.map(|gu| gu.to_string())),
@@ -166,7 +159,7 @@ pub async fn create_transaction_with_log_receipt(
                 )
                 .exec()
                 .await?;
-            trace!(?receipt);
+            trace!(?receipt_data);
 
             client
                 .log()
@@ -174,13 +167,14 @@ pub async fn create_transaction_with_log_receipt(
                     format!("{:?}", log.address),
                     log.data.to_string(),
                     vec![
-                        // log::receipt::connect(receipt::transaction_hash::equals(tx.hash)),
                         log::topics::set(
-                            log.topics.iter().map(|tx_hash| tx_hash.to_string()).collect(),
+                            log.topics.iter().map(|tx_hash| format!("{:?}", tx_hash)).collect(),
                         ),
-                        log::block_hash::set(log.block_hash.map(|bh| bh.to_string())),
+                        log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
                         log::block_number::set(log.block_number.map(|bn| bn.to_string())),
-                        log::transaction_hash::set(log.transaction_hash.map(|th| th.to_string())),
+                        log::transaction_hash::set(
+                            log.transaction_hash.map(|th| format!("{:?}", th)),
+                        ),
                         log::transaction_index::set(log.transaction_index.map(|ti| ti.to_string())),
                         log::log_index::set(log.log_index.map(|li| li.to_string())),
                         log::transaction_log_index::set(
@@ -192,7 +186,7 @@ pub async fn create_transaction_with_log_receipt(
                 )
                 .exec()
                 .await
-                .map(|log| (tx, receipt, log))
+                .map(|log| (tx_data, receipt_data, log))
         })
         .await?;
 
