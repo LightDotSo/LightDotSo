@@ -66,7 +66,7 @@ model VerificationRequest {
 model Wallet {
   id        String   @id @default(cuid())
   address   String
-  chainId   String
+  chainId   BigInt
   hash      String
   testnet   Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -98,20 +98,20 @@ model Log {
   blockHash           String?
   /// Block Number
   /// pub block_number: Option<U64>
-  blockNumber         String?
+  blockNumber         Int?
   /// Transaction Hash
   /// pub transaction_hash: Option<H256>
   transactionHash     String?
   /// Transaction Index
   /// pub transaction_index: Option<U64>
-  transactionIndex    String?
+  transactionIndex    Int?
   /// Integer of the log index position in the block. None if it's a pending log.
   /// pub log_index: Option<U256>
-  logIndex            String?
+  logIndex            BigInt?
   /// Integer of the transactions index position log was created from.
   /// None when it's a pending log.
   /// pub transaction_log_index: Option<U256>
-  transactionLogIndex String?
+  transactionLogIndex BigInt?
   /// Log Type
   /// pub log_type: Option<String>
   logType             String?
@@ -131,13 +131,13 @@ model Receipt {
   transactionHash   String  @id
   /// Index within the block.
   /// pub transaction_index: U64
-  transactionIndex  String
+  transactionIndex  Int
   /// Hash of the block this transaction was included within.
   /// pub block_hash: Option<H256>
   blockHash         String?
   /// Number of the block this transaction was included within.
   /// pub block_number: Option<U64>
-  blockNumber       String?
+  blockNumber       Int?
   /// address of the sender.
   /// pub from: Address
   from              String
@@ -146,18 +146,18 @@ model Receipt {
   to                String?
   /// Cumulative gas used within the block after this was executed.
   /// pub cumulative_gas_used: U256
-  cumulativeGasUsed String
+  cumulativeGasUsed BigInt
   /// Gas used by this transaction alone.
   ///
   /// Gas used is `None` if the the client is running in light client mode.
   /// pub gas_used: Option<U256>
-  gas_used          String?
+  gas_used          BigInt?
   /// Contract address created, or `None` if not a deployment.
   /// pub contract_address: Option<Address>
   contractAddress   String?
   /// Status: either 1 (success) or 0 (failure). Only present after activation of [EIP-658](https://eips.ethereum.org/EIPS/eip-658)
   /// pub status: Option<U64>
-  status            String?
+  status            Int?
   /// State root. Only present before activation of [EIP-658](https://eips.ethereum.org/EIPS/eip-658)
   /// pub root: Option<H256>
   root              String?
@@ -166,12 +166,12 @@ model Receipt {
   logsBloom         String
   /// Transaction type, Some(1) for AccessList transaction, None for Legacy
   /// pub transaction_type: Option<U64>
-  transactionType   String?
+  transactionType   Int?
   /// The price paid post-execution by the transaction (i.e. base fee + priority fee).
   /// Both fields in 1559-style transactions are *maximums* (max fee + max priority fee), the
   /// amount that's actually paid by users can only be determined post-execution
   /// pub effective_gas_price: Option<U256>
-  effectiveGasPrice String?
+  effectiveGasPrice BigInt?
 
   /// Logs generated within this transaction.
   /// pub logs: Vec<Log>
@@ -188,16 +188,16 @@ model Transaction {
   hash                 String  @id
   /// The transaction's nonce
   /// pub nonce: U256
-  nonce                String
+  nonce                BigInt
   /// Block hash. None when pending.
   /// pub block_hash: Option<H256>
   blockHash            String?
   /// Block number. None when pending.
   ///pub block_number: Option<U64>
-  blockNumber          String?
+  blockNumber          Int?
   /// Transaction Index. None when pending.
   /// pub transaction_index: Option<U64>
-  transactionIndex     String?
+  transactionIndex     Int?
   /// Sender
   ///pub from: Address
   from                 String
@@ -209,7 +209,7 @@ model Transaction {
   value                String
   /// Gas Price, null for Type 2 transactions
   /// pub gas_price: Option<U256>
-  gas_price            String?
+  gas_price            BigInt?
   /// Gas amount
   /// pub gas: U256
   gas                  String
@@ -229,7 +229,7 @@ model Transaction {
   /// Transaction type, Some(2) for EIP-1559 transaction,
   /// Some(1) for AccessList transaction, None for Legacy
   ///  ub transaction_type: Option<U64>
-  transactionType      String?
+  transactionType      Int?
   /// Represents the maximum tx fee that will go to the miner as part of the user's
   /// fee payment. It serves 3 purposes:
   /// 1. Compensates miners for the uncle/ommer risk + fixed costs of including transaction in a
@@ -240,15 +240,15 @@ model Transaction {
   ///
   /// More context [here](https://hackmd.io/@q8X_WM2nTfu6nuvAzqXiTQ/1559-wallets)
   /// pub max_priority_fee_per_gas: Option<U256>
-  maxPriorityFeePerGas String?
+  maxPriorityFeePerGas BigInt?
   /// Represents the maximum amount that a user is willing to pay for their tx (inclusive of
   /// baseFeePerGas and maxPriorityFeePerGas). The difference between maxFeePerGas and
   /// baseFeePerGas + maxPriorityFeePerGas is “refunded” to the user.
   /// pub max_fee_per_gas: Option<U256>
-  maxFeePerGas         String?
+  maxFeePerGas         BigInt?
 
   /// pub chain_id: Option<U256>
-  chainId   String
+  chainId   BigInt
   timestamp DateTime
 
   Receipt Receipt?
