@@ -43,7 +43,6 @@ export const invoker = experimental_createTRPCNextAppDirServer<
           router: appRouter,
           createContext: async () => {
             return {
-              // prisma,
               session: await getAuthSession(),
               headers: {
                 cookie: cookies().toString(),

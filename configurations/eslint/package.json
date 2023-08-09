@@ -22,7 +22,7 @@
     "eslint": "^8.46.0",
     "eslint-config-next": "^13.4.13",
     "eslint-config-turbo": "^1.10.12",
-    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-cypress": "^2.14.0",
     "eslint-plugin-editorconfig": "^4.0.3",
     "eslint-plugin-import": "^2.28.0",

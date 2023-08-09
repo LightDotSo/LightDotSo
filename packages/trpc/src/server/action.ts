@@ -15,20 +15,19 @@
 
 "use server";
 
-import { headers } from "next/headers";
 import { getAuthSession } from "@lightdotso/auth";
 import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
-import { root } from "./trpc";
+import { cookies } from "next/headers";
+import { appRouter } from "../routers/app";
 
-export const createAction = experimental_createServerActionHandler(root, {
+export const createAction = experimental_createServerActionHandler({
+  router: appRouter,
   async createContext() {
-    const session = await getAuthSession();
-
     return {
-      session,
+      session: await getAuthSession(),
       headers: {
-        // Pass the cookie header to the API
-        cookies: headers().get("cookie") ?? "",
+        cookie: cookies().toString(),
+        "x-trpc-source": "server-action",
       },
     };
   },

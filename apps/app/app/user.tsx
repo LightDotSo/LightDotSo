@@ -15,22 +15,13 @@
 
 "use client";
 
-import { trpc } from "@lightdotso/trpc";
-import { useQueryClient } from "@tanstack/react-query";
+import { api } from "@lightdotso/trpc";
 import React from "react";
 
 export function User() {
-  let { data: users, isLoading, isFetching } = trpc.user.me.useQuery({});
+  let [user] = api.user.me.useSuspenseQuery({});
 
-  const queryClient = useQueryClient();
-
-  function handleClick() {
-    queryClient.refetchQueries([["user", "me"], { type: "query" }]);
-  }
-
-  if (isLoading || isFetching) {
-    return <p>Loading...</p>;
-  }
+  const trpcContext = api.useContext();
 
   return (
     <>
@@ -41,9 +32,9 @@ export function User() {
           gap: 20,
         }}
       >
-        {JSON.stringify(users, null, 2)}
+        {user && JSON.stringify(user, null, 2)}
       </div>
-      <button onClick={handleClick}>Click me</button>
+      <button onClick={() => trpcContext.user.me.invalidate()}>Click me</button>
     </>
   );
 }

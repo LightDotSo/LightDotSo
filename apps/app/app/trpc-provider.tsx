@@ -16,55 +16,69 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, getFetch, loggerLink } from "@trpc/client";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
+import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
+import { experimental_nextHttpLink } from "@trpc/next/app-dir/links/nextHttp";
+import { getUrl, api } from "@lightdotso/trpc";
 import { useState } from "react";
 import superjson from "superjson";
-import { trpc } from "@lightdotso/trpc";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-export const TrpcProvider: React.FC<{ children: React.ReactNode }> = ({
-  // eslint-disable-next-line react/prop-types
-  children,
+export const TrpcProvider = (props: {
+  children: React.ReactNode;
+  headers?: Headers;
 }) => {
   const [queryClient] = useState(
     () =>
       new QueryClient({
-        defaultOptions: { queries: { staleTime: 5000 } },
+        defaultOptions: {
+          queries: {
+            staleTime: 5 * 1000,
+          },
+        },
       }),
   );
 
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  const url = process.env.NEXT_PUBLIC_VERCEL_URL
-    ? // eslint-disable-next-line turbo/no-undeclared-env-vars
-      `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc/`
-    : "http://localhost:3001/api/trpc/";
-
   const [trpcClient] = useState(() =>
-    trpc.createClient({
+    api.createClient({
+      transformer: superjson,
       links: [
         loggerLink({
-          enabled: () => true,
+          enabled: opts =>
+            process.env.NODE_ENV === "development" ||
+            (opts.direction === "down" && opts.result instanceof Error),
         }),
-        httpBatchLink({
-          url,
-          fetch: async (input, init?) => {
-            const fetch = getFetch();
-            return fetch(input, {
-              ...init,
-              credentials: "include",
-            });
+        // unstable_httpBatchStreamLink({
+        //   url: getUrl(),
+        //   headers() {
+        //     const headers = new Map(props.headers);
+        //     headers.set("x-trpc-source", "nextjs-react");
+        //     return Object.fromEntries(headers);
+        //   },
+        // }),
+        experimental_nextHttpLink({
+          batch: true,
+          unstable_stream: true,
+          url: getUrl(),
+          headers() {
+            const headers = new Map(props.headers);
+            headers.set("x-trpc-source", "nextjs-react");
+            return Object.fromEntries(headers);
           },
         }),
       ],
-      transformer: superjson,
     }),
   );
+
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+    <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        {children}
-        <ReactQueryDevtools />
+        <ReactQueryStreamedHydration transformer={superjson}>
+          {props.children}
+        </ReactQueryStreamedHydration>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-    </trpc.Provider>
+    </api.Provider>
   );
 };
