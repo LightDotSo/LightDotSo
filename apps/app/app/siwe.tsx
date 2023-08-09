@@ -26,11 +26,13 @@ import { getCsrfToken, signIn, getSession, signOut } from "next-auth/react";
 export const siweConfig: SIWEConfig = {
   getSession: async () => {
     const session = await getSession();
+    console.info("sesion: ", session);
     if (!session) return null;
     return session.session;
   },
   getNonce: async () => {
     const nonce = await getCsrfToken();
+    console.info("nonce: ", nonce);
     if (!nonce) throw new Error();
     return nonce;
   },
@@ -50,6 +52,7 @@ export const siweConfig: SIWEConfig = {
       signature,
       // callbackUrl: "/",
     });
+    console.info("response: ", response);
     if (response?.error) {
       console.error("Error occured:", response.error);
     }
