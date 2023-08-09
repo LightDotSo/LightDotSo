@@ -19,6 +19,7 @@ import { invoker } from "@lightdotso/trpc";
 import { getAuthSession } from "@lightdotso/auth";
 import { User } from "./user";
 import { SIWEButton } from "./siwe";
+import { Suspense } from "react";
 
 export default async function Page() {
   const user = await invoker.user.me.query({});
@@ -33,7 +34,9 @@ export default async function Page() {
       <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
       <pre>{JSON.stringify(user, null, 2)}</pre>
       <Connect />
-      <User />
+      <Suspense>
+        <User />
+      </Suspense>
       <SIWEButton />
     </main>
   );
