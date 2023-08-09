@@ -24,7 +24,7 @@ import { getUrl, api } from "@lightdotso/trpc";
 import { useState } from "react";
 import superjson from "superjson";
 
-export function TRPCReactProvider(props: {
+export function TRPCProvider(props: {
   children: React.ReactNode;
   headers?: Headers;
 }) {

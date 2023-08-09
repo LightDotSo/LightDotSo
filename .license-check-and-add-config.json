@@ -76,6 +76,7 @@
     "**/_next/**",
     "**/*.appex/**",
     "**/*.xcframework/**",
+    "**/.autometrics/**",
     "**/.build/**",
     "**/.gradle/**",
     "**/.idea/**",
