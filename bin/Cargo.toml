@@ -13,6 +13,11 @@
 
 [dependencies]
   anyhow = { workspace = true }
+  autometrics = { workspace = true, features = [
+    "prometheus-client-0_21",
+    "prometheus-exporter",
+    "exemplars-tracing",
+  ] }
   axum = { workspace = true }
   clap = { workspace = true, features = ["env"] }
   dotenvy = { workspace = true }

@@ -15,8 +15,13 @@
 
 // All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
 // Thank you for providing such an awesome library!
-
+use opentelemetry::{
+    sdk::trace::{BatchSpanProcessor, Tracer, TracerProvider},
+    trace::TracerProvider as _,
+};
+use opentelemetry_stdout::SpanExporter;
 use tracing::Subscriber;
+use tracing_opentelemetry::OpenTelemetryLayer;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
 };
@@ -34,6 +39,21 @@ pub type BoxedLayer<S> = Box<dyn Layer<S> + Send + Sync>;
 /// Initializes a new [Subscriber] based on the given layers.
 pub fn init(layers: Vec<BoxedLayer<Registry>>) {
     tracing_subscriber::registry().with(layers).init();
+}
+
+/// Creates a new OpenTelemetry layer.
+/// Inspired by: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/exemplars-tracing-opentelemetry/src/main.rs#L36-L47
+pub fn otel<R>() -> Box<OpenTelemetryLayer<R, Tracer>>
+where
+    R: Subscriber + for<'a> LookupSpan<'a> + Send + Sync + 'static,
+{
+    let exporter = SpanExporter::default();
+    let processor =
+        BatchSpanProcessor::builder(exporter, opentelemetry::sdk::runtime::Tokio).build();
+    let provider = TracerProvider::builder().with_span_processor(processor).build();
+    let tracer = provider.tracer("lightdotso");
+
+    Box::new(OpenTelemetryLayer::new(tracer))
 }
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L40-L64

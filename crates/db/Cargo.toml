@@ -9,6 +9,11 @@
   repository.workspace = true
 
 [dependencies]
+  autometrics = { workspace = true, features = [
+    "prometheus-client-0_21",
+    "prometheus-exporter",
+    "exemplars-tracing",
+  ] }
   axum = { workspace = true }
   ethers = { workspace = true }
   eyre = { workspace = true }

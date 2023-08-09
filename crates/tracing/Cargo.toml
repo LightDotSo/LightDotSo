@@ -9,7 +9,10 @@
   repository.workspace = true
 
 [dependencies]
+  opentelemetry = { version = "0.20", features = ["rt-tokio", "trace"] }
+  opentelemetry-stdout = { version = "0.1", features = ["trace"] }
   tracing = { workspace = true }
+  tracing-opentelemetry = "0.20"
   tracing-subscriber = { version = "0.3", default-features = false, features = [
     "ansi",
     "env-filter",

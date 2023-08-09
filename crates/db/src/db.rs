@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::error::DbError;
+use autometrics::autometrics;
 use axum::extract::Json;
 use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
 use prisma_client_rust::{
@@ -51,6 +52,7 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
 }
 
 /// Create a new user.
+#[autometrics]
 pub async fn create_wallet(
     db: Database,
     log: ethers::types::Log,
@@ -75,6 +77,7 @@ pub async fn create_wallet(
 }
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
+#[autometrics]
 pub async fn create_transaction_with_log_receipt(
     db: Database,
     transaction: ethers::types::Transaction,
