@@ -27,9 +27,7 @@ import superjson from "superjson";
 /**
  * This client invokes procedures directly on the server without fetching over HTTP.
  */
-export const invoker = experimental_createTRPCNextAppDirServer<
-  typeof appRouter
->({
+export const api = experimental_createTRPCNextAppDirServer<typeof appRouter>({
   config() {
     return {
       transformer: superjson,
@@ -41,9 +39,8 @@ export const invoker = experimental_createTRPCNextAppDirServer<
           // requests are cached for 5 seconds
           revalidate: 5,
           router: appRouter,
-          createContext: async () => {
+          async createContext() {
             return {
-              // prisma,
               session: await getAuthSession(),
               headers: {
                 cookie: cookies().toString(),
