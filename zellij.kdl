@@ -73,6 +73,11 @@ layout {
             args "-c" "make anvil"
         }
     }
+    plain_tab name="Autometrics" focus=false {
+        pane split_direction="vertical" command="nu" {
+            args "-c" "make autometrics"
+        }
+    }
     plain_tab name="Prisma" focus=false {
         pane split_direction="vertical" command="nu" {
             args "-c" "cd configurations/prisma; pnpm run studio:dev"

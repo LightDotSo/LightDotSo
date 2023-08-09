@@ -169,6 +169,11 @@ contracts-slither-install: ## Installs slither on the contracts w/ solc version
 contracts-halmos: ## Runs halmos on the contracts
 	rye run halmos
 
+#@ autometrics
+.PHONY: autometrics
+autometrics: ## Run autometrics
+	am start localhost:3002
+
 ##@ Docker
 
 .PHONY: docker
