@@ -21,7 +21,7 @@ use prisma_client_rust::{
     NewClientError,
 };
 use std::sync::Arc;
-use tracing::info;
+use tracing::{info, trace};
 
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
@@ -132,18 +132,21 @@ pub async fn create_transaction_with_log_receipt(
                 )
                 .exec()
                 .await?;
+            trace!(?tx);
 
             let receipt = client
                 .receipt()
                 .create(
+                    receipt.transaction_hash.to_string(),
                     receipt.transaction_index.to_string(),
                     format!("{:?}", receipt.from),
                     receipt.cumulative_gas_used.to_string(),
                     receipt.logs_bloom.to_string(),
                     prisma_client_rust::serde_json::to_value(receipt.other)
                         .unwrap_or(prisma_client_rust::serde_json::Value::Null),
-                    transaction::UniqueWhereParam::HashEquals(tx.hash.clone()),
                     vec![
+                        // receipt::transaction::connect(transaction::hash::equals(tx.hash.
+                        // clone())),
                         receipt::transaction_hash::set(receipt.transaction_hash.to_string()),
                         receipt::block_hash::set(receipt.block_hash.map(|bh| bh.to_string())),
                         receipt::block_number::set(receipt.block_number.map(|bn| bn.to_string())),
@@ -163,6 +166,7 @@ pub async fn create_transaction_with_log_receipt(
                 )
                 .exec()
                 .await?;
+            trace!(?receipt);
 
             client
                 .log()
@@ -170,7 +174,7 @@ pub async fn create_transaction_with_log_receipt(
                     format!("{:?}", log.address),
                     log.data.to_string(),
                     vec![
-                        log::receipt::connect(receipt::transaction_hash::equals(tx.hash.clone())),
+                        // log::receipt::connect(receipt::transaction_hash::equals(tx.hash)),
                         log::topics::set(
                             log.topics.iter().map(|tx_hash| tx_hash.to_string()).collect(),
                         ),

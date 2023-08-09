@@ -65,7 +65,7 @@ layout {
     }
     lightdotso_tab name="Indexer" focus=false {
         pane split_direction="vertical" command="nu" {
-            args "-c" "cargo watch -c -w crates -x 'run --bin indexer'"
+            args "-c" " $env.RUST_BACKTRACE = 1; cargo watch -c -w crates -x 'run --bin indexer'"
         }
     }
     plain_tab name="Anvil" focus=false {

@@ -113,7 +113,7 @@ model Receipt {
 
   logs Log[]
 
-  transaction Transaction @relation(fields: [transactionHash], references: [hash])
+  transaction Transaction? @relation(fields: [transactionHash], references: [hash])
 }
 
 model Transaction {
