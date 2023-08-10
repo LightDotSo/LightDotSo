@@ -78,16 +78,18 @@ export const authOptions: AuthOptions = {
             JSON.parse(credentials?.message || "{}"),
           );
 
-          // Get the next auth url
-          const nextAuthUrl =
-            process.env.VERCEL_ENV === "production" ||
-            process.env.VERCEL_ENV === "development"
-              ? process.env.NEXTAUTH_URL
-              : `https://${process.env.VERCEL_URL}`;
-          if (!nextAuthUrl) {
-            throw new Error("Invalid URL");
-          }
-          const nextAuthHost = new URL(nextAuthUrl).host;
+          // FIXME: Check if the host matches
+          // // Get the next auth url
+          // const nextAuthUrl =
+          //   process.env.VERCEL_ENV === "production" ||
+          //   process.env.VERCEL_ENV === "development"
+          //     ? process.env.NEXTAUTH_URL
+          //     : `https://${process.env.VERCEL_URL}`;
+          // if (!nextAuthUrl) {
+          //   throw new Error("Invalid URL");
+          // }
+          // const nextAuthHost = new URL(nextAuthUrl).host;
+          // console.info("NextAuthHost", nextAuthHost);
 
           // Check if the nonce matches
           if (
@@ -102,11 +104,12 @@ export const authOptions: AuthOptions = {
             signature: credentials?.signature!,
           });
 
-          // Check if the domain matches
-          if (result.data.domain !== nextAuthHost) {
-            console.error("Domain Mismatch", result.data.domain, nextAuthHost);
-            throw new Error("Domain Mismatch");
-          }
+          // FIXME: Check if the host matches
+          // // Check if the domain matches
+          // if (result.data.domain !== nextAuthHost) {
+          //   console.error("Domain Mismatch", result.data.domain, nextAuthHost);
+          //   throw new Error("Domain Mismatch");
+          // }
 
           // Check if the statement matches
           if (
