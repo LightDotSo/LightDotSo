@@ -13,27 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { createContext, appRouter } from "@lightdotso/trpc";
+import { authOptions } from "@lightdotso/auth";
+import NextAuth from "next-auth";
 
 // Add back once NextAuth v5 is released
 // export const runtime = 'edge';
 
-const handler = async (req: Request) => {
-  const res = await fetchRequestHandler({
-    endpoint: "/api/trpc",
-    req,
-    router: appRouter,
-    createContext,
-  });
-  return new Response(res.body, {
-    status: res.status,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
-};
-
-export { handler as GET, handler as POST };
+const handlers = NextAuth(authOptions);
+export { handlers as GET, handlers as POST };

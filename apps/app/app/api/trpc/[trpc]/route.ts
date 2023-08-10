@@ -19,21 +19,12 @@ import { createContext, appRouter } from "@lightdotso/trpc";
 // Add back once NextAuth v5 is released
 // export const runtime = 'edge';
 
-const handler = async (req: Request) => {
-  const res = await fetchRequestHandler({
+const handler = (req: Request) =>
+  fetchRequestHandler({
     endpoint: "/api/trpc",
     req,
     router: appRouter,
     createContext,
   });
-  return new Response(res.body, {
-    status: res.status,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    },
-  });
-};
 
 export { handler as GET, handler as POST };
