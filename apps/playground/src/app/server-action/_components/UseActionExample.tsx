@@ -16,7 +16,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 "use client";
 
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
 import { useState } from "react";

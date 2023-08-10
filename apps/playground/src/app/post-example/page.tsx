@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { readFile } from "node:fs/promises";
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import { CodeBlock } from "@/components/codeblocks";
 import { CollapsiblePreview } from "@/components/collapsible-preview";
 import { Input } from "@/components/input";

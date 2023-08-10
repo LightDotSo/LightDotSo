@@ -29,7 +29,7 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "@lightdotso/ui/components/ui/menubar"
+} from "./menubar"
 
 const meta: Meta<typeof Menubar> = {
   title: "ui/Menubar",

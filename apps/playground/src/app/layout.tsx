@@ -14,11 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import Link from "next/link";
 import "./globals.css";
 import { auth } from "@/auth";
-import { cn } from "@/components/cn";
+import { cn } from "@lightdotso/utils";
 import { Inter as FontSans } from "next/font/google";
 import { headers } from "next/headers";
 import { SideNav } from "../components/sidebar";

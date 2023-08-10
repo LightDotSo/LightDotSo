@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import {
   Collapsible,
   CollapsibleContent,

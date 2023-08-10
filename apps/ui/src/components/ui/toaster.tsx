@@ -22,8 +22,8 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "@lightdotso/ui/components/ui/toast"
-import { useToast } from "@lightdotso/ui/components/ui/use-toast"
+} from "./toast"
+import { useToast } from "./use-toast"
 
 export function Toaster() {
   const { toasts } = useToast()

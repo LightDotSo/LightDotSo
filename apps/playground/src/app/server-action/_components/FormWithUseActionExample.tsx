@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
 import { useAction } from "trpc-api";

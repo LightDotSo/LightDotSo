@@ -16,14 +16,14 @@
 import { Meta, StoryObj } from "@storybook/react"
 import { Settings2 } from "lucide-react"
 
-import { Button } from "@lightdotso/ui/components/ui/button"
-import { Input } from "@lightdotso/ui/components/ui/input"
-import { Label } from "@lightdotso/ui/components/ui/label"
+import { Button } from "./button"
+import { Input } from "./input"
+import { Label } from "./label"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@lightdotso/ui/components/ui/popover"
+} from "./popover"
 
 const meta: Meta<typeof Popover> = {
   title: "ui/Popover",

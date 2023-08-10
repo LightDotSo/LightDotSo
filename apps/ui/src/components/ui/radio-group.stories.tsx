@@ -15,8 +15,8 @@
 
 import { Meta, StoryObj } from "@storybook/react"
 
-import { Label } from "@lightdotso/ui/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@lightdotso/ui/components/ui/radio-group"
+import { Label } from "./label"
+import { RadioGroup, RadioGroupItem } from "./radio-group"
 
 const meta: Meta<typeof RadioGroup> = {
   title: "ui/RadioGroup",

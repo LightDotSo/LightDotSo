@@ -17,7 +17,7 @@
  * This component invokes the procedure directly on the server,
  * without going through the HTTP endpoint.
  */
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import { JsonPreTag } from "@/components/json-pretag";
 import { api } from "@/trpc/server-invoker";
 

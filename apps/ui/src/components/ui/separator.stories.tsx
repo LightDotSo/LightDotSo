@@ -15,7 +15,7 @@
 
 import { Meta, StoryObj } from "@storybook/react"
 
-import { Separator } from "@lightdotso/ui/components/ui/separator"
+import { Separator } from "./separator"
 
 const meta: Meta<typeof Separator> = {
   title: "ui/Separator",

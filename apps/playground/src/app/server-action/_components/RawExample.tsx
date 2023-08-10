@@ -16,7 +16,7 @@
 
 "use client";
 
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import { Input } from "@/components/input";
 import { useState } from "react";
 import { testAction } from "../_actions";

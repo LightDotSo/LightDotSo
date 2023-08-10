@@ -15,8 +15,8 @@
 
 "use client";
 
-import { Button } from "@/components/button";
-import { cn } from "@/components/cn";
+import { Button } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

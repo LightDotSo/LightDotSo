@@ -19,7 +19,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/accordion";
+} from "@lightdotso/ui";
 import { CodeBlock } from "@/components/codeblocks";
 import { CollapsiblePreview } from "@/components/collapsible-preview";
 import { FormWithUseActionExample } from "./_components/FormWithUseActionExample";

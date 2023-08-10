@@ -16,7 +16,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/button";
+import { Button } from "@lightdotso/ui";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
 import { useRef } from "react";

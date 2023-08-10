@@ -827,6 +827,12 @@ importers:
       '@hookform/resolvers':
         specifier: ^2.9.11
         version: 2.9.11(react-hook-form@7.45.4)
+      '@lightdotso/ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@radix-ui/react-accordion':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -875,6 +881,9 @@ importers:
       clsx:
         specifier: ^1.1.1
         version: 1.2.1
+      lucide-react:
+        specifier: ^0.263.1
+        version: 0.263.1(react@18.2.0)
       next:
         specifier: ^13.4.13
         version: 13.4.13(react-dom@18.2.0)(react@18.2.0)
@@ -1039,8 +1048,8 @@ importers:
         specifier: ^0.17.3
         version: 0.17.3
       lucide-react:
-        specifier: ^0.265.0
-        version: 0.265.0(react@18.2.0)
+        specifier: ^0.263.1
+        version: 0.263.1(react@18.2.0)
       next:
         specifier: ^13.4.13
         version: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
@@ -21843,8 +21852,8 @@ packages:
     resolution: {integrity: sha512-Pn9cox5CsMYngeDbmChANltQl+5pi6XmTrraMSzhPmMBbmgcxmqWry0U3PGapCU1yB4/LqCcom7qhHZiF/jGfQ==}
     dev: true
 
-  /lucide-react@0.265.0(react@18.2.0):
-    resolution: {integrity: sha512-znyvziBEUQ7CKR31GiU4viomQbJrpDLG5ac+FajwiZIavC3YbPFLkzQx3dCXT4JWJx/pB34EwmtiZ0ElGZX0PA==}
+  /lucide-react@0.263.1(react@18.2.0):
+    resolution: {integrity: sha512-keqxAx97PlaEN89PXZ6ki1N8nRjGWtDa4021GFYLNj0RgruM5odbpl8GHTExj0hhPq3sF6Up0gnxt6TSHu+ovw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:

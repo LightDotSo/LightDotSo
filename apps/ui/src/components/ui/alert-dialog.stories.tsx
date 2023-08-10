@@ -25,8 +25,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@lightdotso/ui/components/ui/alert-dialog"
-import { Button } from "@lightdotso/ui/components/ui/button"
+} from "./alert-dialog"
+import { Button } from "./button"
 
 const meta: Meta<typeof AlertDialog> = {
   title: "ui/AlertDialog",

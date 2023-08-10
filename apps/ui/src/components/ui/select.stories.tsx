@@ -24,7 +24,7 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "@lightdotso/ui/components/ui/select"
+} from "./select"
 
 const meta: Meta<typeof Select> = {
   title: "ui/Select",
