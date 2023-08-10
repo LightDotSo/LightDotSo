@@ -15,7 +15,7 @@
 
 import { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "@lightdotso/ui/components/ui/button"
+import { Button } from "./button"
 import {
   Dialog,
   DialogContent,
@@ -24,9 +24,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@lightdotso/ui/components/ui/dialog"
-import { Input } from "@lightdotso/ui/components/ui/input"
-import { Label } from "@lightdotso/ui/components/ui/label"
+} from "./dialog"
+import { Input } from "./input"
+import { Label } from "./label"
 
 const meta: Meta<typeof Dialog> = {
   title: "ui/Dialog",

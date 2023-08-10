@@ -15,9 +15,9 @@
 
 import { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "@lightdotso/ui/components/ui/button"
-import { Label } from "@lightdotso/ui/components/ui/label"
-import { Textarea } from "@lightdotso/ui/components/ui/textarea"
+import { Button } from "./button"
+import { Label } from "./label"
+import { Textarea } from "./textarea"
 
 const meta: Meta<typeof Textarea> = {
   title: "ui/Textarea",

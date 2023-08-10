@@ -20,13 +20,13 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@lightdotso/ui/components/ui/avatar"
-import { Button } from "@lightdotso/ui/components/ui/button"
+} from "./avatar"
+import { Button } from "./button"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@lightdotso/ui/components/ui/hover-card"
+} from "./hover-card"
 
 const meta: Meta<typeof HoverCard> = {
   title: "ui/HoverCard",

@@ -35,7 +35,7 @@ import {
   TR,
   Table,
   UL,
-} from "@lightdotso/ui/components/ui/typography"
+} from "./typography"
 
 const meta: Meta = {
   title: "theme/Typography",

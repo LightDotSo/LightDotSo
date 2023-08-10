@@ -15,9 +15,9 @@
 
 import { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "@lightdotso/ui/components/ui/button"
-import { Input } from "@lightdotso/ui/components/ui/input"
-import { Label } from "@lightdotso/ui/components/ui/label"
+import { Button } from "./button"
+import { Input } from "./input"
+import { Label } from "./label"
 
 const meta: Meta<typeof Input> = {
   title: "ui/Input",

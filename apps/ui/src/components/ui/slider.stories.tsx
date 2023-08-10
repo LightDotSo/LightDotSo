@@ -15,7 +15,7 @@
 
 import { Meta, StoryObj } from "@storybook/react"
 
-import { Slider } from "@lightdotso/ui/components/ui/slider"
+import { Slider } from "./slider"
 
 const meta: Meta<typeof Slider> = {
   title: "ui/Slider",

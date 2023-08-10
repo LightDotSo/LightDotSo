@@ -29,7 +29,7 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "@lightdotso/ui/components/ui/context-menu"
+} from "./context-menu"
 
 const meta: Meta<typeof ContextMenu> = {
   title: "ui/ContextMenu",

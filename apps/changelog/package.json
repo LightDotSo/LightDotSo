@@ -14,7 +14,7 @@
   "author": "Light, Inc.",
   "scripts": {
     "build": "next build",
-    "dev": "next dev --port 3001",
+    "dev": "next dev",
     "lint": "next lint",
     "start": "next start"
   },

@@ -20,7 +20,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@lightdotso/ui/components/ui/accordion"
+} from "./accordion"
 
 const meta: Meta<typeof Accordion> = {
   title: "ui/Accordion",

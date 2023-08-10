@@ -15,15 +15,15 @@
 
 import { Meta, StoryObj } from "@storybook/react"
 
-import { Button } from "@lightdotso/ui/components/ui/button"
-import { Input } from "@lightdotso/ui/components/ui/input"
-import { Label } from "@lightdotso/ui/components/ui/label"
+import { Button } from "./button"
+import { Input } from "./input"
+import { Label } from "./label"
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@lightdotso/ui/components/ui/tabs"
+} from "./tabs"
 
 const meta: Meta<typeof Tabs> = {
   title: "ui/Tabs",

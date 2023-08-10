@@ -16,7 +16,7 @@
 import Image from "next/image"
 import { Meta, StoryObj } from "@storybook/react"
 
-import { AspectRatio } from "@lightdotso/ui/components/ui/aspect-ratio"
+import { AspectRatio } from "./aspect-ratio"
 
 const meta: Meta<typeof AspectRatio> = {
   title: "ui/AspectRatio",

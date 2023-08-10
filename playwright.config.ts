@@ -2,7 +2,7 @@
 
 import type { PlaywrightTestConfig } from "@playwright/test";
 
-const baseUrl = process.env.PLAYWRIGHT_TEST_BASE_URL || "http://localhost:3001";
+const baseUrl = process.env.PLAYWRIGHT_TEST_BASE_URL || "http://localhost:3000";
 console.warn(`Using base URL "${baseUrl}"`);
 
 // From: https://github.com/calcom/cal.com/blob/50d2dad62c5cc93b9ccfad6b9b0836062fd5f465/playwright.config.ts#L26
@@ -13,7 +13,7 @@ const IS_API_TEST = process.argv.some(a =>
 const webServer: PlaywrightTestConfig["webServer"] = [
   {
     command: "pnpm turbo run dev --filter @lightdotso/app",
-    port: 3001,
+    port: 3000,
     timeout: 60_000,
     reuseExistingServer: !process.env.CI,
   },

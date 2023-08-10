@@ -19,7 +19,7 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@lightdotso/ui/components/ui/avatar"
+} from "./avatar"
 
 const meta: Meta<typeof Avatar> = {
   title: "ui/Avatar",

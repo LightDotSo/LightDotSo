@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
@@ -26,7 +28,7 @@ import {
 } from "react-hook-form"
 
 import { cn } from "@lightdotso/utils"
-import { Label } from "@lightdotso/ui/components/ui/label"
+import { Label } from "./label"
 
 const Form = FormProvider
 
