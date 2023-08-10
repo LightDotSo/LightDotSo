@@ -821,6 +821,9 @@ importers:
 
   apps/playground:
     dependencies:
+      '@babel/core':
+        specifier: ^7.22.10
+        version: 7.22.10
       '@code-hike/lighter':
         specifier: ^0.7.1
         version: 0.7.1
@@ -830,15 +833,24 @@ importers:
       '@lightdotso/auth':
         specifier: workspace:*
         version: link:../../packages/auth
+      '@lightdotso/kysely':
+        specifier: workspace:*
+        version: link:../../configurations/kysely
+      '@lightdotso/prisma':
+        specifier: workspace:*
+        version: link:../../configurations/prisma
+      '@lightdotso/styles':
+        specifier: workspace:*
+        version: link:../../configurations/styles
       '@lightdotso/trpc':
         specifier: workspace:*
         version: link:../../packages/trpc
-      '@lightdotso/ui':
-        specifier: workspace:*
-        version: link:../ui
-      '@lightdotso/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
+      '@next-auth/prisma-adapter':
+        specifier: 0.4.4-canary.81
+        version: 0.4.4-canary.81(@prisma/client@5.1.1)(next-auth@4.22.5)
+      '@prisma/client':
+        specifier: ^5.1.1
+        version: 5.1.1(prisma@5.1.1)
       '@radix-ui/react-accordion':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.2.7)(@types/react@18.2.20)(react-dom@18.2.0)(react@18.2.0)
@@ -851,12 +863,12 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.2.20)(react@18.2.0)
-      '@tailwindcss/typography':
-        specifier: ^0.5.9
-        version: 0.5.9(tailwindcss@3.3.3)
       '@tanstack/react-query':
         specifier: ^5.0.0-beta.9
         version: 5.0.0-beta.9(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-query-devtools':
+        specifier: ^5.0.0-beta.9
+        version: 5.0.0-beta.9(@tanstack/react-query@5.0.0-beta.9)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-query-next-experimental':
         specifier: ^5.0.0-beta.9
         version: 5.0.0-beta.9(@tanstack/react-query@5.0.0-beta.9)(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
@@ -892,7 +904,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: ^13.4.13
-        version: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.22.1
         version: 4.22.5(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
@@ -924,23 +936,26 @@ importers:
         specifier: ^3.0.0
         version: 3.21.4
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.26.1
-        version: 1.36.2
-      '@tanstack/react-query-devtools':
-        specifier: ^5.0.0-beta.9
-        version: 5.0.0-beta.9(@tanstack/react-query@5.0.0-beta.9)(react-dom@18.2.0)(react@18.2.0)
+      '@lightdotso/eslint-config':
+        specifier: workspace:*
+        version: link:../../configurations/eslint
+      '@lightdotso/tailwindcss':
+        specifier: workspace:*
+        version: link:../../configurations/tailwindcss
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
       autoprefixer:
-        specifier: ^10.4.7
+        specifier: ^10.4.14
         version: 10.4.14(postcss@8.4.27)
       postcss:
-        specifier: ^8.4.14
+        specifier: ^8.4.27
         version: 8.4.27
       start-server-and-test:
         specifier: ^1.12.0
         version: 1.12.0
       tailwindcss:
-        specifier: ^3.3.0
+        specifier: ^3.3.3
         version: 3.3.3(ts-node@10.9.1)
       wait-port:
         specifier: ^1.0.1
@@ -10547,9 +10562,11 @@ packages:
 
   /@tanstack/query-core@5.0.0-beta.9:
     resolution: {integrity: sha512-SXaTZ+K/Gw4kd7ZAtHrc0AgffcdLVOHMX0ECgDbyZ8F5hxwS/Fi7F3r1FTiVBxDf1QW4oAiHQW65zhGWikRSng==}
+    dev: false
 
   /@tanstack/query-devtools@5.0.0-beta.1:
     resolution: {integrity: sha512-n+UFgL4C/OWNpmVR8v/cj4WIMw5xapGLsZS0qHXgGrpXqNTp2IPWzeU848KHpL7BqBQZeuKDj20BuID+1FsmgA==}
+    dev: false
 
   /@tanstack/query-persist-client-core@4.32.6:
     resolution: {integrity: sha512-MJJ7CldvT5HOel50h/3wOZZwVlIcroFD5Vxn8vPsfo2C0qQ208ilmN/81JWutm/lWy4n2BjnCrrWv6HvVI7S0w==}
@@ -10574,6 +10591,7 @@ packages:
       '@tanstack/react-query': 5.0.0-beta.9(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@tanstack/react-query-next-experimental@5.0.0-beta.9(@tanstack/react-query@5.0.0-beta.9)(next@13.4.13)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-SlM/N8g7fOmIf3QShuJu+4wvItSY3D/64KKFv6Exyo2M/vrEJvO7MZRC6WaT2V5kx35V2RAVEoa8sbgDs8NSPg==}
@@ -10632,6 +10650,7 @@ packages:
       client-only: 0.0.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@taplo/cli@0.5.2:
     resolution: {integrity: sha512-6Sg10lt0fV9aHHWPycz4gzIsUodZihu68zAFZGWq0UDq+Gif2KMrAvNwjMbe+ZUKbnTJjvqJZcPvE4+UEyanAQ==}
