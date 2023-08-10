@@ -13,26 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { Button } from "@lightdotso/ui";
+import { headers } from "next/headers";
+import { Button, TrpcProvider, Web3Provider } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
-import { WagmiConfig, createConfig } from "wagmi";
-import { ConnectKitProvider, getDefaultConfig, SIWEProvider } from "connectkit";
-import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
-import { TrpcProvider } from "./trpc-provider";
+
 import { siweConfig } from "./siwe";
 import Script from "next/script";
-
-// From: https://tanstack.com/query/v5/docs/react/examples/react/nextjs-suspense-streaming
-// Also: https://tanstack.com/query/v4/docs/react/guides/ssr#using-the-app-directory-in-nextjs-13
-
-const config = createConfig(
-  getDefaultConfig({
-    appName: "Light",
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-  }),
-);
 
 export default function RootLayout({
   children,
@@ -42,17 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TrpcProvider>
-          <WagmiConfig config={config}>
-            <SIWEProvider {...siweConfig} signOutOnNetworkChange={false}>
-              <ConnectKitProvider>
-                <Button>Hello</Button>
-                <ReactQueryStreamedHydration>
-                  {children}
-                </ReactQueryStreamedHydration>
-              </ConnectKitProvider>
-            </SIWEProvider>
-          </WagmiConfig>
+        <TrpcProvider headers={headers()}>
+          <Web3Provider siweConfig={siweConfig}>
+            <Button>Hello</Button>
+            {children}
+          </Web3Provider>
         </TrpcProvider>
       </body>
       <Script async src="https://data.light.so/p.js" />
