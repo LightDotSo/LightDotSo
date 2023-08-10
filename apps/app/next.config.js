@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
+    instrumentationHook: true,
     // From: https://github.com/vercel/next.js/issues/42641
     outputFileTracingExcludes: {
       "*": [
