@@ -21,7 +21,7 @@ import { auth } from "@/auth";
 import { cn } from "@lightdotso/utils";
 import { Inter as FontSans } from "next/font/google";
 import { headers } from "next/headers";
-import { SideNav } from "../components/sidebar";
+import { SideNav } from "../src/components/sidebar";
 import { TRPCReactProvider } from "./providers";
 
 const fontSans = FontSans({
