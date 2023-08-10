@@ -1,4 +1,4 @@
-name: TODO
+name: Todo
 on:
   push:
     branches:
@@ -13,6 +13,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      contents: write
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
