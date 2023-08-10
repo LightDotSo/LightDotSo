@@ -19,7 +19,7 @@ import { loggerLink } from "@trpc/client";
 import { experimental_nextCacheLink } from "@trpc/next/app-dir/links/nextCache";
 import { experimental_createTRPCNextAppDirServer } from "@trpc/next/app-dir/server";
 import { getAuthSession } from "@lightdotso/auth";
-import { appRouter } from "../routers/app";
+import { appRouter } from "../routers/_app";
 import { cookies } from "next/headers";
 import superjson from "superjson";
 // import { prisma } from "@lightdotso/prisma";

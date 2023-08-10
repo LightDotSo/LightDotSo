@@ -17,7 +17,7 @@ import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { Button } from "@lightdotso/ui";
 import Link from "next/link";
 import "./globals.css";
-import { auth } from "@/auth";
+import { getAuthSession } from "@lightdotso/auth";
 import { cn } from "@lightdotso/utils";
 import { Inter as FontSans } from "next/font/google";
 import { headers } from "next/headers";
@@ -39,7 +39,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
+  const session = await getAuthSession();
 
   return (
     <html lang="en">

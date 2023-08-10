@@ -18,7 +18,7 @@
 import { loggerLink } from "@trpc/client";
 import { experimental_createTRPCNextAppDirClient } from "@trpc/next/app-dir/client";
 import { experimental_nextHttpLink } from "@trpc/next/app-dir/links/nextHttp";
-import type { AppRouter } from "../routers/app";
+import type { AppRouter } from "../routers/_app";
 import superjson from "superjson";
 import { getUrl } from "../server/shared";
 

@@ -12,6 +12,11 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
@@ -24,6 +29,8 @@
   "dependencies": {
     "@code-hike/lighter": "^0.7.1",
     "@hookform/resolvers": "^2.9.11",
+    "@lightdotso/auth": "workspace:*",
+    "@lightdotso/trpc": "workspace:*",
     "@lightdotso/ui": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@radix-ui/react-accordion": "^1.1.2",

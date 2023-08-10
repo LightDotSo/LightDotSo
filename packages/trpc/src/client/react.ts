@@ -21,7 +21,7 @@ import {
   experimental_serverActionLink,
 } from "@trpc/next/app-dir/client";
 import { experimental_createTRPCNextReactQuery } from "@trpc/next/app-dir/react";
-import type { AppRouter } from "../routers/app";
+import type { AppRouter } from "../routers/_app";
 import superjson from "superjson";
 
 export const api = experimental_createTRPCNextReactQuery<AppRouter>({});

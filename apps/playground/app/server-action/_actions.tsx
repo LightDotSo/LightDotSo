@@ -15,8 +15,7 @@
 
 "use server";
 
-import { createPost } from "@/server/routers/_app";
-import { createAction, publicProcedure } from "@/server/trpc";
+import { createPost, createAction, publicProcedure } from "@lightdotso/trpc";
 import { z } from "zod";
 
 /**

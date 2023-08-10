@@ -20,7 +20,7 @@ import { Button } from "@lightdotso/ui";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
 import { useState } from "react";
-import { useAction } from "trpc-api";
+import { useAction } from "@lightdotso/trpc";
 import { testAction } from "../_actions";
 
 export function UseActionExample() {

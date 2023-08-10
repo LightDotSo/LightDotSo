@@ -18,7 +18,7 @@
 import { getAuthSession } from "@lightdotso/auth";
 import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
 import { cookies } from "next/headers";
-import { appRouter } from "../routers/app";
+import { appRouter } from "../routers/_app";
 
 export const createAction = experimental_createServerActionHandler({
   router: appRouter,

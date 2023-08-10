@@ -19,13 +19,13 @@ import { CodeBlock } from "@/components/codeblocks";
 import { CollapsiblePreview } from "@/components/collapsible-preview";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
-import { api } from "@/trpc/server-http";
+import { http } from "@lightdotso/trpc";
 import { Suspense } from "react";
 import { createPostAction } from "./_actions";
 import { WithHook } from "./with-hook";
 
 export default async function Page() {
-  const post = await api.getLatestPost.query();
+  const post = await http.getLatestPost.query();
 
   return (
     <div className="space-y-4">

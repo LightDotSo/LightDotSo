@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { z } from "zod";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
-import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { publicProcedure, router } from "../server/trpc";
+import { userRouter } from "./user";
 
 let latestPost = {
   id: 0,
@@ -72,12 +72,15 @@ export const appRouter = router({
   me: publicProcedure.query(opts => {
     return opts.ctx.session;
   }),
+  healthcheck: publicProcedure.query(() => "yay!"),
 
   createPost,
 
   getLatestPost: publicProcedure.query(async () => {
     return latestPost;
   }),
+
+  user: userRouter,
 });
 
 export type AppRouter = typeof appRouter;

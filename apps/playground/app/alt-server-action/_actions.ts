@@ -15,8 +15,8 @@
 
 "use server";
 
-import { api, createAction } from "@/trpc/server-invoker";
+import { invoker, createAction } from "@lightdotso/trpc";
 
-export const createPostAction = createAction(api.createPost, {
-  revalidates: [api.getLatestPost],
+export const createPostAction = createAction(invoker.createPost, {
+  revalidates: [invoker.getLatestPost],
 });

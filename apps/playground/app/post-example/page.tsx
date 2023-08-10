@@ -19,24 +19,24 @@ import { CodeBlock } from "@/components/codeblocks";
 import { CollapsiblePreview } from "@/components/collapsible-preview";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
-import { api } from "@/trpc/server-http";
+import { http } from "@lightdotso/trpc";
 import { Suspense } from "react";
 
 async function action(fd: FormData) {
   "use server";
 
   // create the post
-  await api.createPost.mutate({
+  await http.createPost.mutate({
     title: fd.get("title") as string,
     content: fd.get("content") as string,
   });
 
   // revalidate the latest post
-  await api.getLatestPost.revalidate();
+  await http.getLatestPost.revalidate();
 }
 
 export default async function PostPage() {
-  const latestPost = await api.getLatestPost.query();
+  const latestPost = await http.getLatestPost.query();
 
   return (
     <div className="space-y-4">

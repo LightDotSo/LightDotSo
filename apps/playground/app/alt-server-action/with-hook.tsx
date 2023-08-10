@@ -17,7 +17,7 @@
 
 import { Button } from "@lightdotso/ui";
 import { Input } from "@/components/input";
-import { useAction } from "@/trpc/client";
+import { useAction } from "@lightdotso/trpc";
 import { createPostAction } from "./_actions";
 
 export function WithHook() {

@@ -21,6 +21,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth";
 import type { AuthOptions } from "next-auth";
 import { getAddress } from "viem";
+import GitHub from "next-auth/providers/github";
 
 export const authOptions: AuthOptions = {
   session: {
@@ -54,6 +55,12 @@ export const authOptions: AuthOptions = {
     },
   },
   providers: [
+    GitHub({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      clientId: process.env.GITHUB_ID!,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
     CredentialsProvider({
       id: "eth",
       name: "Ethereum",

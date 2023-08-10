@@ -15,7 +15,7 @@
 
 import { generateOpenApiDocument } from "trpc-openapi";
 
-import { appRouter } from "../routers/app";
+import { appRouter } from "../routers/_app";
 import type { OpenAPIV3 } from "openapi-types";
 
 export const openApiDocument: OpenAPIV3.Document = generateOpenApiDocument(

@@ -24,7 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { UseTRPCActionResult } from "@trpc/next/app-dir/client";
 import type * as server from "@trpc/next/app-dir/server";
 import type { ActionHandlerDef } from "@trpc/next/dist/app-dir/shared";
-import * as client from "@/trpc/client";
+import * as client from "@lightdotso/trpc";
 import { useRef } from "react";
 import type { UseFormProps, UseFormReturn } from "react-hook-form";
 import * as reactHookForm from "react-hook-form";

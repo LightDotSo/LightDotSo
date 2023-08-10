@@ -5,6 +5,8 @@
     "build": {
       "dependsOn": ["^build"],
       "env": [
+        "GITHUB_ID",
+        "GITHUB_SECRET",
         "NEXTAUTH_SECRET",
         "NEXTAUTH_URL",
         "NEXT_PUBLIC_SIGNIN_MESSAGE",

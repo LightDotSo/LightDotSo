@@ -20,6 +20,13 @@ const nextConfig = {
   },
   transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],
   webpack: config => {
+    config.externals.push(
+      "async_hooks",
+      "pino-pretty",
+      "lokijs",
+      "encoding",
+      "net",
+    );
     // This is only intended to pass CI and should be skiped in your app
     if (config.name === "server")
       config.optimization.concatenateModules = false;
