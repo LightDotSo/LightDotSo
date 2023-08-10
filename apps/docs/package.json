@@ -19,6 +19,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@babel/core": "^7.22.10",
     "next": "^13.4.13",
     "nextra": "^2.10.0",
     "nextra-theme-docs": "^2.10.0",

@@ -19,6 +19,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@babel/core": "^7.22.10",
     "@lightdotso/auth": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/prisma": "workspace:*",

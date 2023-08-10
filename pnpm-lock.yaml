@@ -376,6 +376,9 @@ importers:
 
   apps/app:
     dependencies:
+      '@babel/core':
+        specifier: ^7.22.10
+        version: 7.22.10
       '@lightdotso/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -511,9 +514,12 @@ importers:
 
   apps/changelog:
     dependencies:
+      '@babel/core':
+        specifier: ^7.22.10
+        version: 7.22.10
       next:
         specifier: ^13.4.13
-        version: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -600,9 +606,12 @@ importers:
 
   apps/docs:
     dependencies:
+      '@babel/core':
+        specifier: ^7.22.10
+        version: 7.22.10
       next:
         specifier: ^13.4.13
-        version: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       nextra:
         specifier: ^2.10.0
         version: 2.10.0(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
@@ -652,6 +661,9 @@ importers:
 
   apps/explorer:
     dependencies:
+      '@babel/core':
+        specifier: ^7.22.10
+        version: 7.22.10
       '@lightdotso/auth':
         specifier: workspace:*
         version: link:../../packages/auth
@@ -1333,6 +1345,9 @@ importers:
 
   packages/popup:
     dependencies:
+      '@babel/core':
+        specifier: ^7.22.10
+        version: 7.22.10
       '@metamask/eth-sig-util':
         specifier: ^6.0.0
         version: 6.0.0
@@ -1356,7 +1371,7 @@ importers:
         version: 4.0.0
       next:
         specifier: ^13.4.13
-        version: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -22976,7 +22991,7 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      next: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -22988,7 +23003,7 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -23089,7 +23104,7 @@ packages:
       git-url-parse: 13.1.0
       intersection-observer: 0.12.2
       match-sorter: 6.3.1
-      next: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-seo: 6.1.0(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
       next-themes: 0.2.1(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
       nextra: 2.10.0(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
@@ -23119,7 +23134,7 @@ packages:
       gray-matter: 4.0.3
       katex: 0.16.8
       lodash.get: 4.4.2
-      next: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.13(@babel/core@7.22.10)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-mdx-remote: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       p-limit: 3.1.0
       react: 18.2.0

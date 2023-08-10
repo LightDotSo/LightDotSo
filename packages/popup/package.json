@@ -22,6 +22,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@babel/core": "^7.22.10",
     "@metamask/eth-sig-util": "^6.0.0",
     "@types/firefox-webext-browser": "^111.0.1",
     "buffer": "^6.0.3",
