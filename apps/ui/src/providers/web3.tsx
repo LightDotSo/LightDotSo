@@ -13,18 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { WagmiConfig } from "wagmi";
-import { ConnectKitProvider, SIWEProvider } from "connectkit";
+"use client";
+
+import type { WagmiConfigProps } from "wagmi";
+import { WagmiConfig, createConfig } from "wagmi";
+import type { SIWEConfig } from "connectkit";
+import { ConnectKitProvider, SIWEProvider, getDefaultConfig } from "connectkit";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+
+const config = createConfig(
+  getDefaultConfig({
+    appName: "Light",
+    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+  }),
+);
 
 export function Web3Provider({
   children,
-  wagmiConfig,
+  wagmiConfig = config,
   siweConfig,
 }: {
   children: React.ReactNode;
-  wagmiConfig: WagmiConfig;
-  siweConfig: SiweConfig;
+  wagmiConfig?: WagmiConfigProps["config"];
+  siweConfig: SIWEConfig;
 }) {
   return (
     <WagmiConfig config={wagmiConfig}>
