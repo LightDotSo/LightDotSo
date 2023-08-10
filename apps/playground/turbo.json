@@ -1,0 +1,35 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "extends": ["//"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": [
+        "CI",
+        "GITHUB_ID",
+        "GITHUB_SECRET",
+        "PLAYWRIGHT_TEST_BASE_URL",
+        "PLAYWRIGHT_HEADLESS",
+        "NODE_ENV",
+        "VERCEL_URL"
+      ],
+      "inputs": ["app/**", "pages/**", "src/**"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {},
+    "start": {
+      "dependsOn": ["build"]
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "env": ["ENVIRONMENT_URL", "NODE_ENV", "PORT"]
+    }
+  }
+}
