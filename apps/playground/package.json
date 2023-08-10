@@ -36,6 +36,7 @@
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/trpc": "workspace:*",
     "@lightdotso/ui": "workspace:*",
+    "@lightdotso/utils": "workspace:*",
     "@next-auth/prisma-adapter": "0.4.4-canary.81",
     "@prisma/client": "^5.1.1",
     "@radix-ui/react-accordion": "^1.1.2",

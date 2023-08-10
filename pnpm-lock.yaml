@@ -848,6 +848,9 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@next-auth/prisma-adapter':
         specifier: 0.4.4-canary.81
         version: 0.4.4-canary.81(@prisma/client@5.1.1)(next-auth@4.22.5)
