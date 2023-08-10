@@ -13,14 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import { Button } from "@lightdotso/ui";
+import { headers } from "next/headers";
+import { Button, TrpcProvider } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 import { WagmiConfig, createConfig } from "wagmi";
 import { ConnectKitProvider, getDefaultConfig, SIWEProvider } from "connectkit";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
-import { TrpcProvider } from "./trpc-provider";
 import { siweConfig } from "./siwe";
 import Script from "next/script";
 
@@ -42,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <TrpcProvider>
+        <TrpcProvider headers={headers()}>
           <WagmiConfig config={config}>
             <SIWEProvider {...siweConfig} signOutOnNetworkChange={false}>
               <ConnectKitProvider>

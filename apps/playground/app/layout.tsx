@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
-import { Button } from "@lightdotso/ui";
+import { Button, TrpcProvider } from "@lightdotso/ui";
 import Link from "next/link";
 import "./globals.css";
 import { getAuthSession } from "@lightdotso/auth";
@@ -22,7 +22,6 @@ import { cn } from "@lightdotso/utils";
 import { Inter as FontSans } from "next/font/google";
 import { headers } from "next/headers";
 import { SideNav } from "../src/components/sidebar";
-import { TRPCReactProvider } from "./providers";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -49,7 +48,7 @@ export default async function RootLayout({
           fontSans.variable,
         )}
       >
-        <TRPCReactProvider headers={headers()}>
+        <TrpcProvider headers={headers()}>
           <div className="relative flex min-h-screen flex-col">
             <header className="sticky top-0 z-40 w-full border-b bg-background">
               <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
@@ -113,7 +112,7 @@ export default async function RootLayout({
               <SideNav>{children}</SideNav>
             </div>
           </div>
-        </TRPCReactProvider>
+        </TrpcProvider>
       </body>
     </html>
   );
