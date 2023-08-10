@@ -13,4 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { experimental_revalidateEndpoint as POST } from "@trpc/next/app-dir/server";
+export { experimental_revalidateEndpoint } from "@trpc/next/app-dir/server";
+
+// Add back once NextAuth v5 is released
+// export const runtime = 'edge';
+
+const handler = async (req: Request) => {
+  const res = await experimental_revalidateEndpoint(req);
+  return new Response(res.body, {
+    status: res.status,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    },
+  });
+};
+
+export { handler as POST };
