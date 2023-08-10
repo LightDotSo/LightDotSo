@@ -13,19 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { readFile } from "node:fs/promises";
+// import { readFile } from "node:fs/promises";
 import { Button } from "@lightdotso/ui";
-import { CodeBlock } from "@/components/codeblocks";
-import { CollapsiblePreview } from "@/components/collapsible-preview";
+// import { CodeBlock } from "@/components/codeblocks";
+// import { CollapsiblePreview } from "@/components/collapsible-preview";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
-import { api } from "@/trpc/server-http";
-import { Suspense } from "react";
+import { http } from "@lightdotso/trpc";
+// import { Suspense } from "react";
 import { createPostAction } from "./_actions";
 import { WithHook } from "./with-hook";
 
 export default async function Page() {
-  const post = await api.getLatestPost.query();
+  const post = await http.getLatestPost.query();
 
   return (
     <div className="space-y-4">
@@ -45,28 +45,28 @@ export default async function Page() {
 
       <div className="space-y-2">
         <h2 className="text-lg font-bold">Code</h2>
-        <Suspense fallback={"Reading page source..."}>
+        {/* <Suspense fallback={"Reading page source..."}>
           <h3 className="font-semibold">_actions.ts</h3>
           <ComponentCode path="./_actions.ts" />
           <h3 className="font-semibold">page.tsx</h3>
           <ComponentCode path="./page.tsx" />
           <h3 className="font-semibold">with-hook.tsx</h3>
           <ComponentCode path="./with-hook.tsx" />
-        </Suspense>
+        </Suspense> */}
       </div>
     </div>
   );
 }
 
-async function ComponentCode(props: { path: string; expandText?: string }) {
-  const fileContent = await readFile(
-    new URL(props.path, import.meta.url),
-    "utf-8",
-  );
+// async function ComponentCode(props: { path: string; expandText?: string }) {
+//   const fileContent = await readFile(
+//     new URL(props.path, import.meta.url),
+//     "utf-8",
+//   );
 
-  return (
-    <CollapsiblePreview expandButtonTitle={props.expandText}>
-      <CodeBlock code={fileContent} lang="tsx" />
-    </CollapsiblePreview>
-  );
-}
+//   return (
+//     <CollapsiblePreview expandButtonTitle={props.expandText}>
+//       <CodeBlock code={fileContent} lang="tsx" />
+//     </CollapsiblePreview>
+//   );
+// }

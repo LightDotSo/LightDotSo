@@ -15,13 +15,13 @@
 
 import { Button } from "@lightdotso/ui";
 import { JsonPreTag } from "@/components/json-pretag";
-import { api } from "@/trpc/server-http";
+import { http } from "@lightdotso/trpc";
 import { Suspense } from "react";
 import { ServerHttpGreeting } from "./ServerHttpGreeting";
 import { ServerInvokedGreeting } from "./ServerInvokedGreeting";
 
 async function AuthThing() {
-  const me = await api.me.query();
+  const me = await http.me.query();
 
   return (
     <div>
@@ -126,7 +126,7 @@ export default async function Home() {
       <form
         action={async () => {
           "use server";
-          await api.revalidate();
+          await http.revalidate();
         }}
       >
         <Button type="submit">Revalidate all</Button>
@@ -136,8 +136,8 @@ export default async function Home() {
 }
 
 async function FooRouter() {
-  const baz = await api.foo.baz.query();
-  const bar = await api.foo.bar.query();
+  const baz = await http.foo.baz.query();
+  const bar = await http.foo.bar.query();
 
   return <JsonPreTag object={{ "foo.bar": bar, "foo.baz": baz }} />;
 }

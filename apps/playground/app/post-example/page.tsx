@@ -13,30 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { readFile } from "node:fs/promises";
+// import { readFile } from "node:fs/promises";
 import { Button } from "@lightdotso/ui";
-import { CodeBlock } from "@/components/codeblocks";
-import { CollapsiblePreview } from "@/components/collapsible-preview";
+// import { CodeBlock } from "@/components/codeblocks";
+// import { CollapsiblePreview } from "@/components/collapsible-preview";
 import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
-import { api } from "@/trpc/server-http";
-import { Suspense } from "react";
+import { http } from "@lightdotso/trpc";
+// import { Suspense } from "react";
 
 async function action(fd: FormData) {
   "use server";
 
   // create the post
-  await api.createPost.mutate({
+  await http.createPost.mutate({
     title: fd.get("title") as string,
     content: fd.get("content") as string,
   });
 
   // revalidate the latest post
-  await api.getLatestPost.revalidate();
+  await http.getLatestPost.revalidate();
 }
 
 export default async function PostPage() {
-  const latestPost = await api.getLatestPost.query();
+  const latestPost = await http.getLatestPost.query();
 
   return (
     <div className="space-y-4">
@@ -54,24 +54,24 @@ export default async function PostPage() {
 
       <div className="space-y-2">
         <h2 className="text-lg font-bold">Code</h2>
-        <Suspense fallback={"Reading page source..."}>
+        {/* <Suspense fallback={"Reading page source..."}>
           <h3 className="font-semibold">page.tsx</h3>
           <ComponentCode path="./page.tsx" />
-        </Suspense>
+        </Suspense> */}
       </div>
     </div>
   );
 }
 
-async function ComponentCode(props: { path: string; expandText?: string }) {
-  const fileContent = await readFile(
-    new URL(props.path, import.meta.url),
-    "utf-8",
-  );
+// async function ComponentCode(props: { path: string; expandText?: string }) {
+//   const fileContent = await readFile(
+//     new URL(props.path, import.meta.url),
+//     "utf-8",
+//   );
 
-  return (
-    <CollapsiblePreview expandButtonTitle={props.expandText}>
-      <CodeBlock code={fileContent} lang="tsx" />
-    </CollapsiblePreview>
-  );
-}
+//   return (
+//     <CollapsiblePreview expandButtonTitle={props.expandText}>
+//       <CodeBlock code={fileContent} lang="tsx" />
+//     </CollapsiblePreview>
+//   );
+// }

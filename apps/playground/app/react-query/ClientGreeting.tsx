@@ -17,7 +17,7 @@
 
 import { Button } from "@lightdotso/ui";
 import { JsonPreTag } from "@/components/json-pretag";
-import { api } from "@/trpc/client";
+import { api } from "@lightdotso/trpc";
 
 export function AuthThing() {
   const [me] = api.me.useSuspenseQuery();

@@ -21,8 +21,7 @@ import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experime
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 import { loggerLink, unstable_httpBatchStreamLink } from "@trpc/client";
 import { experimental_nextHttpLink } from "@trpc/next/app-dir/links/nextHttp";
-import { api } from "@/trpc/client";
-import { getUrl } from "@/trpc/shared";
+import { getUrl, api } from "@lightdotso/trpc";
 import { useState } from "react";
 import superjson from "superjson";
 

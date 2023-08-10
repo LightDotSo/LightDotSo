@@ -15,7 +15,7 @@
 
 "use server";
 
-import { createAction, publicProcedure } from "@/server/trpc";
+import { createAction, publicProcedure } from "@lightdotso/trpc";
 import { rhfActionSchema } from "./ReactHookFormExample.schema";
 
 /**

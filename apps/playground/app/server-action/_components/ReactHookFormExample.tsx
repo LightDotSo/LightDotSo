@@ -22,7 +22,7 @@ import { JsonPreTag } from "@/components/json-pretag";
 import { useRef } from "react";
 import type { UseFormProps } from "react-hook-form";
 import { FormProvider, useForm } from "react-hook-form";
-import { useAction } from "trpc-api";
+import { useAction } from "@lightdotso/trpc";
 import type { z } from "zod";
 import { rhfAction } from "./ReactHookFormExample.action";
 import { rhfActionSchema } from "./ReactHookFormExample.schema";

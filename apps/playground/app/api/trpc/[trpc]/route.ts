@@ -14,8 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
-import { createContext } from "@/server/context";
-import { appRouter } from "@/server/routers/_app";
+import { createContext, appRouter } from "@lightdotso/trpc";
 
 // Add back once NextAuth v5 is released
 // export const runtime = 'edge';
