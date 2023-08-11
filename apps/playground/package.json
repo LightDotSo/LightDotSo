@@ -19,7 +19,7 @@
   },
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev -p 3004",
     "lint": "next lint",
     "start": "next start",
     "test-dev": "start-server-and-test dev 3000 test:e2e",

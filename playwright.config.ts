@@ -10,10 +10,14 @@ const IS_API_TEST = process.argv.some(a =>
   a.startsWith("--project=@lightdotso/api"),
 );
 
+const IS_PLAYGROUND_TEST = process.argv.some(a =>
+  a.startsWith("--project=@lightdotso/playground"),
+);
+
 const webServer: PlaywrightTestConfig["webServer"] = [
   {
     command: "pnpm turbo run dev --filter @lightdotso/app",
-    port: 3000,
+    port: 3001,
     timeout: 60_000,
     reuseExistingServer: !process.env.CI,
   },
@@ -23,6 +27,15 @@ if (IS_API_TEST) {
   webServer.push({
     command: "pnpm turbo run dev --filter @lightdotso/api",
     port: 3000,
+    timeout: 60_000,
+    reuseExistingServer: !process.env.CI,
+  });
+}
+
+if (IS_PLAYGROUND_TEST) {
+  webServer.push({
+    command: "pnpm turbo run dev --filter @lightdotso/playground",
+    port: 3004,
     timeout: 60_000,
     reuseExistingServer: !process.env.CI,
   });
@@ -43,6 +56,11 @@ const config: PlaywrightTestConfig = {
     {
       name: "@lightdotso/app",
       testDir: "./apps/app/e2e",
+      testMatch: /.*\.spec\.tsx?/,
+    },
+    {
+      name: "@lightdotso/playground",
+      testDir: "./apps/playground/e2e",
       testMatch: /.*\.spec\.tsx?/,
     },
   ],
