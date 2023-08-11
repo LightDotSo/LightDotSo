@@ -33,7 +33,7 @@ const nextConfig = {
           {
             key: "Access-Control-Allow-Headers",
             value:
-              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-vercel-ip-latitude, x-real-ip, x-forwarded-for,Accept-Language, Content-Type, Forwarded, Referer, Sec-Ch-Ua, Sec-Ch-Ua-Mobile, Sec-Ch-Ua-Platform, Trpc-Batch-Mode, Upgrade-Insecure-Requests, User-Agent, X-Forwarded-For, X-Forwarded-Host, X-Forwarded-Proto, X-Matched-Path, X-Real-Ip, X-Trpc-Source, X-Vercel-Deployment-Url, X-Vercel-Forwarded-For, X-Vercel-Id, X-Vercel-Ip-Country, X-Vercel-Ip-Country-Region, X-Vercel-Ip-Latitude, X-Vercel-Ip-Longitude, X-Vercel-Ip-Timezone, X-Vercel-Proxied-For, X-Vercel-Proxy-Signature, X-Vercel-Proxy-Signature-Ts, X-Vercel-Sc-Headers",
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, x-vercel-ip-latitude, x-real-ip, x-forwarded-for, Accept-Language, Content-Type, Forwarded, Referer, Sec-Ch-Ua, Sec-Ch-Ua-Mobile, Sec-Ch-Ua-Platform, Trpc-Batch-Mode, Upgrade-Insecure-Requests, User-Agent, X-Forwarded-For, X-Forwarded-Host, X-Forwarded-Proto, X-Matched-Path, X-Real-Ip, X-Trpc-Source, X-Vercel-Deployment-Url, X-Vercel-Forwarded-For, X-Vercel-Id, X-Vercel-Ip-Country, X-Vercel-Ip-Country-Region, X-Vercel-Ip-Latitude, X-Vercel-Ip-Longitude, X-Vercel-Ip-Timezone, X-Vercel-Proxied-For, X-Vercel-Proxy-Signature, X-Vercel-Proxy-Signature-Ts, X-Vercel-Sc-Headers, X-vercel-sc-host",
           },
         ],
       },
