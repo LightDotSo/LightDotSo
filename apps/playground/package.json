@@ -55,7 +55,7 @@
     "@types/react-dom": "^18.2.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
-    "lucide-react": "^0.265.0",
+    "lucide-react": "^0.263.1",
     "next": "^13.4.13",
     "next-auth": "^4.23.0",
     "react": "^18.2.0",

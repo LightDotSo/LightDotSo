@@ -6,3 +6,4 @@ reject:
   - "@trpc/next"
   - "@trpc/react-query"
   - "@trpc/server"
+  - lucide-react

@@ -64,7 +64,7 @@
     "cmdk": "^0.2.0",
     "connectkit": "^1.5.1",
     "date-fns": "^2.30.0",
-    "lucide-react": "^0.265.0",
+    "lucide-react": "^0.263.1",
     "next": "^13.4.13",
     "react": "^18.2.0",
     "react-day-picker": "^8.8.0",
