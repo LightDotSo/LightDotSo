@@ -1,0 +1,6 @@
+upgrade: true
+reject:
+  - "@trpc/client"
+  - "@trpc/next"
+  - "@trpc/react-query"
+  - "@trpc/server"

@@ -18,7 +18,7 @@
   ],
   "dependencies": {
     "prettier": "^3.0.1",
-    "prettier-plugin-tailwindcss": "^0.4.1"
+    "prettier-plugin-tailwindcss": "^0.5.2"
   },
   "publishConfig": {
     "access": "restricted"
