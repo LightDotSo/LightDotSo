@@ -1,0 +1,28 @@
+name: Todo
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  pull_request_target:
+    types:
+      - labeled
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      issues: write
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Run tdg-github-action
+        uses: ribtoks/tdg-github-action@master
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.sha }}
+          REF: ${{ github.ref }}
