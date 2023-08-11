@@ -1,0 +1,43 @@
+# Copyright (C) 2023 Light, Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ignores:
+  - "@babel/core"
+  - "@lightdotso/kysely"
+  - "@lightdotso/prisma"
+  - "@lightdotso/styles"
+  - "@next-auth/prisma-adapter"
+  - "@prisma/client"
+  - "@radix-ui/react-accordion"
+  - "@radix-ui/react-slot"
+  - "@tanstack/react-query-devtools"
+  - "@tanstack/react-query-next-experimental"
+  - "@types/node"
+  - class-variance-authority
+  - lucide-react
+  - superjson
+  - tailwindcss-animate
+  - typescript
+  - "@lightdotso/eslint-config"
+  - "@types/node"
+  - typescript
+  - wait-port
+  - "@playwright/test"
+  - "@types/react-dom"
+  - "@lightdotso/tsconfig"
+  - "@types/react-dom"
+  - autoprefixer
+  - postcss
+  - tailwindcss
