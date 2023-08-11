@@ -1,0 +1,15 @@
+ignores:
+  - "@babel/core"
+  - "@metamask/eth-sig-util"
+  - "@types/firefox-webext-browser"
+  - buffer
+  - events
+  - isutf8
+  - "@types/node"
+  - "@types/react"
+  - "@types/react-dom"
+  - autoprefixer
+  - esbuild
+  - postcss
+  - tailwindcss
+  - typescript

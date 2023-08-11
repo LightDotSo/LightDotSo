@@ -1,0 +1,9 @@
+ignores:
+  - "@metamask/eth-sig-util"
+  - "@types/firefox-webext-browser"
+  - buffer
+  - events
+  - isutf8
+  - "@types/node"
+  - esbuild
+  - typescript

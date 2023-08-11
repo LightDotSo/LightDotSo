@@ -1,0 +1,10 @@
+ignores:
+  - "@lightdotso/crates"
+  - "@lightdotso/background"
+  - "@lightdotso/content"
+  - "@lightdotso/inpage"
+  - "@lightdotso/popup"
+  - "@lightdotso/resources"
+  - "@lightdotso/eslint-config"
+  - typescript
+  - web-ext

@@ -1,0 +1,14 @@
+ignores:
+  - next
+  - "@types/node"
+  - clsx
+  - tailwind-merge
+  - "@lightdotso/prisma"
+  - "@types/node"
+  - typescript
+  - "@prisma/client"
+  - viem
+  - zod
+  - "@lightdotso/tsconfig"
+  - "@lightdotso/wagmi"
+  - "@lightdotso/eslint-config"

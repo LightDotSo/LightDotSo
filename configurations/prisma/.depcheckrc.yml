@@ -1,0 +1,10 @@
+ignores:
+  - "@types/node"
+  - vitest
+  - kysely-postgres-js
+  - postgres
+  - prisma-kysely
+  - zod-prisma
+  - "@types/node"
+  - typescript
+  - "@lightdotso/tsconfig"

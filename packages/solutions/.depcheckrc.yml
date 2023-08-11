@@ -1,0 +1,6 @@
+ignores:
+  - "@lightdotso/tsconfig"
+  - "@types/node"
+  - tsup
+  - typescript
+  - vitest

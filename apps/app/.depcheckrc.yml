@@ -1,0 +1,26 @@
+ignores:
+  - "@babel/core"
+  - "@lightdotso/kysely"
+  - "@lightdotso/prisma"
+  - "@next-auth/prisma-adapter"
+  - "@prisma/client"
+  - "@tanstack/react-query-devtools"
+  - "@tanstack/react-query-next-experimental"
+  - kysely-postgres-js
+  - postgres
+  - prisma
+  - server-only
+  - superjson
+  - "@types/node"
+  - eslint-config-prettier
+  - eslint-import-resolver-typescript
+  - "@playwright/test"
+  - checkly
+  - "@lightdotso/tsconfig"
+  - "@types/react-dom"
+  - autoprefixer
+  - postcss
+  - tailwindcss
+  - jsonc-eslint-parser
+  - "@next/eslint-plugin-next"
+  - eslint-plugin-turbo

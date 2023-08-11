@@ -1,0 +1,7 @@
+ignores:
+  - "@lightdotso/wagmi"
+  - "@lightdotso/eslint-config"
+  - vitest
+  - dotenv
+  - viem
+  - "@viem/anvil"

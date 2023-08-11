@@ -1,0 +1,5 @@
+ignores:
+  - next-auth
+  - swagger-ui-react
+  - "@lightdotso/tsconfig"
+  - viem

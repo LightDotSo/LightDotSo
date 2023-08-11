@@ -1,0 +1,6 @@
+ignores:
+  - prettier
+  - prettier-plugin-tailwindcss
+  - eslint
+  - eslint-import-resolver-typescript
+  - eslint-plugin-import

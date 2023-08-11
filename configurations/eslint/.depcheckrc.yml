@@ -1,0 +1,17 @@
+ignores:
+  - eslint
+  - eslint-import-resolver-typescript
+  - eslint-plugin-import
+  - "@typescript-eslint/eslint-plugin"
+  - "@typescript-eslint/parser"
+  - eslint-config-next
+  - eslint-config-turbo
+  - eslint-plugin-cypress
+  - eslint-plugin-editorconfig
+  - eslint-plugin-jsonc
+  - eslint-plugin-jsx-a11y
+  - eslint-plugin-prettier
+  - eslint-plugin-react
+  - eslint-plugin-react-hooks
+  - eslint-plugin-simple-import-sort
+  - eslint-plugin-tailwindcss

@@ -1,0 +1,5 @@
+ignores:
+  - "@lightdotso/tailwindcss"
+  - autoprefixer
+  - postcss
+  - tailwindcss
