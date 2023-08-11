@@ -14,10 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function getBaseUrl() {
+  if (typeof window !== "undefined") return "";
   if (process.env.NEXT_PUBLIC_VERCEL_URL)
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  if (typeof window !== "undefined") return "";
+  if (process.env.NEXTAUTH_URL) return process.env.NEXTAUTH_URL;
   return "http://localhost:3000";
 }
 
