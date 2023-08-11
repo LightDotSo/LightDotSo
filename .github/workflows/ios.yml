@@ -46,6 +46,9 @@ jobs:
       - ios-turbo
     runs-on: macos-latest
     timeout-minutes: 90
+    env:
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     permissions:
       contents: read
       checks: write
