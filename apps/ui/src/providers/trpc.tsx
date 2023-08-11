@@ -58,6 +58,12 @@ export function TrpcProvider(props: {
             headers.set("x-trpc-source", "nextjs-react");
             return Object.fromEntries(headers);
           },
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: "include",
+            });
+          },
         }),
       ],
     }),
