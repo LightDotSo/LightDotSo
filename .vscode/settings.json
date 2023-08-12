@@ -9,6 +9,9 @@
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
   // Exclude generated files
   "files.exclude": {
     "**/plonk_vk.sol": true,
@@ -46,8 +49,5 @@
   "tailwindCSS.experimental.configFile": "configurations/tailwindcss/src/index.js",
   // Typescript settings
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
