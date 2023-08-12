@@ -36,7 +36,7 @@ use lightdotso_db::{
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
-use std::{sync::Arc, time::Duration};
+use std::{collections::HashMap, sync::Arc, time::Duration};
 use tokio::time::sleep;
 use tracing::{error, trace};
 
@@ -111,7 +111,8 @@ impl Indexer {
             info!("traces: {:?}", traces);
 
             // Create new vec for addresses
-            let mut wallets: Vec<ethers::types::H160> = vec![];
+            let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
+                HashMap::new();
 
             // Loop over the traces
             for trace in traces {
@@ -135,7 +136,7 @@ impl Indexer {
                     }
 
                     // Push the address to the wallets vec
-                    wallets.push(result.address);
+                    wallet_address_hashmap.insert(result.address, res.from);
                 }
 
                 // Loop over the called traces
@@ -146,9 +147,14 @@ impl Indexer {
             }
 
             // Loop over the hashes
-            if !wallets.is_empty() {
+            if !wallet_address_hashmap.is_empty() {
                 // Get the logs for the newly created wallets
-                let logs_result = self.get_hash_logs(block.number.unwrap(), wallets).await;
+                let logs_result = self
+                    .get_hash_logs(
+                        block.number.unwrap(),
+                        wallet_address_hashmap.keys().cloned().collect(),
+                    )
+                    .await;
                 let logs = match logs_result {
                     Ok(value) => value,
                     Err(_) => continue,
@@ -159,7 +165,13 @@ impl Indexer {
                     info!("log: {:?}", log);
 
                     // Create the wallet
-                    let res = self.db_create_wallet(db_client.clone(), log.clone()).await;
+                    let res = self
+                        .db_create_wallet(
+                            db_client.clone(),
+                            log.clone(),
+                            *wallet_address_hashmap.get(&log.address).unwrap(),
+                        )
+                        .await;
                     // Log if error
                     if res.is_err() {
                         return error!("create_wallet error: {:?}", res);
@@ -201,6 +213,7 @@ impl Indexer {
         &self,
         db_client: Arc<PrismaClient>,
         log: ethers::types::Log,
+        factory_address: ethers::types::H160,
     ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
         {
             || {
@@ -208,6 +221,7 @@ impl Indexer {
                     db_client.clone(),
                     log.clone(),
                     self.chain_id as i64,
+                    factory_address,
                     Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                 )
             }

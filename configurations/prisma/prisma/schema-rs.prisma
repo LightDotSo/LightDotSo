@@ -64,13 +64,14 @@ model VerificationRequest {
 }
 
 model Wallet {
-  id        String   @id @default(cuid())
-  address   String
-  chainId   BigInt
-  hash      String
-  testnet   Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(cuid())
+  address        String
+  chainId        BigInt
+  factoryAddress String
+  hash           String
+  testnet        Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   users User[]
 
