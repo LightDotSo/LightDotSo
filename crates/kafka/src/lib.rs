@@ -40,7 +40,8 @@ pub fn get_consumer(group: &str) -> Result<StreamConsumer, rdkafka::error::Kafka
 }
 
 /// Get a Kafka producer with the required settings.
-pub fn get_producer(group: &str) -> Result<BaseProducer, rdkafka::error::KafkaError> {
-    let client_config = configure_client(group);
+pub fn get_producer() -> Result<BaseProducer, rdkafka::error::KafkaError> {
+    // Ignores the group id for producers.
+    let client_config = configure_client("");
     client_config.create()
 }

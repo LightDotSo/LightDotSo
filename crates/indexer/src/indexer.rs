@@ -81,7 +81,7 @@ impl Indexer {
 
         // Create the kafka client
         let kafka_client: Option<Arc<BaseProducer>> =
-            get_producer("lightdotso").map_or_else(|_e| None, |client| Some(Arc::new(client)));
+            get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)));
 
         // Create the indexer
         Self {
@@ -229,6 +229,7 @@ impl Indexer {
                 for (transaction_hash, addresses) in tx_address_hashmap {
                     // Check if the addresses exist on redis
                     let res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
+                    trace!(?res);
                     let has_wallets = res.iter().any(|&x| x);
 
                     // Skip if no wallets
@@ -275,10 +276,11 @@ impl Indexer {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || add_to_set(&mut con, "wallets", to_checksum(&address, None).as_str()) }
+            { || add_to_set(&mut con, "wallet", to_checksum(&address, None).as_str()) }
                 .retry(&ExponentialBuilder::default())
                 .call()
         } else {
+            error!("Redis connection error, {:?}", con.err());
             Ok(())
         }
     }
@@ -304,6 +306,7 @@ impl Indexer {
             .retry(&ExponentialBuilder::default())
             .call()
         } else {
+            error!("Redis connection error, {:?}", con.err());
             Ok(vec![])
         }
     }

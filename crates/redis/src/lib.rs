@@ -25,7 +25,7 @@ pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
     let port = std::env::var("UPSTASH_REDIS_PORT")?;
 
     // Format the connection link
-    let connection_link = format!("redis://:{}@{}:{}", password, host, port);
+    let connection_link = format!("rediss://default:{}@{}:{}", password, host, port);
 
     // Return the client
     redis::Client::open(connection_link).map_err(|e| e.into())

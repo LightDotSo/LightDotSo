@@ -8398,6 +8398,7 @@ checksum = "ffd6543a7bc6428396845f6854ccf3d1ae8823816592e2cbe74f20f50f209d02"
 dependencies = [
  "combine 4.6.6",
  "itoa 1.0.9",
+ "native-tls",
  "percent-encoding",
  "ryu",
  "sha1_smol",

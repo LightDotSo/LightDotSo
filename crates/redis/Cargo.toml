@@ -9,4 +9,4 @@
   repository.workspace = true
 
 [dependencies]
-  redis = "0.23.2"
+  redis = { version = "0.23.2", features = ["tls-native-tls"] }
