@@ -17,12 +17,14 @@ use crate::{
     config::IndexerArgs,
     constants::{FACTORY_ADDRESSES, TESTNET_CHAIN_IDS},
 };
+use autometrics::autometrics;
+use backon::{ExponentialBuilder, Retryable};
 use ethers::{
     prelude::Provider,
     providers::{Http, Middleware, Ws},
     types::{
         Action::{Call, Create, Reward, Suicide},
-        BlockNumber, Filter, Trace,
+        BlockNumber, Filter, Trace, Transaction, TransactionReceipt,
     },
 };
 use futures::StreamExt;
@@ -158,19 +160,12 @@ impl Indexer {
                     }
 
                     // Get the tx receipt
-                    let tx_receipt = self
-                        .http_client
-                        .get_transaction_receipt(log.transaction_hash.unwrap())
-                        .await
-                        .unwrap();
+                    let tx_receipt =
+                        self.get_transaction_receipt(log.transaction_hash.unwrap()).await;
                     info!("tx_receipt: {:?}", tx_receipt);
 
                     // Get the tx
-                    let tx = self
-                        .http_client
-                        .get_transaction(log.transaction_hash.unwrap())
-                        .await
-                        .unwrap();
+                    let tx = self.get_transaction(log.transaction_hash.unwrap()).await;
 
                     // Create the transaction with log receipt if both are not empty
                     if tx_receipt.is_some() && tx.is_some() {
@@ -196,6 +191,7 @@ impl Indexer {
 
     /// Get the logs for the given block number and addresses,
     /// filtered by the ImageHashUpdated event
+    #[autometrics]
     pub async fn get_hash_logs(
         &self,
         block_number: ethers::types::U64,
@@ -211,6 +207,25 @@ impl Indexer {
         self.http_client.get_logs(&filter).await.unwrap()
     }
 
+    /// Get the transaction for the given hash
+    #[autometrics]
+    pub async fn get_transaction(&self, hash: ethers::types::H256) -> Option<Transaction> {
+        // Get the block number
+        self.http_client.get_transaction(hash).await.unwrap()
+    }
+
+    /// Get the transaction receipt for the given hash
+    #[autometrics]
+    pub async fn get_transaction_receipt(
+        &self,
+        hash: ethers::types::H256,
+    ) -> Option<TransactionReceipt> {
+        // Get the block number
+        self.http_client.get_transaction_receipt(hash).await.unwrap()
+    }
+
+    /// Get the traced block for the given block number
+    #[autometrics]
     pub async fn get_traced_block(&self, block_number: ethers::types::U64) -> Vec<Trace> {
         // Get the traced block
         self.http_client.trace_block(BlockNumber::Number(block_number)).await.unwrap()

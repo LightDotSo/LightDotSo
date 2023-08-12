@@ -11,7 +11,9 @@
 [dependencies]
   anvil = { workspace = true }
   anyhow = { workspace = true }
+  autometrics = { workspace = true }
   axum = { workspace = true }
+  backon = "0.4.1"
   byteorder = { workspace = true }
   chrono = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
