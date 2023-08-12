@@ -35,6 +35,10 @@ use lightdotso_db::{
     error::DbError,
 };
 use lightdotso_discord::notify_create_wallet;
+use lightdotso_kafka::{
+    get_producer,
+    rdkafka::producer::{BaseProducer, BaseRecord},
+};
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{add_to_set, get_redis_client, is_all_members_present, redis::Client};
 use lightdotso_tracing::tracing::info;
@@ -42,10 +46,11 @@ use std::{collections::HashMap, sync::Arc, time::Duration};
 use tokio::time::sleep;
 use tracing::{error, trace};
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct Indexer {
     chain_id: usize,
     redis_client: Option<Arc<Client>>,
+    kafka_client: Option<Arc<BaseProducer>>,
     http_client: Arc<Provider<Http>>,
     ws_client: Arc<Provider<Ws>>,
     webhook: String,
@@ -74,6 +79,10 @@ impl Indexer {
         let redis_client: Option<Arc<Client>> =
             get_redis_client().map_or_else(|_e| None, |client| Some(Arc::new(client)));
 
+        // Create the kafka client
+        let kafka_client: Option<Arc<BaseProducer>> =
+            get_producer("lightdotso").map_or_else(|_e| None, |client| Some(Arc::new(client)));
+
         // Create the indexer
         Self {
             chain_id: args.chain_id,
@@ -81,6 +90,7 @@ impl Indexer {
             http_client,
             ws_client,
             redis_client,
+            kafka_client,
         }
     }
 
@@ -196,6 +206,7 @@ impl Indexer {
                             *wallet_address_hashmap.get(&log.address).unwrap(),
                         )
                         .await;
+
                     // Log if error
                     if res.is_err() {
                         return error!("create_wallet error: {:?}", res);
@@ -229,9 +240,30 @@ impl Indexer {
                     let _ = self
                         .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
                         .await;
+
+                    if self.kafka_client.is_some() {
+                        let _ = self.send_tx_queue(&transaction_hash);
+                    }
                 }
             }
         }
+    }
+
+    /// Add a new wallet in the cache
+    #[autometrics]
+    pub fn send_tx_queue(
+        &self,
+        hash: &ethers::types::H256,
+    ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
+        let client = self.kafka_client.clone().unwrap();
+        let chain_id = self.chain_id.to_string();
+        let hash = hash.clone().to_string();
+
+        let _ = { || client.send(BaseRecord::to("transaction").key(&chain_id).payload(&hash)) }
+            .retry(&ExponentialBuilder::default())
+            .call();
+
+        Ok(())
     }
 
     /// Add a new wallet in the cache
