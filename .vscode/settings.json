@@ -9,6 +9,9 @@
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
   // Exclude generated files
   "files.exclude": {
     "**/plonk_vk.sol": true,

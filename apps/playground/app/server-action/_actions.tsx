@@ -15,7 +15,7 @@
 
 "use server";
 
-import { createPost, createAction, publicProcedure } from "@lightdotso/trpc";
+import { createAction, publicProcedure } from "@lightdotso/trpc";
 import { z } from "zod";
 
 /**
@@ -40,9 +40,3 @@ export const testAction = createAction(
       };
     }),
 );
-
-/**
- * Or, you can create actions from existing procedures
- * by importing them and wrapping them in `createAction`
- */
-export const createPostAction = createAction(createPost);

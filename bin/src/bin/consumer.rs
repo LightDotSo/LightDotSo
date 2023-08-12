@@ -14,16 +14,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use anyhow::Result;
+use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
-use clap::Parser;
 use dotenvy::dotenv;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
 use lightdotso_tracing::{
-    init, stdout,
+    init, otel, stdout,
     tracing::{info, Level},
 };
 
+#[autometrics]
 async fn health_check() -> &'static str {
     "OK"
 }
@@ -31,9 +32,10 @@ async fn health_check() -> &'static str {
 pub async fn start_server() -> Result<()> {
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check));
+        .route("/health", get(health_check))
+        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
 
-    let socket_addr = "0.0.0.0:3002".parse()?;
+    let socket_addr = "0.0.0.0:3008".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
 
     Ok(())
@@ -43,7 +45,7 @@ pub async fn start_server() -> Result<()> {
 pub async fn main() {
     let _ = dotenv();
 
-    init(vec![stdout(Level::INFO)]);
+    init(vec![stdout(Level::INFO), otel()]);
 
     info!("Starting server at {}", SHORT_VERSION);
 
@@ -58,7 +60,7 @@ pub async fn main() {
     }
 
     // Parse the command line arguments
-    let args = ConsumerArgs::parse();
+    let args = ConsumerArgs { group: "all".to_string(), topics: vec!["consumer".to_string()] };
 
     // Construct the futures
     let consumer_future = args.run();

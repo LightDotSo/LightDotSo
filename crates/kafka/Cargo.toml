@@ -10,4 +10,4 @@
 
 [dependencies]
   lightdotso-tracing = { workspace = true }
-  rdkafka = { workspace = true }
+  rdkafka = { workspace = true, features = ["ssl"] }

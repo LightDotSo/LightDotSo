@@ -87,6 +87,7 @@
     "**/build/**",
     "**/coverage/**",
     "**/debug/**",
+    "**/docs/**",
     "**/fastlane/**",
     "**/gradle/**",
     "**/lib/**",
