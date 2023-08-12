@@ -5533,7 +5533,9 @@ dependencies = [
  "lazy_static",
  "lightdotso-db",
  "lightdotso-discord",
+ "lightdotso-kafka",
  "lightdotso-prisma",
+ "lightdotso-redis",
  "lightdotso-tracing",
  "prisma-client-rust",
  "redb",
@@ -5568,6 +5570,9 @@ dependencies = [
 [[package]]
 name = "lightdotso-redis"
 version = "0.1.0"
+dependencies = [
+ "redis",
+]
 
 [[package]]
 name = "lightdotso-rpc"
@@ -8386,6 +8391,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "redis"
+version = "0.23.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ffd6543a7bc6428396845f6854ccf3d1ae8823816592e2cbe74f20f50f209d02"
+dependencies = [
+ "combine 4.6.6",
+ "itoa 1.0.9",
+ "percent-encoding",
+ "ryu",
+ "sha1_smol",
+ "socket2 0.4.9",
+ "url",
+]
+
+[[package]]
 name = "redox_syscall"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9780,6 +9800,12 @@ dependencies = [
  "cpufeatures",
  "digest 0.10.7",
 ]
+
+[[package]]
+name = "sha1_smol"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae1a47186c03a32177042e55dbc5fd5aee900b8e0069a8d70fba96a9375cd012"
 
 [[package]]
 name = "sha2"

@@ -16,6 +16,7 @@
 use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
+use ethers::utils::to_checksum;
 use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
@@ -65,9 +66,9 @@ pub async fn create_wallet(
     let wallet = db
         .wallet()
         .create(
-            format!("{:?}", log.address),
+            to_checksum(&log.address, None),
             chain_id,
-            format!("{:?}", factory_address),
+            to_checksum(&factory_address, None),
             // Parse the log indexed data as a string.
             log.data.to_string(),
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
@@ -98,7 +99,7 @@ pub async fn create_transaction_with_log_receipt(
                 .create(
                     format!("{:?}", transaction.hash),
                     transaction.nonce.as_u64() as i64,
-                    format!("{:?}", transaction.from),
+                    to_checksum(&transaction.from, None),
                     transaction.value.to_string(),
                     transaction.gas.to_string(),
                     transaction.input.to_string(),
@@ -120,7 +121,7 @@ pub async fn create_transaction_with_log_receipt(
                         transaction::transaction_index::set(
                             transaction.transaction_index.map(|ti| ti.as_u32() as i32),
                         ),
-                        transaction::to::set(transaction.to.map(|to| format!("{:?}", to))),
+                        transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
                         transaction::gas_price::set(
                             transaction.gas_price.map(|gp| gp.as_u64() as i64),
                         ),
@@ -145,7 +146,7 @@ pub async fn create_transaction_with_log_receipt(
                 .create(
                     format!("{:?}", receipt.transaction_hash),
                     receipt.transaction_index.as_u32() as i32,
-                    format!("{:?}", receipt.from),
+                    to_checksum(&receipt.from, None),
                     receipt.cumulative_gas_used.as_u64() as i64,
                     receipt.logs_bloom.to_string(),
                     vec![
@@ -156,7 +157,7 @@ pub async fn create_transaction_with_log_receipt(
                         receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
                         receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
                         receipt::contract_address::set(
-                            receipt.contract_address.map(|ca| format!("{:?}", ca)),
+                            receipt.contract_address.map(|ca| to_checksum(&ca, None)),
                         ),
                         receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
                         receipt::transaction_type::set(
@@ -183,7 +184,7 @@ pub async fn create_transaction_with_log_receipt(
                 .iter()
                 .map(|log| {
                     client.log().create(
-                        format!("{:?}", log.address),
+                        to_checksum(&log.address, None),
                         log.data.to_string(),
                         vec![
                             log::topics::set(
