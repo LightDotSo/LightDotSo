@@ -228,12 +228,13 @@ impl Indexer {
                 // Loop over the tx hashes
                 for (transaction_hash, addresses) in tx_address_hashmap {
                     // Check if the addresses exist on redis
-                    let res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
-                    trace!(?res);
-                    let has_wallets = res.iter().any(|&x| x);
+                    let check_res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
+                    trace!(?check_res);
+                    let has_wallets = check_res.iter().any(|&x| x);
 
                     // Skip if no wallets
                     if !has_wallets {
+                        info!("No wallets found for tx hash: {:?}", transaction_hash);
                         continue;
                     }
 
@@ -242,8 +243,12 @@ impl Indexer {
                         .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
                         .await;
 
+                    // Send the transaction to the queue
                     if self.kafka_client.is_some() {
-                        let _ = self.send_tx_queue(&transaction_hash);
+                        let queue_res = self.send_tx_queue(&transaction_hash);
+                        if queue_res.is_err() {
+                            error!("send_tx_queue error: {:?}", queue_res);
+                        }
                     }
                 }
             }
