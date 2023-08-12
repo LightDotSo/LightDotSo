@@ -33,7 +33,7 @@ pub struct ConsumerArgs {
 impl ConsumerArgs {
     pub async fn run(&self) -> Result<()> {
         // Add info
-        info!("ConsumerArgs run, exiting");
+        info!("ConsumerArgs run, starging...");
 
         // Print the config
         info!("Config: {:?}", self);
