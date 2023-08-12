@@ -17,6 +17,6 @@
 
 import { invoker, createAction } from "@lightdotso/trpc";
 
-export const createPostAction = createAction(invoker.createPost, {
-  revalidates: [invoker.getLatestPost],
+export const createPostAction = createAction(invoker.playground.createPost, {
+  revalidates: [invoker.playground.getLatestPost],
 });

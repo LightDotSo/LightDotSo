@@ -21,7 +21,7 @@ import { ServerHttpGreeting } from "./ServerHttpGreeting";
 import { ServerInvokedGreeting } from "./ServerInvokedGreeting";
 
 async function AuthThing() {
-  const me = await http.me.query();
+  const me = await http.playground.me.query();
 
   return (
     <div>
@@ -136,8 +136,8 @@ export default async function Home() {
 }
 
 async function FooRouter() {
-  const baz = await http.foo.baz.query();
-  const bar = await http.foo.bar.query();
+  const baz = await http.playground.foo.baz.query();
+  const bar = await http.playground.foo.bar.query();
 
   return <JsonPreTag object={{ "foo.bar": bar, "foo.baz": baz }} />;
 }

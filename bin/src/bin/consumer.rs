@@ -16,7 +16,6 @@
 use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
-use clap::Parser;
 use dotenvy::dotenv;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
@@ -36,7 +35,7 @@ pub async fn start_server() -> Result<()> {
         .route("/health", get(health_check))
         .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
 
-    let socket_addr = "0.0.0.0:3002".parse()?;
+    let socket_addr = "0.0.0.0:3008".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
 
     Ok(())
@@ -61,7 +60,7 @@ pub async fn main() {
     }
 
     // Parse the command line arguments
-    let args = ConsumerArgs::parse();
+    let args = ConsumerArgs { group: "all".to_string(), topics: vec!["consumer".to_string()] };
 
     // Construct the futures
     let consumer_future = args.run();

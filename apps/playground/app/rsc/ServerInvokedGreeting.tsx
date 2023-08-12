@@ -22,14 +22,14 @@ import { JsonPreTag } from "@/components/json-pretag";
 import { invoker } from "@lightdotso/trpc";
 
 export async function ServerInvokedGreeting() {
-  const greeting1 = await invoker.greeting.query({
+  const greeting1 = await invoker.playground.greeting.query({
     text: "i never hit an api endpoint",
   });
-  const greeting2 = await invoker.greeting.query({
+  const greeting2 = await invoker.playground.greeting.query({
     text: "i also never hit an endpoint",
   });
 
-  const secret = await invoker.secret.query();
+  const secret = await invoker.playground.secret.query();
 
   return (
     <div className="space-y-2">
@@ -37,7 +37,7 @@ export async function ServerInvokedGreeting() {
       <form
         action={async () => {
           "use server";
-          await invoker.greeting.revalidate();
+          await invoker.playground.greeting.revalidate();
         }}
       >
         <Button type="submit">Revalidate Cache</Button>

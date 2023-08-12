@@ -26,17 +26,17 @@ async function action(fd: FormData) {
   "use server";
 
   // create the post
-  await http.createPost.mutate({
+  await http.playground.createPost.mutate({
     title: fd.get("title") as string,
     content: fd.get("content") as string,
   });
 
   // revalidate the latest post
-  await http.getLatestPost.revalidate();
+  await http.playground.getLatestPost.revalidate();
 }
 
 export default async function PostPage() {
-  const latestPost = await http.getLatestPost.query();
+  const latestPost = await http.playground.getLatestPost.query();
 
   return (
     <div className="space-y-4">

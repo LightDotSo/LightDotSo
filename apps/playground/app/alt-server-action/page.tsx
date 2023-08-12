@@ -25,7 +25,7 @@ import { createPostAction } from "./_actions";
 import { WithHook } from "./with-hook";
 
 export default async function Page() {
-  const post = await http.getLatestPost.query();
+  const post = await http.playground.getLatestPost.query();
 
   return (
     <div className="space-y-4">
