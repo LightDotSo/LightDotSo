@@ -22,7 +22,7 @@ use axum::Json;
 use backon::{ExponentialBuilder, Retryable};
 use ethers::{
     prelude::Provider,
-    providers::{Http, Middleware, Ws},
+    providers::{Http, Middleware, ProviderError, Ws},
     types::{
         Action::{Call, Create, Reward, Suicide},
         BlockNumber, Filter, Trace, Transaction, TransactionReceipt, U256,
@@ -36,9 +36,9 @@ use lightdotso_db::{
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
-use std::{sync::Arc, time::Duration};
+use std::{collections::HashMap, sync::Arc, time::Duration};
 use tokio::time::sleep;
-use tracing::error;
+use tracing::{error, trace};
 
 #[derive(Debug, Clone)]
 pub struct Indexer {
@@ -87,7 +87,12 @@ impl Indexer {
             sleep(Duration::from_secs(3)).await;
 
             // Get the traced block
-            let traced_block = self.get_traced_block(block.number.unwrap()).await;
+            let traced_block_result = self.get_traced_block(block.number.unwrap()).await;
+            let traced_block = match traced_block_result {
+                Ok(value) => value,
+                Err(_) => continue,
+            };
+            trace!(?traced_block);
 
             // Log the traced block length
             info!("Traced block length: {:?}", traced_block.len());
@@ -106,7 +111,8 @@ impl Indexer {
             info!("traces: {:?}", traces);
 
             // Create new vec for addresses
-            let mut wallets: Vec<ethers::types::H160> = vec![];
+            let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
+                HashMap::new();
 
             // Loop over the traces
             for trace in traces {
@@ -130,7 +136,7 @@ impl Indexer {
                     }
 
                     // Push the address to the wallets vec
-                    wallets.push(result.address);
+                    wallet_address_hashmap.insert(result.address, res.from);
                 }
 
                 // Loop over the called traces
@@ -141,44 +147,59 @@ impl Indexer {
             }
 
             // Loop over the hashes
-            if !wallets.is_empty() {
+            if !wallet_address_hashmap.is_empty() {
                 // Get the logs for the newly created wallets
-                let logs = self.get_hash_logs(block.number.unwrap(), wallets).await;
-                info!("logs: {:?}", logs);
+                let logs_result = self
+                    .get_hash_logs(
+                        block.number.unwrap(),
+                        wallet_address_hashmap.keys().cloned().collect(),
+                    )
+                    .await;
+                let logs = match logs_result {
+                    Ok(value) => value,
+                    Err(_) => continue,
+                };
+                trace!(?logs);
 
                 for log in logs {
                     info!("log: {:?}", log);
 
                     // Create the wallet
-                    let res = self.db_create_wallet(db_client.clone(), log.clone()).await;
-
+                    let res = self
+                        .db_create_wallet(
+                            db_client.clone(),
+                            log.clone(),
+                            *wallet_address_hashmap.get(&log.address).unwrap(),
+                        )
+                        .await;
                     // Log if error
                     if res.is_err() {
-                        error!("create_wallet error: {:?}", res);
+                        return error!("create_wallet error: {:?}", res);
                     }
 
                     // Get the tx receipt
                     let tx_receipt =
                         self.get_transaction_receipt(log.transaction_hash.unwrap()).await;
-                    info!("tx_receipt: {:?}", tx_receipt);
+                    trace!(?tx_receipt);
 
                     // Get the tx
                     let tx = self.get_transaction(log.transaction_hash.unwrap()).await;
+                    trace!(?tx);
 
                     // Create the transaction with log receipt if both are not empty
-                    if tx_receipt.is_some() && tx.is_some() {
+                    if tx_receipt.is_ok() && tx.is_ok() {
                         let res = self
                             .db_create_transaction_with_log_receipt(
                                 db_client.clone(),
-                                tx,
-                                tx_receipt,
+                                tx.unwrap(),
+                                tx_receipt.unwrap(),
                                 block.timestamp,
                             )
                             .await;
 
                         // Log if error
                         if res.is_err() {
-                            error!("create_transaction_with_log_receipt error: {:?}", res);
+                            return error!("create_transaction_with_log_receipt error: {:?}", res);
                         }
                     }
                 }
@@ -192,6 +213,7 @@ impl Indexer {
         &self,
         db_client: Arc<PrismaClient>,
         log: ethers::types::Log,
+        factory_address: ethers::types::H160,
     ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
         {
             || {
@@ -199,6 +221,7 @@ impl Indexer {
                     db_client.clone(),
                     log.clone(),
                     self.chain_id as i64,
+                    factory_address,
                     Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                 )
             }
@@ -239,7 +262,7 @@ impl Indexer {
         &self,
         block_number: ethers::types::U64,
         addresses: Vec<ethers::types::H160>,
-    ) -> Vec<ethers::types::Log> {
+    ) -> Result<Vec<ethers::types::Log>, ProviderError> {
         // Create the filter for the logs
         let filter = Filter::new()
             .from_block(BlockNumber::Number(block_number))
@@ -247,20 +270,17 @@ impl Indexer {
             .address(addresses);
 
         // Get the logs
-        { || self.http_client.get_logs(&filter) }
-            .retry(&ExponentialBuilder::default())
-            .await
-            .unwrap()
+        { || self.http_client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Get the transaction for the given hash
     #[autometrics]
-    pub async fn get_transaction(&self, hash: ethers::types::H256) -> Option<Transaction> {
+    pub async fn get_transaction(
+        &self,
+        hash: ethers::types::H256,
+    ) -> Result<Option<Transaction>, ProviderError> {
         // Get the block number
-        { || self.http_client.get_transaction(hash) }
-            .retry(&ExponentialBuilder::default())
-            .await
-            .unwrap()
+        { || self.http_client.get_transaction(hash) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Get the transaction receipt for the given hash
@@ -268,21 +288,22 @@ impl Indexer {
     pub async fn get_transaction_receipt(
         &self,
         hash: ethers::types::H256,
-    ) -> Option<TransactionReceipt> {
+    ) -> Result<Option<TransactionReceipt>, ProviderError> {
         // Get the block number
         { || self.http_client.get_transaction_receipt(hash) }
             .retry(&ExponentialBuilder::default())
             .await
-            .unwrap()
     }
 
     /// Get the traced block for the given block number
     #[autometrics]
-    pub async fn get_traced_block(&self, block_number: ethers::types::U64) -> Vec<Trace> {
+    pub async fn get_traced_block(
+        &self,
+        block_number: ethers::types::U64,
+    ) -> Result<Vec<Trace>, ProviderError> {
         // Get the traced block
         { || self.http_client.trace_block(BlockNumber::Number(block_number)) }
             .retry(&ExponentialBuilder::default())
             .await
-            .unwrap()
     }
 }

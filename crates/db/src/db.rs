@@ -57,6 +57,7 @@ pub async fn create_wallet(
     db: Database,
     log: ethers::types::Log,
     chain_id: i64,
+    factory_address: ethers::types::H160,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
     info!("Creating wallet");
@@ -66,6 +67,7 @@ pub async fn create_wallet(
         .create(
             format!("{:?}", log.address),
             chain_id,
+            format!("{:?}", factory_address),
             // Parse the log indexed data as a string.
             log.data.to_string(),
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
@@ -263,6 +265,7 @@ mod tests {
                 client.wallet().create(
                     format!("{:?}", log.address),
                     3_i64,
+                    format!("{:?}", Address::zero()),
                     log.data.to_string(),
                     vec![wallet::testnet::set(false)],
                 ),
@@ -270,6 +273,7 @@ mod tests {
                     id: "".to_string(),
                     address: format!("{:?}", Address::zero()),
                     chain_id: 3_i64,
+                    factory_address: format!("{:?}", Address::zero()),
                     hash: "".to_string(),
                     testnet: false,
                     created_at: DateTime::<FixedOffset>::from_utc(
@@ -286,7 +290,7 @@ mod tests {
             .await;
 
         // Create a wallet
-        let wallet = create_wallet(client, log, 3_i64, Some(false)).await;
+        let wallet = create_wallet(client, log, 3_i64, Address::zero(), Some(false)).await;
 
         if let Ok(wallet) = wallet {
             assert_eq!(wallet.address, format!("{:?}", Address::zero()));
