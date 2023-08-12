@@ -19,7 +19,7 @@ use crate::{
 };
 use autometrics::autometrics;
 use axum::Json;
-use backon::{ExponentialBuilder, Retryable};
+use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use ethers::{
     prelude::Provider,
     providers::{Http, Middleware, ProviderError, Ws},
@@ -27,6 +27,7 @@ use ethers::{
         Action::{Call, Create, Reward, Suicide},
         BlockNumber, Filter, Trace, Transaction, TransactionReceipt, U256,
     },
+    utils::to_checksum,
 };
 use futures::StreamExt;
 use lightdotso_db::{
@@ -34,15 +35,22 @@ use lightdotso_db::{
     error::DbError,
 };
 use lightdotso_discord::notify_create_wallet;
+use lightdotso_kafka::{
+    get_producer,
+    rdkafka::producer::{BaseProducer, BaseRecord},
+};
 use lightdotso_prisma::PrismaClient;
+use lightdotso_redis::{add_to_set, get_redis_client, is_all_members_present, redis::Client};
 use lightdotso_tracing::tracing::info;
 use std::{collections::HashMap, sync::Arc, time::Duration};
 use tokio::time::sleep;
 use tracing::{error, trace};
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct Indexer {
     chain_id: usize,
+    redis_client: Option<Arc<Client>>,
+    kafka_client: Option<Arc<BaseProducer>>,
     http_client: Arc<Provider<Http>>,
     ws_client: Arc<Provider<Ws>>,
     webhook: String,
@@ -67,8 +75,23 @@ impl Indexer {
             Provider::<Ws>::connect_with_reconnects(args.ws.to_string(), usize::MAX).await.unwrap(),
         );
 
+        // Create the redis client
+        let redis_client: Option<Arc<Client>> =
+            get_redis_client().map_or_else(|_e| None, |client| Some(Arc::new(client)));
+
+        // Create the kafka client
+        let kafka_client: Option<Arc<BaseProducer>> =
+            get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)));
+
         // Create the indexer
-        Self { chain_id: args.chain_id, webhook: args.webhook.clone(), http_client, ws_client }
+        Self {
+            chain_id: args.chain_id,
+            webhook: args.webhook.clone(),
+            http_client,
+            ws_client,
+            redis_client,
+            kafka_client,
+        }
     }
 
     /// Runs the indexer
@@ -113,6 +136,8 @@ impl Indexer {
             // Create new vec for addresses
             let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
                 HashMap::new();
+            let mut tx_address_hashmap: HashMap<ethers::types::H256, Vec<ethers::types::H160>> =
+                HashMap::new();
 
             // Loop over the traces
             for trace in traces {
@@ -125,11 +150,16 @@ impl Indexer {
                     // Log the newly created wallet address
                     info!("New wallet address: {:?}", result.address);
 
+                    // Send redis if exists
+                    if self.redis_client.is_some() {
+                        let _ = self.add_to_wallets(result.address);
+                    }
+
                     // Send webhook if exists
                     if !self.webhook.is_empty(){
                         notify_create_wallet(
                             &self.webhook,
-                            &result.address.to_string(),
+                            &to_checksum(&result.address, None),
                             &self.chain_id.to_string(),
                             &trace.transaction_hash.unwrap().to_string()
                         ).await;
@@ -140,9 +170,13 @@ impl Indexer {
                 }
 
                 // Loop over the called traces
-                if let Call(_res) = &trace.action && let Some(ethers::types::Res::Call(_result)) = &trace.result {
-                    // info!("New called trace: {:?}", res);
-                    // info!("New called trace result: {:?}", result);
+                if let Call(res) = &trace.action && let Some(ethers::types::Res::Call(_result)) = &trace.result {
+                    // Build the tx_address_hashmap
+                    let entry = tx_address_hashmap.entry(trace.transaction_hash.unwrap()).or_insert_with(Vec::new);
+
+                    // Push the address to the tx vec
+                    entry.push(res.from);
+                    entry.push(res.to);
                 }
             }
 
@@ -172,37 +206,145 @@ impl Indexer {
                             *wallet_address_hashmap.get(&log.address).unwrap(),
                         )
                         .await;
+
                     // Log if error
                     if res.is_err() {
                         return error!("create_wallet error: {:?}", res);
                     }
 
-                    // Get the tx receipt
-                    let tx_receipt =
-                        self.get_transaction_receipt(log.transaction_hash.unwrap()).await;
-                    trace!(?tx_receipt);
+                    // Create the transaction
+                    let _ = self
+                        .db_create_transaction(
+                            db_client.clone(),
+                            log.transaction_hash.unwrap(),
+                            block.timestamp,
+                        )
+                        .await;
+                }
+            }
 
-                    // Get the tx
-                    let tx = self.get_transaction(log.transaction_hash.unwrap()).await;
-                    trace!(?tx);
+            // Loop over the hashes
+            if !tx_address_hashmap.is_empty() && self.redis_client.is_some() {
+                // Loop over the tx hashes
+                for (transaction_hash, addresses) in tx_address_hashmap {
+                    // Check if the addresses exist on redis
+                    let check_res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
+                    trace!(?check_res);
+                    let has_wallets = check_res.iter().any(|&x| x);
 
-                    // Create the transaction with log receipt if both are not empty
-                    if tx_receipt.is_ok() && tx.is_ok() {
-                        let res = self
-                            .db_create_transaction_with_log_receipt(
-                                db_client.clone(),
-                                tx.unwrap(),
-                                tx_receipt.unwrap(),
-                                block.timestamp,
-                            )
-                            .await;
+                    // Skip if no wallets
+                    if !has_wallets {
+                        info!("No wallets found for tx hash: {:?}", transaction_hash);
+                        continue;
+                    }
 
-                        // Log if error
-                        if res.is_err() {
-                            return error!("create_transaction_with_log_receipt error: {:?}", res);
+                    // Create the transaction
+                    let _ = self
+                        .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
+                        .await;
+
+                    // Send the transaction to the queue
+                    if self.kafka_client.is_some() {
+                        let queue_res = self.send_tx_queue(&transaction_hash);
+                        if queue_res.is_err() {
+                            error!("send_tx_queue error: {:?}", queue_res);
                         }
                     }
                 }
+            }
+        }
+    }
+
+    /// Add a new wallet in the cache
+    #[autometrics]
+    pub fn send_tx_queue(
+        &self,
+        hash: &ethers::types::H256,
+    ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
+        let client = self.kafka_client.clone().unwrap();
+        let chain_id = self.chain_id.to_string();
+        let hash = hash.clone().to_string();
+
+        let _ = { || client.send(BaseRecord::to("transaction").key(&chain_id).payload(&hash)) }
+            .retry(&ExponentialBuilder::default())
+            .call();
+
+        Ok(())
+    }
+
+    /// Add a new wallet in the cache
+    #[autometrics]
+    pub fn add_to_wallets(
+        &self,
+        address: ethers::types::H160,
+    ) -> Result<(), lightdotso_redis::redis::RedisError> {
+        let client = self.redis_client.clone().unwrap();
+        let con = client.get_connection();
+        if let Ok(mut con) = con {
+            { || add_to_set(&mut con, "wallet", to_checksum(&address, None).as_str()) }
+                .retry(&ExponentialBuilder::default())
+                .call()
+        } else {
+            error!("Redis connection error, {:?}", con.err());
+            Ok(())
+        }
+    }
+
+    /// Check if the wallet exists in the cache
+    #[autometrics]
+    pub fn check_if_exists_in_wallets(
+        &self,
+        addresses: Vec<ethers::types::H160>,
+    ) -> Result<std::vec::Vec<bool>, lightdotso_redis::redis::RedisError> {
+        let client = self.redis_client.clone().unwrap();
+        let con = client.get_connection();
+        if let Ok(mut con) = con {
+            {
+                || {
+                    is_all_members_present(
+                        &mut con,
+                        "wallets",
+                        addresses.iter().map(|address| to_checksum(address, None)).collect(),
+                    )
+                }
+            }
+            .retry(&ExponentialBuilder::default())
+            .call()
+        } else {
+            error!("Redis connection error, {:?}", con.err());
+            Ok(vec![])
+        }
+    }
+
+    #[autometrics]
+    pub async fn db_create_transaction(
+        &self,
+        db_client: Arc<PrismaClient>,
+        hash: ethers::types::H256,
+        timestamp: U256,
+    ) {
+        // Get the tx receipt
+        let tx_receipt = self.get_transaction_receipt(hash).await;
+        trace!(?tx_receipt);
+
+        // Get the tx
+        let tx = self.get_transaction(hash).await;
+        trace!(?tx);
+
+        // Create the transaction with log receipt if both are not empty
+        if tx_receipt.is_ok() && tx.is_ok() {
+            let res = self
+                .db_create_transaction_with_log_receipt(
+                    db_client.clone(),
+                    tx.unwrap(),
+                    tx_receipt.unwrap(),
+                    timestamp,
+                )
+                .await;
+
+            // Log if error
+            if res.is_err() {
+                error!("create_transaction_with_log_receipt error: {:?}", res);
             }
         }
     }
