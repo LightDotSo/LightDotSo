@@ -24,6 +24,10 @@ import type { AuthOptions } from "next-auth";
 import { getAddress } from "viem";
 import GitHub from "next-auth/providers/github";
 
+// Check if we are using https, only use secure cookies in deployment
+const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith("https://");
+const hostName = new URL(process.env.NEXTAUTH_URL!).hostname;
+
 export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
@@ -53,6 +57,18 @@ export const authOptions: AuthOptions = {
       session.address = session.user.name || "";
       session.chainId = 1;
       return session;
+    },
+  },
+  cookies: {
+    sessionToken: {
+      name: `${useSecureCookies ? "__Secure-" : ""}next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: hostName == "localhost" ? hostName : "." + hostName,
+        secure: useSecureCookies,
+      },
     },
   },
   providers: [
