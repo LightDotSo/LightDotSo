@@ -201,38 +201,21 @@ impl Indexer {
                         return error!("create_wallet error: {:?}", res);
                     }
 
-                    // Get the tx receipt
-                    let tx_receipt =
-                        self.get_transaction_receipt(log.transaction_hash.unwrap()).await;
-                    trace!(?tx_receipt);
-
-                    // Get the tx
-                    let tx = self.get_transaction(log.transaction_hash.unwrap()).await;
-                    trace!(?tx);
-
-                    // Create the transaction with log receipt if both are not empty
-                    if tx_receipt.is_ok() && tx.is_ok() {
-                        let res = self
-                            .db_create_transaction_with_log_receipt(
-                                db_client.clone(),
-                                tx.unwrap(),
-                                tx_receipt.unwrap(),
-                                block.timestamp,
-                            )
-                            .await;
-
-                        // Log if error
-                        if res.is_err() {
-                            return error!("create_transaction_with_log_receipt error: {:?}", res);
-                        }
-                    }
+                    // Create the transaction
+                    let _ = self
+                        .db_create_transaction(
+                            db_client.clone(),
+                            log.transaction_hash.unwrap(),
+                            block.timestamp,
+                        )
+                        .await;
                 }
             }
 
             // Loop over the hashes
             if !tx_address_hashmap.is_empty() && self.redis_client.is_some() {
                 // Loop over the tx hashes
-                for (tx_hash, addresses) in tx_address_hashmap {
+                for (transaction_hash, addresses) in tx_address_hashmap {
                     // Check if the addresses exist on redis
                     let res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
                     let has_wallets = res.iter().any(|&x| x);
@@ -242,30 +225,10 @@ impl Indexer {
                         continue;
                     }
 
-                    // Get the tx receipt
-                    let tx_receipt = self.get_transaction_receipt(tx_hash).await;
-                    trace!(?tx_receipt);
-
-                    // Get the tx
-                    let tx = self.get_transaction(tx_hash).await;
-                    trace!(?tx);
-
-                    // Create the transaction with log receipt if both are not empty
-                    if tx_receipt.is_ok() && tx.is_ok() {
-                        let res = self
-                            .db_create_transaction_with_log_receipt(
-                                db_client.clone(),
-                                tx.unwrap(),
-                                tx_receipt.unwrap(),
-                                block.timestamp,
-                            )
-                            .await;
-
-                        // Log if error
-                        if res.is_err() {
-                            return error!("create_transaction_with_log_receipt error: {:?}", res);
-                        }
-                    }
+                    // Create the transaction
+                    let _ = self
+                        .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
+                        .await;
                 }
             }
         }
@@ -310,6 +273,39 @@ impl Indexer {
             .call()
         } else {
             Ok(vec![])
+        }
+    }
+
+    #[autometrics]
+    pub async fn db_create_transaction(
+        &self,
+        db_client: Arc<PrismaClient>,
+        hash: ethers::types::H256,
+        timestamp: U256,
+    ) {
+        // Get the tx receipt
+        let tx_receipt = self.get_transaction_receipt(hash).await;
+        trace!(?tx_receipt);
+
+        // Get the tx
+        let tx = self.get_transaction(hash).await;
+        trace!(?tx);
+
+        // Create the transaction with log receipt if both are not empty
+        if tx_receipt.is_ok() && tx.is_ok() {
+            let res = self
+                .db_create_transaction_with_log_receipt(
+                    db_client.clone(),
+                    tx.unwrap(),
+                    tx_receipt.unwrap(),
+                    timestamp,
+                )
+                .await;
+
+            // Log if error
+            if res.is_err() {
+                error!("create_transaction_with_log_receipt error: {:?}", res);
+            }
         }
     }
 
