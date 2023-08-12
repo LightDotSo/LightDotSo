@@ -17,16 +17,22 @@ use crate::{
     config::IndexerArgs,
     constants::{FACTORY_ADDRESSES, TESTNET_CHAIN_IDS},
 };
+use autometrics::autometrics;
+use axum::Json;
+use backon::{ExponentialBuilder, Retryable};
 use ethers::{
     prelude::Provider,
     providers::{Http, Middleware, Ws},
     types::{
         Action::{Call, Create, Reward, Suicide},
-        BlockNumber, Filter, Trace,
+        BlockNumber, Filter, Trace, Transaction, TransactionReceipt, U256,
     },
 };
 use futures::StreamExt;
-use lightdotso_db::db::{create_transaction_with_log_receipt, create_wallet};
+use lightdotso_db::{
+    db::{create_transaction_with_log_receipt, create_wallet},
+    error::DbError,
+};
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
@@ -144,13 +150,7 @@ impl Indexer {
                     info!("log: {:?}", log);
 
                     // Create the wallet
-                    let res = create_wallet(
-                        db_client.clone(),
-                        log.clone(),
-                        self.chain_id as i64,
-                        Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
-                    )
-                    .await;
+                    let res = self.db_create_wallet(db_client.clone(), log.clone()).await;
 
                     // Log if error
                     if res.is_err() {
@@ -158,31 +158,23 @@ impl Indexer {
                     }
 
                     // Get the tx receipt
-                    let tx_receipt = self
-                        .http_client
-                        .get_transaction_receipt(log.transaction_hash.unwrap())
-                        .await
-                        .unwrap();
+                    let tx_receipt =
+                        self.get_transaction_receipt(log.transaction_hash.unwrap()).await;
                     info!("tx_receipt: {:?}", tx_receipt);
 
                     // Get the tx
-                    let tx = self
-                        .http_client
-                        .get_transaction(log.transaction_hash.unwrap())
-                        .await
-                        .unwrap();
+                    let tx = self.get_transaction(log.transaction_hash.unwrap()).await;
 
                     // Create the transaction with log receipt if both are not empty
                     if tx_receipt.is_some() && tx.is_some() {
-                        let res = create_transaction_with_log_receipt(
-                            db_client.clone(),
-                            tx.clone().unwrap(),
-                            tx_receipt.clone().unwrap().logs,
-                            tx_receipt.clone().unwrap(),
-                            self.chain_id as i64,
-                            block.timestamp,
-                        )
-                        .await;
+                        let res = self
+                            .db_create_transaction_with_log_receipt(
+                                db_client.clone(),
+                                tx,
+                                tx_receipt,
+                                block.timestamp,
+                            )
+                            .await;
 
                         // Log if error
                         if res.is_err() {
@@ -194,8 +186,55 @@ impl Indexer {
         }
     }
 
+    /// Creates a new wallet in the database
+    #[autometrics]
+    pub async fn db_create_wallet(
+        &self,
+        db_client: Arc<PrismaClient>,
+        log: ethers::types::Log,
+    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
+        {
+            || {
+                create_wallet(
+                    db_client.clone(),
+                    log.clone(),
+                    self.chain_id as i64,
+                    Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await
+    }
+
+    /// Creates a new transaction with log receipt in the database
+    #[autometrics]
+    pub async fn db_create_transaction_with_log_receipt(
+        &self,
+        db_client: Arc<PrismaClient>,
+        tx: Option<Transaction>,
+        tx_receipt: Option<TransactionReceipt>,
+        timestamp: U256,
+    ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
+        {
+            || {
+                create_transaction_with_log_receipt(
+                    db_client.clone(),
+                    tx.clone().unwrap(),
+                    tx_receipt.clone().unwrap().logs,
+                    tx_receipt.clone().unwrap(),
+                    self.chain_id as i64,
+                    timestamp,
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await
+    }
+
     /// Get the logs for the given block number and addresses,
     /// filtered by the ImageHashUpdated event
+    #[autometrics]
     pub async fn get_hash_logs(
         &self,
         block_number: ethers::types::U64,
@@ -208,11 +247,42 @@ impl Indexer {
             .address(addresses);
 
         // Get the logs
-        self.http_client.get_logs(&filter).await.unwrap()
+        { || self.http_client.get_logs(&filter) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
     }
 
+    /// Get the transaction for the given hash
+    #[autometrics]
+    pub async fn get_transaction(&self, hash: ethers::types::H256) -> Option<Transaction> {
+        // Get the block number
+        { || self.http_client.get_transaction(hash) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
+    }
+
+    /// Get the transaction receipt for the given hash
+    #[autometrics]
+    pub async fn get_transaction_receipt(
+        &self,
+        hash: ethers::types::H256,
+    ) -> Option<TransactionReceipt> {
+        // Get the block number
+        { || self.http_client.get_transaction_receipt(hash) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
+    }
+
+    /// Get the traced block for the given block number
+    #[autometrics]
     pub async fn get_traced_block(&self, block_number: ethers::types::U64) -> Vec<Trace> {
         // Get the traced block
-        self.http_client.trace_block(BlockNumber::Number(block_number)).await.unwrap()
+        { || self.http_client.trace_block(BlockNumber::Number(block_number)) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
     }
 }
