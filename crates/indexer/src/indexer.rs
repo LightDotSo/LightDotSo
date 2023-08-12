@@ -204,14 +204,20 @@ impl Indexer {
             .address(addresses);
 
         // Get the logs
-        self.http_client.get_logs(&filter).await.unwrap()
+        { || self.http_client.get_logs(&filter) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
     }
 
     /// Get the transaction for the given hash
     #[autometrics]
     pub async fn get_transaction(&self, hash: ethers::types::H256) -> Option<Transaction> {
         // Get the block number
-        self.http_client.get_transaction(hash).await.unwrap()
+        { || self.http_client.get_transaction(hash) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
     }
 
     /// Get the transaction receipt for the given hash
@@ -221,13 +227,19 @@ impl Indexer {
         hash: ethers::types::H256,
     ) -> Option<TransactionReceipt> {
         // Get the block number
-        self.http_client.get_transaction_receipt(hash).await.unwrap()
+        { || self.http_client.get_transaction_receipt(hash) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
     }
 
     /// Get the traced block for the given block number
     #[autometrics]
     pub async fn get_traced_block(&self, block_number: ethers::types::U64) -> Vec<Trace> {
         // Get the traced block
-        self.http_client.trace_block(BlockNumber::Number(block_number)).await.unwrap()
+        { || self.http_client.trace_block(BlockNumber::Number(block_number)) }
+            .retry(&ExponentialBuilder::default())
+            .await
+            .unwrap()
     }
 }
