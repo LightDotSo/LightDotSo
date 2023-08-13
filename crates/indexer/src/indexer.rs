@@ -225,19 +225,44 @@ impl Indexer {
 
             // Loop over the hashes
             if !tx_address_hashmap.is_empty() && self.redis_client.is_some() {
+                // Create a vec of hashes and addresses
+                // Hashmap: {hash1: [address, address, address]}
+                // Hashes: [hash1, hash1, hash1]
+                // Addresses: [address, address, address,]
+                let (hashes, addresses) = tx_address_hashmap.iter().fold(
+                    (Vec::new(), Vec::new()),
+                    |(mut h, mut a), (key, values)| {
+                        h.extend(std::iter::repeat(key.clone()).take(values.len()));
+                        a.extend(values.iter().cloned());
+                        (h, a)
+                    },
+                );
+
+                // Check if the two vecs are the same length
+                assert_eq!(hashes.len(), addresses.len());
+
+                // Check if the addresses exist on redis
+                let check_res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
+                trace!(?check_res);
+
+                // Check if any of the addresses exist
+                let has_wallets = check_res.iter().any(|&x| x);
+                if !has_wallets {
+                    info!("No wallets found for block");
+                    continue;
+                }
+
+                // Create the hashes w/ check_res filter
+                let hashes: Vec<ethers::types::H256> = hashes
+                    .iter()
+                    .zip(check_res.iter())
+                    .filter(|(_, &x)| x)
+                    .map(|(x, _)| x.clone())
+                    .collect();
+                trace!(?hashes);
+
                 // Loop over the tx hashes
-                for (transaction_hash, addresses) in tx_address_hashmap {
-                    // Check if the addresses exist on redis
-                    let check_res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
-                    trace!(?check_res);
-                    let has_wallets = check_res.iter().any(|&x| x);
-
-                    // Skip if no wallets
-                    if !has_wallets {
-                        info!("No wallets found for tx hash: {:?}", transaction_hash);
-                        continue;
-                    }
-
+                for transaction_hash in hashes {
                     // Create the transaction
                     let _ = self
                         .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
