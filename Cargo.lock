@@ -2785,7 +2785,7 @@ dependencies = [
 [[package]]
 name = "ethers"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "ethers-addressbook 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "ethers-contract 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
@@ -2812,7 +2812,7 @@ dependencies = [
 [[package]]
 name = "ethers-addressbook"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "ethers-core 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "once_cell",
@@ -2843,7 +2843,7 @@ dependencies = [
 [[package]]
 name = "ethers-contract"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "const-hex",
  "ethers-contract-abigen 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
@@ -2886,7 +2886,7 @@ dependencies = [
 [[package]]
 name = "ethers-contract-abigen"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "Inflector",
  "const-hex",
@@ -2925,7 +2925,7 @@ dependencies = [
 [[package]]
 name = "ethers-contract-derive"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "Inflector",
  "const-hex",
@@ -2970,7 +2970,7 @@ dependencies = [
 [[package]]
 name = "ethers-core"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "arrayvec",
  "bytes",
@@ -3014,7 +3014,7 @@ dependencies = [
 [[package]]
 name = "ethers-etherscan"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "ethers-core 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "ethers-solc 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
@@ -3056,7 +3056,7 @@ dependencies = [
 [[package]]
 name = "ethers-middleware"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "async-trait",
  "auto_impl",
@@ -3119,7 +3119,7 @@ dependencies = [
 [[package]]
 name = "ethers-providers"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "async-trait",
  "auto_impl",
@@ -3176,7 +3176,7 @@ dependencies = [
 [[package]]
 name = "ethers-signers"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "async-trait",
  "coins-bip32",
@@ -3228,7 +3228,7 @@ dependencies = [
 [[package]]
 name = "ethers-solc"
 version = "2.0.8"
-source = "git+https://github.com/gakonst/ethers-rs#980c7c810595bb6b58fe864ce44fc68d6be3fe18"
+source = "git+https://github.com/gakonst/ethers-rs#842fe1bb4eb17ecfbfc54ac239e858f2c088150b"
 dependencies = [
  "cfg-if",
  "const-hex",
@@ -4551,9 +4551,9 @@ checksum = "d897f394bad6a705d5f4104762e116a75639e470d80901eed05a860a95cb1904"
 
 [[package]]
 name = "httpdate"
-version = "1.0.2"
+version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c4a1e36c821dbe04574f602848a19f742f4fb3c98d40449f11bcad18d6b17421"
+checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 
 [[package]]
 name = "hyper"
