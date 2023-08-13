@@ -256,10 +256,13 @@ impl Indexer {
                 let hashes: Vec<ethers::types::H256> = hashes
                     .iter()
                     .zip(check_res.iter())
-                    .filter(|(_, &x)| x)
-                    .map(|(x, _)| x.clone())
+                    .filter(|(_, &check)| check)
+                    .map(|(hsh, _)| hsh.clone())
                     .collect();
                 trace!(?hashes);
+
+                // Check if the hashes length and check_res true length are the same
+                assert_eq!(hashes.len(), check_res.iter().filter(|&&x| x).count());
 
                 // Loop over the tx hashes
                 for transaction_hash in hashes {
