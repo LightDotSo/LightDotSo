@@ -21,11 +21,12 @@ use autometrics::autometrics;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use ethers::{
+    core::abi::Event,
     prelude::Provider,
     providers::{Http, Middleware, ProviderError, Ws},
     types::{
         Action::{Call, Create, Reward, Suicide},
-        BlockNumber, Filter, Trace, Transaction, TransactionReceipt, U256,
+        BlockNumber, Filter, Trace, Transaction, TransactionReceipt, H256, U256,
     },
     utils::to_checksum,
 };
@@ -192,11 +193,42 @@ impl Indexer {
                 }
             }
 
+            // Get the block logs
+            let block_logs_result = self.get_block_logs(block.number.unwrap()).await;
+            let block_logs = match block_logs_result {
+                Ok(value) => value,
+                Err(_) => continue,
+            };
+            trace!(?block_logs);
+
+            // Loop over the block logs
+            for log in block_logs {
+                // Build the tx_address_hashmap
+                let entry = tx_address_hashmap
+                    .entry(log.transaction_hash.unwrap())
+                    .or_insert_with(Vec::new);
+
+                if log.topics[0] ==
+                    H256::from(
+                        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                    )
+                {
+                    // If the id exists in the log, meaning it's a NFT transfer
+                    if !log.topics[3].is_zero() {
+                        entry.push(log.topics[1].into());
+                        entry.push(log.topics[2].into());
+                    } else {
+                        entry.push(log.topics[1].into());
+                        entry.push(log.topics[2].into());
+                    }
+                }
+            }
+
             // Loop over the hashes
             if !wallet_address_hashmap.is_empty() {
                 // Get the logs for the newly created wallets
                 let logs_result = self
-                    .get_hash_logs(
+                    .get_block_image_hash_logs(
                         block.number.unwrap(),
                         wallet_address_hashmap.keys().cloned().collect(),
                     )
@@ -480,10 +512,27 @@ impl Indexer {
         .await
     }
 
+    /// Get the block logs for the given block number
+    #[autometrics]
+    pub async fn get_block_logs(
+        &self,
+        block_number: ethers::types::U64,
+    ) -> Result<Vec<ethers::types::Log>, ProviderError> {
+        // Create the filter for the logs
+        let filter = Filter::new()
+            .from_block(BlockNumber::Number(block_number))
+            .event("Transfer(address,address,uint256)")
+            .event("TransferSingle(address,address,address,uint256,uint256)")
+            .event("TransferBatch(address,address,address,uint256[],uint256[])");
+
+        // Get the logs
+        { || self.http_client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
+    }
+
     /// Get the logs for the given block number and addresses,
     /// filtered by the ImageHashUpdated event
     #[autometrics]
-    pub async fn get_hash_logs(
+    pub async fn get_block_image_hash_logs(
         &self,
         block_number: ethers::types::U64,
         addresses: Vec<ethers::types::H160>,
