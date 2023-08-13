@@ -40,7 +40,10 @@ use lightdotso_kafka::{
     rdkafka::producer::{BaseProducer, BaseRecord},
 };
 use lightdotso_prisma::PrismaClient;
-use lightdotso_redis::{add_to_set, get_redis_client, is_all_members_present, redis::Client};
+use lightdotso_redis::{
+    add_to_set, get_redis_client, is_all_members_present, redis::Client, set_default_unindexed,
+    set_status_flag,
+};
 use lightdotso_tracing::tracing::info;
 use std::{collections::HashMap, sync::Arc, time::Duration};
 use tokio::time::sleep;
@@ -97,6 +100,15 @@ impl Indexer {
     /// Runs the indexer
     pub async fn run(&self, db_client: Arc<PrismaClient>) {
         info!("Indexer run, starting");
+
+        // Set the default block flags
+        if redis_client.is_some() {
+            info!(
+                "Setting default block flags from {:?} to {:?}",
+                args.start_block, args.end_block
+            );
+            let _ = set_default_block_flags(args.start_block, args.end_block);
+        }
 
         // Initiate stream for new blocks
         let mut stream = self.ws_client.subscribe_blocks().await.unwrap();
@@ -280,6 +292,11 @@ impl Indexer {
                     }
                 }
             }
+
+            // Set the flag for the block
+            if self.redis_client.is_some() {
+                let _ = self.set_block_flag_true(block.number.unwrap().as_u64());
+            }
         }
     }
 
@@ -318,6 +335,43 @@ impl Indexer {
         }
     }
 
+    /// Set the default block flags
+    #[autometrics]
+    pub fn set_default_block_flags(
+        &self,
+        start_block: u64,
+        end_block: u64,
+    ) -> Result<(), lightdotso_redis::redis::RedisError> {
+        let client = self.redis_client.clone().unwrap();
+        let con = client.get_connection();
+        if let Ok(mut con) = con {
+            { || set_default_unindexed(&mut con, start_block as i64, end_block as i64) }
+                .retry(&ExponentialBuilder::default())
+                .call()
+        } else {
+            error!("Redis connection error, {:?}", con.err());
+            Ok(())
+        }
+    }
+
+    /// Set the block flag to true
+    #[autometrics]
+    pub fn set_block_flag_true(
+        &self,
+        block: u64,
+    ) -> Result<(), lightdotso_redis::redis::RedisError> {
+        let client = self.redis_client.clone().unwrap();
+        let con = client.get_connection();
+        if let Ok(mut con) = con {
+            { || set_status_flag(&mut con, block as i64) }
+                .retry(&ExponentialBuilder::default())
+                .call()
+        } else {
+            error!("Redis connection error, {:?}", con.err());
+            Ok(())
+        }
+    }
+
     /// Check if the wallet exists in the cache
     #[autometrics]
     pub fn check_if_exists_in_wallets(
@@ -344,6 +398,7 @@ impl Indexer {
         }
     }
 
+    /// Creates a new wallet in the database
     #[autometrics]
     pub async fn db_create_transaction(
         &self,
