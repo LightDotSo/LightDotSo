@@ -20,28 +20,34 @@ use rdkafka::{
 };
 
 /// Configure a Kafka client with the required settings.
-pub fn configure_client(group: &str) -> ClientConfig {
+pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error::Error>> {
     let mut binding = ClientConfig::new();
     let config = binding
         .set("group.id", group)
-        .set("bootstrap.servers", std::env::var("KAFKA_BROKER").unwrap())
+        .set("bootstrap.servers", std::env::var("KAFKA_BROKER")?)
         .set("sasl.mechanism", "SCRAM-SHA-256")
         .set("security.protocol", "SASL_SSL")
-        .set("sasl.username", std::env::var("KAFKA_USERNAME").unwrap())
-        .set("sasl.password", std::env::var("KAFKA_PASSWORD").unwrap());
+        .set("sasl.username", std::env::var("KAFKA_USERNAME")?)
+        .set("sasl.password", std::env::var("KAFKA_PASSWORD")?);
 
-    config.clone()
+    Ok(config.clone())
 }
 
 /// Get a Kafka consumer with the required settings.
 pub fn get_consumer(group: &str) -> Result<StreamConsumer, rdkafka::error::KafkaError> {
     let client_config = configure_client(group);
-    client_config.create()
+    if client_config.is_err() {
+        return Err(rdkafka::error::KafkaError::ClientCreation("Failed to create client".into()));
+    }
+    client_config.unwrap().create()
 }
 
 /// Get a Kafka producer with the required settings.
 pub fn get_producer() -> Result<BaseProducer, rdkafka::error::KafkaError> {
     // Ignores the group id for producers.
     let client_config = configure_client("");
-    client_config.create()
+    if client_config.is_err() {
+        return Err(rdkafka::error::KafkaError::ClientCreation("Failed to create client".into()));
+    }
+    client_config.unwrap().create()
 }
