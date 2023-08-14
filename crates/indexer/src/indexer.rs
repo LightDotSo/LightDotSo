@@ -28,7 +28,7 @@ use ethers::{
         Action::{Call, Create, Reward, Suicide},
         BlockNumber, Filter, Trace, Transaction, TransactionReceipt, H256, U256,
     },
-    utils::to_checksum,
+    utils::{keccak256, to_checksum},
 };
 use futures::StreamExt;
 use lightdotso_db::{
@@ -46,9 +46,9 @@ use lightdotso_redis::{
     set_status_flag,
 };
 use lightdotso_tracing::tracing::info;
-use std::{collections::HashMap, sync::Arc, time::Duration};
+use std::{collections::HashMap, str::FromStr, sync::Arc, time::Duration};
 use tokio::time::sleep;
-use tracing::{error, trace};
+use tracing::{debug, error, trace};
 
 #[derive(Clone)]
 pub struct Indexer {
@@ -58,6 +58,9 @@ pub struct Indexer {
     http_client: Arc<Provider<Http>>,
     ws_client: Arc<Provider<Ws>>,
     webhook: String,
+    start_block: u64,
+    end_block: u64,
+    live: bool,
 }
 
 impl Indexer {
@@ -91,6 +94,9 @@ impl Indexer {
         Self {
             chain_id: args.chain_id,
             webhook: args.webhook.clone(),
+            start_block: args.start_block,
+            end_block: args.end_block,
+            live: args.live,
             http_client,
             ws_client,
             redis_client,
@@ -103,12 +109,12 @@ impl Indexer {
         info!("Indexer run, starting");
 
         // Set the default block flags
-        if redis_client.is_some() {
+        if self.redis_client.is_some() {
             info!(
                 "Setting default block flags from {:?} to {:?}",
-                args.start_block, args.end_block
+                self.start_block, self.end_block
             );
-            let _ = set_default_block_flags(args.start_block, args.end_block);
+            let _ = self.set_default_block_flags(self.start_block, self.end_block);
         }
 
         // Initiate stream for new blocks
@@ -142,27 +148,19 @@ impl Indexer {
                     Reward(_) | Suicide(_) => false,
                 })
                 .collect();
-
-            // Log the result of filtered traces
-            info!("traces: {:?}", traces);
+            trace!(?traces);
 
             // Create new vec for addresses
             let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
                 HashMap::new();
             let mut tx_address_hashmap: HashMap<ethers::types::H256, Vec<ethers::types::H160>> =
                 HashMap::new();
+            let mut address_type_hashmap: HashMap<ethers::types::H160, String> = HashMap::new();
 
             // Loop over the traces
             for trace in traces {
                 // Loop over traces that are create
                 if let Create(res) = &trace.action && let Some(ethers::types::Res::Create(result)) = &trace.result {
-                    info!("New created trace: {:?}", trace);
-                    info!("New create action: {:?}", res);
-                    info!("New init trace: {:?}", res.init);
-
-                    // Log the newly created wallet address
-                    info!("New wallet address: {:?}", result.address);
-
                     // Send redis if exists
                     if self.redis_client.is_some() {
                         let _ = self.add_to_wallets(result.address);
@@ -194,12 +192,13 @@ impl Indexer {
             }
 
             // Get the block logs
-            let block_logs_result = self.get_block_logs(block.number.unwrap()).await;
+            let block_logs_result = self.get_block_logs(block.number.unwrap() - 1).await;
             let block_logs = match block_logs_result {
                 Ok(value) => value,
                 Err(_) => continue,
             };
             trace!(?block_logs);
+            info!("Block logs: {:?}", block_logs);
 
             // Loop over the block logs
             for log in block_logs {
@@ -208,19 +207,68 @@ impl Indexer {
                     .entry(log.transaction_hash.unwrap())
                     .or_insert_with(Vec::new);
 
+                // Filter the logs for transfers
                 if log.topics[0] ==
-                    H256::from(
+                    // Event signature for `Transfer(address,address,uint256)`
+                    H256::from_str(
                         "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
                     )
+                    .unwrap()
                 {
-                    // If the id exists in the log, meaning it's a NFT transfer
-                    if !log.topics[3].is_zero() {
+                    // If the id exists in the log for topic 3,
+                    // it's a ERC721 transfer
+                    if !log.topics.len() < 4 && !log.topics[3].is_zero() {
+                        // Address for from
                         entry.push(log.topics[1].into());
+                        // Address for to
                         entry.push(log.topics[2].into());
-                    } else {
+                        // Insert entries into the hashmap
+                        address_type_hashmap.insert(log.topics[1].into(), "ERC721".to_string());
+                        address_type_hashmap.insert(log.topics[2].into(), "ERC721".to_string());
+                    // It's a ERC20 transfer
+                    } else if log.topics.len() >= 3 {
+                        // Address for from
                         entry.push(log.topics[1].into());
+                        // Address for to
                         entry.push(log.topics[2].into());
+                        // Insert entries into the hashmap
+                        address_type_hashmap.insert(log.topics[1].into(), "ERC20".to_string());
+                        address_type_hashmap.insert(log.topics[2].into(), "ERC20".to_string());
                     }
+                }
+
+                if log.topics[0] ==
+                    // Event signature for `TransferSingle(address,address,address,uint256,uint256)`
+                    H256::from_str(
+                        "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62",
+                    )
+                    .unwrap() &&
+                    log.topics.len() == 5
+                {
+                    // Address for from
+                    entry.push(log.topics[2].into());
+                    // Address for to
+                    entry.push(log.topics[3].into());
+                    // Insert entries into the hashmap
+                    address_type_hashmap.insert(log.topics[2].into(), "ERC1155".to_string());
+                    address_type_hashmap.insert(log.topics[3].into(), "ERC1155".to_string());
+                }
+
+                if log.topics[0] ==
+                    // Event signature for `TransferBatch(address,address,address,uint256[],uint256[])`
+                    H256::from_str(
+                        "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb",
+                    )
+                    .unwrap() &&
+                    log.topics.len() == 5
+                {
+                    // Address for from
+                    entry.push(log.topics[2].into());
+                    // Address for to
+                    entry.push(log.topics[3].into());
+                    // Insert entries into the hashmap
+                    address_type_hashmap.insert(log.topics[2].into(), "ERC1155".to_string());
+                    address_type_hashmap.insert(log.topics[3].into(), "ERC1155".to_string());
                 }
             }
 
@@ -332,7 +380,7 @@ impl Indexer {
         }
     }
 
-    /// Add a new wallet in the cache
+    /// Add a new tx in the queue
     #[autometrics]
     pub fn send_tx_queue(
         &self,
@@ -395,7 +443,7 @@ impl Indexer {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || set_status_flag(&mut con, block as i64) }
+            { || set_status_flag(&mut con, block as i64, true) }
                 .retry(&ExponentialBuilder::default())
                 .call()
         } else {
@@ -521,9 +569,10 @@ impl Indexer {
         // Create the filter for the logs
         let filter = Filter::new()
             .from_block(BlockNumber::Number(block_number))
-            .event("Transfer(address,address,uint256)")
-            .event("TransferSingle(address,address,address,uint256,uint256)")
-            .event("TransferBatch(address,address,address,uint256[],uint256[])");
+            .to_block(BlockNumber::Number(block_number));
+        // .event("Transfer(address,address,uint256)")
+        // .event("TransferSingle(address,address,address,uint256,uint256)")
+        // .event("TransferBatch(address,address,address,uint256[],uint256[])");
 
         // Get the logs
         { || self.http_client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await

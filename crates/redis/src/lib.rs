@@ -59,7 +59,7 @@ pub fn set_default_unindexed(
     end: i64,
 ) -> redis::RedisResult<()> {
     let mut pipe = redis::pipe();
-    for block_number in start_block..=end_block {
+    for block_number in start..=end {
         pipe.hset_nx("blocks", block_number, 0).ignore();
     }
     pipe.query(redis_conn)?;
@@ -67,7 +67,11 @@ pub fn set_default_unindexed(
 }
 
 /// Set a range of values depending on the status
-pub fn set_status_flag(redis_conn: &mut redis::Connection, number: i64) -> redis::RedisResult<()> {
+pub fn set_status_flag(
+    redis_conn: &mut redis::Connection,
+    number: i64,
+    status: bool,
+) -> redis::RedisResult<()> {
     let status = if status { 1 } else { 0 };
     redis_conn.hset("blocks", number, status)?;
     Ok(())

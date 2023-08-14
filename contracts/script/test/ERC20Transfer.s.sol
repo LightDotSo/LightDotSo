@@ -20,37 +20,32 @@ pragma solidity ^0.8.18;
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightDeployer} from "@/script/LightDeployer.s.sol";
+import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 import {Script} from "forge-std/Script.sol";
+import {Test} from "forge-std/Test.sol";
 
-// LightWalletDeployer -- Deploys the LightWallet contract
-
-contract LightWalletDeployer is LightDeployer, Script {
-    // -------------------------------------------------------------------------
-    // Storages
-    // -------------------------------------------------------------------------
-    LightWallet private wallet;
-    LightWalletFactory private factory;
+// ERC20Transfer -- Test ERC20 transfer
+contract ERC20Transfer is Script, Test {
+    address private deployer = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
+    MockERC20 internal token;
 
     function run() public {
         // Start the broadcast
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
-        // If testing on a local chain, use the existing address
+        // Only run on the local anvil
         if (block.chainid == 0x7a69) {
-            // Get the factory
-            factory = LightWalletFactory(address(0x262aD6Becda7CE4B047a3130491978A8f35F9aeC));
+            // Deploy a new MockERC20
+            token = new MockERC20("Test", "TEST", 18);
 
-            // Create an account
-            wallet = factory.createAccount(bytes32(uint256(1)), randMod());
+            // Mint 1e18 ERC20s to the account
+            token.mint(address(deployer), 1e18);
+            assertEq(token.balanceOf(address(deployer)), 1e18);
 
-            // solhint-disable-next-line no-console
-            console.log("LightWallet deployed at address: %s", address(wallet));
-        } else {
-            // Get the factory
-            factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
-
-            // Create an account
-            wallet = factory.createAccount(bytes32(uint256(1)), uint256(1));
+            // Transfer to address 0x0
+            token.transfer(address(0), 1e18);
+            assertEq(token.balanceOf(address(deployer)), 0);
+            assertEq(token.balanceOf(address(0)), 1e18);
         }
 
         // Stop the broadcast
