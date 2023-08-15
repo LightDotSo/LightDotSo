@@ -392,15 +392,17 @@ impl Indexer {
 
                     if tx_adress_category.is_some() {
                         for (addr, category) in tx_adress_category.unwrap() {
-                            // Create the transaction category
-                            let _ = self
-                                .db_create_transaction_category(
-                                    db_client.clone(),
-                                    addr,
-                                    category,
-                                    transaction_hash,
-                                )
-                                .await;
+                            // Create the transaction category if wallet exists
+                            if wallet_addresses.contains(addr) {
+                                let _ = self
+                                    .db_create_transaction_category(
+                                        db_client.clone(),
+                                        addr,
+                                        category,
+                                        transaction_hash,
+                                    )
+                                    .await;
+                            }
                         }
                     }
 
