@@ -32,7 +32,7 @@ use ethers::{
 };
 use futures::StreamExt;
 use lightdotso_db::{
-    db::{create_transaction_with_log_receipt, create_wallet},
+    db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
     error::DbError,
 };
 use lightdotso_discord::notify_create_wallet;
@@ -365,15 +365,28 @@ impl Indexer {
 
                 // Loop over the tx hashes
                 for transaction_hash in hashes {
+                    // Create the transaction
+                    let _ = self
+                        .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
+                        .await;
+
+                    // Get the optional category
                     let category = tx_address_type_hashmap
                         .get(&transaction_hash)
                         .and_then(|hm| hm.get(&ethers::types::Address::zero()))
                         .map(|s| s.to_string());
 
-                    // Create the transaction
-                    let _ = self
-                        .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
-                        .await;
+                    if category.is_some() {
+                        // Create the transaction category
+                        let _ = self
+                            .db_create_transaction_category(
+                                db_client.clone(),
+                                ethers::types::Address::zero(),
+                                category.unwrap(),
+                                transaction_hash,
+                            )
+                            .await;
+                    }
 
                     // Send the transaction to the queue
                     if self.kafka_client.is_some() {
@@ -418,7 +431,7 @@ impl Indexer {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || add_to_set(&mut con, "wallet", to_checksum(&address, None).as_str()) }
+            { || add_to_set(&mut con, "wallets", to_checksum(&address, None).as_str()) }
                 .retry(&ExponentialBuilder::default())
                 .call()
         } else {
@@ -540,6 +553,29 @@ impl Indexer {
                     self.chain_id as i64,
                     factory_address,
                     Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await
+    }
+
+    /// Creates a new transaction category in the database
+    #[autometrics]
+    pub async fn db_create_transaction_category(
+        &self,
+        db_client: Arc<PrismaClient>,
+        address: ethers::types::H160,
+        category: String,
+        tx_hash: ethers::types::H256,
+    ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
+        {
+            || {
+                create_transaction_category(
+                    db_client.clone(),
+                    address.clone(),
+                    category.clone(),
+                    tx_hash.clone(),
                 )
             }
         }

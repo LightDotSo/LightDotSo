@@ -17,7 +17,9 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::utils::to_checksum;
-use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
+use lightdotso_prisma::{
+    log, receipt, transaction, transaction_category, user, wallet, PrismaClient,
+};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     NewClientError,
@@ -77,6 +79,32 @@ pub async fn create_wallet(
         .await?;
 
     Ok(Json::from(wallet))
+}
+
+pub async fn create_transaction_category(
+    db: Database,
+    address: ethers::types::H160,
+    category: String,
+    transaction_hash: ethers::types::H256,
+) -> AppJsonResult<transaction_category::Data> {
+    info!("Creating transaction category");
+
+    let category = db
+        .transaction_category()
+        .create(
+            to_checksum(&address, None),
+            category,
+            // transaction_category::transaction::connect(transaction::hash::equals(format!(
+            //     "{:?}",
+            //     transaction_hash
+            // ))),
+            transaction::UniqueWhereParam::HashEquals(format!("{:?}", transaction_hash)),
+            vec![],
+        )
+        .exec()
+        .await?;
+
+    Ok(Json::from(category))
 }
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
