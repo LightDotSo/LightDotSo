@@ -24,6 +24,12 @@ pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
     let password = std::env::var("UPSTASH_REDIS_PASSWORD")?;
     let port = std::env::var("UPSTASH_REDIS_PORT")?;
 
+    // If host is localhost, connect to redis without password
+    if host == "localhost" {
+        let connection_link = format!("redis://{}:{}", host, port);
+        return redis::Client::open(connection_link).map_err(|e| e.into());
+    }
+
     // Format the connection link
     let connection_link = format!("rediss://default:{}@{}:{}", password, host, port);
 

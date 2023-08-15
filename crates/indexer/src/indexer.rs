@@ -46,9 +46,20 @@ use lightdotso_redis::{
     set_status_flag,
 };
 use lightdotso_tracing::tracing::info;
-use std::{collections::HashMap, str::FromStr, sync::Arc, time::Duration};
+use std::{
+    collections::{HashMap, HashSet},
+    hash::Hash,
+    str::FromStr,
+    sync::Arc,
+    time::Duration,
+};
 use tokio::time::sleep;
 use tracing::{debug, error, trace};
+
+pub fn make_unique<T: Hash + Eq + Clone>(items: Vec<T>) -> Vec<T> {
+    let unique_items: HashSet<_> = items.into_iter().collect();
+    unique_items.into_iter().collect()
+}
 
 #[derive(Clone)]
 pub struct Indexer {
@@ -348,7 +359,7 @@ impl Indexer {
                 let has_wallets = check_res.iter().any(|&x| x);
                 if !has_wallets {
                     info!("No wallets found for block");
-                    continue;
+                    return;
                 }
 
                 // Create the hashes w/ check_res filter
@@ -363,9 +374,9 @@ impl Indexer {
                     .collect();
                 trace!(?wallet_hashes);
 
-                // Create the hashes w/ check_res filter
-                // wallet_hashes: [hash1, hash3]
-                // hashes: [hash1, hash2, hash3]
+                // Create the wallet addresses w/ check_res filter
+                // wallet_addresses: [addr1, addr3]
+                // addresses: [addr1, addr2, addr3]
                 // check_res: [true, false, true]
                 let wallet_addresses: Vec<ethers::types::H160> = addresses
                     .iter()
@@ -380,20 +391,31 @@ impl Indexer {
                 assert_eq!(wallet_addresses.len(), check_res.iter().filter(|&&x| x).count());
                 assert_eq!(wallet_hashes.len(), wallet_addresses.len());
 
-                // Loop over the tx hashes
-                for transaction_hash in wallet_hashes {
-                    // Create the transaction
-                    let _ = self
-                        .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
-                        .await;
+                // Get the unique hashes and addresses
+                let unique_wallet_hashes: Vec<ethers::types::H256> = make_unique(wallet_hashes);
+                let unique_wallet_addreses: Vec<ethers::types::H160> =
+                    make_unique(wallet_addresses);
+                info!("unique_wallet_hashes: {:?}", unique_wallet_hashes.clone());
+                info!("unique_wallet_addreses: {:?}", unique_wallet_addreses.clone());
 
+                // Loop over the tx hashes
+                for transaction_hash in unique_wallet_hashes {
                     // Get the optional category
                     let tx_adress_category = tx_address_type_hashmap.get(&transaction_hash);
 
                     if tx_adress_category.is_some() {
                         for (addr, category) in tx_adress_category.unwrap() {
+                            // Create the transaction for indexing
+                            let _ = self
+                                .db_create_transaction(
+                                    db_client.clone(),
+                                    transaction_hash,
+                                    block.timestamp,
+                                )
+                                .await;
+
                             // Create the transaction category if wallet exists
-                            if wallet_addresses.contains(addr) {
+                            if unique_wallet_addreses.contains(addr) {
                                 let _ = self
                                     .db_create_transaction_category(
                                         db_client.clone(),
@@ -403,14 +425,14 @@ impl Indexer {
                                     )
                                     .await;
                             }
-                        }
-                    }
 
-                    // Send the transaction to the queue
-                    if self.kafka_client.is_some() {
-                        let queue_res = self.send_tx_queue(&transaction_hash);
-                        if queue_res.is_err() {
-                            error!("send_tx_queue error: {:?}", queue_res);
+                            // Send the transaction to the queue if live indexing
+                            if self.live && self.kafka_client.is_some() {
+                                let queue_res = self.send_tx_queue(&transaction_hash);
+                                if queue_res.is_err() {
+                                    error!("send_tx_queue error: {:?}", queue_res);
+                                }
+                            }
                         }
                     }
                 }
