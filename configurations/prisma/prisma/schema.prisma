@@ -141,6 +141,9 @@ model Log {
   removed             Boolean?
 
   receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
+
+  // Index based on the gin index on the topics column.
+  @@index([topics(ops: ArrayOps)], type: Gin)
 }
 
 /// ethers-rs TransactionReceipt struct converted to Prisma model.
@@ -270,6 +273,7 @@ model Transaction {
   /// pub chain_id: Option<U256>
   chainId   BigInt
   timestamp DateTime
+  category  String?
 
   Receipt Receipt?
 }

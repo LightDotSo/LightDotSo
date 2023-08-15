@@ -155,7 +155,10 @@ impl Indexer {
                 HashMap::new();
             let mut tx_address_hashmap: HashMap<ethers::types::H256, Vec<ethers::types::H160>> =
                 HashMap::new();
-            let mut address_type_hashmap: HashMap<ethers::types::H160, String> = HashMap::new();
+            let mut tx_address_type_hashmap: HashMap<
+                ethers::types::H256,
+                HashMap<ethers::types::H160, String>,
+            > = HashMap::new();
 
             // Loop over the traces
             for trace in traces {
@@ -206,6 +209,10 @@ impl Indexer {
                 let entry = tx_address_hashmap
                     .entry(log.transaction_hash.unwrap())
                     .or_insert_with(Vec::new);
+                // Build the address_type_hashmap
+                let address_type_entry = tx_address_type_hashmap
+                    .entry(log.transaction_hash.unwrap())
+                    .or_insert_with(HashMap::new);
 
                 // Filter the logs for transfers
                 if log.topics[0] ==
@@ -223,8 +230,8 @@ impl Indexer {
                         // Address for to
                         entry.push(log.topics[2].into());
                         // Insert entries into the hashmap
-                        address_type_hashmap.insert(log.topics[1].into(), "ERC721".to_string());
-                        address_type_hashmap.insert(log.topics[2].into(), "ERC721".to_string());
+                        address_type_entry.insert(log.topics[1].into(), "ERC721".to_string());
+                        address_type_entry.insert(log.topics[2].into(), "ERC721".to_string());
                     // It's a ERC20 transfer
                     } else if log.topics.len() >= 3 {
                         // Address for from
@@ -232,8 +239,8 @@ impl Indexer {
                         // Address for to
                         entry.push(log.topics[2].into());
                         // Insert entries into the hashmap
-                        address_type_hashmap.insert(log.topics[1].into(), "ERC20".to_string());
-                        address_type_hashmap.insert(log.topics[2].into(), "ERC20".to_string());
+                        address_type_entry.insert(log.topics[1].into(), "ERC20".to_string());
+                        address_type_entry.insert(log.topics[2].into(), "ERC20".to_string());
                     }
                 }
 
@@ -250,8 +257,8 @@ impl Indexer {
                     // Address for to
                     entry.push(log.topics[3].into());
                     // Insert entries into the hashmap
-                    address_type_hashmap.insert(log.topics[2].into(), "ERC1155".to_string());
-                    address_type_hashmap.insert(log.topics[3].into(), "ERC1155".to_string());
+                    address_type_entry.insert(log.topics[2].into(), "ERC1155".to_string());
+                    address_type_entry.insert(log.topics[3].into(), "ERC1155".to_string());
                 }
 
                 if log.topics[0] ==
@@ -267,8 +274,8 @@ impl Indexer {
                     // Address for to
                     entry.push(log.topics[3].into());
                     // Insert entries into the hashmap
-                    address_type_hashmap.insert(log.topics[2].into(), "ERC1155".to_string());
-                    address_type_hashmap.insert(log.topics[3].into(), "ERC1155".to_string());
+                    address_type_entry.insert(log.topics[2].into(), "ERC1155".to_string());
+                    address_type_entry.insert(log.topics[3].into(), "ERC1155".to_string());
                 }
             }
 
@@ -310,6 +317,7 @@ impl Indexer {
                             db_client.clone(),
                             log.transaction_hash.unwrap(),
                             block.timestamp,
+                            Some("create".to_string()),
                         )
                         .await;
                 }
@@ -358,9 +366,19 @@ impl Indexer {
 
                 // Loop over the tx hashes
                 for transaction_hash in hashes {
+                    let category = tx_address_type_hashmap
+                        .get(&transaction_hash)
+                        .and_then(|hm| hm.get(&ethers::types::Address::zero()))
+                        .map(|s| s.to_string());
+
                     // Create the transaction
                     let _ = self
-                        .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
+                        .db_create_transaction(
+                            db_client.clone(),
+                            transaction_hash,
+                            block.timestamp,
+                            category,
+                        )
                         .await;
 
                     // Send the transaction to the queue
@@ -485,6 +503,7 @@ impl Indexer {
         db_client: Arc<PrismaClient>,
         hash: ethers::types::H256,
         timestamp: U256,
+        category: Option<String>,
     ) {
         // Get the tx receipt
         let tx_receipt = self.get_transaction_receipt(hash).await;
@@ -502,6 +521,7 @@ impl Indexer {
                     tx.unwrap(),
                     tx_receipt.unwrap(),
                     timestamp,
+                    category,
                 )
                 .await;
 
@@ -543,6 +563,7 @@ impl Indexer {
         tx: Option<Transaction>,
         tx_receipt: Option<TransactionReceipt>,
         timestamp: U256,
+        category: Option<String>,
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         {
             || {
@@ -553,6 +574,7 @@ impl Indexer {
                     tx_receipt.clone().unwrap(),
                     self.chain_id as i64,
                     timestamp,
+                    category.clone(),
                 )
             }
         }

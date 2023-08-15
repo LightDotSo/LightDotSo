@@ -88,6 +88,7 @@ pub async fn create_transaction_with_log_receipt(
     receipt: ethers::types::TransactionReceipt,
     chain_id: i64,
     timestamp: ethers::types::U256,
+    category: Option<String>,
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
@@ -134,6 +135,7 @@ pub async fn create_transaction_with_log_receipt(
                         transaction::max_fee_per_gas::set(
                             transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
                         ),
+                        transaction::category::set(category),
                     ],
                 )
                 .exec()
