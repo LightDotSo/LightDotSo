@@ -352,40 +352,56 @@ impl Indexer {
                 }
 
                 // Create the hashes w/ check_res filter
-                let hashes: Vec<ethers::types::H256> = hashes
+                // wallet_hashes: [hash1, hash3]
+                // hashes: [hash1, hash2, hash3]
+                // check_res: [true, false, true]
+                let wallet_hashes: Vec<ethers::types::H256> = hashes
                     .iter()
                     .zip(check_res.iter())
                     .filter(|(_, &check)| check)
                     .map(|(hsh, _)| hsh.clone())
                     .collect();
-                trace!(?hashes);
+                trace!(?wallet_hashes);
+
+                // Create the hashes w/ check_res filter
+                // wallet_hashes: [hash1, hash3]
+                // hashes: [hash1, hash2, hash3]
+                // check_res: [true, false, true]
+                let wallet_addresses: Vec<ethers::types::H160> = addresses
+                    .iter()
+                    .zip(check_res.iter())
+                    .filter(|(_, &check)| check)
+                    .map(|(addr, _)| addr.clone())
+                    .collect();
+                trace!(?wallet_addresses);
 
                 // Check if the hashes length and check_res true length are the same
-                assert_eq!(hashes.len(), check_res.iter().filter(|&&x| x).count());
+                assert_eq!(wallet_hashes.len(), check_res.iter().filter(|&&x| x).count());
+                assert_eq!(wallet_addresses.len(), check_res.iter().filter(|&&x| x).count());
+                assert_eq!(wallet_hashes.len(), wallet_addresses.len());
 
                 // Loop over the tx hashes
-                for transaction_hash in hashes {
+                for transaction_hash in wallet_hashes {
                     // Create the transaction
                     let _ = self
                         .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
                         .await;
 
                     // Get the optional category
-                    let category = tx_address_type_hashmap
-                        .get(&transaction_hash)
-                        .and_then(|hm| hm.get(&ethers::types::Address::zero()))
-                        .map(|s| s.to_string());
+                    let tx_adress_category = tx_address_type_hashmap.get(&transaction_hash);
 
-                    if category.is_some() {
-                        // Create the transaction category
-                        let _ = self
-                            .db_create_transaction_category(
-                                db_client.clone(),
-                                ethers::types::Address::zero(),
-                                category.unwrap(),
-                                transaction_hash,
-                            )
-                            .await;
+                    if tx_adress_category.is_some() {
+                        for (addr, category) in tx_adress_category.unwrap() {
+                            // Create the transaction category
+                            let _ = self
+                                .db_create_transaction_category(
+                                    db_client.clone(),
+                                    addr,
+                                    category,
+                                    transaction_hash,
+                                )
+                                .await;
+                        }
                     }
 
                     // Send the transaction to the queue
@@ -565,8 +581,8 @@ impl Indexer {
     pub async fn db_create_transaction_category(
         &self,
         db_client: Arc<PrismaClient>,
-        address: ethers::types::H160,
-        category: String,
+        address: &ethers::types::H160,
+        category: &String,
         tx_hash: ethers::types::H256,
     ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
         {

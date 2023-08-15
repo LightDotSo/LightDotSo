@@ -94,10 +94,6 @@ pub async fn create_transaction_category(
         .create(
             to_checksum(&address, None),
             category,
-            // transaction_category::transaction::connect(transaction::hash::equals(format!(
-            //     "{:?}",
-            //     transaction_hash
-            // ))),
             transaction::UniqueWhereParam::HashEquals(format!("{:?}", transaction_hash)),
             vec![],
         )
