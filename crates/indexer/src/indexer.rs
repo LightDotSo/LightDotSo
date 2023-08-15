@@ -317,7 +317,6 @@ impl Indexer {
                             db_client.clone(),
                             log.transaction_hash.unwrap(),
                             block.timestamp,
-                            Some("create".to_string()),
                         )
                         .await;
                 }
@@ -373,12 +372,7 @@ impl Indexer {
 
                     // Create the transaction
                     let _ = self
-                        .db_create_transaction(
-                            db_client.clone(),
-                            transaction_hash,
-                            block.timestamp,
-                            category,
-                        )
+                        .db_create_transaction(db_client.clone(), transaction_hash, block.timestamp)
                         .await;
 
                     // Send the transaction to the queue
@@ -503,7 +497,6 @@ impl Indexer {
         db_client: Arc<PrismaClient>,
         hash: ethers::types::H256,
         timestamp: U256,
-        category: Option<String>,
     ) {
         // Get the tx receipt
         let tx_receipt = self.get_transaction_receipt(hash).await;
@@ -521,7 +514,6 @@ impl Indexer {
                     tx.unwrap(),
                     tx_receipt.unwrap(),
                     timestamp,
-                    category,
                 )
                 .await;
 
@@ -563,7 +555,6 @@ impl Indexer {
         tx: Option<Transaction>,
         tx_receipt: Option<TransactionReceipt>,
         timestamp: U256,
-        category: Option<String>,
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         {
             || {
@@ -574,7 +565,6 @@ impl Indexer {
                     tx_receipt.clone().unwrap(),
                     self.chain_id as i64,
                     timestamp,
-                    category.clone(),
                 )
             }
         }

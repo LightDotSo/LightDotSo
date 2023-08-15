@@ -273,7 +273,15 @@ model Transaction {
   /// pub chain_id: Option<U256>
   chainId   BigInt
   timestamp DateTime
-  category  String?
 
-  Receipt Receipt?
+  Receipt             Receipt?
+  TransactionCategory TransactionCategory[]
+}
+
+model TransactionCategory {
+  id       String @id @default(cuid())
+  address  String
+  category String
+
+  transaction Transaction @relation(fields: [id], references: [hash])
 }
