@@ -29,28 +29,40 @@ jobs:
   rust:
     strategy:
       matrix:
-        include:
-          - name: Workspace
-            os: ubuntu-latest-large
-            target: x86_64-unknown-linux-gnu
-            package: --workspace
-            clippy: true
-            test: true
-            workspace: true
+        name: [Workspace, Android, iOS]
+        os: [ubuntu-latest]
+        target: [x86_64-unknown-linux-gnu]
+        package: [--workspace]
+        clippy: [true]
+        test: [true]
+        workspace: [true]
+        partition: [1, 2, 3]
+        job-total: [3]
+        exclude:
           - name: Android
-            os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
+            partition: 2
+          - name: Android
+            partition: 3
+          - name: iOS
+            partition: 2
+          - name: iOS
+            partition: 3
+        include:
+          - name: Android
             package: --package lightwallet-core
             clippy: false
             test: false
             workspace: false
+            partition: null
+            job-total: null
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
             package: --package lightwallet-core
             clippy: false
-            test: true
             workspace: false
+            partition: 1
+            job-total: 1
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
@@ -92,16 +104,11 @@ jobs:
         run: |
           cargo deny check
       - if: matrix.test
-        name: Rust Test
-        run: |
-          cargo test --target ${{ matrix.target }} ${{ matrix.package }}
-      - if: matrix.test
-        name: Rust Coverage Install
-        uses: taiki-e/install-action@cargo-llvm-cov
-      - if: matrix.test
         name: Rust Coverage
         run: |
-          cargo llvm-cov --all-features ${{ matrix.package }} --lcov --output-path lcov.info
+          cargo llvm-cov nextest --lcov --output-path lcov.info \
+          --locked --all-features ${{ matrix.package }} \
+          --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
