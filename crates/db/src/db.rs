@@ -22,7 +22,7 @@ use lightdotso_prisma::{
 };
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
-    NewClientError,
+    serde_json, NewClientError,
 };
 use std::sync::Arc;
 use tracing::{info, trace};

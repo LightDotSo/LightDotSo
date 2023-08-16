@@ -417,7 +417,7 @@ impl Indexer {
                         // Get the traced tx
                         let trace_tx = traced_block
                             .iter()
-                            .find(|&x| x.transaction_hash == unique_wallet_tx_hash);
+                            .find(|&x| x.transaction_hash.as_ref() == Some(&unique_wallet_tx_hash));
 
                         if tx_adress_category.is_some() {
                             // Create the transaction for indexing if category exists
@@ -662,7 +662,7 @@ impl Indexer {
                     tx_receipt.clone().unwrap(),
                     self.chain_id as i64,
                     timestamp,
-                    trace,
+                    trace.clone(),
                 )
             }
         }
