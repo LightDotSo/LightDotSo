@@ -124,7 +124,7 @@ jobs:
           fail_ci_if_error: false
           files: lcov.info
           flags: rust
-      - if: matrix.clippy
+      - if: matrix.clippy && matrix.partition == 1
         name: Run Clippy
         run: |
           cargo clippy \
