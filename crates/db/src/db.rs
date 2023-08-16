@@ -112,6 +112,7 @@ pub async fn create_transaction_with_log_receipt(
     receipt: ethers::types::TransactionReceipt,
     chain_id: i64,
     timestamp: ethers::types::U256,
+    trace: Option<ethers::types::Trace>,
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
@@ -135,6 +136,9 @@ pub async fn create_transaction_with_log_receipt(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
                         FixedOffset::east_opt(0).unwrap(),
                     ),
+                    trace.map_or(serde_json::Value::Null, |t| {
+                        serde_json::to_value(t).unwrap_or_else(|_| serde_json::Value::Null)
+                    }),
                     vec![
                         transaction::block_hash::set(
                             transaction.block_hash.map(|bh| format!("{:?}", bh)),

@@ -304,6 +304,9 @@ impl Indexer {
                 };
                 trace!(?logs);
 
+                // Loop over the logs
+                // WARNING: The db_create_wallet function may fail when a factory address is invoked
+                // multiple times in the same tx
                 for log in logs {
                     info!("log: {:?}", log);
 
@@ -321,12 +324,17 @@ impl Indexer {
                         return error!("create_wallet error: {:?}", res);
                     }
 
+                    // Get the traced tx
+                    let trace_tx =
+                        traced_block.iter().find(|&x| x.transaction_hash == log.transaction_hash);
+
                     // Create the transaction
                     let _ = self
                         .db_create_transaction(
                             db_client.clone(),
                             log.transaction_hash.unwrap(),
                             block.timestamp,
+                            trace_tx.clone().map(|r| r.clone()),
                         )
                         .await;
                 }
@@ -406,6 +414,11 @@ impl Indexer {
                         let tx_adress_category =
                             tx_address_type_hashmap.get(&unique_wallet_tx_hash);
 
+                        // Get the traced tx
+                        let trace_tx = traced_block
+                            .iter()
+                            .find(|&x| x.transaction_hash == unique_wallet_tx_hash);
+
                         if tx_adress_category.is_some() {
                             // Create the transaction for indexing if category exists
                             let _ = self
@@ -413,6 +426,7 @@ impl Indexer {
                                     db_client.clone(),
                                     unique_wallet_tx_hash,
                                     block.timestamp,
+                                    trace_tx.clone().map(|r| r.clone()),
                                 )
                                 .await;
 
@@ -554,6 +568,7 @@ impl Indexer {
         db_client: Arc<PrismaClient>,
         hash: ethers::types::H256,
         timestamp: U256,
+        trace: Option<Trace>,
     ) {
         // Get the tx receipt
         let tx_receipt = self.get_transaction_receipt(hash).await;
@@ -571,6 +586,7 @@ impl Indexer {
                     tx.unwrap(),
                     tx_receipt.unwrap(),
                     timestamp,
+                    trace,
                 )
                 .await;
 
@@ -635,6 +651,7 @@ impl Indexer {
         tx: Option<Transaction>,
         tx_receipt: Option<TransactionReceipt>,
         timestamp: U256,
+        trace: Option<Trace>,
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         {
             || {
@@ -645,6 +662,7 @@ impl Indexer {
                     tx_receipt.clone().unwrap(),
                     self.chain_id as i64,
                     timestamp,
+                    trace,
                 )
             }
         }

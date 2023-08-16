@@ -254,6 +254,7 @@ model Transaction {
   /// pub chain_id: Option<U256>
   chainId   BigInt
   timestamp DateTime
+  trace     Json
 
   Receipt             Receipt?
   TransactionCategory TransactionCategory[]
