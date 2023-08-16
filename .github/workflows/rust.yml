@@ -84,15 +84,15 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
-      - name: Rust Install
-        uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
-      - name: Node Install
-        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: matrix.workspace
         name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
+      - name: Rust Install
+        uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: matrix.workspace
         name: Node Build
         run: |
