@@ -45,9 +45,9 @@ contract ERC20Transfer is Script, Test {
             assertEq(token.balanceOf(address(deployer)), 1e18);
 
             // Transfer to address 0x0
-            token.transfer(address(0), 1e18);
+            token.transfer(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1), 1e18);
             assertEq(token.balanceOf(address(deployer)), 0);
-            assertEq(token.balanceOf(address(0)), 1e18);
+            assertEq(token.balanceOf(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1)), 1e18);
         }
 
         // Stop the broadcast

@@ -21,14 +21,13 @@ use autometrics::autometrics;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use ethers::{
-    core::abi::Event,
     prelude::Provider,
     providers::{Http, Middleware, ProviderError, Ws},
     types::{
         Action::{Call, Create, Reward, Suicide},
         BlockNumber, Filter, Trace, Transaction, TransactionReceipt, H256, U256,
     },
-    utils::{keccak256, to_checksum},
+    utils::to_checksum,
 };
 use futures::StreamExt;
 use lightdotso_db::{
@@ -54,7 +53,7 @@ use std::{
     time::Duration,
 };
 use tokio::time::sleep;
-use tracing::{debug, error, trace};
+use tracing::{error, trace};
 
 pub fn make_unique<T: Hash + Eq + Clone>(items: Vec<T>) -> Vec<T> {
     let unique_items: HashSet<_> = items.into_iter().collect();
@@ -336,10 +335,10 @@ impl Indexer {
             // Loop over the hashes
             if !tx_address_hashmap.is_empty() && self.redis_client.is_some() {
                 // Create a vec of hashes and addresses
-                // Hashmap: {hash1: [address, address, address]}
-                // Hashes: [hash1, hash1, hash1]
-                // Addresses: [address, address, address,]
-                let (hashes, addresses) = tx_address_hashmap.iter().fold(
+                // hashmap: {hash1: [address, address, address]}
+                // tx_hashes: [hash1, hash1, hash1]
+                // addresses: [address, address, address,]
+                let (tx_hashes, addresses) = tx_address_hashmap.iter().fold(
                     (Vec::new(), Vec::new()),
                     |(mut h, mut a), (key, values)| {
                         h.extend(std::iter::repeat(key.clone()).take(values.len()));
@@ -347,9 +346,11 @@ impl Indexer {
                         (h, a)
                     },
                 );
+                trace!(?tx_hashes);
+                trace!(?addresses);
 
                 // Check if the two vecs are the same length
-                assert_eq!(hashes.len(), addresses.len());
+                assert_eq!(tx_hashes.len(), addresses.len());
 
                 // Check if the addresses exist on redis
                 let check_res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
@@ -359,78 +360,81 @@ impl Indexer {
                 let has_wallets = check_res.iter().any(|&x| x);
                 if !has_wallets {
                     info!("No wallets found for block");
-                    return;
-                }
+                } else {
+                    info!("Wallets found for block");
 
-                // Create the hashes w/ check_res filter
-                // wallet_hashes: [hash1, hash3]
-                // hashes: [hash1, hash2, hash3]
-                // check_res: [true, false, true]
-                let wallet_hashes: Vec<ethers::types::H256> = hashes
-                    .iter()
-                    .zip(check_res.iter())
-                    .filter(|(_, &check)| check)
-                    .map(|(hsh, _)| hsh.clone())
-                    .collect();
-                trace!(?wallet_hashes);
+                    // Create the hashes w/ check_res filter
+                    // wallet_tx_hashes: [hash1, hash3]
+                    // tx_hashes: [hash1, hash2, hash3]
+                    // check_res: [true, false, true]
+                    let wallet_tx_hashes: Vec<ethers::types::H256> = tx_hashes
+                        .iter()
+                        .zip(check_res.iter())
+                        .filter(|(_, &check)| check)
+                        .map(|(hsh, _)| hsh.clone())
+                        .collect();
+                    trace!(?wallet_tx_hashes);
 
-                // Create the wallet addresses w/ check_res filter
-                // wallet_addresses: [addr1, addr3]
-                // addresses: [addr1, addr2, addr3]
-                // check_res: [true, false, true]
-                let wallet_addresses: Vec<ethers::types::H160> = addresses
-                    .iter()
-                    .zip(check_res.iter())
-                    .filter(|(_, &check)| check)
-                    .map(|(addr, _)| addr.clone())
-                    .collect();
-                trace!(?wallet_addresses);
+                    // Create the wallet addresses w/ check_res filter
+                    // wallet_addresses: [addr1, addr3]
+                    // addresses: [addr1, addr2, addr3]
+                    // check_res: [true, false, true]
+                    let wallet_addresses: Vec<ethers::types::H160> = addresses
+                        .iter()
+                        .zip(check_res.iter())
+                        .filter(|(_, &check)| check)
+                        .map(|(addr, _)| addr.clone())
+                        .collect();
+                    trace!(?wallet_addresses);
 
-                // Check if the hashes length and check_res true length are the same
-                assert_eq!(wallet_hashes.len(), check_res.iter().filter(|&&x| x).count());
-                assert_eq!(wallet_addresses.len(), check_res.iter().filter(|&&x| x).count());
-                assert_eq!(wallet_hashes.len(), wallet_addresses.len());
+                    // Check if the hashes length and check_res true length are the same
+                    assert_eq!(wallet_tx_hashes.len(), check_res.iter().filter(|&&x| x).count());
+                    assert_eq!(wallet_addresses.len(), check_res.iter().filter(|&&x| x).count());
+                    assert_eq!(wallet_tx_hashes.len(), wallet_addresses.len());
 
-                // Get the unique hashes and addresses
-                let unique_wallet_hashes: Vec<ethers::types::H256> = make_unique(wallet_hashes);
-                let unique_wallet_addreses: Vec<ethers::types::H160> =
-                    make_unique(wallet_addresses);
-                info!("unique_wallet_hashes: {:?}", unique_wallet_hashes.clone());
-                info!("unique_wallet_addreses: {:?}", unique_wallet_addreses.clone());
+                    // Get the unique hashes and addresses
+                    let unique_wallet_tx_hashes: Vec<ethers::types::H256> =
+                        make_unique(wallet_tx_hashes);
+                    let unique_wallet_addreses: Vec<ethers::types::H160> =
+                        make_unique(wallet_addresses);
+                    info!("unique_wallet_tx_hashes: {:?}", unique_wallet_tx_hashes.clone());
+                    info!("unique_wallet_addreses: {:?}", unique_wallet_addreses.clone());
 
-                // Loop over the tx hashes
-                for transaction_hash in unique_wallet_hashes {
-                    // Get the optional category
-                    let tx_adress_category = tx_address_type_hashmap.get(&transaction_hash);
+                    // Loop over the tx hashes
+                    for unique_wallet_tx_hash in unique_wallet_tx_hashes {
+                        // Get the optional category
+                        let tx_adress_category =
+                            tx_address_type_hashmap.get(&unique_wallet_tx_hash);
 
-                    if tx_adress_category.is_some() {
-                        for (addr, category) in tx_adress_category.unwrap() {
-                            // Create the transaction for indexing
+                        if tx_adress_category.is_some() {
+                            // Create the transaction for indexing if category exists
                             let _ = self
                                 .db_create_transaction(
                                     db_client.clone(),
-                                    transaction_hash,
+                                    unique_wallet_tx_hash,
                                     block.timestamp,
                                 )
                                 .await;
 
-                            // Create the transaction category if wallet exists
-                            if unique_wallet_addreses.contains(addr) {
-                                let _ = self
-                                    .db_create_transaction_category(
-                                        db_client.clone(),
-                                        addr,
-                                        category,
-                                        transaction_hash,
-                                    )
-                                    .await;
-                            }
+                            for (addr, category) in tx_adress_category.unwrap() {
+                                // Create the transaction category if wallet exists
+                                if unique_wallet_addreses.contains(addr) {
+                                    let _ = self
+                                        .db_create_transaction_category(
+                                            db_client.clone(),
+                                            addr,
+                                            category,
+                                            unique_wallet_tx_hash,
+                                        )
+                                        .await;
+                                }
 
-                            // Send the transaction to the queue if live indexing
-                            if self.live && self.kafka_client.is_some() {
-                                let queue_res = self.send_tx_queue(&transaction_hash);
-                                if queue_res.is_err() {
-                                    error!("send_tx_queue error: {:?}", queue_res);
+                                // Send the transaction to the queue if live indexing
+                                if self.live && self.kafka_client.is_some() {
+                                    let queue_res = self.send_tx_queue(&unique_wallet_tx_hash);
+                                    if queue_res.is_err() {
+                                        error!("send_tx_queue error: {:?}", queue_res);
+                                    }
                                 }
                             }
                         }
