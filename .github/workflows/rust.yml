@@ -29,10 +29,10 @@ jobs:
   rust:
     strategy:
       matrix:
-        name: [Workspace, Android, iOS]
-        os: [ubuntu-latest]
-        target: [x86_64-unknown-linux-gnu]
-        package: [--workspace]
+        name: ["Workspace", "Android", "iOS"]
+        os: ["ubuntu-latest"]
+        target: ["x86_64-unknown-linux-gnu"]
+        package: ["--workspace"]
         clippy: [true]
         test: [true]
         workspace: [true]
