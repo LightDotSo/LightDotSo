@@ -49,16 +49,16 @@ jobs:
             partition: 3
         include:
           - name: Android
-            package: --package lightwallet-core
+            package: "--package lightwallet-core"
             clippy: false
             test: false
             workspace: false
-            partition: null
-            job-total: null
+            partition: 1
+            job-total: 1
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
-            package: --package lightwallet-core
+            package: "--package lightwallet-core"
             clippy: false
             workspace: false
             partition: 1
