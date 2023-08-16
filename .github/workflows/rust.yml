@@ -88,13 +88,10 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Free disk
-        run: |
-          sudo swapoff -a
-          sudo rm -f /swapfile
-          sudo apt clean
-          docker rmi $(docker image ls -aq)
-          df -h
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
       - if: matrix.workspace
         name: Node Build
         run: |
