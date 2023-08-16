@@ -51,7 +51,12 @@ pub async fn start_server() -> Result<()> {
 pub async fn main() {
     let _ = dotenv();
 
-    init(vec![stdout(Level::INFO), otel()]);
+    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
+        "development" => Level::TRACE,
+        _ => Level::INFO,
+    };
+
+    init(vec![stdout(log_level), otel()]);
 
     info!("Starting server at {}", SHORT_VERSION);
 

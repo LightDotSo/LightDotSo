@@ -24,6 +24,12 @@ pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
     let password = std::env::var("UPSTASH_REDIS_PASSWORD")?;
     let port = std::env::var("UPSTASH_REDIS_PORT")?;
 
+    // If host is localhost, connect to redis without password
+    if host == "localhost" {
+        let connection_link = format!("redis://{}:{}", host, port);
+        return redis::Client::open(connection_link).map_err(|e| e.into());
+    }
+
     // Format the connection link
     let connection_link = format!("rediss://default:{}@{}:{}", password, host, port);
 
@@ -37,6 +43,7 @@ pub fn add_to_set(con: &mut Connection, key: &str, value: &str) -> RedisResult<(
     Ok(())
 }
 
+/// Check if an array of values are present in a set
 pub fn is_all_members_present(
     con: &mut Connection,
     key: &str,
@@ -49,4 +56,29 @@ pub fn is_all_members_present(
     }
 
     pipe.query(con)
+}
+
+/// Set a range of values to 0
+pub fn set_default_unindexed(
+    redis_conn: &mut Connection,
+    start: i64,
+    end: i64,
+) -> redis::RedisResult<()> {
+    let mut pipe = redis::pipe();
+    for block_number in start..=end {
+        pipe.hset_nx("blocks", block_number, 0).ignore();
+    }
+    pipe.query(redis_conn)?;
+    Ok(())
+}
+
+/// Set a range of values depending on the status
+pub fn set_status_flag(
+    redis_conn: &mut redis::Connection,
+    number: i64,
+    status: bool,
+) -> redis::RedisResult<()> {
+    let status = if status { 1 } else { 0 };
+    redis_conn.hset("blocks", number, status)?;
+    Ok(())
 }

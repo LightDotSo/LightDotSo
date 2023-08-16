@@ -51,6 +51,8 @@ jobs:
             clippy: false
             test: true
             workspace: false
+            partition: 1
+            job-total: 1
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
@@ -62,11 +64,14 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
+      - if: matrix.workspace
+        name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          large-packages: false
+          tool-cache: false
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
-      - name: Rust Format Check
-        run: |
-          cargo fmt --all --check
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: matrix.workspace
@@ -84,24 +89,18 @@ jobs:
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
-      - name: Rust Build
+      - name: Rust Format Check
         run: |
-          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
+          cargo fmt --all --check
       - if: matrix.workspace
         name: Deny Check
         run: |
           cargo deny check
       - if: matrix.test
-        name: Rust Test
-        run: |
-          cargo test --target ${{ matrix.target }} ${{ matrix.package }}
-      - if: matrix.test
-        name: Rust Coverage Install
-        uses: taiki-e/install-action@cargo-llvm-cov
-      - if: matrix.test
         name: Rust Coverage
         run: |
-          cargo llvm-cov --all-features ${{ matrix.package }} --lcov --output-path lcov.info
+          cargo llvm-cov nextest --lcov --output-path lcov.info \
+          --locked --all-features ${{ matrix.package }}
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
@@ -110,7 +109,7 @@ jobs:
           fail_ci_if_error: false
           files: lcov.info
           flags: rust
-      - if: matrix.clippy
+      - if: matrix.clippy && matrix.partition == 1
         name: Run Clippy
         run: |
           cargo clippy \

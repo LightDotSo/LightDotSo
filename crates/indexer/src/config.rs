@@ -51,6 +51,10 @@ pub struct IndexerArgs {
     #[arg(long, short, default_value_t = 0)]
     #[clap(long, env)]
     pub end_block: u64,
+    /// The flag of whether indexing is live.
+    #[arg(long, short, default_value_t = false)]
+    #[clap(long, env)]
+    pub live: bool,
 }
 
 impl IndexerArgs {
