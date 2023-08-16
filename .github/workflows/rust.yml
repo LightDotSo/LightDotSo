@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: Workspace
+          - name: Workspace 1/3
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
@@ -39,7 +39,7 @@ jobs:
             workspace: true
             partition: 1
             job-total: 3
-          - name: Workspace
+          - name: Workspace 2/3
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
@@ -48,7 +48,7 @@ jobs:
             workspace: true
             partition: 2
             job-total: 3
-          - name: Workspace
+          - name: Workspace 3/3
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
