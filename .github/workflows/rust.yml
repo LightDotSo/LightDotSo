@@ -88,7 +88,8 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Free Disk Space
+      - if: matrix.workspace
+        name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
         with:
           tool-cache: false
