@@ -96,9 +96,6 @@ jobs:
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
-      - name: Rust Build
-        run: |
-          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.workspace
         name: Deny Check
         run: |
