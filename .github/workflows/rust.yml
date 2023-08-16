@@ -30,33 +30,13 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: Workspace 1/3
-            os: ubuntu-latest
+          - name: Workspace
+            os: ubuntu-latest-large
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
             test: true
             workspace: true
-            partition: 1
-            job-total: 3
-          - name: Workspace 2/3
-            os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            package: --workspace
-            clippy: true
-            test: true
-            workspace: true
-            partition: 2
-            job-total: 3
-          - name: Workspace 3/3
-            os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
-            package: --workspace
-            clippy: true
-            test: true
-            workspace: true
-            partition: 3
-            job-total: 3
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -120,8 +100,7 @@ jobs:
         name: Rust Coverage
         run: |
           cargo llvm-cov nextest --lcov --output-path lcov.info \
-          --locked --all-features ${{ matrix.package }} \
-          --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
+          --locked --all-features ${{ matrix.package }}
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
