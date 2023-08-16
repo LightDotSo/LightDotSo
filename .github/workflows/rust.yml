@@ -39,23 +39,23 @@ jobs:
         partition: [1, 2, 3]
         job-total: [3]
         exclude:
-          - name: Android
+          - name: "Android"
             partition: 2
-          - name: Android
+          - name: "Android"
             partition: 3
-          - name: iOS
+          - name: "iOS"
             partition: 2
-          - name: iOS
+          - name: "iOS"
             partition: 3
         include:
-          - name: Android
+          - name: "Android"
             package: "--package lightwallet-core"
             clippy: false
             test: false
             workspace: false
             partition: 1
             job-total: 1
-          - name: iOS
+          - name: "iOS"
             os: ["macos-latest"]
             target: ["x86_64-apple-darwin"]
             package: "--package lightwallet-core"
