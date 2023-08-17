@@ -4,6 +4,7 @@
   members = [
     "apps/desktop/src-tauri",
     "bin",
+    "crates/autometrics",
     "crates/bundler",
     "crates/consumer",
     "crates/core",
@@ -61,6 +62,7 @@
   http = "0.2.8"
   js-sys = "=0.3.56"
   lazy_static = "1.4.0"
+  lightdotso-autometrics = { path = "./crates/autometrics" }
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-discord = { path = "./crates/discord" }

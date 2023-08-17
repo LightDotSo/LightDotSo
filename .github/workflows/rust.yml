@@ -31,12 +31,14 @@ jobs:
       matrix:
         include:
           - name: Workspace
-            os: ubuntu-latest-large
+            os: buildjet-4vcpu-ubuntu-2204
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
             test: true
             workspace: true
+            partition: 1
+            job-total: 1
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -44,6 +46,8 @@ jobs:
             clippy: false
             test: false
             workspace: false
+            partition: 1
+            job-total: 1
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
@@ -100,7 +104,8 @@ jobs:
         name: Rust Coverage
         run: |
           cargo llvm-cov nextest --lcov --output-path lcov.info \
-          --locked --all-features ${{ matrix.package }}
+          --locked --all-features ${{ matrix.package }} \
+          --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
