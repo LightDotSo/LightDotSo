@@ -24,6 +24,7 @@
   eyre = { workspace = true }
   http = { workspace = true }
   hyper = { version = "0.14", features = ["full"] }
+  hyper-rustls = "0.24.1"
   lightdotso-bundler = { workspace = true }
   lightdotso-consumer = { workspace = true }
   lightdotso-db = { workspace = true }

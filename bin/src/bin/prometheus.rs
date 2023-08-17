@@ -16,24 +16,34 @@
 use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{
-    extract::State,
+    extract::{Path, State},
     http::{uri::Uri, Request, Response},
     routing::get,
     Router,
 };
-use hyper::{client::HttpConnector, header::HeaderValue, Body, HeaderMap};
-
+use dotenvy::dotenv;
+use hyper::{client, client::HttpConnector, header::HeaderValue, Body, HeaderMap};
+use hyper_rustls::HttpsConnector;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_tracing::{init, stdout, tracing::Level};
+use lightdotso_tracing::{
+    init, stdout,
+    tracing::{info, Level},
+};
 
-type Client = hyper::client::Client<HttpConnector, Body>;
+type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 
 #[autometrics]
-async fn handler(State(client): State<Client>, mut req: Request<Body>) -> Response<Body> {
+async fn handler(
+    Path(path): Path<String>,
+    State(client): State<Client>,
+    mut req: Request<Body>,
+) -> Response<Body> {
     let org_slug = "lightdotso";
     let query = req.uri().query().unwrap_or_default();
+    let full_path = format!("{}/api/v1/{}", org_slug, path);
 
-    let uri = format!("https://api.fly.io/prometheus/{}?{}", org_slug, query);
+    let uri = format!("https://api.fly.io/prometheus/{}?{}", full_path, query);
+    info!("uri: {}", uri);
 
     *req.uri_mut() = Uri::try_from(uri).unwrap();
 
@@ -54,13 +64,19 @@ async fn health_check() -> &'static str {
 pub async fn start_server() -> Result<()> {
     init(vec![stdout(Level::INFO)]);
 
-    let client = Client::new();
+    let https = hyper_rustls::HttpsConnectorBuilder::new()
+        .with_native_roots()
+        .https_only()
+        .enable_http1()
+        .build();
+    // Build the hyper client from the HTTPS connector.
+    let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
 
     let app = Router::new()
-        .route("/", get(handler))
-        .with_state(client)
         .route("/health", get(health_check))
-        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
+        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
+        .route("/api/v1/:anything", get(handler)) // fallback route that will handle all other paths
+        .with_state(client);
 
     let socket_addr = "0.0.0.0:3002".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
@@ -70,6 +86,8 @@ pub async fn start_server() -> Result<()> {
 
 #[tokio::main]
 pub async fn main() -> Result<(), anyhow::Error> {
+    let _ = dotenv();
+
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
     start_server().await?;
     Ok(())
