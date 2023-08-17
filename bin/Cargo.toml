@@ -18,11 +18,12 @@
     "prometheus-exporter",
     "exemplars-tracing",
   ] }
-  axum = { workspace = true }
+  axum = { workspace = true, features = ["http2", "tokio"] }
   clap = { workspace = true, features = ["env"] }
   dotenvy = { workspace = true }
   eyre = { workspace = true }
   http = { workspace = true }
+  hyper = { version = "0.14", features = ["full"] }
   lightdotso-bundler = { workspace = true }
   lightdotso-consumer = { workspace = true }
   lightdotso-db = { workspace = true }
@@ -35,7 +36,7 @@
   silius-grpc = { workspace = true }
   silius-primitives = { workspace = true }
   silius-rpc = { workspace = true }
-  tokio = { workspace = true }
+  tokio = { workspace = true, features = ["full"] }
   tower = { workspace = true, features = [
     "full",
     "util",

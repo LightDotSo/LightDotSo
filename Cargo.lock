@@ -5468,6 +5468,7 @@ dependencies = [
  "dotenvy",
  "eyre",
  "http",
+ "hyper",
  "lightdotso-bundler",
  "lightdotso-consumer",
  "lightdotso-db",
