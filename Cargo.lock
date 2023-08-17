@@ -5469,6 +5469,7 @@ dependencies = [
  "eyre",
  "http",
  "hyper",
+ "hyper-rustls",
  "lightdotso-bundler",
  "lightdotso-consumer",
  "lightdotso-db",
