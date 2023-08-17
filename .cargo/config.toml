@@ -13,6 +13,3 @@
   scopelint = ["run", "--package", "embedded-scopelint", "--"]
   uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
   test-all = ["test", "--workspace"]
-
-[target.x86_64-unknown-linux-gnu]
-  rustflags = ["-C", "link-arg=-fuse-ld=lld"]
