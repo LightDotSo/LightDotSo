@@ -31,7 +31,7 @@ jobs:
       matrix:
         include:
           - name: Workspace
-            os: ubuntu-latest-large
+            os: buildjet-4vcpu-ubuntu-2204
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
@@ -40,7 +40,7 @@ jobs:
             partition: 1
             job-total: 3
           - name: Workspace
-            os: ubuntu-latest-large
+            os: buildjet-4vcpu-ubuntu-2204
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
@@ -49,7 +49,7 @@ jobs:
             partition: 2
             job-total: 3
           - name: Workspace
-            os: ubuntu-latest-large
+            os: buildjet-4vcpu-ubuntu-2204
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
