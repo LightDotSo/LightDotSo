@@ -38,7 +38,8 @@ async fn handler(State(client): State<Client>, mut req: Request<Body>) -> Respon
     *req.uri_mut() = Uri::try_from(uri).unwrap();
 
     let mut headers = HeaderMap::new();
-    headers.insert("Authorization", HeaderValue::from_str(&format!("Bearer <token>")).unwrap());
+    let token = std::env::var("FLY_API_TOKEN").unwrap_or_else(|_| panic!("FLY_API_TOKEN not set"));
+    headers.insert("Authorization", HeaderValue::from_str(&format!("Bearer {}", token)).unwrap());
 
     *req.headers_mut() = headers;
 
