@@ -38,25 +38,7 @@ jobs:
             test: true
             workspace: true
             partition: 1
-            job-total: 3
-          - name: Workspace
-            os: buildjet-4vcpu-ubuntu-2204
-            target: x86_64-unknown-linux-gnu
-            package: --workspace
-            clippy: true
-            test: true
-            workspace: true
-            partition: 2
-            job-total: 3
-          - name: Workspace
-            os: buildjet-4vcpu-ubuntu-2204
-            target: x86_64-unknown-linux-gnu
-            package: --workspace
-            clippy: true
-            test: true
-            workspace: true
-            partition: 3
-            job-total: 3
+            job-total: 1
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
