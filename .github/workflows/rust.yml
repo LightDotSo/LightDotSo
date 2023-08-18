@@ -54,8 +54,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       RUSTFLAGS: "-A warnings"
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      # TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      # TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     permissions:
       contents: read
       security-events: write
