@@ -62,6 +62,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips:
-            - prisma-build
+          allowed-skips: prisma-build
           jobs: ${{ toJSON(needs) }}

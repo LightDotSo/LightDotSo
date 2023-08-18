@@ -169,14 +169,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips:
-            - fly-wait-docker
-            - fly-deploy-grafana
-            - fly-deploy-rpc
-            - fly-deploy-serve
-            - fly-deploy-consumer
-            - fly-deploy-indexer
-            - fly-deploy-indexer-sepolia
-            - fly-deploy-prometheus
-            - fly-deploy-log-shipper
+          allowed-skips: fly-wait-docker,fly-deploy-grafana,fly-deploy-rpc,fly-deploy-serve,fly-deploy-consumer,fly-deploy-indexer,fly-deploy-indexer-sepolia,fly-deploy-prometheus,fly-deploy-log-shipper
           jobs: ${{ toJSON(needs) }}
