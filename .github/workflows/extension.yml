@@ -11,9 +11,7 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
-env:
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+
 jobs:
   extension-turbo:
     runs-on: ubuntu-latest
@@ -31,6 +29,9 @@ jobs:
     needs:
       - extension-turbo
     runs-on: ubuntu-latest
+    env:
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     permissions:
       contents: read
     timeout-minutes: 90
