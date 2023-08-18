@@ -11,9 +11,6 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
-env:
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 jobs:
   rust-turbo:
     runs-on: ubuntu-latest
@@ -55,10 +52,14 @@ jobs:
     needs:
       - rust-turbo
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 90
+    env:
+      RUSTFLAGS: "-A warnings"
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     permissions:
       contents: read
       security-events: write
+    timeout-minutes: 90
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
