@@ -68,6 +68,8 @@ jobs:
             check: false
             test: false
             workspace: false
+            partition: 1
+            job-total: 1
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
@@ -75,6 +77,8 @@ jobs:
             check: false
             test: true
             workspace: false
+            partition: 1
+            job-total: 1
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
