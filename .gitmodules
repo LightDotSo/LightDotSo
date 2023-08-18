@@ -49,3 +49,6 @@
 [submodule "lib/halmos-cheatcodes"]
 	path = lib/halmos-cheatcodes
 	url = https://github.com/a16z/halmos-cheatcodes
+[submodule "lib/erc20-paymaster-contracts"]
+	path = lib/erc20-paymaster-contracts
+	url = https://github.com/pimlicolabs/erc20-paymaster-contracts
