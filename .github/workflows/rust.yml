@@ -91,10 +91,6 @@ jobs:
       - name: Rust Format Check
         run: |
           cargo fmt --all --check
-      - if: matrix.workspace
-        name: Deny Check
-        run: |
-          cargo deny check
       - name: Rust Build
         run: |
           cargo build --target ${{ matrix.target }} ${{ matrix.package }}
@@ -111,6 +107,10 @@ jobs:
           fail_ci_if_error: false
           files: lcov.info
           flags: rust
+      - if: matrix.workspace
+        name: Deny Check
+        run: |
+          cargo deny check
       - if: matrix.clippy
         name: Run Clippy
         run: |
