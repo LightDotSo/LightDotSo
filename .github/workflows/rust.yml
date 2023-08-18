@@ -61,12 +61,14 @@ jobs:
             check: true
             test: false
             workspace: true
+            partition: 1
+            job-total: 1
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --package lightwallet-core
             check: false
-            test: false
+            test: true
             workspace: false
             partition: 1
             job-total: 1
@@ -123,19 +125,25 @@ jobs:
         run: |
           cargo fmt --all --check
       - if: matrix.test
-        name: Rust Coverage
+        name: Rust Test
         run: |
           cargo nextest run \
           --locked --all-features ${{ matrix.package }} \
           --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
-      - if: matrix.test
-        name: Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: false
-          files: lcov.info
-          flags: rust
+      # - if: matrix.test
+      #   name: Rust Coverage
+      #   run: |
+      #     cargo llvm-cov nextest --lcov --output-path lcov.info \
+      #     --locked --all-features ${{ matrix.package }} \
+      #     --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
+      # - if: matrix.test
+      #   name: Codecov
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     fail_ci_if_error: false
+      #     files: lcov.info
+      #     flags: rust
       - if: matrix.check
         name: Deny Check
         run: |
