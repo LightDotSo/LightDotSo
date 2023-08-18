@@ -10,6 +10,7 @@
 
 [dependencies]
   opentelemetry = { version = "0.20", features = ["rt-tokio", "trace"] }
+  opentelemetry-otlp = { version = "0.13", features = ["tonic", "metrics"] }
   opentelemetry-stdout = { version = "0.1", features = ["trace"] }
   tracing = { workspace = true }
   tracing-opentelemetry = "0.20"
