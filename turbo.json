@@ -39,7 +39,7 @@
     },
     "//#prisma": {
       "dependsOn": [],
-      "env": ["CI", "DOCKER", "RUNNER_OS"],
+      "env": ["CI", "DOCKER", "RUNNER_NAME", "RUNNER_OS"],
       "inputs": ["Makefile", "configurations/prisma/prisma/schema-rs.prisma"],
       "outputs": ["crates/prisma/src/lib.rs"]
     },
