@@ -211,7 +211,6 @@ impl Indexer {
                 Err(_) => continue,
             };
             trace!(?block_logs);
-            info!("Block logs: {:?}", block_logs);
 
             // Loop over the block logs
             for log in block_logs {
@@ -223,6 +222,11 @@ impl Indexer {
                 let address_type_entry = tx_address_type_hashmap
                     .entry(log.transaction_hash.unwrap())
                     .or_insert_with(HashMap::new);
+
+                // Skip if no topics
+                if log.topics.is_empty() {
+                    continue;
+                }
 
                 // Filter the logs for transfers
                 if log.topics[0] ==
