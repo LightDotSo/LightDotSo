@@ -24,7 +24,7 @@ use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_tracing::{
-    init, otel, stdout,
+    init, init_metrics, otel, stdout,
     tracing::{info, Level},
 };
 
@@ -57,6 +57,8 @@ pub async fn main() {
     };
 
     init(vec![stdout(log_level), otel()]);
+
+    let _ = init_metrics();
 
     info!("Starting server at {}", SHORT_VERSION);
 
