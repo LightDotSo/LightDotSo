@@ -27,13 +27,33 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: Workspace
-            os: buildjet-8vcpu-ubuntu-2204
+          - name: Workspace (1/3)
+            os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
             test: true
             workspace: true
+            partition: 1
+            job-total: 3
+          - name: Workspace (2/3)
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: --workspace
+            clippy: true
+            test: true
+            workspace: true
+            partition: 2
+            job-total: 3
+          - name: Workspace (3/3)
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: --workspace
+            clippy: true
+            test: true
+            workspace: true
+            partition: 3
+            job-total: 3
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -41,6 +61,8 @@ jobs:
             clippy: false
             test: false
             workspace: false
+            partition: 1
+            job-total: 1
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
@@ -48,6 +70,8 @@ jobs:
             clippy: false
             test: true
             workspace: false
+            partition: 1
+            job-total: 1
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
@@ -98,7 +122,8 @@ jobs:
         name: Rust Coverage
         run: |
           cargo llvm-cov nextest --lcov --output-path lcov.info \
-          --locked --all-features ${{ matrix.package }}
+          --locked --all-features ${{ matrix.package }} \
+          --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
