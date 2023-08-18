@@ -37,8 +37,6 @@ jobs:
             clippy: true
             test: true
             workspace: true
-            partition: 1
-            job-total: 1
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -46,8 +44,6 @@ jobs:
             clippy: false
             test: false
             workspace: false
-            partition: 1
-            job-total: 1
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
@@ -55,8 +51,6 @@ jobs:
             clippy: false
             test: true
             workspace: false
-            partition: 1
-            job-total: 1
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
@@ -74,6 +68,22 @@ jobs:
         with:
           large-packages: false
           tool-cache: false
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump steps context
+        env:
+          STEPS_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEPS_CONTEXT"
+      - name: Dump runner context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
       - name: Node Install
@@ -100,12 +110,14 @@ jobs:
         name: Deny Check
         run: |
           cargo deny check
+      - name: Rust Build
+        run: |
+          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.test
         name: Rust Coverage
         run: |
           cargo llvm-cov nextest --lcov --output-path lcov.info \
-          --locked --all-features ${{ matrix.package }} \
-          --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
+          --locked --all-features ${{ matrix.package }}
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
@@ -114,7 +126,7 @@ jobs:
           fail_ci_if_error: false
           files: lcov.info
           flags: rust
-      - if: matrix.clippy && matrix.partition == 1
+      - if: matrix.clippy
         name: Run Clippy
         run: |
           cargo clippy \
