@@ -11,9 +11,6 @@ on:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
-env:
-  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 jobs:
   rust-turbo:
     runs-on: ubuntu-latest
@@ -31,14 +28,12 @@ jobs:
       matrix:
         include:
           - name: Workspace
-            os: buildjet-4vcpu-ubuntu-2204
+            os: buildjet-8vcpu-ubuntu-2204
             target: x86_64-unknown-linux-gnu
             package: --workspace
             clippy: true
             test: true
             workspace: true
-            partition: 1
-            job-total: 1
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -46,8 +41,6 @@ jobs:
             clippy: false
             test: false
             workspace: false
-            partition: 1
-            job-total: 1
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
@@ -55,16 +48,18 @@ jobs:
             clippy: false
             test: true
             workspace: false
-            partition: 1
-            job-total: 1
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 90
+    env:
+      RUSTFLAGS: "-A warnings"
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     permissions:
       contents: read
       security-events: write
+    timeout-minutes: 90
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -96,16 +91,14 @@ jobs:
       - name: Rust Format Check
         run: |
           cargo fmt --all --check
-      - if: matrix.workspace
-        name: Deny Check
+      - name: Rust Build
         run: |
-          cargo deny check
+          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.test
         name: Rust Coverage
         run: |
           cargo llvm-cov nextest --lcov --output-path lcov.info \
-          --locked --all-features ${{ matrix.package }} \
-          --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
+          --locked --all-features ${{ matrix.package }}
       - if: matrix.test
         name: Codecov
         uses: codecov/codecov-action@v3
@@ -114,7 +107,11 @@ jobs:
           fail_ci_if_error: false
           files: lcov.info
           flags: rust
-      - if: matrix.clippy && matrix.partition == 1
+      - if: matrix.workspace
+        name: Deny Check
+        run: |
+          cargo deny check
+      - if: matrix.clippy
         name: Run Clippy
         run: |
           cargo clippy \
