@@ -121,7 +121,7 @@ jobs:
       - if: matrix.test
         name: Rust Coverage
         run: |
-          cargo llvm-cov nextest --lcov --output-path lcov.info \
+          cargo nextest \
           --locked --all-features ${{ matrix.package }} \
           --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
       - if: matrix.test
