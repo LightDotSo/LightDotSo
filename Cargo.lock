@@ -5458,6 +5458,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-autometrics"
+version = "0.1.0"
+dependencies = [
+ "autometrics",
+]
+
+[[package]]
 name = "lightdotso-bin"
 version = "0.1.0"
 dependencies = [
@@ -5468,6 +5475,9 @@ dependencies = [
  "dotenvy",
  "eyre",
  "http",
+ "hyper",
+ "hyper-rustls",
+ "lightdotso-autometrics",
  "lightdotso-bundler",
  "lightdotso-consumer",
  "lightdotso-db",

@@ -4,6 +4,7 @@
   members = [
     "apps/desktop/src-tauri",
     "bin",
+    "crates/autometrics",
     "crates/bundler",
     "crates/consumer",
     "crates/core",
@@ -47,7 +48,7 @@
   anyhow = "1.0.71"
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   autometrics = { version = "*" }
-  axum = "0.6.18"
+  axum = "0.6.16"
   backon = "0.4.1"
   byteorder = "1.4.3"
   chrono = "0.4.26"
@@ -61,6 +62,7 @@
   http = "0.2.8"
   js-sys = "=0.3.56"
   lazy_static = "1.4.0"
+  lightdotso-autometrics = { path = "./crates/autometrics" }
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-discord = { path = "./crates/discord" }

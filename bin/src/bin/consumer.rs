@@ -17,6 +17,7 @@ use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
 use dotenvy::dotenv;
+use lightdotso_autometrics::API_SLO;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
 use lightdotso_tracing::{
@@ -24,7 +25,7 @@ use lightdotso_tracing::{
     tracing::{info, Level},
 };
 
-#[autometrics]
+#[autometrics(objective = API_SLO)]
 async fn health_check() -> &'static str {
     "OK"
 }
