@@ -199,6 +199,7 @@ docker-compose-restart: ## Restart the docker-compose.
 .PHONY: cargo-generate
 cargo-generate:
 	cargo generate
+	cargo fix --lib -p lightdotso-prisma
 	cargo fmt
 
 .PHONY: prisma
