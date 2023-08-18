@@ -334,7 +334,7 @@ impl Indexer {
                             db_client.clone(),
                             log.transaction_hash.unwrap(),
                             block.timestamp,
-                            trace_tx.clone().map(|r| r.clone()),
+                            trace_tx.cloned(),
                         )
                         .await;
                 }
@@ -349,7 +349,7 @@ impl Indexer {
                 let (tx_hashes, addresses) = tx_address_hashmap.iter().fold(
                     (Vec::new(), Vec::new()),
                     |(mut h, mut a), (key, values)| {
-                        h.extend(std::iter::repeat(key.clone()).take(values.len()));
+                        h.extend(std::iter::repeat(*key).take(values.len()));
                         a.extend(values.iter().cloned());
                         (h, a)
                     },
@@ -379,7 +379,7 @@ impl Indexer {
                         .iter()
                         .zip(check_res.iter())
                         .filter(|(_, &check)| check)
-                        .map(|(hsh, _)| hsh.clone())
+                        .map(|(hsh, _)| *hsh)
                         .collect();
                     trace!(?wallet_tx_hashes);
 
@@ -391,7 +391,7 @@ impl Indexer {
                         .iter()
                         .zip(check_res.iter())
                         .filter(|(_, &check)| check)
-                        .map(|(addr, _)| addr.clone())
+                        .map(|(addr, _)| *addr)
                         .collect();
                     trace!(?wallet_addresses);
 
@@ -426,7 +426,7 @@ impl Indexer {
                                     db_client.clone(),
                                     unique_wallet_tx_hash,
                                     block.timestamp,
-                                    trace_tx.clone().map(|r| r.clone()),
+                                    trace_tx.cloned(),
                                 )
                                 .await;
 
@@ -626,16 +626,16 @@ impl Indexer {
         &self,
         db_client: Arc<PrismaClient>,
         address: &ethers::types::H160,
-        category: &String,
+        category: &str,
         tx_hash: ethers::types::H256,
     ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
         {
             || {
                 create_transaction_category(
                     db_client.clone(),
-                    address.clone(),
-                    category.clone(),
-                    tx_hash.clone(),
+                    *address,
+                    category.to_string(),
+                    tx_hash,
                 )
             }
         }
