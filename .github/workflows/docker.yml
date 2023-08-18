@@ -105,5 +105,7 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: docker-build,docker-lint
+          allowed-skips:
+            - docker-build
+            - docker-lint
           jobs: ${{ toJSON(needs) }}

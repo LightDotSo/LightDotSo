@@ -123,5 +123,8 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: e2e-api,e2e-app,e2e-playground
+          allowed-skips:
+            - e2e-api
+            - e2e-app
+            - e2e-playground
           jobs: ${{ toJSON(needs) }}
