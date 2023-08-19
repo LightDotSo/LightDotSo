@@ -127,7 +127,7 @@ jobs:
       - if: matrix.test
         name: Rust Test
         run: |
-          cargo nextest run \
+          cargo nextest run --release \
           --locked --all-features ${{ matrix.package }} \
           --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
       # - if: matrix.test
