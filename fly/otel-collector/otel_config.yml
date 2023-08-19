@@ -17,7 +17,7 @@ receivers:
   otlp:
     protocols:
       grpc:
-        endpoint: otelcol:4317 # here we tell OpenTelemetryCollector to listen for metrics submissions from our main app
+        endpoint: 0.0.0.0:4317 # here we tell OpenTelemetryCollector to listen for metrics submissions from our main app
 
 exporters:
   prometheusremotewrite:
