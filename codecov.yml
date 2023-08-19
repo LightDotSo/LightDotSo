@@ -16,10 +16,10 @@ coverage:
         informational: true
         flags:
           - js
-      rust:
-        informational: true
-        flags:
-          - rust
+      # rust:
+      #   informational: true
+      #   flags:
+      #     - rust
       ios:
         informational: true
         flags:
@@ -39,11 +39,11 @@ component_management:
         - apps/**
         - configurations/**
         - packages/**
-    - component_id: rust
-      name: Rust
-      paths:
-        - bin/**
-        - crates/**
+    # - component_id: rust
+    #   name: Rust
+    #   paths:
+    #     - bin/**
+    #     - crates/**
     - component_id: ios
       name: iOS
       paths:
@@ -59,11 +59,11 @@ flags:
       - configurations/**
       - packages/**
     carryforward: true
-  rust:
-    paths:
-      - bin/**
-      - crates/**
-    carryforward: true
+  # rust:
+  #   paths:
+  #     - bin/**
+  #     - crates/**
+  #   carryforward: true
   ios:
     paths:
       - ios/**
