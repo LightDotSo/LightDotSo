@@ -44,7 +44,7 @@ use lightdotso_redis::{
     add_to_set, get_redis_client, is_all_members_present, redis::Client, set_default_unindexed,
     set_status_flag,
 };
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{error, info, trace};
 use std::{
     collections::{HashMap, HashSet},
     hash::Hash,
@@ -53,7 +53,6 @@ use std::{
     time::Duration,
 };
 use tokio::time::sleep;
-use tracing::{error, trace};
 
 pub fn make_unique<T: Hash + Eq + Clone>(items: Vec<T>) -> Vec<T> {
     let unique_items: HashSet<_> = items.into_iter().collect();

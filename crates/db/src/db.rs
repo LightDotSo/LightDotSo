@@ -20,13 +20,12 @@ use ethers::utils::to_checksum;
 use lightdotso_prisma::{
     log, receipt, transaction, transaction_category, user, wallet, PrismaClient,
 };
+use lightdotso_tracing::tracing::{info, trace};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     serde_json, NewClientError,
 };
 use std::sync::Arc;
-use tracing::{info, trace};
-use tracing_futures::Instrument;
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;

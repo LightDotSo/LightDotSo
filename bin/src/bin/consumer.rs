@@ -21,8 +21,8 @@ use lightdotso_autometrics::API_SLO;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
 use lightdotso_tracing::{
-    init, otel, stdout,
-    tracing::{info, Level},
+    init, init_metrics, otel, stdout,
+    tracing::{error, info, Level},
 };
 
 #[autometrics(objective = API_SLO)]
@@ -45,6 +45,11 @@ pub async fn start_server() -> Result<()> {
 #[tokio::main]
 pub async fn main() {
     let _ = dotenv();
+
+    let res = init_metrics();
+    if let Err(e) = res {
+        error!("Failed to initialize metrics: {:?}", e)
+    }
 
     init(vec![stdout(Level::INFO), otel()]);
 
