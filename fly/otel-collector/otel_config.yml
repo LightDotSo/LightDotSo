@@ -21,7 +21,7 @@ receivers:
 
 exporters:
   prometheusremotewrite:
-    endpoint: <https://light.fmp.fiberplane.dev/api/v1/write> # This is the endpoint we point it to send to FMP
+    endpoint: https://light.fmp.fiberplane.dev/api/v1/write # This is the endpoint we point it to send to FMP
 
 service: # we define the pipeline the collector needs to go through
   pipelines:
