@@ -70,7 +70,7 @@ impl Consumer {
 
                     if let Some(headers) = m.headers() {
                         for header in headers.iter() {
-                            info!("  Header {:#?}: {:?}", header.key, header.value);
+                            info!("Header {:#?}: {:?}", header.key, header.value);
                         }
                     }
                     self.consumer.commit_message(&m, CommitMode::Async).unwrap();
