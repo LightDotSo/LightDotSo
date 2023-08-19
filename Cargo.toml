@@ -99,6 +99,7 @@
   tokio = { version = "1", features = ["full"] }
   tower = { version = "0.4.12" }
   tower-http = { version = "0.4", features = ["trace"] }
+  tracing = "0.1.37"
   tracing-test = "0.2.4"
   uniffi = "0.24.2"
   uniffi_macros = "0.24.2"

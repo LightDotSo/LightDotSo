@@ -32,4 +32,7 @@
   serde = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true, features = ["sync", "macros", "rt-multi-thread"] }
+
+[dev-dependencies]
+  tracing = { workspace = true }
   tracing-test = { workspace = true, features = ["no-env-filter"] }
