@@ -27,27 +27,60 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: Workspace
-            os: buildjet-8vcpu-ubuntu-2204
+          - name: Workspace (1/3)
+            os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
-            clippy: true
+            check: false
             test: true
             workspace: true
+            partition: 1
+            job-total: 3
+          - name: Workspace (2/3)
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: --workspace
+            check: false
+            test: true
+            workspace: true
+            partition: 2
+            job-total: 3
+          - name: Workspace (3/3)
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: --workspace
+            check: false
+            test: true
+            workspace: true
+            partition: 3
+            job-total: 3
+          - name: Clippy
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            package: --workspace
+            check: true
+            test: false
+            workspace: true
+            partition: 1
+            job-total: 1
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             package: --package lightwallet-core
-            clippy: false
-            test: false
+            check: false
+            test: true
             workspace: false
+            partition: 1
+            job-total: 1
           - name: iOS
             os: macos-latest
             target: x86_64-apple-darwin
             package: --package lightwallet-core
-            clippy: false
+            check: false
             test: true
             workspace: false
+            partition: 1
+            job-total: 1
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
       - rust-turbo
@@ -91,27 +124,31 @@ jobs:
       - name: Rust Format Check
         run: |
           cargo fmt --all --check
-      - name: Rust Build
-        run: |
-          cargo build --target ${{ matrix.target }} ${{ matrix.package }}
       - if: matrix.test
-        name: Rust Coverage
+        name: Rust Test
         run: |
-          cargo llvm-cov nextest --lcov --output-path lcov.info \
-          --locked --all-features ${{ matrix.package }}
-      - if: matrix.test
-        name: Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          fail_ci_if_error: false
-          files: lcov.info
-          flags: rust
-      - if: matrix.workspace
+          cargo nextest run \
+          --locked --all-features ${{ matrix.package }} \
+          --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
+      # - if: matrix.test
+      #   name: Rust Coverage
+      #   run: |
+      #     cargo llvm-cov nextest --lcov --output-path lcov.info \
+      #     --locked --all-features ${{ matrix.package }} \
+      #     --partition hash:${{ matrix.partition }}/${{ matrix.job-total }}
+      # - if: matrix.test
+      #   name: Codecov
+      #   uses: codecov/codecov-action@v3
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }}
+      #     fail_ci_if_error: false
+      #     files: lcov.info
+      #     flags: rust
+      - if: matrix.check
         name: Deny Check
         run: |
           cargo deny check
-      - if: matrix.clippy
+      - if: matrix.check
         name: Run Clippy
         run: |
           cargo clippy \
@@ -119,7 +156,7 @@ jobs:
             ${{ matrix.package }} \
             --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
         continue-on-error: true
-      - if: matrix.clippy
+      - if: matrix.check
         name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
         continue-on-error: true

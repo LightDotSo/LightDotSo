@@ -228,6 +228,21 @@ impl Indexer {
                     continue;
                 }
 
+                if log.topics[0] ==
+                    // Event signature for `ImageHashUpdated(bytes32)`
+                    H256::from_str(
+                        "0x307ed6bd941ee9fc80f369c94af5fa11e25bab5102a6140191756c5474a30bfa",
+                    )
+                    .unwrap() &&
+                    log.topics.len() == 2
+                {
+                    // Address for from
+                    entry.push(log.address);
+
+                    // Insert entries into the hashmap
+                    address_type_entry.insert(log.address, "ImageHashUpdate".to_string());
+                }
+
                 // Filter the logs for transfers
                 if log.topics[0] ==
                     // Event signature for `Transfer(address,address,uint256)`
