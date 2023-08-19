@@ -20,7 +20,10 @@ use ethers::utils::to_checksum;
 use lightdotso_prisma::{
     log, receipt, transaction, transaction_category, user, wallet, PrismaClient,
 };
-use lightdotso_tracing::tracing::{info, trace};
+use lightdotso_tracing::{
+    tracing::{info, info_span, trace},
+    tracing_futures::Instrument,
+};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     serde_json, NewClientError,
@@ -164,7 +167,7 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
-                .instrument(tracing::info_span!("create_transaction"))
+                .instrument(info_span!("create_transaction"))
                 .await?;
             trace!(?tx_data);
 
@@ -196,7 +199,7 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
-                .instrument(tracing::info_span!("create_receipt"))
+                .instrument(info_span!("create_receipt"))
                 .await
                 .map(|op| (tx_data, op))
         })
