@@ -5494,6 +5494,7 @@ dependencies = [
  "lightdotso-consumer",
  "lightdotso-db",
  "lightdotso-indexer",
+ "lightdotso-kafka",
  "lightdotso-prisma",
  "lightdotso-simulator",
  "lightdotso-tracing",

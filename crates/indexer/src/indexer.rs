@@ -36,8 +36,7 @@ use lightdotso_db::{
 };
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_kafka::{
-    get_producer, namespace::TRANSACTION, produce_transaction_message,
-    rdkafka::producer::FutureProducer,
+    get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
 };
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{
@@ -237,7 +236,7 @@ impl Indexer {
                     entry.push(log.address);
 
                     // Insert entries into the hashmap
-                    address_type_entry.insert(log.address, "ImageHashUpdate".to_string());
+                    address_type_entry.insert(log.address, "ImageHashUpdated".to_string());
                 }
 
                 // Filter the logs for transfers
@@ -486,7 +485,6 @@ impl Indexer {
         traces: Vec<&ethers::types::Trace>,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
         let client = self.kafka_client.clone().unwrap();
-        let to = TRANSACTION.clone();
         let chain_id = self.chain_id.to_string();
         let payload =
             serde_json::to_value(traces).unwrap_or_else(|_| serde_json::Value::Null).to_string();

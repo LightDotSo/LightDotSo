@@ -20,6 +20,7 @@ use dotenvy::dotenv;
 use lightdotso_autometrics::API_SLO;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
+use lightdotso_kafka::namespace::TRANSACTION;
 use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{error, info, Level},
@@ -66,7 +67,7 @@ pub async fn main() {
     }
 
     // Parse the command line arguments
-    let args = ConsumerArgs { group: "all".to_string(), topics: vec!["consumer".to_string()] };
+    let args = ConsumerArgs { group: "all".to_string(), topics: vec![TRANSACTION.to_string()] };
 
     // Construct the futures
     let consumer_future = args.run();
