@@ -63,35 +63,39 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    // If the topic is transaction
-                    if m.topic() == TRANSACTION.to_string() {
-                        // Convert the payload to a string
-                        let payload_opt = m.payload_view::<str>();
+                    match m.topic() {
+                        topic if topic == TRANSACTION.to_string() => {
+                            // Convert the payload to a string
+                            let payload_opt = m.payload_view::<str>();
 
-                        // If the payload is valid
-                        if let Some(Ok(payload)) = payload_opt {
-                            // Deserialize the payload
-                            match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
-                                Ok(block) => {
-                                    // Log each message as an example.
-                                    info!("key: '{:?}', block: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-                                    m.key(), block,  m.topic(), m.partition(), m.offset(), m.timestamp());
+                            // If the payload is valid
+                            if let Some(Ok(payload)) = payload_opt {
+                                // Deserialize the payload
+                                match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
+                                    Ok(block) => {
+                                        // Log each message as an example.
+                                        info!("key: '{:?}', block: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                            m.key(), block, m.topic(), m.partition(), m.offset(), m.timestamp());
 
-                                    // Index the block
-                                    let res = args.index(db.clone(), block).await;
+                                        // Index the block
+                                        let res = args.index(db.clone(), block).await;
 
-                                    // Commit the message
-                                    if let Err(e) = res {
-                                        warn!("Error while indexing block: {:?}", e);
-                                        continue;
+                                        // Commit the message
+                                        if let Err(e) = res {
+                                            warn!("Error while indexing block: {:?}", e);
+                                            continue;
+                                        }
+
+                                        let _ = self.consumer.commit_message(&m, CommitMode::Async);
                                     }
-
-                                    let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                                }
-                                Err(e) => {
-                                    warn!("Error while deserializing message payload: {:?}", e);
-                                }
-                            };
+                                    Err(e) => {
+                                        warn!("Error while deserializing message payload: {:?}", e);
+                                    }
+                                };
+                            }
+                        }
+                        _ => {
+                            // Handle other topics here
                         }
                     }
                 }
