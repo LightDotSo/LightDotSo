@@ -15,7 +15,7 @@
 
 use crate::{
     config::IndexerArgs,
-    constants::{FACTORY_ADDRESSES, KAFKA_CHAIN_IDS, TESTNET_CHAIN_IDS},
+    constants::{FACTORY_ADDRESSES, KAFKA_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
     namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED},
 };
 use autometrics::autometrics;
@@ -124,35 +124,15 @@ impl Indexer {
             // Get the block number
             info!("New block: {:?}", block.clone().number.unwrap());
 
-            // Sleep for 3 seconds
-            sleep(Duration::from_secs(3)).await;
-
-            // Get the traced block
-            let traced_block_result = self.get_traced_block(block.number.unwrap()).await;
-            let traced_block = match traced_block_result {
-                Ok(value) => value,
-                Err(_) => continue,
-            };
-            trace!(?traced_block);
-
-            // Log the traced block length
-            info!("Traced block length: {:?}", traced_block.len());
-
-            // Filter the traces
-            let traces: Vec<&Trace> = traced_block
-                .iter()
-                .filter(|trace| match &trace.action {
-                    Call(_) => true,
-                    Create(res) => FACTORY_ADDRESSES.contains(&res.from),
-                    Reward(_) | Suicide(_) => false,
-                })
-                .collect();
-            trace!(?traces);
+            // Check if the block is in the sleep chain ids
+            if SLEEP_CHAIN_IDS.contains_key(&self.chain_id) {
+                // Sleep for the duration
+                sleep(Duration::from_secs(SLEEP_CHAIN_IDS[&self.chain_id] as u64)).await;
+            }
 
             // Send the transaction to the queue for indexing
             if self.kafka_client.is_some() && KAFKA_CHAIN_IDS.contains(&self.chain_id) {
-                // if self.kafka_client.is_some() {
-                let queue_res = self.send_tx_queue(block, traces.clone()).await;
+                let queue_res = self.send_tx_queue(block).await;
                 if queue_res.is_err() {
                     error!("send_tx_queue error: {:?}", queue_res);
                 }
@@ -160,17 +140,34 @@ impl Indexer {
             }
 
             // Run the indexing
-            self.index(db_client.clone(), block, traces).await;
+            self.index(db_client.clone(), block).await;
         }
     }
 
     /// The core indexing function.
-    pub async fn index(
-        &self,
-        db_client: Arc<PrismaClient>,
-        block: Block<H256>,
-        traces: Vec<&Trace>,
-    ) {
+    pub async fn index(&self, db_client: Arc<PrismaClient>, block: Block<H256>) {
+        // Get the traced block
+        let traced_block_result = self.get_traced_block(block.number.unwrap()).await;
+        let traced_block = match traced_block_result {
+            Ok(value) => value,
+            Err(_) => return,
+        };
+        trace!(?traced_block);
+
+        // Log the traced block length
+        info!("Traced block length: {:?}", traced_block.len());
+
+        // Filter the traces
+        let traces: Vec<&Trace> = traced_block
+            .iter()
+            .filter(|trace| match &trace.action {
+                Call(_) => true,
+                Create(res) => FACTORY_ADDRESSES.contains(&res.from),
+                Reward(_) | Suicide(_) => false,
+            })
+            .collect();
+        trace!(?traces);
+
         // Create new vec for addresses
         let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
             HashMap::new();
@@ -496,13 +493,11 @@ impl Indexer {
     pub async fn send_tx_queue(
         &self,
         block: Block<H256>,
-        traces: Vec<&ethers::types::Trace>,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
         let client = self.kafka_client.clone().unwrap();
         let chain_id = self.chain_id.to_string();
-        let payload = serde_json::to_value((block, traces))
-            .unwrap_or_else(|_| serde_json::Value::Null)
-            .to_string();
+        let payload =
+            serde_json::to_value(block).unwrap_or_else(|_| serde_json::Value::Null).to_string();
 
         let _ = { || produce_transaction_message(client.clone(), &chain_id, &payload) }
             .retry(&ExponentialBuilder::default())

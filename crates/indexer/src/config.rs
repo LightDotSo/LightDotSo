@@ -16,7 +16,7 @@
 use crate::indexer::Indexer;
 use anyhow::Result;
 use clap::Parser;
-use ethers::types::{Block, Trace, H256};
+use ethers::types::{Block, H256};
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
 use std::sync::Arc;
@@ -81,12 +81,7 @@ impl IndexerArgs {
         Ok(())
     }
 
-    pub async fn index(
-        &self,
-        db: Arc<PrismaClient>,
-        block: Block<H256>,
-        traces: Vec<&Trace>,
-    ) -> Result<()> {
+    pub async fn index(&self, db: Arc<PrismaClient>, block: Block<H256>) -> Result<()> {
         // Add info
         info!("IndexerArgs run, exiting");
 
@@ -97,7 +92,7 @@ impl IndexerArgs {
         let indexer = Indexer::new(self).await;
 
         // Index the blocks
-        let _ = indexer.index(Arc::clone(&db), block, traces).await;
+        let _ = indexer.index(Arc::clone(&db), block).await;
 
         Ok(())
     }
