@@ -64,7 +64,7 @@ pub struct Indexer {
     redis_client: Option<Arc<Client>>,
     kafka_client: Option<Arc<FutureProducer>>,
     http_client: Arc<Provider<Http>>,
-    ws_client: Arc<Provider<Ws>>,
+    ws_client: Option<Arc<Provider<Ws>>>,
     webhook: String,
     // start_block: u64,
     // end_block: u64,
@@ -86,9 +86,14 @@ impl Indexer {
         }
 
         // Create the websocket client
-        let ws_client = Arc::new(
-            Provider::<Ws>::connect_with_reconnects(args.ws.to_string(), usize::MAX).await.unwrap(),
-        );
+        let ws_client: Option<Arc<Provider<Ws>>> =
+            match Provider::<Ws>::connect_with_reconnects(args.ws.to_string(), usize::MAX).await {
+                Ok(client) => Some(Arc::new(client)),
+                Err(_) => {
+                    error!("Websocket connection failed.");
+                    None
+                }
+            };
 
         // Create the redis client
         let redis_client: Option<Arc<Client>> =
@@ -117,7 +122,8 @@ impl Indexer {
         info!("Indexer run, starting");
 
         // Initiate stream for new blocks
-        let mut stream = self.ws_client.subscribe_blocks().await.unwrap();
+        let client = self.ws_client.clone().unwrap();
+        let mut stream = client.subscribe_blocks().await.unwrap();
 
         // Loop over the blocks
         while let Some(block) = stream.next().await {
