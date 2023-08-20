@@ -15,15 +15,15 @@
 
 use crate::config::ConsumerArgs;
 
-use std::sync::Arc;
-
-use lightdotso_kafka::get_consumer;
+use ethers::types::{Block, Trace, H256};
+use lightdotso_kafka::{get_consumer, namespace::TRANSACTION};
 use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
     message::Headers,
     Message,
 };
+use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct Consumer {
@@ -55,25 +55,28 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    let payload = match m.payload_view::<str>() {
-                        None => "",
-                        Some(Ok(s)) => s,
-                        Some(Err(e)) => {
-                            warn!("Error while deserializing message payload: {:?}", e);
-                            ""
-                        }
-                    };
+                    if topics.contains(&TRANSACTION.as_str()) {
+                        match serde_json::from_slice::<(Block<H256>, Vec<Trace>)>(
+                            m.payload_view::<str>().unwrap().unwrap().as_bytes(),
+                        ) {
+                            Ok(traces) => {
+                                // Log each trace as an example.
+                                info!("key: '{:?}', traces: '{:?}', topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                      m.key(), traces.0, m.topic(), m.partition(), m.offset(), m.timestamp());
 
-                    // Log the message
-                    info!("key: '{:?}', payload: '{}', topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-                      m.key(), payload, m.topic(), m.partition(), m.offset(), m.timestamp());
-
-                    if let Some(headers) = m.headers() {
-                        for header in headers.iter() {
-                            info!("Header {:#?}: {:?}", header.key, header.value);
-                        }
+                                if let Some(headers) = m.headers() {
+                                    for header in headers.iter() {
+                                        info!("Header {:#?}: {:?}", header.key, header.value);
+                                    }
+                                }
+                                self.consumer.commit_message(&m, CommitMode::Async).unwrap();
+                            }
+                            Err(e) => {
+                                // Handle json parsing errors
+                                warn!("Error while deserializing message payload: {:?}", e);
+                            }
+                        };
                     }
-                    self.consumer.commit_message(&m, CommitMode::Async).unwrap();
                 }
             };
         }

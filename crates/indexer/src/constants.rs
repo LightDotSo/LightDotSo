@@ -35,3 +35,11 @@ lazy_static! {
     11155111
   ];
 }
+
+// The testnet chain ids
+lazy_static! {
+  pub static ref KAFKA_CHAIN_IDS: [usize; 1] = [
+    // Optimism
+    10
+  ];
+}

@@ -5522,9 +5522,11 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
  "lightdotso-kafka",
  "lightdotso-tracing",
  "rdkafka",
+ "serde_json",
 ]
 
 [[package]]

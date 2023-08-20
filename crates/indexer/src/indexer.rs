@@ -15,7 +15,7 @@
 
 use crate::{
     config::IndexerArgs,
-    constants::{FACTORY_ADDRESSES, TESTNET_CHAIN_IDS},
+    constants::{FACTORY_ADDRESSES, KAFKA_CHAIN_IDS, TESTNET_CHAIN_IDS},
     namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED},
 };
 use autometrics::autometrics;
@@ -150,8 +150,8 @@ impl Indexer {
             trace!(?traces);
 
             // Send the transaction to the queue for indexing
-            if self.kafka_client.is_some() {
-                let queue_res = self.send_tx_queue(traces.clone()).await;
+            if self.kafka_client.is_some() && KAFKA_CHAIN_IDS.contains(&self.chain_id) {
+                let queue_res = self.send_tx_queue(block, traces.clone()).await;
                 if queue_res.is_err() {
                     error!("send_tx_queue error: {:?}", queue_res);
                 }
@@ -494,12 +494,14 @@ impl Indexer {
     #[autometrics]
     pub async fn send_tx_queue(
         &self,
+        block: Block<H256>,
         traces: Vec<&ethers::types::Trace>,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
         let client = self.kafka_client.clone().unwrap();
         let chain_id = self.chain_id.to_string();
-        let payload =
-            serde_json::to_value(traces).unwrap_or_else(|_| serde_json::Value::Null).to_string();
+        let payload = serde_json::to_value((block, traces))
+            .unwrap_or_else(|_| serde_json::Value::Null)
+            .to_string();
 
         let _ = { || produce_transaction_message(client.clone(), &chain_id, &payload) }
             .retry(&ExponentialBuilder::default())

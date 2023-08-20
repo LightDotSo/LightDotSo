@@ -11,6 +11,8 @@
 [dependencies]
   anyhow = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
+  ethers = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-tracing = { workspace = true }
   rdkafka = { workspace = true }
+  serde_json = { workspace = true }
