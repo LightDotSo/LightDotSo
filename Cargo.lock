@@ -5523,6 +5523,8 @@ dependencies = [
  "anyhow",
  "clap",
  "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "lightdotso-db",
+ "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-tracing",
  "rdkafka",

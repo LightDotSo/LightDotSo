@@ -12,6 +12,8 @@
   anyhow = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   ethers = { workspace = true }
+  lightdotso-db = { workspace = true }
+  lightdotso-indexer = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-tracing = { workspace = true }
   rdkafka = { workspace = true }

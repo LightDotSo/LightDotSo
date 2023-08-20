@@ -84,7 +84,7 @@ pub async fn produce_message(
     key: &str,
     message: &str,
 ) -> Result<(), rdkafka::error::KafkaError> {
-    let payload = format!("{}: {}", key, message);
+    let payload = format!("{}", message);
     let record = FutureRecord::to(topic).payload(&payload).key(key);
     let _ = producer.send(record, None).await;
     Ok(())

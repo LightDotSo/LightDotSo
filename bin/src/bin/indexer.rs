@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::sync::Arc;
-
 use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
@@ -27,6 +25,7 @@ use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{info, Level},
 };
+use std::sync::Arc;
 
 #[autometrics]
 async fn health_check() -> &'static str {

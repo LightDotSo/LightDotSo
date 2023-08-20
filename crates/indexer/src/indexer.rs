@@ -151,6 +151,7 @@ impl Indexer {
 
             // Send the transaction to the queue for indexing
             if self.kafka_client.is_some() && KAFKA_CHAIN_IDS.contains(&self.chain_id) {
+                // if self.kafka_client.is_some() {
                 let queue_res = self.send_tx_queue(block, traces.clone()).await;
                 if queue_res.is_err() {
                     error!("send_tx_queue error: {:?}", queue_res);
