@@ -33,7 +33,7 @@ RUN npm install -g turbo@1.10.11 pnpm@8.6.9
 
 # Install building dependencies.
 RUN apt-get update && \
-  apt-get -y install build-essential git clang curl libsasl2 libssl-dev llvm libudev-dev make protobuf-compiler && \
+  apt-get -y install build-essential git clang curl libsasl2-2 libssl-dev llvm libudev-dev make protobuf-compiler && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
