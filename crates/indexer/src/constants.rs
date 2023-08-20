@@ -15,6 +15,7 @@
 
 use ethers::types::Address;
 use lazy_static::lazy_static;
+use std::collections::HashMap;
 
 // The factory addresses
 lazy_static! {
@@ -24,6 +25,16 @@ lazy_static! {
       // v0.0.0
       "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab".parse().unwrap(),
     ];
+}
+
+// The sleep chain ids
+lazy_static! {
+    pub static ref SLEEP_CHAIN_IDS: HashMap<usize, i32> = {
+        let mut m = HashMap::new();
+        m.insert(31337, 1);
+        m.insert(11155111, 3);
+        m
+    };
 }
 
 // The testnet chain ids

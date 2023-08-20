@@ -16,7 +16,7 @@
 use crate::config::ConsumerArgs;
 
 use clap::Parser;
-use ethers::types::{Block, Trace, H256};
+use ethers::types::{Block, H256};
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{get_consumer, namespace::TRANSACTION};
@@ -63,37 +63,41 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    if topics.contains(&TRANSACTION.as_str()) {
-                        // Convert the payload to a string
-                        let payload_opt = m.payload_view::<str>();
+                    match m.topic() {
+                        topic if topic == TRANSACTION.to_string() => {
+                            // Convert the payload to a string
+                            let payload_opt = m.payload_view::<str>();
 
-                        // If the payload is valid
-                        if let Some(Ok(payload)) = payload_opt {
-                            // Deserialize the payload
-                            match serde_json::from_slice::<(Block<H256>, Vec<Trace>)>(
-                                payload.as_bytes(),
-                            ) {
-                                Ok((block, traces)) => {
-                                    // Log each trace as an example.
-                                    info!("key: '{:?}', block: '{:?}', traces: '{:?}', topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-                                    m.key(), block, traces, m.topic(), m.partition(), m.offset(), m.timestamp());
+                            // If the payload is valid
+                            if let Some(Ok(payload)) = payload_opt {
+                                // Deserialize the payload
+                                match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
+                                    Ok(block) => {
+                                        // Log each message as an example.
+                                        info!("key: '{:?}', block: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                            m.key(), block, m.topic(), m.partition(), m.offset(), m.timestamp());
 
-                                    // Index the block
-                                    let traces_ref: Vec<_> = traces.iter().collect();
-                                    let res = args.index(db.clone(), block, traces_ref).await;
+                                        // Index the block
+                                        let res = args.index(db.clone(), block).await;
 
-                                    // Commit the message
-                                    if let Err(e) = res {
-                                        warn!("Error while indexing block: {:?}", e);
-                                        continue;
+                                        // Commit the message
+                                        if let Err(e) = res {
+                                            warn!("Error while indexing block: {:?}", e);
+                                            continue;
+                                        }
+
+                                        let _ = self.consumer.commit_message(&m, CommitMode::Async);
                                     }
-
-                                    let _ = self.consumer.commit_message(&m, CommitMode::Async);
-                                }
-                                Err(e) => {
-                                    warn!("Error while deserializing message payload: {:?}", e);
-                                }
-                            };
+                                    Err(e) => {
+                                        warn!("Error while deserializing message payload: {:?}", e);
+                                    }
+                                };
+                            }
+                        }
+                        _ => {
+                            // Log each message as an example.
+                            info!("key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                            m.key(), m.payload_view::<str>(), m.topic(), m.partition(), m.offset(), m.timestamp());
                         }
                     }
                 }
