@@ -37,6 +37,7 @@ use lightdotso_db::{
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_kafka::{
     get_producer,
+    namespace::TRANSACTION,
     rdkafka::producer::{BaseProducer, BaseRecord},
 };
 use lightdotso_prisma::PrismaClient;
@@ -66,9 +67,9 @@ pub struct Indexer {
     http_client: Arc<Provider<Http>>,
     ws_client: Arc<Provider<Ws>>,
     webhook: String,
-    start_block: u64,
-    end_block: u64,
-    live: bool,
+    // start_block: u64,
+    // end_block: u64,
+    // live: bool,
 }
 
 impl Indexer {
@@ -148,6 +149,14 @@ impl Indexer {
                 })
                 .collect();
             trace!(?traces);
+
+            // Send the transaction to the queue for indexing
+            if self.kafka_client.is_some() {
+                let queue_res = self.send_tx_queue(traces.clone());
+                if queue_res.is_err() {
+                    error!("send_tx_queue error: {:?}", queue_res);
+                }
+            }
 
             // Create new vec for addresses
             let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
@@ -452,12 +461,12 @@ impl Indexer {
                                 }
 
                                 // Send the transaction to the queue if live indexing
-                                if self.live && self.kafka_client.is_some() {
-                                    let queue_res = self.send_tx_queue(&unique_wallet_tx_hash);
-                                    if queue_res.is_err() {
-                                        error!("send_tx_queue error: {:?}", queue_res);
-                                    }
-                                }
+                                // if self.live && self.kafka_client.is_some() {
+                                //     let queue_res = self.send_tx_queue(&unique_wallet_tx_hash);
+                                //     if queue_res.is_err() {
+                                //         error!("send_tx_queue error: {:?}", queue_res);
+                                //     }
+                                // }
                             }
                         }
                     }
@@ -475,13 +484,15 @@ impl Indexer {
     #[autometrics]
     pub fn send_tx_queue(
         &self,
-        hash: &ethers::types::H256,
+        traces: Vec<&ethers::types::Trace>,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
         let client = self.kafka_client.clone().unwrap();
+        let to = TRANSACTION.clone();
         let chain_id = self.chain_id.to_string();
-        let hash = hash.clone().to_string();
+        let payload =
+            serde_json::to_value(traces).unwrap_or_else(|_| serde_json::Value::Null).to_string();
 
-        let _ = { || client.send(BaseRecord::to("transaction").key(&chain_id).payload(&hash)) }
+        let _ = { || client.send(BaseRecord::to(&to).key(&chain_id).payload(&payload)) }
             .retry(&ExponentialBuilder::default())
             .call();
 

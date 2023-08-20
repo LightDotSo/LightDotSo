@@ -20,6 +20,8 @@ use rdkafka::{
     config::ClientConfig, consumer::stream_consumer::StreamConsumer, producer::BaseProducer,
 };
 
+pub mod namespace;
+
 /// Configure a Kafka client with the required settings.
 pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error::Error>> {
     // Get the environment variables
