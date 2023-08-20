@@ -63,7 +63,8 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    if topics.contains(&TRANSACTION.as_str()) {
+                    // If the topic is transaction
+                    if m.topic() == TRANSACTION.to_string() {
                         // Convert the payload to a string
                         let payload_opt = m.payload_view::<str>();
 
