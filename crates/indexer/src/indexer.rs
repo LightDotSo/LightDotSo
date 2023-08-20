@@ -90,7 +90,10 @@ impl Indexer {
             match Provider::<Ws>::connect_with_reconnects(args.ws.to_string(), usize::MAX).await {
                 Ok(client) => Some(Arc::new(client)),
                 Err(_) => {
-                    error!("Websocket connection failed.");
+                    // Only error if env var is not empty
+                    if !args.ws.is_empty() {
+                        error!("Websocket connection failed.");
+                    }
                     None
                 }
             };
