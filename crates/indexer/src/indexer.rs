@@ -349,10 +349,8 @@ impl Indexer {
                 }
 
                 // Get the traced tx
-                let trace_tx = traces
-                    .iter()
-                    .find(|&x| x.transaction_hash == log.transaction_hash)
-                    .map(|x| x.clone());
+                let trace_tx =
+                    traces.iter().find(|&x| x.transaction_hash == log.transaction_hash).copied();
 
                 // Create the transaction
                 let _ = self
@@ -443,7 +441,7 @@ impl Indexer {
                     let trace_tx = traces
                         .iter()
                         .find(|&x| x.transaction_hash.as_ref() == Some(&unique_wallet_tx_hash))
-                        .map(|x| x.clone());
+                        .copied();
 
                     if tx_adress_category.is_some() {
                         // Create the transaction for indexing if category exists
