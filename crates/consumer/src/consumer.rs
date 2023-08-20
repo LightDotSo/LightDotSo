@@ -63,7 +63,16 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
+                    // Don't consume if key is not the consumer chain
+                    if let Some(key) = m.key() {
+                        if key != args.chain_id.to_string().as_bytes() {
+                            info!("Skipping message with key: {:?}", key);
+                            continue;
+                        }
+                    }
+
                     match m.topic() {
+                        // If the topic is the transaction topic
                         topic if topic == TRANSACTION.to_string() => {
                             // Convert the payload to a string
                             let payload_opt = m.payload_view::<str>();

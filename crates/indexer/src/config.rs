@@ -60,7 +60,7 @@ pub struct IndexerArgs {
 impl IndexerArgs {
     pub async fn run(&self, db: Arc<PrismaClient>) -> Result<()> {
         // Add info
-        info!("IndexerArgs run, exiting");
+        info!("IndexerArgs run, entering");
 
         // Print the config
         info!("Config: {:?}", self);
@@ -83,7 +83,7 @@ impl IndexerArgs {
 
     pub async fn index(&self, db: Arc<PrismaClient>, block: Block<H256>) -> Result<()> {
         // Add info
-        info!("IndexerArgs run, exiting");
+        info!("IndexerArgs index, entering");
 
         // Print the config
         info!("Config: {:?}", self);
@@ -93,6 +93,9 @@ impl IndexerArgs {
 
         // Index the blocks
         let _ = indexer.index(Arc::clone(&db), block).await;
+
+        // Log the result
+        info!("IndexerArgs index, exiting");
 
         Ok(())
     }
