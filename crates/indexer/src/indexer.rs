@@ -36,9 +36,8 @@ use lightdotso_db::{
 };
 use lightdotso_discord::notify_create_wallet;
 use lightdotso_kafka::{
-    get_producer,
-    namespace::TRANSACTION,
-    rdkafka::producer::{BaseProducer, BaseRecord},
+    get_producer, namespace::TRANSACTION, produce_transaction_message,
+    rdkafka::producer::FutureProducer,
 };
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{
@@ -63,7 +62,7 @@ pub fn make_unique<T: Hash + Eq + Clone>(items: Vec<T>) -> Vec<T> {
 pub struct Indexer {
     chain_id: usize,
     redis_client: Option<Arc<Client>>,
-    kafka_client: Option<Arc<BaseProducer>>,
+    kafka_client: Option<Arc<FutureProducer>>,
     http_client: Arc<Provider<Http>>,
     ws_client: Arc<Provider<Ws>>,
     webhook: String,
@@ -96,7 +95,7 @@ impl Indexer {
             get_redis_client().map_or_else(|_e| None, |client| Some(Arc::new(client)));
 
         // Create the kafka client
-        let kafka_client: Option<Arc<BaseProducer>> =
+        let kafka_client: Option<Arc<FutureProducer>> =
             get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)));
 
         // Create the indexer
@@ -152,7 +151,7 @@ impl Indexer {
 
             // Send the transaction to the queue for indexing
             if self.kafka_client.is_some() {
-                let queue_res = self.send_tx_queue(traces.clone());
+                let queue_res = self.send_tx_queue(traces.clone()).await;
                 if queue_res.is_err() {
                     error!("send_tx_queue error: {:?}", queue_res);
                 }
@@ -482,7 +481,7 @@ impl Indexer {
 
     /// Add a new tx in the queue
     #[autometrics]
-    pub fn send_tx_queue(
+    pub async fn send_tx_queue(
         &self,
         traces: Vec<&ethers::types::Trace>,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
@@ -492,9 +491,9 @@ impl Indexer {
         let payload =
             serde_json::to_value(traces).unwrap_or_else(|_| serde_json::Value::Null).to_string();
 
-        let _ = { || client.send(BaseRecord::to(&to).key(&chain_id).payload(&payload)) }
+        let _ = { || produce_transaction_message(client.clone(), &chain_id, &payload) }
             .retry(&ExponentialBuilder::default())
-            .call();
+            .await;
 
         Ok(())
     }

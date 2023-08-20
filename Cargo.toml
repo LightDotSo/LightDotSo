@@ -81,7 +81,7 @@
   prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
     "mocking",
   ] }
-  rdkafka = "0.33.2"
+  rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
   redb = "1.0.5"
   revm = { version = "3", default-features = false, features = [
     "std",

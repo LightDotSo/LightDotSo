@@ -15,9 +15,13 @@
 
 use lightdotso_tracing::tracing::error;
 pub use rdkafka;
+use std::sync::Arc;
 
+use namespace::TRANSACTION;
 use rdkafka::{
-    config::ClientConfig, consumer::stream_consumer::StreamConsumer, producer::BaseProducer,
+    config::ClientConfig,
+    consumer::stream_consumer::StreamConsumer,
+    producer::{FutureProducer, FutureRecord},
 };
 
 pub mod namespace;
@@ -63,7 +67,7 @@ pub fn get_consumer(group: &str) -> Result<StreamConsumer, rdkafka::error::Kafka
 }
 
 /// Get a Kafka producer with the required settings.
-pub fn get_producer() -> Result<BaseProducer, rdkafka::error::KafkaError> {
+pub fn get_producer() -> Result<FutureProducer, rdkafka::error::KafkaError> {
     // Ignores the group id for producers.
     let client_config = configure_client("");
     if client_config.is_err() {
@@ -71,4 +75,26 @@ pub fn get_producer() -> Result<BaseProducer, rdkafka::error::KafkaError> {
         return Err(rdkafka::error::KafkaError::ClientCreation("Failed to create client".into()));
     }
     client_config.unwrap().create()
+}
+
+// Produce a message with the given topic.
+pub async fn produce_message(
+    producer: Arc<FutureProducer>,
+    topic: &str,
+    key: &str,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    let payload = format!("{}: {}", key, message);
+    let record = FutureRecord::to(topic).payload(&payload).key(key);
+    let _ = producer.send(record, None).await;
+    Ok(())
+}
+
+// Produce a message with Transaction topic.
+pub async fn produce_transaction_message(
+    producer: Arc<FutureProducer>,
+    key: &str,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    produce_message(producer, TRANSACTION.as_str(), key, message).await
 }
