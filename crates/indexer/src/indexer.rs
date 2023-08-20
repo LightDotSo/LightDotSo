@@ -41,8 +41,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{
-    add_to_set, get_redis_client, is_all_members_present, redis::Client, set_default_unindexed,
-    set_status_flag,
+    add_to_wallets, get_redis_client, is_wallet_present, redis::Client, set_block_status,
 };
 use lightdotso_tracing::tracing::{error, info, trace};
 use std::{
@@ -116,15 +115,6 @@ impl Indexer {
     /// Runs the indexer
     pub async fn run(&self, db_client: Arc<PrismaClient>) {
         info!("Indexer run, starting");
-
-        // Set the default block flags
-        if self.redis_client.is_some() {
-            info!(
-                "Setting default block flags from {:?} to {:?}",
-                self.start_block, self.end_block
-            );
-            let _ = self.set_default_block_flags(self.start_block, self.end_block);
-        }
 
         // Initiate stream for new blocks
         let mut stream = self.ws_client.subscribe_blocks().await.unwrap();
@@ -507,26 +497,7 @@ impl Indexer {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || add_to_set(&mut con, "wallets", to_checksum(&address, None).as_str()) }
-                .retry(&ExponentialBuilder::default())
-                .call()
-        } else {
-            error!("Redis connection error, {:?}", con.err());
-            Ok(())
-        }
-    }
-
-    /// Set the default block flags
-    #[autometrics]
-    pub fn set_default_block_flags(
-        &self,
-        start_block: u64,
-        end_block: u64,
-    ) -> Result<(), lightdotso_redis::redis::RedisError> {
-        let client = self.redis_client.clone().unwrap();
-        let con = client.get_connection();
-        if let Ok(mut con) = con {
-            { || set_default_unindexed(&mut con, start_block as i64, end_block as i64) }
+            { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
                 .retry(&ExponentialBuilder::default())
                 .call()
         } else {
@@ -544,7 +515,7 @@ impl Indexer {
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
-            { || set_status_flag(&mut con, block as i64, true) }
+            { || set_block_status(&mut con, self.chain_id, block as i64, true) }
                 .retry(&ExponentialBuilder::default())
                 .call()
         } else {
@@ -564,9 +535,8 @@ impl Indexer {
         if let Ok(mut con) = con {
             {
                 || {
-                    is_all_members_present(
+                    is_wallet_present(
                         &mut con,
-                        "wallets",
                         addresses.iter().map(|address| to_checksum(address, None)).collect(),
                     )
                 }
