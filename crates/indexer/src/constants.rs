@@ -31,7 +31,7 @@ lazy_static! {
 lazy_static! {
     pub static ref SLEEP_CHAIN_IDS: HashMap<usize, i32> = {
         let mut m = HashMap::new();
-        m.insert(31337, 10);
+        m.insert(31337, 1);
         m.insert(11155111, 3);
         m
     };

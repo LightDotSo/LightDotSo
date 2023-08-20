@@ -70,11 +70,12 @@ pub async fn main() {
     let args = ConsumerArgs { group: "all".to_string(), topics: vec![TRANSACTION.to_string()] };
 
     // Construct the futures
-    let consumer_future = args.run();
+    let consumer_future_1 = args.run();
+    let consumer_future_2 = args.run();
     let server_future = start_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(consumer_future, server_future);
+    let result = tokio::try_join!(consumer_future_1, consumer_future_2, server_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {
