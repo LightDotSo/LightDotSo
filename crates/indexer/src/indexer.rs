@@ -103,9 +103,9 @@ impl Indexer {
         Self {
             chain_id: args.chain_id,
             webhook: args.webhook.clone(),
-            start_block: args.start_block,
-            end_block: args.end_block,
-            live: args.live,
+            // start_block: args.start_block,
+            // end_block: args.end_block,
+            // live: args.live,
             http_client,
             ws_client,
             redis_client,
