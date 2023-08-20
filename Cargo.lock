@@ -2367,6 +2367,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "duct"
+version = "0.13.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37ae3fc31835f74c2a7ceda3aeede378b0ae2e74c8f1c36559fcc9ae2a4e7d3e"
+dependencies = [
+ "libc",
+ "once_cell",
+ "os_pipe",
+ "shared_child",
+]
+
+[[package]]
 name = "dunce"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5482,6 +5494,7 @@ dependencies = [
  "lightdotso-consumer",
  "lightdotso-db",
  "lightdotso-indexer",
+ "lightdotso-kafka",
  "lightdotso-prisma",
  "lightdotso-simulator",
  "lightdotso-tracing",
@@ -5509,9 +5522,13 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "lightdotso-db",
+ "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-tracing",
  "rdkafka",
+ "serde_json",
 ]
 
 [[package]]
@@ -5571,8 +5588,10 @@ dependencies = [
 name = "lightdotso-kafka"
 version = "0.1.0"
 dependencies = [
+ "lazy_static",
  "lightdotso-tracing",
  "rdkafka",
+ "serde_json",
 ]
 
 [[package]]
@@ -6989,6 +7008,16 @@ name = "ordermap"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a86ed3f5f244b372d6b1a00b72ef7f8876d0bc6a78a4c9985c53614041512063"
+
+[[package]]
+name = "os_pipe"
+version = "1.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0ae859aa07428ca9a929b936690f8b12dc5f11dd8c6992a18ca93919f28bc177"
+dependencies = [
+ "libc",
+ "windows-sys 0.48.0",
+]
 
 [[package]]
 name = "overload"
@@ -8443,6 +8472,7 @@ dependencies = [
  "num_enum 0.5.11",
  "openssl-sys",
  "pkg-config",
+ "sasl2-sys",
 ]
 
 [[package]]
@@ -9296,6 +9326,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "sasl2-sys"
+version = "0.1.20+2.1.28"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9e645bd98535fc8fd251c43ba7c7c1f9be1e0369c99b6a5ea719052a773e655c"
+dependencies = [
+ "cc",
+ "duct",
+ "libc",
+ "pkg-config",
+]
+
+[[package]]
 name = "saturating"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9914,6 +9956,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "900fba806f70c630b0a382d0d825e17a0f19fcd059a2ade1ff237bcddf446b31"
 dependencies = [
  "lazy_static",
+]
+
+[[package]]
+name = "shared_child"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0d94659ad3c2137fef23ae75b03d5241d633f8acded53d672decfa0e6e0caef"
+dependencies = [
+ "libc",
+ "winapi",
 ]
 
 [[package]]

@@ -15,15 +15,17 @@
 
 use crate::config::ConsumerArgs;
 
-use std::sync::Arc;
-
-use lightdotso_kafka::get_consumer;
+use clap::Parser;
+use ethers::types::{Block, Trace, H256};
+use lightdotso_db::db::create_client;
+use lightdotso_indexer::config::IndexerArgs;
+use lightdotso_kafka::{get_consumer, namespace::TRANSACTION};
 use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
-    message::Headers,
     Message,
 };
+use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct Consumer {
@@ -45,6 +47,12 @@ impl Consumer {
     pub async fn run(&self) {
         info!("Consumer run, starting");
 
+        // Parse the command line arguments
+        let args = IndexerArgs::parse();
+
+        // Create the db client
+        let db = Arc::new(create_client().await.unwrap());
+
         // Convert the topics to a vector of strings
         let topics: Vec<&str> = self.topics.iter().map(AsRef::as_ref).collect();
 
@@ -55,25 +63,39 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    let payload = match m.payload_view::<str>() {
-                        None => "",
-                        Some(Ok(s)) => s,
-                        Some(Err(e)) => {
-                            warn!("Error while deserializing message payload: {:?}", e);
-                            ""
-                        }
-                    };
+                    if topics.contains(&TRANSACTION.as_str()) {
+                        // Convert the payload to a string
+                        let payload_opt = m.payload_view::<str>();
 
-                    // Log the message
-                    info!("key: '{:?}', payload: '{}', topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-                      m.key(), payload, m.topic(), m.partition(), m.offset(), m.timestamp());
+                        // If the payload is valid
+                        if let Some(Ok(payload)) = payload_opt {
+                            // Deserialize the payload
+                            match serde_json::from_slice::<(Block<H256>, Vec<Trace>)>(
+                                payload.as_bytes(),
+                            ) {
+                                Ok((block, traces)) => {
+                                    // Log each trace as an example.
+                                    info!("key: '{:?}', block: '{:?}', traces: '{:?}', topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                                    m.key(), block, traces, m.topic(), m.partition(), m.offset(), m.timestamp());
 
-                    if let Some(headers) = m.headers() {
-                        for header in headers.iter() {
-                            info!("Header {:#?}: {:?}", header.key, header.value);
+                                    // Index the block
+                                    let traces_ref: Vec<_> = traces.iter().collect();
+                                    let res = args.index(db.clone(), block, traces_ref).await;
+
+                                    // Commit the message
+                                    if let Err(e) = res {
+                                        warn!("Error while indexing block: {:?}", e);
+                                        continue;
+                                    }
+
+                                    let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                                }
+                                Err(e) => {
+                                    warn!("Error while deserializing message payload: {:?}", e);
+                                }
+                            };
                         }
                     }
-                    self.consumer.commit_message(&m, CommitMode::Async).unwrap();
                 }
             };
         }

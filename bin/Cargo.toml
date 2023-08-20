@@ -30,6 +30,7 @@
   lightdotso-consumer = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
+  lightdotso-kafka = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
