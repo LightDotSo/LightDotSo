@@ -16,6 +16,7 @@
 use crate::{
     config::IndexerArgs,
     constants::{FACTORY_ADDRESSES, TESTNET_CHAIN_IDS},
+    namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED},
 };
 use autometrics::autometrics;
 use axum::Json;
@@ -148,24 +149,27 @@ impl Indexer {
                 .collect();
             trace!(?traces);
 
-            self.index(db_client.clone(), block, traces).await
+            // Send the transaction to the queue for indexing
+            if self.kafka_client.is_some() {
+                let queue_res = self.send_tx_queue(traces.clone()).await;
+                if queue_res.is_err() {
+                    error!("send_tx_queue error: {:?}", queue_res);
+                }
+                continue;
+            }
+
+            // Run the indexing
+            self.index(db_client.clone(), block, traces).await;
         }
     }
 
+    /// The core indexing function.
     pub async fn index(
         &self,
         db_client: Arc<PrismaClient>,
         block: Block<H256>,
         traces: Vec<&Trace>,
     ) {
-        // Send the transaction to the queue for indexing
-        if self.kafka_client.is_some() {
-            let queue_res = self.send_tx_queue(traces.clone()).await;
-            if queue_res.is_err() {
-                error!("send_tx_queue error: {:?}", queue_res);
-            }
-        }
-
         // Create new vec for addresses
         let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
             HashMap::new();
@@ -245,7 +249,7 @@ impl Indexer {
                 entry.push(log.address);
 
                 // Insert entries into the hashmap
-                address_type_entry.insert(log.address, "ImageHashUpdated".to_string());
+                address_type_entry.insert(log.address, IMAGE_HASH_UPDATED.to_string());
             }
 
             // Filter the logs for transfers
@@ -264,8 +268,8 @@ impl Indexer {
                     // Address for to
                     entry.push(log.topics[2].into());
                     // Insert entries into the hashmap
-                    address_type_entry.insert(log.topics[1].into(), "ERC721".to_string());
-                    address_type_entry.insert(log.topics[2].into(), "ERC721".to_string());
+                    address_type_entry.insert(log.topics[1].into(), ERC721.to_string());
+                    address_type_entry.insert(log.topics[2].into(), ERC721.to_string());
                 // It's a ERC20 transfer
                 } else if log.topics.len() >= 3 {
                     // Address for from
@@ -273,8 +277,8 @@ impl Indexer {
                     // Address for to
                     entry.push(log.topics[2].into());
                     // Insert entries into the hashmap
-                    address_type_entry.insert(log.topics[1].into(), "ERC20".to_string());
-                    address_type_entry.insert(log.topics[2].into(), "ERC20".to_string());
+                    address_type_entry.insert(log.topics[1].into(), ERC20.to_string());
+                    address_type_entry.insert(log.topics[2].into(), ERC20.to_string());
                 }
             }
 
@@ -291,8 +295,8 @@ impl Indexer {
                 // Address for to
                 entry.push(log.topics[3].into());
                 // Insert entries into the hashmap
-                address_type_entry.insert(log.topics[2].into(), "ERC1155".to_string());
-                address_type_entry.insert(log.topics[3].into(), "ERC1155".to_string());
+                address_type_entry.insert(log.topics[2].into(), ERC1155.to_string());
+                address_type_entry.insert(log.topics[3].into(), ERC1155.to_string());
             }
 
             if log.topics[0] ==
@@ -308,8 +312,8 @@ impl Indexer {
                 // Address for to
                 entry.push(log.topics[3].into());
                 // Insert entries into the hashmap
-                address_type_entry.insert(log.topics[2].into(), "ERC1155".to_string());
-                address_type_entry.insert(log.topics[3].into(), "ERC1155".to_string());
+                address_type_entry.insert(log.topics[2].into(), ERC1155.to_string());
+                address_type_entry.insert(log.topics[3].into(), ERC1155.to_string());
             }
         }
 
@@ -684,9 +688,6 @@ impl Indexer {
         let filter = Filter::new()
             .from_block(BlockNumber::Number(block_number))
             .to_block(BlockNumber::Number(block_number));
-        // .event("Transfer(address,address,uint256)")
-        // .event("TransferSingle(address,address,address,uint256,uint256)")
-        // .event("TransferBatch(address,address,address,uint256[],uint256[])");
 
         // Get the logs
         { || self.http_client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
