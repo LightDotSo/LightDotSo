@@ -95,7 +95,9 @@ impl Consumer {
                             }
                         }
                         _ => {
-                            // Handle other topics here
+                            // Log each message as an example.
+                            info!("key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                            m.key(), m.payload_view::<str>(), m.topic(), m.partition(), m.offset(), m.timestamp());
                         }
                     }
                 }
