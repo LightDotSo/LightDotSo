@@ -18,12 +18,12 @@ use crate::config::ConsumerArgs;
 use std::sync::Arc;
 
 use lightdotso_kafka::get_consumer;
+use lightdotso_tracing::tracing::{info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
     message::Headers,
     Message,
 };
-use tracing::{info, warn};
 
 #[derive(Clone)]
 pub struct Consumer {

@@ -12,5 +12,5 @@
   anyhow = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   lightdotso-kafka = { workspace = true }
+  lightdotso-tracing = { workspace = true }
   rdkafka = { workspace = true }
-  tracing = { workspace = true }

@@ -13,25 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_tracing::{init, init_test_tracing, stdout};
+use lazy_static::lazy_static;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use lightdotso_tracing::tracing::{info, Level};
+// The wallet namesapce
+lazy_static! {
+    pub static ref WALLET: String = "wallet".to_string();
+}
 
-    #[ignore = "This test can only be run on the local machine"]
-    #[test]
-    fn test_stdout_layer() {
-        let layers = vec![stdout(Level::INFO)];
-        init(layers);
-        info!("This is a test log message");
-    }
-
-    #[ignore = "This test can only be run on the local machine"]
-    #[test]
-    fn test_init_test_tracing() {
-        init_test_tracing();
-        info!("This is a test log message");
-    }
+// The wallet namesapce
+lazy_static! {
+    pub static ref INDEXED_BLOCKS: String = "indexed_blocks".to_string();
 }

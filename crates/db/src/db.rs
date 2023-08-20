@@ -20,13 +20,15 @@ use ethers::utils::to_checksum;
 use lightdotso_prisma::{
     log, receipt, transaction, transaction_category, user, wallet, PrismaClient,
 };
+use lightdotso_tracing::{
+    tracing::{info, info_span, trace},
+    tracing_futures::Instrument,
+};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
     serde_json, NewClientError,
 };
 use std::sync::Arc;
-use tracing::{info, trace};
-use tracing_futures::Instrument;
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
@@ -165,7 +167,7 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
-                .instrument(tracing::info_span!("create_transaction"))
+                .instrument(info_span!("create_transaction"))
                 .await?;
             trace!(?tx_data);
 
@@ -197,7 +199,7 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
-                .instrument(tracing::info_span!("create_receipt"))
+                .instrument(info_span!("create_receipt"))
                 .await
                 .map(|op| (tx_data, op))
         })

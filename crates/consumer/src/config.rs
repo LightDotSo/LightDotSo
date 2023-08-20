@@ -16,7 +16,7 @@
 use crate::consumer::Consumer;
 use anyhow::Result;
 use clap::Parser;
-use tracing::info;
+use lightdotso_tracing::tracing::info;
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct ConsumerArgs {

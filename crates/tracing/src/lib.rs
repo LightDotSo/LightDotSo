@@ -36,6 +36,7 @@ use tracing_subscriber::{
 // From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L28-L30
 // Re-export tracing crates
 pub use tracing;
+pub use tracing_futures;
 pub use tracing_subscriber;
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L32
