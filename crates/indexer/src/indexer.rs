@@ -30,6 +30,7 @@ use ethers::{
     },
     utils::to_checksum,
 };
+use eyre::eyre;
 use futures::StreamExt;
 use lightdotso_db::{
     db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
@@ -149,18 +150,26 @@ impl Indexer {
             }
 
             // Run the indexing
-            self.index(db_client.clone(), block).await;
+            let res = self.index(db_client.clone(), block).await;
+
+            // Log if error
+            if res.is_err() {
+                error!("index error: {:?}", res);
+            }
         }
     }
 
     /// The core indexing function.
-    pub async fn index(&self, db_client: Arc<PrismaClient>, block: Block<H256>) {
+    pub async fn index(
+        &self,
+        db_client: Arc<PrismaClient>,
+        block: Block<H256>,
+    ) -> eyre::Result<()> {
         // Get the traced block
-        let traced_block_result = self.get_traced_block(block.number.unwrap()).await;
-        let traced_block = match traced_block_result {
-            Ok(value) => value,
-            Err(_) => return,
-        };
+        let traced_block = self
+            .get_traced_block(block.number.unwrap())
+            .await
+            .map_err(|e| eyre!("Error in get_traced_block: {:?}", e))?;
         trace!(?traced_block);
 
         // Log the traced block length
@@ -222,11 +231,11 @@ impl Indexer {
         }
 
         // Get the block logs
-        let block_logs_result = self.get_block_logs(block.number.unwrap() - 1).await;
-        let block_logs = match block_logs_result {
-            Ok(value) => value,
-            Err(_) => return,
-        };
+        let block_logs = self
+            .get_block_logs(block.number.unwrap() - 1)
+            .await
+            .map_err(|e| eyre!("Error in get_block_logs: {:?}", e))?;
+        trace!(?block_logs);
         trace!(?block_logs);
 
         // Loop over the block logs
@@ -327,16 +336,13 @@ impl Indexer {
         // Loop over the hashes
         if !wallet_address_hashmap.is_empty() {
             // Get the logs for the newly created wallets
-            let logs_result = self
+            let logs = self
                 .get_block_image_hash_logs(
                     block.number.unwrap(),
                     wallet_address_hashmap.keys().cloned().collect(),
                 )
-                .await;
-            let logs = match logs_result {
-                Ok(value) => value,
-                Err(_) => return,
-            };
+                .await
+                .map_err(|e| eyre!("Error in get_block_image_hash_logs: {:?}", e))?;
             trace!(?logs);
 
             // Loop over the logs
@@ -346,18 +352,14 @@ impl Indexer {
                 info!("log: {:?}", log);
 
                 // Create the wallet
-                let res = self
+                let _ = self
                     .db_create_wallet(
                         db_client.clone(),
                         log.clone(),
                         *wallet_address_hashmap.get(&log.address).unwrap(),
                     )
-                    .await;
-
-                // Log if error
-                if res.is_err() {
-                    return error!("create_wallet error: {:?}", res);
-                }
+                    .await
+                    .map_err(|e| eyre!("create_wallet error: {:?}", e))?;
 
                 // Get the traced tx
                 let trace_tx =
@@ -493,8 +495,12 @@ impl Indexer {
 
         // Set the flag for the block
         if self.redis_client.is_some() {
-            let _ = self.set_block_flag_true(block.number.unwrap().as_u64());
+            self.set_block_flag_true(block.number.unwrap().as_u64())
+                .map_err(|e| eyre!("set_block_flag_true error: {:?}", e))?;
         }
+
+        // Return the result
+        Ok(())
     }
 
     /// Add a new tx in the queue
