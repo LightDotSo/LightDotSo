@@ -159,7 +159,11 @@ impl Indexer {
         let traced_block_result = self.get_traced_block(block.number.unwrap()).await;
         let traced_block = match traced_block_result {
             Ok(value) => value,
-            Err(_) => return,
+            Err(e) => {
+                // Log the error:
+                error!("Error in get_traced_block: {:?}", e);
+                return;
+            }
         };
         trace!(?traced_block);
 
@@ -225,7 +229,11 @@ impl Indexer {
         let block_logs_result = self.get_block_logs(block.number.unwrap() - 1).await;
         let block_logs = match block_logs_result {
             Ok(value) => value,
-            Err(_) => return,
+            Err(e) => {
+                // Log the error:
+                error!("Error in get_block_logs: {:?}", e);
+                return;
+            }
         };
         trace!(?block_logs);
 
@@ -335,7 +343,11 @@ impl Indexer {
                 .await;
             let logs = match logs_result {
                 Ok(value) => value,
-                Err(_) => return,
+                Err(e) => {
+                    // Log the error:
+                    error!("Error in get_block_image_hash_logs: {:?}", e);
+                    return;
+                }
             };
             trace!(?logs);
 
@@ -493,7 +505,12 @@ impl Indexer {
 
         // Set the flag for the block
         if self.redis_client.is_some() {
-            let _ = self.set_block_flag_true(block.number.unwrap().as_u64());
+            let res = self.set_block_flag_true(block.number.unwrap().as_u64());
+
+            // Log if error
+            if res.is_err() {
+                error!("set_block_flag_true error: {:?}", res);
+            }
         }
     }
 
