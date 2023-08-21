@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::consumer::Consumer;
-use anyhow::Result;
 use clap::Parser;
+use eyre::Result;
 use lightdotso_tracing::tracing::info;
 
 #[derive(Debug, Clone, Parser, Default)]

@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
 use clap::Parser;
 use dotenvy::dotenv;
+use eyre::Result;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;

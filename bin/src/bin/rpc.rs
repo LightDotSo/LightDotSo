@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use anyhow::Result;
 use axum::{
     error_handling::HandleErrorLayer, http::StatusCode, response::IntoResponse, routing::get,
     BoxError, Router,
 };
+use eyre::Result;
 use http::Method;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_tracing::{init, stdout, tracing::Level};
@@ -75,7 +75,7 @@ pub async fn start_server() -> Result<()> {
 }
 
 #[tokio::main]
-pub async fn main() -> Result<(), anyhow::Error> {
+pub async fn main() -> Result<(), eyre::Error> {
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
     start_server().await?;
     Ok(())

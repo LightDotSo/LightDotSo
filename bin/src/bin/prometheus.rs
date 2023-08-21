@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{
     extract::{Path, State},
@@ -22,6 +21,7 @@ use axum::{
     Router,
 };
 use dotenvy::dotenv;
+use eyre::Result;
 use hyper::{client, client::HttpConnector, header::HeaderValue, Body, HeaderMap};
 use hyper_rustls::HttpsConnector;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
@@ -85,7 +85,7 @@ pub async fn start_server() -> Result<()> {
 }
 
 #[tokio::main]
-pub async fn main() -> Result<(), anyhow::Error> {
+pub async fn main() -> Result<(), eyre::Error> {
     let _ = dotenv();
 
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);

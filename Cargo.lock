@@ -5480,7 +5480,6 @@ dependencies = [
 name = "lightdotso-bin"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "autometrics",
  "axum 0.6.20",
  "clap",
@@ -5520,9 +5519,9 @@ dependencies = [
 name = "lightdotso-consumer"
 version = "0.1.0"
 dependencies = [
- "anyhow",
  "clap",
  "ethers 2.0.8 (git+https://github.com/gakonst/ethers-rs)",
+ "eyre",
  "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-kafka",
@@ -5558,7 +5557,6 @@ name = "lightdotso-indexer"
 version = "0.1.0"
 dependencies = [
  "anvil",
- "anyhow",
  "autometrics",
  "axum 0.6.20",
  "backon",
