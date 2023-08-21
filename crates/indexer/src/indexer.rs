@@ -236,7 +236,6 @@ impl Indexer {
             .await
             .map_err(|e| eyre!("Error in get_block_logs: {:?}", e))?;
         trace!(?block_logs);
-        trace!(?block_logs);
 
         // Loop over the block logs
         for log in block_logs {
