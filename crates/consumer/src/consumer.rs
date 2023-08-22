@@ -91,7 +91,6 @@ impl Consumer {
 
                                         // Index the block
                                         let res = indexer.index(db.clone(), block.clone()).await;
-                                        info!("res: {:?}", res);
 
                                         // Commit the message
                                         if let Err(e) = res {
