@@ -12,7 +12,6 @@
   default-run = "cli"
 
 [dependencies]
-  anyhow = { workspace = true }
   autometrics = { workspace = true, features = [
     "prometheus-client-0_21",
     "prometheus-exporter",

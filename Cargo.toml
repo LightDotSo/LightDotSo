@@ -45,7 +45,6 @@
   codegen-units = 16
 
 [workspace.dependencies]
-  anyhow = "1.0.71"
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
   autometrics = { version = "*" }
   axum = "0.6.16"

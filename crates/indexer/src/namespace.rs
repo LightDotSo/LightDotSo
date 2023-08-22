@@ -15,6 +15,11 @@
 
 use lazy_static::lazy_static;
 
+// The WalletUpdated namesapce
+lazy_static! {
+    pub static ref LIGHT_WALLET_INITIALIZED: String = "LightWalletInitialized".to_string();
+}
+
 // The ImageHashUpdated namesapce
 lazy_static! {
     pub static ref IMAGE_HASH_UPDATED: String = "ImageHashUpdated".to_string();

@@ -114,7 +114,7 @@ pub async fn create_transaction_with_log_receipt(
     receipt: ethers::types::TransactionReceipt,
     chain_id: i64,
     timestamp: ethers::types::U256,
-    trace: Option<ethers::types::Trace>,
+    trace: Option<ethers::types::GethTrace>,
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 

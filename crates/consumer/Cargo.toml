@@ -9,9 +9,9 @@
   repository.workspace = true
 
 [dependencies]
-  anyhow = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   ethers = { workspace = true }
+  eyre = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-kafka = { workspace = true }

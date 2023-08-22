@@ -10,7 +10,6 @@
 
 [dependencies]
   anvil = { workspace = true }
-  anyhow = { workspace = true }
   autometrics = { workspace = true }
   axum = { workspace = true }
   backon = { workspace = true }

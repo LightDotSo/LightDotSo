@@ -16,7 +16,7 @@
 use crate::{
     config::IndexerArgs,
     constants::{FACTORY_ADDRESSES, KAFKA_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
-    namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED},
+    namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
 };
 use autometrics::autometrics;
 use axum::Json;
@@ -25,8 +25,9 @@ use ethers::{
     prelude::Provider,
     providers::{Http, Middleware, ProviderError, Ws},
     types::{
-        Action::{Call, Create, Reward, Suicide},
-        Block, BlockNumber, Filter, Trace, Transaction, TransactionReceipt, H256, U256,
+        Block, BlockNumber, CallFrame, Filter, GethDebugBuiltInTracerType, GethDebugTracerType,
+        GethDebugTracingOptions, GethTrace, GethTraceFrame, Transaction, TransactionReceipt, H256,
+        U256,
     },
     utils::to_checksum,
 };
@@ -165,30 +166,18 @@ impl Indexer {
         db_client: Arc<PrismaClient>,
         block: Block<H256>,
     ) -> eyre::Result<()> {
-        // Get the traced block
-        let traced_block = self
-            .get_traced_block(block.number.unwrap())
-            .await
-            .map_err(|e| eyre!("Error in get_traced_block: {:?}", e))?;
-        trace!(?traced_block);
-
-        // Log the traced block length
-        info!("Traced block length: {:?}", traced_block.len());
-
-        // Filter the traces
-        let traces: Vec<&Trace> = traced_block
-            .iter()
-            .filter(|trace| match &trace.action {
-                Call(_) => true,
-                Create(res) => FACTORY_ADDRESSES.contains(&res.from),
-                Reward(_) | Suicide(_) => false,
-            })
-            .collect();
-        trace!(?traces);
+        // Get block from http client
+        let block = self
+            .get_block(block.number.unwrap())
+            .await?
+            .ok_or_else(|| eyre!("Error: Block not found"))?;
+        trace!(?block);
 
         // Create new vec for addresses
-        let mut wallet_address_hashmap: HashMap<ethers::types::H160, ethers::types::H160> =
-            HashMap::new();
+        let mut wallet_address_hashmap: HashMap<
+            ethers::types::H256,
+            HashMap<ethers::types::H160, ethers::types::H160>,
+        > = HashMap::new();
         let mut tx_address_hashmap: HashMap<ethers::types::H256, Vec<ethers::types::H160>> =
             HashMap::new();
         let mut tx_address_type_hashmap: HashMap<
@@ -196,38 +185,40 @@ impl Indexer {
             HashMap<ethers::types::H160, String>,
         > = HashMap::new();
 
-        // Loop over the traces
-        for trace in &traces {
-            // Loop over traces that are create
-            if let Create(res) = &trace.action && let Some(ethers::types::Res::Create(result)) = &trace.result {
-                    // Send redis if exists
-                    if self.redis_client.is_some() {
-                        let _ = self.add_to_wallets(result.address);
-                    }
+        // Get the traced block
+        let traced_block = self
+            .get_traced_block(block.number.unwrap())
+            .await
+            .map_err(|e| eyre!("Error in get_traced_block: {:?}", e))?;
+        trace!(?traced_block);
 
-                    // Send webhook if exists
-                    if !self.webhook.is_empty(){
-                        notify_create_wallet(
-                            &self.webhook,
-                            &to_checksum(&result.address, None),
-                            &self.chain_id.to_string(),
-                            &trace.transaction_hash.unwrap().to_string()
-                        ).await;
-                    }
+        // Check if the traced block length and block transactions length are the same
+        assert_eq!(traced_block.len(), block.transactions.len());
 
-                    // Push the address to the wallets vec
-                    wallet_address_hashmap.insert(result.address, res.from);
-                }
+        // Convert the traced block to a vec of call frames
+        let traces: Vec<&CallFrame> = traced_block
+            .iter()
+            .filter_map(|trace| match trace {
+                GethTrace::Known(frame) => match frame {
+                    GethTraceFrame::CallTracer(call_frame) => Some(call_frame),
+                    GethTraceFrame::Default(_) => None,
+                    GethTraceFrame::NoopTracer(_) => None,
+                    GethTraceFrame::FourByteTracer(_) => None,
+                    GethTraceFrame::PreStateTracer(_) => None,
+                },
+                _ => None,
+            })
+            .collect();
 
-            // Loop over the called traces
-            if let Call(res) = &trace.action && let Some(ethers::types::Res::Call(_result)) = &trace.result {
-                    // Build the tx_address_hashmap
-                    let entry = tx_address_hashmap.entry(trace.transaction_hash.unwrap()).or_insert_with(Vec::new);
-
-                    // Push the address to the tx vec
-                    entry.push(res.from);
-                    entry.push(res.to);
-                }
+        // Recursively loop over the traces
+        for (index, trace) in traces.iter().enumerate() {
+            self.iterate_from_addresses(
+                index,
+                trace,
+                &block,
+                &mut wallet_address_hashmap,
+                &mut tx_address_hashmap,
+            )
         }
 
         // Get the block logs
@@ -235,7 +226,6 @@ impl Indexer {
             .get_block_logs(block.number.unwrap() - 1)
             .await
             .map_err(|e| eyre!("Error in get_block_logs: {:?}", e))?;
-        trace!(?block_logs);
         trace!(?block_logs);
 
         // Loop over the block logs
@@ -335,45 +325,41 @@ impl Indexer {
 
         // Loop over the hashes
         if !wallet_address_hashmap.is_empty() {
-            // Get the logs for the newly created wallets
-            let logs = self
-                .get_block_image_hash_logs(
-                    block.number.unwrap(),
-                    wallet_address_hashmap.keys().cloned().collect(),
-                )
-                .await
-                .map_err(|e| eyre!("Error in get_block_image_hash_logs: {:?}", e))?;
-            trace!(?logs);
-
             // Loop over the logs
-            // WARNING: The db_create_wallet function may fail when a factory address is invoked
-            // multiple times in the same tx
-            for log in logs {
-                info!("log: {:?}", log);
+            for (tx_hash, hashmap) in &wallet_address_hashmap {
+                info!("wallet tx_hash: {:?}", tx_hash);
 
-                // Create the wallet
-                let _ = self
-                    .db_create_wallet(
-                        db_client.clone(),
-                        log.clone(),
-                        *wallet_address_hashmap.get(&log.address).unwrap(),
-                    )
-                    .await
-                    .map_err(|e| eyre!("create_wallet error: {:?}", e))?;
+                // Get the address
+                let address = hashmap.values().next().unwrap();
 
-                // Get the traced tx
-                let trace_tx =
-                    traces.iter().find(|&x| x.transaction_hash == log.transaction_hash).copied();
+                // Get the trace
+                let trace = self.get_geth_trace(&block, tx_hash, &traced_block);
 
                 // Create the transaction
                 let _ = self
-                    .db_create_transaction(
+                    .db_create_transaction(db_client.clone(), *tx_hash, block.timestamp, trace)
+                    .await;
+
+                // Create the transaction category
+                let _ = self
+                    .db_create_transaction_category(
                         db_client.clone(),
-                        log.transaction_hash.unwrap(),
-                        block.timestamp,
-                        trace_tx.cloned(),
+                        address,
+                        &LIGHT_WALLET_INITIALIZED.to_string(),
+                        *tx_hash,
                     )
                     .await;
+
+                // Send webhook if exists
+                if !self.webhook.is_empty() {
+                    notify_create_wallet(
+                        &self.webhook,
+                        &to_checksum(address, None),
+                        &self.chain_id.to_string(),
+                        &tx_hash.to_string(),
+                    )
+                    .await;
+                }
             }
         }
 
@@ -450,20 +436,18 @@ impl Indexer {
                     // Get the optional category
                     let tx_adress_category = tx_address_type_hashmap.get(&unique_wallet_tx_hash);
 
-                    // Get the traced tx
-                    let trace_tx = traces
-                        .iter()
-                        .find(|&x| x.transaction_hash.as_ref() == Some(&unique_wallet_tx_hash))
-                        .copied();
-
                     if tx_adress_category.is_some() {
+                        // Get the trace
+                        let trace =
+                            self.get_geth_trace(&block, &unique_wallet_tx_hash, &traced_block);
+
                         // Create the transaction for indexing if category exists
                         let _ = self
                             .db_create_transaction(
                                 db_client.clone(),
                                 unique_wallet_tx_hash,
                                 block.timestamp,
-                                trace_tx.cloned(),
+                                trace,
                             )
                             .await;
 
@@ -501,6 +485,78 @@ impl Indexer {
 
         // Return the result
         Ok(())
+    }
+
+    pub fn iterate_from_addresses(
+        &self,
+        index: usize,
+        frame: &CallFrame,
+        block: &Block<H256>,
+        wallet_address_hashmap: &mut HashMap<
+            ethers::types::H256,
+            HashMap<ethers::types::H160, ethers::types::H160>,
+        >,
+        tx_address_hashmap: &mut HashMap<ethers::types::H256, Vec<ethers::types::H160>>,
+    ) {
+        // Get the tx hash w/ the index
+        let tx_hash = block.clone().transactions[index];
+
+        // Build the tx_address_hashmap
+        let entry = tx_address_hashmap.entry(tx_hash).or_insert_with(Vec::new);
+
+        // Convert the to address to a wallet address
+        // Shouldn't fail because debug_traceTransaction returns a valid address on most RPC
+        let to = *frame.to.clone().unwrap().as_address().unwrap();
+
+        // Push the from and to address to the tx_address_hashmap
+        entry.push(frame.from);
+        entry.push(to);
+
+        // Loop over the calls
+        if frame.typ == "CREATE2" {
+            // If the from address is a factory address
+            if FACTORY_ADDRESSES.contains(&frame.from) {
+                // Build the wallet_address_hashmap
+                let wallet_entry =
+                    wallet_address_hashmap.entry(tx_hash).or_insert_with(HashMap::new);
+
+                // Send redis if exists
+                if self.redis_client.is_some() {
+                    let _ = self.add_to_wallets(to);
+                }
+
+                // Push the address to the wallets vec
+                wallet_entry.insert(frame.from, to);
+            }
+        }
+
+        if let Some(calls) = &frame.calls {
+            for frame in calls {
+                self.iterate_from_addresses(
+                    index,
+                    frame,
+                    block,
+                    wallet_address_hashmap,
+                    tx_address_hashmap,
+                );
+            }
+        }
+    }
+
+    /// Get the geth trace from the block w/ hash
+    pub fn get_geth_trace(
+        &self,
+        block: &Block<H256>,
+        hash: &ethers::types::H256,
+        traced_block: &[GethTrace],
+    ) -> Option<GethTrace> {
+        // Get the index of the tx in blocks.transactions
+        let index = block.transactions.iter().position(|&x| x == *hash).unwrap_or(0);
+
+        // Get the trace
+        let trace = traced_block[index].clone();
+
+        Some(trace)
     }
 
     /// Add a new tx in the queue
@@ -589,7 +645,7 @@ impl Indexer {
         db_client: Arc<PrismaClient>,
         hash: ethers::types::H256,
         timestamp: U256,
-        trace: Option<Trace>,
+        trace: Option<GethTrace>,
     ) {
         // Get the tx receipt
         let tx_receipt = self.get_transaction_receipt(hash).await;
@@ -672,7 +728,7 @@ impl Indexer {
         tx: Option<Transaction>,
         tx_receipt: Option<TransactionReceipt>,
         timestamp: U256,
-        trace: Option<Trace>,
+        trace: Option<GethTrace>,
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         {
             || {
@@ -693,6 +749,16 @@ impl Indexer {
 
     /// Get the block logs for the given block number
     #[autometrics]
+    pub async fn get_block(
+        &self,
+        block_number: ethers::types::U64,
+    ) -> Result<Option<Block<H256>>, ProviderError> {
+        // Get the logs
+        { || self.http_client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
+    }
+
+    /// Get the block logs for the given block number
+    #[autometrics]
     pub async fn get_block_logs(
         &self,
         block_number: ethers::types::U64,
@@ -701,24 +767,6 @@ impl Indexer {
         let filter = Filter::new()
             .from_block(BlockNumber::Number(block_number))
             .to_block(BlockNumber::Number(block_number));
-
-        // Get the logs
-        { || self.http_client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
-    }
-
-    /// Get the logs for the given block number and addresses,
-    /// filtered by the ImageHashUpdated event
-    #[autometrics]
-    pub async fn get_block_image_hash_logs(
-        &self,
-        block_number: ethers::types::U64,
-        addresses: Vec<ethers::types::H160>,
-    ) -> Result<Vec<ethers::types::Log>, ProviderError> {
-        // Create the filter for the logs
-        let filter = Filter::new()
-            .from_block(BlockNumber::Number(block_number))
-            .event("ImageHashUpdated(bytes32)")
-            .address(addresses);
 
         // Get the logs
         { || self.http_client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
@@ -751,9 +799,19 @@ impl Indexer {
     pub async fn get_traced_block(
         &self,
         block_number: ethers::types::U64,
-    ) -> Result<Vec<Trace>, ProviderError> {
+    ) -> Result<Vec<GethTrace>, ProviderError> {
+        let opts = GethDebugTracingOptions {
+            disable_storage: Some(false),
+            enable_memory: Some(false),
+            tracer: Some(GethDebugTracerType::BuiltInTracer(
+                GethDebugBuiltInTracerType::CallTracer,
+            )),
+            ..Default::default()
+        };
+        let block_num = BlockNumber::Number(block_number);
+
         // Get the traced block
-        { || self.http_client.trace_block(BlockNumber::Number(block_number)) }
+        { || self.http_client.debug_trace_block_by_number(Some(block_num), opts.clone()) }
             .retry(&ExponentialBuilder::default())
             .await
     }
