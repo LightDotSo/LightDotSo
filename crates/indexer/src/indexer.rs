@@ -166,6 +166,8 @@ impl Indexer {
         db_client: Arc<PrismaClient>,
         block: Block<H256>,
     ) -> eyre::Result<()> {
+        info!("Indexer index, starting");
+
         // Get block from http client
         let block = self
             .get_block(block.number.unwrap())

@@ -58,6 +58,11 @@ pub struct IndexerArgs {
 }
 
 impl IndexerArgs {
+    pub async fn create(&self) -> Indexer {
+        // Create the indexer
+        Indexer::new(self).await
+    }
+
     pub async fn run(&self, db: Arc<PrismaClient>) -> Result<()> {
         // Add info
         info!("IndexerArgs run, entering");
@@ -77,25 +82,6 @@ impl IndexerArgs {
                 }
             }
         });
-
-        Ok(())
-    }
-
-    pub async fn index(&self, db: Arc<PrismaClient>, block: Block<H256>) -> Result<()> {
-        // Add info
-        info!("IndexerArgs index, entering");
-
-        // Print the config
-        info!("Config: {:?}", self);
-
-        // Construct the indexer
-        let indexer = Indexer::new(self).await;
-
-        // Index the blocks
-        let _ = indexer.index(Arc::clone(&db), block).await;
-
-        // Log the result
-        info!("IndexerArgs index, exiting");
 
         Ok(())
     }
