@@ -37,7 +37,7 @@ lazy_static! {
     };
 }
 
-// The testnet chain ids
+// The anvil chain id
 lazy_static! {
     pub static ref ANVIL_CHAIN_ID: usize = 31337;
 }
