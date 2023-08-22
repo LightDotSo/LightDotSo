@@ -42,9 +42,6 @@ pub struct UoPoolServiceOpts {
 
 #[derive(Clone, Debug, Parser, PartialEq)]
 pub struct BundlerServiceOpts {
-    #[clap(long, default_value = "", value_parser=parse_address)]
-    pub beneficiary: Address,
-
     #[clap(long, default_value = "100000000000000000", value_parser=parse_u256)]
     pub min_balance: U256,
 

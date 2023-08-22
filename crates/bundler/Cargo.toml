@@ -14,6 +14,7 @@
   ethers-providers = { workspace = true }
   expanded-pathbuf = "0.1"
   eyre = { workspace = true }
+  lazy_static = { workspace = true }
   lightdotso-tracing = { workspace = true }
   pin-utils = "0.1"
   silius-grpc = { workspace = true }

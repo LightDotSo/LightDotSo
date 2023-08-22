@@ -15,6 +15,7 @@
 
 use crate::{
     config::BundlerArgs,
+    constants::ENTRYPOINT_ADDRESSES,
     opts::{BundlerServiceOpts, RpcServiceOpts, UoPoolServiceOpts},
     utils::run_until_ctrl_c,
 };
@@ -46,6 +47,7 @@ pub struct Bundler {
     rpc_opts: RpcServiceOpts,
     bundler_opts: BundlerServiceOpts,
     rpc: String,
+    beneficiary: Address,
     seed_phrase: String,
 }
 
@@ -62,6 +64,7 @@ impl Bundler {
             rpc_opts: args.rpc_opts.clone(),
             bundler_opts: args.bundler_opts.clone(),
             rpc: args.rpc.clone(),
+            beneficiary: args.beneficiary,
             seed_phrase: args.seed_phrase.clone(),
         }
     }
@@ -133,10 +136,10 @@ impl Bundler {
                 bundler_service_run(
                     self.bundler_opts.bundler_grpc_listen_address,
                     wallet,
-                    self.entry_points,
+                    ENTRYPOINT_ADDRESSES.to_vec(),
                     self.rpc.clone(),
                     chain,
-                    self.bundler_opts.beneficiary,
+                    self.beneficiary,
                     self.bundler_opts.min_balance,
                     self.bundler_opts.bundle_interval,
                     uopool_grpc_client.clone(),

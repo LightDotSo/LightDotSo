@@ -25,6 +25,8 @@ use lightdotso_tracing::tracing::info;
 
 #[derive(Debug, Clone, Parser)]
 pub struct BundlerArgs {
+    #[clap(long, env = "BUNDLER_BENEFICIARY_ADDRESS", default_value = "", value_parser=parse_address)]
+    pub beneficiary: Address,
     /// The seed phrase of mnemonic
     #[clap(long, env = "BUNDLER_SEED_PHRASE")]
     pub seed_phrase: String,
@@ -55,10 +57,6 @@ pub struct BundlerArgs {
     #[arg(long, default_value_t = String::from(""))]
     #[clap(long, env = "DISCORD_WEBHOOK")]
     pub webhook: String,
-    /// The websocket RPC endpoint to connect to.
-    #[arg(long, short, default_value_t = String::from(""))]
-    #[clap(long, env = "BUNDLER_RPC_WS")]
-    pub ws: String,
 }
 
 impl BundlerArgs {
