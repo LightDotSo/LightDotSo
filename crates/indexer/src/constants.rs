@@ -39,6 +39,11 @@ lazy_static! {
 
 // The testnet chain ids
 lazy_static! {
+    pub static ref ANVIL_CHAIN_ID: usize = 31337;
+}
+
+// The testnet chain ids
+lazy_static! {
   pub static ref TESTNET_CHAIN_IDS: [usize; 2] = [
     // Local
     31337,
@@ -47,7 +52,7 @@ lazy_static! {
   ];
 }
 
-// The testnet chain ids
+// The kafka chain ids
 lazy_static! {
   pub static ref KAFKA_CHAIN_IDS: [usize; 1] = [
     // Optimism

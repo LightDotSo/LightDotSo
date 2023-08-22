@@ -16,7 +16,7 @@
 use crate::{
     config::IndexerArgs,
     constants::{FACTORY_ADDRESSES, KAFKA_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
-    namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED},
+    namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
 };
 use autometrics::autometrics;
 use axum::Json;
@@ -25,10 +25,9 @@ use ethers::{
     prelude::Provider,
     providers::{Http, Middleware, ProviderError, Ws},
     types::{
-        Block, BlockNumber, CallFrame, Filter, GethDebugBuiltInTracerConfig,
-        GethDebugBuiltInTracerType, GethDebugTracerConfig, GethDebugTracerType,
-        GethDebugTracingOptions, GethTrace, GethTraceFrame, PreStateConfig, Trace, Transaction,
-        TransactionReceipt, H256, U256,
+        Block, BlockNumber, CallFrame, Filter, GethDebugBuiltInTracerType, GethDebugTracerType,
+        GethDebugTracingOptions, GethTrace, GethTraceFrame, Transaction, TransactionReceipt, H256,
+        U256,
     },
     utils::to_checksum,
 };
@@ -186,6 +185,9 @@ impl Indexer {
             .map_err(|e| eyre!("Error in get_traced_block: {:?}", e))?;
         trace!(?traced_block);
 
+        // Check if the traced block length and block transactions length are the same
+        assert_eq!(traced_block.len(), block.transactions.len());
+
         // Convert the traced block to a vec of call frames
         let traces: Vec<&CallFrame> = traced_block
             .iter()
@@ -320,6 +322,9 @@ impl Indexer {
             for (tx_hash, hashmap) in &wallet_address_hashmap {
                 info!("wallet tx_hash: {:?}", tx_hash);
 
+                // Get the address
+                let address = hashmap.values().next().unwrap();
+
                 // Get the trace
                 let trace = self.get_geth_trace(&block, tx_hash, &traced_block);
 
@@ -328,11 +333,21 @@ impl Indexer {
                     .db_create_transaction(db_client.clone(), *tx_hash, block.timestamp, trace)
                     .await;
 
+                // Create the transaction category
+                let _ = self
+                    .db_create_transaction_category(
+                        db_client.clone(),
+                        address,
+                        &LIGHT_WALLET_INITIALIZED.to_string(),
+                        *tx_hash,
+                    )
+                    .await;
+
                 // Send webhook if exists
                 if !self.webhook.is_empty() {
                     notify_create_wallet(
                         &self.webhook,
-                        &to_checksum(hashmap.iter().next().unwrap().1, None),
+                        &to_checksum(address, None),
                         &self.chain_id.to_string(),
                         &tx_hash.to_string(),
                     )
