@@ -42,7 +42,7 @@ pub struct UoPoolServiceOpts {
 
 #[derive(Clone, Debug, Parser, PartialEq)]
 pub struct BundlerServiceOpts {
-    #[clap(long, value_parser=parse_address)]
+    #[clap(long, default_value = "", value_parser=parse_address)]
     pub beneficiary: Address,
 
     #[clap(long, default_value = "100000000000000000", value_parser=parse_u256)]
@@ -60,32 +60,6 @@ pub struct RpcServiceOpts {
     #[clap(long, default_value = "127.0.0.1:3000")]
     pub rpc_listen_address: String,
 
-    /// Enables or disables the HTTP RPC.
-    ///
-    /// By default, this option is set to false.
-    /// - To enable: `--http`.
-    /// - To disable: no `--http` flag.
-    #[clap(long)]
-    pub http: bool,
-
-    /// Enables or disables the WebSocket RPC.
-    ///
-    /// By default, this option is set to false.
-    /// - To enable: `--ws`
-    /// - To disable: no `--ws` flag.
-    #[clap(long)]
-    pub ws: bool,
-
     #[clap(long, value_delimiter = ',', default_value = "*")]
     pub cors_domain: Vec<String>,
-}
-
-impl RpcServiceOpts {
-    /// Checks if either HTTP or WebSocket RPC is enabled.
-    ///
-    /// # Returns
-    /// * `bool` - Returns `true` if either HTTP or WebSocket RPC is enabled, otherwise `false`.
-    pub fn is_enabled(&self) -> bool {
-        self.http || self.ws
-    }
 }
