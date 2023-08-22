@@ -166,6 +166,13 @@ impl Indexer {
         db_client: Arc<PrismaClient>,
         block: Block<H256>,
     ) -> eyre::Result<()> {
+        // Get block from http client
+        let block = self
+            .get_block(block.number.unwrap())
+            .await?
+            .ok_or_else(|| eyre!("Error: Block not found"))?;
+        trace!(?block);
+
         // Create new vec for addresses
         let mut wallet_address_hashmap: HashMap<
             ethers::types::H256,
@@ -738,6 +745,16 @@ impl Indexer {
         }
         .retry(&ExponentialBuilder::default())
         .await
+    }
+
+    /// Get the block logs for the given block number
+    #[autometrics]
+    pub async fn get_block(
+        &self,
+        block_number: ethers::types::U64,
+    ) -> Result<Option<Block<H256>>, ProviderError> {
+        // Get the logs
+        { || self.http_client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Get the block logs for the given block number
