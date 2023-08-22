@@ -20,7 +20,7 @@ use ethers::types::{Block, H256};
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{get_consumer, namespace::TRANSACTION};
-use lightdotso_tracing::tracing::{info, warn};
+use lightdotso_tracing::tracing::{error, info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
     Message,
@@ -49,6 +49,9 @@ impl Consumer {
 
         // Parse the command line arguments
         let args = IndexerArgs::parse();
+
+        // Create the indexer
+        let indexer = args.create().await;
 
         // Create the db client
         let db = Arc::new(create_client().await.unwrap());
@@ -87,14 +90,21 @@ impl Consumer {
                             m.key(), block, m.topic(), m.partition(), m.offset(), m.timestamp());
 
                                         // Index the block
-                                        let res = args.index(db.clone(), block).await;
+                                        let res = indexer.index(db.clone(), block.clone()).await;
 
                                         // Commit the message
                                         if let Err(e) = res {
-                                            warn!("Error while indexing block: {:?}", e);
+                                            error!("Error while indexing block: {:?}", e);
                                             continue;
                                         }
 
+                                        // Log success
+                                        info!(
+                                            "Successfully indexed block: {:?}",
+                                            block.number.unwrap().as_u64()
+                                        );
+
+                                        // Commit the message
                                         let _ = self.consumer.commit_message(&m, CommitMode::Async);
                                     }
                                     Err(e) => {
