@@ -31,8 +31,8 @@ use ethers::{
     },
     utils::to_checksum,
 };
+use ethers_providers::StreamExt;
 use eyre::eyre;
-use futures::StreamExt;
 use lightdotso_db::{
     db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
     error::DbError,

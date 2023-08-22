@@ -9,4 +9,14 @@
   repository.workspace = true
 
 [dependencies]
+  clap = { workspace = true, features = ["derive"] }
+  ethers = { workspace = true }
+  ethers-providers = { workspace = true }
+  expanded-pathbuf = "0.1"
+  eyre = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  pin-utils = "0.1"
+  silius-grpc = { workspace = true }
   silius-primitives = { workspace = true }
+  silius-rpc = { workspace = true }
+  tokio = { workspace = true, features = ["full"] }

@@ -15,7 +15,6 @@
 
 use crate::indexer::Indexer;
 use clap::Parser;
-use ethers::types::{Block, H256};
 use eyre::Result;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;

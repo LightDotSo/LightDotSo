@@ -15,10 +15,7 @@
 
 use anvil::NodeConfig;
 use clap::Parser;
-use ethers::{
-    prelude::Middleware,
-    types::{U256, U64},
-};
+use ethers::types::{U256, U64};
 use lightdotso_indexer::{config::IndexerArgs, indexer::Indexer};
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
