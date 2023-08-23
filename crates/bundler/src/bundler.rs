@@ -13,6 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Entire file and code is from: https://github.com/Vid201/silius/blob/ea49b426d19f848e422d1fc3a7557ddb9f485cf7/bin/silius/src/silius.rs
+// License: MIT or Apache-2.0
+// Slightly modified with minor changes to make it work with our codebase
+// Thank you Vid201 for your work - it could not have been done without you
+
 use crate::{
     config::BundlerArgs,
     constants::ENTRYPOINT_ADDRESSES,

@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Entire file and code is from: https://github.com/Vid201/silius/blob/ea49b426d19f848e422d1fc3a7557ddb9f485cf7/bin/silius/src/cli.rs
+// License: MIT or Apache-2.0
 use crate::utils::{parse_address, parse_u256, parse_uopool_mode};
 use clap::Parser;
 use ethers::types::{Address, U256};
