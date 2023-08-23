@@ -127,6 +127,7 @@ impl Bundler {
                 if res.is_err() {
                     error!("Error in uopool gRPC service: {:?}", res);
                 }
+
                 info!(
                     "Started uopool gRPC service at {:}",
                     self.uopool_opts.uopool_grpc_listen_address
@@ -157,6 +158,7 @@ impl Bundler {
                     self.bundler_opts.bundler_grpc_listen_address
                 );
 
+
                 info!("Starting bundler JSON-RPC server...");
                 tokio::spawn({
                     async move {
@@ -166,14 +168,14 @@ impl Bundler {
 
                         server.add_method(Web3ApiServerImpl{}.into_rpc()).map_err(|e| eyre!("Error in web3: {:?}", e))?;
 
-                        let res = server.add_method(
+                        let eth_res = server.add_method(
                             EthApiServerImpl {
                                 uopool_grpc_client: uopool_grpc_client.clone(),
                             }
                             .into_rpc(),
                         ).map_err(|e| eyre!("Error in eth: {:?}", e));
-                        if res.is_err() {
-                            error!("Error in eth: {:?}", res);
+                        if eth_res.is_err() {
+                            error!("Error in eth: {:?}", eth_res);
                         }
 
                         let bundler_grpc_client = BundlerClient::connect(format!(
@@ -181,15 +183,15 @@ impl Bundler {
                             self.bundler_opts.bundler_grpc_listen_address
                         ))
                         .await?;
-                        let r = server.add_method(
+                        let debug_res = server.add_method(
                             DebugApiServerImpl {
                                 uopool_grpc_client,
                                 bundler_grpc_client,
                             }
                             .into_rpc(),
                         ).map_err(|e| eyre!("Error in debug: {:?}", e));
-                        if r.is_err() {
-                            error!("Error in debug: {:?}", r);
+                        if debug_res.is_err() {
+                            error!("Error in debug: {:?}", debug_res);
                         }
 
                         let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
