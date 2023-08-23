@@ -29,7 +29,7 @@ use ethers::{
     types::{Address, U256},
 };
 use eyre::{eyre, format_err, Result};
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{error, info};
 use silius_grpc::{
     bundler_client::BundlerClient, bundler_service_run, uo_pool_client::UoPoolClient,
     uopool_service_run,
@@ -111,7 +111,7 @@ impl Bundler {
                 info!("{:?}", wallet.signer);
 
                 info!("Starting uopool gRPC service...");
-                let _ = uopool_service_run(
+                let res = uopool_service_run(
                     self.uopool_opts.uopool_grpc_listen_address,
                     self.entry_points.clone(),
                     eth_client,
@@ -124,6 +124,9 @@ impl Bundler {
                     self.uopool_opts.uo_pool_mode,
                 )
                 .await.map_err(|e| eyre!("Error in uopool gRPC service: {:?}", e));
+                if res.is_err() {
+                    error!("Error in uopool gRPC service: {:?}", res);
+                }
                 info!(
                     "Started uopool gRPC service at {:}",
                     self.uopool_opts.uopool_grpc_listen_address
@@ -163,25 +166,31 @@ impl Bundler {
 
                         server.add_method(Web3ApiServerImpl{}.into_rpc()).map_err(|e| eyre!("Error in web3: {:?}", e))?;
 
-                        let _ = server.add_method(
+                        let res = server.add_method(
                             EthApiServerImpl {
                                 uopool_grpc_client: uopool_grpc_client.clone(),
                             }
                             .into_rpc(),
                         ).map_err(|e| eyre!("Error in eth: {:?}", e));
+                        if res.is_err() {
+                            error!("Error in eth: {:?}", res);
+                        }
 
                         let bundler_grpc_client = BundlerClient::connect(format!(
                             "http://{}",
                             self.bundler_opts.bundler_grpc_listen_address
                         ))
                         .await?;
-                        let _ = server.add_method(
+                        let r = server.add_method(
                             DebugApiServerImpl {
                                 uopool_grpc_client,
                                 bundler_grpc_client,
                             }
                             .into_rpc(),
                         ).map_err(|e| eyre!("Error in debug: {:?}", e));
+                        if r.is_err() {
+                            error!("Error in debug: {:?}", r);
+                        }
 
                         let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
                         info!(

@@ -38,7 +38,7 @@ pub struct UoPoolServiceOpts {
     #[clap(long, value_delimiter=',', value_parser = parse_address)]
     pub whitelist: Vec<Address>,
 
-    #[clap(long, default_value = "standard", value_parser=parse_uopool_mode)]
+    #[clap(long, default_value = "unsafe", value_parser=parse_uopool_mode)]
     pub uo_pool_mode: UoPoolMode,
 }
 
