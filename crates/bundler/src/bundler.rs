@@ -45,7 +45,6 @@ use std::{future::pending, panic, sync::Arc};
 
 #[derive(Clone)]
 pub struct Bundler {
-    entry_points: Vec<Address>,
     uopool_opts: UoPoolServiceOpts,
     max_verification_gas: U256,
     chain_id: usize,
@@ -62,7 +61,6 @@ impl Bundler {
         info!("Bundler new, starting");
 
         Bundler {
-            entry_points: args.entry_points.clone(),
             uopool_opts: args.uopool_opts.clone(),
             max_verification_gas: args.max_verification_gas,
             chain_id: args.chain_id,
@@ -113,7 +111,7 @@ impl Bundler {
                 info!("Starting uopool gRPC service...");
                 let res = uopool_service_run(
                     self.uopool_opts.uopool_grpc_listen_address,
-                    self.entry_points.clone(),
+                    ENTRYPOINT_ADDRESSES.to_vec(),
                     eth_client,
                     chain,
                     self.max_verification_gas,
@@ -127,7 +125,6 @@ impl Bundler {
                 if res.is_err() {
                     error!("Error in uopool gRPC service: {:?}", res);
                 }
-
                 info!(
                     "Started uopool gRPC service at {:}",
                     self.uopool_opts.uopool_grpc_listen_address

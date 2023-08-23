@@ -30,9 +30,6 @@ pub struct BundlerArgs {
     /// The seed phrase of mnemonic
     #[clap(long, env = "BUNDLER_SEED_PHRASE")]
     pub seed_phrase: String,
-    /// The entry points
-    #[clap(long, value_delimiter=',', value_parser=parse_address)]
-    pub entry_points: Vec<Address>,
     /// The uopool options
     #[clap(flatten)]
     pub uopool_opts: UoPoolServiceOpts,
