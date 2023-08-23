@@ -21,7 +21,7 @@ use crate::{
 use clap::Parser;
 use ethers::types::{Address, U256};
 use eyre::Result;
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{error, info};
 
 #[derive(Debug, Clone, Parser)]
 pub struct BundlerArgs {
@@ -76,7 +76,12 @@ impl BundlerArgs {
         let bundler = Bundler::new(self).await;
 
         // Run the bundler
-        let _ = bundler.run().await;
+        let res = bundler.run().await;
+
+        // Log if error
+        if res.is_err() {
+            error!("index error: {:?}", res);
+        }
 
         Ok(())
     }
