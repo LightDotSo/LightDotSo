@@ -21,8 +21,9 @@ use eyre::Result;
 use http::Method;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_tracing::{init, stdout, tracing::Level};
-use std::{borrow::Cow, time::Duration};
-use tower::{limit::RateLimitLayer, ServiceBuilder};
+use std::borrow::Cow;
+use tower::ServiceBuilder;
+use tower_governor::{governor::GovernorConfigBuilder, GovernorLayer};
 use tower_http::cors::{Any, CorsLayer};
 
 async fn health_check() -> &'static str {
@@ -53,6 +54,12 @@ pub async fn start_server() -> Result<()> {
         .allow_headers(Any)
         .allow_origin(Any);
 
+    // Rate limit based on IP address
+    // From: https://github.com/benwis/tower-governor
+    // License: MIT
+    let governor_conf =
+        Box::new(GovernorConfigBuilder::default().per_second(1).burst_size(15).finish().unwrap());
+
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
         .route("/health", get(health_check))
@@ -64,7 +71,7 @@ pub async fn start_server() -> Result<()> {
                 .layer(HandleErrorLayer::new(handle_error))
                 .layer(cors)
                 .buffer(5)
-                .layer(RateLimitLayer::new(30, Duration::from_secs(1)))
+                .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .into_inner(),
         );
 

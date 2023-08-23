@@ -17,6 +17,7 @@
   chrono = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   ethers = { workspace = true }
+  ethers-providers = { workspace = true }
   eyre = { workspace = true }
   futures = { workspace = true }
   lazy_static = { workspace = true }

@@ -31,8 +31,8 @@ use ethers::{
     },
     utils::to_checksum,
 };
+use ethers_providers::StreamExt;
 use eyre::eyre;
-use futures::StreamExt;
 use lightdotso_db::{
     db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
     error::DbError,
@@ -233,12 +233,10 @@ impl Indexer {
         // Loop over the block logs
         for log in block_logs {
             // Build the tx_address_hashmap
-            let entry =
-                tx_address_hashmap.entry(log.transaction_hash.unwrap()).or_insert_with(Vec::new);
+            let entry = tx_address_hashmap.entry(log.transaction_hash.unwrap()).or_default();
             // Build the address_type_hashmap
-            let address_type_entry = tx_address_type_hashmap
-                .entry(log.transaction_hash.unwrap())
-                .or_insert_with(HashMap::new);
+            let address_type_entry =
+                tx_address_type_hashmap.entry(log.transaction_hash.unwrap()).or_default();
 
             // Skip if no topics
             if log.topics.is_empty() {
@@ -453,26 +451,27 @@ impl Indexer {
                             )
                             .await;
 
-                        for (addr, category) in tx_adress_category.unwrap() {
-                            // Create the transaction category if wallet exists
-                            if unique_wallet_addreses.contains(addr) {
-                                let _ = self
-                                    .db_create_transaction_category(
-                                        db_client.clone(),
-                                        addr,
-                                        category,
-                                        unique_wallet_tx_hash,
-                                    )
-                                    .await;
+                        if let Some(hashmap) = tx_adress_category {
+                            for (addr, category) in hashmap {
+                                // Create the transaction category if wallet exists
+                                if unique_wallet_addreses.contains(addr) {
+                                    let _ = self
+                                        .db_create_transaction_category(
+                                            db_client.clone(),
+                                            addr,
+                                            category,
+                                            unique_wallet_tx_hash,
+                                        )
+                                        .await;
+                                }
+                                // Send the transaction to the queue if live indexing
+                                // if self.live && self.kafka_client.is_some() {
+                                //     let queue_res = self.send_tx_queue(&unique_wallet_tx_hash);
+                                //     if queue_res.is_err() {
+                                //         error!("send_tx_queue error: {:?}", queue_res);
+                                //     }
+                                // }
                             }
-
-                            // Send the transaction to the queue if live indexing
-                            // if self.live && self.kafka_client.is_some() {
-                            //     let queue_res = self.send_tx_queue(&unique_wallet_tx_hash);
-                            //     if queue_res.is_err() {
-                            //         error!("send_tx_queue error: {:?}", queue_res);
-                            //     }
-                            // }
                         }
                     }
                 }
@@ -504,7 +503,7 @@ impl Indexer {
         let tx_hash = block.clone().transactions[index];
 
         // Build the tx_address_hashmap
-        let entry = tx_address_hashmap.entry(tx_hash).or_insert_with(Vec::new);
+        let entry = tx_address_hashmap.entry(tx_hash).or_default();
 
         // Convert the to address to a wallet address
         // Shouldn't fail because debug_traceTransaction returns a valid address on most RPC
@@ -519,8 +518,7 @@ impl Indexer {
             // If the from address is a factory address
             if FACTORY_ADDRESSES.contains(&frame.from) {
                 // Build the wallet_address_hashmap
-                let wallet_entry =
-                    wallet_address_hashmap.entry(tx_hash).or_insert_with(HashMap::new);
+                let wallet_entry = wallet_address_hashmap.entry(tx_hash).or_default();
 
                 // Send redis if exists
                 if self.redis_client.is_some() {
