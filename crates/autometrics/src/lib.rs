@@ -18,3 +18,7 @@ use autometrics::objectives::{Objective, ObjectiveLatency, ObjectivePercentile};
 pub const API_SLO: Objective = Objective::new("api")
     .success_rate(ObjectivePercentile::P99_9)
     .latency(ObjectiveLatency::Ms250, ObjectivePercentile::P99);
+
+pub const RPC_SLO: Objective = Objective::new("rpc")
+    .success_rate(ObjectivePercentile::P99_9)
+    .latency(ObjectiveLatency::Ms250, ObjectivePercentile::P99);

@@ -58,6 +58,8 @@
   eyre = "0.6.8"
   futures = "0.3.28"
   http = "0.2.8"
+  hyper = { version = "0.14", features = ["full"] }
+  hyper-rustls = "0.24.1"
   js-sys = "=0.3.56"
   lazy_static = "1.4.0"
   lightdotso-autometrics = { path = "./crates/autometrics" }
@@ -70,6 +72,7 @@
   lightdotso-keychain = { path = "./crates/indexer" }
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
+  lightdotso-rpc = { path = "./crates/rpc" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [

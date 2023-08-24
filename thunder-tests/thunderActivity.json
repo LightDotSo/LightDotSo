@@ -32,11 +32,11 @@
     "colId": "history",
     "containerId": "",
     "name": "eth_supportedEntryPoints",
-    "url": "http://localhost:6000",
+    "url": "http://localhost:3010/1",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-08-23T09:08:08.729Z",
+    "modified": "2023-08-24T09:10:52.881Z",
     "headers": [
       {
         "name": "accept",

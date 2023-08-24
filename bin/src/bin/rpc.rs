@@ -13,13 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use autometrics::{autometrics, prometheus_exporter};
 use axum::{
-    error_handling::HandleErrorLayer, http::StatusCode, response::IntoResponse, routing::get,
+    error_handling::HandleErrorLayer,
+    http::StatusCode,
+    response::IntoResponse,
+    routing::{get, on, MethodFilter},
     BoxError, Router,
 };
 use eyre::Result;
 use http::Method;
+use hyper::{client::HttpConnector, Body};
+use lightdotso_autometrics::RPC_SLO;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
+use lightdotso_rpc::rpc_proxy_handler;
 use lightdotso_tracing::{init, stdout, tracing::Level};
 use std::{borrow::Cow, net::SocketAddr};
 use tower::ServiceBuilder;
@@ -31,6 +38,9 @@ use tower_http::{
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
 
+type Client = hyper::client::Client<HttpConnector, Body>;
+
+#[autometrics(objective = RPC_SLO)]
 async fn health_check() -> &'static str {
     "OK"
 }
@@ -50,6 +60,8 @@ async fn handle_error(error: BoxError) -> impl IntoResponse {
 
 pub async fn start_server() -> Result<()> {
     init(vec![stdout(Level::INFO)]);
+
+    let client = Client::new();
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
@@ -81,8 +93,10 @@ pub async fn start_server() -> Result<()> {
         .on_response(DefaultOnResponse::new().level(Level::INFO));
 
     let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
+        .route("/", get("hello world"))
+        .route("/:chain_id", on(MethodFilter::all(), rpc_proxy_handler))
         .route("/health", get(health_check))
+        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
@@ -94,7 +108,8 @@ pub async fn start_server() -> Result<()> {
                 .buffer(5)
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .into_inner(),
-        );
+        )
+        .with_state(client);
 
     let socket_addr = "0.0.0.0:3010".parse()?;
     axum::Server::bind(&socket_addr)
