@@ -21,10 +21,15 @@ use eyre::Result;
 use http::Method;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_tracing::{init, stdout, tracing::Level};
-use std::borrow::Cow;
+use std::{borrow::Cow, net::SocketAddr};
 use tower::ServiceBuilder;
-use tower_governor::{governor::GovernorConfigBuilder, GovernorLayer};
-use tower_http::cors::{Any, CorsLayer};
+use tower_governor::{
+    governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
+};
+use tower_http::{
+    cors::{Any, CorsLayer},
+    trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
+};
 
 async fn health_check() -> &'static str {
     "OK"
@@ -57,8 +62,23 @@ pub async fn start_server() -> Result<()> {
     // Rate limit based on IP address
     // From: https://github.com/benwis/tower-governor
     // License: MIT
-    let governor_conf =
-        Box::new(GovernorConfigBuilder::default().per_second(1).burst_size(15).finish().unwrap());
+    let governor_conf = Box::new(
+        GovernorConfigBuilder::default()
+            .per_second(30)
+            .burst_size(100)
+            .use_headers()
+            .key_extractor(SmartIpKeyExtractor)
+            .finish()
+            .unwrap(),
+    );
+
+    // Trace requests and responses w/ span
+    // From: https://github.com/quasiuslikecautious/commerce-api/blob/73fb24667665e87d0909716657f949e3ce9c2990/src/middlewares/lib.rs#L83
+    // License: MIT
+    let trace_layer = TraceLayer::new_for_http()
+        .make_span_with(DefaultMakeSpan::new().include_headers(true))
+        .on_request(DefaultOnRequest::new().level(Level::INFO))
+        .on_response(DefaultOnResponse::new().level(Level::INFO));
 
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
@@ -69,14 +89,17 @@ pub async fn start_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
+                .layer(trace_layer)
                 .layer(cors)
                 .buffer(5)
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .into_inner(),
         );
 
-    let socket_addr = "0.0.0.0:3002".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
+    let socket_addr = "0.0.0.0:3010".parse()?;
+    axum::Server::bind(&socket_addr)
+        .serve(app.into_make_service_with_connect_info::<SocketAddr>())
+        .await?;
 
     Ok(())
 }
