@@ -32,11 +32,11 @@
     "colId": "history",
     "containerId": "",
     "name": "eth_supportedEntryPoints",
-    "url": "http://localhost:3010/10",
+    "url": "https://rpc.light.so/11155111",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-08-24T19:43:42.959Z",
+    "modified": "2023-08-24T19:44:50.026Z",
     "headers": [
       {
         "name": "accept",
