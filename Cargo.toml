@@ -57,6 +57,7 @@
   ethers-providers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-providers" }
   eyre = "0.6.8"
   futures = "0.3.28"
+  futures-util = "0.3.28"
   http = "0.2.8"
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
