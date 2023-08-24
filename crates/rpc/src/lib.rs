@@ -23,11 +23,12 @@ use axum::{
     http::{Request, Response},
 };
 use hyper::{body, client::HttpConnector};
+use hyper_rustls::HttpsConnector;
 use lightdotso_tracing::tracing::{error, info};
 use serde::ser::Error;
 use serde_json::{Error as SerdeError, Value};
 
-type Client = hyper::client::Client<HttpConnector, Body>;
+pub type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 
 pub async fn get_method(body: Body) -> Result<String, SerdeError> {
     // Convert the body into bytes
@@ -48,6 +49,8 @@ pub async fn get_method(body: Body) -> Result<String, SerdeError> {
 }
 
 async fn get_client_result(uri: String, client: Client, body: Body) -> Response<Body> {
+    info!("uri: {}", uri);
+
     // Create a new request with the same method and body
     let client_req = Request::builder()
         .uri(uri)
@@ -109,7 +112,7 @@ pub async fn rpc_proxy_handler(
                     if result.status().is_success() {
                         return result;
                     } else {
-                        error!("Error while getting result from client");
+                        error!("Error while getting result from client: {:?}", result);
                     }
                 }
             }
@@ -126,7 +129,7 @@ pub async fn rpc_proxy_handler(
         if result.status().is_success() {
             return result;
         } else {
-            error!("Error while getting result from client");
+            error!("Error while getting result from client: {:?}", result);
         }
     }
 

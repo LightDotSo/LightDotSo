@@ -5716,6 +5716,7 @@ dependencies = [
  "eyre",
  "futures-util",
  "hyper",
+ "hyper-rustls",
  "lazy_static",
  "lightdotso-tracing",
  "serde",

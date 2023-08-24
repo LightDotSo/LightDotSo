@@ -25,7 +25,7 @@ use clap::Parser;
 use dotenvy::dotenv;
 use eyre::Result;
 use http::Method;
-use hyper::{client::HttpConnector, Body};
+use hyper::client;
 use lightdotso_autometrics::RPC_SLO;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_rpc::{config::RpcArgs, rpc_proxy_handler};
@@ -39,8 +39,6 @@ use tower_http::{
     cors::{Any, CorsLayer},
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
-
-type Client = hyper::client::Client<HttpConnector, Body>;
 
 #[autometrics(objective = RPC_SLO)]
 async fn health_check() -> &'static str {
@@ -64,7 +62,12 @@ pub async fn start_server() -> Result<()> {
     init(vec![stdout(Level::INFO)]);
 
     // Create a client
-    let client = Client::new();
+    let https = hyper_rustls::HttpsConnectorBuilder::new()
+        .with_native_roots()
+        .https_or_http()
+        .enable_http1()
+        .build();
+    let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
 
     // Get the config
     let _ = RpcArgs::parse();
