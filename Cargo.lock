@@ -5712,6 +5712,8 @@ name = "lightdotso-rpc"
 version = "0.1.0"
 dependencies = [
  "axum 0.6.20",
+ "clap",
+ "eyre",
  "futures-util",
  "hyper",
  "lazy_static",

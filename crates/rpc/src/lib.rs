@@ -13,13 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+pub mod config;
+mod constants;
+
+use crate::constants::{BUNDLER_RPC_URLS, INFURA_RPC_URLS};
 use axum::{
     body::Body,
     extract::{Path, State},
     http::{Request, Response},
 };
 use hyper::{body, client::HttpConnector};
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{error, info};
 use serde::ser::Error;
 use serde_json::{Error as SerdeError, Value};
 
@@ -41,6 +45,18 @@ pub async fn get_method(body: Body) -> Result<String, SerdeError> {
         .to_string();
 
     Ok(method)
+}
+
+async fn get_client_result(uri: String, client: Client, body: Body) -> Response<Body> {
+    // Create a new request with the same method and body
+    let client_req = Request::builder()
+        .uri(uri)
+        .header("Content-Type", "application/json")
+        .method(hyper::Method::POST)
+        .body(body)
+        .unwrap();
+
+    client.request(client_req).await.unwrap()
 }
 
 pub async fn rpc_proxy_handler(
@@ -70,29 +86,52 @@ pub async fn rpc_proxy_handler(
     // Call your async function to consume the body
     let full_body_bytes = body::to_bytes(full_body).await.unwrap().to_vec();
 
-    // Clone the body for later reuse
-    let body_clone = Body::from(full_body_bytes.clone());
-    let body_clone_2 = Body::from(full_body_bytes.clone());
-
     // Get the method from the body
-    let method = get_method(body_clone_2).await;
+    let method = get_method(Body::from(full_body_bytes.clone())).await;
     if let Ok(method) = method {
-        info!("method: {}", method);
+        match method.as_str() {
+            "eth_sendUserOperation" |
+            "eth_estimateUserOperationGas" |
+            "eth_supportedEntryPoints" |
+            "eth_getUserOperationByHash" |
+            "eth_getUserOperationReceipt" => {
+                info!("method: {}", method);
+
+                // Get the rpc url from the constants
+                if let Some(rpc) = BUNDLER_RPC_URLS.get(&chain_id) {
+                    // Get the result from the client
+                    let result = get_client_result(
+                        rpc.clone(),
+                        client.clone(),
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
+                    if result.status().is_success() {
+                        return result;
+                    } else {
+                        error!("Error while getting result from client");
+                    }
+                }
+            }
+            &_ => {}
+        }
     }
 
-    let uri = format!("http://127.0.0.1:3000");
+    // Get the rpc url from the constants
+    if let Some(infura_rpc_url) = INFURA_RPC_URLS.get(&chain_id) {
+        let uri = format!("{}{}", infura_rpc_url, std::env::var("INFURA_API_KEY").unwrap());
 
-    // Create a new request with the same method and body
-    let client_req = Request::builder()
-        .uri(uri)
-        .header("Content-Type", "application/json")
-        .method(req.method())
-        .body(body_clone) // use Body::from to create Body owned
-        .unwrap();
+        // Get the result from the client
+        let result = get_client_result(uri, client, Body::from(full_body_bytes.clone())).await;
+        if result.status().is_success() {
+            return result;
+        } else {
+            error!("Error while getting result from client");
+        }
+    }
 
-    client.request(client_req).await.unwrap()
-
+    // Return an error if the chain_id is not supported or not found
+    Response::builder().status(404).body(Body::from("Not Found")).unwrap()
     // * req.uri_mut() = Uri::try_from(uri).unwrap();
-
     // client.request(req).await.unwrap()
 }

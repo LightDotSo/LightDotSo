@@ -10,6 +10,8 @@
 
 [dependencies]
   axum = { workspace = true }
+  clap = { workspace = true }
+  eyre = { workspace = true }
   futures-util = { workspace = true }
   hyper = { workspace = true }
   lazy_static = { workspace = true }

@@ -21,12 +21,14 @@ use axum::{
     routing::{get, on, MethodFilter},
     BoxError, Router,
 };
+use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
 use http::Method;
 use hyper::{client::HttpConnector, Body};
 use lightdotso_autometrics::RPC_SLO;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_rpc::rpc_proxy_handler;
+use lightdotso_rpc::{config::RpcArgs, rpc_proxy_handler};
 use lightdotso_tracing::{init, stdout, tracing::Level};
 use std::{borrow::Cow, net::SocketAddr};
 use tower::ServiceBuilder;
@@ -61,7 +63,11 @@ async fn handle_error(error: BoxError) -> impl IntoResponse {
 pub async fn start_server() -> Result<()> {
     init(vec![stdout(Level::INFO)]);
 
+    // Create a client
     let client = Client::new();
+
+    // Get the config
+    let _ = RpcArgs::parse();
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
@@ -121,7 +127,10 @@ pub async fn start_server() -> Result<()> {
 
 #[tokio::main]
 pub async fn main() -> Result<(), eyre::Error> {
+    let _ = dotenv();
+
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
     start_server().await?;
+
     Ok(())
 }
