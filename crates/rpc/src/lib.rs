@@ -67,17 +67,17 @@ pub async fn rpc_proxy_handler(
     Path(chain_id): Path<String>,
     mut req: Request<Body>,
 ) -> Response<Body> {
-    info!("chain_id: {}", chain_id);
-
     info!("req: {:?}", req);
 
     // Convert hexadecimal chain_id to u64 or normal integer
     // Return 0 if the chain_id is not a hexadecimal or normal integer
-    let chain_id: u64 = if chain_id.len() > 2 {
-        u64::from_str_radix(&chain_id[2..], 16).unwrap_or_else(|_| chain_id.parse().unwrap_or(0))
+    let chain_id: u64 = if chain_id.starts_with("0x") {
+        u64::from_str_radix(chain_id.strip_prefix("0x").unwrap(), 16)
+            .unwrap_or_else(|_| chain_id.parse().unwrap_or(0))
     } else {
         chain_id.parse().unwrap_or(0)
     };
+    info!("chain_id: {}", chain_id);
 
     // Return an error if the chain_id is not supported or not found
     if chain_id == 0 {
@@ -134,7 +134,7 @@ pub async fn rpc_proxy_handler(
     }
 
     // Return an error if the chain_id is not supported or not found
-    Response::builder().status(404).body(Body::from("Not Found")).unwrap()
+    Response::builder().status(404).body(Body::from("Not Found for RPC Request")).unwrap()
     // * req.uri_mut() = Uri::try_from(uri).unwrap();
     // client.request(req).await.unwrap()
 }
