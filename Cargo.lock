@@ -5565,6 +5565,7 @@ dependencies = [
  "clap",
  "dotenvy",
  "eyre",
+ "futures",
  "http",
  "hyper",
  "hyper-rustls",

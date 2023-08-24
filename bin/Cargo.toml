@@ -21,6 +21,7 @@
   clap = { workspace = true, features = ["env"] }
   dotenvy = { workspace = true }
   eyre = { workspace = true }
+  futures = { workspace = true }
   http = { workspace = true }
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
