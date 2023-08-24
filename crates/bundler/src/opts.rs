@@ -23,7 +23,7 @@ use std::net::SocketAddr;
 
 #[derive(Clone, Debug, Parser, PartialEq)]
 pub struct UoPoolServiceOpts {
-    #[clap(long, default_value = "0.0.0.0:3001")]
+    #[clap(long, default_value = "[::]:3001")]
     pub uopool_grpc_listen_address: SocketAddr,
 
     #[clap(long, value_parser=parse_u256, default_value = "1")]
@@ -47,7 +47,7 @@ pub struct BundlerServiceOpts {
     #[clap(long, default_value = "100000000000000000", value_parser=parse_u256)]
     pub min_balance: U256,
 
-    #[clap(long, default_value = "0.0.0.0:3002")]
+    #[clap(long, default_value = "[::]:3002")]
     pub bundler_grpc_listen_address: SocketAddr,
 
     #[clap(long, default_value = "10")]
@@ -56,7 +56,7 @@ pub struct BundlerServiceOpts {
 
 #[derive(Clone, Debug, Parser, PartialEq)]
 pub struct RpcServiceOpts {
-    #[clap(long, default_value = "0.0.0.0:3000")]
+    #[clap(long, default_value = "[::]:3000")]
     pub rpc_listen_address: String,
 
     #[clap(long, value_delimiter = ',', default_value = "*")]
