@@ -73,6 +73,7 @@ pub async fn main() {
     let args = BundlerArgs::parse();
 
     // Construct the futures
+    // TODO: Construct the bundler future as a multi-threaded future
     let bundler_future = args.run();
     let server_future = start_server();
 

@@ -13,12 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::objectives::{Objective, ObjectiveLatency, ObjectivePercentile};
+use clap::Parser;
 
-pub const API_SLO: Objective = Objective::new("api")
-    .success_rate(ObjectivePercentile::P99_9)
-    .latency(ObjectiveLatency::Ms250, ObjectivePercentile::P99);
-
-pub const RPC_SLO: Objective = Objective::new("rpc")
-    .success_rate(ObjectivePercentile::P99_9)
-    .latency(ObjectiveLatency::Ms250, ObjectivePercentile::P99);
+#[derive(Debug, Clone, Parser, Default)]
+pub struct RpcArgs {
+    /// The infura API key
+    #[clap(long, env = "INFURA_API_KEY")]
+    pub infura_api_key: String,
+}

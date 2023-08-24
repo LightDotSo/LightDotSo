@@ -5565,6 +5565,7 @@ dependencies = [
  "clap",
  "dotenvy",
  "eyre",
+ "futures",
  "http",
  "hyper",
  "hyper-rustls",
@@ -5575,6 +5576,7 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-prisma",
+ "lightdotso-rpc",
  "lightdotso-tracing",
  "ratatui",
  "redb",
@@ -5708,6 +5710,21 @@ dependencies = [
 [[package]]
 name = "lightdotso-rpc"
 version = "0.1.0"
+dependencies = [
+ "axum 0.6.20",
+ "clap",
+ "eyre",
+ "futures-util",
+ "hyper",
+ "hyper-rustls",
+ "lazy_static",
+ "lightdotso-tracing",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower",
+ "tower-http 0.4.3",
+]
 
 [[package]]
 name = "lightdotso-telegram"

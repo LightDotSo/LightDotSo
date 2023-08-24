@@ -15,7 +15,7 @@ kill_timeout = "5s"
   image = "ghcr.io/lightdotso/lightdotso:latest"
 
 [http_service]
-  internal_port = 3002
+  internal_port = 3010
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
@@ -27,10 +27,13 @@ kill_timeout = "5s"
 
 [checks]
   [checks.health]
-    port = 3002
+    port = 3010
     type = "http"
     interval = "15s"
     timeout = "10s"
     grace_period = "30s"
     method = "get"
     path = "/health"
+
+[deploy]
+  strategy = "bluegreen"
