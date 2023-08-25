@@ -13,31 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use axum::{routing::get, Router};
+pub mod config;
+
+use ethers_main::{
+    core::k256::ecdsa::SigningKey,
+    signers::{Signer, Wallet},
+    types::H256,
+};
 use eyre::Result;
-use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_tracing::{init, stdout, tracing::Level};
 
-async fn health_check() -> &'static str {
-    "OK"
-}
+pub async fn sign() -> Result<()> {
+    let wallet: Wallet<SigningKey> =
+        "0000000000000000000000000000000000000000000000000000000000000001".parse().unwrap();
+    let wallet = wallet.with_chain_id(1_u64);
 
-pub async fn start_server() -> Result<()> {
-    init(vec![stdout(Level::INFO)]);
-
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check));
-
-    let socket_addr = "0.0.0.0:3002".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
-
-    Ok(())
-}
-
-#[tokio::main]
-pub async fn main() -> Result<(), eyre::Error> {
-    println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
-    start_server().await?;
+    let _ = wallet.sign_message(H256::zero()).await?;
     Ok(())
 }

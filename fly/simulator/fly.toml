@@ -1,0 +1,43 @@
+# fly.toml app configuration file generated for lightdotso-simulator on 2023-07-17T01:35:58-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "lightdotso-simulator"
+primary_region = "sjc"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[experimental]
+  entrypoint = ["/usr/local/bin/simulator"]
+
+[build]
+  image = "ghcr.io/lightdotso/lightdotso:latest"
+
+[http_service]
+  internal_port = 3013
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200
+
+[checks]
+  [checks.health]
+    port = 3013
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/health"
+
+[metrics]
+  port = 3013
+  path = "/metrics"
+
+[deploy]
+  strategy = "bluegreen"
