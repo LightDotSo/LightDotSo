@@ -81,7 +81,7 @@
   lightdotso-indexer = { path = "./crates/indexer" }
   lightdotso-kafka = { path = "./crates/kafka" }
   lightdotso-keychain = { path = "./crates/indexer" }
-  lightdotso-paymaster = { path = "./crates/indexer" }
+  lightdotso-paymaster = { path = "./crates/paymaster" }
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }

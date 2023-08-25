@@ -9,9 +9,14 @@
   repository.workspace = true
 
 [dependencies]
+  clap = { workspace = true }
   ethers-main = { workspace = true, features = ["aws"] }
   eyre = { workspace = true }
+  jsonrpsee = { workspace = true }
+  lightdotso-tracing = { workspace = true }
   rusoto_core = { version = "0.48.0", default-features = false, optional = true }
   rusoto_kms = { version = "0.48.0", default-features = false, optional = true }
   serde = { workspace = true }
+  silius-rpc = { workspace = true }
   spki = { workspace = true, optional = true }
+  tokio = { workspace = true }

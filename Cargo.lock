@@ -5571,6 +5571,7 @@ dependencies = [
  "lightdotso-gas",
  "lightdotso-indexer",
  "lightdotso-kafka",
+ "lightdotso-paymaster",
  "lightdotso-prisma",
  "lightdotso-rpc",
  "lightdotso-simulator",
@@ -5707,12 +5708,17 @@ version = "0.1.0"
 name = "lightdotso-paymaster"
 version = "0.1.0"
 dependencies = [
+ "clap",
  "ethers 2.0.9",
  "eyre",
+ "jsonrpsee",
+ "lightdotso-tracing",
  "rusoto_core",
  "rusoto_kms",
  "serde",
+ "silius-rpc",
  "spki",
+ "tokio",
 ]
 
 [[package]]
@@ -5755,12 +5761,17 @@ dependencies = [
 name = "lightdotso-simulator"
 version = "0.1.0"
 dependencies = [
+ "clap",
  "ethers 2.0.9",
  "eyre",
  "foundry-config",
  "foundry-evm",
+ "jsonrpsee",
+ "lightdotso-tracing",
  "revm",
  "serde",
+ "silius-rpc",
+ "tokio",
 ]
 
 [[package]]

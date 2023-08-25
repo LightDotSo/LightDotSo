@@ -19,7 +19,7 @@ use clap::Parser;
 use dotenvy::dotenv;
 use eyre::Result;
 use lightdotso_bin::version::SHORT_VERSION;
-use lightdotso_simulator::config::SimulatorArgs;
+use lightdotso_paymaster::config::PaymasterArgs;
 use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{info, Level},
@@ -60,7 +60,7 @@ pub async fn main() {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Run the test server if we're running in Fly
-    if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-simulator") {
+    if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-paymaster") {
         let test_server_future = start_server();
         let result = test_server_future.await;
 
@@ -70,14 +70,14 @@ pub async fn main() {
     }
 
     // Parse the command line arguments
-    let args = SimulatorArgs::parse();
+    let args = PaymasterArgs::parse();
 
     // Construct the futures
-    let simulator_future = args.run();
+    let paymaster_future = args.run();
     let server_future = start_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(simulator_future, server_future);
+    let result = tokio::try_join!(paymaster_future, server_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {
