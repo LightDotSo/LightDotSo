@@ -10,8 +10,12 @@
 
 [dependencies]
   async-trait = { workspace = true }
+  clap = { workspace = true }
   eyre = { workspace = true }
   jsonrpsee = { workspace = true }
+  lightdotso-tracing = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
+  silius-rpc = { workspace = true }
+  tokio = { workspace = true }

@@ -13,14 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod chains;
-pub mod config;
-pub mod error;
-pub mod gas;
-pub mod gas_api;
+use crate::gas::GasEstimation;
+pub use crate::gas::GasServerImpl;
+use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 
-use eyre::Result;
+#[rpc(server, namespace = "gas")]
+pub trait Gas {
+    #[method(name = "clientVersion")]
+    async fn client_version(&self) -> RpcResult<String>;
 
-pub async fn gas() -> Result<()> {
-    Ok(())
+    #[method(name = "fetchGasEstimation")]
+    async fn fetch_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation>;
 }

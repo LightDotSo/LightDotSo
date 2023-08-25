@@ -13,32 +13,75 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
+use clap::Parser;
+use dotenvy::dotenv;
 use eyre::Result;
-use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_gas::gas;
-use lightdotso_tracing::{init, stdout, tracing::Level};
+use lightdotso_bin::version::SHORT_VERSION;
+use lightdotso_gas::config::GasArgs;
+use lightdotso_tracing::{
+    init, init_metrics, otel, stdout,
+    tracing::{info, Level},
+};
 
+#[autometrics]
 async fn health_check() -> &'static str {
     "OK"
 }
 
 pub async fn start_server() -> Result<()> {
-    init(vec![stdout(Level::INFO)]);
+    prometheus_exporter::init();
 
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check));
+        .route("/health", get(health_check))
+        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
 
-    let socket_addr = "0.0.0.0:3002".parse()?;
+    let socket_addr = "0.0.0.0:3011".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
 
     Ok(())
 }
 
 #[tokio::main]
-pub async fn main() -> Result<(), eyre::Error> {
-    println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
-    start_server().await?;
-    Ok(())
+pub async fn main() {
+    let _ = dotenv();
+
+    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
+        "development" => Level::TRACE,
+        _ => Level::INFO,
+    };
+
+    init(vec![stdout(log_level), otel()]);
+
+    let _ = init_metrics();
+
+    info!("Starting server at {}", SHORT_VERSION);
+
+    // Run the test server if we're running in Fly
+    if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-gas") {
+        let test_server_future = start_server();
+        let result = test_server_future.await;
+
+        if result.is_err() {
+            std::process::exit(1)
+        };
+    }
+
+    // Parse the command line arguments
+    let args = GasArgs::parse();
+
+    // Construct the futures
+    let gas_future = args.run();
+    let server_future = start_server();
+
+    // Run the futures concurrently
+    let result = tokio::try_join!(gas_future, server_future);
+
+    // Exit with an error if either future failed
+    if let Err(e) = result {
+        eprintln!("Error: {:?}", e);
+        std::process::exit(1);
+    }
 }

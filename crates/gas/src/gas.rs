@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{chains::_1::mainnet_gas_estimation, error::JsonRpcError};
+use crate::{chains::_1::mainnet_gas_estimation, error::JsonRpcError, gas_api::GasServer};
 use async_trait::async_trait;
 use jsonrpsee::{
     core::RpcResult,
-    proc_macros::rpc,
     types::{error::INTERNAL_ERROR_CODE, ErrorObjectOwned},
 };
 use serde::{Deserialize, Serialize};
@@ -35,15 +34,6 @@ pub struct GasEstimation {
     pub(crate) average: GasEstimationParams,
     pub(crate) high: GasEstimationParams,
     pub(crate) instant: GasEstimationParams,
-}
-
-#[rpc(server, namespace = "gas")]
-pub trait Gas {
-    #[method(name = "clientVersion")]
-    async fn client_version(&self) -> RpcResult<String>;
-
-    #[method(name = "fetchGasEstimation")]
-    async fn fetch_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation>;
 }
 
 pub struct GasServerImpl {}
