@@ -16,6 +16,7 @@
 use axum::{routing::get, Router};
 use eyre::Result;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
+use lightdotso_simulator::Evm;
 use lightdotso_tracing::{init, stdout, tracing::Level};
 
 async fn health_check() -> &'static str {
