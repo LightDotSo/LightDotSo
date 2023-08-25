@@ -5688,7 +5688,7 @@ dependencies = [
 name = "lightdotso-simulator"
 version = "0.1.0"
 dependencies = [
- "ethers 2.0.8",
+ "ethers 2.0.9",
  "eyre",
  "foundry-config",
  "foundry-evm",
