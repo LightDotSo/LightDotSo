@@ -15,34 +15,42 @@
 
 use crate::{gas::GasServerImpl, gas_api::GasServer};
 use clap::Parser;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::info;
 use silius_rpc::JsonRpcServer;
-use std::net::SocketAddr;
+use std::future::pending;
 
 #[derive(Debug, Clone, Parser)]
 pub struct GasArgs {
     /// The topics to consume.
     #[clap(long, default_value = "[::]:3000")]
-    pub rpc_address: SocketAddr,
+    pub rpc_address: String,
 }
 
 impl GasArgs {
-    pub async fn run(&self) -> Result<()> {
+    pub async fn run(self) -> Result<()> {
         // Add info
         info!("GasArgs run, starting...");
 
         // Print the config
         info!("Config: {:?}", self);
 
-        // Create the server
-        let mut server = JsonRpcServer::new(self.rpc_address.to_string(), true, false);
+        tokio::spawn({
+            async move {
+                // Create the server
+                let mut server = JsonRpcServer::new(self.rpc_address.clone(), true, false);
 
-        // Add the gas server
-        server.add_method(GasServerImpl {}.into_rpc()).unwrap();
+                // Add the gas server
+                server.add_method(GasServerImpl {}.into_rpc()).unwrap();
 
-        // Start the server
-        let _handle = server.start().await.unwrap();
+                // Start the server
+                let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
+                info!("Started bundler JSON-RPC server at {:}", self.rpc_address,);
+
+                pending::<Result<()>>().await
+            }
+        });
+        info!("GasArgs run, finished");
 
         Ok(())
     }

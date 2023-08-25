@@ -67,5 +67,46 @@
         "value": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
       }
     ]
+  },
+  {
+    "_id": "53d04bf2-7f0d-47db-9c25-af258749efc5",
+    "colId": "history",
+    "containerId": "",
+    "name": "gas_fetchGasEstimation",
+    "url": "http://localhost:3000/1",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:13:33.627Z",
+    "modified": "2023-08-25T21:43:26.148Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_fetchGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "max_priority_fee_per_gas"
+      }
+    ]
   }
 ]
