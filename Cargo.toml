@@ -46,7 +46,7 @@
   codegen-units = 16
 
 [workspace.dependencies]
-  anvil = { git = "https://github.com/foundry-rs/foundry", rev = "95a93cd397f25f3f8d49d2851eb52bc2d52dd983", package = "anvil" }
+  anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
   autometrics = { version = "*" }
   axum = "0.6.16"
   backon = "0.4.1"
@@ -58,8 +58,8 @@
   ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-core" }
   ethers-providers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-providers" }
   eyre = "0.6.8"
-  foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "95a93cd397f25f3f8d49d2851eb52bc2d52dd983", package = "foundry-config" }
-  foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "95a93cd397f25f3f8d49d2851eb52bc2d52dd983", package = "foundry-evm" }
+  foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "foundry-config" }
+  foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "foundry-evm" }
   futures = "0.3.28"
   futures-util = "0.3.28"
   http = "0.2.8"

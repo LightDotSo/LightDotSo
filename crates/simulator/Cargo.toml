@@ -9,8 +9,7 @@
   repository.workspace = true
 
 [dependencies]
-  # TODO: Sync with workspace
-  ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "842fe1bb4eb17ecfbfc54ac239e858f2c088150b" }
+  ethers = { workspace = true }
   eyre = { workspace = true }
   foundry-config = { workspace = true }
   foundry-evm = { workspace = true }

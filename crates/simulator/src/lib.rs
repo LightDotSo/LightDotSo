@@ -106,25 +106,29 @@ impl Evm {
 
         let db = Backend::spawn(Some(fork_opts.clone()));
 
-        let mut builder = ExecutorBuilder::default().gas_limit(gas_limit.into());
+        let mut builder =
+            ExecutorBuilder::default().with_gas_limit(gas_limit.into()).set_tracing(tracing);
 
-        let env_or_default = env.unwrap_or_else(|| fork_opts.env.clone());
-        let executor = builder.build(env_or_default, db.await);
+        if let Some(env) = env {
+            builder = builder.with_config(env);
+        } else {
+            builder = builder.with_config(fork_opts.env.clone());
+        }
+
+        let executor = builder.build(db.await);
 
         let foundry_config =
             foundry_config::Config { etherscan_api_key: etherscan_key, ..Default::default() };
 
         let chain: Chain = fork_opts.env.cfg.chain_id.to::<u64>().into();
         let etherscan_identifier = EtherscanIdentifier::new(&foundry_config, Some(chain)).ok();
-        let mut decoder_builder = CallTraceDecoderBuilder::new().with_verbosity(5);
+        let mut decoder = CallTraceDecoderBuilder::new().with_verbosity(5).build();
 
         if let Ok(identifier) =
             SignaturesIdentifier::new(foundry_config::Config::foundry_cache_dir(), false)
         {
-            decoder_builder.with_signature_identifier(identifier);
+            decoder.add_signature_identifier(identifier);
         }
-
-        let decoder = decoder_builder.build();
 
         Evm { executor, decoder, etherscan_identifier }
     }
@@ -216,24 +220,24 @@ impl Evm {
     }
 
     pub async fn set_block(&mut self, number: u64) -> Result<(), EvmError> {
-        self.executor.env.block.number = Uint::from(number).into();
+        self.executor.env_mut().block.number = Uint::from(number).into();
         Ok(())
     }
 
     pub fn get_block(&self) -> Uint {
-        self.executor.env.block.number.into()
+        self.executor.env().block.number.into()
     }
 
     pub async fn set_block_timestamp(&mut self, timestamp: u64) -> Result<(), EvmError> {
-        self.executor.env.block.timestamp = Uint::from(timestamp).into();
+        self.executor.env_mut().block.timestamp = Uint::from(timestamp).into();
         Ok(())
     }
 
     pub fn get_block_timestamp(&self) -> Uint {
-        self.executor.env.block.timestamp.into()
+        self.executor.env().block.timestamp.into()
     }
 
     pub fn get_chain_id(&self) -> Uint {
-        self.executor.env.cfg.chain_id.into()
+        self.executor.env().cfg.chain_id.into()
     }
 }
