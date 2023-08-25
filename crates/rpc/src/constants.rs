@@ -76,3 +76,16 @@ lazy_static! {
         m
     };
 }
+
+// The public rpc urls
+lazy_static! {
+    pub static ref PUBLIC_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(100, "https://rpc.gnosischain.com".to_string());
+        m.insert(8453, "https://mainnet.base.org".to_string());
+
+        m
+    };
+}

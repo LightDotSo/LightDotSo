@@ -29,13 +29,14 @@
   [workspace.package]
     version = "0.1.0"
     edition = "2021"
-    rust-version = "1.71.1"
+    rust-version = "1.71"
     license = "AGPL-3.0-or-later"
     homepage = "https://github.com/LightDotSo/LightDotSo"
     repository = "https://github.com/LightDotSo/LightDotSo"
 
 # Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
 [profile.dev]
+  debug = 0
   opt-level = 0
   codegen-units = 16
 
