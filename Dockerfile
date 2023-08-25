@@ -57,6 +57,7 @@ COPY --from=builder /app/target/release/bundler /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/consumer /usr/local/bin
 COPY --from=builder /app/target/release/indexer /usr/local/bin
+COPY --from=builder /app/target/release/paymaster /usr/local/bin
 COPY --from=builder /app/target/release/prometheus /usr/local/bin
 COPY --from=builder /app/target/release/rpc /usr/local/bin
 COPY --from=builder /app/target/release/simulator /usr/local/bin

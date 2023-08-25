@@ -38,7 +38,7 @@ pub async fn start_server() -> Result<()> {
         .route("/health", get(health_check))
         .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
 
-    let socket_addr = "0.0.0.0:3011".parse()?;
+    let socket_addr = "0.0.0.0:3013".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
 
     Ok(())
