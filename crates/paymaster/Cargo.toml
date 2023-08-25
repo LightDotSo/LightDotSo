@@ -1,0 +1,17 @@
+[package]
+  name = "lightdotso-paymaster"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  ethers-main = { workspace = true, features = ["aws"] }
+  eyre = { workspace = true }
+  rusoto_core = { version = "0.48.0", default-features = false, optional = true }
+  rusoto_kms = { version = "0.48.0", default-features = false, optional = true }
+  serde = { workspace = true }
+  spki = { workspace = true, optional = true }

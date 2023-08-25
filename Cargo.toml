@@ -13,6 +13,7 @@
     "crates/indexer",
     "crates/kafka",
     "crates/keychain",
+    "crates/paymaster",
     "crates/prisma",
     "crates/redis",
     "crates/rpc",
@@ -57,6 +58,7 @@
   ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
   ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-core" }
   ethers-providers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-providers" }
+  ethers-main = { git = "https://github.com/gakonst/ethers-rs", package = "ethers" }
   eyre = "0.6.8"
   foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "foundry-config" }
   foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "foundry-evm" }
@@ -66,6 +68,7 @@
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
   js-sys = "=0.3.56"
+  jsonrpsee = { version = "0.20.0", features = ["server", "macros", "client"] }
   lazy_static = "1.4.0"
   lightdotso-autometrics = { path = "./crates/autometrics" }
   lightdotso-bundler = { path = "./crates/bundler" }
@@ -75,6 +78,7 @@
   lightdotso-indexer = { path = "./crates/indexer" }
   lightdotso-kafka = { path = "./crates/kafka" }
   lightdotso-keychain = { path = "./crates/indexer" }
+  lightdotso-paymaster = { path = "./crates/indexer" }
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
@@ -99,6 +103,7 @@
   ] }
   serde = "1.0.183"
   serde_json = "1.0.104"
+  spki = "0.7.2"
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-grpc" }
   silius-primitives = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-primitives" }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
