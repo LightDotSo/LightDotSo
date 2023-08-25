@@ -9,5 +9,9 @@
   repository.workspace = true
 
 [dependencies]
+  async-trait = { workspace = true }
   eyre = { workspace = true }
+  jsonrpsee = { workspace = true }
+  reqwest = { workspace = true }
   serde = { workspace = true }
+  serde_json = { workspace = true }

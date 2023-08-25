@@ -49,7 +49,8 @@
 
 [workspace.dependencies]
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
-  autometrics = { version = "*" }
+  async-trait = "0.1.73"
+  autometrics = "0.6.0"
   axum = "0.6.16"
   backon = "0.4.1"
   byteorder = "1.4.3"
@@ -95,6 +96,7 @@
   ] }
   rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
   redb = "1.0.5"
+  reqwest = "0.11.20"
   revm = { version = "3", default-features = false, features = [
     "std",
     "serde",
