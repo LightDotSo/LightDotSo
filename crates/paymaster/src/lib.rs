@@ -16,20 +16,17 @@
 pub mod config;
 
 use ethers_main::{
-    signers::{AwsSigner, Signer},
+    core::k256::ecdsa::SigningKey,
+    signers::{Signer, Wallet},
     types::H256,
 };
 use eyre::Result;
-use rusoto_core::{credential::EnvironmentProvider, Client, HttpClient, Region};
-use rusoto_kms::KmsClient;
 
 pub async fn sign() -> Result<()> {
-    let client = Client::new_with(EnvironmentProvider::default(), HttpClient::new().unwrap());
-    let kms_client = KmsClient::new_with_client(client, Region::UsWest1);
-    let key_id = "...";
-    let chain_id = 1;
+    let wallet: Wallet<SigningKey> =
+        "0000000000000000000000000000000000000000000000000000000000000001".parse().unwrap();
+    let wallet = wallet.with_chain_id(1_u64);
 
-    let signer = AwsSigner::new(kms_client, key_id, chain_id).await?;
-    let _ = signer.sign_message(H256::zero()).await?;
+    let _ = wallet.sign_message(H256::zero()).await?;
     Ok(())
 }
