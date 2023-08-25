@@ -4,11 +4,11 @@
     "colId": "history",
     "containerId": "",
     "name": "eth_estimateUserOperationGas",
-    "url": "http://localhost:6000",
+    "url": "https://rpc.light.so/11155111",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:06:45.901Z",
-    "modified": "2023-08-23T09:08:14.398Z",
+    "modified": "2023-08-24T23:36:51.228Z",
     "headers": [
       {
         "name": "accept",
@@ -32,11 +32,11 @@
     "colId": "history",
     "containerId": "",
     "name": "eth_supportedEntryPoints",
-    "url": "http://localhost:3010/11155111",
+    "url": "https://rpc.light.so/11155111",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-08-24T20:52:08.492Z",
+    "modified": "2023-08-24T13:57:36.318Z",
     "headers": [
       {
         "name": "accept",

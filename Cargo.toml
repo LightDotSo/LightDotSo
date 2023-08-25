@@ -16,6 +16,7 @@
     "crates/prisma",
     "crates/redis",
     "crates/rpc",
+    "crates/simulator",
     "crates/telegram",
     "crates/tracing",
     "tools/embedded-prisma",
@@ -44,7 +45,7 @@
   codegen-units = 16
 
 [workspace.dependencies]
-  anvil = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
+  anvil = { git = "https://github.com/foundry-rs/foundry", rev = "95a93cd397f25f3f8d49d2851eb52bc2d52dd983", package = "anvil" }
   autometrics = { version = "*" }
   axum = "0.6.16"
   backon = "0.4.1"
@@ -56,6 +57,8 @@
   ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-core" }
   ethers-providers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-providers" }
   eyre = "0.6.8"
+  foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "95a93cd397f25f3f8d49d2851eb52bc2d52dd983", package = "foundry-config" }
+  foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "95a93cd397f25f3f8d49d2851eb52bc2d52dd983", package = "foundry-evm" }
   futures = "0.3.28"
   futures-util = "0.3.28"
   http = "0.2.8"
@@ -74,6 +77,7 @@
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
+  lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
