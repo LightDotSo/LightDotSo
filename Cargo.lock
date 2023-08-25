@@ -5568,6 +5568,7 @@ dependencies = [
  "lightdotso-bundler",
  "lightdotso-consumer",
  "lightdotso-db",
+ "lightdotso-gas",
  "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-prisma",
@@ -5639,6 +5640,14 @@ version = "0.1.0"
 dependencies = [
  "serenity",
  "tokio",
+]
+
+[[package]]
+name = "lightdotso-gas"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "serde",
 ]
 
 [[package]]

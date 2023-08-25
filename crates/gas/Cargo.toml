@@ -1,0 +1,13 @@
+[package]
+  name = "lightdotso-gas"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  eyre = { workspace = true }
+  serde = { workspace = true }

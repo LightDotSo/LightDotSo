@@ -29,6 +29,7 @@
   lightdotso-bundler = { workspace = true }
   lightdotso-consumer = { workspace = true }
   lightdotso-db = { workspace = true }
+  lightdotso-gas = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-prisma = { workspace = true }

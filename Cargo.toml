@@ -10,6 +10,7 @@
     "crates/core",
     "crates/db",
     "crates/discord",
+    "crates/gas",
     "crates/indexer",
     "crates/kafka",
     "crates/keychain",
@@ -75,6 +76,7 @@
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-discord = { path = "./crates/discord" }
   lightdotso-db = { path = "./crates/db" }
+  lightdotso-gas = { path = "./crates/gas" }
   lightdotso-indexer = { path = "./crates/indexer" }
   lightdotso-kafka = { path = "./crates/kafka" }
   lightdotso-keychain = { path = "./crates/indexer" }
