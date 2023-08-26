@@ -13,7 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod evm;
-pub mod simulator;
-pub mod simulator_api;
+pub use crate::paymaster::PaymasterServerImpl;
+use jsonrpsee::{core::RpcResult, proc_macros::rpc};
+
+#[rpc(server, namespace = "paymaster")]
+pub trait Paymaster {
+    #[method(name = "requestPaymasterAndData")]
+    async fn reuest_paymaster_and_data(&self) -> RpcResult<String>;
+
+    #[method(name = "requestGasAndPaymasterAndData")]
+    async fn reuest_gas_and_paymaster_and_data(&self) -> RpcResult<String>;
+}

@@ -5703,6 +5703,7 @@ version = "0.1.0"
 name = "lightdotso-paymaster"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "clap",
  "ethers 2.0.9",
  "eyre",
@@ -5754,6 +5755,7 @@ dependencies = [
 name = "lightdotso-simulator"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "clap",
  "ethers 2.0.9",
  "eyre",

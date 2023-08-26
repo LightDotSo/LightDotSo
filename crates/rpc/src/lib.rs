@@ -151,7 +151,11 @@ pub async fn rpc_proxy_handler(
             "simulator_simulateExecution" |
             "simulator_simulateExecutionBundle" |
             "simulator_simulateAssetChanges" |
-            "simulator_simulateAssetChangesBundle" => {
+            "simulator_simulateAssetChangesBundle" |
+            "simulator_simulateUserOperation" |
+            "simulator_simulateUserOperationBundle" |
+            "simulator_simulateUserOperationAssetChanges" |
+            "simulator_simulateUserOperationAssetChangesBundle" => {
                 info!("method: {}", method);
 
                 let result = get_client_result(
