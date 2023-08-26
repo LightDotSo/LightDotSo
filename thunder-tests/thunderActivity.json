@@ -108,5 +108,50 @@
         "value": "max_priority_fee_per_gas"
       }
     ]
+  },
+  {
+    "_id": "43110ed8-945a-4cf4-b6dc-94855466dd16",
+    "colId": "history",
+    "containerId": "",
+    "name": "gas_fetchGasEstimation Copy",
+    "url": "http://localhost:3010/internal/1",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:13:33.627Z",
+    "modified": "2023-08-26T00:59:45.457Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "Authorization",
+        "value": "Bearer asf"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getChainId\"\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "max_priority_fee_per_gas"
+      }
+    ]
   }
 ]

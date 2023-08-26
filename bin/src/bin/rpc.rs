@@ -27,6 +27,7 @@ use eyre::Result;
 use http::Method;
 use hyper::client;
 use lightdotso_autometrics::RPC_SLO;
+use lightdotso_axum::UserToken;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_rpc::{config::RpcArgs, rpc_proxy_handler};
 use lightdotso_tracing::{init, stdout, tracing::Level};
@@ -101,6 +102,11 @@ pub async fn start_server() -> Result<()> {
         .on_request(DefaultOnRequest::new().level(Level::INFO))
         .on_response(DefaultOnResponse::new().level(Level::INFO));
 
+    let trace_all_layer = TraceLayer::new_for_http()
+        .make_span_with(DefaultMakeSpan::new().include_headers(true))
+        .on_request(DefaultOnRequest::new().level(Level::DEBUG))
+        .on_response(DefaultOnResponse::new().level(Level::DEBUG));
+
     let app = Router::new()
         .route("/", get("hello world"))
         .route("/:chain_id", on(MethodFilter::all(), rpc_proxy_handler))
@@ -116,6 +122,14 @@ pub async fn start_server() -> Result<()> {
                 .layer(cors)
                 .buffer(5)
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
+                .into_inner(),
+        )
+        .route("/internal/:chain_id", on(MethodFilter::all(), rpc_proxy_handler))
+        .layer(
+            ServiceBuilder::new()
+                .layer(HandleErrorLayer::new(handle_error))
+                .layer(trace_all_layer)
+                .buffer(5)
                 .into_inner(),
         )
         .with_state(client);
