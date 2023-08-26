@@ -124,6 +124,7 @@
     "cors",
     "set-header",
     "limit",
+    "sensitive-headers",
   ] }
   tracing = "0.1.37"
   tracing-test = "0.2.4"

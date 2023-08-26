@@ -27,8 +27,10 @@ use eyre::Result;
 use hyper::client;
 use lightdotso_autometrics::RPC_SLO;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_rpc::{config::RpcArgs, internal_rpc_handler, public_rpc_handler};
-use lightdotso_tracing::{init, stdout, tracing::Level};
+use lightdotso_rpc::{
+    config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
+};
+use lightdotso_tracing::{init, otel, stdout, tracing::Level};
 use std::{borrow::Cow, net::SocketAddr, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
@@ -36,6 +38,7 @@ use tower_governor::{
 };
 use tower_http::{
     cors::{Any, CorsLayer},
+    // sensitive_headers::{SetSensitiveRequestHeadersLayer, SetSensitiveResponseHeadersLayer},
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
 
@@ -58,7 +61,12 @@ async fn handle_error(error: BoxError) -> impl IntoResponse {
 }
 
 pub async fn start_server() -> Result<()> {
-    init(vec![stdout(Level::INFO)]);
+    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
+        "development" => Level::TRACE,
+        _ => Level::INFO,
+    };
+
+    init(vec![stdout(log_level), otel()]);
 
     // Create a client
     let https = hyper_rustls::HttpsConnectorBuilder::new()
@@ -108,29 +116,28 @@ pub async fn start_server() -> Result<()> {
         .on_request(DefaultOnRequest::new().level(Level::INFO))
         .on_response(DefaultOnResponse::new().level(Level::INFO));
 
-    let trace_all_layer = TraceLayer::new_for_http()
-        .make_span_with(DefaultMakeSpan::new().include_headers(true))
-        .on_request(DefaultOnRequest::new().level(Level::DEBUG))
-        .on_response(DefaultOnResponse::new().level(Level::DEBUG));
-
     let app = Router::new()
         .route("/", get("rpc.light.so"))
         .route("/:chain_id", on(MethodFilter::all(), public_rpc_handler))
+        .route("/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
         .route("/health", get(health_check))
         .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
-        .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
             // License: Apache-2.0
             ServiceBuilder::new()
-                .propagate_x_request_id()
                 .layer(HandleErrorLayer::new(handle_error))
+                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(trace_layer)
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .buffer(5)
                 .layer(cors)
                 .into_inner(),
+        )
+        .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
+        .layer(
+            ServiceBuilder::new().layer(HandleErrorLayer::new(handle_error)).buffer(5).into_inner(),
         )
         .with_state(client);
 
