@@ -56,6 +56,7 @@ COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
 COPY --from=builder /app/target/release/bundler /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/consumer /usr/local/bin
+COPY --from=builder /app/target/release/gas /usr/local/bin
 COPY --from=builder /app/target/release/indexer /usr/local/bin
 COPY --from=builder /app/target/release/paymaster /usr/local/bin
 COPY --from=builder /app/target/release/prometheus /usr/local/bin
