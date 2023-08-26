@@ -73,6 +73,47 @@
         "form": []
       },
       "tests": []
+    },
+    {
+      "_id": "99146b35-c502-4eb0-9dd4-08c22ae49451",
+      "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
+      "containerId": "",
+      "name": "gas_requestGasEstimation",
+      "url": "https://rpc.light.so/1",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2023-08-26T10:07:19.550Z",
+      "modified": "2023-08-26T10:07:19.550Z",
+      "headers": [
+        {
+          "name": "accept",
+          "value": "application/json"
+        },
+        {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
+        "form": []
+      },
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "res-body",
+          "custom": "",
+          "action": "contains",
+          "value": "max_priority_fee_per_gas"
+        }
+      ]
     }
   ]
 }
