@@ -134,7 +134,7 @@ pub async fn start_server() -> Result<()> {
                 .layer(cors)
                 .into_inner(),
         )
-        .route("/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
+        .route("/protected/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
         .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
         .layer(
             ServiceBuilder::new().layer(HandleErrorLayer::new(handle_error)).buffer(5).into_inner(),
