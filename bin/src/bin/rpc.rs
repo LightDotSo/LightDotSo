@@ -133,7 +133,7 @@ pub async fn start_server() -> Result<()> {
         )
         .with_state(client);
 
-    let socket_addr = "[::]:3010".parse()?;
+    let socket_addr = "[::]:3000".parse()?;
     axum::Server::bind(&socket_addr)
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
         .await?;
