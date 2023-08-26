@@ -119,7 +119,6 @@ pub async fn start_server() -> Result<()> {
     let app = Router::new()
         .route("/", get("rpc.light.so"))
         .route("/:chain_id", on(MethodFilter::all(), public_rpc_handler))
-        .route("/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
         .route("/health", get(health_check))
         .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
         .layer(
@@ -135,6 +134,7 @@ pub async fn start_server() -> Result<()> {
                 .layer(cors)
                 .into_inner(),
         )
+        .route("/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
         .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
         .layer(
             ServiceBuilder::new().layer(HandleErrorLayer::new(handle_error)).buffer(5).into_inner(),
