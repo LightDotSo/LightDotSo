@@ -28,7 +28,7 @@ use http::Method;
 use hyper::client;
 use lightdotso_autometrics::RPC_SLO;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_rpc::{config::RpcArgs, rpc_proxy_handler};
+use lightdotso_rpc::{config::RpcArgs, internal_rpc_handler, public_rpc_handler};
 use lightdotso_tracing::{init, stdout, tracing::Level};
 use std::{borrow::Cow, net::SocketAddr};
 use tower::ServiceBuilder;
@@ -114,7 +114,7 @@ pub async fn start_server() -> Result<()> {
 
     let app = Router::new()
         .route("/", get("rpc.light.so"))
-        .route("/:chain_id", on(MethodFilter::all(), rpc_proxy_handler))
+        .route("/:chain_id", on(MethodFilter::all(), public_rpc_handler))
         .route("/health", get(health_check))
         .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
         .layer(
@@ -129,7 +129,7 @@ pub async fn start_server() -> Result<()> {
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .into_inner(),
         )
-        .route("/internal/:chain_id", on(MethodFilter::all(), rpc_proxy_handler))
+        .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
         .layer(
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))

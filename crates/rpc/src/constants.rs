@@ -64,21 +64,6 @@ lazy_static! {
     };
 }
 
-// The node rpc urls
-lazy_static! {
-    pub static ref NODE_RPC_URLS: HashMap<u64, String> = {
-        let mut m = HashMap::new();
-
-        // Mainnet
-        m.insert(1, "https://www.noderpc.xyz/rpc-mainnet/".to_string());
-        m.insert(137, "https://www.noderpc.xyz/rpc-polygon/".to_string());
-
-        // Testnet
-        m.insert(11155111, "https://www.noderpc.xyz/rpc-sepolia/".to_string());
-        m
-    };
-}
-
 // The chainnodes rpc urls
 lazy_static! {
     pub static ref CHAINNODES_RPC_URLS: HashMap<u64, String> = {

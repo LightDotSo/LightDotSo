@@ -20,4 +20,7 @@ pub struct RpcArgs {
     /// The infura API key
     #[clap(long, env = "INFURA_API_KEY")]
     pub infura_api_key: String,
+    /// The chainnodes API key
+    #[clap(long, env = "CHAINNODES_API_KEY")]
+    pub chainnodes_api_key: String,
 }
