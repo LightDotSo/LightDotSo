@@ -4253,6 +4253,24 @@ dependencies = [
 
 [[package]]
 name = "governor"
+version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c390a940a5d157878dd057c78680a33ce3415bcd05b4799509ea44210914b4d5"
+dependencies = [
+ "cfg-if",
+ "dashmap",
+ "futures",
+ "futures-timer",
+ "no-std-compat",
+ "nonzero_ext",
+ "parking_lot 0.12.1",
+ "quanta 0.9.3",
+ "rand 0.8.5",
+ "smallvec 1.11.0",
+]
+
+[[package]]
+name = "governor"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "821239e5672ff23e2a7060901fa622950bbd80b649cdaadd78d1c1767ed14eb4"
@@ -5514,6 +5532,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-axum"
+version = "0.1.0"
+dependencies = [
+ "autometrics",
+ "axum 0.6.20",
+ "governor 0.5.1",
+ "http",
+ "serde",
+ "tower",
+ "tower-http 0.4.3",
+ "tower_governor",
+]
+
+[[package]]
 name = "lightdotso-bin"
 version = "0.1.0"
 dependencies = [
@@ -5527,6 +5559,7 @@ dependencies = [
  "hyper",
  "hyper-rustls",
  "lightdotso-autometrics",
+ "lightdotso-axum",
  "lightdotso-bundler",
  "lightdotso-consumer",
  "lightdotso-db",
@@ -11793,7 +11826,7 @@ dependencies = [
  "forwarded-header-value",
  "futures",
  "futures-core",
- "governor",
+ "governor 0.6.0",
  "http",
  "pin-project",
  "thiserror",

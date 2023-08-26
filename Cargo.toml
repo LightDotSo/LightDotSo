@@ -5,6 +5,7 @@
     "apps/desktop/src-tauri",
     "bin",
     "crates/autometrics",
+    "crates/axum",
     "crates/bundler",
     "crates/consumer",
     "crates/core",
@@ -73,6 +74,7 @@
   jsonrpsee = { version = "0.18.2", features = ["server", "macros", "client"] }
   lazy_static = "1.4.0"
   lightdotso-autometrics = { path = "./crates/autometrics" }
+  lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-discord = { path = "./crates/discord" }
@@ -113,7 +115,7 @@
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
   tokio = { version = "1", features = ["full"] }
   tower = { version = "0.4.12" }
-  tower_governor = { version = "0.1.0" }
+  tower_governor = { version = "0.1.0", features = ["tracing"] }
   tower-http = { version = "0.4", features = ["trace"] }
   tracing = "0.1.37"
   tracing-test = "0.2.4"

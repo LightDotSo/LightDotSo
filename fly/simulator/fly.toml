@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for lightdotso-simulator on 2023-07-17T01:35:58-07:00
+# fly.toml app configuration file generated for lightdotso-simulator on 2023-08-25T18:45:40-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -13,6 +13,9 @@ kill_timeout = "5s"
 
 [build]
   image = "ghcr.io/lightdotso/lightdotso:latest"
+
+[deploy]
+  strategy = "bluegreen"
 
 [http_service]
   internal_port = 3013
@@ -38,6 +41,3 @@ kill_timeout = "5s"
 [metrics]
   port = 3013
   path = "/metrics"
-
-[deploy]
-  strategy = "bluegreen"

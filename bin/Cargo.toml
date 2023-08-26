@@ -26,6 +26,7 @@
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
   lightdotso-autometrics = { workspace = true }
+  lightdotso-axum = { workspace = true }
   lightdotso-bundler = { workspace = true }
   lightdotso-consumer = { workspace = true }
   lightdotso-db = { workspace = true }
