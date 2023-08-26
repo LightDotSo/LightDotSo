@@ -107,7 +107,7 @@ pub async fn start_server() -> Result<()> {
         .on_response(DefaultOnResponse::new().level(Level::DEBUG));
 
     let app = Router::new()
-        .route("/", get("hello world"))
+        .route("/", get("rpc.light.so"))
         .route("/:chain_id", on(MethodFilter::all(), rpc_proxy_handler))
         .route("/health", get(health_check))
         .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
@@ -133,7 +133,7 @@ pub async fn start_server() -> Result<()> {
         )
         .with_state(client);
 
-    let socket_addr = "0.0.0.0:3010".parse()?;
+    let socket_addr = "[::]:3010".parse()?;
     axum::Server::bind(&socket_addr)
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
         .await?;
