@@ -116,7 +116,15 @@
   tokio = { version = "1", features = ["full"] }
   tower = { version = "0.4.12" }
   tower_governor = { version = "0.1.0", features = ["tracing"] }
-  tower-http = { version = "0.4", features = ["trace"] }
+  tower-http = { version = "0.4", features = [
+    "trace",
+    "auth",
+    "request-id",
+    "catch-panic",
+    "cors",
+    "set-header",
+    "limit",
+  ] }
   tracing = "0.1.37"
   tracing-test = "0.2.4"
   uniffi = "0.24.2"
