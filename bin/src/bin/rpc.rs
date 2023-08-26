@@ -80,6 +80,12 @@ pub async fn start_server() -> Result<()> {
         .allow_headers(Any)
         .allow_origin(Any);
 
+    // Only allow CORS for internal requests
+    let internal_cors = CorsLayer::new()
+        .allow_methods(vec![Method::GET, Method::POST])
+        .allow_headers(Any)
+        .allow_origin(["lightdotso-rpc.internal:3000".parse().unwrap()]);
+
     // Rate limit based on IP address
     // From: https://github.com/benwis/tower-governor
     // License: MIT
@@ -128,6 +134,7 @@ pub async fn start_server() -> Result<()> {
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
                 .layer(trace_all_layer)
+                .layer(internal_cors)
                 .buffer(5)
                 .into_inner(),
         )

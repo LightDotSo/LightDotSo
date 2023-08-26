@@ -73,11 +73,11 @@
     "colId": "history",
     "containerId": "",
     "name": "gas_fetchGasEstimation",
-    "url": "http://localhost:3000/1",
+    "url": "https://rpc.light.so/1",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-08-25T21:43:26.148Z",
+    "modified": "2023-08-26T09:55:32.363Z",
     "headers": [
       {
         "name": "accept",
@@ -91,7 +91,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_fetchGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
       "form": []
     },
     "tests": [
