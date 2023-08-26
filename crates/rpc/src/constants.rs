@@ -16,6 +16,23 @@
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 
+// The internal gas rpc url
+lazy_static! {
+    pub static ref GAS_RPC_URL: String = "http://lightdotso-gas.internal:3000".to_string();
+}
+
+// The internal paymaster rpc url
+lazy_static! {
+    pub static ref PAYMASTER_RPC_URL: String =
+        "http://lightdotso-paymaster.internal:3000".to_string();
+}
+
+// The internal simulator rpc url
+lazy_static! {
+    pub static ref SIMULATOR_RPC_URL: String =
+        "http://lightdotso-simulator.internal:3000".to_string();
+}
+
 // The internal bundler rpc urls
 lazy_static! {
     pub static ref BUNDLER_RPC_URLS: HashMap<u64, String> = {

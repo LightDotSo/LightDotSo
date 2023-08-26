@@ -44,7 +44,7 @@ impl GasServer for GasServerImpl {
         return Ok(format!("light/{}", env!("CARGO_PKG_VERSION")));
     }
 
-    async fn fetch_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation> {
+    async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation> {
         match chain_id {
             1 => match mainnet_gas_estimation().await {
                 Ok(res) => Ok(res),

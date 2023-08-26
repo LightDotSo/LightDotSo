@@ -16,7 +16,9 @@
 pub mod config;
 mod constants;
 
-use crate::constants::{BUNDLER_RPC_URLS, INFURA_RPC_URLS};
+use crate::constants::{
+    BUNDLER_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, PAYMASTER_RPC_URL, SIMULATOR_RPC_URL,
+};
 use axum::{
     body::Body,
     extract::{Path, State},
@@ -114,6 +116,58 @@ pub async fn rpc_proxy_handler(
                     } else {
                         error!("Error while getting result from client: {:?}", result);
                     }
+                }
+            }
+            "gas_requestGasEstimation" => {
+                info!("method: {}", method);
+
+                let result = get_client_result(
+                    GAS_RPC_URL.to_string(),
+                    client.clone(),
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if result.status().is_success() {
+                    return result;
+                } else {
+                    error!("Error while getting result from client: {:?}", result);
+                }
+            }
+            "paymaster_requestPaymasterAndData" | "paymaster_requestGasAndPaymasterAndData" => {
+                info!("method: {}", method);
+
+                let result = get_client_result(
+                    PAYMASTER_RPC_URL.to_string(),
+                    client.clone(),
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if result.status().is_success() {
+                    return result;
+                } else {
+                    error!("Error while getting result from client: {:?}", result);
+                }
+            }
+            "simulator_simulateExecution" |
+            "simulator_simulateExecutionBundle" |
+            "simulator_simulateAssetChanges" |
+            "simulator_simulateAssetChangesBundle" |
+            "simulator_simulateUserOperation" |
+            "simulator_simulateUserOperationBundle" |
+            "simulator_simulateUserOperationAssetChanges" |
+            "simulator_simulateUserOperationAssetChangesBundle" => {
+                info!("method: {}", method);
+
+                let result = get_client_result(
+                    SIMULATOR_RPC_URL.to_string(),
+                    client.clone(),
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if result.status().is_success() {
+                    return result;
+                } else {
+                    error!("Error while getting result from client: {:?}", result);
                 }
             }
             &_ => {}

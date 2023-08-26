@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// use crate::{paymaster::PaymasterServerImpl, paymaster_api::PaymasterServer};
+use crate::{paymaster::PaymasterServerImpl, paymaster_api::PaymasterServer};
 use clap::Parser;
 use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::info;
@@ -38,10 +38,10 @@ impl PaymasterArgs {
         tokio::spawn({
             async move {
                 // Create the server
-                let server = JsonRpcServer::new(self.rpc_address.clone(), true, false);
+                let mut server = JsonRpcServer::new(self.rpc_address.clone(), true, false);
 
                 // Add the paymaster server
-                // server.add_method(PaymasterServerImpl {}.into_rpc()).unwrap();
+                server.add_method(PaymasterServerImpl {}.into_rpc()).unwrap();
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));

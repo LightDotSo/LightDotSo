@@ -14,6 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod config;
+pub mod paymaster;
+pub mod paymaster_api;
 
 use ethers_main::{
     core::k256::ecdsa::SigningKey,
