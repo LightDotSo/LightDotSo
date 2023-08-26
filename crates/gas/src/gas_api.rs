@@ -22,6 +22,6 @@ pub trait Gas {
     #[method(name = "clientVersion")]
     async fn client_version(&self) -> RpcResult<String>;
 
-    #[method(name = "fetchGasEstimation")]
-    async fn fetch_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation>;
+    #[method(name = "requestGasEstimation")]
+    async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation>;
 }
