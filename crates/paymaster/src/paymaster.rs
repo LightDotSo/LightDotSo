@@ -21,11 +21,11 @@ pub struct PaymasterServerImpl {}
 
 #[async_trait]
 impl PaymasterServer for PaymasterServerImpl {
-    async fn reuest_paymaster_and_data(&self) -> RpcResult<String> {
+    async fn request_paymaster_and_data(&self) -> RpcResult<String> {
         return Ok(format!("paymaster/{}", env!("CARGO_PKG_VERSION")));
     }
 
-    async fn reuest_gas_and_paymaster_and_data(&self) -> RpcResult<String> {
+    async fn request_gas_and_paymaster_and_data(&self) -> RpcResult<String> {
         return Ok(format!("paymaster/{}", env!("CARGO_PKG_VERSION")));
     }
 }

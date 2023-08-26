@@ -19,8 +19,8 @@ use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 #[rpc(server, namespace = "paymaster")]
 pub trait Paymaster {
     #[method(name = "requestPaymasterAndData")]
-    async fn reuest_paymaster_and_data(&self) -> RpcResult<String>;
+    async fn request_paymaster_and_data(&self) -> RpcResult<String>;
 
     #[method(name = "requestGasAndPaymasterAndData")]
-    async fn reuest_gas_and_paymaster_and_data(&self) -> RpcResult<String>;
+    async fn request_gas_and_paymaster_and_data(&self) -> RpcResult<String>;
 }
