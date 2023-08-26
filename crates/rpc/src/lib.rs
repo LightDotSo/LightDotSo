@@ -17,7 +17,8 @@ pub mod config;
 mod constants;
 
 use crate::constants::{
-    BUNDLER_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, PAYMASTER_RPC_URL, SIMULATOR_RPC_URL,
+    BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, PAYMASTER_RPC_URL,
+    SIMULATOR_RPC_URL,
 };
 use axum::{
     body::Body,
@@ -32,6 +33,7 @@ use serde_json::{Error as SerdeError, Value};
 
 pub type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 
+/// Get the method from the body of the JSON RPC request
 pub async fn get_method(body: Body) -> Result<String, SerdeError> {
     // Convert the body into bytes
     let body = body::to_bytes(body)
@@ -50,7 +52,8 @@ pub async fn get_method(body: Body) -> Result<String, SerdeError> {
     Ok(method)
 }
 
-async fn get_client_result(uri: String, client: Client, body: Body) -> Response<Body> {
+/// Get the result from the client
+async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Response<Body>> {
     info!("uri: {}", uri);
 
     // Create a new request with the same method and body
@@ -61,13 +64,39 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Response<
         .body(body)
         .unwrap();
 
-    client.request(client_req).await.unwrap()
+    let res = client.request(client_req).await.unwrap();
+    if res.status().is_success() {
+        Some(res)
+    } else {
+        error!("Error while getting result from client: {:?}", res);
+        None
+    }
 }
 
+/// The public rpc handler for the RPC server
+pub async fn public_rpc_handler(
+    state: State<Client>,
+    chain_id: Path<String>,
+    req: Request<Body>,
+) -> Response<Body> {
+    rpc_proxy_handler(state, chain_id, req, false).await
+}
+
+/// The internal rpc handler for the RPC server
+pub async fn internal_rpc_handler(
+    state: State<Client>,
+    chain_id: Path<String>,
+    req: Request<Body>,
+) -> Response<Body> {
+    rpc_proxy_handler(state, chain_id, req, true).await
+}
+
+/// The rpc proxy handler for the RPC server
 pub async fn rpc_proxy_handler(
     State(client): State<Client>,
     Path(chain_id): Path<String>,
     mut req: Request<Body>,
+    debug: bool,
 ) -> Response<Body> {
     info!("req: {:?}", req);
 
@@ -93,8 +122,39 @@ pub async fn rpc_proxy_handler(
 
     // Get the method from the body
     let method = get_method(Body::from(full_body_bytes.clone())).await;
+    info!("method: {:?}", method);
+
     if let Ok(method) = method {
         match method.as_str() {
+            "debug_traceBlock" |
+            "debug_traceBlockByHash" |
+            "debug_traceBlockByNumber" |
+            "debug_traceCall" |
+            "debug_traceTransaction" => {
+                if !debug {
+                    return Response::builder()
+                        .status(404)
+                        .body(Body::from("Debug Not Enabled"))
+                        .unwrap();
+                }
+
+                // Get the rpc url from the chainnodes constants
+                if let Some(chainnodes_rpc_url) = CHAINNODES_RPC_URLS.get(&chain_id) {
+                    let uri = format!(
+                        "{}{}",
+                        chainnodes_rpc_url,
+                        std::env::var("CHAINNODES_API_KEY").unwrap()
+                    );
+
+                    // Get the result from the client
+                    let result =
+                        get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone()))
+                            .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                }
+            }
             "eth_sendUserOperation" |
             "eth_estimateUserOperationGas" |
             "eth_supportedEntryPoints" |
@@ -111,10 +171,8 @@ pub async fn rpc_proxy_handler(
                         Body::from(full_body_bytes.clone()),
                     )
                     .await;
-                    if result.status().is_success() {
-                        return result;
-                    } else {
-                        error!("Error while getting result from client: {:?}", result);
+                    if let Some(resp) = result {
+                        return resp;
                     }
                 }
             }
@@ -127,10 +185,8 @@ pub async fn rpc_proxy_handler(
                     Body::from(full_body_bytes.clone()),
                 )
                 .await;
-                if result.status().is_success() {
-                    return result;
-                } else {
-                    error!("Error while getting result from client: {:?}", result);
+                if let Some(resp) = result {
+                    return resp;
                 }
             }
             "paymaster_requestPaymasterAndData" | "paymaster_requestGasAndPaymasterAndData" => {
@@ -142,10 +198,8 @@ pub async fn rpc_proxy_handler(
                     Body::from(full_body_bytes.clone()),
                 )
                 .await;
-                if result.status().is_success() {
-                    return result;
-                } else {
-                    error!("Error while getting result from client: {:?}", result);
+                if let Some(resp) = result {
+                    return resp;
                 }
             }
             "simulator_simulateExecution" |
@@ -164,10 +218,8 @@ pub async fn rpc_proxy_handler(
                     Body::from(full_body_bytes.clone()),
                 )
                 .await;
-                if result.status().is_success() {
-                    return result;
-                } else {
-                    error!("Error while getting result from client: {:?}", result);
+                if let Some(resp) = result {
+                    return resp;
                 }
             }
             &_ => {}
@@ -179,16 +231,13 @@ pub async fn rpc_proxy_handler(
         let uri = format!("{}{}", infura_rpc_url, std::env::var("INFURA_API_KEY").unwrap());
 
         // Get the result from the client
-        let result = get_client_result(uri, client, Body::from(full_body_bytes.clone())).await;
-        if result.status().is_success() {
-            return result;
-        } else {
-            error!("Error while getting result from client: {:?}", result);
+        let result =
+            get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone())).await;
+        if let Some(resp) = result {
+            return resp;
         }
     }
 
     // Return an error if the chain_id is not supported or not found
     Response::builder().status(404).body(Body::from("Not Found for RPC Request")).unwrap()
-    // * req.uri_mut() = Uri::try_from(uri).unwrap();
-    // client.request(req).await.unwrap()
 }
