@@ -122,6 +122,8 @@ pub async fn rpc_proxy_handler(
 
     // Get the method from the body
     let method = get_method(Body::from(full_body_bytes.clone())).await;
+    info!("method: {:?}", method);
+
     if let Ok(method) = method {
         match method.as_str() {
             "debug_traceBlock" |
