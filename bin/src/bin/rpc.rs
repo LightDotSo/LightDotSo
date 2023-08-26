@@ -27,7 +27,6 @@ use eyre::Result;
 use http::Method;
 use hyper::client;
 use lightdotso_autometrics::RPC_SLO;
-use lightdotso_axum::UserToken;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_rpc::{config::RpcArgs, rpc_proxy_handler};
 use lightdotso_tracing::{init, stdout, tracing::Level};
