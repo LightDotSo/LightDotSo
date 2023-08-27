@@ -83,9 +83,8 @@ FROM base AS production
 COPY --from=builder /app/apps/api/.next/standalone ./
 COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
 COPY --from=builder /app/apps/api/public ./apps/api/public
-EXPOSE 3000
 
-RUN doppler --version
-RUN doppler secrets download --no-file --no-backup --no-prompt
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-CMD ["doppler", "run", "--", "node", "apps/api/server.js"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["printenv"]
