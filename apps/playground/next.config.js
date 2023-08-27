@@ -1,3 +1,5 @@
+const { PrismaPlugin } = require("@prisma/nextjs-monorepo-workaround-plugin");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -36,7 +38,10 @@ const nextConfig = {
     ];
   },
   transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],
-  webpack: config => {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
     config.externals.push(
       "async_hooks",
       "pino-pretty",
