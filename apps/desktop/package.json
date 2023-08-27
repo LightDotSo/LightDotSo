@@ -27,14 +27,14 @@
   "devDependencies": {
     "@lightdotso/tailwindcss": "workspace:*",
     "@tauri-apps/cli": "^1.4.0",
-    "@types/node": "^20.4.10",
-    "@types/react": "^18.2.20",
+    "@types/node": "^20.5.6",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react": "^4.0.4",
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.27",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.28",
     "tailwindcss": "^3.3.3",
-    "typescript": "^5.1.6",
+    "typescript": "^5.2.2",
     "vite": "^4.4.9"
   },
   "publishConfig": {
