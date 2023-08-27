@@ -15,7 +15,6 @@
   "scripts": {
     "build": "next build || true",
     "dev": "next dev",
-    "postinstall": "pnpm --filter @lightdotso/prisma build",
     "lint": "next lint",
     "start": "next start"
   },

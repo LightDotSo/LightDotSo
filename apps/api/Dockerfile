@@ -13,52 +13,63 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM node:18-alpine AS base
+# Dockerfile heavily inspired by https://github.com/supabase/supabase/blob/6fc14dd7d3050e733fc91414526a6d2e7fc3c919/studio/Dockerfile
+# License: MIT License
 
-FROM base AS builder
-RUN apk add --no-cache libc6-compat
-RUN apk update
+FROM node:18-slim AS base
 
-# Install dependencies
-RUN npm install -g pnpm@7.9.5 turbo@1.10.6
+ARG TARGETARCH
 
-# Builder
-FROM base as builder
+# Fixes issues with Sentry CLI and SSL certificates during build
+RUN apt-get update -qq && \
+    apt-get install -y ca-certificates && \
+    rm -rf /var/lib/apt/lists/* && \
+    update-ca-certificates
+
+# Build the prisma dep.
+RUN npm install -g turbo@1.10.11 pnpm@8.6.9
 
 WORKDIR /app
 
+# Builder
+FROM base as turbo
+
 # Copy over dir.
 COPY . .
-RUN turbo prune --scope=@lightdotso/api
+RUN turbo prune --scope=@lightdotso/api --docker
 
 # Dependencies Stage
 FROM base AS dependencies
 
-WORKDIR /app
-COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=turbo /app/out/json ./
+COPY --from=turbo /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+
+# Install additional dependencies for arm64 build (required by bufferutil)
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+    apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*; fi
+
 RUN pnpm install
 
-COPY --from=builder /app/out/full/ .
+# dev contains dependencies and source code not compiled
+FROM dependencies as dev
+
+RUN ls
+COPY --from=turbo /app/out/full ./
 COPY turbo.json turbo.json
-RUN pnpm build --filter @lightdotso/api
+
+FROM dev as builder
+
+RUN pnpm turbo run build --filter @lightdotso/api  --include-dependencies --no-deps
 
 # Runner Stage
-FROM base AS runner
-WORKDIR /app
+FROM dependencies AS runner
 
-# Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+COPY --from=builder /app/api/public ./api/public
+COPY --from=builder /app/api/.next/standalone/app ./
+COPY --from=builder /app/api/.next/static ./api/.next/static
+EXPOSE 3000
 
-COPY --from=dependencies /app .
-
-# # Automatically leverage output traces to reduce image size
-# # https://nextjs.org/docs/advanced-features/output-file-tracing
-# COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-# COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
-# COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
-
-CMD node apps/web/server.js
+CMD ["node", "api/server.js"]
