@@ -9,6 +9,7 @@
       "outputs": [
         "dist/**",
         "prisma/schema-rs.prisma",
+        "src/zod/**",
         "./../../node_modules/.pnpm/*/node_modules/@prisma/client"
       ]
     },
