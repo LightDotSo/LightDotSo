@@ -71,10 +71,10 @@ FROM dev as builder
 
 RUN pnpm turbo run build --filter @lightdotso/api  --include-dependencies --no-deps
 
-# Runner Stage
-FROM dependencies AS runner
-
 RUN ls
+
+# Runner Stage
+FROM base AS production
 
 COPY --from=builder /app/@lightdotso/api/public ./@lightdotso/api/public
 COPY --from=builder /app/@lightdotso/api/.next/standalone/app ./
