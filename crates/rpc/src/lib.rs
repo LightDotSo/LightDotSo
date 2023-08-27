@@ -64,11 +64,15 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
         .body(body)
         .unwrap();
 
-    let res = client.request(client_req).await.unwrap();
-    if res.status().is_success() {
-        Some(res)
+    if let Ok(res) = client.request(client_req).await {
+        if res.status().is_success() {
+            Some(res)
+        } else {
+            error!("Error while getting result from client: {:?}", res);
+            None
+        }
     } else {
-        error!("Error while getting result from client: {:?}", res);
+        error!("Error while making request to client");
         None
     }
 }
