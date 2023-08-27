@@ -85,8 +85,7 @@ pub async fn public_rpc_handler(
 /// The protected rpc handler for the RPC server
 pub async fn protected_rpc_handler(
     state: State<Client>,
-    key: Path<String>,
-    chain_id: Path<String>,
+    Path((key, chain_id)): Path<(String, String)>,
     req: Request<Body>,
 ) -> Response<Body> {
     // If the key is not in the `PROTECTED_RPC_KEYS` environment variable return a 404
@@ -98,7 +97,7 @@ pub async fn protected_rpc_handler(
         return Response::builder().status(404).body(Body::from("Not Found")).unwrap();
     }
 
-    rpc_proxy_handler(state, chain_id, req, false).await
+    rpc_proxy_handler(state, Path(chain_id), req, false).await
 }
 
 /// The internal rpc handler for the RPC server
