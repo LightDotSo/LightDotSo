@@ -51,7 +51,7 @@
     "load-shed",
     "limit",
   ] }
-  tower-http = { workspace = true, features = ["cors"] }
+  tower-http = { workspace = true }
   tower_governor = { workspace = true }
 
 [build-dependencies]

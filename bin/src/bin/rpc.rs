@@ -24,19 +24,21 @@ use axum::{
 use clap::Parser;
 use dotenvy::dotenv;
 use eyre::Result;
-use http::Method;
 use hyper::client;
 use lightdotso_autometrics::RPC_SLO;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_rpc::{config::RpcArgs, internal_rpc_handler, public_rpc_handler};
-use lightdotso_tracing::{init, stdout, tracing::Level};
-use std::{borrow::Cow, net::SocketAddr};
+use lightdotso_rpc::{
+    config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
+};
+use lightdotso_tracing::{init, otel, stdout, tracing::Level};
+use std::{borrow::Cow, net::SocketAddr, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
 use tower_http::{
     cors::{Any, CorsLayer},
+    // sensitive_headers::{SetSensitiveRequestHeadersLayer, SetSensitiveResponseHeadersLayer},
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
 
@@ -59,7 +61,12 @@ async fn handle_error(error: BoxError) -> impl IntoResponse {
 }
 
 pub async fn start_server() -> Result<()> {
-    init(vec![stdout(Level::INFO)]);
+    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
+        "development" => Level::TRACE,
+        _ => Level::INFO,
+    };
+
+    init(vec![stdout(log_level), otel()]);
 
     // Create a client
     let https = hyper_rustls::HttpsConnectorBuilder::new()
@@ -76,15 +83,17 @@ pub async fn start_server() -> Result<()> {
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
     // License: Apache-2.0
     let cors = CorsLayer::new()
-        .allow_methods(vec![Method::GET, Method::POST])
+        .allow_methods([
+            http::Method::GET,
+            http::Method::PUT,
+            http::Method::POST,
+            http::Method::PATCH,
+            http::Method::DELETE,
+            http::Method::OPTIONS,
+        ])
         .allow_headers(Any)
-        .allow_origin(Any);
-
-    // Only allow CORS for internal requests
-    let internal_cors = CorsLayer::new()
-        .allow_methods(vec![Method::GET, Method::POST])
-        .allow_headers(Any)
-        .allow_origin(["lightdotso-rpc.internal:3000".parse().unwrap()]);
+        .allow_origin(Any)
+        .max_age(Duration::from_secs(86400));
 
     // Rate limit based on IP address
     // From: https://github.com/benwis/tower-governor
@@ -107,11 +116,6 @@ pub async fn start_server() -> Result<()> {
         .on_request(DefaultOnRequest::new().level(Level::INFO))
         .on_response(DefaultOnResponse::new().level(Level::INFO));
 
-    let trace_all_layer = TraceLayer::new_for_http()
-        .make_span_with(DefaultMakeSpan::new().include_headers(true))
-        .on_request(DefaultOnRequest::new().level(Level::DEBUG))
-        .on_response(DefaultOnResponse::new().level(Level::DEBUG));
-
     let app = Router::new()
         .route("/", get("rpc.light.so"))
         .route("/:chain_id", on(MethodFilter::all(), public_rpc_handler))
@@ -123,20 +127,17 @@ pub async fn start_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
+                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(trace_layer)
-                .layer(cors)
-                .buffer(5)
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
+                .buffer(5)
+                .layer(cors)
                 .into_inner(),
         )
+        .route("/protected/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
         .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
         .layer(
-            ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(handle_error))
-                .layer(trace_all_layer)
-                .layer(internal_cors)
-                .buffer(5)
-                .into_inner(),
+            ServiceBuilder::new().layer(HandleErrorLayer::new(handle_error)).buffer(5).into_inner(),
         )
         .with_state(client);
 

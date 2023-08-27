@@ -5539,6 +5539,8 @@ dependencies = [
  "axum 0.6.20",
  "governor 0.5.1",
  "http",
+ "hyper",
+ "lightdotso-tracing",
  "serde",
  "tower",
  "tower-http 0.4.3",
@@ -11793,6 +11795,7 @@ version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "55ae70283aba8d2a8b411c695c437fe25b8b5e44e23e780662002fc72fb47a82"
 dependencies = [
+ "base64 0.21.2",
  "bitflags 2.4.0",
  "bytes",
  "futures-core",
@@ -11800,10 +11803,12 @@ dependencies = [
  "http",
  "http-body",
  "http-range-header",
+ "mime",
  "pin-project-lite",
  "tower-layer",
  "tower-service",
  "tracing",
+ "uuid 1.4.1",
 ]
 
 [[package]]
