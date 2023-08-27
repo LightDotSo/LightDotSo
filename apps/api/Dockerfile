@@ -69,7 +69,7 @@ COPY turbo.json turbo.json
 
 FROM dev as builder
 
-RUN pnpm turbo run build --filter @lightdotso/api  --include-dependencies --no-deps
+RUN pnpm turbo run build --filter @lightdotso/api --include-dependencies --no-deps
 
 # Runner Stage
 FROM base AS production
