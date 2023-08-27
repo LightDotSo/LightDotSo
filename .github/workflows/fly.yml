@@ -39,7 +39,7 @@ jobs:
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
-        run: flyctl deploy --config apps/api/fly.toml --dockerfile apps/api/Dockerfile --build-arg DOPPLER_TOKEN=${{ secrets.DOPPLER_TOKEN }} --build-arg INNGEST_EVENT_KEY=${{ secrets.INNGEST_EVENT_KEY }} --build-arg TURBO_TEAM=${{ secrets.TURBO_TEAM }} --build-arg TURBO_TOKEN=${{ secrets.TURBO_TOKEN }} --remote-only
+        run: flyctl deploy --config apps/api/fly.toml --dockerfile apps/api/Dockerfile --build-arg INNGEST_EVENT_KEY=${{ secrets.INNGEST_EVENT_KEY }} --build-arg TURBO_TEAM=${{ secrets.TURBO_TEAM }} --build-arg TURBO_TOKEN=${{ secrets.TURBO_TOKEN }} --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-bundler:

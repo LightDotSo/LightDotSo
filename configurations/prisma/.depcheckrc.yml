@@ -4,6 +4,7 @@ ignores:
   - kysely-postgres-js
   - postgres
   - prisma-kysely
+  - zod
   - zod-prisma
   - "@types/node"
   - typescript
