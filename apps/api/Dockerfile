@@ -18,7 +18,14 @@
 
 FROM node:18-slim AS base
 
+ARG INNGEST_SIGNING_KEY
 ARG TARGETARCH
+ARG TURBO_TEAM
+ARG TURBO_TOKEN
+
+ENV INNGEST_SIGNING_KEY=${INNGEST_SIGNING_KEY}
+ENV TURBO_TEAM=${TURBO_TEAM}
+ENV TURBO_TOKEN=${TURBO_TOKEN}
 
 # Fixes issues with Sentry CLI and SSL certificates during build
 RUN apt-get update -qq && \
