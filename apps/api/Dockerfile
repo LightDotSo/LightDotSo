@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Dockerfile heavily inspired by https://github.com/supabase/supabase/blob/6fc14dd7d3050e733fc91414526a6d2e7fc3c919/@lightdotso/api/Dockerfile
+# Dockerfile heavily inspired by https://github.com/supabase/supabase/blob/6fc14dd7d3050e733fc91414526a6d2e7fc3c919/studio/Dockerfile
 # License: MIT License
 
 FROM node:18-slim AS base
@@ -71,14 +71,12 @@ FROM dev as builder
 
 RUN pnpm turbo run build --filter @lightdotso/api  --include-dependencies --no-deps
 
-RUN ls
-
 # Runner Stage
 FROM base AS production
 
-COPY --from=builder /app/@lightdotso/api/public ./@lightdotso/api/public
-COPY --from=builder /app/@lightdotso/api/.next/standalone/app ./
-COPY --from=builder /app/@lightdotso/api/.next/static ./@lightdotso/api/.next/static
+COPY --from=builder /app/apps/api/public ./apps/api/public
+COPY --from=builder /app/apps/api/.next/standalone/app ./
+COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
 EXPOSE 3000
 
 CMD ["node", "api/server.js"]
