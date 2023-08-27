@@ -84,7 +84,7 @@ COPY --from=builder /app/apps/api/.next/standalone ./
 COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
 COPY --from=builder /app/apps/api/public ./apps/api/public
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY apps/api/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["printenv"]
