@@ -39,6 +39,13 @@ const nextConfig = {
   },
   outputFileTracing: true,
   transpilePackages: ["@lightdotso/trpc"],
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
+
+    return config;
+  },
 };
 
 module.exports = nextConfig;
