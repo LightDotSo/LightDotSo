@@ -51,6 +51,5 @@
   "tailwindCSS.experimental.configFile": "configurations/tailwindcss/src/index.js",
   // Typescript settings
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "rust-analyzer.linkedProjects": ["./crates/simulator/Cargo.toml"]
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

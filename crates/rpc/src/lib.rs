@@ -101,7 +101,7 @@ pub async fn protected_rpc_handler(
         return Response::builder().status(404).body(Body::from("Not Found")).unwrap();
     }
 
-    rpc_proxy_handler(state, Path(chain_id), req, false).await
+    rpc_proxy_handler(state, Path(chain_id), req, true).await
 }
 
 /// The internal rpc handler for the RPC server
