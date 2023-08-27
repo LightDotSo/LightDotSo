@@ -18,32 +18,27 @@
 
 FROM node:18-slim AS base
 
+ARG INNGEST_EVENT_KEY
 ARG TARGETARCH
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
-ARG DATABASE_URL
-ARG INNGEST_EVENT_KEY
-ARG NEXTAUTH_URL
-ARG NEXTAUTH_SECRET
-ARG UPSTASH_REDIS_REST_URL
-ARG UPSTASH_REDIS_REST_TOKEN
-
+ENV INNGEST_EVENT_KEY=${INNGEST_EVENT_KEY}
 ENV TURBO_TEAM=${TURBO_TEAM}
 ENV TURBO_TOKEN=${TURBO_TOKEN}
-
-ARG DATABASE_URL=${DATABASE_URL}
-ENV INNGEST_EVENT_KEY=${INNGEST_EVENT_KEY}
-ARG NEXTAUTH_URL=${NEXTAUTH_URL}
-ARG NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-ARG UPSTASH_REDIS_REST_URL=${UPSTASH_REDIS_REST_URL}
-ARG UPSTASH_REDIS_REST_TOKEN=${UPSTASH_REDIS_REST_TOKEN}
 
 # Fixes issues with Sentry CLI and SSL certificates during build
 RUN apt-get update -qq && \
     apt-get install -y ca-certificates && \
     rm -rf /var/lib/apt/lists/* && \
     update-ca-certificates
+
+# Install Doppler CLI
+RUN apt-get update && apt-get install -y apt-transport-https ca-certificates curl gnupg && \
+    curl -sLf --retry 3 --tlsv1.2 --proto "=https" 'https://packages.doppler.com/public/cli/gpg.DE2A7741A397C129.key' | gpg --dearmor -o /usr/share/keyrings/doppler-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/doppler-archive-keyring.gpg] https://packages.doppler.com/public/cli/deb/debian any-version main" | tee /etc/apt/sources.list.d/doppler-cli.list && \
+    apt-get update && \
+    apt-get -y install doppler
 
 # Build the prisma dep.
 RUN npm install -g turbo@1.10.11 pnpm@8.6.9
@@ -90,4 +85,4 @@ COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
 COPY --from=builder /app/apps/api/public ./apps/api/public
 EXPOSE 3000
 
-CMD ["node", "apps/api/server.js"]
+CMD ["doppler", "run", "--", "node", "apps/api/server.js"]
