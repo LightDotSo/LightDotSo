@@ -85,5 +85,7 @@ COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
 COPY --from=builder /app/apps/api/public ./apps/api/public
 EXPOSE 3000
 
-ENTRYPOINT ["doppler", "run", "--"]
-CMD ["node", "apps/api/server.js"]
+RUN doppler --version
+RUN doppler secrets download --no-file --no-backup --no-prompt
+
+CMD ["doppler", "run", "--", "node", "apps/api/server.js"]
