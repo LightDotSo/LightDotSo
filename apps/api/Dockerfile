@@ -63,7 +63,6 @@ RUN pnpm install
 # dev contains dependencies and source code not compiled
 FROM dependencies as dev
 
-RUN ls
 COPY --from=turbo /app/out/full ./
 COPY turbo.json turbo.json
 
@@ -79,4 +78,4 @@ COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
 COPY --from=builder /app/apps/api/public ./apps/api/public
 EXPOSE 3000
 
-CMD ["node", "api/server.js"]
+CMD ["node", "apps/api/server.js"]
