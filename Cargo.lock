@@ -5767,6 +5767,7 @@ dependencies = [
  "lightdotso-tracing",
  "revm",
  "serde",
+ "serde_json",
  "silius-rpc",
  "tokio",
 ]
