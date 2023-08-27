@@ -85,4 +85,5 @@ COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
 COPY --from=builder /app/apps/api/public ./apps/api/public
 EXPOSE 3000
 
-CMD ["doppler", "run", "--", "node", "apps/api/server.js"]
+ENTRYPOINT ["doppler", "run", "--"]
+CMD ["node", "apps/api/server.js"]

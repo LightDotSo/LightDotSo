@@ -3,3 +3,4 @@ ignores:
   - swagger-ui-react
   - "@lightdotso/tsconfig"
   - viem
+  - typescript
