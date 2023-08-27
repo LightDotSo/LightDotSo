@@ -71,14 +71,12 @@ FROM dev as builder
 
 RUN pnpm turbo run build --filter @lightdotso/api  --include-dependencies --no-deps
 
-RUN ls apps/api
-
 # Runner Stage
 FROM base AS production
 
-COPY --from=builder /app/apps/api/public ./apps/api/public
-COPY --from=builder /app/apps/api/.next/standalone/app ./
+COPY --from=builder /app/apps/api/.next/standalone ./
 COPY --from=builder /app/apps/api/.next/static ./apps/api/.next/static
+COPY --from=builder /app/apps/api/public ./apps/api/public
 EXPOSE 3000
 
 CMD ["node", "api/server.js"]
