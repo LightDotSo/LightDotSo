@@ -166,25 +166,27 @@ export const authOptions: AuthOptions = {
           }
 
           // Create new user and account sequentially
-          const { user } = await prisma.$transaction(async tx => {
-            const user = await tx.user.create({
-              data: {
-                name: address,
-              },
-            });
-            const account = await tx.account.create({
-              data: {
-                userId: user.id,
-                providerType: "credentials",
-                providerId: "eth",
-                providerAccountId: address,
-              },
-            });
-            return {
-              user,
-              account,
-            };
-          });
+          const { user } = await prisma.$transaction(
+            async (tx: { user: any; account: any }) => {
+              const user = await tx.user.create({
+                data: {
+                  name: address,
+                },
+              });
+              const account = await tx.account.create({
+                data: {
+                  userId: user.id,
+                  providerType: "credentials",
+                  providerId: "eth",
+                  providerAccountId: address,
+                },
+              });
+              return {
+                user,
+                account,
+              };
+            },
+          );
 
           return {
             id: user.id,
