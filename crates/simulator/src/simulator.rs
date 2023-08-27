@@ -16,99 +16,96 @@
 // Entire file is derived from https://github.com/EnsoFinance/transaction-simulator/blob/42bc679fb171de760838457820d5c6622e53ab15/src/simulation.rs
 // License: MIT
 
-use crate::{evm::Evm, simulator_api::SimulatorServer};
-use async_trait::async_trait;
-use ethers_main::{
-    abi::{Address, Uint},
-    types::{Bytes, Log},
-};
-use eyre::{eyre, Result};
-use foundry_evm::{trace::node::CallTraceNode, CallKind};
-use jsonrpsee::core::RpcResult;
-use revm::interpreter::InstructionResult;
-use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SimulationRequest {
-    #[serde(rename = "chainId")]
-    pub chain_id: u64,
-    pub from: Address,
-    pub to: Address,
-    pub data: Option<Bytes>,
-    #[serde(rename = "gasLimit")]
-    pub gas_limit: u64,
-    pub value: Option<String>,
-    #[serde(rename = "blockNumber")]
-    pub block_number: Option<u64>,
-    #[serde(rename = "formatTrace")]
-    pub format_trace: Option<bool>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct SimulationResponse {
-    #[serde(rename = "simulationId")]
-    pub simulation_id: u64,
-    #[serde(rename = "gasUsed")]
-    pub gas_used: u64,
-    #[serde(rename = "blockNumber")]
-    pub block_number: u64,
-    pub success: bool,
-    pub trace: Vec<CallTrace>,
-    #[serde(rename = "formattedTrace")]
-    pub formatted_trace: Option<String>,
-    pub logs: Vec<Log>,
-    #[serde(rename = "exitReason")]
-    pub exit_reason: InstructionResult,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-pub struct CallTrace {
-    #[serde(rename = "callType")]
-    pub call_type: CallKind,
-    pub from: Address,
-    pub to: Address,
-    pub value: Uint,
-}
-
-impl From<CallTraceNode> for CallTrace {
-    fn from(node: CallTraceNode) -> Self {
-        CallTrace {
-            call_type: node.kind(),
-            from: node.trace.caller,
-            to: node.trace.address,
-            value: node.trace.value,
-        }
-    }
-}
+use crate::{
+    evm::Evm,
+    simulator_api::SimulatorServer,
+    types::{CallTrace, SimulationRequest, SimulationResponse, UserOperationRequest},
+};
+use async_trait::async_trait;
+use ethers_main::abi::Uint;
+use eyre::{eyre, Result};
+use jsonrpsee::core::RpcResult;
 
 pub struct SimulatorServerImpl {}
 
 #[async_trait]
 impl SimulatorServer for SimulatorServerImpl {
-    async fn simulate_execution(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_execution(&self, tx: SimulationRequest) -> RpcResult<String> {
+        let res = simulate(tx).await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
-    async fn simulate_execution_bundle(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_execution_bundle(&self, txs: Vec<SimulationRequest>) -> RpcResult<String> {
+        let res = simulate_bundle(txs).await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
-    async fn simulate_asset_changes(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_asset_changes(&self, tx: SimulationRequest) -> RpcResult<String> {
+        let res = simulate(tx).await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
-    async fn simulate_asset_changes_bundle(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_asset_changes_bundle(
+        &self,
+        txs: Vec<SimulationRequest>,
+    ) -> RpcResult<String> {
+        let res = simulate_bundle(txs).await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
-    async fn simulate_user_operation(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_user_operation(
+        &self,
+        user_operation: UserOperationRequest,
+    ) -> RpcResult<String> {
+        let res = simulate(SimulationRequest::from(user_operation)).await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
-    async fn simulate_user_operation_bundle(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_user_operation_bundle(
+        &self,
+        user_operations: Vec<UserOperationRequest>,
+    ) -> RpcResult<String> {
+        let res =
+            simulate_bundle(user_operations.into_iter().map(SimulationRequest::from).collect())
+                .await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
-    async fn simulate_user_operation_asset_changes(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_user_operation_asset_changes(
+        &self,
+        user_operation: UserOperationRequest,
+    ) -> RpcResult<String> {
+        let res = simulate(SimulationRequest::from(user_operation)).await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
-    async fn simulate_user_operation_asset_changes_bundle(&self) -> RpcResult<String> {
-        return Ok(format!("simulator/{}", env!("CARGO_PKG_VERSION")));
+    async fn simulate_user_operation_asset_changes_bundle(
+        &self,
+        user_operations: Vec<UserOperationRequest>,
+    ) -> RpcResult<String> {
+        let res =
+            simulate_bundle(user_operations.into_iter().map(SimulationRequest::from).collect())
+                .await;
+        match res {
+            Ok(res) => Ok(serde_json::to_string(&res).unwrap()),
+            Err(err) => Ok(serde_json::to_string(&err.to_string()).unwrap()),
+        }
     }
 }
 
@@ -145,20 +142,14 @@ async fn run(
             value,
             transaction.data,
             transaction.gas_limit,
-            transaction.format_trace.unwrap_or_default(),
+            true,
         )
         .await
         .map_err(|_err| eyre!("Failed to commit transaction"))?
     } else {
-        evm.call_raw(
-            transaction.from,
-            transaction.to,
-            value,
-            transaction.data,
-            transaction.format_trace.unwrap_or_default(),
-        )
-        .await
-        .map_err(|_err| eyre!("Failed to call transaction"))?
+        evm.call_raw(transaction.from, transaction.to, value, transaction.data, true)
+            .await
+            .map_err(|_err| eyre!("Failed to call transaction"))?
     };
 
     Ok(SimulationResponse {
