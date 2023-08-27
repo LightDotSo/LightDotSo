@@ -87,4 +87,4 @@ COPY --from=builder /app/apps/api/public ./apps/api/public
 COPY apps/api/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["printenv"]
+CMD ["node", "apps/api/server.js"]
