@@ -71,6 +71,8 @@ FROM dev as builder
 
 RUN pnpm turbo run build --filter @lightdotso/api  --include-dependencies --no-deps
 
+RUN ls apps
+
 # Runner Stage
 FROM base AS production
 
