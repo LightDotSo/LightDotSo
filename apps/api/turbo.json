@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NEXT_PUBLIC_VERCEL_URL"],
+      "env": ["NEXT_PUBLIC_VERCEL_URL", "INNGEST_EVENT_KEY"],
       "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
