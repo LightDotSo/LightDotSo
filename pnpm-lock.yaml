@@ -5,11 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@trpc/next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45':
-    hash: 7q65qiupfkoifqtcnm7r65x52e
-    path: patches/@trpc__next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45.patch
   next@13.4.19:
-    hash: y632ycmnrfgefti6rzpygabq3u
+    hash: wlhtyksin2unubqmbhl4y2iuzu
     path: patches/next@13.4.19.patch
 
 importers:
@@ -322,7 +319,7 @@ importers:
         version: 0.0.8(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)
       '@trpc/next':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
-        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(patch_hash=7q65qiupfkoifqtcnm7r65x52e)(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
@@ -337,7 +334,7 @@ importers:
         version: 2.6.0(typescript@5.2.2)
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -458,7 +455,7 @@ importers:
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)
       '@trpc/next':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
-        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(patch_hash=7q65qiupfkoifqtcnm7r65x52e)(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/react-query':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(react-dom@18.2.0)(react@18.2.0)
@@ -473,7 +470,7 @@ importers:
         version: 1.1.1(kysely@0.26.3)(postgres@3.3.5)
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -545,7 +542,7 @@ importers:
         version: 7.22.11
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -637,7 +634,7 @@ importers:
         version: 7.22.11
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       nextra:
         specifier: ^2.12.2
         version: 2.12.2(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -728,7 +725,7 @@ importers:
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)
       '@trpc/next':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
-        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(patch_hash=7q65qiupfkoifqtcnm7r65x52e)(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/react-query':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(react-dom@18.2.0)(react@18.2.0)
@@ -743,7 +740,7 @@ importers:
         version: 1.1.1(kysely@0.26.3)(postgres@3.3.5)
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -906,7 +903,7 @@ importers:
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)
       '@trpc/next':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
-        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(patch_hash=7q65qiupfkoifqtcnm7r65x52e)(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/react-query':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(react-dom@18.2.0)(react@18.2.0)
@@ -933,7 +930,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -1099,7 +1096,7 @@ importers:
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)
       '@trpc/next':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
-        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(patch_hash=7q65qiupfkoifqtcnm7r65x52e)(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/react-query':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(react-dom@18.2.0)(react@18.2.0)
@@ -1129,7 +1126,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1322,7 +1319,7 @@ importers:
         version: 3.13.0(tailwindcss@3.3.3)
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(react-dom@18.2.0)(react@18.2.0)
 
   configurations/kysely:
     dependencies:
@@ -1463,7 +1460,7 @@ importers:
         version: 0.4.4-canary.81(@prisma/client@5.2.0)(next-auth@4.23.1)
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -1578,7 +1575,7 @@ importers:
         version: 4.0.0
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1645,7 +1642,7 @@ importers:
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)
       '@trpc/next':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
-        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(patch_hash=7q65qiupfkoifqtcnm7r65x52e)(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
+        version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/react-query':
         specifier: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
         version: 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(react-dom@18.2.0)(react@18.2.0)
@@ -1660,7 +1657,7 @@ importers:
         version: 1.22.0
       next:
         specifier: ^13.4.19
-        version: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -10210,7 +10207,7 @@ packages:
       fs-extra: 11.1.1
       image-size: 1.0.2
       loader-utils: 3.2.1
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.88.2)
       pnp-webpack-plugin: 1.7.0(typescript@5.2.2)
       postcss: 8.4.28
@@ -11083,7 +11080,7 @@ packages:
       react-dom: ^18.0.0
     dependencies:
       '@tanstack/react-query': 5.0.0-beta.9(react-dom@18.2.0)(react@18.2.0)
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -11319,7 +11316,7 @@ packages:
       '@trpc/server': 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
     dev: false
 
-  /@trpc/next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(patch_hash=7q65qiupfkoifqtcnm7r65x52e)(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0):
+  /@trpc/next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(next@13.4.19)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-P2radS/ZMKWj0yuAB7rkDvcfSmrOLCU0Wlmlor9CecOdqLfRhEB5lof/5/6PNE0Ira2Tcf5r2oS9dkHHy7hFWw==}
     peerDependencies:
       '@tanstack/react-query': ^5.0.0-beta.9
@@ -11334,12 +11331,11 @@ packages:
       '@trpc/client': 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)
       '@trpc/react-query': 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server': 10.32.1-alpha-actions-2-2023-08-09-10-23-47.45
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-ssr-prepass: 1.5.0(react@18.2.0)
     dev: false
-    patched: true
 
   /@trpc/react-query@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(@trpc/server@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-4nMi1xQi0eCJII59Ia/yAZUqg96SBAVuDuofkgr83s/RhvQDg+G3jNXj5SXwVc1MFXLdW1TFh47181d8OdkwYA==}
@@ -24098,7 +24094,7 @@ packages:
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
       jose: 4.14.4
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.4.3
       preact: 10.16.0
@@ -24132,7 +24128,7 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -24144,12 +24140,12 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /next@13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-HuPSzzAbJ1T4BD8e0bs6B9C1kWQ6gv8ykZoRWs5AQoiIuqbGHHdQO7Ljuvg05Q0Z24E2ABozHe6FxDvI6HfyAw==}
     engines: {node: '>=16.8.0'}
     hasBin: true
@@ -24190,7 +24186,7 @@ packages:
       - babel-plugin-macros
     patched: true
 
-  /next@13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-HuPSzzAbJ1T4BD8e0bs6B9C1kWQ6gv8ykZoRWs5AQoiIuqbGHHdQO7Ljuvg05Q0Z24E2ABozHe6FxDvI6HfyAw==}
     engines: {node: '>=16.8.0'}
     hasBin: true
@@ -24248,7 +24244,7 @@ packages:
       git-url-parse: 13.1.0
       intersection-observer: 0.12.2
       match-sorter: 6.3.1
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-seo: 6.1.0(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       next-themes: 0.2.1(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
       nextra: 2.12.2(next@13.4.19)(react-dom@18.2.0)(react@18.2.0)
@@ -24278,7 +24274,7 @@ packages:
       gray-matter: 4.0.3
       katex: 0.16.8
       lodash.get: 4.4.2
-      next: 13.4.19(patch_hash=y632ycmnrfgefti6rzpygabq3u)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.4.19(patch_hash=wlhtyksin2unubqmbhl4y2iuzu)(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-mdx-remote: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       p-limit: 3.1.0
       react: 18.2.0
