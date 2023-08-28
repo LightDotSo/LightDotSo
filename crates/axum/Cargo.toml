@@ -11,7 +11,7 @@
 [dependencies]
   autometrics = { workspace = true }
   axum = { workspace = true }
-  governor = "0.5.1"
+  governor = "0.6.0"
   http = { workspace = true }
   hyper = { workspace = true }
   lightdotso-tracing = { workspace = true }
