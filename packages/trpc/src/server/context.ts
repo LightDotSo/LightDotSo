@@ -15,8 +15,17 @@
 
 import { getAuthSession } from "@lightdotso/auth";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+// import Pusher from "pusher-http-edge";
 
 export async function createContext(opts?: FetchCreateContextFnOptions) {
+  // const eventServer = new Pusher({
+  //   appId: env.PUSHER_APP_ID,
+  //   key: env.NEXT_PUBLIC_PUSHER_APP_KEY,
+  //   secret: env.PUSHER_SECRET,
+  //   cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
+  //   useTLS: true,
+  // });
+
   const session = await getAuthSession();
 
   return {
