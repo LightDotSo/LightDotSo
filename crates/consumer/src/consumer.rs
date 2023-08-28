@@ -51,7 +51,7 @@ impl Consumer {
         let args = IndexerArgs::parse();
 
         // Create the indexer
-        let indexer = args.create().await;
+        let mut indexer = args.create().await;
 
         // Create the db client
         let db = Arc::new(create_client().await.unwrap());
@@ -81,16 +81,23 @@ impl Consumer {
                             let payload_opt = m.payload_view::<str>();
 
                             // If the payload is valid
-                            if let Some(Ok(payload)) = payload_opt {
+                            if let Some(Ok(payload)) = payload_opt && let Some(key) = m.key() && key.len() >= 8  {
                                 // Deserialize the payload
                                 match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
                                     Ok(block) => {
+                                        // Get the chain id from the key
+                                        // Conversion borrowed from: https://stackoverflow.com/questions/29307474/how-can-i-convert-a-buffer-of-a-slice-of-bytes-u8-to-an-integer
+                                        let chain_id = u64::from_ne_bytes(key.split_at(8).0.try_into().unwrap());
+
                                         // Log each message as an example.
-                                        info!("key: '{:?}', block: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-                            m.key(), block, m.topic(), m.partition(), m.offset(), m.timestamp());
+                                        info!(
+                                            "Indexing block: {:?} at chain id: {:?}",
+                                            block.number.unwrap().as_u64(),
+                                            chain_id
+                                        );
 
                                         // Index the block
-                                        let res = indexer.index(db.clone(), block.clone()).await;
+                                        let res = indexer.index_with_internal(db.clone(), block.clone(), chain_id).await;
 
                                         // Commit the message
                                         if let Err(e) = res {
@@ -100,8 +107,9 @@ impl Consumer {
 
                                         // Log success
                                         info!(
-                                            "Successfully indexed block: {:?}",
-                                            block.number.unwrap().as_u64()
+                                            "Successfully indexed block: {:?} at chain id: {:?}",
+                                            block.number.unwrap().as_u64(),
+                                            chain_id
                                         );
 
                                         // Commit the message

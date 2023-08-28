@@ -62,7 +62,7 @@ pub fn make_unique<T: Hash + Eq + Clone>(items: Vec<T>) -> Vec<T> {
 
 #[derive(Clone)]
 pub struct Indexer {
-    chain_id: usize,
+    chain_id: u64,
     redis_client: Option<Arc<Client>>,
     kafka_client: Option<Arc<FutureProducer>>,
     http_client: Arc<Provider<Http>>,
@@ -83,7 +83,9 @@ impl Indexer {
 
         // Check if the chain ID matches the arg chain ID
         let chain_id = http_client.get_chainid().await.unwrap();
-        if (chain_id.as_u64() as usize) != args.chain_id {
+
+        // Skip check if chain id is 0, consumer needs to be able to handle all chains
+        if args.chain_id != 0 && chain_id.as_u64() != args.chain_id {
             panic!("Chain ID mismatch: expected {}, got {}", args.chain_id, chain_id.as_u64());
         }
 
@@ -158,6 +160,27 @@ impl Indexer {
                 error!("index error: {:?}", res);
             }
         }
+    }
+
+    /// Index w/ specified chain id
+    pub async fn index_with_internal(
+        &mut self,
+        db_client: Arc<PrismaClient>,
+        block: Block<H256>,
+        chain_id: u64,
+    ) -> eyre::Result<()> {
+        // Mutate the chain id
+        self.chain_id = chain_id;
+
+        // Get the url for the rpc
+        let rpc = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
+
+        // Mutate the http client
+        let http_client = Arc::new(Provider::<Http>::try_from(rpc).unwrap());
+        self.http_client = http_client;
+
+        // Index the block
+        self.index(db_client, block).await
     }
 
     /// The core indexing function.

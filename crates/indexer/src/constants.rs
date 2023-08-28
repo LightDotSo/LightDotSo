@@ -29,7 +29,7 @@ lazy_static! {
 
 // The sleep chain ids
 lazy_static! {
-    pub static ref SLEEP_CHAIN_IDS: HashMap<usize, i32> = {
+    pub static ref SLEEP_CHAIN_IDS: HashMap<u64, i32> = {
         let mut m = HashMap::new();
         m.insert(31337, 1);
         m.insert(11155111, 3);
@@ -39,12 +39,12 @@ lazy_static! {
 
 // The anvil chain id
 lazy_static! {
-    pub static ref ANVIL_CHAIN_ID: usize = 31337;
+    pub static ref ANVIL_CHAIN_ID: u64 = 31337;
 }
 
 // The testnet chain ids
 lazy_static! {
-  pub static ref TESTNET_CHAIN_IDS: [usize; 2] = [
+  pub static ref TESTNET_CHAIN_IDS: [u64; 2] = [
     // Local
     31337,
     // Sepolia
@@ -54,7 +54,7 @@ lazy_static! {
 
 // The kafka chain ids
 lazy_static! {
-  pub static ref KAFKA_CHAIN_IDS: [usize; 1] = [
+  pub static ref KAFKA_CHAIN_IDS: [u64; 1] = [
     // Optimism
     10
   ];
