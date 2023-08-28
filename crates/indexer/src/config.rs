@@ -23,9 +23,9 @@ use std::sync::Arc;
 #[derive(Debug, Clone, Parser, Default)]
 pub struct IndexerArgs {
     /// The chain id of the chain to index.
-    #[arg(long, short, default_value_t = 1)]
+    #[arg(long, short, default_value_t = 0)]
     #[clap(long, env = "CHAIN_ID")]
-    pub chain_id: usize,
+    pub chain_id: u64,
     /// The RPC endpoint to connect to.
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "INDEXER_RPC_URL")]
@@ -69,6 +69,12 @@ impl IndexerArgs {
         // Print the config
         info!("Config: {:?}", self);
 
+        // Check if the chain id is not 0
+        if self.chain_id == 0 {
+            // Return an error
+            return Err(eyre::eyre!("Chain id is 0"));
+        }
+
         // Construct the indexer
         let indexer = Indexer::new(self).await;
 
@@ -102,7 +108,7 @@ mod tests {
         let config_args = IndexerArgs::parse_from([""]);
 
         // Verify the default values
-        assert_eq!(config_args.chain_id, 1);
+        assert_eq!(config_args.chain_id, 0);
         assert_eq!(config_args.rpc, "");
         assert_eq!(config_args.ws, "");
         assert_eq!(config_args.batch_size, 1);

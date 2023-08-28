@@ -63,7 +63,7 @@ pub fn is_wallet_present(
 /// Set a range of values depending on the status
 pub fn set_block_status(
     redis_conn: &mut redis::Connection,
-    chain_id: usize,
+    chain_id: u64,
     block_number: i64,
     status: bool,
 ) -> redis::RedisResult<()> {

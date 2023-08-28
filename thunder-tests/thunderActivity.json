@@ -114,11 +114,11 @@
     "colId": "history",
     "containerId": "",
     "name": "debug_traceCall",
-    "url": "https://arb1.arbitrum.io/rpc",
+    "url": "http://localhost:3000/internal/11155111",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-26T10:42:05.410Z",
-    "modified": "2023-08-27T00:10:48.531Z",
+    "modified": "2023-08-28T23:17:56.510Z",
     "headers": [
       {
         "name": "Content-Type",
