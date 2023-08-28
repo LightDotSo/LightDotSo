@@ -31,6 +31,7 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   // secret: process.env.NEXTAUTH_SECRET ?? process.env.NEXT_PUBLIC_SECRET,
+  secret: "secret",
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.warn("signIn", { user, account, profile, email, credentials });
