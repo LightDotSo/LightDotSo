@@ -23,7 +23,7 @@ jobs:
       - name: Fetch Head
         uses: actions/checkout@v3
       - name: Diff Metrics
-        uses: autometrics-dev/diff-metrics@v1
+        uses: autometrics-dev/diff-metrics@v2
         with:
           gh-token: ${{ secrets.GITHUB_TOKEN }}
           rust-roots: |
