@@ -45,5 +45,3 @@ file_env() {
 
 # load secrets either from environment variables or files
 file_env 'NEXTAUTH_SECRET'
-
-exec doppler run -- "$@"
