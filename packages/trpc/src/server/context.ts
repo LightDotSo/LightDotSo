@@ -15,6 +15,7 @@
 
 import { getAuthSession } from "@lightdotso/auth";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
+// TODO: Add pusher
 // import Pusher from "pusher-http-edge";
 
 export async function createContext(opts?: FetchCreateContextFnOptions) {

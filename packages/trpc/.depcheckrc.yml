@@ -4,3 +4,4 @@ ignores:
   - "@lightdotso/tsconfig"
   - viem
   - typescript
+  - pusher-http-edge
