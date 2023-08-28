@@ -166,7 +166,8 @@
   "packageManager": "pnpm@8.6.9",
   "pnpm": {
     "patchedDependencies": {
-      "@trpc/next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45": "patches/@trpc__next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45.patch"
+      "@trpc/next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45": "patches/@trpc__next@10.32.1-alpha-actions-2-2023-08-09-10-23-47.45.patch",
+      "next@13.4.19": "patches/next@13.4.19.patch"
     }
   }
 }
