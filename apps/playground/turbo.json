@@ -13,7 +13,7 @@
         "NODE_ENV",
         "VERCEL_URL"
       ],
-      "inputs": ["app/**", "pages/**", "src/**"],
+      "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "clean": {

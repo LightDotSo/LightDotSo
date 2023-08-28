@@ -13,26 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getAuthSession } from "@lightdotso/auth";
-import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-// TODO: Add pusher
-// import Pusher from "pusher-http-edge";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@lightdotso/auth";
+import { NextResponse } from "next/server";
 
-export async function createContext(opts?: FetchCreateContextFnOptions) {
-  // const eventServer = new Pusher({
-  //   appId: env.PUSHER_APP_ID,
-  //   key: env.NEXT_PUBLIC_PUSHER_APP_KEY,
-  //   secret: env.PUSHER_SECRET,
-  //   cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
-  //   useTLS: true,
-  // });
+export async function GET() {
+  const session = await getServerSession(authOptions);
 
-  const session = await getAuthSession();
-
-  return {
+  return NextResponse.json({
+    authenticated: !!session,
     session,
-    headers: opts && Object.fromEntries(opts.req.headers),
-  };
+  });
 }
-
-export type Context = Awaited<ReturnType<typeof createContext>>;
