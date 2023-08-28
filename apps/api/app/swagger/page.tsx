@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+// "use client";
 
-import SwaggerUI from "swagger-ui-react";
-import "swagger-ui-react/swagger-ui.css";
+// import SwaggerUI from "swagger-ui-react";
+// import "swagger-ui-react/swagger-ui.css";
 
-// Url for local development, vercel deployment
-const url = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc/openapi.json`
-  : "http://localhost:3000/api/trpc/openapi.json";
+// // Url for local development, vercel deployment
+// const url = process.env.NEXT_PUBLIC_VERCEL_URL
+//   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc/openapi.json`
+//   : "http://localhost:3000/api/trpc/openapi.json";
 
-export default function Page() {
-  return <SwaggerUI url={url} />;
-}
+// export default function Page() {
+//   return <SwaggerUI url={url} />;
+// }
