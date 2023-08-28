@@ -68,6 +68,7 @@
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {
+    "next": "13.4.13",
     "solc": "0.8.18"
   },
   "devDependencies": {
@@ -165,6 +166,9 @@
   },
   "packageManager": "pnpm@8.6.9",
   "pnpm": {
+    "overrides": {
+      "next": "$next"
+    },
     "patchedDependencies": {}
   }
 }
