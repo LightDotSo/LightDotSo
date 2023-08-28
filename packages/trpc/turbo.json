@@ -8,6 +8,7 @@
         "PORT",
         "NEXTAUTH_URL",
         "NEXT_PUBLIC_VERCEL_URL",
+        "NEXT_PUBLIC_VERCEL_GIT_REPO_SLUG",
         "NODE_ENV",
         "VERCEL_URL"
       ],
