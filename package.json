@@ -117,7 +117,7 @@
     "dotenv-cli": "^7.3.0",
     "esbuild": "^0.19.2",
     "eslint": "^8.48.0",
-    "eslint-config-next": "^13.4.19",
+    "eslint-config-next": "^13.4.13",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-turbo": "^1.10.13",
     "eslint-import-resolver-typescript": "^3.6.0",
