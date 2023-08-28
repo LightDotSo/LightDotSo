@@ -4,14 +4,18 @@
   members = [
     "apps/desktop/src-tauri",
     "bin",
+    "crates/autometrics",
+    "crates/axum",
     "crates/bundler",
     "crates/consumer",
     "crates/core",
     "crates/db",
     "crates/discord",
+    "crates/gas",
     "crates/indexer",
     "crates/kafka",
     "crates/keychain",
+    "crates/paymaster",
     "crates/prisma",
     "crates/redis",
     "crates/rpc",
@@ -28,13 +32,14 @@
   [workspace.package]
     version = "0.1.0"
     edition = "2021"
-    rust-version = "1.70"
+    rust-version = "1.71"
     license = "AGPL-3.0-or-later"
     homepage = "https://github.com/LightDotSo/LightDotSo"
     repository = "https://github.com/LightDotSo/LightDotSo"
 
 # Ref: https://www.uffizzi.com/blog/optimizing-rust-builds-for-faster-github-actions-pipelines
 [profile.dev]
+  debug = 0
   opt-level = 0
   codegen-units = 16
 
@@ -44,32 +49,44 @@
   codegen-units = 16
 
 [workspace.dependencies]
-  anyhow = "1.0.71"
-  anvil = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
-  autometrics = { version = "*" }
-  axum = "0.6.18"
+  anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
+  async-trait = "0.1.73"
+  autometrics = "0.6.0"
+  axum = "0.6.16"
   backon = "0.4.1"
   byteorder = "1.4.3"
   chrono = "0.4.26"
   clap = "4.3.12"
   dotenvy = "0.15"
-  ethers = { git = "https://github.com/gakonst/ethers-rs" }
+  ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
+  ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-core" }
+  ethers-providers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-providers" }
+  ethers-main = { git = "https://github.com/gakonst/ethers-rs", package = "ethers" }
   eyre = "0.6.8"
-  foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
-  foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "0e33b3e4246482e21b7008a3e6fe115ed6dda85b" }
+  foundry-config = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "foundry-config" }
+  foundry-evm = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "foundry-evm" }
   futures = "0.3.28"
+  futures-util = "0.3.28"
   http = "0.2.8"
+  hyper = { version = "0.14", features = ["full"] }
+  hyper-rustls = "0.24.1"
   js-sys = "=0.3.56"
+  jsonrpsee = { version = "0.18.2", features = ["server", "macros", "client"] }
   lazy_static = "1.4.0"
+  lightdotso-autometrics = { path = "./crates/autometrics" }
+  lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-discord = { path = "./crates/discord" }
   lightdotso-db = { path = "./crates/db" }
+  lightdotso-gas = { path = "./crates/gas" }
   lightdotso-indexer = { path = "./crates/indexer" }
   lightdotso-kafka = { path = "./crates/kafka" }
   lightdotso-keychain = { path = "./crates/indexer" }
+  lightdotso-paymaster = { path = "./crates/paymaster" }
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
+  lightdotso-rpc = { path = "./crates/rpc" }
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
@@ -79,8 +96,9 @@
   prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
     "mocking",
   ] }
-  rdkafka = "0.33.2"
+  rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
   redb = "1.0.5"
+  reqwest = "0.11.20"
   revm = { version = "3", default-features = false, features = [
     "std",
     "serde",
@@ -91,20 +109,24 @@
   ] }
   serde = "1.0.183"
   serde_json = "1.0.104"
-  silius-grpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
-  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
-  silius-rpc = { git = "https://github.com/Vid201/silius", rev = "865801d0c0dfcd3860330549cd892221f30f2e12" }
+  spki = "0.7.2"
+  silius-grpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-grpc" }
+  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-primitives" }
+  silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
   tokio = { version = "1", features = ["full"] }
   tower = { version = "0.4.12" }
-  tower-http = { version = "0.4", features = ["trace"] }
-  tracing = "0.1.37"
-  tracing-futures = "0.2.5"
-  tracing-subscriber = { version = "0.3.17", features = [
-    "env-filter",
-    "fmt",
-    "json",
-    "std",
+  tower_governor = { version = "0.1.0", features = ["tracing"] }
+  tower-http = { version = "0.4", features = [
+    "trace",
+    "auth",
+    "request-id",
+    "catch-panic",
+    "cors",
+    "set-header",
+    "limit",
+    "sensitive-headers",
   ] }
+  tracing = "0.1.37"
   tracing-test = "0.2.4"
   uniffi = "0.24.2"
   uniffi_macros = "0.24.2"

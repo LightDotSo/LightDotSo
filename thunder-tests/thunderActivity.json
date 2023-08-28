@@ -1,0 +1,136 @@
+[
+  {
+    "_id": "89f31e1e-0b13-4b69-86cd-fe49ece2b3fc",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_estimateUserOperationGas",
+    "url": "https://rpc.light.so/11155111",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:06:45.901Z",
+    "modified": "2023-08-24T23:36:51.228Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_estimateUserOperationGas\",\n  \"params\": [\n    {\n      \"sender\": \"0xEed01c4FfA9f88096b77d2f16c2e143a94D71298\",\n      \"nonce\": \"0x2a\",\n      \"initCode\": \"0x\",\n      \"callData\": \"0x18dfb3c7000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000001000000000000000000000000e7bc9b3a936f122f08aac3b1fac3c3ec29a78874000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000044a9059cbb00000000000000000000000026409e498023b57f5b10d6ce1677113e1326683c0000000000000000000000000000000000000000000000022b1c8c1227a0000000000000000000000000000000000000000000000000000000000000\",\n      \"callGasLimit\": \"0x44\",\n      \"verificationGasLimit\": \"0xffffff\",\n      \"preVerificationGas\": \"0x18d08\",\n      \"maxFeePerGas\": \"0x2b8f4e\",\n      \"maxPriorityFeePerGas\": \"0x2b8f4e\",\n      \"signature\": \"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c\",\n      \"paymasterAndData\": \"0x\"\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "9bdaa4d4-e1e6-41d8-befb-0cce2d9f8372",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_supportedEntryPoints",
+    "url": "http://localhost:3000/protected/a/11155111",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:13:33.627Z",
+    "modified": "2023-08-27T00:06:01.598Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_supportedEntryPoints\"\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+      }
+    ]
+  },
+  {
+    "_id": "53d04bf2-7f0d-47db-9c25-af258749efc5",
+    "colId": "history",
+    "containerId": "",
+    "name": "gas_requestGasEstimation",
+    "url": "https://rpc.light.so/1",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:13:33.627Z",
+    "modified": "2023-08-26T09:55:32.363Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "max_priority_fee_per_gas"
+      }
+    ]
+  },
+  {
+    "_id": "e12c2082-2532-4cbd-a999-71d19f526bf6",
+    "colId": "history",
+    "containerId": "",
+    "name": "debug_traceCall",
+    "url": "https://arb1.arbitrum.io/rpc",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-26T10:42:05.410Z",
+    "modified": "2023-08-27T00:10:48.531Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"method\": \"debug_traceCall\",\n  \"params\": [\n    {\n      \"from\": null,\n      \"to\": \"0x6b175474e89094c44da98b954eedeac495271d0f\",\n      \"data\": \"0x70a082310000000000000000000000006E0d01A76C3Cf4288372a29124A26D4353EE51BE\"\n    },\n    \"latest\"\n  ],\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\"\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]

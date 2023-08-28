@@ -13,18 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
 use dotenvy::dotenv;
+use eyre::Result;
+use lightdotso_autometrics::API_SLO;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
+use lightdotso_kafka::namespace::TRANSACTION;
 use lightdotso_tracing::{
-    init, otel, stdout,
-    tracing::{info, Level},
+    init, init_metrics, otel, stdout,
+    tracing::{error, info, Level},
 };
 
-#[autometrics]
+#[autometrics(objective = API_SLO)]
 async fn health_check() -> &'static str {
     "OK"
 }
@@ -45,6 +47,11 @@ pub async fn start_server() -> Result<()> {
 pub async fn main() {
     let _ = dotenv();
 
+    let res = init_metrics();
+    if let Err(e) = res {
+        error!("Failed to initialize metrics: {:?}", e)
+    }
+
     init(vec![stdout(Level::INFO), otel()]);
 
     info!("Starting server at {}", SHORT_VERSION);
@@ -60,14 +67,15 @@ pub async fn main() {
     }
 
     // Parse the command line arguments
-    let args = ConsumerArgs { group: "all".to_string(), topics: vec!["consumer".to_string()] };
+    let args = ConsumerArgs { group: "all".to_string(), topics: vec![TRANSACTION.to_string()] };
 
     // Construct the futures
-    let consumer_future = args.run();
+    let consumer_future_1 = args.run();
+    let consumer_future_2 = args.run();
     let server_future = start_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(consumer_future, server_future);
+    let result = tokio::try_join!(consumer_future_1, consumer_future_2, server_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {

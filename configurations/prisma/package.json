@@ -38,18 +38,18 @@
     "studio:dev": "dotenv -e .env.development prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "5.1.1",
+    "@prisma/client": "5.2.0",
     "kysely-postgres-js": "^1.1.1",
     "postgres": "^3.3.5",
-    "prisma": "^5.1.1",
-    "prisma-kysely": "^1.5.0",
-    "zod": "^3.21.4",
+    "prisma": "^5.2.0",
+    "prisma-kysely": "^1.6.0",
+    "zod": "^3.22.2",
     "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.4.10",
-    "typescript": "^5.1.6"
+    "@types/node": "^20.5.6",
+    "typescript": "^5.2.2"
   },
   "publishConfig": {
     "access": "restricted"

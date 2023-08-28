@@ -13,20 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::sync::Arc;
-
-use anyhow::Result;
 use autometrics::{autometrics, prometheus_exporter};
 use axum::{routing::get, Router};
 use clap::Parser;
 use dotenvy::dotenv;
+use eyre::Result;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_tracing::{
-    init, otel, stdout,
+    init, init_metrics, otel, stdout,
     tracing::{info, Level},
 };
+use std::sync::Arc;
 
 #[autometrics]
 async fn health_check() -> &'static str {
@@ -51,7 +50,14 @@ pub async fn start_server() -> Result<()> {
 pub async fn main() {
     let _ = dotenv();
 
-    init(vec![stdout(Level::INFO), otel()]);
+    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
+        "development" => Level::TRACE,
+        _ => Level::INFO,
+    };
+
+    init(vec![stdout(log_level), otel()]);
+
+    let _ = init_metrics();
 
     info!("Starting server at {}", SHORT_VERSION);
 

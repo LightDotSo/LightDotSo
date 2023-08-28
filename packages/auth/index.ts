@@ -33,7 +33,9 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   adapter: PrismaAdapter(prisma),
-  secret: process.env.NEXTAUTH_SECRET!,
+  // eslint-disable-next-line turbo/no-undeclared-env-vars
+  // secret: process.env.NEXTAUTH_SECRET ?? process.env.NEXT_PUBLIC_SECRET,
+  secret: "secret",
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       console.warn("signIn", { user, account, profile, email, credentials });
@@ -182,25 +184,27 @@ export const authOptions: AuthOptions = {
           }
 
           // Create new user and account sequentially
-          const { user } = await prisma.$transaction(async tx => {
-            const user = await tx.user.create({
-              data: {
-                name: address,
-              },
-            });
-            const account = await tx.account.create({
-              data: {
-                userId: user.id,
-                providerType: "credentials",
-                providerId: "eth",
-                providerAccountId: address,
-              },
-            });
-            return {
-              user,
-              account,
-            };
-          });
+          const { user } = await prisma.$transaction(
+            async (tx: { user: any; account: any }) => {
+              const user = await tx.user.create({
+                data: {
+                  name: address,
+                },
+              });
+              const account = await tx.account.create({
+                data: {
+                  userId: user.id,
+                  providerType: "credentials",
+                  providerId: "eth",
+                  providerAccountId: address,
+                },
+              });
+              return {
+                user,
+                account,
+              };
+            },
+          );
 
           return {
             id: user.id,

@@ -18,7 +18,7 @@ use lightdotso_tracing::{init, init_test_tracing, stdout};
 #[cfg(test)]
 mod tests {
     use super::*;
-    use tracing::{info, Level};
+    use lightdotso_tracing::tracing::{info, Level};
 
     #[ignore = "This test can only be run on the local machine"]
     #[test]

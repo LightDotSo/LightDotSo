@@ -1,0 +1,27 @@
+[package]
+  name = "lightdotso-axum"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  autometrics = { workspace = true }
+  axum = { workspace = true }
+  governor = "0.5.1"
+  http = { workspace = true }
+  hyper = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  serde = { workspace = true, features = ["derive"] }
+  tower = { workspace = true, features = [
+    "full",
+    "util",
+    "timeout",
+    "load-shed",
+    "limit",
+  ] }
+  tower-http = { workspace = true, features = ["cors"] }
+  tower_governor = { workspace = true }

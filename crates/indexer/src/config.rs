@@ -14,12 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::indexer::Indexer;
-use anyhow::Result;
 use clap::Parser;
+use eyre::Result;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
-use std::{sync::Arc, time::Duration};
-use tokio::time::sleep;
+use std::sync::Arc;
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct IndexerArgs {
@@ -51,16 +50,26 @@ pub struct IndexerArgs {
     #[arg(long, short, default_value_t = 0)]
     #[clap(long, env)]
     pub end_block: u64,
+    /// The flag of whether indexing is live.
+    #[arg(long, short, default_value_t = false)]
+    #[clap(long, env)]
+    pub live: bool,
 }
 
 impl IndexerArgs {
+    pub async fn create(&self) -> Indexer {
+        // Create the indexer
+        Indexer::new(self).await
+    }
+
     pub async fn run(&self, db: Arc<PrismaClient>) -> Result<()> {
         // Add info
-        info!("IndexerArgs run, exiting");
+        info!("IndexerArgs run, entering");
 
         // Print the config
         info!("Config: {:?}", self);
 
+        // Construct the indexer
         let indexer = Indexer::new(self).await;
 
         // Run the indexer in a loop
@@ -69,9 +78,6 @@ impl IndexerArgs {
                 loop {
                     // Run the indexer
                     let _ = indexer.run(Arc::clone(&db)).await;
-
-                    // Sleep for 300ms
-                    sleep(Duration::from_millis(300)).await;
                 }
             }
         });

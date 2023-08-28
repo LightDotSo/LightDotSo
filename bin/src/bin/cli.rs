@@ -25,7 +25,7 @@ use lightdotso_tracing::{
     tracing_subscriber::{filter::Directive, EnvFilter},
 };
 /// Parse CLI options, set up logging and run the chosen command.
-pub async fn run() -> anyhow::Result<()> {
+pub async fn run() -> eyre::Result<()> {
     // Parse CLI options
     let opt = Cli::parse();
 

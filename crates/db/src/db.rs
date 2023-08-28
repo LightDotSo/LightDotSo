@@ -17,14 +17,18 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::utils::to_checksum;
-use lightdotso_prisma::{log, receipt, transaction, user, wallet, PrismaClient};
+use lightdotso_prisma::{
+    log, receipt, transaction, transaction_category, user, wallet, PrismaClient,
+};
+use lightdotso_tracing::{
+    tracing::{info, info_span, trace},
+    tracing_futures::Instrument,
+};
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
-    NewClientError,
+    serde_json, NewClientError,
 };
 use std::sync::Arc;
-use tracing::{info, trace};
-use tracing_futures::Instrument;
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
@@ -79,6 +83,28 @@ pub async fn create_wallet(
     Ok(Json::from(wallet))
 }
 
+pub async fn create_transaction_category(
+    db: Database,
+    address: ethers::types::H160,
+    category: String,
+    transaction_hash: ethers::types::H256,
+) -> AppJsonResult<transaction_category::Data> {
+    info!("Creating transaction category");
+
+    let category = db
+        .transaction_category()
+        .create(
+            to_checksum(&address, None),
+            category,
+            transaction::UniqueWhereParam::HashEquals(format!("{:?}", transaction_hash)),
+            vec![],
+        )
+        .exec()
+        .await?;
+
+    Ok(Json::from(category))
+}
+
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
 #[autometrics]
 pub async fn create_transaction_with_log_receipt(
@@ -88,6 +114,7 @@ pub async fn create_transaction_with_log_receipt(
     receipt: ethers::types::TransactionReceipt,
     chain_id: i64,
     timestamp: ethers::types::U256,
+    trace: Option<ethers::types::GethTrace>,
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
@@ -111,6 +138,9 @@ pub async fn create_transaction_with_log_receipt(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
                         FixedOffset::east_opt(0).unwrap(),
                     ),
+                    trace.map_or(serde_json::Value::Null, |t| {
+                        serde_json::to_value(t).unwrap_or_else(|_| serde_json::Value::Null)
+                    }),
                     vec![
                         transaction::block_hash::set(
                             transaction.block_hash.map(|bh| format!("{:?}", bh)),
@@ -137,7 +167,7 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
-                .instrument(tracing::info_span!("create_transaction"))
+                .instrument(info_span!("create_transaction"))
                 .await?;
             trace!(?tx_data);
 
@@ -169,7 +199,7 @@ pub async fn create_transaction_with_log_receipt(
                     ],
                 )
                 .exec()
-                .instrument(tracing::info_span!("create_receipt"))
+                .instrument(info_span!("create_receipt"))
                 .await
                 .map(|op| (tx_data, op))
         })

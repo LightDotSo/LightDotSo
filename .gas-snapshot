@@ -15,7 +15,7 @@ ERC1271FuzzTest:testFuzz_isValidSignature_eip_1271_6492(bytes) (runs: 256, μ: 7
 ERC1271FuzzTest:testFuzz_isValidSignature_predeployed_6492(bytes) (runs: 256, μ: 77727, ~: 77748)
 ERC165UnitTest:test_erc165() (gas: 318741)
 ERC721UnitTest:test_erc721_onReceived() (gas: 1595505)
-ImageHashUpgradabliityFuzzTest:testFuzz_updateImageHash(bytes32) (runs: 256, μ: 167359, ~: 167369)
+ImageHashUpgradabliityFuzzTest:testFuzz_updateImageHash(bytes32) (runs: 256, μ: 167358, ~: 167349)
 ImageHashUpgradabliityIntegrationTest:test_revertWhenImageHashZero_updateImageHash() (gas: 27100)
 ImageHashUpgradabliityIntegrationTest:test_revertWhenSignatureInvalid_updateImageHash() (gas: 60675)
 ImageHashUpgradabliityIntegrationTest:test_updateImageHash() (gas: 168416)

@@ -13,9 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use silius_primitives::Chain;
-
-pub fn main() {
-    let chain = Chain::from(1);
-    println!("Chain: {:?}", chain);
-}
+pub mod bundler;
+pub mod config;
+pub mod constants;
+pub mod opts;
+pub mod utils;

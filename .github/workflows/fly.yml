@@ -30,7 +30,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
           allowed-conclusions: success,skipped,cancelled
-  fly-deploy-grafana:
+  fly-deploy-bundler:
     runs-on: ubuntu-latest
     needs:
       - fly-wait-docker
@@ -42,11 +42,10 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
         run: flyctl deploy --remote-only
-        working-directory: ./fly/grafana
-        continue-on-error: true
+        working-directory: ./fly/bundler
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  fly-deploy-rpc:
+  fly-deploy-bundler-sepolia:
     runs-on: ubuntu-latest
     needs:
       - fly-wait-docker
@@ -58,22 +57,7 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
         run: flyctl deploy --remote-only
-        working-directory: ./fly/rpc
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  fly-deploy-serve:
-    runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
-    timeout-minutes: 30
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v3
-      - name: Fly Install
-        uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Fly Deploy
-        run: flyctl deploy --remote-only
-        working-directory: ./fly/serve
+        working-directory: ./fly/bundler-sepolia
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer:
@@ -91,6 +75,52 @@ jobs:
         working-directory: ./fly/consumer
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-consumer-optimism:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/consumer-optimism
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-gas:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/gas
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-grafana:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/grafana
+        continue-on-error: true
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer:
     runs-on: ubuntu-latest
     needs:
@@ -104,6 +134,21 @@ jobs:
       - name: Fly Deploy
         run: flyctl deploy --remote-only
         working-directory: ./fly/indexer
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-indexer-optimism:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/indexer-optimism
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-sepolia:
@@ -136,22 +181,105 @@ jobs:
         working-directory: ./fly/log-shipper
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-otel-collector:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/otel-collector
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-paymaster:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/paymaster
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-prometheus:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/prometheus
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-rpc:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/rpc
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-simulator:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/simulator
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-check:
     if: always()
     needs:
       - fly-wait-docker
-      - fly-deploy-grafana
-      - fly-deploy-rpc
-      - fly-deploy-serve
+      - fly-deploy-bundler
+      - fly-deploy-bundler-sepolia
       - fly-deploy-consumer
+      - fly-deploy-consumer-optimism
+      - fly-deploy-gas
+      - fly-deploy-grafana
       - fly-deploy-indexer
+      - fly-deploy-indexer-optimism
       - fly-deploy-indexer-sepolia
       - fly-deploy-log-shipper
+      - fly-deploy-otel-collector
+      - fly-deploy-paymaster
+      - fly-deploy-prometheus
+      - fly-deploy-rpc
+      - fly-deploy-simulator
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: fly-wait-docker,fly-deploy-grafana,fly-deploy-rpc,fly-deploy-serve,fly-deploy-consumer,fly-deploy-indexer,fly-deploy-indexer-sepolia,fly-deploy-log-shipper
+          allowed-skips: fly-wait-docker,fly-deploy-bundler,fly-deploy-bundler-sepolia,fly-deploy-consumer,fly-deploy-consumer-optimism,fly-deploy-gas,fly-deploy-grafana,fly-deploy-indexer,fly-deploy-indexer-optimism,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-simulator
           jobs: ${{ toJSON(needs) }}

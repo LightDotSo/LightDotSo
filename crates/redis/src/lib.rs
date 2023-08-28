@@ -13,8 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use namespace::{INDEXED_BLOCKS, WALLET};
 pub use redis;
 use redis::{Commands, Connection, RedisResult};
+
+mod namespace;
 
 // From: https://github.com/upstash/redis-examples/blob/27558e2192f7f0cd5b22e1869a433bbe96bad64d/using_redis-rs/src/main.rs
 /// Get a redis client from the environment variables
@@ -24,6 +27,12 @@ pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
     let password = std::env::var("UPSTASH_REDIS_PASSWORD")?;
     let port = std::env::var("UPSTASH_REDIS_PORT")?;
 
+    // If host is localhost, connect to redis without password
+    if host == "localhost" {
+        let connection_link = format!("redis://{}:{}", host, port);
+        return redis::Client::open(connection_link).map_err(|e| e.into());
+    }
+
     // Format the connection link
     let connection_link = format!("rediss://default:{}@{}:{}", password, host, port);
 
@@ -32,21 +41,48 @@ pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
 }
 
 /// Add a value to a set
-pub fn add_to_set(con: &mut Connection, key: &str, value: &str) -> RedisResult<()> {
-    con.sadd(key, value)?;
+pub fn add_to_wallets(con: &mut Connection, value: &str) -> RedisResult<()> {
+    con.sadd(WALLET.as_str(), value)?;
     Ok(())
 }
 
-pub fn is_all_members_present(
+/// Check if an array of values are present in a set
+pub fn is_wallet_present(
     con: &mut Connection,
-    key: &str,
     members: Vec<String>,
 ) -> redis::RedisResult<Vec<bool>> {
     let mut pipe = redis::pipe();
 
     for member in members {
-        pipe.cmd("SISMEMBER").arg(key).arg(member);
+        pipe.cmd("SISMEMBER").arg(WALLET.as_str()).arg(member);
     }
 
     pipe.query(con)
+}
+
+/// Set a range of values depending on the status
+pub fn set_block_status(
+    redis_conn: &mut redis::Connection,
+    chain_id: usize,
+    block_number: i64,
+    status: bool,
+) -> redis::RedisResult<()> {
+    let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
+    if status {
+        redis_conn.zadd(&key, block_number, block_number)?;
+    }
+    Ok(())
+}
+
+/// Get the most recent indexed block
+pub fn get_most_recent_indexed_block(
+    redis_conn: &mut redis::Connection,
+    chain_id: &str,
+) -> redis::RedisResult<i64> {
+    let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
+    let result: Vec<i64> = redis_conn.zrevrange(&key, 0, 0)?;
+    result
+        .first()
+        .cloned()
+        .ok_or(redis::RedisError::from((redis::ErrorKind::TypeError, "No block found")))
 }

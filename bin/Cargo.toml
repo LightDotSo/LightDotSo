@@ -12,7 +12,6 @@
   default-run = "cli"
 
 [dependencies]
-  anyhow = { workspace = true }
   autometrics = { workspace = true, features = [
     "prometheus-client-0_21",
     "prometheus-exporter",
@@ -22,12 +21,21 @@
   clap = { workspace = true, features = ["env"] }
   dotenvy = { workspace = true }
   eyre = { workspace = true }
+  futures = { workspace = true }
   http = { workspace = true }
+  hyper = { workspace = true }
+  hyper-rustls = { workspace = true }
+  lightdotso-autometrics = { workspace = true }
+  lightdotso-axum = { workspace = true }
   lightdotso-bundler = { workspace = true }
   lightdotso-consumer = { workspace = true }
   lightdotso-db = { workspace = true }
+  lightdotso-gas = { workspace = true }
   lightdotso-indexer = { workspace = true }
+  lightdotso-kafka = { workspace = true }
+  lightdotso-paymaster = { workspace = true }
   lightdotso-prisma = { workspace = true }
+  lightdotso-rpc = { workspace = true }
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
   ratatui = { version = "0.22.0", features = ["all-widgets"] }
@@ -35,7 +43,7 @@
   silius-grpc = { workspace = true }
   silius-primitives = { workspace = true }
   silius-rpc = { workspace = true }
-  tokio = { workspace = true }
+  tokio = { workspace = true, features = ["full"] }
   tower = { workspace = true, features = [
     "full",
     "util",
@@ -43,7 +51,8 @@
     "load-shed",
     "limit",
   ] }
-  tower-http = { workspace = true, features = ["cors"] }
+  tower-http = { workspace = true }
+  tower_governor = { workspace = true }
 
 [build-dependencies]
   vergen = { version = "8.2.4", default-features = false, features = [

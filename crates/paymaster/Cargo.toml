@@ -1,0 +1,21 @@
+[package]
+  name = "lightdotso-paymaster"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  async-trait = { workspace = true }
+  clap = { workspace = true }
+  ethers-main = { workspace = true }
+  eyre = { workspace = true }
+  jsonrpsee = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  serde = { workspace = true }
+  silius-rpc = { workspace = true }
+  spki = { workspace = true, optional = true }
+  tokio = { workspace = true }

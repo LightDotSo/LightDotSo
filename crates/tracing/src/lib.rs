@@ -16,10 +16,17 @@
 // All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
 // Thank you for providing such an awesome library!
 use opentelemetry::{
-    sdk::trace::{BatchSpanProcessor, Tracer, TracerProvider},
+    metrics::MetricsError,
+    runtime,
+    sdk::{
+        metrics::MeterProvider,
+        trace::{BatchSpanProcessor, Tracer, TracerProvider},
+    },
     trace::TracerProvider as _,
 };
+use opentelemetry_otlp::{ExportConfig, WithExportConfig};
 use opentelemetry_stdout::SpanExporter;
+use std::time::Duration;
 use tracing::Subscriber;
 use tracing_opentelemetry::OpenTelemetryLayer;
 use tracing_subscriber::{
@@ -29,6 +36,7 @@ use tracing_subscriber::{
 // From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L28-L30
 // Re-export tracing crates
 pub use tracing;
+pub use tracing_futures;
 pub use tracing_subscriber;
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L32
@@ -95,4 +103,19 @@ pub fn init_test_tracing() {
         .with_env_filter(EnvFilter::from_default_env())
         .with_writer(std::io::stderr)
         .try_init();
+}
+
+/// From: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/opentelemetry-push/src/main.rs#L11C1-L27C1
+/// Initializes a new push-based OpenTelemetry metrics pipeline.
+pub fn init_metrics() -> Result<MeterProvider, MetricsError> {
+    let export_config = ExportConfig {
+        endpoint: "http://lightdotso-otel-collector.internal:4317".to_string(),
+        ..ExportConfig::default()
+    };
+    let push_interval = Duration::from_secs(1);
+    opentelemetry_otlp::new_pipeline()
+        .metrics(runtime::Tokio)
+        .with_exporter(opentelemetry_otlp::new_exporter().tonic().with_export_config(export_config))
+        .with_period(push_interval)
+        .build()
 }

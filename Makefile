@@ -199,6 +199,7 @@ docker-compose-restart: ## Restart the docker-compose.
 .PHONY: cargo-generate
 cargo-generate:
 	cargo generate
+	cargo fix --lib --allow-no-vcs -p lightdotso-prisma
 	cargo fmt
 
 .PHONY: prisma
@@ -209,6 +210,16 @@ prisma: cargo-generate ## Add clippy ignore.
 .PHONY: anvil
 anvil: ## Run anvil
 	anvil --block-time 3 --load-state anvil/state.json
+
+#@ forge scripts
+
+.PHONY: local-wallet-deploy
+local-wallet-deploy: ## Deploy the contracts to local node
+	forge script contracts/script/LightWalletDeployer.s.sol -f http://localhost:8545 --broadcast
+
+.PHONY: local-token-deploy
+local-token-deploy: ## Deploy the mock token to local node
+	forge script contracts/script/test/ERC20Transfer.s.sol -f http://localhost:8545 --broadcast
 
 #@ zellij
 .PHONY: shell

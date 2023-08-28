@@ -14,9 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::consumer::Consumer;
-use anyhow::Result;
 use clap::Parser;
-use tracing::info;
+use eyre::Result;
+use lightdotso_tracing::tracing::info;
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct ConsumerArgs {
@@ -33,7 +33,7 @@ pub struct ConsumerArgs {
 impl ConsumerArgs {
     pub async fn run(&self) -> Result<()> {
         // Add info
-        info!("ConsumerArgs run, starging...");
+        info!("ConsumerArgs run, starting...");
 
         // Print the config
         info!("Config: {:?}", self);

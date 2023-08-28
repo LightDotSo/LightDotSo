@@ -33,7 +33,7 @@ RUN npm install -g turbo@1.10.11 pnpm@8.6.9
 
 # Install building dependencies.
 RUN apt-get update && \
-  apt-get -y install build-essential git clang curl libssl-dev llvm libudev-dev make protobuf-compiler && \
+  apt-get -y install build-essential git clang curl libsasl2-dev libssl-dev llvm libudev-dev make protobuf-compiler && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
@@ -49,15 +49,19 @@ FROM debian:bullseye-slim AS runtime
 WORKDIR /app
 
 # sqlx depends on native TLS, which is missing in buster-slim.
-RUN apt update && apt install -y libssl1.1 ca-certificates
+RUN apt update && apt install -y libsasl2-dev libssl1.1 ca-certificates
 
 # Copy over the binaries.
 COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
+COPY --from=builder /app/target/release/bundler /usr/local/bin
 COPY --from=builder /app/target/release/cli /usr/local/bin
 COPY --from=builder /app/target/release/consumer /usr/local/bin
+COPY --from=builder /app/target/release/gas /usr/local/bin
 COPY --from=builder /app/target/release/indexer /usr/local/bin
+COPY --from=builder /app/target/release/paymaster /usr/local/bin
+COPY --from=builder /app/target/release/prometheus /usr/local/bin
 COPY --from=builder /app/target/release/rpc /usr/local/bin
-COPY --from=builder /app/target/release/serve /usr/local/bin
+COPY --from=builder /app/target/release/simulator /usr/local/bin
 
 # Run the binary.
 EXPOSE 3002

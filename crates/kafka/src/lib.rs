@@ -13,22 +13,47 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use lightdotso_tracing::tracing::error;
 pub use rdkafka;
+use std::sync::Arc;
 
+use namespace::TRANSACTION;
 use rdkafka::{
-    config::ClientConfig, consumer::stream_consumer::StreamConsumer, producer::BaseProducer,
+    config::ClientConfig,
+    consumer::stream_consumer::StreamConsumer,
+    producer::{FutureProducer, FutureRecord},
 };
+
+pub mod namespace;
 
 /// Configure a Kafka client with the required settings.
 pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error::Error>> {
+    // Get the environment variables
+    let broker = std::env::var("KAFKA_BROKER")?;
+    let username = std::env::var("KAFKA_USERNAME").unwrap_or("".to_string());
+    let password = std::env::var("KAFKA_PASSWORD").unwrap_or("".to_string());
+
     let mut binding = ClientConfig::new();
+
+    // If host is localhost, connect to kafka without security settings.
+    if broker.starts_with("localhost") {
+        let config = binding
+            .set("group.id", group)
+            .set("bootstrap.servers", broker)
+            .set("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+            .set("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+        return Ok(config.clone());
+    }
+
     let config = binding
         .set("group.id", group)
-        .set("bootstrap.servers", std::env::var("KAFKA_BROKER")?)
+        .set("bootstrap.servers", broker)
         .set("sasl.mechanism", "SCRAM-SHA-256")
         .set("security.protocol", "SASL_SSL")
-        .set("sasl.username", std::env::var("KAFKA_USERNAME")?)
-        .set("sasl.password", std::env::var("KAFKA_PASSWORD")?);
+        .set("auto.offset.reset", "latest")
+        .set("sasl.username", username)
+        .set("sasl.password", password);
 
     Ok(config.clone())
 }
@@ -43,11 +68,34 @@ pub fn get_consumer(group: &str) -> Result<StreamConsumer, rdkafka::error::Kafka
 }
 
 /// Get a Kafka producer with the required settings.
-pub fn get_producer() -> Result<BaseProducer, rdkafka::error::KafkaError> {
+pub fn get_producer() -> Result<FutureProducer, rdkafka::error::KafkaError> {
     // Ignores the group id for producers.
     let client_config = configure_client("");
     if client_config.is_err() {
+        error!("Failed to create client");
         return Err(rdkafka::error::KafkaError::ClientCreation("Failed to create client".into()));
     }
     client_config.unwrap().create()
+}
+
+// Produce a message with the given topic.
+pub async fn produce_message(
+    producer: Arc<FutureProducer>,
+    topic: &str,
+    key: &str,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    let payload = format!("{}", message);
+    let record = FutureRecord::to(topic).payload(&payload).key(key);
+    let _ = producer.send(record, None).await;
+    Ok(())
+}
+
+// Produce a message with Transaction topic.
+pub async fn produce_transaction_message(
+    producer: Arc<FutureProducer>,
+    key: &str,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    produce_message(producer, TRANSACTION.as_str(), key, message).await
 }
