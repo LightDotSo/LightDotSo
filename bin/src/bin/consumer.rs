@@ -33,7 +33,7 @@ async fn health_check() -> &'static str {
 
 pub async fn start_server() -> Result<()> {
     let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
+        .route("/", get("consumer.light.so"))
         .route("/health", get(health_check))
         .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
 
