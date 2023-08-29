@@ -56,16 +56,6 @@ pub async fn main() {
 
     info!("Starting server at {}", SHORT_VERSION);
 
-    // Run the test server if we're running in Fly
-    if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-consumer") {
-        let test_server_future = start_server();
-        let result = test_server_future.await;
-
-        if result.is_err() {
-            std::process::exit(1)
-        };
-    }
-
     // Parse the command line arguments
     let args = ConsumerArgs { group: "all".to_string(), topics: vec![TRANSACTION.to_string()] };
 
