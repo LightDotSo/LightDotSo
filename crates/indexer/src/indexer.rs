@@ -65,7 +65,7 @@ pub struct Indexer {
     chain_id: u64,
     redis_client: Option<Arc<Client>>,
     kafka_client: Option<Arc<FutureProducer>>,
-    http_client: Arc<Provider<Http>>,
+    http_client: Option<Arc<Provider<Http>>>,
     ws_client: Option<Arc<Provider<Ws>>>,
     webhook: String,
     // start_block: u64,
@@ -79,15 +79,10 @@ impl Indexer {
         info!("Indexer new, starting");
 
         // Create the http client
-        let http_client = Arc::new(Provider::<Http>::try_from(args.rpc.to_string()).unwrap());
-
-        // Check if the chain ID matches the arg chain ID
-        let chain_id = http_client.get_chainid().await.unwrap();
-
-        // Skip check if chain id is 0, consumer needs to be able to handle all chains
-        if args.chain_id != 0 && chain_id.as_u64() != args.chain_id {
-            panic!("Chain ID mismatch: expected {}, got {}", args.chain_id, chain_id.as_u64());
-        }
+        let http_client = match Provider::<Http>::try_from(args.rpc.to_string()) {
+            Ok(client) => Some(Arc::new(client)),
+            Err(_) => None,
+        };
 
         // Create the websocket client
         let ws_client: Option<Arc<Provider<Ws>>> =
@@ -177,7 +172,7 @@ impl Indexer {
 
         // Mutate the http client
         let http_client = Arc::new(Provider::<Http>::try_from(rpc).unwrap());
-        self.http_client = http_client;
+        self.http_client = Some(http_client);
 
         // Index the block
         self.index(db_client, block).await
@@ -190,6 +185,11 @@ impl Indexer {
         block: Block<H256>,
     ) -> eyre::Result<()> {
         info!("Indexer index, starting");
+
+        // If the http client is none, return an error
+        if self.http_client.is_none() {
+            return Err(eyre!("Error: http client is none"));
+        }
 
         // Get block from http client
         let block = self
@@ -776,8 +776,10 @@ impl Indexer {
         &self,
         block_number: ethers::types::U64,
     ) -> Result<Option<Block<H256>>, ProviderError> {
+        let client = self.http_client.clone().unwrap();
+
         // Get the logs
-        { || self.http_client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
+        { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Get the block logs for the given block number
@@ -786,13 +788,15 @@ impl Indexer {
         &self,
         block_number: ethers::types::U64,
     ) -> Result<Vec<ethers::types::Log>, ProviderError> {
+        let client = self.http_client.clone().unwrap();
+
         // Create the filter for the logs
         let filter = Filter::new()
             .from_block(BlockNumber::Number(block_number))
             .to_block(BlockNumber::Number(block_number));
 
         // Get the logs
-        { || self.http_client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
+        { || client.get_logs(&filter) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Get the transaction for the given hash
@@ -801,8 +805,10 @@ impl Indexer {
         &self,
         hash: ethers::types::H256,
     ) -> Result<Option<Transaction>, ProviderError> {
+        let client = self.http_client.clone().unwrap();
+
         // Get the block number
-        { || self.http_client.get_transaction(hash) }.retry(&ExponentialBuilder::default()).await
+        { || client.get_transaction(hash) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Get the transaction receipt for the given hash
@@ -811,10 +817,10 @@ impl Indexer {
         &self,
         hash: ethers::types::H256,
     ) -> Result<Option<TransactionReceipt>, ProviderError> {
+        let client = self.http_client.clone().unwrap();
+
         // Get the block number
-        { || self.http_client.get_transaction_receipt(hash) }
-            .retry(&ExponentialBuilder::default())
-            .await
+        { || client.get_transaction_receipt(hash) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Get the traced block for the given block number
@@ -823,6 +829,8 @@ impl Indexer {
         &self,
         block_number: ethers::types::U64,
     ) -> Result<Vec<GethTrace>, ProviderError> {
+        let client = self.http_client.clone().unwrap();
+
         let opts = GethDebugTracingOptions {
             disable_storage: None,
             disable_stack: None,
@@ -837,7 +845,7 @@ impl Indexer {
         let block_num = BlockNumber::Number(block_number);
 
         // Get the traced block
-        { || self.http_client.debug_trace_block_by_number(Some(block_num), opts.clone()) }
+        { || client.debug_trace_block_by_number(Some(block_num), opts.clone()) }
             .retry(&ExponentialBuilder::default())
             .await
     }
