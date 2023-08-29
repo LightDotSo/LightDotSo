@@ -18,6 +18,7 @@ use axum::{routing::get, Router};
 use clap::Parser;
 use dotenvy::dotenv;
 use eyre::Result;
+use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
@@ -30,20 +31,6 @@ use std::sync::Arc;
 #[autometrics]
 async fn health_check() -> &'static str {
     "OK"
-}
-
-pub async fn start_server() -> Result<()> {
-    prometheus_exporter::init();
-
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check))
-        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
-
-    let socket_addr = "0.0.0.0:3002".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
-
-    Ok(())
 }
 
 #[tokio::main]
@@ -63,7 +50,7 @@ pub async fn main() {
 
     // Run the test server if we're running in Fly
     if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-indexer") {
-        let test_server_future = start_server();
+        let test_server_future = start_internal_server();
         let result = test_server_future.await;
 
         if result.is_err() {
@@ -79,10 +66,10 @@ pub async fn main() {
 
     // Construct the futures
     let indexer_future = args.run(db);
-    let server_future = start_server();
+    let internal_future = start_internal_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(indexer_future, server_future);
+    let result = tokio::try_join!(indexer_future, internal_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {

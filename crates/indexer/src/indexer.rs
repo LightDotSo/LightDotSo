@@ -824,12 +824,15 @@ impl Indexer {
         block_number: ethers::types::U64,
     ) -> Result<Vec<GethTrace>, ProviderError> {
         let opts = GethDebugTracingOptions {
-            disable_storage: Some(false),
-            enable_memory: Some(false),
+            disable_storage: None,
+            disable_stack: None,
+            enable_memory: None,
+            enable_return_data: None,
             tracer: Some(GethDebugTracerType::BuiltInTracer(
                 GethDebugBuiltInTracerType::CallTracer,
             )),
-            ..Default::default()
+            tracer_config: None,
+            timeout: None,
         };
         let block_num = BlockNumber::Number(block_number);
 

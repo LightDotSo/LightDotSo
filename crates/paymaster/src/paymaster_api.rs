@@ -14,13 +14,25 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub use crate::paymaster::PaymasterServerImpl;
+use ethers_main::types::{Address, Bytes};
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
+use silius_primitives::UserOperationPartial;
+
+pub type PaymasterAndData = Bytes;
 
 #[rpc(server, namespace = "paymaster")]
 pub trait Paymaster {
     #[method(name = "requestPaymasterAndData")]
-    async fn request_paymaster_and_data(&self) -> RpcResult<String>;
+    async fn request_paymaster_and_data(
+        &self,
+        user_operation: UserOperationPartial,
+        entry_point: Address,
+    ) -> RpcResult<UserOperationPartial>;
 
     #[method(name = "requestGasAndPaymasterAndData")]
-    async fn request_gas_and_paymaster_and_data(&self) -> RpcResult<String>;
+    async fn request_gas_and_paymaster_and_data(
+        &self,
+        user_operation: UserOperationPartial,
+        entry_point: Address,
+    ) -> RpcResult<PaymasterAndData>;
 }

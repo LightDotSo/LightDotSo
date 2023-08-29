@@ -13,19 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::paymaster_api::PaymasterServer;
+use crate::paymaster_api::{PaymasterAndData, PaymasterServer};
 use async_trait::async_trait;
+use ethers_main::types::Address;
 use jsonrpsee::core::RpcResult;
+use silius_primitives::{UserOperation, UserOperationPartial};
 
 pub struct PaymasterServerImpl {}
 
 #[async_trait]
 impl PaymasterServer for PaymasterServerImpl {
-    async fn request_paymaster_and_data(&self) -> RpcResult<String> {
-        return Ok(format!("paymaster/{}", env!("CARGO_PKG_VERSION")));
+    async fn request_paymaster_and_data(
+        &self,
+        user_operation: UserOperationPartial,
+        entry_point: Address,
+    ) -> RpcResult<UserOperationPartial> {
+        return Ok(UserOperationPartial { ..UserOperation::random() });
     }
 
-    async fn request_gas_and_paymaster_and_data(&self) -> RpcResult<String> {
-        return Ok(format!("paymaster/{}", env!("CARGO_PKG_VERSION")));
+    async fn request_gas_and_paymaster_and_data(
+        &self,
+        user_operation: UserOperationPartial,
+        entry_point: Address,
+    ) -> RpcResult<PaymasterAndData> {
+        return Ok(PaymasterAndData::default());
     }
 }

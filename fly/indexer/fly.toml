@@ -14,20 +14,9 @@ kill_timeout = "5s"
 [build]
   image = "ghcr.io/lightdotso/lightdotso:latest"
 
-[http_service]
-  internal_port = 3002
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 0
-  [http_service.concurrency]
-    type = "requests"
-    hard_limit = 250
-    soft_limit = 200
-
 [checks]
   [checks.health]
-    port = 3002
+    port = 9091
     type = "http"
     interval = "15s"
     timeout = "10s"
@@ -36,7 +25,7 @@ kill_timeout = "5s"
     path = "/health"
 
 [metrics]
-  port = 3002
+  port = 9091
   path = "/metrics"
 
 [deploy]
