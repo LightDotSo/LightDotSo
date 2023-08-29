@@ -66,14 +66,6 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    // Don't consume if key is not the consumer chain
-                    if let Some(key) = m.key() {
-                        if key != args.chain_id.to_string().as_bytes() {
-                            info!("Skipping message with key: {:?}", key);
-                            continue;
-                        }
-                    }
-
                     match m.topic() {
                         // If the topic is the transaction topic
                         topic if topic == TRANSACTION.to_string() => {
@@ -81,7 +73,7 @@ impl Consumer {
                             let payload_opt = m.payload_view::<str>();
 
                             // If the payload is valid
-                            if let Some(Ok(payload)) = payload_opt && let Some(key) = m.key() && key.len() >= 8  {
+                            if let Some(Ok(payload)) = payload_opt && let Some(key) = m.key()  {
                                 // Deserialize the payload
                                 match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
                                     Ok(block) => {
