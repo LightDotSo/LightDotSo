@@ -85,7 +85,7 @@ impl Indexer {
         };
 
         // Create the websocket client
-        let ws_client: Option<Arc<Provider<Ws>>> =
+        let ws_client =
             match Provider::<Ws>::connect_with_reconnects(args.ws.to_string(), usize::MAX).await {
                 Ok(client) => Some(Arc::new(client)),
                 Err(_) => {
