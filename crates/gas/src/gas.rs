@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{chains::_1::mainnet_gas_estimation, error::JsonRpcError, gas_api::GasServer};
+use crate::{
+    chains::{_1::mainnet_gas_estimation, _1337::polygon_gas_estimation},
+    error::JsonRpcError,
+    gas_api::GasServer,
+};
 use async_trait::async_trait;
 use jsonrpsee::{
     core::RpcResult,
@@ -23,8 +27,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct GasEstimationParams {
-    pub(crate) max_priority_fee_per_gas: u64,
-    pub(crate) max_fee_per_gas: u64,
+    pub(crate) max_priority_fee_per_gas: f64,
+    pub(crate) max_fee_per_gas: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -47,6 +51,10 @@ impl GasServer for GasServerImpl {
     async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation> {
         match chain_id {
             1 => match mainnet_gas_estimation().await {
+                Ok(res) => Ok(res),
+                Err(s) => Err(JsonRpcError::from(s).into()),
+            },
+            1337 => match polygon_gas_estimation().await {
                 Ok(res) => Ok(res),
                 Err(s) => Err(JsonRpcError::from(s).into()),
             },

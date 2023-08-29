@@ -110,6 +110,47 @@
     ]
   },
   {
+    "_id": "1719a945-31fe-4f06-ae4f-9fb313535de7",
+    "colId": "history",
+    "containerId": "",
+    "name": "gas_requestGasEstimation local",
+    "url": "http://localhost:3000/1",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:13:33.627Z",
+    "modified": "2023-08-29T08:28:30.442Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1337\n  ]\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "max_priority_fee_per_gas"
+      }
+    ]
+  },
+  {
     "_id": "e12c2082-2532-4cbd-a999-71d19f526bf6",
     "colId": "history",
     "containerId": "",

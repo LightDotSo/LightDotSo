@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use jsonrpsee::types::{error::ErrorCode, ErrorObject, ErrorObjectOwned};
+use jsonrpsee::types::{
+    error::{ErrorCode, INTERNAL_ERROR_CODE},
+    ErrorObject, ErrorObjectOwned,
+};
 use reqwest::Error as ReqwestError;
 
 // From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/rpc/src/error.rs#L15-L23
@@ -42,10 +45,17 @@ impl From<serde_json::Error> for JsonRpcError {
 
 impl From<ReqwestError> for JsonRpcError {
     fn from(err: ReqwestError) -> Self {
-        JsonRpcError(ErrorObject::owned(
-            ErrorCode::ServerError(err.status().unwrap().as_u16() as i32).code(),
-            format!("Network error: {err}"),
-            None::<bool>,
-        ))
+        match err.status() {
+            Some(status) => JsonRpcError(ErrorObject::owned(
+                ErrorCode::ServerError(status.as_u16() as i32).code(),
+                format!("Network error: {:?}", err),
+                None::<bool>,
+            )),
+            None => JsonRpcError(ErrorObject::owned(
+                INTERNAL_ERROR_CODE,
+                format!("Network error with no status code: {:?}", err),
+                None::<bool>,
+            )),
+        }
     }
 }
