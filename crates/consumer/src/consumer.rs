@@ -77,12 +77,12 @@ impl Consumer {
                                 // Deserialize the payload
                                 match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
                                     Ok(block) => {
-                                        // Get the chain id from the key
+                                        // Get the chain_id from the key
                                         let chain_id = String::from_utf8(key.to_vec()).unwrap().parse::<u64>().unwrap();
 
                                         // Log each message as an example.
                                         info!(
-                                            "Indexing block: {:?} at chain id: {:?}",
+                                            "Indexing block: {:?} at chain_id: {:?}",
                                             block.number.unwrap().as_u64(),
                                             chain_id
                                         );
@@ -98,7 +98,7 @@ impl Consumer {
 
                                         // Log success
                                         info!(
-                                            "Successfully indexed block: {:?} at chain id: {:?}",
+                                            "Successfully indexed block: {:?} at chain_id: {:?}",
                                             block.number.unwrap().as_u64(),
                                             chain_id
                                         );
