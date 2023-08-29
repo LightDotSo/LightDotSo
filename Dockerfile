@@ -50,7 +50,6 @@ ENV \
   AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
   CARGO_INCREMENTAL=0 \
   DOCKER=true \
-  RUSTFLAGS="-C target-feature=+crt-static" \
   SCCACHE_BUCKET=sccache \
   SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT \
   SCCACHE_REGION=auto \
@@ -61,7 +60,7 @@ ENV \
 # Run the build.
 RUN make install && \
     turbo run prisma && \
-    cargo build --release --target=x86_64-unknown-linux-gnu
+    cargo build --release
 
 # Show sccache stats.
 RUN sccache --show-stats

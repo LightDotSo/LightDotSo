@@ -58,7 +58,11 @@ impl From<ApiResponse> for GasEstimation {
 }
 
 pub async fn polygon_gas_estimation() -> Result<GasEstimation, reqwest::Error> {
-    let response = reqwest::get("https://gasstation.polygon.technology/v2")
+    let client = reqwest::Client::builder().user_agent("Your-User-Agent").build()?;
+
+    let response = client
+        .get("https://gasstation.polygon.technology/v2")
+        .send()
         .await?
         .json::<ApiResponse>()
         .await?;
