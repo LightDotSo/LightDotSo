@@ -46,8 +46,11 @@ ENV \
   AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
   CARGO_INCREMENTAL=0 \
   DOCKER=true \
-  RUSTC_WRAPPER=/usr/local/bin/sccache \
-  SCCACHE_BUCKET=sccache \
+  RUST_LOG="sccache=info" \
+  RUST_BACKTRACE=1 \
+  RUSTFLAGS="-D warnings" \
+  RUSTC_WRAPPER="/usr/local/bin/sccache" \
+  SCCACHE_BUCKET="sccache" \
   SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT \
   SCCACHE_REGION=auto \
   TURBO_TEAM=$TURBO_TEAM \
