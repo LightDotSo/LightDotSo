@@ -120,17 +120,14 @@ pub async fn start_server() -> Result<()> {
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
-                .layer(trace_layer)
+                .layer(trace_layer.clone())
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
-                .buffer(5)
                 .layer(cors)
                 .into_inner(),
         )
         .route("/protected/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
         .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
-        .layer(
-            ServiceBuilder::new().layer(HandleErrorLayer::new(handle_error)).buffer(5).into_inner(),
-        )
+        .layer(ServiceBuilder::new().layer(trace_layer.clone()).into_inner())
         .with_state(client);
 
     let socket_addr = "[::]:3000".parse()?;

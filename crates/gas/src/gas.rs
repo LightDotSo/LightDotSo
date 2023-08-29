@@ -26,6 +26,7 @@ use jsonrpsee::{
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct GasEstimationParams {
     pub(crate) max_priority_fee_per_gas: f64,
     pub(crate) max_fee_per_gas: f64,
