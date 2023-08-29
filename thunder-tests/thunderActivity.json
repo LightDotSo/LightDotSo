@@ -155,11 +155,11 @@
     "colId": "history",
     "containerId": "",
     "name": "debug_traceCall",
-    "url": "http://localhost:3000/internal/11155111",
+    "url": "http://rpc.light.so/protected/a/1",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-26T10:42:05.410Z",
-    "modified": "2023-08-28T23:17:56.510Z",
+    "modified": "2023-08-29T22:30:13.618Z",
     "headers": [
       {
         "name": "Content-Type",
