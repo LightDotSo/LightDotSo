@@ -31,10 +31,12 @@ RUN apt-get update && \
 RUN npm install -g turbo@1.10.11 pnpm@8.6.9
 
 # Install sccache dependencies.
-RUN curl -L https://github.com/mozilla/sccache/releases/download/v0.5.4/sccache-v0.5.4-x86_64-unknown-linux-musl.tar.gz -o sccache-v0.5.4-x86_64-unknown-linux-musl.tar.gz \
-    && tar -xzf sccache-v0.5.4-x86_64-unknown-linux-musl.tar.gz \
-    && mv sccache-v0.5.4-x86_64-unknown-linux-musl/sccache /usr/local/bin/ \
+ENV SCCACHE_VERSION=0.5.4
+RUN curl -L https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERSION}/sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz -o sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+    && tar -xzf sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+    && mv sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl/sccache /usr/local/bin/ \
     && chmod +x /usr/local/bin/sccache
+ENV RUSTC_WRAPPER=/usr/local/bin/sccache
 
 # Start sccache server.
 RUN sccache --start-server
@@ -42,21 +44,19 @@ RUN sccache --start-server
 # Copy over dir.
 COPY . .
 
-# Specify the target we're building for.
-ENV DOCKER=true
-ENV RUSTC_WRAPPER=/usr/local/bin/sccache
-ENV SCCACHE_BUCKET=sccache
-ENV SCCACHE_REGION=auto
-ENV SCCACHE_S3_USE_SSL=true
-
-# Specify sccache related envs.
-ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-ENV SCCACHE_ENDPOINT=${SCCACHE_ENDPOINT}
-
-# Specify turborepo related envs.
-ENV TURBO_TEAM=${TURBO_TEAM}
-ENV TURBO_TOKEN=${TURBO_TOKEN}
+# Specify the build related environment variables.
+ENV \
+  AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+  AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+  CARGO_INCREMENTAL=0 \
+  DOCKER=true \
+  RUSTFLAGS="-C target-feature=+crt-static" \
+  SCCACHE_BUCKET=sccache \
+  SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT \
+  SCCACHE_REGION=auto \
+  SCCACHE_S3_USE_SSL=true \
+  TURBO_TEAM=$TURBO_TEAM \
+  TURBO_TOKEN=$TURBO_TOKEN
 
 # Run the build.
 RUN make install && \
