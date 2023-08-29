@@ -78,8 +78,7 @@ impl Consumer {
                                 match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
                                     Ok(block) => {
                                         // Get the chain id from the key
-                                        // Conversion borrowed from: https://stackoverflow.com/questions/29307474/how-can-i-convert-a-buffer-of-a-slice-of-bytes-u8-to-an-integer
-                                        let chain_id = u64::from_ne_bytes(key.split_at(8).0.try_into().unwrap());
+                                        let chain_id = String::from_utf8(key.to_vec()).unwrap().parse::<u64>().unwrap();
 
                                         // Log each message as an example.
                                         info!(
