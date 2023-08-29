@@ -6,18 +6,14 @@
 FROM rust:1.71 AS builder
 
 # Specify turborepo related args
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG SCCACHE_ENDPOINT
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
 # Specify the working directory.
 WORKDIR /app
-
-# Specify the target we're building for.
-ENV DOCKER=true
-
-# Specify turborepo related envs.
-ENV TURBO_TEAM=${TURBO_TEAM}
-ENV TURBO_TOKEN=${TURBO_TOKEN}
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
@@ -25,22 +21,50 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 # Install planning dependencies.
 RUN apt install -y python3-pip nodejs
 
-# Copy over dir.
-COPY . .
-
-# Build the prisma dep.
-RUN npm install -g turbo@1.10.11 pnpm@8.6.9
-
 # Install building dependencies.
 RUN apt-get update && \
   apt-get -y install build-essential git clang curl libsasl2-dev libssl-dev llvm libudev-dev make protobuf-compiler && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+  # Build the prisma dep.
+RUN npm install -g turbo@1.10.11 pnpm@8.6.9
+
+# Install sccache dependencies.
+RUN curl -L https://github.com/mozilla/sccache/releases/download/v0.5.4/sccache-v0.5.4-x86_64-unknown-linux-musl.tar.gz -o sccache-v0.5.4-x86_64-unknown-linux-musl.tar.gz \
+    && tar -xzf sccache-v0.5.4-x86_64-unknown-linux-musl.tar.gz \
+    && mv sccache-v0.5.4-x86_64-unknown-linux-musl/sccache /usr/local/bin/ \
+    && chmod +x /usr/local/bin/sccache
+
+# Start sccache server.
+RUN sccache --start-server
+
+# Copy over dir.
+COPY . .
+
+# Specify the target we're building for.
+ENV DOCKER=true
+ENV RUSTC_WRAPPER=/usr/local/bin/sccache
+ENV SCCACHE_BUCKET=sccache
+ENV SCCACHE_REGION=auto
+ENV SCCACHE_S3_USE_SSL=true
+
+# Specify sccache related envs.
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV SCCACHE_ENDPOINT=${SCCACHE_ENDPOINT}
+
+# Specify turborepo related envs.
+ENV TURBO_TEAM=${TURBO_TEAM}
+ENV TURBO_TOKEN=${TURBO_TOKEN}
+
 # Run the build.
 RUN make install && \
     turbo run prisma && \
     cargo build --release
+
+# Show sccache stats.
+RUN sccache --show-stats
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
