@@ -38,9 +38,6 @@ RUN curl -L https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERS
     && chmod +x /usr/local/bin/sccache
 ENV RUSTC_WRAPPER=/usr/local/bin/sccache
 
-# Start sccache server.
-RUN sccache --start-server
-
 # Copy over dir.
 COPY . .
 
@@ -58,9 +55,12 @@ ENV \
   TURBO_TOKEN=$TURBO_TOKEN
 
 # Run the build.
-RUN make install && \
+RUN --mount=target=/root/.cache/sccache,type=cache --mount=target=/app/target,type=cache \
+    sccache --start-server && \
+    make install && \
     turbo run prisma && \
-    cargo build --release
+    cargo build --release \
+    sccache --show-stats
 
 # Show sccache stats.
 RUN sccache --show-stats
