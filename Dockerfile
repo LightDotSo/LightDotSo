@@ -46,7 +46,7 @@ ENV \
   AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
   CARGO_INCREMENTAL=0 \
   DOCKER=true \
-  RUST_LOG="sccache=info" \
+  RUST_LOG="sccache=trace" \
   RUST_BACKTRACE=1 \
   RUSTFLAGS="-D warnings" \
   RUSTC_WRAPPER="/usr/local/bin/sccache" \
