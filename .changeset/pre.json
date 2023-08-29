@@ -34,7 +34,10 @@
     "@lightdotso/assets": "0.0.0",
     "@lightdotso/kysely": "0.0.0",
     "@lightdotso/auth": "0.0.0",
-    "@lightdotso/trpc": "0.0.0"
+    "@lightdotso/trpc": "0.0.0",
+    "@lightdotso/explorer": "0.0.0-pre.2",
+    "@lightdotso/open": "0.0.0",
+    "@lightdotso/playground": "0.0.0"
   },
   "changesets": [
     "calm-stingrays-bathe",
@@ -59,6 +62,7 @@
     "rude-radios-suffer",
     "seven-rings-change",
     "shaggy-hotels-deliver",
+    "shaggy-phones-lay",
     "sharp-cameras-speak",
     "shiny-yaks-do",
     "small-hats-lay",
