@@ -52,7 +52,9 @@ ENV \
   RUSTC_WRAPPER="/usr/local/bin/sccache" \
   SCCACHE_BUCKET="sccache" \
   SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT \
+  SCCACHE_IDLE_TIMEOUT="0" \
   SCCACHE_REGION=auto \
+  SCCACHE_LOG="info,sccache::cache=debug" \
   TURBO_TEAM=$TURBO_TEAM \
   TURBO_TOKEN=$TURBO_TOKEN
 
