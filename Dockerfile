@@ -55,11 +55,10 @@ ENV \
   TURBO_TOKEN=$TURBO_TOKEN
 
 # Run the build.
-RUN --mount=target=/root/.cache/sccache,type=cache --mount=target=/app/target,type=cache \
-    sccache --start-server && \
+RUN sccache --start-server && \
     make install && \
     turbo run prisma && \
-    cargo build --release \
+    cargo build --release && \
     sccache --show-stats
 
 # Show sccache stats.
