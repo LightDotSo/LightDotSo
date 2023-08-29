@@ -61,7 +61,7 @@ ENV \
 # Run the build.
 RUN make install && \
     turbo run prisma && \
-    cargo build --release
+    cargo build --release --target=x86_64-unknown-linux-gnu
 
 # Show sccache stats.
 RUN sccache --show-stats
