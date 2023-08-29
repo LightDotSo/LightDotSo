@@ -13,36 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::{autometrics, prometheus_exporter};
-use axum::{routing::get, Router};
 use clap::Parser;
 use dotenvy::dotenv;
-use eyre::Result;
+use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_gas::config::GasArgs;
 use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{info, Level},
 };
-
-#[autometrics]
-async fn health_check() -> &'static str {
-    "OK"
-}
-
-pub async fn start_server() -> Result<()> {
-    prometheus_exporter::init();
-
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check))
-        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
-
-    let socket_addr = "0.0.0.0:3011".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
-
-    Ok(())
-}
 
 #[tokio::main]
 pub async fn main() {
@@ -61,7 +40,7 @@ pub async fn main() {
 
     // Run the test server if we're running in Fly
     if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-gas") {
-        let test_server_future = start_server();
+        let test_server_future = start_internal_server();
         let result = test_server_future.await;
 
         if result.is_err() {
@@ -74,10 +53,10 @@ pub async fn main() {
 
     // Construct the futures
     let gas_future = args.run();
-    let server_future = start_server();
+    let internal_future = start_internal_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(gas_future, server_future);
+    let result = tokio::try_join!(gas_future, internal_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {

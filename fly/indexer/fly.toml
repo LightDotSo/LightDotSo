@@ -14,6 +14,9 @@ kill_timeout = "5s"
 [build]
   image = "ghcr.io/lightdotso/lightdotso:latest"
 
+[deploy]
+  strategy = "canary"
+
 [checks]
   [checks.health]
     port = 9091
@@ -27,6 +30,3 @@ kill_timeout = "5s"
 [metrics]
   port = 9091
   path = "/metrics"
-
-[deploy]
-  strategy = "canary"
