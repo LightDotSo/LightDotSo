@@ -15,14 +15,16 @@
 
 function getBaseUrl() {
   if (typeof window !== "undefined") return "";
+  // On Vercel production deployments
   if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
     return "https://api.light.so";
   }
+  // On Vercel preview deployments
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   }
-  // if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  // if (process.env.NEXTAUTH_URL) return process.env.NEXTAUTH_URL;
+  // Fallback to NEXTAUTH_URL for local builds
+  if (process.env.NEXTAUTH_URL) return process.env.NEXTAUTH_URL;
   return "http://localhost:3000";
 }
 

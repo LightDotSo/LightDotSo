@@ -26,3 +26,4 @@ ignores:
   - autoprefixer
   - postcss
   - tailwindcss
+  - next-auth
