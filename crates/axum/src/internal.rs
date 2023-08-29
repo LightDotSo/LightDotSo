@@ -13,5 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod _1;
-pub mod _1337;
+use autometrics::{autometrics, prometheus_exporter};
+use axum::{response::Response, routing::get, Router};
+use eyre::Result;
+
+#[autometrics]
+async fn health_check() -> &'static str {
+    "OK"
+}
+
+#[autometrics]
+async fn prometheus_metrics_check() -> Response<String> {
+    prometheus_exporter::encode_http_response()
+}
+
+pub async fn start_internal_server() -> Result<()> {
+    prometheus_exporter::init();
+
+    let app = Router::new()
+        .route("/health", get(health_check))
+        .route("/metrics", get(prometheus_metrics_check));
+
+    let socket_addr = "0.0.0.0:9091".parse()?;
+    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
+
+    Ok(())
+}

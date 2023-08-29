@@ -51,7 +51,7 @@ impl Consumer {
         let args = IndexerArgs::parse();
 
         // Create the indexer
-        let indexer = args.create().await;
+        let mut indexer = args.create().await;
 
         // Create the db client
         let db = Arc::new(create_client().await.unwrap());
@@ -66,14 +66,6 @@ impl Consumer {
             match self.consumer.recv().await {
                 Err(e) => warn!("Kafka error: {}", e),
                 Ok(m) => {
-                    // Don't consume if key is not the consumer chain
-                    if let Some(key) = m.key() {
-                        if key != args.chain_id.to_string().as_bytes() {
-                            info!("Skipping message with key: {:?}", key);
-                            continue;
-                        }
-                    }
-
                     match m.topic() {
                         // If the topic is the transaction topic
                         topic if topic == TRANSACTION.to_string() => {
@@ -81,16 +73,22 @@ impl Consumer {
                             let payload_opt = m.payload_view::<str>();
 
                             // If the payload is valid
-                            if let Some(Ok(payload)) = payload_opt {
+                            if let Some(Ok(payload)) = payload_opt && let Some(key) = m.key()  {
                                 // Deserialize the payload
                                 match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
                                     Ok(block) => {
+                                        // Get the chain_id from the key
+                                        let chain_id = String::from_utf8(key.to_vec()).unwrap().parse::<u64>().unwrap();
+
                                         // Log each message as an example.
-                                        info!("key: '{:?}', block: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
-                            m.key(), block, m.topic(), m.partition(), m.offset(), m.timestamp());
+                                        info!(
+                                            "Indexing block: {:?} at chain_id: {:?}",
+                                            block.number.unwrap().as_u64(),
+                                            chain_id
+                                        );
 
                                         // Index the block
-                                        let res = indexer.index(db.clone(), block.clone()).await;
+                                        let res = indexer.index_with_internal(db.clone(), block.clone(), chain_id).await;
 
                                         // Commit the message
                                         if let Err(e) = res {
@@ -100,8 +98,9 @@ impl Consumer {
 
                                         // Log success
                                         info!(
-                                            "Successfully indexed block: {:?}",
-                                            block.number.unwrap().as_u64()
+                                            "Successfully indexed block: {:?} at chain_id: {:?}",
+                                            block.number.unwrap().as_u64(),
+                                            chain_id
                                         );
 
                                         // Commit the message

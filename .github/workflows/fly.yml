@@ -75,21 +75,6 @@ jobs:
         working-directory: ./fly/consumer
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  fly-deploy-consumer-optimism:
-    runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
-    timeout-minutes: 30
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v3
-      - name: Fly Install
-        uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Fly Deploy
-        run: flyctl deploy --remote-only
-        working-directory: ./fly/consumer-optimism
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-gas:
     runs-on: ubuntu-latest
     needs:
@@ -263,7 +248,6 @@ jobs:
       - fly-deploy-bundler
       - fly-deploy-bundler-sepolia
       - fly-deploy-consumer
-      - fly-deploy-consumer-optimism
       - fly-deploy-gas
       - fly-deploy-grafana
       - fly-deploy-indexer
@@ -281,5 +265,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: fly-wait-docker,fly-deploy-bundler,fly-deploy-bundler-sepolia,fly-deploy-consumer,fly-deploy-consumer-optimism,fly-deploy-gas,fly-deploy-grafana,fly-deploy-indexer,fly-deploy-indexer-optimism,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-simulator
+          allowed-skips: fly-wait-docker,fly-deploy-bundler,fly-deploy-bundler-sepolia,fly-deploy-consumer,fly-deploy-gas,fly-deploy-grafana,fly-deploy-indexer,fly-deploy-indexer-optimism,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-simulator
           jobs: ${{ toJSON(needs) }}

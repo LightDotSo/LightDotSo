@@ -13,11 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::{autometrics, prometheus_exporter};
-use axum::{routing::get, Router};
 use dotenvy::dotenv;
-use eyre::Result;
-use lightdotso_autometrics::API_SLO;
+use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
 use lightdotso_kafka::namespace::TRANSACTION;
@@ -25,23 +22,6 @@ use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{error, info, Level},
 };
-
-#[autometrics(objective = API_SLO)]
-async fn health_check() -> &'static str {
-    "OK"
-}
-
-pub async fn start_server() -> Result<()> {
-    let app = Router::new()
-        .route("/", get(|| async { "Hello, World!" }))
-        .route("/health", get(health_check))
-        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }));
-
-    let socket_addr = "0.0.0.0:3008".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
-
-    Ok(())
-}
 
 #[tokio::main]
 pub async fn main() {
@@ -56,26 +36,16 @@ pub async fn main() {
 
     info!("Starting server at {}", SHORT_VERSION);
 
-    // Run the test server if we're running in Fly
-    if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-consumer") {
-        let test_server_future = start_server();
-        let result = test_server_future.await;
-
-        if result.is_err() {
-            std::process::exit(1)
-        };
-    }
-
     // Parse the command line arguments
     let args = ConsumerArgs { group: "all".to_string(), topics: vec![TRANSACTION.to_string()] };
 
     // Construct the futures
     let consumer_future_1 = args.run();
     let consumer_future_2 = args.run();
-    let server_future = start_server();
+    let internal_future = start_internal_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(consumer_future_1, consumer_future_2, server_future);
+    let result = tokio::try_join!(consumer_future_1, consumer_future_2, internal_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {

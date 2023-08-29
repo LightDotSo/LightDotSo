@@ -19,10 +19,10 @@ use crate::gas::{GasEstimation, GasEstimationParams};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct ApiResponseData {
-    slow: u64,
-    standard: u64,
-    fast: u64,
-    rapid: u64,
+    slow: f64,
+    standard: f64,
+    fast: f64,
+    rapid: f64,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -32,7 +32,7 @@ struct ApiResponse {
 
 impl From<ApiResponseData> for GasEstimation {
     fn from(data: ApiResponseData) -> Self {
-        let make_params = |value: u64| -> GasEstimationParams {
+        let make_params = |value: f64| -> GasEstimationParams {
             GasEstimationParams { max_priority_fee_per_gas: value, max_fee_per_gas: value }
         };
 

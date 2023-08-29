@@ -111,7 +111,9 @@
   serde_json = "1.0.104"
   spki = "0.7.2"
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-grpc" }
-  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-primitives" }
+  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-primitives", features = [
+    "test-utils",
+  ] }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
   tokio = { version = "1", features = ["full"] }
   tower = { version = "0.4.12" }

@@ -6,18 +6,14 @@
 FROM rust:1.71 AS builder
 
 # Specify turborepo related args
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG SCCACHE_ENDPOINT
 ARG TURBO_TEAM
 ARG TURBO_TOKEN
 
 # Specify the working directory.
 WORKDIR /app
-
-# Specify the target we're building for.
-ENV DOCKER=true
-
-# Specify turborepo related envs.
-ENV TURBO_TEAM=${TURBO_TEAM}
-ENV TURBO_TOKEN=${TURBO_TOKEN}
 
 # Install nodejs 18.
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
@@ -25,22 +21,49 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 # Install planning dependencies.
 RUN apt install -y python3-pip nodejs
 
-# Copy over dir.
-COPY . .
-
-# Build the prisma dep.
-RUN npm install -g turbo@1.10.11 pnpm@8.6.9
-
 # Install building dependencies.
 RUN apt-get update && \
   apt-get -y install build-essential git clang curl libsasl2-dev libssl-dev llvm libudev-dev make protobuf-compiler && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
 
+  # Build the prisma dep.
+RUN npm install -g turbo@1.10.11 pnpm@8.6.9
+
+# Install sccache dependencies.
+ENV SCCACHE_VERSION=0.5.4
+RUN curl -L https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERSION}/sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz -o sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+    && tar -xzf sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz \
+    && mv sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl/sccache /usr/local/bin/ \
+    && chmod +x /usr/local/bin/sccache
+
+# Copy over dir.
+COPY . .
+
+# Specify the build related environment variables.
+ENV \
+  AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+  AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+  CARGO_INCREMENTAL=0 \
+  DOCKER=true \
+  RUST_LOG="sccache=trace" \
+  RUST_BACKTRACE=1 \
+  RUSTFLAGS="-D warnings" \
+  RUSTC_WRAPPER="/usr/local/bin/sccache" \
+  SCCACHE_BUCKET="sccache" \
+  SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT \
+  SCCACHE_IDLE_TIMEOUT="0" \
+  SCCACHE_REGION=auto \
+  SCCACHE_LOG="info,sccache::cache=debug" \
+  TURBO_TEAM=$TURBO_TEAM \
+  TURBO_TOKEN=$TURBO_TOKEN
+
 # Run the build.
 RUN make install && \
+    sccache --start-server && \
     turbo run prisma && \
-    cargo build --release
+    cargo build --release && \
+    sccache --show-stats
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime

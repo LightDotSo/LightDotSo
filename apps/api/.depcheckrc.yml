@@ -24,3 +24,5 @@ ignores:
   - jsonc-eslint-parser
   - "@next/eslint-plugin-next"
   - eslint-plugin-turbo
+  - swagger-ui-react
+  - "@types/swagger-ui-react"
