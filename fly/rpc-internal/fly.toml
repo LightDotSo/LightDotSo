@@ -24,10 +24,14 @@ kill_timeout = "5s"
 
 [checks]
   [checks.health]
-    port = 3000
+    port = 9091
     type = "http"
     interval = "15s"
     timeout = "10s"
     grace_period = "30s"
     method = "get"
     path = "/health"
+
+[metrics]
+  port = 9091
+  path = "/metrics"

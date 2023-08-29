@@ -16,6 +16,7 @@
   jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   serde = { workspace = true }
+  silius-primitives = { workspace = true }
   silius-rpc = { workspace = true }
   spki = { workspace = true, optional = true }
   tokio = { workspace = true }

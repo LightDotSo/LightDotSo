@@ -5537,6 +5537,7 @@ version = "0.1.0"
 dependencies = [
  "autometrics",
  "axum 0.6.20",
+ "eyre",
  "governor 0.5.1",
  "http",
  "hyper",
@@ -5712,6 +5713,7 @@ dependencies = [
  "jsonrpsee",
  "lightdotso-tracing",
  "serde",
+ "silius-primitives",
  "silius-rpc",
  "spki",
  "tokio",

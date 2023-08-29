@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::{autometrics, prometheus_exporter};
 use axum::{
     error_handling::HandleErrorLayer,
     http::StatusCode,
@@ -25,7 +24,7 @@ use clap::Parser;
 use dotenvy::dotenv;
 use eyre::Result;
 use hyper::client;
-use lightdotso_autometrics::RPC_SLO;
+use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_rpc::{
     config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
@@ -41,11 +40,6 @@ use tower_http::{
     // sensitive_headers::{SetSensitiveRequestHeadersLayer, SetSensitiveResponseHeadersLayer},
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
-
-#[autometrics(objective = RPC_SLO)]
-async fn health_check() -> &'static str {
-    "OK"
-}
 
 // Handle errors
 // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L308
@@ -119,8 +113,6 @@ pub async fn start_server() -> Result<()> {
     let app = Router::new()
         .route("/", get("rpc.light.so"))
         .route("/:chain_id", on(MethodFilter::all(), public_rpc_handler))
-        .route("/health", get(health_check))
-        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
@@ -153,8 +145,21 @@ pub async fn start_server() -> Result<()> {
 pub async fn main() -> Result<(), eyre::Error> {
     let _ = dotenv();
 
+    // Log the version
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
-    start_server().await?;
+
+    // Construct the futures
+    let rpc_future = start_server();
+    let internal_future = start_internal_server();
+
+    // Run the futures concurrently
+    let result = tokio::try_join!(rpc_future, internal_future);
+
+    // Exit with an error if either future failed
+    if let Err(e) = result {
+        eprintln!("Error: {:?}", e);
+        std::process::exit(1);
+    }
 
     Ok(())
 }

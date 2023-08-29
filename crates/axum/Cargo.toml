@@ -11,6 +11,7 @@
 [dependencies]
   autometrics = { workspace = true }
   axum = { workspace = true }
+  eyre = { workspace = true }
   governor = "0.5.1"
   http = { workspace = true }
   hyper = { workspace = true }

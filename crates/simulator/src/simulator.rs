@@ -110,6 +110,11 @@ impl SimulatorServer for SimulatorServerImpl {
 }
 
 fn get_fork_url(first_chain_id: u64) -> String {
+    // If env `ENVIRONMENT` is `development`, use the local anvil fork
+    if std::env::var("ENVIRONMENT").unwrap_or_default() == "development" {
+        return "http://localhost:8545".to_string();
+    }
+
     format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", first_chain_id)
 }
 
