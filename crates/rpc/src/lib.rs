@@ -149,9 +149,10 @@ pub async fn rpc_proxy_handler(
 
     // Get the method from the body
     let method = get_method(Body::from(full_body_bytes.clone())).await;
-    info!("method: {:?}", method);
 
     if let Ok(method) = method {
+        info!("method: {:?}", method);
+
         match method.as_str() {
             "debug_traceBlock" |
             "debug_traceBlockByHash" |
@@ -187,8 +188,6 @@ pub async fn rpc_proxy_handler(
             "eth_supportedEntryPoints" |
             "eth_getUserOperationByHash" |
             "eth_getUserOperationReceipt" => {
-                info!("method: {}", method);
-
                 // Get the rpc url from the constants
                 if let Some(rpc) = BUNDLER_RPC_URLS.get(&chain_id) {
                     // Get the result from the client
@@ -204,8 +203,6 @@ pub async fn rpc_proxy_handler(
                 }
             }
             "gas_requestGasEstimation" => {
-                info!("method: {}", method);
-
                 let result = get_client_result(
                     GAS_RPC_URL.to_string(),
                     client.clone(),
@@ -217,8 +214,6 @@ pub async fn rpc_proxy_handler(
                 }
             }
             "paymaster_requestPaymasterAndData" | "paymaster_requestGasAndPaymasterAndData" => {
-                info!("method: {}", method);
-
                 let result = get_client_result(
                     PAYMASTER_RPC_URL.to_string(),
                     client.clone(),
@@ -237,8 +232,6 @@ pub async fn rpc_proxy_handler(
             "simulator_simulateUserOperationBundle" |
             "simulator_simulateUserOperationAssetChanges" |
             "simulator_simulateUserOperationAssetChangesBundle" => {
-                info!("method: {}", method);
-
                 let result = get_client_result(
                     SIMULATOR_RPC_URL.to_string(),
                     client.clone(),
