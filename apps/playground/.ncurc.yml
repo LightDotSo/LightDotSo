@@ -7,3 +7,4 @@ reject:
   - "@trpc/react-query"
   - "@trpc/server"
   - lucide-react
+  - next-auth

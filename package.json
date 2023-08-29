@@ -31,7 +31,6 @@
     "forge:fmt:cmd": "forge fmt",
     "forge:snapshot": "make contracts-snapshot",
     "forge:snapshot:cmd": "make contracts-snapshot && echo",
-    "hardhat:compile": "hardhat compile",
     "hardhat:compile:coverage": "hardhat compile-for-coverage",
     "hardhat:docgen": "hardhat docgen",
     "license:cmd": "license-check-and-add -f .license-check-and-add-config.json",
