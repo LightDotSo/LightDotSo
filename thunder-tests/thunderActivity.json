@@ -118,7 +118,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-08-29T08:28:30.442Z",
+    "modified": "2023-08-29T22:35:38.459Z",
     "headers": [
       {
         "name": "accept",
@@ -132,7 +132,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1337\n  ]\n}",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
       "form": []
     },
     "tests": [
