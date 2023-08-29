@@ -36,7 +36,6 @@ RUN curl -L https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERS
     && tar -xzf sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz \
     && mv sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl/sccache /usr/local/bin/ \
     && chmod +x /usr/local/bin/sccache
-ENV RUSTC_WRAPPER=/usr/local/bin/sccache
 
 # Copy over dir.
 COPY . .
@@ -47,22 +46,19 @@ ENV \
   AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
   CARGO_INCREMENTAL=0 \
   DOCKER=true \
+  RUSTC_WRAPPER=/usr/local/bin/sccache \
   SCCACHE_BUCKET=sccache \
   SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT \
   SCCACHE_REGION=auto \
-  SCCACHE_S3_USE_SSL=true \
   TURBO_TEAM=$TURBO_TEAM \
   TURBO_TOKEN=$TURBO_TOKEN
 
 # Run the build.
-RUN sccache --start-server && \
-    make install && \
+RUN make install && \
+    sccache --start-server && \
     turbo run prisma && \
     cargo build --release && \
     sccache --show-stats
-
-# Show sccache stats.
-RUN sccache --show-stats
 
 # Slim down the image for runtime.
 FROM debian:bullseye-slim AS runtime
