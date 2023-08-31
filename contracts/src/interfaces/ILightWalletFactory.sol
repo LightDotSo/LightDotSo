@@ -34,8 +34,8 @@ interface ILightWalletFactory {
     function accountImplementation() external view returns (LightWallet);
 
     /// @notice Creates an account and returns its address
-    function createAccount(bytes32 hash, uint256 salt) external returns (LightWallet);
+    function createAccount(bytes32 hash, bytes32 salt) external returns (LightWallet);
 
     /// @notice Calculates the counterfactual address of an account
-    function getAddress(bytes32 hash, uint256 salt) external view returns (address);
+    function getAddress(bytes32 hash, bytes32 salt) external view returns (address);
 }
