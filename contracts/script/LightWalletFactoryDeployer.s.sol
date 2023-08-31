@@ -19,7 +19,7 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightDeployer} from "@/script/LightDeployer.s.sol";
+import {LightDeployer} from "@/script/abstract/LightDeployer.s.sol";
 import {Script} from "forge-std/Script.sol";
 
 interface ImmutableCreate2Factory {
