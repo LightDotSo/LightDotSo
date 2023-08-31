@@ -32,7 +32,7 @@
   test = 'contracts'
 
 [profile.local]
-  no_match_test = "test(Fork)?(Fuzz)"
+  no_match_test = "test(Fork|Fuzz|Invariant)"
 
 [profile.ci]
   fuzz = { runs = 5000 }

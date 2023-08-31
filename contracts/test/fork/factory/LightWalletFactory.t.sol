@@ -41,7 +41,7 @@ contract LightWalletFactoryForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
 
     /// Tests that the factory can create a new account at the predicted address
-    function testForkRun_createAccount_equalsGetAddress() public {
+    function testFork_createAccount_equalsGetAddress() public {
         // Create the account using the factory w/ hash 1, nonce 0
         _testCreateAccountWithNonceZero();
 
