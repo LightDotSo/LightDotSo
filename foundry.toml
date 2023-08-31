@@ -43,6 +43,17 @@
   invariant = { runs = 1000 }
   verbosity = 2
 
+[profile.smt]
+  [profile.smt.model_checker]
+    engine = "chc"
+    invariants = ["contract", "reentrancy"]
+    show_unproved = true
+    timeout = 300_000
+
+    [profile.smt.model_checker.contracts]
+      "contracts/src/LightWallet.sol" = ["LightWallet"]
+      "contracts/src/LightWalletFactory.sol" = ["LightWalletFactory"]
+
 [doc]
   ignore = ["**/*.t.sol"]
   out = "docs"

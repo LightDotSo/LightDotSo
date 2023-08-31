@@ -8,6 +8,7 @@ on:
     types:
       - labeled
   merge_group:
+  workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -46,6 +47,29 @@ jobs:
       - name: Run Build
         run: |
           forge build
+  contracts-fork:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
+    needs:
+      - contracts-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      FOUNDRY_PROFILE: fork
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Install Deps
+        run: |
+          forge install
+      - name: Run Fork
+        run: |
+          forge test
   contracts-lint:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
@@ -196,6 +220,34 @@ jobs:
         continue-on-error: true
         with:
           sarif_file: ${{ steps.slither.outputs.sarif }}
+  contracts-smt:
+    if: needs.contracts-turbo.outputs.trigger == 'true'
+    needs:
+      - contracts-turbo
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      FOUNDRY_PROFILE: smt
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - name: Install Deps
+        run: |
+          forge install
+      - name: Contracts Smt
+        run: |
+          forge build > smt-checker-report.txt
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: smt-checker-report
+          path: smt-checker-report.txt
   contracts-check:
     if: always()
     needs:
