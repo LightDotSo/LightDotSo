@@ -38,7 +38,7 @@
   fuzz = { runs = 5000 }
   invariant = { runs = 1000 }
   verbosity = 2
-  no_match_test = "test(Fork)"
+  no_match_path = "*.f.sol"
 
 [profile.fork]
   test = "contracts/test/fork"
