@@ -19,5 +19,15 @@ pragma solidity ^0.8.18;
 
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
-/// @notice Base fuzz test for `LightWallet`
-abstract contract BaseFuzzTest is BaseIntegrationTest {}
+/// @notice Base fork fuzz test for `LightWallet`
+abstract contract BaseForkTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
+
+    /// @dev BaseForkTest setup
+    function setUp() public virtual override {
+        // Base integration test setup
+        BaseIntegrationTest.setUp();
+    }
+}

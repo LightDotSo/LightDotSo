@@ -48,7 +48,7 @@ jobs:
         run: |
           forge build
   contracts-fork:
-    if: needs.contracts-turbo.outputs.trigger == 'true'
+    if: needs.contracts-turbo.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch'
     needs:
       - contracts-turbo
     runs-on: ubuntu-latest

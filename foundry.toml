@@ -34,14 +34,17 @@
 [profile.local]
   no_match_test = "testForkRun"
 
-[profile.noir]
-  fs_permissions = [{ access = "read", path = "contracts/circuits/proofs" }]
-  test = "contracts/circuits/test"
-
 [profile.ci]
   fuzz = { runs = 5000 }
   invariant = { runs = 1000 }
   verbosity = 2
+
+[profile.fork]
+  test = "contracts/test/fork"
+
+[profile.noir]
+  fs_permissions = [{ access = "read", path = "contracts/circuits/proofs" }]
+  test = "contracts/circuits/test"
 
 [profile.smt]
   [profile.smt.model_checker]
