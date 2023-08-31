@@ -32,7 +32,7 @@
   test = 'contracts'
 
 [profile.local]
-  no_match_path = "contracts/test/fork"
+  no_match_test = "test(Fork)?(Fuzz)"
 
 [profile.ci]
   fuzz = { runs = 5000 }
