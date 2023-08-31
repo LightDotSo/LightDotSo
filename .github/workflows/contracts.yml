@@ -134,7 +134,7 @@ jobs:
         run: |
           forge test
         env:
-          NETOWRK_NAME: ${{ matrix.network }}
+          NETWORK_NAME: ${{ matrix.network }}
           PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
   contracts-smt:
     if: needs.contracts-turbo.outputs.trigger == 'true'

@@ -31,7 +31,8 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         BaseIntegrationTest.setUp();
 
         // Get network name
-        string memory name = vm.envString("NETWORK_NAME");
+        string memory defaultName = "mainnet";
+        string memory name = vm.envOr("NETWORK_NAME", defaultName);
 
         // Fork network setup
         vm.createSelectFork(name);
