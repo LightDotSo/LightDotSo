@@ -32,16 +32,31 @@
   test = 'contracts'
 
 [profile.local]
-  no_match_test = "testForkRun"
-
-[profile.noir]
-  fs_permissions = [{ access = "read", path = "contracts/circuits/proofs" }]
-  test = "contracts/circuits/test"
+  no_match_test = "test(Fork|Fuzz|Invariant)"
 
 [profile.ci]
   fuzz = { runs = 5000 }
   invariant = { runs = 1000 }
   verbosity = 2
+  no_match_path = "*.f.sol"
+
+[profile.fork]
+  test = "contracts/test/fork"
+
+[profile.noir]
+  fs_permissions = [{ access = "read", path = "contracts/circuits/proofs" }]
+  test = "contracts/circuits/test"
+
+[profile.smt]
+  [profile.smt.model_checker]
+    engine = "chc"
+    invariants = ["contract", "reentrancy"]
+    show_unproved = true
+    timeout = 300_000
+
+    [profile.smt.model_checker.contracts]
+      "contracts/src/LightWallet.sol" = ["LightWallet"]
+      "contracts/src/LightWalletFactory.sol" = ["LightWalletFactory"]
 
 [doc]
   ignore = ["**/*.t.sol"]
@@ -49,4 +64,11 @@
   repository = "https://github.com/LightDotSo/LightDotSo"
 
 [rpc_endpoints]
-  mainnet = "${ETH_RPC_MAINNET}"
+  localhost = "http://localhost:8545"
+  arbitrum = "${PROTECTED_RPC_URL}/42161"
+  bnb = "${PROTECTED_RPC_URL}/56"
+  gnosis = "${PROTECTED_RPC_URL}/100"
+  mainnet = "${PROTECTED_RPC_URL}/1"
+  optimism = "${PROTECTED_RPC_URL}/10"
+  polygon = "${PROTECTED_RPC_URL}/137"
+  sepolia = "${PROTECTED_RPC_URL}/11155111"

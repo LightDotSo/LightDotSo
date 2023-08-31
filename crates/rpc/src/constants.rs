@@ -86,6 +86,7 @@ lazy_static! {
 
         // Mainnet
         m.insert(10, "https://mainnet.optimism.io".to_string());
+        m.insert(56, "https://bsc-dataseed.binance.org".to_string());
         m.insert(100, "https://rpc.gnosischain.com".to_string());
         m.insert(8453, "https://mainnet.base.org".to_string());
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());
