@@ -24,6 +24,7 @@ IsValidSignatureIntegrationTest:testFuzz_isValidSignature_predeployed_6492() (ga
 IsValidSignatureIntegrationTest:test_isValidSignature_eip_1271_6492() (gas: 73285)
 IsValidSignatureIntegrationTest:test_revertWhenInvalidSignature_isValidSignature_eip_1271_6492() (gas: 75600)
 IsValidSignatureIntegrationTest:test_revertWhenInvalidSignature_isValidSignature_predeployed_6492() (gas: 949347)
+LightWalletFactoryForkTest:testForkRun_createAccount_equalsGetAddress() (gas: 314273)
 LightWalletFactoryIntegrationTest:test_createAccount_alreadyExists() (gas: 305246)
 LightWalletFactoryIntegrationTest:test_createAccount_emitEvents() (gas: 297607)
 LightWalletFactoryIntegrationTest:test_createAccount_equalsGetAddress() (gas: 314353)

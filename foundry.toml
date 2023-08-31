@@ -15,6 +15,7 @@
     "lib/v3-periphery",
   ]
   gas_reports = ["LightWallet", "LightWalletFactory"]
+  no_match_test = "testForkRun"
   optimizer = true
   optimizer_runs = 10_000
   solc = "0.8.18"
