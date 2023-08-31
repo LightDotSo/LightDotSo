@@ -16,6 +16,7 @@ concurrency:
   cancel-in-progress: true
 env:
   FOUNDRY_PROFILE: ci
+  PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
 jobs:
   contracts-turbo:
     runs-on: ubuntu-latest
@@ -135,7 +136,6 @@ jobs:
           forge test
         env:
           NETWORK_NAME: ${{ matrix.network }}
-          PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
   contracts-smt:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
