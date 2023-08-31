@@ -43,7 +43,7 @@ contract LightWalletFactory is ILightWalletFactory {
     string public constant NAME = "LightWalletFactory";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.0.0";
+    string public constant VERSION = "0.0.1";
 
     // -------------------------------------------------------------------------
     // Immutable Storage
@@ -65,7 +65,7 @@ contract LightWalletFactory is ILightWalletFactory {
     /// @param salt The salt of the create2 call.
     /// @dev Note that during UserOperation execution, this method is called only if the account is not deployed.
     /// This method returns an existing account address so that entryPoint.getSenderAddress() would work even after account creation
-    function createAccount(bytes32 hash, uint256 salt) public returns (LightWallet ret) {
+    function createAccount(bytes32 hash, bytes32 salt) public returns (LightWallet ret) {
         address addr = getAddress(hash, salt);
         uint256 codeSize = addr.code.length;
         // If the account already exists, return it
@@ -87,10 +87,10 @@ contract LightWalletFactory is ILightWalletFactory {
     /// @param hash The hash of the account image.
     /// @param salt The salt of the create2 call.
     // slither-disable-next-line too-many-digits
-    function getAddress(bytes32 hash, uint256 salt) public view returns (address) {
+    function getAddress(bytes32 hash, bytes32 salt) public view returns (address) {
         // Computes the address with the given `salt`and the contract address `accountImplementation`, and with `initialize` method w/ `hash`
         return Create2.computeAddress(
-            bytes32(salt),
+            salt,
             keccak256(
                 abi.encodePacked(
                     type(ERC1967Proxy).creationCode,
