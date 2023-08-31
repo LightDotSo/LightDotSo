@@ -107,7 +107,7 @@ jobs:
           files: lcov.info
           flags: contracts
   contracts-fork:
-    if: needs.contracts-turbo.outputs.trigger == 'true' || github.event_name == 'workflow_dispatch'
+    if: needs.contracts-turbo.outputs.trigger == 'true' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     needs:
       - contracts-turbo
     runs-on: ubuntu-latest
