@@ -94,8 +94,6 @@ jobs:
       - name: Check Gas Snapshots
         run: |
           make contracts-snapshot-check
-        env:
-          FORGE_PROFILE: local
       - name: Run Coverage
         run: |
           forge coverage --report lcov
