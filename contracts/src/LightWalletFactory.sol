@@ -43,7 +43,7 @@ contract LightWalletFactory is ILightWalletFactory {
     string public constant NAME = "LightWalletFactory";
 
     /// @notice The version for this contract
-    string public constant VERSION = "0.0.0";
+    string public constant VERSION = "0.0.1";
 
     // -------------------------------------------------------------------------
     // Immutable Storage
