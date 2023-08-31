@@ -33,7 +33,6 @@
   test = 'contracts'
 
 [profile.local]
-  no_match_test = "testForkRun"
 
 [profile.ci]
   fuzz = { runs = 5000 }
