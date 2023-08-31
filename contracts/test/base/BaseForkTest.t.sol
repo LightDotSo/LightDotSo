@@ -29,5 +29,11 @@ abstract contract BaseForkTest is BaseIntegrationTest {
     function setUp() public virtual override {
         // Base integration test setup
         BaseIntegrationTest.setUp();
+
+        // Get network name
+        string memory name = vm.envString("NETWORK_NAME");
+
+        // Fork network setup
+        vm.createSelectFork(name);
     }
 }

@@ -111,6 +111,10 @@ jobs:
     needs:
       - contracts-turbo
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        network:
+          - sepolia
     timeout-minutes: 90
     env:
       FOUNDRY_PROFILE: fork
@@ -129,6 +133,9 @@ jobs:
       - name: Run Fork
         run: |
           forge test
+        env:
+          NETOWRK_NAME: ${{ matrix.network }}
+          PROTECTED_RPC_URL: ${{ secrets.PROTECTED_RPC_URL }}
   contracts-smt:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:

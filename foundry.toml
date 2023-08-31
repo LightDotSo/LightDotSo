@@ -64,4 +64,11 @@
   repository = "https://github.com/LightDotSo/LightDotSo"
 
 [rpc_endpoints]
-  mainnet = "${ETH_RPC_MAINNET}"
+  localhost = "http://localhost:8545"
+  arbitrum = "${PROTECTED_RPC_URL}/42161"
+  bnb = "${PROTECTED_RPC_URL}/56"
+  gnosis = "${PROTECTED_RPC_URL}/100"
+  mainnet = "${PROTECTED_RPC_URL}/1"
+  optimism = "${PROTECTED_RPC_URL}/10"
+  polygon = "${PROTECTED_RPC_URL}/137"
+  sepolia = "${PROTECTED_RPC_URL}/11155111"
