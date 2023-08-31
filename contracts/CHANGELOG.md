@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.15
+
+### Patch Changes
+
+- [#472](https://github.com/LightDotSo/LightDotSo/pull/472) [`6a1a082`](https://github.com/LightDotSo/LightDotSo/commit/6a1a082e284255bc36c015412053455bdc2ebb4e) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Convert to uint256 from bytes32 hash
+
 ## 0.1.0-pre.14
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @lightdotso/bin
 
+## 0.1.0-pre.10
+
+### Patch Changes
+
+- [#469](https://github.com/LightDotSo/LightDotSo/pull/469) [`b1e202d`](https://github.com/LightDotSo/LightDotSo/commit/b1e202dc794ff7080a06ccc3fc67d6eee1bceedf) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Update gas sig
+
+- Updated dependencies [[`b1e202d`](https://github.com/LightDotSo/LightDotSo/commit/b1e202dc794ff7080a06ccc3fc67d6eee1bceedf)]:
+  - @lightdotso/crates@0.1.0-pre.6
+
 ## 0.1.0-pre.9
 
 ### Patch Changes
