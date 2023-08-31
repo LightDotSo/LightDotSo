@@ -17,10 +17,25 @@
 
 pragma solidity ^0.8.18;
 
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
 
 /// @notice Base fork fuzz test for `LightWallet`
 abstract contract BaseForkTest is BaseIntegrationTest {
+    // -------------------------------------------------------------------------
+    // Constants
+    // -------------------------------------------------------------------------
+
+    // Prank sender address - kaki.eth
+    address internal constant PRANK_SENDER_ADDRESS = address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
+
+    // EntryPoint address
+    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
+
+    // LightWalletFactory address
+    address internal constant LIGHT_FACTORY_ADDRESS = address(0x426Ff63A09eFa1E7ccb3517E046956346e311881);
+
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
@@ -30,11 +45,19 @@ abstract contract BaseForkTest is BaseIntegrationTest {
         // Base integration test setup
         BaseIntegrationTest.setUp();
 
+        // EntryPoint from eth-inifinitism
+        entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
+        // LightWalletFactory core contract
+        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+
         // Get network name
         string memory defaultName = "mainnet";
         string memory name = vm.envOr("NETWORK_NAME", defaultName);
 
         // Fork network setup
         vm.createSelectFork(name);
+
+        // Prank sender setup
+        vm.startPrank(PRANK_SENDER_ADDRESS);
     }
 }

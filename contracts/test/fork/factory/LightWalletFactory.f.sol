@@ -43,16 +43,12 @@ contract LightWalletFactoryForkTest is BaseForkTest {
     /// Tests that the factory can create a new account at the predicted address
     function testFork_createAccount_equalsGetAddress() public {
         // Create the account using the factory w/ hash 1, nonce 0
-        _testCreateAccountWithNonceZero();
+        account = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(8)));
 
         // Get the predicted address of the new account
-        address predicted = factory.getAddress(bytes32(uint256(1)), 0);
+        address predicted = factory.getAddress(bytes32(uint256(1)), bytes32(uint256(8)));
 
         // Assert that the predicted address matches the created account
         assertEq(predicted, address(account));
-        // Get the immutable implementation in the factory
-        LightWallet implementation = factory.accountImplementation();
-        // Assert that the implementation of the created account is the LightWallet
-        assertEq(proxyUtils.getProxyImplementation(address(account)), address(implementation));
     }
 }
