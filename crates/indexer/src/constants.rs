@@ -56,7 +56,7 @@ lazy_static! {
   ];
 }
 
-// The kafka chain ids
+// The runner chain ids
 lazy_static! {
   pub static ref RUNNER_CHAIN_IDS: [u64; 3] = [
     // Mainnet
