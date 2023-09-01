@@ -138,7 +138,7 @@ impl Indexer {
                 sleep(Duration::from_secs(SLEEP_CHAIN_IDS[&self.chain_id] as u64)).await;
             }
 
-            // Send the transaction to the queue for indexing
+            // Send the transaction to the queue for indexing if not runner
             if self.kafka_client.is_some() && !RUNNER_CHAIN_IDS.contains(&self.chain_id) {
                 let queue_res = self.send_tx_queue(block).await;
                 if queue_res.is_err() {
