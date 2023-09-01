@@ -41,12 +41,12 @@ pub async fn main() {
         ConsumerArgs { group: "consumer".to_string(), topics: vec![TRANSACTION.to_string()] };
 
     // Construct the futures
-    let consumer_future_1 = args.run();
-    let consumer_future_2 = args.run();
-    let internal_future = start_internal_server();
+    info!("Starting {} consumers", num_cpus::get());
+    let consumer_futures: Vec<_> = (0..num_cpus::get()).map(|_| args.run()).collect();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(consumer_future_1, consumer_future_2, internal_future);
+    let result =
+        tokio::try_join!(consumer_futures.into_iter().next().unwrap(), start_internal_server());
 
     // Exit with an error if either future failed
     if let Err(e) = result {
