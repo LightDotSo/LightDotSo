@@ -18,7 +18,7 @@ mod constants;
 
 use crate::constants::{
     BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, PAYMASTER_RPC_URL,
-    SIMULATOR_RPC_URL,
+    PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
 };
 use axum::{
     body::Body,
@@ -64,9 +64,38 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
         .body(body)
         .unwrap();
 
-    if let Ok(res) = client.request(client_req).await {
+    if let Ok(mut res) = client.request(client_req).await {
+        // Consume the body and replace it with an empty one for later reuse
+        let full_body = std::mem::replace(res.body_mut(), Body::empty());
+
         if res.status().is_success() {
-            Some(res)
+            // If the body contains a error field return None
+            if let Ok(body) = body::to_bytes(full_body).await {
+                // Convert the body into bytes
+                let body_json: Value = serde_json::from_slice(&body).unwrap_or_default();
+                // If the error code is the speficied error code return None
+                if let Some(error) = body_json.get("error") {
+                    if let Some(code) = error.get("code") {
+                        // If the error code is -32001 or -32603 return None
+                        // Invalid method
+                        if code.as_i64() == Some(-32001) ||
+                        // Internal error
+                        code.as_i64() == Some(-32603)
+                        {
+                            error!("Error in body w/ code: {:?}", body_json);
+                            return None;
+                        }
+                    }
+                }
+                // If body is empty return None
+                if body_json.is_null() {
+                    error!("Error in body w/ null: {:?}", body_json);
+                    return None;
+                }
+                // Return the response
+                return Some(Response::builder().status(200).body(Body::from(body)).unwrap());
+            }
+            None
         } else {
             error!("Error while getting result from client: {:?}", res);
             None
@@ -151,7 +180,7 @@ pub async fn rpc_proxy_handler(
     let method = get_method(Body::from(full_body_bytes.clone())).await;
 
     if let Ok(method) = method {
-        info!("method: {:?}", method);
+        info!("method: {}", method);
 
         match method.as_str() {
             "debug_traceBlock" |
@@ -278,6 +307,18 @@ pub async fn rpc_proxy_handler(
                 }
             }
             &_ => {}
+        }
+    }
+
+    // Get the public rpc url from the constants
+    if let Some(public_rpc_url) = PUBLIC_RPC_URLS.get(&chain_id) {
+        let uri = public_rpc_url.clone();
+
+        // Get the result from the client
+        let result =
+            get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone())).await;
+        if let Some(resp) = result {
+            return resp;
         }
     }
 
