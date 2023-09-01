@@ -23,13 +23,13 @@ abstract contract LightDeployer {
     // Immutable Storage
     // -------------------------------------------------------------------------
 
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x426Ff63A09eFa1E7ccb3517E046956346e311881);
+    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
 
     // -------------------------------------------------------------------------
     // Utilities
     // -------------------------------------------------------------------------
 
-    function randMod() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
+    function randMod() internal view returns (bytes32) {
+        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
     }
 }

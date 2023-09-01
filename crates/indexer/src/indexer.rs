@@ -15,7 +15,7 @@
 
 use crate::{
     config::IndexerArgs,
-    constants::{FACTORY_ADDRESSES, KAFKA_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
+    constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
     namespace::{ERC1155, ERC20, ERC721, ETH, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
 };
 use autometrics::autometrics;
@@ -138,8 +138,8 @@ impl Indexer {
                 sleep(Duration::from_secs(SLEEP_CHAIN_IDS[&self.chain_id] as u64)).await;
             }
 
-            // Send the transaction to the queue for indexing
-            if self.kafka_client.is_some() && KAFKA_CHAIN_IDS.contains(&self.chain_id) {
+            // Send the transaction to the queue for indexing if not runner
+            if self.kafka_client.is_some() && !RUNNER_CHAIN_IDS.contains(&self.chain_id) {
                 let queue_res = self.send_tx_queue(block).await;
                 if queue_res.is_err() {
                     error!("send_tx_queue error: {:?}", queue_res);
@@ -547,7 +547,7 @@ impl Indexer {
         if frame.value.is_some() && frame.input.0.is_empty() {
             // Log if the value is not zero
             if frame.value.unwrap() != U256::zero() {
-                info!("Value: {:?}", frame.value.unwrap());
+                address_type_entry.entry(frame.from).or_insert(ETH.to_string());
                 address_type_entry.entry(to).or_insert(ETH.to_string());
             }
         }

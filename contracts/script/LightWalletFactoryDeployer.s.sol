@@ -20,6 +20,8 @@ pragma solidity ^0.8.18;
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightDeployer} from "@/script/abstract/LightDeployer.s.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
 interface ImmutableCreate2Factory {
@@ -55,10 +57,16 @@ contract LightWalletFactoryDeployer is LightDeployer, Script {
     bytes private initCode = abi.encodePacked(byteCode, abi.encode(address(ENTRY_POINT_ADDRESS)));
 
     function run() public {
-        // Start the broadcast
+        // Log the byte code hash
+        // solhint-disable-next-line no-console
+        console.logBytes32(keccak256(initCode));
+        // The init code hash of the LightWalletFactory
+        bytes32 initCodeHash = 0x8957ba1f77a4becdcfe5a5e01d4516901271037e93597fe921161829034d540e;
+        // Assert that the init code is the expected value
+        assert(keccak256(initCode) == initCodeHash);
 
-        // TODO: Specify salt for deterministic deployment
-        bytes32 salt = 0x0;
+        // Salt for deterministic deployment
+        bytes32 salt = 0x0000000000000000000000000000000000000000a2850b49daa90b2a103159bd;
 
         // If testing on a local chain, use without a safe create2
         if (block.chainid == 0x7a69) {

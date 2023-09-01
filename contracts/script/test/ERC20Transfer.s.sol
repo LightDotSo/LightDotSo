@@ -19,7 +19,7 @@ pragma solidity ^0.8.18;
 
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightDeployer} from "@/script/LightDeployer.s.sol";
+import {LightDeployer} from "@/script/abstract/LightDeployer.s.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
