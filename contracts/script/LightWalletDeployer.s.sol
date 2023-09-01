@@ -51,7 +51,7 @@ contract LightWalletDeployer is LightDeployer, Script {
             factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
 
             // Create an account
-            wallet = factory.createAccount(bytes32(uint256(1)), uint256(1));
+            wallet = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(1)));
         }
 
         // Stop the broadcast
