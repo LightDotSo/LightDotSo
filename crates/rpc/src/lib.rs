@@ -80,7 +80,9 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                         // Invalid method
                         if code.as_i64() == Some(-32001) ||
                         // Internal error
-                        code.as_i64() == Some(-32603)
+                        code.as_i64() == Some(-32603) ||
+                        // Limit exceeded
+                        code.as_i64() == Some(-32005)
                         {
                             error!("Error in body w/ code: {:?}", body_json);
                             return None;
@@ -211,41 +213,6 @@ pub async fn rpc_proxy_handler(
                         return resp;
                     }
                 }
-
-                // Get the rpc url from secret env `PRIVATE_RPC_URLS`
-                // The env is a comma separated list w/ chain_id of rpc urls
-                // Example: 1=https://mainnet.infura.io/v3/123,4=https://rinkeby.infura.io/v3/123
-                if let Ok(private_rpc_urls) = std::env::var("PRIVATE_RPC_URLS") {
-                    // Split the env into a vector of rpc urls
-                    for private_rpc_url in private_rpc_urls.split(',') {
-                        // Trim the rpc url
-                        let private_rpc_url = private_rpc_url.trim();
-                        // Split the rpc url into a vector of chain_id and rpc url
-                        let private_rpc_url_split: Vec<&str> = private_rpc_url.split('=').collect();
-                        // If the vector has 2 elements
-                        if private_rpc_url_split.len() == 2 {
-                            // Get the chain_id from the private rpc url
-                            let private_chain_id =
-                                private_rpc_url_split[0].parse::<u64>().unwrap_or(0);
-
-                            // If the private chain_id is the same as the chain_id
-                            if private_chain_id == chain_id {
-                                let uri = private_rpc_url_split[1].to_string();
-
-                                // Get the result from the client
-                                let result = get_client_result(
-                                    uri,
-                                    client.clone(),
-                                    Body::from(full_body_bytes.clone()),
-                                )
-                                .await;
-                                if let Some(resp) = result {
-                                    return resp;
-                                }
-                            }
-                        }
-                    }
-                }
             }
             "eth_sendUserOperation" |
             "eth_estimateUserOperationGas" |
@@ -331,6 +298,37 @@ pub async fn rpc_proxy_handler(
             get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone())).await;
         if let Some(resp) = result {
             return resp;
+        }
+    }
+
+    // Get the rpc url from secret env `PRIVATE_RPC_URLS`
+    // The env is a comma separated list w/ chain_id of rpc urls
+    // Example: 1=https://mainnet.infura.io/v3/123,4=https://rinkeby.infura.io/v3/123
+    if let Ok(private_rpc_urls) = std::env::var("PRIVATE_RPC_URLS") {
+        // Split the env into a vector of rpc urls
+        for private_rpc_url in private_rpc_urls.split(',') {
+            // Trim the rpc url
+            let private_rpc_url = private_rpc_url.trim();
+            // Split the rpc url into a vector of chain_id and rpc url
+            let private_rpc_url_split: Vec<&str> = private_rpc_url.split('=').collect();
+            // If the vector has 2 elements
+            if private_rpc_url_split.len() == 2 {
+                // Get the chain_id from the private rpc url
+                let private_chain_id = private_rpc_url_split[0].parse::<u64>().unwrap_or(0);
+
+                // If the private chain_id is the same as the chain_id
+                if private_chain_id == chain_id {
+                    let uri = private_rpc_url_split[1].to_string();
+
+                    // Get the result from the client
+                    let result =
+                        get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone()))
+                            .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                }
+            }
         }
     }
 

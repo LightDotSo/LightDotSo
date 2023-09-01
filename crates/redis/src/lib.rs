@@ -86,3 +86,20 @@ pub fn get_most_recent_indexed_block(
         .cloned()
         .ok_or(redis::RedisError::from((redis::ErrorKind::TypeError, "No block found")))
 }
+
+/// Get the indexed percentage
+pub fn get_indexed_percentage(
+    redis_conn: &mut redis::Connection,
+    chain_id: &str,
+    total_blocks: i64,
+) -> redis::RedisResult<f64> {
+    // If the total number of blocks is zero, return zero to avoid division by zero.
+    if total_blocks == 0 {
+        return Ok(0.0);
+    }
+
+    let key = format!("indexed_blocks::{}", chain_id);
+    let indexed_blocks_count: i64 = redis_conn.zcard(&key)?;
+
+    Ok((indexed_blocks_count as f64 / total_blocks as f64) * 100.0)
+}

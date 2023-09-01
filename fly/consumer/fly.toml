@@ -20,7 +20,7 @@ kill_timeout = "5s"
 [http_service]
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 5
+  min_machines_running = 8
 
 [checks]
   [checks.health]

@@ -14,8 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use autometrics::{autometrics, prometheus_exporter};
-use axum::{response::Response, routing::get, Router};
+use axum::{
+    extract::{Path, State},
+    response::Response,
+    routing::get,
+    Router,
+};
 use eyre::Result;
+use lightdotso_redis::{get_most_recent_indexed_block, get_redis_client, redis::Client};
+use std::{convert::Infallible, sync::Arc};
 
 #[autometrics]
 async fn health_check() -> &'static str {
@@ -25,6 +32,27 @@ async fn health_check() -> &'static str {
 #[autometrics]
 async fn prometheus_metrics_check() -> Response<String> {
     prometheus_exporter::encode_http_response()
+}
+
+#[autometrics]
+async fn get_indexed_block(
+    State(redis_client): State<Arc<Client>>,
+    chain_id: Path<String>,
+) -> Result<Response<String>, Infallible> {
+    let mut con = redis_client.get_connection().unwrap();
+    let block = get_most_recent_indexed_block(&mut con, &chain_id);
+
+    Ok(Response::builder().status(200).body(block.unwrap().to_string()).unwrap())
+}
+
+pub async fn start_indexer_server() -> Result<()> {
+    let redis_client: Arc<Client> = Arc::new(get_redis_client().unwrap());
+    let app = Router::new().route("/:chain_id", get(get_indexed_block)).with_state(redis_client);
+
+    let socket_addr = "[::]:3000".parse()?;
+    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
+
+    Ok(())
 }
 
 pub async fn start_internal_server() -> Result<()> {
