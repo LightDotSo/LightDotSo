@@ -1,26 +1,21 @@
-# fly.toml app configuration file generated for lightdotso-rpc-internal on 2023-08-26T18:50:47-07:00
+# fly.toml app configuration file generated for lightdotso-indexer-bsc on 2023-08-31T23:41:24-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lightdotso-rpc-internal"
+app = "lightdotso-indexer-bsc"
 primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
 
 [experimental]
-  entrypoint = ["/usr/local/bin/rpc"]
+  entrypoint = ["/usr/local/bin/indexer"]
 
 [build]
   image = "ghcr.io/lightdotso/lightdotso:latest"
 
 [deploy]
-  strategy = "bluegreen"
-
-[http_service]
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 2
+  strategy = "canary"
 
 [checks]
   [checks.health]

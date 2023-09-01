@@ -30,8 +30,8 @@ pub mod namespace;
 pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error::Error>> {
     // Get the environment variables
     let broker = std::env::var("KAFKA_BROKER")?;
-    let username = std::env::var("KAFKA_USERNAME").unwrap_or("".to_string());
-    let password = std::env::var("KAFKA_PASSWORD").unwrap_or("".to_string());
+    let username = std::env::var("KAFKA_USERNAME")?;
+    let password = std::env::var("KAFKA_PASSWORD")?;
 
     let mut binding = ClientConfig::new();
 
@@ -69,8 +69,9 @@ pub fn get_consumer(group: &str) -> Result<StreamConsumer, rdkafka::error::Kafka
 
 /// Get a Kafka producer with the required settings.
 pub fn get_producer() -> Result<FutureProducer, rdkafka::error::KafkaError> {
-    // Ignores the group id for producers.
-    let client_config = configure_client("");
+    // Set the group to process env `FLY_ALLOC_ID` if it exists, otherwise use default.
+    let client_config =
+        configure_client(std::env::var("FLY_ALLOC_ID").unwrap_or("default".to_string()).as_str());
     if client_config.is_err() {
         error!("Failed to create client");
         return Err(rdkafka::error::KafkaError::ClientCreation("Failed to create client".into()));
