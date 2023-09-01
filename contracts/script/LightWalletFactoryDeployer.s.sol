@@ -66,7 +66,7 @@ contract LightWalletFactoryDeployer is LightDeployer, Script {
         assert(keccak256(initCode) == initCodeHash);
 
         // Salt for deterministic deployment
-        bytes32 salt = 0x00000000000000000000000000000000000000005df0a51fc4f2bb031b419b69;
+        bytes32 salt = 0x0000000000000000000000000000000000000000a2850b49daa90b2a103159bd;
 
         // If testing on a local chain, use without a safe create2
         if (block.chainid == 0x7a69) {

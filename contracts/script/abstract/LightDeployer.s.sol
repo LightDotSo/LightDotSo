@@ -23,7 +23,7 @@ abstract contract LightDeployer {
     // Immutable Storage
     // -------------------------------------------------------------------------
 
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000003A51AD900B578b582A2E9BE090b91CFb25);
+    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
 
     // -------------------------------------------------------------------------
     // Utilities

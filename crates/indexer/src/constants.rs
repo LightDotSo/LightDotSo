@@ -19,13 +19,15 @@ use std::collections::HashMap;
 
 // The factory addresses
 lazy_static! {
-    pub static ref FACTORY_ADDRESSES: [Address; 3] = [
+    pub static ref FACTORY_ADDRESSES: [Address; 4] = [
       // Local
       "0x262aD6Becda7CE4B047a3130491978A8f35F9aeC".parse().unwrap(),
       // v0.0.0
       "0x63CBfA247a2c1043892c7cEB4C21d1d8BC71Ffab".parse().unwrap(),
       // v0.0.1
       "0x426Ff63A09eFa1E7ccb3517E046956346e311881".parse().unwrap(),
+      // v0.1.0
+      "0x0000000000756D3E6464f5efe7e413a0Af1C7474".parse().unwrap(),
     ];
 }
 
