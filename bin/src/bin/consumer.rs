@@ -37,7 +37,7 @@ pub async fn main() {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args = ConsumerArgs { group: "all".to_string(), topics: vec![TRANSACTION.to_string()] };
+    let args = ConsumerArgs { topics: vec![TRANSACTION.to_string()] };
 
     // Construct the futures
     let consumer_future_1 = args.run();
