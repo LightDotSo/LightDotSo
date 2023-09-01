@@ -155,11 +155,11 @@
     "colId": "history",
     "containerId": "",
     "name": "debug_traceCall",
-    "url": "http://rpc.light.so/protected/a/1",
+    "url": "http://localhost:3000/internal/100",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-26T10:42:05.410Z",
-    "modified": "2023-08-31T09:50:19.011Z",
+    "modified": "2023-09-01T10:58:17.533Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -170,6 +170,30 @@
     "body": {
       "type": "json",
       "raw": "{\n  \"method\": \"debug_traceCall\",\n  \"params\": [\n    {\n      \"from\": null,\n      \"to\": \"0x6b175474e89094c44da98b954eedeac495271d0f\",\n      \"data\": \"0x70a082310000000000000000000000006E0d01A76C3Cf4288372a29124A26D4353EE51BE\"\n    },\n    \"latest\"\n  ],\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "9535a1f5-4265-483c-8eb5-12055d621d80",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_getBlockByNumber",
+    "url": "http://localhost:3000/100",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-26T10:42:05.410Z",
+    "modified": "2023-09-01T10:59:57.464Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_blockNumber\",\n  \"params\": []\n}",
       "form": []
     },
     "tests": []
