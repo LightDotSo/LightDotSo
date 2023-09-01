@@ -16,7 +16,7 @@
 use crate::{
     config::IndexerArgs,
     constants::{FACTORY_ADDRESSES, KAFKA_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
-    namespace::{ERC1155, ERC20, ERC721, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
+    namespace::{ERC1155, ERC20, ERC721, ETH, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
 };
 use autometrics::autometrics;
 use axum::Json;
@@ -243,6 +243,7 @@ impl Indexer {
                 &block,
                 &mut wallet_address_hashmap,
                 &mut tx_address_hashmap,
+                &mut tx_address_type_hashmap,
             )
         }
 
@@ -521,12 +522,18 @@ impl Indexer {
             HashMap<ethers::types::H160, ethers::types::H160>,
         >,
         tx_address_hashmap: &mut HashMap<ethers::types::H256, Vec<ethers::types::H160>>,
+        tx_address_type_hashmap: &mut HashMap<
+            ethers::types::H256,
+            HashMap<ethers::types::H160, String>,
+        >,
     ) {
         // Get the tx hash w/ the index
         let tx_hash = block.clone().transactions[index];
 
         // Build the tx_address_hashmap
         let entry = tx_address_hashmap.entry(tx_hash).or_default();
+        // Build the address_type_hashmap
+        let address_type_entry = tx_address_type_hashmap.entry(tx_hash).or_default();
 
         // Convert the to address to a wallet address
         // Shouldn't fail because debug_traceTransaction returns a valid address on most RPC
@@ -535,6 +542,15 @@ impl Indexer {
         // Push the from and to address to the tx_address_hashmap
         entry.push(frame.from);
         entry.push(to);
+
+        // If the value is a eth transfer
+        if frame.value.is_some() && frame.input.0.is_empty() {
+            // Log if the value is not zero
+            if frame.value.unwrap() != U256::zero() {
+                info!("Value: {:?}", frame.value.unwrap());
+                address_type_entry.entry(to).or_insert(ETH.to_string());
+            }
+        }
 
         // Loop over the calls
         if frame.typ == "CREATE2" {
@@ -561,6 +577,7 @@ impl Indexer {
                     block,
                     wallet_address_hashmap,
                     tx_address_hashmap,
+                    tx_address_type_hashmap,
                 );
             }
         }

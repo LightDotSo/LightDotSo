@@ -25,6 +25,11 @@ lazy_static! {
     pub static ref IMAGE_HASH_UPDATED: String = "ImageHashUpdated".to_string();
 }
 
+// The ETH namesapce
+lazy_static! {
+    pub static ref ETH: String = "ETH".to_string();
+}
+
 // The ERC721 namesapce
 lazy_static! {
     pub static ref ERC721: String = "ERC721".to_string();
