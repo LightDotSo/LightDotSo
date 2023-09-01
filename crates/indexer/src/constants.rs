@@ -59,6 +59,8 @@ lazy_static! {
   pub static ref RUNNER_CHAIN_IDS: [u64; 2] = [
     // Mainnet
     1,
+    // Gnosis
+    100,
     // Sepolia
     11155111
   ];
