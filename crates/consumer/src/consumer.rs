@@ -38,7 +38,7 @@ impl Consumer {
         info!("Consumer new, starting");
 
         // Construct the consumer
-        let consumer = Arc::new(get_consumer(&args.group).unwrap());
+        let consumer = Arc::new(get_consumer().unwrap());
 
         // Create the consumer
         Self { consumer, topics: args.topics.clone() }
