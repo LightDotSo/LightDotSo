@@ -38,6 +38,7 @@
   lightdotso-rpc = { workspace = true }
   lightdotso-simulator = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  num_cpus = "1.13.0"
   ratatui = { version = "0.22.0", features = ["all-widgets"] }
   redb = { workspace = true }
   silius-grpc = { workspace = true }

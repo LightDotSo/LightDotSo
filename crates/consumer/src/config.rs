@@ -21,7 +21,7 @@ use lightdotso_tracing::tracing::info;
 #[derive(Debug, Clone, Parser, Default)]
 pub struct ConsumerArgs {
     /// The group id of the consumer.
-    #[arg(long, short, default_value_t = String::from("all"))]
+    #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "KAFKA_GROUP")]
     pub group: String,
     /// The topics to consume.

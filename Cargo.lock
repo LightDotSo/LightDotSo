@@ -5575,6 +5575,7 @@ dependencies = [
  "lightdotso-rpc",
  "lightdotso-simulator",
  "lightdotso-tracing",
+ "num_cpus",
  "ratatui",
  "redb",
  "silius-grpc",
