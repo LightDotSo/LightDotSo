@@ -56,8 +56,10 @@ lazy_static! {
 
 // The kafka chain ids
 lazy_static! {
-  pub static ref KAFKA_CHAIN_IDS: [u64; 1] = [
-    // Optimism
-    10
+  pub static ref RUNNER_CHAIN_IDS: [u64; 2] = [
+    // Mainnet
+    1,
+    // Sepolia
+    11155111
   ];
 }
