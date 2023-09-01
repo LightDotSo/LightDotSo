@@ -29,7 +29,7 @@ abstract contract LightDeployer {
     // Utilities
     // -------------------------------------------------------------------------
 
-    function randMod() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
+    function randMod() internal view returns (bytes32) {
+        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
     }
 }
