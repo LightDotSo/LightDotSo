@@ -5541,6 +5541,7 @@ dependencies = [
  "governor 0.5.1",
  "http",
  "hyper",
+ "lightdotso-redis",
  "lightdotso-tracing",
  "serde",
  "tower",

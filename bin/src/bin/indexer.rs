@@ -15,7 +15,7 @@
 
 use clap::Parser;
 use dotenvy::dotenv;
-use lightdotso_axum::internal::start_internal_server;
+use lightdotso_axum::internal::{start_indexer_server, start_internal_server};
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
@@ -42,8 +42,10 @@ pub async fn main() {
 
     // Run the test server if we're running in Fly
     if std::env::var("FLY_APP_NAME").is_ok_and(|s| s == "lightdotso-indexer") {
-        let test_server_future = start_internal_server();
-        let result = test_server_future.await;
+        let indexer_server_future = start_indexer_server();
+        let internal_server_future = start_internal_server();
+
+        let result = tokio::try_join!(indexer_server_future, internal_server_future);
 
         if result.is_err() {
             std::process::exit(1)

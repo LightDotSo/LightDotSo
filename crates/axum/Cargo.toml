@@ -15,6 +15,7 @@
   governor = "0.5.1"
   http = { workspace = true }
   hyper = { workspace = true }
+  lightdotso-redis = { workspace = true }
   lightdotso-tracing = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   tower = { workspace = true, features = [
