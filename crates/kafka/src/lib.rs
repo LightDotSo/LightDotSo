@@ -84,20 +84,17 @@ pub fn get_producer() -> Result<FutureProducer, rdkafka::error::KafkaError> {
 pub async fn produce_message(
     producer: Arc<FutureProducer>,
     topic: &str,
-    key: &str,
     message: &str,
 ) -> Result<(), rdkafka::error::KafkaError> {
     let payload = format!("{}", message);
-    let record = FutureRecord::to(topic).payload(&payload).key(key);
-    let _ = producer.send(record, None).await;
+    let _ = producer.send::<Vec<u8>, _, _>(FutureRecord::to(topic).payload(&payload), None).await;
     Ok(())
 }
 
 // Produce a message with Transaction topic.
 pub async fn produce_transaction_message(
     producer: Arc<FutureProducer>,
-    key: &str,
     message: &str,
 ) -> Result<(), rdkafka::error::KafkaError> {
-    produce_message(producer, TRANSACTION.as_str(), key, message).await
+    produce_message(producer, TRANSACTION.as_str(), message).await
 }

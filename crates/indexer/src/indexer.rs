@@ -606,11 +606,12 @@ impl Indexer {
         block: Block<H256>,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
         let client = self.kafka_client.clone().unwrap();
-        let chain_id = self.chain_id.to_string();
-        let payload =
-            serde_json::to_value(block).unwrap_or_else(|_| serde_json::Value::Null).to_string();
+        let chain_id = self.chain_id;
+        let payload = serde_json::to_value((&block, &chain_id))
+            .unwrap_or_else(|_| serde_json::Value::Null)
+            .to_string();
 
-        let _ = { || produce_transaction_message(client.clone(), &chain_id, &payload) }
+        let _ = { || produce_transaction_message(client.clone(), &payload) }
             .retry(&ExponentialBuilder::default())
             .await;
 
