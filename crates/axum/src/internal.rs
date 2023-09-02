@@ -20,16 +20,7 @@ use axum::{
     routing::get,
     Router,
 };
-use ethers_main::{
-    prelude::Provider,
-    providers::{Http, Middleware, ProviderError, Ws},
-    types::{
-        Block, BlockNumber, CallFrame, Filter, GethDebugBuiltInTracerType, GethDebugTracerType,
-        GethDebugTracingOptions, GethTrace, GethTraceFrame, Transaction, TransactionReceipt, H256,
-        U256,
-    },
-    utils::to_checksum,
-};
+use ethers_main::prelude::Provider;
 use eyre::Result;
 use lightdotso_redis::{
     get_indexed_percentage, get_last_n_indexed_blocks, get_most_recent_indexed_block,
