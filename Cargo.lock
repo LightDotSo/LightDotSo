@@ -5537,6 +5537,7 @@ version = "0.1.0"
 dependencies = [
  "autometrics",
  "axum 0.6.20",
+ "ethers 2.0.9",
  "eyre",
  "governor 0.5.1",
  "http",
@@ -5544,6 +5545,7 @@ dependencies = [
  "lightdotso-redis",
  "lightdotso-tracing",
  "serde",
+ "serde_json",
  "tower",
  "tower-http 0.4.3",
  "tower_governor",

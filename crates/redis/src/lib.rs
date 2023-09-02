@@ -103,3 +103,41 @@ pub fn get_indexed_percentage(
 
     Ok((indexed_blocks_count as f64 / total_blocks as f64) * 100.0)
 }
+
+/// Get the last N indexed blocks in descending order
+pub fn get_last_n_indexed_blocks(
+    redis_conn: &mut redis::Connection,
+    chain_id: &str,
+    n: i64,
+) -> redis::RedisResult<Vec<i64>> {
+    let key = format!("indexed_blocks::{}", chain_id);
+
+    // This will return the last N blocks in descending order.
+    let n_isize: isize = n as isize;
+    redis_conn.zrevrange(&key, 0, n_isize - 1)
+}
+
+/// Get the indexed percentage for the last N blocks
+pub fn get_last_n_indexed_percentage(
+    redis_conn: &mut redis::Connection,
+    chain_id: &str,
+    total_blocks: i64,
+    n: i64,
+) -> redis::RedisResult<f64> {
+    // If total blocks is less than N or N is zero, return 0;
+    if total_blocks < n || n == 0 {
+        return Ok(0.0);
+    }
+
+    // Construct the key
+    let key = format!("indexed_blocks::{}", chain_id);
+
+    // Get the block numbers for the last N blocks
+    let n_isize: isize = n as isize;
+    let last_n_blocks: Vec<i64> = redis_conn.zrevrange(&key, 0, n_isize - 1)?;
+
+    // Calculate the indexed percentage for the last N blocks
+    let indexed_percentage = (last_n_blocks.len() as f64 / n as f64) * 100.0;
+
+    Ok(indexed_percentage)
+}
