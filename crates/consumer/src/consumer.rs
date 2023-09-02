@@ -37,8 +37,15 @@ impl Consumer {
     pub async fn new(args: &ConsumerArgs) -> Self {
         info!("Consumer new, starting");
 
+        // If the group is not empty, read it from the environment var `FLY_APP_NAME`
+        let group = if args.group.is_empty() {
+            std::env::var("FLY_APP_NAME").unwrap_or("default".to_string())
+        } else {
+            args.group.clone()
+        };
+
         // Construct the consumer
-        let consumer = Arc::new(get_consumer().unwrap());
+        let consumer = Arc::new(get_consumer(&group).unwrap());
 
         // Create the consumer
         Self { consumer, topics: args.topics.clone() }
