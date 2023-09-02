@@ -37,8 +37,21 @@ impl Consumer {
     pub async fn new(args: &ConsumerArgs) -> Self {
         info!("Consumer new, starting");
 
+        // If the group is empty, read it from the environment var `FLY_APP_NAME`
+        let group = if args.group.is_empty() {
+            std::env::var("FLY_APP_NAME").unwrap_or("default".to_string())
+        } else {
+            args.group.clone()
+        };
+        info!("Consumer group: {}", group);
+
+        // Panic if the topics are empty
+        if args.topics.is_empty() {
+            panic!("No topics specified");
+        }
+
         // Construct the consumer
-        let consumer = Arc::new(get_consumer(&args.group).unwrap());
+        let consumer = Arc::new(get_consumer(&group).unwrap());
 
         // Create the consumer
         Self { consumer, topics: args.topics.clone() }
@@ -73,13 +86,12 @@ impl Consumer {
                             let payload_opt = m.payload_view::<str>();
 
                             // If the payload is valid
-                            if let Some(Ok(payload)) = payload_opt && let Some(key) = m.key()  {
+                            if let Some(Ok(payload)) = payload_opt {
                                 // Deserialize the payload
-                                match serde_json::from_slice::<Block<H256>>(payload.as_bytes()) {
-                                    Ok(block) => {
-                                        // Get the chain_id from the key
-                                        let chain_id = String::from_utf8(key.to_vec()).unwrap().parse::<u64>().unwrap();
-
+                                match serde_json::from_slice::<(Block<H256>, u64)>(
+                                    payload.as_bytes(),
+                                ) {
+                                    Ok((block, chain_id)) => {
                                         // Log each message as an example.
                                         info!(
                                             "Indexing block: {:?} at chain_id: {:?}",
@@ -88,7 +100,13 @@ impl Consumer {
                                         );
 
                                         // Index the block
-                                        let res = indexer.index_with_internal(db.clone(), block.clone(), chain_id).await;
+                                        let res = indexer
+                                            .index_with_internal(
+                                                db.clone(),
+                                                block.clone(),
+                                                chain_id,
+                                            )
+                                            .await;
 
                                         // Commit the message
                                         if let Err(e) = res {

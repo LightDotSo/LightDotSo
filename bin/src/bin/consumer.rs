@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use clap::Parser;
 use dotenvy::dotenv;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
-use lightdotso_kafka::namespace::TRANSACTION;
 use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{error, info, Level},
@@ -37,8 +37,7 @@ pub async fn main() {
     info!("Starting server at {}", SHORT_VERSION);
 
     // Parse the command line arguments
-    let args =
-        ConsumerArgs { group: "consumer".to_string(), topics: vec![TRANSACTION.to_string()] };
+    let args = ConsumerArgs::parse();
 
     // Construct the futures
     info!("Starting {} consumers", num_cpus::get());
