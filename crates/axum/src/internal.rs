@@ -22,17 +22,7 @@ use axum::{
 };
 use ethers_main::{
     prelude::Provider,
-<<<<<<< HEAD
     providers::{Http, Middleware},
-=======
-    providers::{Http, Middleware, ProviderError, Ws},
-    types::{
-        Block, BlockNumber, CallFrame, Filter, GethDebugBuiltInTracerType, GethDebugTracerType,
-        GethDebugTracingOptions, GethTrace, GethTraceFrame, Transaction, TransactionReceipt, H256,
-        U256,
-    },
-    utils::to_checksum,
->>>>>>> origin/main
 };
 use eyre::Result;
 use lightdotso_redis::{
