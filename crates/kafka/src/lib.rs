@@ -59,9 +59,10 @@ pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error:
 }
 
 /// Get a Kafka consumer with the required settings.
-pub fn get_consumer(group: &str) -> Result<StreamConsumer, rdkafka::error::KafkaError> {
-    // Set the group to the specified group.
-    let client_config = configure_client(group);
+pub fn get_consumer() -> Result<StreamConsumer, rdkafka::error::KafkaError> {
+    // Set the group to process env `FLY_APP_NAME` if it exists, otherwise use default.
+    let client_config =
+        configure_client(std::env::var("FLY_APP_NAME").unwrap_or("default".to_string()).as_str());
     if client_config.is_err() {
         return Err(rdkafka::error::KafkaError::ClientCreation("Failed to create client".into()));
     }

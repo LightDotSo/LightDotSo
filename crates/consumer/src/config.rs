@@ -16,14 +16,11 @@
 use crate::consumer::Consumer;
 use clap::Parser;
 use eyre::Result;
+use lightdotso_kafka::namespace::TRANSACTION;
 use lightdotso_tracing::tracing::info;
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct ConsumerArgs {
-    /// The group id of the consumer.
-    #[arg(long, short, default_value_t = String::from(""))]
-    #[clap(long, env = "KAFKA_GROUP")]
-    pub group: String,
     /// The topics to consume.
     #[arg(long, short, num_args = 1.., value_delimiter = ',')]
     #[clap(long, env = "KAFKA_TOPICS")]
@@ -61,19 +58,16 @@ mod tests {
         let config_args = ConsumerArgs::parse_from([""]);
 
         // Verify the default values
-        assert_eq!(config_args.group, "");
         assert_eq!(config_args.topics, vec![] as Vec<String>);
 
         // Set some env vars
-        env::set_var("KAFKA_GROUP", "one");
-        env::set_var("KAFKA_TOPICS", "hello,world");
+        env::set_var("KAFKA_TOPICS", "transaction");
 
         // Create a Config with env values
         let config_args = ConsumerArgs::parse_from([""]);
 
         // Verify the new values from env
-        assert_eq!(config_args.group, "one");
-        assert_eq!(config_args.topics, vec!["hello", "world"]);
+        assert_eq!(config_args.topics, vec![TRANSACTION.to_string()]);
 
         // Reset the env vars
         env::remove_var("KAFKA_GROUP");
@@ -86,7 +80,6 @@ mod tests {
         let config_args = ConsumerArgs::default();
 
         // Verify the default values
-        assert_eq!(config_args.group, "");
         assert_eq!(config_args.topics, vec![] as Vec<String>);
     }
 }
