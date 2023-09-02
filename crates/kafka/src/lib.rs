@@ -52,6 +52,7 @@ pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error:
         .set("sasl.mechanism", "SCRAM-SHA-256")
         .set("security.protocol", "SASL_SSL")
         .set("auto.offset.reset", "latest")
+        .set("enable.auto.commit", "false")
         .set("sasl.username", username)
         .set("sasl.password", password);
 
