@@ -20,7 +20,10 @@ use axum::{
     routing::get,
     Router,
 };
-use ethers_main::{prelude::Provider, providers::Middleware};
+use ethers_main::{
+    prelude::Provider,
+    providers::{Http, Middleware},
+};
 use eyre::Result;
 use lightdotso_redis::{
     get_indexed_percentage, get_last_n_indexed_blocks, get_most_recent_indexed_block,
