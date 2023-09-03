@@ -22,8 +22,9 @@ use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{error, info, Level},
 };
+use tokio::task;
 
-#[tokio::main]
+#[tokio::main(flavor = "multi_thread", worker_threads = 8)]
 pub async fn main() {
     let _ = dotenv();
 
@@ -39,17 +40,40 @@ pub async fn main() {
     // Parse the command line arguments
     let args = ConsumerArgs::parse();
 
-    // Construct the futures
-    let consumer_future_1 = args.run();
-    let consumer_future_2 = args.run();
-    let internal_future = start_internal_server();
+    // Spawn tasks in the custom runtime and store join handles
+    let mut handles = Vec::new();
 
-    // Run the futures concurrently
-    let result = tokio::try_join!(consumer_future_1, consumer_future_2, internal_future);
+    // Get the number of CPUs and start that many consumers
+    let cpu_count = num_cpus::get();
+    info!("Starting {} consumers", cpu_count);
 
-    // Exit with an error if either future failed
-    if let Err(e) = result {
-        eprintln!("Error: {:?}", e);
-        std::process::exit(1);
+    for _ in 0..cpu_count {
+        let args_clone = args.clone();
+        let handle = task::spawn(async move {
+            loop {
+                match args_clone.run().await {
+                    Ok(_) => {
+                        info!("Task completed successfully");
+                        break;
+                    }
+                    Err(e) => {
+                        error!("Task failed with error: {:?}, restarting task...", e);
+                        continue;
+                    }
+                }
+            }
+        });
+        handles.push(handle);
     }
+
+    // Run internal server
+    let server_handle = task::spawn(start_internal_server());
+
+    // Wait for all tasks to complete
+    for handle in handles {
+        let _ = handle.await;
+    }
+
+    // Wait for the server task to complete.
+    let _ = server_handle.await;
 }
