@@ -73,18 +73,33 @@ lazy_static! {
     pub static ref DEPLOY_CHAIN_IDS: HashMap<u64, i64> = {
         let mut m = HashMap::new();
         // Mainnet
-        m.insert(1, 18053152);
+        // https://etherscan.io/tx/0xc6b87c3fca696baf2b43de41fc632abdf9c6885d70561aae2840fe67c3964b80
+        m.insert(1, 18039585);
         // Optimism
-        m.insert(10, 109055644);
+        // https://optimistic.etherscan.io/tx/0x611b4a05622784295d8db416c46c96f7561677f3138c96671322324eecf3d397
+        m.insert(10, 108976643);
         // BSC
-        m.insert(56, 31408074);
+        // https://bscscan.com/tx/0xd43347b2df1a6047a1144302f74ac8faec27bfdb36e93af88dc467db806afb6c
+        m.insert(56, 31414354);
         // Gnosis
-        m.insert(100, 29782016);
+        // https://gnosisscan.io/tx/0x0b52d24d06eab395fe156d10e6b52febd1a415029e3fd4011baef0f5bb9ebd05
+        m.insert(100, 29785769);
+        // Polygon
+        // https://polygonscan.com/tx/0xc4c152f70d7e35ab065a41e302f01a073303600aa53a52fc7ff625f0cd470728
+        m.insert(137, 47007194);
+        // Base
+        // https://basescan.org/tx/0xd0eb3cc2b32447b97675beb992bafbabf889632684828a2216824d2deba1dcc7
+        m.insert(8453, 3470401);
         // Arbitrum
-        m.insert(42161, 127522739);
+        // https://arbiscan.io/tx/0x75be6607154baafdbfea04887dd75061882b0a0fc029e6cacf04594bf1c9814d
+        m.insert(42161, 127586355);
+        // Avalanche
+        // https://snowtrace.io/tx/0x08ea42012d24b605986c8e671c78358625a7ef764be4a1dab853643a3e805802
+        m.insert(43114, 34714138);
 
         // Sepolia
-        m.insert(11155111, 4214469);
+        // https://sepolia.etherscan.io/tx/0xa009d527c08a86d1d3c2bc943be5a6a2258da3dbe06a25be35939110726e58df
+        m.insert(11155111, 4202058);
 
         m
     };
