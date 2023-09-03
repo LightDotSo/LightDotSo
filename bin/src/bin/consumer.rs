@@ -49,9 +49,11 @@ pub async fn main() {
         }
     });
 
+    // Get the number of CPUs and start that many consumers
     let cpu_count = num_cpus::get();
     info!("Starting {} consumers", cpu_count);
 
+    // Run the futures in parallel
     for _ in 0..cpu_count {
         // Clone the args for each thread
         let args_clone = args.clone();
@@ -65,10 +67,5 @@ pub async fn main() {
                 }
             }
         });
-    }
-
-    // The main function runs indefinitely, as the consumers and server are looping forever.
-    loop {
-        tokio::time::sleep(tokio::time::Duration::from_secs(300)).await;
     }
 }
