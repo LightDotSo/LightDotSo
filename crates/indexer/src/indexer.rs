@@ -45,7 +45,7 @@ use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{
     add_to_wallets, get_redis_client, is_wallet_present, redis::Client, set_block_status,
 };
-use lightdotso_tracing::tracing::{error, info, trace};
+use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{
     collections::{HashMap, HashSet},
     hash::Hash,
@@ -543,8 +543,21 @@ impl Indexer {
         let address_type_entry = tx_address_type_hashmap.entry(tx_hash).or_default();
 
         // Convert the to address to a wallet address
-        // Shouldn't fail because debug_traceTransaction returns a valid address on most RPC
-        let to = *frame.to.clone().unwrap().as_address().unwrap();
+        // If the to address is none, use the from address
+        // Temporarily use the from address if the to address is not a wallet address
+        let to = match frame.to.clone() {
+            Some(address) => match address.as_address() {
+                Some(addr) => *addr,
+                None => {
+                    warn!("Conversion warning: to address is not a wallet address: {:?}", address);
+                    frame.from
+                }
+            },
+            None => {
+                warn!("Conversion warning: to address is none, using from address");
+                frame.from
+            }
+        };
 
         // Push the from and to address to the tx_address_hashmap
         entry.push(frame.from);
