@@ -332,9 +332,9 @@ pub async fn rpc_proxy_handler(
         }
     }
 
-    // Get the rpc url from the constants
-    if let Some(infura_rpc_url) = ANKR_RPC_URLS.get(&chain_id) {
-        let uri = format!("{}{}", infura_rpc_url, std::env::var("INFURA_API_KEY").unwrap());
+    // Get the ankr rpc url
+    if let Some(ankr_rpc_url) = ANKR_RPC_URLS.get(&chain_id) {
+        let uri = ankr_rpc_url.clone();
 
         // Get the result from the client
         let result =
