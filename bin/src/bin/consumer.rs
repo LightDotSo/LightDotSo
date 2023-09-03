@@ -24,7 +24,7 @@ use lightdotso_tracing::{
 };
 use tokio::task;
 
-#[tokio::main(flavor = "multi_thread", worker_threads = 16)]
+#[tokio::main(flavor = "multi_thread", worker_threads = 4)]
 pub async fn main() {
     let _ = dotenv();
 
@@ -74,6 +74,6 @@ pub async fn main() {
         let _ = handle.await;
     }
 
-    // Wait for the server task to complete. Ignore JoinError here as well
+    // Wait for the server task to complete.
     let _ = server_handle.await;
 }
