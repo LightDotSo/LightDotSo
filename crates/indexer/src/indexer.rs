@@ -543,8 +543,15 @@ impl Indexer {
         let address_type_entry = tx_address_type_hashmap.entry(tx_hash).or_default();
 
         // Convert the to address to a wallet address
-        // Shouldn't fail because debug_traceTransaction returns a valid address on most RPC
-        let to = *frame.to.clone().unwrap().as_address().unwrap();
+        // If the to address is none, use the from address
+        // Temporarily use the from address if the to address is not a wallet address
+        let to = match frame.to.clone() {
+            Some(address) => match address.as_address() {
+                Some(addr) => *addr,
+                None => frame.from,
+            },
+            None => frame.from,
+        };
 
         // Push the from and to address to the tx_address_hashmap
         entry.push(frame.from);
