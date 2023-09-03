@@ -22,8 +22,9 @@ use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{error, info, Level},
 };
+use tokio::task;
 
-#[tokio::main]
+#[tokio::main(flavor = "multi_thread", worker_threads = 8)]
 pub async fn main() {
     let _ = dotenv();
 
@@ -39,33 +40,40 @@ pub async fn main() {
     // Parse the command line arguments
     let args = ConsumerArgs::parse();
 
-    // Start the internal server in a separate task
-    tokio::spawn(async {
-        loop {
-            if let Err(e) = start_internal_server().await {
-                error!("Internal server failed: {:?}", e);
-                info!("Restarting internal server");
-            }
-        }
-    });
+    // Spawn tasks in the custom runtime and store join handles
+    let mut handles = Vec::new();
 
     // Get the number of CPUs and start that many consumers
     let cpu_count = num_cpus::get();
     info!("Starting {} consumers", cpu_count);
 
-    // Run the futures in parallel
     for _ in 0..cpu_count {
-        // Clone the args for each thread
         let args_clone = args.clone();
-
-        // Start the consumer in a separate task
-        tokio::spawn(async move {
+        let handle = task::spawn(async move {
             loop {
-                if let Err(e) = args_clone.run().await {
-                    error!("Consumer failed: {:?}", e);
-                    info!("Restarting failed consumer");
+                match args_clone.run().await {
+                    Ok(_) => {
+                        info!("Task completed successfully");
+                        break;
+                    }
+                    Err(e) => {
+                        error!("Task failed with error: {:?}, restarting task...", e);
+                        continue;
+                    }
                 }
             }
         });
+        handles.push(handle);
     }
+
+    // Run internal server
+    let server_handle = task::spawn(start_internal_server());
+
+    // Wait for all tasks to complete
+    for handle in handles {
+        let _ = handle.await;
+    }
+
+    // Wait for the server task to complete.
+    let _ = server_handle.await;
 }

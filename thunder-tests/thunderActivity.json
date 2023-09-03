@@ -197,5 +197,29 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "76dd5498-800f-4d4e-844b-fa97698a4567",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_getBlockByNumber Copy",
+    "url": "https://rpc.ankr.com/eth",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-26T10:42:05.410Z",
+    "modified": "2023-09-03T07:09:51.385Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getLogs\",\n  \"params\": [\n    {\n      \"fromBlock\": \"0x0\",\n      \"toBlock\": \"0x1000\"\n    }\n  ]\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]
