@@ -186,10 +186,13 @@ impl Indexer {
         }
 
         // Get block from http client
-        let block = self
-            .get_block(block.number.unwrap())
-            .await?
-            .ok_or_else(|| eyre!("Error: Block not found"))?;
+        let block = self.get_block(block.number.unwrap()).await?.ok_or_else(|| {
+            eyre!(
+                "Error: Block not found at chain_id: {}, block: {}",
+                self.chain_id,
+                block.number.unwrap_or_default()
+            )
+        })?;
         trace!(?block);
 
         // Create new vec for addresses
@@ -205,10 +208,14 @@ impl Indexer {
         > = HashMap::new();
 
         // Get the traced block
-        let traced_block = self
-            .get_traced_block(block.number.unwrap())
-            .await
-            .map_err(|e| eyre!("Error in get_traced_block: {:?}", e))?;
+        let traced_block = self.get_traced_block(block.number.unwrap()).await.map_err(|e| {
+            eyre!(
+                "Error in get_traced_block: {:?} at chain_id: {}, block: {}",
+                e,
+                self.chain_id,
+                block.number.unwrap_or_default()
+            )
+        })?;
         trace!(?traced_block);
 
         // Check if the traced block length and block transactions length are the same
