@@ -68,9 +68,6 @@ pub struct Indexer {
     http_client: Option<Arc<Provider<Http>>>,
     ws_client: Option<Arc<Provider<Ws>>>,
     webhook: String,
-    // start_block: u64,
-    // end_block: u64,
-    // live: bool,
 }
 
 impl Indexer {
@@ -109,9 +106,6 @@ impl Indexer {
         Self {
             chain_id: args.chain_id,
             webhook: args.webhook.clone(),
-            // start_block: args.start_block,
-            // end_block: args.end_block,
-            // live: args.live,
             http_client,
             ws_client,
             redis_client,
@@ -218,7 +212,11 @@ impl Indexer {
         trace!(?traced_block);
 
         // Check if the traced block length and block transactions length are the same
-        assert_eq!(traced_block.len(), block.transactions.len());
+        if traced_block.len() != block.transactions.len() {
+            return Err(eyre!(
+                "Length mismatch: traced_block and block.transactions do not have the same length"
+            ));
+        }
 
         // Convert the traced block to a vec of call frames
         let traces: Vec<&CallFrame> = traced_block
@@ -405,7 +403,11 @@ impl Indexer {
             trace!(?addresses);
 
             // Check if the two vecs are the same length
-            assert_eq!(tx_hashes.len(), addresses.len());
+            if tx_hashes.len() != addresses.len() {
+                return Err(eyre!(
+                    "Length mismatch: tx_hashes and addresses do not have the same length"
+                ));
+            }
 
             // Check if the addresses exist on redis
             let check_res = self.check_if_exists_in_wallets(addresses.clone()).unwrap();
@@ -443,9 +445,14 @@ impl Indexer {
                 trace!(?wallet_addresses);
 
                 // Check if the hashes length and check_res true length are the same
-                assert_eq!(wallet_tx_hashes.len(), check_res.iter().filter(|&&x| x).count());
-                assert_eq!(wallet_addresses.len(), check_res.iter().filter(|&&x| x).count());
-                assert_eq!(wallet_tx_hashes.len(), wallet_addresses.len());
+                if wallet_tx_hashes.len() != check_res.iter().filter(|&&x| x).count() ||
+                    wallet_addresses.len() != check_res.iter().filter(|&&x| x).count() ||
+                    wallet_tx_hashes.len() != wallet_addresses.len()
+                {
+                    return Err(eyre!(
+                        "Length mismatch: hashes and check_res do not have the same length"
+                    ));
+                }
 
                 // Get the unique hashes and addresses
                 let unique_wallet_tx_hashes: Vec<ethers::types::H256> =
@@ -488,13 +495,6 @@ impl Indexer {
                                         )
                                         .await;
                                 }
-                                // Send the transaction to the queue if live indexing
-                                // if self.live && self.kafka_client.is_some() {
-                                //     let queue_res = self.send_tx_queue(&unique_wallet_tx_hash);
-                                //     if queue_res.is_err() {
-                                //         error!("send_tx_queue error: {:?}", queue_res);
-                                //     }
-                                // }
                             }
                         }
                     }
