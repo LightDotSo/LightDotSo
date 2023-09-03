@@ -159,3 +159,19 @@ pub fn get_last_n_indexed_percentage(
     // Return the indexed percentage
     Ok(indexed_percentage)
 }
+
+/// Get whether the block is indexed
+pub fn get_indexed_status(
+    redis_conn: &mut redis::Connection,
+    chain_id: &str,
+    block_number: i64,
+) -> redis::RedisResult<bool> {
+    // Construct the key
+    let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
+
+    // Get the score for the block number
+    let score: Option<f64> = redis_conn.zscore(&key, block_number)?;
+
+    // Return whether the block is indexed
+    Ok(score.is_some())
+}
