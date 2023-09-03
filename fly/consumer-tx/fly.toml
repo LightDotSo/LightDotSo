@@ -12,7 +12,7 @@ kill_timeout = "5s"
   entrypoint = ["/usr/local/bin/consumer"]
 
 [build]
-  image = "ghcr.io/lightdotso/lightdotso:latest"
+  image = "ghcr.io/lightdotso/lightdotso:sha-41ebb103b4bc2ae9acd8a157873678ae0f15483b"
 
 [deploy]
   strategy = "bluegreen"
