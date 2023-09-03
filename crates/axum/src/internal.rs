@@ -47,8 +47,8 @@ async fn prometheus_metrics_check() -> Response<String> {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 struct IndexResponse {
-    latest_block: i64,
-    indexed_block: i64,
+    latest_block_number: i64,
+    latest_indexed_block: i64,
     all_percentage: f64,
     last_300_percentage: f64,
     last_indexed_blocks: Vec<i64>,
@@ -68,32 +68,31 @@ async fn get_recent_block(
     let http_client = Provider::<Http>::try_from(rpc).unwrap();
 
     // Get the block number
-    let block_number = http_client.get_block_number().await.unwrap().as_u64() as i64;
+    let latest_block_number = http_client.get_block_number().await.unwrap().as_u64() as i64;
 
     // Get the connection
     let mut con = redis_client.get_connection().unwrap();
 
     // Get the most recent indexed block
-    let indexed_block = get_most_recent_indexed_block(&mut con, &chain_id).unwrap();
+    let latest_indexed_block = get_most_recent_indexed_block(&mut con, &chain_id).unwrap();
 
     // Get the start block
     let start_block = DEPLOY_CHAIN_IDS.get(&chain_id.parse::<u64>().unwrap()).unwrap();
 
     // Get the most recent indexed block percentage
     let percentage =
-        get_indexed_percentage(&mut con, &chain_id, block_number - start_block).unwrap();
+        get_indexed_percentage(&mut con, &chain_id, latest_block_number - start_block).unwrap();
 
     // Get last 300 percentage
-    let last_300_percentage =
-        get_last_n_indexed_percentage(&mut con, &chain_id, block_number - 300).unwrap();
+    let last_300_percentage = get_last_n_indexed_percentage(&mut con, &chain_id, 300).unwrap();
 
-    // Get the last 10 blocks
-    let last_indexed_blocks = get_last_n_indexed_blocks(&mut con, &chain_id, 10).unwrap();
+    // Get the last 100 blocks
+    let last_indexed_blocks = get_last_n_indexed_blocks(&mut con, &chain_id, 100).unwrap();
 
     // Construct the response
     let response = IndexResponse {
-        latest_block: block_number,
-        indexed_block,
+        latest_block_number,
+        latest_indexed_block,
         all_percentage: percentage,
         last_300_percentage,
         last_indexed_blocks,
