@@ -21,7 +21,7 @@ kill_timeout = "5s"
   internal_port = 0
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 10
+  min_machines_running = 12
 
 [checks]
   [checks.health]

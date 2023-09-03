@@ -39,17 +39,33 @@ pub async fn main() {
     // Parse the command line arguments
     let args = ConsumerArgs::parse();
 
-    // Construct the futures
-    info!("Starting {} consumers", num_cpus::get());
-    let consumer_futures: Vec<_> = (0..num_cpus::get()).map(|_| args.run()).collect();
+    // Start the internal server in a separate task
+    tokio::spawn(async {
+        loop {
+            if let Err(e) = start_internal_server().await {
+                error!("Internal server failed: {:?}", e);
+                info!("Restarting internal server");
+            }
+        }
+    });
 
-    // Run the futures concurrently
-    let result =
-        tokio::try_join!(consumer_futures.into_iter().next().unwrap(), start_internal_server());
+    // Get the number of CPUs and start that many consumers
+    let cpu_count = num_cpus::get();
+    info!("Starting {} consumers", cpu_count);
 
-    // Exit with an error if either future failed
-    if let Err(e) = result {
-        eprintln!("Error: {:?}", e);
-        std::process::exit(1);
+    // Run the futures in parallel
+    for _ in 0..cpu_count {
+        // Clone the args for each thread
+        let args_clone = args.clone();
+
+        // Start the consumer in a separate task
+        tokio::spawn(async move {
+            loop {
+                if let Err(e) = args_clone.run().await {
+                    error!("Consumer failed: {:?}", e);
+                    info!("Restarting failed consumer");
+                }
+            }
+        });
     }
 }
