@@ -221,5 +221,29 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "7df8c2be-5f0f-49f3-9aec-ae13f54a6c62",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_getBlockByNumber Copy Copy",
+    "url": "https://rpc.ankr.com/avalanche",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-26T10:42:05.410Z",
+    "modified": "2023-09-03T09:39:18.416Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]

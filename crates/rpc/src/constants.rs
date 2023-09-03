@@ -96,3 +96,27 @@ lazy_static! {
         m
     };
 }
+
+// The public rpc urls
+lazy_static! {
+    pub static ref ANKR_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://rpc.ankr.com/eth".to_string());
+        m.insert(10, "https://rpc.ankr.com/optimism".to_string());
+        m.insert(56, "https://rpc.ankr.com/bsc".to_string());
+        m.insert(100, "https://rpc.ankr.com/gnosis".to_string());
+        m.insert(137, "https://rpc.ankr.com/polygon".to_string());
+        m.insert(250, "https://rpc.ankr.com/fantom".to_string());
+        m.insert(1101, "https://rpc.ankr.com/polygon_zkevm".to_string());
+        m.insert(8453, "https://rpc.ankr.com/base".to_string());
+        m.insert(42161, "https://rpc.ankr.com/arbitrum".to_string());
+        m.insert(42220, "https://rpc.ankr.com/celo".to_string());
+        m.insert(42170, "https://rpc.ankr.com/arbitrumnova".to_string());
+        m.insert(43114, "https://rpc.ankr.com/avalanche".to_string());
+        m.insert(1666600000, "https://rpc.ankr.com/harmony".to_string());
+
+        m
+    };
+}

@@ -17,8 +17,8 @@ pub mod config;
 mod constants;
 
 use crate::constants::{
-    BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS, PAYMASTER_RPC_URL,
-    PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
+    ANKR_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS,
+    PAYMASTER_RPC_URL, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
 };
 use axum::{
     body::Body,
@@ -329,6 +329,18 @@ pub async fn rpc_proxy_handler(
                     }
                 }
             }
+        }
+    }
+
+    // Get the rpc url from the constants
+    if let Some(infura_rpc_url) = ANKR_RPC_URLS.get(&chain_id) {
+        let uri = format!("{}{}", infura_rpc_url, std::env::var("INFURA_API_KEY").unwrap());
+
+        // Get the result from the client
+        let result =
+            get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone())).await;
+        if let Some(resp) = result {
+            return resp;
         }
     }
 
