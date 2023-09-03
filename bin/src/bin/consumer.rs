@@ -24,7 +24,7 @@ use lightdotso_tracing::{
 };
 use tokio::task;
 
-#[tokio::main(flavor = "multi_thread", worker_threads = 4)]
+#[tokio::main(flavor = "multi_thread", worker_threads = 8)]
 pub async fn main() {
     let _ = dotenv();
 
