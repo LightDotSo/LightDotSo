@@ -18,7 +18,6 @@ use dotenvy::dotenv;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
-use lightdotso_kafka::namespace::TRANSACTION;
 use lightdotso_tracing::{
     init, init_metrics, otel, stdout,
     tracing::{error, info, Level},
