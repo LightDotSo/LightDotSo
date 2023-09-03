@@ -207,7 +207,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-26T10:42:05.410Z",
-    "modified": "2023-09-03T07:09:51.385Z",
+    "modified": "2023-09-03T09:05:06.493Z",
     "headers": [
       {
         "name": "Content-Type",
@@ -217,7 +217,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getLogs\",\n  \"params\": [\n    {\n      \"fromBlock\": \"0x0\",\n      \"toBlock\": \"0x1000\"\n    }\n  ]\n}",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getLogs\",\n  \"params\": [\n    {\n      \"fromBlock\": \"0x1000000\",\n      \"toBlock\": \"0x1000001\"\n    }\n  ]\n}",
       "form": []
     },
     "tests": []

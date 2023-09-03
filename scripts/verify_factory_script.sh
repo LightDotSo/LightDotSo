@@ -1,4 +1,6 @@
-forge verify-contract \
+#!/bin/bash
+
+FOUNDRY_PROFILE="deploy" forge verify-contract \
     --chain-id $CHAIN_ID \
     --num-of-optimizations 4194304 \
     --watch \
