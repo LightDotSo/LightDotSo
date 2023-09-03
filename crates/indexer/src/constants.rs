@@ -67,3 +67,25 @@ lazy_static! {
     11155111
   ];
 }
+
+// The chain ids to start block
+lazy_static! {
+    pub static ref DEPLOY_CHAIN_IDS: HashMap<u64, i64> = {
+        let mut m = HashMap::new();
+        // Mainnet
+        m.insert(1, 18053152);
+        // Optimism
+        m.insert(10, 109055644);
+        // BSC
+        m.insert(56, 31408074);
+        // Gnosis
+        m.insert(100, 29782016);
+        // Arbitrum
+        m.insert(42161, 127522739);
+
+        // Sepolia
+        m.insert(11155111, 4214469);
+
+        m
+    };
+}

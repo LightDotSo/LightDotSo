@@ -25,9 +25,10 @@ use ethers_main::{
     providers::{Http, Middleware},
 };
 use eyre::Result;
+use lightdotso_indexer::constants::DEPLOY_CHAIN_IDS;
 use lightdotso_redis::{
-    get_indexed_percentage, get_last_n_indexed_blocks, get_most_recent_indexed_block,
-    get_redis_client, redis::Client,
+    get_indexed_percentage, get_last_n_indexed_blocks, get_last_n_indexed_percentage,
+    get_most_recent_indexed_block, get_redis_client, redis::Client,
 };
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
@@ -75,12 +76,16 @@ async fn get_recent_block(
     // Get the most recent indexed block
     let indexed_block = get_most_recent_indexed_block(&mut con, &chain_id).unwrap();
 
+    // Get the start block
+    let start_block = DEPLOY_CHAIN_IDS.get(&chain_id.parse::<u64>().unwrap()).unwrap();
+
     // Get the most recent indexed block percentage
-    let percentage = get_indexed_percentage(&mut con, &chain_id, block_number).unwrap();
+    let percentage =
+        get_indexed_percentage(&mut con, &chain_id, block_number - start_block).unwrap();
 
     // Get last 300 percentage
     let last_300_percentage =
-        get_indexed_percentage(&mut con, &chain_id, block_number - 300).unwrap();
+        get_last_n_indexed_percentage(&mut con, &chain_id, block_number - 300).unwrap();
 
     // Get the last 10 blocks
     let last_indexed_blocks = get_last_n_indexed_blocks(&mut con, &chain_id, 10).unwrap();

@@ -42,7 +42,10 @@ pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
 
 /// Add a value to a set
 pub fn add_to_wallets(con: &mut Connection, value: &str) -> RedisResult<()> {
+    // Add the value to the set
     con.sadd(WALLET.as_str(), value)?;
+
+    // Return Ok
     Ok(())
 }
 
@@ -51,12 +54,15 @@ pub fn is_wallet_present(
     con: &mut Connection,
     members: Vec<String>,
 ) -> redis::RedisResult<Vec<bool>> {
+    // Create a pipeline
     let mut pipe = redis::pipe();
 
+    // Add the commands to the pipeline
     for member in members {
         pipe.cmd("SISMEMBER").arg(WALLET.as_str()).arg(member);
     }
 
+    // Execute the pipeline
     pipe.query(con)
 }
 
@@ -67,10 +73,15 @@ pub fn set_block_status(
     block_number: i64,
     status: bool,
 ) -> redis::RedisResult<()> {
+    // Construct the key
     let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
+
+    // Set the block number depending on the status
     if status {
         redis_conn.zadd(&key, block_number, block_number)?;
     }
+
+    // Return Ok
     Ok(())
 }
 
@@ -79,8 +90,13 @@ pub fn get_most_recent_indexed_block(
     redis_conn: &mut redis::Connection,
     chain_id: &str,
 ) -> redis::RedisResult<i64> {
+    // Construct the key
     let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
+
+    // Get the most recent indexed block
     let result: Vec<i64> = redis_conn.zrevrange(&key, 0, 0)?;
+
+    // Return the most recent indexed block
     result
         .first()
         .cloned()
@@ -98,9 +114,13 @@ pub fn get_indexed_percentage(
         return Ok(0.0);
     }
 
-    let key = format!("indexed_blocks::{}", chain_id);
+    // Construct the key
+    let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
+
+    // Get the number of indexed blocks
     let indexed_blocks_count: i64 = redis_conn.zcard(&key)?;
 
+    // Return the indexed percentage
     Ok((indexed_blocks_count as f64 / total_blocks as f64) * 100.0)
 }
 
@@ -110,27 +130,24 @@ pub fn get_last_n_indexed_blocks(
     chain_id: &str,
     n: i64,
 ) -> redis::RedisResult<Vec<i64>> {
-    let key = format!("indexed_blocks::{}", chain_id);
+    // Construct the key
+    let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
 
     // This will return the last N blocks in descending order.
     let n_isize: isize = n as isize;
-    redis_conn.zrevrange(&key, 0, n_isize - 1)
+
+    // Return the last N indexed blocks
+    redis_conn.zrevrange(&key, 0, n_isize)
 }
 
 /// Get the indexed percentage for the last N blocks
 pub fn get_last_n_indexed_percentage(
     redis_conn: &mut redis::Connection,
     chain_id: &str,
-    total_blocks: i64,
     n: i64,
 ) -> redis::RedisResult<f64> {
-    // If total blocks is less than N or N is zero, return 0;
-    if total_blocks < n || n == 0 {
-        return Ok(0.0);
-    }
-
     // Construct the key
-    let key = format!("indexed_blocks::{}", chain_id);
+    let key = format!("{}:{}", *INDEXED_BLOCKS, chain_id);
 
     // Get the block numbers for the last N blocks
     let n_isize: isize = n as isize;
@@ -139,5 +156,6 @@ pub fn get_last_n_indexed_percentage(
     // Calculate the indexed percentage for the last N blocks
     let indexed_percentage = (last_n_blocks.len() as f64 / n as f64) * 100.0;
 
+    // Return the indexed percentage
     Ok(indexed_percentage)
 }
