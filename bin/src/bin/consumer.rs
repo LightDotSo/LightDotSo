@@ -51,7 +51,9 @@ pub async fn main() {
         let args_clone = args.clone();
         let handle = task::spawn(async move {
             loop {
-                match args_clone.run().await {
+                let result = std::panic::catch_unwind(|| async { args_clone.run().await });
+
+                match result {
                     Ok(_) => {
                         info!("Task completed successfully");
                         break;
