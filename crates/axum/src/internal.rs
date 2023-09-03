@@ -29,6 +29,7 @@ use lightdotso_redis::{
     get_indexed_percentage, get_last_n_indexed_blocks, get_most_recent_indexed_block,
     get_redis_client, redis::Client,
 };
+use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use std::{convert::Infallible, sync::Arc};
 
@@ -58,7 +59,9 @@ async fn get_recent_block(
     chain_id: Path<String>,
 ) -> Result<Response<String>, Infallible> {
     // Construct the rpc
-    let rpc = format!("http://lightdotso-rpc-internal.internal:3000/internal/{:?}", chain_id);
+    let rpc =
+        format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id.as_str());
+    info!("rpc: {}", rpc);
 
     // Create the http client
     let http_client = Provider::<Http>::try_from(rpc).unwrap();
