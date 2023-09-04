@@ -189,9 +189,7 @@ pub async fn rpc_proxy_handler(
             "debug_traceBlockByHash" |
             "debug_traceBlockByNumber" |
             "debug_traceCall" |
-            "debug_traceTransaction" |
-            "eth_getBlockByNumber" |
-            "eth_getLogs" => {
+            "debug_traceTransaction" => {
                 if !debug {
                     return Response::builder()
                         .status(404)
@@ -265,6 +263,21 @@ pub async fn rpc_proxy_handler(
                     }
                 }
             }
+            "eth_getBlockByNumber" | "eth_getLogs" => {
+                // Get the rpc url from the blast api constants
+                if let Some(blastapi_rpc_url) = BLASTAPI_RPC_URLS.get(&chain_id) {
+                    let uri =
+                        format!("{}{}", blastapi_rpc_url, std::env::var("BLAST_API_KEY").unwrap());
+
+                    // Get the result from the client
+                    let result =
+                        get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone()))
+                            .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                }
+            }
             "eth_sendUserOperation" |
             "eth_estimateUserOperationGas" |
             "eth_supportedEntryPoints" |
@@ -328,9 +341,9 @@ pub async fn rpc_proxy_handler(
         }
     }
 
-    // Get the public rpc url from the constants
-    if let Some(public_rpc_url) = PUBLIC_RPC_URLS.get(&chain_id) {
-        let uri = public_rpc_url.clone();
+    // Get the ankr rpc url
+    if let Some(ankr_rpc_url) = ANKR_RPC_URLS.get(&chain_id) {
+        let uri = ankr_rpc_url.clone();
 
         // Get the result from the client
         let result =
@@ -352,9 +365,9 @@ pub async fn rpc_proxy_handler(
         }
     }
 
-    // Get the ankr rpc url
-    if let Some(ankr_rpc_url) = ANKR_RPC_URLS.get(&chain_id) {
-        let uri = ankr_rpc_url.clone();
+    // Get the public rpc url from the constants
+    if let Some(public_rpc_url) = PUBLIC_RPC_URLS.get(&chain_id) {
+        let uri = public_rpc_url.clone();
 
         // Get the result from the client
         let result =
