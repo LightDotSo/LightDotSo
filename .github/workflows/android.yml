@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Rust Toolchain
         uses: mkroening/rust-toolchain-toml@main
       - name: Java Install
@@ -51,7 +51,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Rust Toolchain
         uses: mkroening/rust-toolchain-toml@main
       - name: Java Install

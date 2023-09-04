@@ -19,7 +19,7 @@ jobs:
       checkly: ${{ steps.filter.outputs.checkly }}
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Paths Filter
         uses: dorny/paths-filter@v2
         id: filter
@@ -42,7 +42,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: github.event_name == 'push'

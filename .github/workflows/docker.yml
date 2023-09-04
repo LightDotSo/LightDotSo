@@ -35,7 +35,7 @@ jobs:
       contents: read
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Make Install
         run: |
           make install
@@ -91,7 +91,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:

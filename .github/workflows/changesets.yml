@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Node Install
@@ -38,7 +38,7 @@ jobs:
       contents: write
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Node Install

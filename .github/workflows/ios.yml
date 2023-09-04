@@ -31,7 +31,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Brew Install
         uses: wallet-rs/wallet-rs/.github/actions/brew-install@main
       - name: Run swiftlint
@@ -54,7 +54,7 @@ jobs:
       checks: write
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Brew Install
         uses: wallet-rs/wallet-rs/.github/actions/brew-install@main
       - name: Rust Install
