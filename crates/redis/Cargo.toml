@@ -10,4 +10,4 @@
 
 [dependencies]
   lazy_static = { workspace = true }
-  redis = { version = "0.23.2", features = ["tls-native-tls"] }
+  redis = { version = "0.23.3", features = ["tls-native-tls"] }

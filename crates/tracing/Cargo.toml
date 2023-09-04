@@ -14,7 +14,7 @@
   opentelemetry-stdout = { version = "0.1", features = ["trace"] }
   tracing = { workspace = true }
   tracing-futures = "0.2.5"
-  tracing-opentelemetry = "0.20"
+  tracing-opentelemetry = "0.21"
   tracing-subscriber = { version = "0.3.17", features = [
     "ansi",
     "env-filter",
