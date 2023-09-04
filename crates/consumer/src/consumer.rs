@@ -23,7 +23,7 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{RETRY_TRANSACTION, TRANSACTION},
-    produce_retry_transaction_message,
+    produce_error_transaction_message, produce_retry_transaction_message,
 };
 use lightdotso_tracing::tracing::{error, info, warn};
 use rdkafka::{
@@ -128,10 +128,11 @@ impl Consumer {
                                             // Create a new producer
                                             let client = &self.producer.clone();
 
-                                            // Produce the message w/ exponential backoff if
-                                            // block timestamp to present is less than 1 hour ago
+                                            // Get the block timestamp
                                             if let Ok(timestamp) = block.time() {
-                                                // If the block is less than 1 hour old
+                                                // Produce the message w/ exponential backoff if
+                                                // block timestamp to present is less than 1 hour
+                                                // ago
                                                 if timestamp >
                                                     chrono::Utc::now()
                                                         .checked_sub_signed(
@@ -143,6 +144,18 @@ impl Consumer {
                                                     let _ = {
                                                         || {
                                                             produce_retry_transaction_message(
+                                                                client.clone(),
+                                                                payload,
+                                                            )
+                                                        }
+                                                    }
+                                                    .retry(&ExponentialBuilder::default())
+                                                    .await;
+                                                } else {
+                                                    warn!("Block is more than 1 hour old, adding to error queue");
+                                                    let _ = {
+                                                        || {
+                                                            produce_error_transaction_message(
                                                                 client.clone(),
                                                                 payload,
                                                             )
