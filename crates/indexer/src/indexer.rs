@@ -134,7 +134,7 @@ impl Indexer {
 
             // Send the transaction to the queue for indexing if not runner
             if self.kafka_client.is_some() && !RUNNER_CHAIN_IDS.contains(&self.chain_id) {
-                let queue_res = self.send_tx_queue(block).await;
+                let queue_res = self.send_tx_queue(block.clone()).await;
                 if queue_res.is_err() {
                     error!("send_tx_queue error: {:?}", queue_res);
                 }
@@ -142,11 +142,18 @@ impl Indexer {
             }
 
             // Run the indexing
-            let res = self.index(db_client.clone(), block).await;
+            let res = self.index(db_client.clone(), block.clone()).await;
 
             // Log if error
             if res.is_err() {
                 error!("index error: {:?}", res);
+                if self.kafka_client.is_some() {
+                    let queue_res = self.send_tx_queue(block.clone()).await;
+                    if queue_res.is_err() {
+                        error!("send_tx_queue error: {:?}", queue_res);
+                    }
+                    continue;
+                }
             }
         }
     }
