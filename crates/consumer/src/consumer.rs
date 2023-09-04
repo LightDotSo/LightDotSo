@@ -165,6 +165,9 @@ impl Consumer {
                                                     .await;
                                                 }
                                             }
+
+                                            // Continue to the next loop iteration
+                                            continue;
                                         }
 
                                         // Log success
