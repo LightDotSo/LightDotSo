@@ -5613,6 +5613,8 @@ dependencies = [
 name = "lightdotso-consumer"
 version = "0.1.0"
 dependencies = [
+ "backon",
+ "chrono",
  "clap",
  "ethers 2.0.8",
  "eyre",

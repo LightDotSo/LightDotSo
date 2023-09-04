@@ -17,7 +17,7 @@ use lightdotso_tracing::tracing::error;
 pub use rdkafka;
 use std::sync::Arc;
 
-use namespace::TRANSACTION;
+use namespace::{RETRY_TRANSACTION, TRANSACTION};
 use rdkafka::{
     config::ClientConfig,
     consumer::stream_consumer::StreamConsumer,
@@ -97,4 +97,12 @@ pub async fn produce_transaction_message(
     message: &str,
 ) -> Result<(), rdkafka::error::KafkaError> {
     produce_message(producer, TRANSACTION.as_str(), message).await
+}
+
+// Produce a message with retry Transaction topic.
+pub async fn produce_retry_transaction_message(
+    producer: Arc<FutureProducer>,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    produce_message(producer, RETRY_TRANSACTION.as_str(), message).await
 }

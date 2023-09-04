@@ -15,7 +15,12 @@
 
 use lazy_static::lazy_static;
 
-// The wallet namesapce
+// The transaction namesapce
 lazy_static! {
     pub static ref TRANSACTION: String = "transaction".to_string();
+}
+
+// The retry transaction namesapce
+lazy_static! {
+    pub static ref RETRY_TRANSACTION: String = "retry-transaction".to_string();
 }
