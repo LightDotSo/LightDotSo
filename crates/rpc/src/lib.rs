@@ -17,8 +17,8 @@ pub mod config;
 mod constants;
 
 use crate::constants::{
-    ANKR_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL, INFURA_RPC_URLS,
-    PAYMASTER_RPC_URL, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
+    ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL,
+    INFURA_RPC_URLS, PAYMASTER_RPC_URL, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
 };
 use axum::{
     body::Body,
@@ -189,7 +189,9 @@ pub async fn rpc_proxy_handler(
             "debug_traceBlockByHash" |
             "debug_traceBlockByNumber" |
             "debug_traceCall" |
-            "debug_traceTransaction" => {
+            "debug_traceTransaction" |
+            "eth_getBlockByNumber" |
+            "eth_getLogs" => {
                 if !debug {
                     return Response::builder()
                         .status(404)
@@ -204,6 +206,20 @@ pub async fn rpc_proxy_handler(
                         chainnodes_rpc_url,
                         std::env::var("CHAINNODES_API_KEY").unwrap()
                     );
+
+                    // Get the result from the client
+                    let result =
+                        get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone()))
+                            .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                }
+
+                // Get the rpc url from the blast api constants
+                if let Some(blastapi_rpc_url) = BLASTAPI_RPC_URLS.get(&chain_id) {
+                    let uri =
+                        format!("{}{}", blastapi_rpc_url, std::env::var("BLAST_API_KEY").unwrap());
 
                     // Get the result from the client
                     let result =

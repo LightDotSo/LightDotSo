@@ -64,6 +64,40 @@ lazy_static! {
     };
 }
 
+// The nodereal rpc urls
+lazy_static! {
+    pub static ref NODEREAL_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://eth-mainnet.nodereal.io/v1/".to_string());
+        m.insert(10, "https://opt-mainnet.nodereal.io/v1/".to_string());
+        m.insert(56, "https://bsc-mainnet.nodereal.io/v1/".to_string());
+        m.insert(137, "https://polygon-mainnet.nodereal.io/v1/".to_string());
+
+        m
+    };
+}
+
+// The blast api rpc urls
+lazy_static! {
+    pub static ref BLASTAPI_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://eth-mainnet.blastapi.io/".to_string());
+        m.insert(10, "https://optimism-mainnet.blastapi.io/".to_string());
+        m.insert(56, "https://bsc-mainnet.blastapi.io/".to_string());
+        m.insert(100, "https://gnosis-mainnet.blastapi.io/".to_string());
+        m.insert(137, "https://polygon-mainnet.blastapi.io/".to_string());
+        m.insert(8453, "https://base-mainnet.blastapi.io/".to_string());
+        m.insert(42161, "https://arbitrum-mainnet.blastapi.io/".to_string());
+        m.insert(43114, "https://ava-mainnet.blastapi.io/".to_string());
+
+        m
+    };
+}
+
 // The chainnodes rpc urls
 lazy_static! {
     pub static ref CHAINNODES_RPC_URLS: HashMap<u64, String> = {
