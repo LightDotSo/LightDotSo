@@ -85,7 +85,7 @@ pub fn set_block_status(
     let key_score: i64 = redis_conn.zscore(&key, block_number)?;
 
     // If the block number is not present, raise an error
-    if key_score == 0 {
+    if key_score != block_number {
         return Err(redis::RedisError::from((
             redis::ErrorKind::TypeError,
             "Block number not present",
