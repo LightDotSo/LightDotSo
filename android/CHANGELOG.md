@@ -1,5 +1,12 @@
 # @lightdotso/android
 
+## 0.1.0-pre.7
+
+### Patch Changes
+
+- Updated dependencies [[`dd72842`](https://github.com/LightDotSo/LightDotSo/commit/dd7284250c23bc9b74a52298a1e7d87e9c05c673)]:
+  - @lightdotso/crates@0.1.0-pre.7
+
 ## 0.1.0-pre.6
 
 ### Patch Changes
