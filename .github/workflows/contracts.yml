@@ -128,6 +128,11 @@ jobs:
     strategy:
       matrix:
         network:
+          - mainnet
+          - optimism
+          - gnosis
+          - polygon
+          - arbitrum
           - sepolia
     timeout-minutes: 90
     env:
@@ -157,6 +162,11 @@ jobs:
     strategy:
       matrix:
         network:
+          - mainnet
+          - optimism
+          - gnosis
+          - polygon
+          - arbitrum
           - sepolia
     timeout-minutes: 90
     env:
@@ -177,6 +187,7 @@ jobs:
         run: |
           forge test
         env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           NETWORK_NAME: ${{ matrix.network }}
       - if: github.event_name == 'schedule'
         name: Run Scripts

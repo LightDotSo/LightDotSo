@@ -34,7 +34,7 @@ abstract contract BaseForkTest is BaseIntegrationTest {
     address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
 
     // LightWalletFactory address
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x426Ff63A09eFa1E7ccb3517E046956346e311881);
+    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
 
     // -------------------------------------------------------------------------
     // Setup
