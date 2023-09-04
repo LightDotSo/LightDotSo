@@ -69,7 +69,7 @@
 [rpc_endpoints]
   localhost = "http://localhost:8545"
   arbitrum = "${PROTECTED_RPC_URL}/42161"
-  bnb = "${PROTECTED_RPC_URL}/56"
+  bsc = "${PROTECTED_RPC_URL}/56"
   gnosis = "${PROTECTED_RPC_URL}/100"
   mainnet = "${PROTECTED_RPC_URL}/1"
   optimism = "${PROTECTED_RPC_URL}/10"

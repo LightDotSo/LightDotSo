@@ -9,6 +9,19 @@ on:
       - labeled
   merge_group:
   workflow_dispatch:
+    inputs:
+      network:
+        type: choice
+        default: sepolia
+        description: "Network to run fork and script tests on"
+        options:
+          - mainnet
+          - optimism
+          - gnosis
+          - polygon
+          - arbitrum
+          - sepolia
+        required: true
   schedule:
     - cron: "0 0 * * *"
 concurrency:
@@ -165,12 +178,19 @@ jobs:
           forge test
         env:
           NETWORK_NAME: ${{ matrix.network }}
-      - if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+      - if: github.event_name == 'schedule'
         name: Run Scripts
         run: |
           ./scripts/run_script_flow.sh
         env:
           NETWORK_NAME: ${{ matrix.network }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      - if: github.event_name == 'workflow_dispatch'
+        name: Run Scripts
+        run: |
+          ./scripts/run_script_flow.sh
+        env:
+          NETWORK_NAME: ${{ github.event.inputs.network }}
           PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
   contracts-smt:
     if: needs.contracts-turbo.outputs.trigger == 'true'
