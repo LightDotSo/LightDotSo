@@ -19,13 +19,13 @@ pragma solidity ^0.8.18;
 
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightDeployer} from "@/script/abstract/LightDeployer.s.sol";
+import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
 // LightWalletDeployer -- Deploys the LightWallet contract
-contract LightWalletDeployer is LightDeployer, Script {
+contract LightWalletDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------

@@ -15,49 +15,49 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {LightWallet} from "@/contracts/LightWallet.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
+
 pragma solidity ^0.8.18;
 
-import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
-
-/// @notice Base fork fuzz test for `LightWallet`
-abstract contract BaseForkTest is BaseIntegrationTest {
+// BaseLightDeployer - Create abstract contract of just immutable storages
+abstract contract BaseLightDeployer {
     // -------------------------------------------------------------------------
-    // Constants
+    // Storages
     // -------------------------------------------------------------------------
 
-    // Prank sender address - kaki.eth
-    address internal constant PRANK_SENDER_ADDRESS = address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
+    LightWallet internal wallet;
 
-    // EntryPoint address
-    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
+    LightWalletFactory internal factory;
 
-    // LightWalletFactory address
+    // -------------------------------------------------------------------------
+    // Immutable Storage
+    // -------------------------------------------------------------------------
+
     address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
 
+    address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
+
     // -------------------------------------------------------------------------
-    // Setup
+    // Utilities
     // -------------------------------------------------------------------------
 
-    /// @dev BaseForkTest setup
-    function setUp() public virtual override {
-        // Base integration test setup
-        BaseIntegrationTest.setUp();
+    function randMod() internal view returns (bytes32) {
+        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 4337);
+    }
 
-        // EntryPoint from eth-inifinitism
-        entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
-        // LightWalletFactory core contract
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+    function deployLightWallet() internal returns (LightWallet) {
+        // Get the factory
+        factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
 
-        // Get network name
-        string memory defaultName = "mainnet";
-        string memory name = vm.envOr("NETWORK_NAME", defaultName);
+        // Create an account
+        wallet = factory.createAccount(bytes32(uint256(1)), randMod());
 
-        // Fork network setup
-        vm.createSelectFork(name);
+        // solhint-disable-next-line no-console
+        console.log("LightWallet deployed at address: %s", address(wallet));
 
-        // Prank sender setup
-        vm.startPrank(PRANK_SENDER_ADDRESS);
+        return wallet;
     }
 }

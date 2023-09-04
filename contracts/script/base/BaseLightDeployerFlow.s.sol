@@ -17,36 +17,20 @@
 
 pragma solidity ^0.8.18;
 
-import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
+import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {Script} from "forge-std/Script.sol";
+import {Test} from "forge-std/Test.sol";
 
-/// @notice Base fork fuzz test for `LightWallet`
-abstract contract BaseForkTest is BaseIntegrationTest {
-    // -------------------------------------------------------------------------
-    // Constants
-    // -------------------------------------------------------------------------
-
-    // Prank sender address - kaki.eth
-    address internal constant PRANK_SENDER_ADDRESS = address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
-
-    // EntryPoint address
-    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
-
-    // LightWalletFactory address
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
-
+/// @notice Base deployer test for scripts
+abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
-    /// @dev BaseForkTest setup
-    function setUp() public virtual override {
-        // Base integration test setup
-        BaseIntegrationTest.setUp();
-
-        // EntryPoint from eth-inifinitism
-        entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
+    /// @dev BaseLightDeployerFlow setup
+    function setUp() public virtual {
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
@@ -56,8 +40,5 @@ abstract contract BaseForkTest is BaseIntegrationTest {
 
         // Fork network setup
         vm.createSelectFork(name);
-
-        // Prank sender setup
-        vm.startPrank(PRANK_SENDER_ADDRESS);
     }
 }

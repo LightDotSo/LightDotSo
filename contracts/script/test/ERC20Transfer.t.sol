@@ -14,22 +14,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
 pragma solidity ^0.8.18;
 
-// LightDeployer - Create abstract contract of just immutable storages
-abstract contract LightDeployer {
-    // -------------------------------------------------------------------------
-    // Immutable Storage
-    // -------------------------------------------------------------------------
+import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
+import {ERC20TransferFlowScript} from "@/script/flow/ERC20TransferFlow.s.sol";
 
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+// ERC20Transfer -- Test ERC20 transfer
+contract ERC20TransferFlowScriptTest is BaseLightDeployerFlow {
+    ERC20TransferFlowScript script;
 
-    // -------------------------------------------------------------------------
-    // Utilities
-    // -------------------------------------------------------------------------
+    function setUp() public override {
+        super.setUp();
 
-    function randMod() internal view returns (bytes32) {
-        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
+        script = new ERC20TransferFlowScript();
+    }
+
+    function test_run() public {
+        script.run();
     }
 }

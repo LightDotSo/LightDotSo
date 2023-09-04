@@ -9,6 +9,21 @@ on:
       - labeled
   merge_group:
   workflow_dispatch:
+    inputs:
+      network:
+        type: choice
+        default: sepolia
+        description: "Network to run fork and script tests on"
+        options:
+          - mainnet
+          - optimism
+          - bsc
+          - gnosis
+          - polygon
+          - arbitrum
+          - avalanche
+          - sepolia
+        required: true
   schedule:
     - cron: "0 0 * * *"
 concurrency:
@@ -115,6 +130,13 @@ jobs:
     strategy:
       matrix:
         network:
+          - mainnet
+          - optimism
+          - bsc
+          - gnosis
+          - polygon
+          - arbitrum
+          - avalanche
           - sepolia
     timeout-minutes: 90
     env:
@@ -136,18 +158,19 @@ jobs:
           forge test
         env:
           NETWORK_NAME: ${{ matrix.network }}
+      - name: Run Script Fork
+        run: |
+          forge test
+        env:
+          FOUNDRY_PROFILE: script
+          NETWORK_NAME: ${{ matrix.network }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
   contracts-script:
-    if: needs.contracts-turbo.outputs.trigger == 'true' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch'
     needs:
       - contracts-turbo
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        network:
-          - sepolia
     timeout-minutes: 90
-    env:
-      FOUNDRY_PROFILE: fork
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -160,11 +183,13 @@ jobs:
       - name: Install Deps
         run: |
           forge install
-      - name: Run Fork
+      - if: github.event_name == 'workflow_dispatch'
+        name: Run Scripts
         run: |
-          forge test
+          ./scripts/run_script_flow.sh
         env:
-          NETWORK_NAME: ${{ matrix.network }}
+          NETWORK_NAME: ${{ github.event.inputs.network }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
   contracts-smt:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:
