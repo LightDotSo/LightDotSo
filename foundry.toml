@@ -68,10 +68,11 @@
 
 [rpc_endpoints]
   localhost = "http://localhost:8545"
-  arbitrum = "${PROTECTED_RPC_URL}/42161"
-  bsc = "${PROTECTED_RPC_URL}/56"
-  gnosis = "${PROTECTED_RPC_URL}/100"
   mainnet = "${PROTECTED_RPC_URL}/1"
   optimism = "${PROTECTED_RPC_URL}/10"
+  bsc = "${PROTECTED_RPC_URL}/56"
+  gnosis = "${PROTECTED_RPC_URL}/100"
   polygon = "${PROTECTED_RPC_URL}/137"
+  arbitrum = "${PROTECTED_RPC_URL}/42161"
+  avalanche = "${PROTECTED_RPC_URL}/43114"
   sepolia = "${PROTECTED_RPC_URL}/11155111"
