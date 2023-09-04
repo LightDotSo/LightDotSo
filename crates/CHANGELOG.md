@@ -1,5 +1,11 @@
 # @lightdotso/crates
 
+## 0.1.0-pre.7
+
+### Patch Changes
+
+- [#474](https://github.com/LightDotSo/LightDotSo/pull/474) [`dd72842`](https://github.com/LightDotSo/LightDotSo/commit/dd7284250c23bc9b74a52298a1e7d87e9c05c673) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add indexer for arbitrum,base,polygon
+
 ## 0.1.0-pre.6
 
 ### Patch Changes
