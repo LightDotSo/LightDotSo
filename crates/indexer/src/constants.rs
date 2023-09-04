@@ -58,13 +58,15 @@ lazy_static! {
 
 // The runner chain ids
 lazy_static! {
-  pub static ref RUNNER_CHAIN_IDS: [u64; 5] = [
+  pub static ref RUNNER_CHAIN_IDS: [u64; 6] = [
     // Mainnet
     1,
     // Optimism
     10,
     // Gnosis
     100,
+    // Base
+    8453,
     // Local
     31337,
     // Sepolia
