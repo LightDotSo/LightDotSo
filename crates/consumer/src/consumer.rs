@@ -15,14 +15,20 @@
 
 use crate::config::ConsumerArgs;
 
+use backon::{ExponentialBuilder, Retryable};
 use clap::Parser;
 use ethers::types::{Block, H256};
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
-use lightdotso_kafka::{get_consumer, namespace::TRANSACTION};
+use lightdotso_kafka::{
+    get_consumer, get_producer,
+    namespace::{RETRY_TRANSACTION, TRANSACTION},
+    produce_error_transaction_message, produce_retry_transaction_message,
+};
 use lightdotso_tracing::tracing::{error, info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
+    producer::FutureProducer,
     Message,
 };
 use std::sync::Arc;
@@ -30,6 +36,7 @@ use std::sync::Arc;
 #[derive(Clone)]
 pub struct Consumer {
     consumer: Arc<StreamConsumer>,
+    producer: Arc<FutureProducer>,
     topics: Vec<String>,
 }
 
@@ -53,8 +60,11 @@ impl Consumer {
         // Construct the consumer
         let consumer = Arc::new(get_consumer(&group).unwrap());
 
+        // Construct the producer
+        let producer = Arc::new(get_producer().unwrap());
+
         // Create the consumer
-        Self { consumer, topics: args.topics.clone() }
+        Self { consumer, producer, topics: args.topics.clone() }
     }
 
     pub async fn run(&self) {
@@ -81,7 +91,10 @@ impl Consumer {
                 Ok(m) => {
                     match m.topic() {
                         // If the topic is the transaction topic
-                        topic if topic == TRANSACTION.to_string() => {
+                        topic
+                            if topic == TRANSACTION.to_string() ||
+                                topic == RETRY_TRANSACTION.to_string() =>
+                        {
                             // Convert the payload to a string
                             let payload_opt = m.payload_view::<str>();
 
@@ -111,7 +124,47 @@ impl Consumer {
                                         // Commit the message
                                         if let Err(e) = res {
                                             error!("Error while indexing block: {:?}", e);
-                                            continue;
+                                            warn!("Adding block to retry queue");
+                                            // Create a new producer
+                                            let client = &self.producer.clone();
+
+                                            // Get the block timestamp
+                                            if let Ok(timestamp) = block.time() {
+                                                // Produce the message w/ exponential backoff if
+                                                // block timestamp to present is less than 1 hour
+                                                // ago
+                                                if timestamp >
+                                                    chrono::Utc::now()
+                                                        .checked_sub_signed(
+                                                            chrono::Duration::hours(1),
+                                                        )
+                                                        .unwrap()
+                                                {
+                                                    info!("Block is less than 1 hour old, adding to retry queue");
+                                                    let _ = {
+                                                        || {
+                                                            produce_retry_transaction_message(
+                                                                client.clone(),
+                                                                payload,
+                                                            )
+                                                        }
+                                                    }
+                                                    .retry(&ExponentialBuilder::default())
+                                                    .await;
+                                                } else {
+                                                    warn!("Block is more than 1 hour old, adding to error queue");
+                                                    let _ = {
+                                                        || {
+                                                            produce_error_transaction_message(
+                                                                client.clone(),
+                                                                payload,
+                                                            )
+                                                        }
+                                                    }
+                                                    .retry(&ExponentialBuilder::default())
+                                                    .await;
+                                                }
+                                            }
                                         }
 
                                         // Log success
