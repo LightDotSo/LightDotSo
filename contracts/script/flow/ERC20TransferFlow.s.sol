@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
 pragma solidity ^0.8.18;
 
 import {LightWallet} from "@/contracts/LightWallet.sol";
@@ -27,28 +26,39 @@ import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
 
 // ERC20Transfer -- Test ERC20 transfer
-contract ERC20Transfer is Script, Test {
+contract ERC20TransferFlowScript is LightDeployer, Script, Test {
     address private deployer = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
+    // -------------------------------------------------------------------------
+    // Storages
+    // -------------------------------------------------------------------------
+    LightWallet internal wallet;
+    LightWalletFactory internal factory;
     MockERC20 internal token;
 
     function run() public {
         // Start the broadcast
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
-        // Only run on the local anvil
-        if (block.chainid == 0x7a69) {
-            // Deploy a new MockERC20
-            token = new MockERC20("Test", "TEST", 18);
+        // Get the factory
+        factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
 
-            // Mint 1e18 ERC20s to the account
-            token.mint(address(deployer), 1e18);
-            assertEq(token.balanceOf(address(deployer)), 1e18);
+        // Create an account
+        wallet = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(1)));
 
-            // Transfer to address 0x0
-            token.transfer(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1), 1e18);
-            assertEq(token.balanceOf(address(deployer)), 0);
-            assertEq(token.balanceOf(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1)), 1e18);
-        }
+        // solhint-disable-next-line no-console
+        console.log("LightWallet deployed at address: %s", address(wallet));
+
+        // Deploy a new MockERC20
+        token = new MockERC20("Test", "TEST", 18);
+
+        // Mint 1e18 ERC20s to the account
+        token.mint(address(deployer), 1e18);
+        assertEq(token.balanceOf(address(deployer)), 1e18);
+
+        // Transfer to address 0x0
+        token.transfer(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1), 1e18);
+        assertEq(token.balanceOf(address(deployer)), 0);
+        assertEq(token.balanceOf(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1)), 1e18);
 
         // Stop the broadcast
         vm.stopBroadcast();

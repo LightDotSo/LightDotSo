@@ -27,7 +27,7 @@ coverage
 lcov.info
 
 # foundry
-broadcast/*/31337/**.json
+broadcast
 optimized-out
 out-wagmi
 

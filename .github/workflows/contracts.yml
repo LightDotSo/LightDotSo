@@ -147,7 +147,7 @@ jobs:
           - sepolia
     timeout-minutes: 90
     env:
-      FOUNDRY_PROFILE: fork
+      FOUNDRY_PROFILE: script
     steps:
       - name: Fetch Head
         uses: actions/checkout@v3
@@ -162,9 +162,10 @@ jobs:
           forge install
       - name: Run Fork
         run: |
-          forge test
+          ./scripts/run_script_flow.sh
         env:
           NETWORK_NAME: ${{ matrix.network }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
   contracts-smt:
     if: needs.contracts-turbo.outputs.trigger == 'true'
     needs:

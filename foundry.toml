@@ -47,6 +47,9 @@
   fs_permissions = [{ access = "read", path = "contracts/circuits/proofs" }]
   test = "contracts/circuits/test"
 
+[profile.script]
+  test = "contracts/script/test"
+
 [profile.smt]
   [profile.smt.model_checker]
     engine = "chc"
