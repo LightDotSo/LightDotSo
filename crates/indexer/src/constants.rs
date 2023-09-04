@@ -36,7 +36,6 @@ lazy_static! {
     pub static ref SLEEP_CHAIN_IDS: HashMap<u64, i32> = {
         let mut m = HashMap::new();
         m.insert(31337, 1);
-        m.insert(11155111, 3);
         m
     };
 }
@@ -58,15 +57,11 @@ lazy_static! {
 
 // The runner chain ids
 lazy_static! {
-  pub static ref RUNNER_CHAIN_IDS: [u64; 5] = [
+  pub static ref RUNNER_CHAIN_IDS: [u64; 3] = [
     // Mainnet
     1,
-    // Optimism
-    10,
     // Gnosis
     100,
-    // Base
-    8453,
     // Local
     31337,
   ];
