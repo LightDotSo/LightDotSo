@@ -17,6 +17,8 @@
 
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
 pragma solidity ^0.8.18;
 
@@ -44,5 +46,18 @@ abstract contract BaseLightDeployer {
 
     function randMod() internal view returns (bytes32) {
         return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 4337);
+    }
+
+    function deployLightWallet() internal returns (LightWallet) {
+        // Get the factory
+        factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
+
+        // Create an account
+        wallet = factory.createAccount(bytes32(uint256(1)), randMod());
+
+        // solhint-disable-next-line no-console
+        console.log("LightWallet deployed at address: %s", address(wallet));
+
+        return wallet;
     }
 }

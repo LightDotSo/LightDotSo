@@ -37,14 +37,8 @@ contract ERC20TransferFlowScript is BaseLightDeployerFlow {
         // Start the broadcast
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
-        // Get the factory
-        factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
-
-        // Create an account
-        wallet = factory.createAccount(bytes32(uint256(1)), randMod());
-
-        // solhint-disable-next-line no-console
-        console.log("LightWallet deployed at address: %s", address(wallet));
+        // Deploy a new LightWallet
+        deployLightWallet();
 
         // Deploy a new MockERC20
         token = new MockERC20("Test", "TEST", 18);
