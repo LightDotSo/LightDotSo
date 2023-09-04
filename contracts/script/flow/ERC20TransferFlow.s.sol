@@ -43,7 +43,7 @@ contract ERC20TransferFlowScript is LightDeployer, Script, Test {
         factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
 
         // Create an account
-        wallet = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(1)));
+        wallet = factory.createAccount(bytes32(uint256(1)), randMod());
 
         // solhint-disable-next-line no-console
         console.log("LightWallet deployed at address: %s", address(wallet));
