@@ -15,21 +15,34 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {LightWallet} from "@/contracts/LightWallet.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+
 pragma solidity ^0.8.18;
 
-// LightDeployer - Create abstract contract of just immutable storages
-abstract contract LightDeployer {
+// BaseLightDeployer - Create abstract contract of just immutable storages
+abstract contract BaseLightDeployer {
+    // -------------------------------------------------------------------------
+    // Storages
+    // -------------------------------------------------------------------------
+
+    LightWallet internal wallet;
+
+    LightWalletFactory internal factory;
+
     // -------------------------------------------------------------------------
     // Immutable Storage
     // -------------------------------------------------------------------------
 
     address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
 
+    address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
+
     // -------------------------------------------------------------------------
     // Utilities
     // -------------------------------------------------------------------------
 
     function randMod() internal view returns (bytes32) {
-        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
+        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 4337);
     }
 }

@@ -19,7 +19,7 @@ pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightDeployer} from "@/script/abstract/LightDeployer.s.sol";
+import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
@@ -32,7 +32,7 @@ interface ImmutableCreate2Factory {
 }
 
 // LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
-contract LightWalletFactoryDeployer is LightDeployer, Script {
+contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------

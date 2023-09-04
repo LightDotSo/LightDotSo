@@ -16,24 +16,22 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity ^0.8.18;
 
-import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightDeployer} from "@/script/abstract/LightDeployer.s.sol";
+import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
-import {Script} from "forge-std/Script.sol";
-import {Test} from "forge-std/Test.sol";
 
 // ERC20Transfer -- Test ERC20 transfer
-contract ERC20TransferFlowScript is LightDeployer, Script, Test {
-    address internal deployer = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
+contract ERC20TransferFlowScript is BaseLightDeployerFlow {
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------
-    LightWallet internal wallet;
-    LightWalletFactory internal factory;
     MockERC20 internal token;
+
+    // -------------------------------------------------------------------------
+    // Run
+    // -------------------------------------------------------------------------
 
     function run() public {
         // Start the broadcast
@@ -52,12 +50,12 @@ contract ERC20TransferFlowScript is LightDeployer, Script, Test {
         token = new MockERC20("Test", "TEST", 18);
 
         // Mint 1e18 ERC20s to the account
-        token.mint(address(deployer), 1e18);
-        assertEq(token.balanceOf(address(deployer)), 1e18);
+        token.mint(address(PRIVATE_KEY_DEPLOYER), 1e18);
+        assertEq(token.balanceOf(address(PRIVATE_KEY_DEPLOYER)), 1e18);
 
         // Transfer to address 0x0
         token.transfer(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1), 1e18);
-        assertEq(token.balanceOf(address(deployer)), 0);
+        assertEq(token.balanceOf(address(PRIVATE_KEY_DEPLOYER)), 0);
         assertEq(token.balanceOf(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1)), 1e18);
 
         // Stop the broadcast

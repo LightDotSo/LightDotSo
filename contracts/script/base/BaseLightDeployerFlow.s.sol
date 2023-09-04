@@ -20,41 +20,25 @@ pragma solidity ^0.8.18;
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
-// solhint-disable-next-line no-console
-import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
+import {Test} from "forge-std/Test.sol";
 
-// LightWalletDeployer -- Deploys the LightWallet contract
-contract LightWalletDeployer is BaseLightDeployer, Script {
+/// @notice Base deployer test for scripts
+abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
     // -------------------------------------------------------------------------
-    // Storages
+    // Setup
     // -------------------------------------------------------------------------
-    LightWallet private wallet;
-    LightWalletFactory private factory;
 
-    function run() public {
-        // Start the broadcast
-        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+    /// @dev BaseLightDeployerFlow setup
+    function setUp() public virtual {
+        // LightWalletFactory core contract
+        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
-        // If testing on a local chain, use the existing address
-        if (block.chainid == 0x7a69) {
-            // Get the factory
-            factory = LightWalletFactory(address(0x262aD6Becda7CE4B047a3130491978A8f35F9aeC));
+        // Get network name
+        string memory defaultName = "mainnet";
+        string memory name = vm.envOr("NETWORK_NAME", defaultName);
 
-            // Create an account
-            wallet = factory.createAccount(bytes32(uint256(1)), randMod());
-
-            // solhint-disable-next-line no-console
-            console.log("LightWallet deployed at address: %s", address(wallet));
-        } else {
-            // Get the factory
-            factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
-
-            // Create an account
-            wallet = factory.createAccount(bytes32(uint256(1)), bytes32(uint256(1)));
-        }
-
-        // Stop the broadcast
-        vm.stopBroadcast();
+        // Fork network setup
+        vm.createSelectFork(name);
     }
 }

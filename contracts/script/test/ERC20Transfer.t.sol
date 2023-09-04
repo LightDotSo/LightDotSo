@@ -16,27 +16,15 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity ^0.8.18;
 
-import {LightWallet} from "@/contracts/LightWallet.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {LightDeployer} from "@/script/abstract/LightDeployer.s.sol";
+import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
 import {ERC20TransferFlowScript} from "@/script/flow/ERC20TransferFlow.s.sol";
-import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
-// solhint-disable-next-line no-console
-import {console} from "forge-std/console.sol";
-import {Script} from "forge-std/Script.sol";
-import {Test} from "forge-std/Test.sol";
 
 // ERC20Transfer -- Test ERC20 transfer
-contract ERC20TransferFlowScriptTest is LightDeployer, Script, Test {
+contract ERC20TransferFlowScriptTest is BaseLightDeployerFlow {
     ERC20TransferFlowScript script;
 
-    function setUp() public {
-        // Get network name
-        string memory defaultName = "mainnet";
-        string memory name = vm.envOr("NETWORK_NAME", defaultName);
-
-        // Fork network setup
-        vm.createSelectFork(name);
+    function setUp() public override {
+        super.setUp();
 
         script = new ERC20TransferFlowScript();
     }
