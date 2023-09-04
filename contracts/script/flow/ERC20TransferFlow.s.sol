@@ -27,7 +27,7 @@ import {Test} from "forge-std/Test.sol";
 
 // ERC20Transfer -- Test ERC20 transfer
 contract ERC20TransferFlowScript is LightDeployer, Script, Test {
-    address private deployer = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
+    address internal deployer = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------

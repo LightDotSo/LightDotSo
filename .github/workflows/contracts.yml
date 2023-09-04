@@ -160,7 +160,13 @@ jobs:
       - name: Install Deps
         run: |
           forge install
-      - name: Run Fork
+      - name: Run Script Test
+        run: |
+          forge test
+        env:
+          NETWORK_NAME: ${{ matrix.network }}
+      - if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        name: Run Scripts
         run: |
           ./scripts/run_script_flow.sh
         env:

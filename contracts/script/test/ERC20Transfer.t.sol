@@ -30,7 +30,14 @@ import {Test} from "forge-std/Test.sol";
 contract ERC20TransferFlowScriptTest is LightDeployer, Script, Test {
     ERC20TransferFlowScript script;
 
-    function run() public {
+    function setUp() public {
+        // Get network name
+        string memory defaultName = "mainnet";
+        string memory name = vm.envOr("NETWORK_NAME", defaultName);
+
+        // Fork network setup
+        vm.createSelectFork(name);
+
         script = new ERC20TransferFlowScript();
     }
 
