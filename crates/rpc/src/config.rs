@@ -23,4 +23,7 @@ pub struct RpcArgs {
     /// The chainnodes API key
     #[clap(long, env = "CHAINNODES_API_KEY")]
     pub chainnodes_api_key: String,
+    /// The blastapi API key
+    #[clap(long, env = "BLAST_API_KEY")]
+    pub blast_api_key: String,
 }

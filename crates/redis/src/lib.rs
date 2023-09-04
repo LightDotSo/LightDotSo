@@ -157,7 +157,7 @@ pub fn get_last_n_indexed_percentage(
     let indexed_percentage = if last_n_blocks.len() > 1 {
         let first_block = last_n_blocks.first().unwrap();
         let last_block = last_n_blocks.last().unwrap();
-        let total_blocks = last_block - first_block + 1;
+        let total_blocks = first_block - last_block + 1;
         let indexed_blocks_count = last_n_blocks.len() as i64;
         (indexed_blocks_count as f64 / total_blocks as f64) * 100.0
     } else {
