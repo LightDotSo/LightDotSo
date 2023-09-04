@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Build

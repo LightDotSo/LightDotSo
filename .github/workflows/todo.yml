@@ -18,7 +18,7 @@ jobs:
       issues: write
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Run tdg-github-action
         uses: ribtoks/tdg-github-action@master
         with:

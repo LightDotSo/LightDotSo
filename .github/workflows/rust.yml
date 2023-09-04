@@ -69,7 +69,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - if: matrix.workspace
         name: Free Disk Space
         uses: jlumbroso/free-disk-space@main

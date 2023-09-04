@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -52,7 +52,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -67,7 +67,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -82,7 +82,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -97,7 +97,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -112,7 +112,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -128,7 +128,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -143,7 +143,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -158,7 +158,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -173,7 +173,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -188,7 +188,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -203,7 +203,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -218,7 +218,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -233,7 +233,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -248,7 +248,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -263,7 +263,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -278,7 +278,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -293,7 +293,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -308,7 +308,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -323,7 +323,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
@@ -338,7 +338,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Fetch Head
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Fly Install
         uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Fly Deploy
