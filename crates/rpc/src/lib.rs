@@ -28,8 +28,10 @@ use axum::{
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
 use lightdotso_tracing::tracing::{info, warn};
+use rand::Rng;
 use serde::ser::Error;
 use serde_json::{Error as SerdeError, Value};
+use std::collections::HashMap;
 
 pub type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 
@@ -149,6 +151,33 @@ pub async fn internal_rpc_handler(
     rpc_proxy_handler(state, chain_id, req, true).await
 }
 
+/// The rpc handler for the RPC server
+async fn try_rpc_with_url(
+    rpc_urls: &HashMap<u64, String>,
+    api_key: Option<String>,
+    chain_id: &u64,
+    client: &Client,
+    body: Body,
+) -> Option<Response<Body>> {
+    if let Some(rpc_url) = rpc_urls.get(chain_id) {
+        let full_url = match api_key {
+            // Format the url with the api_key if it exists
+            Some(key) => format!("{}{}", rpc_url, key),
+            // If the api_key does not exist return the url as is
+            None => rpc_url.to_string(),
+        };
+
+        // Get the result from the client
+        let result = get_client_result(full_url, client.clone(), body).await;
+        if let Some(resp) = result {
+            return Some(resp);
+        }
+    }
+
+    // Return None if the rpc url is not found
+    None
+}
+
 /// The rpc proxy handler for the RPC server
 pub async fn rpc_proxy_handler(
     State(client): State<Client>,
@@ -189,40 +218,67 @@ pub async fn rpc_proxy_handler(
             "debug_traceBlockByHash" |
             "debug_traceBlockByNumber" |
             "debug_traceCall" |
-            "debug_traceTransaction" => {
+            "debug_traceTransaction" |
+            "eth_getBlockByNumber" |
+            "eth_getLogs" => {
                 if !debug {
                     return Response::builder()
                         .status(404)
                         .body(Body::from("Debug Not Enabled"))
                         .unwrap();
                 }
+                // Generate a random number
+                let random_percentage = rand::thread_rng().gen_range(0..=100);
 
-                // Get the rpc url from the chainnodes constants
-                if let Some(chainnodes_rpc_url) = CHAINNODES_RPC_URLS.get(&chain_id) {
-                    let uri = format!(
-                        "{}{}",
-                        chainnodes_rpc_url,
-                        std::env::var("CHAINNODES_API_KEY").unwrap()
-                    );
-
-                    // Get the result from the client
-                    let result =
-                        get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone()))
-                            .await;
+                if random_percentage <= 50 {
+                    // Get the rpc url from the chainnodes constants
+                    let result = try_rpc_with_url(
+                        &CHAINNODES_RPC_URLS,
+                        Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
+                        &chain_id,
+                        &client,
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
                     if let Some(resp) = result {
                         return resp;
                     }
-                }
 
-                // Get the rpc url from the blast api constants
-                if let Some(blastapi_rpc_url) = BLASTAPI_RPC_URLS.get(&chain_id) {
-                    let uri =
-                        format!("{}{}", blastapi_rpc_url, std::env::var("BLAST_API_KEY").unwrap());
+                    // Get the rpc url from the blast api constants
+                    let result = try_rpc_with_url(
+                        &BLASTAPI_RPC_URLS,
+                        Some(std::env::var("BLAST_API_KEY").unwrap()),
+                        &chain_id,
+                        &client,
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                } else {
+                    // Get the rpc url from the blast api constants
+                    let result = try_rpc_with_url(
+                        &BLASTAPI_RPC_URLS,
+                        Some(std::env::var("BLAST_API_KEY").unwrap()),
+                        &chain_id,
+                        &client,
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
 
-                    // Get the result from the client
-                    let result =
-                        get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone()))
-                            .await;
+                    // Get the rpc url from the chainnodes constants
+                    let result = try_rpc_with_url(
+                        &CHAINNODES_RPC_URLS,
+                        Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
+                        &chain_id,
+                        &client,
+                        Body::from(full_body_bytes.clone()),
+                    )
+                    .await;
                     if let Some(resp) = result {
                         return resp;
                     }
@@ -263,38 +319,22 @@ pub async fn rpc_proxy_handler(
                     }
                 }
             }
-            "eth_getBlockByNumber" | "eth_getLogs" => {
-                // Get the rpc url from the blast api constants
-                if let Some(blastapi_rpc_url) = BLASTAPI_RPC_URLS.get(&chain_id) {
-                    let uri =
-                        format!("{}{}", blastapi_rpc_url, std::env::var("BLAST_API_KEY").unwrap());
-
-                    // Get the result from the client
-                    let result =
-                        get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone()))
-                            .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
-                }
-            }
             "eth_sendUserOperation" |
             "eth_estimateUserOperationGas" |
             "eth_supportedEntryPoints" |
             "eth_getUserOperationByHash" |
             "eth_getUserOperationReceipt" => {
-                // Get the rpc url from the constants
-                if let Some(rpc) = BUNDLER_RPC_URLS.get(&chain_id) {
-                    // Get the result from the client
-                    let result = get_client_result(
-                        rpc.clone(),
-                        client.clone(),
-                        Body::from(full_body_bytes.clone()),
-                    )
-                    .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
+                // Get the ankr rpc url
+                let result = try_rpc_with_url(
+                    &BUNDLER_RPC_URLS,
+                    None,
+                    &chain_id,
+                    &client,
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if let Some(resp) = result {
+                    return resp;
                 }
             }
             "gas_requestGasEstimation" => {
@@ -342,39 +382,42 @@ pub async fn rpc_proxy_handler(
     }
 
     // Get the ankr rpc url
-    if let Some(ankr_rpc_url) = ANKR_RPC_URLS.get(&chain_id) {
-        let uri = ankr_rpc_url.clone();
-
-        // Get the result from the client
-        let result =
-            get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone())).await;
-        if let Some(resp) = result {
-            return resp;
-        }
+    let result = try_rpc_with_url(
+        &ANKR_RPC_URLS,
+        None,
+        &chain_id,
+        &client,
+        Body::from(full_body_bytes.clone()),
+    )
+    .await;
+    if let Some(resp) = result {
+        return resp;
     }
 
     // Get the rpc url from the constants
-    if let Some(infura_rpc_url) = INFURA_RPC_URLS.get(&chain_id) {
-        let uri = format!("{}{}", infura_rpc_url, std::env::var("INFURA_API_KEY").unwrap());
-
-        // Get the result from the client
-        let result =
-            get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone())).await;
-        if let Some(resp) = result {
-            return resp;
-        }
+    let result = try_rpc_with_url(
+        &INFURA_RPC_URLS,
+        Some(std::env::var("INFURA_API_KEY").unwrap()),
+        &chain_id,
+        &client,
+        Body::from(full_body_bytes.clone()),
+    )
+    .await;
+    if let Some(resp) = result {
+        return resp;
     }
 
     // Get the public rpc url from the constants
-    if let Some(public_rpc_url) = PUBLIC_RPC_URLS.get(&chain_id) {
-        let uri = public_rpc_url.clone();
-
-        // Get the result from the client
-        let result =
-            get_client_result(uri, client.clone(), Body::from(full_body_bytes.clone())).await;
-        if let Some(resp) = result {
-            return resp;
-        }
+    let result = try_rpc_with_url(
+        &PUBLIC_RPC_URLS,
+        None,
+        &chain_id,
+        &client,
+        Body::from(full_body_bytes.clone()),
+    )
+    .await;
+    if let Some(resp) = result {
+        return resp;
     }
 
     // Return an error if the chain_id is not supported or not found
