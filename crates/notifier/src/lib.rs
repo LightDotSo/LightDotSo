@@ -13,23 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lazy_static::lazy_static;
-
-// The transaction namesapce
-lazy_static! {
-    pub static ref TRANSACTION: String = "transaction".to_string();
-}
-
-// The retry transaction namesapce
-lazy_static! {
-    pub static ref RETRY_TRANSACTION: String = "retry-transaction".to_string();
-}
-
-// The error transaction namesapce
-lazy_static! {
-    pub static ref ERROR_TRANSACTION: String = "error-transaction".to_string();
-}
-
-lazy_static! {
-    pub static ref NOTIFICATION: String = "notification".to_string();
-}
+#![feature(let_chains)]
+pub mod config;
+pub mod notifier;

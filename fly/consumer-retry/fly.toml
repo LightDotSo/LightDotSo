@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for lightdotso-consumer on 2023-08-08T01:48:22-07:00
+# fly.toml app configuration file generated for lightdotso-consumer-retry on 2023-09-04T20:36:19-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lightdotso-consumer"
+app = "lightdotso-consumer-retry"
 primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
@@ -18,9 +18,10 @@ kill_timeout = "5s"
   strategy = "bluegreen"
 
 [http_service]
+  internal_port = 0
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 8
 
 [checks]
   [checks.health]

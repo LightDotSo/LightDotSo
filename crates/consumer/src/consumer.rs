@@ -22,9 +22,10 @@ use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
-    namespace::{RETRY_TRANSACTION, TRANSACTION},
+    namespace::{ERROR_TRANSACTION, NOTIFICATION, RETRY_TRANSACTION, TRANSACTION},
     produce_error_transaction_message, produce_retry_transaction_message,
 };
+use lightdotso_notifier::config::NotifierArgs;
 use lightdotso_tracing::tracing::{error, info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
@@ -72,6 +73,9 @@ impl Consumer {
 
         // Parse the command line arguments
         let args = IndexerArgs::parse();
+
+        // Parse the notifer command line arguments
+        let notifier_args = NotifierArgs::parse();
 
         // Create the indexer
         let mut indexer = args.create().await;
@@ -186,10 +190,32 @@ impl Consumer {
                                 };
                             }
                         }
+                        topic if topic == NOTIFICATION.to_string() => {
+                            // Send webhook if exists
+                            info!("key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                            m.key(), m.payload_view::<str>(), m.topic(), m.partition(), m.offset(), m.timestamp());
+
+                            // Convert the payload to a string
+                            let payload_opt = m.payload_view::<str>();
+                            info!("payload_opt: {:?}", payload_opt);
+
+                            let _ = notifier_args.run().await;
+                        }
+                        topic if topic == ERROR_TRANSACTION.to_string() => {
+                            // Log error messages
+                            info!("key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+                            m.key(), m.payload_view::<str>(), m.topic(), m.partition(), m.offset(), m.timestamp());
+
+                            // Commit the message
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
+                        }
                         _ => {
                             // Log each message as an example.
                             info!("key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
                             m.key(), m.payload_view::<str>(), m.topic(), m.partition(), m.offset(), m.timestamp());
+
+                            // Commit the message
+                            let _ = self.consumer.commit_message(&m, CommitMode::Async);
                         }
                     }
                 }

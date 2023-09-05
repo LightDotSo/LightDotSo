@@ -22,7 +22,6 @@
   futures = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-db = { workspace = true }
-  lightdotso-discord = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-redis = { workspace = true }
