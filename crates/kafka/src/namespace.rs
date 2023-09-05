@@ -27,17 +27,17 @@ lazy_static! {
 
 // The retry transaction 0 namesapce
 lazy_static! {
-    pub static ref RETRY_TRANSACTION_0: String = "retry-transaction".to_string();
+    pub static ref RETRY_TRANSACTION_0: String = "retry-transaction-0".to_string();
 }
 
 // The retry transaction 1 namesapce
 lazy_static! {
-    pub static ref RETRY_TRANSACTION_1: String = "retry-transaction".to_string();
+    pub static ref RETRY_TRANSACTION_1: String = "retry-transaction-1".to_string();
 }
 
 // The retry transaction 2 namesapce
 lazy_static! {
-    pub static ref RETRY_TRANSACTION_2: String = "retry-transaction".to_string();
+    pub static ref RETRY_TRANSACTION_2: String = "retry-transaction-2".to_string();
 }
 
 // The error transaction namesapce
