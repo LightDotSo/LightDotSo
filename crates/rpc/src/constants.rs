@@ -60,6 +60,7 @@ lazy_static! {
 
         // Testnet
         m.insert(11155111, "https://sepolia.infura.io/v3/".to_string());
+
         m
     };
 }
