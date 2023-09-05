@@ -17,7 +17,10 @@ use lightdotso_tracing::tracing::error;
 pub use rdkafka;
 use std::sync::Arc;
 
-use namespace::{ERROR_TRANSACTION, RETRY_TRANSACTION, TRANSACTION};
+use namespace::{
+    ERROR_TRANSACTION, RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1,
+    RETRY_TRANSACTION_2, TRANSACTION,
+};
 use rdkafka::{
     config::ClientConfig,
     consumer::stream_consumer::StreamConsumer,
@@ -105,6 +108,30 @@ pub async fn produce_retry_transaction_message(
     message: &str,
 ) -> Result<(), rdkafka::error::KafkaError> {
     produce_message(producer, RETRY_TRANSACTION.as_str(), message).await
+}
+
+// Produce a message with retry Transaction 0 topic.
+pub async fn produce_retry_transaction_0_message(
+    producer: Arc<FutureProducer>,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    produce_message(producer, RETRY_TRANSACTION_0.as_str(), message).await
+}
+
+// Produce a message with retry Transaction 1 topic.
+pub async fn produce_retry_transaction_1_message(
+    producer: Arc<FutureProducer>,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    produce_message(producer, RETRY_TRANSACTION_1.as_str(), message).await
+}
+
+// Produce a message with retry Transaction 2JJ topic.
+pub async fn produce_retry_transaction_2_message(
+    producer: Arc<FutureProducer>,
+    message: &str,
+) -> Result<(), rdkafka::error::KafkaError> {
+    produce_message(producer, RETRY_TRANSACTION_2.as_str(), message).await
 }
 
 // Produce a message with error Transaction topic.

@@ -23,7 +23,8 @@ use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
     namespace::{ERROR_TRANSACTION, NOTIFICATION, RETRY_TRANSACTION, TRANSACTION},
-    produce_error_transaction_message, produce_retry_transaction_message,
+    produce_error_transaction_message, produce_retry_transaction_0_message,
+    produce_retry_transaction_1_message, produce_retry_transaction_2_message,
 };
 use lightdotso_notifier::config::NotifierArgs;
 use lightdotso_tracing::tracing::{error, info, warn};
@@ -140,14 +141,50 @@ impl Consumer {
                                                 if timestamp >
                                                     chrono::Utc::now()
                                                         .checked_sub_signed(
+                                                            chrono::Duration::minutes(10),
+                                                        )
+                                                        .unwrap()
+                                                {
+                                                    info!("Block: {:?} at chain_id: {:?} is less than 10 minutes old, adding to retry queue: 0", block.number.unwrap().as_u64(), chain_id);
+                                                    let _ = {
+                                                        || {
+                                                            produce_retry_transaction_0_message(
+                                                                client.clone(),
+                                                                payload,
+                                                            )
+                                                        }
+                                                    }
+                                                    .retry(&ExponentialBuilder::default())
+                                                    .await;
+                                                } else if timestamp >
+                                                    chrono::Utc::now()
+                                                        .checked_sub_signed(
+                                                            chrono::Duration::minutes(30),
+                                                        )
+                                                        .unwrap()
+                                                {
+                                                    info!("Block: {:?} at chain_id: {:?} is less than 30 minutes old, adding to retry queue: 1", block.number.unwrap().as_u64(), chain_id);
+                                                    let _ = {
+                                                        || {
+                                                            produce_retry_transaction_1_message(
+                                                                client.clone(),
+                                                                payload,
+                                                            )
+                                                        }
+                                                    }
+                                                    .retry(&ExponentialBuilder::default())
+                                                    .await;
+                                                } else if timestamp >
+                                                    chrono::Utc::now()
+                                                        .checked_sub_signed(
                                                             chrono::Duration::hours(1),
                                                         )
                                                         .unwrap()
                                                 {
-                                                    info!("Block: {:?} at chain_id: {:?} is less than 1 hour old, adding to retry queue", block.number.unwrap().as_u64(), chain_id);
+                                                    info!("Block: {:?} at chain_id: {:?} is less than 1 hour old, adding to retry queue: 2", block.number.unwrap().as_u64(), chain_id);
                                                     let _ = {
                                                         || {
-                                                            produce_retry_transaction_message(
+                                                            produce_retry_transaction_2_message(
                                                                 client.clone(),
                                                                 payload,
                                                             )
