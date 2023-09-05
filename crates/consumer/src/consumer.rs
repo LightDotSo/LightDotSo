@@ -22,7 +22,10 @@ use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
 use lightdotso_kafka::{
     get_consumer, get_producer,
-    namespace::{ERROR_TRANSACTION, NOTIFICATION, RETRY_TRANSACTION, TRANSACTION},
+    namespace::{
+        ERROR_TRANSACTION, NOTIFICATION, RETRY_TRANSACTION, RETRY_TRANSACTION_0,
+        RETRY_TRANSACTION_1, RETRY_TRANSACTION_2, TRANSACTION,
+    },
     produce_error_transaction_message, produce_retry_transaction_0_message,
     produce_retry_transaction_1_message, produce_retry_transaction_2_message,
 };
@@ -98,7 +101,10 @@ impl Consumer {
                         // If the topic is the transaction topic
                         topic
                             if topic == TRANSACTION.to_string() ||
-                                topic == RETRY_TRANSACTION.to_string() =>
+                                topic == RETRY_TRANSACTION.to_string() ||
+                                topic == RETRY_TRANSACTION_0.to_string() ||
+                                topic == RETRY_TRANSACTION_1.to_string() ||
+                                topic == RETRY_TRANSACTION_2.to_string() =>
                         {
                             // Convert the payload to a string
                             let payload_opt = m.payload_view::<str>();
