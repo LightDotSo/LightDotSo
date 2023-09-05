@@ -17,6 +17,7 @@
   hyper-rustls = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  rand = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true }
