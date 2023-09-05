@@ -139,78 +139,56 @@ impl Consumer {
                                             // Create a new producer
                                             let client = &self.producer.clone();
 
-                                            // Get the block timestamp
-                                            if let Ok(timestamp) = block.time() {
-                                                // Produce the message w/ exponential backoff if
-                                                // block timestamp to present is less than 1 hour
-                                                // ago
-                                                if timestamp >
-                                                    chrono::Utc::now()
-                                                        .checked_sub_signed(
-                                                            chrono::Duration::minutes(10),
+                                            if topic == TRANSACTION.to_string() ||
+                                                topic == RETRY_TRANSACTION.to_string()
+                                            {
+                                                info!("Block: {:?} at chain_id: {:?} error, adding to retry queue: 0", block.number.unwrap().as_u64(), chain_id);
+                                                let _ = {
+                                                    || {
+                                                        produce_retry_transaction_0_message(
+                                                            client.clone(),
+                                                            payload,
                                                         )
-                                                        .unwrap()
-                                                {
-                                                    info!("Block: {:?} at chain_id: {:?} is less than 10 minutes old, adding to retry queue: 0", block.number.unwrap().as_u64(), chain_id);
-                                                    let _ = {
-                                                        || {
-                                                            produce_retry_transaction_0_message(
-                                                                client.clone(),
-                                                                payload,
-                                                            )
-                                                        }
                                                     }
-                                                    .retry(&ExponentialBuilder::default())
-                                                    .await;
-                                                } else if timestamp >
-                                                    chrono::Utc::now()
-                                                        .checked_sub_signed(
-                                                            chrono::Duration::minutes(30),
-                                                        )
-                                                        .unwrap()
-                                                {
-                                                    info!("Block: {:?} at chain_id: {:?} is less than 30 minutes old, adding to retry queue: 1", block.number.unwrap().as_u64(), chain_id);
-                                                    let _ = {
-                                                        || {
-                                                            produce_retry_transaction_1_message(
-                                                                client.clone(),
-                                                                payload,
-                                                            )
-                                                        }
-                                                    }
-                                                    .retry(&ExponentialBuilder::default())
-                                                    .await;
-                                                } else if timestamp >
-                                                    chrono::Utc::now()
-                                                        .checked_sub_signed(
-                                                            chrono::Duration::hours(1),
-                                                        )
-                                                        .unwrap()
-                                                {
-                                                    info!("Block: {:?} at chain_id: {:?} is less than 1 hour old, adding to retry queue: 2", block.number.unwrap().as_u64(), chain_id);
-                                                    let _ = {
-                                                        || {
-                                                            produce_retry_transaction_2_message(
-                                                                client.clone(),
-                                                                payload,
-                                                            )
-                                                        }
-                                                    }
-                                                    .retry(&ExponentialBuilder::default())
-                                                    .await;
-                                                } else {
-                                                    warn!("Block: {:?} at chain_id: {:?} is warn than 1 hour old, adding to error queue", block.number.unwrap().as_u64(), chain_id);
-                                                    let _ = {
-                                                        || {
-                                                            produce_error_transaction_message(
-                                                                client.clone(),
-                                                                payload,
-                                                            )
-                                                        }
-                                                    }
-                                                    .retry(&ExponentialBuilder::default())
-                                                    .await;
                                                 }
+                                                .retry(&ExponentialBuilder::default())
+                                                .await;
+                                            } else if topic == RETRY_TRANSACTION_0.to_string() {
+                                                info!("Block: {:?} at chain_id: {:?} error, adding to retry queue: 1", block.number.unwrap().as_u64(), chain_id);
+                                                let _ = {
+                                                    || {
+                                                        produce_retry_transaction_1_message(
+                                                            client.clone(),
+                                                            payload,
+                                                        )
+                                                    }
+                                                }
+                                                .retry(&ExponentialBuilder::default())
+                                                .await;
+                                            } else if topic == RETRY_TRANSACTION_1.to_string() {
+                                                info!("Block: {:?} at chain_id: {:?} error, adding to retry queue: 2", block.number.unwrap().as_u64(), chain_id);
+                                                let _ = {
+                                                    || {
+                                                        produce_retry_transaction_2_message(
+                                                            client.clone(),
+                                                            payload,
+                                                        )
+                                                    }
+                                                }
+                                                .retry(&ExponentialBuilder::default())
+                                                .await;
+                                            } else if topic == RETRY_TRANSACTION_2.to_string() {
+                                                warn!("Block: {:?} at chain_id: {:?} error, adding to error queue", block.number.unwrap().as_u64(), chain_id);
+                                                let _ = {
+                                                    || {
+                                                        produce_error_transaction_message(
+                                                            client.clone(),
+                                                            payload,
+                                                        )
+                                                    }
+                                                }
+                                                .retry(&ExponentialBuilder::default())
+                                                .await;
                                             }
 
                                             // Continue to the next loop iteration
