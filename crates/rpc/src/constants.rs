@@ -96,6 +96,7 @@ lazy_static! {
 
         // Testnet
         m.insert(11155111, "https://eth-sepolia.blastapi.io/".to_string());
+
         m
     };
 }
