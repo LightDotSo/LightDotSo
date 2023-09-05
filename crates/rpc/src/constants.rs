@@ -60,6 +60,7 @@ lazy_static! {
 
         // Testnet
         m.insert(11155111, "https://sepolia.infura.io/v3/".to_string());
+
         m
     };
 }
@@ -93,6 +94,9 @@ lazy_static! {
         m.insert(8453, "https://base-mainnet.blastapi.io/".to_string());
         m.insert(42161, "https://arbitrum-mainnet.blastapi.io/".to_string());
         m.insert(43114, "https://ava-mainnet.blastapi.io/".to_string());
+
+        // Testnet
+        m.insert(11155111, "https://eth-sepolia.blastapi.io/".to_string());
 
         m
     };
