@@ -140,7 +140,7 @@ impl Consumer {
                                                         )
                                                         .unwrap()
                                                 {
-                                                    info!("Block is less than 1 hour old, adding to retry queue");
+                                                    info!("Block: {:?} at chain_id: {:?} is less than 1 hour old, adding to retry queue", block.number.unwrap().as_u64(), chain_id);
                                                     let _ = {
                                                         || {
                                                             produce_retry_transaction_message(
@@ -152,7 +152,7 @@ impl Consumer {
                                                     .retry(&ExponentialBuilder::default())
                                                     .await;
                                                 } else {
-                                                    warn!("Block is more than 1 hour old, adding to error queue");
+                                                    warn!("Block: {:?} at chain_id: {:?} is warn than 1 hour old, adding to error queue", block.number.unwrap().as_u64(), chain_id);
                                                     let _ = {
                                                         || {
                                                             produce_error_transaction_message(
