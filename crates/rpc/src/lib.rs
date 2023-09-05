@@ -28,7 +28,6 @@ use axum::{
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
 use lightdotso_tracing::tracing::{info, warn};
-use rand::Rng;
 use serde::ser::Error;
 use serde_json::{Error as SerdeError, Value};
 use std::collections::HashMap;
