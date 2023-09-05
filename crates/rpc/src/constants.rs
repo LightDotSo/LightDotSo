@@ -155,6 +155,9 @@ lazy_static! {
         m.insert(43114, "https://rpc.ankr.com/avalanche".to_string());
         m.insert(1666600000, "https://rpc.ankr.com/harmony".to_string());
 
+        // Testnet
+        m.insert(11155111, "https://rpc.ankr.com/eth_sepolia".to_string());
+
         m
     };
 }

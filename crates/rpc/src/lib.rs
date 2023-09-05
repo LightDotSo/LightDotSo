@@ -217,9 +217,7 @@ pub async fn rpc_proxy_handler(
             "debug_traceBlockByHash" |
             "debug_traceBlockByNumber" |
             "debug_traceCall" |
-            "debug_traceTransaction" |
-            "eth_getBlockByNumber" |
-            "eth_getLogs" => {
+            "debug_traceTransaction" => {
                 if !debug {
                     return Response::builder()
                         .status(404)
@@ -363,10 +361,10 @@ pub async fn rpc_proxy_handler(
         return resp;
     }
 
-    // Get the rpc url from the constants
+    // Get the public rpc url from the constants
     let result = try_rpc_with_url(
-        &INFURA_RPC_URLS,
-        Some(std::env::var("INFURA_API_KEY").unwrap()),
+        &PUBLIC_RPC_URLS,
+        None,
         &chain_id,
         &client,
         Body::from(full_body_bytes.clone()),
@@ -376,10 +374,10 @@ pub async fn rpc_proxy_handler(
         return resp;
     }
 
-    // Get the public rpc url from the constants
+    // Get the rpc url from the constants
     let result = try_rpc_with_url(
-        &PUBLIC_RPC_URLS,
-        None,
+        &INFURA_RPC_URLS,
+        Some(std::env::var("INFURA_API_KEY").unwrap()),
         &chain_id,
         &client,
         Body::from(full_body_bytes.clone()),
