@@ -28,7 +28,6 @@ use axum::{
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
 use lightdotso_tracing::tracing::{info, warn};
-use rand::Rng;
 use serde::ser::Error;
 use serde_json::{Error as SerdeError, Value};
 use std::collections::HashMap;
@@ -228,32 +227,6 @@ pub async fn rpc_proxy_handler(
                         .unwrap();
                 }
 
-                // Get the rpc url from the chainnodes constants
-                let result = try_rpc_with_url(
-                    &CHAINNODES_RPC_URLS,
-                    Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
-                };
-
-                // Get the rpc url from the blast api constants
-                let result = try_rpc_with_url(
-                    &BLASTAPI_RPC_URLS,
-                    Some(std::env::var("BLAST_API_KEY").unwrap()),
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
-                };
-
                 // Get the rpc url from secret env `PRIVATE_RPC_URLS`
                 // The env is a comma separated list w/ chain_id of rpc urls
                 // Example: 1=https://mainnet.infura.io/v3/123,4=https://rinkeby.infura.io/v3/123
@@ -288,6 +261,32 @@ pub async fn rpc_proxy_handler(
                         }
                     }
                 }
+
+                // Get the rpc url from the chainnodes constants
+                let result = try_rpc_with_url(
+                    &CHAINNODES_RPC_URLS,
+                    Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
+                    &chain_id,
+                    &client,
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if let Some(resp) = result {
+                    return resp;
+                };
+
+                // Get the rpc url from the blast api constants
+                let result = try_rpc_with_url(
+                    &BLASTAPI_RPC_URLS,
+                    Some(std::env::var("BLAST_API_KEY").unwrap()),
+                    &chain_id,
+                    &client,
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if let Some(resp) = result {
+                    return resp;
+                };
             }
             "eth_sendUserOperation" |
             "eth_estimateUserOperationGas" |

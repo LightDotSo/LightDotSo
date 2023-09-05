@@ -17,7 +17,7 @@ on:
         options:
           - mainnet
           - optimism
-          - bsc
+          # - bsc
           - gnosis
           # - polygon
           - arbitrum
@@ -132,7 +132,7 @@ jobs:
         network:
           - mainnet
           - optimism
-          - bsc
+          # - bsc
           - gnosis
           # - polygon
           - arbitrum
