@@ -94,6 +94,8 @@ lazy_static! {
         m.insert(42161, "https://arbitrum-mainnet.blastapi.io/".to_string());
         m.insert(43114, "https://ava-mainnet.blastapi.io/".to_string());
 
+        // Testnet
+        m.insert(11155111, "https://eth-sepolia.blastapi.io/".to_string());
         m
     };
 }
