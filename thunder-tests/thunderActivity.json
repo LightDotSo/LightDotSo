@@ -151,6 +151,88 @@
     ]
   },
   {
+    "_id": "aa1b2218-d848-4170-bada-76ef83cd58bc",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_supportedEntryPoints local",
+    "url": "http://localhost:3000/11155111",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:13:33.627Z",
+    "modified": "2023-09-05T02:41:11.957Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_supportedEntryPoints\"\n}\n",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+      }
+    ]
+  },
+  {
+    "_id": "4e21e892-a5b4-431f-b261-6acedaadef7e",
+    "colId": "history",
+    "containerId": "",
+    "name": "gas_requestGasEstimation local",
+    "url": "http://localhost:3000/11155111",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-23T08:13:33.627Z",
+    "modified": "2023-09-05T02:42:12.434Z",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
+      "form": []
+    },
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "contains",
+        "value": "max_priority_fee_per_gas"
+      }
+    ]
+  },
+  {
     "_id": "e12c2082-2532-4cbd-a999-71d19f526bf6",
     "colId": "history",
     "containerId": "",
@@ -226,12 +308,12 @@
     "_id": "7df8c2be-5f0f-49f3-9aec-ae13f54a6c62",
     "colId": "history",
     "containerId": "",
-    "name": "eth_getBlockByNumber Copy Copy",
-    "url": "https://rpc.ankr.com/avalanche",
+    "name": "eth_chainId",
+    "url": "https://rpc.light.so/42161",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-26T10:42:05.410Z",
-    "modified": "2023-09-03T09:39:18.416Z",
+    "modified": "2023-09-05T02:40:43.402Z",
     "headers": [
       {
         "name": "Content-Type",
