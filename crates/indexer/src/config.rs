@@ -31,10 +31,6 @@ pub struct IndexerArgs {
     #[clap(long, env = "INDEXER_RPC_URL")]
     pub rpc: String,
     /// The websocket RPC endpoint to connect to.
-    #[arg(long, default_value_t = String::from(""))]
-    #[clap(long, env = "DISCORD_WEBHOOK")]
-    pub webhook: String,
-    /// The websocket RPC endpoint to connect to.
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "INDEXER_RPC_WS")]
     pub ws: String,

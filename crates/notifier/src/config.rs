@@ -13,23 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lazy_static::lazy_static;
+use crate::notifier::Notifier;
+use clap::Parser;
+use eyre::Result;
+use lightdotso_tracing::tracing::info;
 
-// The transaction namesapce
-lazy_static! {
-    pub static ref TRANSACTION: String = "transaction".to_string();
+#[derive(Debug, Clone, Parser, Default)]
+pub struct NotifierArgs {
+    /// The webhook endpoint to connect to.
+    #[clap(long, env = "DISCORD_WEBHOOK")]
+    pub webhook: Option<String>,
 }
 
-// The retry transaction namesapce
-lazy_static! {
-    pub static ref RETRY_TRANSACTION: String = "retry-transaction".to_string();
-}
+impl NotifierArgs {
+    pub async fn run(&self) -> Result<()> {
+        // Add info
+        info!("NotifierArgs run, starting...");
 
-// The error transaction namesapce
-lazy_static! {
-    pub static ref ERROR_TRANSACTION: String = "error-transaction".to_string();
-}
+        // Print the config
+        info!("Config: {:?}", self);
 
-lazy_static! {
-    pub static ref NOTIFICATION: String = "notification".to_string();
+        let notifier = Notifier::new(self).await;
+
+        notifier.run().await;
+
+        Ok(())
+    }
 }

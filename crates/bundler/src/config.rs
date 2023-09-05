@@ -50,10 +50,6 @@ pub struct BundlerArgs {
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "BUNDLER_RPC_URL")]
     pub rpc: String,
-    /// The websocket RPC endpoint to connect to.
-    #[arg(long, default_value_t = String::from(""))]
-    #[clap(long, env = "DISCORD_WEBHOOK")]
-    pub webhook: String,
 }
 
 impl BundlerArgs {

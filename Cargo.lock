@@ -5621,6 +5621,7 @@ dependencies = [
  "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-kafka",
+ "lightdotso-notifier",
  "lightdotso-tracing",
  "rdkafka",
  "serde_json",
@@ -5681,7 +5682,6 @@ dependencies = [
  "futures",
  "lazy_static",
  "lightdotso-db",
- "lightdotso-discord",
  "lightdotso-kafka",
  "lightdotso-prisma",
  "lightdotso-redis",
@@ -5708,6 +5708,18 @@ dependencies = [
 [[package]]
 name = "lightdotso-keychain"
 version = "0.1.0"
+
+[[package]]
+name = "lightdotso-notifier"
+version = "0.1.0"
+dependencies = [
+ "backon",
+ "clap",
+ "eyre",
+ "lightdotso-discord",
+ "lightdotso-tracing",
+ "serde_json",
+]
 
 [[package]]
 name = "lightdotso-paymaster"

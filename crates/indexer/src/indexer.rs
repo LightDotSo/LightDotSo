@@ -37,7 +37,6 @@ use lightdotso_db::{
     db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
     error::DbError,
 };
-use lightdotso_discord::notify_create_wallet;
 use lightdotso_kafka::{
     get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
 };
@@ -67,7 +66,6 @@ pub struct Indexer {
     kafka_client: Option<Arc<FutureProducer>>,
     http_client: Option<Arc<Provider<Http>>>,
     ws_client: Option<Arc<Provider<Ws>>>,
-    webhook: String,
 }
 
 impl Indexer {
@@ -103,14 +101,7 @@ impl Indexer {
             get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)));
 
         // Create the indexer
-        Self {
-            chain_id: args.chain_id,
-            webhook: args.webhook.clone(),
-            http_client,
-            ws_client,
-            redis_client,
-            kafka_client,
-        }
+        Self { chain_id: args.chain_id, http_client, ws_client, redis_client, kafka_client }
     }
 
     /// Runs the indexer
@@ -385,17 +376,6 @@ impl Indexer {
                         *tx_hash,
                     )
                     .await;
-
-                // Send webhook if exists
-                if !self.webhook.is_empty() {
-                    notify_create_wallet(
-                        &self.webhook,
-                        &to_checksum(address, None),
-                        &self.chain_id.to_string(),
-                        &tx_hash.to_string(),
-                    )
-                    .await;
-                }
             }
         }
 
