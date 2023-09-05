@@ -227,62 +227,32 @@ pub async fn rpc_proxy_handler(
                         .body(Body::from("Debug Not Enabled"))
                         .unwrap();
                 }
-                // Generate a random number
-                let random_percentage = rand::thread_rng().gen_range(0..=100);
 
-                if random_percentage <= 50 {
-                    // Get the rpc url from the chainnodes constants
-                    let result = try_rpc_with_url(
-                        &CHAINNODES_RPC_URLS,
-                        Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
-                        &chain_id,
-                        &client,
-                        Body::from(full_body_bytes.clone()),
-                    )
-                    .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
+                // Get the rpc url from the chainnodes constants
+                let result = try_rpc_with_url(
+                    &CHAINNODES_RPC_URLS,
+                    Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
+                    &chain_id,
+                    &client,
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if let Some(resp) = result {
+                    return resp;
+                };
 
-                    // Get the rpc url from the blast api constants
-                    let result = try_rpc_with_url(
-                        &BLASTAPI_RPC_URLS,
-                        Some(std::env::var("BLAST_API_KEY").unwrap()),
-                        &chain_id,
-                        &client,
-                        Body::from(full_body_bytes.clone()),
-                    )
-                    .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
-                } else {
-                    // Get the rpc url from the blast api constants
-                    let result = try_rpc_with_url(
-                        &BLASTAPI_RPC_URLS,
-                        Some(std::env::var("BLAST_API_KEY").unwrap()),
-                        &chain_id,
-                        &client,
-                        Body::from(full_body_bytes.clone()),
-                    )
-                    .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
-
-                    // Get the rpc url from the chainnodes constants
-                    let result = try_rpc_with_url(
-                        &CHAINNODES_RPC_URLS,
-                        Some(std::env::var("CHAINNODES_API_KEY").unwrap()),
-                        &chain_id,
-                        &client,
-                        Body::from(full_body_bytes.clone()),
-                    )
-                    .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
-                }
+                // Get the rpc url from the blast api constants
+                let result = try_rpc_with_url(
+                    &BLASTAPI_RPC_URLS,
+                    Some(std::env::var("BLAST_API_KEY").unwrap()),
+                    &chain_id,
+                    &client,
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if let Some(resp) = result {
+                    return resp;
+                };
 
                 // Get the rpc url from secret env `PRIVATE_RPC_URLS`
                 // The env is a comma separated list w/ chain_id of rpc urls
