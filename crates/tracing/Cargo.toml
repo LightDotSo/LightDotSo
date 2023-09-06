@@ -9,15 +9,23 @@
   repository.workspace = true
 
 [dependencies]
+  base64 = { workspace = true }
+  eyre = { workspace = true }
+  lazy_static = { workspace = true }
   opentelemetry = { version = "0.20", features = ["rt-tokio", "trace"] }
   opentelemetry-otlp = { version = "0.13", features = [
     "tonic",
-    "metrics",
+    "tls",
     "tls-roots",
+    "protobuf",
+    "http-proto",
   ] }
   opentelemetry-stdout = { version = "0.1", features = ["trace"] }
+  tokio = { workspace = true }
+  tonic = { workspace = true }
   tracing = { workspace = true }
   tracing-futures = "0.2.5"
+  tracing-loki = { version = "0.2.3", features = ["rustls", "native-tls"] }
   tracing-opentelemetry = "0.20"
   tracing-subscriber = { version = "0.3.17", features = [
     "ansi",

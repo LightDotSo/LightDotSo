@@ -60,8 +60,6 @@ pub async fn start_server() -> Result<()> {
         _ => Level::INFO,
     };
 
-    init(vec![stdout(log_level), otel()]);
-
     // Create a client
     let https = hyper_rustls::HttpsConnectorBuilder::new()
         .with_native_roots()

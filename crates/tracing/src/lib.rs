@@ -15,29 +15,36 @@
 
 // All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
 // Thank you for providing such an awesome library!
+use base64::{engine::general_purpose, Engine as _};
+use eyre::Result;
 use opentelemetry::{
-    metrics::MetricsError,
-    runtime,
     sdk::{
-        metrics::MeterProvider,
+        propagation::TraceContextPropagator,
+        resource::{OsResourceDetector, ProcessResourceDetector, ResourceDetector},
         trace::{BatchSpanProcessor, Tracer, TracerProvider},
+        Resource,
     },
     trace::TracerProvider as _,
 };
-use opentelemetry_otlp::{ExportConfig, WithExportConfig};
+use opentelemetry_otlp::WithExportConfig;
 use opentelemetry_stdout::SpanExporter;
-use std::time::Duration;
-use tracing::Subscriber;
+use tonic::metadata::MetadataMap;
+use tracing::{info, Level, Subscriber};
+use tracing_loki::url::Url;
 use tracing_opentelemetry::OpenTelemetryLayer;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
 };
+
+mod constants;
 
 // From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L28-L30
 // Re-export tracing crates
 pub use tracing;
 pub use tracing_futures;
 pub use tracing_subscriber;
+
+use crate::constants::{LOKI_USER_ID, TEMPO_USER_ID};
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L32
 /// A boxed tracing [Layer].
@@ -106,16 +113,75 @@ pub fn init_test_tracing() {
 }
 
 /// From: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/opentelemetry-push/src/main.rs#L11C1-L27C1
+/// License: MIT
+/// Also heavily inspired by: https://github.com/senate-xyz/senate/blob/19d565957554673429f9391eee2af7261f1b44b4/apps/email-secretary/src/telemetry.rs#L29C1-L75C81
+/// License: GPL-3.0
 /// Initializes a new push-based OpenTelemetry metrics pipeline.
-pub fn init_metrics() -> Result<MeterProvider, MetricsError> {
-    let export_config = ExportConfig {
-        endpoint: "https://light.fmp.fiberplane.dev:4317".to_string(),
-        ..ExportConfig::default()
-    };
-    let push_interval = Duration::from_secs(1);
-    opentelemetry_otlp::new_pipeline()
-        .metrics(runtime::Tokio)
-        .with_exporter(opentelemetry_otlp::new_exporter().tonic().with_export_config(export_config))
-        .with_period(push_interval)
-        .build()
+pub fn init_metrics() -> Result<()> {
+    info!("Initializing metrics pipeline...");
+
+    // Retrieve the required environment variables for tracing
+    let fly_app_name = std::env::var("FLY_APP_NAME").unwrap();
+    let grafana_api_key = std::env::var("GRAFANA_API_KEY").unwrap();
+
+    // Set the global propagator to the W3C Trace Context propagator
+    opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
+
+    // Initialize the Loki layer
+    let (logging_layer, task) = tracing_loki::builder()
+        .build_url(
+            Url::parse(
+                format!("https://{}:{}@logs-prod-006.grafana.net", *LOKI_USER_ID, grafana_api_key)
+                    .as_str(),
+            )
+            .unwrap(),
+        )
+        .unwrap();
+
+    // Encode the telemetry key for basic authentication for Tempo
+    let mut map = MetadataMap::with_capacity(3);
+    let encoded =
+        general_purpose::STANDARD.encode(format!("{}:{}", *TEMPO_USER_ID, grafana_api_key));
+    map.insert("authorization", format!("Basic {}", encoded).parse().unwrap());
+
+    // Merge the detected resources with the service name for Tempo
+    let resources = OsResourceDetector
+        .detect(std::time::Duration::from_secs(0))
+        .merge(&ProcessResourceDetector.detect(std::time::Duration::from_secs(0)))
+        .merge(&Resource::new(vec![opentelemetry::KeyValue::new("service.name", fly_app_name)]));
+
+    // Initialize the OpenTelemetry tracing pipeline w/ authentication for Tempo
+    let tracer = opentelemetry_otlp::new_pipeline()
+        .tracing()
+        .with_exporter(
+            opentelemetry_otlp::new_exporter()
+                .tonic()
+                .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net:443/tempo")
+                .with_metadata(map),
+        )
+        .with_trace_config(
+            opentelemetry::sdk::trace::config()
+                .with_id_generator(opentelemetry::sdk::trace::RandomIdGenerator::default())
+                .with_sampler(opentelemetry::sdk::trace::Sampler::AlwaysOn)
+                .with_resource(resources),
+        )
+        .install_batch(opentelemetry::runtime::Tokio)
+        .unwrap();
+
+    // Create the OpenTelemetry layer
+    let telemetry_layer = tracing_opentelemetry::layer().with_tracer(tracer);
+
+    // Initialize the tracing subscriber
+    tracing_subscriber::registry()
+        .with(logging_layer)
+        .with(telemetry_layer)
+        .with(stdout(Level::INFO))
+        .init();
+
+    // Spawn the Loki task
+    tokio::spawn(task);
+
+    info!("Successfully initialized metrics pipeline");
+
+    Ok(())
 }

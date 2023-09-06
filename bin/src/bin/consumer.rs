@@ -33,7 +33,7 @@ pub async fn main() {
         error!("Failed to initialize metrics: {:?}", e)
     }
 
-    init(vec![stdout(Level::INFO), otel()]);
+    // init(vec![stdout(Level::INFO), otel()]);
 
     info!("Starting server at {}", SHORT_VERSION);
 
@@ -47,7 +47,7 @@ pub async fn main() {
     let consumer_count = num_cpus::get() * 2;
     info!("Starting {} consumers", consumer_count);
 
-    for _ in 0..consumer_count {
+    for _ in 0..1 {
         let args_clone = args.clone();
         let handle = task::spawn(async move {
             loop {

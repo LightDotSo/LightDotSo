@@ -34,8 +34,6 @@ pub async fn main() {
         _ => Level::INFO,
     };
 
-    init(vec![stdout(log_level), otel()]);
-
     let _ = init_metrics();
 
     info!("Starting server at {}", SHORT_VERSION);
