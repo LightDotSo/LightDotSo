@@ -17,6 +17,7 @@
     "crates/keychain",
     "crates/notifier",
     "crates/paymaster",
+    "crates/prometheus",
     "crates/prisma",
     "crates/redis",
     "crates/rpc",
@@ -86,18 +87,21 @@
   lightdotso-keychain = { path = "./crates/indexer" }
   lightdotso-notifier = { path = "./crates/notifier" }
   lightdotso-paymaster = { path = "./crates/paymaster" }
+  lightdotso-prometheus = { path = "./crates/prometheus" }
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
+  once_cell = "1.8.0"
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
     "mocking",
   ] }
   prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
     "mocking",
   ] }
+  prometheus = "0.13.3"
   rand = "0.8.5"
   rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
   redb = "1.0.5"

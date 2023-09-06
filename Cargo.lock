@@ -5543,6 +5543,7 @@ dependencies = [
  "http",
  "hyper",
  "lightdotso-indexer",
+ "lightdotso-prometheus",
  "lightdotso-redis",
  "lightdotso-tracing",
  "serde",
@@ -5575,6 +5576,7 @@ dependencies = [
  "lightdotso-kafka",
  "lightdotso-paymaster",
  "lightdotso-prisma",
+ "lightdotso-prometheus",
  "lightdotso-rpc",
  "lightdotso-simulator",
  "lightdotso-tracing",
@@ -5745,6 +5747,19 @@ dependencies = [
  "prisma-client-rust",
  "prisma-client-rust-cli",
  "serde",
+]
+
+[[package]]
+name = "lightdotso-prometheus"
+version = "0.1.0"
+dependencies = [
+ "axum 0.6.20",
+ "once_cell",
+ "prometheus",
+ "reqwest",
+ "serde",
+ "tokio",
+ "tower",
 ]
 
 [[package]]
