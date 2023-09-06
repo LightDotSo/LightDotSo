@@ -17,21 +17,15 @@
 // Thank you for providing such an awesome library!
 use base64::{engine::general_purpose, Engine as _};
 use eyre::Result;
-use opentelemetry::{
-    sdk::{
-        propagation::TraceContextPropagator,
-        resource::{OsResourceDetector, ProcessResourceDetector, ResourceDetector},
-        trace::{BatchSpanProcessor, Tracer, TracerProvider},
-        Resource,
-    },
-    trace::TracerProvider as _,
+use opentelemetry::sdk::{
+    propagation::TraceContextPropagator,
+    resource::{OsResourceDetector, ProcessResourceDetector, ResourceDetector},
+    Resource,
 };
 use opentelemetry_otlp::WithExportConfig;
-use opentelemetry_stdout::SpanExporter;
 use tonic::metadata::MetadataMap;
 use tracing::{info, Level, Subscriber};
 use tracing_loki::url::Url;
-use tracing_opentelemetry::OpenTelemetryLayer;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
 };
@@ -54,21 +48,6 @@ pub type BoxedLayer<S> = Box<dyn Layer<S> + Send + Sync>;
 /// Initializes a new [Subscriber] based on the given layers.
 pub fn init(layers: Vec<BoxedLayer<Registry>>) {
     tracing_subscriber::registry().with(layers).init();
-}
-
-/// Creates a new OpenTelemetry layer.
-/// Inspired by: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/exemplars-tracing-opentelemetry/src/main.rs#L36-L47
-pub fn otel<R>() -> Box<OpenTelemetryLayer<R, Tracer>>
-where
-    R: Subscriber + for<'a> LookupSpan<'a> + Send + Sync + 'static,
-{
-    let exporter = SpanExporter::default();
-    let processor =
-        BatchSpanProcessor::builder(exporter, opentelemetry::sdk::runtime::Tokio).build();
-    let provider = TracerProvider::builder().with_span_processor(processor).build();
-    let tracer = provider.tracer("lightdotso");
-
-    Box::new(OpenTelemetryLayer::new(tracer))
 }
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L40-L64
@@ -124,6 +103,12 @@ pub fn init_metrics() -> Result<()> {
     let fly_app_name = std::env::var("FLY_APP_NAME").unwrap();
     let grafana_api_key = std::env::var("GRAFANA_API_KEY").unwrap();
 
+    // Determine the log level based on the environment
+    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
+        "development" => Level::TRACE,
+        _ => Level::INFO,
+    };
+
     // Set the global propagator to the W3C Trace Context propagator
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
 
@@ -156,8 +141,9 @@ pub fn init_metrics() -> Result<()> {
         .with_exporter(
             opentelemetry_otlp::new_exporter()
                 .tonic()
-                .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net:443/tempo")
-                .with_metadata(metadata),
+                .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net")
+                .with_metadata(metadata)
+                .with_tls_config(Default::default()),
         )
         .with_trace_config(
             opentelemetry::sdk::trace::config()
@@ -175,7 +161,7 @@ pub fn init_metrics() -> Result<()> {
     tracing_subscriber::registry()
         .with(logging_layer)
         .with(telemetry_layer)
-        .with(stdout(Level::INFO))
+        .with(stdout(log_level))
         .init();
 
     // Spawn the Loki task

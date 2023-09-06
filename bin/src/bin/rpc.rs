@@ -29,7 +29,7 @@ use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_rpc::{
     config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
 };
-use lightdotso_tracing::{init, otel, stdout, tracing::Level};
+use lightdotso_tracing::tracing::Level;
 use std::{borrow::Cow, net::SocketAddr, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
@@ -55,11 +55,6 @@ async fn handle_error(error: BoxError) -> impl IntoResponse {
 }
 
 pub async fn start_server() -> Result<()> {
-    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
-        "development" => Level::TRACE,
-        _ => Level::INFO,
-    };
-
     // Create a client
     let https = hyper_rustls::HttpsConnectorBuilder::new()
         .with_native_roots()

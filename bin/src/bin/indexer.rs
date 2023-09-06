@@ -19,20 +19,12 @@ use lightdotso_axum::internal::{start_indexer_server, start_internal_server};
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
 use lightdotso_indexer::config::IndexerArgs;
-use lightdotso_tracing::{
-    init, init_metrics, otel, stdout,
-    tracing::{info, Level},
-};
+use lightdotso_tracing::{init_metrics, tracing::info};
 use std::sync::Arc;
 
 #[tokio::main]
 pub async fn main() {
     let _ = dotenv();
-
-    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
-        "development" => Level::TRACE,
-        _ => Level::INFO,
-    };
 
     let _ = init_metrics();
 

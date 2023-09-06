@@ -19,8 +19,8 @@ use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_consumer::config::ConsumerArgs;
 use lightdotso_tracing::{
-    init, init_metrics, otel, stdout,
-    tracing::{error, info, Level},
+    init_metrics,
+    tracing::{error, info},
 };
 use tokio::task;
 
@@ -32,8 +32,6 @@ pub async fn main() {
     if let Err(e) = res {
         error!("Failed to initialize metrics: {:?}", e)
     }
-
-    // init(vec![stdout(Level::INFO), otel()]);
 
     info!("Starting server at {}", SHORT_VERSION);
 
