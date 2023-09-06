@@ -52,12 +52,13 @@ pub async fn metrics_handler() -> axum::response::Html<String> {
 
 pub async fn parse_indexer_metrics() {
     for &chain_id in CHAIN_IDS.iter() {
-        let data: ApiResponse = reqwest::get(&format!("https://indexer.light.so/{}", chain_id))
-            .await
-            .unwrap()
-            .json()
-            .await
-            .unwrap();
+        let data: ApiResponse =
+            reqwest::get(&format!("http://lightdotso-indexer.internal:3000/{}", chain_id))
+                .await
+                .unwrap()
+                .json()
+                .await
+                .unwrap();
 
         LATEST_BLOCK_NUMBER
             .with_label_values(&[&chain_id.to_string()])
