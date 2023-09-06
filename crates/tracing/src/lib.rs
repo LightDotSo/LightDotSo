@@ -16,6 +16,7 @@
 // All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
 // Thank you for providing such an awesome library!
 use base64::{engine::general_purpose, Engine as _};
+use dotenvy::dotenv;
 use eyre::Result;
 use opentelemetry::sdk::{
     propagation::TraceContextPropagator,
@@ -23,6 +24,8 @@ use opentelemetry::sdk::{
     Resource,
 };
 use opentelemetry_otlp::WithExportConfig;
+use pyroscope::PyroscopeAgent;
+use pyroscope_pprofrs::{pprof_backend, PprofConfig};
 use tonic::metadata::MetadataMap;
 use tracing::{info, Level, Subscriber};
 use tracing_loki::url::Url;
@@ -38,7 +41,7 @@ pub use tracing;
 pub use tracing_futures;
 pub use tracing_subscriber;
 
-use crate::constants::{LOKI_USER_ID, TEMPO_USER_ID};
+use crate::constants::{LOKI_USER_ID, PYROSCOPE_USER_ID, TEMPO_USER_ID};
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L32
 /// A boxed tracing [Layer].
@@ -99,6 +102,12 @@ pub fn init_test_tracing() {
 pub fn init_metrics() -> Result<()> {
     info!("Initializing metrics pipeline...");
 
+    // Initialize the pyroscope agent
+    // let pyroscope_agent;
+
+    // Load the environment variables from the .env file
+    let _ = dotenv();
+
     // Retrieve the required environment variables for tracing
     let fly_app_name = std::env::var("FLY_APP_NAME").unwrap();
     let grafana_api_key = std::env::var("GRAFANA_API_KEY").unwrap();
@@ -133,7 +142,10 @@ pub fn init_metrics() -> Result<()> {
     let resources = OsResourceDetector
         .detect(std::time::Duration::from_secs(0))
         .merge(&ProcessResourceDetector.detect(std::time::Duration::from_secs(0)))
-        .merge(&Resource::new(vec![opentelemetry::KeyValue::new("service.name", fly_app_name)]));
+        .merge(&Resource::new(vec![opentelemetry::KeyValue::new(
+            "service.name",
+            fly_app_name.clone(),
+        )]));
 
     // Initialize the OpenTelemetry tracing pipeline w/ authentication for Tempo
     let tracer = opentelemetry_otlp::new_pipeline()
@@ -166,6 +178,17 @@ pub fn init_metrics() -> Result<()> {
 
     // Spawn the Loki task
     tokio::spawn(task);
+
+    // // Construct the Pyroscope agent
+    // pyroscope_agent =
+    //     PyroscopeAgent::builder("https://profiles-prod-001.grafana.net", &fly_app_name.clone())
+    //         .backend(pprof_backend(PprofConfig::new().sample_rate(100)))
+    //         .basic_auth(PYROSCOPE_USER_ID.to_string(), grafana_api_key.clone())
+    //         .build()
+    //         .unwrap();
+
+    // // Start the Pyroscope agent
+    // let _ = pyroscope_agent.start().unwrap();
 
     info!("Successfully initialized metrics pipeline");
 

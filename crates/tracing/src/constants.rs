@@ -22,3 +22,7 @@ lazy_static! {
 lazy_static! {
     pub static ref TEMPO_USER_ID: u64 = 687519;
 }
+
+lazy_static! {
+    pub static ref PYROSCOPE_USER_ID: u64 = 735382;
+}

@@ -5944,6 +5944,7 @@ name = "lightdotso-tracing"
 version = "0.1.0"
 dependencies = [
  "base64 0.21.3",
+ "dotenvy",
  "eyre",
  "lazy_static",
  "metrics 0.21.1",
