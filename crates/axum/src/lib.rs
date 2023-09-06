@@ -23,6 +23,7 @@ use lightdotso_tracing::tracing::{debug, info};
 use serde::{Deserialize, Serialize};
 use tower_governor::{errors::GovernorError, key_extractor::KeyExtractor};
 
+pub mod exporter;
 pub mod internal;
 
 #[derive(Debug, Serialize, Deserialize, Clone, Eq, PartialEq)]

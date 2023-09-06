@@ -17,6 +17,7 @@
   http = { workspace = true }
   hyper = { workspace = true }
   lightdotso-indexer = { workspace = true }
+  lightdotso-prometheus = { workspace = true }
   lightdotso-redis = { workspace = true }
   lightdotso-tracing = { workspace = true }
   serde = { workspace = true, features = ["derive"] }

@@ -35,12 +35,12 @@ use serde::{Deserialize, Serialize};
 use std::{convert::Infallible, sync::Arc};
 
 #[autometrics]
-async fn health_check() -> &'static str {
+pub(crate) async fn health_check() -> &'static str {
     "OK"
 }
 
 #[autometrics]
-async fn prometheus_metrics_check() -> Response<String> {
+pub(crate) async fn prometheus_metrics_check() -> Response<String> {
     prometheus_exporter::encode_http_response()
 }
 
