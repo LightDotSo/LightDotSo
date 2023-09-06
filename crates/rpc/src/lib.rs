@@ -18,7 +18,7 @@ mod constants;
 
 use crate::constants::{
     ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL,
-    INFURA_RPC_URLS, PAYMASTER_RPC_URL, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
+    INFURA_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
 };
 use axum::{
     body::Body,
@@ -373,6 +373,19 @@ pub async fn rpc_proxy_handler(
     if let Some(resp) = result {
         return resp;
     }
+
+    // Get the rpc url from the nodereal constants
+    let result = try_rpc_with_url(
+        &NODEREAL_RPC_URLS,
+        Some(std::env::var("NODEREAL_API_KEY").unwrap()),
+        &chain_id,
+        &client,
+        Body::from(full_body_bytes.clone()),
+    )
+    .await;
+    if let Some(resp) = result {
+        return resp;
+    };
 
     // Get the rpc url from the constants
     let result = try_rpc_with_url(
