@@ -13,9 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use chrono::Utc;
 use once_cell::sync::Lazy;
 use prometheus::{register_gauge_vec, Encoder, GaugeVec, TextEncoder};
 use serde::Deserialize;
+
 #[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 struct ApiResponse {
@@ -52,13 +54,16 @@ pub async fn metrics_handler() -> axum::response::Html<String> {
 
 pub async fn parse_indexer_metrics() {
     for &chain_id in CHAIN_IDS.iter() {
-        let data: ApiResponse =
-            reqwest::get(&format!("http://lightdotso-indexer.internal:3000/{}", chain_id))
-                .await
-                .unwrap()
-                .json()
-                .await
-                .unwrap();
+        let url = format!("https://indexer.light.so/{}?time={}", chain_id, Utc::now().timestamp());
+        let data: ApiResponse = reqwest::Client::new()
+            .get(&url)
+            .header("Cache-Control", "no-cache")
+            .send()
+            .await
+            .unwrap()
+            .json::<ApiResponse>()
+            .await
+            .unwrap();
 
         LATEST_BLOCK_NUMBER
             .with_label_values(&[&chain_id.to_string()])
