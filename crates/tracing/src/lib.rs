@@ -139,10 +139,10 @@ pub fn init_metrics() -> Result<()> {
         .unwrap();
 
     // Encode the telemetry key for basic authentication for Tempo
-    let mut map = MetadataMap::with_capacity(3);
+    let mut metadata = MetadataMap::new();
     let encoded =
         general_purpose::STANDARD.encode(format!("{}:{}", *TEMPO_USER_ID, grafana_api_key));
-    map.insert("authorization", format!("Basic {}", encoded).parse().unwrap());
+    metadata.insert("authorization", format!("Basic {}", encoded).parse().unwrap());
 
     // Merge the detected resources with the service name for Tempo
     let resources = OsResourceDetector
@@ -157,7 +157,7 @@ pub fn init_metrics() -> Result<()> {
             opentelemetry_otlp::new_exporter()
                 .tonic()
                 .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net:443/tempo")
-                .with_metadata(map),
+                .with_metadata(metadata),
         )
         .with_trace_config(
             opentelemetry::sdk::trace::config()

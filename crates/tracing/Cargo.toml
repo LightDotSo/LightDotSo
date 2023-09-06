@@ -12,6 +12,7 @@
   base64 = { workspace = true }
   eyre = { workspace = true }
   lazy_static = { workspace = true }
+  metrics = "0.21.1"
   opentelemetry = { version = "0.20", features = ["rt-tokio", "trace"] }
   opentelemetry-otlp = { version = "0.13", features = [
     "tonic",
@@ -21,6 +22,8 @@
     "http-proto",
   ] }
   opentelemetry-stdout = { version = "0.1", features = ["trace"] }
+  pyroscope = "0.5.6"
+  pyroscope_pprofrs = "0.2.5"
   tokio = { workspace = true }
   tonic = { workspace = true }
   tracing = { workspace = true }
