@@ -109,7 +109,7 @@ pub fn init_test_tracing() {
 /// Initializes a new push-based OpenTelemetry metrics pipeline.
 pub fn init_metrics() -> Result<MeterProvider, MetricsError> {
     let export_config = ExportConfig {
-        endpoint: "http://lightdotso-otel-collector.internal:4317".to_string(),
+        endpoint: "https://light.fmp.fiberplane.dev:4317".to_string(),
         ..ExportConfig::default()
     };
     let push_interval = Duration::from_secs(1);
