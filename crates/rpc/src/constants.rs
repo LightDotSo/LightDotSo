@@ -131,6 +131,9 @@ lazy_static! {
         m.insert(42161, "https://arb1.arbitrum.io/rpc".to_string());
         m.insert(43114, "https://api.avax.network/ext/bc/C/rpc".to_string());
 
+        // Testnet
+        m.insert(11155111, "https://rpc.sepolia.org".to_string());
+
         m
     };
 }
