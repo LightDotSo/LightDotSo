@@ -43,11 +43,11 @@ pub async fn main() {
     // Spawn tasks in the custom runtime and store join handles
     let mut handles = Vec::new();
 
-    // Get the number of CPUs and start that many consumers
-    let cpu_count = num_cpus::get();
-    info!("Starting {} consumers", cpu_count);
+    // Double the number of CPUs for consumer count
+    let consumer_count = num_cpus::get() * 2;
+    info!("Starting {} consumers", consumer_count);
 
-    for _ in 0..cpu_count {
+    for _ in 0..consumer_count {
         let args_clone = args.clone();
         let handle = task::spawn(async move {
             loop {
