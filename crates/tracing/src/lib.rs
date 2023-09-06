@@ -148,13 +148,15 @@ pub fn init_metrics() -> Result<()> {
         )]));
 
     // Initialize the OpenTelemetry tracing pipeline w/ authentication for Tempo
+    // https://grafana.com/docs/grafana-cloud/monitor-infrastructure/otlp/send-data-otlp/
     let tracer = opentelemetry_otlp::new_pipeline()
         .tracing()
         .with_exporter(
             opentelemetry_otlp::new_exporter()
                 .tonic()
-                .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net")
+                .with_endpoint("https://otlp-gateway-us-east-0.grafana.net/otlp")
                 .with_metadata(metadata)
+                .with_protocol(opentelemetry_otlp::Protocol::HttpBinary)
                 .with_tls_config(Default::default()),
         )
         .with_trace_config(
