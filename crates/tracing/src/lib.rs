@@ -28,7 +28,7 @@ use opentelemetry::sdk::{
 use opentelemetry_otlp::WithExportConfig;
 use pyroscope::PyroscopeAgent;
 use pyroscope_pprofrs::{pprof_backend, PprofConfig};
-use tonic::metadata::MetadataMap;
+use tonic_0_9::metadata::MetadataMap;
 use tracing::{event, info, instrument, Level, Subscriber};
 use tracing_loki::url::Url;
 use tracing_subscriber::{
@@ -152,14 +152,27 @@ pub fn init_metrics() -> Result<()> {
     // Initialize the OpenTelemetry tracing pipeline w/ authentication for Tempo
     // https://grafana.com/docs/grafana-cloud/monitor-infrastructure/otlp/send-data-otlp/
     // https://community.grafana.com/t/opentelemetry-endpoint-of-grafana-cloud/85359/5
+    // Bug with https://github.com/hyperium/tonic/issues/1427, disabling for now
+    // let tracer = opentelemetry_otlp::new_pipeline()
+    //     .tracing()
+    //     .with_exporter(
+    //         opentelemetry_otlp::new_exporter()
+    //             .tonic()
+    //             .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net:443")
+    //             .with_metadata(metadata),
+    //     )
+    //     .with_trace_config(
+    //         opentelemetry::sdk::trace::config()
+    //             .with_id_generator(opentelemetry::sdk::trace::RandomIdGenerator::default())
+    //             .with_sampler(opentelemetry::sdk::trace::Sampler::AlwaysOn)
+    //             .with_resource(resources),
+    //     )
+    //     .install_batch(opentelemetry::runtime::Tokio)
+    //     .unwrap();
+
     let tracer = opentelemetry_otlp::new_pipeline()
         .tracing()
-        .with_exporter(
-            opentelemetry_otlp::new_exporter()
-                .tonic()
-                .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net:443")
-                .with_metadata(metadata),
-        )
+        .with_exporter(opentelemetry_otlp::new_exporter().tonic())
         .with_trace_config(
             opentelemetry::sdk::trace::config()
                 .with_id_generator(opentelemetry::sdk::trace::RandomIdGenerator::default())

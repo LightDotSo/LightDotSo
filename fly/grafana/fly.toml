@@ -7,7 +7,7 @@ app = "lightdotso-grafana"
 primary_region = "sjc"
 
 [build]
-  image = "grafana/grafana:10.0.2"
+  dockerfile = "./Dockerfile"
 
 [env]
   GF_FEATURE_TOGGLES_ENABLE = "publicDashboards"
