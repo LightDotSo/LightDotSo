@@ -1,0 +1,10 @@
+# # fly.toml app configuration file generated for lightdotso-mimir on 2023-08-04T00:37:17-07:00
+# #
+# # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+# #
+
+# app = "lightdotso-mimir"
+# primary_region = "sjc"
+
+# [build]
+#   image = "grafana/mimir:latest"
