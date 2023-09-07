@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use std::{thread, time::Duration};
+
 // All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
 // Thank you for providing such an awesome library!
 use base64::{engine::general_purpose, Engine as _};
@@ -27,7 +29,7 @@ use opentelemetry_otlp::WithExportConfig;
 use pyroscope::PyroscopeAgent;
 use pyroscope_pprofrs::{pprof_backend, PprofConfig};
 use tonic::metadata::MetadataMap;
-use tracing::{info, Level, Subscriber};
+use tracing::{event, info, instrument, Level, Subscriber};
 use tracing_loki::url::Url;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
@@ -182,6 +184,9 @@ pub fn init_metrics() -> Result<()> {
     // Spawn the Loki task
     tokio::spawn(task);
 
+    // wait for a bit before starting to push logs and traces
+    thread::sleep(Duration::from_secs(5));
+
     // // Construct the Pyroscope agent
     // pyroscope_agent =
     //     PyroscopeAgent::builder("https://profiles-prod-001.grafana.net", &fly_app_name.clone())
@@ -195,5 +200,17 @@ pub fn init_metrics() -> Result<()> {
 
     info!("Successfully initialized metrics pipeline");
 
+    // Loop forever
+    loop {
+        // Sleep for 1 second
+        thread::sleep(Duration::from_secs(1));
+        function();
+    }
+
     Ok(())
+}
+
+#[instrument]
+pub fn function() {
+    event!(Level::INFO, "this is an event");
 }

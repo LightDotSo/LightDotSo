@@ -32,43 +32,43 @@ pub async fn main() {
 
     info!("Starting server at {}", SHORT_VERSION);
 
-    // Parse the command line arguments
-    let args = ConsumerArgs::parse();
+    // // Parse the command line arguments
+    // let args = ConsumerArgs::parse();
 
-    // Spawn tasks in the custom runtime and store join handles
-    let mut handles = Vec::new();
+    // // Spawn tasks in the custom runtime and store join handles
+    // let mut handles = Vec::new();
 
-    // Double the number of CPUs for consumer count
-    let consumer_count = num_cpus::get() * 2;
-    info!("Starting {} consumers", consumer_count);
+    // // Double the number of CPUs for consumer count
+    // let consumer_count = num_cpus::get() * 2;
+    // info!("Starting {} consumers", consumer_count);
 
-    for _ in 0..1 {
-        let args_clone = args.clone();
-        let handle = task::spawn(async move {
-            loop {
-                match args_clone.run().await {
-                    Ok(_) => {
-                        info!("Task completed successfully");
-                        break;
-                    }
-                    Err(e) => {
-                        error!("Task failed with error: {:?}, restarting task...", e);
-                        continue;
-                    }
-                }
-            }
-        });
-        handles.push(handle);
-    }
+    // for _ in 0..1 {
+    //     let args_clone = args.clone();
+    //     let handle = task::spawn(async move {
+    //         loop {
+    //             match args_clone.run().await {
+    //                 Ok(_) => {
+    //                     info!("Task completed successfully");
+    //                     break;
+    //                 }
+    //                 Err(e) => {
+    //                     error!("Task failed with error: {:?}, restarting task...", e);
+    //                     continue;
+    //                 }
+    //             }
+    //         }
+    //     });
+    //     handles.push(handle);
+    // }
 
-    // Run internal server
-    let server_handle = task::spawn(start_internal_server());
+    // // Run internal server
+    // let server_handle = task::spawn(start_internal_server());
 
-    // Wait for all tasks to complete
-    for handle in handles {
-        let _ = handle.await;
-    }
+    // // Wait for all tasks to complete
+    // for handle in handles {
+    //     let _ = handle.await;
+    // }
 
     // Wait for the server task to complete.
-    let _ = server_handle.await;
+    // let _ = server_handle.await;
 }
