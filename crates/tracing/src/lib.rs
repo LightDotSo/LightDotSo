@@ -157,10 +157,8 @@ pub fn init_metrics() -> Result<()> {
         .with_exporter(
             opentelemetry_otlp::new_exporter()
                 .tonic()
-                .with_endpoint("https://otlp-gateway-us-east-0.grafana.net/otlp/v1/traces")
-                .with_metadata(metadata)
-                .with_protocol(opentelemetry_otlp::Protocol::Grpc)
-                .with_tls_config(Default::default()),
+                .with_endpoint("https://tempo-prod-04-prod-us-east-0.grafana.net:443")
+                .with_metadata(metadata),
         )
         .with_trace_config(
             opentelemetry::sdk::trace::config()
