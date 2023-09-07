@@ -124,7 +124,7 @@
   ] }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
   tokio = { version = "1", features = ["full"] }
-  tonic = { version = "0.8.0", features = ["tls-roots"] }
+  tonic = { version = "0.8.0", features = ["tls", "tls-roots"] }
   tower = { version = "0.4.12" }
   tower_governor = { version = "0.1.0", features = ["tracing"] }
   tower-http = { version = "0.4", features = [
