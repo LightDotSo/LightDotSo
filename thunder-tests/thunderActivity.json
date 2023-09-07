@@ -309,11 +309,11 @@
     "colId": "history",
     "containerId": "",
     "name": "eth_chainId",
-    "url": "https://rpc.light.so/42161",
+    "url": "https://www.noderpc.xyz/rpc-zkevm-test/public",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-26T10:42:05.410Z",
-    "modified": "2023-09-05T02:40:43.402Z",
+    "modified": "2023-09-07T05:35:19.709Z",
     "headers": [
       {
         "name": "Content-Type",
