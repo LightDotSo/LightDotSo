@@ -27,7 +27,7 @@ distributor:
 
 storage:
   trace:
-    backend: local
+    backend: s3
     block:
       bloom_filter_false_positive: .05
       index_downsample_bytes: 1000
