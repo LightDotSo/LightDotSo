@@ -1,0 +1,83 @@
+# Copyright (C) 2023 Light, Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# From: https://grafana.com/docs/loki/latest/configure/examples/#1-local-configuration-exampleyaml
+
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  grpc_listen_port: 9096
+
+common:
+  instance_addr: 127.0.0.1
+  path_prefix: /loki
+  storage:
+    s3:
+      bucketnames: xxx
+      region: xxx
+  replication_factor: 1
+  ring:
+    instance_addr: 127.0.0.1
+    kvstore:
+      store: inmemory
+
+# schema_config:
+#   configs:
+#     - from: 2020-05-15
+#       store: boltdb-shipper
+#       object_store: filesystem
+#       schema: v11
+#       index:
+#         prefix: index_
+#         period: 24h
+schema_config:
+  configs:
+    - from: 2020-05-15
+      store: aws
+      object_store: s3
+      schema: v11
+      index:
+        prefix: loki_
+
+storage_config:
+  aws:
+    bucketnames: bucket_name1, bucket_name2
+    endpoint: s3.endpoint.com
+    region: s3_region
+    access_key_id: s3_access_key_id
+    secret_access_key: s3_secret_access_key
+    insecure: false
+    sse_encryption: false
+    http_config:
+      idle_conn_timeout: 90s
+      response_header_timeout: 0s
+      insecure_skip_verify: false
+    s3forcepathstyle: true
+  configs:
+    - from: 2023-05-15
+      store: boltdb-shipper
+      object_store: s3
+      schema: v11
+      index:
+        prefix: loki_index_
+        period: 24h
+
+query_range:
+  results_cache:
+    cache:
+      embedded_cache:
+        enabled: true
+        max_size_mb: 100
