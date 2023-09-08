@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::{thread, time::Duration};
+// FIXME: Remove after test code
+#![allow(unreachable_code)]
+#![allow(unused_imports)]
 
 // All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
 // Thank you for providing such an awesome library!
@@ -26,6 +28,7 @@ use opentelemetry::sdk::{
     Resource,
 };
 use opentelemetry_otlp::WithExportConfig;
+use std::{thread, time::Duration};
 // use pyroscope::PyroscopeAgent;
 use pyroscope_pprofrs::{pprof_backend, PprofConfig};
 use tonic_0_9::metadata::MetadataMap;
@@ -125,13 +128,7 @@ pub fn init_metrics() -> Result<()> {
 
     // Initialize the Loki layer
     let (logging_layer, task) = tracing_loki::builder()
-        .build_url(
-            Url::parse(
-                format!("https://{}:{}@logs-prod-006.grafana.net", *LOKI_USER_ID, grafana_api_key)
-                    .as_str(),
-            )
-            .unwrap(),
-        )
+        .build_url(Url::parse("http://lightdotso-loki.internal").unwrap())
         .unwrap();
 
     // Encode the telemetry key for basic authentication for Tempo
