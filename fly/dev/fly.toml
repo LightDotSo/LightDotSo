@@ -12,7 +12,7 @@ kill_timeout = "5s"
   entrypoint = ["/usr/local/bin/consumer"]
 
 [build]
-  image = "ghcr.io/lightdotso/lightdotso:sha-932a618d673d99c3bad07fee8ec8c982208e611c"
+  image = "ghcr.io/lightdotso/lightdotso:sha-20b7ea20b84bb64de8a959db9f0adf6b4ccf49cf"
 
 [http_service]
   auto_stop_machines = true

@@ -127,7 +127,7 @@ pub fn init_metrics() -> Result<()> {
 
     // Initialize the Loki layer
     let (logging_layer, task) = tracing_loki::builder()
-        .build_url(Url::parse("http://lightdotso-loki.internal").unwrap())
+        .build_url(Url::parse("http://lightdotso-loki.internal:3100").unwrap())
         .unwrap();
 
     // Merge the detected resources with the service name for Tempo
