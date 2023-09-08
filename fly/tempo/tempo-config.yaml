@@ -57,9 +57,9 @@ storage:
     # See here: https://grafana.com/docs/tempo/latest/configuration/#storage
     backend: s3
     s3:
-      bucket: s3.us-east-1.amazonaws.com
-      endpoint: ${TEMPO_S3_ENDPOINT}
-      region: auto
+      bucket: ${S3_BUCKET_NAME}
+      endpoint: s3.us-east-1.amazonaws.com
+      region: us-east-1
       access_key: ${AWS_SECRET_ACCESS_KEY} # This is a secret injected via an environment variable
       secret_key: ${AWS_ACCESS_KEY_ID}
 
