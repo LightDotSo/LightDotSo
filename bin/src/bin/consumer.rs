@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// FIXME: Remove after test code
+#![allow(unreachable_code)]
+#![allow(unused_imports)]
+
 use clap::Parser;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
