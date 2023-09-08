@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM grafana/loki:2.9.0
+FROM grafana/loki:2.2.0
 
 COPY ./loki-config.yaml /etc/loki/local-config.yaml
 
-CMD ["/loki", "-config.file=/etc/loki/local-config.yaml", "--config.expand-env=true"]
+CMD ["loki", "-config.file=/etc/loki/local-config.yaml", "--config.expand-env=true"]
