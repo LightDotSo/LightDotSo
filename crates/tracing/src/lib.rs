@@ -115,7 +115,6 @@ pub fn init_metrics() -> Result<()> {
 
     // Retrieve the required environment variables for tracing
     let fly_app_name = std::env::var("FLY_APP_NAME").unwrap();
-    let grafana_api_key = std::env::var("GRAFANA_API_KEY").unwrap();
 
     // Determine the log level based on the environment
     let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
@@ -127,15 +126,9 @@ pub fn init_metrics() -> Result<()> {
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
 
     // Initialize the Loki layer
-    // let (logging_layer, task) = tracing_loki::builder()
-    //     .build_url(Url::parse("http://lightdotso-loki.internal").unwrap())
-    //     .unwrap();
-
-    // Encode the telemetry key for basic authentication for Tempo
-    let mut metadata = MetadataMap::new();
-    let encoded =
-        general_purpose::STANDARD.encode(format!("{}:{}", *TEMPO_USER_ID, grafana_api_key));
-    metadata.insert("authorization", format!("Basic {}", encoded).parse().unwrap());
+    let (logging_layer, task) = tracing_loki::builder()
+        .build_url(Url::parse("http://lightdotso-loki.internal").unwrap())
+        .unwrap();
 
     // Merge the detected resources with the service name for Tempo
     let resources = OsResourceDetector
@@ -155,8 +148,7 @@ pub fn init_metrics() -> Result<()> {
         .with_exporter(
             opentelemetry_otlp::new_exporter()
                 .tonic()
-                .with_endpoint("http://lightdotso-grafana-agent.internal:4317")
-                .with_metadata(metadata),
+                .with_endpoint("http://lightdotso-grafana-agent.internal:4317"),
         )
         .with_trace_config(
             opentelemetry::sdk::trace::config()
@@ -172,13 +164,13 @@ pub fn init_metrics() -> Result<()> {
 
     // Initialize the tracing subscriber
     tracing_subscriber::registry()
-        // .with(logging_layer)
+        .with(logging_layer)
         .with(telemetry_layer)
         .with(stdout(log_level))
         .init();
 
     // Spawn the Loki task
-    // tokio::spawn(task);
+    tokio::spawn(task);
 
     // wait for a bit before starting to push logs and traces
     thread::sleep(Duration::from_secs(3));
