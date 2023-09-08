@@ -8,3 +8,14 @@ primary_region = "sjc"
 
 [build]
   dockerfile = "./Dockerfile"
+
+[http_service]
+  internal_port = 3200
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200

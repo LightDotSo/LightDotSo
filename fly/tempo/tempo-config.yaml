@@ -57,10 +57,11 @@ storage:
     # See here: https://grafana.com/docs/tempo/latest/configuration/#storage
     backend: s3
     s3:
+      bucket: s3.us-east-1.amazonaws.com
       endpoint: ${TEMPO_S3_ENDPOINT}
       region: auto
-      secret_access_key: ${AWS_SECRET_ACCESS_KEY} # This is a secret injected via an environment variable
-      access_key_id: ${AWS_ACCESS_KEY_ID}
+      access_key: ${AWS_SECRET_ACCESS_KEY} # This is a secret injected via an environment variable
+      secret_key: ${AWS_ACCESS_KEY_ID}
 
     block:
       bloom_filter_false_positive: .05 # Bloom filter false positive rate.  lower values create larger filters but fewer false positives.
