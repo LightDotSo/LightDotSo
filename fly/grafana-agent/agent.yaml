@@ -22,7 +22,6 @@
 
 server:
   log_level: warn
-  http_listen_port: 12345
 
 # Enable integrations.
 # All metrics scraped from these integrations will use the `remote_write` block
@@ -103,11 +102,6 @@ traces:
         # Send traces to the locally running Tempo service using GRPC on the default port (4317).JJ
         - endpoint: lightdotso-tempo.internal:4317
           insecure: true
-
-      batch:
-        timeout: 15s
-        send_batch_size: 10000
-        send_batch_max_size: 256
 
       # Enable service graph generation.
       # See https://grafana.com/docs/tempo/latest/configuration/grafana-agent/service-graphs/

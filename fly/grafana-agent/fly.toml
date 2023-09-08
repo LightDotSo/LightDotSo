@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for lightdotso-otel-collector on 2023-08-18T10:47:01-07:00
+# fly.toml app configuration file generated for lightdotso-grafana-agent on 2023-09-08T04:41:10-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lightdotso-otel-collector"
+app = "lightdotso-grafana-agent"
 primary_region = "sjc"
 
 [build]
@@ -14,4 +14,4 @@ primary_region = "sjc"
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1

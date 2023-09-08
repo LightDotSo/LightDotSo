@@ -24,10 +24,6 @@ server:
 common:
   instance_addr: 127.0.0.1
   path_prefix: /loki
-  storage:
-    s3:
-      bucketnames: xxx
-      region: xxx
   replication_factor: 1
   ring:
     instance_addr: 127.0.0.1
@@ -53,14 +49,6 @@ storage_config:
   aws:
     s3: ${S3_ACCESS_STRING}
     bucketnames: lightdotso-loki
-  configs:
-    - from: 2023-05-15
-      store: boltdb-shipper
-      object_store: s3
-      schema: v11
-      index:
-        prefix: loki_index_
-        period: 24h
 
 query_range:
   results_cache:
