@@ -22,8 +22,6 @@ server:
   # Listen for all incoming requests on port 3200.
   http_listen_port: 3200
 
-search_enabled: true
-
 # The distributor receives incoming trace span data for the system.
 distributor:
   receivers: # This configuration will listen on all ports and protocols that tempo is capable of.
@@ -59,10 +57,10 @@ storage:
     # See here: https://grafana.com/docs/tempo/latest/configuration/#storage
     backend: s3
     s3:
-      endpoint: s3.us-east-2.amazonaws.com
-      region: us-east-2
-      secret_access_key: "${AWS_SECRET_ACCESS_KEY}" # This is a secret injected via an environment variable
-      access_key_id: "${AWS_ACCESS_KEY_ID}"
+      endpoint: ${TEMPO_S3_ENDPOINT}
+      region: auto
+      secret_access_key: ${AWS_SECRET_ACCESS_KEY} # This is a secret injected via an environment variable
+      access_key_id: ${AWS_ACCESS_KEY_ID}
 
     block:
       bloom_filter_false_positive: .05 # Bloom filter false positive rate.  lower values create larger filters but fewer false positives.

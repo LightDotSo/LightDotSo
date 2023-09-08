@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM grafana/tempo:1.5.0
+FROM grafana/tempo:2.2.2
 
 COPY ./tempo-config.yaml /etc/tempo.yaml
 
