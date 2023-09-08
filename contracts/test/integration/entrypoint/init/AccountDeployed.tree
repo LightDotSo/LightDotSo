@@ -1,0 +1,17 @@
+AccountDeployed.t.sol
+├── If the entrypoint address is zero
+│  ├── It should revert
+│  └── It should revert on a {EntrypointAddressZero} error
+└── If the entrypoint address is not zero
+   ├── If the hash is zero
+   │  ├── It should revert
+   │  └── It should revert on a {ImageHashIsZero} error
+   └── If the hash is not zero
+      ├── When the address already exists
+      │  └── It should return the existing address
+      └── When the address does not exist
+         ├── It should deploy a new LightWallet
+         ├── It should deploy a new LightWallet with the correct hash
+         ├── It should equal the {getAddress} function
+         ├── It should not have a proxy adminn
+         └── It should not be able to initialize twice
