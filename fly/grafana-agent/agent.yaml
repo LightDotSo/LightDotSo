@@ -108,3 +108,8 @@ traces:
         timeout: 15s
         send_batch_size: 10000
         send_batch_max_size: 256
+
+      # Enable service graph generation.
+      # See https://grafana.com/docs/tempo/latest/configuration/grafana-agent/service-graphs/
+      service_graphs:
+        enabled: true

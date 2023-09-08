@@ -13,30 +13,106 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# Default configuration for the Tempo.
+# File from: https://github.com/grafana/intro-to-mltp/blob/b28081e888ffd39e4700d1e50facdaa5d1ce39c4/tempo/tempo.yaml
+# License: AGPL-3.0
+
+# Configure the server block.
 server:
+  # Listen for all incoming requests on port 3200.
   http_listen_port: 3200
 
 search_enabled: true
 
+# The distributor receives incoming trace span data for the system.
 distributor:
-  receivers:
+  receivers: # This configuration will listen on all ports and protocols that tempo is capable of.
+    # jaeger: # The receivers all come from the OpenTelemetry collector.  More configuration information can
+    #   protocols: # be found there: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver
+    #     thrift_http: #
+    #     grpc: # For a production deployment you should only enable the receivers you need!
+    #     thrift_binary: #
+    #     thrift_compact:
     otlp:
       protocols:
-        http:
-          endpoint: "0.0.0.0:4318"
+        # http:
+        grpc: # This is the only receiver enabled by default.
+    # zipkin: # Receive trace data in any supported Zipkin format.
 
+# The ingester receives data from the distributor and processes it into indices and blocks.
+ingester:
+  trace_idle_period: 10s # The length of time after a trace has not received spans to consider it complete and flush it.
+  max_block_bytes: 1_000_000 # Cut the head block when it hits this size or
+  max_block_duration: 5m # this much time passes
+
+# The compactor block configures the compactor responsible for compacting TSDB blocks.
+compactor:
+  compaction:
+    compaction_window: 1h # Blocks in this time window will be compacted together.
+    max_block_bytes: 100_000_000 # Maximum size of a compacted block.
+    block_retention: 1h # How long to keep blocks. Default is 14 days, this demo system is short-lived.
+    compacted_block_retention: 10m # How long to keep compacted blocks stored elsewhere.
+
+# Configuration block to determine where to store TSDB blocks.
 storage:
   trace:
+    # See here: https://grafana.com/docs/tempo/latest/configuration/#storage
     backend: s3
+    s3:
+      endpoint: s3.us-east-2.amazonaws.com
+      region: us-east-2
+      secret_access_key: "${AWS_SECRET_ACCESS_KEY}" # This is a secret injected via an environment variable
+      access_key_id: "${AWS_ACCESS_KEY_ID}"
+
     block:
-      bloom_filter_false_positive: .05
-      index_downsample_bytes: 1000
-      encoding: zstd
+      bloom_filter_false_positive: .05 # Bloom filter false positive rate.  lower values create larger filters but fewer false positives.
+    # Write Ahead Log (WAL) configuration.
     wal:
-      path: /tmp/tempo/wal
-      encoding: snappy
+      path: /tmp/tempo/wal # Directory to store the the WAL locally.
+    # Local configuration for filesystem storage.
     local:
-      path: /tmp/tempo/blocks
+      path: /tmp/tempo/blocks # Directory to store the TSDB blocks.
+    # Pool used for finding trace IDs.
     pool:
-      max_workers: 100
-      queue_depth: 10000
+      max_workers: 100 # Worker pool determines the number of parallel requests to the object store backend.
+      queue_depth: 10000 # Maximum depth for the querier queue jobs. A job is required for each block searched.
+
+# # Configures the metrics generator component of Tempo.
+# metrics_generator:
+#   # Specifies which processors to use.
+#   processor:
+#     # Span metrics create metrics based on span type, duration, name and service.
+#     span_metrics:
+#         # Configure extra dimensions to add as metric labels.
+#         dimensions:
+#           - http.method
+#           - http.target
+#           - http.status_code
+#           - service.version
+#     # Service graph metrics create node and edge metrics for determinng service interactions.
+#     service_graphs:
+#         # Configure extra dimensions to add as metric labels.
+#         dimensions:
+#           - http.method
+#           - http.target
+#           - http.status_code
+#           - service.version
+#   # The registry configuration determines how to process metrics.
+#   registry:
+#     collection_interval: 5s                 # Create new metrics every 5s.
+#     # Configure extra labels to be added to metrics.
+#     external_labels:
+#       source: tempo                         # Add a `{source="tempo"}` label.
+#       group: 'mythical'                     # Add a `{group="mythical"}` label.
+#   # Configures where the store for metrics is located.
+#   storage:
+#     # WAL for metrics generation.
+#     path: /tmp/tempo/generator/wal
+#     # Where to remote write metrics to.
+#     remote_write:
+#       - url: http://mimir:9009/api/v1/push  # URL of locally running Mimir instance.
+#         send_exemplars: true                # Send exemplars along with their metrics.
+
+# # Global override configuration.
+# overrides:
+#   metrics_generator_processors: ['service-graphs', 'span-metrics'] # The types of metrics generation to enable for each tenant.

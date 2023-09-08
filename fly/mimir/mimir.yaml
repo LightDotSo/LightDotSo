@@ -13,28 +13,67 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# # Copyright (C) 2023 Light, Inc.
+
+# # This program is free software: you can redistribute it and/or modify
+# # it under the terms of the GNU Affero General Public License as published by
+# # the Free Software Foundation, either version 3 of the License, or
+# # (at your option) any later version.
+
+# # This program is distributed in the hope that it will be useful,
+# # but WITHOUT ANY WARRANTY; without even the implied warranty of
+# # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# # GNU Affero General Public License for more details.
+
+# # You should have received a copy of the GNU Affero General Public License
+# # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 # # For more information on this configuration, see the complete reference guide at
 # # https://grafana.com/docs/mimir/latest/references/configuration-parameters/
 
 # # File from: https://github.com/grafana/intro-to-mltp/blob/main/mimir/mimir.yaml
 
+# # Also, see the storage configuration documentation at
+# # https://grafana.com/docs/mimir/latest/configuration/storage/
+
+# common:
+#   storage:
+#     backend: s3
+#     s3:
+#       endpoint: s3.us-east-2.amazonaws.com
+#       region: us-east-2
+#       secret_access_key: "${AWS_SECRET_ACCESS_KEY}" # This is a secret injected via an environment variable
+#       access_key_id: "${AWS_ACCESS_KEY_ID}" # This is a secret injected via an environment variable
+
+# blocks_storage:
+#   s3:
+#     bucket_name: mimir-blocks
+
+# alertmanager_storage:
+#   s3:
+#     bucket_name: mimir-alertmanager
+
+# ruler_storage:
+#   s3:
+#     bucket_name: mimir-ruler
+
 # # Disable multi-tenancy and restrict to single tenant.
 # multitenancy_enabled: false
 
 # # The block storage configuration determines where the metrics TSDB data is stored.
-# blocks_storage:
-#   # Use the local filesystem for block storage.
-#   # Note: It is highly recommended not to use local filesystem for production data.
-#   backend: filesystem
-#   # Directory in which to store synchronised TSDB index headers.
-#   bucket_store:
-#     sync_dir: /tmp/mimir/tsdb-sync
-#   # Directory in which to store configuration for object storage.
-#   filesystem:
-#     dir: /tmp/mimir/data/tsdb
-#   # Direction in which to store TSDB WAL data.
-#   tsdb:
-#     dir: /tmp/mimir/tsdb
+# # blocks_storage:
+# #   # Use the local filesystem for block storage.
+# #   # Note: It is highly recommended not to use local filesystem for production data.
+# #   backend: filesystem
+# #   # Directory in which to store synchronised TSDB index headers.
+# #   bucket_store:
+# #     sync_dir: /tmp/mimir/tsdb-sync
+# #   # Directory in which to store configuration for object storage.
+# #   filesystem:
+# #     dir: /tmp/mimir/data/tsdb
+# #   # Direction in which to store TSDB WAL data.
+# #   tsdb:
+# #     dir: /tmp/mimir/tsdb
 
 # # The compactor block configures the compactor responsible for compacting TSDB blocks.
 # compactor:
@@ -70,13 +109,13 @@
 #     replication_factor: 1
 
 # # The ruler storage block configures ruler storage settings.
-# ruler_storage:
-#   # Use the local filesystem for block storage.
-#   # Note: It is highly recommended not to use local filesystem for production data.
-#   backend: filesystem
-#   filesystem:
-#     # The directory in which to store rules.
-#     dir: /tmp/mimir/rules
+# # ruler_storage:
+# #   # Use the local filesystem for block storage.
+# #   # Note: It is highly recommended not to use local filesystem for production data.
+# #   backend: filesystem
+# #   filesystem:
+# #     # The directory in which to store rules.
+# #     dir: /tmp/mimir/rules
 
 # # The server block configures the Mimir server.
 # server:
