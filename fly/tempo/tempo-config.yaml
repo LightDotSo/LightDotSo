@@ -116,6 +116,7 @@ overrides:
   #    per-user traces limit (local: 10000 global: 0 actual local: 1) exceeded
   # This override limit is used by the ingester.
   # [max_traces_per_user: <int> | default = 10000]
+  max_traces_per_user: 0
 
   # Maximum size in bytes of a tag-values query. Tag-values query is used mainly
   # to populate the autocomplete dropdown. This limit protects the system from

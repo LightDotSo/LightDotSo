@@ -13,13 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// FIXME: Remove after test code
-#![allow(unreachable_code)]
-#![allow(unused_imports)]
-
-// All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
-// Thank you for providing such an awesome library!
-use base64::{engine::general_purpose, Engine as _};
 use dotenvy::dotenv;
 use eyre::Result;
 use opentelemetry::sdk::{
@@ -30,23 +23,18 @@ use opentelemetry::sdk::{
 use opentelemetry_otlp::WithExportConfig;
 use std::{thread, time::Duration};
 // use pyroscope::PyroscopeAgent;
-use pyroscope_pprofrs::{pprof_backend, PprofConfig};
-use tonic_0_9::metadata::MetadataMap;
-use tracing::{event, info, instrument, Level, Subscriber};
+// use pyroscope_pprofrs::{pprof_backend, PprofConfig};
+use tracing::{info, Level, Subscriber};
 use tracing_loki::url::Url;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
 };
-
-mod constants;
 
 // From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L28-L30
 // Re-export tracing crates
 pub use tracing;
 pub use tracing_futures;
 pub use tracing_subscriber;
-
-use crate::constants::{LOKI_USER_ID, PYROSCOPE_USER_ID, TEMPO_USER_ID};
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L32
 /// A boxed tracing [Layer].
@@ -188,17 +176,5 @@ pub fn init_metrics() -> Result<()> {
 
     info!("Successfully initialized metrics pipeline");
 
-    // Loop forever
-    loop {
-        // Sleep for 1 second
-        thread::sleep(Duration::from_secs(1));
-        function();
-    }
-
     Ok(())
-}
-
-#[instrument]
-pub fn function() {
-    event!(Level::INFO, "this is an event");
 }

@@ -10,12 +10,20 @@ primary_region = "sjc"
   dockerfile = "./Dockerfile"
 
 [http_service]
-  internal_port = 3200
-  force_https = true
-  auto_stop_machines = true
+  auto_stop_machines = false
   auto_start_machines = true
   min_machines_running = 1
   [http_service.concurrency]
     type = "requests"
     hard_limit = 250
     soft_limit = 200
+
+[checks]
+  [checks.health]
+    port = 3200
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/ready"
