@@ -17,4 +17,4 @@ FROM grafana/loki:2.9.0
 
 COPY ./loki-config.yaml /etc/loki/local-config.yaml
 
-CMD ["-config.file=/etc/loki/local-config.yaml", "--config.expand-env=true"]
+CMD ["-target=all,table-manager", "-config.file=/etc/loki/local-config.yaml", "--config.expand-env=true"]

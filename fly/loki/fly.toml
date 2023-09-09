@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for lightdotso-loki on 2023-09-08T02:35:43-04:00
+# fly.toml app configuration file generated for lightdotso-loki on 2023-09-09T12:51:53-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -19,10 +19,6 @@ primary_region = "sjc"
     type = "requests"
     hard_limit = 250
     soft_limit = 200
-
-[[mounts]]
-  source = "loki_storage"
-  destination = "/loki"
 
 [checks]
   [checks.health]
