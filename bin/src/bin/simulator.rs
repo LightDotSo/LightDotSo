@@ -14,17 +14,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use clap::Parser;
-use dotenvy::dotenv;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_simulator::config::SimulatorArgs;
-use lightdotso_tracing::{init_metrics, tracing::info};
+use lightdotso_tracing::{
+    init_metrics,
+    tracing::{error, info},
+};
 
 #[tokio::main]
 pub async fn main() {
-    let _ = dotenv();
-
-    let _ = init_metrics();
+    // Initialize tracing
+    let res = init_metrics();
+    if let Err(e) = res {
+        error!("Failed to initialize metrics: {:?}", e)
+    }
 
     info!("Starting server at {}", SHORT_VERSION);
 
