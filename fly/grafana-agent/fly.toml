@@ -15,3 +15,13 @@ primary_region = "sjc"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 1
+
+[checks]
+  [checks.health]
+    port = 12345
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/-/healthy"

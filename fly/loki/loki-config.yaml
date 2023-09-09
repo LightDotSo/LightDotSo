@@ -44,7 +44,7 @@ storage_config:
   boltdb_shipper:
     active_index_directory: /loki/boltdb-shipper-active
     cache_location: /loki/boltdb-shipper-cache
-    cache_ttl: 24h # Can be increased for faster performance over longer query periods, uses more disk space
+    cache_ttl: 1h # Can be increased for faster performance over longer query periods, uses more disk space
     shared_store: s3
   aws:
     s3: ${S3_ACCESS_STRING}
@@ -56,6 +56,14 @@ query_range:
       embedded_cache:
         enabled: true
         max_size_mb: 100
+
+compactor:
+  working_directory: /loki
+  shared_store: s3
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 1h
+  retention_delete_worker_count: 4
 
 # From: https://grafana.com/docs/loki/latest/configure/#runtime-configuration-file
 limits_config:
