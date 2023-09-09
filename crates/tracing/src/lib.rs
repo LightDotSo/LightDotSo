@@ -21,6 +21,7 @@ use opentelemetry::sdk::{
     Resource,
 };
 use opentelemetry_otlp::WithExportConfig;
+use opentelemetry_sdk::trace::Sampler;
 use std::{thread, time::Duration};
 // use pyroscope::PyroscopeAgent;
 // use pyroscope_pprofrs::{pprof_backend, PprofConfig};
@@ -141,7 +142,7 @@ pub fn init_metrics() -> Result<()> {
         .with_trace_config(
             opentelemetry::sdk::trace::config()
                 .with_id_generator(opentelemetry::sdk::trace::RandomIdGenerator::default())
-                .with_sampler(opentelemetry::sdk::trace::Sampler::AlwaysOn)
+                .with_sampler(Sampler::ParentBased(Box::new(Sampler::TraceIdRatioBased(0.03))))
                 .with_resource(resources),
         )
         .install_batch(opentelemetry::runtime::Tokio)

@@ -14,8 +14,22 @@ primary_region = "sjc"
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 1
+  min_machines_running = 3
   [http_service.concurrency]
     type = "requests"
     hard_limit = 250
     soft_limit = 200
+
+[[mounts]]
+  source = "loki_storage"
+  destination = "/loki"
+
+[checks]
+  [checks.health]
+    port = 3100
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/ready"
