@@ -33,7 +33,7 @@ distributor:
     #     thrift_compact:
     otlp:
       protocols:
-        # http:
+        http:
         grpc: # This is the only receiver enabled by default.
     # zipkin: # Receive trace data in any supported Zipkin format.
 
@@ -75,6 +75,10 @@ storage:
     pool:
       max_workers: 100 # Worker pool determines the number of parallel requests to the object store backend.
       queue_depth: 10000 # Maximum depth for the querier queue jobs. A job is required for each block searched.
+
+# querier:
+#   frontend_worker:
+#     frontend_address: lightdotso-tempo.internal:9095
 
 # Overrides configuration block
 # From: https://grafana.com/docs/tempo/latest/configuration/
