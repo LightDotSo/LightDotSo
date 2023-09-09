@@ -1,24 +1,16 @@
-# fly.toml app configuration file generated for lightdotso-grafana on 2023-07-17T01:07:27-07:00
+# fly.toml app configuration file generated for lightdotso-loki on 2023-09-08T02:35:43-04:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lightdotso-grafana"
+app = "lightdotso-loki"
 primary_region = "sjc"
 
 [build]
   dockerfile = "./Dockerfile"
 
-[env]
-  GF_FEATURE_TOGGLES_ENABLE = "publicDashboards"
-  GF_INSTALL_PLUGINS = "grafana-worldmap-panel,grafana-clock-panel"
-
-[[mounts]]
-  source = "grafana_storage"
-  destination = "/var/lib/grafana"
-
 [http_service]
-  internal_port = 3000
+  internal_port = 3100
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true

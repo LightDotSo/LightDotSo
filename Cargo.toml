@@ -56,6 +56,7 @@
   autometrics = "0.6.0"
   axum = "0.6.16"
   backon = "0.4.1"
+  base64 = "0.21.3"
   byteorder = "1.4.3"
   chrono = "0.4.26"
   clap = "4.3.12"
@@ -123,6 +124,7 @@
   ] }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
   tokio = { version = "1", features = ["full"] }
+  tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
   tower = { version = "0.4.12" }
   tower_governor = { version = "0.1.0", features = ["tracing"] }
   tower-http = { version = "0.4", features = [

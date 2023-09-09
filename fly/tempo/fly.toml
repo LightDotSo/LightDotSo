@@ -1,0 +1,29 @@
+# fly.toml app configuration file generated for lightdotso-tempo on 2023-09-08T01:44:35-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "lightdotso-tempo"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "./Dockerfile"
+
+[http_service]
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200
+
+[checks]
+  [checks.health]
+    port = 3200
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/ready"

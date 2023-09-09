@@ -1,0 +1,247 @@
+# Copyright (C) 2023 Light, Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Default configuration for the Tempo.
+# File from: https://github.com/grafana/intro-to-mltp/blob/b28081e888ffd39e4700d1e50facdaa5d1ce39c4/tempo/tempo.yaml
+# License: AGPL-3.0
+
+# Configure the server block.
+server:
+  # Listen for all incoming requests on port 3200.
+  http_listen_port: 3200
+
+# The distributor receives incoming trace span data for the system.
+distributor:
+  receivers: # This configuration will listen on all ports and protocols that tempo is capable of.
+    # jaeger: # The receivers all come from the OpenTelemetry collector.  More configuration information can
+    #   protocols: # be found there: https://github.com/open-telemetry/opentelemetry-collector/tree/main/receiver
+    #     thrift_http: #
+    #     grpc: # For a production deployment you should only enable the receivers you need!
+    #     thrift_binary: #
+    #     thrift_compact:
+    otlp:
+      protocols:
+        # http:
+        grpc: # This is the only receiver enabled by default.
+    # zipkin: # Receive trace data in any supported Zipkin format.
+
+# The ingester receives data from the distributor and processes it into indices and blocks.
+ingester:
+  trace_idle_period: 10s # The length of time after a trace has not received spans to consider it complete and flush it.
+  max_block_bytes: 1_000_000 # Cut the head block when it hits this size or
+  max_block_duration: 5m # this much time passes
+
+# The compactor block configures the compactor responsible for compacting TSDB blocks.
+compactor:
+  compaction:
+    compaction_window: 1h # Blocks in this time window will be compacted together.
+    max_block_bytes: 100_000_000 # Maximum size of a compacted block.
+    block_retention: 1h # How long to keep blocks. Default is 14 days, this demo system is short-lived.
+    compacted_block_retention: 10m # How long to keep compacted blocks stored elsewhere.
+
+# Configuration block to determine where to store TSDB blocks.
+storage:
+  trace:
+    # See here: https://grafana.com/docs/tempo/latest/configuration/#storage
+    backend: s3
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+      endpoint: s3.us-east-1.amazonaws.com
+      region: us-east-1
+      access_key: ${AWS_SECRET_ACCESS_KEY} # This is a secret injected via an environment variable
+      secret_key: ${AWS_ACCESS_KEY_ID}
+
+    block:
+      bloom_filter_false_positive: .05 # Bloom filter false positive rate.  lower values create larger filters but fewer false positives.
+    # Write Ahead Log (WAL) configuration.
+    wal:
+      path: /tmp/tempo/wal # Directory to store the the WAL locally.
+    # Local configuration for filesystem storage.
+    local:
+      path: /tmp/tempo/blocks # Directory to store the TSDB blocks.
+    # Pool used for finding trace IDs.
+    pool:
+      max_workers: 100 # Worker pool determines the number of parallel requests to the object store backend.
+      queue_depth: 10000 # Maximum depth for the querier queue jobs. A job is required for each block searched.
+
+# Overrides configuration block
+# From: https://grafana.com/docs/tempo/latest/configuration/
+overrides:
+  # Global ingestion limits configurations
+
+  # Specifies whether the ingestion rate limits should be applied by each instance
+  # of the distributor and ingester individually, or the limits are to be shared
+  # across all instances. See the "override strategies" section for an example.
+  # [ingestion_rate_strategy: <global|local> | default = local]
+
+  # Burst size (bytes) used in ingestion.
+  # Results in errors like
+  #   RATE_LIMITED: ingestion rate limit (20000000 bytes) exceeded while
+  #   adding 10 bytes
+  # [ingestion_burst_size_bytes: <int> | default = 20000000 (20MB) ]
+
+  # Per-user ingestion rate limit (bytes) used in ingestion.
+  # Results in errors like
+  #   RATE_LIMITED: ingestion rate limit (15000000 bytes) exceeded while
+  #   adding 10 bytes
+  # [ingestion_rate_limit_bytes: <int> | default = 15000000 (15MB) ]
+
+  # Maximum size of a single trace in bytes.  A value of 0 disables the size
+  # check.
+  # This limit is used in 3 places:
+  #  - During search, traces will be skipped when they exceed this threshold.
+  #  - During ingestion, traces that exceed this threshold will be refused.
+  #  - During compaction, traces that exceed this threshold will be partially dropped.
+  # During ingestion, exceeding the threshold results in errors like
+  #    TRACE_TOO_LARGE: max size of trace (5000000) exceeded while adding 387 bytes
+  # [max_bytes_per_trace: <int> | default = 5000000 (5MB) ]
+  max_bytes_per_trace: 0
+
+  # Maximum number of active traces per user, per ingester. A value of 0
+  # disables the check.
+  # Results in errors like
+  #    LIVE_TRACES_EXCEEDED: max live traces per tenant exceeded:
+  #    per-user traces limit (local: 10000 global: 0 actual local: 1) exceeded
+  # This override limit is used by the ingester.
+  # [max_traces_per_user: <int> | default = 10000]
+  max_traces_per_user: 0
+
+  # Maximum size in bytes of a tag-values query. Tag-values query is used mainly
+  # to populate the autocomplete dropdown. This limit protects the system from
+  # tags with high cardinality or large values such as HTTP URLs or SQL queries.
+  # This override limit is used by the ingester and the querier.
+  # A value of 0 disables the limit.
+  # [max_bytes_per_tag_values_query: <int> | default = 5000000 (5MB) ]
+
+  # Maximum number of blocks to be inspected for a tag values query. Tag-values
+  # query is used mainly to populate the autocomplete dropdown. This limit
+  # protects the system from long block lists in the ingesters.
+  # This override limit is used by the ingester.
+  # A value of 0 disables the limit.
+  # [max_blocks_per_tag_values_query: <int> | default = 0 (disabled) ]
+
+  # Generic forwarding configuration
+
+  # Per-user configuration of generic forwarder feature. Each forwarder in the list
+  # must refer by name to a forwarder defined in the distributor.forwarders configuration.
+  # [forwarders: <list of strings>]
+
+  # Metrics-generator configurations
+
+  # Per-user configuration of the metrics-generator ring size. If set, the tenant will use a
+  # ring with at most the given amount of instances. Shuffle sharding is used to spread out
+  # smaller rings across all instances. If the value 0 or a value larger than the total amount
+  # of instances is used, all instances will be included in the ring.
+  #
+  # Together with metrics_generator_max_active_series this can be used to control the total
+  # amount of active series. The total max active series for a specific tenant will be:
+  #   metrics_generator_ring_size * metrics_generator_max_active_series
+  # [metrics_generator_ring_size: <int>]
+
+  # Spans are stored in a queue in the distributor before being sent to the metrics-generators.
+  # The length of the queue and the amount of workers pulling from the queue can be configured.
+  # [metrics_generator_forwarder_queue_size: <int> | default = 100]
+  # [metrics_generator_forwarder_workers: <int> | default = 2]
+
+  # Per-user configuration of the metrics-generator processors. The following processors are
+  # supported:
+  #  - service-graphs
+  #  - span-metrics
+  # [metrics_generator_processors: <list of strings>]
+
+  # Per-user configuration of the metrics-generator processors. The following configuration
+  # overrides settings in the global configuration.
+  # [metrics_generator_processor_service_graphs_histogram_buckets: <list of float>]
+  # [metrics_generator_processor_service_graphs_dimensions: <list of string>]
+  # [metrics_generator_processor_service_graphs_peer_attributes: <list of string>]
+  # [metrics_generator_processor_span_metrics_histogram_buckets: <list of float>]
+  # Allowed keys for intrinsic dimensions are: service, span_name, span_kind, status_code, and status_message.
+  # [metrics_generator_processor_span_metrics_intrinsic_dimensions: <map string to bool>]
+  # [metrics_generator_processor_span_metrics_dimensions: <list of string>]
+  # [MetricsGeneratorProcessorSpanMetricsDimensionMappings: <list of map>]
+  # Enable target_info metrics
+  # [MetricsGeneratorProcessorSpanMetricsEnableTargetInfo: <bool>]
+
+  # Maximum number of active series in the registry, per instance of the metrics-generator. A
+  # value of 0 disables this check.
+  # If the limit is reached, no new series will be added but existing series will still be
+  # updated. The amount of limited series can be observed with the metric
+  #   tempo_metrics_generator_registry_series_limited_total
+  # [metrics_generator_max_active_series: <int>]
+
+  # Per-user configuration of the collection interval. A value of 0 means the global default is
+  # used set in the metrics_generator config block.
+  # [metrics_generator_collection_interval: <duration>]
+
+  # Per-user flag of the registry collection operation. If set, the registry will not be
+  # collected and no samples will be exported from the metrics-generator. The metrics-generator
+  # will still ingest spans and update its internal counters, including the amount of active
+  # series. To disable metrics generation entirely, clear metrics_generator_processors for this
+  # tenant.
+  #
+  # This setting is useful if you wish to test how many active series a tenant will generate, without
+  # actually writing these metrics.
+  # [metrics_generator_disable_collection: <bool> | default = false]
+
+  # Per-user block retention. If this value is set to 0 (default), then block_retention
+  #  in the compactor configuration is used.
+  # [block_retention: <duration> | default = 0s]
+
+  # Per-user max search duration. If this value is set to 0 (default), then max_duration
+  #  in the front-end configuration is used.
+  # [max_search_duration: <duration> | default = 0s]
+
+  # Tenant-specific overrides settings configuration file. The empty string (default
+  # value) disables using an overrides file.
+  # [per_tenant_override_config: <string> | default = ""]
+# # Configures the metrics generator component of Tempo.
+# metrics_generator:
+#   # Specifies which processors to use.
+#   processor:
+#     # Span metrics create metrics based on span type, duration, name and service.
+#     span_metrics:
+#         # Configure extra dimensions to add as metric labels.
+#         dimensions:
+#           - http.method
+#           - http.target
+#           - http.status_code
+#           - service.version
+#     # Service graph metrics create node and edge metrics for determinng service interactions.
+#     service_graphs:
+#         # Configure extra dimensions to add as metric labels.
+#         dimensions:
+#           - http.method
+#           - http.target
+#           - http.status_code
+#           - service.version
+#   # The registry configuration determines how to process metrics.
+#   registry:
+#     collection_interval: 5s                 # Create new metrics every 5s.
+#     # Configure extra labels to be added to metrics.
+#     external_labels:
+#       source: tempo                         # Add a `{source="tempo"}` label.
+#       group: 'mythical'                     # Add a `{group="mythical"}` label.
+#   # Configures where the store for metrics is located.
+#   storage:
+#     # WAL for metrics generation.
+#     path: /tmp/tempo/generator/wal
+#     # Where to remote write metrics to.
+#     remote_write:
+#       - url: http://mimir:9009/api/v1/push  # URL of locally running Mimir instance.
+#         send_exemplars: true                # Send exemplars along with their metrics.
+
+# # Global override configuration.
+# overrides:
+#   metrics_generator_processors: ['service-graphs', 'span-metrics'] # The types of metrics generation to enable for each tenant.

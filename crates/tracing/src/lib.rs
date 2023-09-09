@@ -13,22 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// All resources are from reth-tracing: https://github.com/paradigmxyz/reth/blob/0096739dbb192b419e1a3aa89d34c202c7a554af/crates/tracing/src/lib.rs
-// Thank you for providing such an awesome library!
-use opentelemetry::{
-    metrics::MetricsError,
-    runtime,
-    sdk::{
-        metrics::MeterProvider,
-        trace::{BatchSpanProcessor, Tracer, TracerProvider},
-    },
-    trace::TracerProvider as _,
+use dotenvy::dotenv;
+use eyre::Result;
+use opentelemetry::sdk::{
+    propagation::TraceContextPropagator,
+    resource::{OsResourceDetector, ProcessResourceDetector, ResourceDetector},
+    Resource,
 };
-use opentelemetry_otlp::{ExportConfig, WithExportConfig};
-use opentelemetry_stdout::SpanExporter;
-use std::time::Duration;
-use tracing::Subscriber;
-use tracing_opentelemetry::OpenTelemetryLayer;
+use opentelemetry_otlp::WithExportConfig;
+use std::{thread, time::Duration};
+// use pyroscope::PyroscopeAgent;
+// use pyroscope_pprofrs::{pprof_backend, PprofConfig};
+use tracing::{info, Level, Subscriber};
+use tracing_loki::url::Url;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
 };
@@ -47,21 +44,6 @@ pub type BoxedLayer<S> = Box<dyn Layer<S> + Send + Sync>;
 /// Initializes a new [Subscriber] based on the given layers.
 pub fn init(layers: Vec<BoxedLayer<Registry>>) {
     tracing_subscriber::registry().with(layers).init();
-}
-
-/// Creates a new OpenTelemetry layer.
-/// Inspired by: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/exemplars-tracing-opentelemetry/src/main.rs#L36-L47
-pub fn otel<R>() -> Box<OpenTelemetryLayer<R, Tracer>>
-where
-    R: Subscriber + for<'a> LookupSpan<'a> + Send + Sync + 'static,
-{
-    let exporter = SpanExporter::default();
-    let processor =
-        BatchSpanProcessor::builder(exporter, opentelemetry::sdk::runtime::Tokio).build();
-    let provider = TracerProvider::builder().with_span_processor(processor).build();
-    let tracer = provider.tracer("lightdotso");
-
-    Box::new(OpenTelemetryLayer::new(tracer))
 }
 
 /// From: https://github.com/paradigmxyz/reth/blob/428a6dc2f63ac7f2798c0cb56cf099108d7cbd00/crates/tracing/src/lib.rs#L40-L64
@@ -106,16 +88,93 @@ pub fn init_test_tracing() {
 }
 
 /// From: https://github.com/autometrics-dev/autometrics-rs/blob/0801acbe0db735c85324c8f70302af056d3fe9c2/examples/opentelemetry-push/src/main.rs#L11C1-L27C1
+/// License: MIT
+/// Also heavily inspired by: https://github.com/senate-xyz/senate/blob/19d565957554673429f9391eee2af7261f1b44b4/apps/email-secretary/src/telemetry.rs#L29C1-L75C81
+/// License: GPL-3.0
 /// Initializes a new push-based OpenTelemetry metrics pipeline.
-pub fn init_metrics() -> Result<MeterProvider, MetricsError> {
-    let export_config = ExportConfig {
-        endpoint: "https://light.fmp.fiberplane.dev:4317".to_string(),
-        ..ExportConfig::default()
+pub fn init_metrics() -> Result<()> {
+    info!("Initializing metrics pipeline...");
+
+    // Initialize the pyroscope agent
+    // let pyroscope_agent;
+
+    // Load the environment variables from the .env file
+    let _ = dotenv();
+
+    // Retrieve the required environment variables for tracing
+    let fly_app_name = std::env::var("FLY_APP_NAME").unwrap();
+
+    // Determine the log level based on the environment
+    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
+        "development" => Level::TRACE,
+        _ => Level::INFO,
     };
-    let push_interval = Duration::from_secs(1);
-    opentelemetry_otlp::new_pipeline()
-        .metrics(runtime::Tokio)
-        .with_exporter(opentelemetry_otlp::new_exporter().tonic().with_export_config(export_config))
-        .with_period(push_interval)
-        .build()
+
+    // Set the global propagator to the W3C Trace Context propagator
+    opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
+
+    // Initialize the Loki layer
+    let (logging_layer, task) = tracing_loki::builder()
+        .build_url(Url::parse("http://lightdotso-loki.internal:3100").unwrap())
+        .unwrap();
+
+    // Merge the detected resources with the service name for Tempo
+    let resources = OsResourceDetector
+        .detect(std::time::Duration::from_secs(0))
+        .merge(&ProcessResourceDetector.detect(std::time::Duration::from_secs(0)))
+        .merge(&Resource::new(vec![opentelemetry::KeyValue::new(
+            "service.name",
+            fly_app_name.clone(),
+        )]));
+
+    // Initialize the OpenTelemetry tracing pipeline w/ authentication for Tempo
+    // https://grafana.com/docs/grafana-cloud/monitor-infrastructure/otlp/send-data-otlp/
+    // https://community.grafana.com/t/opentelemetry-endpoint-of-grafana-cloud/85359/5
+    // Bug with https://github.com/hyperium/tonic/issues/1427, disabling for now
+    let tracer = opentelemetry_otlp::new_pipeline()
+        .tracing()
+        .with_exporter(
+            opentelemetry_otlp::new_exporter()
+                .tonic()
+                .with_endpoint("http://lightdotso-grafana-agent.internal:4317"),
+        )
+        .with_trace_config(
+            opentelemetry::sdk::trace::config()
+                .with_id_generator(opentelemetry::sdk::trace::RandomIdGenerator::default())
+                .with_sampler(opentelemetry::sdk::trace::Sampler::AlwaysOn)
+                .with_resource(resources),
+        )
+        .install_batch(opentelemetry::runtime::Tokio)
+        .unwrap();
+
+    // Create the OpenTelemetry layer
+    let telemetry_layer = tracing_opentelemetry::layer().with_tracer(tracer);
+
+    // Initialize the tracing subscriber
+    tracing_subscriber::registry()
+        .with(logging_layer)
+        .with(telemetry_layer)
+        .with(stdout(log_level))
+        .init();
+
+    // Spawn the Loki task
+    tokio::spawn(task);
+
+    // wait for a bit before starting to push logs and traces
+    thread::sleep(Duration::from_secs(3));
+
+    // // Construct the Pyroscope agent
+    // pyroscope_agent =
+    //     PyroscopeAgent::builder("https://profiles-prod-001.grafana.net", &fly_app_name.clone())
+    //         .backend(pprof_backend(PprofConfig::new().sample_rate(100)))
+    //         .basic_auth(PYROSCOPE_USER_ID.to_string(), grafana_api_key.clone())
+    //         .build()
+    //         .unwrap();
+
+    // // Start the Pyroscope agent
+    // let _ = pyroscope_agent.start().unwrap();
+
+    info!("Successfully initialized metrics pipeline");
+
+    Ok(())
 }
