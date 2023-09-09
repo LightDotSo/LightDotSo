@@ -91,12 +91,14 @@ overrides:
   #   RATE_LIMITED: ingestion rate limit (20000000 bytes) exceeded while
   #   adding 10 bytes
   # [ingestion_burst_size_bytes: <int> | default = 20000000 (20MB) ]
+  ingestion_burst_size_bytes: 20000000000
 
   # Per-user ingestion rate limit (bytes) used in ingestion.
   # Results in errors like
   #   RATE_LIMITED: ingestion rate limit (15000000 bytes) exceeded while
   #   adding 10 bytes
   # [ingestion_rate_limit_bytes: <int> | default = 15000000 (15MB) ]
+  ingestion_rate_limit_bytes: 15000000000
 
   # Maximum size of a single trace in bytes.  A value of 0 disables the size
   # check.
