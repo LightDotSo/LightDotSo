@@ -23,3 +23,13 @@ primary_region = "sjc"
 [[mounts]]
   source = "loki_storage"
   destination = "/loki"
+
+[checks]
+  [checks.health]
+    port = 3100
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/ready"
