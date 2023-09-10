@@ -6,7 +6,7 @@ const baseUrl = process.env.PLAYWRIGHT_TEST_BASE_URL || "http://localhost:3000";
 console.warn(`Using base URL "${baseUrl}"`);
 
 // From: https://github.com/calcom/cal.com/blob/50d2dad62c5cc93b9ccfad6b9b0836062fd5f465/playwright.config.ts#L26
-const IS_API_TEST = process.argv.some(a =>
+const IS_AUTH_TEST = process.argv.some(a =>
   a.startsWith("--project=@lightdotso/auth"),
 );
 
@@ -23,7 +23,7 @@ const webServer: PlaywrightTestConfig["webServer"] = [
   },
 ];
 
-if (IS_API_TEST) {
+if (IS_AUTH_TEST) {
   webServer.push({
     command: "pnpm turbo run dev --filter @lightdotso/auth",
     port: 3000,
@@ -50,7 +50,7 @@ const config: PlaywrightTestConfig = {
   projects: [
     {
       name: "@lightdotso/auth",
-      testDir: "./apps/api/e2e",
+      testDir: "./apps/auth/e2e",
       testMatch: /.*\.spec\.tsx?/,
     },
     {
