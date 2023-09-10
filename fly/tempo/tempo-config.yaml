@@ -250,4 +250,4 @@ overrides:
 
   # # Global override configuration.
   # overrides:
-  metrics_generator_processors: ["service-graphs", "span-metrics"] # The types of metrics generation to enable for each tenant.
+  # metrics_generator_processors: ["service-graphs", "span-metrics"] # The types of metrics generation to enable for each tenant.

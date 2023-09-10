@@ -17,4 +17,4 @@ FROM grafana/tempo:2.2.2
 
 COPY ./tempo-config.yaml /etc/tempo.yaml
 
-CMD ["/tempo", "-target=scalable-single-binary", "-config.file=/etc/tempo.yaml", "--config.expand-env=true"]
+CMD ["/tempo", "-config.file=/etc/tempo.yaml", "--config.expand-env=true"]
