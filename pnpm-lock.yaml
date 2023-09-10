@@ -1393,6 +1393,22 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  configurations/rspc:
+    dependencies:
+      '@lightdotso/prisma':
+        specifier: workspace:*
+        version: link:../prisma
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      '@types/node':
+        specifier: ^20.5.7
+        version: 20.5.7
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
   configurations/styles: {}
 
   configurations/tailwindcss:
