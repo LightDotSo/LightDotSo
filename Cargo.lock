@@ -5669,6 +5669,7 @@ dependencies = [
  "lightdotso-tracing",
  "serde",
  "serde_json",
+ "tokio",
  "tower",
  "tower-http 0.4.3",
  "tower_governor",
