@@ -268,3 +268,6 @@ UserInterfaceState.xcuserstate
 # App specific .env
 # https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
 !apps/*/.env
+
+# Overrides
+!configurations/rspc/src/types
