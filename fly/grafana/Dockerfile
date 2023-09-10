@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM grafana/grafana:9.2.3
+FROM grafana/grafana:10.1.1
 
 COPY ./grafana.ini /etc/grafana/grafana.ini
 
