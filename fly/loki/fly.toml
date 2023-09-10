@@ -14,7 +14,7 @@ primary_region = "sjc"
   force_https = true
   auto_stop_machines = false
   auto_start_machines = true
-  min_machines_running = 3
+  min_machines_running = 1
   [http_service.concurrency]
     type = "requests"
     hard_limit = 250

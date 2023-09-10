@@ -70,6 +70,9 @@ compactor:
   retention_delete_delay: 1h
   retention_delete_worker_count: 4
 
+ingester_client:
+  remote_timeout: 10s
+
 # From: https://grafana.com/docs/loki/latest/configure/#runtime-configuration-file
 limits_config:
   # Whether the ingestion rate limit should be applied individually to each
