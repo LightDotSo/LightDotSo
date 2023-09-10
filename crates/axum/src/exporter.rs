@@ -17,9 +17,18 @@ use crate::internal::health_check;
 use axum::{routing::get, Router};
 use eyre::Result;
 use lightdotso_prometheus::{metrics_handler, parse_indexer_metrics};
+use tokio::time::{sleep, Duration};
+
+async fn periodic_metrics_update() {
+    loop {
+        parse_indexer_metrics().await;
+        sleep(Duration::from_secs(15)).await;
+    }
+}
 
 pub async fn start_exporter_server() -> Result<()> {
-    parse_indexer_metrics().await;
+    // Start a task to periodically update the metrics
+    tokio::spawn(periodic_metrics_update());
 
     let app =
         Router::new().route("/health", get(health_check)).route("/metrics", get(metrics_handler));

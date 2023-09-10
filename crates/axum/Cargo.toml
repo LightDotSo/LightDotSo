@@ -22,6 +22,7 @@
   lightdotso-tracing = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
+  tokio = { workspace = true }
   tower = { workspace = true, features = [
     "full",
     "util",
