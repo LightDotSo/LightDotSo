@@ -206,6 +206,12 @@ cargo-generate:
 prisma: cargo-generate ## Add clippy ignore.
 	./scripts/add_clippy_ignore.sh
 
+##@ Rspc
+
+.PHONY: cargo-rspc
+rspc:
+	cargo rspc
+
 #@ anvil
 .PHONY: anvil
 anvil: ## Run anvil
