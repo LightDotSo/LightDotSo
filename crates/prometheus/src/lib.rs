@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use eyre::Result;
 use once_cell::sync::Lazy;
 use prometheus::{register_gauge_vec, Encoder, GaugeVec, TextEncoder};
 use serde::Deserialize;
@@ -51,17 +52,11 @@ pub async fn metrics_handler() -> axum::response::Html<String> {
     axum::response::Html(String::from_utf8_lossy(&buffer).to_string())
 }
 
-pub async fn parse_indexer_metrics() {
+pub async fn parse_indexer_metrics() -> Result<()> {
     for &chain_id in CHAIN_IDS.iter() {
         let url = format!("https://indexer.light.so/{}", chain_id);
-        let data: ApiResponse = reqwest::Client::new()
-            .get(&url)
-            .send()
-            .await
-            .unwrap()
-            .json::<ApiResponse>()
-            .await
-            .unwrap();
+        let data: ApiResponse =
+            reqwest::Client::new().get(&url).send().await?.json::<ApiResponse>().await?;
 
         LATEST_BLOCK_NUMBER
             .with_label_values(&[&chain_id.to_string()])
@@ -74,4 +69,5 @@ pub async fn parse_indexer_metrics() {
             .with_label_values(&[&chain_id.to_string()])
             .set(data.last_300_percentage);
     }
+    Ok(())
 }

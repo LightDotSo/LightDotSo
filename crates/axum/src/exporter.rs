@@ -21,7 +21,7 @@ use tokio::time::{sleep, Duration};
 
 async fn periodic_metrics_update() {
     loop {
-        parse_indexer_metrics().await;
+        let _ = parse_indexer_metrics().await;
         // Keeps in sync with the fly.io health check interval
         sleep(Duration::from_secs(15)).await;
     }
