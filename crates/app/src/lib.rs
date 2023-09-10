@@ -18,10 +18,36 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use lightdotso_prisma::PrismaClient;
+use lightdotso_prisma::{new_client_with_url, PrismaClient};
 use std::sync::Arc;
 
-async fn migrate_and_populate(
+use crate::{constants::LIGHTDOTSO_DB, utils::get_lightdotso_dir};
+
+mod constants;
+mod utils;
+
+// From: https://github.com/tomheaton/tauri-rspc-prisma/blob/e135a252a7c08d4a81847934ed73296c998f2753/core/src/db.rs#L6-L24
+// License: MIT
+pub async fn create_db() -> Result<PrismaClient, Box<dyn std::error::Error>> {
+    let library_url = get_lightdotso_dir().join(LIGHTDOTSO_DB.to_string());
+
+    println!("Connecting to library database at {}", library_url.display());
+
+    tokio::fs::create_dir_all(library_url.parent().unwrap()).await?;
+
+    if !library_url.exists() {
+        tokio::fs::File::create(library_url.clone()).await?;
+    }
+
+    let client =
+        new_client_with_url(&("file:".to_string() + library_url.to_str().unwrap())).await?;
+
+    Ok(client)
+}
+
+// From: https://github.com/tomheaton/tauri-rspc-prisma/blob/e135a252a7c08d4a81847934ed73296c998f2753/src-tauri/src/main.rs#L8
+//  License: MIT
+pub async fn migrate_and_populate(
     client: &Arc<PrismaClient>,
 ) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(debug_assertions)]
@@ -30,5 +56,5 @@ async fn migrate_and_populate(
     #[cfg(not(debug_assertions))]
     client._migrate_deploy().await.unwrap();
 
-    return Ok(());
+    Ok(())
 }
