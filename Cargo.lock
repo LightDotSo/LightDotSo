@@ -5973,8 +5973,12 @@ dependencies = [
 name = "lightdotso-rspc"
 version = "0.1.0"
 dependencies = [
+ "async-stream",
  "lightdotso-db",
+ "lightdotso-prisma",
+ "lightdotso-tracing",
  "rspc",
+ "serde",
 ]
 
 [[package]]

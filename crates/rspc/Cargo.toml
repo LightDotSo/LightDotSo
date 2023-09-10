@@ -9,5 +9,9 @@
   repository.workspace = true
 
 [dependencies]
+  async-stream = { workspace = true }
   lightdotso-db = { workspace = true }
+  lightdotso-prisma = { workspace = true }
+  lightdotso-tracing = { workspace = true }
   rspc = { workspace = true }
+  serde = { workspace = true }
