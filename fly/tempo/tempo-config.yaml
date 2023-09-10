@@ -33,7 +33,7 @@ distributor:
     #     thrift_compact:
     otlp:
       protocols:
-        # http:
+        http:
         grpc: # This is the only receiver enabled by default.
     # zipkin: # Receive trace data in any supported Zipkin format.
 
@@ -75,6 +75,10 @@ storage:
     pool:
       max_workers: 100 # Worker pool determines the number of parallel requests to the object store backend.
       queue_depth: 10000 # Maximum depth for the querier queue jobs. A job is required for each block searched.
+
+# querier:
+#   frontend_worker:
+#     frontend_address: lightdotso-tempo.internal:9095
 
 # Overrides configuration block
 # From: https://grafana.com/docs/tempo/latest/configuration/
@@ -208,42 +212,42 @@ overrides:
   # Tenant-specific overrides settings configuration file. The empty string (default
   # value) disables using an overrides file.
   # [per_tenant_override_config: <string> | default = ""]
-# # Configures the metrics generator component of Tempo.
-# metrics_generator:
-#   # Specifies which processors to use.
-#   processor:
-#     # Span metrics create metrics based on span type, duration, name and service.
-#     span_metrics:
-#         # Configure extra dimensions to add as metric labels.
-#         dimensions:
-#           - http.method
-#           - http.target
-#           - http.status_code
-#           - service.version
-#     # Service graph metrics create node and edge metrics for determinng service interactions.
-#     service_graphs:
-#         # Configure extra dimensions to add as metric labels.
-#         dimensions:
-#           - http.method
-#           - http.target
-#           - http.status_code
-#           - service.version
-#   # The registry configuration determines how to process metrics.
-#   registry:
-#     collection_interval: 5s                 # Create new metrics every 5s.
-#     # Configure extra labels to be added to metrics.
-#     external_labels:
-#       source: tempo                         # Add a `{source="tempo"}` label.
-#       group: 'mythical'                     # Add a `{group="mythical"}` label.
-#   # Configures where the store for metrics is located.
-#   storage:
-#     # WAL for metrics generation.
-#     path: /tmp/tempo/generator/wal
-#     # Where to remote write metrics to.
-#     remote_write:
-#       - url: http://mimir:9009/api/v1/push  # URL of locally running Mimir instance.
-#         send_exemplars: true                # Send exemplars along with their metrics.
+  # # Configures the metrics generator component of Tempo.
+  # metrics_generator:
+  #   # Specifies which processors to use.
+  #   processor:
+  #     # Span metrics create metrics based on span type, duration, name and service.
+  #     span_metrics:
+  #         # Configure extra dimensions to add as metric labels.
+  #         dimensions:
+  #           - http.method
+  #           - http.target
+  #           - http.status_code
+  #           - service.version
+  #     # Service graph metrics create node and edge metrics for determinng service interactions.
+  #     service_graphs:
+  #         # Configure extra dimensions to add as metric labels.
+  #         dimensions:
+  #           - http.method
+  #           - http.target
+  #           - http.status_code
+  #           - service.version
+  #   # The registry configuration determines how to process metrics.
+  #   registry:
+  #     collection_interval: 5s                 # Create new metrics every 5s.
+  #     # Configure extra labels to be added to metrics.
+  #     external_labels:
+  #       source: tempo                         # Add a `{source="tempo"}` label.
+  #       group: 'mythical'                     # Add a `{group="mythical"}` label.
+  #   # Configures where the store for metrics is located.
+  #   storage:
+  #     # WAL for metrics generation.
+  #     path: /tmp/tempo/generator/wal
+  #     # Where to remote write metrics to.
+  #     remote_write:
+  #       - url: http://mimir:9009/api/v1/push  # URL of locally running Mimir instance.
+  #         send_exemplars: true                # Send exemplars along with their metrics.
 
-# # Global override configuration.
-# overrides:
-#   metrics_generator_processors: ['service-graphs', 'span-metrics'] # The types of metrics generation to enable for each tenant.
+  # # Global override configuration.
+  # overrides:
+  metrics_generator_processors: ["service-graphs", "span-metrics"] # The types of metrics generation to enable for each tenant.

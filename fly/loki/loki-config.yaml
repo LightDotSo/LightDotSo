@@ -20,6 +20,15 @@ auth_enabled: false
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
+  # Limit on the size of a gRPC message this server can receive (bytes).
+  # CLI flag: -server.grpc-max-recv-msg-size-bytes
+  # [grpc_server_max_recv_msg_size: <int> | default = 4194304]
+  grpc_server_max_recv_msg_size: 104857600 # 100 MB, might be too much, be careful
+
+  # Limit on the size of a gRPC message this server can send (bytes).
+  # CLI flag: -server.grpc-max-send-msg-size-bytes
+  # [grpc_server_max_send_msg_size: <int> | default = 4194304]
+  grpc_server_max_send_msg_size: 104857600
 
 common:
   instance_addr: 127.0.0.1
@@ -33,22 +42,18 @@ common:
 schema_config:
   configs:
     - from: 2020-07-01
-      store: boltdb-shipper
-      object_store: aws
+      store: aws
+      object_store: s3
       schema: v11
       index:
-        prefix: index_
-        period: 24h
+        prefix: loki_
 
 storage_config:
-  boltdb_shipper:
-    active_index_directory: /loki/boltdb-shipper-active
-    cache_location: /loki/boltdb-shipper-cache
-    cache_ttl: 24h # Can be increased for faster performance over longer query periods, uses more disk space
-    shared_store: s3
   aws:
     s3: ${S3_ACCESS_STRING}
     bucketnames: lightdotso-loki
+    dynamodb:
+      dynamodb_url: ${DYNAMODB_ACCESS_STRING}
 
 query_range:
   results_cache:
@@ -56,6 +61,14 @@ query_range:
       embedded_cache:
         enabled: true
         max_size_mb: 100
+
+compactor:
+  working_directory: /loki
+  shared_store: s3
+  compaction_interval: 10m
+  retention_enabled: true
+  retention_delete_delay: 1h
+  retention_delete_worker_count: 4
 
 # From: https://grafana.com/docs/loki/latest/configure/#runtime-configuration-file
 limits_config:
