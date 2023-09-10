@@ -12,6 +12,7 @@ primary_region = "sjc"
 [env]
   GF_FEATURE_TOGGLES_ENABLE = "publicDashboards"
   GF_INSTALL_PLUGINS = "grafana-worldmap-panel,grafana-clock-panel"
+  GF_SERVER_ROOT_URL = "https://grafana.light.so"
 
 [[mounts]]
   source = "grafana_storage"
