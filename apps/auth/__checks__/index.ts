@@ -15,17 +15,17 @@
 
 import { CheckGroup } from "checkly/constructs";
 
-export const websiteGroup = new CheckGroup("api", {
-  name: "api",
+export const websiteGroup = new CheckGroup("auth", {
+  name: "auth",
   activated: true,
   muted: false,
   runtimeId: "2022.10",
   locations: ["us-east-1", "eu-west-1", "ap-northeast-1"],
-  tags: ["api", "group"],
+  tags: ["auth", "group"],
   environmentVariables: [],
   apiCheckDefaults: {},
   concurrency: 100,
   alertChannels: [],
 });
 
-export const targetUrl = process.env.ENVIRONMENT_URL || "https://api.light.so";
+export const targetUrl = process.env.ENVIRONMENT_URL || "https://auth.light.so";

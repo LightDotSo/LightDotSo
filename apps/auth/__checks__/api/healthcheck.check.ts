@@ -24,7 +24,7 @@ new ApiCheck("api-healthcheck", {
   doubleCheck: true,
   shouldFail: false,
   locations: ["eu-west-1", "us-west-1"],
-  tags: ["api"],
+  tags: ["auth"],
   frequency: 60,
   environmentVariables: [],
   maxResponseTime: 20000,

@@ -15,7 +15,7 @@
 
 "use server";
 
-import { getAuthSession } from "@lightdotso/auth";
+import { getAuthSession } from "@lightdotso/next-auth";
 import { experimental_createServerActionHandler } from "@trpc/next/app-dir/server";
 import { cookies } from "next/headers";
 import { appRouter } from "../routers/_app";

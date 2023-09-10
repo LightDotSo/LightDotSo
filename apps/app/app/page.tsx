@@ -16,7 +16,7 @@
 import { Connect } from "./connect";
 import { EnsName, preload } from "@/components/EnsName";
 import { invoker } from "@lightdotso/trpc";
-import { getAuthSession } from "@lightdotso/auth";
+import { getAuthSession } from "@lightdotso/next-auth";
 import { User } from "./user";
 import { SIWEButton } from "./siwe";
 import { Suspense } from "react";

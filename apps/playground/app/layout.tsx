@@ -17,7 +17,7 @@ import { GitHubLogoIcon, TwitterLogoIcon } from "@radix-ui/react-icons";
 import { Button, TrpcProvider } from "@lightdotso/ui";
 import Link from "next/link";
 import "./globals.css";
-import { getAuthSession } from "@lightdotso/auth";
+import { getAuthSession } from "@lightdotso/next-auth";
 import { cn } from "@lightdotso/utils";
 import { Inter as FontSans } from "next/font/google";
 import { headers } from "next/headers";

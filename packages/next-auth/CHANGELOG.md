@@ -1,4 +1,4 @@
-# @lightdotso/auth
+# @lightdotso/next-auth
 
 ## 0.0.1-pre.0
 

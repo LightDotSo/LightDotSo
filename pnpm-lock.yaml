@@ -298,117 +298,17 @@ importers:
         specifier: workspace:*
         version: link:../crates
 
-  apps/api:
-    dependencies:
-      '@babel/core':
-        specifier: ^7.22.11
-        version: 7.22.11
-      '@lightdotso/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
-      '@lightdotso/prisma':
-        specifier: workspace:*
-        version: link:../../configurations/prisma
-      '@lightdotso/trpc':
-        specifier: workspace:*
-        version: link:../../packages/trpc
-      '@prisma/client':
-        specifier: ^5.2.0
-        version: 5.2.0(prisma@5.2.0)
-      '@trpc-limiter/core':
-        specifier: ^0.0.8
-        version: 0.0.8(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)
-      '@trpc/next':
-        specifier: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
-        version: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server':
-        specifier: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
-        version: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53
-      '@upstash/ratelimit':
-        specifier: ^0.4.3
-        version: 0.4.3
-      '@upstash/redis':
-        specifier: ^1.22.0
-        version: 1.22.0
-      inngest:
-        specifier: ^2.6.0
-        version: 2.6.0(typescript@5.2.2)
-      next:
-        specifier: 13.4.13
-        version: 13.4.13(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
-      next-auth:
-        specifier: ^4.23.1
-        version: 4.23.1(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
-      prisma:
-        specifier: ^5.2.0
-        version: 5.2.0
-      react:
-        specifier: ^18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.2.0(react@18.2.0)
-      superjson:
-        specifier: ^1.13.1
-        version: 1.13.1
-      swagger-ui-react:
-        specifier: ^5.4.2
-        version: 5.4.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
-      trpc-openapi:
-        specifier: ^1.2.0
-        version: 1.2.0(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(zod@3.22.2)
-      zod:
-        specifier: ^3.22.2
-        version: 3.22.2
-    devDependencies:
-      '@lightdotso/eslint-config':
-        specifier: workspace:*
-        version: link:../../configurations/eslint
-      '@lightdotso/tailwindcss':
-        specifier: workspace:*
-        version: link:../../configurations/tailwindcss
-      '@lightdotso/tsconfig':
-        specifier: workspace:*
-        version: link:../../configurations/tsconfig
-      '@prisma/nextjs-monorepo-workaround-plugin':
-        specifier: ^5.2.0
-        version: 5.2.0
-      '@types/node':
-        specifier: ^20.5.7
-        version: 20.5.7
-      '@types/react':
-        specifier: ^18.2.21
-        version: 18.2.21
-      '@types/react-dom':
-        specifier: ^18.2.7
-        version: 18.2.7
-      '@types/swagger-ui-react':
-        specifier: ^4.18.0
-        version: 4.18.0
-      autoprefixer:
-        specifier: ^10.4.15
-        version: 10.4.15(postcss@8.4.28)
-      postcss:
-        specifier: ^8.4.28
-        version: 8.4.28
-      tailwindcss:
-        specifier: ^3.3.3
-        version: 3.3.3(ts-node@10.9.1)
-      typescript:
-        specifier: ^5.2.2
-        version: 5.2.2
-
   apps/app:
     dependencies:
       '@babel/core':
         specifier: ^7.22.11
         version: 7.22.11
-      '@lightdotso/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
+      '@lightdotso/next-auth':
+        specifier: workspace:*
+        version: link:../../packages/next-auth
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
@@ -535,6 +435,106 @@ importers:
         version: 5.2.2
 
   apps/assets: {}
+
+  apps/auth:
+    dependencies:
+      '@babel/core':
+        specifier: ^7.22.11
+        version: 7.22.11
+      '@lightdotso/next-auth':
+        specifier: workspace:*
+        version: link:../../packages/next-auth
+      '@lightdotso/prisma':
+        specifier: workspace:*
+        version: link:../../configurations/prisma
+      '@lightdotso/trpc':
+        specifier: workspace:*
+        version: link:../../packages/trpc
+      '@prisma/client':
+        specifier: ^5.2.0
+        version: 5.2.0(prisma@5.2.0)
+      '@trpc-limiter/core':
+        specifier: ^0.0.8
+        version: 0.0.8(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)
+      '@trpc/next':
+        specifier: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
+        version: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/server':
+        specifier: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
+        version: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53
+      '@upstash/ratelimit':
+        specifier: ^0.4.3
+        version: 0.4.3
+      '@upstash/redis':
+        specifier: ^1.22.0
+        version: 1.22.0
+      inngest:
+        specifier: ^2.6.0
+        version: 2.6.0(typescript@5.2.2)
+      next:
+        specifier: 13.4.13
+        version: 13.4.13(@babel/core@7.22.11)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next-auth:
+        specifier: ^4.23.1
+        version: 4.23.1(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
+      prisma:
+        specifier: ^5.2.0
+        version: 5.2.0
+      react:
+        specifier: ^18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.2.0(react@18.2.0)
+      superjson:
+        specifier: ^1.13.1
+        version: 1.13.1
+      swagger-ui-react:
+        specifier: ^5.4.2
+        version: 5.4.2(@types/react-dom@18.2.7)(@types/react@18.2.21)(react-dom@18.2.0)(react@18.2.0)
+      trpc-openapi:
+        specifier: ^1.2.0
+        version: 1.2.0(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(zod@3.22.2)
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
+    devDependencies:
+      '@lightdotso/eslint-config':
+        specifier: workspace:*
+        version: link:../../configurations/eslint
+      '@lightdotso/tailwindcss':
+        specifier: workspace:*
+        version: link:../../configurations/tailwindcss
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.2.0
+        version: 5.2.0
+      '@types/node':
+        specifier: ^20.5.7
+        version: 20.5.7
+      '@types/react':
+        specifier: ^18.2.21
+        version: 18.2.21
+      '@types/react-dom':
+        specifier: ^18.2.7
+        version: 18.2.7
+      '@types/swagger-ui-react':
+        specifier: ^4.18.0
+        version: 4.18.0
+      autoprefixer:
+        specifier: ^10.4.15
+        version: 10.4.15(postcss@8.4.28)
+      postcss:
+        specifier: ^8.4.28
+        version: 8.4.28
+      tailwindcss:
+        specifier: ^3.3.3
+        version: 3.3.3(ts-node@10.9.1)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
 
   apps/changelog:
     dependencies:
@@ -688,12 +688,12 @@ importers:
       '@babel/core':
         specifier: ^7.22.11
         version: 7.22.11
-      '@lightdotso/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
+      '@lightdotso/next-auth':
+        specifier: workspace:*
+        version: link:../../packages/next-auth
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
@@ -851,12 +851,12 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.3.1
         version: 3.3.1(react-hook-form@7.45.4)
-      '@lightdotso/auth':
-        specifier: workspace:*
-        version: link:../../packages/auth
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
+      '@lightdotso/next-auth':
+        specifier: workspace:*
+        version: link:../../packages/next-auth
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
@@ -1467,34 +1467,6 @@ importers:
         specifier: workspace:*
         version: link:../apps/extension
 
-  packages/auth:
-    dependencies:
-      '@lightdotso/prisma':
-        specifier: workspace:*
-        version: link:../../configurations/prisma
-      '@next-auth/prisma-adapter':
-        specifier: 0.4.4-canary.81
-        version: 0.4.4-canary.81(@prisma/client@5.2.0)(next-auth@4.23.1)
-      next:
-        specifier: 13.4.13
-        version: 13.4.13(react-dom@18.2.0)(react@18.2.0)
-      next-auth:
-        specifier: ^4.23.1
-        version: 4.23.1(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
-      siwe:
-        specifier: ^2.1.4
-        version: 2.1.4(ethers@6.7.0)
-    devDependencies:
-      '@lightdotso/tsconfig':
-        specifier: workspace:*
-        version: link:../../configurations/tsconfig
-      '@types/node':
-        specifier: ^20.5.7
-        version: 20.5.7
-      typescript:
-        specifier: ^5.2.2
-        version: 5.2.2
-
   packages/background:
     dependencies:
       '@types/firefox-webext-browser':
@@ -1557,6 +1529,34 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
     devDependencies:
+      '@types/node':
+        specifier: ^20.5.7
+        version: 20.5.7
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  packages/next-auth:
+    dependencies:
+      '@lightdotso/prisma':
+        specifier: workspace:*
+        version: link:../../configurations/prisma
+      '@next-auth/prisma-adapter':
+        specifier: 0.4.4-canary.81
+        version: 0.4.4-canary.81(@prisma/client@5.2.0)(next-auth@4.23.1)
+      next:
+        specifier: 13.4.13
+        version: 13.4.13(react-dom@18.2.0)(react@18.2.0)
+      next-auth:
+        specifier: ^4.23.1
+        version: 4.23.1(next@13.4.13)(react-dom@18.2.0)(react@18.2.0)
+      siwe:
+        specifier: ^2.1.4
+        version: 2.1.4(ethers@6.7.0)
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
       '@types/node':
         specifier: ^20.5.7
         version: 20.5.7
@@ -1642,9 +1642,9 @@ importers:
 
   packages/trpc:
     dependencies:
-      '@lightdotso/auth':
+      '@lightdotso/next-auth':
         specifier: workspace:*
-        version: link:../auth
+        version: link:../next-auth
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
@@ -1833,7 +1833,7 @@ packages:
     resolution: {integrity: sha512-LvBTxu8bQSQkcyKOU+a1btnNFQ1dMAd0R6PyW3arXes06F6QLWLIrd681bxRPIXlrMGR3XYnW9JyML7dP3qgxg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
 
   /@babel/helper-builder-binary-assignment-operator-visitor@7.22.10:
     resolution: {integrity: sha512-Av0qubwDQxC56DoUReVDeLfMEjYYSN1nZrTUrWkXd7hpU73ymRANkbuDm3yni9npkn+RXy9nNbEJZEzXr7xrfQ==}
@@ -1906,19 +1906,19 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/template': 7.22.5
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
 
   /@babel/helper-hoist-variables@7.22.5:
     resolution: {integrity: sha512-wGjk9QZVzvknA6yKIUURb8zY3grXCcOZt+/7Wcy8O2uctxhplmUPkOdlgoNhmdVee2c92JXbf1xpMtVNbfoxRw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
 
   /@babel/helper-member-expression-to-functions@7.22.5:
     resolution: {integrity: sha512-aBiH1NKMG0H2cGZqspNvsaBe6wNGjbJjuLy29aU+eDZjSbbN53BaxlpB02xm9v34pLTZ1nIQPFYn2qMZoa5BQQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
     dev: true
 
   /@babel/helper-module-imports@7.22.5:
@@ -1944,7 +1944,7 @@ packages:
     resolution: {integrity: sha512-HBwaojN0xFRx4yIvpwGqxiV2tUfl7401jlok564NgB9EHS1y6QT17FmKWm4ztqjeVdXLuC4fSvHc5ePpQjoTbw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
     dev: true
 
   /@babel/helper-plugin-utils@7.22.5:
@@ -1985,7 +1985,7 @@ packages:
     resolution: {integrity: sha512-tK14r66JZKiC43p8Ki33yLBVJKlQDFoA8GYN67lWCDCqoL6EMMSuM9b+Iff2jHaM/RRFYl7K+iiru7hbRqNx8Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
     dev: true
 
   /@babel/helper-split-export-declaration@7.22.6:
@@ -2038,7 +2038,7 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
     dev: true
 
   /@babel/parser@7.22.11:
@@ -2053,7 +2053,7 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
-      '@babel/types': 7.22.10
+      '@babel/types': 7.22.11
     dev: true
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@7.22.5(@babel/core@7.22.11):
@@ -3243,8 +3243,8 @@ packages:
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.22.10
-      '@babel/types': 7.22.10
+      '@babel/parser': 7.22.11
+      '@babel/types': 7.22.11
       debug: 4.3.4(supports-color@8.1.1)
       globals: 11.12.0
     transitivePeerDependencies:
@@ -3258,6 +3258,7 @@ packages:
       '@babel/helper-string-parser': 7.22.5
       '@babel/helper-validator-identifier': 7.22.5
       to-fast-properties: 2.0.0
+    dev: false
 
   /@babel/types@7.22.11:
     resolution: {integrity: sha512-siazHiGuZRz9aB9NpHy9GOs9xiQPKnMzgdr493iI1M67vRXpnEq8ZOOKzezC5q7zwuQ6sDhdSp4SD9ixKSqKZg==}
@@ -12425,7 +12426,7 @@ packages:
   /@vue/compiler-core@3.3.4:
     resolution: {integrity: sha512-cquyDNvZ6jTbf/+x+AgM2Arrp6G4Dzbb0R64jiG804HRMfRiFXWI6kqUVqZ6ZR0bQhIoQjB4+2bhNtVwndW15g==}
     dependencies:
-      '@babel/parser': 7.22.10
+      '@babel/parser': 7.22.11
       '@vue/shared': 3.3.4
       estree-walker: 2.0.2
       source-map-js: 1.0.2
@@ -12441,7 +12442,7 @@ packages:
   /@vue/compiler-sfc@3.3.4:
     resolution: {integrity: sha512-6y/d8uw+5TkCuzBkgLS0v3lSM3hJDntFEiUORM11pQ/hKvkhSKZrXW6i69UyXlJQisJxuUEJKAWEqWbWsLeNKQ==}
     dependencies:
-      '@babel/parser': 7.22.10
+      '@babel/parser': 7.22.11
       '@vue/compiler-core': 3.3.4
       '@vue/compiler-dom': 3.3.4
       '@vue/compiler-ssr': 3.3.4
@@ -12463,7 +12464,7 @@ packages:
   /@vue/reactivity-transform@3.3.4:
     resolution: {integrity: sha512-MXgwjako4nu5WFLAjpBnCj/ieqcjE2aJBINUNQzkZQfzIZA4xn+0fV1tIYBJvvva3N3OvKGofRLvQIwEQPpaXw==}
     dependencies:
-      '@babel/parser': 7.22.10
+      '@babel/parser': 7.22.11
       '@vue/compiler-core': 3.3.4
       '@vue/shared': 3.3.4
       estree-walker: 2.0.2

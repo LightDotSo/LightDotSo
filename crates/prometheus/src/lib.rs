@@ -54,7 +54,7 @@ pub async fn metrics_handler() -> axum::response::Html<String> {
 
 pub async fn parse_indexer_metrics() -> Result<()> {
     for &chain_id in CHAIN_IDS.iter() {
-        let url = format!("https://indexer.light.so/{}", chain_id);
+        let url = format!("http://lightdotso-indexer.internal:3000/{}", chain_id);
         let data: ApiResponse =
             reqwest::Client::new().get(&url).send().await?.json::<ApiResponse>().await?;
 
