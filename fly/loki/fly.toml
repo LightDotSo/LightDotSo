@@ -29,3 +29,7 @@ primary_region = "sjc"
     grace_period = "30s"
     method = "get"
     path = "/ready"
+
+[metrics]
+  port = 3100
+  path = "/metrics"
