@@ -26,13 +26,31 @@ pub struct Context {
 
 pub fn create_router() -> Router<Context> {
     Router::<Context>::new()
-        .config(Config::new().set_ts_bindings_header("/* eslint-disable */").export_ts_bindings(
-            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../src/types/bindings.ts"),
-        ))
+        .config(
+            Config::new().set_ts_bindings_header("/* eslint-disable */").export_ts_bindings(
+                PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                    .join("../../configurations/rspc/src/types/bindings.ts"),
+            ),
+        )
         .query("version", |t| t(|_, _: ()| env!("CARGO_PKG_VERSION")))
         .query("wallets", |t| {
             t(|ctx, _: ()| async move {
+                #[derive(Debug, Clone, Deserialize, Serialize, Type)]
+                struct ExtendedWallet {
+                    chain_id: String,
+                }
+
+                impl From<lightdotso_prisma::wallet::Data> for ExtendedWallet {
+                    fn from(item: lightdotso_prisma::wallet::Data) -> Self {
+                        ExtendedWallet { chain_id: item.chain_id.to_string() }
+                    }
+                }
+
                 let wallets = ctx.db.wallet().find_many(vec![]).exec().await?;
+
+                // Convert the chainId bigInt field to a string
+                // Issue: https://github.com/oscartbeaumont/rspc/issues/93
+                let wallets = wallets.into_iter().map(ExtendedWallet::from).collect::<Vec<_>>();
 
                 Ok(wallets)
             })
@@ -50,16 +68,13 @@ pub fn create_router() -> Router<Context> {
                 }
             })
         })
-        .mutation("emptyWallets", |t| {
+        .mutation("emptyInput", |t| {
             #[derive(Debug, Clone, Deserialize, Serialize, Type)]
             struct EmptyInput {
                 content: String,
             }
-            t(|ctx, empty: EmptyInput| async move {
-                info!("createPost: {:?}", empty);
-                let wallets = ctx.db.wallet().find_many(vec![]).exec().await?;
-
-                Ok(wallets)
+            t(|_ctx, empty: EmptyInput| async move {
+                info!("emptyInput: {:?}", empty);
             })
         })
         .build()
