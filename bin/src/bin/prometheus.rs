@@ -20,14 +20,13 @@ use axum::{
     routing::get,
     Router,
 };
-use dotenvy::dotenv;
 use eyre::Result;
 use hyper::{client, client::HttpConnector, header::HeaderValue, Body, HeaderMap};
 use hyper_rustls::HttpsConnector;
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_tracing::{
-    init, stdout,
-    tracing::{info, Level},
+    init_metrics,
+    tracing::{error, info},
 };
 
 type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
@@ -62,8 +61,6 @@ async fn health_check() -> &'static str {
 }
 
 pub async fn start_server() -> Result<()> {
-    init(vec![stdout(Level::INFO)]);
-
     let https = hyper_rustls::HttpsConnectorBuilder::new()
         .with_native_roots()
         .https_only()
@@ -86,7 +83,11 @@ pub async fn start_server() -> Result<()> {
 
 #[tokio::main]
 pub async fn main() -> Result<(), eyre::Error> {
-    let _ = dotenv();
+    // Initialize tracing
+    let res = init_metrics();
+    if let Err(e) = res {
+        error!("Failed to initialize metrics: {:?}", e)
+    };
 
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
     start_server().await?;

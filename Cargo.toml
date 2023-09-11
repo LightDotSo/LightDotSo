@@ -22,7 +22,6 @@
     "crates/prisma",
     "crates/redis",
     "crates/rpc",
-    "crates/rspc",
     "crates/simulator",
     "crates/tauri",
     "crates/telegram",
@@ -58,7 +57,7 @@
   async-stream = "0.3.5"
   async-trait = "0.1.73"
   autometrics = "0.6.0"
-  axum = "0.6.16"
+  axum = { version = "0.6.16", features = ["ws"] }
   backon = "0.4.1"
   base64 = "0.21.3"
   byteorder = "1.4.3"
@@ -97,13 +96,11 @@
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
-  lightdotso-rspc = { path = "./crates/rspc" }
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
   once_cell = "1.8.0"
-  rspc = { version = "0.1.3", feature = ["tauri"] }
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
     "migrations",
     "mocking",

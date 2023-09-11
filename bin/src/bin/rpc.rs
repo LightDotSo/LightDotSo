@@ -15,22 +15,22 @@
 
 use axum::{
     error_handling::HandleErrorLayer,
-    http::StatusCode,
-    response::IntoResponse,
     routing::{get, on, MethodFilter},
-    BoxError, Router,
+    Router,
 };
 use clap::Parser;
-use dotenvy::dotenv;
 use eyre::Result;
 use hyper::client;
-use lightdotso_axum::internal::start_internal_server;
+use lightdotso_axum::{handle_error, internal::start_internal_server};
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
 use lightdotso_rpc::{
     config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
 };
-use lightdotso_tracing::tracing::Level;
-use std::{borrow::Cow, net::SocketAddr, time::Duration};
+use lightdotso_tracing::{
+    init_metrics,
+    tracing::{error, Level},
+};
+use std::{net::SocketAddr, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
@@ -40,19 +40,6 @@ use tower_http::{
     // sensitive_headers::{SetSensitiveRequestHeadersLayer, SetSensitiveResponseHeadersLayer},
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
-
-// Handle errors
-// From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L308
-async fn handle_error(error: BoxError) -> impl IntoResponse {
-    if error.is::<tower::load_shed::error::Overloaded>() {
-        return (
-            StatusCode::SERVICE_UNAVAILABLE,
-            Cow::from("service is overloaded, please try again later"),
-        );
-    }
-
-    (StatusCode::INTERNAL_SERVER_ERROR, Cow::from(format!("Unhandled internal error: {}", error)))
-}
 
 pub async fn start_server() -> Result<()> {
     // Create a client
@@ -133,7 +120,11 @@ pub async fn start_server() -> Result<()> {
 
 #[tokio::main]
 pub async fn main() -> Result<(), eyre::Error> {
-    let _ = dotenv();
+    // Initialize tracing
+    let res = init_metrics();
+    if let Err(e) = res {
+        error!("Failed to initialize metrics: {:?}", e)
+    }
 
     // Log the version
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
