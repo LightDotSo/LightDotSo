@@ -98,6 +98,7 @@ pub async fn start_api_server() -> Result<()> {
         // Alternative to above
         // .merge(RapiDoc::with_openapi("/api-docs/openapi2.json",
         // ApiDoc::openapi()).path("/rapidoc"))
+        .merge(crate::routes::health::router())
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19

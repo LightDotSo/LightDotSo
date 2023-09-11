@@ -74,6 +74,7 @@
   futures = "0.3.28"
   futures-util = "0.3.28"
   http = "0.2.8"
+  http-body = "0.4.5"
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
   js-sys = "=0.3.56"

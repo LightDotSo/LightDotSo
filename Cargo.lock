@@ -5720,6 +5720,7 @@ dependencies = [
  "eyre",
  "governor 0.5.1",
  "http",
+ "http-body",
  "hyper",
  "hyper-rustls",
  "lightdotso-indexer",

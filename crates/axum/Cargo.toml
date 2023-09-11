@@ -16,6 +16,7 @@
   eyre = { workspace = true }
   governor = "0.5.1"
   http = { workspace = true }
+  http-body = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
   lightdotso-indexer = { workspace = true }

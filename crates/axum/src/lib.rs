@@ -29,6 +29,7 @@ pub mod api;
 pub mod exporter;
 pub mod internal;
 pub mod prometheus;
+pub mod routes;
 pub mod rpc;
 
 #[derive(Debug, Serialize, Deserialize, Clone, Eq, PartialEq)]
