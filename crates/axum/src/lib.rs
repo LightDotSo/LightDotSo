@@ -25,8 +25,11 @@ use serde::{Deserialize, Serialize};
 use std::borrow::Cow;
 use tower_governor::{errors::GovernorError, key_extractor::KeyExtractor};
 
+pub mod api;
 pub mod exporter;
 pub mod internal;
+pub mod prometheus;
+pub mod rpc;
 
 #[derive(Debug, Serialize, Deserialize, Clone, Eq, PartialEq)]
 pub struct UserToken;

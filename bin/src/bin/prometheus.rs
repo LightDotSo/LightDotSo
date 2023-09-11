@@ -13,73 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::{autometrics, prometheus_exporter};
-use axum::{
-    extract::{Path, State},
-    http::{uri::Uri, Request, Response},
-    routing::get,
-    Router,
-};
 use eyre::Result;
-use hyper::{client, client::HttpConnector, header::HeaderValue, Body, HeaderMap};
-use hyper_rustls::HttpsConnector;
+use lightdotso_axum::{internal::start_internal_server, prometheus::start_prometheus_server};
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_tracing::{
-    init_metrics,
-    tracing::{error, info},
-};
-
-type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
-
-#[autometrics]
-async fn handler(
-    Path(path): Path<String>,
-    State(client): State<Client>,
-    mut req: Request<Body>,
-) -> Response<Body> {
-    let org_slug = "lightdotso";
-    let query = req.uri().query().unwrap_or_default();
-    let full_path = format!("{}/api/v1/{}", org_slug, path);
-
-    let uri = format!("https://api.fly.io/prometheus/{}?{}", full_path, query);
-    info!("uri: {}", uri);
-
-    *req.uri_mut() = Uri::try_from(uri).unwrap();
-
-    let mut headers = HeaderMap::new();
-    let token = std::env::var("FLY_API_TOKEN").unwrap_or_else(|_| panic!("FLY_API_TOKEN not set"));
-    headers.insert("Authorization", HeaderValue::from_str(&format!("Bearer {}", token)).unwrap());
-
-    *req.headers_mut() = headers;
-
-    client.request(req).await.unwrap()
-}
-
-#[autometrics]
-async fn health_check() -> &'static str {
-    "OK"
-}
-
-pub async fn start_server() -> Result<()> {
-    let https = hyper_rustls::HttpsConnectorBuilder::new()
-        .with_native_roots()
-        .https_only()
-        .enable_http1()
-        .build();
-    // Build the hyper client from the HTTPS connector.
-    let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
-
-    let app = Router::new()
-        .route("/health", get(health_check))
-        .route("/metrics", get(|| async { prometheus_exporter::encode_http_response() }))
-        .route("/api/v1/:anything", get(handler)) // fallback route that will handle all other paths
-        .with_state(client);
-
-    let socket_addr = "0.0.0.0:3002".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
-
-    Ok(())
-}
+use lightdotso_tracing::{init_metrics, tracing::error};
 
 #[tokio::main]
 pub async fn main() -> Result<(), eyre::Error> {
@@ -87,9 +24,23 @@ pub async fn main() -> Result<(), eyre::Error> {
     let res = init_metrics();
     if let Err(e) = res {
         error!("Failed to initialize metrics: {:?}", e)
-    };
+    }
 
+    // Log the version
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
-    start_server().await?;
+
+    // Construct the futures
+    let prometheus_future = start_prometheus_server();
+    let internal_future = start_internal_server();
+
+    // Run the futures concurrently
+    let result = tokio::try_join!(prometheus_future, internal_future);
+
+    // Exit with an error if either future failed
+    if let Err(e) = result {
+        eprintln!("Error: {:?}", e);
+        std::process::exit(1);
+    }
+
     Ok(())
 }

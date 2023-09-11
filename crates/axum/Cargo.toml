@@ -11,14 +11,17 @@
 [dependencies]
   autometrics = { workspace = true }
   axum = { workspace = true }
+  clap = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
   governor = "0.5.1"
   http = { workspace = true }
   hyper = { workspace = true }
+  hyper-rustls = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-prometheus = { workspace = true }
   lightdotso-redis = { workspace = true }
+  lightdotso-rpc = { workspace = true }
   lightdotso-tracing = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
@@ -32,3 +35,6 @@
   ] }
   tower-http = { workspace = true, features = ["cors"] }
   tower_governor = { workspace = true }
+  utoipa-rapidoc = { workspace = true }
+  utoipa-redoc = { workspace = true }
+  utoipa-swagger-ui = { workspace = true }
