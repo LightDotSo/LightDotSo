@@ -65,7 +65,6 @@
     "apps/docs/src/pages/posts/**/*.mdx",
     "configurations/kysely/src/db/**/*.ts",
     "configurations/prisma/src/zod/**/*.ts",
-    "configurations/rspc/src/**/*.ts",
     "ios/LightWalletSafariExtension/Resources/**/*.js",
     "**/__snapshots__/**",
     "**/*.app/**",

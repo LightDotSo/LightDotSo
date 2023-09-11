@@ -1,4 +1,0 @@
-ignores:
-  - "@types/node"
-  - typescript
-  - "@lightdotso/prisma"

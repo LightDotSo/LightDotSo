@@ -69,24 +69,18 @@ pub async fn start_server() -> Result<()> {
         .on_request(DefaultOnRequest::new().level(Level::INFO))
         .on_response(DefaultOnResponse::new().level(Level::INFO));
 
-    // Create the router
-    let router = create_router();
-
-    let app = Router::new()
-        .route("/", get("api.light.so"))
-        .route("/rspc/:id", router.endpoint(|| ()).axum())
-        .layer(
-            // Set up error handling, rate limiting, and CORS
-            // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
-            // License: Apache-2.0
-            ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(handle_error))
-                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
-                .layer(trace_layer.clone())
-                .layer(GovernorLayer { config: Box::leak(governor_conf) })
-                .layer(cors)
-                .into_inner(),
-        );
+    let app = Router::new().route("/", get("api.light.so")).layer(
+        // Set up error handling, rate limiting, and CORS
+        // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
+        // License: Apache-2.0
+        ServiceBuilder::new()
+            .layer(HandleErrorLayer::new(handle_error))
+            // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
+            .layer(trace_layer.clone())
+            .layer(GovernorLayer { config: Box::leak(governor_conf) })
+            .layer(cors)
+            .into_inner(),
+    );
 
     let socket_addr = "[::]:3000".parse()?;
     axum::Server::bind(&socket_addr)

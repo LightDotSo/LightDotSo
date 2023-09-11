@@ -51,7 +51,6 @@
     "prisma": "make prisma",
     "prisma:turbo": "turbo run prisma",
     "release": "changeset publish",
-    "rspc": "make rspc",
     "solhint:cmd": "solhint \"contracts/**/*.sol\"",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --fix",
     "solhint:lint": "solhint \"contracts/**/*.sol\"",

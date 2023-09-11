@@ -44,9 +44,6 @@ jobs:
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
-      - name: Make Rspc
-        run: |
-          pnpm turbo run rspc
       - name: Check Changes
         run: |
           git diff --quiet

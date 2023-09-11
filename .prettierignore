@@ -4,8 +4,6 @@ apps/docs/src/pages/posts/**/*.mdx
 apps/ui/src/components/**
 configurations/prisma/src/zod/**
 
-configurations/rspc/src/types/bindings.ts
-
 *.html
 *.xcarchive
 

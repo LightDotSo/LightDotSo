@@ -10,7 +10,6 @@
     "generate",
     "--schema=configurations/prisma/prisma/schema-rs.prisma",
   ]
-  rspc = ["run", "--package", "lightdotso-rspc", "--"]
   scopelint = ["run", "--package", "embedded-scopelint", "--"]
   uniffi-bindgen = ["run", "--package", "embedded-uniffi-bindgen", "--"]
   test-all = ["test", "--workspace"]
