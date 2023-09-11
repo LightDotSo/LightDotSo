@@ -1,5 +1,5 @@
 {
-  "name": "@lightdotso/api",
+  "name": "@lightdotso/auth",
   "version": "1.1.0-pre.2",
   "private": false,
   "homepage": "https://github.com/LightDotSo/LightDotSo",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.22.11",
-    "@lightdotso/auth": "workspace:*",
+    "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/trpc": "workspace:*",
     "@prisma/client": "^5.2.0",

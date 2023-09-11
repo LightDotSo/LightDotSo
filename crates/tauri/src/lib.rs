@@ -13,26 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getAuthSession } from "@lightdotso/next-auth";
-import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-// TODO: Add pusher
-// import Pusher from "pusher-http-edge";
-
-export async function createContext(opts?: FetchCreateContextFnOptions) {
-  // const eventServer = new Pusher({
-  //   appId: env.PUSHER_APP_ID,
-  //   key: env.NEXT_PUBLIC_PUSHER_APP_KEY,
-  //   secret: env.PUSHER_SECRET,
-  //   cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
-  //   useTLS: true,
-  // });
-
-  const session = await getAuthSession();
-
-  return {
-    session,
-    headers: opts && Object.fromEntries(opts.req.headers),
-  };
+pub fn rust_greeting(to: String) -> String {
+    format!("Hello World, {}!", to)
 }
-
-export type Context = Awaited<ReturnType<typeof createContext>>;

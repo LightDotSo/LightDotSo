@@ -13,26 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getAuthSession } from "@lightdotso/next-auth";
-import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-// TODO: Add pusher
-// import Pusher from "pusher-http-edge";
+use lazy_static::lazy_static;
 
-export async function createContext(opts?: FetchCreateContextFnOptions) {
-  // const eventServer = new Pusher({
-  //   appId: env.PUSHER_APP_ID,
-  //   key: env.NEXT_PUBLIC_PUSHER_APP_KEY,
-  //   secret: env.PUSHER_SECRET,
-  //   cluster: env.NEXT_PUBLIC_PUSHER_CLUSTER,
-  //   useTLS: true,
-  // });
-
-  const session = await getAuthSession();
-
-  return {
-    session,
-    headers: opts && Object.fromEntries(opts.req.headers),
-  };
+// The `lightdotso` namespace
+lazy_static! {
+    pub static ref LIGHTDOTSO_APP_DIR: String = "lightdotso".to_string();
 }
 
-export type Context = Awaited<ReturnType<typeof createContext>>;
+// The `dev` namespace
+lazy_static! {
+    pub static ref DEV_APP_DIR: String = "dev".to_string();
+}
+
+// The `lightdotso` db
+lazy_static! {
+    pub static ref LIGHTDOTSO_DB: String = "lightdotso.db".to_string();
+}

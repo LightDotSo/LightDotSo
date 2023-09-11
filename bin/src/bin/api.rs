@@ -13,19 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use axum::{
-    error_handling::HandleErrorLayer,
-    routing::{get, on, MethodFilter},
-    Router,
-};
-use clap::Parser;
+use axum::{error_handling::HandleErrorLayer, routing::get, Router};
 use eyre::Result;
-use hyper::client;
 use lightdotso_axum::{handle_error, internal::start_internal_server};
 use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
-use lightdotso_rpc::{
-    config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
-};
 use lightdotso_tracing::{
     init_metrics,
     tracing::{error, Level},
@@ -37,22 +28,10 @@ use tower_governor::{
 };
 use tower_http::{
     cors::{Any, CorsLayer},
-    // sensitive_headers::{SetSensitiveRequestHeadersLayer, SetSensitiveResponseHeadersLayer},
     trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
 };
 
 pub async fn start_server() -> Result<()> {
-    // Create a client
-    let https = hyper_rustls::HttpsConnectorBuilder::new()
-        .with_native_roots()
-        .https_or_http()
-        .enable_http1()
-        .build();
-    let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
-
-    // Get the config
-    let _ = RpcArgs::parse();
-
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
     // License: Apache-2.0
@@ -90,25 +69,18 @@ pub async fn start_server() -> Result<()> {
         .on_request(DefaultOnRequest::new().level(Level::INFO))
         .on_response(DefaultOnResponse::new().level(Level::INFO));
 
-    let app = Router::new()
-        .route("/", get("rpc.light.so"))
-        .route("/:chain_id", on(MethodFilter::all(), public_rpc_handler))
-        .layer(
-            // Set up error handling, rate limiting, and CORS
-            // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
-            // License: Apache-2.0
-            ServiceBuilder::new()
-                .layer(HandleErrorLayer::new(handle_error))
-                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
-                .layer(trace_layer.clone())
-                .layer(GovernorLayer { config: Box::leak(governor_conf) })
-                .layer(cors)
-                .into_inner(),
-        )
-        .route("/protected/:key/:chain_id", on(MethodFilter::all(), protected_rpc_handler))
-        .route("/internal/:chain_id", on(MethodFilter::all(), internal_rpc_handler))
-        .layer(ServiceBuilder::new().layer(trace_layer.clone()).into_inner())
-        .with_state(client);
+    let app = Router::new().route("/", get("api.light.so")).layer(
+        // Set up error handling, rate limiting, and CORS
+        // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
+        // License: Apache-2.0
+        ServiceBuilder::new()
+            .layer(HandleErrorLayer::new(handle_error))
+            // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
+            .layer(trace_layer.clone())
+            .layer(GovernorLayer { config: Box::leak(governor_conf) })
+            .layer(cors)
+            .into_inner(),
+    );
 
     let socket_addr = "[::]:3000".parse()?;
     axum::Server::bind(&socket_addr)
@@ -130,11 +102,11 @@ pub async fn main() -> Result<(), eyre::Error> {
     println!("Starting server at {} {}", SHORT_VERSION, LONG_VERSION);
 
     // Construct the futures
-    let rpc_future = start_server();
+    let api_future = start_server();
     let internal_future = start_internal_server();
 
     // Run the futures concurrently
-    let result = tokio::try_join!(rpc_future, internal_future);
+    let result = tokio::try_join!(api_future, internal_future);
 
     // Exit with an error if either future failed
     if let Err(e) = result {

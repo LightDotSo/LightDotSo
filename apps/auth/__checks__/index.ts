@@ -13,15 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getServerSession } from "next-auth";
-import { authOptions } from "@lightdotso/auth";
-import { NextResponse } from "next/server";
+import { CheckGroup } from "checkly/constructs";
 
-export async function GET() {
-  const session = await getServerSession(authOptions);
+export const websiteGroup = new CheckGroup("auth", {
+  name: "auth",
+  activated: true,
+  muted: false,
+  runtimeId: "2022.10",
+  locations: ["us-east-1", "eu-west-1", "ap-northeast-1"],
+  tags: ["auth", "group"],
+  environmentVariables: [],
+  apiCheckDefaults: {},
+  concurrency: 100,
+  alertChannels: [],
+});
 
-  return NextResponse.json({
-    authenticated: !!session,
-    session,
-  });
-}
+export const targetUrl = process.env.ENVIRONMENT_URL || "https://auth.light.so";
