@@ -5733,6 +5733,7 @@ dependencies = [
  "tower",
  "tower-http 0.4.3",
  "tower_governor",
+ "utoipa",
  "utoipa-rapidoc",
  "utoipa-redoc",
  "utoipa-swagger-ui",
@@ -13040,6 +13041,7 @@ dependencies = [
  "proc-macro-error",
  "proc-macro2",
  "quote",
+ "regex",
  "syn 2.0.29",
 ]
 
@@ -13049,6 +13051,7 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2e5b9ebae0a8e5860e19ddaae755f5caade84b2de93cfde1c88d8c8d1da62843"
 dependencies = [
+ "axum 0.6.20",
  "serde",
  "serde_json",
  "utoipa",
@@ -13060,6 +13063,7 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2d0ecce4acc6580d87b052a48fb142b1ddaf4d6d70e547d25012a4387f3cf3bd"
 dependencies = [
+ "axum 0.6.20",
  "serde",
  "serde_json",
  "utoipa",
@@ -13071,6 +13075,7 @@ version = "3.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "84614caa239fb25b2bb373a52859ffd94605ceb256eeb1d63436325cf81e3653"
 dependencies = [
+ "axum 0.6.20",
  "mime_guess",
  "regex",
  "rust-embed",
