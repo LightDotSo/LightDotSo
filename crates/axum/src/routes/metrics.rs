@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::autometrics;
+use autometrics::{autometrics, prometheus_exporter};
 use axum::{response::IntoResponse, routing::get, Router};
 use http_body::Body as HttpBody;
 
@@ -23,10 +23,10 @@ where
     B: HttpBody + Send + 'static,
     S: Clone + Send + Sync + 'static,
 {
-    Router::new().route("/health", get(handler))
+    Router::new().route("/metrics", get(handler))
 }
 
 #[autometrics]
 async fn handler() -> impl IntoResponse {
-    "Ok"
+    prometheus_exporter::encode_http_response()
 }

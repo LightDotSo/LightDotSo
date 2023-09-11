@@ -34,16 +34,6 @@ use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use std::{convert::Infallible, sync::Arc};
 
-#[autometrics]
-pub(crate) async fn health_check() -> &'static str {
-    "OK"
-}
-
-#[autometrics]
-pub(crate) async fn prometheus_metrics_check() -> Response<String> {
-    prometheus_exporter::encode_http_response()
-}
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
 struct IndexResponse {
@@ -123,8 +113,8 @@ pub async fn start_internal_server() -> Result<()> {
     prometheus_exporter::init();
 
     let app = Router::new()
-        .route("/health", get(health_check))
-        .route("/metrics", get(prometheus_metrics_check));
+        .merge(crate::routes::health::router())
+        .merge(crate::routes::metrics::router());
 
     let socket_addr = "0.0.0.0:9091".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
