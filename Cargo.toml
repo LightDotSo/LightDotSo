@@ -59,10 +59,10 @@
   autometrics = "0.6.0"
   axum = { version = "0.6.16", features = ["ws"] }
   backon = "0.4.1"
-  base64 = "0.21.3"
+  base64 = "0.21.4"
   byteorder = "1.4.3"
-  chrono = "0.4.26"
-  clap = "4.3.12"
+  chrono = "0.4.30"
+  clap = "4.4.2"
   dotenvy = "0.15"
   ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
   ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-core" }
@@ -101,13 +101,13 @@
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
   once_cell = "1.8.0"
-  prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+  prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.10", features = [
     "migrations",
     "mocking",
     "sqlite",
     "sqlite-create-many",
   ] }
-  prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+  prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.10", features = [
     "migrations",
     "mocking",
     "sqlite",
@@ -126,8 +126,8 @@
     "optional_block_gas_limit",
     "optional_no_base_fee",
   ] }
-  serde = "1.0.183"
-  serde_json = "1.0.104"
+  serde = "1.0.188"
+  serde_json = "1.0.106"
   spki = "0.7.2"
   silius-grpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-grpc" }
   silius-primitives = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-primitives", features = [
