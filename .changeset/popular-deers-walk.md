@@ -1,5 +1,4 @@
 ---
-"@lightdotso/rspc": patch
 "@lightdotso/desktop": patch
 "@lightdotso/crates": patch
 ---
