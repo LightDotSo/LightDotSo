@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::internal::health_check;
 use axum::{routing::get, Router};
 use eyre::Result;
 use lightdotso_prometheus::{metrics_handler, parse_indexer_metrics};
@@ -31,8 +30,9 @@ pub async fn start_exporter_server() -> Result<()> {
     // Start a task to periodically update the metrics
     tokio::spawn(periodic_metrics_update());
 
-    let app =
-        Router::new().route("/health", get(health_check)).route("/metrics", get(metrics_handler));
+    let app = Router::new()
+        .merge(crate::routes::health::router())
+        .route("/metrics", get(metrics_handler));
 
     let socket_addr = "0.0.0.0:9091".parse()?;
     axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;

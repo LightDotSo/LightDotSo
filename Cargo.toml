@@ -74,6 +74,7 @@
   futures = "0.3.28"
   futures-util = "0.3.28"
   http = "0.2.8"
+  http-body = "0.4.5"
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
   js-sys = "=0.3.56"
@@ -155,8 +156,4 @@
   uniffi = "0.24.2"
   uniffi_macros = "0.24.2"
   uniffi_build = { version = "0.24.2", features = ["builtin-bindgen"] }
-  utoipa = "3.5.0"
-  utoipa-swagger-ui = "3.1.5"
-  utoipa-redoc = "0.1.0"
-  utoipa-rapidoc = "0.1.0"
   uuid = { version = "1.3.4", features = ["v4", "fast-rng", "serde"] }

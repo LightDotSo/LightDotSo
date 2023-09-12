@@ -23,8 +23,6 @@
   eyre = { workspace = true }
   futures = { workspace = true }
   http = { workspace = true }
-  hyper = { workspace = true }
-  hyper-rustls = { workspace = true }
   lightdotso-autometrics = { workspace = true }
   lightdotso-axum = { workspace = true }
   lightdotso-bundler = { workspace = true }
