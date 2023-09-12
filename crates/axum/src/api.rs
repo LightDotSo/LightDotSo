@@ -34,16 +34,31 @@ use utoipa_swagger_ui::SwaggerUi;
 use crate::routes::{check, health};
 
 #[derive(OpenApi)]
+#[openapi(info(
+    title = "api.light.so",
+    description = "API for api.light.so",
+    contact(name = "Test")
+))]
 #[openapi(
-        paths(
-            check::handler,
-            health::handler
+    paths(
+        check::handler,
+        health::handler
+    ),
+    tags(
+        (name = "check", description = "Check API"),
+        (name = "health", description = "Health API")
+    )
+)]
+#[openapi(
+    servers(
+        (url = "https://api.light.so", description = "Official API",
+            variables(
+                ("username" = (default = "demo", description = "Default username for API")),
+            )
         ),
-        tags(
-            (name = "check", description = "Check API"),
-            (name = "health", description = "Health API")
-        )
-    )]
+        (url = "http://localhost:3000", description = "Local server"),
+    )
+)]
 struct ApiDoc;
 
 pub async fn start_api_server() -> Result<()> {
