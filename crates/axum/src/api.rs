@@ -15,19 +15,16 @@
 
 use crate::handle_error;
 use axum::{error_handling::HandleErrorLayer, routing::get, Router};
+use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
 use lightdotso_prisma::PrismaClient;
-use lightdotso_tracing::tracing::Level;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
-use tower_http::{
-    cors::{Any, CorsLayer},
-    trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer},
-};
+use tower_http::cors::{Any, CorsLayer};
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
@@ -107,14 +104,6 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
-    // Trace requests and responses w/ span
-    // From: https://github.com/quasiuslikecautious/commerce-api/blob/73fb24667665e87d0909716657f949e3ce9c2990/src/middlewares/lib.rs#L83
-    // License: MIT
-    let trace_layer = TraceLayer::new_for_http()
-        .make_span_with(DefaultMakeSpan::new().include_headers(true))
-        .on_request(DefaultOnRequest::new().level(Level::INFO))
-        .on_response(DefaultOnResponse::new().level(Level::INFO));
-
     let app = Router::new()
         .route("/", get("api.light.so"))
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
@@ -132,8 +121,9 @@ pub async fn start_api_server() -> Result<()> {
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
-                .layer(trace_layer.clone())
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
+                .layer(OtelInResponseLayer)
+                .layer(OtelAxumLayer::default())
                 .layer(cors)
                 .into_inner(),
         )
