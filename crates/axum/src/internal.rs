@@ -27,8 +27,12 @@ use ethers_main::{
 use eyre::Result;
 use lightdotso_indexer::constants::DEPLOY_CHAIN_IDS;
 use lightdotso_redis::{
-    get_indexed_percentage, get_last_n_indexed_blocks, get_last_n_indexed_percentage,
-    get_most_recent_indexed_block, get_redis_client, redis::Client,
+    block::{
+        get_indexed_percentage, get_last_n_indexed_blocks, get_last_n_indexed_percentage,
+        get_most_recent_indexed_block,
+    },
+    get_redis_client,
+    redis::Client,
 };
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};

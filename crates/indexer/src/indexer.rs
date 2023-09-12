@@ -42,7 +42,10 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{
-    add_to_wallets, get_redis_client, is_wallet_present, redis::Client, set_block_status,
+    block::set_block_status,
+    get_redis_client,
+    redis::Client,
+    wallet::{add_to_wallets, is_wallet_present},
 };
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{
