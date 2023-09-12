@@ -11,6 +11,7 @@
 [dependencies]
   autometrics = { workspace = true }
   axum = { workspace = true }
+  axum-tracing-opentelemetry = "0.13.1"
   clap = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
