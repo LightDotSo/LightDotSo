@@ -54,7 +54,7 @@ ios-setup: ## Install iOS dependencies.
 
 .PHONY: solc-setup
 solc-setup: ## Install solc dependencies.
-	pip3 install solc-select || pip3 install --user solc-select --break-system-packages
+	pip3 install solc-select || pip3 install solc-select --break-system-packages
 	solc-select install $(SOLC_VERSION)
 	solc-select use $(SOLC_VERSION)
 
