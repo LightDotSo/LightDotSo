@@ -33,22 +33,27 @@ use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::routes::{check, health};
+use crate::routes::{check, health, wallet};
 
 #[derive(OpenApi)]
 #[openapi(info(
     title = "api.light.so",
     description = "API for api.light.so",
-    contact(name = "Test")
+    contact(name = "support@light.so")
 ))]
 #[openapi(
+    components(
+        schemas(wallet::Wallet)
+    ),
     paths(
         check::handler,
-        health::handler
+        health::handler,
+        wallet::handler
     ),
     tags(
         (name = "check", description = "Check API"),
-        (name = "health", description = "Health API")
+        (name = "health", description = "Health API"),
+        (name = "wallet", description = "Wallet API")
     )
 )]
 #[openapi(
@@ -119,6 +124,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(RapiDoc::new("/api-docs/openapi.json").path("/rapidoc"))
         .merge(check::router())
         .merge(health::router())
+        .merge(wallet::router())
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19

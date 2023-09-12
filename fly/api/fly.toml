@@ -12,7 +12,7 @@ kill_timeout = "5s"
   entrypoint = ["/usr/local/bin/api"]
 
 [build]
-  image = "ghcr.io/lightdotso/lightdotso:sha-6db578c784351f5554de5405cb2521fb365afaea"
+  image = "ghcr.io/lightdotso/lightdotso:sha-89759e6c9dddeaac9cf5bfc0350e6f57db4a9b6a"
 
 [deploy]
   strategy = "bluegreen"

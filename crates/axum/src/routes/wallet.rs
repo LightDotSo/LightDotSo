@@ -45,7 +45,7 @@ impl From<wallet::Data> for Wallet {
 
 #[autometrics]
 pub(crate) fn router() -> Router<ApiState> {
-    Router::new().route("/check", get(handler))
+    Router::new().route("/wallet/list", get(handler))
 }
 
 /// Check if the server is running.
