@@ -25,7 +25,7 @@ fn get_shard_key(chain_id: u64, block_number: i64) -> String {
     let shard_number = block_number / BLOCK_SHARD_SIZE;
     let start_range = shard_number * BLOCK_SHARD_SIZE;
     let end_range = start_range + BLOCK_SHARD_SIZE - 1;
-    format!("indexed_blocks:{}:{}-{}", chain_id, start_range, end_range)
+    format!("{}:{}:{}-{}", *INDEXED_BLOCKS, chain_id, start_range, end_range)
 }
 
 /// Set a range of values depending on the status
