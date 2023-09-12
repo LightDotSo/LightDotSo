@@ -25,11 +25,9 @@ use ethers_main::{
     providers::{Http, Middleware},
 };
 use eyre::Result;
-use lightdotso_indexer::constants::DEPLOY_CHAIN_IDS;
 use lightdotso_redis::{
     block::{
-        get_indexed_percentage, get_last_n_indexed_blocks, get_last_n_indexed_percentage,
-        get_most_recent_indexed_block,
+        get_last_n_indexed_blocks, get_last_n_indexed_percentage, get_most_recent_indexed_block,
     },
     get_redis_client,
     redis::Client,
@@ -43,7 +41,6 @@ use std::{convert::Infallible, sync::Arc};
 struct IndexResponse {
     latest_block_number: i64,
     latest_indexed_block: i64,
-    all_percentage: f64,
     last_300_percentage: f64,
     last_indexed_blocks: Vec<i64>,
 }
@@ -53,9 +50,19 @@ async fn get_recent_block(
     State(redis_client): State<Arc<Client>>,
     chain_id: Path<String>,
 ) -> Result<Response<String>, Infallible> {
+    // Parse the chain id as i64
+    let chain_id = chain_id.parse::<u64>();
+
+    // If the chain id is not valid, return 400
+    if chain_id.is_err() {
+        return Ok(Response::builder().status(400).body("invalid chain id".to_string()).unwrap());
+    }
+
+    // Unwrap the chain id
+    let chain_id = chain_id.unwrap();
+
     // Construct the rpc
-    let rpc =
-        format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id.as_str());
+    let rpc = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
     info!("rpc: {}", rpc);
 
     // Create the http client
@@ -68,26 +75,21 @@ async fn get_recent_block(
     let mut con = redis_client.get_connection().unwrap();
 
     // Get the most recent indexed block
-    let latest_indexed_block = get_most_recent_indexed_block(&mut con, &chain_id).unwrap();
-
-    // Get the start block
-    let start_block = DEPLOY_CHAIN_IDS.get(&chain_id.parse::<u64>().unwrap()).unwrap();
-
-    // Get the most recent indexed block percentage
-    let percentage =
-        get_indexed_percentage(&mut con, &chain_id, latest_block_number - start_block).unwrap();
+    let latest_indexed_block =
+        get_most_recent_indexed_block(&mut con, chain_id, latest_block_number).unwrap();
 
     // Get last 300 percentage
-    let last_300_percentage = get_last_n_indexed_percentage(&mut con, &chain_id, 300).unwrap();
+    let last_300_percentage =
+        get_last_n_indexed_percentage(&mut con, chain_id, 300, latest_block_number).unwrap();
 
     // Get the last 100 blocks
-    let last_indexed_blocks = get_last_n_indexed_blocks(&mut con, &chain_id, 100).unwrap();
+    let last_indexed_blocks =
+        get_last_n_indexed_blocks(&mut con, chain_id, 100, latest_block_number).unwrap();
 
     // Construct the response
     let response = IndexResponse {
         latest_block_number,
         latest_indexed_block,
-        all_percentage: percentage,
         last_300_percentage,
         last_indexed_blocks,
     };

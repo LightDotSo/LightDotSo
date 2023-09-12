@@ -37,9 +37,6 @@ static LATEST_INDEXED_BLOCK: Lazy<GaugeVec> = Lazy::new(|| {
     register_gauge_vec!("latest_indexed_block", "Latest Indexed Block", &["chain_id"]).unwrap()
 });
 
-static ALL_PERCENTAGE: Lazy<GaugeVec> =
-    Lazy::new(|| register_gauge_vec!("all_percentage", "All Percentage", &["chain_id"]).unwrap());
-
 static LAST300_PERCENTAGE: Lazy<GaugeVec> = Lazy::new(|| {
     register_gauge_vec!("last300_percentage", "Last 300 Percentage", &["chain_id"]).unwrap()
 });
@@ -64,7 +61,6 @@ pub async fn parse_indexer_metrics() -> Result<()> {
         LATEST_INDEXED_BLOCK
             .with_label_values(&[&chain_id.to_string()])
             .set(data.latest_indexed_block as f64);
-        ALL_PERCENTAGE.with_label_values(&[&chain_id.to_string()]).set(data.all_percentage);
         LAST300_PERCENTAGE
             .with_label_values(&[&chain_id.to_string()])
             .set(data.last_300_percentage);
