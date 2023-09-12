@@ -26,6 +26,14 @@ where
     Router::new().route("/health", get(handler))
 }
 
+/// Check the health of the server.
+#[utoipa::path(
+        get,
+        path = "/health",
+        responses(
+            (status = 200, description = "Health returned successfully"),
+        )
+    )]
 #[autometrics]
 async fn handler() -> impl IntoResponse {
     "Ok"

@@ -31,13 +31,17 @@ use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
+use crate::routes::{check, health};
+
 #[derive(OpenApi)]
 #[openapi(
         paths(
-            crate::routes::check::handler
+            check::handler,
+            health::handler
         ),
         tags(
-            (name = "Check", description = "Check API")
+            (name = "check", description = "Check API"),
+            (name = "health", description = "Health API")
         )
     )]
 struct ApiDoc;
@@ -87,10 +91,8 @@ pub async fn start_api_server() -> Result<()> {
         // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
         // via SwaggerUi instead we only make rapidoc to point to the existing doc.
         .merge(RapiDoc::new("/api-docs/openapi.json").path("/rapidoc"))
-        // Alternative to above
-        // .merge(RapiDoc::with_openapi("/api-docs/openapi2.json",
-        // ApiDoc::openapi()).path("/rapidoc"))
-        .merge(crate::routes::health::router())
+        .merge(check::router())
+        .merge(health::router())
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
