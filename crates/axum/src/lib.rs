@@ -29,6 +29,7 @@ pub mod api;
 pub mod exporter;
 pub mod internal;
 pub mod prometheus;
+pub mod result;
 pub mod routes;
 pub mod rpc;
 

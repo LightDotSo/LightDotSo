@@ -19,11 +19,14 @@
   http-body = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
+  lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
+  lightdotso-prisma = { workspace = true }
   lightdotso-prometheus = { workspace = true }
   lightdotso-redis = { workspace = true }
   lightdotso-rpc = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  prisma-client-rust = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
   tokio = { workspace = true }

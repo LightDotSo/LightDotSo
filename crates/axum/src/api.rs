@@ -16,8 +16,10 @@
 use crate::handle_error;
 use axum::{error_handling::HandleErrorLayer, routing::get, Router};
 use eyre::Result;
+use lightdotso_db::db::create_client;
+use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::Level;
-use std::{net::SocketAddr, time::Duration};
+use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
@@ -61,7 +63,16 @@ use crate::routes::{check, health};
 )]
 struct ApiDoc;
 
+#[derive(Clone)]
+pub struct ApiState {
+    pub client: Arc<PrismaClient>,
+}
+
 pub async fn start_api_server() -> Result<()> {
+    // Create a shared client
+    let db = Arc::new(create_client().await.unwrap());
+    let state = ApiState { client: db };
+
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
     // License: Apache-2.0
@@ -119,7 +130,8 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(cors)
                 .into_inner(),
-        );
+        )
+        .with_state(state);
 
     let socket_addr = "[::]:3000".parse()?;
     axum::Server::bind(&socket_addr)
