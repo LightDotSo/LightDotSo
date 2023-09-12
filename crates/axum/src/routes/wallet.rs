@@ -21,12 +21,26 @@ use axum::{
     Json, Router,
 };
 use lightdotso_prisma::wallet;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
+use utoipa::{IntoParams, ToSchema};
 
-#[derive(Debug, Deserialize, Default)]
-pub struct Pagination {
+#[derive(Debug, Deserialize, Default, IntoParams)]
+pub struct PaginationQuery {
     pub offset: Option<i64>,
     pub limit: Option<i64>,
+}
+
+/// Item to do.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct Wallet {
+    id: String,
+}
+
+// Implement From<wallet::Data> for Wallet.
+impl From<wallet::Data> for Wallet {
+    fn from(wallet: wallet::Data) -> Self {
+        Self { id: wallet.id.to_string() }
+    }
 }
 
 #[autometrics]
@@ -38,18 +52,23 @@ pub(crate) fn router() -> Router<ApiState> {
 #[utoipa::path(
         get,
         path = "/wallet/list",
+        params(
+            PaginationQuery
+        ),
         responses(
-            (status = 200, description = "Check returned successfully"),
+            (status = 200, description = "Wallets returned successfully", body = [Wallet]),
         )
     )]
 #[autometrics]
 async fn handler(
-    pagination: Option<Query<Pagination>>,
+    pagination: Option<Query<PaginationQuery>>,
     State(client): State<ApiState>,
-) -> AppJsonResult<Vec<wallet::Data>> {
+) -> AppJsonResult<Vec<Wallet>> {
+    // Get the pagination query.
     let Query(pagination) = pagination.unwrap_or_default();
 
-    let users = client
+    // Get the wallets from the database.
+    let wallets = client
         .client
         .wallet()
         .find_many(vec![])
@@ -58,5 +77,8 @@ async fn handler(
         .exec()
         .await?;
 
-    Ok(Json::from(users))
+    // Change the wallets to the format that the API expects.
+    let wallets: Vec<Wallet> = wallets.into_iter().map(Wallet::from).collect();
+
+    Ok(Json::from(wallets))
 }
