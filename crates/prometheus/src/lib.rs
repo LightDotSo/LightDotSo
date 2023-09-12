@@ -23,7 +23,6 @@ use serde::Deserialize;
 struct ApiResponse {
     latest_block_number: i64,
     latest_indexed_block: i64,
-    all_percentage: f64,
     last_300_percentage: f64,
 }
 
