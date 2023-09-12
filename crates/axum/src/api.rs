@@ -33,19 +33,11 @@ use utoipa_swagger_ui::SwaggerUi;
 
 #[derive(OpenApi)]
 #[openapi(
-        // paths(
-        //     todo::list_todos,
-        //     todo::search_todos,
-        //     todo::create_todo,
-        //     todo::mark_done,
-        //     todo::delete_todo,
-        // ),
-        // components(
-        //     schemas(todo::Todo, todo::TodoError)
-        // ),
-        // modifiers(&SecurityAddon),
+        paths(
+            crate::routes::check::handler
+        ),
         tags(
-            (name = "todo", description = "Todo items management API")
+            (name = "Check", description = "Check API")
         )
     )]
 struct ApiDoc;

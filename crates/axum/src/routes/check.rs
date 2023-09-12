@@ -13,6 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod check;
-pub(crate) mod health;
-pub(crate) mod metrics;
+use autometrics::autometrics;
+use axum::{response::IntoResponse, routing::get, Router};
+use http_body::Body as HttpBody;
+
+#[autometrics]
+pub(crate) fn router<S, B>() -> Router<S, B>
+where
+    B: HttpBody + Send + 'static,
+    S: Clone + Send + Sync + 'static,
+{
+    Router::new().route("/check", get(handler))
+}
+
+/// Check if the server is running.
+#[utoipa::path(
+        get,
+        path = "/check",
+        responses(
+            (status = 200, description = "Check returned successfully"),
+        )
+    )]
+#[autometrics]
+async fn handler() -> impl IntoResponse {
+    "Ok"
+}

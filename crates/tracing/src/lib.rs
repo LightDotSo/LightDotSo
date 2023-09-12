@@ -108,8 +108,17 @@ pub fn init_metrics() -> Result<()> {
     // Determine the log level based on the environment
     let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
         "development" => Level::TRACE,
+        "local" => Level::DEBUG,
         _ => Level::INFO,
     };
+
+    // If the environment is local, return early w/ subscriber
+    if log_level == Level::DEBUG {
+        // Initialize the tracing subscriber
+        tracing_subscriber::registry().with(stdout(log_level)).init();
+
+        return Ok(());
+    }
 
     // Set the global propagator to the W3C Trace Context propagator
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
