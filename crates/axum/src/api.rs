@@ -104,6 +104,10 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
+    // Create the API
+    let api = Router::new().merge(check::router()).merge(health::router()).merge(wallet::router());
+
+    // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
@@ -111,9 +115,8 @@ pub async fn start_api_server() -> Result<()> {
         // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
         // via SwaggerUi instead we only make rapidoc to point to the existing doc.
         .merge(RapiDoc::new("/api-docs/openapi.json").path("/rapidoc"))
-        .merge(check::router())
-        .merge(health::router())
-        .merge(wallet::router())
+        .nest("/v1", api.clone())
+        .merge(api)
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19

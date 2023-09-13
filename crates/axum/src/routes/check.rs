@@ -29,7 +29,7 @@ where
 /// Check if the server is running.
 #[utoipa::path(
         get,
-        path = "/check",
+        path = "/v1/check",
         responses(
             (status = 200, description = "Check returned successfully"),
         )
