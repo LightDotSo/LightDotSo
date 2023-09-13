@@ -29,7 +29,7 @@ where
 /// Check the health of the server.
 #[utoipa::path(
         get,
-        path = "/health",
+        path = "/v1/health",
         responses(
             (status = 200, description = "Health returned successfully"),
         )

@@ -52,7 +52,7 @@ pub(crate) fn router() -> Router<ApiState> {
 /// Check if the server is running.
 #[utoipa::path(
         get,
-        path = "/wallet/list",
+        path = "/v1/wallet/list",
         params(
             PaginationQuery
         ),
