@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.22.11",
-    "@lightdotso/auth": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
+    "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/trpc": "workspace:*",

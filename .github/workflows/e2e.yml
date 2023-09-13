@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     outputs:
-      api: ${{ steps.filter.outputs.api }}
+      auth: ${{ steps.filter.outputs.auth }}
       app: ${{ steps.filter.outputs.app }}
     steps:
       - name: Fetch Head
@@ -29,14 +29,14 @@ jobs:
         id: filter
         with:
           filters: |
-            api:
-              - 'apps/api/**'
+            auth:
+              - 'apps/auth/**'
             app:
               - 'apps/app/**'
             playground:
               - 'apps/playground/**'
-  e2e-api:
-    if: needs.e2e-filter.outputs.api == 'true'
+  e2e-auth:
+    if: needs.e2e-filter.outputs.auth == 'true'
     needs:
       - e2e-filter
     runs-on: ubuntu-latest
@@ -57,9 +57,9 @@ jobs:
       - name: Docker Compose Up
         run: |
           docker-compose up -d --build
-      - name: Run E2E Api
+      - name: Run E2E Auth
         run: |
-          pnpm run e2e:api:dev
+          pnpm run e2e:auth:dev
   e2e-app:
     if: needs.e2e-filter.outputs.app == 'true'
     needs:
@@ -114,7 +114,7 @@ jobs:
     if: always()
     needs:
       - e2e-filter
-      - e2e-api
+      - e2e-auth
       - e2e-app
       - e2e-playground
     runs-on: ubuntu-latest
@@ -123,5 +123,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: e2e-api,e2e-app,e2e-playground
+          allowed-skips: e2e-auth,e2e-app,e2e-playground
           jobs: ${{ toJSON(needs) }}

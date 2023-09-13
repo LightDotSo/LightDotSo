@@ -60,9 +60,10 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
 #[autometrics]
 pub async fn create_wallet(
     db: Database,
-    log: ethers::types::Log,
+    address: ethers::types::H160,
     chain_id: i64,
     factory_address: ethers::types::H160,
+    hash: String,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
     info!("Creating wallet");
@@ -70,11 +71,10 @@ pub async fn create_wallet(
     let wallet = db
         .wallet()
         .create(
-            to_checksum(&log.address, None),
+            to_checksum(&address, None),
             chain_id,
             to_checksum(&factory_address, None),
-            // Parse the log indexed data as a string.
-            log.data.to_string(),
+            hash,
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
         )
         .exec()
@@ -250,7 +250,7 @@ pub async fn create_transaction_with_log_receipt(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ethers::types::{Address, Log};
+    use ethers::types::Address;
     use lightdotso_prisma::PrismaClient;
 
     #[test]
@@ -261,31 +261,6 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_wallet() {
-        let log = Log {
-            address: Address::zero(),
-            block_hash: Some(
-                "0x1d59ff54b1eb26b013ce3cb5fc9dab3705b415a67127a003c3e61eb445bb8df2"
-                    .parse()
-                    .unwrap(),
-            ),
-            block_number: Some(0x5daf3b.into()),
-            data: "0x68656c6c6f21".parse().unwrap(),
-            transaction_hash: Some(
-                "0x88df016429689c079f3b2f6ad39fa052532c56795b733da78a91ebe6a713944b"
-                    .parse()
-                    .unwrap(),
-            ),
-            transaction_index: Some(0x41.into()),
-            log_index: Some(0x1.into()),
-            transaction_log_index: Some(0x0.into()),
-            log_type: None,
-            removed: Some(false),
-            topics: vec![
-                "bd9bb67345a2fcc8ef3b0857e7e2901f5a0dcfc7fe5e3c10dc984f02842fb7ba".parse().unwrap(),
-                "000000000000000000000000000000000000000000000000000000000000007b".parse().unwrap(),
-            ],
-        };
-
         // Set the mocked db client
         let (client, _mock) = PrismaClient::_mock();
         let client = Arc::new(client);
@@ -294,10 +269,10 @@ mod tests {
         _mock
             .expect(
                 client.wallet().create(
-                    format!("{:?}", log.address),
+                    format!("{:?}", Address::zero()),
                     3_i64,
                     format!("{:?}", Address::zero()),
-                    log.data.to_string(),
+                    "".to_string(),
                     vec![wallet::testnet::set(false)],
                 ),
                 wallet::Data {
@@ -321,7 +296,15 @@ mod tests {
             .await;
 
         // Create a wallet
-        let wallet = create_wallet(client, log, 3_i64, Address::zero(), Some(false)).await;
+        let wallet = create_wallet(
+            client,
+            Address::zero(),
+            3_i64,
+            Address::zero(),
+            "".to_string(),
+            Some(false),
+        )
+        .await;
 
         if let Ok(wallet) = wallet {
             assert_eq!(wallet.address, format!("{:?}", Address::zero()));

@@ -12,6 +12,7 @@
   axum = { workspace = true }
   clap = { workspace = true }
   eyre = { workspace = true }
+  futures = { workspace = true }
   futures-util = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }

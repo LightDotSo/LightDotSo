@@ -13,7 +13,7 @@
   - @lightdotso/trpc@0.1.0-pre.0
   - @lightdotso/ui@1.1.0-pre.4
   - @lightdotso/kysely@0.0.1-pre.0
-  - @lightdotso/auth@0.0.1-pre.0
+  - @lightdotso/next-auth@0.0.1-pre.0
 
 ## 1.1.0-pre.4
 

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getAuthSession } from "@lightdotso/auth";
+import { getAuthSession } from "@lightdotso/next-auth";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 // TODO: Add pusher
 // import Pusher from "pusher-http-edge";

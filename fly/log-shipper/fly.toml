@@ -7,7 +7,7 @@ app = "lightdotso-log-shipper"
 primary_region = "sjc"
 
 [build]
-  image = "ghcr.io/superfly/fly-log-shipper:latest"
+  image = "ghcr.io/superfly/fly-log-shipper:v0.0.8"
 
 [http_service]
   internal_port = 8686
@@ -17,6 +17,6 @@ primary_region = "sjc"
   min_machines_running = 1
   # processes = ["app"]
 
-[[services]]
-  http_checks = []
-  internal_port = 8686
+  # [[services]]
+  #   http_checks = []
+  #   internal_port = 8686

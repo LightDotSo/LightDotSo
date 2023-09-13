@@ -14,27 +14,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use clap::Parser;
-use dotenvy::dotenv;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_gas::config::GasArgs;
 use lightdotso_tracing::{
-    init, init_metrics, otel, stdout,
-    tracing::{info, Level},
+    init_metrics,
+    tracing::{error, info},
 };
 
 #[tokio::main]
 pub async fn main() {
-    let _ = dotenv();
-
-    let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
-        "development" => Level::TRACE,
-        _ => Level::INFO,
-    };
-
-    init(vec![stdout(log_level), otel()]);
-
-    let _ = init_metrics();
+    // Initialize tracing
+    let res = init_metrics();
+    if let Err(e) = res {
+        error!("Failed to initialize metrics: {:?}", e)
+    }
 
     info!("Starting server at {}", SHORT_VERSION);
 

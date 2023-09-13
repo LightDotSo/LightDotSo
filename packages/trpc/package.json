@@ -18,7 +18,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@lightdotso/auth": "workspace:*",
+    "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@prisma/client": "^5.2.0",
     "@trpc-limiter/core": "^0.0.8",
