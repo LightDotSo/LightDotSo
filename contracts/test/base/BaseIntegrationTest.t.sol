@@ -37,6 +37,9 @@ abstract contract BaseIntegrationTest is BaseTest {
     // Hash of the expected image
     bytes32 internal expectedImageHash;
 
+    // Init code of the account
+    bytes internal initCode;
+
     // -------------------------------------------------------------------------
     // Utility Contracts
     // -------------------------------------------------------------------------

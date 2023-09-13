@@ -4,7 +4,7 @@ AccountDeployed.t.sol
 │  └── It should revert on a {ImageHashIsZero} error
 └── If the hash is not zero
    ├── When the address already exists
-   │  └── It should return the existing address
+   │  └── It should revert on a {AA10 sender already constructed} error
    └── When the address does not exist
       ├── It should deploy a new LightWallet
       ├── It should deploy a new LightWallet with the correct hash

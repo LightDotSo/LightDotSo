@@ -34,6 +34,12 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     function setUp() public virtual override {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
+
+        // The to-be-deployed account at expected Hash, nonce 3
+        wallet = LightWallet(payable(address(0xE30950a24FA04488549227664D4a1f079c164f9D)));
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(wallet), 1e30);
     }
 
     // -------------------------------------------------------------------------
@@ -54,24 +60,33 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         entryPoint.handleOps(ops, beneficiary);
     }
 
-    /// Tests that the factory revert when creating an account with a nonce that is 0
-    function test_createAccountFromEntryPoint() public {
-        // The to-be-deployed account at expected Hash, nonce 3
-        LightWallet wallet = LightWallet(payable(address(0xE30950a24FA04488549227664D4a1f079c164f9D)));
+    /// Tests that the factory revert when creating an account that already exists
+    function test_revertWhenAlreadyExists_createAccountFromEntryPoint() public {
+        _testCreateAccountFromEntryPoint();
 
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(wallet), 1e30);
+        // Example UserOperation to create the account w/ the same params
+        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
 
+        vm.expectRevert(
+            abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA10 sender already constructed")
+        );
+        entryPoint.handleOps(ops, beneficiary);
+    }
+
+    /// Utility function to create an account from the entry point
+    function _testCreateAccountFromEntryPoint() internal {
+        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
+        entryPoint.handleOps(ops, beneficiary);
+    }
+
+    /// Utility function to run the signPackUserOp function
+    function _testSignPackUserOpWithInitCode() internal view returns (UserOperation[] memory ops) {
         // Set the initCode to create an account with the expected image hash and nonce 3
         bytes memory initCode = abi.encodePacked(
             address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
         );
 
         // Example UserOperation to create the account
-        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", userKey, initCode);
-        entryPoint.handleOps(ops, beneficiary);
-
-        // Assert that the wallet is a contract
-        assertTrue(address(wallet).code.length > 0);
+        ops = entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", userKey, initCode);
     }
 }
