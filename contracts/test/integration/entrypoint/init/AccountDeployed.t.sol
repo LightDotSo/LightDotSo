@@ -42,10 +42,16 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the factory revert when creating an account with a hash that is 0
     function test_revertWhenHashZero_createAccountFromEntryPoint() public {
+        // Set the initCode to create an account with the expected image hash and nonce 3
+        bytes memory initCode =
+            abi.encodePacked(address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, 3));
+
+        // Example UserOperation to create the account
+        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(1), "", userKey, initCode);
+
         // Revert for conventional upgrades w/o signature
-        vm.expectRevert(abi.encodeWithSignature("ImageHashIsZero()"));
-        // Get the predicted address of the new account
-        account = factory.createAccount(bytes32(0), 0);
+        vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA13 initCode failed or OOG"));
+        entryPoint.handleOps(ops, beneficiary);
     }
 
     /// Tests that the factory revert when creating an account with a nonce that is 0

@@ -28,7 +28,7 @@ LightWalletFactoryIntegrationTest:test_createAccount_noInitializeTwice() (gas: 1
 LightWalletFactoryIntegrationTest:test_createAccount_noProxyAdmin() (gas: 10811)
 LightWalletFactoryIntegrationTest:test_revertWhenAddressZero_createAccount() (gas: 39474)
 LightWalletFactoryIntegrationTest:test_revertWhenHashZero_createAccount() (gas: 102665)
-LightWalletFactoryIntegrationTest:test_revertWhenHashZero_createAccountFromEntryPoint() (gas: 102687)
+LightWalletFactoryIntegrationTest:test_revertWhenHashZero_createAccountFromEntryPoint() (gas: 148666)
 LightWalletProxyIntegrationTest:test_proxy_initialize() (gas: 2582358)
 LightWalletProxyIntegrationTest:test_revertWhenAlreadyInitialized_proxy() (gas: 16198)
 SendERC1155IntegrationTest:test_revertWhenInvalidSignature_transferERC1155() (gas: 89385)
