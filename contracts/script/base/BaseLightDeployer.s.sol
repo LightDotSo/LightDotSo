@@ -15,8 +15,10 @@
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
@@ -28,9 +30,15 @@ abstract contract BaseLightDeployer {
     // Storages
     // -------------------------------------------------------------------------
 
+    EntryPoint internal entryPoint;
+
     LightWallet internal wallet;
 
     LightWalletFactory internal factory;
+
+    LightWalletUtils internal lightWalletUtils;
+
+    bytes32 internal expectedImageHash;
 
     // -------------------------------------------------------------------------
     // Immutable Storage
@@ -40,24 +48,22 @@ abstract contract BaseLightDeployer {
 
     address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
 
+    address internal constant ENTRY_POINT_ADDRESS = address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789);
+
+    /// @dev BaseTest setup
+    function setUp() public virtual {
+        // Get the entry point
+        entryPoint = EntryPoint(payable(ENTRY_POINT_ADDRESS));
+
+        // Construct the utils
+        lightWalletUtils = new LightWalletUtils();
+    }
+
     // -------------------------------------------------------------------------
     // Utilities
     // -------------------------------------------------------------------------
 
     function randMod() internal view returns (bytes32) {
-        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty))) % 4337);
-    }
-
-    function deployLightWallet() internal returns (LightWallet) {
-        // Get the factory
-        factory = LightWalletFactory(address(LIGHT_FACTORY_ADDRESS));
-
-        // Create an account
-        wallet = factory.createAccount(bytes32(uint256(1)), randMod());
-
-        // solhint-disable-next-line no-console
-        console.log("LightWallet deployed at address: %s", address(wallet));
-
-        return wallet;
+        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
     }
 }
