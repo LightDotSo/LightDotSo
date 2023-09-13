@@ -1,7 +1,7 @@
 AccountDeployed.t.sol
 ├── If the hash is zero
 │  ├── It should revert
-│  └── It should revert on a {ImageHashIsZero} error
+│  └── It should revert on a {AA13 initCode failed or OOG} error
 └── If the hash is not zero
    ├── When the address already exists
    │  └── It should revert on a {AA10 sender already constructed} error

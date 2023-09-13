@@ -40,6 +40,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(wallet), 1e30);
+
+        _testCreateAccountFromEntryPoint();
     }
 
     // -------------------------------------------------------------------------
@@ -62,8 +64,6 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the factory revert when creating an account that already exists
     function test_revertWhenAlreadyExists_createAccountFromEntryPoint() public {
-        _testCreateAccountFromEntryPoint();
-
         // Example UserOperation to create the account w/ the same params
         UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
 
@@ -71,6 +71,56 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
             abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA10 sender already constructed")
         );
         entryPoint.handleOps(ops, beneficiary);
+    }
+
+    /// Tests that the factory can create a new account at the predicted address
+    function test_createAccountFromEntryPoint_emitEvents() public {
+        // The to-be-deployed account at expected Hash, nonce 300
+        LightWallet newWallet = LightWallet(payable(address(0x24DB11C8266D85A917C37b3ab3Afdc11886F1B83)));
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(newWallet), 1e30);
+
+        // Set the initCode to create an account with the expected image hash and nonce 300
+        bytes memory initCode = abi.encodePacked(
+            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 300)
+        );
+        // Example UserOperation to create the account
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOp(lightWalletUtils, address(newWallet), "", userKey, initCode);
+
+        vm.expectEmit(true, true, true, true);
+        emit ImageHashUpdated(expectedImageHash);
+        vm.expectEmit(true, true, true, true);
+        emit Initialized(1);
+        // vm.expectEmit(true, true, true, true);
+        // emit LightWalletInitialized(address(entryPoint), hash);
+        entryPoint.handleOps(ops, beneficiary);
+    }
+
+    /// Tests that the factory can create a new wallet at the predicted address
+    function test_createAccountFromEntryPoint_equalsGetAddress() public {
+        // Get the predicted address of the new account
+        address predicted = factory.getAddress(expectedImageHash, bytes32(uint256(3)));
+
+        // Assert that the predicted address matches the created account
+        assertEq(predicted, address(wallet));
+        // Get the immutable implementation in the factory
+        LightWallet implementation = factory.accountImplementation();
+        // Assert that the implementation of the created account is the LightWallet
+        assertEq(proxyUtils.getProxyImplementation(address(wallet)), address(implementation));
+    }
+
+    /// Tests that there is no proxy admin for the wallet
+    function test_createAccountFromEntryPoint_noProxyAdmin() public {
+        // Check that no proxy admin exists
+        _noProxyAdmin(address(wallet));
+    }
+
+    /// Tests that the wallet is not initializable twice
+    function test_createAccountFromEntryPoint_noInitializeTwice() public {
+        // Check that the wallet is not initializable twice
+        _noInitializeTwice(address(wallet), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
     }
 
     /// Utility function to create an account from the entry point
