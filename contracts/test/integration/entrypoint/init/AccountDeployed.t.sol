@@ -40,6 +40,14 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     // Tests
     // -------------------------------------------------------------------------
 
+    /// Tests that the factory revert when creating an account with a hash that is 0
+    function test_revertWhenHashZero_createAccountFromEntryPoint() public {
+        // Revert for conventional upgrades w/o signature
+        vm.expectRevert(abi.encodeWithSignature("ImageHashIsZero()"));
+        // Get the predicted address of the new account
+        account = factory.createAccount(bytes32(0), 0);
+    }
+
     /// Tests that the factory revert when creating an account with a nonce that is 0
     function test_createAccountFromEntryPoint() public {
         // The to-be-deployed account at expected Hash, nonce 3
@@ -48,28 +56,13 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Deposit 1e30 ETH into the account
         vm.deal(address(wallet), 1e30);
 
-        // Example UserOperation to initialize an account
-        UserOperation memory op = entryPoint.fillUserOp(address(wallet), "");
         // Set the initCode to create an account with the expected image hash and nonce 3
-        op.initCode = abi.encodePacked(
+        bytes memory initCode = abi.encodePacked(
             address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
         );
 
-        // Get the hash of the UserOperation
-        bytes32 userOphash = entryPoint.getUserOpHash(op);
-
-        // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(userOphash, address(wallet), userKey);
-
-        // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
-        op.signature = signature;
-
-        // Pack the UserOperation
-        UserOperation[] memory ops = new UserOperation[](1);
-        ops[0] = op;
-
-        // Handle the user operation
+        // Example UserOperation to create the account
+        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", userKey, initCode);
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the wallet is a contract

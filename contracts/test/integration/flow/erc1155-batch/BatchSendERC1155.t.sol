@@ -93,7 +93,8 @@ contract BatchSendERC1155IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC1155
     function test_revertWhenInvalidSignature_batchTransferERC1155() public {
         // Example UserOperation to send 0 ERC1155 to the address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey, "");
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
@@ -102,7 +103,8 @@ contract BatchSendERC1155IntegrationTest is BaseIntegrationTest {
     /// Tests that the account can correctly transfer ERC1155
     function test_batchTransferERC1155() public {
         // Example UserOperation to send 0 ETH to the address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey);
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey, "");
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the corresponding destinations are correct

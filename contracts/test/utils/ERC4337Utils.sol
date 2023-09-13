@@ -76,16 +76,22 @@ library ERC4337Utils {
     /// @param _account The account to sign the UserOperation with
     /// @param _data The data to fill the UserOperation with
     /// @param _key The user's private key to sign the UserOperation with
+    /// @param _initCode The initialization code for the user operation (optional parameter)
     function signPackUserOp(
         EntryPoint _entryPoint,
         LightWalletUtils _lightWalletUtils,
         address _account,
         bytes memory _data,
-        uint256 _key
+        uint256 _key,
+        bytes memory _initCode
     ) internal view returns (UserOperation[] memory ops) {
         // Example UserOperation to update the account to immutable address one
         UserOperation memory op = _entryPoint.fillUserOp(address(_account), _data);
 
+        // Set the initCode from the params
+        if (_initCode.length > 0) {
+            op.initCode = _initCode;
+        }
         // Get the hash of the UserOperation
         bytes32 userOphash = _entryPoint.getUserOpHash(op);
 

@@ -64,7 +64,8 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 0,
                 abi.encodeWithSignature("upgradeTo(address)", address(accountV2))
             ),
-            userKey
+            userKey,
+            ""
         );
         entryPoint.handleOps(ops, beneficiary);
 
@@ -84,7 +85,8 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 0,
                 abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
             ),
-            userKey
+            userKey,
+            ""
         );
         entryPoint.handleOps(ops, beneficiary);
         // Deploy new version of LightWallet to test upgrade to
@@ -95,7 +97,8 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
             lightWalletUtils,
             address(account),
             abi.encodeWithSignature("upgradeTo(address)", address(accountV2)),
-            userKey
+            userKey,
+            ""
         );
         vm.expectRevert();
         entryPoint.handleOps(opsv2, beneficiary);
