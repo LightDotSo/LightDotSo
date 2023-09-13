@@ -104,8 +104,10 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
+    // Create the API
     let api = Router::new().merge(check::router()).merge(health::router()).merge(wallet::router());
 
+    // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
         .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
