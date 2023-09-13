@@ -25,6 +25,7 @@ use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
 pub struct PaginationQuery {
     pub offset: Option<i64>,
     pub limit: Option<i64>,
