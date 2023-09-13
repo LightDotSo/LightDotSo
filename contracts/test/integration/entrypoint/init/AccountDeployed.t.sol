@@ -42,7 +42,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the factory revert when creating an account with a nonce that is 0
     function test_createAccountFromEntryPoint() public {
-        // The to-be-deployed account at hash 0, nonce 1
+        // The to-be-deployed account at expected Hash, nonce 3
         LightWallet wallet = LightWallet(payable(address(0xE30950a24FA04488549227664D4a1f079c164f9D)));
 
         // Deposit 1e30 ETH into the account
@@ -50,6 +50,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
         // Example UserOperation to initialize an account
         UserOperation memory op = entryPoint.fillUserOp(address(wallet), "");
+        // Set the initCode to create an account with the expected image hash and nonce 3
         op.initCode = abi.encodePacked(
             address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
         );
@@ -68,6 +69,10 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
 
+        // Handle the user operation
         entryPoint.handleOps(ops, beneficiary);
+
+        // Assert that the wallet is a contract
+        assertTrue(address(wallet).code.length > 0);
     }
 }
