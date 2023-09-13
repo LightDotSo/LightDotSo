@@ -48,8 +48,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         new LightWalletFactory(EntryPoint(payable(address(0))));
     }
 
-    /// Tests that the factory revert when creating an account with a nonce that is 0
-    function test_revertWhenBytesZero_createAccount() public {
+    /// Tests that the factory revert when creating an account with a hash that is 0
+    function test_revertWhenHashZero_createAccount() public {
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("ImageHashIsZero()"));
         // Get the predicted address of the new account

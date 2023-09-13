@@ -69,6 +69,9 @@ abstract contract BaseTest is Test {
     // LightWalletFactory core contract
     LightWalletFactory internal factory;
 
+    // LightWallet for deployed account
+    LightWallet internal wallet;
+
     // -------------------------------------------------------------------------
     // Utility Contracts
     // -------------------------------------------------------------------------

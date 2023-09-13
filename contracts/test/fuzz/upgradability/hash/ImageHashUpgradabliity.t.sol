@@ -45,7 +45,8 @@ contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
                 0,
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
             ),
-            userKey
+            userKey,
+            ""
         );
 
         // Handle the user operation

@@ -46,7 +46,8 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
                 0,
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
             ),
-            userKey
+            userKey,
+            ""
         );
 
         // Set the signature to an invalid value
@@ -97,7 +98,8 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
                 0,
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
             ),
-            userKey
+            userKey,
+            ""
         );
 
         // Handle the user operation
