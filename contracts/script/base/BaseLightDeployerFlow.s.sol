@@ -17,11 +17,16 @@
 
 pragma solidity ^0.8.18;
 
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
+
+using ERC4337Utils for EntryPoint;
 
 /// @notice Base deployer test for scripts
 abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
@@ -53,13 +58,14 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         );
 
         // UserOperation to create the account
-        ops = entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", vm.envUint("PRIVATE_KEY"), initCode);
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", vm.envUint("PRIVATE_KEY"), initCode);
 
         // Create an account
         wallet = factory.createAccount(bytes32(uint256(1)), randMod());
 
         // solhint-disable-next-line no-console
-        console.log("LightWallet deployed at address: %s", address(wallet));
+        // console.log("LightWallet deployed at address: %s", address(wallet));
 
         return wallet;
     }
