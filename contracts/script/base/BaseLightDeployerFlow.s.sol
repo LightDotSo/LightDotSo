@@ -67,7 +67,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         // Create an account
         wallet = factory.createAccount(bytes32(uint256(1)), randMod());
 
-        entryPoint.handleOps(ops, address(1));
+        entryPoint.handleOps(ops, payable(address(1)));
 
         // solhint-disable-next-line no-console
         // console.log("LightWallet deployed at address: %s", address(wallet));
