@@ -60,9 +60,10 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
 #[autometrics]
 pub async fn create_wallet(
     db: Database,
-    log: ethers::types::Log,
+    address: ethers::types::H160,
     chain_id: i64,
     factory_address: ethers::types::H160,
+    hash: String,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
     info!("Creating wallet");
@@ -70,11 +71,10 @@ pub async fn create_wallet(
     let wallet = db
         .wallet()
         .create(
-            to_checksum(&log.address, None),
+            to_checksum(&address, None),
             chain_id,
             to_checksum(&factory_address, None),
-            // Parse the log indexed data as a string.
-            log.data.to_string(),
+            hash,
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
         )
         .exec()
@@ -321,7 +321,15 @@ mod tests {
             .await;
 
         // Create a wallet
-        let wallet = create_wallet(client, log, 3_i64, Address::zero(), Some(false)).await;
+        let wallet = create_wallet(
+            client,
+            Address::zero(),
+            3_i64,
+            Address::zero(),
+            "".to_string(),
+            Some(false),
+        )
+        .await;
 
         if let Ok(wallet) = wallet {
             assert_eq!(wallet.address, format!("{:?}", Address::zero()));
