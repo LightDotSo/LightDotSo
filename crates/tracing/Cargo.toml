@@ -9,16 +9,29 @@
   repository.workspace = true
 
 [dependencies]
-  opentelemetry = { version = "0.20", features = ["rt-tokio", "trace"] }
-  opentelemetry-otlp = { version = "0.13", features = [
-    "tonic",
-    "metrics",
+  base64 = { workspace = true }
+  dotenvy = { workspace = true }
+  eyre = { workspace = true }
+  lazy_static = { workspace = true }
+  metrics = "0.21.1"
+  opentelemetry = { version = "0.20.0", features = ["rt-tokio"] }
+  opentelemetry-otlp = { version = "0.13.0", features = [
+    "grpc-tonic",
+    "reqwest-client",
+    "tls",
     "tls-roots",
   ] }
-  opentelemetry-stdout = { version = "0.1", features = ["trace"] }
-  tracing = { workspace = true }
+  opentelemetry_sdk = "0.20.0"
+  pyroscope = "0.5.7"
+  pyroscope_pprofrs = "0.2.7"
+  tokio = { workspace = true }
+  tonic = { workspace = true }
+  tonic_0_9 = { version = "0.9.0", features = ["tls"], package = "tonic" }
+  tracing = "0.1.37"
+  tracing-appender = "0.2.2"
   tracing-futures = "0.2.5"
-  tracing-opentelemetry = "0.20"
+  tracing-loki = { version = "0.2.2", features = ["rustls", "native-tls"] }
+  tracing-opentelemetry = "0.21.0"
   tracing-subscriber = { version = "0.3.17", features = [
     "ansi",
     "env-filter",

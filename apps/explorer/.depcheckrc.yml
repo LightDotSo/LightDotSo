@@ -16,7 +16,7 @@ ignores:
   - eslint-import-resolver-typescript
   - "@playwright/test"
   - checkly
-  - "@lightdotso/auth"
+  - "@lightdotso/next-auth"
   - "@lightdotso/styles"
   - "@lightdotso/ui"
   - connectkit

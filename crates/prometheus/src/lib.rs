@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use chrono::Utc;
+use eyre::Result;
 use once_cell::sync::Lazy;
 use prometheus::{register_gauge_vec, Encoder, GaugeVec, TextEncoder};
 use serde::Deserialize;
@@ -23,7 +23,6 @@ use serde::Deserialize;
 struct ApiResponse {
     latest_block_number: i64,
     latest_indexed_block: i64,
-    all_percentage: f64,
     last_300_percentage: f64,
 }
 
@@ -37,9 +36,6 @@ static LATEST_INDEXED_BLOCK: Lazy<GaugeVec> = Lazy::new(|| {
     register_gauge_vec!("latest_indexed_block", "Latest Indexed Block", &["chain_id"]).unwrap()
 });
 
-static ALL_PERCENTAGE: Lazy<GaugeVec> =
-    Lazy::new(|| register_gauge_vec!("all_percentage", "All Percentage", &["chain_id"]).unwrap());
-
 static LAST300_PERCENTAGE: Lazy<GaugeVec> = Lazy::new(|| {
     register_gauge_vec!("last300_percentage", "Last 300 Percentage", &["chain_id"]).unwrap()
 });
@@ -52,18 +48,11 @@ pub async fn metrics_handler() -> axum::response::Html<String> {
     axum::response::Html(String::from_utf8_lossy(&buffer).to_string())
 }
 
-pub async fn parse_indexer_metrics() {
+pub async fn parse_indexer_metrics() -> Result<()> {
     for &chain_id in CHAIN_IDS.iter() {
-        let url = format!("https://indexer.light.so/{}?time={}", chain_id, Utc::now().timestamp());
-        let data: ApiResponse = reqwest::Client::new()
-            .get(&url)
-            .header("Cache-Control", "no-cache")
-            .send()
-            .await
-            .unwrap()
-            .json::<ApiResponse>()
-            .await
-            .unwrap();
+        let url = format!("http://lightdotso-indexer.internal:3000/{}", chain_id);
+        let data: ApiResponse =
+            reqwest::Client::new().get(&url).send().await?.json::<ApiResponse>().await?;
 
         LATEST_BLOCK_NUMBER
             .with_label_values(&[&chain_id.to_string()])
@@ -71,9 +60,9 @@ pub async fn parse_indexer_metrics() {
         LATEST_INDEXED_BLOCK
             .with_label_values(&[&chain_id.to_string()])
             .set(data.latest_indexed_block as f64);
-        ALL_PERCENTAGE.with_label_values(&[&chain_id.to_string()]).set(data.all_percentage);
         LAST300_PERCENTAGE
             .with_label_values(&[&chain_id.to_string()])
             .set(data.last_300_percentage);
     }
+    Ok(())
 }

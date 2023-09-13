@@ -1,0 +1,109 @@
+# Copyright (C) 2023 Light, Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Default configuration for the Grafana Agent.
+# https://github.com/grafana/intro-to-mltp/blob/main/agent/config.yaml
+# License: AGPL-3.0
+
+# Fly.io Forum
+# https://community.fly.io/t/grafana-tempo-agent/4253/3
+
+server:
+  log_level: warn
+
+# Enable integrations.
+# All metrics scraped from these integrations will use the `remote_write` block
+# in the `global` configuration, above.
+integrations:
+  # Scrape metrics data from the Agent itself.
+  agent:
+    enabled: true
+  # Scrape metrics data from the in-built Node Exporter instance.
+  node_exporter:
+    enabled: true
+
+# Configures a metrics scraping service, used to scrape metrics and send
+# to Mimir.
+# metrics:
+#   # The `global` section pertains to the Prometheus `global` configuration.
+#   # See https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+#   global:
+#     scrape_interval: 15s # By default, scrape targets every 15 seconds.
+#     # Remote write to the locally running Mimir service.
+#     remote_write:
+#       - url: http://lightdotso-mimir.internal:9009/api/v1/push
+#         send_exemplars: true
+
+# Configures a log ingestion endpoint. This is used for the autologging feature in the tracing configuration below.
+logs:
+  # Define a single Promtail (logs) instance.
+  # See https://grafana.com/docs/loki/latest/clients/promtail/
+  configs:
+    # Create a Promtail instance named `loki`, that pushes all log data to the locally running Loki service and
+    # adds an external label for the job.
+    - name: loki
+      clients:
+        - url: http://lightdotso-loki.internal:3100/loki/api/v1/push
+          external_labels:
+            job: agent
+  positions_directory: /tmp/positions
+
+traces:
+  configs:
+    - name: default
+      # Add a custom attribute to every received span. This processor follows the conventions for the OpenTelemetry
+      # collector attribute processor.
+      # See https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/processor/attributesprocessor/README.md
+      # attributes:
+      #   actions:
+      #     - key: custom.attribute
+      #       action: upsert
+      #       value: some-value
+
+      # Define the protocols to receive traces in. In this case, OTLP gRPC on the default port (4317).
+      # See https://grafana.com/docs/agent/latest/configuration/traces-config/ receivers.
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+        # Generate logs automatically from incoming trace data.
+      automatic_logging:
+        # Use the logs instance defined at the start of the configuration file, specifying a logs instance and the
+        # named Promtail instance.
+        backend: logs_instance
+        logs_instance_name: loki
+        # Ensure one log one line per root span (ie. one per trace).
+        roots: true
+        processes: false
+        # Setting spans to `true` (default false) will generate a log line *per span* received. Note that this
+        # can produce a huge amount of log information.
+        spans: false
+        # If present in the span, add the http.method, http.target and http.status_code span attributes to the log line.
+        span_attributes:
+          - http.method
+          - http.target
+          - http.status_code
+        # Force the trace ID to be set as `traceId`. This ensures correlation from within Grafana between data sources.
+        overrides:
+          trace_id_key: "traceId"
+      remote_write:
+        # Send traces to the locally running Tempo service using GRPC on the default port (4317).
+        - endpoint: lightdotso-tempo.internal:4317
+          insecure: true
+
+      # Enable service graph generation.
+      # See https://grafana.com/docs/tempo/latest/configuration/grafana-agent/service-graphs/
+      service_graphs:
+        enabled: true

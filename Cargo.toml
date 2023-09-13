@@ -4,6 +4,7 @@
   members = [
     "apps/desktop/src-tauri",
     "bin",
+    "crates/app",
     "crates/autometrics",
     "crates/axum",
     "crates/bundler",
@@ -22,6 +23,7 @@
     "crates/redis",
     "crates/rpc",
     "crates/simulator",
+    "crates/tauri",
     "crates/telegram",
     "crates/tracing",
     "tools/embedded-prisma",
@@ -52,10 +54,12 @@
 
 [workspace.dependencies]
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
+  async-stream = "0.3.5"
   async-trait = "0.1.73"
   autometrics = "0.6.0"
-  axum = "0.6.16"
+  axum = { version = "0.6.16", features = ["ws"] }
   backon = "0.4.1"
+  base64 = "0.21.3"
   byteorder = "1.4.3"
   chrono = "0.4.26"
   clap = "4.3.12"
@@ -70,11 +74,13 @@
   futures = "0.3.28"
   futures-util = "0.3.28"
   http = "0.2.8"
+  http-body = "0.4.5"
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
   js-sys = "=0.3.56"
   jsonrpsee = { version = "0.18.2", features = ["server", "macros", "client"] }
   lazy_static = "1.4.0"
+  lightdotso-app = { path = "./crates/app" }
   lightdotso-autometrics = { path = "./crates/autometrics" }
   lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
@@ -92,14 +98,21 @@
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
   lightdotso-simulator = { path = "./crates/simulator" }
+  lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
   once_cell = "1.8.0"
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+    "migrations",
     "mocking",
+    "sqlite",
+    "sqlite-create-many",
   ] }
   prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+    "migrations",
     "mocking",
+    "sqlite",
+    "sqlite-create-many",
   ] }
   prometheus = "0.13.3"
   rand = "0.8.5"
@@ -122,7 +135,10 @@
     "test-utils",
   ] }
   silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
+  tauri = { version = "1.4", features = ["shell-open"] }
+  tauri-build = { version = "1.4", features = [] }
   tokio = { version = "1", features = ["full"] }
+  tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
   tower = { version = "0.4.12" }
   tower_governor = { version = "0.1.0", features = ["tracing"] }
   tower-http = { version = "0.4", features = [

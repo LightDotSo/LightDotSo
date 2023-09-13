@@ -164,3 +164,22 @@ lazy_static! {
         m
     };
 }
+
+// The nodereal rpc urls
+lazy_static! {
+    pub static ref NODRPC_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://www.noderpc.xyz/rpc-mainnet/".to_string());
+        m.insert(137, "https://www.noderpc.xyz/rpc-polygon/".to_string());
+
+        // Testnet
+        m.insert(5, "https://www.noderpc.xyz/rpc-goerli/".to_string());
+        m.insert(1442, "https://www.noderpc.xyz/rpc-zkevm-test/".to_string());
+        m.insert(80001, "https://www.noderpc.xyz/rpc-mumbai/".to_string());
+        m.insert(11155111, "https://www.noderpc.xyz/rpc-sepolia/".to_string());
+
+        m
+    };
+}

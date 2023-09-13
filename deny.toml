@@ -32,6 +32,7 @@
     "MIT",
     "MPL-2.0",
     "Unlicense",
+    "Zlib",
   ]
   deny = []
   exceptions = [{ allow = ["Unicode-DFS-2016"], name = "unicode-ident" }]

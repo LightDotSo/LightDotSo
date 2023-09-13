@@ -10,6 +10,16 @@ on:
   merge_group:
   release:
     types: created
+  workflow_dispatch:
+    inputs:
+      group:
+        type: choice
+        default: consumer
+        description: "Group to invoke (consumer, indexer, rpc, etc.)"
+        options:
+          - consumer
+          - indexer
+          - graph
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -30,6 +40,21 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
           allowed-conclusions: success,skipped,cancelled
+  fly-deploy-api:
+    runs-on: ubuntu-latest
+    needs:
+      - fly-wait-docker
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/api
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-bundler:
     runs-on: ubuntu-latest
     needs:
@@ -76,9 +101,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-error:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -91,9 +115,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-nfn:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -106,9 +129,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-retry:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -121,9 +143,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-tx:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -181,6 +202,34 @@ jobs:
         continue-on-error: true
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-graph:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'graph'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/graph
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  fly-deploy-ipfs:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'graph'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+      - name: Fly Install
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Fly Deploy
+        run: flyctl deploy --remote-only
+        working-directory: ./fly/ipfs
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer:
     runs-on: ubuntu-latest
     needs:
@@ -197,9 +246,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-arbitrum:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -212,9 +260,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-avalanche:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -227,9 +274,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-base:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -242,9 +288,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-bsc:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -257,9 +302,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-gnosis:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -272,9 +316,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-polygon:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -287,9 +330,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-optimism:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -302,9 +344,8 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-sepolia:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
     runs-on: ubuntu-latest
-    needs:
-      - fly-wait-docker
     timeout-minutes: 30
     steps:
       - name: Fetch Head
@@ -425,6 +466,7 @@ jobs:
     if: always()
     needs:
       - fly-wait-docker
+      - fly-deploy-api
       - fly-deploy-bundler
       - fly-deploy-bundler-sepolia
       - fly-deploy-consumer
@@ -435,6 +477,8 @@ jobs:
       - fly-deploy-exporter
       - fly-deploy-gas
       - fly-deploy-grafana
+      - fly-deploy-graph
+      - fly-deploy-ipfs
       - fly-deploy-indexer
       - fly-deploy-indexer-arbitrum
       - fly-deploy-indexer-avalanche
@@ -457,5 +501,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: fly-wait-docker,fly-deploy-bundler,fly-deploy-bundler-sepolia,fly-deploy-consumer,fly-deploy-consumer-error,fly-deploy-consumer-nfn,fly-deploy-consumer-retry,fly-deploy-consumer-tx,fly-deploy-exporter,fly-deploy-gas,fly-deploy-grafana,fly-deploy-indexer,fly-deploy-indexer-arbitrum,fly-deploy-indexer-avalanche,fly-deploy-indexer-base,fly-deploy-indexer-bsc,fly-deploy-indexer-gnosis,fly-deploy-indexer-polygon,fly-deploy-indexer-optimism,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-simulator
+          allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-bundler,fly-deploy-bundler-sepolia,fly-deploy-consumer,fly-deploy-consumer-error,fly-deploy-consumer-nfn,fly-deploy-consumer-retry,fly-deploy-consumer-tx,fly-deploy-exporter,fly-deploy-gas,fly-deploy-grafana,fly-deploy-graph,fly-deploy-ipfs,fly-deploy-indexer,fly-deploy-indexer-arbitrum,fly-deploy-indexer-avalanche,fly-deploy-indexer-base,fly-deploy-indexer-bsc,fly-deploy-indexer-gnosis,fly-deploy-indexer-polygon,fly-deploy-indexer-optimism,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-simulator
           jobs: ${{ toJSON(needs) }}

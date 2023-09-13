@@ -71,7 +71,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') }}
+          push: true
+          # push: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |

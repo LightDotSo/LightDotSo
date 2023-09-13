@@ -1,0 +1,8 @@
+server {
+    listen 9040;
+    listen [::]:9040;
+
+    location / {
+        proxy_pass http://127.0.0.1:8040;
+    }
+}

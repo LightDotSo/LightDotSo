@@ -18,13 +18,20 @@ use axum::{
     http::{Request, StatusCode},
     middleware::Next,
     response::{IntoResponse, Response},
+    BoxError,
 };
 use lightdotso_tracing::tracing::{debug, info};
 use serde::{Deserialize, Serialize};
+use std::borrow::Cow;
 use tower_governor::{errors::GovernorError, key_extractor::KeyExtractor};
 
+pub mod api;
 pub mod exporter;
 pub mod internal;
+pub mod prometheus;
+pub mod result;
+pub mod routes;
+pub mod rpc;
 
 #[derive(Debug, Serialize, Deserialize, Clone, Eq, PartialEq)]
 pub struct UserToken;
@@ -87,4 +94,17 @@ where
     }
 
     Ok(bytes)
+}
+
+// Handle errors
+// From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L308
+pub async fn handle_error(error: BoxError) -> impl IntoResponse {
+    if error.is::<tower::load_shed::error::Overloaded>() {
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Cow::from("service is overloaded, please try again later"),
+        );
+    }
+
+    (StatusCode::INTERNAL_SERVER_ERROR, Cow::from(format!("Unhandled internal error: {}", error)))
 }

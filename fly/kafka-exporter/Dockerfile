@@ -15,8 +15,14 @@
 
 FROM danielqsj/kafka-exporter:latest
 
-ENV KAFKA_BROKER=kafka:9092
+ARG KAFKA_BROKER
+ARG KAFKA_USERNAME
+ARG KAFKA_PASSWORD
 
-EXPOSE 9308
+ENV KAFKA_BROKER=$KAFKA_BROKER
+ENV KAFKA_USERNAME=$KAFKA_USERNAME
+ENV KAFKA_PASSWORD=$KAFKA_PASSWORD
 
-CMD ["--kafka.server=${KAFKA_BROKER}"]
+ENTRYPOINT []
+
+CMD kafka_exporter --kafka.server=$KAFKA_BROKER --sasl.username=$KAFKA_USERNAME --sasl.password=$KAFKA_PASSWORD --sasl.enabled --sasl.handshake --sasl.mechanism=SCRAM-SHA256 --tls.insecure-skip-tls-verify --tls.enabled --log.enable-sarama

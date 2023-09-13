@@ -1,0 +1,35 @@
+# fly.toml app configuration file generated for lightdotso-loki on 2023-09-09T12:51:53-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "lightdotso-loki"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "./Dockerfile"
+
+[http_service]
+  internal_port = 3100
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200
+
+[checks]
+  [checks.health]
+    port = 3100
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/ready"
+
+[metrics]
+  port = 3100
+  path = "/metrics"
