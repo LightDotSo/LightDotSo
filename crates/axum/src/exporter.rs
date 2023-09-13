@@ -16,10 +16,13 @@
 use axum::{routing::get, Router};
 use eyre::Result;
 use lightdotso_prometheus::{metrics_handler, parse_indexer_metrics};
+use lightdotso_tracing::tracing::info;
 use tokio::time::{sleep, Duration};
 
 async fn periodic_metrics_update() {
     loop {
+        info!("Updating exporter metrics");
+
         let _ = parse_indexer_metrics().await;
         // Keeps in sync with the fly.io health check interval
         sleep(Duration::from_secs(15)).await;

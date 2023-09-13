@@ -18,7 +18,7 @@ kill_timeout = "5s"
   strategy = "canary"
 
 [http_service]
-  internal_port = 0
+  internal_port = 9091
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 1

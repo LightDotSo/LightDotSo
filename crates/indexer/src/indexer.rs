@@ -261,7 +261,7 @@ impl Indexer {
         trace!(?block_logs);
 
         // Loop over the block logs
-        for log in block_logs {
+        for log in block_logs.clone() {
             // Build the tx_address_hashmap
             let entry = tx_address_hashmap.entry(log.transaction_hash.unwrap()).or_default();
             // Build the address_type_hashmap
@@ -481,6 +481,62 @@ impl Indexer {
 
                         if let Some(hashmap) = tx_adress_category {
                             for (addr, category) in hashmap {
+                                // If the category is a wallet initialized
+                                if category == &LIGHT_WALLET_INITIALIZED.to_string() {
+                                    // Get the wallet entry
+                                    let wallet_entry =
+                                        wallet_address_hashmap.get(&unique_wallet_tx_hash);
+
+                                    // Get the key for the wallet entry that matches the `from`
+                                    // value
+                                    let factory_address = wallet_entry
+                                        .unwrap()
+                                        .iter()
+                                        .find(|(_, &v)| v == *addr)
+                                        .unwrap()
+                                        .0;
+
+                                    // Get the log that matches the tx hash
+                                    let initialized_logs = block_logs
+                                        .clone()
+                                        .into_iter()
+                                        .filter(|log| {
+                                            log.transaction_hash == Some(unique_wallet_tx_hash)
+                                        })
+                                        .collect::<Vec<ethers::types::Log>>();
+
+                                    // Filter the logs for the `ImageHashUpdated(bytes32)`
+                                    let image_hash_updated_logs = initialized_logs
+                                        .clone()
+                                        .into_iter()
+                                        .filter(|log| {
+                                            log.topics[0] ==
+                                                // Event signature for `ImageHashUpdated(bytes32)`
+                                                H256::from_str(
+                                                    "0x307ed6bd941ee9fc80f369c94af5fa11e25bab5102a6140191756c5474a30bfa",
+                                                )
+                                                .unwrap() &&
+                                                log.topics.len() == 2
+                                        })
+                                        .collect::<Vec<ethers::types::Log>>();
+
+                                    // Get the last image hash updated log
+                                    let image_hash_updated_log =
+                                        image_hash_updated_logs.last().ok_or_else(|| {
+                                            eyre!("Error: image_hash_updated_logs is empty")
+                                        })?;
+
+                                    // Create the wallet
+                                    let _ = self
+                                        .db_create_wallet(
+                                            Arc::clone(&db_client),
+                                            *addr,
+                                            *factory_address,
+                                            image_hash_updated_log.data.to_string(),
+                                        )
+                                        .await;
+                                }
+
                                 // Create the transaction category if wallet exists
                                 if unique_wallet_addreses.contains(addr) {
                                     let _ = self
@@ -730,16 +786,18 @@ impl Indexer {
     pub async fn db_create_wallet(
         &self,
         db_client: Arc<PrismaClient>,
-        log: ethers::types::Log,
+        address: ethers::types::H160,
         factory_address: ethers::types::H160,
+        hash: String,
     ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
         {
             || {
                 create_wallet(
                     db_client.clone(),
-                    log.clone(),
+                    address,
                     self.chain_id as i64,
                     factory_address,
+                    hash.clone(),
                     Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                 )
             }
