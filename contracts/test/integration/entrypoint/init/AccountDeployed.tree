@@ -9,5 +9,5 @@ AccountDeployed.t.sol
       ├── It should deploy a new LightWallet
       ├── It should deploy a new LightWallet with the correct hash
       ├── It should equal the {getAddress} function
-      ├── It should not have a proxy adminn
+      ├── It should not have a proxy admin
       └── It should not be able to initialize twice
