@@ -1,3 +1,8 @@
+# Graph
+
+The following services on fly.io are from risedle/monorepo: https://github.com/risedle/monorepo/blob/78dd4c032e91f8e9afb337db2856d8bc6edfafcf/apps/graph-node
+Thanks to the risedle team for their awesome work.
+
 ## Setting up the database
 
 Run the following commands to create the database:
