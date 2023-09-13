@@ -25,3 +25,7 @@ primary_region = "sjc"
     grace_period = "30s"
     method = "get"
     path = "/-/healthy"
+
+[metrics]
+  port = 12345
+  path = "/metrics"

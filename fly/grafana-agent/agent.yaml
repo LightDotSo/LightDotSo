@@ -99,7 +99,7 @@ traces:
         overrides:
           trace_id_key: "traceId"
       remote_write:
-        # Send traces to the locally running Tempo service using GRPC on the default port (4317).JJ
+        # Send traces to the locally running Tempo service using GRPC on the default port (4317).
         - endpoint: lightdotso-tempo.internal:4317
           insecure: true
 

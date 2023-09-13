@@ -103,10 +103,7 @@ pub async fn start_indexer_server() -> Result<()> {
     let redis_client: Arc<Client> = Arc::new(get_redis_client().unwrap());
 
     // Construct the app
-    let app = Router::new()
-        .route("/", get("indexer.light.so"))
-        .route("/:chain_id", get(get_recent_block))
-        .with_state(redis_client);
+    let app = Router::new().route("/:chain_id", get(get_recent_block)).with_state(redis_client);
 
     // Listen on port 3000
     let socket_addr = "[::]:3000".parse()?;
