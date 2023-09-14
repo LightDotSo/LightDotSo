@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::handle_error;
+use crate::{handle_error, state::AppState};
 use axum::{error_handling::HandleErrorLayer, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
-use lightdotso_prisma::PrismaClient;
+use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
@@ -65,15 +65,12 @@ use crate::routes::{check, health, wallet};
 )]
 struct ApiDoc;
 
-#[derive(Clone)]
-pub struct ApiState {
-    pub client: Arc<PrismaClient>,
-}
-
 pub async fn start_api_server() -> Result<()> {
+    info!("Starting API server");
+
     // Create a shared client
     let db = Arc::new(create_client().await.unwrap());
-    let state = ApiState { client: db };
+    let state = AppState { client: Some(db) };
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85

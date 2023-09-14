@@ -13,8 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// use opentelemetry::sdk::metrics::{controllers, processors, selectors};
-pub use opentelemetry_prometheus;
-// use opentelemetry_prometheus::PrometheusExporter;
-// use opentelemetry_sdk::export::metrics::aggregation;
-pub use prometheus;
+use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
+use opentelemetry::{global, metrics::Counter};
+
+lazy_static! {
+    /// Example usage:
+    /// COUNTER.add(1, &[KeyValue::new("foo", "bar")]);
+    pub static ref COUNTER: Lazy<Counter<u64>> = Lazy::new(|| {
+        global::meter("")
+            .u64_counter("custom_opentelemetry_counter")
+            .init()
+    });
+}

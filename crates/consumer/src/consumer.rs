@@ -30,7 +30,9 @@ use lightdotso_kafka::{
     produce_retry_transaction_1_message, produce_retry_transaction_2_message,
 };
 use lightdotso_notifier::config::NotifierArgs;
+use lightdotso_opentelemetry::{consumer::BLOCK_INDEXED_STATUS, custom::COUNTER};
 use lightdotso_tracing::tracing::{error, info, warn};
+use opentelemetry::KeyValue;
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
     producer::FutureProducer,
@@ -116,11 +118,13 @@ impl Consumer {
                                     payload.as_bytes(),
                                 ) {
                                     Ok((block, chain_id)) => {
+                                        // Get the block number
+                                        let block_number = block.number.unwrap().as_u64();
+
                                         // Log each message as an example.
                                         info!(
                                             "Indexing block: {:?} at chain_id: {:?}",
-                                            block.number.unwrap().as_u64(),
-                                            chain_id
+                                            block_number, chain_id
                                         );
 
                                         // Index the block
@@ -131,6 +135,22 @@ impl Consumer {
                                                 chain_id,
                                             )
                                             .await;
+
+                                        // Increment the custom counter
+                                        COUNTER.add(1, &[KeyValue::new("foo", "bar")]);
+
+                                        // Write the metric to prometheus
+                                        let value_to_add = if res.is_ok() { 1.0 } else { 0.0 };
+                                        BLOCK_INDEXED_STATUS.add(
+                                            value_to_add,
+                                            &[
+                                                KeyValue::new("chain_id", chain_id.to_string()),
+                                                KeyValue::new(
+                                                    "block_number",
+                                                    block_number.to_string(),
+                                                ),
+                                            ],
+                                        );
 
                                         // Commit the message
                                         if let Err(e) = res {

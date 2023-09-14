@@ -680,13 +680,12 @@ dependencies = [
  "metrics-exporter-prometheus 0.12.1",
  "once_cell",
  "opentelemetry-prometheus",
+ "opentelemetry_api",
  "opentelemetry_sdk",
  "prometheus",
  "prometheus-client",
  "spez",
  "thiserror",
- "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]
@@ -5831,7 +5830,9 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-notifier",
+ "lightdotso-opentelemetry",
  "lightdotso-tracing",
+ "opentelemetry 0.20.0",
  "rdkafka",
  "serde_json",
 ]
@@ -5931,6 +5932,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-opentelemetry"
+version = "0.1.0"
+dependencies = [
+ "lazy_static",
+ "once_cell",
+ "opentelemetry 0.20.0",
+ "opentelemetry-prometheus",
+ "opentelemetry_sdk",
+]
+
+[[package]]
 name = "lightdotso-paymaster"
 version = "0.1.0"
 dependencies = [
@@ -5960,15 +5972,9 @@ dependencies = [
 name = "lightdotso-prometheus"
 version = "0.1.0"
 dependencies = [
- "axum 0.6.20",
- "chrono",
- "eyre",
- "once_cell",
+ "opentelemetry 0.20.0",
+ "opentelemetry-prometheus",
  "prometheus",
- "reqwest",
- "serde",
- "tokio",
- "tower",
 ]
 
 [[package]]
@@ -6050,12 +6056,11 @@ dependencies = [
  "pyroscope_pprofrs",
  "tokio",
  "tonic 0.10.0",
- "tonic 0.9.2",
  "tracing",
  "tracing-appender",
  "tracing-futures",
  "tracing-loki",
- "tracing-opentelemetry 0.21.0",
+ "tracing-opentelemetry 0.20.0",
  "tracing-subscriber",
 ]
 
@@ -12515,22 +12520,6 @@ checksum = "fc09e402904a5261e42cf27aea09ccb7d5318c6717a9eec3d8e2e65c56b18f19"
 dependencies = [
  "once_cell",
  "opentelemetry 0.20.0",
- "tracing",
- "tracing-core",
- "tracing-log",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "tracing-opentelemetry"
-version = "0.21.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "75327c6b667828ddc28f5e3f169036cb793c3f588d83bf0f262a7f062ffed3c8"
-dependencies = [
- "once_cell",
- "opentelemetry 0.20.0",
- "opentelemetry_sdk",
- "smallvec 1.11.0",
  "tracing",
  "tracing-core",
  "tracing-log",

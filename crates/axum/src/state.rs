@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// use opentelemetry::sdk::metrics::{controllers, processors, selectors};
-pub use opentelemetry_prometheus;
-// use opentelemetry_prometheus::PrometheusExporter;
-// use opentelemetry_sdk::export::metrics::aggregation;
-pub use prometheus;
+use lightdotso_prisma::PrismaClient;
+use std::sync::Arc;
+
+#[derive(Clone)]
+pub struct AppState {
+    pub client: Option<Arc<PrismaClient>>,
+}

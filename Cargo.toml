@@ -17,6 +17,7 @@
     "crates/kafka",
     "crates/keychain",
     "crates/notifier",
+    "crates/opentelemetry",
     "crates/paymaster",
     "crates/prometheus",
     "crates/prisma",
@@ -56,7 +57,10 @@
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
   async-stream = "0.3.5"
   async-trait = "0.1.73"
-  autometrics = "0.6.0"
+  autometrics = { version = "*", features = [
+    "opentelemetry-0_20",
+    "prometheus-exporter",
+  ], default-features = false }
   axum = { version = "0.6.16", features = ["ws"] }
   backon = "0.4.1"
   base64 = "0.21.3"
@@ -92,6 +96,7 @@
   lightdotso-kafka = { path = "./crates/kafka" }
   lightdotso-keychain = { path = "./crates/indexer" }
   lightdotso-notifier = { path = "./crates/notifier" }
+  lightdotso-opentelemetry = { path = "./crates/opentelemetry" }
   lightdotso-paymaster = { path = "./crates/paymaster" }
   lightdotso-prometheus = { path = "./crates/prometheus" }
   lightdotso-prisma = { path = "./crates/prisma" }
@@ -101,6 +106,15 @@
   lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
+  opentelemetry = { version = "0.20.0", features = ["metrics", "rt-tokio"] }
+  opentelemetry-otlp = { version = "0.13.0", features = [
+    "grpc-tonic",
+    "reqwest-client",
+    "tls",
+    "tls-roots",
+  ] }
+  opentelemetry-prometheus = "0.13.0"
+  opentelemetry_sdk = { version = "0.20.0", features = ["metrics"] }
   once_cell = "1.8.0"
   prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
     "migrations",

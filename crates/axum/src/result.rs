@@ -18,6 +18,7 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
+use lightdotso_redis::redis::RedisError;
 use prisma_client_rust::{
     prisma_errors::query_engine::{RecordNotFound, UniqueKeyViolation},
     QueryError,
@@ -25,12 +26,13 @@ use prisma_client_rust::{
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L18
 // type Database = Extension<Arc<PrismaClient>>;
-type AppResult<T> = Result<T, AppError>;
+pub type AppResult<T> = Result<T, AppError>;
 pub type AppJsonResult<T> = AppResult<Json<T>>;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L118
 pub enum AppError {
     PrismaError(QueryError),
+    RedisError(RedisError),
     NotFound,
 }
 
@@ -44,6 +46,12 @@ impl From<QueryError> for AppError {
     }
 }
 
+impl From<RedisError> for AppError {
+    fn from(error: RedisError) -> Self {
+        AppError::RedisError(error)
+    }
+}
+
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L133
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
@@ -52,6 +60,7 @@ impl IntoResponse for AppError {
                 StatusCode::CONFLICT
             }
             AppError::PrismaError(_) => StatusCode::BAD_REQUEST,
+            AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::NotFound => StatusCode::NOT_FOUND,
         };
 

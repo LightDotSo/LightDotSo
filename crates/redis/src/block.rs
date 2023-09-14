@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::namespace::INDEXED_BLOCKS;
+use lightdotso_tracing::tracing::{error, info};
 pub use redis;
 use redis::Commands;
 
@@ -66,22 +67,33 @@ pub fn get_most_recent_indexed_block(
     // Construct the current shard block
     let mut current_shard_block = most_recent_block - (most_recent_block % BLOCK_SHARD_SIZE);
 
+    // Add a counter for the loop
+    let mut counter = 0;
+
     // Iterate through the shards until we find a block
     loop {
         let key = get_shard_key(chain_id, current_shard_block);
+        info!("key: {}", key);
+
         let result: Vec<i64> = redis_conn.zrevrange(&key, 0, 0)?;
+        info!("result: {:?}", result);
 
         if let Some(block_number) = result.first() {
             return Ok(*block_number);
         }
 
-        // If we haven't found a block and we've reached the lowest shard (0-999), break.
-        if current_shard_block == 0 {
+        // If we haven't found a block after 3 iterations or we've reached the lowest shard
+        // (0-999), break.
+        if current_shard_block == 0 || counter >= 3 {
+            error!("No block found");
             break;
         }
 
         // Move to the previous shard.
         current_shard_block -= BLOCK_SHARD_SIZE;
+
+        // Increment the counter
+        counter += 1;
     }
 
     // Return an error if no block was found
@@ -102,12 +114,20 @@ pub fn get_last_n_indexed_blocks(
     let mut current_block = start_block;
     let mut blocks_retrieved = 0;
 
+    // Add a counter for iterations
+    let mut counter = 0;
+
     // Iterate through the shards until we have enough blocks
-    while blocks_retrieved < n {
+    while blocks_retrieved < n && counter < 3 {
+        info!("counter: {}", counter);
+
         // Construct the key
         let key = get_shard_key(chain_id, current_block);
+        info!("key: {}", key);
+
         // Get the blocks in the shard in descending order
         let shard_blocks: Vec<i64> = redis_conn.zrevrange(&key, 0, BLOCK_SHARD_SIZE as isize)?;
+        info!("shard_blocks: {:?}", shard_blocks);
 
         if !shard_blocks.is_empty() {
             // Extend the blocks vector with the shard blocks
@@ -115,7 +135,8 @@ pub fn get_last_n_indexed_blocks(
             // Update the blocks retrieved count
             blocks_retrieved += shard_blocks.len() as i64;
             // Move to the previous shard
-            current_block = *shard_blocks.last().unwrap() - 1;
+            current_block =
+                (shard_blocks.first().unwrap() / BLOCK_SHARD_SIZE * BLOCK_SHARD_SIZE) - 1;
         } else {
             if current_block == 0 {
                 break;
@@ -123,6 +144,9 @@ pub fn get_last_n_indexed_blocks(
             // Move to the previous shard
             current_block -= BLOCK_SHARD_SIZE;
         }
+
+        // Increment the counter
+        counter += 1;
     }
 
     // Trim the blocks vector to the requested size (in case we retrieved extra)

@@ -12,11 +12,7 @@
   default-run = "cli"
 
 [dependencies]
-  autometrics = { workspace = true, features = [
-    "prometheus-client-0_21",
-    "prometheus-exporter",
-    "exemplars-tracing",
-  ] }
+  autometrics = { workspace = true }
   axum = { workspace = true }
   clap = { workspace = true, features = ["env"] }
   dotenvy = { workspace = true }
