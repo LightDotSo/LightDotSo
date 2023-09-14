@@ -19,6 +19,7 @@ use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer}
 use eyre::Result;
 use lightdotso_db::db::create_client;
 use lightdotso_prisma::PrismaClient;
+use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
@@ -71,6 +72,8 @@ pub struct ApiState {
 }
 
 pub async fn start_api_server() -> Result<()> {
+    info!("Starting API server");
+
     // Create a shared client
     let db = Arc::new(create_client().await.unwrap());
     let state = ApiState { client: db };

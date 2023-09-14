@@ -57,6 +57,8 @@ async fn health_check() -> &'static str {
 }
 
 pub async fn start_prometheus_server() -> Result<()> {
+    info!("Starting prometheus server");
+
     let https = hyper_rustls::HttpsConnectorBuilder::new()
         .with_native_roots()
         .https_only()

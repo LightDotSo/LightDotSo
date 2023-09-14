@@ -16,8 +16,11 @@
 use autometrics::prometheus_exporter;
 use axum::Router;
 use eyre::Result;
+use lightdotso_tracing::tracing::info;
 
 pub async fn start_internal_server() -> Result<()> {
+    info!("Starting internal server");
+
     prometheus_exporter::init();
 
     let app = Router::new()

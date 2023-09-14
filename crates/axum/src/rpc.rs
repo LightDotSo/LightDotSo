@@ -25,7 +25,7 @@ use hyper::client;
 use lightdotso_rpc::{
     config::RpcArgs, internal_rpc_handler, protected_rpc_handler, public_rpc_handler,
 };
-use lightdotso_tracing::tracing::Level;
+use lightdotso_tracing::tracing::{info, Level};
 use std::{net::SocketAddr, time::Duration};
 use tower::ServiceBuilder;
 use tower_governor::{
@@ -38,6 +38,8 @@ use tower_http::{
 };
 
 pub async fn start_rpc_server() -> Result<()> {
+    info!("Starting RPC server");
+
     // Create a client
     let https = hyper_rustls::HttpsConnectorBuilder::new()
         .with_native_roots()

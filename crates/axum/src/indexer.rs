@@ -50,6 +50,8 @@ async fn get_recent_block(
     State(redis_client): State<Arc<Client>>,
     chain_id: Path<String>,
 ) -> Result<Response<String>, Infallible> {
+    info!("get_recent_block");
+
     // Parse the chain id as i64
     let chain_id = chain_id.parse::<u64>();
 
@@ -60,6 +62,7 @@ async fn get_recent_block(
 
     // Unwrap the chain id
     let chain_id = chain_id.unwrap();
+    info!("chain_id: {}", chain_id);
 
     // Construct the rpc
     let rpc = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
@@ -77,14 +80,17 @@ async fn get_recent_block(
     // Get the most recent indexed block
     let latest_indexed_block =
         get_most_recent_indexed_block(&mut con, chain_id, latest_block_number).unwrap();
+    info!("chain_id {} - latest_indexed_block: {}", chain_id, latest_indexed_block);
 
     // Get last 300 percentage
     let last_300_percentage =
-        get_last_n_indexed_percentage(&mut con, chain_id, 300, latest_block_number).unwrap();
+        get_last_n_indexed_percentage(&mut con, chain_id, latest_block_number, 300).unwrap();
+    info!("chain_id {} - last_300_percentage: {}", chain_id, last_300_percentage);
 
     // Get the last 100 blocks
     let last_indexed_blocks =
-        get_last_n_indexed_blocks(&mut con, chain_id, 100, latest_block_number).unwrap();
+        get_last_n_indexed_blocks(&mut con, chain_id, latest_block_number, 300).unwrap();
+    info!("chain_id {} - last_indexed_blocks: {:?}", chain_id, last_indexed_blocks);
 
     // Construct the response
     let response = IndexResponse {
@@ -99,6 +105,8 @@ async fn get_recent_block(
 }
 
 pub async fn start_indexer_server() -> Result<()> {
+    info!("Starting indexer server");
+
     // Construct the redis
     let redis_client: Arc<Client> = Arc::new(get_redis_client().unwrap());
 

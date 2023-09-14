@@ -30,6 +30,8 @@ async fn periodic_metrics_update() {
 }
 
 pub async fn start_exporter_server() -> Result<()> {
+    info!("Starting exporter server");
+
     // Start a task to periodically update the metrics
     tokio::spawn(periodic_metrics_update());
 
