@@ -1295,19 +1295,6 @@ export class LightWallet extends Entity {
     this.set("address", Value.fromBytes(value));
   }
 
-  get factory(): Bytes {
-    let value = this.get("factory");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytes();
-    }
-  }
-
-  set factory(value: Bytes) {
-    this.set("factory", Value.fromBytes(value));
-  }
-
   get imageHash(): Bytes | null {
     let value = this.get("imageHash");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1336,6 +1323,45 @@ export class LightWallet extends Entity {
 
   set userOpHash(value: Bytes) {
     this.set("userOpHash", Value.fromBytes(value));
+  }
+
+  get sender(): Bytes {
+    let value = this.get("sender");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set sender(value: Bytes) {
+    this.set("sender", Value.fromBytes(value));
+  }
+
+  get factory(): Bytes {
+    let value = this.get("factory");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set factory(value: Bytes) {
+    this.set("factory", Value.fromBytes(value));
+  }
+
+  get paymaster(): Bytes {
+    let value = this.get("paymaster");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set paymaster(value: Bytes) {
+    this.set("paymaster", Value.fromBytes(value));
   }
 
   get blockNumber(): BigInt {
