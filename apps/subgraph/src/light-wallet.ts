@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Address } from "@graphprotocol/graph-ts";
-import { AccountDeployed as AccountDeployedEvent } from "../generated/EntryPoint/EntryPoint";
+import { Address, Bytes } from "@graphprotocol/graph-ts";
+import { AccountDeployed as AccountDeployedEvent } from "../generated/EntryPointv0.6.0/EntryPoint";
+import { LightWallet as LightWaletInterface } from "../generated/EntryPointv0.6.0/LightWallet";
 import { AccountDeployed, LightWallet } from "../generated/schema";
 
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
@@ -44,6 +45,14 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
     lightWallet.blockNumber = event.block.number;
     lightWallet.blockTimestamp = event.block.timestamp;
     lightWallet.transactionHash = event.transaction.hash;
+
+    // Get the image hash of the LightWallet
+    let wallet = LightWaletInterface.bind(event.address);
+    let try_imageHash = wallet.try_imageHash();
+    lightWallet.imageHash = try_imageHash.reverted
+      ? new Bytes(0)
+      : try_imageHash.value;
+
     lightWallet.save();
   }
 }
