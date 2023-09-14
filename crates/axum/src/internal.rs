@@ -35,7 +35,7 @@ pub async fn start_internal_server() -> Result<()> {
         .merge(crate::routes::metrics::router())
         .with_state(state);
 
-    let socket_addr = "[::]:3000".parse()?;
+    let socket_addr = "[::]:9091".parse()?;
     axum::Server::bind(&socket_addr)
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
         .await?;
