@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { newMockEvent } from "matchstick-as";
-import type { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
 import { ethereum } from "@graphprotocol/graph-ts";
+import type { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
 import type {
   AccountDeployed,
   BeforeExecution,
