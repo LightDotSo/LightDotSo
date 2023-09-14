@@ -30,7 +30,7 @@ import {
   UserOperationEvent,
   UserOperationRevertReason,
   Withdrawn,
-} from "../generated/EntryPoint/EntryPoint";
+} from "../generated/EntryPointv0.6.0/EntryPoint";
 
 export function createAccountDeployedEvent(
   userOpHash: Bytes,

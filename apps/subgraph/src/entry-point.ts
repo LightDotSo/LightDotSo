@@ -24,7 +24,7 @@ import {
   UserOperationEvent as UserOperationEventEvent,
   UserOperationRevertReason as UserOperationRevertReasonEvent,
   // Withdrawn as WithdrawnEvent,
-} from "../generated/EntryPoint/EntryPoint";
+} from "../generated/EntryPointv0.6.0/EntryPoint";
 // import
 // AccountDeployed,
 // BeforeExecution,
@@ -44,6 +44,20 @@ import {
 } from "./light-wallet";
 
 export function handleAccountDeployed(event: AccountDeployedEvent): void {
+  // let entity = new AccountDeployed(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32()),
+  // );
+  // entity.userOpHash = event.params.userOpHash;
+  // entity.sender = event.params.sender;
+  // entity.factory = event.params.factory;
+  // entity.paymaster = event.params.paymaster;
+
+  // entity.blockNumber = event.block.number;
+  // entity.blockTimestamp = event.block.timestamp;
+  // entity.transactionHash = event.transaction.hash;
+
+  // entity.save();
+
   // Handle if the account is LightWallet
   handleLightWalletDeployed(event);
 }
@@ -134,6 +148,23 @@ export function handleAccountDeployed(event: AccountDeployedEvent): void {
 // }
 
 export function handleUserOperationEvent(event: UserOperationEventEvent): void {
+  // let entity = new UserOperationEvent(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32()),
+  // );
+  // entity.userOpHash = event.params.userOpHash;
+  // entity.sender = event.params.sender;
+  // entity.paymaster = event.params.paymaster;
+  // entity.nonce = event.params.nonce;
+  // entity.success = event.params.success;
+  // entity.actualGasCost = event.params.actualGasCost;
+  // entity.actualGasUsed = event.params.actualGasUsed;
+
+  // entity.blockNumber = event.block.number;
+  // entity.blockTimestamp = event.block.timestamp;
+  // entity.transactionHash = event.transaction.hash;
+
+  // entity.save();
+
   // Handle if the account is LightWallet
   handleLightWalletUserOperationEvent(event);
 }
@@ -141,6 +172,20 @@ export function handleUserOperationEvent(event: UserOperationEventEvent): void {
 export function handleUserOperationRevertReason(
   event: UserOperationRevertReasonEvent,
 ): void {
+  // let entity = new UserOperationRevertReason(
+  //   event.transaction.hash.concatI32(event.logIndex.toI32()),
+  // );
+  // entity.userOpHash = event.params.userOpHash;
+  // entity.sender = event.params.sender;
+  // entity.nonce = event.params.nonce;
+  // entity.revertReason = event.params.revertReason;
+
+  // entity.blockNumber = event.block.number;
+  // entity.blockTimestamp = event.block.timestamp;
+  // entity.transactionHash = event.transaction.hash;
+
+  // entity.save();
+
   // Handle if the account is LightWallet
   handleLightWalletUserOperationRevertReason(event);
 }

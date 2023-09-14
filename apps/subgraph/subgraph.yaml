@@ -49,22 +49,22 @@ dataSources:
       eventHandlers:
         - event: AccountDeployed(indexed bytes32,indexed address,address,address)
           handler: handleAccountDeployed
-        - event: BeforeExecution()
-          handler: handleBeforeExecution
-        - event: Deposited(indexed address,uint256)
-          handler: handleDeposited
-        - event: SignatureAggregatorChanged(indexed address)
-          handler: handleSignatureAggregatorChanged
-        - event: StakeLocked(indexed address,uint256,uint256)
-          handler: handleStakeLocked
-        - event: StakeUnlocked(indexed address,uint256)
-          handler: handleStakeUnlocked
-        - event: StakeWithdrawn(indexed address,address,uint256)
-          handler: handleStakeWithdrawn
+        # - event: BeforeExecution()
+        #   handler: handleBeforeExecution
+        # - event: Deposited(indexed address,uint256)
+        #   handler: handleDeposited
+        # - event: SignatureAggregatorChanged(indexed address)
+        #   handler: handleSignatureAggregatorChanged
+        # - event: StakeLocked(indexed address,uint256,uint256)
+        #   handler: handleStakeLocked
+        # - event: StakeUnlocked(indexed address,uint256)
+        #   handler: handleStakeUnlocked
+        # - event: StakeWithdrawn(indexed address,address,uint256)
+        #   handler: handleStakeWithdrawn
         - event: UserOperationEvent(indexed bytes32,indexed address,indexed address,uint256,bool,uint256,uint256)
           handler: handleUserOperationEvent
         - event: UserOperationRevertReason(indexed bytes32,indexed address,uint256,bytes)
           handler: handleUserOperationRevertReason
-        - event: Withdrawn(indexed address,address,uint256)
-          handler: handleWithdrawn
+        # - event: Withdrawn(indexed address,address,uint256)
+        #   handler: handleWithdrawn
       file: ./src/entry-point.ts

@@ -24,7 +24,7 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
 // import { AccountDeployed } from "../generated/schema";
-// import { AccountDeployed as AccountDeployedEvent } from "../generated/EntryPoint/EntryPoint";
+// import { AccountDeployed as AccountDeployedEvent } from "../generated/EntryPointv0.6.0/EntryPoint";
 import { handleAccountDeployed } from "../src/entry-point";
 import { createAccountDeployedEvent } from "./entry-point-utils";
 
