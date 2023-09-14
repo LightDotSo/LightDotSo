@@ -12,10 +12,23 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "dependencies": {},
+  "scripts": {
+    "build": "graph build",
+    "codegen": "graph codegen",
+    "create-local": "graph create --node http://localhost:8020/ @lightdotso/mainnet",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ @lightdotso/mainnet",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 @lightdotso/mainnet",
+    "remove-local": "graph remove --node http://localhost:8020/ @lightdotso/mainnet",
+    "test": "graph test"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "^0.57.0",
+    "@graphprotocol/graph-ts": "^0.31.0"
+  },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
     "@types/node": "^20.5.7",
+    "matchstick-as": "0.5.0",
     "typescript": "^5.2.2"
   },
   "publishConfig": {

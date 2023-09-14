@@ -1,0 +1,114 @@
+# Copyright (C) 2023 Light, Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+type AccountDeployed @entity(immutable: true) {
+  id: Bytes!
+  userOpHash: Bytes! # bytes32
+  sender: Bytes! # address
+  factory: Bytes! # address
+  paymaster: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type BeforeExecution @entity(immutable: true) {
+  id: Bytes!
+
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Deposited @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  totalDeposit: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SignatureAggregatorChanged @entity(immutable: true) {
+  id: Bytes!
+  aggregator: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type StakeLocked @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  totalStaked: BigInt! # uint256
+  unstakeDelaySec: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type StakeUnlocked @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  withdrawTime: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type StakeWithdrawn @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  withdrawAddress: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserOperationEvent @entity(immutable: true) {
+  id: Bytes!
+  userOpHash: Bytes! # bytes32
+  sender: Bytes! # address
+  paymaster: Bytes! # address
+  nonce: BigInt! # uint256
+  success: Boolean! # bool
+  actualGasCost: BigInt! # uint256
+  actualGasUsed: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type UserOperationRevertReason @entity(immutable: true) {
+  id: Bytes!
+  userOpHash: Bytes! # bytes32
+  sender: Bytes! # address
+  nonce: BigInt! # uint256
+  revertReason: Bytes! # bytes
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Withdrawn @entity(immutable: true) {
+  id: Bytes!
+  account: Bytes! # address
+  withdrawAddress: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

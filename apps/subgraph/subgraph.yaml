@@ -1,0 +1,66 @@
+# Copyright (C) 2023 Light, Inc.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: EntryPoint
+    network: mainnet
+    source:
+      address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
+      abi: EntryPoint
+      startBlock: 17012204
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AccountDeployed
+        - BeforeExecution
+        - Deposited
+        - SignatureAggregatorChanged
+        - StakeLocked
+        - StakeUnlocked
+        - StakeWithdrawn
+        - UserOperationEvent
+        - UserOperationRevertReason
+        - Withdrawn
+      abis:
+        - name: EntryPoint
+          file: ./abis/EntryPoint.json
+      eventHandlers:
+        - event: AccountDeployed(indexed bytes32,indexed address,address,address)
+          handler: handleAccountDeployed
+        - event: BeforeExecution()
+          handler: handleBeforeExecution
+        - event: Deposited(indexed address,uint256)
+          handler: handleDeposited
+        - event: SignatureAggregatorChanged(indexed address)
+          handler: handleSignatureAggregatorChanged
+        - event: StakeLocked(indexed address,uint256,uint256)
+          handler: handleStakeLocked
+        - event: StakeUnlocked(indexed address,uint256)
+          handler: handleStakeUnlocked
+        - event: StakeWithdrawn(indexed address,address,uint256)
+          handler: handleStakeWithdrawn
+        - event: UserOperationEvent(indexed bytes32,indexed address,indexed address,uint256,bool,uint256,uint256)
+          handler: handleUserOperationEvent
+        - event: UserOperationRevertReason(indexed bytes32,indexed address,uint256,bytes)
+          handler: handleUserOperationRevertReason
+        - event: Withdrawn(indexed address,address,uint256)
+          handler: handleWithdrawn
+      file: ./src/entry-point.ts
