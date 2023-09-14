@@ -14,11 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use lightdotso_prisma::PrismaClient;
-use lightdotso_prometheus::opentelemetry_prometheus::PrometheusExporter;
 use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct AppState {
     pub client: Option<Arc<PrismaClient>>,
-    pub exporter: Arc<PrometheusExporter>,
 }

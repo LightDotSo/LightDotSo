@@ -71,8 +71,8 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create a shared client
     let db = Arc::new(create_client().await.unwrap());
-    let exporter = Arc::new(init_prometheus());
-    let state = AppState { client: Some(db), exporter };
+    init_prometheus();
+    let state = AppState { client: Some(db) };
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85

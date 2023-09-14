@@ -15,17 +15,14 @@
 
 use lazy_static::lazy_static;
 use once_cell::sync::Lazy;
-use prometheus::{register_int_counter_vec, IntCounterVec};
+use opentelemetry::{global, metrics::Counter};
 
 lazy_static! {
     /// Example usage:
-    /// COUNTER.with_label_values(&["bar", "prometheus"]).inc();
-    pub static ref COUNTER: Lazy<IntCounterVec> = Lazy::new(|| {
-        register_int_counter_vec!(
-            "custom_prometheus_counter",
-            "Custom counter",
-            &["foo", "library"]
-        )
-        .unwrap()
+    /// COUNTER.add(1, &[KeyValue::new("foo", "bar")]);
+    pub static ref COUNTER: Lazy<Counter<u64>> = Lazy::new(|| {
+        global::meter("")
+            .u64_counter("custom_opentelemetry_counter")
+            .init()
     });
 }

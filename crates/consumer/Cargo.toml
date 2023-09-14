@@ -20,5 +20,6 @@
   lightdotso-notifier = { workspace = true }
   lightdotso-prometheus = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  opentelemetry = { workspace = true }
   rdkafka = { workspace = true }
   serde_json = { workspace = true }

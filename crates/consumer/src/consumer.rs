@@ -30,8 +30,9 @@ use lightdotso_kafka::{
     produce_retry_transaction_1_message, produce_retry_transaction_2_message,
 };
 use lightdotso_notifier::config::NotifierArgs;
-use lightdotso_prometheus::consumer::BLOCK_INDEXED_STATUS;
+use lightdotso_prometheus::{consumer::BLOCK_INDEXED_STATUS, custom::COUNTER};
 use lightdotso_tracing::tracing::{error, info, warn};
+use opentelemetry::KeyValue;
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
     producer::FutureProducer,
@@ -134,6 +135,9 @@ impl Consumer {
                                                 chain_id,
                                             )
                                             .await;
+
+                                        // Increment the custom counter
+                                        COUNTER.add(1, &[KeyValue::new("foo", "bar")]);
 
                                         // Write the metric to prometheus
                                         let metric = BLOCK_INDEXED_STATUS.with_label_values(&[

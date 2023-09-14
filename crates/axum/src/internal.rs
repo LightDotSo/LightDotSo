@@ -18,15 +18,16 @@ use axum::Router;
 use eyre::Result;
 use lightdotso_prometheus::init_prometheus;
 use lightdotso_tracing::tracing::info;
-use std::{net::SocketAddr, sync::Arc};
+use std::net::SocketAddr;
 
 use crate::state::AppState;
 
 pub async fn start_internal_server() -> Result<()> {
     info!("Starting internal server");
 
-    let exporter = Arc::new(init_prometheus());
-    let state = AppState { client: None, exporter };
+    init_prometheus();
+
+    let state = AppState { client: None };
 
     prometheus_exporter::init();
 
