@@ -101,7 +101,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-error:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'consumer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -115,7 +115,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-nfn:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'consumer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -129,7 +129,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-retry:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'consumer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -143,7 +143,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-consumer-tx:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'consumer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'consumer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -203,7 +203,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-graph:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'graph'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'graph'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -217,7 +217,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-ipfs:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'graph'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'graph'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -246,7 +246,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-arbitrum:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -260,7 +260,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-avalanche:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -274,7 +274,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-base:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -288,7 +288,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-bsc:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -302,7 +302,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-gnosis:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -316,7 +316,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-polygon:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -330,7 +330,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-optimism:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -344,7 +344,7 @@ jobs:
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-sepolia:
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.group == 'indexer'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
