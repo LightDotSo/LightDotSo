@@ -14,9 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { newMockEvent } from "matchstick-as";
-import type { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports, import/no-duplicates
+import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
+// eslint-disable-next-line import/no-duplicates
 import { ethereum } from "@graphprotocol/graph-ts";
-import type {
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import {
   AccountDeployed,
   BeforeExecution,
   Deposited,
