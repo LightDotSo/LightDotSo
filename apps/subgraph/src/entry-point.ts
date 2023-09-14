@@ -25,7 +25,8 @@ import {
   UserOperationRevertReason as UserOperationRevertReasonEvent,
   // Withdrawn as WithdrawnEvent,
 } from "../generated/EntryPoint/EntryPoint";
-import // AccountDeployed,
+// import
+// AccountDeployed,
 // BeforeExecution,
 // Deposited,
 // SignatureAggregatorChanged,
@@ -35,7 +36,7 @@ import // AccountDeployed,
 // UserOperationEvent,
 // UserOperationRevertReason,
 // Withdrawn,
-"../generated/schema";
+// "../generated/schema";
 import {
   handleLightWalletDeployed,
   handleLightWalletUserOperationEvent,
