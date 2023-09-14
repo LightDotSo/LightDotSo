@@ -16,11 +16,13 @@
 pub mod consumer;
 pub mod custom;
 
+use consumer::BLOCK_INDEXED_STATUS;
 use opentelemetry::sdk::metrics::{controllers, processors, selectors};
 pub use opentelemetry_prometheus;
 use opentelemetry_prometheus::PrometheusExporter;
 use opentelemetry_sdk::export::metrics::aggregation;
 pub use prometheus;
+use prometheus::Registry;
 use std::time::Duration;
 
 /// Initialize the Prometheus exporter.
@@ -31,6 +33,10 @@ pub fn init_prometheus() -> PrometheusExporter {
     ))
     .with_collect_period(Duration::from_secs(10))
     .build();
+
+    let registry = Registry::new();
+    // registry.register(Box::new(INDEX_ATTEMPTS.clone())).unwrap();
+    registry.register(Box::new(BLOCK_INDEXED_STATUS.clone())).unwrap();
 
     opentelemetry_prometheus::exporter(controller).init()
 }

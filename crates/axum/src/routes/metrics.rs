@@ -16,7 +16,7 @@
 use autometrics::autometrics;
 use axum::{extract::State, response::IntoResponse, routing::get, Router};
 use http::StatusCode;
-use lightdotso_prometheus::prometheus::{Encoder, TextEncoder};
+use lightdotso_prometheus::prometheus::{self, Encoder, TextEncoder};
 use lightdotso_tracing::tracing::error;
 
 use crate::state::AppState;
@@ -39,11 +39,10 @@ pub async fn handler(State(state): State<AppState>) -> impl IntoResponse {
     };
 
     // Get the exporter and encoder.
-    let exporter = state.exporter.clone();
     let encoder = TextEncoder::new();
 
     // Gather the metrics.
-    let metric_families = exporter.registry().gather();
+    let metric_families = prometheus::gather();
 
     // Return the metrics.
     let mut result = vec![];
