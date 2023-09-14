@@ -74,6 +74,12 @@ module.exports = {
       },
     },
     {
+      files: ["**/subgraph/**/*.ts"],
+      rules: {
+        "@typescript-eslint/consistent-type-imports": "off",
+      },
+    },
+    {
       files: ["turbo.json"],
       parser: "jsonc-eslint-parser",
       rules: {

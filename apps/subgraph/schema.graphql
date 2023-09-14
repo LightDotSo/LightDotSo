@@ -112,3 +112,14 @@ type Withdrawn @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type LightWallet @entity {
+  id: Bytes!
+  address: Bytes! # address
+  factory: Bytes! # address
+  imageHash: Bytes # bytes32
+  userOpHash: Bytes! # bytes32
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

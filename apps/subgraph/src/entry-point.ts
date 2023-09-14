@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import {
   AccountDeployed as AccountDeployedEvent,
   BeforeExecution as BeforeExecutionEvent,
@@ -27,7 +26,7 @@ import {
   Withdrawn as WithdrawnEvent,
 } from "../generated/EntryPoint/EntryPoint";
 import {
-  AccountDeployed,
+  // AccountDeployed,
   BeforeExecution,
   Deposited,
   SignatureAggregatorChanged,
@@ -38,21 +37,11 @@ import {
   UserOperationRevertReason,
   Withdrawn,
 } from "../generated/schema";
+import { handleLightWalletDeployed } from "./light-wallet";
 
 export function handleAccountDeployed(event: AccountDeployedEvent): void {
-  let entity = new AccountDeployed(
-    event.transaction.hash.concatI32(event.logIndex.toI32()),
-  );
-  entity.userOpHash = event.params.userOpHash;
-  entity.sender = event.params.sender;
-  entity.factory = event.params.factory;
-  entity.paymaster = event.params.paymaster;
-
-  entity.blockNumber = event.block.number;
-  entity.blockTimestamp = event.block.timestamp;
-  entity.transactionHash = event.transaction.hash;
-
-  entity.save();
+  // Handle if the account is LightWallet
+  handleLightWalletDeployed(event);
 }
 
 export function handleBeforeExecution(event: BeforeExecutionEvent): void {
