@@ -23,7 +23,8 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "^0.57.0",
-    "@graphprotocol/graph-ts": "^0.31.0"
+    "@graphprotocol/graph-ts": "^0.31.0",
+    "assemblyscript": "^0.27.9"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
