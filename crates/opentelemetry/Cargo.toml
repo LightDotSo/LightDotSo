@@ -1,5 +1,5 @@
 [package]
-  name = "lightdotso-prometheus"
+  name = "lightdotso-opentelemetry"
 
   version.workspace = true
   edition.workspace = true
@@ -9,6 +9,8 @@
   repository.workspace = true
 
 [dependencies]
+  lazy_static = { workspace = true }
+  once_cell = { workspace = true }
   opentelemetry = { workspace = true }
   opentelemetry-prometheus = { workspace = true }
-  prometheus = { workspace = true }
+  opentelemetry_sdk = { workspace = true }

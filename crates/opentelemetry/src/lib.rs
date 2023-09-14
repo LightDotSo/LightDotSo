@@ -13,13 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lazy_static::lazy_static;
-use prometheus::{GaugeVec, Opts};
-
-lazy_static! {
-    pub static ref BLOCK_INDEXED_STATUS: GaugeVec = {
-        let gauge_opts = Opts::new("block_indexed_status", "1 if block is indexed, 0 if not");
-
-        GaugeVec::new(gauge_opts, &["chain_id", "block_number"]).unwrap()
-    };
-}
+pub mod consumer;
+pub mod custom;

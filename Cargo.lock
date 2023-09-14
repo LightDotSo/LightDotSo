@@ -5830,7 +5830,7 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-notifier",
- "lightdotso-prometheus",
+ "lightdotso-opentelemetry",
  "lightdotso-tracing",
  "opentelemetry 0.20.0",
  "rdkafka",
@@ -5932,6 +5932,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-opentelemetry"
+version = "0.1.0"
+dependencies = [
+ "lazy_static",
+ "once_cell",
+ "opentelemetry 0.20.0",
+ "opentelemetry-prometheus",
+ "opentelemetry_sdk",
+]
+
+[[package]]
 name = "lightdotso-paymaster"
 version = "0.1.0"
 dependencies = [
@@ -5961,19 +5972,9 @@ dependencies = [
 name = "lightdotso-prometheus"
 version = "0.1.0"
 dependencies = [
- "axum 0.6.20",
- "chrono",
- "eyre",
- "lazy_static",
- "once_cell",
  "opentelemetry 0.20.0",
  "opentelemetry-prometheus",
- "opentelemetry_sdk",
  "prometheus",
- "reqwest",
- "serde",
- "tokio",
- "tower",
 ]
 
 [[package]]
