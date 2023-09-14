@@ -12,6 +12,7 @@
   axum = { workspace = true }
   chrono = { workspace = true }
   eyre = { workspace = true }
+  lazy_static = { workspace = true }
   once_cell = { workspace = true }
   prometheus = { workspace = true }
   reqwest = { workspace = true }

@@ -26,8 +26,6 @@ use std::borrow::Cow;
 use tower_governor::{errors::GovernorError, key_extractor::KeyExtractor};
 
 pub mod api;
-pub mod exporter;
-pub mod indexer;
 pub mod internal;
 pub mod prometheus;
 pub mod result;

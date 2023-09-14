@@ -13,5 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod consumer;
-pub mod custom;
+use lazy_static::lazy_static;
+use once_cell::sync::Lazy;
+use prometheus::{register_int_counter_vec, IntCounterVec};
+
+lazy_static! {
+    /// Example usage:
+    /// COUNTER.with_label_values(&["bar", "prometheus"]).inc();
+    pub static ref COUNTER: Lazy<IntCounterVec> = Lazy::new(|| {
+        register_int_counter_vec!(
+            "custom_prometheus_counter",
+            "Custom counter",
+            &["foo", "library"]
+        )
+        .unwrap()
+    });
+}

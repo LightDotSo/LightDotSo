@@ -30,6 +30,7 @@ use lightdotso_kafka::{
     produce_retry_transaction_1_message, produce_retry_transaction_2_message,
 };
 use lightdotso_notifier::config::NotifierArgs;
+use lightdotso_prometheus::consumer::BLOCK_INDEXED_STATUS;
 use lightdotso_tracing::tracing::{error, info, warn};
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
@@ -116,11 +117,13 @@ impl Consumer {
                                     payload.as_bytes(),
                                 ) {
                                     Ok((block, chain_id)) => {
+                                        // Get the block number
+                                        let block_number = block.number.unwrap().as_u64();
+
                                         // Log each message as an example.
                                         info!(
                                             "Indexing block: {:?} at chain_id: {:?}",
-                                            block.number.unwrap().as_u64(),
-                                            chain_id
+                                            block_number, chain_id
                                         );
 
                                         // Index the block
@@ -131,6 +134,17 @@ impl Consumer {
                                                 chain_id,
                                             )
                                             .await;
+
+                                        // Write the metric to prometheus
+                                        let metric = BLOCK_INDEXED_STATUS.with_label_values(&[
+                                            &chain_id.to_string(),
+                                            &block_number.to_string(),
+                                        ]);
+                                        if res.is_ok() {
+                                            metric.set(1.0);
+                                        } else {
+                                            metric.set(0.0);
+                                        }
 
                                         // Commit the message
                                         if let Err(e) = res {

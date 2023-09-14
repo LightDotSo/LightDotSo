@@ -13,14 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_axum::exporter::start_exporter_server;
-use lightdotso_bin::version::{LONG_VERSION, SHORT_VERSION};
+use lazy_static::lazy_static;
+use prometheus::{GaugeVec, Opts};
 
-#[tokio::main]
-pub async fn main() -> Result<(), eyre::Error> {
-    println!("Starting exporter at {} {}", SHORT_VERSION, LONG_VERSION);
+lazy_static! {
+    pub static ref BLOCK_INDEXED_STATUS: GaugeVec = {
+        let gauge_opts = Opts::new("block_indexed_status", "1 if block is indexed, 0 if not");
 
-    let _ = start_exporter_server().await;
-
-    Ok(())
+        GaugeVec::new(gauge_opts, &["chain_id", "block_number"]).unwrap()
+    };
 }

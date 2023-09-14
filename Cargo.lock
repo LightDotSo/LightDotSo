@@ -685,8 +685,6 @@ dependencies = [
  "prometheus-client",
  "spez",
  "thiserror",
- "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]
@@ -5831,6 +5829,7 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-notifier",
+ "lightdotso-prometheus",
  "lightdotso-tracing",
  "rdkafka",
  "serde_json",
@@ -5963,6 +5962,7 @@ dependencies = [
  "axum 0.6.20",
  "chrono",
  "eyre",
+ "lazy_static",
  "once_cell",
  "prometheus",
  "reqwest",
