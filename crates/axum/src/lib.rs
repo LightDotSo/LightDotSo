@@ -31,6 +31,7 @@ pub mod prometheus;
 pub mod result;
 pub mod routes;
 pub mod rpc;
+pub mod state;
 
 #[derive(Debug, Serialize, Deserialize, Clone, Eq, PartialEq)]
 pub struct UserToken;

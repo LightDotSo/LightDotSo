@@ -14,6 +14,9 @@
   eyre = { workspace = true }
   lazy_static = { workspace = true }
   once_cell = { workspace = true }
+  opentelemetry = { workspace = true }
+  opentelemetry-prometheus = { workspace = true }
+  opentelemetry_sdk = { workspace = true }
   prometheus = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true }

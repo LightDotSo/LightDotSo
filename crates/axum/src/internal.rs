@@ -16,19 +16,29 @@
 use autometrics::prometheus_exporter;
 use axum::Router;
 use eyre::Result;
+use lightdotso_prometheus::init_prometheus;
 use lightdotso_tracing::tracing::info;
+use std::{net::SocketAddr, sync::Arc};
+
+use crate::state::AppState;
 
 pub async fn start_internal_server() -> Result<()> {
     info!("Starting internal server");
+
+    let exporter = Arc::new(init_prometheus());
+    let state = AppState { client: None, exporter };
 
     prometheus_exporter::init();
 
     let app = Router::new()
         .merge(crate::routes::health::router())
-        .merge(crate::routes::metrics::router());
+        .merge(crate::routes::metrics::router())
+        .with_state(state);
 
-    let socket_addr = "0.0.0.0:9091".parse()?;
-    axum::Server::bind(&socket_addr).serve(app.into_make_service()).await?;
+    let socket_addr = "[::]:3000".parse()?;
+    axum::Server::bind(&socket_addr)
+        .serve(app.into_make_service_with_connect_info::<SocketAddr>())
+        .await?;
 
     Ok(())
 }

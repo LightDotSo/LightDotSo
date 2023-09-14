@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{api::ApiState, result::AppJsonResult};
+use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -45,7 +45,7 @@ impl From<wallet::Data> for Wallet {
 }
 
 #[autometrics]
-pub(crate) fn router() -> Router<ApiState> {
+pub(crate) fn router() -> Router<AppState> {
     Router::new().route("/wallet/list", get(handler))
 }
 
@@ -63,7 +63,7 @@ pub(crate) fn router() -> Router<ApiState> {
 #[autometrics]
 async fn handler(
     pagination: Option<Query<PaginationQuery>>,
-    State(client): State<ApiState>,
+    State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
     // Get the pagination query.
     let Query(pagination) = pagination.unwrap_or_default();
@@ -71,6 +71,7 @@ async fn handler(
     // Get the wallets from the database.
     let wallets = client
         .client
+        .unwrap()
         .wallet()
         .find_many(vec![])
         .skip(pagination.offset.unwrap_or(0))

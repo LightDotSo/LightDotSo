@@ -14,14 +14,9 @@
   eyre = { workspace = true }
   lazy_static = { workspace = true }
   metrics = "0.21.1"
-  opentelemetry = { version = "0.20.0", features = ["rt-tokio"] }
-  opentelemetry-otlp = { version = "0.13.0", features = [
-    "grpc-tonic",
-    "reqwest-client",
-    "tls",
-    "tls-roots",
-  ] }
-  opentelemetry_sdk = "0.20.0"
+  opentelemetry = { workspace = true }
+  opentelemetry-otlp = { workspace = true }
+  opentelemetry_sdk = { workspace = true }
   pyroscope = "0.5.7"
   pyroscope_pprofrs = "0.2.7"
   tokio = { workspace = true }
@@ -31,7 +26,7 @@
   tracing-appender = "0.2.2"
   tracing-futures = "0.2.5"
   tracing-loki = { version = "0.2.2", features = ["rustls", "native-tls"] }
-  tracing-opentelemetry = "0.21.0"
+  tracing-opentelemetry = "0.19.0"
   tracing-subscriber = { version = "0.3.17", features = [
     "ansi",
     "env-filter",
