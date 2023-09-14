@@ -18,7 +18,7 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
-    name: EntryPoint
+    name: EntryPointv0.6.0
     network: mainnet
     source:
       address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
@@ -42,6 +42,10 @@ dataSources:
       abis:
         - name: EntryPoint
           file: ./abis/EntryPoint.json
+        - name: LightWallet
+          file: ./abis/LightWallet.json
+        - name: LightWalletFactory
+          file: ./abis/LightWalletFactory.json
       eventHandlers:
         - event: AccountDeployed(indexed bytes32,indexed address,address,address)
           handler: handleAccountDeployed
