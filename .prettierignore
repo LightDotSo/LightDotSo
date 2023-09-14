@@ -1,8 +1,12 @@
 generated.ts
 
 apps/docs/src/pages/posts/**/*.mdx
+apps/subgraph/generated/**/*.ts
 apps/ui/src/components/**
+apps/extension/**
 configurations/prisma/src/zod/**
+ios/LightWallet
+ios/LightWalletSafariExtension/Resources/**
 
 *.html
 *.xcarchive
@@ -24,6 +28,3 @@ out
 out-wagmi
 target
 
-apps/extension/**
-ios/LightWallet
-ios/LightWalletSafariExtension/Resources/**

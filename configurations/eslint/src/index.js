@@ -33,6 +33,7 @@ module.exports = {
     "**/lib/**",
     "**/__next/**",
     "**/_next/**",
+    "**/generated/**",
     "generated.ts",
     "apps/ui/src/components/ui/**",
     "apps/extension/*/**.js",
