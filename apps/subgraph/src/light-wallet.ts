@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Address, Bytes } from "@graphprotocol/graph-ts";
+import { Bytes } from "@graphprotocol/graph-ts";
 import {
   AccountDeployed as AccountDeployedEvent,
   UserOperationEvent as UserOperationEventEvent,
@@ -25,13 +25,13 @@ import {
   UserOperationEvent,
   UserOperationRevertReason,
 } from "../generated/schema";
+import { lightWalletFactories } from "./config";
 
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
   // If the event is emitted by one of the factories, then we know that the account is a LightWallet
-  if (
-    event.params.factory ==
-    Address.fromString("0x0000000000756D3E6464f5efe7e413a0Af1C7474")
-  ) {
+  // If it is one of the factories, the index will be greater than -1
+  // If it is not one of the factories, the index will be -1
+  if (lightWalletFactories.indexOf(event.params.factory) > -1) {
     // Create a new LightWallet entity
     let lightWallet = new LightWallet(event.params.sender);
     lightWallet.address = event.params.sender;
