@@ -15,12 +15,12 @@
   "scripts": {
     "build": "graph build",
     "codegen": "graph codegen",
-    "create-local": "graph create --node http://localhost:8020/ @lightdotso/mainnet",
+    "create:local": "graph create --node http://localhost:8020 @lightdotso/mainnet",
     "create:mainnet": "graph create --node http://lightdotso-graph.internal:9020 mainnet",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ @lightdotso/mainnet",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 @lightdotso/mainnet",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy @lightdotso/mainnet",
+    "deploy:local": "graph deploy --node http://localhost:8020 --ipfs http://localhost:5001 @lightdotso/mainnet",
     "deploy:mainnet": "graph deploy --node http://lightdotso-graph.internal:9020 --ipfs http://lightdotso-ipfs.internal:5001 mainnet",
-    "remove-local": "graph remove --node http://localhost:8020/ @lightdotso/mainnet",
+    "remove:local": "graph remove --node http://localhost:8020 @lightdotso/mainnet",
     "remove:mainnet": "graph remove --node http://lightdotso-graph.internal:9020 mainnet",
     "test": "graph test"
   },
