@@ -27,12 +27,6 @@ import {Script} from "forge-std/Script.sol";
 // LightVerifyingPaymasterDeployer -- Deploys the LightVerifyingPaymaster contract
 contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
-    // Storages
-    // -------------------------------------------------------------------------
-
-    LightVerifyingPaymaster private paymaster;
-
-    // -------------------------------------------------------------------------
     // Bytecode
     // -------------------------------------------------------------------------
 
@@ -49,7 +43,7 @@ contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
         // solhint-disable-next-line no-console
         console.logBytes32(keccak256(initCode));
         // The init code hash of the LightVerifyingPaymaster
-        bytes32 initCodeHash = 0x8957ba1f77a4becdcfe5a5e01d4516901271037e93597fe921161829034d540e;
+        bytes32 initCodeHash = 0xa57ffe0ca776b32dba86504118f6fade9447b104c1b334c97fb5f5f10af92c38;
         // Assert that the init code is the expected value
         assert(keccak256(initCode) == initCodeHash);
 
