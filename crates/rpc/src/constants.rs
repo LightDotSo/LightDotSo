@@ -153,13 +153,40 @@ lazy_static! {
         m.insert(1101, "https://rpc.ankr.com/polygon_zkevm".to_string());
         m.insert(8453, "https://rpc.ankr.com/base".to_string());
         m.insert(42161, "https://rpc.ankr.com/arbitrum".to_string());
-        m.insert(42220, "https://rpc.ankr.com/celo".to_string());
         m.insert(42170, "https://rpc.ankr.com/arbitrumnova".to_string());
+        m.insert(42220, "https://rpc.ankr.com/celo".to_string());
         m.insert(43114, "https://rpc.ankr.com/avalanche".to_string());
         m.insert(1666600000, "https://rpc.ankr.com/harmony".to_string());
 
         // Testnet
         m.insert(11155111, "https://rpc.ankr.com/eth_sepolia".to_string());
+
+        m
+    };
+}
+
+// The thirdweb rpc urls
+lazy_static! {
+    pub static ref THIRDWEB_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://ethereum.rpc.thirdweb.com".to_string());
+        m.insert(10, "https://optimism.rpc.thirdweb.com".to_string());
+        m.insert(56, "https://binance.rpc.thirdweb.com".to_string());
+        m.insert(100, "https://gnosis.rpc.thirdweb.com".to_string());
+        m.insert(137, "https://polygon.rpc.thirdweb.com".to_string());
+        m.insert(250, "https://fantom.rpc.thirdweb.com".to_string());
+        m.insert(1101, "https://polygon-zkevm.rpc.thirdweb.com".to_string());
+        m.insert(8453, "https://base.rpc.thirdweb.com".to_string());
+        m.insert(42161, "https://arbitrum.rpc.thirdweb.com".to_string());
+        m.insert(42170, "https://arbitrum-nova.rpc.thirdweb.com".to_string());
+        m.insert(42220, "https://celo.rpc.thirdweb.com".to_string());
+        m.insert(43114, "https://avalanche.rpc.thirdweb.com".to_string());
+        m.insert(1666600000, "https://harmony-shard-0.rpc.thirdweb.com".to_string());
+
+        // Testnet
+        m.insert(11155111, "https://sepolia.rpc.thirdweb.com".to_string());
 
         m
     };

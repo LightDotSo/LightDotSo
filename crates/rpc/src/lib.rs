@@ -19,6 +19,7 @@ mod constants;
 use crate::constants::{
     ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL,
     INFURA_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
+    THIRDWEB_RPC_URLS,
 };
 use axum::{
     body::Body,
@@ -27,7 +28,7 @@ use axum::{
 };
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
-use lightdotso_tracing::tracing::{info, warn};
+use lightdotso_tracing::tracing::{error, info, warn};
 use serde::ser::Error;
 use serde_json::{Error as SerdeError, Value};
 use std::collections::HashMap;
@@ -96,6 +97,7 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                     return None;
                 }
                 // Return the response
+                info!("Successfully returning w/ response: {:?}", body);
                 return Some(Response::builder().status(200).body(Body::from(body)).unwrap());
             }
             None
@@ -360,6 +362,18 @@ pub async fn rpc_proxy_handler(
     if let Some(resp) = result {
         return resp;
     }
+    // Get the ankr rpc url
+    let result = try_rpc_with_url(
+        &THIRDWEB_RPC_URLS,
+        None,
+        &chain_id,
+        &client,
+        Body::from(full_body_bytes.clone()),
+    )
+    .await;
+    if let Some(resp) = result {
+        return resp;
+    }
 
     // Get the public rpc url from the constants
     let result = try_rpc_with_url(
@@ -401,5 +415,6 @@ pub async fn rpc_proxy_handler(
     }
 
     // Return an error if the chain_id is not supported or not found
+    error!("Could not resolve rpc url for chain_id: {}", chain_id);
     Response::builder().status(404).body(Body::from("Not Found for RPC Request")).unwrap()
 }
