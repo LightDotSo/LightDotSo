@@ -78,7 +78,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Graph Auth
         run: |
-          graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
+          pnpm graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
       - name: Deploy Graph
         run: |
           pnpm run deploy:graph:hosted
