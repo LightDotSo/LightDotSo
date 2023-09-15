@@ -22,6 +22,9 @@ use std::future::pending;
 
 #[derive(Debug, Clone, Parser)]
 pub struct PaymasterArgs {
+    /// The infura API key
+    #[clap(long, env = "PAYMASTER_PRIVATE_KEY")]
+    pub paymaster_private_key: String,
     /// The topics to consume.
     #[clap(long, default_value = "[::]:3000")]
     pub rpc_address: String,

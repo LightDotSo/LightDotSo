@@ -58,7 +58,7 @@ abstract contract BaseLightDeployer {
 
     address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
 
-    address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+    address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
 
     address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
 
