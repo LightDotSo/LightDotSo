@@ -210,3 +210,19 @@ lazy_static! {
         m
     };
 }
+
+// The nodereal rpc urls
+lazy_static! {
+    pub static ref LLAMANODES_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://eth.llamarpc.com".to_string());
+        m.insert(10, "https://optimism.llamarpc.com".to_string());
+        m.insert(56, "https://binance.llamarpc.com".to_string());
+        m.insert(137, "https://polygon.llamarpc.com".to_string());
+        m.insert(42161, "https://arbitrum.llamarpc.com".to_string());
+
+        m
+    };
+}
