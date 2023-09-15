@@ -18,7 +18,7 @@
     "create:local": "graph create --node http://localhost:8020 lightdotso/mainnet",
     "create:mainnet": "graph create --node http://lightdotso-graph.internal:9020 mainnet",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy @lightdotso/mainnet",
-    "deploy:hosted": "concurrently \"pnpm:*:fix\"",
+    "deploy:hosted": "concurrently \"pnpm:deploy:hosted:*\"",
     "deploy:hosted:arbitrum": "graph deploy --product hosted-service lightdotso/arbitrum-one --network arbitrum-one",
     "deploy:hosted:avalanche": "graph deploy --product hosted-service lightdotso/avalanche --network avalanche",
     "deploy:hosted:base": "graph deploy --product hosted-service lightdotso/base --network base",
