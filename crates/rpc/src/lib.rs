@@ -18,8 +18,8 @@ mod constants;
 
 use crate::constants::{
     ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL,
-    INFURA_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL,
-    THIRDWEB_RPC_URLS,
+    INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL, PUBLIC_RPC_URLS,
+    SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
 };
 use axum::{
     body::Body,
@@ -362,7 +362,21 @@ pub async fn rpc_proxy_handler(
     if let Some(resp) = result {
         return resp;
     }
-    // Get the ankr rpc url
+
+    // Get the llama noes rpc url
+    let result = try_rpc_with_url(
+        &LLAMANODES_RPC_URLS,
+        None,
+        &chain_id,
+        &client,
+        Body::from(full_body_bytes.clone()),
+    )
+    .await;
+    if let Some(resp) = result {
+        return resp;
+    }
+
+    // Get the thirdweb rpc url
     let result = try_rpc_with_url(
         &THIRDWEB_RPC_URLS,
         None,
