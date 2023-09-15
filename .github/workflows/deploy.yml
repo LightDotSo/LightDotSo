@@ -79,8 +79,7 @@ jobs:
       - name: Deploy Graph
         working-directory: apps/subgraph
         run: |
-          npm install -g @graphprotocol/graph-cli
-          graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
+          npx graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
           pnpm run deploy:hosted
   deploy-check:
     if: always()
