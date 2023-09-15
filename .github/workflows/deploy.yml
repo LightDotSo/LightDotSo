@@ -63,7 +63,7 @@ jobs:
         run: |
           pnpm run deploy:checkly --preview
   deploy-graph:
-    if: github.event_name == 'workflow_dispatch' && inputs.group == 'graph' || github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'graph' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     env:
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
