@@ -22,10 +22,6 @@ import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymast
 // LightVerifyingPaymaster -- VerifyingPaymaster for Light
 contract LightVerifyingPaymaster is VerifyingPaymaster {
     // -------------------------------------------------------------------------
-    // Immutable Storage
-    // -------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------
     // Constructor
     // -------------------------------------------------------------------------
 
