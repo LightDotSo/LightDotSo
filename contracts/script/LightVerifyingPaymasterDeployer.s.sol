@@ -18,20 +18,27 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {Script} from "forge-std/Script.sol";
 
-// LightWalletFactoryDeployer -- Deploys the LightWalletFactory contract
-contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
+// LightVerifyingPaymasterDeployer -- Deploys the LightVerifyingPaymaster contract
+contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
+    // -------------------------------------------------------------------------
+    // Storages
+    // -------------------------------------------------------------------------
+
+    LightVerifyingPaymaster private paymaster;
+
     // -------------------------------------------------------------------------
     // Bytecode
     // -------------------------------------------------------------------------
 
-    bytes private byteCode = type(LightWalletFactory).creationCode;
-    bytes private initCode = abi.encodePacked(byteCode, abi.encode(address(ENTRY_POINT_ADDRESS)));
+    bytes private byteCode = type(LightVerifyingPaymaster).creationCode;
+    bytes private initCode =
+        abi.encodePacked(byteCode, abi.encode(address(ENTRY_POINT_ADDRESS), OFFCHAIN_VERIFIER_ADDRESS));
 
     // -------------------------------------------------------------------------
     // Run
@@ -41,7 +48,7 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
         // Log the byte code hash
         // solhint-disable-next-line no-console
         console.logBytes32(keccak256(initCode));
-        // The init code hash of the LightWalletFactory
+        // The init code hash of the LightVerifyingPaymaster
         bytes32 initCodeHash = 0x8957ba1f77a4becdcfe5a5e01d4516901271037e93597fe921161829034d540e;
         // Assert that the init code is the expected value
         assert(keccak256(initCode) == initCodeHash);
@@ -57,17 +64,17 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
             // Construct the entrypoint
             entryPoint = new EntryPoint();
 
-            // Create the factory
-            factory = new LightWalletFactory(entryPoint);
+            // Create the paymaster
+            paymaster = new LightVerifyingPaymaster(entryPoint, address(0x0));
         } else {
             // Use regular broadcast
             vm.startBroadcast();
 
-            // Create LightWalletFactory
-            factory = LightWalletFactory(IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, initCode));
+            // Create LightVerifyingPaymaster
+            paymaster = LightVerifyingPaymaster(IMMUTABLE_CREATE2_FACTORY.safeCreate2(salt, initCode));
 
-            // Assert that the factory is the expected address
-            assert(address(factory) == LIGHT_FACTORY_ADDRESS);
+            // Assert that the paymaster is the expected address
+            assert(address(paymaster) == LIGHT_FACTORY_ADDRESS);
         }
 
         // Stop the broadcast

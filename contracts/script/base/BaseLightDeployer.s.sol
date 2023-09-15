@@ -18,11 +18,19 @@
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
 pragma solidity ^0.8.18;
+
+interface ImmutableCreate2Factory {
+    function safeCreate2(bytes32 salt, bytes calldata initializationCode)
+        external
+        payable
+        returns (address deploymentAddress);
+}
 
 // BaseLightDeployer - Create abstract contract of just immutable storages
 abstract contract BaseLightDeployer {
@@ -36,6 +44,8 @@ abstract contract BaseLightDeployer {
 
     LightWalletFactory internal factory;
 
+    LightVerifyingPaymaster internal paymaster;
+
     LightWalletUtils internal lightWalletUtils;
 
     bytes32 internal expectedImageHash;
@@ -46,9 +56,25 @@ abstract contract BaseLightDeployer {
 
     address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
 
+    address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+
+    address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+
     address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
 
     address internal constant ENTRY_POINT_ADDRESS = address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789);
+
+    // -------------------------------------------------------------------------
+    // Immutable Factoy
+    // -------------------------------------------------------------------------
+
+    address internal constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
+    ImmutableCreate2Factory internal constant IMMUTABLE_CREATE2_FACTORY =
+        ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
+
+    // -------------------------------------------------------------------------
+    // Setup
+    // -------------------------------------------------------------------------
 
     /// @dev BaseTest setup
     function setUp() public virtual {
