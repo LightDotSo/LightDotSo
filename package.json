@@ -19,6 +19,7 @@
     "changeset": "changeset",
     "depcheck:lint": "pnpm -r exec depcheck .",
     "deploy:checkly": "checkly deploy",
+    "deploy:graph:hosted": "pnpm run deploy:graph:hosted --filter @lightdotso/subgraph",
     "dev:prisma": "make docker-compose-up",
     "dev:prisma:studio": "pnpm run studio:dev --filter @lightdotso/prisma",
     "e2e:app:dev": "PLAYWRIGHT_TEST_BASE_URL=http://localhost:3001 playwright test --project=@lightdotso/app",

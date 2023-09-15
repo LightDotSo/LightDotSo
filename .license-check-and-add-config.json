@@ -63,6 +63,7 @@
     "*.yml",
     "apps/extension/**/*.js",
     "apps/docs/src/pages/posts/**/*.mdx",
+    "apps/subgraph/subgraph.yaml",
     "configurations/kysely/src/db/**/*.ts",
     "configurations/prisma/src/zod/**/*.ts",
     "fly/graph/nginx/**",

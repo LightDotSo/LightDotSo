@@ -8,6 +8,15 @@ on:
     types:
       - labeled
   merge_group:
+  workflow_dispatch:
+    inputs:
+      group:
+        type: choice
+        default: graph
+        description: "Group to deploy"
+        options:
+          - graph
+        required: true
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -53,11 +62,31 @@ jobs:
         name: Deploy Checkly
         run: |
           pnpm run deploy:checkly --preview
+  deploy-graph:
+    if: github.event_name == 'workflow_dispatch' && inputs.group == 'graph'
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    permissions:
+      contents: read
+    timeout-minutes: 90
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Deploy Graph
+        working-directory: apps/subgraph
+        run: |
+          pnpm graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
+          pnpm run deploy:hosted
   deploy-check:
     if: always()
     needs:
       - deploy-filter
       - deploy-checkly
+      - deploy-graph
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:

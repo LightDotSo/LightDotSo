@@ -327,5 +327,38 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "72ece1db-43e8-4957-b46c-a270775e957f",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://api.thegraph.com/subgraphs/name/lightdotso/bsc",
+    "url": "https://api.thegraph.com/subgraphs/name/lightdotso/bsc",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-09-15T03:02:07.395Z",
+    "modified": "2023-09-15T03:02:53.234Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "*/*",
+        "isDisabled": true
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "graphql",
+      "raw": "",
+      "form": [],
+      "graphql": {
+        "query": "{\n  accountDeployeds(first: 5) {\n    id\n    userOpHash\n    sender\n    factory\n  }\n  beforeExecutions(first: 5) {\n    id\n    blockNumber\n    blockTimestamp\n    transactionHash\n  }\n}"
+      }
+    },
+    "tests": []
   }
 ]
