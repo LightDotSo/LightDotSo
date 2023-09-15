@@ -17,9 +17,9 @@ pub mod config;
 mod constants;
 
 use crate::constants::{
-    ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS, GAS_RPC_URL,
-    INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL, PUBLIC_RPC_URLS,
-    SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
+    ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS,
+    GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL,
+    PUBLIC_RPC_URLS, SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
 };
 use axum::{
     body::Body,
@@ -292,11 +292,25 @@ pub async fn rpc_proxy_handler(
             "eth_estimateUserOperationGas" |
             "eth_supportedEntryPoints" |
             "eth_getUserOperationByHash" |
-            "eth_getUserOperationReceipt" => {
-                // Get the ankr rpc url
+            "eth_getUserOperationReceipt" |
+            "rundler_maxPriorityFeePerGas" => {
+                // Get the bundler rpc url
                 let result = try_rpc_with_url(
                     &BUNDLER_RPC_URLS,
                     None,
+                    &chain_id,
+                    &client,
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if let Some(resp) = result {
+                    return resp;
+                }
+
+                // Get the alchemy rpc url
+                let result = try_rpc_with_url(
+                    &ALCHEMY_RPC_URLS,
+                    Some(std::env::var("ALCHEMY_API_KEY").unwrap()),
                     &chain_id,
                     &client,
                     Body::from(full_body_bytes.clone()),

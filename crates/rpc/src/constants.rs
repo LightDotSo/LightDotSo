@@ -65,6 +65,27 @@ lazy_static! {
     };
 }
 
+// The alchemy rpc urls
+lazy_static! {
+    pub static ref ALCHEMY_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://eth-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(10, "https://opt-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(137, "https://polygon-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(1101, "https://polygonzkevm-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(8453, "https://base-mainnet.g.alchemy.com/v2/".to_string());
+        m.insert(42161, "https://arb-mainnet.g.alchemy.com/v2/".to_string());
+
+        // Testnet
+        m.insert(80001, "https://polygon-mumbai.g.alchemy.com/v2/".to_string());
+        m.insert(11155111, "https://eth-sepolia.g.alchemy.com/v2/".to_string());
+
+        m
+    };
+}
+
 // The nodereal rpc urls
 lazy_static! {
     pub static ref NODEREAL_RPC_URLS: HashMap<u64, String> = {
