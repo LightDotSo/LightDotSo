@@ -79,7 +79,7 @@ jobs:
       - name: Deploy Graph
         working-directory: apps/subgraph
         run: |
-          npx graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
+          pnpm graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
           pnpm run deploy:hosted
   deploy-check:
     if: always()
