@@ -8,6 +8,7 @@ configurations/prisma/src/zod/**
 ios/LightWallet
 ios/LightWalletSafariExtension/Resources/**
 
+*.graphql
 *.html
 *.xcarchive
 

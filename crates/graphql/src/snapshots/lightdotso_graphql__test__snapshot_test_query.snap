@@ -1,0 +1,11 @@
+---
+source: crates/graphql/src/lib.rs
+expression: query.query
+---
+query MyQuery($n: Int!) {
+  lightWallets(first: $n) {
+    id
+  }
+}
+
+

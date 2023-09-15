@@ -1,0 +1,23 @@
+[package]
+  name = "lightdotso-graphql"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  cynic = { version = "3.2.2", features = ["http-reqwest-blocking"] }
+  cynic-codegen = { version = "3.2.2" }
+  eyre = { workspace = true }
+  insta = "1.17"
+  lightdotso-tracing = { workspace = true }
+  reqwest = { version = "0.11", features = ["json", "blocking"] }
+
+[dev-dependencies]
+  insta = "1.17"
+
+[build-dependencies]
+  cynic-codegen = { version = "3.2.2" }

@@ -1,0 +1,9 @@
+---
+source: crates/graphql/src/lib.rs
+expression: result.data
+---
+Some(
+    MyQuery {
+        light_wallets: [],
+    },
+)
