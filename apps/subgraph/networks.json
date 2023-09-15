@@ -29,6 +29,12 @@
       "startBlock": 27202729
     }
   },
+  "celo": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 21062508
+    }
+  },
   "gnosis": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
@@ -51,6 +57,18 @@
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 3257815
+    }
+  },
+  "base-testnet": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 3760459
+    }
+  },
+  "mumbai": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 34166156
     }
   }
 }
