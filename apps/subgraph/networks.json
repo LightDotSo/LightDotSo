@@ -8,43 +8,43 @@
   "arbitrum-one": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 17012204
+      "startBlock": 78720307
     }
   },
   "avalanche": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 17012204
+      "startBlock": 28865255
     }
   },
   "base": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 0
+      "startBlock": 1854367
     }
   },
   "bsc": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 17012204
+      "startBlock": 27202729
     }
   },
   "gnosis": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 17012204
+      "startBlock": 27364185
     }
   },
   "matic": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 17012204
+      "startBlock": 41335185
     }
   },
   "optimism": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 17012204
+      "startBlock": 88234528
     }
   }
 }
