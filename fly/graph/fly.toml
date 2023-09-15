@@ -13,12 +13,26 @@ kill_timeout = "5s"
 
 [build]
 
+[deploy]
+  strategy = "canary"
+
 [env]
   EXPERIMENTAL_SUBGRAPH_VERSION_SWITCHING_MODE = "synced"
   GRAPH_ETHEREUM_CLEANUP_BLOCKS = "true"
   GRAPH_GRAPHQL_ERROR_RESULT_SIZE = "1000000"
   GRAPH_GRAPHQL_WARN_RESULT_SIZE = "1000000"
   GRAPH_LOG = "debug"
+
+[http_service]
+  internal_port = 9000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  [http_service.concurrency]
+    type = "requests"
+    hard_limit = 250
+    soft_limit = 200
 
 [[services]]
   protocol = "tcp"
