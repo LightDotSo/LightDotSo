@@ -26,7 +26,7 @@ fly secrets set \
   postgres_pass="" \
   postgres_db="graph_node" \
   ipfs="risedle-ipfs.internal:5001" \
-  ethereum="mainnet:http://lightdotso-rpc-internal.internal:3000/1 xdai:http://lightdotso-rpc-internal.internal:3000/100 matic:http://lightdotso-rpc-internal.internal:3000/137 optimism:http://lightdotso-rpc-internal.internal:3000/10 arbitrum-one:http://lightdotso-rpc-internal.internal:3000/42161 avalanche:http://lightdotso-rpc-internal.internal:3000/43114 base:http://lightdotso-rpc-internal.internal:3000/8453 bsc:http://lightdotso-rpc-internal.internal:3000/56"
+  ethereum="mainnet:http://lightdotso-rpc-internal.internal:3000/internal/1 xdai:http://lightdotso-rpc-internal.internal:3000/internal/100 matic:http://lightdotso-rpc-internal.internal:3000/internal/137 optimism:http://lightdotso-rpc-internal.internal:3000/internal/10 arbitrum-one:http://lightdotso-rpc-internal.internal:3000/internal/42161 avalanche:http://lightdotso-rpc-internal.internal:3000/internal/43114 base:http://lightdotso-rpc-internal.internal:3000/internal/8453 bsc:http://lightdotso-rpc-internal.internal:3000/internal/56"
 ```
 
 ## Access the services
