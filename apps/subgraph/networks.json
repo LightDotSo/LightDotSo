@@ -4,5 +4,47 @@
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
       "startBlock": 17012204
     }
+  },
+  "arbitrum-one": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 17012204
+    }
+  },
+  "avalanche": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 17012204
+    }
+  },
+  "base": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 0
+    }
+  },
+  "bsc": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 17012204
+    }
+  },
+  "gnosis": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 17012204
+    }
+  },
+  "matic": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 17012204
+    }
+  },
+  "optimism": {
+    "EntryPointv0.6.0": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "startBlock": 17012204
+    }
   }
 }
