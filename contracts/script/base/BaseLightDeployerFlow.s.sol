@@ -17,11 +17,16 @@
 
 pragma solidity ^0.8.18;
 
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
+
+using ERC4337Utils for EntryPoint;
 
 /// @notice Base deployer test for scripts
 abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
@@ -30,7 +35,10 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
     // -------------------------------------------------------------------------
 
     /// @dev BaseLightDeployerFlow setup
-    function setUp() public virtual {
+    function setUp() public virtual override {
+        // setUp from BaseLightDeployer
+        BaseLightDeployer.setUp();
+
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
@@ -40,5 +48,30 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
 
         // Fork network setup
         vm.createSelectFork(name);
+    }
+
+    function deployLightWallet() internal returns (LightWallet) {
+        // Get the expected image hash
+        expectedImageHash = lightWalletUtils.getExpectedImageHash(PRIVATE_KEY_DEPLOYER);
+
+        // Set the initCode to create an account with the expected image hash and nonce 3
+        bytes memory initCode = abi.encodePacked(
+            LIGHT_FACTORY_ADDRESS,
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
+        );
+
+        // UserOperation to create the account
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", vm.envUint("PRIVATE_KEY"), initCode);
+
+        // Create an account
+        wallet = factory.createAccount(bytes32(uint256(1)), randMod());
+
+        entryPoint.handleOps(ops, payable(address(1)));
+
+        // solhint-disable-next-line no-console
+        // console.log("LightWallet deployed at address: %s", address(wallet));
+
+        return wallet;
     }
 }

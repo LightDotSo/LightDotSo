@@ -44,7 +44,6 @@ contract LightWalletFactoryDeployer is BaseLightDeployer, Script {
     // Immutable Storage
     // -------------------------------------------------------------------------
 
-    address private constant ENTRY_POINT_ADDRESS = address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789);
     address private constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
     ImmutableCreate2Factory private constant IMMUTABLE_CREATE2_FACTORY =
         ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
