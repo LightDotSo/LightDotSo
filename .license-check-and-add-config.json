@@ -95,6 +95,7 @@
     "**/lib/**",
     "**/pods/**",
     "**/scripts/**",
+    "**/snapshots/**",
     "**/target/**",
     "**/tools/**",
     "**/wiki/**"
