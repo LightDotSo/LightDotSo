@@ -77,6 +77,7 @@ jobs:
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Graph Auth
+        working-directory: apps/subgraph
         run: |
           pnpm graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
       - name: Deploy Graph
