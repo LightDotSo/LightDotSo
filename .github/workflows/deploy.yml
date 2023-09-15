@@ -76,12 +76,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Graph Auth
+      - name: Deploy Graph
         working-directory: apps/subgraph
         run: |
           pnpm graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
-      - name: Deploy Graph
-        run: |
           pnpm run deploy:graph:hosted
   deploy-check:
     if: always()
