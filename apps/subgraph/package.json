@@ -23,6 +23,7 @@
     "deploy:hosted:avalanche": "graph deploy --product hosted-service lightdotso/avalanche --network avalanche",
     "deploy:hosted:base": "graph deploy --product hosted-service lightdotso/base --network base",
     "deploy:hosted:bsc": "graph deploy --product hosted-service lightdotso/bsc --network bsc",
+    "deploy:hosted:celo": "graph deploy --product hosted-service lightdotso/celo --network celo",
     "deploy:hosted:gnosis": "graph deploy --product hosted-service lightdotso/gnosis --network gnosis",
     "deploy:hosted:hosted": "graph deploy --product hosted-service lightdotso/mainnet --network mainnet",
     "deploy:hosted:matic": "graph deploy --product hosted-service lightdotso/matic --network matic",
