@@ -37,7 +37,8 @@
     "@lightdotso/trpc": "0.0.0",
     "@lightdotso/explorer": "0.0.0-pre.2",
     "@lightdotso/open": "0.0.0",
-    "@lightdotso/playground": "0.0.0"
+    "@lightdotso/playground": "0.0.0",
+    "@lightdotso/subgraph": "0.0.0"
   },
   "changesets": [
     "calm-stingrays-bathe",
@@ -59,6 +60,7 @@
     "lazy-glasses-type",
     "lemon-kangaroos-cheer",
     "odd-nails-brake",
+    "popular-deers-walk",
     "real-cougars-grin",
     "rotten-jeans-exist",
     "rude-radios-suffer",

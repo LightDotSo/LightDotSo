@@ -1,5 +1,11 @@
 # @lightdotso/desktop
 
+## 0.1.0-pre.3
+
+### Patch Changes
+
+- [#557](https://github.com/LightDotSo/LightDotSo/pull/557) [`a8cc4dd`](https://github.com/LightDotSo/LightDotSo/commit/a8cc4ddc12d26e5d68531732cbd4199fd3fc0cec) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add rspc package
+
 ## 0.1.0-pre.2
 
 ### Patch Changes
