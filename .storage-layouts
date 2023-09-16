@@ -2,6 +2,12 @@
 👁️ STORAGE LAYOUT SNAPSHOT 👁️
 ============================
 =======================
+ ➡ LightVerifyingPaymaster
+| Name        | Type                        | Slot | Offset | Bytes | Contract                                                          |
+|-------------|-----------------------------|------|--------|-------|-------------------------------------------------------------------|
+| _owner      | address                     | 0    | 0      | 20    | contracts/src/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
+| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | contracts/src/LightVerifyingPaymaster.sol:LightVerifyingPaymaster |
+=======================
  ➡ LightWallet
 | Name          | Type  | Slot | Offset | Bytes | Contract                                  |
 |---------------|-------|------|--------|-------|-------------------------------------------|
@@ -18,6 +24,12 @@
 | deposits            | mapping(address => struct IStakeManager.DepositInfo) | 0    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 | nonceSequenceNumber | mapping(address => mapping(uint192 => uint256))      | 1    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
 | _status             | uint256                                              | 2    | 0      | 32    | lib/account-abstraction/contracts/core/EntryPoint.sol:EntryPoint |
+=======================
+ ➡ VerifyingPaymaster
+| Name        | Type                        | Slot | Offset | Bytes | Contract                                                                            |
+|-------------|-----------------------------|------|--------|-------|-------------------------------------------------------------------------------------|
+| _owner      | address                     | 0    | 0      | 20    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
+| senderNonce | mapping(address => uint256) | 1    | 0      | 32    | lib/account-abstraction/contracts/samples/VerifyingPaymaster.sol:VerifyingPaymaster |
 =======================
  ➡ IERC1271
 | Name | Type | Slot | Offset | Bytes | Contract |
