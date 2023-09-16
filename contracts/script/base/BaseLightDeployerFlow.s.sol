@@ -57,11 +57,14 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         // Set the random nonce
         bytes32 nonce = randMod();
 
+        // Specify the entryPoint
+        entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
+
         // Create lightWalletUtils
         lightWalletUtils = new LightWalletUtils();
 
-        // Specify the entryPoint
-        entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
+        // Allow light wallet utils to access the cheatcodes
+        vm.allowCheatcodes(address(lightWalletUtils));
 
         // Specify the factory
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);

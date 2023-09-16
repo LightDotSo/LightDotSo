@@ -37,9 +37,6 @@ contract ERC20TransferFlowScript is BaseLightDeployerFlow {
         // Start the broadcast
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
-        // Allow cheatcodes
-        vm.allowCheatcodes(address(0xd84554b821B79EEB06365dFc273221321B2540a4));
-
         // Deploy a new LightWallet
         deployLightWallet();
 
