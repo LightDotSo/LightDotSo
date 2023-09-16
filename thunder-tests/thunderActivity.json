@@ -32,11 +32,11 @@
     "colId": "history",
     "containerId": "",
     "name": "eth_supportedEntryPoints",
-    "url": "https://rpc.light.so/11155111",
+    "url": "https://rpc.light.so/1",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-08-29T22:26:07.123Z",
+    "modified": "2023-09-15T22:55:12.743Z",
     "headers": [
       {
         "name": "accept",
@@ -77,7 +77,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2023-08-23T08:13:33.627Z",
-    "modified": "2023-08-26T09:55:32.363Z",
+    "modified": "2023-09-16T03:20:29.381Z",
     "headers": [
       {
         "name": "accept",
@@ -91,7 +91,7 @@
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [1]\n}",
       "form": []
     },
     "tests": [
