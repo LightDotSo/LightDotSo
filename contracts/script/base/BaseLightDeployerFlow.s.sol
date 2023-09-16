@@ -25,6 +25,8 @@ import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
 using ERC4337Utils for EntryPoint;
 
@@ -54,23 +56,20 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         // Get the expected image hash
         expectedImageHash = lightWalletUtils.getExpectedImageHash(PRIVATE_KEY_DEPLOYER);
 
-        // Set the initCode to create an account with the expected image hash and nonce 3
+        // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
             LIGHT_FACTORY_ADDRESS,
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, randMod())
         );
 
         // UserOperation to create the account
         UserOperation[] memory ops =
             entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", vm.envUint("PRIVATE_KEY"), initCode);
 
-        // Create an account
-        wallet = factory.createAccount(bytes32(uint256(1)), randMod());
-
         entryPoint.handleOps(ops, payable(address(1)));
 
         // solhint-disable-next-line no-console
-        // console.log("LightWallet deployed at address: %s", address(wallet));
+        console.log("LightWallet deployed at address: %s", address(wallet));
 
         return wallet;
     }
