@@ -22,6 +22,7 @@ import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
@@ -53,23 +54,44 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
     }
 
     function deployLightWallet() internal returns (LightWallet) {
+        // Set the random nonce
+        bytes32 nonce = randMod();
+
+        // Create lightWalletUtils
+        lightWalletUtils = new LightWalletUtils();
+
+        // Specify the entryPoint
+        entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
+
+        // Specify the factory
+        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+
         // Get the expected image hash
         expectedImageHash = lightWalletUtils.getExpectedImageHash(PRIVATE_KEY_DEPLOYER);
+
+        // Get the expected address
+        address expectedAddress = factory.getAddress(expectedImageHash, nonce);
+
+        // Deposit 1e30 ETH into the account
+        vm.deal(address(expectedAddress), 1e30);
 
         // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
             LIGHT_FACTORY_ADDRESS,
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, randMod())
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 
         // UserOperation to create the account
-        UserOperation[] memory ops =
-            entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", vm.envUint("PRIVATE_KEY"), initCode);
+        UserOperation[] memory ops = entryPoint.signPackUserOp(
+            lightWalletUtils, address(expectedAddress), "", vm.envUint("PRIVATE_KEY"), initCode
+        );
 
+        // Handle the ops
         entryPoint.handleOps(ops, payable(address(1)));
 
         // solhint-disable-next-line no-console
-        console.log("LightWallet deployed at address: %s", address(wallet));
+        console.log("LightWallet deployed at address: %s", address(expectedAddress));
+        assert(address(expectedAddress).code.length > 0);
 
         return wallet;
     }
