@@ -75,8 +75,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         // Get the expected address
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
 
-        // Deposit 1e30 ETH into the account
-        address(expectedAddress).call{value: 1e30}("");
+        // Deposit ETH into the account for stake deposit
+        address(expectedAddress).call{value: 1002500000000}("");
 
         // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
