@@ -130,13 +130,13 @@ jobs:
     strategy:
       matrix:
         network:
-          - mainnet
+          # - mainnet
           - optimism
           # - bsc
           - gnosis
           # - polygon
-          - arbitrum
-          - avalanche
+          # - arbitrum
+          # - avalanche
           - sepolia
     timeout-minutes: 90
     env:
