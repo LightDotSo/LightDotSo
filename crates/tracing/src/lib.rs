@@ -26,7 +26,7 @@ use std::{thread, time::Duration};
 // use pyroscope::PyroscopeAgent;
 // use pyroscope_pprofrs::{pprof_backend, PprofConfig};
 use tracing::{info, Level, Subscriber};
-use tracing_loki::url::Url;
+// use tracing_loki::url::Url;
 use tracing_subscriber::{
     filter::Directive, prelude::*, registry::LookupSpan, EnvFilter, Layer, Registry,
 };
@@ -124,9 +124,9 @@ pub fn init_metrics() -> Result<()> {
     opentelemetry::global::set_text_map_propagator(TraceContextPropagator::new());
 
     // Initialize the Loki layer
-    let (logging_layer, task) = tracing_loki::builder()
-        .build_url(Url::parse("http://lightdotso-loki.internal:3100").unwrap())
-        .unwrap();
+    // let (logging_layer, task) = tracing_loki::builder()
+    //     .build_url(Url::parse("http://lightdotso-loki.internal:3100").unwrap())
+    //     .unwrap();
 
     // Merge the detected resources with the service name for Tempo
     let resources = OsResourceDetector
@@ -162,13 +162,13 @@ pub fn init_metrics() -> Result<()> {
 
     // Initialize the tracing subscriber
     tracing_subscriber::registry()
-        .with(logging_layer)
+        // .with(logging_layer)
         .with(telemetry_layer)
         .with(stdout(log_level))
         .init();
 
     // Spawn the Loki task
-    tokio::spawn(task);
+    // tokio::spawn(task);
 
     // wait for a bit before starting to push logs and traces
     thread::sleep(Duration::from_secs(3));
