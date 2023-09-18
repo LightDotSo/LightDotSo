@@ -74,32 +74,9 @@ impl PaymasterServer for PaymasterServerImpl {
         let valid_until = 0_u64;
         let valid_after = timestamp;
 
-        // Get the address
-        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
-
-        // Infinite valid until.
-        let hash = get_hash(
-            chain_id,
-            verifying_paymaster_address,
-            construct.clone(),
-            valid_until,
-            valid_after,
-        )
-        .await
-        .map_err(JsonRpcError::from)?;
-
-        // Sign the message.
-        let msg = sign_message(chain_id, hash).await.map_err(JsonRpcError::from)?;
-
-        // Construct the paymaster and data.
-        let paymater_and_data = Bytes::from(
-            [
-                verifying_paymaster_address.as_bytes(),
-                &encode(&[0.into_token(), timestamp.into_token()]),
-                &msg,
-            ]
-            .concat(),
-        );
+        // Get the paymaster and data.
+        let paymater_and_data =
+            get_paymaster_and_data(chain_id, construct.clone(), valid_until, valid_after).await?;
 
         return Ok(GasAndPaymasterAndData {
             call_gas_limit: construct.call_gas_limit,
@@ -110,6 +87,43 @@ impl PaymasterServer for PaymasterServerImpl {
             paymaster_and_data: paymater_and_data,
         });
     }
+}
+
+/// Construct the paymaster and data.
+pub async fn get_paymaster_and_data(
+    chain_id: u64,
+    construct: UserOperationConstruct,
+    valid_until: u64,
+    valid_after: u64,
+) -> RpcResult<Bytes> {
+    // Get the address
+    let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+
+    // Infinite valid until.
+    let hash = get_hash(
+        chain_id,
+        verifying_paymaster_address,
+        construct.clone(),
+        valid_until,
+        valid_after,
+    )
+    .await
+    .map_err(JsonRpcError::from)?;
+
+    // Sign the message.
+    let msg = sign_message(chain_id, hash).await.map_err(JsonRpcError::from)?;
+
+    // Construct the paymaster and data.
+    let paymater_and_data = Bytes::from(
+        [
+            verifying_paymaster_address.as_bytes(),
+            &encode(&[valid_until.into_token(), valid_after.into_token()]),
+            &msg,
+        ]
+        .concat(),
+    );
+
+    Ok(paymater_and_data)
 }
 
 /// Construct the user operation w/ rpc.
