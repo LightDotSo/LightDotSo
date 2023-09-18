@@ -28,7 +28,7 @@ pub async fn get_paymaster(
 ) -> Result<LightVerifyingPaymaster<Provider<Http>>> {
     // Get the provider.
     let provider = Provider::<Http>::try_from(format!(
-        "http://lightdotso-rpc-internal:3000/internal/{}",
+        "http://lightdotso-rpc-internal.internal:3000/internal/{}",
         chain_id
     ))?;
 
@@ -41,9 +41,8 @@ pub async fn get_paymaster(
 
 #[cfg(test)]
 mod tests {
-    use crate::constants::LIGHT_PAYMASTER_ADDRESS;
-
     use super::*;
+    use crate::constants::LIGHT_PAYMASTER_ADDRESS;
 
     // TODO: Setup wireguard on the CI in order to run
     #[ignore]

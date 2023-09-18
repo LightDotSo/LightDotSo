@@ -209,7 +209,7 @@ pub async fn sign_message(chain_id: u64, hash: [u8; 32]) -> Result<Vec<u8>> {
 }
 
 /// Get the hash for the paymaster.
-pub async fn get_hash(
+async fn get_hash(
     chain_id: u64,
     verifying_paymaster_address: Address,
     user_operation: UserOperationConstruct,
@@ -241,4 +241,48 @@ pub async fn get_hash(
         .await?;
 
     Ok(hash)
+}
+
+mod tests {
+    use super::*;
+    use ethers::{types::U256, utils::hex};
+
+    #[tokio::test]
+    async fn test_get_hash() {
+        // Arbitrary test inputs
+        let chain_id = 1;
+        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+        let user_operation = UserOperationConstruct {
+            sender: "0x0476DF9D2faa5C019d51E6684eFC37cB4f7b8b14".parse().unwrap(),
+            nonce: U256::from(0),
+            init_code: "0x".parse().unwrap(),
+            call_data: "0x".parse().unwrap(),
+            call_gas_limit: U256::from(0),
+            verification_gas_limit: U256::from(150000),
+            pre_verification_gas: U256::from(21000),
+            max_fee_per_gas: U256::from(1091878423),
+            max_priority_fee_per_gas: U256::from(1000000000),
+            signature: "0x983f1a8c786be7a3661666abe8af0e687cd429ffc304c2593b52c4fd052b9f2734eddf9a64f718106fe7ad8975ea5291d5018a9adfb4172fef2321c948ba80c51c".parse().unwrap(),
+        };
+        let valid_until = u64::from_str_radix("00000000deadbeef", 16).unwrap();
+        let valid_after = u64::from_str_radix("0000000000001234", 16).unwrap();
+
+        let result = get_hash(
+            chain_id,
+            verifying_paymaster_address,
+            user_operation,
+            valid_until,
+            valid_after,
+        )
+        .await;
+
+        let expected_bytes: [u8; 32] =
+            hex::decode("f2cdf1a8e93ac2f1d227c347db642bb5d6869080b64af374698719a52f0b1484")
+                .expect("Decoding failed")
+                .try_into()
+                .expect("Expected byte length does not match");
+
+        // Assert that the result matches the expected value
+        assert_eq!(result.unwrap(), expected_bytes);
+    }
 }

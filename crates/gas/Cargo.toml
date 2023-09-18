@@ -10,7 +10,7 @@
 
 [dependencies]
   async-trait = { workspace = true }
-  clap = { workspace = true }
+  clap = { workspace = true, features = ["derive", "env"] }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
   jsonrpsee = { workspace = true }
