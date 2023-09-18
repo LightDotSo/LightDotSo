@@ -15,7 +15,7 @@
   clap = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
-  governor = "0.5.1"
+  governor = "0.6.0"
   http = { workspace = true }
   http-body = { workspace = true }
   hyper = { workspace = true }
