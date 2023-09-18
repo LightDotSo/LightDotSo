@@ -29,7 +29,10 @@ use ethers::{
 };
 use eyre::Result;
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::paymaster::{get_paymaster, UserOperation};
+use lightdotso_contracts::{
+    constants::LIGHT_PAYMASTER_ADDRESS,
+    paymaster::{get_paymaster, UserOperation},
+};
 use lightdotso_gas::gas::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
@@ -50,6 +53,7 @@ impl PaymasterServer for PaymasterServerImpl {
         _user_operation: UserOperationRequest,
         _entry_point: Address,
     ) -> RpcResult<PaymasterAndData> {
+        // Return the default.
         return Ok(PaymasterAndData::default());
     }
 
@@ -71,7 +75,7 @@ impl PaymasterServer for PaymasterServerImpl {
         let valid_after = timestamp;
 
         // Get the address
-        let verifying_paymaster_address = Address::zero();
+        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
 
         // Infinite valid until.
         let hash = get_hash(

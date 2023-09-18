@@ -11,3 +11,4 @@
 [dependencies]
   ethers = { workspace = true }
   eyre = { workspace = true }
+  lazy_static = { workspace = true }

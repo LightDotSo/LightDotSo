@@ -13,5 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod constants;
-pub mod paymaster;
+use ethers::types::Address;
+use lazy_static::lazy_static;
+
+// The factory addresses
+lazy_static! {
+    pub static ref LIGHT_PAYMASTER_ADDRESS: Address =
+      // Local
+      "0x000000000001d2D44c9d7133eC384c1A6f0a5B3F".parse().unwrap();
+
+}
