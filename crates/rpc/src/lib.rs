@@ -28,9 +28,10 @@ use axum::{
 };
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
+use lightdotso_paymaster::types::{Request as JSONRPCRequest, UserOperationRequest};
 use lightdotso_tracing::tracing::{error, info, warn};
 use serde::ser::Error;
-use serde_json::{Error as SerdeError, Value};
+use serde_json::{json, Error as SerdeError, Value};
 use std::collections::HashMap;
 
 pub type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
@@ -321,25 +322,57 @@ pub async fn rpc_proxy_handler(
                 }
             }
             "gas_requestGasEstimation" => {
-                let result = get_client_result(
-                    GAS_RPC_URL.to_string(),
-                    client.clone(),
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
+                // Construct the params for the rpc request
+                let params = vec![json!(chain_id)];
+                let req_body = json!({
+                    "jsonrpc": "2.0",
+                    "method": method.as_str(),
+                    "params": params,
+                    "id": 1
+                });
+                // Convert the params to hyper Body
+                let hyper_body = Body::from(req_body.to_string());
+
+                let result =
+                    get_client_result(GAS_RPC_URL.to_string(), client.clone(), hyper_body).await;
                 if let Some(resp) = result {
                     return resp;
                 }
             }
             "paymaster_requestPaymasterAndData" | "paymaster_requestGasAndPaymasterAndData" => {
-                let result = get_client_result(
-                    PAYMASTER_RPC_URL.to_string(),
-                    client.clone(),
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
+                // Deserialize w/ serde_json
+                let body_json_result = serde_json::from_slice::<JSONRPCRequest<UserOperationRequest>>(
+                    &full_body_bytes,
+                );
+
+                if let Ok(body_json) = body_json_result {
+                    // Get the user_operation from the body
+                    let user_operation = body_json.params;
+                    let params = vec![
+                        json!(chain_id),
+                        json!(user_operation),
+                        // TODO: Get the entry_point from the constants or the body
+                        json!("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
+                    ];
+                    let req_body = json!({
+                        "jsonrpc": "2.0",
+                        "method": method.as_str(),
+                        "params": params,
+                        "id": 1
+                    });
+                    // Convert the params to hyper Body
+                    let hyper_body = Body::from(req_body.to_string());
+
+                    // Get the result from the client
+                    let result = get_client_result(
+                        PAYMASTER_RPC_URL.to_string(),
+                        client.clone(),
+                        hyper_body,
+                    )
+                    .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
                 }
             }
             "simulator_simulateExecution" |

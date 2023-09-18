@@ -13,5 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod _1;
-// pub mod _1337;
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct GasEstimationParams {
+    pub(crate) max_priority_fee_per_gas: f64,
+    pub(crate) max_fee_per_gas: f64,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct GasEstimation {
+    pub(crate) low: GasEstimationParams,
+    pub(crate) average: GasEstimationParams,
+    pub(crate) high: GasEstimationParams,
+    pub(crate) instant: GasEstimationParams,
+}

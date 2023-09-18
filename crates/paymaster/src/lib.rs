@@ -16,6 +16,7 @@
 pub mod config;
 pub mod paymaster;
 pub mod paymaster_api;
+pub mod types;
 
 use ethers_main::{
     core::k256::ecdsa::SigningKey,
