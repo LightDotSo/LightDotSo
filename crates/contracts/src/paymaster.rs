@@ -20,6 +20,8 @@ use ethers::{
 };
 use eyre::Result;
 
+use crate::provider::get_provider;
+
 abigen!(LightVerifyingPaymaster, "abi/LightVerifyingPaymaster.json",);
 
 pub async fn get_paymaster(
@@ -27,10 +29,7 @@ pub async fn get_paymaster(
     verifying_paymaster_address: Address,
 ) -> Result<LightVerifyingPaymaster<Provider<Http>>> {
     // Get the provider.
-    let provider = Provider::<Http>::try_from(format!(
-        "http://lightdotso-rpc-internal.internal:3000/internal/{}",
-        chain_id
-    ))?;
+    let provider = get_provider(chain_id).await?;
 
     // Get the contract.
     let contract = LightVerifyingPaymaster::new(verifying_paymaster_address, provider.into());

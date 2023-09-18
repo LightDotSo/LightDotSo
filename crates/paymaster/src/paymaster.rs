@@ -243,6 +243,7 @@ async fn get_hash(
     Ok(hash)
 }
 
+#[cfg(test)]
 mod tests {
     use super::*;
     use ethers::{types::U256, utils::hex};
