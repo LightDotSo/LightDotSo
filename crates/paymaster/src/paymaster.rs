@@ -17,8 +17,8 @@ use crate::{
     contract::get_hash,
     paymaster_api::PaymasterServer,
     types::{
-        ErrorResponse, EstimateResult, GasAndPaymasterAndData, PaymasterAndData, Request, Response,
-        UserOperationConstruct, UserOperationRequest,
+        EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
+        UserOperationRequest,
     },
 };
 use async_trait::async_trait;
@@ -28,13 +28,14 @@ use ethers::{
     signers::{Signer, Wallet},
     types::{Address, Bytes},
 };
-use eyre::{Error, Result};
-use jsonrpsee::{
-    core::RpcResult,
-    types::{error::INTERNAL_ERROR_CODE, ErrorObjectOwned},
-};
+use eyre::Result;
+use jsonrpsee::core::RpcResult;
 use lightdotso_gas::gas::GasEstimation;
-use lightdotso_tracing::tracing::{info, warn};
+use lightdotso_jsonrpsee::{
+    error::JsonRpcError,
+    handle_response,
+    types::{Request, Response},
+};
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -59,17 +60,9 @@ impl PaymasterServer for PaymasterServerImpl {
         entry_point: Address,
     ) -> RpcResult<GasAndPaymasterAndData> {
         // Construct the user operation w/ rpc.
-        let construct = construct_user_operation(chain_id, user_operation, entry_point).await;
-
-        // Error handling.
-        if construct.is_err() {
-            return Err(ErrorObjectOwned::owned(
-                INTERNAL_ERROR_CODE,
-                "Error getting construct".to_string(),
-                None::<bool>,
-            ));
-        }
-        let construct = construct.unwrap();
+        let construct = construct_user_operation(chain_id, user_operation, entry_point)
+            .await
+            .map_err(JsonRpcError::from)?;
 
         // Get the timestamp
         let timestamp =
@@ -88,30 +81,11 @@ impl PaymasterServer for PaymasterServerImpl {
             valid_until,
             valid_after,
         )
-        .await;
-
-        // Error handling.
-        if hash.is_err() {
-            return Err(ErrorObjectOwned::owned(
-                INTERNAL_ERROR_CODE,
-                "Error getting hash".to_string(),
-                None::<bool>,
-            ));
-        }
-        let hash = hash.unwrap();
+        .await
+        .map_err(JsonRpcError::from)?;
 
         // Sign the message.
-        let msg = sign_message(chain_id, hash).await;
-
-        // Error handling.
-        if msg.is_err() {
-            return Err(ErrorObjectOwned::owned(
-                INTERNAL_ERROR_CODE,
-                "Error signing message".to_string(),
-                None::<bool>,
-            ));
-        }
-        let msg = msg.unwrap();
+        let msg = sign_message(chain_id, hash).await.map_err(JsonRpcError::from)?;
 
         // Construct the paymaster and data.
         let paymater_and_data = Bytes::from(
@@ -203,38 +177,6 @@ pub async fn estimate_user_operation_gas(
 
     // Handle the response for the JSON-RPC API.
     handle_response(response).await
-}
-
-/// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/userop_middleware.rs#L222
-/// License: MIT
-///
-/// Helper function to handle the response from the bundler
-///
-/// # Arguments
-/// * `response` - The response from the bundler
-///
-/// # Returns
-/// * `Response<R>` - The success response if no error
-pub async fn handle_response<R>(response: reqwest::Response) -> Result<Response<R>>
-where
-    R: std::fmt::Debug + serde::de::DeserializeOwned,
-{
-    let str_response = response.text().await?;
-    let parsed_response: Result<Response<R>> =
-        serde_json::from_str(&str_response).map_err(Error::from);
-
-    match parsed_response {
-        Ok(success_response) => {
-            info!("Success {:?}", success_response);
-            Ok(success_response)
-        }
-        Err(_) => {
-            let error_response: ErrorResponse = serde_json::from_str(&str_response)?;
-            let error_message = error_response.clone().error.message;
-            warn!("Error: {:?}", error_response);
-            Err(Error::msg(error_message))
-        }
-    }
 }
 
 /// Sign a message w/ the paymaster private key.

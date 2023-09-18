@@ -23,6 +23,7 @@ use jsonrpsee::{
     core::RpcResult,
     types::{error::INTERNAL_ERROR_CODE, ErrorObjectOwned},
 };
+use lightdotso_jsonrpsee::error::JsonRpcError;
 use lightdotso_tracing::tracing::{info, warn};
 use serde::{Deserialize, Serialize};
 
@@ -59,26 +60,25 @@ impl GasServer for GasServerImpl {
         }
 
         // Setup a new ethers provider
-        let eth_client = Provider::<Http>::try_from(format!(
+        let client = Provider::<Http>::try_from(format!(
             "http://lightdotso-rpc.internal:3000/internal/{}",
             chain_id
-        ));
+        ))
+        .map_err(JsonRpcError::from)?;
 
         // Get the gas price from the client
-        if let Ok(client) = eth_client {
-            let estimate_eip1559_fees = client.inner().estimate_eip1559_fees(None).await;
-            info!("Gas estimation for chain {} is {:?}", chain_id, estimate_eip1559_fees);
+        let estimate_eip1559_fees = client.inner().estimate_eip1559_fees(None).await;
+        info!("Gas estimation for chain {} is {:?}", chain_id, estimate_eip1559_fees);
 
-            if let Ok(fee) = estimate_eip1559_fees {
-                let params =
-                    GasEstimationParams { max_fee_per_gas: fee.0, max_priority_fee_per_gas: fee.1 };
-                return Ok(GasEstimation {
-                    low: params.clone(),
-                    average: params.clone(),
-                    high: params.clone(),
-                    instant: params.clone(),
-                });
-            }
+        if let Ok(fee) = estimate_eip1559_fees {
+            let params =
+                GasEstimationParams { max_fee_per_gas: fee.0, max_priority_fee_per_gas: fee.1 };
+            return Ok(GasEstimation {
+                low: params.clone(),
+                average: params.clone(),
+                high: params.clone(),
+                instant: params.clone(),
+            });
         }
 
         warn!("Gas estimation for chain {} is not available", chain_id);

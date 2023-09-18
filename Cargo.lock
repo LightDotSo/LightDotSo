@@ -6003,6 +6003,7 @@ dependencies = [
  "ethers 2.0.9",
  "eyre",
  "jsonrpsee",
+ "lightdotso-jsonrpsee",
  "lightdotso-tracing",
  "reqwest",
  "serde",
@@ -6054,6 +6055,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-jsonrpsee"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
+ "eyre",
+ "jsonrpsee",
+ "lightdotso-tracing",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "url",
+]
+
+[[package]]
 name = "lightdotso-kafka"
 version = "0.1.0"
 dependencies = [
@@ -6100,6 +6115,7 @@ dependencies = [
  "eyre",
  "jsonrpsee",
  "lightdotso-gas",
+ "lightdotso-jsonrpsee",
  "lightdotso-tracing",
  "reqwest",
  "serde",
