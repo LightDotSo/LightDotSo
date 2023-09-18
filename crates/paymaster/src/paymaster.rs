@@ -134,6 +134,7 @@ impl PaymasterServer for PaymasterServerImpl {
     }
 }
 
+/// Construct the user operation w/ rpc.
 pub async fn construct_user_operation(
     chain_id: u64,
     user_operation: UserOperationRequest,
@@ -158,6 +159,7 @@ pub async fn construct_user_operation(
     })
 }
 
+/// Estimate the gas for the request w/ the internal gas API.
 pub async fn estimate_request_gas_estimation(chain_id: u64) -> Result<Response<GasEstimation>> {
     let params = vec![json!(chain_id)];
 
@@ -235,9 +237,10 @@ where
     }
 }
 
+/// Sign a message w/ the paymaster private key.
 pub async fn sign_message(chain_id: u64, hash: [u8; 32]) -> Result<Vec<u8>> {
     let wallet: Wallet<SigningKey> =
-        "0000000000000000000000000000000000000000000000000000000000000001".parse().unwrap();
+        std::env::var("PAYMASTER_PRIVATE_KEY").unwrap().parse().unwrap();
     let wallet = wallet.with_chain_id(chain_id);
 
     let msg = wallet.sign_message(hash).await?;
