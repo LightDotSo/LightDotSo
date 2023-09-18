@@ -18,8 +18,22 @@ use lazy_static::lazy_static;
 
 // The factory addresses
 lazy_static! {
+    #[derive(Debug)]
     pub static ref LIGHT_PAYMASTER_ADDRESS: Address =
-      // Local
+      // 1
       "0x000000000001d2D44c9d7133eC384c1A6f0a5B3F".parse().unwrap();
+}
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_light_paymaster_address() {
+        assert_eq!(
+            format!("{:?}", *LIGHT_PAYMASTER_ADDRESS),
+            "0x000000000001d2d44c9d7133ec384c1a6f0a5b3f".to_string(),
+            "The expected and actual paymaster addresses should match"
+        );
+    }
 }

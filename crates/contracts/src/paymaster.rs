@@ -38,3 +38,27 @@ pub async fn get_paymaster(
     // Return the contract.
     Ok(contract)
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::constants::LIGHT_PAYMASTER_ADDRESS;
+
+    use super::*;
+
+    // TODO: Setup wireguard on the CI in order to run
+    #[ignore]
+    #[tokio::test]
+    async fn test_get_paymaster() {
+        let chain_id = 1;
+        // Get the address
+        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+
+        let result = get_paymaster(chain_id, verifying_paymaster_address).await;
+        assert!(result.is_ok());
+
+        // If you want to test the details of the resulting contract:
+        // let contract = result.unwrap();
+        // assert_eq!(contract.address(), verifying_paymaster_address);
+        // assert!(contract.is_read_only());  // or some other method on LightVerifyingPaymaster
+    }
+}

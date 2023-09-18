@@ -5979,6 +5979,7 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "lazy_static",
+ "tokio",
 ]
 
 [[package]]
