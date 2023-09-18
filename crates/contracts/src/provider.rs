@@ -23,8 +23,10 @@ pub async fn get_provider(chain_id: u64) -> Result<Provider<Http>> {
         return Ok(provider);
     }
 
-    // If `PROTECTED_RPC_URL` is set
-    if let Ok(rpc_url_2) = std::env::var("PROTECTED_RPC_URL") {
+    // If `PROTECTED_RPC_URL` is set, concatenate the chain ID and try to connect
+    // to that RPC URL.
+    if let Ok(protected_rpc_url) = std::env::var("PROTECTED_RPC_URL") {
+        let rpc_url_2 = format!("{}/{}", protected_rpc_url, chain_id);
         if let Ok(provider) = Provider::<Http>::try_from(rpc_url_2.as_str()) {
             return Ok(provider);
         }
