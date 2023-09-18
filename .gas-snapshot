@@ -35,6 +35,7 @@ LightWalletFactoryIntegrationTest:test_revertWhenHashZero_createAccount() (gas: 
 LightWalletFactoryIntegrationTest:test_revertWhenHashZero_createAccountFromEntryPoint() (gas: 148800)
 LightWalletProxyIntegrationTest:test_proxy_initialize() (gas: 2582358)
 LightWalletProxyIntegrationTest:test_revertWhenAlreadyInitialized_proxy() (gas: 16198)
+PaymasterGetHash:test_getHash() (gas: 1175767)
 SendERC1155IntegrationTest:test_revertWhenInvalidSignature_transferERC1155() (gas: 89385)
 SendERC1155IntegrationTest:test_revertWhenNotEntrypoint_transferERC1155() (gas: 44159)
 SendERC1155IntegrationTest:test_transferERC1155() (gas: 227926)
