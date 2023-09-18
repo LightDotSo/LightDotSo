@@ -246,7 +246,10 @@ async fn get_hash(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ethers::{types::U256, utils::hex};
+    use ethers::{
+        types::U256,
+        utils::{hex, keccak256},
+    };
 
     #[tokio::test]
     async fn test_get_hash() {
@@ -285,5 +288,31 @@ mod tests {
 
         // Assert that the result matches the expected value
         assert_eq!(result.unwrap(), expected_bytes);
+    }
+
+    #[tokio::test]
+    async fn test_sign_message() {
+        // Specify a private key (This is a dummy key for the test)
+        let private_key_str = "0000000000000000000000000000000000000000000000000000000000000001";
+
+        // Set the private key as an environment variable
+        std::env::set_var("PAYMASTER_PRIVATE_KEY", private_key_str);
+
+        // Specified test inputs
+        let chain_id = 1;
+        let hash: [u8; 32] =
+            hex::decode("6cda338264c27d259de3ab19f2414ca606265918ed9b15568de0a002e6151309")
+                .unwrap()
+                .try_into()
+                .unwrap();
+
+        // Call our function
+        let result = sign_message(chain_id, hash).await;
+
+        // The expected signature
+        let expected_signature: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
+
+        // Assert that the result matches the expected value
+        assert_eq!(result.unwrap(), expected_signature);
     }
 }
