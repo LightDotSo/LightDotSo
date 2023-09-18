@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    contract::get_hash,
     paymaster_api::PaymasterServer,
     types::{
         ErrorResponse, EstimateResult, GasAndPaymasterAndData, PaymasterAndData, Request, Response,
@@ -21,7 +22,12 @@ use crate::{
     },
 };
 use async_trait::async_trait;
-use ethers_main::types::Address;
+use ethers::{
+    abi::{encode, Tokenizable},
+    core::k256::ecdsa::SigningKey,
+    signers::{Signer, Wallet},
+    types::{Address, Bytes},
+};
 use eyre::{Error, Result};
 use jsonrpsee::{
     core::RpcResult,
@@ -30,6 +36,7 @@ use jsonrpsee::{
 use lightdotso_gas::gas::GasEstimation;
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::json;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 /// The paymaster server implementation.
 pub struct PaymasterServerImpl {}
@@ -64,13 +71,65 @@ impl PaymasterServer for PaymasterServerImpl {
         }
         let construct = construct.unwrap();
 
+        // Get the timestamp
+        let timestamp =
+            SystemTime::now().duration_since(UNIX_EPOCH).expect("Time went backwards").as_secs();
+        let valid_until = 0_u64;
+        let valid_after = timestamp;
+
+        // Get the address
+        let verifying_paymaster_address = Address::zero();
+
+        // Infinite valid until.
+        let hash = get_hash(
+            chain_id,
+            verifying_paymaster_address,
+            construct.clone(),
+            valid_until,
+            valid_after,
+        )
+        .await;
+
+        // Error handling.
+        if hash.is_err() {
+            return Err(ErrorObjectOwned::owned(
+                INTERNAL_ERROR_CODE,
+                "Error getting hash".to_string(),
+                None::<bool>,
+            ));
+        }
+        let hash = hash.unwrap();
+
+        // Sign the message.
+        let msg = sign_message(chain_id, hash).await;
+
+        // Error handling.
+        if msg.is_err() {
+            return Err(ErrorObjectOwned::owned(
+                INTERNAL_ERROR_CODE,
+                "Error signing message".to_string(),
+                None::<bool>,
+            ));
+        }
+        let msg = msg.unwrap();
+
+        // Construct the paymaster and data.
+        let paymater_and_data = Bytes::from(
+            [
+                verifying_paymaster_address.as_bytes(),
+                &encode(&[0.into_token(), timestamp.into_token()]),
+                &msg,
+            ]
+            .concat(),
+        );
+
         return Ok(GasAndPaymasterAndData {
             call_gas_limit: construct.call_gas_limit,
             verification_gas_limit: construct.verification_gas_limit,
             pre_verification_gas: construct.pre_verification_gas,
             max_fee_per_gas: construct.max_fee_per_gas,
             max_priority_fee_per_gas: construct.max_priority_fee_per_gas,
-            paymaster_and_data: PaymasterAndData::default(),
+            paymaster_and_data: paymater_and_data,
         });
     }
 }
@@ -174,4 +233,14 @@ where
             Err(Error::msg(error_message))
         }
     }
+}
+
+pub async fn sign_message(chain_id: u64, hash: [u8; 32]) -> Result<Vec<u8>> {
+    let wallet: Wallet<SigningKey> =
+        "0000000000000000000000000000000000000000000000000000000000000001".parse().unwrap();
+    let wallet = wallet.with_chain_id(chain_id);
+
+    let msg = wallet.sign_message(hash).await?;
+
+    Ok(msg.to_vec())
 }

@@ -14,11 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod config;
+pub mod contract;
 pub mod paymaster;
 pub mod paymaster_api;
 pub mod types;
 
-use ethers_main::{
+use ethers::{
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::H256,

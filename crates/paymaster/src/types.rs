@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers_main::types::{Address, Bytes, U256};
+use ethers::types::{Address, Bytes, U256};
 use serde::{Deserialize, Serialize};
 
 /// The paymaster and data returned by the paymaster.

@@ -15,7 +15,7 @@
 
 pub use crate::paymaster::PaymasterServerImpl;
 use crate::types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest};
-use ethers_main::types::Address;
+use ethers::types::Address;
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 
 #[rpc(server, namespace = "paymaster")]
