@@ -25,12 +25,3 @@ use ethers::{
     types::H256,
 };
 use eyre::Result;
-
-pub async fn sign() -> Result<()> {
-    let wallet: Wallet<SigningKey> =
-        "0000000000000000000000000000000000000000000000000000000000000001".parse().unwrap();
-    let wallet = wallet.with_chain_id(1_u64);
-
-    let _ = wallet.sign_message(H256::zero()).await?;
-    Ok(())
-}
