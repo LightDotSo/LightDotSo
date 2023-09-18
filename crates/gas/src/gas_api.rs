@@ -19,9 +19,6 @@ use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 
 #[rpc(server, namespace = "gas")]
 pub trait Gas {
-    #[method(name = "clientVersion")]
-    async fn client_version(&self) -> RpcResult<String>;
-
     #[method(name = "requestGasEstimation")]
     async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation>;
 }

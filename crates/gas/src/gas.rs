@@ -47,12 +47,10 @@ pub struct GasServerImpl {}
 
 #[async_trait]
 impl GasServer for GasServerImpl {
-    async fn client_version(&self) -> RpcResult<String> {
-        return Ok(format!("light/{}", env!("CARGO_PKG_VERSION")));
-    }
-
     async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation> {
+        // Get the estimation from pre-configured APIs
         let estimation = get_estimation(chain_id).await;
+
         // Return if some
         if let Some(estimation) = estimation {
             info!("Gas estimation for chain {} is {:?}", chain_id, estimation);
@@ -70,6 +68,7 @@ impl GasServer for GasServerImpl {
         let estimate_eip1559_fees = client.inner().estimate_eip1559_fees(None).await;
         info!("Gas estimation for chain {} is {:?}", chain_id, estimate_eip1559_fees);
 
+        // Return if the result is Ok
         if let Ok(fee) = estimate_eip1559_fees {
             let params =
                 GasEstimationParams { max_fee_per_gas: fee.0, max_priority_fee_per_gas: fee.1 };
@@ -81,6 +80,7 @@ impl GasServer for GasServerImpl {
             });
         }
 
+        // Return if the result is Err
         warn!("Gas estimation for chain {} is not available", chain_id);
         Err(ErrorObjectOwned::owned(
             INTERNAL_ERROR_CODE,

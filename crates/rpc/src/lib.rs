@@ -28,7 +28,8 @@ use axum::{
 };
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
-use lightdotso_paymaster::types::{Request as JSONRPCRequest, UserOperationRequest};
+use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
+use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, warn};
 use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
