@@ -22,7 +22,7 @@ use crate::{
 };
 use async_trait::async_trait;
 use ethers::{
-    abi::{encode, Tokenizable},
+    abi::{encode, Token},
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::{Address, Bytes},
@@ -114,16 +114,24 @@ pub async fn get_paymaster_and_data(
     let msg = sign_message(chain_id, hash).await.map_err(JsonRpcError::from)?;
 
     // Construct the paymaster and data.
-    let paymater_and_data = Bytes::from(
-        [
-            verifying_paymaster_address.as_bytes(),
-            &encode(&[valid_until.into_token(), valid_after.into_token()]),
-            &msg,
-        ]
-        .concat(),
-    );
+    let paymater_and_data =
+        construct_paymaster_and_data(verifying_paymaster_address, valid_until, valid_after, &msg);
 
     Ok(paymater_and_data)
+}
+
+/// Construct the paymaster and data.
+fn construct_paymaster_and_data(
+    verifying_paymaster_address: Address,
+    valid_until: u64,
+    valid_after: u64,
+    msg: &[u8],
+) -> Bytes {
+    let tokens = vec![Token::Uint(valid_until.into()), Token::Uint(valid_after.into())];
+    let encoded_tokens = encode(&tokens);
+
+    // Return the paymaster and data.
+    Bytes::from([verifying_paymaster_address.as_bytes(), &encoded_tokens, msg].concat())
 }
 
 /// Construct the user operation w/ rpc.
@@ -246,10 +254,7 @@ async fn get_hash(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ethers::{
-        types::U256,
-        utils::{hex, keccak256},
-    };
+    use ethers::{types::U256, utils::hex};
 
     #[tokio::test]
     async fn test_get_hash() {
@@ -314,5 +319,32 @@ mod tests {
 
         // Assert that the result matches the expected value
         assert_eq!(result.unwrap(), expected_signature);
+    }
+
+    #[test]
+    fn test_construct_paymaster_and_data() {
+        // Test input values.
+        let verifying_paymaster_address =
+            "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82".parse().unwrap();
+        let valid_until = u64::from_str_radix("00000000deadbeef", 16).unwrap();
+        let valid_after = u64::from_str_radix("0000000000001234", 16).unwrap();
+        let msg: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
+
+        // Call the function
+        let result = construct_paymaster_and_data(
+            verifying_paymaster_address,
+            valid_until,
+            valid_after,
+            &msg,
+        );
+
+        // Expected result.
+        let expected_result: Vec<u8> = hex::decode("0dcd1bf9a1b36ce34237eeafef220932846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
+
+        // Assert that the result matches the expected value
+        assert_eq!(result, expected_result);
+
+        // Validate the result.
+        assert_eq!(result.len(), 20 + 64 + msg.len());
     }
 }
