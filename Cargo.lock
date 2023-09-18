@@ -6176,6 +6176,7 @@ dependencies = [
  "hyper",
  "hyper-rustls",
  "lazy_static",
+ "lightdotso-contracts",
  "lightdotso-jsonrpsee",
  "lightdotso-paymaster",
  "lightdotso-tracing",
