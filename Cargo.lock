@@ -5973,6 +5973,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-contracts"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
+ "eyre",
+]
+
+[[package]]
 name = "lightdotso-db"
 version = "0.1.0"
 dependencies = [
@@ -6114,6 +6122,7 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "jsonrpsee",
+ "lightdotso-contracts",
  "lightdotso-gas",
  "lightdotso-jsonrpsee",
  "lightdotso-tracing",

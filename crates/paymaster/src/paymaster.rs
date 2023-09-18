@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    contract::get_hash,
     paymaster_api::PaymasterServer,
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
@@ -30,6 +29,7 @@ use ethers::{
 };
 use eyre::Result;
 use jsonrpsee::core::RpcResult;
+use lightdotso_contracts::paymaster::{get_paymaster, UserOperation};
 use lightdotso_gas::gas::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
@@ -188,4 +188,39 @@ pub async fn sign_message(chain_id: u64, hash: [u8; 32]) -> Result<Vec<u8>> {
     let msg = wallet.sign_message(hash).await?;
 
     Ok(msg.to_vec())
+}
+
+/// Get the hash for the paymaster.
+pub async fn get_hash(
+    chain_id: u64,
+    verifying_paymaster_address: Address,
+    user_operation: UserOperationConstruct,
+    valid_until: u64,
+    valid_after: u64,
+) -> Result<[u8; 32]> {
+    // Get the contract.
+    let contract = get_paymaster(chain_id, verifying_paymaster_address).await?;
+
+    // Get the hash.
+    let hash = contract
+        .get_hash(
+            UserOperation {
+                sender: user_operation.sender,
+                nonce: user_operation.nonce,
+                init_code: user_operation.init_code,
+                call_data: user_operation.call_data,
+                call_gas_limit: user_operation.call_gas_limit,
+                verification_gas_limit: user_operation.verification_gas_limit,
+                pre_verification_gas: user_operation.pre_verification_gas,
+                max_fee_per_gas: user_operation.max_fee_per_gas,
+                max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
+                paymaster_and_data: Bytes::default(),
+                signature: user_operation.signature,
+            },
+            valid_until,
+            valid_after,
+        )
+        .await?;
+
+    Ok(hash)
 }

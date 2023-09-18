@@ -10,6 +10,7 @@
     "crates/bundler",
     "crates/consumer",
     "crates/core",
+    "crates/contracts",
     "crates/db",
     "crates/discord",
     "crates/gas",
@@ -91,6 +92,7 @@
   lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-consumer = { path = "./crates/consumer" }
+  lightdotso-contracts = { path = "./crates/contracts" }
   lightdotso-discord = { path = "./crates/discord" }
   lightdotso-db = { path = "./crates/db" }
   lightdotso-gas = { path = "./crates/gas" }
