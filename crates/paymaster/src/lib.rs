@@ -18,10 +18,3 @@ pub mod contract;
 pub mod paymaster;
 pub mod paymaster_api;
 pub mod types;
-
-use ethers::{
-    core::k256::ecdsa::SigningKey,
-    signers::{Signer, Wallet},
-    types::H256,
-};
-use eyre::Result;
