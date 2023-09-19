@@ -12,5 +12,5 @@ module.exports = {
     "pnpm run npm-package-json:lint",
     "pnpm run sort-package-json:fix",
   ],
-  "thunder-tests": ["./scripts/check-thunder-url.sh"],
+  "thunder-tests/**/*.json": ["./scripts/check-thunder-url.sh"],
 };

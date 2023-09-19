@@ -370,7 +370,7 @@
     "method": "GET",
     "sortNum": 0,
     "created": "2023-09-19T16:28:01.005Z",
-    "modified": "2023-09-19T16:28:21.818Z",
+    "modified": "2023-09-19T19:22:32.160Z",
     "headers": [],
     "params": [],
     "tests": [
@@ -379,6 +379,12 @@
         "custom": "",
         "action": "equal",
         "value": "200"
+      },
+      {
+        "type": "res-body",
+        "custom": "",
+        "action": "equal",
+        "value": "Ok"
       }
     ]
   },
