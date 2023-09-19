@@ -93,9 +93,11 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                             return None;
                         }
 
-                        // If the error code is from -32500 to -32507 return response
+                        // If the error code is from -32500 to -32507 or -32521 return response
                         // Invalid request
-                        if code.as_i64() >= Some(-32500) && code.as_i64() <= Some(-32507) {
+                        if code.as_i64() >= Some(-32500) && code.as_i64() <= Some(-32507) ||
+                            code.as_i64() == Some(-32521)
+                        {
                             warn!("Successfully returning w/ invalid request response: {:?}", body);
                             return Some(
                                 Response::builder().status(400).body(Body::from(body)).unwrap(),
