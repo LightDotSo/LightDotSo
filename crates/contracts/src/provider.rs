@@ -13,14 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::providers::{Http, Provider};
+use ethers::providers::{Http, Middleware, Provider};
 use eyre::{eyre, Result};
 
+/// Returns a provider for the given chain ID w/ fallbacks
 pub async fn get_provider(chain_id: u64) -> Result<Provider<Http>> {
     // Primary RPC URL
     let rpc_url_1 = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
     if let Ok(provider) = Provider::<Http>::try_from(rpc_url_1.as_str()) {
-        return Ok(provider);
+        if provider.get_block_number().await.is_ok() {
+            return Ok(provider);
+        }
     }
 
     // If `PROTECTED_RPC_URL` is set, concatenate the chain ID and try to connect
@@ -28,14 +31,18 @@ pub async fn get_provider(chain_id: u64) -> Result<Provider<Http>> {
     if let Ok(protected_rpc_url) = std::env::var("PROTECTED_RPC_URL") {
         let rpc_url_2 = format!("{}/{}", protected_rpc_url, chain_id);
         if let Ok(provider) = Provider::<Http>::try_from(rpc_url_2.as_str()) {
-            return Ok(provider);
+            if provider.get_block_number().await.is_ok() {
+                return Ok(provider);
+            }
         }
     }
 
     // Fallback Public RPC URL
     let rpc_url_3 = format!("https://rpc.light.so/{}", chain_id);
     if let Ok(provider) = Provider::<Http>::try_from(rpc_url_3.as_str()) {
-        return Ok(provider);
+        if provider.get_block_number().await.is_ok() {
+            return Ok(provider);
+        }
     }
 
     // If all attempts fail, return error message
