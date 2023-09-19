@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import clsx from "clsx";
 import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
@@ -27,19 +29,19 @@ const carousels = [
     name: "Your Web3 Hub",
     title: "Web3 Home",
     body: "Your personal web3 suite.\nConnect and discover what's happening across the blockchain.\nExplore the world of web3 with zero friction and simplicity.",
-    image: "/home/web3Home.png",
+    image: "/web3Home.png",
   },
   {
     name: "Light Protocol",
     title: "Earn with web3",
     body: "Your personal web3 suite.\nConnect and discover what's happening across the blockchain.\nExplore the world of web3 with zero friction and simplicity.",
-    image: "/home/lightProtocol.png",
+    image: "/lightProtocol.png",
   },
   {
     name: "Social Credentials",
     title: "Connect on web3",
     body: "One place to showcase your web3 credentials & reputation.\nAccumulate scores and boost your reputation and compete with your friends!",
-    image: "/home/socialCredentials.png",
+    image: "/socialCredentials.png",
   },
 ];
 
