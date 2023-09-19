@@ -5,7 +5,7 @@ URLS_TO_REJECT=('infura.io' 'alchemy.com')
 FILES=$(git diff --cached --name-only --diff-filter=ACM)
 for FILE in $FILES
 do
-  if [[ $FILE == your-directory/* ]]
+  if [[ $FILE == thunder-tests/* ]]
   then
     for URL_TO_REJECT in "${URLS_TO_REJECT[@]}"
     do
