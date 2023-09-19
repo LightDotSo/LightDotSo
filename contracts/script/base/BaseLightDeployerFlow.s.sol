@@ -76,7 +76,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
 
         // Deposit ETH into the account for stake deposit
-        address(expectedAddress).call{value: 1002500000000}("");
+        // address(expectedAddress).call{value: 1002500000000}("");
 
         // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
@@ -84,17 +84,20 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
             abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 
+        // solhint-disable-next-line no-console
+        console.logBytes(initCode);
+
         // UserOperation to create the account
         UserOperation[] memory ops = entryPoint.signPackUserOp(
             lightWalletUtils, address(expectedAddress), "", vm.envUint("PRIVATE_KEY"), initCode
         );
 
         // Handle the ops
-        entryPoint.handleOps(ops, payable(address(1)));
+        // entryPoint.handleOps(ops, payable(address(1)));
 
         // solhint-disable-next-line no-console
-        console.log("LightWallet deployed at address: %s", address(expectedAddress));
-        assert(address(expectedAddress).code.length > 0);
+        console.log("LightWallet to be deployed at address: %s", address(expectedAddress));
+        // assert(address(expectedAddress).code.length > 0);
 
         return wallet;
     }

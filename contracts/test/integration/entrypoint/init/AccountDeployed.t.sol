@@ -36,7 +36,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         BaseIntegrationTest.setUp();
 
         // The to-be-deployed account at expected Hash, nonce 3
-        wallet = LightWallet(payable(address(0xE30950a24FA04488549227664D4a1f079c164f9D)));
+        wallet = LightWallet(payable(address(0x2B65f0696ba6c37FFC9A686361f9d46a3b7c0B9f)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(wallet), 1e30);
@@ -76,7 +76,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     /// Tests that the factory can create a new account at the predicted address
     function test_createAccountFromEntryPoint_emitEvents() public {
         // The to-be-deployed account at expected Hash, nonce 300
-        LightWallet newWallet = LightWallet(payable(address(0x24DB11C8266D85A917C37b3ab3Afdc11886F1B83)));
+        LightWallet newWallet = LightWallet(payable(address(0x9ADC9Fab68ECd94CD9DbE1bda19C9453580b4b6c)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(newWallet), 1e30);
