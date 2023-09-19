@@ -360,5 +360,26 @@
       }
     },
     "tests": []
+  },
+  {
+    "_id": "baa64ae1-1204-4803-8c9c-72269247a930",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://api.light.so/check",
+    "url": "https://api.light.so/check",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-09-19T16:28:01.005Z",
+    "modified": "2023-09-19T16:28:21.818Z",
+    "headers": [],
+    "params": [],
+    "tests": [
+      {
+        "type": "res-code",
+        "custom": "",
+        "action": "equal",
+        "value": "200"
+      }
+    ]
   }
 ]
