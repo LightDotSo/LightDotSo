@@ -15,12 +15,6 @@
 
 pub mod chains;
 pub mod config;
-pub mod error;
 pub mod gas;
 pub mod gas_api;
-
-use eyre::Result;
-
-pub async fn gas() -> Result<()> {
-    Ok(())
-}
+pub mod types;

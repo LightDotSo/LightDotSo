@@ -5973,6 +5973,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-contracts"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
+ "eyre",
+ "lazy_static",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-db"
 version = "0.1.0"
 dependencies = [
@@ -6000,8 +6010,10 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "clap 4.4.0",
+ "ethers 2.0.9",
  "eyre",
  "jsonrpsee",
+ "lightdotso-jsonrpsee",
  "lightdotso-tracing",
  "reqwest",
  "serde",
@@ -6053,6 +6065,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-jsonrpsee"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
+ "eyre",
+ "jsonrpsee",
+ "lightdotso-tracing",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "url",
+]
+
+[[package]]
 name = "lightdotso-kafka"
 version = "0.1.0"
 dependencies = [
@@ -6095,11 +6121,16 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "clap 4.4.0",
- "ethers 2.0.9",
+ "ethers 2.0.8",
  "eyre",
  "jsonrpsee",
+ "lightdotso-contracts",
+ "lightdotso-gas",
+ "lightdotso-jsonrpsee",
  "lightdotso-tracing",
+ "reqwest",
  "serde",
+ "serde_json",
  "silius-primitives",
  "silius-rpc",
  "spki",
@@ -6145,6 +6176,9 @@ dependencies = [
  "hyper",
  "hyper-rustls",
  "lazy_static",
+ "lightdotso-contracts",
+ "lightdotso-jsonrpsee",
+ "lightdotso-paymaster",
  "lightdotso-tracing",
  "rand 0.8.5",
  "serde",

@@ -18,6 +18,7 @@
 pragma solidity ^0.8.18;
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
@@ -68,7 +69,8 @@ abstract contract BaseTest is Test {
     LightWallet internal account;
     // LightWalletFactory core contract
     LightWalletFactory internal factory;
-
+    // LightVerifyingPaymaster core contract
+    LightVerifyingPaymaster internal paymaster;
     // LightWallet for deployed account
     LightWallet internal wallet;
 

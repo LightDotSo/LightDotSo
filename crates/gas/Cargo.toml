@@ -10,9 +10,11 @@
 
 [dependencies]
   async-trait = { workspace = true }
-  clap = { workspace = true }
+  clap = { workspace = true, features = ["derive", "env"] }
+  ethers-main = { workspace = true }
   eyre = { workspace = true }
   jsonrpsee = { workspace = true }
+  lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true }

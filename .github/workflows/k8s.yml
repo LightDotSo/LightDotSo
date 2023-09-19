@@ -17,7 +17,7 @@ jobs:
   k8s-wait-docker:
     if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') && github.event_name == 'release'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     steps:
       - name: Sleep for 30 seconds
         run: |
