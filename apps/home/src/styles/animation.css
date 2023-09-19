@@ -1,0 +1,25 @@
+.gradient {
+  background-image: radial-gradient(
+    90% 354% at 12% 100%,
+    #987ffc 0%,
+    #7dd4ee 30%,
+    #f75ae7 60%,
+    #f1d95c 100%
+  );
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.move-gradient {
+  animation: gradient 8s ease-in-out infinite;
+}
