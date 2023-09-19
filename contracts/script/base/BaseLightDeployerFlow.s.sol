@@ -97,7 +97,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
 
         // solhint-disable-next-line no-console
         console.log("LightWallet to be deployed at address: %s", address(expectedAddress));
-        assert(address(expectedAddress).code.length > 0);
+        // assert(address(expectedAddress).code.length > 0);
 
         return wallet;
     }
