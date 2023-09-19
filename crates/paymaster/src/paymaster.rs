@@ -39,7 +39,7 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
-use lightdotso_tracing::tracing::{debug, info};
+use lightdotso_tracing::tracing::info;
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
