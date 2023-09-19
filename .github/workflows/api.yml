@@ -26,10 +26,13 @@ jobs:
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
           ref: ${{ github.ref }}
-          check-name: fly-check
+          check-name: fly-wait-docker
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           wait-interval: 10
           allowed-conclusions: success
+      - name: Sleep for 180 seconds
+        run: |
+          sleep 180s
   api-tc:
     if: always()
     needs:

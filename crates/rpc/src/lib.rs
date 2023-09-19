@@ -92,6 +92,15 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                             warn!("Error in body w/ code: {:?}", body_json);
                             return None;
                         }
+
+                        // If the error code is -32602 return the response
+                        // Invalid params
+                        if code.as_i64() == Some(-32602) {
+                            warn!("Successfully returning w/ invalid params response: {:?}", body);
+                            return Some(
+                                Response::builder().status(400).body(Body::from(body)).unwrap(),
+                            );
+                        }
                     }
                 }
                 // If body is empty return None
