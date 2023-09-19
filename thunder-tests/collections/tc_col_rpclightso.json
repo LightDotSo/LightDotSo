@@ -10,11 +10,11 @@
       "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
       "containerId": "",
       "name": "eth_supportedEntryPoints",
-      "url": "https://rpc.light.so/11155111",
+      "url": "https://rpc.light.so/1",
       "method": "POST",
       "sortNum": 10000,
       "created": "2023-08-24T23:40:39.096Z",
-      "modified": "2023-08-24T23:40:39.096Z",
+      "modified": "2023-09-19T16:51:27.690Z",
       "headers": [
         {
           "name": "accept",
@@ -51,11 +51,11 @@
       "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
       "containerId": "",
       "name": "eth_estimateUserOperationGas",
-      "url": "https://rpc.light.so/11155111",
+      "url": "https://rpc.light.so/1",
       "method": "POST",
       "sortNum": 20000,
       "created": "2023-08-24T23:40:48.793Z",
-      "modified": "2023-08-24T23:40:48.793Z",
+      "modified": "2023-09-19T16:51:32.217Z",
       "headers": [
         {
           "name": "accept",
@@ -83,7 +83,7 @@
       "method": "POST",
       "sortNum": 30000,
       "created": "2023-08-26T10:07:19.550Z",
-      "modified": "2023-08-26T10:07:19.550Z",
+      "modified": "2023-09-19T16:54:54.688Z",
       "headers": [
         {
           "name": "accept",
@@ -106,12 +106,6 @@
           "custom": "",
           "action": "equal",
           "value": "200"
-        },
-        {
-          "type": "res-body",
-          "custom": "",
-          "action": "contains",
-          "value": "max_priority_fee_per_gas"
         }
       ]
     }
