@@ -74,8 +74,10 @@ contract LightVerifyingPaymasterForkTest is BaseForkTest {
         // Get the hash w/ custom operation
         bytes32 hash = paymaster.getHash(op, 0x00000000deadbeef, 0x0000000000001234);
 
-        // Assert the hash is correct
-        assertEq(hash, 0x8de0df60b31116ee8d79fffef79ff348469c560a17b8a1e9ae7b40181369db63);
+        // Assert the hash is correct if chain ID is 1
+        if (block.chainid == 1) {
+            assertEq(hash, 0x8de0df60b31116ee8d79fffef79ff348469c560a17b8a1e9ae7b40181369db63);
+        }
 
         // Log the byte code hash
         // solhint-disable-next-line no-console
