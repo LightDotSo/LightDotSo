@@ -15,7 +15,6 @@ concurrency:
   cancel-in-progress: true
 jobs:
   api-wait-fly:
-    if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') && github.event_name == 'release'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -31,7 +30,6 @@ jobs:
           wait-interval: 10
           allowed-conclusions: success
   api-tc:
-    if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') && github.event_name == 'release' || github.event_name == 'schedule'
     needs:
       - api-wait-fly
     runs-on: ubuntu-latest
