@@ -32,7 +32,8 @@ jobs:
           allowed-conclusions: success
   api-tc:
     if: always()
-    needs: api-wait-fly
+    needs:
+      - api-wait-fly
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
