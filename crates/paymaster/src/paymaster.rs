@@ -39,6 +39,7 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
+use lightdotso_tracing::tracing::info;
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -67,6 +68,7 @@ impl PaymasterServer for PaymasterServerImpl {
         let construct = construct_user_operation(chain_id, user_operation, entry_point)
             .await
             .map_err(JsonRpcError::from)?;
+        info!("construct: {:?}", construct);
 
         // Get the timestamp
         let timestamp =
@@ -142,6 +144,7 @@ pub async fn construct_user_operation(
 ) -> Result<UserOperationConstruct> {
     let estimated_user_operation_gas =
         estimate_user_operation_gas(chain_id, entry_point, &user_operation).await?.result;
+    info!("estimated_user_operation_gas: {:?}", estimated_user_operation_gas);
 
     let estimated_request_gas = estimate_request_gas_estimation(chain_id).await?.result;
 

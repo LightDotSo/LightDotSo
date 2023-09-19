@@ -6,6 +6,7 @@ seaport/=lib/seaport/
 solady/=lib/solady/src/
 solmate/=lib/solmate/src/
 src/=lib/kernel/src/
+surl/=lib/surl/src/
 @0xsequence/wallet-contracts/=lib/wallet-contracts/
 @account-abstraction/=lib/account-abstraction/
 @biconomy/account-contracts/=lib/scw-contracts/
