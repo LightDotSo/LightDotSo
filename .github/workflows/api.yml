@@ -31,8 +31,8 @@ jobs:
           wait-interval: 10
           allowed-conclusions: success
   api-tc:
-    needs:
-      - api-wait-fly
+    if: always()
+    needs: api-wait-fly
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -43,8 +43,6 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Thunder Client Check
