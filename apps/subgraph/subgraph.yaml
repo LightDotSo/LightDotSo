@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: EntryPointv0.6.0
-    network: mumbai
+    network: polygon-zkevm
     source:
       abi: EntryPoint
       address: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
-      startBlock: 34166156
+      startBlock: 184258
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
