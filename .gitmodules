@@ -49,3 +49,6 @@
 [submodule "lib/halmos-cheatcodes"]
 	path = lib/halmos-cheatcodes
 	url = https://github.com/a16z/halmos-cheatcodes
+[submodule "lib/surl"]
+	path = lib/surl
+	url = https://github.com/memester-xyz/surl
