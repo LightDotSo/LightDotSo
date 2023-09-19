@@ -1,0 +1,65 @@
+name: API
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  pull_request_target:
+    types:
+      - labeled
+  merge_group:
+  schedule:
+    - cron: "0 0 * * *"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  api-wait-fly:
+    if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') && github.event_name == 'release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Sleep for 30 seconds
+        run: |
+          sleep 30s
+      - name: Wait Docker
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.ref }}
+          check-name: fly-check
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
+          allowed-conclusions: success
+  api-tc:
+    if: github.event_name == 'push' || startsWith(github.ref, 'refs/tags/@lightdotso/bin') && github.event_name == 'release' || github.event_name == 'schedule'
+    needs:
+      - api-wait-fly
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Thunder Client Check
+        run: |
+          pnpm tc --col api.light.so,rpc.light.so
+  api-check:
+    if: always()
+    needs:
+      - api-tc
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: api-tc
+          jobs: ${{ toJSON(needs) }}

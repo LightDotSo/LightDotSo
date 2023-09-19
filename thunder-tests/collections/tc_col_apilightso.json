@@ -1,0 +1,23 @@
+{
+  "_id": "90010c79-933e-468c-92a4-3ccac076fbb0",
+  "colName": "api.light.so",
+  "created": "2023-09-19T16:28:12.122Z",
+  "sortNum": 5000,
+  "folders": [],
+  "requests": [
+    {
+      "_id": "809e5ace-0d9d-4285-a8b2-e3bda35ea70c",
+      "colId": "90010c79-933e-468c-92a4-3ccac076fbb0",
+      "containerId": "",
+      "name": "https://api.light.so/check",
+      "url": "https://api.light.so/check",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2023-09-19T16:28:12.124Z",
+      "modified": "2023-09-19T16:28:12.124Z",
+      "headers": [],
+      "params": [],
+      "tests": []
+    }
+  ]
+}
