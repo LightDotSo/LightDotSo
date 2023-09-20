@@ -39,7 +39,7 @@ pub async fn start_internal_server() -> Result<()> {
     let socket_addr = match TcpListener::bind(primary_addr) {
         Ok(_) => primary_addr,
         Err(_) => {
-            warn!("Fallback to another port");
+            warn!("Fallbacking to another port");
             fallback_addr
         }
     };
