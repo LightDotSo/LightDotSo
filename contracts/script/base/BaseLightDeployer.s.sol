@@ -19,7 +19,6 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
-import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
@@ -45,8 +44,6 @@ abstract contract BaseLightDeployer {
     LightWalletFactory internal factory;
 
     LightVerifyingPaymaster internal paymaster;
-
-    LightWalletUtils internal lightWalletUtils;
 
     bytes32 internal expectedImageHash;
 
@@ -80,9 +77,6 @@ abstract contract BaseLightDeployer {
     function setUp() public virtual {
         // Get the entry point
         entryPoint = EntryPoint(payable(ENTRY_POINT_ADDRESS));
-
-        // Construct the utils
-        lightWalletUtils = new LightWalletUtils();
     }
 
     // -------------------------------------------------------------------------
@@ -91,5 +85,20 @@ abstract contract BaseLightDeployer {
 
     function randMod() internal view returns (bytes32) {
         return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
+    }
+
+    // From: `LightWalletUtils` contract
+    function getExpectedImageHash(address user) internal pure returns (bytes32 imageHash) {
+        // Parameters for the signature
+        uint8 weight = uint8(1);
+        uint16 threshold = uint16(1);
+        uint32 checkpoint = uint32(1);
+
+        // Calculate the image hash
+        imageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
+        imageHash = keccak256(abi.encodePacked(imageHash, uint256(threshold)));
+        imageHash = keccak256(abi.encodePacked(imageHash, uint256(checkpoint)));
+
+        return imageHash;
     }
 }

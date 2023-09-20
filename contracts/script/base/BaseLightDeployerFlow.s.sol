@@ -60,17 +60,11 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         // Specify the entryPoint
         entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
 
-        // Create lightWalletUtils
-        lightWalletUtils = new LightWalletUtils();
-
-        // Allow light wallet utils to access the cheatcodes
-        vm.allowCheatcodes(address(lightWalletUtils));
-
         // Specify the factory
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
         // Get the expected image hash
-        expectedImageHash = lightWalletUtils.getExpectedImageHash(PRIVATE_KEY_DEPLOYER);
+        expectedImageHash = getExpectedImageHash(PRIVATE_KEY_DEPLOYER);
 
         // Get the expected address
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
@@ -88,9 +82,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         console.logBytes(initCode);
 
         // UserOperation to create the account
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
-            lightWalletUtils, address(expectedAddress), "", vm.envUint("PRIVATE_KEY"), initCode
-        );
+        // UserOperation[] memory ops = entryPoint.signPackUserOp(
+        //     lightWalletUtils, address(expectedAddress), "", vm.envUint("PRIVATE_KEY"), initCode
+        // );
 
         // Handle the ops
         // entryPoint.handleOps(ops, payable(address(1)));
