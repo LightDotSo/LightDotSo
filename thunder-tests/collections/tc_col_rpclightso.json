@@ -90,7 +90,7 @@
       "method": "POST",
       "sortNum": 30000,
       "created": "2023-08-26T10:07:19.550Z",
-      "modified": "2023-09-19T16:54:54.688Z",
+      "modified": "2023-09-20T06:38:53.550Z",
       "headers": [
         {
           "name": "accept",
@@ -104,7 +104,7 @@
       "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    1\n  ]\n}",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    11155111\n  ]\n}",
         "form": []
       },
       "tests": [
@@ -115,6 +115,81 @@
           "value": "200"
         }
       ]
+    },
+    {
+      "_id": "88611494-74bc-407a-9634-d53993df889b",
+      "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
+      "containerId": "",
+      "name": "eth_estimateUserOperationGas",
+      "url": "https://rpc.light.so/1",
+      "method": "POST",
+      "sortNum": 40000,
+      "created": "2023-09-20T01:01:27.755Z",
+      "modified": "2023-09-20T01:02:24.600Z",
+      "headers": [
+        {
+          "name": "accept",
+          "value": "application/json"
+        },
+        {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_estimateUserOperationGas\",\n  \"params\": [\n    {\n      \"sender\": \"0x037dBd58Bf1f316cdbF5d211f33A04f5bD95C6A6\",\n      \"nonce\": \"0x0\",\n      \"initCode\": \"0x0000000000756d3e6464f5efe7e413a0af1c7474183815c8b416eb7e5703c66bf1afc9e68a19f54087168e74b82eba920af3fde8dee8d15b0000000000000000000000000000000000000000000000000000000000000a1a\",\n      \"callData\": \"0x\",\n      \"signature\": \"0x000100000001000131a184eb40202a407819e4efe1313e8464c56ae6bb88ee91728134892f57a1df2519f8cd158ca4d60043fa37ed9da5e8748757367374a7c0ea745fdf364280c31c01\",\n      \"paymasterAndData\": \"0x\"\n    },\n    \"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789\"\n  ]\n}",
+        "form": []
+      },
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        },
+        {
+          "type": "res-body",
+          "custom": "",
+          "action": "contains",
+          "value": "preVerificationGas"
+        },
+        {
+          "type": "res-body",
+          "custom": "",
+          "action": "contains",
+          "value": "callGasLimit"
+        }
+      ]
+    },
+    {
+      "_id": "67e1ab0c-f1ae-4e9f-8e64-5b67bf3a6445",
+      "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
+      "containerId": "",
+      "name": "paymaster_requestGasAndPaymasterAndData",
+      "url": "https://rpc.light.so/1",
+      "method": "POST",
+      "sortNum": 50000,
+      "created": "2023-09-20T01:18:23.079Z",
+      "modified": "2023-09-20T06:39:07.268Z",
+      "headers": [
+        {
+          "name": "accept",
+          "value": "application/json"
+        },
+        {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"paymaster_requestGasAndPaymasterAndData\",\n  \"params\": [\n    1,\n    {\n      \"sender\": \"0x037dBd58Bf1f316cdbF5d211f33A04f5bD95C6A6\",\n      \"nonce\": \"0x0\",\n      \"initCode\": \"0x0000000000756d3e6464f5efe7e413a0af1c7474183815c8b416eb7e5703c66bf1afc9e68a19f54087168e74b82eba920af3fde8dee8d15b0000000000000000000000000000000000000000000000000000000000000a1a\",\n      \"callData\": \"0x\",\n      \"signature\": \"0x000100000001000131a184eb40202a407819e4efe1313e8464c56ae6bb88ee91728134892f57a1df2519f8cd158ca4d60043fa37ed9da5e8748757367374a7c0ea745fdf364280c31c01\",\n      \"paymasterAndData\": \"0x\",\n      \"preVerificationGas\": \"0xab84\",\n      \"verificationGasLimit\": \"0x63faa\",\n      \"callGasLimit\": \"0x238c\"\n    },\n    \"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789\"\n  ]\n}",
+        "form": []
+      },
+      "tests": []
     }
   ]
 }

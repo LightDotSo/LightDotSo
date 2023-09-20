@@ -33,6 +33,7 @@ use ethers::{
 };
 use ethers_providers::StreamExt;
 use eyre::eyre;
+use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
     error::DbError,
@@ -162,12 +163,9 @@ impl Indexer {
         // Mutate the chain id
         self.chain_id = chain_id;
 
-        // Get the url for the rpc
-        let rpc = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
-
-        // Mutate the http client
-        let http_client = Arc::new(Provider::<Http>::try_from(rpc).unwrap());
-        self.http_client = Some(http_client);
+        // Get the http_client for the rpc
+        let http_client = get_provider(chain_id).await?;
+        self.http_client = Some(Arc::new(http_client));
 
         // Index the block
         self.index(db_client, block).await

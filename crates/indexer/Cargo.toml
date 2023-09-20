@@ -21,6 +21,7 @@
   eyre = { workspace = true }
   futures = { workspace = true }
   lazy_static = { workspace = true }
+  lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-kafka = { workspace = true }
   lightdotso-prisma = { workspace = true }
