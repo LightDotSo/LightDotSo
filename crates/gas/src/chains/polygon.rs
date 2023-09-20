@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use ethers::types::{u256_from_f64_saturating, U256};
 use serde::{Deserialize, Serialize};
 
 use crate::gas::{GasEstimation, GasEstimationParams};
@@ -43,8 +44,8 @@ impl From<ApiResponse> for GasEstimation {
     fn from(data: ApiResponse) -> Self {
         let make_params = |gas_data: &GasData| -> GasEstimationParams {
             GasEstimationParams {
-                max_priority_fee_per_gas: (gas_data.max_priority_fee as u64).into(),
-                max_fee_per_gas: (gas_data.max_fee as u64).into(),
+                max_priority_fee_per_gas: from_gwei_f64(gas_data.max_priority_fee),
+                max_fee_per_gas: from_gwei_f64(gas_data.max_fee),
             }
         };
 
@@ -70,4 +71,15 @@ pub async fn polygon_gas_estimation(chain_id: u64) -> Result<GasEstimation, reqw
 
     // Convert to GasEstimation using From trait
     Ok(response.into())
+}
+
+// From: https://github.com/gakonst/ethers-rs/blob/fa3017715a298728d9fb341933818a5d0d84c2dc/ethers-middleware/src/gas_oracle/mod.rs#L39
+// License: MIT
+pub(crate) const GWEI_TO_WEI: u64 = 1_000_000_000;
+pub(crate) const GWEI_TO_WEI_U256: U256 = U256([GWEI_TO_WEI, 0, 0, 0]);
+
+// From: https://github.com/gakonst/ethers-rs/blob/fa3017715a298728d9fb341933818a5d0d84c2dc/ethers-middleware/src/gas_oracle/mod.rs#L155
+// License: MIT
+pub(crate) fn from_gwei_f64(gwei: f64) -> U256 {
+    u256_from_f64_saturating(gwei) * GWEI_TO_WEI_U256
 }
