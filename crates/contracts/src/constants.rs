@@ -16,12 +16,20 @@
 use ethers::types::Address;
 use lazy_static::lazy_static;
 
-// The factory addresses
+// The paymaster addresses
 lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_PAYMASTER_ADDRESS: Address =
       // 1
       "0x000000000001d2D44c9d7133eC384c1A6f0a5B3F".parse().unwrap();
+}
+
+// The entrypoint addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref ENTRYPOINT_V060_ADDRESS: Address =
+      // v0.6.0
+      "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse().unwrap();
 }
 
 #[cfg(test)]

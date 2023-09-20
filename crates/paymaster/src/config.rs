@@ -26,7 +26,7 @@ pub struct PaymasterArgs {
     #[clap(long, env = "PAYMASTER_PRIVATE_KEY")]
     pub paymaster_private_key: String,
     /// The topics to consume.
-    #[clap(long, default_value = "[::]:3000")]
+    #[clap(long, default_value = "[::]:3006")]
     pub rpc_address: String,
 }
 

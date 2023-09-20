@@ -26,10 +26,9 @@ use axum::{
     extract::{Path, State},
     http::{Request, Response},
 };
-use ethers::types::Address;
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
-use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
+use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, warn};
@@ -381,7 +380,7 @@ pub async fn rpc_proxy_handler(
                     let params = vec![
                         json!(chain_id),
                         json!(user_operation),
-                        json!("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
+                        json!(format!("{:?}", *ENTRYPOINT_V060_ADDRESS)),
                     ];
                     info!("params: {:?}", params);
 
