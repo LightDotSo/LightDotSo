@@ -48,11 +48,14 @@ impl From<ApiResponseData> for GasEstimation {
     }
 }
 
-pub async fn mainnet_gas_estimation() -> Result<GasEstimation, reqwest::Error> {
-    let response = reqwest::get("https://beaconcha.in/api/v1/execution/gasnow")
-        .await?
-        .json::<ApiResponse>()
-        .await?;
+pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimation, reqwest::Error> {
+    let url = match chain_id {
+        1 => "https://beaconcha.in/api/v1/execution/gasnow",
+        11155111 => "https://sepolia.beaconcha.in/api/v1/execution/gasnow",
+        _ => panic!("Unsupported chain ID"),
+    };
+
+    let response = reqwest::get(url).await?.json::<ApiResponse>().await?;
 
     // Convert to GasEstimation using From trait
     Ok(response.data.into())

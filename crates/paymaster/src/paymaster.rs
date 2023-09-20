@@ -164,12 +164,13 @@ pub async fn construct_user_operation(
 
 /// Estimate the gas for the request w/ the internal gas API.
 pub async fn estimate_request_gas_estimation(chain_id: u64) -> Result<Response<GasEstimation>> {
-    let params = vec![json!(chain_id)];
+    let params = vec![chain_id];
+    info!("params: {:?}", params);
 
     let req_body = Request {
         jsonrpc: "2.0".to_string(),
         method: "gas_requestGasEstimation".to_string(),
-        params: params.clone(),
+        params: chain_id,
         id: 1,
     };
 

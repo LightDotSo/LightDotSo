@@ -13,18 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{chains::_1::mainnet_gas_estimation, gas_api::GasServer};
+use crate::{
+    chains::{ethereum::ethereum_gas_estimation, polygon::polygon_gas_estimation},
+    gas_api::GasServer,
+};
 use async_trait::async_trait;
-use ethers_main::{
-    providers::{Http, Middleware, Provider},
-    types::U256,
-};
-use jsonrpsee::{
-    core::RpcResult,
-    types::{error::INTERNAL_ERROR_CODE, ErrorObjectOwned},
-};
+use ethers::{providers::Middleware, types::BlockNumber};
+use ethers_main::types::U256;
+use jsonrpsee::core::RpcResult;
+use lightdotso_contracts::provider::get_provider;
 use lightdotso_jsonrpsee::error::JsonRpcError;
-use lightdotso_tracing::tracing::{info, warn};
+use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -58,20 +57,21 @@ impl GasServer for GasServerImpl {
         }
 
         // Setup a new ethers provider
-        let client = Provider::<Http>::try_from(format!(
-            "http://lightdotso-rpc.internal:3000/internal/{}",
-            chain_id
-        ))
-        .map_err(JsonRpcError::from)?;
+        let client = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
 
         // Get the gas price from the client
-        let estimate_eip1559_fees = client.inner().estimate_eip1559_fees(None).await;
-        info!("Gas estimation for chain {} is {:?}", chain_id, estimate_eip1559_fees);
+        let mut gas_price = client.get_gas_price().await.map_err(JsonRpcError::from)?;
+        info!("Gas price for chain {} is {:?}", chain_id, gas_price);
 
-        // Return if the result is Ok
-        if let Ok(fee) = estimate_eip1559_fees {
-            let params =
-                GasEstimationParams { max_fee_per_gas: fee.0, max_priority_fee_per_gas: fee.1 };
+        // For Arbitrum, we need to multiply the gas price by 5/4
+        // From: https://github.com/pimlicolabs/alto/blob/58bcc4e75a214f9074c7d4c73626960527fa43ce/packages/utils/src/gasPrice.ts#L81
+        // License: GPL-3.0
+        if chain_id == 42161 {
+            let gas_price = gas_price * 5 / 4;
+            let params = GasEstimationParams {
+                max_fee_per_gas: gas_price,
+                max_priority_fee_per_gas: gas_price,
+            };
             return Ok(GasEstimation {
                 low: params.clone(),
                 average: params.clone(),
@@ -80,26 +80,60 @@ impl GasServer for GasServerImpl {
             });
         }
 
-        // Return if the result is Err
-        warn!("Gas estimation for chain {} is not available", chain_id);
-        Err(ErrorObjectOwned::owned(
-            INTERNAL_ERROR_CODE,
-            "Chain not supported".to_string(),
-            None::<bool>,
-        ))
+        // Get the fee history
+        let fee_history = client
+            .fee_history(10, BlockNumber::Latest, &[20.0])
+            .await
+            .map_err(JsonRpcError::from)?;
+
+        if fee_history.reward.is_empty() {
+            let gas_price = gas_price * 3 / 2;
+            // Use the gas price to create the params
+            let params = GasEstimationParams {
+                max_fee_per_gas: gas_price,
+                max_priority_fee_per_gas: gas_price,
+            };
+            return Ok(GasEstimation {
+                low: params.clone(),
+                average: params.clone(),
+                high: params.clone(),
+                instant: params.clone(),
+            });
+        };
+
+        // Get the average gas price
+        let fee_average = fee_history.reward.iter().fold(0, |acc, cur| cur[0].as_u32() + acc) / 10;
+        let fee_average = U256::from(fee_average);
+
+        // Compare the average gas price with the current gas price
+        if fee_average > gas_price {
+            gas_price = fee_average;
+        }
+        let max_priority_fee_per_gas = gas_price;
+
+        // Use the gas price to create the params
+        let params = GasEstimationParams { max_fee_per_gas: gas_price, max_priority_fee_per_gas };
+        Ok(GasEstimation {
+            low: params.clone(),
+            average: params.clone(),
+            high: params.clone(),
+            instant: params.clone(),
+        })
     }
 }
 
 async fn get_estimation(chain_id: u64) -> Option<GasEstimation> {
     match chain_id {
-        1 => match mainnet_gas_estimation().await {
+        // Match either 1 or 11155111
+        1 | 11155111 => match ethereum_gas_estimation(chain_id).await {
             Ok(res) => Some(res),
             Err(_) => None,
         },
-        // 1337 => match polygon_gas_estimation().await {
-        //     Ok(res) => Some(res),
-        //     Err(_) => None,
-        // },
+        // Match either 137 or 80001
+        137 | 80001 => match polygon_gas_estimation(chain_id).await {
+            Ok(res) => Some(res),
+            Err(_) => None,
+        },
         _ => None,
     }
 }
