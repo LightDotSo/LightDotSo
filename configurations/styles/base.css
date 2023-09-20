@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --white: rgba(255, 255, 255, 1);
+    --black: rgba(13, 19, 23, 1);
+
+    --bg-light: rgba(252, 252, 253, 1);
+    --bg-lighter: rgba(255, 255, 255, 1);
+    --bg: rgba(249, 250, 251, 1);
+    --bg-dark: rgba(239, 240, 240, 1);
+    --bg-darker: rgba(226, 227, 228, 1);
+    --bg-loading: var(--bg-darker);
+    --contrast-lower: rgba(214, 215, 215, 1);
+    --contrast-low: rgba(161, 163, 165, 1);
+    --contrast-medium: rgba(115, 118, 120, 1);
+    --contrast-high: rgba(50, 54, 57, 1);
+    --contrast-higher: rgba(13, 19, 23, 1);
+    --emphasis-low: rgba(13, 19, 23, 0.18);
+    --emphasis-medium: rgba(13, 19, 23, 0.12);
+    --emphasis-high: rgba(13, 19, 23, 0.06);
+    --primary-lighter: rgba(125, 211, 252, 1);
+    --primary-light: rgba(56, 189, 248, 1);
+    --primary: rgba(14, 165, 233, 1);
+    --primary-dark: rgba(2, 132, 199, 1);
+    --primary-darker: rgba(3, 105, 161, 1);
+    --accent-lighter: rgba(244, 72, 124, 1);
+    --accent-light: rgba(243, 43, 103, 1);
+    --accent: rgba(231, 13, 79, 1);
+    --accent-dark: rgba(207, 12, 71, 1);
+    --accent-darker: rgba(183, 11, 62, 1);
+    --success-lighter: rgba(163, 224, 165, 1);
+    --success-light: rgba(136, 215, 139, 1);
+    --success: rgba(102, 204, 105, 1);
+    --success-dark: rgba(71, 194, 75, 1);
+    --success-darker: rgba(60, 180, 64, 1);
+    --warning-lighter: rgba(255, 231, 153, 1);
+    --warning-light: rgba(255, 220, 107, 1);
+    --warning: rgba(255, 209, 56, 1);
+    --warning-dark: rgba(255, 196, 0, 1);
+    --warning-darker: rgba(240, 184, 0, 1);
+    --error-lighter: rgba(244, 72, 124, 1);
+    --error-light: rgba(243, 43, 103, 1);
+    --error: rgba(231, 13, 79, 1);
+    --error-dark: rgba(207, 12, 71, 1);
+    --error-darker: rgba(183, 11, 62, 1);
+
+    --hover: var(--accent);
+    --selection: var(--accent-light);
+
+    --font-sans: -apple-system, system-ui, BlinkMacSystemFont, "Helvetica Neue",
+      "Helvetica", sans-serif;
+  }
+
+  .dark {
+    --bg-light: rgba(33, 37, 40, 1);
+    --bg-lighter: rgba(27, 31, 33, 1);
+    --bg: rgba(20, 23, 26, 1);
+    --bg-dark: rgba(14, 15, 16, 1);
+    --bg-darker: rgba(9, 9, 10, 1);
+    --bg-loading: var(--bg-lighter);
+    --contrast-lower: rgba(41, 45, 48, 1);
+    --contrast-low: rgba(81, 83, 87, 1);
+    --contrast-medium: rgba(123, 125, 130, 1);
+    --contrast-high: rgba(197, 198, 203, 1);
+    --contrast-higher: rgba(249, 249, 255, 1);
+    --emphasis-low: rgba(249, 249, 255, 0.18);
+    --emphasis-medium: rgba(249, 249, 255, 0.12);
+    --emphasis-high: rgba(249, 249, 255, 0.06);
+    --primary-lighter: rgba(252, 211, 77, 1);
+    --primary-light: rgba(251, 191, 36, 1);
+    --primary: rgba(245, 158, 11, 1);
+    --primary-dark: rgba(217, 119, 6, 1);
+    --primary-darker: rgba(180, 83, 9, 1);
+  }
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+  touch-action: manipulation;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--black);
+}
+
+html,
+body {
+  font-family: var(--font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg);
+  background-color: var(--bg);
+  color: var(--text-primary);
+}
+
+body {
+  position: relative;
+  min-height: 100%;
+  margin: 0;
+}
+
+[data-theme="dark"],
+[data-theme="dark"] body {
+  background: rgba(20, 23, 26, 1);
+}
+
+@font-face {
+  font-family: "ClashGrotesk-Semibold";
+  src:
+    url("/fonts/ClashGrotesk-Semibold.woff2") format("woff2"),
+    url("/fonts/ClashGrotesk-Semibold.woff") format("woff"),
+    url("/fonts/ClashGrotesk-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-display: fallback;
+  font-style: normal;
+}

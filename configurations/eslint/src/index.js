@@ -53,11 +53,24 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
+    "import/no-named-as-default": "off",
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": "warn",
     "react/react-in-jsx-scope": "off",
+    "tailwindcss/no-custom-classname": [
+      0,
+      {
+        cssFiles: [
+          "**/*.css",
+          "!**/node_modules",
+          "!**/.*",
+          "!**/dist",
+          "!**/build",
+        ],
+      },
+    ],
   },
   overrides: [
     {

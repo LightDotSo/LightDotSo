@@ -1,0 +1,9 @@
+ignores:
+  - "@types/firefox-webext-browser"
+  - "@types/node"
+  - cross-env
+  - dotenv
+  - "@lightdotso/tsconfig"
+  - tsup
+  - clsx
+  - tailwind-merge
