@@ -26,13 +26,14 @@ use axum::{
     extract::{Path, State},
     http::{Request, Response},
 };
+use ethers::types::Address;
 use hyper::{body, client::HttpConnector};
 use hyper_rustls::HttpsConnector;
 use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, warn};
-use serde::ser::Error;
+use serde::{ser::Error, Deserialize, Serialize};
 use serde_json::{json, Error as SerdeError, Value};
 use std::collections::HashMap;
 
@@ -364,26 +365,30 @@ pub async fn rpc_proxy_handler(
                 }
             }
             "paymaster_requestPaymasterAndData" | "paymaster_requestGasAndPaymasterAndData" => {
+                #[derive(Clone, Debug, Serialize, Deserialize)]
+                pub struct PaymasterUserOperationRequest {
+                    pub params: UserOperationRequest,
+                }
+
                 // Deserialize w/ serde_json
-                let body_json_result = serde_json::from_slice::<JSONRPCRequest<UserOperationRequest>>(
-                    &full_body_bytes,
-                );
-                info!("body_json_result: {:?}", body_json_result);
+                let body_json_result = serde_json::from_slice::<
+                    JSONRPCRequest<PaymasterUserOperationRequest>,
+                >(&full_body_bytes);
 
                 if let Ok(body_json) = body_json_result {
                     // Get the user_operation from the body
-                    let user_operation = body_json.params;
+                    let user_operation = body_json.params.params;
                     let params = vec![
                         json!(chain_id),
                         json!(user_operation),
-                        json!(format!("{:?}", *LIGHT_PAYMASTER_ADDRESS)),
+                        json!("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"),
                     ];
                     info!("params: {:?}", params);
 
                     let req_body = json!({
                         "jsonrpc": "2.0",
                         "method": method.as_str(),
-                        "params": params,
+                        "params": params.clone(),
                         "id": 1
                     });
                     // Convert the params to hyper Body
