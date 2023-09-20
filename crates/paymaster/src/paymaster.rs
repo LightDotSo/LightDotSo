@@ -170,7 +170,7 @@ pub async fn estimate_request_gas_estimation(chain_id: u64) -> Result<Response<G
     let req_body = Request {
         jsonrpc: "2.0".to_string(),
         method: "gas_requestGasEstimation".to_string(),
-        params: chain_id,
+        params: params.clone(),
         id: 1,
     };
 
@@ -190,6 +190,7 @@ pub async fn estimate_user_operation_gas(
     user_operation: &UserOperationRequest,
 ) -> Result<Response<EstimateResult>> {
     let params = vec![json!(user_operation), json!(entry_point)];
+    info!("params: {:?}", params);
 
     let req_body = Request {
         jsonrpc: "2.0".to_string(),

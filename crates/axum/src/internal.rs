@@ -16,8 +16,8 @@
 use autometrics::prometheus_exporter;
 use axum::Router;
 use eyre::Result;
-use lightdotso_tracing::tracing::info;
-use std::net::SocketAddr;
+use lightdotso_tracing::tracing::{info, warn};
+use std::net::{SocketAddr, TcpListener};
 
 use crate::state::AppState;
 
@@ -33,7 +33,17 @@ pub async fn start_internal_server() -> Result<()> {
         .merge(crate::routes::metrics::router())
         .with_state(state);
 
-    let socket_addr = "[::]:9091".parse()?;
+    let primary_addr: SocketAddr = "[::]:9091".parse()?;
+    let fallback_addr: SocketAddr = "[::]:9092".parse()?;
+
+    let socket_addr = match TcpListener::bind(primary_addr) {
+        Ok(_) => primary_addr,
+        Err(_) => {
+            warn!("Fallbacking to another port");
+            fallback_addr
+        }
+    };
+
     axum::Server::bind(&socket_addr)
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
         .await?;
