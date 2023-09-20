@@ -33,16 +33,24 @@ pub async fn start_internal_server() -> Result<()> {
         .merge(crate::routes::metrics::router())
         .with_state(state);
 
-    let primary_addr: SocketAddr = "[::]:9091".parse()?;
-    let fallback_addr: SocketAddr = "[::]:9092".parse()?;
+    let mut port_number = 9091;
+    let max_port_number = 65535;
+    let mut socket_addr = SocketAddr::from(([0, 0, 0, 0], port_number));
 
-    let socket_addr = match TcpListener::bind(primary_addr) {
-        Ok(_) => primary_addr,
-        Err(_) => {
-            warn!("Fallbacking to another port");
-            fallback_addr
+    while port_number <= max_port_number {
+        match TcpListener::bind(socket_addr) {
+            Ok(_) => break,
+            Err(_) => {
+                port_number += 1;
+                warn!("Cannot bind to port, trying next port: {}", port_number);
+                socket_addr.set_port(port_number);
+            }
         }
-    };
+    }
+
+    if port_number > max_port_number {
+        panic!("No available ports found!");
+    }
 
     axum::Server::bind(&socket_addr)
         .serve(app.into_make_service_with_connect_info::<SocketAddr>())
