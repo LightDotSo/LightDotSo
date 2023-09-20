@@ -18,3 +18,5 @@ ignores:
   - postcss
   - tailwindcss
   - typescript
+  - clsx
+  - tailwind-merge
