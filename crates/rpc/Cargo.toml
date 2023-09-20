@@ -11,6 +11,7 @@
 [dependencies]
   axum = { workspace = true }
   clap = { workspace = true }
+  ethers = { workspace = true }
   eyre = { workspace = true }
   futures = { workspace = true }
   futures-util = { workspace = true }

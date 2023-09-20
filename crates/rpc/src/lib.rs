@@ -368,6 +368,7 @@ pub async fn rpc_proxy_handler(
                 let body_json_result = serde_json::from_slice::<JSONRPCRequest<UserOperationRequest>>(
                     &full_body_bytes,
                 );
+                info!("body_json_result: {:?}", body_json_result);
 
                 if let Ok(body_json) = body_json_result {
                     // Get the user_operation from the body
@@ -377,6 +378,8 @@ pub async fn rpc_proxy_handler(
                         json!(user_operation),
                         json!(format!("{:?}", *LIGHT_PAYMASTER_ADDRESS)),
                     ];
+                    info!("params: {:?}", params);
+
                     let req_body = json!({
                         "jsonrpc": "2.0",
                         "method": method.as_str(),
@@ -396,6 +399,8 @@ pub async fn rpc_proxy_handler(
                     if let Some(resp) = result {
                         return resp;
                     }
+                } else {
+                    warn!("Error while deserializing body_json_result: {:?}", body_json_result);
                 }
             }
             "simulator_simulateExecution" |
