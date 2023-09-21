@@ -38,8 +38,7 @@ contract ERC20TransferFlowScript is BaseLightDeployerFlow {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         // Deploy a new LightWallet
-        // FIXME: Once the pm is ready, we should use the pm to deploy the contract
-        // deployLightWallet();
+        deployLightWallet();
 
         // // Deploy a new MockERC20
         // token = new MockERC20("Test", "TEST", 18);
