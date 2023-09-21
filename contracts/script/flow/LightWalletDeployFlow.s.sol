@@ -38,8 +38,7 @@ contract LightWalletDeployFlowScript is BaseLightDeployerFlow {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         // Deploy a new LightWallet
-        // FIXME: Once the pm is ready, we should use the pm to deploy the contract
-        // deployLightWallet();
+        deployLightWallet();
 
         // Stop the broadcast
         vm.stopBroadcast();

@@ -81,6 +81,11 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // solhint-disable-next-line no-console
         console.logBytes(initCode);
 
+        // Get the gas estimation
+        (bytes memory maxFeePerGas, bytes memory maxPriorityFeePerGas) = getGasRequestGasEstimation();
+
+        getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
+
         getEthEstimateUserOperationGas(expectedAddress, initCode);
         // UserOperation to create the account
         // UserOperation[] memory ops = entryPoint.signPackUserOp(
