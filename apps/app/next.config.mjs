@@ -43,6 +43,13 @@ const nextConfig = {
     config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
     config.resolve.fallback = { fs: false, net: false, tls: false };
 
+    if (config.isServer) {
+      // eslint-disable-next-line no-undef
+      config.resolve.alias["@sentry/nextjs"] = require.resolve(
+        "@sentry/nextjs/cjs/edge",
+      );
+    }
+
     return config;
   },
 };
