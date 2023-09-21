@@ -291,7 +291,7 @@ mod tests {
         .await;
 
         let expected_bytes: [u8; 32] =
-            hex::decode("f2cdf1a8e93ac2f1d227c347db642bb5d6869080b64af374698719a52f0b1484")
+            hex::decode("52ac45c943745ef1a2e46780b28ad686c193b508a5e45cd8cd68c0c3c7e3fc67")
                 .expect("Decoding failed")
                 .try_into()
                 .expect("Expected byte length does not match");

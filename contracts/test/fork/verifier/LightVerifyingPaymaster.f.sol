@@ -76,7 +76,7 @@ contract LightVerifyingPaymasterForkTest is BaseForkTest {
 
         // Assert the hash is correct if chain ID is 1
         if (block.chainid == 1) {
-            assertEq(hash, 0x8de0df60b31116ee8d79fffef79ff348469c560a17b8a1e9ae7b40181369db63);
+            assertEq(hash, 0x52ac45c943745ef1a2e46780b28ad686c193b508a5e45cd8cd68c0c3c7e3fc67);
         }
 
         // Log the byte code hash
