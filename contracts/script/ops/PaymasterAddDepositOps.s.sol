@@ -22,8 +22,8 @@ import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
-// PaymasterAddStake -- Test Deployment
-contract PaymasterAddStakeOpsScript is BaseLightDeployerOps {
+// PaymasterAddDeposit -- Test Deployment
+contract PaymasterAddDepositOpsScript is BaseLightDeployerOps {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -35,8 +35,8 @@ contract PaymasterAddStakeOpsScript is BaseLightDeployerOps {
         // solhint-disable-next-line no-console
         console.log(paymaster.owner());
 
-        // Add stake
-        paymaster.addStake{value: 1 ether}(300);
+        // Add deposit
+        paymaster.deposit{value: 1 ether}();
 
         // Stop the broadcast
         vm.stopBroadcast();
