@@ -95,7 +95,14 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                         // If the error code is from -32500 to -32507 or -32521 return response
                         // Invalid request
                         // From: https://eips.ethereum.org/EIPS/eip-4337
-                        if code.as_i64() <= Some(-32500) && code.as_i64() >= Some(-32507) ||
+                        if code.as_i64() == Some(-32500) ||
+                            code.as_i64() == Some(-32501) ||
+                            code.as_i64() == Some(-32502) ||
+                            code.as_i64() == Some(-32503) ||
+                            code.as_i64() == Some(-32504) ||
+                            code.as_i64() == Some(-32505) ||
+                            code.as_i64() == Some(-32506) ||
+                            code.as_i64() == Some(-32507) ||
                             code.as_i64() == Some(-32521)
                         {
                             warn!("Successfully returning w/ invalid request response: {:?}", body);
