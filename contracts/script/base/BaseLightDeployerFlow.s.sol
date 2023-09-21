@@ -81,6 +81,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
         // solhint-disable-next-line no-console
         console.logBytes(initCode);
 
+        getEthEstimateUserOperationGas(expectedAddress, initCode);
         // UserOperation to create the account
         // UserOperation[] memory ops = entryPoint.signPackUserOp(
         //     lightWalletUtils, address(expectedAddress), "", vm.envUint("PRIVATE_KEY"), initCode

@@ -21,6 +21,9 @@ import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
+import {stdJson} from "forge-std/StdJson.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import {Surl} from "surl/Surl.sol";
 
 pragma solidity ^0.8.18;
 
@@ -33,6 +36,9 @@ interface ImmutableCreate2Factory {
 
 // BaseLightDeployer - Create abstract contract of just immutable storages
 abstract contract BaseLightDeployer {
+    using Surl for *;
+    using stdJson for string;
+
     // -------------------------------------------------------------------------
     // Storages
     // -------------------------------------------------------------------------
@@ -100,5 +106,63 @@ abstract contract BaseLightDeployer {
         imageHash = keccak256(abi.encodePacked(imageHash, uint256(checkpoint)));
 
         return imageHash;
+    }
+
+    function getEthEstimateUserOperationGas(address sender, bytes memory initCode) internal {
+        // Perform a post request with headers and JSON body
+        string memory url = getFullUrl();
+        string[] memory headers = new string[](1);
+        headers[0] = "Content-Type: application/json";
+        string memory body = string(
+            abi.encodePacked(
+                '{"id": 1,"jsonrpc":"2.0","method":"eth_estimateUserOperationGas","params":[{',
+                '"sender":"',
+                Strings.toHexString(uint160(sender), 20),
+                '","nonce":"0x1",',
+                '"initCode":"',
+                bytesToHexString(initCode),
+                '","callData":"0x","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
+            )
+        );
+        // solhint-disable-next-line no-console
+        console.log(string(body));
+
+        (uint256 status, bytes memory data) = url.post(headers, body);
+
+        // solhint-disable-next-line no-console
+        console.log(string(data));
+
+        string memory json = string(data);
+
+        // solhint-disable-next-line no-console
+        console.logBytes(json.readBytes(".result"));
+
+        // solhint-disable-next-line no-console
+        console.log(status);
+
+        // solhint-disable-next-line no-console
+        console.logBytes(data);
+    }
+
+    function getFullUrl() public view returns (string memory) {
+        string memory baseUrl = "https://rpc.light.so/";
+        string memory chainId = Strings.toString(block.chainid);
+        return string(abi.encodePacked(baseUrl, chainId));
+    }
+
+    // From: https://ethereum.stackexchange.com/questions/126899/convert-bytes-to-hexadecimal-string-in-solidity
+    // License: GPL-3.0
+    function bytesToHexString(bytes memory buffer) public pure returns (string memory) {
+        // Fixed buffer size for hexadecimal convertion
+        bytes memory converted = new bytes(buffer.length * 2);
+
+        bytes memory _base = "0123456789abcdef";
+
+        for (uint256 i = 0; i < buffer.length; i++) {
+            converted[i * 2] = _base[uint8(buffer[i]) / _base.length];
+            converted[i * 2 + 1] = _base[uint8(buffer[i]) % _base.length];
+        }
+
+        return string(abi.encodePacked("0x", converted));
     }
 }
