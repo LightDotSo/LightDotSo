@@ -40,7 +40,7 @@ mod tests {
     fn test_light_paymaster_address() {
         assert_eq!(
             format!("{:?}", *LIGHT_PAYMASTER_ADDRESS),
-            "0x000000000001d2d44c9d7133ec384c1a6f0a5b3f".to_string(),
+            "0x000000000018d32df916ff115a25fbefc70baf8b".to_string(),
             "The expected and actual paymaster addresses should match"
         );
     }
