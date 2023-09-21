@@ -14,18 +14,30 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
 pragma solidity ^0.8.18;
 
-import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {BaseLightDeployerOps} from "@/script/base/BaseLightDeployerOps.s.sol";
+import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
-// LightVerifyingPaymaster -- VerifyingPaymaster for Light
-contract LightVerifyingPaymaster is VerifyingPaymaster {
+// PaymasterAddStake -- Test Deployment
+contract PaymasterAddStakeOpsScript is BaseLightDeployerOps {
     // -------------------------------------------------------------------------
-    // Constructor
+    // Run
     // -------------------------------------------------------------------------
 
-    constructor(IEntryPoint entryPoint, address verifyingSigner) VerifyingPaymaster(entryPoint, verifyingSigner) {
-        _transferOwnership(tx.origin);
+    function run() public {
+        // Start the broadcast
+        vm.startBroadcast();
+
+        // solhint-disable-next-line no-console
+        console.log(paymaster.owner());
+
+        paymaster.addStake{value: 1 ether}(300);
+
+        // Stop the broadcast
+        vm.stopBroadcast();
     }
 }
