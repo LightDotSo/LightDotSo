@@ -103,6 +103,13 @@ abstract contract BaseTest is Test {
     UniversalSigValidator internal validator;
     // Testing utility contract
     ProxyUtils proxyUtils;
+
+    // -------------------------------------------------------------------------
+    // Utility Storages
+    // -------------------------------------------------------------------------
+
+    bytes32 internal expectedImageHash;
+
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

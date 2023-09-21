@@ -34,8 +34,6 @@ abstract contract BaseIntegrationTest is BaseTest {
     uint256 internal userKey;
     // Address of the beneficiary of the account
     address payable internal beneficiary;
-    // Hash of the expected image
-    bytes32 internal expectedImageHash;
 
     // Init code of the account
     bytes internal initCode;
