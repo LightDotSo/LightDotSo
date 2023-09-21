@@ -32,7 +32,7 @@ import {console} from "forge-std/console.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Base deployer test for scripts
-abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
+abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

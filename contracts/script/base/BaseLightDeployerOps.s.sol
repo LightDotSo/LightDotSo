@@ -26,7 +26,7 @@ import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
 
 /// @notice Base deployer test for scripts
-abstract contract BaseLightDeployerOps is BaseLightDeployer, Script, Test {
+abstract contract BaseLightDeployerOps is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

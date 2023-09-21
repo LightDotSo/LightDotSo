@@ -86,11 +86,11 @@
       "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
       "containerId": "",
       "name": "gas_requestGasEstimation",
-      "url": "https://rpc.light.so/1",
+      "url": "https://rpc.light.so/11155111",
       "method": "POST",
       "sortNum": 30000,
       "created": "2023-08-26T10:07:19.550Z",
-      "modified": "2023-09-20T06:38:53.550Z",
+      "modified": "2023-09-21T19:33:51.946Z",
       "headers": [
         {
           "name": "accept",
@@ -104,7 +104,7 @@
       "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\",\n  \"params\": [\n    11155111\n  ]\n}",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\"\n}",
         "form": []
       },
       "tests": [

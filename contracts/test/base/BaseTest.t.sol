@@ -52,6 +52,23 @@ abstract contract BaseTest is Test {
     event Upgraded(address implementation);
 
     // -------------------------------------------------------------------------
+    // Addresses
+    // -------------------------------------------------------------------------
+
+    address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
+
+    address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
+
+    // EntryPoint address
+    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
+
+    // LightWalletFactory address
+    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
+
+    // LightVerifyingPaymaster address
+    address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
+
+    // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
 
@@ -86,6 +103,13 @@ abstract contract BaseTest is Test {
     UniversalSigValidator internal validator;
     // Testing utility contract
     ProxyUtils proxyUtils;
+
+    // -------------------------------------------------------------------------
+    // Utility Storages
+    // -------------------------------------------------------------------------
+
+    bytes32 internal expectedImageHash;
+
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

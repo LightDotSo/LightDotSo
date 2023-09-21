@@ -81,22 +81,28 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                 // If the error code is the speficied error code return None
                 if let Some(error) = body_json.get("error") {
                     if let Some(code) = error.get("code") {
+                        warn!("Error in body: {:?} code: {:?}", code, body_json);
+
                         // If the error code is -32001 or -32603 return None
                         // Invalid method
                         if code.as_i64() == Some(-32001) ||
-                        // Internal error
-                        code.as_i64() == Some(-32603) ||
                         // Limit exceeded
                         code.as_i64() == Some(-32005)
                         {
-                            warn!("Error in body w/ code: {:?}", body_json);
                             return None;
                         }
 
                         // If the error code is from -32500 to -32507 or -32521 return response
                         // Invalid request
                         // From: https://eips.ethereum.org/EIPS/eip-4337
-                        if code.as_i64() >= Some(-32500) && code.as_i64() <= Some(-32507) ||
+                        if code.as_i64() == Some(-32500) ||
+                            code.as_i64() == Some(-32501) ||
+                            code.as_i64() == Some(-32502) ||
+                            code.as_i64() == Some(-32503) ||
+                            code.as_i64() == Some(-32504) ||
+                            code.as_i64() == Some(-32505) ||
+                            code.as_i64() == Some(-32506) ||
+                            code.as_i64() == Some(-32507) ||
                             code.as_i64() == Some(-32521)
                         {
                             warn!("Successfully returning w/ invalid request response: {:?}", body);
@@ -110,6 +116,15 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                         // From: https://eips.ethereum.org/EIPS/eip-4337
                         if code.as_i64() == Some(-32602) {
                             warn!("Successfully returning w/ invalid params response: {:?}", body);
+                            return Some(
+                                Response::builder().status(400).body(Body::from(body)).unwrap(),
+                            );
+                        }
+
+                        // If the error code is -32603 return the response
+                        // Internal error
+                        if code.as_i64() == Some(-32603) && body_json.get("message").is_some() {
+                            warn!("Successfully returning w/ internal error response: {:?}", body);
                             return Some(
                                 Response::builder().status(400).body(Body::from(body)).unwrap(),
                             );

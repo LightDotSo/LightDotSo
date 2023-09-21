@@ -19,6 +19,7 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {stdJson} from "forge-std/StdJson.sol";
@@ -35,40 +36,12 @@ interface ImmutableCreate2Factory {
 }
 
 // BaseLightDeployer - Create abstract contract of just immutable storages
-abstract contract BaseLightDeployer {
+abstract contract BaseLightDeployer is BaseTest {
     using Surl for *;
     using stdJson for string;
 
     // -------------------------------------------------------------------------
-    // Storages
-    // -------------------------------------------------------------------------
-
-    EntryPoint internal entryPoint;
-
-    LightWallet internal wallet;
-
-    LightWalletFactory internal factory;
-
-    LightVerifyingPaymaster internal paymaster;
-
-    bytes32 internal expectedImageHash;
-
-    // -------------------------------------------------------------------------
-    // Immutable Storage
-    // -------------------------------------------------------------------------
-
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
-
-    address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
-
-    address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
-
-    address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
-
-    address internal constant ENTRY_POINT_ADDRESS = address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789);
-
-    // -------------------------------------------------------------------------
-    // Immutable Factoy
+    // Immutable Factory
     // -------------------------------------------------------------------------
 
     address internal constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
@@ -80,9 +53,9 @@ abstract contract BaseLightDeployer {
     // -------------------------------------------------------------------------
 
     /// @dev BaseTest setup
-    function setUp() public virtual {
+    function setUp() public virtual override {
         // Get the entry point
-        entryPoint = EntryPoint(payable(ENTRY_POINT_ADDRESS));
+        entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
     }
 
     // -------------------------------------------------------------------------
