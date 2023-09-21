@@ -83,3 +83,27 @@ pub(crate) const GWEI_TO_WEI_U256: U256 = U256([GWEI_TO_WEI, 0, 0, 0]);
 pub(crate) fn from_gwei_f64(gwei: f64) -> U256 {
     u256_from_f64_saturating(gwei) * GWEI_TO_WEI_U256
 }
+
+#[cfg(test)]
+mod tests {
+    use ethers::types::U256;
+
+    use super::*;
+
+    #[tokio::test]
+    async fn test_polygon_gas_estimation() {
+        // Test for polygon
+        let chain_id = 137;
+        let result = polygon_gas_estimation(chain_id).await;
+        assert!(result.is_ok());
+        let gas_estimation = result.unwrap();
+        assert!(gas_estimation.low.max_priority_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.low.max_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.average.max_priority_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.average.max_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.high.max_priority_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.high.max_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.instant.max_priority_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.instant.max_fee_per_gas > U256::from(0));
+    }
+}
