@@ -81,6 +81,67 @@ abstract contract BaseLightDeployer is BaseTest {
         return imageHash;
     }
 
+    function getGasRequestGasEstimation()
+        internal
+        returns (bytes memory maxFeePerGas, bytes memory maxPriorityFeePerGas)
+    {
+        // Perform a post request with headers and JSON body
+        string memory url = getFullUrl();
+        string[] memory headers = new string[](1);
+        headers[0] = "Content-Type: application/json";
+        string memory body = '{"id": 1,"jsonrpc":"2.0","method":"gas_requestGasEstimation","params":[]}';
+
+        // Get the response
+        (uint256 status, bytes memory data) = url.post(headers, body);
+
+        // Assert the status code is successful
+        assert(status == 200);
+
+        // Parse the response
+        string memory json = string(data);
+
+        // solhint-disable-next-line no-console
+        console.log(json);
+
+        maxFeePerGas = json.readBytes(".result.instant.maxFeePerGas");
+        maxPriorityFeePerGas = json.readBytes(".result.instant.maxPriorityFeePerGas");
+    }
+
+    function getPaymasterRequestGasAndPaymasterAndData(address sender, bytes memory initCode)
+        internal
+        returns (bytes memory paymasterAndData)
+    {
+        // Perform a post request with headers and JSON body
+        string memory url = getFullUrl();
+        string[] memory headers = new string[](1);
+        headers[0] = "Content-Type: application/json";
+        string memory body = string(
+            abi.encodePacked(
+                '{"id": 1,"jsonrpc":"2.0","method":"paymaster_requestGasAndPaymasterAndData","params":[{',
+                '"sender":"',
+                Strings.toHexString(uint160(sender), 20),
+                '","nonce":"0x0",',
+                '"initCode":"',
+                bytesToHexString(initCode),
+                '","callData":"0x","signature":"0x000100000001000131a184eb40202a407819e4efe1313e8464c56ae6bb88ee91728134892f57a1df2519f8cd158ca4d60043fa37ed9da5e8748757367374a7c0ea745fdf364280c31c01","paymasterAndData":"0x"}]}'
+            )
+        );
+
+        // Get the response
+        (uint256 status, bytes memory data) = url.post(headers, body);
+
+        // Assert the status code is successful
+        assert(status == 200);
+
+        // Parse the response
+        string memory json = string(data);
+
+        // solhint-disable-next-line no-console
+        console.log(json);
+
+        paymasterAndData = json.readBytes(".result.paymasterAndData");
+    }
+
     function getEthEstimateUserOperationGas(address sender, bytes memory initCode) internal {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
@@ -97,24 +158,18 @@ abstract contract BaseLightDeployer is BaseTest {
                 '","callData":"0x","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
             )
         );
-        // solhint-disable-next-line no-console
-        console.log(string(body));
 
+        // Get the response
         (uint256 status, bytes memory data) = url.post(headers, body);
 
-        // solhint-disable-next-line no-console
-        console.log(string(data));
+        // Assert the status code is successful
+        assert(status == 200);
 
+        // Parse the response
         string memory json = string(data);
 
         // solhint-disable-next-line no-console
-        console.logBytes(json.readBytes(".result"));
-
-        // solhint-disable-next-line no-console
-        console.log(status);
-
-        // solhint-disable-next-line no-console
-        console.logBytes(data);
+        console.log(json);
     }
 
     function getFullUrl() public view returns (string memory) {
