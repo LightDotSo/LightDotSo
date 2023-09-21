@@ -17,15 +17,29 @@
 
 pragma solidity ^0.8.18;
 
-import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {Script} from "forge-std/Script.sol";
+import {Test} from "forge-std/Test.sol";
+// solhint-disable-next-line no-console
+import {console} from "forge-std/console.sol";
 
-// LightVerifyingPaymaster -- VerifyingPaymaster for Light
-contract LightVerifyingPaymaster is VerifyingPaymaster {
+/// @notice Base deployer test for scripts
+abstract contract BaseLightDeployerOps is BaseLightDeployer, Script, Test {
     // -------------------------------------------------------------------------
-    // Constructor
+    // Setup
     // -------------------------------------------------------------------------
 
-    constructor(IEntryPoint entryPoint, address verifyingSigner) VerifyingPaymaster(entryPoint, verifyingSigner) {
-        _transferOwnership(tx.origin);
+    /// @dev BaseLightDeployerOps setup
+    function setUp() public virtual override {
+        // setUp from BaseLightDeployer
+        BaseLightDeployer.setUp();
+
+        // LightWalletFactory core contract
+        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+
+        // LightVerifyingPaymaster core contract
+        paymaster = LightVerifyingPaymaster(LIGHT_PAYMASTER_ADDRESS);
     }
 }

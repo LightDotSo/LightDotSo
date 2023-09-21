@@ -14,18 +14,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // SPDX-License-Identifier: AGPL-3.0-or-later
-
 pragma solidity ^0.8.18;
 
-import {IEntryPoint, VerifyingPaymaster} from "@/contracts/core/VerifyingPaymaster.sol";
+import {BaseLightDeployerFlow} from "@/script/base/BaseLightDeployerFlow.s.sol";
+import {LightWalletDeployFlowScript} from "@/script/flow/LightWalletDeployFlow.s.sol";
 
-// LightVerifyingPaymaster -- VerifyingPaymaster for Light
-contract LightVerifyingPaymaster is VerifyingPaymaster {
-    // -------------------------------------------------------------------------
-    // Constructor
-    // -------------------------------------------------------------------------
+// LightWalletDeploy -- Test Deployment
+contract LightWalletDeployFlowScriptTest is BaseLightDeployerFlow {
+    LightWalletDeployFlowScript script;
 
-    constructor(IEntryPoint entryPoint, address verifyingSigner) VerifyingPaymaster(entryPoint, verifyingSigner) {
-        _transferOwnership(tx.origin);
+    function setUp() public override {
+        super.setUp();
+
+        script = new LightWalletDeployFlowScript();
+    }
+
+    function test_run() public {
+        script.run();
     }
 }

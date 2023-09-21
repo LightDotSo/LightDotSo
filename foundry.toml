@@ -48,6 +48,7 @@
   test = "contracts/circuits/test"
 
 [profile.script]
+  ffi = true
   test = "contracts/script/test"
 
 [profile.smt]

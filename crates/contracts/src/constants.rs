@@ -21,7 +21,7 @@ lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_PAYMASTER_ADDRESS: Address =
       // 1
-      "0x000000000001d2D44c9d7133eC384c1A6f0a5B3F".parse().unwrap();
+      "0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap();
 }
 
 // The entrypoint addresses
