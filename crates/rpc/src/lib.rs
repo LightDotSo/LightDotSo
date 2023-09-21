@@ -391,6 +391,7 @@ pub async fn rpc_proxy_handler(
 
                 if let Ok(body_json) = body_json_result {
                     // Get the user_operation from the body
+                    // FIXME: There should be a better clean abstraction for this
                     let user_operation = body_json.params.params;
                     let params = vec![
                         json!(chain_id),

@@ -156,8 +156,8 @@ pub async fn construct_user_operation(
         call_gas_limit: estimated_user_operation_gas.call_gas_limit,
         verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
         pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
-        max_fee_per_gas: estimated_request_gas.average.max_fee_per_gas,
-        max_priority_fee_per_gas: estimated_request_gas.average.max_priority_fee_per_gas,
+        max_fee_per_gas: estimated_request_gas.high.max_fee_per_gas,
+        max_priority_fee_per_gas: estimated_request_gas.high.max_priority_fee_per_gas,
         signature: user_operation.signature,
     })
 }
