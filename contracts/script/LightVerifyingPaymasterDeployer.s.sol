@@ -48,7 +48,7 @@ contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
         assert(keccak256(initCode) == initCodeHash);
 
         // Salt for deterministic deployment
-        bytes32 salt = 0x0000000000000000000000000000000000000000d2c4e4ebb741a62106428860;
+        bytes32 salt = 0x000000000000000000000000000000000000000003cf3a59741da01f6ddc5ce6;
 
         // If testing on a local chain, use without a safe create2
         if (block.chainid == 0x7a69) {
