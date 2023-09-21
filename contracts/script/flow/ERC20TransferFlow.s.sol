@@ -38,19 +38,20 @@ contract ERC20TransferFlowScript is BaseLightDeployerFlow {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
         // Deploy a new LightWallet
-        deployLightWallet();
+        // FIXME: Once the pm is ready, we should use the pm to deploy the contract
+        // deployLightWallet();
 
-        // Deploy a new MockERC20
-        token = new MockERC20("Test", "TEST", 18);
+        // // Deploy a new MockERC20
+        // token = new MockERC20("Test", "TEST", 18);
 
-        // Mint 1e18 ERC20s to the account
-        token.mint(address(PRIVATE_KEY_DEPLOYER), 1e18);
-        assertEq(token.balanceOf(address(PRIVATE_KEY_DEPLOYER)), 1e18);
+        // // Mint 1e18 ERC20s to the account
+        // token.mint(address(PRIVATE_KEY_DEPLOYER), 1e18);
+        // assertEq(token.balanceOf(address(PRIVATE_KEY_DEPLOYER)), 1e18);
 
-        // Transfer to address 0x0
-        token.transfer(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1), 1e18);
-        assertEq(token.balanceOf(address(PRIVATE_KEY_DEPLOYER)), 0);
-        assertEq(token.balanceOf(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1)), 1e18);
+        // // Transfer to address 0x0
+        // token.transfer(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1), 1e18);
+        // assertEq(token.balanceOf(address(PRIVATE_KEY_DEPLOYER)), 0);
+        // assertEq(token.balanceOf(address(0x462F9B138Ec29DB9Ee59f261f641633388A94aA1)), 1e18);
 
         // Stop the broadcast
         vm.stopBroadcast();
