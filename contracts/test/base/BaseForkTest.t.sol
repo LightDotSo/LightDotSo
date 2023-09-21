@@ -31,15 +31,6 @@ abstract contract BaseForkTest is BaseIntegrationTest {
     // Prank sender address - kaki.eth
     address internal constant PRANK_SENDER_ADDRESS = address(0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed);
 
-    // EntryPoint address
-    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
-
-    // LightWalletFactory address
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
-
-    // LightVerifyingPaymaster address
-    address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
-
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

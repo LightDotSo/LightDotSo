@@ -54,22 +54,11 @@ abstract contract BaseLightDeployer {
     bytes32 internal expectedImageHash;
 
     // -------------------------------------------------------------------------
-    // Immutable Storage
+    // Immutable Factory
     // -------------------------------------------------------------------------
 
-    address internal constant LIGHT_FACTORY_ADDRESS = address(0x0000000000756D3E6464f5efe7e413a0Af1C7474);
-
-    address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
-
-    address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
-
-    address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
-
-    address internal constant ENTRY_POINT_ADDRESS = address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789);
-
-    // -------------------------------------------------------------------------
-    // Immutable Factoy
-    // -------------------------------------------------------------------------
+    // EntryPoint address
+    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
 
     address internal constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
     ImmutableCreate2Factory internal constant IMMUTABLE_CREATE2_FACTORY =
@@ -82,7 +71,7 @@ abstract contract BaseLightDeployer {
     /// @dev BaseTest setup
     function setUp() public virtual {
         // Get the entry point
-        entryPoint = EntryPoint(payable(ENTRY_POINT_ADDRESS));
+        entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
     }
 
     // -------------------------------------------------------------------------

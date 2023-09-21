@@ -22,6 +22,7 @@ import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Script} from "forge-std/Script.sol";
@@ -32,13 +33,13 @@ import {console} from "forge-std/console.sol";
 using ERC4337Utils for EntryPoint;
 
 /// @notice Base deployer test for scripts
-abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script, Test {
+abstract contract BaseLightDeployerFlow is BaseLightDeployer, BaseTest, Script {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
     /// @dev BaseLightDeployerFlow setup
-    function setUp() public virtual override {
+    function setUp() public virtual override(BaseLightDeployer, BaseTest) {
         // setUp from BaseLightDeployer
         BaseLightDeployer.setUp();
 
