@@ -19,6 +19,7 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 import {stdJson} from "forge-std/StdJson.sol";
@@ -35,30 +36,13 @@ interface ImmutableCreate2Factory {
 }
 
 // BaseLightDeployer - Create abstract contract of just immutable storages
-abstract contract BaseLightDeployer {
+abstract contract BaseLightDeployer is BaseTest {
     using Surl for *;
     using stdJson for string;
 
     // -------------------------------------------------------------------------
-    // Storages
-    // -------------------------------------------------------------------------
-
-    EntryPoint internal entryPoint;
-
-    LightWallet internal wallet;
-
-    LightWalletFactory internal factory;
-
-    LightVerifyingPaymaster internal paymaster;
-
-    bytes32 internal expectedImageHash;
-
-    // -------------------------------------------------------------------------
     // Immutable Factory
     // -------------------------------------------------------------------------
-
-    // EntryPoint address
-    address payable internal constant ENTRY_POINT_ADDRESS = payable(address(0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789));
 
     address internal constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
     ImmutableCreate2Factory internal constant IMMUTABLE_CREATE2_FACTORY =
@@ -69,7 +53,7 @@ abstract contract BaseLightDeployer {
     // -------------------------------------------------------------------------
 
     /// @dev BaseTest setup
-    function setUp() public virtual {
+    function setUp() public virtual override {
         // Get the entry point
         entryPoint = EntryPoint(ENTRY_POINT_ADDRESS);
     }

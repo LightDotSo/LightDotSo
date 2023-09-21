@@ -20,20 +20,19 @@ pragma solidity ^0.8.18;
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
-import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {Script} from "forge-std/Script.sol";
 import {Test} from "forge-std/Test.sol";
 // solhint-disable-next-line no-console
 import {console} from "forge-std/console.sol";
 
 /// @notice Base deployer test for scripts
-abstract contract BaseLightDeployerOps is BaseLightDeployer, BaseTest, Script {
+abstract contract BaseLightDeployerOps is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
     /// @dev BaseLightDeployerOps setup
-    function setUp() public virtual override(BaseLightDeployer, BaseTest) {
+    function setUp() public virtual override {
         // setUp from BaseLightDeployer
         BaseLightDeployer.setUp();
 
