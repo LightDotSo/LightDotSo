@@ -26,7 +26,7 @@
     "@lightdotso/ui": "workspace:*",
     "clsx": "^1.2.1",
     "critters": "^0.0.16",
-    "next": "^13.4.13",
+    "next": "^13.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
