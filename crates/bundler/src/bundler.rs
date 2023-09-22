@@ -19,7 +19,7 @@
 // Thank you Vid201 for your work - it could not have been done without you
 
 use crate::{
-    cli::args::{BundlerAndUoPoolArgs, BundlerArgs, RpcArgs, UoPoolArgs},
+    args::{BundlerAndUoPoolArgs, BundlerArgs, RpcArgs, UoPoolArgs},
     constants::ENTRYPOINT_ADDRESSES,
     utils::unwrap_path_or_home,
 };

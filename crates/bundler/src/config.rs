@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    args::{BundlerAndUoPoolArgs, BundlerArgs as BundlerArgsOriginal, RpcArgs, UoPoolArgs},
     bundler::Bundler,
-    cli::args::{BundlerAndUoPoolArgs, BundlerArgs as BundlerArgsOriginal, RpcArgs, UoPoolArgs},
 };
 use clap::Parser;
 use eyre::Result;
