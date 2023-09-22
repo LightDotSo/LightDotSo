@@ -90,6 +90,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
             getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
 
+        bytes memory callData = "";
         verificationGasLimit = 5000000;
         paymasterAndData = "";
 
@@ -105,7 +106,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             maxFeePerGas,
             maxPriorityFeePerGas,
             paymasterAndData,
-            ""
+            callData
         );
 
         // Get the hash of the UserOperation
