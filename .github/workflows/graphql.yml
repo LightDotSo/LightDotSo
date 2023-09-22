@@ -20,6 +20,9 @@ jobs:
         with:
           server-url: https://api.thegraph.com/subgraphs/name/lightdotso/mainnet
           output-file: crates/graphql/schemas/graph.graphql
+      - name: Run Fix
+        run: |
+          pnpm run fix
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
