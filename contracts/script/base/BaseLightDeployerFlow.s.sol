@@ -115,10 +115,13 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory sig = signDigest(userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
 
         // Construct the UserOperation
-        op.signature = sig;
+        op.signature = packLegacySignature(sig);
 
         // solhint-disable-next-line no-console
         console.logBytes(sig);
+
+        // Simulate the UserOperation
+        entryPoint.simulateValidation(op);
 
         // Handle the ops
         sendUserOperation(

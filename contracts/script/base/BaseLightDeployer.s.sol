@@ -49,6 +49,15 @@ abstract contract BaseLightDeployer is BaseTest {
         ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
 
     // -------------------------------------------------------------------------
+    // Immutable Factory
+    // -------------------------------------------------------------------------
+
+    // Parameters for the signature
+    uint8 weight = uint8(1);
+    uint16 threshold = uint16(1);
+    uint32 checkpoint = uint32(1);
+
+    // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
@@ -67,12 +76,18 @@ abstract contract BaseLightDeployer is BaseTest {
     }
 
     // From: `LightWalletUtils` contract
-    function getExpectedImageHash(address user) internal pure returns (bytes32 imageHash) {
-        // Parameters for the signature
-        uint8 weight = uint8(1);
-        uint16 threshold = uint16(1);
-        uint32 checkpoint = uint32(1);
+    function packLegacySignature(bytes memory sig) public view returns (bytes memory) {
+        // Flag for legacy signature
+        uint8 legacySignatureFlag = uint8(0);
 
+        // Pack the signature w/ flag, weight, threshold, checkpoint
+        bytes memory encoded = abi.encodePacked(threshold, checkpoint, legacySignatureFlag, weight, sig);
+
+        return encoded;
+    }
+
+    // From: `LightWalletUtils` contract
+    function getExpectedImageHash(address user) internal view returns (bytes32 imageHash) {
         // Calculate the image hash
         imageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
         imageHash = keccak256(abi.encodePacked(imageHash, uint256(threshold)));
