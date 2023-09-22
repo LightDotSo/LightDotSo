@@ -106,7 +106,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             maxFeePerGas,
             maxPriorityFeePerGas,
             paymasterAndData,
-            callData
+            // signature
+            ""
         );
 
         // Get the hash of the UserOperation
