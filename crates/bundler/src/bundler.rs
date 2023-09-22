@@ -21,7 +21,9 @@
 use crate::{
     config::BundlerArgs,
     constants::ENTRYPOINT_ADDRESSES,
-    opts::{BundlerServiceOpts, RpcServiceOpts, UoPoolServiceOpts},
+    opts::{BundlerOpts, UoPoolOpts},
+    rpc::launch_rpc,
+    utils::unwrap_path_or_home,
 };
 use ethers::{
     providers::{Http, Middleware, Provider},
@@ -33,7 +35,7 @@ use silius_grpc::{
     bundler_client::BundlerClient, bundler_service_run, uo_pool_client::UoPoolClient,
     uopool_service_run,
 };
-use silius_primitives::{Chain, Wallet};
+use silius_primitives::{bundler::SendBundleMode, Chain, Wallet};
 use silius_rpc::{
     debug_api::{DebugApiServer, DebugApiServerImpl},
     eth_api::{EthApiServer, EthApiServerImpl},
@@ -44,11 +46,10 @@ use std::{future::pending, sync::Arc};
 
 #[derive(Clone)]
 pub struct Bundler {
-    uopool_opts: UoPoolServiceOpts,
+    uopool_opts: UoPoolOpts,
     max_verification_gas: U256,
     chain_id: usize,
-    rpc_opts: RpcServiceOpts,
-    bundler_opts: BundlerServiceOpts,
+    bundler_opts: BundlerOpts,
     rpc: String,
     beneficiary: Address,
     seed_phrase: String,
@@ -63,7 +64,6 @@ impl Bundler {
             uopool_opts: args.uopool_opts.clone(),
             max_verification_gas: args.max_verification_gas,
             chain_id: args.chain_id,
-            rpc_opts: args.rpc_opts.clone(),
             bundler_opts: args.bundler_opts.clone(),
             rpc: args.rpc.clone(),
             beneficiary: args.beneficiary,
@@ -71,7 +71,7 @@ impl Bundler {
         }
     }
     /// Runs the bundler
-    pub async fn run(self) -> Result<()> {
+    pub async fn run(self) -> anyhow::Result<()> {
         info!("Starting ERC-4337 AA Bundler");
 
         let eth_client = Arc::new(Provider::<Http>::try_from(self.rpc.clone())?);
@@ -84,22 +84,25 @@ impl Bundler {
         let chain_id = eth_client.get_chainid().await?;
         let chain = Chain::from(chain_id);
 
-        if self.chain_id != chain_id.as_u64() as usize {
-            return Err(format_err!(
-                "Bundler tries to connect to the execution client of different chain: {} != {}",
-                self.chain_id,
-                chain_id
-            ));
-        }
+        // if self.chain_id != chain_id.as_u64() as usize {
+        //     return Err(format_err!(
+        //         "Bundler tries to connect to the execution client of different chain: {} != {}",
+        //         self.chain_id,
+        //         chain_id
+        //     ));
+        // }
 
         info!("Loading wallet from mnemonic file...");
-        let wallet = Wallet::from_phrase(&self.seed_phrase, &chain_id)
+        let wallet = Wallet::from_phrase(&self.seed_phrase, &chain_id, false)
             .map_err(|error| format_err!("Could not load mnemonic file: {}", error))?;
         info!("{:?}", wallet.signer);
 
+        let datadir = unwrap_path_or_home(None)?;
+
         info!("Starting uopool gRPC service...");
         let res = uopool_service_run(
-            self.uopool_opts.uopool_grpc_listen_address,
+            self.uopool_opts.uopool_addr,
+            datadir,
             ENTRYPOINT_ADDRESSES.to_vec(),
             eth_client,
             chain,
@@ -108,7 +111,7 @@ impl Bundler {
             self.uopool_opts.min_unstake_delay,
             self.uopool_opts.min_priority_fee_per_gas,
             self.uopool_opts.whitelist,
-            self.uopool_opts.uo_pool_mode,
+            silius_primitives::UoPoolMode::Standard,
         )
         .await
         .map_err(|e| eyre!("Error in uopool gRPC service: {:?}", e));
@@ -125,9 +128,8 @@ impl Bundler {
         .await?;
         info!("Connected to uopool gRPC service");
 
-        info!("Starting bundler gRPC service...");
         bundler_service_run(
-            self.bundler_opts.bundler_grpc_listen_address,
+            self.bundler_opts.bundler_addr,
             wallet,
             ENTRYPOINT_ADDRESSES.to_vec(),
             self.rpc.clone(),
@@ -136,51 +138,19 @@ impl Bundler {
             self.bundler_opts.min_balance,
             self.bundler_opts.bundle_interval,
             uopool_grpc_client.clone(),
+            SendBundleMode::EthClient,
+            None,
         );
-        info!("Started bundler gRPC service at {:}", self.bundler_opts.bundler_grpc_listen_address);
 
-        info!("Starting bundler JSON-RPC server...");
-        tokio::spawn({
-            async move {
-                let mut server =
-                    JsonRpcServer::new(self.rpc_opts.rpc_listen_address.clone(), true, false)
-                        .with_proxy(self.rpc)
-                        .with_cors(self.rpc_opts.cors_domain);
-
-                server
-                    .add_method(Web3ApiServerImpl {}.into_rpc())
-                    .map_err(|e| eyre!("Error in web3: {:?}", e))?;
-
-                let eth_res = server
-                    .add_method(
-                        EthApiServerImpl { uopool_grpc_client: uopool_grpc_client.clone() }
-                            .into_rpc(),
-                    )
-                    .map_err(|e| eyre!("Error in eth: {:?}", e));
-                if eth_res.is_err() {
-                    error!("Error in eth: {:?}", eth_res);
-                }
-
-                let bundler_grpc_client = BundlerClient::connect(format!(
-                    "http://{}",
-                    self.bundler_opts.bundler_grpc_listen_address
-                ))
-                .await?;
-                let debug_res = server
-                    .add_method(
-                        DebugApiServerImpl { uopool_grpc_client, bundler_grpc_client }.into_rpc(),
-                    )
-                    .map_err(|e| eyre!("Error in debug: {:?}", e));
-                if debug_res.is_err() {
-                    error!("Error in debug: {:?}", debug_res);
-                }
-
-                let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at {:}", self.rpc_opts.rpc_listen_address,);
-
-                pending::<Result<()>>().await
-            }
-        });
+        launch_rpc(
+            self.rpc.clone(),
+            format!("http://{:?}:{:?}", self.uopool_opts.uopool_addr, self.uopool_opts.uopool_port),
+            format!(
+                "http://{:?}:{:?}",
+                self.bundler_opts.bundler_addr, self.bundler_opts.bundler_port
+            ),
+        )
+        .await?;
 
         pending().await
     }

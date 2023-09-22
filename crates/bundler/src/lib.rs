@@ -17,4 +17,6 @@ pub mod bundler;
 pub mod config;
 pub mod constants;
 pub mod opts;
+pub mod rpc;
+pub mod uo_pool;
 pub mod utils;

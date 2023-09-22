@@ -13,9 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use dirs::home_dir;
 /// Entire file is copied from https://github.com/Vid201/silius/blob/bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96/bin/silius/src/utils.rs
 /// License: MIT or Apache-2.0
 use ethers::types::{Address, U256};
+use expanded_pathbuf::ExpandedPathBuf;
+use eyre::Result;
 use lightdotso_tracing::tracing::info;
 use pin_utils::pin_mut;
 use silius_primitives::UoPoolMode;
@@ -61,4 +64,16 @@ where
     }
 
     Ok(())
+}
+
+/// Unwrap path or returns home directory
+pub fn unwrap_path_or_home(path: Option<ExpandedPathBuf>) -> anyhow::Result<ExpandedPathBuf> {
+    if let Some(path) = path {
+        Ok(path)
+    } else {
+        home_dir()
+            .map(|h| h.join(".silius"))
+            .ok_or_else(|| anyhow::anyhow!("Get Home directory error"))
+            .map(ExpandedPathBuf)
+    }
 }

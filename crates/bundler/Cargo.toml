@@ -9,7 +9,9 @@
   repository.workspace = true
 
 [dependencies]
+  anyhow = "1"
   clap = { workspace = true, features = ["derive"] }
+  dirs = { workspace = true }
   ethers = { workspace = true }
   ethers-providers = { workspace = true }
   expanded-pathbuf = "0.1"

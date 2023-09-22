@@ -15,7 +15,7 @@
 
 use crate::{
     bundler::Bundler,
-    opts::{BundlerServiceOpts, RpcServiceOpts, UoPoolServiceOpts},
+    opts::{BundlerOpts, UoPoolOpts},
     utils::{parse_address, parse_u256},
 };
 use clap::Parser;
@@ -32,16 +32,13 @@ pub struct BundlerArgs {
     pub seed_phrase: String,
     /// The uopool options
     #[clap(flatten)]
-    pub uopool_opts: UoPoolServiceOpts,
+    pub uopool_opts: UoPoolOpts,
     /// The max verification gas
     #[clap(long, default_value="3000000", value_parser=parse_u256)]
     pub max_verification_gas: U256,
-    /// The rpc options
-    #[clap(flatten)]
-    pub rpc_opts: RpcServiceOpts,
     /// The bundler options
     #[clap(flatten)]
-    pub bundler_opts: BundlerServiceOpts,
+    pub bundler_opts: BundlerOpts,
     /// The chain id of the chain to index.
     #[arg(long, short, default_value_t = 1)]
     #[clap(long, env = "CHAIN_ID")]

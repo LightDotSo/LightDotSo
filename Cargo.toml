@@ -68,6 +68,7 @@
   byteorder = "1.4.3"
   chrono = "0.4.26"
   clap = "4.3.12"
+  dirs = "4.0.0"
   dotenvy = "0.15"
   ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
   ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-core" }
@@ -148,11 +149,11 @@
   serde = "1.0.183"
   serde_json = "1.0.104"
   spki = "0.7.2"
-  silius-grpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-grpc" }
-  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-primitives", features = [
+  silius-grpc = { git = "https://github.com/Vid201/silius", rev = "bd79ea0e610adff8d77ba128f53befa8401a4d77", package = "silius-grpc" }
+  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "bd79ea0e610adff8d77ba128f53befa8401a4d77", package = "silius-primitives", features = [
     "test-utils",
   ] }
-  silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96", package = "silius-rpc" }
+  silius-rpc = { git = "https://github.com/Vid201/silius", rev = "bd79ea0e610adff8d77ba128f53befa8401a4d77", package = "silius-rpc" }
   tauri = { version = "1.4", features = ["shell-open"] }
   tauri-build = { version = "1.4", features = [] }
   tokio = { version = "1", features = ["full"] }

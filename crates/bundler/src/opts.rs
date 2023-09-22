@@ -18,47 +18,71 @@
 use crate::utils::{parse_address, parse_u256, parse_uopool_mode};
 use clap::Parser;
 use ethers::types::{Address, U256};
-use silius_primitives::UoPoolMode;
-use std::net::SocketAddr;
+use silius_primitives::{
+    consts::networking::{DEFAULT_BUNDLER_GRPC_PORT, DEFAULT_UOPOOL_GRPC_PORT},
+    UoPoolMode,
+};
+use std::net::{IpAddr, Ipv6Addr};
 
 #[derive(Clone, Debug, Parser, PartialEq)]
-pub struct UoPoolServiceOpts {
-    #[clap(long, default_value = "[::]:3001")]
-    pub uopool_grpc_listen_address: SocketAddr,
+pub struct UoPoolOpts {
+    /// UoPool gRPC address to listen on.
+    #[clap(long = "uopool.addr", default_value_t = IpAddr::V6(Ipv6Addr::LOCALHOST))]
+    pub uopool_addr: IpAddr,
 
+    /// UoPool gRPC port to listen on.
+    #[clap(long = "uopool.port", default_value_t = DEFAULT_UOPOOL_GRPC_PORT)]
+    pub uopool_port: u16,
+
+    /// Max allowed verification gas.
+    #[clap(long, default_value="3000000", value_parser=parse_u256)]
+    pub max_verification_gas: U256,
+
+    /// Minimum stake required for entities.
     #[clap(long, value_parser=parse_u256, default_value = "1")]
     pub min_stake: U256,
 
+    /// Minimum unstake delay for entities.
     #[clap(long, value_parser=parse_u256, default_value = "0")]
     pub min_unstake_delay: U256,
 
+    /// Minimum priority fee per gas.
     #[clap(long, value_parser=parse_u256, default_value = "0")]
     pub min_priority_fee_per_gas: U256,
 
+    /// Addresses of whitelisted entities.
     #[clap(long, value_delimiter=',', value_parser = parse_address)]
     pub whitelist: Vec<Address>,
 
-    #[clap(long, default_value = "unsafe", value_parser=parse_uopool_mode)]
-    pub uo_pool_mode: UoPoolMode,
+    /// User operation mempool mode
+    #[clap(long, default_value = "standard", value_parser=parse_uopool_mode)]
+    pub uopool_mode: UoPoolMode,
 }
 
-#[derive(Clone, Debug, Parser, PartialEq)]
-pub struct BundlerServiceOpts {
+/// Bundler CLI args
+#[derive(Debug, Clone, Parser, PartialEq)]
+pub struct BundlerOpts {
+    /// Bundler gRPC address to listen on.
+    #[clap(long = "bundler.addr", default_value_t = IpAddr::V6(Ipv6Addr::LOCALHOST))]
+    pub bundler_addr: IpAddr,
+
+    /// Bundler gRPC port to listen on.
+    #[clap(long = "bundler.port", default_value_t = DEFAULT_BUNDLER_GRPC_PORT)]
+    pub bundler_port: u16,
+
+    /// The bundler beneficiary address.
+    #[clap(long, value_parser=parse_address)]
+    pub beneficiary: Address,
+
+    /// The minimum balance required for the beneficiary address.
+    ///
+    /// By default, this option is set to `100000000000000000`.
     #[clap(long, default_value = "100000000000000000", value_parser=parse_u256)]
     pub min_balance: U256,
 
-    #[clap(long, default_value = "[::]:3002")]
-    pub bundler_grpc_listen_address: SocketAddr,
-
-    #[clap(long, default_value = "10")]
+    /// The bundle interval in seconds.
+    ///
+    /// By default the interval time is set to 10
+    #[clap(long, default_value_t = 10)]
     pub bundle_interval: u64,
-}
-
-#[derive(Clone, Debug, Parser, PartialEq)]
-pub struct RpcServiceOpts {
-    #[clap(long, default_value = "[::]:3000")]
-    pub rpc_listen_address: String,
-
-    #[clap(long, value_delimiter = ',', default_value = "*")]
-    pub cors_domain: Vec<String>,
 }
