@@ -19,7 +19,7 @@
 // Thank you Vid201 for your work - it could not have been done without you
 
 use crate::{
-    args::{BundlerAndUoPoolArgs, BundlerArgs, RpcArgs, UoPoolArgs},
+    args::{BundlerAndUoPoolArgs, RpcArgs, SiliusBundlerArgs, UoPoolArgs},
     constants::ENTRYPOINT_ADDRESSES,
     utils::unwrap_path_or_home,
 };
@@ -45,7 +45,7 @@ use std::{collections::HashSet, future::pending, net::SocketAddr, sync::Arc};
 
 #[derive(Clone)]
 pub struct Bundler {
-    bundler_args: BundlerArgs,
+    bundler_args: SiliusBundlerArgs,
     uopool_args: UoPoolArgs,
     common_args: BundlerAndUoPoolArgs,
     rpc_args: RpcArgs,
@@ -54,7 +54,7 @@ pub struct Bundler {
 impl Bundler {
     /// Constructs the new Bundler
     pub async fn new(
-        bundler_args: BundlerArgs,
+        bundler_args: SiliusBundlerArgs,
         uopool_args: UoPoolArgs,
         common_args: BundlerAndUoPoolArgs,
         rpc_args: RpcArgs,
@@ -73,7 +73,7 @@ impl Bundler {
 }
 
 pub async fn launch_bundler(
-    bundler_args: BundlerArgs,
+    bundler_args: SiliusBundlerArgs,
     uopool_args: UoPoolArgs,
     common_args: BundlerAndUoPoolArgs,
     rpc_args: RpcArgs,
@@ -108,7 +108,7 @@ pub async fn launch_bundler(
 }
 
 pub async fn launch_bundling(
-    args: BundlerArgs,
+    args: SiliusBundlerArgs,
     eth_client_address: String,
     chain_id: u64,
     entry_points: Vec<Address>,

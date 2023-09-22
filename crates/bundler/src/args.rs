@@ -29,7 +29,7 @@ use std::net::{IpAddr, Ipv4Addr};
 
 /// Bundler CLI args
 #[derive(Debug, Clone, Parser, PartialEq)]
-pub struct BundlerArgs {
+pub struct SiliusBundlerArgs {
     /// Bundler gRPC address to listen on.
     #[clap(long = "bundler.addr", default_value_t = IpAddr::V4(Ipv4Addr::LOCALHOST))]
     pub bundler_addr: IpAddr,
@@ -139,7 +139,7 @@ pub struct RpcArgs {
     /// By default, this option is set to false.
     /// - To enable: `--http`.
     /// - To disable: no `--http` flag.
-    #[clap(long)]
+    #[clap(long, default_value = "true")]
     pub http: bool,
 
     /// Sets the HTTP RPC address to listen on.
@@ -169,7 +169,7 @@ pub struct RpcArgs {
     /// By default, this option is set to false.
     /// - To enable: `--ws`
     /// - To disable: no `--ws` flag.
-    #[clap(long)]
+    #[clap(long, default_value = "false")]
     pub ws: bool,
 
     /// Sets the WS RPC address to listen on.
@@ -256,7 +256,7 @@ mod tests {
             "10",
         ];
         assert_eq!(
-            BundlerArgs {
+            SiliusBundlerArgs {
                 beneficiary: Address::from_str("0x690B9A9E9aa1C9dB991C7721a92d351Db4FaC990")
                     .unwrap(),
                 min_balance: U256::from(100000000000000000_u64),
@@ -266,7 +266,7 @@ mod tests {
                 bundler_addr: IpAddr::V4(Ipv4Addr::new(127, 0, 0, 1)),
                 bundler_port: 3002,
             },
-            BundlerArgs::try_parse_from(args).unwrap()
+            SiliusBundlerArgs::try_parse_from(args).unwrap()
         );
     }
 

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    args::{BundlerAndUoPoolArgs, BundlerArgs as BundlerArgsOriginal, RpcArgs, UoPoolArgs},
+    args::{BundlerAndUoPoolArgs, RpcArgs, SiliusBundlerArgs as BundlerArgsOriginal, UoPoolArgs},
     bundler::Bundler,
 };
 use clap::Parser;
