@@ -43,6 +43,8 @@ use lightdotso_tracing::tracing::info;
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+pub const VERIFICATION_GAS_LIMIT_MULTIPLIER: u64 = 3;
+
 /// The paymaster server implementation.
 pub struct PaymasterServerImpl {}
 
@@ -82,7 +84,8 @@ impl PaymasterServer for PaymasterServerImpl {
 
         return Ok(GasAndPaymasterAndData {
             call_gas_limit: construct.call_gas_limit,
-            verification_gas_limit: construct.verification_gas_limit,
+            verification_gas_limit: construct.verification_gas_limit *
+                VERIFICATION_GAS_LIMIT_MULTIPLIER,
             pre_verification_gas: construct.pre_verification_gas,
             max_fee_per_gas: construct.max_fee_per_gas,
             max_priority_fee_per_gas: construct.max_priority_fee_per_gas,
@@ -154,7 +157,8 @@ pub async fn construct_user_operation(
         nonce: user_operation.nonce,
         sender: user_operation.sender,
         call_gas_limit: estimated_user_operation_gas.call_gas_limit,
-        verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
+        verification_gas_limit: estimated_user_operation_gas.verification_gas_limit *
+            VERIFICATION_GAS_LIMIT_MULTIPLIER,
         pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
         max_fee_per_gas: estimated_request_gas.high.max_fee_per_gas,
         max_priority_fee_per_gas: estimated_request_gas.high.max_priority_fee_per_gas,
@@ -241,7 +245,8 @@ async fn get_hash(
                 init_code: user_operation.init_code,
                 call_data: user_operation.call_data,
                 call_gas_limit: user_operation.call_gas_limit,
-                verification_gas_limit: user_operation.verification_gas_limit,
+                verification_gas_limit: user_operation.verification_gas_limit *
+                    VERIFICATION_GAS_LIMIT_MULTIPLIER,
                 pre_verification_gas: user_operation.pre_verification_gas,
                 max_fee_per_gas: user_operation.max_fee_per_gas,
                 max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
