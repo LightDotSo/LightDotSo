@@ -52,9 +52,7 @@
   codegen-units = 16
 
 [profile.release]
-  lto = true
   opt-level = 2
-  codegen-units = 16
 
 [workspace.dependencies]
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
