@@ -84,8 +84,7 @@ impl PaymasterServer for PaymasterServerImpl {
 
         return Ok(GasAndPaymasterAndData {
             call_gas_limit: construct.call_gas_limit,
-            verification_gas_limit: construct.verification_gas_limit *
-                VERIFICATION_GAS_LIMIT_MULTIPLIER,
+            verification_gas_limit: construct.verification_gas_limit,
             pre_verification_gas: construct.pre_verification_gas,
             max_fee_per_gas: construct.max_fee_per_gas,
             max_priority_fee_per_gas: construct.max_priority_fee_per_gas,
@@ -245,8 +244,7 @@ async fn get_hash(
                 init_code: user_operation.init_code,
                 call_data: user_operation.call_data,
                 call_gas_limit: user_operation.call_gas_limit,
-                verification_gas_limit: user_operation.verification_gas_limit *
-                    VERIFICATION_GAS_LIMIT_MULTIPLIER,
+                verification_gas_limit: user_operation.verification_gas_limit,
                 pre_verification_gas: user_operation.pre_verification_gas,
                 max_fee_per_gas: user_operation.max_fee_per_gas,
                 max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
