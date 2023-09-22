@@ -91,19 +91,20 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
 
         verificationGasLimit = 5000000;
+        paymasterAndData = "";
 
         // UserOperation to create the account
         UserOperation memory op = UserOperation(
             expectedAddress,
             0x0,
             initCode,
-            "",
+            callData,
             callGasLimit,
             verificationGasLimit,
             preVerificationGas,
             maxFeePerGas,
             maxPriorityFeePerGas,
-            "",
+            paymasterAndData,
             ""
         );
 
@@ -133,7 +134,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         sendUserOperation(
             expectedAddress,
             initCode,
-            "",
+            paymasterAndData,
             sig,
             maxFeePerGas,
             maxPriorityFeePerGas,
