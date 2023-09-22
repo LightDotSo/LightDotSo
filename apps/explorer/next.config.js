@@ -1,3 +1,9 @@
+import { withSentryConfig } from "@sentry/nextjs";
+
+const sentryWebpackPluginOptions = {
+  silent: false,
+};
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -25,4 +31,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default withSentryConfig(nextConfig, sentryWebpackPluginOptions);

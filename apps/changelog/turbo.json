@@ -4,6 +4,12 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
+      "env": [
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "NEXT_PUBLIC_VERCEL_ENV",
+        "SENTRY_DSN",
+        "VERCEL_ENV"
+      ],
       "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },

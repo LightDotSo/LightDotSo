@@ -24,6 +24,8 @@
     "@heroicons/react": "^2.0.11",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/ui": "workspace:*",
+    "@sentry/integrations": "^7.70.0",
+    "@sentry/nextjs": "^7.70.0",
     "clsx": "^1.2.1",
     "critters": "^0.0.16",
     "next": "^13.4.5",
