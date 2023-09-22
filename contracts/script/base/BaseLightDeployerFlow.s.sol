@@ -111,17 +111,27 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // solhint-disable-next-line no-console
         console.logBytes32(userOphash);
 
-        // Create the subdigest
-        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), userOphash));
+        // Sign the UserOperation
+        bytes memory sig = signDigest(userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
 
-        // Create the signature w/ the subdigest
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
+        // Construct the UserOperation
+        op.signature = sig;
 
-        // Pack the signature w/ EIP-712 flag
-        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
+        // solhint-disable-next-line no-console
+        console.logBytes(sig);
 
         // Handle the ops
-        // entryPoint.handleOps(ops, payable(address(1)));
+        sendUserOperation(
+            expectedAddress,
+            initCode,
+            paymasterAndData,
+            sig,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            preVerificationGas,
+            verificationGasLimit,
+            callGasLimit
+        );
 
         // solhint-disable-next-line no-console
         console.log("LightWallet to be deployed at address: %s", address(expectedAddress));

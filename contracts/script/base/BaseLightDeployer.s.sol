@@ -187,6 +187,55 @@ abstract contract BaseLightDeployer is BaseTest {
         callGasLimit = json.readUint(".result.callGasLimit");
     }
 
+    function sendUserOperation(
+        address sender,
+        bytes memory initCode,
+        bytes memory paymasterAndData,
+        bytes memory signature,
+        uint256 maxFeePerGas,
+        uint256 maxPriorityFeePerGas,
+        uint256 preVerificationGas,
+        uint256 verificationGasLimit,
+        uint256 callGasLimit
+    ) internal {
+        // Perform a post request with headers and JSON body
+        string memory url = getFullUrl();
+        string[] memory headers = new string[](1);
+        headers[0] = "Content-Type: application/json";
+        string memory body = string(
+            abi.encodePacked(
+                '{"id": 1,"jsonrpc":"2.0","method":"eth_sendUserOperation","params":[{"sender":"',
+                Strings.toHexString(uint160(sender), 20),
+                '","nonce":"0x0","callData":"0x","initCode":"',
+                bytesToHexString(initCode),
+                '","paymasterAndData":"',
+                bytesToHexString(paymasterAndData),
+                '","signature":"',
+                bytesToHexString(signature),
+                '","maxFeePerGas":"',
+                Strings.toHexString(maxFeePerGas),
+                '","maxPriorityFeePerGas":"',
+                Strings.toHexString(maxPriorityFeePerGas),
+                '","preVerificationGas":"',
+                Strings.toHexString(preVerificationGas),
+                '","verificationGasLimit":"',
+                Strings.toHexString(verificationGasLimit),
+                '","callGasLimit":"',
+                Strings.toHexString(callGasLimit),
+                '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
+            )
+        );
+
+        // Get the response
+        // (, bytes memory data) = url.post(headers, body);
+
+        // Parse the response
+        // string memory json = string(data);
+
+        // solhint-disable-next-line no-console
+        // console.log(json);
+    }
+
     function getFullUrl() public view returns (string memory) {
         string memory baseUrl = "https://rpc.light.so/";
         string memory chainId = Strings.toString(block.chainid);
