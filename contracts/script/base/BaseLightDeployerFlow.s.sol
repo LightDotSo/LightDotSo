@@ -82,15 +82,43 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         console.logBytes(initCode);
 
         // Get the gas estimation
-        (bytes memory maxFeePerGas, bytes memory maxPriorityFeePerGas) = getGasRequestGasEstimation();
+        // (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) = getGasRequestGasEstimation();
 
-        getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
+        (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) =
+            getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
 
-        getEthEstimateUserOperationGas(expectedAddress, initCode);
+        (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
+            getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
+
         // UserOperation to create the account
-        // UserOperation[] memory ops = entryPoint.signPackUserOp(
-        //     lightWalletUtils, address(expectedAddress), "", vm.envUint("PRIVATE_KEY"), initCode
-        // );
+        UserOperation memory op = UserOperation(
+            expectedAddress,
+            0x0,
+            initCode,
+            "",
+            callGasLimit,
+            verificationGasLimit,
+            preVerificationGas,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            paymasterAndData,
+            ""
+        );
+
+        // Get the hash of the UserOperation
+        bytes32 userOphash = entryPoint.getUserOpHash(op);
+
+        // solhint-disable-next-line no-console
+        console.logBytes32(userOphash);
+
+        // Create the subdigest
+        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), userOphash));
+
+        // Create the signature w/ the subdigest
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
+
+        // Pack the signature w/ EIP-712 flag
+        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
 
         // Handle the ops
         // entryPoint.handleOps(ops, payable(address(1)));
