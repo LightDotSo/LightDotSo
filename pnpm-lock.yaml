@@ -462,6 +462,9 @@ importers:
       '@prisma/client':
         specifier: ^5.2.0
         version: 5.2.0(prisma@5.2.0)
+      '@sentry/integrations':
+        specifier: ^7.70.0
+        version: 7.70.0
       '@sentry/nextjs':
         specifier: ^7.70.0
         version: 7.70.0(next@13.4.5)(react@18.2.0)(webpack@5.88.2)

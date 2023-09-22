@@ -24,6 +24,7 @@
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/trpc": "workspace:*",
     "@prisma/client": "^5.2.0",
+    "@sentry/integrations": "^7.70.0",
     "@sentry/nextjs": "^7.70.0",
     "@trpc-limiter/core": "^0.0.8",
     "@trpc/next": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
