@@ -226,6 +226,9 @@ abstract contract BaseLightDeployer is BaseTest {
             )
         );
 
+        // solhint-disable-next-line no-console
+        console.log(body);
+
         // Get the response
         (, bytes memory data) = url.post(headers, body);
 
