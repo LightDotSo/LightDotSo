@@ -27,6 +27,6 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.BOT_TOKEN }}
-          commit-message: "Update GraphQL Schema"
+          commit-message: "chore: Update GraphQL Schema"
           branch: graphql-schema-updates
-          title: "Update GraphQL Schema"
+          title: "chore: Update GraphQL Schema"
