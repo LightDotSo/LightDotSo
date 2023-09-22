@@ -82,18 +82,56 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         console.logBytes(initCode);
 
         // Get the gas estimation
-        (bytes memory maxFeePerGas, bytes memory maxPriorityFeePerGas) = getGasRequestGasEstimation();
+        // (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) = getGasRequestGasEstimation();
 
-        getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
+        (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) =
+            getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
 
-        getEthEstimateUserOperationGas(expectedAddress, initCode);
+        (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
+            getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
+
         // UserOperation to create the account
-        // UserOperation[] memory ops = entryPoint.signPackUserOp(
-        //     lightWalletUtils, address(expectedAddress), "", vm.envUint("PRIVATE_KEY"), initCode
-        // );
+        UserOperation memory op = UserOperation(
+            expectedAddress,
+            0x0,
+            initCode,
+            "",
+            callGasLimit,
+            verificationGasLimit,
+            preVerificationGas,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            paymasterAndData,
+            ""
+        );
+
+        // Get the hash of the UserOperation
+        bytes32 userOphash = entryPoint.getUserOpHash(op);
+
+        // solhint-disable-next-line no-console
+        console.logBytes32(userOphash);
+
+        // Sign the UserOperation
+        bytes memory sig = signDigest(userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
+
+        // Construct the UserOperation
+        op.signature = sig;
+
+        // solhint-disable-next-line no-console
+        console.logBytes(sig);
 
         // Handle the ops
-        // entryPoint.handleOps(ops, payable(address(1)));
+        sendUserOperation(
+            expectedAddress,
+            initCode,
+            paymasterAndData,
+            sig,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            preVerificationGas,
+            verificationGasLimit,
+            callGasLimit
+        );
 
         // solhint-disable-next-line no-console
         console.log("LightWallet to be deployed at address: %s", address(expectedAddress));

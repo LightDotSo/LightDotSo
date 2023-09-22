@@ -48,8 +48,14 @@
   test = "contracts/circuits/test"
 
 [profile.script]
+  optimizer = true
+  optimizer_runs = 200
   ffi = true
   test = "contracts/script/test"
+
+  [profile.script.optimizer_details]
+    constantOptimizer = false
+    yul = false
 
 [profile.smt]
   [profile.smt.model_checker]
