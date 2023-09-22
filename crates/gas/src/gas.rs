@@ -50,14 +50,27 @@ impl GasServer for GasServerImpl {
         // Get the estimation from pre-configured APIs
         let estimation = get_estimation(chain_id).await;
 
-        // Return if some
-        if let Some(estimation) = estimation {
-            info!("Gas estimation for chain {} is {:?}", chain_id, estimation);
-            return Ok(estimation);
-        }
-
         // Setup a new ethers provider
         let client = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
+
+        // Return if some
+        if let Some(estimation) = estimation {
+            // Check if the estimation is valid, higher than the current block base fee
+            let block = client.get_block(BlockNumber::Latest).await.map_err(JsonRpcError::from)?;
+
+            // Get the base fee
+            if let Some(base_fee) = block {
+                // Check if the estimation is valid
+                if let Some(block_base_fee_per_gas) = base_fee.base_fee_per_gas {
+                    if estimation.high.max_fee_per_gas > block_base_fee_per_gas &&
+                        estimation.high.max_priority_fee_per_gas > block_base_fee_per_gas
+                    {
+                        info!("Gas estimation for chain {} is {:?}", chain_id, estimation);
+                        return Ok(estimation);
+                    }
+                }
+            }
+        }
 
         // Get the gas price from the client
         let mut gas_price = client.get_gas_price().await.map_err(JsonRpcError::from)?;

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::{u256_from_f64_saturating, U256};
+use eyre::{eyre, Result};
 use serde::{Deserialize, Serialize};
 
 use crate::gas::{GasEstimation, GasEstimationParams};
@@ -58,16 +59,27 @@ impl From<ApiResponse> for GasEstimation {
     }
 }
 
-pub async fn polygon_gas_estimation(chain_id: u64) -> Result<GasEstimation, reqwest::Error> {
+pub async fn polygon_gas_estimation(chain_id: u64) -> Result<GasEstimation> {
     let client = reqwest::Client::builder().user_agent("Your-User-Agent").build()?;
 
     let url = match chain_id {
         137 => "https://gasstation.polygon.technology/v2",
         80001 => "https://gasstation-testnet.polygon.technology/v2",
-        _ => panic!("Unsupported chain ID"),
+        _ => return Err(eyre!("Unsupported chain ID")),
     };
 
     let response = client.get(url).send().await?.json::<ApiResponse>().await?;
+
+    // Check if any of the values is 0
+    if response.safe_low.max_priority_fee == 0.0 ||
+        response.safe_low.max_fee == 0.0 ||
+        response.standard.max_priority_fee == 0.0 ||
+        response.standard.max_fee == 0.0 ||
+        response.fast.max_priority_fee == 0.0 ||
+        response.fast.max_fee == 0.0
+    {
+        return Err(eyre!("API returned a value of 0"));
+    }
 
     // Convert to GasEstimation using From trait
     Ok(response.into())
@@ -105,5 +117,15 @@ mod tests {
         assert!(gas_estimation.high.max_fee_per_gas > U256::from(0));
         assert!(gas_estimation.instant.max_priority_fee_per_gas > U256::from(0));
         assert!(gas_estimation.instant.max_fee_per_gas > U256::from(0));
+    }
+
+    #[tokio::test]
+    async fn test_polygon_gas_estimation_unsupported_chain_id() {
+        // Test for an unsupported chain ID
+        let chain_id = 999;
+        let result = polygon_gas_estimation(chain_id).await;
+        assert!(result.is_err());
+        let error = result.unwrap_err();
+        assert_eq!(error.to_string(), "Unsupported chain ID");
     }
 }
