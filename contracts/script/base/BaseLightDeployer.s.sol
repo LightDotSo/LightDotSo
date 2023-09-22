@@ -81,10 +81,21 @@ abstract contract BaseLightDeployer is BaseTest {
         return imageHash;
     }
 
-    function getGasRequestGasEstimation()
-        internal
-        returns (bytes memory maxFeePerGas, bytes memory maxPriorityFeePerGas)
-    {
+    // From: `LightWalletUtils` contract
+    function signDigest(bytes32 hash, address account, uint256 userKey) public view returns (bytes memory) {
+        // Create the subdigest
+        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
+
+        // Create the signature w/ the subdigest
+        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
+
+        // Pack the signature w/ EIP-712 flag
+        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
+
+        return sig;
+    }
+
+    function getGasRequestGasEstimation() internal returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
         string[] memory headers = new string[](1);
@@ -92,10 +103,7 @@ abstract contract BaseLightDeployer is BaseTest {
         string memory body = '{"id": 1,"jsonrpc":"2.0","method":"gas_requestGasEstimation","params":[]}';
 
         // Get the response
-        (uint256 status, bytes memory data) = url.post(headers, body);
-
-        // Assert the status code is successful
-        assert(status == 200);
+        (, bytes memory data) = url.post(headers, body);
 
         // Parse the response
         string memory json = string(data);
@@ -103,13 +111,13 @@ abstract contract BaseLightDeployer is BaseTest {
         // solhint-disable-next-line no-console
         console.log(json);
 
-        maxFeePerGas = json.readBytes(".result.instant.maxFeePerGas");
-        maxPriorityFeePerGas = json.readBytes(".result.instant.maxPriorityFeePerGas");
+        maxFeePerGas = json.readUint(".result.instant.maxFeePerGas");
+        maxPriorityFeePerGas = json.readUint(".result.instant.maxPriorityFeePerGas");
     }
 
     function getPaymasterRequestGasAndPaymasterAndData(address sender, bytes memory initCode)
         internal
-        returns (bytes memory paymasterAndData)
+        returns (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas)
     {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
@@ -128,10 +136,7 @@ abstract contract BaseLightDeployer is BaseTest {
         );
 
         // Get the response
-        (uint256 status, bytes memory data) = url.post(headers, body);
-
-        // Assert the status code is successful
-        assert(status == 200);
+        (, bytes memory data) = url.post(headers, body);
 
         // Parse the response
         string memory json = string(data);
@@ -139,10 +144,16 @@ abstract contract BaseLightDeployer is BaseTest {
         // solhint-disable-next-line no-console
         console.log(json);
 
+        // Parse the params
+        maxFeePerGas = json.readUint(".result.maxFeePerGas");
+        maxPriorityFeePerGas = json.readUint(".result.maxPriorityFeePerGas");
         paymasterAndData = json.readBytes(".result.paymasterAndData");
     }
 
-    function getEthEstimateUserOperationGas(address sender, bytes memory initCode) internal {
+    function getEthEstimateUserOperationGas(address sender, bytes memory initCode, bytes memory paymasterAndData)
+        internal
+        returns (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit)
+    {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
         string[] memory headers = new string[](1);
@@ -152,18 +163,74 @@ abstract contract BaseLightDeployer is BaseTest {
                 '{"id": 1,"jsonrpc":"2.0","method":"eth_estimateUserOperationGas","params":[{',
                 '"sender":"',
                 Strings.toHexString(uint160(sender), 20),
-                '","nonce":"0x1",',
+                '","nonce":"0x0",',
                 '"initCode":"',
                 bytesToHexString(initCode),
-                '","callData":"0x","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
+                '","callData":"0x","signature":"0x000100000001000131a184eb40202a407819e4efe1313e8464c56ae6bb88ee91728134892f57a1df2519f8cd158ca4d60043fa37ed9da5e8748757367374a7c0ea745fdf364280c31c01","paymasterAndData":"',
+                bytesToHexString(paymasterAndData),
+                '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
             )
         );
 
         // Get the response
-        (uint256 status, bytes memory data) = url.post(headers, body);
+        (, bytes memory data) = url.post(headers, body);
 
-        // Assert the status code is successful
-        assert(status == 200);
+        // Parse the response
+        string memory json = string(data);
+
+        // solhint-disable-next-line no-console
+        console.log(json);
+
+        // Parse the params
+        preVerificationGas = json.readUint(".result.preVerificationGas");
+        verificationGasLimit = json.readUint(".result.verificationGasLimit");
+        callGasLimit = json.readUint(".result.callGasLimit");
+    }
+
+    function sendUserOperation(
+        address sender,
+        bytes memory initCode,
+        bytes memory paymasterAndData,
+        bytes memory signature,
+        uint256 maxFeePerGas,
+        uint256 maxPriorityFeePerGas,
+        uint256 preVerificationGas,
+        uint256 verificationGasLimit,
+        uint256 callGasLimit
+    ) internal {
+        // Perform a post request with headers and JSON body
+        string memory url = getFullUrl();
+        string[] memory headers = new string[](1);
+        headers[0] = "Content-Type: application/json";
+        string memory body = string(
+            abi.encodePacked(
+                '{"id": 1,"jsonrpc":"2.0","method":"eth_sendUserOperation","params":[{"sender":"',
+                Strings.toHexString(uint160(sender), 20),
+                '","nonce":"0x0","callData":"0x","initCode":"',
+                bytesToHexString(initCode),
+                '","paymasterAndData":"',
+                bytesToHexString(paymasterAndData),
+                '","signature":"',
+                bytesToHexString(signature),
+                '","maxFeePerGas":"',
+                Strings.toHexString(maxFeePerGas),
+                '","maxPriorityFeePerGas":"',
+                Strings.toHexString(maxPriorityFeePerGas),
+                '","preVerificationGas":"',
+                Strings.toHexString(preVerificationGas),
+                '","verificationGasLimit":"',
+                Strings.toHexString(verificationGasLimit),
+                '","callGasLimit":"',
+                Strings.toHexString(callGasLimit),
+                '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
+            )
+        );
+
+        // solhint-disable-next-line no-console
+        console.log(body);
+
+        // Get the response
+        (, bytes memory data) = url.post(headers, body);
 
         // Parse the response
         string memory json = string(data);
