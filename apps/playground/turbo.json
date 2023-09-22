@@ -10,8 +10,13 @@
         "GITHUB_SECRET",
         "PLAYWRIGHT_TEST_BASE_URL",
         "PLAYWRIGHT_HEADLESS",
+        "NEXT_PUBLIC_SENTRY_DSN",
+        "NEXT_PUBLIC_VERCEL_ENV",
+        "NEXT_PUBLIC_VERCEL_URL",
         "NODE_ENV",
-        "VERCEL_URL"
+        "SENTRY_DSN",
+        "VERCEL_URL",
+        "VERCEL_ENV"
       ],
       "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
