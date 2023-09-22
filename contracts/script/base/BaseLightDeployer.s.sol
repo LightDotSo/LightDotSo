@@ -227,13 +227,13 @@ abstract contract BaseLightDeployer is BaseTest {
         );
 
         // Get the response
-        // (, bytes memory data) = url.post(headers, body);
+        (, bytes memory data) = url.post(headers, body);
 
         // Parse the response
-        // string memory json = string(data);
+        string memory json = string(data);
 
         // solhint-disable-next-line no-console
-        // console.log(json);
+        console.log(json);
     }
 
     function getFullUrl() public view returns (string memory) {
