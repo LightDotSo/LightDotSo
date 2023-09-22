@@ -123,7 +123,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         op.signature = packLegacySignature(sig);
 
         // Simulate the UserOperation
-        entryPoint.simulateValidation(op);
+        // entryPoint.simulateValidation(op);
 
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);
