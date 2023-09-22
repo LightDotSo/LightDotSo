@@ -15,44 +15,38 @@
 
 use crate::{
     bundler::Bundler,
-    opts::{BundlerOpts, UoPoolOpts},
-    utils::{parse_address, parse_u256},
+    cli::args::{BundlerAndUoPoolArgs, BundlerArgs as BundlerArgsOriginal, RpcArgs, UoPoolArgs},
 };
 use clap::Parser;
-use ethers::types::{Address, U256};
 use eyre::Result;
 use lightdotso_tracing::tracing::{error, info};
 
 #[derive(Debug, Clone, Parser)]
 pub struct BundlerArgs {
-    #[clap(long, env = "BUNDLER_BENEFICIARY_ADDRESS", default_value = "", value_parser=parse_address)]
-    pub beneficiary: Address,
-    /// The seed phrase of mnemonic
-    #[clap(long, env = "BUNDLER_SEED_PHRASE")]
-    pub seed_phrase: String,
-    /// The uopool options
+    /// The original bundler args
     #[clap(flatten)]
-    pub uopool_opts: UoPoolOpts,
-    /// The max verification gas
-    #[clap(long, default_value="3000000", value_parser=parse_u256)]
-    pub max_verification_gas: U256,
-    /// The bundler options
+    pub bundler_args: BundlerArgsOriginal,
+    /// All UoPool specific args
     #[clap(flatten)]
-    pub bundler_opts: BundlerOpts,
-    /// The chain id of the chain to index.
-    #[arg(long, short, default_value_t = 1)]
-    #[clap(long, env = "CHAIN_ID")]
-    pub chain_id: usize,
-    /// The RPC endpoint to connect to.
-    #[arg(long, short, default_value_t = String::from(""))]
-    #[clap(long, env = "BUNDLER_RPC_URL")]
-    pub rpc: String,
+    pub uopool_args: UoPoolArgs,
+    /// Common Bundler and UoPool args
+    #[clap(flatten)]
+    pub common_args: BundlerAndUoPoolArgs,
+    /// All RPC args
+    #[clap(flatten)]
+    pub rpc_args: RpcArgs,
 }
 
 impl BundlerArgs {
     pub async fn create(&self) -> Bundler {
         // Create the bundler
-        Bundler::new(self).await
+        Bundler::new(
+            self.bundler_args.clone(),
+            self.uopool_args.clone(),
+            self.common_args.clone(),
+            self.rpc_args.clone(),
+        )
+        .await
     }
 
     pub async fn run(&self) -> Result<()> {
@@ -63,7 +57,13 @@ impl BundlerArgs {
         info!("Config: {:?}", self);
 
         // Construct the bundler
-        let bundler = Bundler::new(self).await;
+        let bundler = Bundler::new(
+            self.bundler_args.clone(),
+            self.uopool_args.clone(),
+            self.common_args.clone(),
+            self.rpc_args.clone(),
+        )
+        .await;
 
         // Run the bundler
         let res = bundler.run().await;

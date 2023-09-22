@@ -14,9 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod bundler;
+pub mod cli;
 pub mod config;
 pub mod constants;
-pub mod opts;
-pub mod rpc;
-pub mod uo_pool;
 pub mod utils;

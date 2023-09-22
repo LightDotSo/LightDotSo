@@ -14,15 +14,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use dirs::home_dir;
-/// Entire file is copied from https://github.com/Vid201/silius/blob/bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96/bin/silius/src/utils.rs
-/// License: MIT or Apache-2.0
 use ethers::types::{Address, U256};
 use expanded_pathbuf::ExpandedPathBuf;
-use eyre::Result;
 use lightdotso_tracing::tracing::info;
 use pin_utils::pin_mut;
-use silius_primitives::UoPoolMode;
+use silius_primitives::{bundler::SendBundleMode, UoPoolMode};
 use std::{future::Future, str::FromStr};
+
+/// Unwrap path or returns home directory
+pub fn unwrap_path_or_home(path: Option<ExpandedPathBuf>) -> anyhow::Result<ExpandedPathBuf> {
+    if let Some(path) = path {
+        Ok(path)
+    } else {
+        home_dir()
+            .map(|h| h.join(".silius"))
+            .ok_or_else(|| anyhow::anyhow!("Get Home directory error"))
+            .map(ExpandedPathBuf)
+    }
+}
 
 /// Parses address from string
 pub fn parse_address(s: &str) -> Result<Address, String> {
@@ -32,6 +41,11 @@ pub fn parse_address(s: &str) -> Result<Address, String> {
 /// Parses U256 from string
 pub fn parse_u256(s: &str) -> Result<U256, String> {
     U256::from_str_radix(s, 10).map_err(|_| format!("String {s} is not a valid U256"))
+}
+
+/// Parses SendBundleMode from string
+pub fn parse_send_bundle_mode(s: &str) -> Result<SendBundleMode, String> {
+    SendBundleMode::from_str(s).map_err(|_| format!("String {s} is not a valid SendBundleMode"))
 }
 
 /// Parses UoPoolMode from string
@@ -64,16 +78,4 @@ where
     }
 
     Ok(())
-}
-
-/// Unwrap path or returns home directory
-pub fn unwrap_path_or_home(path: Option<ExpandedPathBuf>) -> anyhow::Result<ExpandedPathBuf> {
-    if let Some(path) = path {
-        Ok(path)
-    } else {
-        home_dir()
-            .map(|h| h.join(".silius"))
-            .ok_or_else(|| anyhow::anyhow!("Get Home directory error"))
-            .map(ExpandedPathBuf)
-    }
 }
