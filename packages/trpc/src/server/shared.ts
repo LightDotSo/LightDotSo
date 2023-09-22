@@ -16,9 +16,9 @@
 function getBaseUrl() {
   if (typeof window !== "undefined") return "";
   // On Vercel production deployments
-  if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
-    return "https://api.light.so";
-  }
+  // if (process.env.NEXT_PUBLIC_VERCEL_ENV === "production") {
+  //   return "https://auth.light.so";
+  // }
   // On Vercel preview deployments
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
