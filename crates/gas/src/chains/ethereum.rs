@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use eyre::{eyre, Result};
 use serde::{Deserialize, Serialize};
 
 use crate::gas::{GasEstimation, GasEstimationParams};
@@ -48,14 +49,23 @@ impl From<ApiResponseData> for GasEstimation {
     }
 }
 
-pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimation, reqwest::Error> {
+pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimation> {
     let url = match chain_id {
         1 => "https://beaconcha.in/api/v1/execution/gasnow",
         11155111 => "https://sepolia.beaconcha.in/api/v1/execution/gasnow",
-        _ => panic!("Unsupported chain ID"),
+        _ => return Err(eyre!("Unsupported chain ID")),
     };
 
     let response = reqwest::get(url).await?.json::<ApiResponse>().await?;
+
+    // Check if any of the values is 0
+    if response.data.slow == 0 ||
+        response.data.standard == 0 ||
+        response.data.fast == 0 ||
+        response.data.rapid == 0
+    {
+        return Err(eyre!("API returned a value of 0"));
+    }
 
     // Convert to GasEstimation using From trait
     Ok(response.data.into())
@@ -82,5 +92,15 @@ mod tests {
         assert!(gas_estimation.high.max_fee_per_gas > U256::from(0));
         assert!(gas_estimation.instant.max_priority_fee_per_gas > U256::from(0));
         assert!(gas_estimation.instant.max_fee_per_gas > U256::from(0));
+    }
+
+    #[tokio::test]
+    async fn test_ethereum_gas_estimation_unsupported_chain_id() {
+        // Test for an unsupported chain ID
+        let chain_id = 999;
+        let result = ethereum_gas_estimation(chain_id).await;
+        assert!(result.is_err());
+        let error = result.unwrap_err();
+        assert_eq!(error.to_string(), "Unsupported chain ID");
     }
 }
