@@ -34,12 +34,11 @@ contract LightWalletDeployFlowScript is BaseLightDeployerFlow {
     // -------------------------------------------------------------------------
 
     function run() public {
-        // Start the broadcast
-        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-
         // Deploy a new LightWallet
         deployLightWallet();
 
+        // Start the broadcast
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         // Stop the broadcast
         vm.stopBroadcast();
     }
