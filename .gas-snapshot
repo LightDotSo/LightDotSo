@@ -33,6 +33,7 @@ LightWalletFactoryIntegrationTest:test_revertWhenAddressZero_createAccount() (ga
 LightWalletFactoryIntegrationTest:test_revertWhenAlreadyExists_createAccountFromEntryPoint() (gas: 54723)
 LightWalletFactoryIntegrationTest:test_revertWhenHashZero_createAccount() (gas: 102665)
 LightWalletFactoryIntegrationTest:test_revertWhenHashZero_createAccountFromEntryPoint() (gas: 148803)
+LightWalletFactoryIntegrationTest:test_simulateValidation() (gas: 396003)
 LightWalletProxyIntegrationTest:test_proxy_initialize() (gas: 2582358)
 LightWalletProxyIntegrationTest:test_revertWhenAlreadyInitialized_proxy() (gas: 16198)
 PaymasterGetHash:test_getHash() (gas: 1177593)
