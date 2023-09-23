@@ -95,7 +95,7 @@
     "@release-it/keep-a-changelog": "^4.0.0",
     "@swc/core": "^1.3.80",
     "@taplo/cli": "^0.5.2",
-    "@thunderclient/cli": "^1.5.4",
+    "@thunderclient/cli": "^1.6.0",
     "@types/dotenv": "^8.2.0",
     "@types/jest": "^29.5.4",
     "@types/node": "^20.5.7",
