@@ -55,7 +55,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
 
     function deployLightWallet() internal returns (LightWallet) {
         // Set the random nonce
-        bytes32 nonce = randMod();
+        bytes32 nonce = bytes32(uint256(1));
 
         // Specify the entryPoint
         entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
@@ -90,19 +90,23 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
             getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
 
+        bytes memory callData = "";
+        verificationGasLimit = 5000000;
+        paymasterAndData = "";
+
         // UserOperation to create the account
         UserOperation memory op = UserOperation(
             expectedAddress,
             0x0,
             initCode,
-            "",
+            callData,
             callGasLimit,
             verificationGasLimit,
             preVerificationGas,
             maxFeePerGas,
             maxPriorityFeePerGas,
             paymasterAndData,
-            ""
+            callData
         );
 
         // Get the hash of the UserOperation
@@ -115,10 +119,17 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory sig = signDigest(userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
 
         // Construct the UserOperation
-        op.signature = sig;
+        op.signature = packLegacySignature(sig);
 
-        // solhint-disable-next-line no-console
-        console.logBytes(sig);
+        // Simulate the UserOperation
+        entryPoint.simulateValidation(op);
+
+        // Construct the ops
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+
+        // Entry point handle ops
+        entryPoint.handleOps(ops, payable(address(1)));
 
         // Handle the ops
         sendUserOperation(
