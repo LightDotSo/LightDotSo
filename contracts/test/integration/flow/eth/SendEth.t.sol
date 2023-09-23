@@ -60,7 +60,7 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     function test_revertWhenInvalidSignature_transferEth() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation[] memory ops =
-            entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey, "");
+            entryPoint.signPackUserOps(lightWalletUtils, address(account), callData, userKey, "");
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
@@ -70,7 +70,7 @@ contract SendEthIntegrationTest is BaseIntegrationTest {
     function test_transferEth() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation[] memory ops =
-            entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey, "");
+            entryPoint.signPackUserOps(lightWalletUtils, address(account), callData, userKey, "");
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the account is 1

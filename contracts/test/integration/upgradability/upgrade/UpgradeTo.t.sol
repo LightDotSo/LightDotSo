@@ -55,7 +55,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightWallet accountV2 = new LightWallet(entryPoint);
 
         // Example UserOperation to update the account to immutable address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
+        UserOperation[] memory ops = entryPoint.signPackUserOps(
             lightWalletUtils,
             address(account),
             abi.encodeWithSelector(
@@ -76,7 +76,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
     /// Tests that the factory reverts when trying to upgrade to an immutable address
     function test_revertWhenImmutable_upgradeToImmutable() public {
         // Example UserOperation to update the account to immutable address one
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
+        UserOperation[] memory ops = entryPoint.signPackUserOps(
             lightWalletUtils,
             address(account),
             abi.encodeWithSelector(
@@ -93,7 +93,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
         LightWallet accountV2 = new LightWallet(entryPoint);
 
         // Example UserOperation to update the account to immutable address one
-        UserOperation[] memory opsv2 = entryPoint.signPackUserOp(
+        UserOperation[] memory opsv2 = entryPoint.signPackUserOps(
             lightWalletUtils,
             address(account),
             abi.encodeWithSignature("upgradeTo(address)", address(accountV2)),

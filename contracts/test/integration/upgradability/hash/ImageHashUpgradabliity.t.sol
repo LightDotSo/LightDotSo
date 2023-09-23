@@ -37,7 +37,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         bytes32 hash = bytes32(uint256(1));
 
         // Obtain the user operation w/ signature
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
+        UserOperation[] memory ops = entryPoint.signPackUserOps(
             lightWalletUtils,
             address(account),
             abi.encodeWithSelector(
@@ -89,7 +89,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         // Expect emit the `ImageHashUpdated` event and handle the user operation
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(hash);
-        UserOperation[] memory ops = entryPoint.signPackUserOp(
+        UserOperation[] memory ops = entryPoint.signPackUserOps(
             lightWalletUtils,
             address(account),
             abi.encodeWithSelector(

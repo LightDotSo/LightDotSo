@@ -55,7 +55,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
             abi.encodePacked(address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, 3));
 
         // Example UserOperation to create the account
-        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(1), "", userKey, initCode);
+        UserOperation[] memory ops = entryPoint.signPackUserOps(lightWalletUtils, address(1), "", userKey, initCode);
 
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA13 initCode failed or OOG"));
@@ -87,7 +87,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
         // Example UserOperation to create the account
         UserOperation[] memory ops =
-            entryPoint.signPackUserOp(lightWalletUtils, address(newWallet), "", userKey, initCode);
+            entryPoint.signPackUserOps(lightWalletUtils, address(newWallet), "", userKey, initCode);
 
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(expectedImageHash);
@@ -137,6 +137,6 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
 
         // Example UserOperation to create the account
-        ops = entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", userKey, initCode);
+        ops = entryPoint.signPackUserOps(lightWalletUtils, address(wallet), "", userKey, initCode);
     }
 }
