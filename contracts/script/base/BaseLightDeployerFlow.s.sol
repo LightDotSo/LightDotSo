@@ -90,8 +90,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
             getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
 
-        bytes memory callData = "";
-        verificationGasLimit = 5000000;
+        // Sent ETH to the account w/ the expected address
+        bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+
+        callGasLimit = 3_000_000;
+        verificationGasLimit = 3_000_000;
+        preVerificationGas = 60_000;
         paymasterAndData = "";
 
         // UserOperation to create the account
@@ -106,7 +110,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             maxFeePerGas,
             maxPriorityFeePerGas,
             paymasterAndData,
-            // signature
+            // signature should be empty
             ""
         );
 
@@ -122,15 +126,15 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // Construct the UserOperation
         op.signature = packLegacySignature(sig);
 
-        // Simulate the UserOperation
-        // entryPoint.simulateValidation(op);
-
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
 
         // Entry point handle ops
         entryPoint.handleOps(ops, payable(address(1)));
+
+        // Simulate the UserOperation
+        // entryPoint.simulateValidation(op);
 
         // Handle the ops
         sendUserOperation(

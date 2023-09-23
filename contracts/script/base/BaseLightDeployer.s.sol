@@ -214,7 +214,8 @@ abstract contract BaseLightDeployer is BaseTest {
         uint256 callGasLimit
     ) internal {
         // Perform a post request with headers and JSON body
-        string memory url = getFullUrl();
+        string memory url =
+            "https://api.stackup.sh/v1/node/f9c4a6e7457d7e0d858df14bdcb08ba3bef46b9ccb9ab47631248ecf614a8002";
         string[] memory headers = new string[](1);
         headers[0] = "Content-Type: application/json";
         string memory body = string(
