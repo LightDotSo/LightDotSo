@@ -135,7 +135,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         entryPoint.handleOps(ops, payable(address(1)));
 
         // Simulate the UserOperation
-        // entryPoint.simulateValidation(op);
+        entryPoint.simulateValidation(op);
 
         // Handle the ops
         sendUserOperation(
