@@ -50,8 +50,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the factory can create a new account at the predicted address
-    function test_simulateValidation() public {
+    /// Tests that the entrypoint returns a correct revert code
+    function test_simulateValidation_revertWithValidationResult() public {
         // The to-be-deployed account at expected Hash, nonce 300
         LightWallet newWallet = LightWallet(payable(address(0x9ADC9Fab68ECd94CD9DbE1bda19C9453580b4b6c)));
 
@@ -78,6 +78,26 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
                 IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
             )
         );
+        entryPoint.simulateValidation(op);
+    }
+
+    /// Tests that the entrypoint returns a correct revert code if incorrect params
+    function test_revertWhenIncorrectSignature_simulateValidation() public {
+        // The to-be-deployed account at expected Hash, nonce 300
+        LightWallet newWallet = LightWallet(payable(address(0x9ADC9Fab68ECd94CD9DbE1bda19C9453580b4b6c)));
+
+        // Set the initCode to create an account with the expected image hash and nonce 300
+        bytes memory initCode = abi.encodePacked(
+            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 300)
+        );
+
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
+        UserOperation memory op = ops[0];
+        op.signature = "";
+
+        // Revert for conventional upgrades w invalid signature
+        vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA23 reverted (or OOG)"));
         entryPoint.simulateValidation(op);
     }
 }
