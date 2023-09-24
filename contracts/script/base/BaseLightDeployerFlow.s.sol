@@ -99,7 +99,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
 
         // Sent ETH to the account w/ the expected address
-        bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        bytes memory callData = "";
 
         callGasLimit = 12_000_000;
         verificationGasLimit = 1_000_000;
