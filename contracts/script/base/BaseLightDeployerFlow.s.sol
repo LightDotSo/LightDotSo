@@ -102,8 +102,11 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
 
         callGasLimit = 12_000_000;
-        verificationGasLimit = 690_000;
-        preVerificationGas = 60_000;
+        verificationGasLimit = 1_000_000;
+        preVerificationGas = 1_000_000;
+
+        maxFeePerGas = maxFeePerGas + 100;
+        maxPriorityFeePerGas = maxPriorityFeePerGas + 100;
 
         paymasterAndData = "";
 
