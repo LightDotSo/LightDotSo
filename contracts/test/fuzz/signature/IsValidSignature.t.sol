@@ -64,7 +64,7 @@ contract ERC1271FuzzTest is BaseFuzzTest {
             abi.encode(
                 // Nonce is 1 (does not exist)
                 address(factory),
-                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 1),
+                abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce),
                 signature
             ),
             ERC6492_DETECTION_SUFFIX

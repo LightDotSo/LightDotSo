@@ -37,8 +37,11 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
 
-        // The to-be-deployed account at expected Hash, nonce 3
-        wallet = LightWallet(payable(address(0x2B65f0696ba6c37FFC9A686361f9d46a3b7c0B9f)));
+        // Construct a new nonce
+        nonce = bytes32(uint256(20));
+
+        // The to-be-deployed account at expected Hash, nonce
+        wallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(wallet), 1e30);
@@ -52,15 +55,19 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the entrypoint returns a correct revert code
     function test_simulateValidation_revertWithValidationResult() public {
-        // The to-be-deployed account at expected Hash, nonce 300
-        LightWallet newWallet = LightWallet(payable(address(0x9ADC9Fab68ECd94CD9DbE1bda19C9453580b4b6c)));
+        // Construct the expected nonce
+        nonce = bytes32(uint256(300));
+
+        // The to-be-deployed account at expected Hash, nonce
+        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(newWallet), 1e30);
 
-        // Set the initCode to create an account with the expected image hash and nonce 300
+        // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 300)
+            address(factory),
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
         // Example UserOperation to create the account
         UserOperation[] memory ops =
@@ -68,7 +75,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         UserOperation memory op = ops[0];
 
         IEntryPoint.ReturnInfo memory returnInfo =
-            IEntryPoint.ReturnInfo(408489, 1002500000000, false, 0, 281474976710655, "");
+            IEntryPoint.ReturnInfo(405989, 1002500000000, false, 0, 281474976710655, "");
         IStakeManager.StakeInfo memory senderInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
@@ -83,12 +90,16 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the entrypoint returns a correct revert code if incorrect params
     function test_revertWhenIncorrectSignature_simulateValidation() public {
-        // The to-be-deployed account at expected Hash, nonce 300
-        LightWallet newWallet = LightWallet(payable(address(0x9ADC9Fab68ECd94CD9DbE1bda19C9453580b4b6c)));
+        // Construct the expected nonce
+        bytes32 nonce = bytes32(uint256(123));
 
-        // Set the initCode to create an account with the expected image hash and nonce 300
+        // The to-be-deployed account at expected Hash, nonce
+        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
+
+        // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 300)
+            address(factory),
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 
         UserOperation[] memory ops =

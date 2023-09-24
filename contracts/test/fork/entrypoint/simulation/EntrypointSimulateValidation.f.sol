@@ -44,15 +44,16 @@ contract SimulateValidationForkTest is BaseForkTest {
 
     /// Tests that the factory can create a new account at the predicted address
     function testFork_simulateValidation() public {
-        // The to-be-deployed account at expected Hash, nonce 300
-        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, bytes32(uint256(300)))));
+        // The to-be-deployed account at expected Hash, nonce
+        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(newWallet), 1e30);
 
-        // Set the initCode to create an account with the expected image hash and nonce 300
+        // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 300)
+            address(factory),
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
         // Example UserOperation to create the account
         UserOperation memory op =
