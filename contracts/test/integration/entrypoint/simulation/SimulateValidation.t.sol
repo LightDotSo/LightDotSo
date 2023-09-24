@@ -80,21 +80,4 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
         entryPoint.simulateValidation(op);
     }
-
-    /// Utility function to create an account from the entry point
-    function _testCreateAccountFromEntryPoint() internal {
-        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
-        entryPoint.handleOps(ops, beneficiary);
-    }
-
-    /// Utility function to run the signPackUserOp function
-    function _testSignPackUserOpWithInitCode() internal view returns (UserOperation[] memory ops) {
-        // Set the initCode to create an account with the expected image hash and nonce 3
-        bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
-        );
-
-        // Example UserOperation to create the account
-        ops = entryPoint.signPackUserOps(vm, address(wallet), "", userKey, initCode, weight, threshold, checkpoint);
-    }
 }

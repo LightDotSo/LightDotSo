@@ -19,9 +19,15 @@ pragma solidity ^0.8.18;
 
 import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {Test} from "forge-std/Test.sol";
-import {BaseTest} from "@/test/base/BaseTest.t.sol";
+import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
+import {UserOperation} from "@/contracts/LightWallet.sol";
+import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
+import {BaseTest} from "@/test/base/BaseTest.t.sol";
+import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
+
+using ERC4337Utils for EntryPoint;
 
 /// @notice Base integration test for `LightWallet`
 abstract contract BaseIntegrationTest is BaseTest {
@@ -35,9 +41,6 @@ abstract contract BaseIntegrationTest is BaseTest {
     uint256 internal userKey;
     // Address of the beneficiary of the account
     address payable internal beneficiary;
-
-    // Init code of the account
-    bytes internal initCode;
 
     // -------------------------------------------------------------------------
     // Utility Contracts
@@ -114,5 +117,22 @@ abstract contract BaseIntegrationTest is BaseTest {
         (bool success,) = _proxy.call(_calldata);
         // Assert that the code was not reverted
         assertEq(success, true);
+    }
+
+    /// Utility function to create an account from the entry point
+    function _testCreateAccountFromEntryPoint() internal {
+        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
+        entryPoint.handleOps(ops, beneficiary);
+    }
+
+    /// Utility function to run the signPackUserOp function
+    function _testSignPackUserOpWithInitCode() internal view returns (UserOperation[] memory ops) {
+        // Set the initCode to create an account with the expected image hash and nonce 3
+        bytes memory initCode = abi.encodePacked(
+            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
+        );
+
+        // Example UserOperation to create the account
+        ops = entryPoint.signPackUserOps(vm, address(wallet), "", userKey, initCode, weight, threshold, checkpoint);
     }
 }
