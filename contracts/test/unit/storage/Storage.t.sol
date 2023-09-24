@@ -33,9 +33,7 @@ contract StorageUnitTest is BaseTest {
         // Assert that the image hash is correct
         assertEq(
             // keccak256("org.arcadeum.module.auth.upgradable.image.hash");
-            storageUtils.readBytes32(
-                address(account), bytes32(0xea7157fa25e3aa17d0ae2d5280fa4e24d421c61842aa85e45194e1145aa72bf8)
-            ),
+            readBytes32(address(account), bytes32(0xea7157fa25e3aa17d0ae2d5280fa4e24d421c61842aa85e45194e1145aa72bf8)),
             bytes32(uint256(1))
         );
     }

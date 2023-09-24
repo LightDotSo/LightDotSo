@@ -1,0 +1,6 @@
+SimulateValidation.t.sol
+├── When the signature is correct
+│  └── It should revert on a {ValidationResult} error
+└── When the signature is not correct
+   ├── It should revert on a {AA23 initCode (or OOG)} error
+   └── It should not be able to initialize twice

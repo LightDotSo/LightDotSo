@@ -91,7 +91,7 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
     function test_revertWhenInvalidSignature_batchTransferERC20() public {
         // Example UserOperation to send 0 ERC20 to the address one
         UserOperation[] memory ops =
-            entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey, "");
+            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         ops[0].signature = bytes("invalid");
         vm.expectRevert();
         entryPoint.handleOps(ops, beneficiary);
@@ -101,7 +101,7 @@ contract BatchSendERC20IntegrationTest is BaseIntegrationTest {
     function test_batchTransferERC20() public {
         // Example UserOperation to send 0 ETH to the address one
         UserOperation[] memory ops =
-            entryPoint.signPackUserOp(lightWalletUtils, address(account), callData, userKey, "");
+            entryPoint.signPackUserOps(vm, address(account), callData, userKey, "", weight, threshold, checkpoint);
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the balance of the corresponding destinations are correct

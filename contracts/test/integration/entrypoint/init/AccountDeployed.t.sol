@@ -55,7 +55,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
             abi.encodePacked(address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, 3));
 
         // Example UserOperation to create the account
-        UserOperation[] memory ops = entryPoint.signPackUserOp(lightWalletUtils, address(1), "", userKey, initCode);
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOps(vm, address(1), "", userKey, initCode, weight, threshold, checkpoint);
 
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA13 initCode failed or OOG"));
@@ -87,7 +88,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
         // Example UserOperation to create the account
         UserOperation[] memory ops =
-            entryPoint.signPackUserOp(lightWalletUtils, address(newWallet), "", userKey, initCode);
+            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
 
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(expectedImageHash);
@@ -108,7 +109,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Get the immutable implementation in the factory
         LightWallet implementation = factory.accountImplementation();
         // Assert that the implementation of the created account is the LightWallet
-        assertEq(proxyUtils.getProxyImplementation(address(wallet)), address(implementation));
+        assertEq(getProxyImplementation(address(wallet)), address(implementation));
     }
 
     /// Tests that there is no proxy admin for the wallet
@@ -121,22 +122,5 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
     function test_createAccountFromEntryPoint_noInitializeTwice() public {
         // Check that the wallet is not initializable twice
         _noInitializeTwice(address(wallet), abi.encodeWithSignature("initialize(bytes32)", bytes32(uint256(0))));
-    }
-
-    /// Utility function to create an account from the entry point
-    function _testCreateAccountFromEntryPoint() internal {
-        UserOperation[] memory ops = _testSignPackUserOpWithInitCode();
-        entryPoint.handleOps(ops, beneficiary);
-    }
-
-    /// Utility function to run the signPackUserOp function
-    function _testSignPackUserOpWithInitCode() internal view returns (UserOperation[] memory ops) {
-        // Set the initCode to create an account with the expected image hash and nonce 3
-        bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
-        );
-
-        // Example UserOperation to create the account
-        ops = entryPoint.signPackUserOp(lightWalletUtils, address(wallet), "", userKey, initCode);
     }
 }

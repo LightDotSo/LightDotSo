@@ -49,15 +49,6 @@ abstract contract BaseLightDeployer is BaseTest {
         ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
 
     // -------------------------------------------------------------------------
-    // Immutable Factory
-    // -------------------------------------------------------------------------
-
-    // Parameters for the signature
-    uint8 weight = uint8(1);
-    uint16 threshold = uint16(1);
-    uint32 checkpoint = uint32(1);
-
-    // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
@@ -73,41 +64,6 @@ abstract contract BaseLightDeployer is BaseTest {
 
     function randMod() internal view returns (bytes32) {
         return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
-    }
-
-    // From: `LightWalletUtils` contract
-    function packLegacySignature(bytes memory sig) public view returns (bytes memory) {
-        // Flag for legacy signature
-        uint8 legacySignatureFlag = uint8(0);
-
-        // Pack the signature w/ flag, weight, threshold, checkpoint
-        bytes memory encoded = abi.encodePacked(threshold, checkpoint, legacySignatureFlag, weight, sig);
-
-        return encoded;
-    }
-
-    // From: `LightWalletUtils` contract
-    function getExpectedImageHash(address user) internal view returns (bytes32 imageHash) {
-        // Calculate the image hash
-        imageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
-        imageHash = keccak256(abi.encodePacked(imageHash, uint256(threshold)));
-        imageHash = keccak256(abi.encodePacked(imageHash, uint256(checkpoint)));
-
-        return imageHash;
-    }
-
-    // From: `LightWalletUtils` contract
-    function signDigest(bytes32 hash, address account, uint256 userKey) public view returns (bytes memory) {
-        // Create the subdigest
-        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
-
-        // Create the signature w/ the subdigest
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
-
-        // Pack the signature w/ EIP-712 flag
-        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
-
-        return sig;
     }
 
     function getGasRequestGasEstimation() internal returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) {
@@ -214,7 +170,8 @@ abstract contract BaseLightDeployer is BaseTest {
         uint256 callGasLimit
     ) internal {
         // Perform a post request with headers and JSON body
-        string memory url = getFullUrl();
+        string memory url =
+            "https://api.stackup.sh/v1/node/f9c4a6e7457d7e0d858df14bdcb08ba3bef46b9ccb9ab47631248ecf614a8002";
         string[] memory headers = new string[](1);
         headers[0] = "Content-Type: application/json";
         string memory body = string(

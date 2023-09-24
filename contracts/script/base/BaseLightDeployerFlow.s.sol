@@ -64,7 +64,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
         // Get the expected image hash
-        expectedImageHash = getExpectedImageHash(PRIVATE_KEY_DEPLOYER);
+        expectedImageHash = LightWalletUtils.getExpectedImageHash(PRIVATE_KEY_DEPLOYER, weight, threshold, checkpoint);
 
         // Get the expected address
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
@@ -90,8 +90,13 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
             getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
 
-        bytes memory callData = "";
-        verificationGasLimit = 5000000;
+        // Sent ETH to the account w/ the expected address
+        bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+
+        callGasLimit = 12_000_000;
+        verificationGasLimit = 690_000;
+        preVerificationGas = 60_000;
+
         paymasterAndData = "";
 
         // UserOperation to create the account
@@ -106,7 +111,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             maxFeePerGas,
             maxPriorityFeePerGas,
             paymasterAndData,
-            callData
+            // signature should be empty
+            ""
         );
 
         // Get the hash of the UserOperation
@@ -116,13 +122,10 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         console.logBytes32(userOphash);
 
         // Sign the UserOperation
-        bytes memory sig = signDigest(userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
+        bytes memory sig = LightWalletUtils.signDigest(vm, userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
 
         // Construct the UserOperation
-        op.signature = packLegacySignature(sig);
-
-        // Simulate the UserOperation
-        entryPoint.simulateValidation(op);
+        op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);
@@ -130,6 +133,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
 
         // Entry point handle ops
         entryPoint.handleOps(ops, payable(address(1)));
+
+        // Simulate the UserOperation
+        entryPoint.simulateValidation(op);
 
         // Handle the ops
         sendUserOperation(
