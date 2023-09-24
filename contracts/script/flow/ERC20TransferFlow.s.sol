@@ -35,7 +35,7 @@ contract ERC20TransferFlowScript is BaseLightDeployerFlow {
 
     function run() public {
         // Deploy a new LightWallet
-        deployLightWallet();
+        // deployLightWallet();
 
         // Start the broadcast
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));

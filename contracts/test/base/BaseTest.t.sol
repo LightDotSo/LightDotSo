@@ -106,6 +106,8 @@ abstract contract BaseTest is Test {
     uint16 internal threshold = uint16(1);
     uint32 internal checkpoint = uint32(1);
 
+    bytes32 internal nonce = bytes32(uint256(1));
+
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------

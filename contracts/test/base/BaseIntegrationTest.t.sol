@@ -67,8 +67,8 @@ abstract contract BaseIntegrationTest is BaseTest {
         beneficiary = payable(address(makeAddr("beneficiary")));
         // Get the expected image hash
         expectedImageHash = LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
-        // Create the account using the factory w/ nonce 0 and hash
-        account = factory.createAccount(expectedImageHash, 0);
+        // Create the account using the factory w/ nonce and hash
+        account = factory.createAccount(expectedImageHash, nonce);
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(account), 1e30);
@@ -127,9 +127,10 @@ abstract contract BaseIntegrationTest is BaseTest {
 
     /// Utility function to run the signPackUserOp function
     function _testSignPackUserOpWithInitCode() internal view returns (UserOperation[] memory ops) {
-        // Set the initCode to create an account with the expected image hash and nonce 3
+        // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 3)
+            address(factory),
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
 
         // Example UserOperation to create the account

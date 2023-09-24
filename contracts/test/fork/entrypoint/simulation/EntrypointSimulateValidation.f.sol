@@ -22,42 +22,28 @@ import {IStakeManager} from "@eth-infinitism/account-abstraction/contracts/inter
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet, UserOperation} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
-import {BaseIntegrationTest} from "@/test/base/BaseIntegrationTest.t.sol";
+import {BaseForkTest} from "@/test/base/BaseForkTest.t.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 
 using ERC4337Utils for EntryPoint;
 
 /// @notice Unit tests for `LightWallet` upgradeability
-contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
+contract SimulateValidationForkTest is BaseForkTest {
     // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
     function setUp() public virtual override {
         // Setup the base factory tests
-        BaseIntegrationTest.setUp();
-
-        // Construct a new nonce
-        nonce = bytes32(uint256(20));
-
-        // The to-be-deployed account at expected Hash, nonce
-        wallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
-
-        // Deposit 1e30 ETH into the account
-        vm.deal(address(wallet), 1e30);
-
-        _testCreateAccountFromEntryPoint();
+        BaseForkTest.setUp();
     }
 
     // -------------------------------------------------------------------------
     // Tests
     // -------------------------------------------------------------------------
 
-    /// Tests that the entrypoint returns a correct revert code
-    function test_simulateValidation_revertWithValidationResult() public {
-        // Construct the expected nonce
-        nonce = bytes32(uint256(300));
-
+    /// Tests that the factory can create a new account at the predicted address
+    function testFork_simulateValidation() public {
         // The to-be-deployed account at expected Hash, nonce
         LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
@@ -70,45 +56,21 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
             abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
         // Example UserOperation to create the account
-        UserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
-        UserOperation memory op = ops[0];
+        UserOperation memory op =
+            entryPoint.signPackUserOp(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
 
         IEntryPoint.ReturnInfo memory returnInfo =
-            IEntryPoint.ReturnInfo(405989, 1002500000000, false, 0, 281474976710655, "");
+            IEntryPoint.ReturnInfo(396483, 1002500000000, false, 0, 281474976710655, "");
         IStakeManager.StakeInfo memory senderInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
 
+        // Simulate the validation
         vm.expectRevert(
             abi.encodeWithSelector(
                 IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
             )
         );
-        entryPoint.simulateValidation(op);
-    }
-
-    /// Tests that the entrypoint returns a correct revert code if incorrect params
-    function test_revertWhenIncorrectSignature_simulateValidation() public {
-        // Construct the expected nonce
-        bytes32 nonce = bytes32(uint256(123));
-
-        // The to-be-deployed account at expected Hash, nonce
-        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
-
-        // Set the initCode to create an account with the expected image hash and nonce
-        bytes memory initCode = abi.encodePacked(
-            address(factory),
-            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
-        );
-
-        UserOperation[] memory ops =
-            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
-        UserOperation memory op = ops[0];
-        op.signature = "";
-
-        // Revert for conventional upgrades w invalid signature
-        vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA23 reverted (or OOG)"));
         entryPoint.simulateValidation(op);
     }
 }

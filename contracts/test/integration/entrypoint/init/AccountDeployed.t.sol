@@ -35,8 +35,11 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Setup the base factory tests
         BaseIntegrationTest.setUp();
 
-        // The to-be-deployed account at expected Hash, nonce 3
-        wallet = LightWallet(payable(address(0x2B65f0696ba6c37FFC9A686361f9d46a3b7c0B9f)));
+        // Construct a new nonce
+        nonce = bytes32(uint256(3));
+
+        // The to-be-deployed account at expected Hash, nonce
+        wallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(wallet), 1e30);
@@ -50,9 +53,10 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the factory revert when creating an account with a hash that is 0
     function test_revertWhenHashZero_createAccountFromEntryPoint() public {
-        // Set the initCode to create an account with the expected image hash and nonce 3
-        bytes memory initCode =
-            abi.encodePacked(address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, 3));
+        // Set the initCode to create an account with the expected image hash and nonce
+        bytes memory initCode = abi.encodePacked(
+            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, nonce)
+        );
 
         // Example UserOperation to create the account
         UserOperation[] memory ops =
@@ -76,15 +80,19 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
 
     /// Tests that the factory can create a new account at the predicted address
     function test_createAccountFromEntryPoint_emitEvents() public {
-        // The to-be-deployed account at expected Hash, nonce 300
-        LightWallet newWallet = LightWallet(payable(address(0x9ADC9Fab68ECd94CD9DbE1bda19C9453580b4b6c)));
+        // Construct the new nonce
+        nonce = bytes32(uint256(300_000));
+
+        // The to-be-deployed account at expected Hash, nonce
+        LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
 
         // Deposit 1e30 ETH into the account
         vm.deal(address(newWallet), 1e30);
 
-        // Set the initCode to create an account with the expected image hash and nonce 300
+        // Set the initCode to create an account with the expected image hash and nonce
         bytes memory initCode = abi.encodePacked(
-            address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, 300)
+            address(factory),
+            abi.encodeWithSelector(LightWalletFactory.createAccount.selector, expectedImageHash, nonce)
         );
         // Example UserOperation to create the account
         UserOperation[] memory ops =
