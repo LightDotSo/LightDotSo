@@ -92,7 +92,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Get the immutable implementation in the factory
         LightWallet implementation = factory.accountImplementation();
         // Assert that the implementation of the created account is the LightWallet
-        assertEq(proxyUtils.getProxyImplementation(address(account)), address(implementation));
+        assertEq(getProxyImplementation(address(account)), address(implementation));
     }
 
     /// Tests that there is no proxy admin for the account

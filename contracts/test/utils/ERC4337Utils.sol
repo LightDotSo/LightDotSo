@@ -72,18 +72,24 @@ library ERC4337Utils {
 
     /// @dev Signs a UserOperation with a user's key
     /// @param _entryPoint The entry point contract
-    /// @param _lightWalletUtils The `LightWalletUtils` contract
+    /// @param _vm The VM contract
     /// @param _account The account to sign the UserOperation with
     /// @param _data The data to fill the UserOperation with
     /// @param _key The user's private key to sign the UserOperation with
     /// @param _initCode The initialization code for the user operation (optional parameter)
+    /// @param _weight The weight for the signature
+    /// @param _threshold The threshold for the signature
+    /// @param _checkpoint The checkpoint for the signature
     function signPackUserOp(
         EntryPoint _entryPoint,
-        LightWalletUtils _lightWalletUtils,
+        Vm _vm,
         address _account,
         bytes memory _data,
         uint256 _key,
-        bytes memory _initCode
+        bytes memory _initCode,
+        uint8 _weight,
+        uint16 _threshold,
+        uint32 _checkpoint
     ) internal view returns (UserOperation memory op) {
         // Example UserOperation to update the account to immutable address one
         op = _entryPoint.fillUserOp(address(_account), _data);
@@ -96,30 +102,36 @@ library ERC4337Utils {
         bytes32 userOphash = _entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = _lightWalletUtils.signDigest(userOphash, _account, _key);
+        bytes memory sig = LightWalletUtils.signDigest(_vm, userOphash, _account, _key);
 
         // Pack the signature
-        bytes memory signature = _lightWalletUtils.packLegacySignature(sig);
+        bytes memory signature = LightWalletUtils.packLegacySignature(sig, _weight, _threshold, _checkpoint);
         op.signature = signature;
     }
 
     /// @dev Signs a UserOperation with a user's key
     /// @param _entryPoint The entry point contract
-    /// @param _lightWalletUtils The `LightWalletUtils` contract
+    /// @param _vm The VM contract
     /// @param _account The account to sign the UserOperation with
     /// @param _data The data to fill the UserOperation with
     /// @param _key The user's private key to sign the UserOperation with
     /// @param _initCode The initialization code for the user operation (optional parameter)
+    /// @param _weight The weight for the signature
+    /// @param _threshold The threshold for the signature
+    /// @param _checkpoint The checkpoint for the signature
     function signPackUserOps(
         EntryPoint _entryPoint,
-        LightWalletUtils _lightWalletUtils,
+        Vm _vm,
         address _account,
         bytes memory _data,
         uint256 _key,
-        bytes memory _initCode
+        bytes memory _initCode,
+        uint8 _weight,
+        uint16 _threshold,
+        uint32 _checkpoint
     ) internal view returns (UserOperation[] memory ops) {
         // Pack the UserOperation
         ops = new UserOperation[](1);
-        ops[0] = signPackUserOp(_entryPoint, _lightWalletUtils, _account, _data, _key, _initCode);
+        ops[0] = signPackUserOp(_entryPoint, _vm, _account, _data, _key, _initCode, _weight, _threshold, _checkpoint);
     }
 }

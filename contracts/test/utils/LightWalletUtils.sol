@@ -17,18 +17,17 @@
 
 pragma solidity ^0.8.18;
 
-import {Test} from "forge-std/Test.sol";
+import {Test, Vm} from "forge-std/Test.sol";
 
 /// @title LightWalletUtils
 /// @author shunkakinoki
-/// @notice LightWalletUtils is a utility contract for the Safe
-contract LightWalletUtils is Test {
-    // Parameters for the signature
-    uint8 private weight = uint8(1);
-    uint16 private threshold = uint16(1);
-    uint32 private checkpoint = uint32(1);
-
-    function getExpectedImageHash(address user) public view returns (bytes32) {
+/// @notice LightWalletUtils is a utility library for the wallet
+library LightWalletUtils {
+    function getExpectedImageHash(address user, uint8 weight, uint16 threshold, uint32 checkpoint)
+        internal
+        pure
+        returns (bytes32)
+    {
         // Calculate the image hash
         bytes32 expectedImageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
         expectedImageHash = keccak256(abi.encodePacked(expectedImageHash, uint256(threshold)));
@@ -37,12 +36,12 @@ contract LightWalletUtils is Test {
         return expectedImageHash;
     }
 
-    function signDigest(bytes32 hash, address account, uint256 userKey) public view returns (bytes memory) {
+    function signDigest(Vm _vm, bytes32 hash, address account, uint256 userKey) internal view returns (bytes memory) {
         // Create the subdigest
         bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
 
         // Create the signature w/ the subdigest
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
+        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(userKey, subdigest);
 
         // Pack the signature w/ EIP-712 flag
         bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
@@ -50,7 +49,11 @@ contract LightWalletUtils is Test {
         return sig;
     }
 
-    function packLegacySignature(bytes memory sig) public view returns (bytes memory) {
+    function packLegacySignature(bytes memory sig, uint8 weight, uint16 threshold, uint32 checkpoint)
+        internal
+        pure
+        returns (bytes memory)
+    {
         // Flag for legacy signature
         uint8 legacySignatureFlag = uint8(0);
 

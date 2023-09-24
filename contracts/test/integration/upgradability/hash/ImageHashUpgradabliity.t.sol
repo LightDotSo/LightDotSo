@@ -38,7 +38,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
 
         // Obtain the user operation w/ signature
         UserOperation[] memory ops = entryPoint.signPackUserOps(
-            lightWalletUtils,
+            vm,
             address(account),
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
@@ -47,7 +47,10 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
             ),
             userKey,
-            ""
+            "",
+            weight,
+            threshold,
+            checkpoint
         );
 
         // Set the signature to an invalid value
@@ -90,7 +93,7 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(hash);
         UserOperation[] memory ops = entryPoint.signPackUserOps(
-            lightWalletUtils,
+            vm,
             address(account),
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
@@ -99,7 +102,10 @@ contract ImageHashUpgradabliityIntegrationTest is BaseIntegrationTest {
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
             ),
             userKey,
-            ""
+            "",
+            weight,
+            threshold,
+            checkpoint
         );
 
         // Handle the user operation

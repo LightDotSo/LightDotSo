@@ -24,8 +24,6 @@ import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
-import {ProxyUtils} from "@/test/utils/ProxyUtils.sol";
-import {StorageUtils} from "@/test/utils/StorageUtils.sol";
 import {Test} from "forge-std/Test.sol";
 
 // The structure of the base test is influenced by sabilier - https://github.com/sablier-labs/v2-core/blob/3df030516c7e9044742313c7cf17f15fdc1e9b05/test/Base.t.sol
@@ -95,20 +93,18 @@ abstract contract BaseTest is Test {
     // Utility Contracts
     // -------------------------------------------------------------------------
 
-    // Safe utility contract
-    LightWalletUtils internal lightWalletUtils;
-    // Storage utility contract
-    StorageUtils internal storageUtils;
     // UniversalSigValidator
     UniversalSigValidator internal validator;
-    // Testing utility contract
-    ProxyUtils proxyUtils;
 
     // -------------------------------------------------------------------------
     // Utility Storages
     // -------------------------------------------------------------------------
 
     bytes32 internal expectedImageHash;
+
+    uint8 internal weight = uint8(1);
+    uint16 internal threshold = uint16(1);
+    uint32 internal checkpoint = uint32(1);
 
     // -------------------------------------------------------------------------
     // Setup
@@ -121,19 +117,68 @@ abstract contract BaseTest is Test {
         // Deploy the LightWalletFactory w/ EntryPoint
         factory = new LightWalletFactory(entryPoint);
 
-        // Deploy the LightWalletUtils utility contract
-        lightWalletUtils = new LightWalletUtils();
-        // Deploy the StorageUtils utility contract
-        storageUtils = new StorageUtils();
         // Deploy the UniversalSigValidator
         validator = new UniversalSigValidator();
-        // Deploy the ProxyUtils utility contract
-        proxyUtils = new ProxyUtils();
     }
 
     /// @dev Create the account using the factory w/ hash 1, nonce 0
     function _testCreateAccountWithNonceZero() internal {
         // Create the account using the factory w/ hash 1, nonce 0
         account = factory.createAccount(bytes32(uint256(1)), 0);
+    }
+
+    // -------------------------------------------------------------------------
+    // Utility
+    // -------------------------------------------------------------------------
+
+    /// @param _addr The address of the contract
+    /// @param _slot The location of the bytes32 in storage
+    /// @dev Reads a uint256 from storage
+    function readBytes32(address _addr, bytes32 _slot) internal view returns (bytes32 val) {
+        bytes32 storageSlot = vm.load(_addr, _slot);
+        assembly {
+            mstore(0, storageSlot)
+            val := mload(0)
+        }
+    }
+
+    /// @param _proxyAddress The address of the proxy
+    /// @dev Gets the implementation address of a proxy
+    function getProxyImplementation(address _proxyAddress) internal view returns (address addr) {
+        bytes32 implSlot = bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
+        bytes32 proxySlot = vm.load(_proxyAddress, implSlot);
+        assembly {
+            mstore(0, proxySlot)
+            addr := mload(0)
+        }
+    }
+
+    /// @param _proxyAddress The address of the proxy
+    /// @dev Gets the admin address of a proxy
+    function getProxyAdmin(address _proxyAddress) internal view returns (address addr) {
+        bytes32 adminSlot = bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
+        bytes32 proxySlot = vm.load(_proxyAddress, adminSlot);
+        assembly {
+            mstore(0, proxySlot)
+            addr := mload(0)
+        }
+    }
+
+    /// @param _proxyAddress The address of the proxy
+    /// @dev Gets the creation code of a proxy
+    function getCreationCode(address _proxyAddress) internal view returns (bytes memory) {
+        bytes memory code;
+        assembly {
+            // Size of the creation code
+            let size := extcodesize(_proxyAddress)
+
+            // Allocate memory for the creation code
+            code := mload(0x40)
+            mstore(0x40, add(code, and(add(add(size, 0x20), 0x1f), not(0x1f))))
+
+            // Retrieve the creation code
+            extcodecopy(_proxyAddress, add(code, 0x20), 0, size)
+        }
+        return code;
     }
 }

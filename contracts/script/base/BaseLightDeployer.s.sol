@@ -75,41 +75,6 @@ abstract contract BaseLightDeployer is BaseTest {
         return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
     }
 
-    // From: `LightWalletUtils` contract
-    function packLegacySignature(bytes memory sig) public view returns (bytes memory) {
-        // Flag for legacy signature
-        uint8 legacySignatureFlag = uint8(0);
-
-        // Pack the signature w/ flag, weight, threshold, checkpoint
-        bytes memory encoded = abi.encodePacked(threshold, checkpoint, legacySignatureFlag, weight, sig);
-
-        return encoded;
-    }
-
-    // From: `LightWalletUtils` contract
-    function getExpectedImageHash(address user) internal view returns (bytes32 imageHash) {
-        // Calculate the image hash
-        imageHash = abi.decode(abi.encodePacked(uint96(weight), user), (bytes32));
-        imageHash = keccak256(abi.encodePacked(imageHash, uint256(threshold)));
-        imageHash = keccak256(abi.encodePacked(imageHash, uint256(checkpoint)));
-
-        return imageHash;
-    }
-
-    // From: `LightWalletUtils` contract
-    function signDigest(bytes32 hash, address account, uint256 userKey) public view returns (bytes memory) {
-        // Create the subdigest
-        bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
-
-        // Create the signature w/ the subdigest
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, subdigest);
-
-        // Pack the signature w/ EIP-712 flag
-        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
-
-        return sig;
-    }
-
     function getGasRequestGasEstimation() internal returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();

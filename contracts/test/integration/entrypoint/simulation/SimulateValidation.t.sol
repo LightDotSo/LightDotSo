@@ -64,7 +64,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
         // Example UserOperation to create the account
         UserOperation[] memory ops =
-            entryPoint.signPackUserOps(lightWalletUtils, address(newWallet), "", userKey, initCode);
+            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
         UserOperation memory op = ops[0];
 
         IEntryPoint.ReturnInfo memory returnInfo =
@@ -95,6 +95,6 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
 
         // Example UserOperation to create the account
-        ops = entryPoint.signPackUserOps(lightWalletUtils, address(wallet), "", userKey, initCode);
+        ops = entryPoint.signPackUserOps(vm, address(wallet), "", userKey, initCode, weight, threshold, checkpoint);
     }
 }

@@ -21,6 +21,7 @@ import {UUPSUpgradeable} from "@openzeppelin/contracts/proxy/utils/UUPSUpgradeab
 import {Test} from "forge-std/Test.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
 import {ImmutableProxy} from "@/contracts/proxies/ImmutableProxy.sol";
+import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 
 /// @notice Base integration test for `LightWallet`
 abstract contract BaseIntegrationTest is BaseTest {
@@ -62,7 +63,7 @@ abstract contract BaseIntegrationTest is BaseTest {
         // Set the beneficiary
         beneficiary = payable(address(makeAddr("beneficiary")));
         // Get the expected image hash
-        expectedImageHash = lightWalletUtils.getExpectedImageHash(user);
+        expectedImageHash = LightWalletUtils.getExpectedImageHash(user, weight, threshold, checkpoint);
         // Create the account using the factory w/ nonce 0 and hash
         account = factory.createAccount(expectedImageHash, 0);
 
@@ -79,7 +80,7 @@ abstract contract BaseIntegrationTest is BaseTest {
         // Upgrade the account to the new implementation
         _upgradeTo(_proxy, address(_newImplementation));
         // Assert that the account is now the new version
-        assertEq(proxyUtils.getProxyImplementation(address(_proxy)), address(_newImplementation));
+        assertEq(getProxyImplementation(address(_proxy)), address(_newImplementation));
     }
 
     /// @dev Upgrade the account to the immutable version and assert that the implementation is correct
@@ -87,7 +88,7 @@ abstract contract BaseIntegrationTest is BaseTest {
         // Upgrade the account to the immutable version
         _upgradeTo(_proxy, address(immutableProxy));
         // Assert that the account is now immutable
-        assertEq(proxyUtils.getProxyImplementation(address(_proxy)), address(immutableProxy));
+        assertEq(getProxyImplementation(address(_proxy)), address(immutableProxy));
         // Assert that the account cannot be upgraded again
         vm.expectRevert("Upgrades are disabled");
         _upgradeTo(_proxy, address(0));
@@ -102,7 +103,7 @@ abstract contract BaseIntegrationTest is BaseTest {
     /// @dev Assert that the proxy admin is the zero address
     function _noProxyAdmin(address _proxy) internal {
         // Assert that the proxy admin is the zero address
-        assertEq(proxyUtils.getProxyAdmin(_proxy), address(0));
+        assertEq(getProxyAdmin(_proxy), address(0));
     }
 
     /// @dev Check that the account is not initializable twice

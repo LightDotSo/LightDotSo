@@ -19,6 +19,7 @@ pragma solidity ^0.8.18;
 
 import {BaseFuzzTest} from "@/test/base/BaseFuzzTest.t.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 
 /// @notice Fuzz tests for `LightWallet` for compatibility w/ ERC-1271
 contract ERC1271FuzzTest is BaseFuzzTest {
@@ -32,10 +33,10 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes32 hashed = keccak256(message);
 
         // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
+        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
+        bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Test the signature w/ EIP-1271
         assertEq(account.isValidSignature(hashed, signature), bytes4(0x1626ba7e));
@@ -52,10 +53,10 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes32 hashed = keccak256(message);
 
         // Sign the hash
-        bytes memory sig = lightWalletUtils.signDigest(hashed, address(account), userKey);
+        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey);
 
         // Pack the signature
-        bytes memory signature = lightWalletUtils.packLegacySignature(sig);
+        bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Concat the signature w/ the EIP-6492 detection suffix because of the predeployed contract
         // concat(abi.encode((create2Factory, factoryCalldata, originalERC1271Signature), (address, bytes, bytes)), magicBytes)

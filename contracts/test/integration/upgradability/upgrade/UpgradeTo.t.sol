@@ -56,7 +56,7 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
 
         // Example UserOperation to update the account to immutable address one
         UserOperation[] memory ops = entryPoint.signPackUserOps(
-            lightWalletUtils,
+            vm,
             address(account),
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
@@ -65,19 +65,22 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 abi.encodeWithSignature("upgradeTo(address)", address(accountV2))
             ),
             userKey,
-            ""
+            "",
+            weight,
+            threshold,
+            checkpoint
         );
         entryPoint.handleOps(ops, beneficiary);
 
         // Assert that the account is now immutable
-        assertEq(proxyUtils.getProxyImplementation(address(account)), address(accountV2));
+        assertEq(getProxyImplementation(address(account)), address(accountV2));
     }
 
     /// Tests that the factory reverts when trying to upgrade to an immutable address
     function test_revertWhenImmutable_upgradeToImmutable() public {
         // Example UserOperation to update the account to immutable address one
         UserOperation[] memory ops = entryPoint.signPackUserOps(
-            lightWalletUtils,
+            vm,
             address(account),
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
@@ -86,7 +89,10 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
                 abi.encodeWithSignature("upgradeTo(address)", address(immutableProxy))
             ),
             userKey,
-            ""
+            "",
+            weight,
+            threshold,
+            checkpoint
         );
         entryPoint.handleOps(ops, beneficiary);
         // Deploy new version of LightWallet to test upgrade to
@@ -94,11 +100,14 @@ contract UpgradeToIntegrationTest is BaseIntegrationTest {
 
         // Example UserOperation to update the account to immutable address one
         UserOperation[] memory opsv2 = entryPoint.signPackUserOps(
-            lightWalletUtils,
+            vm,
             address(account),
             abi.encodeWithSignature("upgradeTo(address)", address(accountV2)),
             userKey,
-            ""
+            "",
+            weight,
+            threshold,
+            checkpoint
         );
         vm.expectRevert();
         entryPoint.handleOps(opsv2, beneficiary);

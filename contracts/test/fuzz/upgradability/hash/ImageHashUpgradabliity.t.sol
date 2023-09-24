@@ -37,7 +37,7 @@ contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
 
         // Obtain the user operation w/ signature
         UserOperation[] memory ops = entryPoint.signPackUserOps(
-            lightWalletUtils,
+            vm,
             address(account),
             abi.encodeWithSelector(
                 LightWallet.execute.selector,
@@ -46,7 +46,10 @@ contract ImageHashUpgradabliityFuzzTest is BaseFuzzTest {
                 abi.encodeWithSignature("updateImageHash(bytes32)", hash)
             ),
             userKey,
-            ""
+            "",
+            weight,
+            threshold,
+            checkpoint
         );
 
         // Handle the user operation

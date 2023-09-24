@@ -55,7 +55,8 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
             abi.encodePacked(address(factory), abi.encodeWithSelector(LightWalletFactory.createAccount.selector, 0, 3));
 
         // Example UserOperation to create the account
-        UserOperation[] memory ops = entryPoint.signPackUserOps(lightWalletUtils, address(1), "", userKey, initCode);
+        UserOperation[] memory ops =
+            entryPoint.signPackUserOps(vm, address(1), "", userKey, initCode, weight, threshold, checkpoint);
 
         // Revert for conventional upgrades w/o signature
         vm.expectRevert(abi.encodeWithSignature("FailedOp(uint256,string)", uint256(0), "AA13 initCode failed or OOG"));
@@ -87,7 +88,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
         // Example UserOperation to create the account
         UserOperation[] memory ops =
-            entryPoint.signPackUserOps(lightWalletUtils, address(newWallet), "", userKey, initCode);
+            entryPoint.signPackUserOps(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
 
         vm.expectEmit(true, true, true, true);
         emit ImageHashUpdated(expectedImageHash);
@@ -108,7 +109,7 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         // Get the immutable implementation in the factory
         LightWallet implementation = factory.accountImplementation();
         // Assert that the implementation of the created account is the LightWallet
-        assertEq(proxyUtils.getProxyImplementation(address(wallet)), address(implementation));
+        assertEq(getProxyImplementation(address(wallet)), address(implementation));
     }
 
     /// Tests that there is no proxy admin for the wallet
@@ -137,6 +138,6 @@ contract LightWalletFactoryIntegrationTest is BaseIntegrationTest {
         );
 
         // Example UserOperation to create the account
-        ops = entryPoint.signPackUserOps(lightWalletUtils, address(wallet), "", userKey, initCode);
+        ops = entryPoint.signPackUserOps(vm, address(wallet), "", userKey, initCode, weight, threshold, checkpoint);
     }
 }

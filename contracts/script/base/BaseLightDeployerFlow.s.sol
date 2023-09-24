@@ -64,7 +64,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
         // Get the expected image hash
-        expectedImageHash = getExpectedImageHash(PRIVATE_KEY_DEPLOYER);
+        expectedImageHash = LightWalletUtils.getExpectedImageHash(PRIVATE_KEY_DEPLOYER, weight, threshold, checkpoint);
 
         // Get the expected address
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
@@ -122,10 +122,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         console.logBytes32(userOphash);
 
         // Sign the UserOperation
-        bytes memory sig = signDigest(userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
+        bytes memory sig = LightWalletUtils.signDigest(
+            vm, userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"), weight, threshold, checkpoint
+        );
 
         // Construct the UserOperation
-        op.signature = packLegacySignature(sig);
+        op.signature = LightWalletUtils.packLegacySignature(sig);
 
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);
