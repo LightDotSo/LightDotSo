@@ -122,12 +122,10 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         console.logBytes32(userOphash);
 
         // Sign the UserOperation
-        bytes memory sig = LightWalletUtils.signDigest(
-            vm, userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"), weight, threshold, checkpoint
-        );
+        bytes memory sig = LightWalletUtils.signDigest(vm, userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
 
         // Construct the UserOperation
-        op.signature = LightWalletUtils.packLegacySignature(sig);
+        op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);

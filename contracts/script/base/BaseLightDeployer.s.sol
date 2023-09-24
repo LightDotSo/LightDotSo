@@ -49,15 +49,6 @@ abstract contract BaseLightDeployer is BaseTest {
         ImmutableCreate2Factory(IMMUTABLE_CREATE2_FACTORY_ADDRESS);
 
     // -------------------------------------------------------------------------
-    // Immutable Factory
-    // -------------------------------------------------------------------------
-
-    // Parameters for the signature
-    uint8 weight = uint8(1);
-    uint16 threshold = uint16(1);
-    uint32 checkpoint = uint32(1);
-
-    // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
