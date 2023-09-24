@@ -102,12 +102,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
         bytes memory callData = "";
 
-        callGasLimit = 12_000_000;
-        verificationGasLimit = 1_000_000;
-        preVerificationGas = 1_000_000;
+        callGasLimit = 10000000;
+        verificationGasLimit = 10000000;
+        preVerificationGas = 50000;
 
-        maxFeePerGas = maxFeePerGas + 100;
-        maxPriorityFeePerGas = maxPriorityFeePerGas + 100;
+        maxFeePerGas = 50000;
+        maxPriorityFeePerGas = 1;
 
         paymasterAndData = "";
 
@@ -144,7 +144,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         ops[0] = op;
 
         // Entry point handle ops
-        entryPoint.handleOps(ops, payable(address(1)));
+        // entryPoint.handleOps(ops, payable(address(1)));
 
         // Simulate the UserOperation
         entryPoint.simulateValidation(op);
