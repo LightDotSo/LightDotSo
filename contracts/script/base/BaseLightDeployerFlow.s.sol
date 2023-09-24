@@ -34,6 +34,17 @@ using ERC4337Utils for EntryPoint;
 /// @notice Base deployer test for scripts
 abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     // -------------------------------------------------------------------------
+    // Storages
+    // -------------------------------------------------------------------------
+
+    // Address of the owner of the account
+    address internal user;
+    // Private key of the owner of the account
+    uint256 internal userKey;
+    // Address of the beneficiary of the account
+    address payable internal beneficiary;
+
+    // -------------------------------------------------------------------------
     // Setup
     // -------------------------------------------------------------------------
 
@@ -41,6 +52,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     function setUp() public virtual override {
         // setUp from BaseLightDeployer
         BaseLightDeployer.setUp();
+
+        // Specify the entryPoint
+        entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
 
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
@@ -54,17 +68,11 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     }
 
     function deployLightWallet() internal returns (LightWallet) {
-        // Set the random nonce
-        bytes32 nonce = bytes32(uint256(1));
-
-        // Specify the entryPoint
-        entryPoint = EntryPoint(payable(address(ENTRY_POINT_ADDRESS)));
-
-        // Specify the factory
-        factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
+        // Set the user and userKey
+        (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
 
         // Get the expected image hash
-        expectedImageHash = LightWalletUtils.getExpectedImageHash(PRIVATE_KEY_DEPLOYER, weight, threshold, checkpoint);
+        expectedImageHash = LightWalletUtils.getExpectedImageHash(deployer, weight, threshold, checkpoint);
 
         // Get the expected address
         address expectedAddress = factory.getAddress(expectedImageHash, nonce);
@@ -116,13 +124,13 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         );
 
         // Get the hash of the UserOperation
-        bytes32 userOphash = entryPoint.getUserOpHash(op);
+        // bytes32 userOphash = entryPoint.getUserOpHash(op);
 
         // solhint-disable-next-line no-console
-        console.logBytes32(userOphash);
+        // console.logBytes32(userOphash);
 
         // Sign the UserOperation
-        bytes memory sig = LightWalletUtils.signDigest(vm, userOphash, expectedAddress, vm.envUint("PRIVATE_KEY"));
+        bytes memory sig = LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey);
 
         // Construct the UserOperation
         op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
