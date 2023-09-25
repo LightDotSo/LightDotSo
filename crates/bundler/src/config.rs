@@ -46,9 +46,6 @@ pub struct BundlerArgs {
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "BUNDLER_RPC_URL")]
     pub rpc: String,
-    /// The topics to consume.
-    #[clap(long, default_value = "[::]:3000")]
-    pub rpc_address: String,
 }
 
 impl BundlerArgs {
@@ -64,10 +61,10 @@ impl BundlerArgs {
                 // Create the server
                 let mut server = JsonRpcServer::new(
                     true,
-                    IpAddr::V6(Ipv6Addr::LOCALHOST),
+                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
                     3000,
                     true,
-                    IpAddr::V6(Ipv6Addr::LOCALHOST),
+                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
                     3001,
                 );
 
@@ -78,7 +75,7 @@ impl BundlerArgs {
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at {:}", self.rpc_address,);
+                info!("Started bundler JSON-RPC server at {:}", IpAddr::V6(Ipv6Addr::UNSPECIFIED));
 
                 pending::<Result<()>>().await
             }

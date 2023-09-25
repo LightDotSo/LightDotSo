@@ -24,11 +24,7 @@ use std::{
 };
 
 #[derive(Debug, Clone, Parser)]
-pub struct GasArgs {
-    /// The topics to consume.
-    #[clap(long, default_value = "[::]:3000")]
-    pub rpc_address: String,
-}
+pub struct GasArgs {}
 
 impl GasArgs {
     pub async fn run(self) -> Result<()> {
@@ -43,10 +39,10 @@ impl GasArgs {
                 // Create the server
                 let mut server = JsonRpcServer::new(
                     true,
-                    IpAddr::V6(Ipv6Addr::LOCALHOST),
+                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
                     3000,
                     true,
-                    IpAddr::V6(Ipv6Addr::LOCALHOST),
+                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
                     3001,
                 );
 
@@ -55,7 +51,7 @@ impl GasArgs {
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at {:}", self.rpc_address,);
+                info!("Started bundler JSON-RPC server at {:}", IpAddr::V6(Ipv6Addr::UNSPECIFIED));
 
                 pending::<Result<()>>().await
             }
