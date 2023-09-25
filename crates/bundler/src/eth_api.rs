@@ -16,6 +16,10 @@
 use ethers::types::U64;
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 
+/// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
+/// License: MIT or Apache-2.0
+/// Thank you to Vid201 for the wonderful work!
+
 #[rpc(server, namespace = "eth")]
 pub trait EthApi {
     /// Retrieve the current [EIP-155](https://eips.ethereum.org/EIPS/eip-155) chain ID.
@@ -25,4 +29,11 @@ pub trait EthApi {
     /// * `RpcResult<U64>` - The chain ID as a U64.
     #[method(name = "chainId")]
     async fn chain_id(&self) -> RpcResult<U64>;
+
+    /// Get the supported entry points for [UserOperations](UserOperation).
+    ///
+    /// # Returns
+    /// * `RpcResult<Vec<String>>` - A array of the entry point addresses as strings.
+    #[method(name = "supportedEntryPoints")]
+    async fn supported_entry_points(&self) -> RpcResult<Vec<String>>;
 }

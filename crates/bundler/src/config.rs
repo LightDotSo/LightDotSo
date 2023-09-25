@@ -72,7 +72,7 @@ impl BundlerArgs {
                 pending::<Result<()>>().await
             }
         });
-        info!("PaymasterArgs run, finished");
+        info!("BundlerArgs run, finished");
 
         Ok(())
     }

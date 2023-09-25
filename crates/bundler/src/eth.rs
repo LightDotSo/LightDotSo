@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::eth_api::EthApiServer;
+use crate::{constants::ENTRYPOINT_ADDRESSES, eth_api::EthApiServer};
 use async_trait::async_trait;
-use ethers::types::U64;
+use ethers::{types::U64, utils::to_checksum};
 use jsonrpsee::core::RpcResult;
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth.rs
@@ -34,5 +34,13 @@ impl EthApiServer for EthApiServerImpl {
     /// * `RpcResult<U64>` - The chain ID as a U64.
     async fn chain_id(&self) -> RpcResult<U64> {
         Ok(U64::from(1))
+    }
+
+    /// Get the supported entry points for [UserOperations](UserOperation).
+    ///
+    /// # Returns
+    /// * `RpcResult<Vec<String>>` - A array of the entry point addresses as strings.
+    async fn supported_entry_points(&self) -> RpcResult<Vec<String>> {
+        return Ok(ENTRYPOINT_ADDRESSES.into_iter().map(|ep| to_checksum(&ep, None)).collect());
     }
 }
