@@ -17,6 +17,7 @@ use jsonrpsee::types::{
     error::{ErrorCode, INTERNAL_ERROR_CODE},
     ErrorObject, ErrorObjectOwned,
 };
+use silius_primitives::simulation::SimulationCheckError;
 
 // From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/rpc/src/error.rs#L15-L23
 // JsonRpcError is a wrapper for the ErrorObjectOwned type.
@@ -99,5 +100,16 @@ impl From<reqwest::Error> for JsonRpcError {
                 None::<bool>,
             )),
         }
+    }
+}
+
+/// Convert a [SimulationCheckError](SimulationCheckError) to a [JsonRpcError](JsonRpcError).
+impl From<SimulationCheckError> for JsonRpcError {
+    fn from(err: SimulationCheckError) -> Self {
+        JsonRpcError(ErrorObject::owned(
+            ErrorCode::ParseError.code(),
+            format!("JSON serializing error: {:?}", err),
+            None::<bool>,
+        ))
     }
 }

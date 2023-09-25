@@ -5958,6 +5958,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "clap 4.4.0",
+ "enumset",
  "ethers 2.0.8",
  "ethers-providers 2.0.8",
  "expanded-pathbuf",
@@ -6103,6 +6104,7 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "silius-primitives",
  "url",
 ]
 
