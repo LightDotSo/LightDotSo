@@ -17,4 +17,5 @@ pub mod config;
 pub mod constants;
 pub mod eth;
 pub mod eth_api;
+pub mod server;
 pub mod utils;

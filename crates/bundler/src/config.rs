@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::future::pending;
-
 use crate::{
     eth::EthApiServerImpl,
     eth_api::EthApiServer,
@@ -24,7 +22,11 @@ use clap::Parser;
 use ethers::types::{Address, U256};
 use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::info;
-use silius_rpc::JsonRpcServer;
+use silius_rpc::{JsonRpcServer, JsonRpcServerType};
+use std::{
+    future::pending,
+    net::{IpAddr, Ipv6Addr},
+};
 
 #[derive(Debug, Clone, Parser)]
 pub struct BundlerArgs {
@@ -36,17 +38,6 @@ pub struct BundlerArgs {
     /// The max verification gas
     #[clap(long, default_value="3000000", value_parser=parse_u256)]
     pub max_verification_gas: U256,
-    /// The chain id of the chain to index.
-    #[arg(long, short, default_value_t = 1)]
-    #[clap(long, env = "CHAIN_ID")]
-    pub chain_id: usize,
-    /// The RPC endpoint to connect to.
-    #[arg(long, short, default_value_t = String::from(""))]
-    #[clap(long, env = "BUNDLER_RPC_URL")]
-    pub rpc: String,
-    /// The topics to consume.
-    #[clap(long, default_value = "[::]:3000")]
-    pub rpc_address: String,
 }
 
 impl BundlerArgs {
@@ -60,14 +51,23 @@ impl BundlerArgs {
         tokio::spawn({
             async move {
                 // Create the server
-                let mut server = JsonRpcServer::new(self.rpc_address.clone(), true, false);
+                let mut server = JsonRpcServer::new(
+                    true,
+                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
+                    3000,
+                    true,
+                    IpAddr::V6(Ipv6Addr::UNSPECIFIED),
+                    3001,
+                );
 
                 // Add the paymaster server
-                server.add_method(EthApiServerImpl {}.into_rpc()).unwrap();
+                server
+                    .add_methods(EthApiServerImpl {}.into_rpc(), JsonRpcServerType::Http)
+                    .unwrap();
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at {:}", self.rpc_address,);
+                info!("Started bundler JSON-RPC server at [::]:3000");
 
                 pending::<Result<()>>().await
             }
