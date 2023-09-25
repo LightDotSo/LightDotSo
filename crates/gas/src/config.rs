@@ -51,7 +51,7 @@ impl GasArgs {
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at {:}", IpAddr::V6(Ipv6Addr::UNSPECIFIED));
+                info!("Started bundler JSON-RPC server at [::]:3000");
 
                 pending::<Result<()>>().await
             }

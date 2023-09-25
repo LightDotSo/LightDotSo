@@ -14,7 +14,7 @@
       "method": "POST",
       "sortNum": 10000,
       "created": "2023-09-25T17:16:43.620Z",
-      "modified": "2023-09-25T21:59:04.393Z",
+      "modified": "2023-09-25T22:03:52.858Z",
       "headers": [
         {
           "name": "Content-Type",
@@ -24,7 +24,7 @@
       "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\",\n  \"params\": []\n}",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\",\n  \"params\": [1]\n}",
         "form": []
       },
       "tests": []
@@ -34,11 +34,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "",
       "name": "eth_supportedEntryPoints local",
-      "url": "http://[::1]:3000",
+      "url": "http://localhost:3000",
       "method": "POST",
       "sortNum": 20000,
       "created": "2023-09-25T17:19:01.660Z",
-      "modified": "2023-09-25T21:46:15.205Z",
+      "modified": "2023-09-25T22:01:39.792Z",
       "headers": [
         {
           "name": "Content-Type",

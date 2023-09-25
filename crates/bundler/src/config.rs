@@ -38,14 +38,6 @@ pub struct BundlerArgs {
     /// The max verification gas
     #[clap(long, default_value="3000000", value_parser=parse_u256)]
     pub max_verification_gas: U256,
-    /// The chain id of the chain to index.
-    #[arg(long, short, default_value_t = 1)]
-    #[clap(long, env = "CHAIN_ID")]
-    pub chain_id: usize,
-    /// The RPC endpoint to connect to.
-    #[arg(long, short, default_value_t = String::from(""))]
-    #[clap(long, env = "BUNDLER_RPC_URL")]
-    pub rpc: String,
 }
 
 impl BundlerArgs {
@@ -75,7 +67,7 @@ impl BundlerArgs {
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at {:}", IpAddr::V6(Ipv6Addr::UNSPECIFIED));
+                info!("Started bundler JSON-RPC server at [::]:3000");
 
                 pending::<Result<()>>().await
             }
