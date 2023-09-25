@@ -329,6 +329,30 @@
     "tests": []
   },
   {
+    "_id": "b058b53b-1983-494b-ba41-4cc536a2c746",
+    "colId": "history",
+    "containerId": "",
+    "name": "eth_chainId local",
+    "url": "http://localhost:3000",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-08-26T10:42:05.410Z",
+    "modified": "2023-09-25T17:16:18.321Z",
+    "headers": [
+      {
+        "name": "Content-Type",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
     "_id": "72ece1db-43e8-4957-b46c-a270775e957f",
     "colId": "history",
     "containerId": "",
