@@ -26,7 +26,7 @@ use std::{
 #[derive(Debug, Clone, Parser)]
 pub struct PaymasterArgs {
     /// The infura API key
-    #[clap(long, env = "PAYMASTER_PRIVATE_KEY")]
+    #[clap(long, env = "PAYMASTER_PRIVATE_KEY", hide = true)]
     pub paymaster_private_key: String,
 }
 
