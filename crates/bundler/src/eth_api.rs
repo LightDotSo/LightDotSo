@@ -13,8 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod constants;
-pub mod eth;
-pub mod eth_api;
-pub mod utils;
+use ethers::types::U64;
+use jsonrpsee::{core::RpcResult, proc_macros::rpc};
+
+#[rpc(server, namespace = "eth")]
+pub trait EthApi {
+    /// Retrieve the current [EIP-155](https://eips.ethereum.org/EIPS/eip-155) chain ID.
+    ///
+    ///
+    /// # Returns
+    /// * `RpcResult<U64>` - The chain ID as a U64.
+    #[method(name = "chainId")]
+    async fn chain_id(&self) -> RpcResult<U64>;
+}

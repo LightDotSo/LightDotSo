@@ -13,13 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use ethers::types::{Address, U256};
 /// Entire file is copied from https://github.com/Vid201/silius/blob/bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96/bin/silius/src/utils.rs
 /// License: MIT or Apache-2.0
-use ethers::types::{Address, U256};
-use lightdotso_tracing::tracing::info;
-use pin_utils::pin_mut;
-use silius_primitives::UoPoolMode;
-use std::{future::Future, str::FromStr};
+use std::str::FromStr;
 
 /// Parses address from string
 pub fn parse_address(s: &str) -> Result<Address, String> {
@@ -29,36 +26,4 @@ pub fn parse_address(s: &str) -> Result<Address, String> {
 /// Parses U256 from string
 pub fn parse_u256(s: &str) -> Result<U256, String> {
     U256::from_str_radix(s, 10).map_err(|_| format!("String {s} is not a valid U256"))
-}
-
-/// Parses UoPoolMode from string
-pub fn parse_uopool_mode(s: &str) -> Result<UoPoolMode, String> {
-    UoPoolMode::from_str(s).map_err(|_| format!("String {s} is not a valid UoPoolMode"))
-}
-
-/// Runs the future to completion or until:
-/// - `ctrl-c` is received.
-/// - `SIGTERM` is received (unix only).
-pub async fn run_until_ctrl_c<F, E>(fut: F) -> Result<(), E>
-where
-    F: Future<Output = Result<(), E>>,
-    E: Send + Sync + 'static + From<std::io::Error>,
-{
-    let ctrl_c = tokio::signal::ctrl_c();
-
-    let mut stream = tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())?;
-    let sigterm = stream.recv();
-    pin_mut!(sigterm, ctrl_c, fut);
-
-    tokio::select! {
-        _ = ctrl_c => {
-            info!("Received ctrl-c signal.");
-        },
-        _ = sigterm => {
-            info!("Received SIGTERM signal.");
-        },
-        res = fut => res?,
-    }
-
-    Ok(())
 }

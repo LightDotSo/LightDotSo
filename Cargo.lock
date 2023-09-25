@@ -5938,12 +5938,15 @@ dependencies = [
 name = "lightdotso-bundler"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "clap 4.4.0",
  "ethers 2.0.8",
  "ethers-providers 2.0.8",
  "expanded-pathbuf",
  "eyre",
+ "jsonrpsee",
  "lazy_static",
+ "lightdotso-jsonrpsee",
  "lightdotso-tracing",
  "pin-utils",
  "silius-grpc",
