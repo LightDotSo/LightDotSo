@@ -93,6 +93,41 @@
           "value": "callGasLimit"
         }
       ]
+    },
+    {
+      "_id": "80728a00-d34b-42dd-9d9d-e9eed8d6560e",
+      "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
+      "containerId": "",
+      "name": "eth_estimateUserOperationGas local",
+      "url": "https://rpc.light.so/1",
+      "method": "POST",
+      "sortNum": 12500,
+      "created": "2023-09-25T19:01:11.712Z",
+      "modified": "2023-09-25T19:01:11.712Z",
+      "headers": [
+        {
+          "name": "accept",
+          "value": "application/json"
+        },
+        {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_estimateUserOperationGas\",\n  \"params\": [\n    {\n      \"sender\": \"0x9ADC9Fab68ECd94CD9DbE1bda19C9453580b4b6c\",\n      \"nonce\": \"0x0\",\n      \"initCode\": \"0x2e234dae75c793f67a35089c9d99245e1c58470b183815c8b7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6000000000000000000000000000000000000000000000000000000000000012c\",\n      \"callData\": \"0x\",\n      \"callGasLimit\": \"0x989680\",\n      \"verificationGasLimit\": \"0x989680\",\n      \"preVerificationGas\": \"0xC350\",\n      \"maxFeePerGas\": \"0xC350\",\n      \"maxPriorityFeePerGas\": \"0x1\",\n      \"signature\": \"0x000100000001000159cf3a23b6dc53ba7218ce310bcb77328aa02a475bf930ec27fdb2e013eff1ae27a6d4b93697d3e06d3a5dffa55590a61efab9aa1f24ea2ba6e0b305e6e5f04f1b01\",\n      \"paymasterAndData\": \"0x\"\n    },\n    \"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789\"\n  ]\n}",
+        "form": []
+      },
+      "tests": [
+        {
+          "type": "res-body",
+          "custom": "",
+          "action": "contains",
+          "value": "32500"
+        }
+      ]
     }
   ]
 }

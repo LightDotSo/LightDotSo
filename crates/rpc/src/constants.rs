@@ -35,14 +35,7 @@ lazy_static! {
 
 // The internal bundler rpc urls
 lazy_static! {
-    pub static ref BUNDLER_RPC_URLS: HashMap<u64, String> = {
-        let mut m = HashMap::new();
-
-        // Testnet
-        m.insert(11155111, "http://lightdotso-bundler-sepolia.internal:3000".to_string());
-
-        m
-    };
+    pub static ref BUNDLER_RPC_URL: String = "http://lightdotso-bundler.internal:3000".to_string();
 }
 
 // The infura rpc urls

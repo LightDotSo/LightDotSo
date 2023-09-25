@@ -17,7 +17,7 @@ pub mod config;
 mod constants;
 
 use crate::constants::{
-    ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URLS, CHAINNODES_RPC_URLS,
+    ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URL, CHAINNODES_RPC_URLS,
     GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL,
     PUBLIC_RPC_URLS, SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
 };
@@ -32,7 +32,7 @@ use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_paymaster::types::UserOperationRequest;
 use lightdotso_tracing::tracing::{error, info, warn};
-use serde::{ser::Error, Deserialize, Serialize};
+use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
 use std::collections::HashMap;
 
@@ -334,17 +334,34 @@ pub async fn rpc_proxy_handler(
             "eth_getUserOperationByHash" |
             "eth_getUserOperationReceipt" |
             "rundler_maxPriorityFeePerGas" => {
-                // Get the bundler rpc url
-                let result = try_rpc_with_url(
-                    &BUNDLER_RPC_URLS,
-                    None,
-                    &chain_id,
-                    &client,
-                    Body::from(full_body_bytes.clone()),
-                )
-                .await;
-                if let Some(resp) = result {
-                    return resp;
+                // Deserialize w/ serde_json
+                let body_json_result =
+                    serde_json::from_slice::<JSONRPCRequest<Vec<Value>>>(&full_body_bytes);
+
+                if let Ok(body_json) = body_json_result {
+                    // Get the params and insert "chainId" into the JSON object
+                    let mut params: Vec<Value> = body_json.params;
+                    params.push(json!(chain_id));
+                    info!("params: {:?}", params);
+
+                    let req_body = json!({
+                        "jsonrpc": "2.0",
+                        "method": method.as_str(),
+                        "params": params.clone(),
+                        "id": 1
+                    });
+                    // Convert the params to hyper Body
+                    let hyper_body = Body::from(req_body.to_string());
+
+                    // Get the result from the client
+                    let result =
+                        get_client_result(BUNDLER_RPC_URL.to_string(), client.clone(), hyper_body)
+                            .await;
+                    if let Some(resp) = result {
+                        return resp;
+                    }
+                } else {
+                    warn!("Error while deserializing body_json_result: {:?}", body_json_result);
                 }
 
                 // Get the alchemy rpc url
