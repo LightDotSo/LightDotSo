@@ -379,23 +379,17 @@ pub async fn rpc_proxy_handler(
                 }
             }
             "paymaster_requestPaymasterAndData" | "paymaster_requestGasAndPaymasterAndData" => {
-                #[derive(Clone, Debug, Serialize, Deserialize)]
-                pub struct PaymasterUserOperationRequest {
-                    pub params: UserOperationRequest,
-                }
-
                 // Deserialize w/ serde_json
                 let body_json_result = serde_json::from_slice::<
-                    JSONRPCRequest<PaymasterUserOperationRequest>,
+                    JSONRPCRequest<Vec<UserOperationRequest>>,
                 >(&full_body_bytes);
 
                 if let Ok(body_json) = body_json_result {
                     // Get the user_operation from the body
-                    // FIXME: There should be a better clean abstraction for this
-                    let user_operation = body_json.params.params;
+                    let user_operation = body_json.params;
                     let params = vec![
                         json!(chain_id),
-                        json!(user_operation),
+                        json!(user_operation[0]),
                         json!(format!("{:?}", *ENTRYPOINT_V060_ADDRESS)),
                     ];
                     info!("params: {:?}", params);
@@ -421,6 +415,10 @@ pub async fn rpc_proxy_handler(
                     }
                 } else {
                     warn!("Error while deserializing body_json_result: {:?}", body_json_result);
+                    return Response::builder()
+                        .status(400)
+                        .body(Body::from(body_json_result.unwrap_err().to_string()))
+                        .unwrap();
                 }
             }
             "simulator_simulateExecution" |
