@@ -17,8 +17,11 @@ use crate::{paymaster::PaymasterServerImpl, paymaster_api::PaymasterServer};
 use clap::Parser;
 use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::info;
-use silius_rpc::JsonRpcServer;
-use std::future::pending;
+use silius_rpc::{JsonRpcServer, JsonRpcServerType};
+use std::{
+    future::pending,
+    net::{IpAddr, Ipv6Addr},
+};
 
 #[derive(Debug, Clone, Parser)]
 pub struct PaymasterArgs {
@@ -41,10 +44,19 @@ impl PaymasterArgs {
         tokio::spawn({
             async move {
                 // Create the server
-                let mut server = JsonRpcServer::new(self.rpc_address.clone(), true, false);
+                let mut server = JsonRpcServer::new(
+                    true,
+                    IpAddr::V6(Ipv6Addr::LOCALHOST),
+                    3000,
+                    true,
+                    IpAddr::V6(Ipv6Addr::LOCALHOST),
+                    3001,
+                );
 
                 // Add the paymaster server
-                server.add_method(PaymasterServerImpl {}.into_rpc()).unwrap();
+                server
+                    .add_methods(PaymasterServerImpl {}.into_rpc(), JsonRpcServerType::Http)
+                    .unwrap();
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));

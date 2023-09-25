@@ -3272,6 +3272,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "ethers-flashbots"
+version = "0.14.0"
+source = "git+https://github.com/qi-protocol/ethers-flashbots.git?rev=1c6504cd2d1f4d67e4af2dd9a5ee676a284452f9#1c6504cd2d1f4d67e4af2dd9a5ee676a284452f9"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "ethers 2.0.8",
+ "futures-core",
+ "futures-util",
+ "pin-project",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "url",
+]
+
+[[package]]
 name = "ethers-middleware"
 version = "2.0.8"
 source = "git+https://github.com/gakonst/ethers-rs?rev=fa3017715a298728d9fb341933818a5d0d84c2dc#fa3017715a298728d9fb341933818a5d0d84c2dc"
@@ -5946,13 +5964,16 @@ dependencies = [
  "eyre",
  "jsonrpsee",
  "lazy_static",
+ "lightdotso-contracts",
  "lightdotso-jsonrpsee",
  "lightdotso-tracing",
  "pin-utils",
  "serde_json",
+ "silius-contracts",
  "silius-grpc",
  "silius-primitives",
  "silius-rpc",
+ "silius-uopool",
  "tokio",
 ]
 
@@ -10883,24 +10904,31 @@ dependencies = [
 
 [[package]]
 name = "silius-bundler"
-version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96#bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96"
+version = "0.2.0-alpha"
+source = "git+https://github.com/Vid201/silius?rev=b1841aa614a9410907d1801128bf500f2a87596f#b1841aa614a9410907d1801128bf500f2a87596f"
 dependencies = [
- "anyhow",
+ "async-trait",
+ "bytes",
  "ethers 2.0.8",
+ "ethers-flashbots",
+ "eyre",
+ "serde",
+ "serde_json",
  "silius-contracts",
  "silius-primitives",
+ "tokio",
  "tracing",
+ "url",
 ]
 
 [[package]]
 name = "silius-contracts"
-version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96#bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96"
+version = "0.2.0-alpha"
+source = "git+https://github.com/Vid201/silius?rev=b1841aa614a9410907d1801128bf500f2a87596f#b1841aa614a9410907d1801128bf500f2a87596f"
 dependencies = [
- "anyhow",
  "ethers 2.0.8",
  "ethers-solc 2.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
+ "eyre",
  "lazy_static",
  "serde",
  "serde_json",
@@ -10910,14 +10938,15 @@ dependencies = [
 
 [[package]]
 name = "silius-grpc"
-version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96#bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96"
+version = "0.2.0-alpha"
+source = "git+https://github.com/Vid201/silius?rev=b1841aa614a9410907d1801128bf500f2a87596f#b1841aa614a9410907d1801128bf500f2a87596f"
 dependencies = [
- "anyhow",
  "arrayref",
  "async-trait",
  "dashmap",
  "ethers 2.0.8",
+ "expanded-pathbuf",
+ "eyre",
  "parking_lot 0.12.1",
  "prost 0.11.9",
  "prost-build",
@@ -10935,13 +10964,13 @@ dependencies = [
 
 [[package]]
 name = "silius-primitives"
-version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96#bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96"
+version = "0.2.0-alpha"
+source = "git+https://github.com/Vid201/silius?rev=b1841aa614a9410907d1801128bf500f2a87596f#b1841aa614a9410907d1801128bf500f2a87596f"
 dependencies = [
- "anyhow",
  "educe",
  "ethers 2.0.8",
  "expanded-pathbuf",
+ "eyre",
  "lazy_static",
  "rustc-hex",
  "serde",
@@ -10956,12 +10985,12 @@ dependencies = [
 
 [[package]]
 name = "silius-rpc"
-version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96#bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96"
+version = "0.2.0-alpha"
+source = "git+https://github.com/Vid201/silius?rev=b1841aa614a9410907d1801128bf500f2a87596f#b1841aa614a9410907d1801128bf500f2a87596f"
 dependencies = [
- "anyhow",
  "async-trait",
  "ethers 2.0.8",
+ "eyre",
  "git-version",
  "hyper",
  "jsonrpsee",
@@ -10976,15 +11005,16 @@ dependencies = [
 
 [[package]]
 name = "silius-uopool"
-version = "0.1.0"
-source = "git+https://github.com/Vid201/silius?rev=bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96#bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96"
+version = "0.2.0-alpha"
+source = "git+https://github.com/Vid201/silius?rev=b1841aa614a9410907d1801128bf500f2a87596f#b1841aa614a9410907d1801128bf500f2a87596f"
 dependencies = [
- "anyhow",
  "async-trait",
  "educe",
  "enumset",
  "ethers 2.0.8",
+ "eyre",
  "page_size 0.5.0",
+ "parking_lot 0.12.1",
  "prost 0.11.9",
  "reth-db",
  "reth-libmdbx",
@@ -12341,8 +12371,10 @@ checksum = "ec509ac96e9a0c43427c74f003127d953a265737636129424288d27cb5c4b12c"
 dependencies = [
  "futures-util",
  "log",
+ "native-tls",
  "rustls 0.21.6",
  "tokio",
+ "tokio-native-tls 0.3.1",
  "tokio-rustls 0.24.1",
  "tungstenite 0.19.0",
  "webpki-roots 0.23.1",
@@ -12955,6 +12987,7 @@ dependencies = [
  "http",
  "httparse",
  "log",
+ "native-tls",
  "rand 0.8.5",
  "rustls 0.21.6",
  "sha1",

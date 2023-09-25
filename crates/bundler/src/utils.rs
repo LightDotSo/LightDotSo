@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::{Address, U256};
+use silius_uopool::Overhead;
 /// Entire file is copied from https://github.com/Vid201/silius/blob/bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96/bin/silius/src/utils.rs
 /// License: MIT or Apache-2.0
 use std::str::FromStr;
@@ -26,4 +27,19 @@ pub fn parse_address(s: &str) -> Result<Address, String> {
 /// Parses U256 from string
 pub fn parse_u256(s: &str) -> Result<U256, String> {
     U256::from_str_radix(s, 10).map_err(|_| format!("String {s} is not a valid U256"))
+}
+
+/// Helper function to calculate the call gas limit of a [UserOperation](UserOperation)
+/// The function is invoked by the
+/// [estimate_user_operation_gas](crates::uopool::estimate::estimate_user_operation_gas) method.
+///
+/// # Arguments
+/// `paid` - The paid gas
+/// `pre_op_gas` - The pre-operation gas
+/// `fee_per_gas` - The fee per gas
+///
+/// # Returns
+/// The call gas limit of the [UserOperation](UserOperation)
+pub fn calculate_call_gas_limit(paid: U256, pre_op_gas: U256, fee_per_gas: U256) -> U256 {
+    paid / fee_per_gas - pre_op_gas + Overhead::default().fixed
 }

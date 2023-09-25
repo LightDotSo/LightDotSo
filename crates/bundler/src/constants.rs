@@ -16,7 +16,7 @@
 use ethers::types::Address;
 use lazy_static::lazy_static;
 
-// The factory addresses
+// The entrypoint addresses
 lazy_static! {
     pub static ref ENTRYPOINT_ADDRESSES: [Address; 1] = [
       // Local
