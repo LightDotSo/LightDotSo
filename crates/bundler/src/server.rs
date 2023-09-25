@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// The portable version of UoPool from silius.
+// From: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/grpc/src/uopool.rs
+// License: MIT & Apache-2.0
+
 use ethers::{
     prelude::LogMeta,
     providers::Middleware,

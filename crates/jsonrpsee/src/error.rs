@@ -106,10 +106,68 @@ impl From<reqwest::Error> for JsonRpcError {
 /// Convert a [SimulationCheckError](SimulationCheckError) to a [JsonRpcError](JsonRpcError).
 impl From<SimulationCheckError> for JsonRpcError {
     fn from(err: SimulationCheckError) -> Self {
-        JsonRpcError(ErrorObject::owned(
-            ErrorCode::ParseError.code(),
-            format!("JSON serializing error: {:?}", err),
-            None::<bool>,
-        ))
+        match err {
+            SimulationCheckError::Signature {} => {
+                JsonRpcError(ErrorObject::owned(
+                    ErrorCode::ParseError.code(),
+                    "Simulation check error: Signature error".to_string(),
+                    None::<bool>,
+                ))
+            }
+            SimulationCheckError::Expiration {
+                valid_after,
+                valid_until,
+                paymaster,
+            } => {
+                JsonRpcError(ErrorObject::owned(
+                    ErrorCode::ParseError.code(),
+                    format!(
+                        "Simulation check error: Expiration error with values: valid_after: {:?}, valid_until: {:?}, paymaster: {:?}",
+                        valid_after, valid_until, paymaster
+                    ),
+                    None::<bool>,
+                ))
+            }
+            SimulationCheckError::Validation { message }
+            | SimulationCheckError::Execution { message }
+            | SimulationCheckError::CallStack { message }
+            | SimulationCheckError::CodeHashes { message }
+            | SimulationCheckError::MiddlewareError { message }
+            | SimulationCheckError::UnknownError { message } => {
+                JsonRpcError(ErrorObject::owned(
+                    ErrorCode::ParseError.code(),
+                    format!("Simulation check error: {}", message),
+                    None::<bool>,
+                ))
+            }
+            SimulationCheckError::Opcode { entity, opcode } => {
+                JsonRpcError(ErrorObject::owned(
+                    ErrorCode::ParseError.code(),
+                    format!("Simulation check error: Opcode error with entity: {}, opcode: {}", entity, opcode),
+                    None::<bool>,
+                ))
+            }
+            SimulationCheckError::StorageAccess { slot } => {
+                JsonRpcError(ErrorObject::owned(
+                    ErrorCode::ParseError.code(),
+                    format!("Simulation check error: Storage access error with slot: {}", slot),
+                    None::<bool>,
+                ))
+            }
+            SimulationCheckError::Unstaked { entity, message } => {
+                JsonRpcError(ErrorObject::owned(
+                    ErrorCode::ParseError.code(),
+                    format!("Simulation check error: Unstaked error with entity: {}, message: {}", entity, message),
+                    None::<bool>,
+                ))
+            }
+            SimulationCheckError::OutOfGas {} => {
+                JsonRpcError(ErrorObject::owned(
+                    ErrorCode::ParseError.code(),
+                    "Simulation check error: Ran out of gas".to_string(),
+                    None::<bool>,
+                ))
+            }
+        }
     }
 }
