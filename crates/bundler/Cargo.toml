@@ -20,6 +20,7 @@
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   pin-utils = "0.1"
+  serde_json = { workspace = true }
   silius-grpc = { workspace = true }
   silius-primitives = { workspace = true }
   silius-rpc = { workspace = true }

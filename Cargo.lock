@@ -5949,6 +5949,7 @@ dependencies = [
  "lightdotso-jsonrpsee",
  "lightdotso-tracing",
  "pin-utils",
+ "serde_json",
  "silius-grpc",
  "silius-primitives",
  "silius-rpc",
