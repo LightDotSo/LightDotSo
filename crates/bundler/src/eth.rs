@@ -184,7 +184,7 @@ impl EthApiServer for EthApiServerImpl {
 
                     Ok(receipt)
                 }
-                Err(s) => Err(ErrorObjectOwned::owned(
+                Err(_) => Err(ErrorObjectOwned::owned(
                     USER_OPERATION_HASH,
                     "Missing/invalid userOpHash".to_string(),
                     None::<bool>,
@@ -228,7 +228,7 @@ impl EthApiServer for EthApiServerImpl {
                     });
                     Ok(uo)
                 }
-                Err(s) => Err(ErrorObjectOwned::owned(
+                Err(_) => Err(ErrorObjectOwned::owned(
                     USER_OPERATION_HASH,
                     "Missing/invalid userOpHash".to_string(),
                     None::<bool>,
