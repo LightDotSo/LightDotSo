@@ -93,6 +93,17 @@ impl EthApiServer for EthApiServerImpl {
         Ok(res)
     }
 
+    // From: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/bundler/src/bundler.rs#L252
+    // And from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/bundler/src/bundler.rs#L177
+
+    /// Send a user operation via the [AddRequest](AddRequest).
+    ///
+    /// # Arguments
+    /// * `user_operation: UserOperation` - The user operation to be sent.
+    /// * `entry_point: Address` - The address of the entry point.
+    ///
+    /// # Returns
+    /// * `RpcResult<UserOperationHash>` - The hash of the sent user operation.
     async fn send_user_operation(
         &self,
         user_operation: UserOperation,
