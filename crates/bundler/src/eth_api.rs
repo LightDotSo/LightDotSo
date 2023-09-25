@@ -15,7 +15,10 @@
 
 use ethers::types::{Address, U64};
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
-use silius_primitives::{UserOperationGasEstimation, UserOperationPartial};
+use silius_primitives::{
+    UserOperation, UserOperationByHash, UserOperationGasEstimation, UserOperationHash,
+    UserOperationPartial, UserOperationReceipt,
+};
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
 /// License: MIT or Apache-2.0
@@ -57,4 +60,52 @@ pub trait EthApi {
         entry_point: Address,
         chain_id: u64,
     ) -> RpcResult<UserOperationGasEstimation>;
+
+    /// Send a [UserOperation](UserOperation).
+    ///
+    /// # Arguments
+    /// * `user_operation: UserOperation` - The [UserOperation](UserOperation) to be sent.
+    /// * `entry_point: Address` - The address of the entry point.
+    ///
+    /// # Returns
+    /// * `RpcResult<UserOperationHash>` - The hash of the sent [UserOperation](UserOperation).
+    #[method(name = "sendUserOperation")]
+    async fn send_user_operation(
+        &self,
+        user_operation: UserOperation,
+        entry_point: Address,
+        chain_id: u64,
+    ) -> RpcResult<UserOperationHash>;
+
+    /// Retrieve the receipt of a [UserOperation](UserOperation).
+    /// The receipt contains the results of the operation, such as the amount of gas used.
+    ///
+    /// # Arguments
+    /// * `user_operation_hash: String` - The hash of a [UserOperation](UserOperation).
+    ///
+    /// # Returns
+    /// * `RpcResult<Option<UserOperationReceipt>>` - The receipt of the
+    ///   [UserOperation](UserOperation), or None if it does not exist.
+    #[method(name = "getUserOperationReceipt")]
+    async fn get_user_operation_receipt(
+        &self,
+        user_operation_hash: String,
+        chain_id: u64,
+    ) -> RpcResult<Option<UserOperationReceipt>>;
+
+    /// Retrieve a [UserOperation](UserOperation) by its hash.
+    /// The hash serves as a unique identifier for the operation.
+    ///
+    /// # Arguments
+    /// * `user_operation_hash: String` - The hash of the user operation.
+    ///
+    /// # Returns
+    /// * `RpcResult<Option<UserOperationByHash>>` - The [UserOperation](UserOperation) associated
+    ///   with the hash, or None if it does not exist.
+    #[method(name = "getUserOperationByHash")]
+    async fn get_user_operation_by_hash(
+        &self,
+        user_operation_hash: String,
+        chain_id: u64,
+    ) -> RpcResult<Option<UserOperationByHash>>;
 }
