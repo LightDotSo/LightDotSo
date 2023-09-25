@@ -32,15 +32,15 @@ impl EthApiServer for EthApiServerImpl {
     ///
     /// # Returns
     /// * `RpcResult<U64>` - The chain ID as a U64.
-    async fn chain_id(&self) -> RpcResult<U64> {
-        Ok(U64::from(1))
+    async fn chain_id(&self, chain_id: u64) -> RpcResult<U64> {
+        Ok(chain_id.into())
     }
 
     /// Get the supported entry points for [UserOperations](UserOperation).
     ///
     /// # Returns
     /// * `RpcResult<Vec<String>>` - A array of the entry point addresses as strings.
-    async fn supported_entry_points(&self) -> RpcResult<Vec<String>> {
+    async fn supported_entry_points(&self, _chain_id: u64) -> RpcResult<Vec<String>> {
         return Ok(ENTRYPOINT_ADDRESSES.into_iter().map(|ep| to_checksum(&ep, None)).collect());
     }
 }

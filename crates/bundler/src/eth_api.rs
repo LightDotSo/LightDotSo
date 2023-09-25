@@ -28,12 +28,12 @@ pub trait EthApi {
     /// # Returns
     /// * `RpcResult<U64>` - The chain ID as a U64.
     #[method(name = "chainId")]
-    async fn chain_id(&self) -> RpcResult<U64>;
+    async fn chain_id(&self, chain_id: u64) -> RpcResult<U64>;
 
     /// Get the supported entry points for [UserOperations](UserOperation).
     ///
     /// # Returns
     /// * `RpcResult<Vec<String>>` - A array of the entry point addresses as strings.
     #[method(name = "supportedEntryPoints")]
-    async fn supported_entry_points(&self) -> RpcResult<Vec<String>>;
+    async fn supported_entry_points(&self, chain_id: u64) -> RpcResult<Vec<String>>;
 }

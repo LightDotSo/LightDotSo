@@ -338,30 +338,34 @@ pub async fn rpc_proxy_handler(
                 let body_json_result =
                     serde_json::from_slice::<JSONRPCRequest<Vec<Value>>>(&full_body_bytes);
 
-                if let Ok(body_json) = body_json_result {
-                    // Get the params and insert "chainId" into the JSON object
-                    let mut params: Vec<Value> = body_json.params;
-                    params.push(json!(chain_id));
-                    info!("params: {:?}", params);
+                // Provide a default case for `body_json`
+                let body_json = body_json_result.unwrap_or(JSONRPCRequest {
+                    jsonrpc: "2.0".to_string(),
+                    id: 1,
+                    method: method.clone(),
+                    params: vec![],
+                });
 
-                    let req_body = json!({
-                        "jsonrpc": "2.0",
-                        "method": method.as_str(),
-                        "params": params.clone(),
-                        "id": 1
-                    });
-                    // Convert the params to hyper Body
-                    let hyper_body = Body::from(req_body.to_string());
+                // Get the params and insert "chainId" into the JSON object
+                let mut params: Vec<Value> = body_json.params;
+                params.push(json!(chain_id));
+                info!("params: {:?}", params);
 
-                    // Get the result from the client
-                    let result =
-                        get_client_result(BUNDLER_RPC_URL.to_string(), client.clone(), hyper_body)
-                            .await;
-                    if let Some(resp) = result {
-                        return resp;
-                    }
-                } else {
-                    warn!("Error while deserializing body_json_result: {:?}", body_json_result);
+                let req_body = json!({
+                    "jsonrpc": "2.0",
+                    "method": method.as_str(),
+                    "params": params.clone(),
+                    "id": 1
+                });
+                // Convert the params to hyper Body
+                let hyper_body = Body::from(req_body.to_string());
+
+                // Get the result from the client
+                let result =
+                    get_client_result(BUNDLER_RPC_URL.to_string(), client.clone(), hyper_body)
+                        .await;
+                if let Some(resp) = result {
+                    return resp;
                 }
 
                 // Get the alchemy rpc url

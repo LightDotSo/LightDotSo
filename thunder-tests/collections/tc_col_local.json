@@ -34,11 +34,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "",
       "name": "eth_supportedEntryPoints local",
-      "url": "http://localhost:3000",
+      "url": "http://localhost:3000/1",
       "method": "POST",
       "sortNum": 20000,
       "created": "2023-09-25T17:19:01.660Z",
-      "modified": "2023-09-25T17:19:28.615Z",
+      "modified": "2023-09-25T19:20:44.078Z",
       "headers": [
         {
           "name": "Content-Type",
