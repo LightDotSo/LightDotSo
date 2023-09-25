@@ -4,7 +4,7 @@
   description = "Add your description here"
   authors = [{ name = "Shun Kakinoki", email = "shunkakinoki@gmail.com" }]
   dependencies = [
-    "halmos <= 0.0.8",
+    "halmos <= 0.1.7",
     "slither-analyzer <= 0.9.6",
     "setuptools>=68.0.0",
   ]
