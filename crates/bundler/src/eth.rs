@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{constants::ENTRYPOINT_ADDRESSES, eth_api::EthApiServer, server::UoPool};
+use crate::{
+    config::BundlerArgs, constants::ENTRYPOINT_ADDRESSES, eth_api::EthApiServer, server::UoPool,
+};
 use async_trait::async_trait;
 use ethers::{
     prelude::k256::ecdsa::SigningKey,
@@ -25,13 +27,13 @@ use ethers::{
 use jsonrpsee::{core::RpcResult, types::ErrorObjectOwned};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_jsonrpsee::error::JsonRpcError;
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{info, trace};
 use silius_contracts::{entry_point::EntryPointAPI, EntryPoint};
 use silius_primitives::{
     consts::rpc_error_codes::USER_OPERATION_HASH, UserOperation, UserOperationByHash,
     UserOperationGasEstimation, UserOperationHash, UserOperationPartial, UserOperationReceipt,
 };
-use std::{str::FromStr, sync::Arc};
+use std::{str::FromStr, sync::Arc, time::Duration};
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth.rs
 /// License: MIT or Apache-2.0
@@ -39,7 +41,9 @@ use std::{str::FromStr, sync::Arc};
 
 /// EthApiServer implements the ERC-4337 `eth` namespace RPC methods trait
 /// [EthApiServer](EthApiServer).
-pub struct EthApiServerImpl {}
+pub struct EthApiServerImpl {
+    pub args: BundlerArgs,
+}
 
 #[async_trait]
 impl EthApiServer for EthApiServerImpl {
@@ -98,26 +102,31 @@ impl EthApiServer for EthApiServerImpl {
         // Get the provider.
         let provider = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
 
+        // Get the entry point.
         let ep = EntryPointAPI::new(entry_point, Arc::new(provider.clone()));
 
-        let wallet: Wallet<SigningKey> =
-            std::env::var("BUNDLER_PRIVATE_KEY").unwrap().parse().unwrap();
+        // Construct the wallet.
+        let wallet: Wallet<SigningKey> = self.args.private_key.parse().unwrap();
         let wallet = wallet.with_chain_id(chain_id);
 
+        // Get the nonce and balance.
         let nonce = provider
             .clone()
             .get_transaction_count(wallet.address(), None)
             .await
             .map_err(JsonRpcError::from)?;
-        // let balance = provider
-        //     .clone()
-        //     .get_balance(wallet.address(), None)
-        //     .await
-        //     .map_err(JsonRpcError::from)?;
-        // let beneficiary = Address::zero();
+        let balance = provider
+            .clone()
+            .get_balance(wallet.address(), None)
+            .await
+            .map_err(JsonRpcError::from)?;
+
+        // If the balance is less than the min balance, send the funds to the beneficiary.
+        let beneficiary =
+            if balance < self.args.min_balance { wallet.address() } else { self.args.beneficiary };
 
         let mut tx: TypedTransaction =
-            ep.handle_ops(vec![user_operation.clone().into()], Address::zero()).tx;
+            ep.handle_ops(vec![user_operation.clone().into()], beneficiary).tx;
 
         // Get the server.
         let accesslist = provider
@@ -130,9 +139,11 @@ impl EthApiServer for EthApiServerImpl {
         let estimated_gas =
             provider.clone().estimate_gas(&tx, None).await.map_err(JsonRpcError::from)?;
 
+        // Get the max fee per gas and max priority fee.
         let (max_fee_per_gas, max_priority_fee) =
             provider.clone().estimate_eip1559_fees(None).await.map_err(JsonRpcError::from)?;
 
+        // Construct the transaction.
         tx = TypedTransaction::Eip1559(Eip1559TransactionRequest {
             to: tx.to().cloned(),
             from: Some(wallet.address()),
@@ -146,6 +157,26 @@ impl EthApiServer for EthApiServerImpl {
             access_list: accesslist,
         });
         info!("tx: {:?}", tx);
+
+        trace!("Sending transaction to the execution client: {tx:?}");
+
+        let tx = provider
+            .send_transaction(tx, None)
+            .await
+            .map_err(JsonRpcError::from)?
+            .interval(Duration::from_millis(75));
+        let tx_hash = tx.tx_hash();
+
+        let tx_receipt = tx.await.map_err(JsonRpcError::from)?;
+
+        info!(
+            "Bundle successfully sent, tx hash: {:?}, account: {:?}, entry point: {:?}, beneficiary: {:?}",
+            tx_hash,
+            wallet.address(),
+            entry_point,
+            beneficiary
+        );
+        trace!("Transaction receipt: {tx_receipt:?}");
 
         Ok(user_operation.hash(&ENTRYPOINT_ADDRESSES[0], &chain_id.into()))
     }

@@ -33,11 +33,14 @@ pub struct BundlerArgs {
     #[clap(long, env = "BUNDLER_BENEFICIARY_ADDRESS", default_value = "", value_parser=parse_address)]
     pub beneficiary: Address,
     /// The seed phrase of mnemonic
-    #[clap(long, env = "BUNDLER_SEED_PHRASE")]
-    pub seed_phrase: String,
+    #[clap(long, env = "BUNDLER_PRIVATE_KEY", hide = true)]
+    pub private_key: String,
     /// The max verification gas
     #[clap(long, default_value="3000000", value_parser=parse_u256)]
     pub max_verification_gas: U256,
+    /// The max verification gas
+    #[clap(long, default_value="3000000", value_parser=parse_u256)]
+    pub min_balance: U256,
 }
 
 impl BundlerArgs {
@@ -62,7 +65,10 @@ impl BundlerArgs {
 
                 // Add the paymaster server
                 server
-                    .add_methods(EthApiServerImpl {}.into_rpc(), JsonRpcServerType::Http)
+                    .add_methods(
+                        EthApiServerImpl { args: self.clone() }.into_rpc(),
+                        JsonRpcServerType::Http,
+                    )
                     .unwrap();
 
                 // Start the server
