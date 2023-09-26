@@ -87,7 +87,9 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                         // Invalid method
                         if code.as_i64() == Some(-32001) ||
                         // Limit exceeded
-                        code.as_i64() == Some(-32005)
+                        code.as_i64() == Some(-32005) ||
+                        // Block range wide
+                        code.as_i64() == Some(-32600)
                         {
                             return None;
                         }
