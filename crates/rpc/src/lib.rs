@@ -253,7 +253,9 @@ pub async fn rpc_proxy_handler(
 
     if let Ok(method) = method {
         info!("method: {}", method);
-        info!("body: {:?}", full_body_bytes);
+        let full_body_string = String::from_utf8(full_body_bytes.clone())
+            .expect("Failed to convert byte array to UTF-8");
+        info!("body: {}", full_body_string);
 
         match method.as_str() {
             "debug_traceBlock" |
