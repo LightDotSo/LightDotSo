@@ -272,6 +272,34 @@
           "value": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"
         }
       ]
+    },
+    {
+      "_id": "b1562828-ac86-4b7d-ad4a-7b890d29bad0",
+      "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
+      "containerId": "",
+      "name": "eth_getUserOperationByHash",
+      "url": "https://rpc.light.so/1",
+      "method": "POST",
+      "sortNum": 55000,
+      "created": "2023-09-25T23:48:06.310Z",
+      "modified": "2023-09-26T00:21:11.390Z",
+      "headers": [
+        {
+          "name": "accept",
+          "value": "application/json"
+        },
+        {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationByHash\",\n  \"params\": [\n    \"0x520ed372ad45aab3fd3728a52ecbfb493e7e9affa388ff5b7810809f4313c29b\"\n  ]\n}",
+        "form": []
+      },
+      "tests": []
     }
   ]
 }
