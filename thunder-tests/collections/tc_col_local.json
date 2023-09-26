@@ -10,11 +10,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "",
       "name": "eth_chainId local",
-      "url": "https://rpc.light.so/1",
+      "url": "http://localhost:3000",
       "method": "POST",
       "sortNum": 10000,
       "created": "2023-09-25T17:16:43.620Z",
-      "modified": "2023-09-26T01:05:04.226Z",
+      "modified": "2023-09-26T01:52:21.188Z",
       "headers": [
         {
           "name": "Content-Type",
@@ -24,7 +24,7 @@
       "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\",\n  \"params\": []\n}",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\",\n  \"params\": [1]\n}",
         "form": []
       },
       "tests": []
@@ -128,6 +128,30 @@
           "value": "32500"
         }
       ]
+    },
+    {
+      "_id": "d876726f-f608-422b-b66c-bc72a9005ccf",
+      "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
+      "containerId": "",
+      "name": "eth_getUserOperationByHash local",
+      "url": "http://localhost:3000",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2023-09-26T01:53:19.304Z",
+      "modified": "2023-09-26T01:53:36.988Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationByHash\",\n  \"params\": [\n    \"0x520ed372ad45aab3fd3728a52ecbfb493e7e9affa388ff5b7810809f4313c29b\",\n    1\n  ]\n}",
+        "form": []
+      },
+      "tests": []
     }
   ]
 }

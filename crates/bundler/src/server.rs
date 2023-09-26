@@ -176,6 +176,8 @@ impl<M: Middleware + 'static> UoPool<M> {
             .entry_point
             .entry_point_api()
             .event::<UserOperationEventFilter>()
+            .from_block(BlockNumber::Earliest)
+            .to_block(BlockNumber::Latest)
             .topic1(uo_hash.0);
         let res: Vec<(UserOperationEventFilter, LogMeta)> = filter.query_with_meta().await?;
         // It is possible have two same user operatation in same bundle
