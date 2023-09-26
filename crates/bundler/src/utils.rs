@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::{Address, U256};
+use silius_contracts::entry_point::SimulateValidationResult;
 use silius_uopool::Overhead;
 /// Entire file is copied from https://github.com/Vid201/silius/blob/bc8b7b0039c9a2b02256fefc7eed3b2efc94bf96/bin/silius/src/utils.rs
 /// License: MIT or Apache-2.0
@@ -42,4 +43,18 @@ pub fn parse_u256(s: &str) -> Result<U256, String> {
 /// The call gas limit of the [UserOperation](UserOperation)
 pub fn calculate_call_gas_limit(paid: U256, pre_op_gas: U256, fee_per_gas: U256) -> U256 {
     paid / fee_per_gas - pre_op_gas + Overhead::default().fixed
+}
+
+/// Helper function to extract the gas limit for verification from the simulation result
+///
+/// # Arguments
+/// `sim_res` - The [simulation result](SimulateValidationResult) from the simulation
+///
+/// # Returns
+/// The gas limit for verification
+pub fn extract_verification_gas_limit(sim_res: &SimulateValidationResult) -> U256 {
+    match sim_res {
+        SimulateValidationResult::ValidationResult(res) => res.return_info.0,
+        SimulateValidationResult::ValidationResultWithAggregation(res) => res.return_info.0,
+    }
 }

@@ -37,7 +37,7 @@ use silius_primitives::{
 };
 use silius_uopool::Overhead;
 
-use crate::utils::calculate_call_gas_limit;
+use crate::utils::{calculate_call_gas_limit, extract_verification_gas_limit};
 
 pub type VecUo = Vec<UserOperation>;
 pub type VecCh = Vec<CodeHash>;
@@ -105,16 +105,19 @@ impl<M: Middleware + 'static> UoPool<M> {
         &self,
         uo: &UserOperation,
     ) -> Result<UserOperationGasEstimation, SimulationCheckError> {
-        // let val_out = self
-        //     .validator
-        //     .validate_user_operation(uo, UserOperationValidatorMode::SimulationTrace.into())
-        //     .await
-        //     .map_err(|err| match err {
-        //         ValidationError::Sanity(_) => {
-        //             SimulationCheckError::UnknownError { message: "Unknown error".to_string() }
-        //         }
-        //         ValidationError::Simulation(err) => err,
-        //     })?;
+        let sim_res = match self.entry_point.simulate_validation(uo.clone()).await {
+            Ok(res) => Ok(res),
+            Err(err) => match err {
+                EntryPointErr::FailedOp(f) => {
+                    Err(SimulationCheckError::Validation { message: f.reason })
+                }
+                _ => Err(SimulationCheckError::UnknownError {
+                    message: format!(
+                        "Unknown error when simulating validation on entry point. Error message: {err:?}"
+                    ),
+                }),
+            },
+        }?;
 
         match self.entry_point.simulate_execution(uo.clone()).await {
             Ok(_) => {}
@@ -152,8 +155,7 @@ impl<M: Middleware + 'static> UoPool<M> {
 
         Ok(UserOperationGasEstimation {
             pre_verification_gas: Overhead::default().calculate_pre_verification_gas(uo),
-            verification_gas_limit: Overhead::default().calculate_pre_verification_gas(uo),
-            // verification_gas_limit: val_out.verification_gas_limit,
+            verification_gas_limit: extract_verification_gas_limit(&sim_res),
             call_gas_limit,
         })
     }
