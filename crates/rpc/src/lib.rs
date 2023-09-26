@@ -254,7 +254,7 @@ pub async fn rpc_proxy_handler(
     if let Ok(method) = method {
         info!("method: {}", method);
         let full_body_string = String::from_utf8(full_body_bytes.clone())
-            .unwrap_or_else("Failed to convert byte array to UTF-8");
+            .unwrap_or_else(|_| "Failed to convert byte array to UTF-8".to_string());
         info!("body: {}", full_body_string);
 
         match method.as_str() {
