@@ -253,6 +253,7 @@ pub async fn rpc_proxy_handler(
 
     if let Ok(method) = method {
         info!("method: {}", method);
+        info!("body: {:?}", full_body_bytes);
 
         match method.as_str() {
             "debug_traceBlock" |

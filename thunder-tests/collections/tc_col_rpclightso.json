@@ -278,11 +278,11 @@
       "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
       "containerId": "",
       "name": "eth_getUserOperationByHash",
-      "url": "https://rpc.light.so/1",
+      "url": "http://localhost:3000",
       "method": "POST",
       "sortNum": 55000,
       "created": "2023-09-25T23:48:06.310Z",
-      "modified": "2023-09-26T00:21:11.390Z",
+      "modified": "2023-09-26T00:55:14.874Z",
       "headers": [
         {
           "name": "accept",
@@ -296,7 +296,7 @@
       "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationByHash\",\n  \"params\": [\n    \"0x520ed372ad45aab3fd3728a52ecbfb493e7e9affa388ff5b7810809f4313c29b\"\n  ]\n}",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationByHash\",\n  \"params\": [\n    \"0x520ed372ad45aab3fd3728a52ecbfb493e7e9affa388ff5b7810809f4313c29b\",\n    1\n  ]\n}",
         "form": []
       },
       "tests": []
