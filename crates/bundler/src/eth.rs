@@ -27,7 +27,7 @@ use ethers::{
 use jsonrpsee::{core::RpcResult, types::ErrorObjectOwned};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_jsonrpsee::error::JsonRpcError;
-use lightdotso_tracing::tracing::{info, trace};
+use lightdotso_tracing::tracing::{error, info, trace};
 use silius_contracts::{entry_point::EntryPointAPI, EntryPoint};
 use silius_primitives::{
     consts::rpc_error_codes::USER_OPERATION_HASH, UserOperation, UserOperationByHash,
@@ -270,17 +270,23 @@ impl EthApiServer for EthApiServerImpl {
                     });
                     Ok(uo)
                 }
-                Err(_) => Err(ErrorObjectOwned::owned(
+                Err(_) => {
+                    error!("Missing/invalid userOpHash: {:?} at chain_id: {:?}", uo_hash, chain_id);
+                    Err(ErrorObjectOwned::owned(
+                        USER_OPERATION_HASH,
+                        "Missing/invalid userOpHash".to_string(),
+                        None::<bool>,
+                    ))
+                }
+            },
+            Err(_) => {
+                error!("Missing/invalid userOpHash: {:?} at chain_id: {:?}", uo_hash, chain_id);
+                Err(ErrorObjectOwned::owned(
                     USER_OPERATION_HASH,
                     "Missing/invalid userOpHash".to_string(),
                     None::<bool>,
-                )),
-            },
-            Err(_) => Err(ErrorObjectOwned::owned(
-                USER_OPERATION_HASH,
-                "Missing/invalid userOpHash".to_string(),
-                None::<bool>,
-            )),
+                ))
+            }
         }
     }
 }

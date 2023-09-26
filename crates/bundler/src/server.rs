@@ -23,6 +23,7 @@ use ethers::{
     types::{Address, BlockNumber, U256},
 };
 use eyre::format_err;
+use lightdotso_tracing::tracing::info;
 use silius_contracts::{
     entry_point::{EntryPointErr, UserOperationEventFilter},
     utils::parse_from_input_data,
@@ -198,6 +199,7 @@ impl<M: Middleware + 'static> UoPool<M> {
         uo_hash: &UserOperationHash,
     ) -> eyre::Result<UserOperationByHash> {
         let event = self.get_user_operation_event_meta(uo_hash).await?;
+        info!("event: {:?}", event);
 
         if let Some((event, log_meta)) = event {
             if let Some((uo, ep)) = self
