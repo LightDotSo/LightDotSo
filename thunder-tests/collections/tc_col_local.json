@@ -10,11 +10,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "",
       "name": "eth_chainId local",
-      "url": "http://localhost:3000",
+      "url": "https://rpc.light.so/1",
       "method": "POST",
       "sortNum": 10000,
       "created": "2023-09-25T17:16:43.620Z",
-      "modified": "2023-09-25T22:03:52.858Z",
+      "modified": "2023-09-26T01:05:04.226Z",
       "headers": [
         {
           "name": "Content-Type",
@@ -24,7 +24,7 @@
       "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\",\n  \"params\": [1]\n}",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_chainId\",\n  \"params\": []\n}",
         "form": []
       },
       "tests": []
