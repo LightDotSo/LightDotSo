@@ -51,6 +51,7 @@
     "**/vite-env.d.ts",
     "gradle*",
     "pnpm*",
+    "tmp*",
     "*.gradle",
     "*file",
     ".*",
