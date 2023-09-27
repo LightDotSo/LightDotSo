@@ -120,6 +120,9 @@ impl EthApiServer for EthApiServerImpl {
         let wallet: Wallet<SigningKey> = self.args.private_key.parse().unwrap();
         let wallet = wallet.with_chain_id(chain_id);
 
+        // Assert that the wallet address is the same as the `BUNDLER_ADDRESS` env var.
+        assert_eq!(wallet.address(), self.args.bundler);
+
         // Get the nonce and balance.
         let nonce = provider
             .clone()

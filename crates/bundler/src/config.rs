@@ -32,7 +32,10 @@ use std::{
 pub struct BundlerArgs {
     #[clap(long, env = "BUNDLER_BENEFICIARY_ADDRESS", default_value = "", value_parser=parse_address)]
     pub beneficiary: Address,
-    /// The seed phrase of mnemonic
+    /// The address of the bundler
+    #[clap(long, env = "BUNDLER_ADDRESS", default_value = "", value_parser=parse_address)]
+    pub bundler: Address,
+    /// The private key of the bundler
     #[clap(long, env = "BUNDLER_PRIVATE_KEY", hide = true)]
     pub private_key: String,
     /// The max verification gas
