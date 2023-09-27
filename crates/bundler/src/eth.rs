@@ -110,6 +110,8 @@ impl EthApiServer for EthApiServerImpl {
         entry_point: Address,
         chain_id: u64,
     ) -> RpcResult<UserOperationHash> {
+        info!("send_user_operation: {:?}", user_operation);
+
         // Get the provider.
         let provider = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
 
@@ -134,13 +136,16 @@ impl EthApiServer for EthApiServerImpl {
             .get_balance(wallet.address(), None)
             .await
             .map_err(JsonRpcError::from)?;
+        info!("nonce: {:?}, balance: {:?}", nonce, balance);
 
         // If the balance is less than the min balance, send the funds to the beneficiary.
         let beneficiary =
             if balance < self.args.min_balance { wallet.address() } else { self.args.beneficiary };
+        info!("beneficiary: {:?}", beneficiary);
 
         let mut tx: TypedTransaction =
             ep.handle_ops(vec![user_operation.clone().into()], beneficiary).tx;
+        info!("tx: {:?}", tx);
 
         // Get the server.
         let accesslist = provider
@@ -180,8 +185,10 @@ impl EthApiServer for EthApiServerImpl {
             .map_err(JsonRpcError::from)?
             .interval(Duration::from_millis(75));
         let tx_hash = tx.tx_hash();
+        info!("tx_hash: {:?}", tx_hash);
 
         let tx_receipt = tx.await.map_err(JsonRpcError::from)?;
+        info!("tx_receipt: {:?}", tx_receipt);
 
         info!(
             "Bundle successfully sent, tx hash: {:?}, account: {:?}, entry point: {:?}, beneficiary: {:?}",
@@ -296,7 +303,8 @@ impl EthApiServer for EthApiServerImpl {
 
 async fn get_uo_pool(chain_id: u64, ep: Address) -> RpcResult<UoPool<Provider<Http>>> {
     // Get the provider.
-    let provider = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
+    // let provider = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
+    let provider = Provider::<Http>::try_from("https://sepolia.infura.io/v3/").unwrap();
 
     // Get the entry point.
     let entry_point = EntryPoint::new(Arc::new(provider.clone()), ep);
