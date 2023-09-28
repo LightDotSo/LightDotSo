@@ -162,7 +162,6 @@ pub async fn construct_user_operation(
         // If the `estimate_user_operation_gas` is not set, estimate the gas for the user operation.
         estimate_user_operation_gas(chain_id, entry_point, &user_operation).await?.result
     };
-
     info!("estimated_user_operation_gas: {:?}", estimated_user_operation_gas);
 
     // If the `maxFeePerGas` and `maxPriorityFeePerGas` are set, include them in the user operation.
