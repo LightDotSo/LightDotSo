@@ -78,12 +78,18 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         returns (UserOperation memory op)
     {
         // Get the paymaster request gas and paymaster and data
-        (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) =
-            getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
+        (
+            uint256 preVerificationGas,
+            uint256 verificationGasLimit,
+            uint256 callGasLimit,
+            bytes memory paymasterAndData,
+            uint256 maxFeePerGas,
+            uint256 maxPriorityFeePerGas,
+        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
 
         // Get the gas estimation
-        (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
-            getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
+        // (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
+        // getEthEstimateUserOperationGas(expectedAddress, initCode);
 
         // UserOperation to create the account
         op = UserOperation(
@@ -91,12 +97,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             0x0,
             initCode,
             callData,
-            // callGasLimit,
-            1_000_000,
-            // verificationGasLimit,
-            1_000_000,
-            // preVerificationGas,
-            500_000,
+            callGasLimit,
+            // 1_000_000,
+            verificationGasLimit,
+            // 1_000_000,
+            preVerificationGas,
+            // 500_000,
             maxFeePerGas,
             maxPriorityFeePerGas,
             paymasterAndData,
@@ -123,17 +129,20 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
 
     /// @dev Deploy the SimpleAccount contract
     function deploySimpleAccount() internal {
+        // Set the nonce
+        uint256 nonce = randomNonce();
+
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
 
         // Set the initCode to create an account with the expected image hash and random nonce
         bytes memory initCode = abi.encodePacked(
             SIMPLE_ACCOUNT_FACTORY_ADDRESS,
-            abi.encodeWithSelector(SimpleAccountFactory.createAccount.selector, deployer, uint256(0))
+            abi.encodeWithSelector(SimpleAccountFactory.createAccount.selector, deployer, nonce)
         );
 
         // Get the expected address
-        address expectedAddress = simpleAccountFactory.getAddress(deployer, uint256(0));
+        address expectedAddress = simpleAccountFactory.getAddress(deployer, nonce);
 
         // Sent ETH to the account w/ the expected address
         // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
@@ -142,14 +151,24 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // UserOperation to create the account
         UserOperation memory op = constructUserOperation(expectedAddress, initCode, callData);
 
+        // -------------------------------------------------------------------------
+
+        // Empty the paymasterAndData
+        // op.paymasterAndData = "";
+
+        // -------------------------------------------------------------------------
+
         // Sign the UserOperation
         bytes memory sig = entryPoint.signUserOp(vm, deployerKey, op);
 
         // Construct the UserOperation
         op.signature = sig;
 
-        // Empty the paymasterAndData
-        op.paymasterAndData = "";
+        // Simulate the validation
+        // try simulateValidation(op) {} catch {}
+
+        // Handle the validation
+        handleOps(op);
 
         // Handle the ops
         sendUserOperation(op);

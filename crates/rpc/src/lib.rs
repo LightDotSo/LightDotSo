@@ -414,9 +414,9 @@ pub async fn rpc_proxy_handler(
                     // Get the user_operation from the body
                     let user_operation = body_json.params;
                     let params = vec![
-                        json!(chain_id),
                         json!(user_operation[0]),
                         json!(format!("{:?}", *ENTRYPOINT_V060_ADDRESS)),
+                        json!(chain_id),
                     ];
                     info!("params: {:?}", params);
 

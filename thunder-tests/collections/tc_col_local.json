@@ -180,6 +180,41 @@
         "form": []
       },
       "tests": []
+    },
+    {
+      "_id": "24769435-2ab4-460f-b6a8-3d55929672aa",
+      "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
+      "containerId": "",
+      "name": "gas_requestGasEstimation Copy",
+      "url": "https://rpc.light.so/11155111",
+      "method": "POST",
+      "sortNum": 11250,
+      "created": "2023-09-28T15:33:43.927Z",
+      "modified": "2023-09-28T15:33:43.927Z",
+      "headers": [
+        {
+          "name": "accept",
+          "value": "application/json"
+        },
+        {
+          "name": "content-type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"gas_requestGasEstimation\"\n}",
+        "form": []
+      },
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
     }
   ]
 }
