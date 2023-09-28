@@ -142,7 +142,7 @@ pub async fn construct_user_operation(
     user_operation: UserOperationRequest,
     entry_point: Address,
 ) -> Result<UserOperationConstruct> {
-    // If the `pre_verification_gas`, `verification_gas_limit`, and `call_gas_limit` are set,
+    // If the `preVerificationGas`, `verificationGasLimit`, and `callGasLimit` are set,
     // override the gas estimation for the user operatioin
     let estimated_user_operation_gas: EstimateResult = if user_operation
         .pre_verification_gas
