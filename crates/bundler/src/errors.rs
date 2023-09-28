@@ -14,12 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::{Address, Opcode, U256};
+use jsonrpsee::types::ErrorObject;
 use jsonrpsee::types::{
     error::{CALL_EXECUTION_FAILED_CODE, INTERNAL_ERROR_CODE, INVALID_PARAMS_CODE},
     ErrorObjectOwned,
 };
-use jsonrpsee::types::{ErrorObject, ErrorObjectOwned};
-use rundler_pool::{MempoolError, PoolServerError};
 use rundler_provider::ProviderError;
 use rundler_sim::{PrecheckViolation, SimulationViolation};
 use rundler_types::{Entity, EntityType, Timestamp};
@@ -165,48 +164,6 @@ pub struct UnsupportedAggregatorData {
     pub aggregator: Address,
 }
 
-impl From<PoolServerError> for EthRpcError {
-    fn from(value: PoolServerError) -> Self {
-        match value {
-            PoolServerError::MempoolError(e) => e.into(),
-            PoolServerError::UnexpectedResponse => {
-                EthRpcError::Internal(anyhow::anyhow!("unexpected response from pool server"))
-            }
-            PoolServerError::Other(e) => EthRpcError::Internal(e),
-        }
-    }
-}
-
-impl From<MempoolError> for EthRpcError {
-    fn from(value: MempoolError) -> Self {
-        match value {
-            MempoolError::Other(e) => EthRpcError::Internal(e),
-            MempoolError::OperationAlreadyKnown => EthRpcError::OperationAlreadyKnown,
-            MempoolError::ReplacementUnderpriced(priority_fee, fee) => {
-                EthRpcError::ReplacementUnderpriced(ReplacementUnderpricedData {
-                    current_max_priority_fee: priority_fee,
-                    current_max_fee: fee,
-                })
-            }
-            MempoolError::MaxOperationsReached(count, _) => EthRpcError::OperationRejected(
-                format!("max operations reached for sender {count} already in pool"),
-            ),
-            MempoolError::EntityThrottled(entity) => EthRpcError::ThrottledOrBanned(entity),
-            MempoolError::DiscardedOnInsert => {
-                EthRpcError::OperationRejected("discarded on insert".to_owned())
-            }
-            MempoolError::PrecheckViolation(violation) => violation.into(),
-            MempoolError::SimulationViolation(violation) => violation.into(),
-            MempoolError::UnsupportedAggregator(a) => {
-                EthRpcError::UnsupportedAggregator(UnsupportedAggregatorData { aggregator: a })
-            }
-            MempoolError::UnknownEntryPoint(a) => {
-                EthRpcError::EntryPointValidationRejected(format!("unknown entry point: {}", a))
-            }
-        }
-    }
-}
-
 impl From<PrecheckViolation> for EthRpcError {
     fn from(value: PrecheckViolation) -> Self {
         Self::PrecheckFailed(value)
@@ -286,16 +243,6 @@ impl From<EthRpcError> for ErrorObjectOwned {
             EthRpcError::ExecutionReverted(_) => rpc_err(EXECUTION_REVERTED, msg),
             EthRpcError::OperationRejected(_) => rpc_err(INVALID_PARAMS_CODE, msg),
         }
-    }
-}
-
-impl From<tonic::Status> for EthRpcError {
-    fn from(status: tonic::Status) -> Self {
-        EthRpcError::Internal(anyhow::anyhow!(
-            "internal server error code: {} message: {}",
-            status.code(),
-            status.message()
-        ))
     }
 }
 
