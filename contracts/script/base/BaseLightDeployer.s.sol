@@ -63,8 +63,12 @@ abstract contract BaseLightDeployer is BaseTest {
     // -------------------------------------------------------------------------
 
     /// @dev Gets the pseudo-random number and hash it in a bytes32
-    function randMod() internal view returns (bytes32) {
-        return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
+    function randomNonce() internal view returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
+    }
+
+    function getSalt() internal view returns (bytes32) {
+        return bytes32(randomNonce());
     }
 
     /// @notice Base deployer test for scripts
@@ -180,15 +184,15 @@ abstract contract BaseLightDeployer is BaseTest {
                 '","signature":"',
                 bytesToHexString(op.signature),
                 '","maxFeePerGas":"',
-                Strings.toHexString(op.maxFeePerGas),
+                uintToHexString(op.maxFeePerGas),
                 '","maxPriorityFeePerGas":"',
-                Strings.toHexString(op.maxPriorityFeePerGas),
+                uintToHexString(op.maxPriorityFeePerGas),
                 '","preVerificationGas":"',
-                Strings.toHexString(op.preVerificationGas),
+                uintToHexString(op.preVerificationGas),
                 '","verificationGasLimit":"',
-                Strings.toHexString(op.verificationGasLimit),
+                uintToHexString(op.verificationGasLimit),
                 '","callGasLimit":"',
-                Strings.toHexString(op.callGasLimit),
+                uintToHexString(op.callGasLimit),
                 '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
             )
         );
@@ -234,5 +238,35 @@ abstract contract BaseLightDeployer is BaseTest {
         }
 
         return string(abi.encodePacked("0x", converted));
+    }
+
+    /// @dev Converts uint8 to hexadecimal bytes1
+    /// From: https://ethereum.stackexchange.com/questions/47472/integer-to-hexadecimal-number
+    function toHexDigit(uint8 d) internal pure returns (bytes1) {
+        if (0 <= d && d <= 9) {
+            return bytes1(uint8(bytes1("0")) + d);
+        } else if (10 <= uint8(d) && uint8(d) <= 15) {
+            return bytes1(uint8(bytes1("a")) + d - 10);
+        }
+        // revert("Invalid hex digit");
+        revert();
+    }
+
+    /// @dev Converts uint to hexadecimal string
+    /// From: https://ethereum.stackexchange.com/questions/47472/integer-to-hexadecimal-number
+    function uintToHexString(uint256 a) public pure returns (string memory) {
+        uint256 count = 0;
+        uint256 b = a;
+        while (b != 0) {
+            count++;
+            b /= 16;
+        }
+        bytes memory res = new bytes(count);
+        for (uint256 i = 0; i < count; ++i) {
+            b = a % 16;
+            res[count - i - 1] = toHexDigit(uint8(b));
+            a /= 16;
+        }
+        return string(abi.encodePacked("0x", res));
     }
 }
