@@ -303,8 +303,8 @@ impl EthApiServer for EthApiServerImpl {
 
 async fn get_uo_pool(chain_id: u64, ep: Address) -> RpcResult<UoPool<Provider<Http>>> {
     // Get the provider.
-    // let provider = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
-    let provider = Provider::<Http>::try_from("https://sepolia.infura.io/v3/").unwrap();
+    let provider = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
+    // let provider = Provider::<Http>::try_from("https://sepolia.infura.io/v3/").unwrap();
 
     // Get the entry point.
     let entry_point = EntryPoint::new(Arc::new(provider.clone()), ep);
