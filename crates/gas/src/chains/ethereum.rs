@@ -16,7 +16,7 @@
 use eyre::{eyre, Result};
 use serde::{Deserialize, Serialize};
 
-use crate::gas::{GasEstimation, GasEstimationParams};
+use crate::gas::GasEstimationParams;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct ApiResponseData {
@@ -31,7 +31,7 @@ struct ApiResponse {
     data: ApiResponseData,
 }
 
-impl From<ApiResponseData> for GasEstimation {
+impl From<ApiResponseData> for GasEstimationParams {
     fn from(data: ApiResponseData) -> Self {
         let make_params = |value: u64| -> GasEstimationParams {
             GasEstimationParams {
@@ -40,16 +40,11 @@ impl From<ApiResponseData> for GasEstimation {
             }
         };
 
-        Self {
-            low: make_params(data.slow),
-            average: make_params(data.standard),
-            high: make_params(data.fast),
-            instant: make_params(data.rapid),
-        }
+        make_params(data.fast)
     }
 }
 
-pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimation> {
+pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimationParams> {
     let url = match chain_id {
         1 => "https://beaconcha.in/api/v1/execution/gasnow",
         11155111 => "https://sepolia.beaconcha.in/api/v1/execution/gasnow",
@@ -84,14 +79,8 @@ mod tests {
         let result = ethereum_gas_estimation(chain_id).await;
         assert!(result.is_ok());
         let gas_estimation = result.unwrap();
-        assert!(gas_estimation.low.max_priority_fee_per_gas > U256::from(0));
-        assert!(gas_estimation.low.max_fee_per_gas > U256::from(0));
-        assert!(gas_estimation.average.max_priority_fee_per_gas > U256::from(0));
-        assert!(gas_estimation.average.max_fee_per_gas > U256::from(0));
-        assert!(gas_estimation.high.max_priority_fee_per_gas > U256::from(0));
-        assert!(gas_estimation.high.max_fee_per_gas > U256::from(0));
-        assert!(gas_estimation.instant.max_priority_fee_per_gas > U256::from(0));
-        assert!(gas_estimation.instant.max_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.max_priority_fee_per_gas > U256::from(0));
+        assert!(gas_estimation.max_fee_per_gas > U256::from(0));
     }
 
     #[tokio::test]

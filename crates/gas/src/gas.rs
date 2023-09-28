@@ -51,27 +51,13 @@ impl GasServer for GasServerImpl {
         // Get the estimation from pre-configured APIs
         let estimation = get_estimation(chain_id).await;
 
+        // Return if some
+        if let Some(params) = estimation {
+            return Ok(create_gas_estimation(&params));
+        }
+
         // Setup a new ethers provider
         let client = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
-
-        // Return if some
-        if let Some(estimation) = estimation {
-            // Check if the estimation is valid, higher than the current block base fee
-            let block = client.get_block(BlockNumber::Latest).await.map_err(JsonRpcError::from)?;
-
-            // Get the base fee
-            if let Some(base_fee) = block {
-                // Check if the estimation is valid
-                if let Some(block_base_fee_per_gas) = base_fee.base_fee_per_gas {
-                    if estimation.high.max_fee_per_gas > block_base_fee_per_gas &&
-                        estimation.high.max_priority_fee_per_gas > block_base_fee_per_gas
-                    {
-                        info!("Gas estimation for chain {} is {:?}", chain_id, estimation);
-                        return Ok(estimation);
-                    }
-                }
-            }
-        }
 
         // Get the gas price from the client
         let mut gas_price = client.get_gas_price().await.map_err(JsonRpcError::from)?;
@@ -102,12 +88,7 @@ impl GasServer for GasServerImpl {
                 max_fee_per_gas: gas_price,
                 max_priority_fee_per_gas: gas_price,
             };
-            return Ok(GasEstimation {
-                low: params.clone(),
-                average: params.clone(),
-                high: params.clone(),
-                instant: params.clone(),
-            });
+            return Ok(create_gas_estimation(&params));
         };
 
         // Get the average gas price
@@ -128,7 +109,7 @@ impl GasServer for GasServerImpl {
 }
 
 /// Get the gas estimation from pre-configured APIs
-async fn get_estimation(chain_id: u64) -> Option<GasEstimation> {
+async fn get_estimation(chain_id: u64) -> Option<GasEstimationParams> {
     match chain_id {
         // Match either 1 or 11155111
         1 | 11155111 => match ethereum_gas_estimation(chain_id).await {
