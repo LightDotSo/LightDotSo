@@ -1,0 +1,165 @@
+// Copyright (C) 2023 Light, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// This file is part of Rundler.
+//
+// Rundler is free software: you can redistribute it and/or modify it under the
+// terms of the GNU Lesser General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later version.
+//
+// Rundler is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+// without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along with Rundler.
+// If not, see https://www.gnu.org/licenses/.
+
+use ethers::{
+    types::{Address, Bytes, Log, TransactionReceipt, H160, H256, U256},
+    utils::to_checksum,
+};
+use rundler_types::UserOperation;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct RpcAddress(H160);
+
+impl Serialize for RpcAddress {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        serializer.serialize_str(&to_checksum(&self.0, None))
+    }
+}
+
+impl<'de> Deserialize<'de> for RpcAddress {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let address = Address::deserialize(deserializer)?;
+        Ok(RpcAddress(address))
+    }
+}
+
+impl From<RpcAddress> for Address {
+    fn from(rpc_addr: RpcAddress) -> Self {
+        rpc_addr.0
+    }
+}
+
+impl From<Address> for RpcAddress {
+    fn from(addr: Address) -> Self {
+        RpcAddress(addr)
+    }
+}
+
+/// User operation definition for RPC
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RpcUserOperation {
+    sender: RpcAddress,
+    nonce: U256,
+    init_code: Bytes,
+    call_data: Bytes,
+    call_gas_limit: U256,
+    verification_gas_limit: U256,
+    pre_verification_gas: U256,
+    max_fee_per_gas: U256,
+    max_priority_fee_per_gas: U256,
+    paymaster_and_data: Bytes,
+    signature: Bytes,
+}
+
+impl From<UserOperation> for RpcUserOperation {
+    fn from(op: UserOperation) -> Self {
+        RpcUserOperation {
+            sender: op.sender.into(),
+            nonce: op.nonce,
+            init_code: op.init_code,
+            call_data: op.call_data,
+            call_gas_limit: op.call_gas_limit,
+            verification_gas_limit: op.verification_gas_limit,
+            pre_verification_gas: op.pre_verification_gas,
+            max_fee_per_gas: op.max_fee_per_gas,
+            max_priority_fee_per_gas: op.max_priority_fee_per_gas,
+            paymaster_and_data: op.paymaster_and_data,
+            signature: op.signature,
+        }
+    }
+}
+
+impl From<RpcUserOperation> for UserOperation {
+    fn from(def: RpcUserOperation) -> Self {
+        UserOperation {
+            sender: def.sender.into(),
+            nonce: def.nonce,
+            init_code: def.init_code,
+            call_data: def.call_data,
+            call_gas_limit: def.call_gas_limit,
+            verification_gas_limit: def.verification_gas_limit,
+            pre_verification_gas: def.pre_verification_gas,
+            max_fee_per_gas: def.max_fee_per_gas,
+            max_priority_fee_per_gas: def.max_priority_fee_per_gas,
+            paymaster_and_data: def.paymaster_and_data,
+            signature: def.signature,
+        }
+    }
+}
+
+/// User operation with additional metadata
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct RichUserOperation {
+    /// The full user operation
+    pub user_operation: RpcUserOperation,
+    /// The entry point address this operation was sent to
+    pub entry_point: RpcAddress,
+    /// The number of the block this operation was included in
+    pub block_number: U256,
+    /// The hash of the block this operation was included in
+    pub block_hash: H256,
+    /// The hash of the transaction this operation was included in
+    pub transaction_hash: H256,
+}
+
+/// User operation receipt
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UserOperationReceipt {
+    /// The hash of the user operation
+    pub user_op_hash: H256,
+    /// The entry point address this operation was sent to
+    pub entry_point: RpcAddress,
+    /// The sender of this user operation
+    pub sender: RpcAddress,
+    /// The nonce of this user operation
+    pub nonce: U256,
+    /// The paymaster used by this operation, empty if none used
+    pub paymaster: RpcAddress,
+    /// The gas cost of this operation
+    pub actual_gas_cost: U256,
+    /// The gas used by this operation
+    pub actual_gas_used: U256,
+    /// Whether this operation's execution was successful
+    pub success: bool,
+    /// If not successful, the revert reason string
+    pub reason: String,
+    /// Logs emitted by this operation
+    pub logs: Vec<Log>,
+    /// The receipt of the transaction that included this operation
+    pub receipt: TransactionReceipt,
+}

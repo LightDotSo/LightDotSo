@@ -12,8 +12,7 @@
   async-trait = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   enumset = { workspace = true }
-  ethers = { workspace = true }
-  ethers-providers = { workspace = true }
+  ethers = "2.0.8"
   expanded-pathbuf = "0.1"
   eyre = { workspace = true }
   jsonrpsee = { workspace = true }
@@ -23,5 +22,7 @@
   lightdotso-tracing = { workspace = true }
   pin-utils = "0.1"
   rundler-sim = { workspace = true }
+  rundler-types = { workspace = true }
+  serde = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true, features = ["full"] }

@@ -5945,8 +5945,7 @@ dependencies = [
  "async-trait",
  "clap 4.4.0",
  "enumset",
- "ethers 2.0.8",
- "ethers-providers 2.0.8",
+ "ethers 2.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "expanded-pathbuf",
  "eyre",
  "jsonrpsee",
@@ -5956,6 +5955,8 @@ dependencies = [
  "lightdotso-tracing",
  "pin-utils",
  "rundler-sim",
+ "rundler-types",
+ "serde",
  "serde_json",
  "tokio",
 ]
