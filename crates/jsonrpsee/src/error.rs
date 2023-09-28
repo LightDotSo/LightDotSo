@@ -17,7 +17,6 @@ use jsonrpsee::types::{
     error::{ErrorCode, INTERNAL_ERROR_CODE},
     ErrorObject, ErrorObjectOwned,
 };
-use silius_primitives::simulation::SimulationCheckError;
 
 // From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/rpc/src/error.rs#L15-L23
 // JsonRpcError is a wrapper for the ErrorObjectOwned type.
@@ -99,75 +98,6 @@ impl From<reqwest::Error> for JsonRpcError {
                 format!("Network error with no status code: {:?}", err),
                 None::<bool>,
             )),
-        }
-    }
-}
-
-/// Convert a [SimulationCheckError](SimulationCheckError) to a [JsonRpcError](JsonRpcError).
-impl From<SimulationCheckError> for JsonRpcError {
-    fn from(err: SimulationCheckError) -> Self {
-        match err {
-            SimulationCheckError::Signature {} => {
-                JsonRpcError(ErrorObject::owned(
-                    ErrorCode::ParseError.code(),
-                    "Simulation check error: Signature error".to_string(),
-                    None::<bool>,
-                ))
-            }
-            SimulationCheckError::Expiration {
-                valid_after,
-                valid_until,
-                paymaster,
-            } => {
-                JsonRpcError(ErrorObject::owned(
-                    ErrorCode::ParseError.code(),
-                    format!(
-                        "Simulation check error: Expiration error with values: valid_after: {:?}, valid_until: {:?}, paymaster: {:?}",
-                        valid_after, valid_until, paymaster
-                    ),
-                    None::<bool>,
-                ))
-            }
-            SimulationCheckError::Validation { message }
-            | SimulationCheckError::Execution { message }
-            | SimulationCheckError::CallStack { message }
-            | SimulationCheckError::CodeHashes { message }
-            | SimulationCheckError::MiddlewareError { message }
-            | SimulationCheckError::UnknownError { message } => {
-                JsonRpcError(ErrorObject::owned(
-                    ErrorCode::ParseError.code(),
-                    format!("Simulation check error: {}", message),
-                    None::<bool>,
-                ))
-            }
-            SimulationCheckError::Opcode { entity, opcode } => {
-                JsonRpcError(ErrorObject::owned(
-                    ErrorCode::ParseError.code(),
-                    format!("Simulation check error: Opcode error with entity: {}, opcode: {}", entity, opcode),
-                    None::<bool>,
-                ))
-            }
-            SimulationCheckError::StorageAccess { slot } => {
-                JsonRpcError(ErrorObject::owned(
-                    ErrorCode::ParseError.code(),
-                    format!("Simulation check error: Storage access error with slot: {}", slot),
-                    None::<bool>,
-                ))
-            }
-            SimulationCheckError::Unstaked { entity, message } => {
-                JsonRpcError(ErrorObject::owned(
-                    ErrorCode::ParseError.code(),
-                    format!("Simulation check error: Unstaked error with entity: {}, message: {}", entity, message),
-                    None::<bool>,
-                ))
-            }
-            SimulationCheckError::OutOfGas {} => {
-                JsonRpcError(ErrorObject::owned(
-                    ErrorCode::ParseError.code(),
-                    "Simulation check error: Ran out of gas".to_string(),
-                    None::<bool>,
-                ))
-            }
         }
     }
 }

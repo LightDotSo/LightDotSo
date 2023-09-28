@@ -13,16 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    eth::EthApiServerImpl,
-    eth_api::EthApiServer,
-    utils::{parse_address, parse_u256},
-};
+use crate::utils::{parse_address, parse_u256};
 use clap::Parser;
 use ethers::types::{Address, U256};
 use eyre::{eyre, Result};
+use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
 use lightdotso_tracing::tracing::info;
-use silius_rpc::{JsonRpcServer, JsonRpcServerType};
 use std::{
     future::pending,
     net::{IpAddr, Ipv6Addr},
@@ -67,12 +63,12 @@ impl BundlerArgs {
                 );
 
                 // Add the paymaster server
-                server
-                    .add_methods(
-                        EthApiServerImpl { args: self.clone() }.into_rpc(),
-                        JsonRpcServerType::Http,
-                    )
-                    .unwrap();
+                // server
+                //     .add_methods(
+                //         EthApiServerImpl { args: self.clone() }.into_rpc(),
+                //         JsonRpcServerType::Http,
+                //     )
+                //     .unwrap();
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));

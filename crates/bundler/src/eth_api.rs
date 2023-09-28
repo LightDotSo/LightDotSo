@@ -13,12 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::{Address, U64};
+use ethers::types::{Address, H256, U64};
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
-use silius_primitives::{
-    UserOperation, UserOperationByHash, UserOperationGasEstimation, UserOperationHash,
-    UserOperationPartial, UserOperationReceipt,
-};
+use rundler_sim::{GasEstimate, UserOperationOptionalGas, UserOperationReceipt};
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
 /// License: MIT or Apache-2.0
@@ -46,25 +43,24 @@ pub trait EthApi {
     /// See [How ERC-4337 Gas Estimation Works](https://www.alchemy.com/blog/erc-4337-gas-estimation).
     ///
     /// # Arguments
-    /// * `user_operation: [UserOperationPartial](UserOperationPartial)` - A [partial user
-    ///   operation](UserOperationPartial) for which to estimate the gas.
+    /// * `user_operation: [UserOperationOptionalGas](UserOperationOptionalGas)` - A [partial user
+    ///   operation](UserOperationOptionalGas) for which to estimate the gas.
     /// * `entry_point: Address` - The address of the entry point.
     ///
     /// # Returns
-    /// * `RpcResult<UserOperationGasEstimation>` - The estimated gas for the
+    /// * `RpcResult<GasEstimate>` - The estimated gas for the
     ///   [UserOperation](UserOperation)
     #[method(name = "estimateUserOperationGas")]
     async fn estimate_user_operation_gas(
         &self,
-        user_operation: UserOperationPartial,
+        user_operation: UserOperationOptionalGas,
         entry_point: Address,
-        chain_id: u64,
-    ) -> RpcResult<UserOperationGasEstimation>;
+    ) -> RpcResult<GasEstimate>;
 
     /// Send a [UserOperation](UserOperation).
     ///
     /// # Arguments
-    /// * `user_operation: UserOperation` - The [UserOperation](UserOperation) to be sent.
+    /// * `user_operation: RpcUserOperation` - The [RpcUserOperation](RpcUserOperation) to be sent.
     /// * `entry_point: Address` - The address of the entry point.
     ///
     /// # Returns
@@ -72,7 +68,7 @@ pub trait EthApi {
     #[method(name = "sendUserOperation")]
     async fn send_user_operation(
         &self,
-        user_operation: UserOperation,
+        user_operation: RpcUserOperation,
         entry_point: Address,
         chain_id: u64,
     ) -> RpcResult<UserOperationHash>;
@@ -81,7 +77,7 @@ pub trait EthApi {
     /// The receipt contains the results of the operation, such as the amount of gas used.
     ///
     /// # Arguments
-    /// * `user_operation_hash: String` - The hash of a [UserOperation](UserOperation).
+    /// * `user_operation_hash: H256` - The hash of a [UserOperation](UserOperation).
     ///
     /// # Returns
     /// * `RpcResult<Option<UserOperationReceipt>>` - The receipt of the
@@ -89,7 +85,7 @@ pub trait EthApi {
     #[method(name = "getUserOperationReceipt")]
     async fn get_user_operation_receipt(
         &self,
-        user_operation_hash: String,
+        hash: H256,
         chain_id: u64,
     ) -> RpcResult<Option<UserOperationReceipt>>;
 
@@ -107,5 +103,5 @@ pub trait EthApi {
         &self,
         user_operation_hash: String,
         chain_id: u64,
-    ) -> RpcResult<Option<UserOperationByHash>>;
+    ) -> RpcResult<Option<RichUserOperation>>;
 }
