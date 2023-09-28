@@ -54,8 +54,10 @@ abstract contract BaseTest is Test {
     // Addresses
     // -------------------------------------------------------------------------
 
+    // OffchainVerifier address for paymaster
     address internal constant OFFCHAIN_VERIFIER_ADDRESS = address(0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F);
 
+    // Deployer address
     address internal constant PRIVATE_KEY_DEPLOYER = address(0x81a2500fa1ae8eB96a63D7E8b6b26e6cabD2C9c0);
 
     // EntryPoint address
