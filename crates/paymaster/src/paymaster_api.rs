@@ -23,16 +23,16 @@ pub trait Paymaster {
     #[method(name = "requestPaymasterAndData")]
     async fn request_paymaster_and_data(
         &self,
-        chain_id: u64,
         user_operation: UserOperationRequest,
         entry_point: Address,
+        chain_id: u64,
     ) -> RpcResult<PaymasterAndData>;
 
     #[method(name = "requestGasAndPaymasterAndData")]
     async fn request_gas_and_paymaster_and_data(
         &self,
-        chain_id: u64,
         user_operation: UserOperationRequest,
         entry_point: Address,
+        chain_id: u64,
     ) -> RpcResult<GasAndPaymasterAndData>;
 }

@@ -50,9 +50,9 @@ pub struct PaymasterServerImpl {}
 impl PaymasterServer for PaymasterServerImpl {
     async fn request_paymaster_and_data(
         &self,
-        _chain_id: u64,
         _user_operation: UserOperationRequest,
         _entry_point: Address,
+        _chain_id: u64,
     ) -> RpcResult<PaymasterAndData> {
         // Return the default.
         return Ok(PaymasterAndData::default());
@@ -60,9 +60,9 @@ impl PaymasterServer for PaymasterServerImpl {
 
     async fn request_gas_and_paymaster_and_data(
         &self,
-        chain_id: u64,
         user_operation: UserOperationRequest,
         entry_point: Address,
+        chain_id: u64,
     ) -> RpcResult<GasAndPaymasterAndData> {
         // Construct the user operation w/ rpc.
         let construct = construct_user_operation(chain_id, user_operation, entry_point)
@@ -153,9 +153,12 @@ pub async fn construct_user_operation(
         init_code: user_operation.init_code,
         nonce: user_operation.nonce,
         sender: user_operation.sender,
-        call_gas_limit: estimated_user_operation_gas.call_gas_limit,
-        verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
-        pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
+        // call_gas_limit: estimated_user_operation_gas.call_gas_limit,
+        call_gas_limit: 1_000_000.into(),
+        // verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
+        verification_gas_limit: 1_000_000.into(),
+        // pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
+        pre_verification_gas: 500_000.into(),
         max_fee_per_gas: estimated_request_gas.high.max_fee_per_gas,
         max_priority_fee_per_gas: estimated_request_gas.high.max_priority_fee_per_gas,
         signature: user_operation.signature,
