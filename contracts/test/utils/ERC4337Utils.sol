@@ -60,7 +60,7 @@ library ERC4337Utils {
     /// @param _vm The VM contract
     /// @param _key The user's private key to sign the UserOperation with
     /// @param _op The UserOperation to sign
-    function signUserOpHash(EntryPoint _entryPoint, Vm _vm, uint256 _key, UserOperation memory _op)
+    function signUserOp(EntryPoint _entryPoint, Vm _vm, uint256 _key, UserOperation memory _op)
         internal
         view
         returns (bytes memory signature)

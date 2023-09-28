@@ -21,6 +21,7 @@ import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {UniversalSigValidator} from "@/contracts/utils/UniversalSigValidator.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
@@ -66,6 +67,9 @@ abstract contract BaseTest is Test {
     // LightVerifyingPaymaster address
     address internal constant LIGHT_PAYMASTER_ADDRESS = address(0x000000000018d32DF916ff115A25fbeFC70bAf8b);
 
+    // SimpleAccountFactory address
+    address internal constant SIMPLE_ACCOUNT_FACTORY_ADDRESS = address(0x9406Cc6185a346906296840746125a0E44976454);
+
     // -------------------------------------------------------------------------
     // Constants
     // -------------------------------------------------------------------------
@@ -88,6 +92,9 @@ abstract contract BaseTest is Test {
     LightVerifyingPaymaster internal paymaster;
     // LightWallet for deployed account
     LightWallet internal wallet;
+
+    // SimpleAccountFactory core contract
+    SimpleAccountFactory internal simpleAccountFactory;
 
     // -------------------------------------------------------------------------
     // Utility Contracts

@@ -31,7 +31,7 @@ use hyper_rustls::HttpsConnector;
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_jsonrpsee::types::Request as JSONRPCRequest;
 use lightdotso_paymaster::types::UserOperationRequest;
-use lightdotso_tracing::tracing::{error, info, warn};
+use lightdotso_tracing::tracing::{error, info, trace, warn};
 use serde::ser::Error;
 use serde_json::{json, Error as SerdeError, Value};
 use std::collections::HashMap;
@@ -354,7 +354,7 @@ pub async fn rpc_proxy_handler(
                 // Get the params and insert "chainId" into the JSON object
                 let mut params: Vec<Value> = body_json.params;
                 params.push(json!(chain_id));
-                info!("params: {:?}", params);
+                trace!("params: {:?}", params);
 
                 let req_body = json!({
                     "jsonrpc": "2.0",

@@ -23,7 +23,7 @@ use ethers::{
     types::{Address, BlockNumber, U256},
 };
 use eyre::format_err;
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{error, info, warn};
 use silius_contracts::{
     entry_point::{EntryPointErr, UserOperationEventFilter},
     utils::parse_from_input_data,
@@ -109,24 +109,33 @@ impl<M: Middleware + 'static> UoPool<M> {
             Ok(res) => Ok(res),
             Err(err) => match err {
                 EntryPointErr::FailedOp(f) => {
+                    error!("simulate_validation err: {:?}", f);
                     Err(SimulationCheckError::Validation { message: f.reason })
                 }
-                _ => Err(SimulationCheckError::UnknownError {
+                _ => {
+                    warn!("simulate_validation unknown err: {:?}", err);
+                    Err(SimulationCheckError::UnknownError {
                     message: format!(
                         "Unknown error when simulating validation on entry point. Error message: {err:?}"
                     ),
-                }),
+                })
+                }
             },
         }?;
+        info!("sim_res: {:?}", sim_res);
 
         match self.entry_point.simulate_execution(uo.clone()).await {
             Ok(_) => {}
             Err(err) => {
                 return Err(match err {
                     EntryPointErr::JsonRpcError(err) => {
+                        warn!("simulate execution err: {:?}", err);
                         SimulationCheckError::Execution { message: err.message }
                     }
-                    _ => SimulationCheckError::UnknownError { message: format!("{err:?}") },
+                    _ => {
+                        warn!("simulate execution unknown err: {:?}", err);
+                        SimulationCheckError::UnknownError { message: format!("{err:?}") }
+                    }
                 })
             }
         }
@@ -134,12 +143,13 @@ impl<M: Middleware + 'static> UoPool<M> {
         let exec_res = match self.entry_point.simulate_handle_op(uo.clone()).await {
             Ok(res) => res,
             Err(err) => {
+                warn!("exec_res err: {:?}", err);
                 return Err(match err {
                     EntryPointErr::JsonRpcError(err) => {
                         SimulationCheckError::Execution { message: err.message }
                     }
                     _ => SimulationCheckError::UnknownError { message: format!("{err:?}") },
-                })
+                });
             }
         };
 
@@ -147,6 +157,7 @@ impl<M: Middleware + 'static> UoPool<M> {
             .base_fee_per_gas()
             .await
             .map_err(|err| SimulationCheckError::UnknownError { message: err.to_string() })?;
+
         let call_gas_limit = calculate_call_gas_limit(
             exec_res.paid,
             exec_res.pre_op_gas,

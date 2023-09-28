@@ -16,7 +16,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
-import {LightWallet} from "@/contracts/LightWallet.sol";
+import {UserOperation, LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 import {BaseTest} from "@/test/base/BaseTest.t.sol";
@@ -102,7 +102,7 @@ abstract contract BaseLightDeployer is BaseTest {
                 '","nonce":"0x0",',
                 '"initCode":"',
                 bytesToHexString(initCode),
-                '","callData":"0x","signature":"0x000100000001000131a184eb40202a407819e4efe1313e8464c56ae6bb88ee91728134892f57a1df2519f8cd158ca4d60043fa37ed9da5e8748757367374a7c0ea745fdf364280c31c01","paymasterAndData":"0x"}]}'
+                '","callData":"0x","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"}]}'
             )
         );
 
@@ -137,7 +137,7 @@ abstract contract BaseLightDeployer is BaseTest {
                 '","nonce":"0x0",',
                 '"initCode":"',
                 bytesToHexString(initCode),
-                '","callData":"0x","signature":"0x000100000001000131a184eb40202a407819e4efe1313e8464c56ae6bb88ee91728134892f57a1df2519f8cd158ca4d60043fa37ed9da5e8748757367374a7c0ea745fdf364280c31c01","paymasterAndData":"',
+                '","callData":"0x","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"',
                 bytesToHexString(paymasterAndData),
                 '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
             )
@@ -158,17 +158,7 @@ abstract contract BaseLightDeployer is BaseTest {
         callGasLimit = json.readUint(".result.callGasLimit");
     }
 
-    function sendUserOperation(
-        address sender,
-        bytes memory initCode,
-        bytes memory paymasterAndData,
-        bytes memory signature,
-        uint256 maxFeePerGas,
-        uint256 maxPriorityFeePerGas,
-        uint256 preVerificationGas,
-        uint256 verificationGasLimit,
-        uint256 callGasLimit
-    ) internal {
+    function sendUserOperation(UserOperation memory op) internal {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
         string[] memory headers = new string[](1);
@@ -176,23 +166,23 @@ abstract contract BaseLightDeployer is BaseTest {
         string memory body = string(
             abi.encodePacked(
                 '{"id": 1,"jsonrpc":"2.0","method":"eth_sendUserOperation","params":[{"sender":"',
-                Strings.toHexString(uint160(sender), 20),
+                Strings.toHexString(uint160(op.sender), 20),
                 '","nonce":"0x0","callData":"0x","initCode":"',
-                bytesToHexString(initCode),
+                bytesToHexString(op.initCode),
                 '","paymasterAndData":"',
-                bytesToHexString(paymasterAndData),
+                bytesToHexString(op.paymasterAndData),
                 '","signature":"',
-                bytesToHexString(signature),
+                bytesToHexString(op.signature),
                 '","maxFeePerGas":"',
-                Strings.toHexString(maxFeePerGas),
+                Strings.toHexString(op.maxFeePerGas),
                 '","maxPriorityFeePerGas":"',
-                Strings.toHexString(maxPriorityFeePerGas),
+                Strings.toHexString(op.maxPriorityFeePerGas),
                 '","preVerificationGas":"',
-                Strings.toHexString(preVerificationGas),
+                Strings.toHexString(op.preVerificationGas),
                 '","verificationGasLimit":"',
-                Strings.toHexString(verificationGasLimit),
+                Strings.toHexString(op.verificationGasLimit),
                 '","callGasLimit":"',
-                Strings.toHexString(callGasLimit),
+                Strings.toHexString(op.callGasLimit),
                 '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
             )
         );
@@ -208,6 +198,12 @@ abstract contract BaseLightDeployer is BaseTest {
 
         // solhint-disable-next-line no-console
         console.log(json);
+
+        // Get the hash of the UserOperation
+        bytes32 userOphash = entryPoint.getUserOpHash(op);
+
+        // solhint-disable-next-line no-console
+        console.logBytes32(userOphash);
     }
 
     function getFullUrl() public view returns (string memory) {
