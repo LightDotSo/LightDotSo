@@ -113,7 +113,7 @@ pub async fn get_paymaster_and_data(
     .map_err(JsonRpcError::from)?;
 
     // Sign the message.
-    let msg = sign_message(chain_id, hash).await.map_err(JsonRpcError::from)?;
+    let msg = sign_message(hash, chain_id).await.map_err(JsonRpcError::from)?;
 
     // Construct the paymaster and data.
     let paymater_and_data =
@@ -251,7 +251,7 @@ pub async fn estimate_user_operation_gas(
 }
 
 /// Sign a message w/ the paymaster private key.
-pub async fn sign_message(chain_id: u64, hash: [u8; 32]) -> Result<Vec<u8>> {
+pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
     let wallet: Wallet<SigningKey> =
         std::env::var("PAYMASTER_PRIVATE_KEY").unwrap().parse().unwrap();
     let wallet = wallet.with_chain_id(chain_id);
@@ -357,7 +357,7 @@ mod tests {
                 .unwrap();
 
         // Call our function
-        let result = sign_message(chain_id, hash).await;
+        let result = sign_message(hash, chain_id).await;
 
         // The expected signature
         let expected_signature: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
