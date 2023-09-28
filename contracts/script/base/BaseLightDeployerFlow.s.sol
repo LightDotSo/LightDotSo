@@ -72,6 +72,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         vm.createSelectFork(name);
     }
 
+    /// @dev Construct the user operation
     function constructUserOperation(address expectedAddress, bytes memory initCode, bytes memory callData)
         internal
         returns (UserOperation memory op)
@@ -90,9 +91,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             0x0,
             initCode,
             callData,
-            callGasLimit,
-            verificationGasLimit,
-            preVerificationGas,
+            // callGasLimit,
+            1_000_000,
+            // verificationGasLimit,
+            1_000_000,
+            // preVerificationGas,
+            500_000,
             maxFeePerGas,
             maxPriorityFeePerGas,
             paymasterAndData,
@@ -101,6 +105,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         );
     }
 
+    /// @dev Handle the ops with the entryPoint
     function handleOps(UserOperation memory op) internal {
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);
@@ -110,11 +115,13 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         entryPoint.handleOps(ops, payable(address(1)));
     }
 
+    /// @dev Simulate the ops with the entryPoint
     function simulateValidation(UserOperation memory op) internal {
         // Simulate the UserOperation
         entryPoint.simulateValidation(op);
     }
 
+    /// @dev Deploy the SimpleAccount contract
     function deploySimpleAccount() internal {
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
@@ -141,10 +148,14 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // Construct the UserOperation
         op.signature = sig;
 
+        // Empty the paymasterAndData
+        op.paymasterAndData = "";
+
         // Handle the ops
         sendUserOperation(op);
     }
 
+    /// @dev Deploy the LightWallet contract
     function deployLightWallet() internal returns (LightWallet) {
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");

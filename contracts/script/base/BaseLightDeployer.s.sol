@@ -62,10 +62,13 @@ abstract contract BaseLightDeployer is BaseTest {
     // Utilities
     // -------------------------------------------------------------------------
 
+    /// @dev Gets the pseudo-random number and hash it in a bytes32
     function randMod() internal view returns (bytes32) {
         return bytes32(uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337);
     }
 
+    /// @notice Base deployer test for scripts
+    /// @dev This contract is used to request gas estimation for a particular chain
     function getGasRequestGasEstimation() internal returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
@@ -86,6 +89,7 @@ abstract contract BaseLightDeployer is BaseTest {
         maxPriorityFeePerGas = json.readUint(".result.instant.maxPriorityFeePerGas");
     }
 
+    /// @dev Gets the gas parameters and the paymaster and data
     function getPaymasterRequestGasAndPaymasterAndData(address sender, bytes memory initCode)
         internal
         returns (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas)
@@ -121,6 +125,7 @@ abstract contract BaseLightDeployer is BaseTest {
         paymasterAndData = json.readBytes(".result.paymasterAndData");
     }
 
+    /// @dev Gets the estimated gas for a user operation
     function getEthEstimateUserOperationGas(address sender, bytes memory initCode, bytes memory paymasterAndData)
         internal
         returns (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit)
@@ -158,6 +163,7 @@ abstract contract BaseLightDeployer is BaseTest {
         callGasLimit = json.readUint(".result.callGasLimit");
     }
 
+    /// @dev Sends a user operation to the RPC
     function sendUserOperation(UserOperation memory op) internal {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
@@ -206,6 +212,7 @@ abstract contract BaseLightDeployer is BaseTest {
         console.logBytes32(userOphash);
     }
 
+    /// @dev Gets the full URL of the RPC
     function getFullUrl() public view returns (string memory) {
         string memory baseUrl = "https://rpc.light.so/";
         string memory chainId = Strings.toString(block.chainid);
@@ -214,6 +221,7 @@ abstract contract BaseLightDeployer is BaseTest {
 
     // From: https://ethereum.stackexchange.com/questions/126899/convert-bytes-to-hexadecimal-string-in-solidity
     // License: GPL-3.0
+    /// @dev Converts bytes to hexadecimal string
     function bytesToHexString(bytes memory buffer) public pure returns (string memory) {
         // Fixed buffer size for hexadecimal convertion
         bytes memory converted = new bytes(buffer.length * 2);
