@@ -22,6 +22,8 @@
   test = "contracts/test"
   verbosity = 3
   via_ir = false
+  # known error codes are: ["unreachable", "unused-return", "unused-param", "unused-var", "code-size", "shadowing", "func-mutability", "license", "pragma-solidity", "virtual-interfaces", "same-varname"]
+  # ignored_error_codes = ["license", "code-size"]
 
 [profile.deploy]
   optimizer_runs = 4_294_967_295
@@ -29,7 +31,7 @@
   out = 'optimized-out'
   script = 'contracts'
   bytecode_hash = 'none'
-  test = 'contracts'
+  src = 'contracts'
 
 [profile.local]
   no_match_test = "test(Fork|Fuzz|Invariant)"

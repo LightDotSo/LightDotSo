@@ -22,6 +22,8 @@ import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
+import {SimpleAccount} from "@/contracts/samples/SimpleAccount.sol";
+import {SimpleAccountFactory} from "@/contracts/samples/SimpleAccountFactory.sol";
 import {LightWalletUtils} from "@/test/utils/LightWalletUtils.sol";
 import {ERC4337Utils} from "@/test/utils/ERC4337Utils.sol";
 import {Script} from "forge-std/Script.sol";
@@ -59,12 +61,88 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
+        // SimpleAccountFactory core contract
+        simpleAccountFactory = SimpleAccountFactory(SIMPLE_ACCOUNT_FACTORY_ADDRESS);
+
         // Get network name
         string memory defaultName = "mainnet";
         string memory name = vm.envOr("NETWORK_NAME", defaultName);
 
         // Fork network setup
         vm.createSelectFork(name);
+    }
+
+    function constructUserOperation(address expectedAddress, bytes memory initCode, bytes memory callData)
+        internal
+        returns (UserOperation memory op)
+    {
+        // Get the paymaster request gas and paymaster and data
+        (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) =
+            getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
+
+        // Get the gas estimation
+        (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
+            getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
+
+        // UserOperation to create the account
+        op = UserOperation(
+            expectedAddress,
+            0x0,
+            initCode,
+            callData,
+            callGasLimit,
+            verificationGasLimit,
+            preVerificationGas,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            paymasterAndData,
+            // signature should be empty
+            ""
+        );
+    }
+
+    function handleOps(UserOperation memory op) internal {
+        // Construct the ops
+        UserOperation[] memory ops = new UserOperation[](1);
+        ops[0] = op;
+
+        // Handle the ops
+        entryPoint.handleOps(ops, payable(address(1)));
+    }
+
+    function simulateValidation(UserOperation memory op) internal {
+        // Simulate the UserOperation
+        entryPoint.simulateValidation(op);
+    }
+
+    function deploySimpleAccount() internal {
+        // Set the user and userKey
+        (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
+
+        // Set the initCode to create an account with the expected image hash and random nonce
+        bytes memory initCode = abi.encodePacked(
+            SIMPLE_ACCOUNT_FACTORY_ADDRESS,
+            abi.encodeWithSelector(SimpleAccountFactory.createAccount.selector, deployer, uint256(0))
+        );
+
+        // Get the expected address
+        address expectedAddress = simpleAccountFactory.getAddress(deployer, uint256(0));
+
+        // Sent ETH to the account w/ the expected address
+        // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
+        bytes memory callData = "";
+
+        // UserOperation to create the account
+        UserOperation memory op = constructUserOperation(expectedAddress, initCode, callData);
+
+        // Sign the UserOperation
+        bytes memory sig = entryPoint.signUserOp(vm, deployerKey, op);
+
+        // Construct the UserOperation
+        op.signature = sig;
+
+        // Handle the ops
+        sendUserOperation(op);
     }
 
     function deployLightWallet() internal returns (LightWallet) {
@@ -89,49 +167,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // solhint-disable-next-line no-console
         console.logBytes(initCode);
 
-        // Get the gas estimation
-        // (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) = getGasRequestGasEstimation();
-
-        (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) =
-            getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
-
-        (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
-            getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
-
         // Sent ETH to the account w/ the expected address
         // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
         bytes memory callData = "";
 
-        callGasLimit = 10000000;
-        verificationGasLimit = 10000000;
-        // preVerificationGas = 50000;
-
-        // maxFeePerGas = 50000;
-        // maxPriorityFeePerGas = 1;
-
-        paymasterAndData = "";
-
         // UserOperation to create the account
-        UserOperation memory op = UserOperation(
-            expectedAddress,
-            0x0,
-            initCode,
-            callData,
-            callGasLimit,
-            verificationGasLimit,
-            preVerificationGas,
-            maxFeePerGas,
-            maxPriorityFeePerGas,
-            paymasterAndData,
-            // signature should be empty
-            ""
-        );
-
-        // Get the hash of the UserOperation
-        // bytes32 userOphash = entryPoint.getUserOpHash(op);
-
-        // solhint-disable-next-line no-console
-        // console.logBytes32(userOphash);
+        UserOperation memory op = constructUserOperation(expectedAddress, initCode, callData);
 
         // Sign the UserOperation
         bytes memory sig = LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey);
@@ -143,24 +184,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;
 
-        // Entry point handle ops
-        // entryPoint.handleOps(ops, payable(address(1)));
-
-        // Simulate the UserOperation
-        // entryPoint.simulateValidation(op);
-
         // Handle the ops
-        sendUserOperation(
-            expectedAddress,
-            initCode,
-            paymasterAndData,
-            sig,
-            maxFeePerGas,
-            maxPriorityFeePerGas,
-            preVerificationGas,
-            verificationGasLimit,
-            callGasLimit
-        );
+        sendUserOperation(op);
 
         // solhint-disable-next-line no-console
         console.log("LightWallet to be deployed at address: %s", address(expectedAddress));
