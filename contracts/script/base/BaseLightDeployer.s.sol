@@ -94,9 +94,18 @@ abstract contract BaseLightDeployer is BaseTest {
     }
 
     /// @dev Gets the gas parameters and the paymaster and data
+    /// The rpc is responsible for calling `eth_estimateUserOperationGas` for the user operation
+    /// and returning the `preVerificationGas`, `verificationGasLimit` and `callGasLimit` w/ `paymasterAndData`
     function getPaymasterRequestGasAndPaymasterAndData(address sender, bytes memory initCode)
         internal
-        returns (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas)
+        returns (
+            uint256 preVerificationGas,
+            uint256 verificationGasLimit,
+            uint256 callGasLimit,
+            bytes memory paymasterAndData,
+            uint256 maxFeePerGas,
+            uint256 maxPriorityFeePerGas
+        )
     {
         // Perform a post request with headers and JSON body
         string memory url = getFullUrl();
@@ -110,7 +119,7 @@ abstract contract BaseLightDeployer is BaseTest {
                 '","nonce":"0x0",',
                 '"initCode":"',
                 bytesToHexString(initCode),
-                '","callData":"0x","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"}]}'
+                '","callData":"0x","signature":"0x","paymasterAndData":"0x"}]}'
             )
         );
 
@@ -123,6 +132,11 @@ abstract contract BaseLightDeployer is BaseTest {
         // solhint-disable-next-line no-console
         console.log(json);
 
+        // Parse the params from `eth_estimateUserOperationGas` internal op
+        preVerificationGas = json.readUint(".result.preVerificationGas");
+        verificationGasLimit = json.readUint(".result.verificationGasLimit");
+        callGasLimit = json.readUint(".result.callGasLimit");
+
         // Parse the params
         maxFeePerGas = json.readUint(".result.maxFeePerGas");
         maxPriorityFeePerGas = json.readUint(".result.maxPriorityFeePerGas");
@@ -130,7 +144,9 @@ abstract contract BaseLightDeployer is BaseTest {
     }
 
     /// @dev Gets the estimated gas for a user operation
-    function getEthEstimateUserOperationGas(address sender, bytes memory initCode, bytes memory paymasterAndData)
+    /// @notice Not used in the script, because the `paymaster_requestGasAndPaymasterAndData` is responsible for calling `eth_estimateUserOperationGas`
+    /// w/ the associated `preVerificationGas`, `verificationGasLimit` and `callGasLimit`
+    function getEthEstimateUserOperationGas(address sender, bytes memory initCode)
         internal
         returns (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit)
     {
@@ -146,9 +162,7 @@ abstract contract BaseLightDeployer is BaseTest {
                 '","nonce":"0x0",',
                 '"initCode":"',
                 bytesToHexString(initCode),
-                '","callData":"0x","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"',
-                bytesToHexString(paymasterAndData),
-                '"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
+                '","callData":"0x","signature":"0x","paymasterAndData":"0x"},"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789"]}'
             )
         );
 

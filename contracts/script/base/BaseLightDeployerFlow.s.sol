@@ -78,12 +78,18 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         returns (UserOperation memory op)
     {
         // Get the paymaster request gas and paymaster and data
-        (bytes memory paymasterAndData, uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) =
-            getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
+        (
+            uint256 preVerificationGas,
+            uint256 verificationGasLimit,
+            uint256 callGasLimit,
+            bytes memory paymasterAndData,
+            uint256 maxFeePerGas,
+            uint256 maxPriorityFeePerGas,
+        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
 
         // Get the gas estimation
-        (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
-            getEthEstimateUserOperationGas(expectedAddress, initCode, paymasterAndData);
+        // (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
+        // getEthEstimateUserOperationGas(expectedAddress, initCode);
 
         // UserOperation to create the account
         op = UserOperation(

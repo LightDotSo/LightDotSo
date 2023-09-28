@@ -39,7 +39,7 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{info, warn};
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -142,10 +142,51 @@ pub async fn construct_user_operation(
     user_operation: UserOperationRequest,
     entry_point: Address,
 ) -> Result<UserOperationConstruct> {
-    let estimated_user_operation_gas =
-        estimate_user_operation_gas(chain_id, entry_point, &user_operation).await?.result;
+    // If the `pre_verification_gas`, `verification_gas_limit`, and `call_gas_limit` are set,
+    // override the gas estimation for the user operatioin
+    let estimated_user_operation_gas: EstimateResult = if user_operation
+        .pre_verification_gas
+        .is_some_and(|pre_verification_gas| pre_verification_gas > 0.into()) &&
+        user_operation
+            .verification_gas_limit
+            .is_some_and(|verification_gas_limit| verification_gas_limit > 0.into()) &&
+        user_operation.call_gas_limit.is_some_and(|call_gas_limit| call_gas_limit > 0.into())
+    {
+        warn!("Overriding the gas estimation for the user operation");
+        EstimateResult {
+            pre_verification_gas: user_operation.pre_verification_gas.unwrap(),
+            verification_gas_limit: user_operation.verification_gas_limit.unwrap(),
+            call_gas_limit: user_operation.call_gas_limit.unwrap(),
+        }
+    } else {
+        // If the `estimate_user_operation_gas` is not set, estimate the gas for the user operation.
+        estimate_user_operation_gas(chain_id, entry_point, &user_operation).await?.result
+    };
+
     info!("estimated_user_operation_gas: {:?}", estimated_user_operation_gas);
 
+    // If the `maxFeePerGas` and `maxPriorityFeePerGas` are set, include them in the user operation.
+    if user_operation.max_fee_per_gas.is_some_and(|max_fee_per_gas| max_fee_per_gas > 0.into()) &&
+        user_operation
+            .max_priority_fee_per_gas
+            .is_some_and(|max_priority_fee_per_gas| max_priority_fee_per_gas > 0.into())
+    {
+        warn!("Overriding the gas estimation for the user operation w/ the maxFeePerGas and maxPriorityFeePerGas");
+        return Ok(UserOperationConstruct {
+            call_data: user_operation.call_data,
+            init_code: user_operation.init_code,
+            nonce: user_operation.nonce,
+            sender: user_operation.sender,
+            call_gas_limit: estimated_user_operation_gas.call_gas_limit,
+            verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
+            pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
+            max_fee_per_gas: user_operation.max_fee_per_gas.unwrap(),
+            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas.unwrap(),
+            signature: user_operation.signature,
+        });
+    }
+
+    // Get the estimated request gas because required gas parameters are not set.
     let estimated_request_gas = estimate_request_gas_estimation(chain_id).await?.result;
 
     Ok(UserOperationConstruct {
@@ -153,12 +194,9 @@ pub async fn construct_user_operation(
         init_code: user_operation.init_code,
         nonce: user_operation.nonce,
         sender: user_operation.sender,
-        // call_gas_limit: estimated_user_operation_gas.call_gas_limit,
-        call_gas_limit: 1_000_000.into(),
-        // verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
-        verification_gas_limit: 1_000_000.into(),
-        // pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
-        pre_verification_gas: 500_000.into(),
+        call_gas_limit: estimated_user_operation_gas.call_gas_limit,
+        verification_gas_limit: estimated_user_operation_gas.verification_gas_limit,
+        pre_verification_gas: estimated_user_operation_gas.pre_verification_gas,
         max_fee_per_gas: estimated_request_gas.high.max_fee_per_gas,
         max_priority_fee_per_gas: estimated_request_gas.high.max_priority_fee_per_gas,
         signature: user_operation.signature,
