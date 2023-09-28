@@ -25,6 +25,7 @@ use lightdotso_contracts::provider::get_provider;
 use lightdotso_jsonrpsee::error::JsonRpcError;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
+use std::ops::{Div, Mul};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -85,12 +86,7 @@ impl GasServer for GasServerImpl {
                 max_fee_per_gas: gas_price,
                 max_priority_fee_per_gas: gas_price,
             };
-            return Ok(GasEstimation {
-                low: params.clone(),
-                average: params.clone(),
-                high: params.clone(),
-                instant: params.clone(),
-            });
+            return Ok(create_gas_estimation(&params));
         }
 
         // Get the fee history
@@ -126,15 +122,12 @@ impl GasServer for GasServerImpl {
 
         // Use the gas price to create the params
         let params = GasEstimationParams { max_fee_per_gas: gas_price, max_priority_fee_per_gas };
-        Ok(GasEstimation {
-            low: params.clone(),
-            average: params.clone(),
-            high: params.clone(),
-            instant: params.clone(),
-        })
+
+        Ok(create_gas_estimation(&params))
     }
 }
 
+/// Get the gas estimation from pre-configured APIs
 async fn get_estimation(chain_id: u64) -> Option<GasEstimation> {
     match chain_id {
         // Match either 1 or 11155111
@@ -148,5 +141,47 @@ async fn get_estimation(chain_id: u64) -> Option<GasEstimation> {
             Err(_) => None,
         },
         _ => None,
+    }
+}
+
+/// Create a gas estimation from the given gas price
+fn create_gas_estimation(gas_price: &GasEstimationParams) -> GasEstimation {
+    let low_params = GasEstimationParams {
+        max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(105)).div(U256::from(100)),
+        max_priority_fee_per_gas: gas_price
+            .max_priority_fee_per_gas
+            .mul(U256::from(105))
+            .div(U256::from(100)),
+    };
+
+    let average_params = GasEstimationParams {
+        max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(110)).div(U256::from(100)),
+        max_priority_fee_per_gas: gas_price
+            .max_priority_fee_per_gas
+            .mul(U256::from(110))
+            .div(U256::from(100)),
+    };
+
+    let high_params = GasEstimationParams {
+        max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(115)).div(U256::from(100)),
+        max_priority_fee_per_gas: gas_price
+            .max_priority_fee_per_gas
+            .mul(U256::from(115))
+            .div(U256::from(100)),
+    };
+
+    let instant_params = GasEstimationParams {
+        max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(120)).div(U256::from(100)),
+        max_priority_fee_per_gas: gas_price
+            .max_priority_fee_per_gas
+            .mul(U256::from(120))
+            .div(U256::from(100)),
+    };
+
+    GasEstimation {
+        low: low_params,
+        average: average_params,
+        high: high_params,
+        instant: instant_params,
     }
 }
