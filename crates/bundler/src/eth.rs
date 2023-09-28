@@ -13,12 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{constants::ENTRYPOINT_ADDRESSES, eth_api::EthApiServer};
+use crate::{
+    constants::ENTRYPOINT_ADDRESSES, eth_api::EthApiServer, provider::get_provider,
+    types::RichUserOperation,
+};
 use async_trait::async_trait;
-use ethers::{types::U64, utils::to_checksum};
+use ethers::{
+    prelude::EthEvent,
+    providers::Middleware,
+    types::{Address, BlockNumber, Filter, U64},
+    utils::to_checksum,
+};
 use jsonrpsee::core::RpcResult;
 use lightdotso_tracing::tracing::{info, warn};
-
+use rundler_types::contracts::entry_point::UserOperationEventFilter;
 /// The eth server implementation.
 pub struct EthApiServerImpl {}
 

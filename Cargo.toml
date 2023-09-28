@@ -146,6 +146,8 @@
     "optional_block_gas_limit",
     "optional_no_base_fee",
   ] }
+  rundler-pool = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-pool" }
+  rundler-provider = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-provider" }
   rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-sim" }
   rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-types" }
   serde = "1.0.183"
@@ -153,6 +155,7 @@
   spki = "0.7.2"
   tauri = { version = "1.4", features = ["shell-open"] }
   tauri-build = { version = "1.4", features = [] }
+  thiserror = "1.0.40"
   tokio = { version = "1", features = ["full"] }
   tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
   tower = { version = "0.4.12" }
