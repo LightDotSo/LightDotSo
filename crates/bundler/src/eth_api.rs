@@ -13,10 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{RichUserOperation, RpcUserOperation, UserOperationReceipt};
-use ethers::types::{Address, H256, U64};
+use ethers::types::U64;
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
-use rundler_sim::{GasEstimate, UserOperationOptionalGas};
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
 /// License: MIT or Apache-2.0

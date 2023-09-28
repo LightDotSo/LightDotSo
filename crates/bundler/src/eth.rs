@@ -13,37 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    constants::ENTRYPOINT_ADDRESSES, eth_api::EthApiServer, provider::get_provider,
-    types::RichUserOperation,
-};
+use crate::{constants::ENTRYPOINT_ADDRESSES, eth_api::EthApiServer};
 use async_trait::async_trait;
-use ethers::{
-    prelude::EthEvent,
-    providers::Middleware,
-    types::{Address, BlockNumber, Filter, U64},
-    utils::to_checksum,
-};
+use ethers::{types::U64, utils::to_checksum};
 use jsonrpsee::core::RpcResult;
-use lightdotso_tracing::tracing::{info, warn};
-use rundler_types::contracts::entry_point::UserOperationEventFilter;
+
 /// The eth server implementation.
 pub struct EthApiServerImpl {}
 
 #[async_trait]
 impl EthApiServer for EthApiServerImpl {
-    /// Retrieve the current [EIP-155](https://eips.ethereum.org/EIPS/eip-155) chain ID.
-    ///
-    /// # Returns
-    /// * `RpcResult<U64>` - The chain ID as a U64.
     async fn chain_id(&self, chain_id: u64) -> RpcResult<U64> {
         Ok(chain_id.into())
     }
 
-    /// Get the supported entry points for [UserOperations](UserOperation).
-    ///
-    /// # Returns
-    /// * `RpcResult<Vec<String>>` - A array of the entry point addresses as strings.
     async fn supported_entry_points(&self, _chain_id: u64) -> RpcResult<Vec<String>> {
         return Ok(ENTRYPOINT_ADDRESSES.into_iter().map(|ep| to_checksum(&ep, None)).collect());
     }

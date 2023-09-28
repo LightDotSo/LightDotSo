@@ -146,11 +146,11 @@ pub async fn construct_user_operation(
     // override the gas estimation for the user operatioin
     let estimated_user_operation_gas: EstimateResult = if user_operation
         .pre_verification_gas
-        .is_some_and(|pre_verification_gas| pre_verification_gas > 0.into()) &&
-        user_operation
+        .is_some_and(|pre_verification_gas| pre_verification_gas > 0.into())
+        && user_operation
             .verification_gas_limit
-            .is_some_and(|verification_gas_limit| verification_gas_limit > 0.into()) &&
-        user_operation.call_gas_limit.is_some_and(|call_gas_limit| call_gas_limit > 0.into())
+            .is_some_and(|verification_gas_limit| verification_gas_limit > 0.into())
+        && user_operation.call_gas_limit.is_some_and(|call_gas_limit| call_gas_limit > 0.into())
     {
         warn!("Overriding the gas estimation for the user operation");
         EstimateResult {
@@ -165,8 +165,8 @@ pub async fn construct_user_operation(
     info!("estimated_user_operation_gas: {:?}", estimated_user_operation_gas);
 
     // If the `maxFeePerGas` and `maxPriorityFeePerGas` are set, include them in the user operation.
-    if user_operation.max_fee_per_gas.is_some_and(|max_fee_per_gas| max_fee_per_gas > 0.into()) &&
-        user_operation
+    if user_operation.max_fee_per_gas.is_some_and(|max_fee_per_gas| max_fee_per_gas > 0.into())
+        && user_operation
             .max_priority_fee_per_gas
             .is_some_and(|max_priority_fee_per_gas| max_priority_fee_per_gas > 0.into())
     {

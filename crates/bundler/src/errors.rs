@@ -60,7 +60,7 @@ const UNSUPORTED_AGGREGATOR_CODE: i32 = -32506;
 const SIGNATURE_CHECK_FAILED_CODE: i32 = -32507;
 const EXECUTION_REVERTED: i32 = -32521;
 
-pub(crate) type EthResult<T> = Result<T, EthRpcError>;
+pub type EthResult<T> = Result<T, EthRpcError>;
 
 /// Error returned by the RPC server eth namespace
 #[derive(Debug, thiserror::Error)]
