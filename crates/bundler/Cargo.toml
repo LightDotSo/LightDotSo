@@ -22,7 +22,6 @@
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   pin-utils = "0.1"
-  rundler-pool = { workspace = true }
   rundler-provider = { workspace = true }
   rundler-sim = { workspace = true }
   rundler-types = { workspace = true }
