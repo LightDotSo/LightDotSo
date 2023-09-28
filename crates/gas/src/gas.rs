@@ -145,6 +145,8 @@ async fn get_estimation(chain_id: u64) -> Option<GasEstimation> {
 }
 
 /// Create a gas estimation from the given gas price
+/// Arbitary multiplication from: https://github.com/pimlicolabs/alto/blob/2981f50eb6fc4692939f13802e799149c554734b/packages/rpc/src/rpcHandler.ts#L531
+/// License: GPL-3.0
 fn create_gas_estimation(gas_price: &GasEstimationParams) -> GasEstimation {
     let low_params = GasEstimationParams {
         max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(105)).div(U256::from(100)),
