@@ -31,6 +31,10 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
     // -------------------------------------------------------------------------
 
     function run() public {
+        UserOperation memory op = UserOperation(
+            address(0), uint256(0), "", "", uint256(0), uint256(0), uint256(0), uint256(0), uint256(0), "", ""
+        );
+
         // Set the nonce
         uint256 nonce = randomNonce();
 
@@ -52,7 +56,7 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
 
         // Deploy a new LightWallet
         // UserOperation to create the account
-        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData);
+        op = constructUserOperation(expectedAddress, 0, initCode, callData);
 
         // solhint-disable-next-line no-console
         console.logBytes(op.paymasterAndData);
@@ -63,12 +67,25 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
         // solhint-disable-next-line no-console
         console.logBytes(signature);
 
-        bytes32 hash = ECDSA.toEthSignedMessageHash(paymaster.getHash(op, validUntil, validAfter));
+        op.signature = "";
+        op.paymasterAndData = "";
+
+        bytes32 beforeHash = paymaster.getHash(op, validUntil, validAfter);
+
+        // solhint-disable-next-line no-console
+        console.logBytes32(beforeHash);
+
+        writeUserOperationJson(op);
+        bytes32 hash = ECDSA.toEthSignedMessageHash(beforeHash);
+
+        // solhint-disable-next-line no-console
+        console.logBytes32(hash);
 
         address signer = ECDSA.recover(hash, signature);
 
         // solhint-disable-next-line no-console
         console.logAddress(signer);
         assertEq(signer, OFFCHAIN_VERIFIER_ADDRESS);
+        // assertEq(signer, address(0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf));
     }
 }

@@ -238,8 +238,29 @@ abstract contract BaseLightDeployer is BaseTest {
         console.logBytes32(userOphash);
     }
 
+    /// @dev Sends a user operation to the RPC
+    function writeUserOperationJson(UserOperation memory op) internal {
+        vm.writeJson(Strings.toHexString(uint160(op.sender), 20), "./tmp.json", ".sender");
+        vm.writeJson(uintToHexString(op.nonce), "./tmp.json", ".nonce");
+        vm.writeJson(bytesToHexString(op.initCode), "./tmp.json", ".initCode");
+        vm.writeJson(bytesToHexString(op.callData), "./tmp.json", ".callData");
+        vm.writeJson(uintToHexString(op.callGasLimit), "./tmp.json", ".callGasLimit");
+        vm.writeJson(uintToHexString(op.verificationGasLimit), "./tmp.json", ".verificationGasLimit");
+        vm.writeJson(uintToHexString(op.preVerificationGas), "./tmp.json", ".preVerificationGas");
+        vm.writeJson(uintToHexString(op.maxFeePerGas), "./tmp.json", ".maxFeePerGas");
+        vm.writeJson(uintToHexString(op.maxPriorityFeePerGas), "./tmp.json", ".maxPriorityFeePerGas");
+        vm.writeJson(bytesToHexString(op.paymasterAndData), "./tmp.json", ".paymasterAndData");
+        vm.writeJson(bytesToHexString(op.signature), "./tmp.json", ".signature");
+    }
+
     /// @dev Gets the full URL of the RPC
-    function getFullUrl() public view returns (string memory) {
+    function getFullUrl() public returns (string memory) {
+        string memory env = vm.envOr("ENVIRONMENT", string(""));
+        // Workaround for comparing strings in solidity
+        if (keccak256(abi.encodePacked(env)) == keccak256(abi.encodePacked(string("local")))) {
+            return string("http://localhost:3000");
+        }
+
         string memory baseUrl = "https://rpc.light.so/";
         string memory chainId = Strings.toString(block.chainid);
         return string(abi.encodePacked(baseUrl, chainId));
