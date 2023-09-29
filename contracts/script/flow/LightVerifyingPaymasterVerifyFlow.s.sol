@@ -35,8 +35,6 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
             address(0), uint256(0), "", "", uint256(0), uint256(0), uint256(0), uint256(0), uint256(0), "", ""
         );
 
-        bytes32 absHash = paymaster.getHash(op, 0, 0);
-
         // Set the nonce
         uint256 nonce = randomNonce();
 
