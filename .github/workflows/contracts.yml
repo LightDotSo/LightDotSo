@@ -133,7 +133,7 @@ jobs:
           # - mainnet
           - optimism
           # - bsc
-          - gnosis
+          # - gnosis
           # - polygon
           # - arbitrum
           # - avalanche
