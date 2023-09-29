@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  anyhow = { workspace = true }
   ethers = { workspace = true }
   eyre = { workspace = true }
   hyper = { workspace = true }

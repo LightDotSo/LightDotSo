@@ -32,11 +32,22 @@ impl From<JsonRpcError> for ErrorObjectOwned {
 }
 
 /// Convert a [eyre error](url::ParseError) to a [JsonRpcError](JsonRpcError).
+impl From<anyhow::Error> for JsonRpcError {
+    fn from(err: anyhow::Error) -> Self {
+        JsonRpcError(ErrorObject::owned(
+            ErrorCode::InternalError.code(),
+            format!("anyhow error: {err}"),
+            None::<bool>,
+        ))
+    }
+}
+
+/// Convert a [eyre error](url::ParseError) to a [JsonRpcError](JsonRpcError).
 impl From<eyre::Error> for JsonRpcError {
     fn from(err: eyre::Error) -> Self {
         JsonRpcError(ErrorObject::owned(
             ErrorCode::InternalError.code(),
-            format!("JSON serializing error: {err}"),
+            format!("eyre error: {err}"),
             None::<bool>,
         ))
     }
@@ -47,7 +58,7 @@ impl From<url::ParseError> for JsonRpcError {
     fn from(err: url::ParseError) -> Self {
         JsonRpcError(ErrorObject::owned(
             ErrorCode::ParseError.code(),
-            format!("JSON serializing error: {err}"),
+            format!("URL serializing error: {err}"),
             None::<bool>,
         ))
     }
@@ -71,13 +82,13 @@ impl From<ethers::providers::ProviderError> for JsonRpcError {
             ethers::providers::ProviderError::JsonRpcClientError(err) => {
                 JsonRpcError(ErrorObject::owned(
                     INTERNAL_ERROR_CODE,
-                    format!("Network error: {:?}", err),
+                    format!("Provider error: {:?}", err),
                     None::<bool>,
                 ))
             }
             _ => JsonRpcError(ErrorObject::owned(
                 INTERNAL_ERROR_CODE,
-                format!("Network error with no status code: {:?}", err),
+                format!("Provider error with no status code: {:?}", err),
                 None::<bool>,
             )),
         }

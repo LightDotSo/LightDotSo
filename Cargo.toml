@@ -57,6 +57,7 @@
 
 [workspace.dependencies]
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
+  anyhow = "1.0.70"
   async-stream = "0.3.5"
   async-trait = "0.1.73"
   autometrics = { version = "*", features = [

@@ -14,13 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::providers::{Http, Middleware, Provider};
-use eyre::{eyre, Result};
 
 // FIXME: This is a temporary solution to get the provider in compatible ethers-rs
 // Copy from the file: crates/contracts/src/provider.rs
 
 /// Returns a provider for the given chain ID w/ fallbacks
-pub async fn get_provider(chain_id: u64) -> Result<Provider<Http>> {
+pub async fn get_provider(chain_id: u64) -> anyhow::Result<Provider<Http>> {
     // Primary RPC URL
     let rpc_url_1 = format!("http://lightdotso-rpc-internal.internal:3000/internal/{}", chain_id);
     if let Ok(provider) = Provider::<Http>::try_from(rpc_url_1.as_str()) {
@@ -49,5 +48,5 @@ pub async fn get_provider(chain_id: u64) -> Result<Provider<Http>> {
     }
 
     // If all attempts fail, return error message
-    Err(eyre!("Could not connect to any RPC URL"))
+    Err(anyhow::bail!("Could not connect to any RPC URL"))
 }
