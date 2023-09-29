@@ -26,6 +26,9 @@
 // You should have received a copy of the GNU General Public License along with Rundler.
 // If not, see https://www.gnu.org/licenses/.
 
+// Entire file is from: https://github.com/Vid201/silius/blob/4fa09996d156bcc70fdf1e812f8e423709bac58c/crates/rpc/src/types.rs
+// License: MIT or Apache-2.0
+
 use ethers::{
     types::{Address, Bytes, Log, TransactionReceipt, H160, H256, U256},
     utils::to_checksum,
