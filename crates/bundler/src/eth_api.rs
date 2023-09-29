@@ -21,6 +21,8 @@ use crate::types::{RichUserOperation, UserOperationReceipt};
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
 /// License: MIT or Apache-2.0
+/// Then converted to: https://github.com/alchemyplatform/rundler/blob/22fc250166cf525596faa9db84f5f56ca945a40b/crates/rpc/src/eth/mod.rs
+/// License: GPL-3.0
 /// Thank you to Vid201 for the wonderful work!
 
 #[rpc(client, server, namespace = "eth")]

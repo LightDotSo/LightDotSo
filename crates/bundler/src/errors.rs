@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// Entire file borrowed from RUndler: https://github.com/alchemyplatform/rundler/blob/22fc250166cf525596faa9db84f5f56ca945a40b/crates/rpc/src/eth/error.rs
+// Entire file borrowed from Rundler: https://github.com/alchemyplatform/rundler/blob/22fc250166cf525596faa9db84f5f56ca945a40b/crates/rpc/src/eth/error.rs
 // Alsoe here: https://github.com/alchemyplatform/rundler/blob/22fc250166cf525596faa9db84f5f56ca945a40b/crates/rpc/src/error.rs
 // License: GPL-3.0
 
