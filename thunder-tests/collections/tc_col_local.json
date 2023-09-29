@@ -215,6 +215,30 @@
           "value": "200"
         }
       ]
+    },
+    {
+      "_id": "39bc9158-31c6-4ee2-8b86-a431fce84227",
+      "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
+      "containerId": "",
+      "name": "eth_getUserOperationByHash local Copy",
+      "url": "http://localhost:3000",
+      "method": "POST",
+      "sortNum": 35000,
+      "created": "2023-09-29T19:34:56.657Z",
+      "modified": "2023-09-29T19:35:12.344Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"id\": 1,\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"eth_getUserOperationReceipt\",\n  \"params\": [\n    \"0x520ed372ad45aab3fd3728a52ecbfb493e7e9affa388ff5b7810809f4313c29b\",\n    1\n  ]\n}",
+        "form": []
+      },
+      "tests": []
     }
   ]
 }

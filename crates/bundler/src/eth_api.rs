@@ -52,11 +52,12 @@ pub trait EthApi {
     ) -> RpcResult<Option<RichUserOperation>>;
 
     /// Returns the user operation receipt with the given hash.
-    // #[method(name = "getUserOperationReceipt")]
-    // async fn get_user_operation_receipt(
-    // &self,
-    // hash: H256,
-    // ) -> RpcResult<Option<UserOperationReceipt>>;
+    #[method(name = "getUserOperationReceipt")]
+    async fn get_user_operation_receipt(
+        &self,
+        hash: H256,
+        chain_id: u64,
+    ) -> RpcResult<Option<UserOperationReceipt>>;
 
     /// Returns the supported entry points addresses
     #[method(name = "supportedEntryPoints")]

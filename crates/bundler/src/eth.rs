@@ -17,17 +17,18 @@ use crate::{
     constants::ENTRYPOINT_ADDRESSES,
     errors::{EthResult, EthRpcError},
     provider::get_provider,
-    types::RichUserOperation,
+    types::{RichUserOperation, UserOperationReceipt},
 };
 use anyhow::Context;
 use ethers::{
-    abi::AbiDecode,
+    abi::{AbiDecode, RawLog},
     contract::EthEvent,
     middleware::Middleware,
     providers::{Http, Provider},
     types::{
         Address, BlockNumber, Bytes, Filter, GethDebugBuiltInTracerType, GethDebugTracerType,
-        GethDebugTracingOptions, GethTrace, GethTraceFrame, Log, H256, U256, U64,
+        GethDebugTracingOptions, GethTrace, GethTraceFrame, Log, TransactionReceipt, H256, U256,
+        U64,
     },
     utils::to_checksum,
 };
@@ -36,10 +37,13 @@ use rundler_sim::{
     GasEstimate, GasEstimationError, GasEstimator, GasEstimatorImpl, UserOperationOptionalGas,
 };
 use rundler_types::{
-    contracts::i_entry_point::{IEntryPoint, IEntryPointCalls, UserOperationEventFilter},
+    contracts::{
+        entry_point::UserOperationRevertReasonFilter,
+        i_entry_point::{IEntryPoint, IEntryPointCalls, UserOperationEventFilter},
+    },
     UserOperation,
 };
-use rundler_utils::log::LogOnError;
+use rundler_utils::{eth::log_to_raw_log, log::LogOnError};
 use std::{
     collections::{HashMap, VecDeque},
     sync::Arc,
@@ -175,6 +179,73 @@ impl EthApi {
         }))
     }
 
+    pub(crate) async fn get_user_operation_receipt(
+        &self,
+        hash: H256,
+        chain_id: u64,
+    ) -> EthResult<Option<UserOperationReceipt>> {
+        if hash == H256::zero() {
+            return Err(EthRpcError::InvalidParams("Missing/invalid userOpHash".to_string()));
+        }
+
+        // Get the provider for the chain id.
+        let provider = self.get_eth_provider(chain_id).await?;
+
+        // Get event associated with hash (need to check all entry point addresses associated with
+        // this API)
+        let log = self
+            .get_user_operation_event_by_hash(Arc::new(provider.clone()), hash)
+            .await
+            .context("should have fetched user ops by hash")?;
+
+        let Some(log) = log else { return Ok(None) };
+        let entry_point = log.address;
+
+        // If the event is found, get the TX receipt
+        let tx_hash = log.transaction_hash.context("tx_hash should be present")?;
+        let tx_receipt = provider
+            .get_transaction_receipt(tx_hash)
+            .await
+            .context("should have fetched tx receipt")?
+            .context("Failed to fetch tx receipt")?;
+
+        // Return null if the tx isn't included in the block yet
+        if tx_receipt.block_hash.is_none() && tx_receipt.block_number.is_none() {
+            return Ok(None);
+        }
+
+        // Filter receipt logs to match just those belonging to the user op
+        let filtered_logs = self
+            .filter_receipt_logs_matching_user_op(&log, &tx_receipt)
+            .context("should have found receipt logs matching user op")?;
+
+        // Decode log and find failure reason if not success
+        let uo_event = self
+            .decode_user_operation_event(log)
+            .context("should have decoded user operation event")?;
+        let reason: String = if uo_event.success {
+            "".to_owned()
+        } else {
+            self.get_user_operation_failure_reason(&tx_receipt.logs, hash)
+                .context("should have found revert reason if tx wasn't successful")?
+                .unwrap_or_default()
+        };
+
+        Ok(Some(UserOperationReceipt {
+            user_op_hash: hash,
+            entry_point: entry_point.into(),
+            sender: uo_event.sender.into(),
+            nonce: uo_event.nonce,
+            paymaster: uo_event.paymaster.into(),
+            actual_gas_cost: uo_event.actual_gas_cost,
+            actual_gas_used: uo_event.actual_gas_used,
+            success: uo_event.success,
+            logs: filtered_logs,
+            receipt: tx_receipt,
+            reason,
+        }))
+    }
+
     async fn get_user_operation_event_by_hash(
         &self,
         provider: Arc<ethers::providers::Provider<Http>>,
@@ -268,6 +339,81 @@ impl EthApi {
         }
     }
 
+    fn decode_user_operation_event(&self, log: Log) -> EthResult<UserOperationEventFilter> {
+        Ok(UserOperationEventFilter::decode_log(&log_to_raw_log(log))
+            .context("log should be a user operation event")?)
+    }
+
+    /// This method takes a user operation event and a transaction receipt and filters out all the
+    /// logs relevant to the user operation. Since there are potentially many user operations in
+    /// a transaction, we want to find all the logs (including the user operation event itself)
+    /// that are sandwiched between ours and the one before it that wasn't ours.
+    /// eg. reference_log: UserOp(hash_moldy) logs: \[...OtherLogs, UserOp(hash1), ...OtherLogs,
+    /// UserOp(hash_moldy), ...OtherLogs\] -> logs: logs\[(idx_of_UserOp(hash1) +
+    /// 1)..=idx_of_UserOp(hash_moldy)\]
+    ///
+    /// topic\[0\] == event name
+    /// topic\[1\] == user operation hash
+    ///
+    /// NOTE: we can't convert just decode all the logs as user operations and filter because we
+    /// still want all the other log types
+    fn filter_receipt_logs_matching_user_op(
+        &self,
+        reference_log: &Log,
+        tx_receipt: &TransactionReceipt,
+    ) -> EthResult<Vec<Log>> {
+        let mut start_idx = 0;
+        let mut end_idx = tx_receipt.logs.len() - 1;
+        let logs = &tx_receipt.logs;
+
+        let is_ref_user_op = |log: &Log| {
+            log.topics[0] == reference_log.topics[0] &&
+                log.topics[1] == reference_log.topics[1] &&
+                log.address == reference_log.address
+        };
+
+        let is_user_op_event = |log: &Log| log.topics[0] == reference_log.topics[0];
+
+        let mut i = 0;
+        while i < logs.len() {
+            if i < end_idx && is_user_op_event(&logs[i]) && !is_ref_user_op(&logs[i]) {
+                start_idx = i;
+            } else if is_ref_user_op(&logs[i]) {
+                end_idx = i;
+            }
+
+            i += 1;
+        }
+
+        if !is_ref_user_op(&logs[end_idx]) {
+            return Err(EthRpcError::Internal(anyhow::anyhow!(
+                "fatal: no user ops found in tx receipt ({start_idx},{end_idx})"
+            )));
+        }
+
+        let start_idx = if start_idx == 0 { 0 } else { start_idx + 1 };
+        Ok(logs[start_idx..=end_idx].to_vec())
+    }
+
+    fn get_user_operation_failure_reason(
+        &self,
+        logs: &[Log],
+        user_op_hash: H256,
+    ) -> EthResult<Option<String>> {
+        let revert_reason_evt: Option<UserOperationRevertReasonFilter> = logs
+            .iter()
+            .filter(|l| l.topics.len() > 1 && l.topics[1] == user_op_hash)
+            .map_while(|l| {
+                UserOperationRevertReasonFilter::decode_log(&RawLog {
+                    topics: l.topics.clone(),
+                    data: l.data.to_vec(),
+                })
+                .ok()
+            })
+            .next();
+
+        Ok(revert_reason_evt.map(|r| r.revert_reason.to_string()))
+    }
     async fn get_eth_provider(
         &self,
         chain_id: u64,
