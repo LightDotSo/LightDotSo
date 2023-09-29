@@ -5954,6 +5954,7 @@ dependencies = [
  "lightdotso-contracts",
  "lightdotso-jsonrpsee",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "pin-utils",
  "rundler-provider",
  "rundler-sim",
@@ -6145,6 +6146,7 @@ dependencies = [
  "lightdotso-gas",
  "lightdotso-jsonrpsee",
  "lightdotso-tracing",
+ "lightdotso-utils",
  "reqwest",
  "serde",
  "serde_json",
@@ -6258,6 +6260,13 @@ dependencies = [
  "tracing-loki",
  "tracing-opentelemetry 0.20.0",
  "tracing-subscriber",
+]
+
+[[package]]
+name = "lightdotso-utils"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
 ]
 
 [[package]]

@@ -13,16 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    eth::EthApiServerImpl,
-    eth_api::EthApiServer,
-    utils::{parse_address, parse_u256},
-};
+use crate::{eth::EthApiServerImpl, eth_api::EthApiServer};
 use clap::Parser;
 use ethers::types::{Address, U256};
 use eyre::{eyre, Result};
 use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
 use lightdotso_tracing::tracing::info;
+use lightdotso_utils::{parse_address, parse_u256};
 use std::{
     future::pending,
     net::{IpAddr, Ipv6Addr},

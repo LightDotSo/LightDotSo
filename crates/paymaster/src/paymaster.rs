@@ -27,7 +27,7 @@ use ethers::{
     signers::{Signer, Wallet},
     types::{Address, Bytes},
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::{
     constants::LIGHT_PAYMASTER_ADDRESS,
@@ -255,6 +255,17 @@ pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
     let wallet: Wallet<SigningKey> =
         std::env::var("PAYMASTER_PRIVATE_KEY").unwrap().parse().unwrap();
     let wallet = wallet.with_chain_id(chain_id);
+
+    // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS`.
+    let address = wallet.address();
+    let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+    if address != verifying_paymaster_address {
+        return Err(eyre!(
+            "The address {:?} does not match the paymaster address {:?}",
+            address,
+            verifying_paymaster_address
+        ));
+    }
 
     let msg = wallet.sign_message(hash).await?;
 

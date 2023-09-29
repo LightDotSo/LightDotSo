@@ -30,6 +30,7 @@
     "crates/tauri",
     "crates/telegram",
     "crates/tracing",
+    "crates/utils",
     "tools/embedded-prisma",
     "tools/embedded-scopelint",
     "tools/embedded-uniffi-bindgen",
@@ -111,6 +112,7 @@
   lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
+  lightdotso-utils = { path = "./crates/utils" }
   opentelemetry = { version = "0.20.0", features = ["metrics", "rt-tokio"] }
   opentelemetry-otlp = { version = "0.13.0", features = [
     "grpc-tonic",

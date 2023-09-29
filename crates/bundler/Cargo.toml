@@ -21,6 +21,7 @@
   lightdotso-contracts = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  lightdotso-utils = { workspace = true }
   pin-utils = "0.1"
   rundler-provider = { workspace = true }
   rundler-sim = { workspace = true }
