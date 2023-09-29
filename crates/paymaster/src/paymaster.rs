@@ -254,9 +254,15 @@ pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
         std::env::var("PAYMASTER_PRIVATE_KEY").unwrap().parse().unwrap();
     let wallet = wallet.with_chain_id(chain_id);
 
-    // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS`.
+    // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
+    // `ENVIROMENT` is `local`.
     let address = wallet.address();
-    let verifying_paymaster_address = *OFFCHAIN_VERIFIER_ADDRESS;
+    let verifying_paymaster_address = if std::env::var("ENVIRONMENT").unwrap_or_default() != "local"
+    {
+        *OFFCHAIN_VERIFIER_ADDRESS
+    } else {
+        "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf".parse().unwrap()
+    };
     if address != verifying_paymaster_address {
         return Err(eyre!(
             "The address {:?} does not match the paymaster address {:?}",
@@ -357,6 +363,9 @@ mod tests {
 
         // Set the private key as an environment variable
         std::env::set_var("PAYMASTER_PRIVATE_KEY", private_key_str);
+
+        // Set the environment to local
+        std::env::set_var("ENVIRONMENT", "local");
 
         // Specified test inputs
         let chain_id = 1;
