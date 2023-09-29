@@ -48,5 +48,7 @@ pub async fn get_provider(chain_id: u64) -> anyhow::Result<Provider<Http>> {
     }
 
     // If all attempts fail, return error message
-    Err(anyhow::bail!("Could not connect to any RPC URL"))
+    // Err(anyhow::bail!("Could not connect to any RPC URL"))
+    // If all attempts fail, panic with an error message
+    panic!("Could not connect to any RPC URL");
 }

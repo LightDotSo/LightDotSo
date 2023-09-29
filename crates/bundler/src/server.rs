@@ -16,13 +16,12 @@
 use async_trait::async_trait;
 use ethers::types::{Address, H256, U64};
 use jsonrpsee::core::RpcResult;
-use rundler_provider::{EntryPoint, Provider};
 use rundler_sim::{GasEstimate, UserOperationOptionalGas};
 
 use crate::{
     eth::EthApi,
     eth_api::EthApiServer,
-    types::{RichUserOperation, RpcUserOperation, UserOperationReceipt},
+    types::{RichUserOperation, UserOperationReceipt},
 };
 
 #[async_trait]

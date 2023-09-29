@@ -17,7 +17,7 @@ use ethers::types::{Address, H256, U64};
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 use rundler_sim::{GasEstimate, UserOperationOptionalGas};
 
-use crate::types::{RichUserOperation, RpcUserOperation, UserOperationReceipt};
+use crate::types::{RichUserOperation, UserOperationReceipt};
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
 /// License: MIT or Apache-2.0
