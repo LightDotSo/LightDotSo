@@ -19,7 +19,7 @@ WORKDIR /app
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
 # Install planning dependencies.
-RUN apt install -y python3-pip nodejs yarn
+RUN apt install -y python3-pip nodejs
 
 # Install building dependencies.
 RUN apt-get update && \
@@ -28,7 +28,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
   # Build the prisma dep.
-RUN npm install -g turbo@1.10.11 pnpm@8.6.9
+RUN npm install -g turbo@1.10.11 pnpm@8.6.9 yarn@1.22.19
 
 # Install sccache dependencies.
 ENV SCCACHE_VERSION=0.5.4
