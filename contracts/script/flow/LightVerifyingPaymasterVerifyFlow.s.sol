@@ -31,15 +31,11 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
     // -------------------------------------------------------------------------
 
     function run() public {
-        console.logAddress(address(paymaster));
-
         UserOperation memory op = UserOperation(
             address(0), uint256(0), "", "", uint256(0), uint256(0), uint256(0), uint256(0), uint256(0), "", ""
         );
 
         bytes32 absHash = paymaster.getHash(op, 0, 0);
-
-        console.logBytes32(absHash);
 
         // Set the nonce
         uint256 nonce = randomNonce();
@@ -56,8 +52,6 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
         // Get the expected address
         address expectedAddress = simpleAccountFactory.getAddress(deployer, nonce);
 
-        console.logAddress(expectedAddress);
-
         // Sent ETH to the account w/ the expected address
         // bytes memory callData = abi.encodeWithSelector(LightWallet.execute.selector, address(1), 1, bytes(""));
         bytes memory callData = "";
@@ -72,20 +66,13 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
         (uint48 validUntil, uint48 validAfter, bytes memory signature) =
             paymaster.parsePaymasterAndData(op.paymasterAndData);
 
-        console.log(uint256(validUntil));
-        console.log(uint256(validAfter));
-
-        console.log("---");
-
-        console.log(block.chainid);
-
         // solhint-disable-next-line no-console
         console.logBytes(signature);
 
         op.signature = "";
         op.paymasterAndData = "";
 
-        bytes32 beforeHash = paymaster.getHash(op, 0, 0);
+        bytes32 beforeHash = paymaster.getHash(op, validUntil, validAfter);
 
         // solhint-disable-next-line no-console
         console.logBytes32(beforeHash);
@@ -100,7 +87,7 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
 
         // solhint-disable-next-line no-console
         console.logAddress(signer);
-        // assertEq(signer, OFFCHAIN_VERIFIER_ADDRESS);
-        assertEq(signer, address(0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf));
+        assertEq(signer, OFFCHAIN_VERIFIER_ADDRESS);
+        // assertEq(signer, address(0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf));
     }
 }

@@ -27,7 +27,7 @@ use ethers::{
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::{Address, Bytes},
-    utils::{hash_message, hex, to_checksum},
+    utils::to_checksum,
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
@@ -108,9 +108,15 @@ pub async fn get_paymaster_and_data(
     info!("verifying_paymaster_address: {:?}", to_checksum(&verifying_paymaster_address, None));
 
     // Infinite valid until.
-    let hash = get_hash(chain_id, verifying_paymaster_address, construct.clone(), 0, 0)
-        .await
-        .map_err(JsonRpcError::from)?;
+    let hash = get_hash(
+        chain_id,
+        verifying_paymaster_address,
+        construct.clone(),
+        valid_until,
+        valid_after,
+    )
+    .await
+    .map_err(JsonRpcError::from)?;
 
     // Sign the message.
     let msg = sign_message(hash).await.map_err(JsonRpcError::from)?;
