@@ -27,6 +27,7 @@ use ethers::{
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::{Address, Bytes},
+    utils::{hash_message, hex, to_checksum},
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
@@ -69,6 +70,7 @@ impl PaymasterServer for PaymasterServerImpl {
         let construct = construct_user_operation(chain_id, user_operation, entry_point)
             .await
             .map_err(JsonRpcError::from)?;
+        // Log the construct in hex.
         info!("construct: {:?}", construct);
 
         // Get the timestamp
@@ -99,22 +101,19 @@ pub async fn get_paymaster_and_data(
     valid_until: u64,
     valid_after: u64,
 ) -> RpcResult<Bytes> {
+    info!(chain_id, valid_until, valid_after);
+
     // Get the address
     let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+    info!("verifying_paymaster_address: {:?}", to_checksum(&verifying_paymaster_address, None));
 
     // Infinite valid until.
-    let hash = get_hash(
-        chain_id,
-        verifying_paymaster_address,
-        construct.clone(),
-        valid_until,
-        valid_after,
-    )
-    .await
-    .map_err(JsonRpcError::from)?;
+    let hash = get_hash(chain_id, verifying_paymaster_address, construct.clone(), 0, 0)
+        .await
+        .map_err(JsonRpcError::from)?;
 
     // Sign the message.
-    let msg = sign_message(hash, chain_id).await.map_err(JsonRpcError::from)?;
+    let msg = sign_message(hash).await.map_err(JsonRpcError::from)?;
 
     // Construct the paymaster and data.
     let paymater_and_data =
@@ -252,10 +251,9 @@ pub async fn estimate_user_operation_gas(
 }
 
 /// Sign a message w/ the paymaster private key.
-pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
+pub async fn sign_message(hash: [u8; 32]) -> Result<Vec<u8>> {
     let wallet: Wallet<SigningKey> =
         std::env::var("PAYMASTER_PRIVATE_KEY").unwrap().parse().unwrap();
-    let wallet = wallet.with_chain_id(chain_id);
 
     // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
     // `ENVIROMENT` is `local`.
@@ -276,7 +274,9 @@ pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
         ));
     }
 
+    // Convert to typed message
     let msg = wallet.sign_message(hash).await?;
+    info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
     Ok(msg.to_vec())
 }
@@ -306,12 +306,13 @@ async fn get_hash(
                 max_fee_per_gas: user_operation.max_fee_per_gas,
                 max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
                 paymaster_and_data: Bytes::default(),
-                signature: user_operation.signature,
+                signature: Bytes::default(),
             },
             valid_until,
             valid_after,
         )
         .await?;
+    info!("hash: 0x{}", hex::encode(hash));
 
     Ok(hash)
 }
@@ -325,22 +326,22 @@ mod tests {
     #[tokio::test]
     async fn test_get_hash() {
         // Arbitrary test inputs
-        let chain_id = 1;
+        let chain_id = 11155111;
         let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
         let user_operation = UserOperationConstruct {
-            sender: "0x0476DF9D2faa5C019d51E6684eFC37cB4f7b8b14".parse().unwrap(),
+            sender: Address::zero(),
             nonce: U256::from(0),
             init_code: "0x".parse().unwrap(),
             call_data: "0x".parse().unwrap(),
             call_gas_limit: U256::from(0),
-            verification_gas_limit: U256::from(150000),
-            pre_verification_gas: U256::from(21000),
-            max_fee_per_gas: U256::from(1091878423),
-            max_priority_fee_per_gas: U256::from(1000000000),
-            signature: "0x983f1a8c786be7a3661666abe8af0e687cd429ffc304c2593b52c4fd052b9f2734eddf9a64f718106fe7ad8975ea5291d5018a9adfb4172fef2321c948ba80c51c".parse().unwrap(),
+            verification_gas_limit: U256::from(0),
+            pre_verification_gas: U256::from(0),
+            max_fee_per_gas: U256::from(0),
+            max_priority_fee_per_gas: U256::from(0),
+            signature: "0xxxaa".parse().unwrap(),
         };
-        let valid_until = u64::from_str_radix("00000000deadbeef", 16).unwrap();
-        let valid_after = u64::from_str_radix("0000000000001234", 16).unwrap();
+        let valid_until = 0_u64;
+        let valid_after = 0_u64;
 
         let result = get_hash(
             chain_id,
@@ -352,7 +353,7 @@ mod tests {
         .await;
 
         let expected_bytes: [u8; 32] =
-            hex::decode("52ac45c943745ef1a2e46780b28ad686c193b508a5e45cd8cd68c0c3c7e3fc67")
+            hex::decode("9934dcd91bdeca5cd5d730369bf3a9724b1f2f841c2c43c4a310a5b7e2b64b51")
                 .expect("Decoding failed")
                 .try_into()
                 .expect("Expected byte length does not match");
@@ -373,7 +374,6 @@ mod tests {
         std::env::set_var("ENVIRONMENT", "local");
 
         // Specified test inputs
-        let chain_id = 1;
         let hash: [u8; 32] =
             hex::decode("6cda338264c27d259de3ab19f2414ca606265918ed9b15568de0a002e6151309")
                 .unwrap()
@@ -381,7 +381,7 @@ mod tests {
                 .unwrap();
 
         // Call our function
-        let result = sign_message(hash, chain_id).await;
+        let result = sign_message(hash).await;
 
         // The expected signature
         let expected_signature: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();

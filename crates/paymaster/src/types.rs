@@ -13,7 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::{Address, Bytes, U256};
+use std::fmt;
+
+use ethers::{
+    types::{Address, Bytes, U256},
+    utils::hex,
+};
 use serde::{Deserialize, Serialize};
 
 /// The paymaster and data returned by the paymaster.
@@ -49,7 +54,7 @@ pub struct UserOperationRequest {
 }
 
 /// User operation required for the request.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UserOperationConstruct {
     pub sender: Address,
@@ -72,4 +77,21 @@ pub struct EstimateResult {
     pub pre_verification_gas: U256,
     pub verification_gas_limit: U256,
     pub call_gas_limit: U256,
+}
+
+impl fmt::Debug for UserOperationConstruct {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("UserOperationConstruct")
+            .field("sender", &format!("{:#x}", self.sender))
+            .field("nonce", &format!("{:#x}", self.nonce))
+            .field("init_code", &format!("0x{}", hex::encode(&self.init_code)))
+            .field("call_data", &format!("0x{}", hex::encode(&self.call_data)))
+            .field("call_gas_limit", &format!("{:#x}", self.call_gas_limit))
+            .field("verification_gas_limit", &format!("{:#x}", self.verification_gas_limit))
+            .field("pre_verification_gas", &format!("{:#x}", self.pre_verification_gas))
+            .field("max_fee_per_gas", &format!("{:#x}", self.max_fee_per_gas))
+            .field("max_priority_fee_per_gas", &format!("{:#x}", self.max_priority_fee_per_gas))
+            .field("signature", &format!("0x{}", hex::encode(&self.signature)))
+            .finish()
+    }
 }
