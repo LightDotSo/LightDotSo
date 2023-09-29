@@ -13,99 +13,59 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::{Address, U64};
+use ethers::types::{Address, H256, U64};
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
-use silius_primitives::{
-    UserOperation, UserOperationByHash, UserOperationGasEstimation, UserOperationHash,
-    UserOperationPartial, UserOperationReceipt,
-};
+use rundler_sim::{GasEstimate, UserOperationOptionalGas};
+
+use crate::types::{RichUserOperation, UserOperationReceipt};
 
 /// Entire file derved from: https://github.com/Vid201/silius/blob/b1841aa614a9410907d1801128bf500f2a87596f/crates/rpc/src/eth_api.rs
 /// License: MIT or Apache-2.0
+/// Then converted to: https://github.com/alchemyplatform/rundler/blob/22fc250166cf525596faa9db84f5f56ca945a40b/crates/rpc/src/eth/mod.rs
+/// License: GPL-3.0
 /// Thank you to Vid201 for the wonderful work!
 
-#[rpc(server, namespace = "eth")]
+#[rpc(client, server, namespace = "eth")]
+#[cfg_attr(test, automock)]
 pub trait EthApi {
-    /// Retrieve the current [EIP-155](https://eips.ethereum.org/EIPS/eip-155) chain ID.
-    ///
-    ///
-    /// # Returns
-    /// * `RpcResult<U64>` - The chain ID as a U64.
-    #[method(name = "chainId")]
-    async fn chain_id(&self, chain_id: u64) -> RpcResult<U64>;
+    /// Sends a user operation to the pool.
+    // #[method(name = "sendUserOperation")]
+    // async fn send_user_operation(
+    // &self,
+    // op: RpcUserOperation,
+    // entry_point: Address,
+    // ) -> RpcResult<H256>;
 
-    /// Get the supported entry points for [UserOperations](UserOperation).
-    ///
-    /// # Returns
-    /// * `RpcResult<Vec<String>>` - A array of the entry point addresses as strings.
-    #[method(name = "supportedEntryPoints")]
-    async fn supported_entry_points(&self, chain_id: u64) -> RpcResult<Vec<String>>;
-
-    /// Estimate the gas required for a user operation.
-    /// This allows you to gauge the computational cost of the operation.
-    /// See [How ERC-4337 Gas Estimation Works](https://www.alchemy.com/blog/erc-4337-gas-estimation).
-    ///
-    /// # Arguments
-    /// * `user_operation: [UserOperationPartial](UserOperationPartial)` - A [partial user
-    ///   operation](UserOperationPartial) for which to estimate the gas.
-    /// * `entry_point: Address` - The address of the entry point.
-    ///
-    /// # Returns
-    /// * `RpcResult<UserOperationGasEstimation>` - The estimated gas for the
-    ///   [UserOperation](UserOperation)
+    /// Estimates the gas fields for a user operation.
     #[method(name = "estimateUserOperationGas")]
     async fn estimate_user_operation_gas(
         &self,
-        user_operation: UserOperationPartial,
+        op: UserOperationOptionalGas,
         entry_point: Address,
         chain_id: u64,
-    ) -> RpcResult<UserOperationGasEstimation>;
+    ) -> RpcResult<GasEstimate>;
 
-    /// Send a [UserOperation](UserOperation).
-    ///
-    /// # Arguments
-    /// * `user_operation: UserOperation` - The [UserOperation](UserOperation) to be sent.
-    /// * `entry_point: Address` - The address of the entry point.
-    ///
-    /// # Returns
-    /// * `RpcResult<UserOperationHash>` - The hash of the sent [UserOperation](UserOperation).
-    #[method(name = "sendUserOperation")]
-    async fn send_user_operation(
-        &self,
-        user_operation: UserOperation,
-        entry_point: Address,
-        chain_id: u64,
-    ) -> RpcResult<UserOperationHash>;
-
-    /// Retrieve the receipt of a [UserOperation](UserOperation).
-    /// The receipt contains the results of the operation, such as the amount of gas used.
-    ///
-    /// # Arguments
-    /// * `user_operation_hash: String` - The hash of a [UserOperation](UserOperation).
-    ///
-    /// # Returns
-    /// * `RpcResult<Option<UserOperationReceipt>>` - The receipt of the
-    ///   [UserOperation](UserOperation), or None if it does not exist.
-    #[method(name = "getUserOperationReceipt")]
-    async fn get_user_operation_receipt(
-        &self,
-        user_operation_hash: String,
-        chain_id: u64,
-    ) -> RpcResult<Option<UserOperationReceipt>>;
-
-    /// Retrieve a [UserOperation](UserOperation) by its hash.
-    /// The hash serves as a unique identifier for the operation.
-    ///
-    /// # Arguments
-    /// * `user_operation_hash: String` - The hash of the user operation.
-    ///
-    /// # Returns
-    /// * `RpcResult<Option<UserOperationByHash>>` - The [UserOperation](UserOperation) associated
-    ///   with the hash, or None if it does not exist.
+    /// Returns the user operation with the given hash.
     #[method(name = "getUserOperationByHash")]
     async fn get_user_operation_by_hash(
         &self,
-        user_operation_hash: String,
+        hash: H256,
         chain_id: u64,
-    ) -> RpcResult<Option<UserOperationByHash>>;
+    ) -> RpcResult<Option<RichUserOperation>>;
+
+    /// Returns the user operation receipt with the given hash.
+    #[method(name = "getUserOperationReceipt")]
+    async fn get_user_operation_receipt(
+        &self,
+        hash: H256,
+        chain_id: u64,
+    ) -> RpcResult<Option<UserOperationReceipt>>;
+
+    /// Returns the supported entry points addresses
+    #[method(name = "supportedEntryPoints")]
+    async fn supported_entry_points(&self, chain_id: u64) -> RpcResult<Vec<String>>;
+
+    /// Returns the chain ID
+    #[method(name = "chainId")]
+    async fn chain_id(&self, chain_id: u64) -> RpcResult<U64>;
 }

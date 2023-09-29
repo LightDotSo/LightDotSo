@@ -21,5 +21,4 @@
   reqwest = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
-  silius-rpc = { workspace = true }
   tokio = { workspace = true }

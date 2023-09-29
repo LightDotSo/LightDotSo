@@ -16,8 +16,8 @@
 use crate::{gas::GasServerImpl, gas_api::GasServer};
 use clap::Parser;
 use eyre::{eyre, Result};
+use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
 use lightdotso_tracing::tracing::info;
-use silius_rpc::{JsonRpcServer, JsonRpcServerType};
 use std::{
     future::pending,
     net::{IpAddr, Ipv6Addr},

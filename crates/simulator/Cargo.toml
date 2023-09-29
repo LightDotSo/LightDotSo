@@ -16,9 +16,9 @@
   foundry-config = { workspace = true }
   foundry-evm = { workspace = true }
   jsonrpsee = { workspace = true }
+  lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   revm = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
-  silius-rpc = { workspace = true }
   tokio = { workspace = true }

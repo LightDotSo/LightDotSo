@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    constants::OFFCHAIN_VERIFIER_ADDRESS,
     paymaster_api::PaymasterServer,
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
@@ -27,12 +28,9 @@ use ethers::{
     signers::{Signer, Wallet},
     types::{Address, Bytes},
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::{
-    constants::LIGHT_PAYMASTER_ADDRESS,
-    paymaster::{get_paymaster, UserOperation},
-};
+use lightdotso_contracts::paymaster::{get_paymaster, UserOperation};
 use lightdotso_gas::gas::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
@@ -99,7 +97,7 @@ pub async fn get_paymaster_and_data(
     valid_after: u64,
 ) -> RpcResult<Bytes> {
     // Get the address
-    let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+    let verifying_paymaster_address = *OFFCHAIN_VERIFIER_ADDRESS;
 
     // Infinite valid until.
     let hash = get_hash(
@@ -113,7 +111,7 @@ pub async fn get_paymaster_and_data(
     .map_err(JsonRpcError::from)?;
 
     // Sign the message.
-    let msg = sign_message(chain_id, hash).await.map_err(JsonRpcError::from)?;
+    let msg = sign_message(hash, chain_id).await.map_err(JsonRpcError::from)?;
 
     // Construct the paymaster and data.
     let paymater_and_data =
@@ -162,7 +160,6 @@ pub async fn construct_user_operation(
         // If the `estimate_user_operation_gas` is not set, estimate the gas for the user operation.
         estimate_user_operation_gas(chain_id, entry_point, &user_operation).await?.result
     };
-
     info!("estimated_user_operation_gas: {:?}", estimated_user_operation_gas);
 
     // If the `maxFeePerGas` and `maxPriorityFeePerGas` are set, include them in the user operation.
@@ -252,10 +249,27 @@ pub async fn estimate_user_operation_gas(
 }
 
 /// Sign a message w/ the paymaster private key.
-pub async fn sign_message(chain_id: u64, hash: [u8; 32]) -> Result<Vec<u8>> {
+pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
     let wallet: Wallet<SigningKey> =
         std::env::var("PAYMASTER_PRIVATE_KEY").unwrap().parse().unwrap();
     let wallet = wallet.with_chain_id(chain_id);
+
+    // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
+    // `ENVIROMENT` is `local`.
+    let address = wallet.address();
+    let verifying_paymaster_address = if std::env::var("ENVIRONMENT").unwrap_or_default() != "local"
+    {
+        *OFFCHAIN_VERIFIER_ADDRESS
+    } else {
+        "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf".parse().unwrap()
+    };
+    if address != verifying_paymaster_address {
+        return Err(eyre!(
+            "The address {:?} does not match the paymaster address {:?}",
+            address,
+            verifying_paymaster_address
+        ));
+    }
 
     let msg = wallet.sign_message(hash).await?;
 
@@ -301,6 +315,7 @@ async fn get_hash(
 mod tests {
     use super::*;
     use ethers::{types::U256, utils::hex};
+    use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
 
     #[tokio::test]
     async fn test_get_hash() {
@@ -349,6 +364,9 @@ mod tests {
         // Set the private key as an environment variable
         std::env::set_var("PAYMASTER_PRIVATE_KEY", private_key_str);
 
+        // Set the environment to local
+        std::env::set_var("ENVIRONMENT", "local");
+
         // Specified test inputs
         let chain_id = 1;
         let hash: [u8; 32] =
@@ -358,7 +376,7 @@ mod tests {
                 .unwrap();
 
         // Call our function
-        let result = sign_message(chain_id, hash).await;
+        let result = sign_message(hash, chain_id).await;
 
         // The expected signature
         let expected_signature: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();

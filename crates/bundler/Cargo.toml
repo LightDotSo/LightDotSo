@@ -9,11 +9,11 @@
   repository.workspace = true
 
 [dependencies]
+  anyhow = { workspace = true }
   async-trait = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   enumset = { workspace = true }
-  ethers = { workspace = true }
-  ethers-providers = { workspace = true }
+  ethers = "2.0.8"
   expanded-pathbuf = "0.1"
   eyre = { workspace = true }
   jsonrpsee = { workspace = true }
@@ -21,11 +21,13 @@
   lightdotso-contracts = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
+  lightdotso-utils = { workspace = true }
   pin-utils = "0.1"
+  rundler-provider = { workspace = true }
+  rundler-sim = { workspace = true }
+  rundler-types = { workspace = true }
+  rundler-utils = { workspace = true }
+  serde = { workspace = true }
   serde_json = { workspace = true }
-  silius-contracts = { workspace = true }
-  silius-grpc = { workspace = true }
-  silius-primitives = { workspace = true }
-  silius-rpc = { workspace = true }
-  silius-uopool = { workspace = true }
+  thiserror = { workspace = true }
   tokio = { workspace = true, features = ["full"] }

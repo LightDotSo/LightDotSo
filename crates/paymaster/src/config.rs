@@ -15,9 +15,11 @@
 
 use crate::{paymaster::PaymasterServerImpl, paymaster_api::PaymasterServer};
 use clap::Parser;
+use ethers::types::Address;
 use eyre::{eyre, Result};
+use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
 use lightdotso_tracing::tracing::info;
-use silius_rpc::{JsonRpcServer, JsonRpcServerType};
+use lightdotso_utils::parse_address;
 use std::{
     future::pending,
     net::{IpAddr, Ipv6Addr},
@@ -25,7 +27,10 @@ use std::{
 
 #[derive(Debug, Clone, Parser)]
 pub struct PaymasterArgs {
-    /// The infura API key
+    #[clap(long, env = "PAYMASTER_ADDRESS", hide = true,default_value = "", value_parser=parse_address)]
+    pub paymaster: Address,
+
+    /// The private key of the paymaster
     #[clap(long, env = "PAYMASTER_PRIVATE_KEY", hide = true)]
     pub paymaster_private_key: String,
 }

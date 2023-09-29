@@ -96,7 +96,12 @@ abstract contract BaseLightDeployer is BaseTest {
     /// @dev Gets the gas parameters and the paymaster and data
     /// The rpc is responsible for calling `eth_estimateUserOperationGas` for the user operation
     /// and returning the `preVerificationGas`, `verificationGasLimit` and `callGasLimit` w/ `paymasterAndData`
-    function getPaymasterRequestGasAndPaymasterAndData(address sender, bytes memory initCode)
+    function getPaymasterRequestGasAndPaymasterAndData(
+        address _sender,
+        uint256 _nonce,
+        bytes memory _initCode,
+        bytes memory _callData
+    )
         internal
         returns (
             uint256 preVerificationGas,
@@ -115,11 +120,14 @@ abstract contract BaseLightDeployer is BaseTest {
             abi.encodePacked(
                 '{"id": 1,"jsonrpc":"2.0","method":"paymaster_requestGasAndPaymasterAndData","params":[{',
                 '"sender":"',
-                Strings.toHexString(uint160(sender), 20),
-                '","nonce":"0x0",',
-                '"initCode":"',
-                bytesToHexString(initCode),
-                '","callData":"0x","signature":"0x","paymasterAndData":"0x"}]}'
+                Strings.toHexString(uint160(_sender), 20),
+                '","nonce":"',
+                uintToHexString(_nonce),
+                '","initCode":"',
+                bytesToHexString(_initCode),
+                '","callData":"',
+                bytesToHexString(_callData),
+                '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"}]}'
             )
         );
 
@@ -269,6 +277,9 @@ abstract contract BaseLightDeployer is BaseTest {
     /// @dev Converts uint to hexadecimal string
     /// From: https://ethereum.stackexchange.com/questions/47472/integer-to-hexadecimal-number
     function uintToHexString(uint256 a) public pure returns (string memory) {
+        if (a == 0) {
+            return "0x0";
+        }
         uint256 count = 0;
         uint256 b = a;
         while (b != 0) {

@@ -18,6 +18,7 @@ use eyre::{Error, Result};
 use lightdotso_tracing::tracing::{info, warn};
 
 pub mod error;
+pub mod rpc;
 pub mod types;
 
 /// From: https://github.com/qi-protocol/ethers-userop/blob/50cb1b18a551a681786f1a766d11215c80afa7cf/src/userop_middleware.rs#L222

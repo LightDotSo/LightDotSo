@@ -15,7 +15,9 @@
 
 pub mod config;
 pub mod constants;
+pub mod errors;
 pub mod eth;
 pub mod eth_api;
+pub mod provider;
 pub mod server;
-pub mod utils;
+pub mod types;

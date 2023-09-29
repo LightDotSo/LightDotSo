@@ -9,12 +9,15 @@
   repository.workspace = true
 
 [dependencies]
+  anyhow = { workspace = true }
   ethers = { workspace = true }
   eyre = { workspace = true }
+  hyper = { workspace = true }
   jsonrpsee = { workspace = true }
   lightdotso-tracing = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
-  silius-primitives = { workspace = true }
+  tower = { workspace = true }
+  tower-http = { workspace = true }
   url = { workspace = true }

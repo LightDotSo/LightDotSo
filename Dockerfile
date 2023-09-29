@@ -28,7 +28,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/*
 
   # Build the prisma dep.
-RUN npm install -g turbo@1.10.11 pnpm@8.6.9
+RUN npm install -g turbo@1.10.11 pnpm@8.6.9 yarn@1.22.19
 
 # Install sccache dependencies.
 ENV SCCACHE_VERSION=0.5.4
@@ -36,6 +36,12 @@ RUN curl -L https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERS
     && tar -xzf sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl.tar.gz \
     && mv sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl/sccache /usr/local/bin/ \
     && chmod +x /usr/local/bin/sccache
+
+# Install foundry.
+SHELL ["/bin/bash", "-c"]
+RUN curl -L https://foundry.paradigm.xyz | bash
+ENV PATH="/root/.foundry/bin:${PATH}"
+RUN foundryup
 
 # Copy over dir.
 COPY . .

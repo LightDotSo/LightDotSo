@@ -30,6 +30,7 @@
     "crates/tauri",
     "crates/telegram",
     "crates/tracing",
+    "crates/utils",
     "tools/embedded-prisma",
     "tools/embedded-scopelint",
     "tools/embedded-uniffi-bindgen",
@@ -56,6 +57,7 @@
 
 [workspace.dependencies]
   anvil = { git = "https://github.com/foundry-rs/foundry", rev = "236208f72a0af26aa0446336132e05edb7024ca6", package = "anvil" }
+  anyhow = "1.0.70"
   async-stream = "0.3.5"
   async-trait = "0.1.73"
   autometrics = { version = "*", features = [
@@ -83,8 +85,8 @@
   http-body = "0.4.5"
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
-  js-sys = "=0.3.56"
-  jsonrpsee = { version = "0.18.2", features = ["server", "macros", "client"] }
+  js-sys = "=0.3.64"
+  jsonrpsee = { version = "0.20.1", features = ["server", "macros", "client"] }
   lazy_static = "1.4.0"
   lightdotso-app = { path = "./crates/app" }
   lightdotso-autometrics = { path = "./crates/autometrics" }
@@ -111,6 +113,7 @@
   lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }
   lightdotso-tracing = { path = "./crates/tracing" }
+  lightdotso-utils = { path = "./crates/utils" }
   opentelemetry = { version = "0.20.0", features = ["metrics", "rt-tokio"] }
   opentelemetry-otlp = { version = "0.13.0", features = [
     "grpc-tonic",
@@ -146,18 +149,16 @@
     "optional_block_gas_limit",
     "optional_no_base_fee",
   ] }
+  rundler-provider = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-provider" }
+  rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-sim" }
+  rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-types" }
+  rundler-utils = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-utils" }
   serde = "1.0.183"
   serde_json = "1.0.104"
   spki = "0.7.2"
-  silius-contracts = { git = "https://github.com/Vid201/silius", rev = "b1841aa614a9410907d1801128bf500f2a87596f", package = "silius-contracts" }
-  silius-grpc = { git = "https://github.com/Vid201/silius", rev = "b1841aa614a9410907d1801128bf500f2a87596f", package = "silius-grpc" }
-  silius-primitives = { git = "https://github.com/Vid201/silius", rev = "b1841aa614a9410907d1801128bf500f2a87596f", package = "silius-primitives", features = [
-    "test-utils",
-  ] }
-  silius-rpc = { git = "https://github.com/Vid201/silius", rev = "b1841aa614a9410907d1801128bf500f2a87596f", package = "silius-rpc" }
-  silius-uopool = { git = "https://github.com/Vid201/silius", rev = "b1841aa614a9410907d1801128bf500f2a87596f", package = "silius-uopool" }
   tauri = { version = "1.4", features = ["shell-open"] }
   tauri-build = { version = "1.4", features = [] }
+  thiserror = "1.0.40"
   tokio = { version = "1", features = ["full"] }
   tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
   tower = { version = "0.4.12" }

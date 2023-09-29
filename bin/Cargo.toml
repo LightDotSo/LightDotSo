@@ -36,9 +36,6 @@
   num_cpus = "1.13.0"
   ratatui = { version = "0.22.0", features = ["all-widgets"] }
   redb = { workspace = true }
-  silius-grpc = { workspace = true }
-  silius-primitives = { workspace = true }
-  silius-rpc = { workspace = true }
   tokio = { workspace = true, features = ["full"] }
   tower = { workspace = true, features = [
     "full",

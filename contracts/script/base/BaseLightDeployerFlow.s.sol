@@ -20,6 +20,7 @@ pragma solidity ^0.8.18;
 import {EntryPoint} from "@/contracts/core/EntryPoint.sol";
 import {LightWallet} from "@/contracts/LightWallet.sol";
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
+import {LightVerifyingPaymaster} from "@/contracts/LightVerifyingPaymaster.sol";
 import {UserOperation} from "@/contracts/LightWallet.sol";
 import {BaseLightDeployer} from "@/script/base/BaseLightDeployer.s.sol";
 import {SimpleAccount} from "@/contracts/samples/SimpleAccount.sol";
@@ -61,6 +62,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // LightWalletFactory core contract
         factory = LightWalletFactory(LIGHT_FACTORY_ADDRESS);
 
+        // LightVerifyingPaymaster core contract
+        paymaster = LightVerifyingPaymaster(LIGHT_PAYMASTER_ADDRESS);
+
         // SimpleAccountFactory core contract
         simpleAccountFactory = SimpleAccountFactory(SIMPLE_ACCOUNT_FACTORY_ADDRESS);
 
@@ -73,10 +77,12 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     }
 
     /// @dev Construct the user operation
-    function constructUserOperation(address expectedAddress, bytes memory initCode, bytes memory callData)
-        internal
-        returns (UserOperation memory op)
-    {
+    function constructUserOperation(
+        address expectedAddress,
+        uint256 nonce,
+        bytes memory initCode,
+        bytes memory callData
+    ) internal returns (UserOperation memory op) {
         // Get the paymaster request gas and paymaster and data
         (
             uint256 preVerificationGas,
@@ -84,8 +90,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             uint256 callGasLimit,
             bytes memory paymasterAndData,
             uint256 maxFeePerGas,
-            uint256 maxPriorityFeePerGas,
-        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, initCode);
+            uint256 maxPriorityFeePerGas
+        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, nonce, initCode, callData);
 
         // Get the gas estimation
         // (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
@@ -94,7 +100,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // UserOperation to create the account
         op = UserOperation(
             expectedAddress,
-            0x0,
+            nonce,
             initCode,
             callData,
             callGasLimit,
@@ -149,7 +155,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory callData = "";
 
         // UserOperation to create the account
-        UserOperation memory op = constructUserOperation(expectedAddress, initCode, callData);
+        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData);
 
         // -------------------------------------------------------------------------
 
@@ -202,7 +208,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory callData = "";
 
         // UserOperation to create the account
-        UserOperation memory op = constructUserOperation(expectedAddress, initCode, callData);
+        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData);
 
         // Sign the UserOperation
         bytes memory sig = LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey);
