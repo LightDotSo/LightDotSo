@@ -98,7 +98,8 @@ jobs:
       # - name: Rust Build
       #   run: |
       #     cargo build --target ${{ matrix.target }} ${{ matrix.package }}
-      - name: Rust Format Check
+      - if: matrix.workspace
+        name: Rust Format Check
         run: |
           cargo fmt --all --check
       - if: matrix.test
