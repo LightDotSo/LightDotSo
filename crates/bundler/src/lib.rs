@@ -19,4 +19,5 @@ pub mod errors;
 pub mod eth;
 pub mod eth_api;
 pub mod provider;
+pub mod server;
 pub mod types;

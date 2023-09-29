@@ -16,10 +16,10 @@
 use std::{collections::HashMap, sync::Arc};
 
 use crate::{
-    constants::ENTRYPOINT_ADDRESSES, errors::EthRpcError, eth_api::EthApiServer,
+    constants::ENTRYPOINT_ADDRESSES,
+    errors::{EthResult, EthRpcError},
     provider::get_provider,
 };
-use async_trait::async_trait;
 use ethers::{
     types::{Address, U64},
     utils::to_checksum,
@@ -31,26 +31,24 @@ use rundler_sim::{
 use rundler_types::contracts::i_entry_point::IEntryPoint;
 
 /// The eth server implementation.
-pub struct EthApiServerImpl {}
+pub(crate) struct EthApi {}
 
-#[async_trait]
-impl EthApiServer for EthApiServerImpl {
-    async fn chain_id(&self, chain_id: u64) -> RpcResult<U64> {
+impl EthApi {
+    pub(crate) async fn chain_id(&self, chain_id: u64) -> RpcResult<U64> {
         Ok(chain_id.into())
     }
 
-    async fn supported_entry_points(&self, _chain_id: u64) -> RpcResult<Vec<String>> {
-        return Ok(ENTRYPOINT_ADDRESSES.into_iter().map(|ep| to_checksum(&ep, None)).collect());
+    pub(crate) async fn supported_entry_points(&self, _chain_id: u64) -> RpcResult<Vec<String>> {
+        Ok(ENTRYPOINT_ADDRESSES.into_iter().map(|ep| to_checksum(&ep, None)).collect())
     }
 
-    async fn estimate_user_operation_gas(
+    pub(crate) async fn estimate_user_operation_gas(
         &self,
         op: UserOperationOptionalGas,
         entry_point: Address,
         chain_id: u64,
-    ) -> RpcResult<GasEstimate> {
-        let provider =
-            get_provider(1).await.map_err(lightdotso_jsonrpsee::error::JsonRpcError::from)?;
+    ) -> EthResult<GasEstimate> {
+        let provider = get_provider(1).await?;
         let entry_points = ENTRYPOINT_ADDRESSES
             .iter()
             .map(|addr| (*addr, IEntryPoint::new(*addr, Arc::new(provider.clone()))))

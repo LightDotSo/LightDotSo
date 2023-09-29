@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{eth::EthApiServerImpl, eth_api::EthApiServer};
+use crate::{eth::EthApi, eth_api::EthApiServer};
 use clap::Parser;
 use ethers::types::{Address, U256};
 use eyre::{eyre, Result};
@@ -64,9 +64,7 @@ impl BundlerArgs {
                 );
 
                 // Add the paymaster server
-                server
-                    .add_methods(EthApiServerImpl {}.into_rpc(), JsonRpcServerType::Http)
-                    .unwrap();
+                server.add_methods(EthApi {}.into_rpc(), JsonRpcServerType::Http).unwrap();
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
