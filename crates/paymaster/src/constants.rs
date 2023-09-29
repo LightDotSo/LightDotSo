@@ -13,8 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod constants;
-pub mod paymaster;
-pub mod paymaster_api;
-pub mod types;
+use ethers::types::Address;
+use lazy_static::lazy_static;
+
+// The paymaster addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref OFFCHAIN_VERIFIER_ADDRESS: Address =
+      // v1
+      "0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F".parse().unwrap();
+}

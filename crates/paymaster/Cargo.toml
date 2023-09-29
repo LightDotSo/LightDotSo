@@ -14,6 +14,7 @@
   ethers = { workspace = true }
   eyre = { workspace = true }
   jsonrpsee = { workspace = true }
+  lazy_static = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-gas = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }

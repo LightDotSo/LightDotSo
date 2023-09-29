@@ -6142,6 +6142,7 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "jsonrpsee",
+ "lazy_static",
  "lightdotso-contracts",
  "lightdotso-gas",
  "lightdotso-jsonrpsee",

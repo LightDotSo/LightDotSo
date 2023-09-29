@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    constants::OFFCHAIN_VERIFIER_ADDRESS,
     paymaster_api::PaymasterServer,
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
@@ -29,10 +30,7 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::{
-    constants::LIGHT_PAYMASTER_ADDRESS,
-    paymaster::{get_paymaster, UserOperation},
-};
+use lightdotso_contracts::paymaster::{get_paymaster, UserOperation};
 use lightdotso_gas::gas::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
@@ -99,7 +97,7 @@ pub async fn get_paymaster_and_data(
     valid_after: u64,
 ) -> RpcResult<Bytes> {
     // Get the address
-    let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+    let verifying_paymaster_address = *OFFCHAIN_VERIFIER_ADDRESS;
 
     // Infinite valid until.
     let hash = get_hash(
@@ -258,7 +256,7 @@ pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
 
     // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS`.
     let address = wallet.address();
-    let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+    let verifying_paymaster_address = *OFFCHAIN_VERIFIER_ADDRESS;
     if address != verifying_paymaster_address {
         return Err(eyre!(
             "The address {:?} does not match the paymaster address {:?}",
