@@ -18,10 +18,9 @@
 // License: GPL-3.0
 
 use ethers::types::{Address, Opcode, U256};
-use jsonrpsee::types::ErrorObject;
 use jsonrpsee::types::{
     error::{CALL_EXECUTION_FAILED_CODE, INTERNAL_ERROR_CODE, INVALID_PARAMS_CODE},
-    ErrorObjectOwned,
+    ErrorObject, ErrorObjectOwned,
 };
 use rundler_provider::ProviderError;
 use rundler_sim::{PrecheckViolation, SimulationViolation};
@@ -192,10 +191,10 @@ impl From<SimulationViolation> for EthRpcError {
             SimulationViolation::UsedForbiddenOpcode(entity, _, op) => {
                 Self::OpcodeViolation(entity.kind, op.0)
             }
-            SimulationViolation::UsedForbiddenPrecompile(_, _, _)
-            | SimulationViolation::AccessedUndeployedContract(_, _)
-            | SimulationViolation::CalledBannedEntryPointMethod(_)
-            | SimulationViolation::CallHadValue(_) => Self::OpcodeViolationMap(value),
+            SimulationViolation::UsedForbiddenPrecompile(_, _, _) |
+            SimulationViolation::AccessedUndeployedContract(_, _) |
+            SimulationViolation::CalledBannedEntryPointMethod(_) |
+            SimulationViolation::CallHadValue(_) => Self::OpcodeViolationMap(value),
             SimulationViolation::FactoryCalledCreate2Twice(_) => {
                 Self::OpcodeViolation(EntityType::Factory, Opcode::CREATE2)
             }
@@ -224,9 +223,9 @@ impl From<EthRpcError> for ErrorObjectOwned {
             EthRpcError::PaymasterValidationRejected(data) => {
                 rpc_err_with_data(PAYMASTER_VALIDATION_REJECTED_CODE, msg, data)
             }
-            EthRpcError::OpcodeViolation(_, _)
-            | EthRpcError::OpcodeViolationMap(_)
-            | EthRpcError::InvalidStorageAccess(_, _, _) => rpc_err(OPCODE_VIOLATION_CODE, msg),
+            EthRpcError::OpcodeViolation(_, _) |
+            EthRpcError::OpcodeViolationMap(_) |
+            EthRpcError::InvalidStorageAccess(_, _, _) => rpc_err(OPCODE_VIOLATION_CODE, msg),
             EthRpcError::OutOfTimeRange(data) => {
                 rpc_err_with_data(OUT_OF_TIME_RANGE_CODE, msg, data)
             }
