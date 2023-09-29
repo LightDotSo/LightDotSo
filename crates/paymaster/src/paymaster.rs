@@ -30,7 +30,10 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::paymaster::{get_paymaster, UserOperation};
+use lightdotso_contracts::{
+    constants::LIGHT_PAYMASTER_ADDRESS,
+    paymaster::{get_paymaster, UserOperation},
+};
 use lightdotso_gas::gas::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
@@ -97,7 +100,7 @@ pub async fn get_paymaster_and_data(
     valid_after: u64,
 ) -> RpcResult<Bytes> {
     // Get the address
-    let verifying_paymaster_address = *OFFCHAIN_VERIFIER_ADDRESS;
+    let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
 
     // Infinite valid until.
     let hash = get_hash(
@@ -263,6 +266,8 @@ pub async fn sign_message(hash: [u8; 32], chain_id: u64) -> Result<Vec<u8>> {
     } else {
         "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf".parse().unwrap()
     };
+    // warn!("verifying_paymaster_address: {:?}", verifying_paymaster_address);
+
     if address != verifying_paymaster_address {
         return Err(eyre!(
             "The address {:?} does not match the paymaster address {:?}",
