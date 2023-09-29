@@ -27,7 +27,7 @@ use ethers::{
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::{Address, Bytes},
-    utils::to_checksum,
+    utils::{hex, to_checksum},
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
