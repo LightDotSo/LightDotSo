@@ -309,6 +309,7 @@ async fn get_hash(
 mod tests {
     use super::*;
     use ethers::{types::U256, utils::hex};
+    use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
 
     #[tokio::test]
     async fn test_get_hash() {
