@@ -81,6 +81,11 @@ jobs:
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - if: matrix.workspace
+        name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+      - if: matrix.workspace
         name: Node Build
         run: |
           pnpm turbo run build
