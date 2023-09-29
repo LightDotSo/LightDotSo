@@ -19,7 +19,7 @@ WORKDIR /app
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 
 # Install planning dependencies.
-RUN apt install -y python3-pip nodejs
+RUN apt install -y python3-pip nodejs yarn
 
 # Install building dependencies.
 RUN apt-get update && \
