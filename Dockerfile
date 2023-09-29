@@ -37,6 +37,12 @@ RUN curl -L https://github.com/mozilla/sccache/releases/download/v${SCCACHE_VERS
     && mv sccache-v${SCCACHE_VERSION}-x86_64-unknown-linux-musl/sccache /usr/local/bin/ \
     && chmod +x /usr/local/bin/sccache
 
+# Install foundry.
+SHELL ["/bin/bash", "-c"]
+RUN curl -L https://foundry.paradigm.xyz | bash
+ENV PATH="/root/.foundry/bin:${PATH}"
+RUN foundryup
+
 # Copy over dir.
 COPY . .
 
