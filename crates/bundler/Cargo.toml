@@ -26,6 +26,7 @@
   rundler-provider = { workspace = true }
   rundler-sim = { workspace = true }
   rundler-types = { workspace = true }
+  rundler-utils = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
   thiserror = { workspace = true }

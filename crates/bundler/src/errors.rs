@@ -17,12 +17,14 @@
 // Alsoe here: https://github.com/alchemyplatform/rundler/blob/22fc250166cf525596faa9db84f5f56ca945a40b/crates/rpc/src/error.rs
 // License: GPL-3.0
 
-use ethers::types::{Address, Opcode, U256};
+use ethers::{
+    providers::ProviderError,
+    types::{Address, Opcode, U256},
+};
 use jsonrpsee::types::{
     error::{CALL_EXECUTION_FAILED_CODE, INTERNAL_ERROR_CODE, INVALID_PARAMS_CODE},
     ErrorObject, ErrorObjectOwned,
 };
-use rundler_provider::ProviderError;
 use rundler_sim::{PrecheckViolation, SimulationViolation};
 use rundler_types::{Entity, EntityType, Timestamp};
 use serde::Serialize;

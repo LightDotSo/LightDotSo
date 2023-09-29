@@ -36,6 +36,14 @@ impl EthApiServer for EthApi {
         Ok(EthApi::estimate_user_operation_gas(self, op, entry_point, chain_id).await?)
     }
 
+    async fn get_user_operation_by_hash(
+        &self,
+        hash: H256,
+        chain_id: u64,
+    ) -> RpcResult<Option<RichUserOperation>> {
+        Ok(EthApi::get_user_operation_by_hash(self, hash, chain_id).await?)
+    }
+
     async fn supported_entry_points(&self, chain_id: u64) -> RpcResult<Vec<String>> {
         Ok(EthApi::supported_entry_points(self, chain_id).await?)
     }

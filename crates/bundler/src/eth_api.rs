@@ -44,9 +44,12 @@ pub trait EthApi {
     ) -> RpcResult<GasEstimate>;
 
     /// Returns the user operation with the given hash.
-    // #[method(name = "getUserOperationByHash")]
-    // async fn get_user_operation_by_hash(&self, hash: H256) ->
-    // RpcResult<Option<RichUserOperation>>;
+    #[method(name = "getUserOperationByHash")]
+    async fn get_user_operation_by_hash(
+        &self,
+        hash: H256,
+        chain_id: u64,
+    ) -> RpcResult<Option<RichUserOperation>>;
 
     /// Returns the user operation receipt with the given hash.
     // #[method(name = "getUserOperationReceipt")]

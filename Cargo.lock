@@ -5959,6 +5959,7 @@ dependencies = [
  "rundler-provider",
  "rundler-sim",
  "rundler-types",
+ "rundler-utils",
  "serde",
  "serde_json",
  "thiserror",

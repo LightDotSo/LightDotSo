@@ -152,6 +152,7 @@
   rundler-provider = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-provider" }
   rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-sim" }
   rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-types" }
+  rundler-utils = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-utils" }
   serde = "1.0.183"
   serde_json = "1.0.104"
   spki = "0.7.2"
