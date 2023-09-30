@@ -375,10 +375,10 @@ pub async fn rpc_proxy_handler(
                     return resp;
                 }
 
-                // Get the pimlico rpc url
+                // Get the alchemy rpc url
                 let result = try_rpc_with_url(
-                    &PIMLICO_RPC_URLS,
-                    Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
+                    &ALCHEMY_RPC_URLS,
+                    Some(std::env::var("ALCHEMY_API_KEY").unwrap()),
                     &chain_id,
                     &client,
                     Body::from(full_body_bytes.clone()),
@@ -388,10 +388,10 @@ pub async fn rpc_proxy_handler(
                     return resp;
                 }
 
-                // Get the alchemy rpc url
+                // Get the pimlico rpc url
                 let result = try_rpc_with_url(
-                    &ALCHEMY_RPC_URLS,
-                    Some(std::env::var("ALCHEMY_API_KEY").unwrap()),
+                    &PIMLICO_RPC_URLS,
+                    Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
                     &chain_id,
                     &client,
                     Body::from(full_body_bytes.clone()),
