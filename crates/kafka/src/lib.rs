@@ -89,7 +89,7 @@ pub async fn produce_message(
     topic: &str,
     message: &str,
 ) -> Result<(), rdkafka::error::KafkaError> {
-    let payload = format!("{}", message);
+    let payload = message.to_string();
     let _ = producer.send::<Vec<u8>, _, _>(FutureRecord::to(topic).payload(&payload), None).await;
     Ok(())
 }
