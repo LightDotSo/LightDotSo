@@ -13,5 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod consumer;
+use crate::config::PollingArgs;
+
+#[derive(Clone)]
+pub struct Polling {}
+
+impl Polling {
+    pub async fn new(args: &PollingArgs) -> Self {
+        info!("Polling new, starting");
+
+        // Create the polling
+        Self { polling, producer, topics: args.topics.clone() }
+    }
+
+    pub async fn run(&self) {
+        info!("Polling run, starting");
+
+        loop {
+            // Sleep for 3 minutes and info log the timestamp
+            tokio::time::sleep(std::time::Duration::from_secs(180)).await;
+            info!("Polling run, timestamp: {}", chrono::Utc::now());
+        }
+    }
+}

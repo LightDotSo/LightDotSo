@@ -13,5 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod consumer;
+use crate::polling::Polling;
+use clap::Parser;
+use eyre::Result;
+use lightdotso_tracing::tracing::info;
+
+#[derive(Debug, Clone, Parser, Default)]
+pub struct PollingArgs {}
+
+impl PollingArgs {
+    pub async fn run(&self) -> Result<()> {
+        // Add info
+        info!("PollingArgs run, starting...");
+
+        // Print the config
+        info!("Config: {:?}", self);
+
+        let polling = Polling::new(self).await;
+
+        polling.run().await;
+
+        Ok(())
+    }
+}
