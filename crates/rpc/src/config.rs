@@ -29,6 +29,9 @@ pub struct RpcArgs {
     /// The blastapi API key
     #[clap(long, env = "BLAST_API_KEY")]
     pub blast_api_key: String,
+    /// The pilmico API key
+    #[clap(long, env = "PIMLICO_API_KEY")]
+    pub pimlico_api_key: String,
     /// The nodereal API key
     #[clap(long, env = "NODEREAL_API_KEY")]
     pub nodereal_api_key: String,
