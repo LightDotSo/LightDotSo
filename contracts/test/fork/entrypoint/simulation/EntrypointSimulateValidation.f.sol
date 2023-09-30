@@ -44,6 +44,9 @@ contract SimulateValidationForkTest is BaseForkTest {
 
     /// Tests that the factory can create a new account at the predicted address
     function testFork_simulateValidation() public {
+        // Create a random nonce
+        nonce = randomNonce();
+
         // The to-be-deployed account at expected Hash, nonce
         LightWallet newWallet = LightWallet(payable(factory.getAddress(expectedImageHash, nonce)));
 

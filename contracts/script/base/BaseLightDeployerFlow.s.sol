@@ -81,7 +81,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         address expectedAddress,
         uint256 nonce,
         bytes memory initCode,
-        bytes memory callData
+        bytes memory callData,
+        bool isLightWallet
     ) internal returns (UserOperation memory op) {
         // Get the paymaster request gas and paymaster and data
         (
@@ -91,7 +92,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
             bytes memory paymasterAndData,
             uint256 maxFeePerGas,
             uint256 maxPriorityFeePerGas
-        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, nonce, initCode, callData);
+        ) = getPaymasterRequestGasAndPaymasterAndData(expectedAddress, nonce, initCode, callData, isLightWallet);
 
         // Get the gas estimation
         // (uint256 preVerificationGas, uint256 verificationGasLimit, uint256 callGasLimit) =
@@ -136,7 +137,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     /// @dev Deploy the SimpleAccount contract
     function deploySimpleAccount() internal {
         // Set the nonce
-        uint256 nonce = randomNonce();
+        uint256 nonce = randomSeed();
 
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
@@ -155,7 +156,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory callData = "";
 
         // UserOperation to create the account
-        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData);
+        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, false);
 
         // -------------------------------------------------------------------------
 
@@ -177,7 +178,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // try simulateValidation(op) {} catch {}
 
         // Handle the validation
-        handleOps(op);
+        // handleOps(op);
 
         // Handle the ops
         sendUserOperation(op);
@@ -185,6 +186,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
 
     /// @dev Deploy the LightWallet contract
     function deployLightWallet() internal returns (LightWallet) {
+        // Set the nonce
+        nonce = randomNonce();
+
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
 
@@ -211,13 +215,16 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         bytes memory callData = "";
 
         // UserOperation to create the account
-        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData);
+        UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, true);
 
         // Sign the UserOperation
         bytes memory sig = LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey);
 
         // Construct the UserOperation
         op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
+
+        // Write the json
+        writeUserOperationJson(op);
 
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);

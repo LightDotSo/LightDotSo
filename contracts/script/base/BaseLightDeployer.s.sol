@@ -62,15 +62,6 @@ abstract contract BaseLightDeployer is BaseTest {
     // Utilities
     // -------------------------------------------------------------------------
 
-    /// @dev Gets the pseudo-random number and hash it in a bytes32
-    function randomNonce() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
-    }
-
-    function getSalt() internal view returns (bytes32) {
-        return bytes32(randomNonce());
-    }
-
     /// @notice Base deployer test for scripts
     /// @dev This contract is used to request gas estimation for a particular chain
     function getGasRequestGasEstimation() internal returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) {
@@ -100,7 +91,8 @@ abstract contract BaseLightDeployer is BaseTest {
         address _sender,
         uint256 _nonce,
         bytes memory _initCode,
-        bytes memory _callData
+        bytes memory _callData,
+        bool _isLightWallet
     )
         internal
         returns (
@@ -127,7 +119,11 @@ abstract contract BaseLightDeployer is BaseTest {
                 bytesToHexString(_initCode),
                 '","callData":"',
                 bytesToHexString(_callData),
-                '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"}]}'
+                _isLightWallet
+                    ?
+                    '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x","callGasLimit":"0x4C4B40","verificationGasLimit":"0x4C4B40","preVerificationGas":"0xC350"}]}'
+                    :
+                    '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"}]}'
             )
         );
 
