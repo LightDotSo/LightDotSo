@@ -51,7 +51,7 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
         bytes32 emptyHash = paymaster.getHash(op, 0, 0);
 
         // Set the nonce
-        uint256 nonce = randomNonce();
+        uint256 nonce = randomSeed();
 
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");

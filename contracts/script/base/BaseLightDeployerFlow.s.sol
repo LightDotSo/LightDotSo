@@ -137,7 +137,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     /// @dev Deploy the SimpleAccount contract
     function deploySimpleAccount() internal {
         // Set the nonce
-        uint256 nonce = randomNonce();
+        uint256 nonce = randomSeed();
 
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");
@@ -187,7 +187,7 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
     /// @dev Deploy the LightWallet contract
     function deployLightWallet() internal returns (LightWallet) {
         // Set the nonce
-        nonce = randomSalt();
+        nonce = randomNonce();
 
         // Set the user and userKey
         (address deployer, uint256 deployerKey) = makeAddrAndKey("user");

@@ -62,16 +62,6 @@ abstract contract BaseLightDeployer is BaseTest {
     // Utilities
     // -------------------------------------------------------------------------
 
-    /// @dev Gets the pseudo-random number
-    function randomNonce() internal view returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
-    }
-
-    /// @dev Gets the pseudo-random salt in bytes32
-    function randomSalt() internal view returns (bytes32) {
-        return bytes32(randomNonce());
-    }
-
     /// @notice Base deployer test for scripts
     /// @dev This contract is used to request gas estimation for a particular chain
     function getGasRequestGasEstimation() internal returns (uint256 maxFeePerGas, uint256 maxPriorityFeePerGas) {

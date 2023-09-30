@@ -142,6 +142,16 @@ abstract contract BaseTest is Test {
     // Utility
     // -------------------------------------------------------------------------
 
+    /// @dev Gets the pseudo-random number
+    function randomSeed() internal view returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(block.timestamp, block.prevrandao))) % 4337;
+    }
+
+    /// @dev Gets the pseudo-random salt in bytes32
+    function randomNonce() internal view returns (bytes32) {
+        return bytes32(randomSeed());
+    }
+
     /// @param _addr The address of the contract
     /// @param _slot The location of the bytes32 in storage
     /// @dev Reads a uint256 from storage
