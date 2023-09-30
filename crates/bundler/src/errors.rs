@@ -193,10 +193,10 @@ impl From<SimulationViolation> for EthRpcError {
             SimulationViolation::UsedForbiddenOpcode(entity, _, op) => {
                 Self::OpcodeViolation(entity.kind, op.0)
             }
-            SimulationViolation::UsedForbiddenPrecompile(_, _, _) |
-            SimulationViolation::AccessedUndeployedContract(_, _) |
-            SimulationViolation::CalledBannedEntryPointMethod(_) |
-            SimulationViolation::CallHadValue(_) => Self::OpcodeViolationMap(value),
+            SimulationViolation::UsedForbiddenPrecompile(_, _, _)
+            | SimulationViolation::AccessedUndeployedContract(_, _)
+            | SimulationViolation::CalledBannedEntryPointMethod(_)
+            | SimulationViolation::CallHadValue(_) => Self::OpcodeViolationMap(value),
             SimulationViolation::FactoryCalledCreate2Twice(_) => {
                 Self::OpcodeViolation(EntityType::Factory, Opcode::CREATE2)
             }
@@ -225,9 +225,9 @@ impl From<EthRpcError> for ErrorObjectOwned {
             EthRpcError::PaymasterValidationRejected(data) => {
                 rpc_err_with_data(PAYMASTER_VALIDATION_REJECTED_CODE, msg, data)
             }
-            EthRpcError::OpcodeViolation(_, _) |
-            EthRpcError::OpcodeViolationMap(_) |
-            EthRpcError::InvalidStorageAccess(_, _, _) => rpc_err(OPCODE_VIOLATION_CODE, msg),
+            EthRpcError::OpcodeViolation(_, _)
+            | EthRpcError::OpcodeViolationMap(_)
+            | EthRpcError::InvalidStorageAccess(_, _, _) => rpc_err(OPCODE_VIOLATION_CODE, msg),
             EthRpcError::OutOfTimeRange(data) => {
                 rpc_err_with_data(OUT_OF_TIME_RANGE_CODE, msg, data)
             }

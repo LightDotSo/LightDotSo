@@ -66,12 +66,12 @@ pub async fn polygon_gas_estimation(chain_id: u64) -> Result<GasEstimationParams
     let response = client.get(url).send().await?.json::<ApiResponse>().await?;
 
     // Check if any of the values is 0
-    if response.safe_low.max_priority_fee == 0.0 ||
-        response.safe_low.max_fee == 0.0 ||
-        response.standard.max_priority_fee == 0.0 ||
-        response.standard.max_fee == 0.0 ||
-        response.fast.max_priority_fee == 0.0 ||
-        response.fast.max_fee == 0.0
+    if response.safe_low.max_priority_fee == 0.0
+        || response.safe_low.max_fee == 0.0
+        || response.standard.max_priority_fee == 0.0
+        || response.standard.max_fee == 0.0
+        || response.fast.max_priority_fee == 0.0
+        || response.fast.max_fee == 0.0
     {
         return Err(eyre!("API returned a value of 0"));
     }
