@@ -19,11 +19,9 @@ pragma solidity ^0.8.18;
 import {LightWalletFactory} from "@/contracts/LightWalletFactory.sol";
 import {BaseLightDeployerOps} from "@/script/base/BaseLightDeployerOps.s.sol";
 import {MockERC20} from "solmate/test/utils/mocks/MockERC20.sol";
-// solhint-disable-next-line no-console
-import {console} from "forge-std/console.sol";
 
-// PaymasterAddStake -- Test Deployment
-contract PaymasterAddStakeOpsScript is BaseLightDeployerOps {
+// PaymasterWithdrawStake -- Test Deployment
+contract PaymasterWithdrawStakeOpsScript is BaseLightDeployerOps {
     // -------------------------------------------------------------------------
     // Run
     // -------------------------------------------------------------------------
@@ -32,11 +30,8 @@ contract PaymasterAddStakeOpsScript is BaseLightDeployerOps {
         // Start the broadcast
         vm.startBroadcast();
 
-        // solhint-disable-next-line no-console
-        console.log(paymaster.owner());
-
         // Add stake
-        paymaster.addStake{value: 1 ether}(86_400);
+        paymaster.withdrawStake(payable(address(0x35da762a35FCb3160738EeCd60fa18438C273D5E)));
 
         // Stop the broadcast
         vm.stopBroadcast();
