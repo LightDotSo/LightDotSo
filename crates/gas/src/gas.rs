@@ -108,23 +108,6 @@ impl GasServer for GasServerImpl {
     }
 }
 
-/// Get the gas estimation from pre-configured APIs
-async fn get_estimation(chain_id: u64) -> Option<GasEstimationParams> {
-    match chain_id {
-        // Match either 1 or 11155111
-        1 | 11155111 => match ethereum_gas_estimation(chain_id).await {
-            Ok(res) => Some(res),
-            Err(_) => None,
-        },
-        // Match either 137 or 80001
-        137 | 80001 => match polygon_gas_estimation(chain_id).await {
-            Ok(res) => Some(res),
-            Err(_) => None,
-        },
-        _ => None,
-    }
-}
-
 /// Create a gas estimation from the given gas price
 /// Arbitary multiplication from: https://github.com/pimlicolabs/alto/blob/2981f50eb6fc4692939f13802e799149c554734b/packages/rpc/src/rpcHandler.ts#L531
 /// License: GPL-3.0
