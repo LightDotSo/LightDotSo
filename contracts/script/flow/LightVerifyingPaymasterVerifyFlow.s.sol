@@ -32,8 +32,23 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
 
     function run() public {
         UserOperation memory op = UserOperation(
-            address(0), uint256(0), "", "", uint256(0), uint256(0), uint256(0), uint256(0), uint256(0), "", ""
+            address(0),
+            uint256(0),
+            "",
+            "",
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            uint256(0),
+            abi.encodePacked(
+                address(LIGHT_PAYMASTER_ADDRESS),
+                abi.encode(uint48(0), uint48(0)),
+                hex"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            ),
+            ""
         );
+        bytes32 emptyHash = paymaster.getHash(op, 0, 0);
 
         // Set the nonce
         uint256 nonce = randomNonce();
@@ -68,7 +83,11 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
         console.logBytes(signature);
 
         op.signature = "";
-        op.paymasterAndData = "";
+        op.paymasterAndData = abi.encodePacked(
+            address(LIGHT_PAYMASTER_ADDRESS),
+            abi.encode(validUntil, validAfter),
+            hex"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        );
 
         bytes32 beforeHash = paymaster.getHash(op, validUntil, validAfter);
 
