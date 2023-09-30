@@ -356,7 +356,7 @@ mod tests {
             pre_verification_gas: U256::from(0),
             max_fee_per_gas: U256::from(0),
             max_priority_fee_per_gas: U256::from(0),
-            signature: "0xxxaa".parse().unwrap(),
+            signature: "0x".parse().unwrap(),
         };
         let valid_until = 0_u64;
         let valid_after = 0_u64;
@@ -371,7 +371,7 @@ mod tests {
         .await;
 
         let expected_bytes: [u8; 32] =
-            hex::decode("9934dcd91bdeca5cd5d730369bf3a9724b1f2f841c2c43c4a310a5b7e2b64b51")
+            hex::decode("2435cd47d8f5ea2c5d6755619d7a5b886502e8b41a4067aa5cfd3bbdbcb97128")
                 .expect("Decoding failed")
                 .try_into()
                 .expect("Expected byte length does not match");
