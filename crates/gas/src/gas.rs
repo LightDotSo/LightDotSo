@@ -49,12 +49,12 @@ pub struct GasServerImpl {}
 impl GasServer for GasServerImpl {
     async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation> {
         // Get the estimation from pre-configured APIs
-        let estimation = get_estimation(chain_id).await;
+        // let estimation = get_estimation(chain_id).await;
 
         // Return if some
-        if let Some(params) = estimation {
-            return Ok(create_gas_estimation(&params));
-        }
+        // if let Some(params) = estimation {
+        //     return Ok(create_gas_estimation(&params));
+        // }
 
         // Setup a new ethers provider
         let client = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
