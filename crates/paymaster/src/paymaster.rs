@@ -122,8 +122,12 @@ pub async fn get_paymaster_and_data(
     let msg = sign_message(hash).await.map_err(JsonRpcError::from)?;
 
     // Construct the paymaster and data.
-    let paymater_and_data =
-        construct_paymaster_and_data(verifying_paymaster_address, valid_until, valid_after, &msg);
+    let paymater_and_data = construct_paymaster_and_data(
+        verifying_paymaster_address,
+        valid_until,
+        valid_after,
+        Some(&msg),
+    );
 
     Ok(paymater_and_data)
 }
@@ -133,13 +137,16 @@ fn construct_paymaster_and_data(
     verifying_paymaster_address: Address,
     valid_until: u64,
     valid_after: u64,
-    msg: &[u8],
+    msg: Option<&[u8]>,
 ) -> Bytes {
     let tokens = vec![Token::Uint(valid_until.into()), Token::Uint(valid_after.into())];
     let encoded_tokens = encode(&tokens);
 
     // Return the paymaster and data.
-    Bytes::from([verifying_paymaster_address.as_bytes(), &encoded_tokens, msg].concat())
+    Bytes::from(
+        [verifying_paymaster_address.as_bytes(), &encoded_tokens, &msg.unwrap_or(&[0u8; 65])]
+            .concat(),
+    )
 }
 
 /// Construct the user operation w/ rpc.
@@ -311,7 +318,12 @@ async fn get_hash(
                 pre_verification_gas: user_operation.pre_verification_gas,
                 max_fee_per_gas: user_operation.max_fee_per_gas,
                 max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
-                paymaster_and_data: Bytes::default(),
+                paymaster_and_data: construct_paymaster_and_data(
+                    verifying_paymaster_address,
+                    valid_until,
+                    valid_after,
+                    None,
+                ),
                 signature: Bytes::default(),
             },
             valid_until,
@@ -410,7 +422,7 @@ mod tests {
             verifying_paymaster_address,
             valid_until,
             valid_after,
-            &msg,
+            Some(&msg),
         );
 
         // Expected result.
