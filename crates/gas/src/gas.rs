@@ -110,14 +110,6 @@ impl GasServer for GasServerImpl {
 /// License: GPL-3.0
 fn create_gas_estimation(gas_price: &GasEstimationParams) -> GasEstimation {
     let low_params = GasEstimationParams {
-        max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(105)).div(U256::from(100)),
-        max_priority_fee_per_gas: gas_price
-            .max_priority_fee_per_gas
-            .mul(U256::from(105))
-            .div(U256::from(100)),
-    };
-
-    let average_params = GasEstimationParams {
         max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(110)).div(U256::from(100)),
         max_priority_fee_per_gas: gas_price
             .max_priority_fee_per_gas
@@ -125,7 +117,7 @@ fn create_gas_estimation(gas_price: &GasEstimationParams) -> GasEstimation {
             .div(U256::from(100)),
     };
 
-    let high_params = GasEstimationParams {
+    let average_params = GasEstimationParams {
         max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(115)).div(U256::from(100)),
         max_priority_fee_per_gas: gas_price
             .max_priority_fee_per_gas
@@ -133,11 +125,19 @@ fn create_gas_estimation(gas_price: &GasEstimationParams) -> GasEstimation {
             .div(U256::from(100)),
     };
 
-    let instant_params = GasEstimationParams {
+    let high_params = GasEstimationParams {
         max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(120)).div(U256::from(100)),
         max_priority_fee_per_gas: gas_price
             .max_priority_fee_per_gas
             .mul(U256::from(120))
+            .div(U256::from(100)),
+    };
+
+    let instant_params = GasEstimationParams {
+        max_fee_per_gas: gas_price.max_fee_per_gas.mul(U256::from(125)).div(U256::from(100)),
+        max_priority_fee_per_gas: gas_price
+            .max_priority_fee_per_gas
+            .mul(U256::from(125))
             .div(U256::from(100)),
     };
 

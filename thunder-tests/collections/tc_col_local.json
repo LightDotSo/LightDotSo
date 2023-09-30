@@ -185,12 +185,12 @@
       "_id": "24769435-2ab4-460f-b6a8-3d55929672aa",
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "",
-      "name": "gas_requestGasEstimation Copy",
-      "url": "https://rpc.light.so/11155111",
+      "name": "gas_requestGasEstimation local",
+      "url": "https://rpc.light.so/137",
       "method": "POST",
       "sortNum": 11250,
       "created": "2023-09-28T15:33:43.927Z",
-      "modified": "2023-09-28T15:33:43.927Z",
+      "modified": "2023-09-30T18:06:58.769Z",
       "headers": [
         {
           "name": "accept",
