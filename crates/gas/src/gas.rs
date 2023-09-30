@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    chains::{ethereum::ethereum_gas_estimation, polygon::polygon_gas_estimation},
-    gas_api::GasServer,
-};
+use crate::gas_api::GasServer;
 use async_trait::async_trait;
 use ethers::{providers::Middleware, types::BlockNumber};
 use ethers_main::types::U256;
@@ -49,12 +46,12 @@ pub struct GasServerImpl {}
 impl GasServer for GasServerImpl {
     async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation> {
         // Get the estimation from pre-configured APIs
-        let estimation = get_estimation(chain_id).await;
+        // let estimation = get_estimation(chain_id).await;
 
         // Return if some
-        if let Some(params) = estimation {
-            return Ok(create_gas_estimation(&params));
-        }
+        // if let Some(params) = estimation {
+        //     return Ok(create_gas_estimation(&params));
+        // }
 
         // Setup a new ethers provider
         let client = get_provider(chain_id).await.map_err(JsonRpcError::from)?;
@@ -105,23 +102,6 @@ impl GasServer for GasServerImpl {
         let params = GasEstimationParams { max_fee_per_gas: gas_price, max_priority_fee_per_gas };
 
         Ok(create_gas_estimation(&params))
-    }
-}
-
-/// Get the gas estimation from pre-configured APIs
-async fn get_estimation(chain_id: u64) -> Option<GasEstimationParams> {
-    match chain_id {
-        // Match either 1 or 11155111
-        1 | 11155111 => match ethereum_gas_estimation(chain_id).await {
-            Ok(res) => Some(res),
-            Err(_) => None,
-        },
-        // Match either 137 or 80001
-        137 | 80001 => match polygon_gas_estimation(chain_id).await {
-            Ok(res) => Some(res),
-            Err(_) => None,
-        },
-        _ => None,
     }
 }
 

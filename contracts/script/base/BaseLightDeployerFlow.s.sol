@@ -170,6 +170,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // Construct the UserOperation
         op.signature = sig;
 
+        // Write the json
+        writeUserOperationJson(op);
+
         // Simulate the validation
         // try simulateValidation(op) {} catch {}
 
