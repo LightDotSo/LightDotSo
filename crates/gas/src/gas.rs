@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    chains::{ethereum::ethereum_gas_estimation, polygon::polygon_gas_estimation},
-    gas_api::GasServer,
-};
+use crate::gas_api::GasServer;
 use async_trait::async_trait;
 use ethers::{providers::Middleware, types::BlockNumber};
 use ethers_main::types::U256;
