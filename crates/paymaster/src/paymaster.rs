@@ -144,7 +144,7 @@ fn construct_paymaster_and_data(
 
     // Return the paymaster and data.
     Bytes::from(
-        [verifying_paymaster_address.as_bytes(), &encoded_tokens, &msg.unwrap_or(&[0u8; 65])]
+        [verifying_paymaster_address.as_bytes(), &encoded_tokens, (msg.unwrap_or(&[0u8; 65]))]
             .concat(),
     )
 }

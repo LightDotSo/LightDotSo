@@ -219,6 +219,9 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         // Construct the UserOperation
         op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
 
+        // Write the json
+        writeUserOperationJson(op);
+
         // Construct the ops
         UserOperation[] memory ops = new UserOperation[](1);
         ops[0] = op;

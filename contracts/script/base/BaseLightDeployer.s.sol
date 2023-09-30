@@ -127,7 +127,7 @@ abstract contract BaseLightDeployer is BaseTest {
                 bytesToHexString(_initCode),
                 '","callData":"',
                 bytesToHexString(_callData),
-                '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"}]}'
+                '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x","callGasLimit":"0x4C4B40","verificationGasLimit":"0x4C4B40","preVerificationGas":"0xC350"}]}'
             )
         );
 
