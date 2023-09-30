@@ -26,14 +26,27 @@ import {
   UserOperationRevertReason,
 } from "../generated/schema";
 import { lightWalletFactories } from "./config";
+import {
+  getUserOpCount,
+  getUserOpRevertCount,
+  getWalletCount,
+  incrementUserOpCount,
+  incrementUserOpRevertCount,
+  incrementUserOpSuccessCount,
+  incrementWalletCount,
+} from "./counter";
 
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
   // If the event is emitted by one of the factories, then we know that the account is a LightWallet
   // If it is one of the factories, the index will be greater than -1
   // If it is not one of the factories, the index will be -1
   if (lightWalletFactories.indexOf(event.params.factory) > -1) {
+    // Increment the wallet count
+    incrementWalletCount();
+
     // Create a new LightWallet entity
     let lightWallet = new LightWallet(event.params.sender);
+    lightWallet.index = getWalletCount();
     lightWallet.address = event.params.sender;
 
     lightWallet.userOpHash = event.params.userOpHash;
@@ -64,7 +77,14 @@ export function handleLightWalletUserOperationEvent(
 
   // Handle if the account exists
   if (lightWallet != null) {
+    // Increment the user operation count
+    incrementUserOpCount();
+    if (event.params.success) {
+      incrementUserOpSuccessCount();
+    }
+
     let entity = new UserOperationEvent(event.params.userOpHash);
+    entity.index = getUserOpCount();
     entity.userOpHash = event.params.userOpHash;
     entity.sender = event.params.sender;
     entity.paymaster = event.params.paymaster;
@@ -89,9 +109,13 @@ export function handleLightWalletUserOperationRevertReason(
 
   // Handle if the account exists
   if (lightWallet != null) {
+    // Increment the user operation revert count
+    incrementUserOpRevertCount();
+
     let entity = new UserOperationRevertReason(
       event.transaction.hash.concatI32(event.logIndex.toI32()),
     );
+    entity.index = getUserOpRevertCount();
     entity.userOpHash = event.params.userOpHash;
     entity.sender = event.params.sender;
     entity.nonce = event.params.nonce;

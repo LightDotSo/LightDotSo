@@ -6158,6 +6158,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-polling"
+version = "0.1.0"
+dependencies = [
+ "lightdotso-graphql",
+]
+
+[[package]]
 name = "lightdotso-prisma"
 version = "0.1.0"
 dependencies = [
