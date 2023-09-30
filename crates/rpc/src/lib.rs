@@ -19,7 +19,7 @@ mod constants;
 use crate::constants::{
     ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URL, CHAINNODES_RPC_URLS,
     GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL,
-    PUBLIC_RPC_URLS, SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
+    PIMLICO_RPC_URLS, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
 };
 use axum::{
     body::Body,
@@ -379,6 +379,19 @@ pub async fn rpc_proxy_handler(
                 let result = try_rpc_with_url(
                     &ALCHEMY_RPC_URLS,
                     Some(std::env::var("ALCHEMY_API_KEY").unwrap()),
+                    &chain_id,
+                    &client,
+                    Body::from(full_body_bytes.clone()),
+                )
+                .await;
+                if let Some(resp) = result {
+                    return resp;
+                }
+
+                // Get the pimlico rpc url
+                let result = try_rpc_with_url(
+                    &PIMLICO_RPC_URLS,
+                    Some("?apikey=".to_owned() + &std::env::var("PIMLICO_API_KEY").unwrap()),
                     &chain_id,
                     &client,
                     Body::from(full_body_bytes.clone()),

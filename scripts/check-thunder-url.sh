@@ -1,6 +1,6 @@
 #!/bin/bash
 
-URLS_TO_REJECT=('infura.io' 'alchemy.com' 'noderpc.xyz')
+URLS_TO_REJECT=('infura.io' 'alchemy.com' 'noderpc.xyz' 'pimlico.io')
 
 FILES=$(git diff --cached --name-only --diff-filter=ACM)
 for FILE in $FILES

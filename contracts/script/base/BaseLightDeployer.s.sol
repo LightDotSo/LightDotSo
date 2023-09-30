@@ -121,7 +121,7 @@ abstract contract BaseLightDeployer is BaseTest {
                 bytesToHexString(_callData),
                 _isLightWallet
                     ?
-                    '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x","callGasLimit":"0x4C4B40","verificationGasLimit":"0x4C4B40","preVerificationGas":"0xC350"}]}'
+                    '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x","callGasLimit":"0x44E1C0","verificationGasLimit":"0x1C4B40","preVerificationGas":"0x1C4B40","maxFeePerGas":"0xD320B3B35","maxPriorityFeePerGas":"0xB323DBB31"}]}'
                     :
                     '","signature":"0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c","paymasterAndData":"0x"}]}'
             )

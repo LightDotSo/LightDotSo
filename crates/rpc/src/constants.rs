@@ -240,3 +240,29 @@ lazy_static! {
         m
     };
 }
+
+// The pimlico rpc urls
+lazy_static! {
+    pub static ref PIMLICO_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://api.pimlico.io/v1/ethereum/rpc".to_string());
+        m.insert(10, "https://api.pimlico.io/v1/optimism/rpc".to_string());
+        m.insert(56, "https://api.pimlico.io/v1/binance/rpc".to_string());
+        m.insert(100, "https://api.pimlico.io/v1/gnosis/rpc".to_string());
+        m.insert(137, "https://api.pimlico.io/v1/polygon/rpc".to_string());
+        m.insert(8453, "https://api.pimlico.io/v1/base/rpc".to_string());
+        m.insert(42161, "https://api.pimlico.io/v1/arbitrum/rpc".to_string());
+        m.insert(43114, "https://api.pimlico.io/v1/avalanche/rpc".to_string());
+        m.insert(59144, "https://api.pimlico.io/v1/linea/rpc".to_string());
+
+
+        // Testnet
+        m.insert(10200, "https://api.pimlico.io/v1/chiado-testnet/rpc".to_string());
+        m.insert(80001, "https://api.pimlico.io/v1/mumbai/rpc".to_string());
+        m.insert(11155111, "https://api.pimlico.io/v1/sepolia/rpc".to_string());
+
+        m
+    };
+}
