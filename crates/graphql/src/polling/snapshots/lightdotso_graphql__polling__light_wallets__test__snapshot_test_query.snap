@@ -1,0 +1,26 @@
+---
+source: crates/graphql/src/polling/light_wallets.rs
+expression: query.query
+---
+query GetProtocolQuery($minBlock: BigInt!) {
+  lightWallets(where: {blockNumber_gte: $minBlock, }) {
+    id
+    index
+    address
+    imageHash
+    userOpHash
+    sender
+    factory
+    paymaster
+    blockNumber
+    blockTimestamp
+    transactionHash
+  }
+  _meta {
+    block {
+      number
+    }
+  }
+}
+
+

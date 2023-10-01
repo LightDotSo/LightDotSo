@@ -1,0 +1,16 @@
+---
+source: crates/graphql/src/polling/light_wallets.rs
+expression: result.data
+---
+Some(
+    GetProtocolQuery {
+        light_wallets: [],
+        _meta: Some(
+            Meta {
+                block: Block {
+                    number: 18253429,
+                },
+            },
+        ),
+    },
+)

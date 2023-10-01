@@ -1,5 +1,5 @@
 ---
-source: crates/graphql/src/lib.rs
+source: crates/graphql/src/wallets/mod.rs
 expression: query.query
 ---
 query MyQuery($n: Int!) {
