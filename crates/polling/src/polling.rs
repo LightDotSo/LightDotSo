@@ -17,6 +17,7 @@ use crate::config::PollingArgs;
 use backon::BlockingRetryable;
 use backon::ExponentialBuilder;
 use eyre::Result;
+use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
 use lightdotso_graphql::polling::light_wallets::run_query;
 use lightdotso_tracing::tracing::error;
 use lightdotso_tracing::tracing::info;
@@ -39,11 +40,16 @@ impl Polling {
 
         let mut handles = Vec::new();
 
-        for index in 0..12 {
-            let handle = tokio::spawn(run_polling_task(index));
+        // Get the chain ids from the constants which is the keys of the THE_GRAPH_HOSTED_SERVICE_URLS map.
+        let chain_ids: Vec<u64> = THE_GRAPH_HOSTED_SERVICE_URLS.keys().cloned().collect();
+
+        // Spawn a task for each chain id.
+        for chain_id in chain_ids {
+            let handle = tokio::spawn(run_polling_task(chain_id));
             handles.push(handle);
         }
 
+        // Wait for all tasks to finish.
         for handle in handles {
             if let Err(e) = handle.await {
                 error!("A task panicked: {:?}", e);
@@ -76,9 +82,11 @@ async fn run_polling_task(chain_id: u64) {
 }
 
 async fn poll_task(chain_id: u64) -> Result<()> {
-    // Get the light wallet data
-    // let light_wallet = { || run_query(chain_id, "0") }.retry(&ExponentialBuilder::default()).call();
-    let light_wallet = chain_id.to_string();
+    // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread used by the underlying reqwest client. (blocking)
+    let light_wallet = tokio::task::spawn_blocking(move || {
+        { || run_query(chain_id, "0") }.retry(&ExponentialBuilder::default()).call()
+    })
+    .await?;
 
     // Log the light wallet data
     info!("light_wallet: {:?}", light_wallet);
