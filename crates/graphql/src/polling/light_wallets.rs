@@ -13,6 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::utils::get_graphql_url;
+use eyre::Result;
+
 #[cynic::schema("graph")]
 mod schema {}
 
@@ -62,21 +65,23 @@ pub struct BigInt(pub String);
 #[derive(cynic::Scalar, Debug, Clone)]
 pub struct Bytes(pub String);
 
-pub fn run_query() -> cynic::GraphQlResponse<GetProtocolQuery> {
-    use cynic::http::ReqwestBlockingExt;
-
-    let query = build_query();
-
-    reqwest::blocking::Client::new()
-        .post("https://api.thegraph.com/subgraphs/name/lightdotso/mainnet")
-        .run_graphql(query)
-        .unwrap()
-}
-
-pub fn build_query() -> cynic::Operation<GetProtocolQuery, GetProtocolQueryVariables> {
+pub fn build_query(
+    min_block: &str,
+) -> cynic::Operation<GetProtocolQuery, GetProtocolQueryVariables> {
     use cynic::QueryBuilder;
 
-    GetProtocolQuery::build(GetProtocolQueryVariables { min_block: BigInt("0".to_string()) })
+    GetProtocolQuery::build(GetProtocolQueryVariables { min_block: BigInt(min_block.to_string()) })
+}
+
+pub fn run_query(
+    chain_id: u64,
+    min_block: &str,
+) -> Result<cynic::GraphQlResponse<GetProtocolQuery>> {
+    use cynic::http::ReqwestBlockingExt;
+
+    let query = build_query(min_block);
+
+    Ok(reqwest::blocking::Client::new().post(get_graphql_url(chain_id)?).run_graphql(query)?)
 }
 
 #[cfg(test)]
@@ -89,14 +94,14 @@ mod test {
         // a place to copy and paste the actual GQL we're using for running elsewhere,
         // and also helps ensure we don't change queries by mistake
 
-        let query = build_query();
+        let query = build_query("0");
 
         insta::assert_snapshot!(query.query);
     }
 
     #[test]
     fn test_running_query() {
-        let result = run_query();
+        let result = run_query(3, "0").unwrap();
         if result.errors.is_some() {
             assert_eq!(result.errors.unwrap().len(), 0);
         }

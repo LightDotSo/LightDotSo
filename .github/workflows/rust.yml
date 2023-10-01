@@ -8,6 +8,15 @@ on:
     types:
       - labeled
   merge_group:
+  workflow_dispatch:
+    inputs:
+      crate:
+        type: choice
+        default: graphql
+        description: "Crate to test"
+        options:
+          - crate
+        required: true
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -112,6 +121,11 @@ jobs:
         run: |
           cargo nextest run \
           --locked --all-features ${{ matrix.package }}
+      - if: github.event_name == 'workflow_dispatch'
+        name: Rust Test
+        run: |
+          cargo nextest run \
+          --locked --all-features --package ${{ inputs.crate }}
       # - if: matrix.test
       #   name: Rust Coverage
       #   run: |
