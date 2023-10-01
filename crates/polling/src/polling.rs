@@ -16,6 +16,7 @@
 use crate::config::PollingArgs;
 use backon::BlockingRetryable;
 use backon::ExponentialBuilder;
+use eyre::Result;
 use lightdotso_graphql::polling::light_wallets::run_query;
 use lightdotso_tracing::tracing::error;
 use lightdotso_tracing::tracing::info;
@@ -32,6 +33,7 @@ impl Polling {
         Self {}
     }
 
+    #[tokio::main]
     pub async fn run(&self) {
         info!("Polling run, starting");
 
@@ -53,13 +55,7 @@ impl Polling {
 async fn run_polling_task(chain_id: u64) {
     loop {
         // Wrap the task in a catch_unwind block to not crash the task if the task panics.
-        let result = std::panic::catch_unwind(|| async {
-            // Get the light wallet data
-            let light_wallet =
-                { || run_query(1, "0") }.retry(&ExponentialBuilder::default()).call();
-            // Log the light wallet data
-            info!("light_wallet: {:?}", light_wallet.unwrap());
-        });
+        let result = poll_task(chain_id).await;
 
         match result {
             Ok(_) => {
@@ -77,4 +73,15 @@ async fn run_polling_task(chain_id: u64) {
             }
         }
     }
+}
+
+async fn poll_task(chain_id: u64) -> Result<()> {
+    // Get the light wallet data
+    // let light_wallet = { || run_query(chain_id, "0") }.retry(&ExponentialBuilder::default()).call();
+    let light_wallet = chain_id.to_string();
+
+    // Log the light wallet data
+    info!("light_wallet: {:?}", light_wallet);
+
+    Ok(())
 }
