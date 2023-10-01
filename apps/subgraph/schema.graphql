@@ -15,6 +15,7 @@
 
 type AccountDeployed @entity(immutable: true) {
   id: Bytes!
+  index: BigInt!
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
   factory: Bytes! # address
@@ -80,6 +81,7 @@ type StakeWithdrawn @entity(immutable: true) {
 
 type UserOperationEvent @entity(immutable: true) {
   id: Bytes!
+  index: BigInt!
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
   paymaster: Bytes! # address
@@ -94,6 +96,7 @@ type UserOperationEvent @entity(immutable: true) {
 
 type UserOperationRevertReason @entity(immutable: true) {
   id: Bytes!
+  index: BigInt!
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
   nonce: BigInt! # uint256
@@ -115,6 +118,7 @@ type Withdrawn @entity(immutable: true) {
 
 type LightWallet @entity {
   id: Bytes!
+  index: BigInt!
   address: Bytes! # address
   imageHash: Bytes # bytes32
   userOpHash: Bytes! # bytes32
@@ -124,4 +128,12 @@ type LightWallet @entity {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+}
+
+type Counter @entity {
+  id: String!
+  userOpCount: BigInt!
+  userOpRevertCount: BigInt!
+  userOpSuccessCount: BigInt!
+  walletCount: BigInt!
 }

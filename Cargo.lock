@@ -5923,6 +5923,7 @@ dependencies = [
  "lightdotso-indexer",
  "lightdotso-kafka",
  "lightdotso-paymaster",
+ "lightdotso-polling",
  "lightdotso-prisma",
  "lightdotso-prometheus",
  "lightdotso-rpc",
@@ -6154,6 +6155,18 @@ dependencies = [
  "serde",
  "serde_json",
  "spki",
+ "tokio",
+]
+
+[[package]]
+name = "lightdotso-polling"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "clap 4.4.0",
+ "eyre",
+ "lightdotso-graphql",
+ "lightdotso-tracing",
  "tokio",
 ]
 

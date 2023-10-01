@@ -69,6 +69,19 @@ export class AccountDeployed extends Entity {
     this.set("id", Value.fromBytes(value));
   }
 
+  get index(): BigInt {
+    let value = this.get("index");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set index(value: BigInt) {
+    this.set("index", Value.fromBigInt(value));
+  }
+
   get userOpHash(): Bytes {
     let value = this.get("userOpHash");
     if (!value || value.kind == ValueKind.NULL) {
@@ -848,6 +861,19 @@ export class UserOperationEvent extends Entity {
     this.set("id", Value.fromBytes(value));
   }
 
+  get index(): BigInt {
+    let value = this.get("index");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set index(value: BigInt) {
+    this.set("index", Value.fromBigInt(value));
+  }
+
   get userOpHash(): Bytes {
     let value = this.get("userOpHash");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1023,6 +1049,19 @@ export class UserOperationRevertReason extends Entity {
 
   set id(value: Bytes) {
     this.set("id", Value.fromBytes(value));
+  }
+
+  get index(): BigInt {
+    let value = this.get("index");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set index(value: BigInt) {
+    this.set("index", Value.fromBigInt(value));
   }
 
   get userOpHash(): Bytes {
@@ -1282,6 +1321,19 @@ export class LightWallet extends Entity {
     this.set("id", Value.fromBytes(value));
   }
 
+  get index(): BigInt {
+    let value = this.get("index");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set index(value: BigInt) {
+    this.set("index", Value.fromBigInt(value));
+  }
+
   get address(): Bytes {
     let value = this.get("address");
     if (!value || value.kind == ValueKind.NULL) {
@@ -1401,5 +1453,97 @@ export class LightWallet extends Entity {
 
   set transactionHash(value: Bytes) {
     this.set("transactionHash", Value.fromBytes(value));
+  }
+}
+
+export class Counter extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Counter entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Counter must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Counter", id.toString(), this);
+    }
+  }
+
+  static loadInBlock(id: string): Counter | null {
+    return changetype<Counter | null>(store.get_in_block("Counter", id));
+  }
+
+  static load(id: string): Counter | null {
+    return changetype<Counter | null>(store.get("Counter", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toString();
+    }
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get userOpCount(): BigInt {
+    let value = this.get("userOpCount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set userOpCount(value: BigInt) {
+    this.set("userOpCount", Value.fromBigInt(value));
+  }
+
+  get userOpRevertCount(): BigInt {
+    let value = this.get("userOpRevertCount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set userOpRevertCount(value: BigInt) {
+    this.set("userOpRevertCount", Value.fromBigInt(value));
+  }
+
+  get userOpSuccessCount(): BigInt {
+    let value = this.get("userOpSuccessCount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set userOpSuccessCount(value: BigInt) {
+    this.set("userOpSuccessCount", Value.fromBigInt(value));
+  }
+
+  get walletCount(): BigInt {
+    let value = this.get("walletCount");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set walletCount(value: BigInt) {
+    this.set("walletCount", Value.fromBigInt(value));
   }
 }

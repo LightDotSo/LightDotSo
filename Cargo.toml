@@ -20,6 +20,7 @@
     "crates/kafka",
     "crates/keychain",
     "crates/notifier",
+    "crates/polling",
     "crates/opentelemetry",
     "crates/paymaster",
     "crates/prometheus",
@@ -105,6 +106,7 @@
   lightdotso-notifier = { path = "./crates/notifier" }
   lightdotso-opentelemetry = { path = "./crates/opentelemetry" }
   lightdotso-paymaster = { path = "./crates/paymaster" }
+  lightdotso-polling = { path = "./crates/polling" }
   lightdotso-prometheus = { path = "./crates/prometheus" }
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
