@@ -6162,9 +6162,12 @@ dependencies = [
 name = "lightdotso-polling"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "clap 4.4.0",
  "eyre",
  "lightdotso-graphql",
+ "lightdotso-tracing",
+ "tokio",
 ]
 
 [[package]]

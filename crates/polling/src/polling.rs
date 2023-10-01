@@ -14,16 +14,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::config::PollingArgs;
+use lightdotso_tracing::tracing::info;
 
 #[derive(Clone)]
 pub struct Polling {}
 
 impl Polling {
-    pub async fn new(args: &PollingArgs) -> Self {
+    pub async fn new(_args: &PollingArgs) -> Self {
         info!("Polling new, starting");
 
         // Create the polling
-        Self { polling, producer, topics: args.topics.clone() }
+        Self {}
     }
 
     pub async fn run(&self) {
