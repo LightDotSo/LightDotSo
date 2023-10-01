@@ -41,7 +41,7 @@ impl PaymasterArgs {
         info!("PaymasterArgs run, starting...");
 
         // Print the config
-        info!("Config: {:?}", self);
+        // info!("Config: {:?}", self);
 
         tokio::spawn({
             async move {
