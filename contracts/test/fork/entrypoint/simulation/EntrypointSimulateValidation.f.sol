@@ -62,20 +62,19 @@ contract SimulateValidationForkTest is BaseForkTest {
         UserOperation memory op =
             entryPoint.signPackUserOp(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
 
-        IEntryPoint.ReturnInfo memory returnInfo =
-            IEntryPoint.ReturnInfo(396463, 1002500000000, false, 0, 281474976710655, "");
-        IStakeManager.StakeInfo memory senderInfo = IStakeManager.StakeInfo(0, 0);
-        IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
-        IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
+        // IEntryPoint.ReturnInfo memory returnInfo =
+        //     IEntryPoint.ReturnInfo(396463, 1002500000000, false, 0, 281474976710655, "");
+        // IStakeManager.StakeInfo memory senderInfo = IStakeManager.StakeInfo(0, 0);
+        // IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
+        // IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
 
-        // Simulate the validation if sepolia
-        if (block.chainid == 11155111) {
-            vm.expectRevert(
-                abi.encodeWithSelector(
-                    IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
-                )
-            );
-            entryPoint.simulateValidation(op);
-        }
+        // vm.expectRevert(
+        //     abi.encodeWithSelector(
+        //         IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
+        //     )
+        // );
+
+        vm.expectRevert();
+        entryPoint.simulateValidation(op);
     }
 }

@@ -49,7 +49,7 @@ impl BundlerArgs {
         info!("BundlerArgs run, entering");
 
         // Print the config
-        info!("Config: {:?}", self);
+        // info!("Config: {:?}", self);
 
         tokio::spawn({
             async move {
