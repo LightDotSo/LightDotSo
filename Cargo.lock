@@ -6046,6 +6046,7 @@ dependencies = [
  "cynic-codegen",
  "eyre",
  "insta",
+ "lazy_static",
  "lightdotso-tracing",
  "reqwest",
 ]
