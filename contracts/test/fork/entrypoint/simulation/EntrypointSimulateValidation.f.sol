@@ -63,7 +63,7 @@ contract SimulateValidationForkTest is BaseForkTest {
             entryPoint.signPackUserOp(vm, address(newWallet), "", userKey, initCode, weight, threshold, checkpoint);
 
         IEntryPoint.ReturnInfo memory returnInfo =
-            IEntryPoint.ReturnInfo(396463, 1002500000000, false, 0, 281474976710655, "");
+            IEntryPoint.ReturnInfo(396483, 1002500000000, false, 0, 281474976710655, "");
         IStakeManager.StakeInfo memory senderInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
