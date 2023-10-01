@@ -15,6 +15,7 @@
 
 type AccountDeployed {
   id: Bytes!
+  index: BigInt!
   userOpHash: Bytes!
   sender: Bytes!
   factory: Bytes!
@@ -35,6 +36,14 @@ input AccountDeployed_filter {
   id_not_in: [Bytes!]
   id_contains: Bytes
   id_not_contains: Bytes
+  index: BigInt
+  index_not: BigInt
+  index_gt: BigInt
+  index_lt: BigInt
+  index_gte: BigInt
+  index_lte: BigInt
+  index_in: [BigInt!]
+  index_not_in: [BigInt!]
   userOpHash: Bytes
   userOpHash_not: Bytes
   userOpHash_gt: Bytes
@@ -111,6 +120,7 @@ input AccountDeployed_filter {
 
 enum AccountDeployed_orderBy {
   id
+  index
   userOpHash
   sender
   factory
@@ -194,6 +204,83 @@ input Block_height {
 }
 
 scalar Bytes
+
+type Counter {
+  id: String!
+  userOpCount: BigInt!
+  userOpRevertCount: BigInt!
+  userOpSuccessCount: BigInt!
+  walletCount: BigInt!
+}
+
+input Counter_filter {
+  id: String
+  id_not: String
+  id_gt: String
+  id_lt: String
+  id_gte: String
+  id_lte: String
+  id_in: [String!]
+  id_not_in: [String!]
+  id_contains: String
+  id_contains_nocase: String
+  id_not_contains: String
+  id_not_contains_nocase: String
+  id_starts_with: String
+  id_starts_with_nocase: String
+  id_not_starts_with: String
+  id_not_starts_with_nocase: String
+  id_ends_with: String
+  id_ends_with_nocase: String
+  id_not_ends_with: String
+  id_not_ends_with_nocase: String
+  userOpCount: BigInt
+  userOpCount_not: BigInt
+  userOpCount_gt: BigInt
+  userOpCount_lt: BigInt
+  userOpCount_gte: BigInt
+  userOpCount_lte: BigInt
+  userOpCount_in: [BigInt!]
+  userOpCount_not_in: [BigInt!]
+  userOpRevertCount: BigInt
+  userOpRevertCount_not: BigInt
+  userOpRevertCount_gt: BigInt
+  userOpRevertCount_lt: BigInt
+  userOpRevertCount_gte: BigInt
+  userOpRevertCount_lte: BigInt
+  userOpRevertCount_in: [BigInt!]
+  userOpRevertCount_not_in: [BigInt!]
+  userOpSuccessCount: BigInt
+  userOpSuccessCount_not: BigInt
+  userOpSuccessCount_gt: BigInt
+  userOpSuccessCount_lt: BigInt
+  userOpSuccessCount_gte: BigInt
+  userOpSuccessCount_lte: BigInt
+  userOpSuccessCount_in: [BigInt!]
+  userOpSuccessCount_not_in: [BigInt!]
+  walletCount: BigInt
+  walletCount_not: BigInt
+  walletCount_gt: BigInt
+  walletCount_lt: BigInt
+  walletCount_gte: BigInt
+  walletCount_lte: BigInt
+  walletCount_in: [BigInt!]
+  walletCount_not_in: [BigInt!]
+  """
+  Filter for the block changed event.
+  """
+  _change_block: BlockChangedFilter
+  and: [Counter_filter]
+  or: [Counter_filter]
+}
+
+enum Counter_orderBy {
+  id
+  userOpCount
+  userOpRevertCount
+  userOpSuccessCount
+  walletCount
+}
 
 type Deposited {
   id: Bytes!
@@ -284,6 +371,7 @@ scalar Int8
 
 type LightWallet {
   id: Bytes!
+  index: BigInt!
   address: Bytes!
   imageHash: Bytes
   userOpHash: Bytes!
@@ -306,6 +394,14 @@ input LightWallet_filter {
   id_not_in: [Bytes!]
   id_contains: Bytes
   id_not_contains: Bytes
+  index: BigInt
+  index_not: BigInt
+  index_gt: BigInt
+  index_lt: BigInt
+  index_gte: BigInt
+  index_lte: BigInt
+  index_in: [BigInt!]
+  index_not_in: [BigInt!]
   address: Bytes
   address_not: Bytes
   address_gt: Bytes
@@ -402,6 +498,7 @@ input LightWallet_filter {
 
 enum LightWallet_orderBy {
   id
+  index
   address
   imageHash
   userOpHash
@@ -708,6 +805,32 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [LightWallet!]!
+  counter(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Counter
+  counters(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Counter_orderBy
+    orderDirection: OrderDirection
+    where: Counter_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Counter!]!
   """
   Access to subgraph metadata
   """
@@ -1337,6 +1460,32 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [LightWallet!]!
+  counter(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Counter
+  counters(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Counter_orderBy
+    orderDirection: OrderDirection
+    where: Counter_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Counter!]!
   """
   Access to subgraph metadata
   """
@@ -1345,6 +1494,7 @@ type Subscription {
 
 type UserOperationEvent {
   id: Bytes!
+  index: BigInt!
   userOpHash: Bytes!
   sender: Bytes!
   paymaster: Bytes!
@@ -1368,6 +1518,14 @@ input UserOperationEvent_filter {
   id_not_in: [Bytes!]
   id_contains: Bytes
   id_not_contains: Bytes
+  index: BigInt
+  index_not: BigInt
+  index_gt: BigInt
+  index_lt: BigInt
+  index_gte: BigInt
+  index_lte: BigInt
+  index_in: [BigInt!]
+  index_not_in: [BigInt!]
   userOpHash: Bytes
   userOpHash_not: Bytes
   userOpHash_gt: Bytes
@@ -1462,6 +1620,7 @@ input UserOperationEvent_filter {
 
 enum UserOperationEvent_orderBy {
   id
+  index
   userOpHash
   sender
   paymaster
@@ -1476,6 +1635,7 @@ enum UserOperationEvent_orderBy {
 
 type UserOperationRevertReason {
   id: Bytes!
+  index: BigInt!
   userOpHash: Bytes!
   sender: Bytes!
   nonce: BigInt!
@@ -1496,6 +1656,14 @@ input UserOperationRevertReason_filter {
   id_not_in: [Bytes!]
   id_contains: Bytes
   id_not_contains: Bytes
+  index: BigInt
+  index_not: BigInt
+  index_gt: BigInt
+  index_lt: BigInt
+  index_gte: BigInt
+  index_lte: BigInt
+  index_in: [BigInt!]
+  index_not_in: [BigInt!]
   userOpHash: Bytes
   userOpHash_not: Bytes
   userOpHash_gt: Bytes
@@ -1570,6 +1738,7 @@ input UserOperationRevertReason_filter {
 
 enum UserOperationRevertReason_orderBy {
   id
+  index
   userOpHash
   sender
   nonce
