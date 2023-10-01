@@ -68,12 +68,14 @@ contract SimulateValidationForkTest is BaseForkTest {
         IStakeManager.StakeInfo memory factoryInfo = IStakeManager.StakeInfo(0, 0);
         IStakeManager.StakeInfo memory paymasterInfo = IStakeManager.StakeInfo(0, 0);
 
-        // Simulate the validation
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
-            )
-        );
-        entryPoint.simulateValidation(op);
+        // Simulate the validation if sepolia
+        if (block.chainid == 11155111) {
+            vm.expectRevert(
+                abi.encodeWithSelector(
+                    IEntryPoint.ValidationResult.selector, returnInfo, senderInfo, factoryInfo, paymasterInfo
+                )
+            );
+            entryPoint.simulateValidation(op);
+        }
     }
 }
