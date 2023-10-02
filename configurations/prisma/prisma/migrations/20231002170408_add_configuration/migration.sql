@@ -2,7 +2,6 @@
   Warnings:
 
   - You are about to drop the column `hash` on the `Wallet` table. All the data in the column will be lost.
-  - A unique constraint covering the columns `[address]` on the table `Wallet` will be added. If there are existing duplicate values, this will fail.
 
 */
 -- AlterTable
@@ -43,9 +42,6 @@ CREATE UNIQUE INDEX "Owner_address_key" ON "Owner"("address");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Owner_address_weight_key" ON "Owner"("address", "weight");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Wallet_address_key" ON "Wallet"("address");
 
 -- AddForeignKey
 ALTER TABLE "Wallet" ADD CONSTRAINT "Wallet_address_fkey" FOREIGN KEY ("address") REFERENCES "Configuration"("address") ON DELETE RESTRICT ON UPDATE CASCADE;

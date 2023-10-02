@@ -85,7 +85,7 @@ model VerificationRequest {
 
 model Wallet {
   id             String   @id @default(cuid())
-  address        String   @unique
+  address        String
   chainId        BigInt
   factoryAddress String
   testnet        Boolean  @default(false)
