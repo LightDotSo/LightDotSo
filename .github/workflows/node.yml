@@ -25,6 +25,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
       - name: Node Build
         run: |
           pnpm turbo run build
