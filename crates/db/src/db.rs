@@ -63,7 +63,6 @@ pub async fn create_wallet(
     address: ethers::types::H160,
     chain_id: i64,
     factory_address: ethers::types::H160,
-    hash: String,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
     info!("Creating wallet");
@@ -74,7 +73,6 @@ pub async fn create_wallet(
             to_checksum(&address, None),
             chain_id,
             to_checksum(&factory_address, None),
-            hash,
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
         )
         .exec()
@@ -272,7 +270,6 @@ mod tests {
                     format!("{:?}", Address::zero()),
                     3_i64,
                     format!("{:?}", Address::zero()),
-                    "".to_string(),
                     vec![wallet::testnet::set(false)],
                 ),
                 wallet::Data {
@@ -280,7 +277,6 @@ mod tests {
                     address: format!("{:?}", Address::zero()),
                     chain_id: 3_i64,
                     factory_address: format!("{:?}", Address::zero()),
-                    hash: "".to_string(),
                     testnet: false,
                     created_at: DateTime::<FixedOffset>::from_utc(
                         NaiveDateTime::from_timestamp_opt(0_i64, 0).unwrap(),
@@ -290,26 +286,19 @@ mod tests {
                         NaiveDateTime::from_timestamp_opt(0_i64, 0).unwrap(),
                         FixedOffset::east_opt(0).unwrap(),
                     ),
+                    configuration: None,
                     users: Some(vec![]),
                 },
             )
             .await;
 
         // Create a wallet
-        let wallet = create_wallet(
-            client,
-            Address::zero(),
-            3_i64,
-            Address::zero(),
-            "".to_string(),
-            Some(false),
-        )
-        .await;
+        let wallet =
+            create_wallet(client, Address::zero(), 3_i64, Address::zero(), Some(false)).await;
 
         if let Ok(wallet) = wallet {
             assert_eq!(wallet.address, format!("{:?}", Address::zero()));
             assert_eq!(wallet.chain_id, 3_i64,);
-            assert_eq!(wallet.hash, "".to_string());
             assert!(!wallet.testnet);
             assert_eq!(wallet.created_at.timestamp(), 0);
             assert_eq!(wallet.updated_at.timestamp(), 0);
