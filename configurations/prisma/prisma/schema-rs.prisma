@@ -50,6 +50,7 @@ model User {
   accounts Account[]
   sessions Session[]
   wallets  Wallet[]
+  owners   Owner[]
 }
 
 model VerificationRequest {
@@ -68,14 +69,43 @@ model Wallet {
   address        String
   chainId        BigInt
   factoryAddress String
-  hash           String
   testnet        Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  users User[]
+  configuration Configuration? @relation(fields: [address], references: [address])
+  users         User[]
 
   @@unique([address, chainId])
+}
+
+model Configuration {
+  id        String @id @default(cuid())
+  address   String @unique
+  imageHash String
+  threshold BigInt
+  nonce     BigInt
+
+  owners  Owner[]
+  wallets Wallet[]
+
+  @@unique([imageHash, nonce])
+}
+
+model Owner {
+  id        String   @id @default(cuid())
+  address   String   @unique
+  weight    BigInt
+  imageHash String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  configurationId String
+
+  configuration Configuration @relation(fields: [configurationId], references: [id])
+  user          User?         @relation(fields: [address], references: [address])
+
+  @@unique([address, weight])
 }
 
 /// ethers-rs Log struct converted to Prisma model.

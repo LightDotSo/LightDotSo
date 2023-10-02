@@ -98,7 +98,6 @@ jobs:
         working-directory: configurations/prisma
         run: |
           pnpm run build
-          pnpm run db:migrate:dev
           pnpm run db:migrate:deploy
       - name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v4
