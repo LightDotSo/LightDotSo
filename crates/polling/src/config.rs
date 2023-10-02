@@ -40,7 +40,8 @@ impl PollingArgs {
 
         // Spawn a task for each chain id.
         for chain_id in chain_ids {
-            let handle = tokio::spawn(run_polling(self.clone(), chain_id));
+            let handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
+            let handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
             handles.push(handle);
         }
 
@@ -56,7 +57,7 @@ impl PollingArgs {
 }
 
 // Run the polling for a specific chain id.
-pub async fn run_polling(args: PollingArgs, chain_id: u64) {
-    let polling = Polling::new(&args, chain_id).await;
+pub async fn run_polling(args: PollingArgs, chain_id: u64, live: bool) {
+    let polling = Polling::new(&args, chain_id, live).await;
     polling.run().await;
 }

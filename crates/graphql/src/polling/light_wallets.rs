@@ -92,6 +92,7 @@ pub struct BigInt(pub String);
 
 #[derive(cynic::Scalar, Debug, Clone)]
 pub struct Bytes(pub String);
+
 pub fn build_light_wallets_query(
     vars: GetLightWalletsQueryVariables,
 ) -> cynic::Operation<GetLightWalletsQuery, GetLightWalletsQueryVariables> {
