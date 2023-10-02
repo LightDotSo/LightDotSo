@@ -30,7 +30,7 @@ use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::routes::{check, health, wallet};
+use crate::routes::{check, configuration, health, wallet};
 
 #[derive(OpenApi)]
 #[openapi(info(
@@ -45,6 +45,8 @@ use crate::routes::{check, health, wallet};
     paths(
         check::handler,
         health::handler,
+        configuration::v1_get_handler,
+        wallet::v1_get_handler,
         wallet::v1_list_handler
     ),
     tags(
