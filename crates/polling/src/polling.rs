@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::config::PollingArgs;
-use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
+use backon::{BlockingRetryable, ExponentialBuilder};
 use eyre::Result;
 use lightdotso_db::db::create_wallet;
 use lightdotso_graphql::{
