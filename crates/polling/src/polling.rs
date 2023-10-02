@@ -126,28 +126,27 @@ async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
             min_block = m.block.number;
         }
 
+        // Get the wallets.
         let wallets = d.light_wallets;
 
+        // If the wallets is not empty, loop through the wallets.
         if !wallets.is_empty() {
             for (index, wallet) in wallets.iter().enumerate() {
                 info!("Polling run, chain_id: {} wallet: {:?}", chain_id, wallet);
 
                 // Create to db if the wallet has a image_hash
                 if let Some(hash) = &wallet.image_hash {
+                    // Create the db client
+                    let db = Arc::new(create_client().await.unwrap());
+
                     if !hash.0.is_empty() {
-                        // Create the db client
-                        let db = Arc::new(create_client().await.unwrap());
-
-                        // Parse the image hash to a string.
-                        let image_hash: String = hash.0.parse().unwrap();
-
                         // Create the wallet in the db.
-                        let _ = db_create_wallet(db, wallet, &image_hash, chain_id).await;
+                        let _ = db_create_wallet(db, wallet, chain_id).await;
                     }
                 }
 
+                // Return the minimum block number for the last wallet.
                 if index == wallets.len() - 1 {
-                    // Return the minimum block number for the last wallet.
                     return Ok(wallet.block_number.0.parse().unwrap_or(min_block));
                 }
             }
@@ -160,7 +159,6 @@ async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
 pub async fn db_create_wallet(
     db_client: Arc<PrismaClient>,
     wallet: &LightWallet,
-    hash: &str,
     chain_id: u64,
 ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
     {
@@ -170,7 +168,6 @@ pub async fn db_create_wallet(
                 wallet.address.0.parse().unwrap(),
                 chain_id as i64,
                 wallet.factory.0.parse().unwrap(),
-                hash.to_string(),
                 // wallet.clone().image_hash.unwrap().0.parse().unwrap(),
                 Some(TESTNET_CHAIN_IDS.contains(&chain_id)),
             )
