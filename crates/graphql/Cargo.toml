@@ -12,14 +12,14 @@
   cynic = { version = "3.2.2", features = ["http-reqwest-blocking"] }
   cynic-codegen = { version = "3.2.2" }
   eyre = { workspace = true }
-  insta = "1.17"
+  insta = "1.33"
   lazy_static = { workspace = true }
   lightdotso-tracing = { workspace = true }
   reqwest = { version = "0.11", features = ["json", "blocking"] }
   tokio = { workspace = true }
 
 [dev-dependencies]
-  insta = "1.17"
+  insta = "1.33"
 
 [build-dependencies]
   cynic-codegen = { version = "3.2.2" }

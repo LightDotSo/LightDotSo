@@ -68,10 +68,10 @@
   ], default-features = false }
   axum = { version = "0.6.16", features = ["ws"] }
   backon = "0.4.1"
-  base64 = "0.21.3"
+  base64 = "0.21.4"
   byteorder = "1.4.3"
-  chrono = "0.4.26"
-  clap = "4.3.12"
+  chrono = "0.4.31"
+  clap = "4.4.6"
   dotenvy = "0.15"
   enumset = "1.1.2"
   ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
@@ -128,13 +128,13 @@
   opentelemetry-prometheus = "0.13.0"
   opentelemetry_sdk = { version = "0.20.0", features = ["metrics"] }
   once_cell = "1.8.0"
-  prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+  prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.10", features = [
     "migrations",
     "mocking",
     "sqlite",
     "sqlite-create-many",
   ] }
-  prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.8", features = [
+  prisma-client-rust-cli = { git = "https://github.com/Brendonovich/prisma-client-rust", tag = "0.6.10", features = [
     "migrations",
     "mocking",
     "sqlite",
@@ -143,7 +143,7 @@
   prometheus = "0.13.3"
   rand = "0.8.5"
   rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
-  redb = "1.0.5"
+  redb = "1.2.0"
   reqwest = { version = "0.11.20", features = ["blocking", "json"] }
   revm = { version = "3", default-features = false, features = [
     "std",
@@ -157,12 +157,12 @@
   rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-sim" }
   rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-types" }
   rundler-utils = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-utils" }
-  serde = "1.0.183"
-  serde_json = "1.0.104"
+  serde = "1.0.188"
+  serde_json = "1.0.107"
   spki = "0.7.2"
   tauri = { version = "1.4", features = ["shell-open"] }
   tauri-build = { version = "1.4", features = [] }
-  thiserror = "1.0.40"
+  thiserror = "1.0.49"
   tokio = { version = "1", features = ["full"] }
   tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
   tower = { version = "0.4.12" }
