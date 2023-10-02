@@ -16,6 +16,7 @@
 use crate::config::PollingArgs;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
+use chrono::Timelike;
 use eyre::Result;
 use lightdotso_constants::TESTNET_CHAIN_IDS;
 use lightdotso_db::{
@@ -59,7 +60,12 @@ impl Polling {
             match result {
                 Ok(block) => {
                     let now = chrono::Utc::now();
-                    info!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+                    trace!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+
+                    // Info if the minute is 0.
+                    if now.minute() == 0 {
+                        info!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+                    }
 
                     // On success, set the min block to the returned block.
                     min_block = block;
@@ -82,6 +88,7 @@ impl Polling {
         PollingMetrics::set_attempt(self.chain_id);
 
         let chain_id = self.chain_id;
+        let index = 0;
 
         // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread
         // used by the underlying reqwest client. (blocking)
@@ -92,7 +99,7 @@ impl Polling {
                         chain_id,
                         GetLightWalletsQueryVariables {
                             min_block: BigInt(min_block.to_string()),
-                            min_index: BigInt("0".to_string()),
+                            min_index: BigInt(index.to_string()),
                         },
                     )
                 }
@@ -107,21 +114,16 @@ impl Polling {
 
         // If can parse the data, loop through the wallets.
         if let Some(d) = data {
-            let meta = d._meta;
-
-            // Set the min block to the returned block.
-            if let Some(m) = meta {
-                min_block = m.block.number;
-            }
-
             // Get the wallets.
             let wallets = d.light_wallets;
+            info!(
+                "Polling run, chain_id: {} min_block: {} index: {} wallets: {:?}",
+                self.chain_id, min_block, index, wallets
+            );
 
             // If the wallets is not empty, loop through the wallets.
             if !wallets.is_empty() {
                 for (index, wallet) in wallets.iter().enumerate() {
-                    trace!("Polling run, chain_id: {} wallet: {:?}", self.chain_id, wallet);
-
                     // Create to db if the wallet has a image_hash
                     if let Some(hash) = &wallet.image_hash {
                         if !hash.0.is_empty() {
@@ -135,6 +137,12 @@ impl Polling {
                         return Ok(wallet.block_number.0.parse().unwrap_or(min_block));
                     }
                 }
+            }
+
+            // Set the min block to the returned block.
+            let meta = d._meta;
+            if let Some(m) = meta {
+                min_block = m.block.number;
             }
         }
 
