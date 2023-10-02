@@ -2,8 +2,8 @@
 source: crates/graphql/src/polling/light_wallets.rs
 expression: query.query
 ---
-query GetProtocolQuery($minBlock: BigInt!) {
-  lightWallets(where: {blockNumber_gte: $minBlock, }) {
+query GetLightWalletsQuery($minBlock: BigInt!, $minIndex: BigInt!) {
+  lightWallets(where: {blockNumber_gte: $minBlock, index_gt: $minIndex, }, orderBy: index) {
     id
     index
     address
