@@ -23,6 +23,7 @@ use prisma_client_rust::{
     prisma_errors::query_engine::{RecordNotFound, UniqueKeyViolation},
     QueryError,
 };
+use rustc_hex::FromHexError;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L18
 // type Database = Extension<Arc<PrismaClient>>;
@@ -33,7 +34,14 @@ pub type AppJsonResult<T> = AppResult<Json<T>>;
 pub enum AppError {
     PrismaError(QueryError),
     RedisError(RedisError),
+    FromHexError(FromHexError),
     NotFound,
+}
+
+impl From<FromHexError> for AppError {
+    fn from(error: FromHexError) -> Self {
+        AppError::FromHexError(error)
+    }
 }
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L123
@@ -61,6 +69,7 @@ impl IntoResponse for AppError {
             }
             AppError::PrismaError(_) => StatusCode::BAD_REQUEST,
             AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            AppError::FromHexError(_) => StatusCode::BAD_REQUEST,
             AppError::NotFound => StatusCode::NOT_FOUND,
         };
 

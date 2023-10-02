@@ -5891,6 +5891,7 @@ dependencies = [
  "lightdotso-rpc",
  "lightdotso-tracing",
  "prisma-client-rust",
+ "rustc-hex",
  "serde",
  "serde_json",
  "tokio",

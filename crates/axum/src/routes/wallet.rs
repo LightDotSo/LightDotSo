@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{result::AppJsonResult, state::AppState};
+use crate::{
+    result::{AppError, AppJsonResult},
+    state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -83,7 +86,7 @@ async fn v1_get_handler(
     // Get the get query.
     let Query(query) = get;
 
-    let parsed_query_address: H160 = query.address.parse().unwrap();
+    let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the wallets from the database.
@@ -93,10 +96,13 @@ async fn v1_get_handler(
         .wallet()
         .find_first(vec![wallet::address::equals(checksum_address)])
         .exec()
-        .await;
+        .await?;
+
+    // If the wallet is not found, return a 404.
+    let wallet = wallet.ok_or(AppError::NotFound)?;
 
     // Change the wallet to the format that the API expects.
-    let wallet: Wallet = wallet.unwrap().unwrap().into();
+    let wallet: Wallet = wallet.into();
 
     Ok(Json::from(wallet))
 }
