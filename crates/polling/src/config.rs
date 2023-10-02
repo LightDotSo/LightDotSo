@@ -20,7 +20,16 @@ use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
 use lightdotso_tracing::tracing::{error, info};
 
 #[derive(Debug, Clone, Parser, Default)]
-pub struct PollingArgs {}
+pub struct PollingArgs {
+    /// The flag of whether polling is live.
+    #[arg(long, short, default_value_t = true)]
+    #[clap(long, env = "POLLING_LIVE")]
+    pub live: bool,
+    /// The polling mode to connect to.
+    #[arg(long, short, default_value_t = String::from(""))]
+    #[clap(long, env = "POLLING_MODE")]
+    pub mode: String,
+}
 
 impl PollingArgs {
     #[tokio::main]
@@ -40,11 +49,15 @@ impl PollingArgs {
 
         // Spawn a task for each chain id.
         for chain_id in chain_ids {
-            let live_handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
-            let past_handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
+            if self.live || self.mode == "all" {
+                let live_handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
+                handles.push(live_handle);
+            }
 
-            handles.push(live_handle);
-            handles.push(past_handle);
+            if !self.live || self.mode == "all" {
+                let past_handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
+                handles.push(past_handle);
+            }
         }
 
         // Wait for all tasks to finish.
@@ -60,6 +73,19 @@ impl PollingArgs {
 
 // Run the polling for a specific chain id.
 pub async fn run_polling(args: PollingArgs, chain_id: u64, live: bool) {
-    let polling = Polling::new(&args, chain_id, live).await;
-    polling.run().await;
+    match live {
+        true => {
+            let polling = Polling::new(&args, chain_id, live).await;
+            polling.run().await;
+        }
+        false => {
+            loop {
+                let polling = Polling::new(&args, chain_id, live).await;
+                polling.run().await;
+
+                // Sleep for 1 hour
+                tokio::time::sleep(tokio::time::Duration::from_secs(60 * 60)).await;
+            }
+        }
+    }
 }
