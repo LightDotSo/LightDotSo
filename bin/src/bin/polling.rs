@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use clap::Parser;
+use eyre::Result;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_polling::config::PollingArgs;
@@ -21,6 +22,18 @@ use lightdotso_tracing::{
     init_metrics,
     tracing::{error, info},
 };
+
+pub async fn start_polling() -> Result<()> {
+    std::thread::spawn(|| {
+        futures::executor::block_on(async {
+            let args = PollingArgs::parse();
+            let _ = args.run().await;
+        })
+    })
+    .join()
+    .expect("Thread panicked");
+    Ok(())
+}
 
 #[tokio::main]
 pub async fn main() {
@@ -32,11 +45,8 @@ pub async fn main() {
 
     info!("Starting server at {}", SHORT_VERSION);
 
-    // Parse the command line arguments
-    let args = PollingArgs::parse();
-
     // Construct the futures
-    let polling_future = args.run();
+    let polling_future = start_polling();
     let internal_future = start_internal_server();
 
     // Run the futures concurrently

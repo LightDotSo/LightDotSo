@@ -15,7 +15,6 @@
 
 use crate::{
     config::IndexerArgs,
-    constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
     namespace::{ERC1155, ERC20, ERC721, ETH, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
 };
 use autometrics::autometrics;
@@ -33,6 +32,9 @@ use ethers::{
 };
 use ethers_providers::StreamExt;
 use eyre::eyre;
+use lightdotso_constants::{
+    FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS,
+};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
@@ -276,8 +278,8 @@ impl Indexer {
                     H256::from_str(
                         "0x307ed6bd941ee9fc80f369c94af5fa11e25bab5102a6140191756c5474a30bfa",
                     )
-                    .unwrap()
-                && log.topics.len() == 2
+                    .unwrap() &&
+                log.topics.len() == 2
             {
                 // Address for from
                 entry.push(log.address);
@@ -321,8 +323,8 @@ impl Indexer {
                     H256::from_str(
                         "0xc3d58168c5ae7397731d063d5bbf3d657854427343f4c083240f7aacaa2d0f62",
                     )
-                    .unwrap()
-                && log.topics.len() == 5
+                    .unwrap() &&
+                log.topics.len() == 5
             {
                 // Address for from
                 entry.push(log.topics[2].into());
@@ -338,8 +340,8 @@ impl Indexer {
                     H256::from_str(
                         "0x4a39dc06d4c0dbc64b70af90fd698a233a518aa5d07e595d983b8c0526c8f7fb",
                     )
-                    .unwrap()
-                && log.topics.len() == 5
+                    .unwrap() &&
+                log.topics.len() == 5
             {
                 // Address for from
                 entry.push(log.topics[2].into());
@@ -440,9 +442,9 @@ impl Indexer {
                 trace!(?wallet_addresses);
 
                 // Check if the hashes length and check_res true length are the same
-                if wallet_tx_hashes.len() != check_res.iter().filter(|&&x| x).count()
-                    || wallet_addresses.len() != check_res.iter().filter(|&&x| x).count()
-                    || wallet_tx_hashes.len() != wallet_addresses.len()
+                if wallet_tx_hashes.len() != check_res.iter().filter(|&&x| x).count() ||
+                    wallet_addresses.len() != check_res.iter().filter(|&&x| x).count() ||
+                    wallet_tx_hashes.len() != wallet_addresses.len()
                 {
                     return Err(eyre!(
                         "Length mismatch: hashes and check_res do not have the same length"

@@ -8,6 +8,7 @@
     "crates/autometrics",
     "crates/axum",
     "crates/bundler",
+    "crates/constants",
     "crates/consumer",
     "crates/core",
     "crates/contracts",
@@ -94,6 +95,7 @@
   lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
   lightdotso-consumer = { path = "./crates/consumer" }
+  lightdotso-constants = { path = "./crates/constants" }
   lightdotso-contracts = { path = "./crates/contracts" }
   lightdotso-discord = { path = "./crates/discord" }
   lightdotso-db = { path = "./crates/db" }
@@ -142,7 +144,7 @@
   rand = "0.8.5"
   rdkafka = { version = "0.33.2", features = ["sasl", "ssl"] }
   redb = "1.0.5"
-  reqwest = "0.11.20"
+  reqwest = { version = "0.11.20", features = ["blocking", "json"] }
   revm = { version = "3", default-features = false, features = [
     "std",
     "serde",

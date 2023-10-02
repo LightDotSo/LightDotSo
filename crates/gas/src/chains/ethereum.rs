@@ -54,10 +54,10 @@ pub async fn ethereum_gas_estimation(chain_id: u64) -> Result<GasEstimationParam
     let response = reqwest::get(url).await?.json::<ApiResponse>().await?;
 
     // Check if any of the values is 0
-    if response.data.slow == 0
-        || response.data.standard == 0
-        || response.data.fast == 0
-        || response.data.rapid == 0
+    if response.data.slow == 0 ||
+        response.data.standard == 0 ||
+        response.data.fast == 0 ||
+        response.data.rapid == 0
     {
         return Err(eyre!("API returned a value of 0"));
     }

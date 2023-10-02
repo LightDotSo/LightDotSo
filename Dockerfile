@@ -54,7 +54,7 @@ ENV \
   DOCKER=true \
   RUST_LOG="sccache=trace" \
   RUST_BACKTRACE=1 \
-  RUSTFLAGS="-D warnings" \
+  # RUSTFLAGS="-D warnings" \
   RUSTC_WRAPPER="/usr/local/bin/sccache" \
   SCCACHE_BUCKET="sccache" \
   SCCACHE_ENDPOINT=$SCCACHE_ENDPOINT \

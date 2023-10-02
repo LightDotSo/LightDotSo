@@ -31,7 +31,7 @@ impl PollingArgs {
 
         let polling = Polling::new(self).await;
 
-        polling.run().await;
+        polling.run();
 
         Ok(())
     }
