@@ -99,15 +99,15 @@ async fn get_client_result(uri: String, client: Client, body: Body) -> Option<Re
                         // If the error code is from -32500 to -32507 or -32521 return response
                         // Invalid request
                         // From: https://eips.ethereum.org/EIPS/eip-4337
-                        if code.as_i64() == Some(-32500)
-                            || code.as_i64() == Some(-32501)
-                            || code.as_i64() == Some(-32502)
-                            || code.as_i64() == Some(-32503)
-                            || code.as_i64() == Some(-32504)
-                            || code.as_i64() == Some(-32505)
-                            || code.as_i64() == Some(-32506)
-                            || code.as_i64() == Some(-32507)
-                            || code.as_i64() == Some(-32521)
+                        if code.as_i64() == Some(-32500) ||
+                            code.as_i64() == Some(-32501) ||
+                            code.as_i64() == Some(-32502) ||
+                            code.as_i64() == Some(-32503) ||
+                            code.as_i64() == Some(-32504) ||
+                            code.as_i64() == Some(-32505) ||
+                            code.as_i64() == Some(-32506) ||
+                            code.as_i64() == Some(-32507) ||
+                            code.as_i64() == Some(-32521)
                         {
                             warn!("Successfully returning w/ invalid request response: {:?}", body);
                             return Some(
@@ -262,11 +262,11 @@ pub async fn rpc_proxy_handler(
         info!("body: {}", full_body_string);
 
         match method.as_str() {
-            "debug_traceBlock"
-            | "debug_traceBlockByHash"
-            | "debug_traceBlockByNumber"
-            | "debug_traceCall"
-            | "debug_traceTransaction" => {
+            "debug_traceBlock" |
+            "debug_traceBlockByHash" |
+            "debug_traceBlockByNumber" |
+            "debug_traceCall" |
+            "debug_traceTransaction" => {
                 if !debug {
                     return Response::builder()
                         .status(404)
@@ -335,12 +335,12 @@ pub async fn rpc_proxy_handler(
                     return resp;
                 };
             }
-            "eth_sendUserOperation"
-            | "eth_estimateUserOperationGas"
-            | "eth_supportedEntryPoints"
-            | "eth_getUserOperationByHash"
-            | "eth_getUserOperationReceipt"
-            | "rundler_maxPriorityFeePerGas" => {
+            "eth_sendUserOperation" |
+            "eth_estimateUserOperationGas" |
+            "eth_supportedEntryPoints" |
+            "eth_getUserOperationByHash" |
+            "eth_getUserOperationReceipt" |
+            "rundler_maxPriorityFeePerGas" => {
                 // Deserialize w/ serde_json
                 let body_json_result =
                     serde_json::from_slice::<JSONRPCRequest<Vec<Value>>>(&full_body_bytes);
@@ -462,14 +462,14 @@ pub async fn rpc_proxy_handler(
                         .unwrap();
                 }
             }
-            "simulator_simulateExecution"
-            | "simulator_simulateExecutionBundle"
-            | "simulator_simulateAssetChanges"
-            | "simulator_simulateAssetChangesBundle"
-            | "simulator_simulateUserOperation"
-            | "simulator_simulateUserOperationBundle"
-            | "simulator_simulateUserOperationAssetChanges"
-            | "simulator_simulateUserOperationAssetChangesBundle" => {
+            "simulator_simulateExecution" |
+            "simulator_simulateExecutionBundle" |
+            "simulator_simulateAssetChanges" |
+            "simulator_simulateAssetChangesBundle" |
+            "simulator_simulateUserOperation" |
+            "simulator_simulateUserOperationBundle" |
+            "simulator_simulateUserOperationAssetChanges" |
+            "simulator_simulateUserOperationAssetChangesBundle" => {
                 let result = get_client_result(
                     SIMULATOR_RPC_URL.to_string(),
                     client.clone(),

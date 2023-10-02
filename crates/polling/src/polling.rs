@@ -14,15 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::config::PollingArgs;
-use backon::BlockingRetryable;
-use backon::ExponentialBuilder;
+use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use eyre::Result;
-use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
-use lightdotso_graphql::polling::light_wallets::run_light_wallets_query;
-use lightdotso_graphql::polling::light_wallets::BigInt;
-use lightdotso_graphql::polling::light_wallets::GetLightWalletsQueryVariables;
-use lightdotso_tracing::tracing::error;
-use lightdotso_tracing::tracing::info;
+use lightdotso_db::db::create_wallet;
+use lightdotso_graphql::{
+    constants::THE_GRAPH_HOSTED_SERVICE_URLS,
+    polling::light_wallets::{run_light_wallets_query, BigInt, GetLightWalletsQueryVariables},
+};
+use lightdotso_tracing::tracing::{error, info};
 use std::time::Duration;
 
 #[derive(Clone)]
@@ -42,7 +41,8 @@ impl Polling {
 
         let mut handles = Vec::new();
 
-        // Get the chain ids from the constants which is the keys of the THE_GRAPH_HOSTED_SERVICE_URLS map.
+        // Get the chain ids from the constants which is the keys of the
+        // THE_GRAPH_HOSTED_SERVICE_URLS map.
         let chain_ids: Vec<u64> = THE_GRAPH_HOSTED_SERVICE_URLS.keys().cloned().collect();
 
         // Spawn a task for each chain id.
@@ -89,7 +89,8 @@ async fn run_polling_task(chain_id: u64) {
 }
 
 async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
-    // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread used by the underlying reqwest client. (blocking)
+    // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread used
+    // by the underlying reqwest client. (blocking)
     let light_wallet = tokio::task::spawn_blocking(move || {
         {
             || {
@@ -122,6 +123,23 @@ async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
         if !wallets.is_empty() {
             for (index, wallet) in wallets.iter().enumerate() {
                 info!("Polling run, chain_id: {} wallet: {:?}", chain_id, wallet);
+
+                // Write the wallet to the database.
+                // {
+                //     || {
+                //         create_wallet(
+                //             db_client.clone(),
+                //             wallet.address,
+                //             chain_id as i64,
+                //             wallet.factory,
+                //             wallet.image_hash,
+                //             Some(TESTNET_CHAIN_IDS.contains(chain_id)),
+                //         )
+                //     }
+                // }
+                // .retry(&ExponentialBuilder::default())
+                // .await;
+
                 if index == wallets.len() - 1 {
                     // Return the minimum block number for the last wallet.
                     return Ok(wallet.block_number.0.parse().unwrap_or(min_block));
