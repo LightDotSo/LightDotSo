@@ -20,14 +20,15 @@ use eyre::Result;
 mod schema {}
 
 #[derive(cynic::QueryVariables, Debug)]
-pub struct GetProtocolQueryVariables {
+pub struct GetLightWalletsQueryVariables {
     pub min_block: BigInt,
+    pub min_index: BigInt,
 }
 
 #[derive(cynic::QueryFragment, Debug)]
-#[cynic(graphql_type = "Query", variables = "GetProtocolQueryVariables")]
-pub struct GetProtocolQuery {
-    #[arguments(where: { blockNumber_gte: $min_block })]
+#[cynic(graphql_type = "Query", variables = "GetLightWalletsQueryVariables")]
+pub struct GetLightWalletsQuery {
+    #[arguments(where: { blockNumber_gte: $min_block, index_gt: $min_index }, orderBy: "index")]
     pub light_wallets: Vec<LightWallet>,
     pub _meta: Option<Meta>,
 }
@@ -59,27 +60,53 @@ pub struct LightWallet {
     pub transaction_hash: Bytes,
 }
 
+#[derive(cynic::Enum, Clone, Copy, Debug)]
+#[cynic(graphql_type = "LightWallet_orderBy")]
+pub enum LightWalletOrderBy {
+    #[cynic(rename = "id")]
+    Id,
+    #[cynic(rename = "index")]
+    Index,
+    #[cynic(rename = "address")]
+    Address,
+    #[cynic(rename = "imageHash")]
+    ImageHash,
+    #[cynic(rename = "userOpHash")]
+    UserOpHash,
+    #[cynic(rename = "sender")]
+    Sender,
+    #[cynic(rename = "factory")]
+    Factory,
+    #[cynic(rename = "paymaster")]
+    Paymaster,
+    #[cynic(rename = "blockNumber")]
+    BlockNumber,
+    #[cynic(rename = "blockTimestamp")]
+    BlockTimestamp,
+    #[cynic(rename = "transactionHash")]
+    TransactionHash,
+}
+
 #[derive(cynic::Scalar, Debug, Clone)]
 pub struct BigInt(pub String);
 
 #[derive(cynic::Scalar, Debug, Clone)]
 pub struct Bytes(pub String);
-
-pub fn build_query(
-    min_block: &str,
-) -> cynic::Operation<GetProtocolQuery, GetProtocolQueryVariables> {
+pub fn build_light_wallets_query(
+    vars: GetLightWalletsQueryVariables,
+) -> cynic::Operation<GetLightWalletsQuery, GetLightWalletsQueryVariables> {
     use cynic::QueryBuilder;
 
-    GetProtocolQuery::build(GetProtocolQueryVariables { min_block: BigInt(min_block.to_string()) })
+    GetLightWalletsQuery::build(vars)
 }
 
-pub fn run_query(
+pub fn run_light_wallets_query(
     chain_id: u64,
-    min_block: &str,
-) -> Result<cynic::GraphQlResponse<GetProtocolQuery>> {
+    vars: GetLightWalletsQueryVariables,
+) -> Result<cynic::GraphQlResponse<GetLightWalletsQuery>> {
     use cynic::http::ReqwestBlockingExt;
 
-    let query = build_query(min_block);
+    let query = build_light_wallets_query(vars);
 
     Ok(reqwest::blocking::Client::new().post(get_graphql_url(chain_id)?).run_graphql(query)?)
 }
@@ -94,14 +121,24 @@ mod test {
         // a place to copy and paste the actual GQL we're using for running elsewhere,
         // and also helps ensure we don't change queries by mistake
 
-        let query = build_query("0");
+        let query = build_light_wallets_query(GetLightWalletsQueryVariables {
+            min_block: BigInt("0".to_string()),
+            min_index: BigInt("0".to_string()),
+        });
 
         insta::assert_snapshot!(query.query);
     }
 
     #[test]
     fn test_running_query() {
-        let result = run_query(1, "0").unwrap();
+        let result = run_light_wallets_query(
+            1,
+            GetLightWalletsQueryVariables {
+                min_block: BigInt("0".to_string()),
+                min_index: BigInt("0".to_string()),
+            },
+        )
+        .unwrap();
         if result.errors.is_some() {
             assert_eq!(result.errors.unwrap().len(), 0);
         }

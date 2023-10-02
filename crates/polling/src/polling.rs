@@ -18,7 +18,9 @@ use backon::BlockingRetryable;
 use backon::ExponentialBuilder;
 use eyre::Result;
 use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
-use lightdotso_graphql::polling::light_wallets::run_query;
+use lightdotso_graphql::polling::light_wallets::run_light_wallets_query;
+use lightdotso_graphql::polling::light_wallets::BigInt;
+use lightdotso_graphql::polling::light_wallets::GetLightWalletsQueryVariables;
 use lightdotso_tracing::tracing::error;
 use lightdotso_tracing::tracing::info;
 use std::time::Duration;
@@ -89,9 +91,19 @@ async fn run_polling_task(chain_id: u64) {
 async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
     // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread used by the underlying reqwest client. (blocking)
     let light_wallet = tokio::task::spawn_blocking(move || {
-        { || run_query(chain_id, &min_block.to_string()) }
-            .retry(&ExponentialBuilder::default())
-            .call()
+        {
+            || {
+                run_light_wallets_query(
+                    chain_id,
+                    GetLightWalletsQueryVariables {
+                        min_block: BigInt(min_block.to_string()),
+                        min_index: BigInt("0".to_string()),
+                    },
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .call()
     })
     .await?;
 
@@ -106,9 +118,14 @@ async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
         }
 
         let wallets = d.light_wallets;
+
         if !wallets.is_empty() {
-            for wallet in wallets {
+            for (index, wallet) in wallets.iter().enumerate() {
                 info!("Polling run, chain_id: {} wallet: {:?}", chain_id, wallet);
+                if index == wallets.len() - 1 {
+                    // Return the minimum block number for the last wallet.
+                    return Ok(wallet.block_number.0.parse().unwrap_or(min_block));
+                }
             }
         }
     }
