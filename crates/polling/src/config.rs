@@ -16,12 +16,14 @@
 use crate::polling::Polling;
 use clap::Parser;
 use eyre::Result;
-use lightdotso_tracing::tracing::info;
+use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
+use lightdotso_tracing::tracing::{error, info};
 
 #[derive(Debug, Clone, Parser, Default)]
 pub struct PollingArgs {}
 
 impl PollingArgs {
+    #[tokio::main]
     pub async fn run(&self) -> Result<()> {
         // Add info
         info!("PollingArgs run, starting...");
@@ -29,10 +31,32 @@ impl PollingArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        let polling = Polling::new(self).await;
+        // Get the chain ids from the constants which is the keys of the
+        // THE_GRAPH_HOSTED_SERVICE_URLS map.
+        let chain_ids: Vec<u64> = THE_GRAPH_HOSTED_SERVICE_URLS.keys().cloned().collect();
 
-        polling.run();
+        // Create a vector to store the handles to the spawned tasks.
+        let mut handles = Vec::new();
+
+        // Spawn a task for each chain id.
+        for chain_id in chain_ids {
+            let handle = tokio::spawn(run_polling(self.clone(), chain_id));
+            handles.push(handle);
+        }
+
+        // Wait for all tasks to finish.
+        for handle in handles {
+            if let Err(e) = handle.await {
+                error!("A task panicked: {:?}", e);
+            }
+        }
 
         Ok(())
     }
+}
+
+// Run the polling for a specific chain id.
+pub async fn run_polling(args: PollingArgs, chain_id: u64) {
+    let polling = Polling::new(&args, chain_id).await;
+    polling.run().await;
 }
