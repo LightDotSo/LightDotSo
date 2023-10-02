@@ -45,7 +45,7 @@ use crate::routes::{check, health, wallet};
     paths(
         check::handler,
         health::handler,
-        wallet::handler
+        wallet::v1_list_handler
     ),
     tags(
         (name = "check", description = "Check API"),

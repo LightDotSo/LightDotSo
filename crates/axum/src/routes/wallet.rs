@@ -20,9 +20,16 @@ use axum::{
     routing::get,
     Json, Router,
 };
+use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::wallet;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct GetQuery {
+    pub address: String,
+}
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
@@ -35,21 +42,66 @@ pub struct PaginationQuery {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Wallet {
     id: String,
+    address: String,
+    factory_address: String,
 }
 
 // Implement From<wallet::Data> for Wallet.
 impl From<wallet::Data> for Wallet {
     fn from(wallet: wallet::Data) -> Self {
-        Self { id: wallet.id.to_string() }
+        Self {
+            id: wallet.id.to_string(),
+            address: wallet.address.to_string(),
+            factory_address: wallet.factory_address.to_string(),
+        }
     }
 }
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/wallet/list", get(handler))
+    Router::new()
+        .route("/wallet/get", get(v1_get_handler))
+        .route("/wallet/list", get(v1_list_handler))
 }
 
-/// Check if the server is running.
+/// Get a wallet
+#[utoipa::path(
+        get,
+        path = "/v1/wallet/get",
+        params(
+            GetQuery
+        ),
+        responses(
+            (status = 200, description = "Wallet returned successfully", body = Wallet),
+        )
+    )]
+#[autometrics]
+async fn v1_get_handler(
+    get: Query<GetQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<Wallet> {
+    // Get the get query.
+    let Query(query) = get;
+
+    let parsed_query_address: H160 = query.address.parse().unwrap();
+    let checksum_address = to_checksum(&parsed_query_address, None);
+
+    // Get the wallets from the database.
+    let wallet = client
+        .client
+        .unwrap()
+        .wallet()
+        .find_first(vec![wallet::address::equals(checksum_address)])
+        .exec()
+        .await;
+
+    // Change the wallet to the format that the API expects.
+    let wallet: Wallet = wallet.unwrap().unwrap().into();
+
+    Ok(Json::from(wallet))
+}
+
+/// Returns a list of wallets.
 #[utoipa::path(
         get,
         path = "/v1/wallet/list",
@@ -61,7 +113,7 @@ pub(crate) fn router() -> Router<AppState> {
         )
     )]
 #[autometrics]
-async fn handler(
+async fn v1_list_handler(
     pagination: Option<Query<PaginationQuery>>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
@@ -75,7 +127,7 @@ async fn handler(
         .wallet()
         .find_many(vec![])
         .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(i64::MAX))
+        .take(pagination.limit.unwrap_or(10))
         .exec()
         .await?;
 

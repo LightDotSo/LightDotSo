@@ -56,7 +56,7 @@ pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
     Ok(Json::from(users))
 }
 
-/// Create a new user.
+/// Create a new wallet.
 #[autometrics]
 pub async fn create_wallet(
     db: Database,
