@@ -25,8 +25,9 @@ use lightdotso_db::{
 use lightdotso_graphql::polling::light_wallets::{
     run_light_wallets_query, BigInt, GetLightWalletsQueryVariables, LightWallet,
 };
+use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::PrismaClient;
-use lightdotso_tracing::tracing::{error, info};
+use lightdotso_tracing::tracing::{error, info, trace};
 use std::{sync::Arc, time::Duration};
 
 #[derive(Clone)]
@@ -77,6 +78,9 @@ impl Polling {
     }
 
     async fn poll_task(&self, mut min_block: i32) -> Result<i32> {
+        // Get the polling metrics, set the attempt.
+        PollingMetrics::set_attempt(self.chain_id);
+
         let chain_id = self.chain_id;
 
         // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread
@@ -98,8 +102,10 @@ impl Polling {
         })
         .await?;
 
+        // Get the data from the response.
         let data = light_wallet?.data;
 
+        // If can parse the data, loop through the wallets.
         if let Some(d) = data {
             let meta = d._meta;
 
@@ -114,7 +120,7 @@ impl Polling {
             // If the wallets is not empty, loop through the wallets.
             if !wallets.is_empty() {
                 for (index, wallet) in wallets.iter().enumerate() {
-                    info!("Polling run, chain_id: {} wallet: {:?}", self.chain_id, wallet);
+                    trace!("Polling run, chain_id: {} wallet: {:?}", self.chain_id, wallet);
 
                     // Create to db if the wallet has a image_hash
                     if let Some(hash) = &wallet.image_hash {

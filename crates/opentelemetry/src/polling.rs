@@ -15,23 +15,17 @@
 
 use lazy_static::lazy_static;
 use once_cell::sync::Lazy;
-use opentelemetry::{global, metrics::UpDownCounter, KeyValue};
+use opentelemetry::{global, metrics::Counter, KeyValue};
 
 lazy_static! {
-    pub static ref BLOCK_INDEXED_STATUS: Lazy<UpDownCounter<f64>> =
-        Lazy::new(|| global::meter("").f64_up_down_counter("block_indexed_status").init());
+    pub static ref POLLING_ATTEMPT_COUNT: Lazy<Counter<u64>> =
+        Lazy::new(|| global::meter("").u64_counter("polling_attempt_count").init());
 }
 
-pub struct ConsumerMetrics {}
+pub struct PollingMetrics {}
 
-impl ConsumerMetrics {
-    pub fn set_index_block(value: f64, chain_id: u64, block_number: u64) {
-        BLOCK_INDEXED_STATUS.add(
-            value,
-            &[
-                KeyValue::new("chain_id", chain_id.to_string()),
-                KeyValue::new("block_number", block_number.to_string()),
-            ],
-        );
+impl PollingMetrics {
+    pub fn set_attempt(chain_id: u64) {
+        POLLING_ATTEMPT_COUNT.add(1, &[KeyValue::new("chain_id", chain_id.to_string())]);
     }
 }

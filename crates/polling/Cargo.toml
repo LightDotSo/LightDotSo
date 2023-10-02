@@ -17,6 +17,7 @@
   lightdotso-constants = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-graphql = { workspace = true }
+  lightdotso-opentelemetry = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   tokio = { workspace = true }

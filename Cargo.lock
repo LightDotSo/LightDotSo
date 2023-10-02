@@ -6181,6 +6181,7 @@ dependencies = [
  "lightdotso-constants",
  "lightdotso-db",
  "lightdotso-graphql",
+ "lightdotso-opentelemetry",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "tokio",
