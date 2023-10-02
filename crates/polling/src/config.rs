@@ -40,9 +40,11 @@ impl PollingArgs {
 
         // Spawn a task for each chain id.
         for chain_id in chain_ids {
-            let handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
-            let handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
-            handles.push(handle);
+            let live_handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
+            let past_handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
+
+            handles.push(live_handle);
+            handles.push(past_handle);
         }
 
         // Wait for all tasks to finish.

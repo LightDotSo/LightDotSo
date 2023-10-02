@@ -46,8 +46,8 @@ pub struct Polling {
     chain_id: u64,
     live: bool,
     db_client: Arc<PrismaClient>,
-    kafka_client: Arc<FutureProducer>,
-    provider: Arc<Provider<Http>>,
+    kafka_client: Option<Arc<FutureProducer>>,
+    provider: Option<Arc<Provider<Http>>>,
 }
 
 impl Polling {
@@ -58,10 +58,15 @@ impl Polling {
         let db_client = Arc::new(create_client().await.unwrap());
 
         // Create the kafka client
-        let kafka_client: Arc<FutureProducer> = Arc::new(get_producer().unwrap());
+        let kafka_client: Option<Arc<FutureProducer>> = if live {
+            get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)))
+        } else {
+            None
+        };
 
         // Create the provider
-        let provider = Arc::new(get_provider(chain_id).await.unwrap());
+        let provider: Option<Arc<Provider<Http>>> =
+            if live { get_provider(chain_id).await.ok().map(Arc::new) } else { None };
 
         // Create the polling
         Self { chain_id, live, db_client, kafka_client, provider }
@@ -115,6 +120,7 @@ impl Polling {
         }
     }
 
+    /// Get the min block
     #[autometrics]
     async fn get_min_block(&self) -> Result<i32> {
         // Escape the static lifetime.
@@ -141,6 +147,7 @@ impl Polling {
         Ok(0)
     }
 
+    /// Poll the task
     #[autometrics]
     async fn poll_task(&self, mut min_block: i32) -> Result<i32> {
         // Get the polling metrics, set the attempt.
@@ -191,7 +198,7 @@ impl Polling {
                             let _ = self.db_create_wallet(wallet).await;
 
                             // Send the tx queue if live.
-                            if self.live {
+                            if self.live && self.kafka_client.is_some() && self.provider.is_some() {
                                 let _ = self
                                     .send_tx_queue(wallet.block_number.0.parse().unwrap())
                                     .await;
@@ -216,6 +223,7 @@ impl Polling {
         Ok(min_block)
     }
 
+    /// Create a new wallet in the db
     #[autometrics]
     pub async fn db_create_wallet(
         &self,
@@ -242,10 +250,11 @@ impl Polling {
         &self,
         block_number: i32,
     ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
-        let client = self.kafka_client.clone();
+        let client = self.kafka_client.clone().unwrap();
+        let provider = self.provider.clone().unwrap();
         let chain_id = self.chain_id;
 
-        let block = self.provider.get_block(block_number as u64).await.unwrap();
+        let block = provider.get_block(block_number as u64).await.unwrap();
 
         let payload = serde_json::to_value((&block, &chain_id))
             .unwrap_or_else(|_| serde_json::Value::Null)
