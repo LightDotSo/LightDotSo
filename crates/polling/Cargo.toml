@@ -13,6 +13,7 @@
   chrono = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   eyre = { workspace = true }
+  lightdotso-db = { workspace = true }
   lightdotso-graphql = { workspace = true }
   lightdotso-tracing = { workspace = true }
   tokio = { workspace = true }

@@ -59,21 +59,26 @@ impl Polling {
 }
 
 async fn run_polling_task(chain_id: u64) {
+    let mut min_block = 0;
+
     loop {
         // Wrap the task in a catch_unwind block to not crash the task if the task panics.
-        let result = poll_task(chain_id).await;
+        let result = poll_task(chain_id, min_block).await;
 
         match result {
-            Ok(_) => {
-                tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-
+            Ok(block) => {
                 let now = chrono::Utc::now();
-                // if now.minute() == 0 {
                 info!("Polling run, chain_id: {} timestamp: {}", chain_id, now);
-                // }
+
+                // On success, set the min block to the returned block.
+                min_block = block;
+
+                // Sleep for 1 second.
+                tokio::time::sleep(std::time::Duration::from_secs(1)).await;
             }
             Err(e) => {
                 error!("run_task {} panicked: {:?}", chain_id, e);
+
                 // Retry the task after 1 second.
                 tokio::time::sleep(Duration::from_secs(1)).await;
             }
@@ -81,15 +86,32 @@ async fn run_polling_task(chain_id: u64) {
     }
 }
 
-async fn poll_task(chain_id: u64) -> Result<()> {
+async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
     // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread used by the underlying reqwest client. (blocking)
     let light_wallet = tokio::task::spawn_blocking(move || {
-        { || run_query(chain_id, "0") }.retry(&ExponentialBuilder::default()).call()
+        { || run_query(chain_id, &min_block.to_string()) }
+            .retry(&ExponentialBuilder::default())
+            .call()
     })
     .await?;
 
-    // Log the light wallet data
-    info!("light_wallet: {:?}", light_wallet);
+    let data = light_wallet?.data;
 
-    Ok(())
+    if let Some(d) = data {
+        let meta = d._meta;
+
+        // Set the min block to the returned block.
+        if let Some(m) = meta {
+            min_block = m.block.number;
+        }
+
+        let wallets = d.light_wallets;
+        if !wallets.is_empty() {
+            for wallet in wallets {
+                info!("Polling run, chain_id: {} wallet: {:?}", chain_id, wallet);
+            }
+        }
+    }
+
+    Ok(min_block)
 }

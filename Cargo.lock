@@ -6168,6 +6168,7 @@ dependencies = [
  "chrono",
  "clap 4.4.0",
  "eyre",
+ "lightdotso-db",
  "lightdotso-graphql",
  "lightdotso-tracing",
  "tokio",
