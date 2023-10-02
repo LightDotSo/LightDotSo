@@ -15,7 +15,6 @@
 
 use crate::{
     config::IndexerArgs,
-    constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS},
     namespace::{ERC1155, ERC20, ERC721, ETH, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},
 };
 use autometrics::autometrics;
@@ -33,6 +32,9 @@ use ethers::{
 };
 use ethers_providers::StreamExt;
 use eyre::eyre;
+use lightdotso_constants::{
+    FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS,
+};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},

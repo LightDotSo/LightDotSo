@@ -9,11 +9,14 @@
   repository.workspace = true
 
 [dependencies]
+  axum = { workspace = true }
   backon = { workspace = true }
   chrono = { workspace = true }
   clap = { workspace = true, features = ["derive"] }
   eyre = { workspace = true }
+  lightdotso-constants = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-graphql = { workspace = true }
+  lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   tokio = { workspace = true }

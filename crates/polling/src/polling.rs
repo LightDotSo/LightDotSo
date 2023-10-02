@@ -14,15 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::config::PollingArgs;
-use backon::{BlockingRetryable, ExponentialBuilder};
+use axum::Json;
+use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use eyre::Result;
-use lightdotso_db::db::create_wallet;
+use lightdotso_constants::TESTNET_CHAIN_IDS;
+use lightdotso_db::{
+    db::{create_client, create_wallet},
+    error::DbError,
+};
 use lightdotso_graphql::{
     constants::THE_GRAPH_HOSTED_SERVICE_URLS,
-    polling::light_wallets::{run_light_wallets_query, BigInt, GetLightWalletsQueryVariables},
+    polling::light_wallets::{
+        run_light_wallets_query, BigInt, GetLightWalletsQueryVariables, LightWallet,
+    },
 };
+use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::{error, info};
-use std::time::Duration;
+use std::{sync::Arc, time::Duration};
 
 #[derive(Clone)]
 pub struct Polling {}
@@ -124,21 +132,19 @@ async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
             for (index, wallet) in wallets.iter().enumerate() {
                 info!("Polling run, chain_id: {} wallet: {:?}", chain_id, wallet);
 
-                // Write the wallet to the database.
-                // {
-                //     || {
-                //         create_wallet(
-                //             db_client.clone(),
-                //             wallet.address,
-                //             chain_id as i64,
-                //             wallet.factory,
-                //             wallet.image_hash,
-                //             Some(TESTNET_CHAIN_IDS.contains(chain_id)),
-                //         )
-                //     }
-                // }
-                // .retry(&ExponentialBuilder::default())
-                // .await;
+                // Create to db if the wallet has a image_hash
+                if let Some(hash) = &wallet.image_hash {
+                    if !hash.0.is_empty() {
+                        // Create the db client
+                        let db = Arc::new(create_client().await.unwrap());
+
+                        // Parse the image hash to a string.
+                        let image_hash: String = hash.0.parse().unwrap();
+
+                        // Create the wallet in the db.
+                        let _ = db_create_wallet(db, wallet, &image_hash, chain_id).await;
+                    }
+                }
 
                 if index == wallets.len() - 1 {
                     // Return the minimum block number for the last wallet.
@@ -149,4 +155,27 @@ async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
     }
 
     Ok(min_block)
+}
+
+pub async fn db_create_wallet(
+    db_client: Arc<PrismaClient>,
+    wallet: &LightWallet,
+    hash: &str,
+    chain_id: u64,
+) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
+    {
+        || {
+            create_wallet(
+                db_client.clone(),
+                wallet.address.0.parse().unwrap(),
+                chain_id as i64,
+                wallet.factory.0.parse().unwrap(),
+                hash.to_string(),
+                // wallet.clone().image_hash.unwrap().0.parse().unwrap(),
+                Some(TESTNET_CHAIN_IDS.contains(&chain_id)),
+            )
+        }
+    }
+    .retry(&ExponentialBuilder::default())
+    .await
 }

@@ -5968,6 +5968,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-constants"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
+ "lazy_static",
+]
+
+[[package]]
 name = "lightdotso-consumer"
 version = "0.1.0"
 dependencies = [
@@ -6068,6 +6076,7 @@ dependencies = [
  "eyre",
  "futures",
  "lazy_static",
+ "lightdotso-constants",
  "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-kafka",
@@ -6164,12 +6173,15 @@ dependencies = [
 name = "lightdotso-polling"
 version = "0.1.0"
 dependencies = [
+ "axum 0.6.20",
  "backon",
  "chrono",
  "clap 4.4.0",
  "eyre",
+ "lightdotso-constants",
  "lightdotso-db",
  "lightdotso-graphql",
+ "lightdotso-prisma",
  "lightdotso-tracing",
  "tokio",
 ]
