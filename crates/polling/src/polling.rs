@@ -32,14 +32,18 @@ use std::{sync::Arc, time::Duration};
 #[derive(Clone)]
 pub struct Polling {
     chain_id: u64,
+    db_client: Arc<PrismaClient>,
 }
 
 impl Polling {
     pub async fn new(_args: &PollingArgs, chain_id: u64) -> Self {
         info!("Polling new, starting");
 
+        // Create the db client
+        let db_client = Arc::new(create_client().await.unwrap());
+
         // Create the polling
-        Self { chain_id }
+        Self { chain_id, db_client }
     }
 
     pub async fn run(&self) {
@@ -49,7 +53,7 @@ impl Polling {
 
         loop {
             // Wrap the task in a catch_unwind block to not crash the task if the task panics.
-            let result = self.poll_task(self.chain_id, min_block).await;
+            let result = self.poll_task(min_block).await;
 
             match result {
                 Ok(block) => {
@@ -72,7 +76,9 @@ impl Polling {
         }
     }
 
-    async fn poll_task(&self, chain_id: u64, mut min_block: i32) -> Result<i32> {
+    async fn poll_task(&self, mut min_block: i32) -> Result<i32> {
+        let chain_id = self.chain_id;
+
         // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread
         // used by the underlying reqwest client. (blocking)
         let light_wallet = tokio::task::spawn_blocking(move || {
@@ -108,16 +114,13 @@ impl Polling {
             // If the wallets is not empty, loop through the wallets.
             if !wallets.is_empty() {
                 for (index, wallet) in wallets.iter().enumerate() {
-                    info!("Polling run, chain_id: {} wallet: {:?}", chain_id, wallet);
-
-                    // Create the db client
-                    let db = Arc::new(create_client().await.unwrap());
+                    info!("Polling run, chain_id: {} wallet: {:?}", self.chain_id, wallet);
 
                     // Create to db if the wallet has a image_hash
                     if let Some(hash) = &wallet.image_hash {
                         if !hash.0.is_empty() {
                             // Create the wallet in the db.
-                            let _ = self.db_create_wallet(db, wallet, chain_id).await;
+                            let _ = self.db_create_wallet(wallet).await;
                         }
                     }
 
@@ -134,19 +137,16 @@ impl Polling {
 
     pub async fn db_create_wallet(
         &self,
-        db_client: Arc<PrismaClient>,
         wallet: &LightWallet,
-        chain_id: u64,
     ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
         {
             || {
                 create_wallet(
-                    db_client.clone(),
+                    self.db_client.clone(),
                     wallet.address.0.parse().unwrap(),
-                    chain_id as i64,
+                    self.chain_id as i64,
                     wallet.factory.0.parse().unwrap(),
-                    // wallet.clone().image_hash.unwrap().0.parse().unwrap(),
-                    Some(TESTNET_CHAIN_IDS.contains(&chain_id)),
+                    Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                 )
             }
         }
