@@ -351,6 +351,9 @@ importers:
       '@prisma/client':
         specifier: ^5.2.0
         version: 5.2.0(prisma@5.2.0)
+      '@prisma/nextjs-monorepo-workaround-plugin':
+        specifier: ^5.2.0
+        version: 5.2.0
       '@radix-ui/react-icons':
         specifier: ^1.3.0
         version: 1.3.0(react@18.2.0)
@@ -7663,7 +7666,6 @@ packages:
 
   /@prisma/nextjs-monorepo-workaround-plugin@5.2.0:
     resolution: {integrity: sha512-HrbbIBKbOxFJlF6+RkzlWBy6vr90c45nn8IesH4Z5yqBNOFAqwVCh9nRSQcuViIGxZUvrolTMrVTICIfFpfqyw==}
-    dev: true
 
   /@prisma/ni@4.13.0:
     resolution: {integrity: sha512-FN1wV1I61P6WndheLpja5oQuzIW2WkYqFViPL5GS5dhrpsO69SlyOnAsxpfCKUa5HhXINi7fowgdcngK1QDW9w==}

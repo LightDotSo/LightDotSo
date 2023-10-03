@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const sentryWebpackPluginOptions = {
@@ -24,7 +25,7 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     instrumentationHook: true,
-    // From: https://github.com/vercel/next.js/issues/42641
+    appDir: true,
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",
@@ -36,19 +37,24 @@ const nextConfig = {
       ],
     },
     serverActions: true,
+    serverComponentsExternalPackages: ["@trpc/server"],
   },
-  outputFileTracing: true,
-  transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],
-  webpack: config => {
-    config.externals.push("async_hooks", "pino-pretty", "lokijs", "encoding");
-    config.resolve.fallback = { fs: false, net: false, tls: false };
 
-    if (config.isServer) {
-      // eslint-disable-next-line no-undef
-      config.resolve.alias["@sentry/nextjs"] = require.resolve(
-        "@sentry/nextjs/cjs/edge",
-      );
+  transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
     }
+    config.externals.push(
+      "async_hooks",
+      "pino-pretty",
+      "lokijs",
+      "encoding",
+      "net",
+    );
+    // This is only intended to pass CI and should be skiped in your app
+    if (config.name === "server")
+      config.optimization.concatenateModules = false;
 
     return config;
   },
