@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -25,6 +27,7 @@ import { Logo } from "@/components/Logo";
 import { UserNav } from "@/components/UserNav";
 import { MainNav } from "@/components/MainNav";
 import { FeedbackPopover } from "@/components/FeedbackPopover";
+import { AspectRatio } from "@lightdotso/ui";
 import Link from "next/link";
 
 export default async function Page() {
@@ -41,7 +44,7 @@ export default async function Page() {
           <div className="flex h-16 items-center px-10">
             <div className="flex items-center">
               <Link href="/" className="hover:rounded-md hover:bg-accent">
-                <Logo className="m-2.5 h-8 w-auto fill-slate-300" />
+                <Logo className="m-2.5 h-8 w-auto fill-slate-800 dark:fill-slate-300" />
               </Link>
               <span className="ml-2 mr-1 text-primary/60">/</span>
               <WalletSwitcher />
@@ -55,14 +58,29 @@ export default async function Page() {
           </div>
           <MainNav className="h-10 items-center px-12" />
         </div>
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <pre>{JSON.stringify(session, null, 2)}</pre>
-          <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
-          <pre>{JSON.stringify(user, null, 2)}</pre>
-          <Suspense>
-            <User />
-          </Suspense>
-          <SIWEButton />
+        <div className="flex-1 space-y-4 p-8 pt-10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
+            <div className="mx-auto max-w-3xl">
+              <AspectRatio ratio={16 / 9} className="bg-muted">
+                <img
+                  src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+                  alt="Photo by Drew Beamer"
+                  className="rounded-md object-cover"
+                />
+              </AspectRatio>
+              {/* Content goes here */}{" "}
+              <pre>{JSON.stringify(session, null, 2)}</pre>
+              <EnsName
+                params={{ address: session?.user?.name as `0x${string}` }}
+              />
+              <pre>{JSON.stringify(user, null, 2)}</pre>
+              <Suspense>
+                <User />
+              </Suspense>
+              <SIWEButton />
+            </div>
+          </div>
         </div>
       </div>
     </main>

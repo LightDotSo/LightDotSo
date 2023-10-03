@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-[100dvh] bg-white dark:bg-black">
-        <ThemeProvider forcedTheme="dark" attribute="class">
+        <ThemeProvider attribute="class">
           <TrpcProvider headers={headers()}>
             <Web3Provider siweConfig={siweConfig}>{children}</Web3Provider>
           </TrpcProvider>
