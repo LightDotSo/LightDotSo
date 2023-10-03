@@ -105,7 +105,7 @@ async fn v1_get_handler(
     Ok(Json::from(configuration))
 }
 
-/// Get a configuration
+/// Create a configuration
 #[utoipa::path(
         post,
         path = "/v1/configuration/create",
