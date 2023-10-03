@@ -309,6 +309,9 @@ importers:
       '@heroicons/react':
         specifier: ^2.0.11
         version: 2.0.11(react@18.2.0)
+      '@lightdotso/client':
+        specifier: workspace:*
+        version: link:../../packages/client
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely
@@ -1648,6 +1651,37 @@ importers:
       '@types/node':
         specifier: ^20.5.7
         version: 20.5.7
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
+  packages/client:
+    dependencies:
+      clsx:
+        specifier: ^2.0.0
+        version: 2.0.0
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
+      dotenv:
+        specifier: ^16.3.1
+        version: 16.3.1
+      neverthrow:
+        specifier: ^6.0.0
+        version: 6.0.0
+      openapi-fetch:
+        specifier: ^0.7.8
+        version: 0.7.8
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.5.7
+        version: 20.5.7
+      openapi-typescript:
+        specifier: ^6.7.0
+        version: 6.7.0
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
@@ -25452,6 +25486,10 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: true
 
+  /neverthrow@6.0.0:
+    resolution: {integrity: sha512-kPZKRs4VkdloCGQXPoP84q4sT/1Z+lYM61AXyV8wWa2hnuo5KpPBF2S3crSFnMrOgUISmEBP8Vo/ngGZX60NhA==}
+    dev: false
+
   /new-github-issue-url@0.2.1:
     resolution: {integrity: sha512-md4cGoxuT4T4d/HDOXbrUHkTKrp/vp+m3aOA7XXVYwNsUNMK49g3SQicTSeV5GIz/5QVGAeYRAOlyp9OvlgsYA==}
     engines: {node: '>=10'}
@@ -26378,9 +26416,31 @@ packages:
       is-inside-container: 1.0.0
       is-wsl: 2.2.0
 
+  /openapi-fetch@0.7.8:
+    resolution: {integrity: sha512-3kSaR+GQFwvPude2+hqxy6FTx6np6lcyn9pHUwhTyf11wW1uqHD5dLQACcWM1psw5KZN9Hp8qkPeOAuxU8eDbw==}
+    dependencies:
+      openapi-typescript-helpers: 0.0.3
+    dev: false
+
   /openapi-types@12.1.3:
     resolution: {integrity: sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==}
     dev: false
+
+  /openapi-typescript-helpers@0.0.3:
+    resolution: {integrity: sha512-lGTzd0j8yx7UX2IPm891SnnUIdFPpIT0Nxea8pic+ff+gK7fBr0VpdG7yzdcBD3afZcKfYTOiwqLBgRK8j1tqw==}
+    dev: false
+
+  /openapi-typescript@6.7.0:
+    resolution: {integrity: sha512-eoUfJwhnMEug7euZ1dATG7iRiDVsEROwdPkhLUDiaFjcClV4lzft9F0Ii0fYjULCPNIiWiFi0BqMpSxipuvAgQ==}
+    hasBin: true
+    dependencies:
+      ansi-colors: 4.1.3
+      fast-glob: 3.3.1
+      js-yaml: 4.1.0
+      supports-color: 9.4.0
+      undici: 5.23.0
+      yargs-parser: 21.1.1
+    dev: true
 
   /openid-client@5.4.3:
     resolution: {integrity: sha512-sVQOvjsT/sbSfYsQI/9liWQGVZH/Pp3rrtlGEwgk/bbHfrUDZ24DN57lAagIwFtuEu+FM9Ev7r85s8S/yPjimQ==}
@@ -30880,6 +30940,11 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       has-flag: 4.0.0
+
+  /supports-color@9.4.0:
+    resolution: {integrity: sha512-VL+lNrEoIXww1coLPOmiEmK/0sGigko5COxI09KzHc2VJXJsQ37UaQ+8quuxjDeA7+KnLGTWRyOXSLLR2Wb4jw==}
+    engines: {node: '>=12'}
+    dev: true
 
   /supports-hyperlinks@2.3.0:
     resolution: {integrity: sha512-RpsAZlpWcDwOPQA22aCH4J0t7L8JmAvsCxfOSEwm7cQs3LshN36QaTkwd70DnBOXDWGssw2eUoc8CaRWT0XunA==}

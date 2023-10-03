@@ -1,0 +1,42 @@
+{
+  "name": "@lightdotso/client",
+  "version": "1.0.0",
+  "private": true,
+  "homepage": "https://github.com/LightDotSo/LightDotSo",
+  "bugs": {
+    "url": "https://github.com/LightDotSo/LightDotSo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LightDotSo/LightDotSo.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Light, Inc.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "pnpm run prepare && pnpm tsup",
+    "clean": "rimraf -rf dist",
+    "prepare": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts"
+  },
+  "dependencies": {
+    "clsx": "^2.0.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "neverthrow": "^6.0.0",
+    "openapi-fetch": "^0.7.8"
+  },
+  "devDependencies": {
+    "@lightdotso/tsconfig": "workspace:*",
+    "@types/node": "^20.5.7",
+    "openapi-typescript": "^6.7.0",
+    "typescript": "^5.2.2"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

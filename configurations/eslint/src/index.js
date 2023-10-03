@@ -55,9 +55,10 @@ module.exports = {
   rules: {
     "import/no-named-as-default": "off",
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
+    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/react-in-jsx-scope": "off",
     "tailwindcss/no-custom-classname": [
       0,

@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,19 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Dashboard } from "@/components/Dashboard";
-import { handler } from "@/handlers/[address]";
+import { getWallet } from "@lightdotso/client";
+import { notFound } from "next/navigation";
 
-export default async function Page({
-  params,
-}: {
-  params: { address: string };
-}) {
-  await handler(params);
+export const handler = async (params: { address: string }) => {
+  let res = await getWallet(params.address);
 
-  return (
-    <div>
-      <Dashboard />
-    </div>
-  );
-}
+  if (res.error) {
+    return notFound();
+  }
+
+  return res.data;
+};

@@ -21,6 +21,7 @@
   "dependencies": {
     "@babel/core": "^7.22.11",
     "@heroicons/react": "^2.0.11",
+    "@lightdotso/client": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
