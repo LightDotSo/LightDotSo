@@ -28,6 +28,7 @@ use ethers_main::{
     utils::to_checksum,
 };
 use eyre::Result;
+use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
 use lightdotso_solutions::{image_hash_of_wallet_config, Signer, WalletConfig};
 use lightdotso_tracing::{
@@ -209,12 +210,7 @@ async fn v1_post_handler(
             // Get the wallets from the database.
             let wallet = client
                 .wallet()
-                .create(
-                    checksum_address,
-                    0,
-                    "0x0000000000756D3E6464f5efe7e413a0Af1C7474".to_string(),
-                    vec![],
-                )
+                .create(checksum_address, 0, LIGHT_WALLET_FACTORY_ADDRESS.to_string(), vec![])
                 .exec()
                 .instrument(info_span!("create_receipt"))
                 .await?;

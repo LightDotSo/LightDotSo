@@ -20,6 +20,7 @@
   http-body = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
+  lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
   lightdotso-prisma = { workspace = true }

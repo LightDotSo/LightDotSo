@@ -5883,6 +5883,7 @@ dependencies = [
  "http-body",
  "hyper",
  "hyper-rustls",
+ "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-prisma",
