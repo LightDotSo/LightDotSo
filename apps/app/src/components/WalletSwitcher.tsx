@@ -59,12 +59,12 @@ const groups = [
     label: "Wallets",
     wallets: [
       {
-        label: "Alicia Koch",
+        label: "Shun Kakinoki",
         value: "personal",
       },
       {
-        label: "Acme Inc.",
-        value: "acme-inc",
+        label: "Family Wallet",
+        value: "family",
       },
       {
         label: "Monsters Inc.",
@@ -100,7 +100,7 @@ export function WalletSwitcher({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
+            variant="ghost"
             role="combobox"
             aria-expanded={open}
             aria-label="Select a wallet"
@@ -183,11 +183,11 @@ export function WalletSwitcher({
         </DialogHeader>
         <div>
           <div className="space-y-4 py-2 pb-4">
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Label htmlFor="name">Wallet name</Label>
               <Input id="name" placeholder="Acme Inc." />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Label htmlFor="plan">Subscription plan</Label>
               <Select>
                 <SelectTrigger>

@@ -30,26 +30,32 @@ export function MainNav({
         href="/"
         className="text-sm font-medium transition-colors hover:text-primary"
       >
-        Home
-      </Link>
-      {/* <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Customers
+        Overview
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Products
+        Transactions
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        Members
+      </Link>
+      <Link
+        href="/"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
         Settings
-      </Link> */}
+      </Link>
+      <Link
+        href="/"
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+      >
+        Support
+      </Link>
     </nav>
   );
 }
