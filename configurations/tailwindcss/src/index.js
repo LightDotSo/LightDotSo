@@ -145,6 +145,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("windy-radix-palette"),
     require("tailwindcss-animate"),
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),
