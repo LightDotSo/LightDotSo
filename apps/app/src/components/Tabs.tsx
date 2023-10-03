@@ -21,6 +21,7 @@ import React, { useEffect, useRef, useState } from "react";
 import type { Tab } from "@/hooks/useTabs";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 const transition = {
   type: "tween",
@@ -46,6 +47,8 @@ export const Tabs = ({
   useEffect(() => {
     setButtonRefs(prev => prev.slice(0, tabs.length));
   }, [tabs.length]);
+
+  const router = useRouter();
 
   const navRef = useRef<HTMLDivElement>(null);
   const navRect = navRef.current?.getBoundingClientRect();
@@ -79,11 +82,13 @@ export const Tabs = ({
             ref={el => (buttonRefs[i] = el)}
             onPointerEnter={() => {
               setHoveredTabIndex(i);
+              router.prefetch(item.href);
             }}
             onFocus={() => {
               setHoveredTabIndex(i);
             }}
             onClick={() => {
+              router.push(item.href);
               setSelectedTab([i, i > selectedTabIndex ? 1 : -1]);
             }}
           >
