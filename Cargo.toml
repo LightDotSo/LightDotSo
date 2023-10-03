@@ -29,6 +29,7 @@
     "crates/redis",
     "crates/rpc",
     "crates/simulator",
+    "crates/solutions",
     "crates/tauri",
     "crates/telegram",
     "crates/tracing",
@@ -113,6 +114,7 @@
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
+  lightdotso-solutions = { path = "./crates/solutions" }
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }
@@ -157,6 +159,7 @@
   rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-sim" }
   rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-types" }
   rundler-utils = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-utils" }
+  rustc-hex = "2.1.0"
   serde = "1.0.183"
   serde_json = "1.0.104"
   spki = "0.7.2"

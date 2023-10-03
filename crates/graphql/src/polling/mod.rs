@@ -14,3 +14,4 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod light_wallets;
+pub mod min_block;

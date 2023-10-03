@@ -1,0 +1,14 @@
+---
+source: crates/graphql/src/polling/min_block.rs
+expression: query.query
+---
+query GetMinBlockQuery {
+  _meta {
+    block {
+      number
+      timestamp
+    }
+  }
+}
+
+

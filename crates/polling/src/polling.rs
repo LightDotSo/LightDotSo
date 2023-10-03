@@ -14,165 +14,256 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::config::PollingArgs;
+use autometrics::autometrics;
 use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
+use chrono::Timelike;
+use ethers::{
+    prelude::{Http, Provider},
+    providers::Middleware,
+};
 use eyre::Result;
 use lightdotso_constants::TESTNET_CHAIN_IDS;
+use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::{create_client, create_wallet},
     error::DbError,
 };
-use lightdotso_graphql::{
-    constants::THE_GRAPH_HOSTED_SERVICE_URLS,
-    polling::light_wallets::{
-        run_light_wallets_query, BigInt, GetLightWalletsQueryVariables, LightWallet,
-    },
+use lightdotso_graphql::polling::{
+    light_wallets::{run_light_wallets_query, BigInt, GetLightWalletsQueryVariables, LightWallet},
+    min_block::run_min_block_query,
 };
+use lightdotso_kafka::{
+    get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
+};
+use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::PrismaClient;
-use lightdotso_tracing::tracing::{error, info};
+use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{sync::Arc, time::Duration};
 
 #[derive(Clone)]
-pub struct Polling {}
+pub struct Polling {
+    chain_id: u64,
+    live: bool,
+    db_client: Arc<PrismaClient>,
+    kafka_client: Option<Arc<FutureProducer>>,
+    provider: Option<Arc<Provider<Http>>>,
+}
 
 impl Polling {
-    pub async fn new(_args: &PollingArgs) -> Self {
+    pub async fn new(_args: &PollingArgs, chain_id: u64, live: bool) -> Self {
         info!("Polling new, starting");
 
+        // Create the db client
+        let db_client = Arc::new(create_client().await.unwrap());
+
+        // Create the kafka client
+        let kafka_client: Option<Arc<FutureProducer>> = if live {
+            get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)))
+        } else {
+            None
+        };
+
+        // Create the provider
+        let provider: Option<Arc<Provider<Http>>> =
+            if live { get_provider(chain_id).await.ok().map(Arc::new) } else { None };
+
         // Create the polling
-        Self {}
+        Self { chain_id, live, db_client, kafka_client, provider }
     }
 
-    #[tokio::main]
     pub async fn run(&self) {
         info!("Polling run, starting");
 
-        let mut handles = Vec::new();
+        // Get the initial min block.
+        let initial_min_block = self.get_min_block().await.unwrap_or_default();
 
-        // Get the chain ids from the constants which is the keys of the
-        // THE_GRAPH_HOSTED_SERVICE_URLS map.
-        let chain_ids: Vec<u64> = THE_GRAPH_HOSTED_SERVICE_URLS.keys().cloned().collect();
+        let mut min_block = if self.live { initial_min_block } else { 0 };
 
-        // Spawn a task for each chain id.
-        for chain_id in chain_ids {
-            let handle = tokio::spawn(run_polling_task(chain_id));
-            handles.push(handle);
-        }
+        loop {
+            // Wrap the task in a catch_unwind block to not crash the task if the task panics.
+            let result = self.poll_task(min_block).await;
 
-        // Wait for all tasks to finish.
-        for handle in handles {
-            if let Err(e) = handle.await {
-                error!("A task panicked: {:?}", e);
+            match result {
+                Ok(block) => {
+                    let now = chrono::Utc::now();
+                    trace!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+
+                    // Info if the minute is 0.
+                    if now.minute() == 0 {
+                        info!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+                    }
+
+                    // On success, set the min block to the returned block.
+                    min_block = block;
+
+                    // If not live, check if the min block is greater to or equal to than the
+                    // initial min block.
+                    if !self.live && min_block >= initial_min_block {
+                        warn!(
+                            "Polling exiting, chain_id: {} min_block: {} initial_min_block: {}",
+                            self.chain_id, min_block, initial_min_block
+                        );
+                        break;
+                    }
+
+                    // Sleep for 1 second.
+                    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+                }
+                Err(e) => {
+                    error!("run_task {} panicked: {:?}", self.chain_id, e);
+
+                    // Retry the task after 1 second.
+                    tokio::time::sleep(Duration::from_secs(1)).await;
+                }
             }
         }
     }
-}
 
-async fn run_polling_task(chain_id: u64) {
-    let mut min_block = 0;
+    /// Get the min block
+    #[autometrics]
+    async fn get_min_block(&self) -> Result<i32> {
+        // Escape the static lifetime.
+        let chain_id = self.chain_id;
 
-    loop {
-        // Wrap the task in a catch_unwind block to not crash the task if the task panics.
-        let result = poll_task(chain_id, min_block).await;
+        // Get the min_block query from the graphql api.
+        let min_block_res = tokio::task::spawn_blocking(move || {
+            { || run_min_block_query(chain_id) }.retry(&ExponentialBuilder::default()).call()
+        })
+        .await?;
 
-        match result {
-            Ok(block) => {
-                let now = chrono::Utc::now();
-                info!("Polling run, chain_id: {} timestamp: {}", chain_id, now);
+        // Get the data from the response.
+        let data = min_block_res?.data;
 
-                // On success, set the min block to the returned block.
-                min_block = block;
-
-                // Sleep for 1 second.
-                tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-            }
-            Err(e) => {
-                error!("run_task {} panicked: {:?}", chain_id, e);
-
-                // Retry the task after 1 second.
-                tokio::time::sleep(Duration::from_secs(1)).await;
+        if let Some(d) = data {
+            // Set the min block to the returned block.
+            let meta = d._meta;
+            if let Some(m) = meta {
+                let min_block = m.block.number;
+                return Ok(min_block);
             }
         }
-    }
-}
 
-async fn poll_task(chain_id: u64, mut min_block: i32) -> Result<i32> {
-    // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread used
-    // by the underlying reqwest client. (blocking)
-    let light_wallet = tokio::task::spawn_blocking(move || {
+        Ok(0)
+    }
+
+    /// Poll the task
+    #[autometrics]
+    async fn poll_task(&self, mut min_block: i32) -> Result<i32> {
+        // Get the polling metrics, set the attempt.
+        PollingMetrics::set_attempt(self.chain_id);
+
+        // Escape the static lifetime.
+        let chain_id = self.chain_id;
+        let index = 0;
+
+        // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread
+        // used by the underlying reqwest client. (blocking)
+        let light_wallet = tokio::task::spawn_blocking(move || {
+            {
+                || {
+                    run_light_wallets_query(
+                        chain_id,
+                        GetLightWalletsQueryVariables {
+                            min_block: BigInt(min_block.to_string()),
+                            min_index: BigInt(index.to_string()),
+                        },
+                    )
+                }
+            }
+            .retry(&ExponentialBuilder::default())
+            .call()
+        })
+        .await?;
+
+        // Get the data from the response.
+        let data = light_wallet?.data;
+
+        // If can parse the data, loop through the wallets.
+        if let Some(d) = data {
+            // Get the wallets.
+            let wallets = d.light_wallets;
+            info!(
+                "Polling run, chain_id: {} min_block: {} index: {} wallets: {:?}",
+                self.chain_id, min_block, index, wallets
+            );
+
+            // If the wallets is not empty, loop through the wallets.
+            if !wallets.is_empty() {
+                for (index, wallet) in wallets.iter().enumerate() {
+                    // Create to db if the wallet has a image_hash
+                    if let Some(hash) = &wallet.image_hash {
+                        if !hash.0.is_empty() {
+                            // Create the wallet in the db.
+                            let _ = self.db_create_wallet(wallet).await;
+
+                            // Send the tx queue if live.
+                            if self.live && self.kafka_client.is_some() && self.provider.is_some() {
+                                let _ = self
+                                    .send_tx_queue(wallet.block_number.0.parse().unwrap())
+                                    .await;
+                            }
+                        }
+                    }
+
+                    // Return the minimum block number for the last wallet.
+                    if index == wallets.len() - 1 {
+                        return Ok(wallet.block_number.0.parse().unwrap_or(min_block));
+                    }
+                }
+            }
+
+            // Set the min block to the returned block.
+            let meta = d._meta;
+            if let Some(m) = meta {
+                min_block = m.block.number;
+            }
+        }
+
+        Ok(min_block)
+    }
+
+    /// Create a new wallet in the db
+    #[autometrics]
+    pub async fn db_create_wallet(
+        &self,
+        wallet: &LightWallet,
+    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
         {
             || {
-                run_light_wallets_query(
-                    chain_id,
-                    GetLightWalletsQueryVariables {
-                        min_block: BigInt(min_block.to_string()),
-                        min_index: BigInt("0".to_string()),
-                    },
+                create_wallet(
+                    self.db_client.clone(),
+                    wallet.address.0.parse().unwrap(),
+                    self.chain_id as i64,
+                    wallet.factory.0.parse().unwrap(),
+                    Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
                 )
             }
         }
         .retry(&ExponentialBuilder::default())
-        .call()
-    })
-    .await?;
-
-    let data = light_wallet?.data;
-
-    if let Some(d) = data {
-        let meta = d._meta;
-
-        // Set the min block to the returned block.
-        if let Some(m) = meta {
-            min_block = m.block.number;
-        }
-
-        // Get the wallets.
-        let wallets = d.light_wallets;
-
-        // If the wallets is not empty, loop through the wallets.
-        if !wallets.is_empty() {
-            for (index, wallet) in wallets.iter().enumerate() {
-                info!("Polling run, chain_id: {} wallet: {:?}", chain_id, wallet);
-
-                // Create to db if the wallet has a image_hash
-                if let Some(hash) = &wallet.image_hash {
-                    // Create the db client
-                    let db = Arc::new(create_client().await.unwrap());
-
-                    if !hash.0.is_empty() {
-                        // Create the wallet in the db.
-                        let _ = db_create_wallet(db, wallet, chain_id).await;
-                    }
-                }
-
-                // Return the minimum block number for the last wallet.
-                if index == wallets.len() - 1 {
-                    return Ok(wallet.block_number.0.parse().unwrap_or(min_block));
-                }
-            }
-        }
+        .await
     }
 
-    Ok(min_block)
-}
+    /// Add a new tx in the queue
+    #[autometrics]
+    pub async fn send_tx_queue(
+        &self,
+        block_number: i32,
+    ) -> Result<(), lightdotso_kafka::rdkafka::error::KafkaError> {
+        let client = self.kafka_client.clone().unwrap();
+        let provider = self.provider.clone().unwrap();
+        let chain_id = self.chain_id;
 
-pub async fn db_create_wallet(
-    db_client: Arc<PrismaClient>,
-    wallet: &LightWallet,
-    chain_id: u64,
-) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
-    {
-        || {
-            create_wallet(
-                db_client.clone(),
-                wallet.address.0.parse().unwrap(),
-                chain_id as i64,
-                wallet.factory.0.parse().unwrap(),
-                // wallet.clone().image_hash.unwrap().0.parse().unwrap(),
-                Some(TESTNET_CHAIN_IDS.contains(&chain_id)),
-            )
-        }
+        let block = provider.get_block(block_number as u64).await.unwrap();
+
+        let payload = serde_json::to_value((&block, &chain_id))
+            .unwrap_or_else(|_| serde_json::Value::Null)
+            .to_string();
+
+        let _ = { || produce_transaction_message(client.clone(), &payload) }
+            .retry(&ExponentialBuilder::default())
+            .await;
+
+        Ok(())
     }
-    .retry(&ExponentialBuilder::default())
-    .await
 }

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub(crate) mod check;
+pub(crate) mod configuration;
 pub(crate) mod health;
 pub(crate) mod metrics;
 pub(crate) mod wallet;

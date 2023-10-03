@@ -5883,14 +5883,17 @@ dependencies = [
  "http-body",
  "hyper",
  "hyper-rustls",
+ "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-indexer",
  "lightdotso-prisma",
  "lightdotso-prometheus",
  "lightdotso-redis",
  "lightdotso-rpc",
+ "lightdotso-solutions",
  "lightdotso-tracing",
  "prisma-client-rust",
+ "rustc-hex",
  "serde",
  "serde_json",
  "tokio",
@@ -6173,16 +6176,22 @@ dependencies = [
 name = "lightdotso-polling"
 version = "0.1.0"
 dependencies = [
+ "autometrics",
  "axum 0.6.20",
  "backon",
  "chrono",
  "clap 4.4.0",
+ "ethers 2.0.8",
  "eyre",
  "lightdotso-constants",
+ "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-graphql",
+ "lightdotso-kafka",
+ "lightdotso-opentelemetry",
  "lightdotso-prisma",
  "lightdotso-tracing",
+ "serde_json",
  "tokio",
 ]
 
@@ -6254,6 +6263,16 @@ dependencies = [
  "serde",
  "serde_json",
  "tokio",
+]
+
+[[package]]
+name = "lightdotso-solutions"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
+ "eyre",
+ "lightdotso-contracts",
+ "serde",
 ]
 
 [[package]]

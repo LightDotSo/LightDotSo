@@ -30,7 +30,7 @@ use lightdotso_kafka::{
     produce_retry_transaction_1_message, produce_retry_transaction_2_message,
 };
 use lightdotso_notifier::config::NotifierArgs;
-use lightdotso_opentelemetry::{consumer::BLOCK_INDEXED_STATUS, custom::COUNTER};
+use lightdotso_opentelemetry::{consumer::ConsumerMetrics, custom::COUNTER};
 use lightdotso_tracing::tracing::{error, info, warn};
 use opentelemetry::KeyValue;
 use rdkafka::{
@@ -141,15 +141,10 @@ impl Consumer {
 
                                         // Write the metric to prometheus
                                         let value_to_add = if res.is_ok() { 1.0 } else { 0.0 };
-                                        BLOCK_INDEXED_STATUS.add(
+                                        ConsumerMetrics::set_index_block(
                                             value_to_add,
-                                            &[
-                                                KeyValue::new("chain_id", chain_id.to_string()),
-                                                KeyValue::new(
-                                                    "block_number",
-                                                    block_number.to_string(),
-                                                ),
-                                            ],
+                                            chain_id,
+                                            block_number,
                                         );
 
                                         // Commit the message

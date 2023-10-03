@@ -16,12 +16,23 @@
 use crate::polling::Polling;
 use clap::Parser;
 use eyre::Result;
-use lightdotso_tracing::tracing::info;
+use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
+use lightdotso_tracing::tracing::{error, info};
 
 #[derive(Debug, Clone, Parser, Default)]
-pub struct PollingArgs {}
+pub struct PollingArgs {
+    /// The flag of whether polling is live.
+    #[arg(long, short, default_value_t = true)]
+    #[clap(long, env = "POLLING_LIVE")]
+    pub live: bool,
+    /// The polling mode to connect to.
+    #[arg(long, short, default_value_t = String::from(""))]
+    #[clap(long, env = "POLLING_MODE")]
+    pub mode: String,
+}
 
 impl PollingArgs {
+    #[tokio::main]
     pub async fn run(&self) -> Result<()> {
         // Add info
         info!("PollingArgs run, starting...");
@@ -29,10 +40,52 @@ impl PollingArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        let polling = Polling::new(self).await;
+        // Get the chain ids from the constants which is the keys of the
+        // THE_GRAPH_HOSTED_SERVICE_URLS map.
+        let chain_ids: Vec<u64> = THE_GRAPH_HOSTED_SERVICE_URLS.keys().cloned().collect();
 
-        polling.run();
+        // Create a vector to store the handles to the spawned tasks.
+        let mut handles = Vec::new();
+
+        // Spawn a task for each chain id.
+        for chain_id in chain_ids {
+            if self.live || self.mode == "all" {
+                let live_handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
+                handles.push(live_handle);
+            }
+
+            if !self.live || self.mode == "all" {
+                let past_handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
+                handles.push(past_handle);
+            }
+        }
+
+        // Wait for all tasks to finish.
+        for handle in handles {
+            if let Err(e) = handle.await {
+                error!("A task panicked: {:?}", e);
+            }
+        }
 
         Ok(())
+    }
+}
+
+// Run the polling for a specific chain id.
+pub async fn run_polling(args: PollingArgs, chain_id: u64, live: bool) {
+    match live {
+        true => {
+            let polling = Polling::new(&args, chain_id, live).await;
+            polling.run().await;
+        }
+        false => {
+            loop {
+                let polling = Polling::new(&args, chain_id, live).await;
+                polling.run().await;
+
+                // Sleep for 1 hour
+                tokio::time::sleep(tokio::time::Duration::from_secs(60 * 60)).await;
+            }
+        }
     }
 }

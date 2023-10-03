@@ -27,7 +27,7 @@ pub async fn start_polling() -> Result<()> {
     std::thread::spawn(|| {
         futures::executor::block_on(async {
             let args = PollingArgs::parse();
-            let _ = args.run().await;
+            let _ = args.run();
         })
     })
     .join()

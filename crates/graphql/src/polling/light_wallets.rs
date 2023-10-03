@@ -28,7 +28,7 @@ pub struct GetLightWalletsQueryVariables {
 #[derive(cynic::QueryFragment, Debug)]
 #[cynic(graphql_type = "Query", variables = "GetLightWalletsQueryVariables")]
 pub struct GetLightWalletsQuery {
-    #[arguments(where: { blockNumber_gte: $min_block, index_gt: $min_index }, orderBy: "index")]
+    #[arguments(first: 300, where: { blockNumber_gt: $min_block, index_gt: $min_index }, orderBy: "index")]
     pub light_wallets: Vec<LightWallet>,
     pub _meta: Option<Meta>,
 }
@@ -92,6 +92,7 @@ pub struct BigInt(pub String);
 
 #[derive(cynic::Scalar, Debug, Clone)]
 pub struct Bytes(pub String);
+
 pub fn build_light_wallets_query(
     vars: GetLightWalletsQueryVariables,
 ) -> cynic::Operation<GetLightWalletsQuery, GetLightWalletsQueryVariables> {
