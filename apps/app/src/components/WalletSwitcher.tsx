@@ -104,9 +104,9 @@ export function WalletSwitcher({
             role="combobox"
             aria-expanded={open}
             aria-label="Select a wallet"
-            className={cn("w-[200px] mx-3", className)}
+            className={cn("mx-2 justify-start", className)}
           >
-            <Avatar className="mr-2 h-5 w-5">
+            <Avatar className="mr-2 h-6 w-6">
               <AvatarImage
                 src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
                 alt={selectedWallet.label}

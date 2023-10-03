@@ -44,7 +44,7 @@ export default async function Page() {
           <div className="flex h-16 items-center px-10">
             <div className="flex items-center">
               <Link href="/" className="hover:rounded-md hover:bg-accent">
-                <Logo className="m-2.5 h-8 w-auto fill-slate-600 dark:fill-slate-300" />
+                <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
               </Link>
               <span className="ml-2 mr-1 text-primary/60">/</span>
               <WalletSwitcher />
