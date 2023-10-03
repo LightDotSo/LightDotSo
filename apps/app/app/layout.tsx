@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { headers } from "next/headers";
-import { Button, TrpcProvider, Web3Provider } from "@lightdotso/ui";
+import { ThemeProvider, TrpcProvider, Web3Provider } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 
 import { siweConfig } from "./siwe";
@@ -27,13 +27,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <TrpcProvider headers={headers()}>
-          <Web3Provider siweConfig={siweConfig}>
-            <Button>Hello</Button>
-            {children}
-          </Web3Provider>
-        </TrpcProvider>
+      <body className="min-h-[100dvh] bg-white dark:bg-black">
+        <ThemeProvider forcedTheme="dark" attribute="class">
+          <TrpcProvider headers={headers()}>
+            <Web3Provider siweConfig={siweConfig}>{children}</Web3Provider>
+          </TrpcProvider>
+        </ThemeProvider>
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>

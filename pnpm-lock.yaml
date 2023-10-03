@@ -345,6 +345,9 @@ importers:
       '@prisma/client':
         specifier: ^5.2.0
         version: 5.2.0(prisma@5.2.0)
+      '@radix-ui/react-icons':
+        specifier: ^1.3.0
+        version: 1.3.0(react@18.2.0)
       '@sentry/integrations':
         specifier: ^7.70.0
         version: 7.70.0
@@ -384,6 +387,9 @@ importers:
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.4.5)(react-dom@18.2.0)(react@18.2.0)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@13.4.5)(react-dom@18.2.0)(react@18.2.0)
       postgres:
         specifier: ^3.3.5
         version: 3.3.5
@@ -9268,7 +9274,7 @@ packages:
     resolution: {integrity: sha512-Mpto8+LY4ZohRUOy1KJIM6r0oAJ+vo/lVAYXtO3L1rgSIcKD422XqBvJAQIQhQjru1/FpWVdOd2BKl+gD1emFw==}
     engines: {node: '>=8'}
     peerDependencies:
-      next: ^10.0.8 || ^11.0 || ^12.0 || ^13.0
+      next: 13.4.5
       react: 16.x || 17.x || 18.x
       webpack: '>= 4.0.0'
     peerDependenciesMeta:
@@ -10711,7 +10717,7 @@ packages:
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@next/font': ^13.0.0
-      next: ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0
+      next: 13.4.5
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
       typescript: '*'
@@ -11614,7 +11620,7 @@ packages:
     resolution: {integrity: sha512-SlM/N8g7fOmIf3QShuJu+4wvItSY3D/64KKFv6Exyo2M/vrEJvO7MZRC6WaT2V5kx35V2RAVEoa8sbgDs8NSPg==}
     peerDependencies:
       '@tanstack/react-query': 5.0.0-beta.9
-      next: ^13.0.0
+      next: 13.4.5
       react: ^18.0.0
       react-dom: ^18.0.0
     dependencies:
@@ -11867,7 +11873,7 @@ packages:
       '@trpc/client': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
       '@trpc/react-query': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
       '@trpc/server': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
-      next: '*'
+      next: 13.4.5
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
@@ -25294,7 +25300,7 @@ packages:
   /next-auth@4.23.1(next@13.4.5)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-mL083z8KgRtlrIV6CDca2H1kduWJuK/3pTS0Fe2og15KOm4v2kkLGdSDfc2g+019aEBrJUT0pPW2Xx42ImN1WA==}
     peerDependencies:
-      next: ^12.2.5 || ^13
+      next: 13.4.5
       nodemailer: ^6.6.5
       react: ^17.0.2 || ^18
       react-dom: ^17.0.2 || ^18
@@ -25336,7 +25342,7 @@ packages:
   /next-seo@6.1.0(next@13.4.5)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-iMBpFoJsR5zWhguHJvsoBDxDSmdYTHtnVPB1ij+CD0NReQCP78ZxxbdL9qkKIf4oEuZEqZkrjAQLB0bkII7RYA==}
     peerDependencies:
-      next: ^8.1.1-canary.54 || >=9.0.0
+      next: 13.4.5
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
@@ -25348,7 +25354,7 @@ packages:
   /next-themes@0.2.1(next@13.4.5)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
     peerDependencies:
-      next: '*'
+      next: 13.4.5
       react: '*'
       react-dom: '*'
     dependencies:
@@ -25446,7 +25452,7 @@ packages:
   /nextra-theme-docs@2.12.3(next@13.4.5)(nextra@2.12.3)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-aZywZwokk/h5HrUTh/bsU981Sd2prZks7ci+HNG9wuMnm+drp3PBmRKIuQxBCiJurePVBJ2Qk2/wTV3VECGKnA==}
     peerDependencies:
-      next: '>=9.5.3'
+      next: 13.4.5
       nextra: 2.12.3
       react: '>=16.13.1'
       react-dom: '>=16.13.1'
@@ -25474,7 +25480,7 @@ packages:
     resolution: {integrity: sha512-0d8wXpGAccFpMFZuxnlnN56MIZj+AWGYXW3Xk6ByXyr0Mb+B/C/0aGZV5YrBex0V1wEqMGQl4LLAJI+AfCbSXg==}
     engines: {node: '>=16'}
     peerDependencies:
-      next: '>=9.5.3'
+      next: 13.4.5
       react: '>=16.13.1'
       react-dom: '>=16.13.1'
     dependencies:

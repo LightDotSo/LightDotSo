@@ -20,6 +20,9 @@ import { getAuthSession } from "@lightdotso/next-auth";
 import { User } from "./user";
 import { SIWEButton } from "./siwe";
 import { Suspense } from "react";
+import { WalletSwitcher } from "@/components/WalletSwitcher";
+import { UserNav } from "@/components/UserNav";
+import { MainNav } from "@/components/MainNav";
 
 export default async function Page() {
   const user = await invoker.user.me.query({});
@@ -29,15 +32,29 @@ export default async function Page() {
   preload(session?.user?.name as `0x${string}`);
 
   return (
-    <main className="text-red-500">
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-      <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-      <Connect />
-      <Suspense>
-        <User />
-      </Suspense>
-      <SIWEButton />
+    <main>
+      <div className="hidden flex-col md:flex">
+        <div className="border-b">
+          <div className="flex h-16 items-center px-4">
+            <WalletSwitcher />
+            <MainNav className="mx-6" />
+            <div className="ml-auto flex items-center space-x-4">
+              {/* <Search /> */}
+              <UserNav />
+              <Connect />
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 space-y-4 p-8 pt-6">
+          <pre>{JSON.stringify(session, null, 2)}</pre>
+          <EnsName params={{ address: session?.user?.name as `0x${string}` }} />
+          <pre>{JSON.stringify(user, null, 2)}</pre>
+          <Suspense>
+            <User />
+          </Suspense>
+          <SIWEButton />
+        </div>
+      </div>
     </main>
   );
 }
