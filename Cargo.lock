@@ -5889,6 +5889,7 @@ dependencies = [
  "lightdotso-prometheus",
  "lightdotso-redis",
  "lightdotso-rpc",
+ "lightdotso-solutions",
  "lightdotso-tracing",
  "prisma-client-rust",
  "rustc-hex",

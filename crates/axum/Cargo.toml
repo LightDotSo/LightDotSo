@@ -26,6 +26,7 @@
   lightdotso-prometheus = { workspace = true }
   lightdotso-redis = { workspace = true }
   lightdotso-rpc = { workspace = true }
+  lightdotso-solutions = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
   rustc-hex = { workspace = true }

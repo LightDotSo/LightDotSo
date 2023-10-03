@@ -46,6 +46,7 @@ use crate::routes::{check, configuration, health, wallet};
         check::handler,
         health::handler,
         configuration::v1_get_handler,
+        configuration::v1_post_handler,
         wallet::v1_get_handler,
         wallet::v1_list_handler
     ),

@@ -20,11 +20,15 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::get,
+    routing::{get, post},
     Json, Router,
 };
-use ethers_main::{types::H160, utils::to_checksum};
+use ethers_main::{
+    types::{H160, U256},
+    utils::to_checksum,
+};
 use lightdotso_prisma::configuration;
+use lightdotso_solutions::{image_hash_of_wallet_config, Signer, WalletConfig};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -36,9 +40,8 @@ pub struct GetQuery {
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
-pub struct PaginationQuery {
-    pub offset: Option<i64>,
-    pub limit: Option<i64>,
+pub struct PostQuery {
+    pub address: String,
 }
 
 /// Item to do.
@@ -57,7 +60,9 @@ impl From<configuration::Data> for Configuration {
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/configuration/get", get(v1_get_handler))
+    Router::new()
+        .route("/configuration/get", get(v1_get_handler))
+        .route("/configuration/create", post(v1_post_handler))
 }
 
 /// Get a configuration
@@ -93,6 +98,54 @@ async fn v1_get_handler(
 
     // If the configuration is not found, return a 404.
     let configuration = configuration.ok_or(AppError::NotFound)?;
+
+    // Change the configuration to the format that the API expects.
+    let configuration: Configuration = configuration.into();
+
+    Ok(Json::from(configuration))
+}
+
+/// Get a configuration
+#[utoipa::path(
+        post,
+        path = "/v1/configuration/create",
+        params(
+            PostQuery
+        ),
+        responses(
+            (status = 200, description = "Configuration created successfully", body = Configuration),
+        )
+    )]
+#[autometrics]
+async fn v1_post_handler(
+    post: Query<PostQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<Configuration> {
+    // Get the post query.
+    let Query(query) = post;
+
+    let address: H160 = query.address.parse()?;
+
+    let config = WalletConfig {
+        checkpoint: U256::from(1u64),
+        threshold: U256::from(1u64),
+        signers: vec![Signer { weight: 1, address }],
+    };
+
+    // Simulate the image hash of the wallet config.
+    let res = image_hash_of_wallet_config(config);
+
+    // If the image hash of the wallet could not be simulated, return a 404.
+    let image_hash = res.map_err(|_| AppError::NotFound)?;
+
+    // Create the configurations to the database.
+    let configuration = client
+        .client
+        .unwrap()
+        .configuration()
+        .create(to_checksum(&address, None), image_hash, 1, 1, vec![])
+        .exec()
+        .await?;
 
     // Change the configuration to the format that the API expects.
     let configuration: Configuration = configuration.into();

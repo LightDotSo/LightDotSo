@@ -20,17 +20,21 @@ use ethers::{
 };
 use eyre::Result;
 
+// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
+// License: Apache-2.0
 #[derive(Debug)]
 pub struct Signer {
-    weight: u8,
-    address: Address,
+    pub weight: u8,
+    pub address: Address,
 }
 
+// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
+// License: Apache-2.0
 #[derive(Debug)]
 pub struct WalletConfig {
-    checkpoint: U256,
-    threshold: U256,
-    signers: Vec<Signer>,
+    pub checkpoint: U256,
+    pub threshold: U256,
+    pub signers: Vec<Signer>,
 }
 
 // Encoding the wallet config into bytes and hash it using keccak256
@@ -49,7 +53,7 @@ pub fn image_hash_of_wallet_config(wallet_config: WalletConfig) -> Result<String
 
     // left pad with zeros to 32 bytes
     // From: https://github.com/gakonst/ethers-rs/blob/fa3017715a298728d9fb341933818a5d0d84c2dc/ethers-core/src/utils/mod.rs#L506
-    // License: MIT
+    // License: Apache-2.0
     let mut padded = [0u8; 32];
     padded[32 - bytes.0.len()..].copy_from_slice(&bytes.0);
 
