@@ -89,8 +89,8 @@ impl Polling {
                     let now = chrono::Utc::now();
                     trace!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
 
-                    // Info if the minute is 0.
-                    if now.minute() == 0 {
+                    // Info if the second is 0.
+                    if now.second() == 0 {
                         info!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
                     }
 
@@ -198,7 +198,10 @@ impl Polling {
                     if let Some(hash) = &wallet.image_hash {
                         if !hash.0.is_empty() {
                             // Create the wallet in the db.
-                            let _ = self.db_create_wallet(wallet).await;
+                            let res = self.db_create_wallet(wallet).await;
+                            if (res.is_err()) {
+                                error!("db_create_wallet error: {:?}", res);
+                            }
 
                             // Send the tx queue if live.
                             if self.live && self.kafka_client.is_some() && self.provider.is_some() {

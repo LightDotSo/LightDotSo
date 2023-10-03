@@ -17,9 +17,7 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::utils::to_checksum;
-use lightdotso_prisma::{
-    log, receipt, transaction, transaction_category, user, wallet, PrismaClient,
-};
+use lightdotso_prisma::{log, receipt, transaction, transaction_category, wallet, PrismaClient};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
@@ -40,22 +38,6 @@ pub async fn create_client() -> Result<PrismaClient, NewClientError> {
     client
 }
 
-/// Find a user by id.
-pub async fn find_user(db: Database) -> Vec<user::Data> {
-    let users: Vec<user::Data> =
-        db.user().find_many(vec![user::id::equals("Id".to_string())]).exec().await.unwrap();
-
-    users
-}
-
-/// Get a user by id.
-/// Taken from: https://github.com/Brendonovich/prisma-client-rust/blob/124e8216a9d093e9ae1feb8b9b84614bc3579f18/examples/axum-rest/src/routes.rs
-pub async fn handle_user_get(db: Database) -> AppJsonResult<Vec<user::Data>> {
-    let users = db.user().find_many(vec![]).with(user::sessions::fetch(vec![])).exec().await?;
-
-    Ok(Json::from(users))
-}
-
 /// Create a new wallet.
 #[autometrics]
 pub async fn create_wallet(
@@ -65,7 +47,7 @@ pub async fn create_wallet(
     factory_address: ethers::types::H160,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
-    info!("Creating wallet");
+    info!("Creating wallet at address: {:?} chain_id: {:?}", address, chain_id);
 
     let wallet = db
         .wallet()
@@ -81,6 +63,7 @@ pub async fn create_wallet(
     Ok(Json::from(wallet))
 }
 
+#[autometrics]
 pub async fn create_transaction_category(
     db: Database,
     address: ethers::types::H160,
