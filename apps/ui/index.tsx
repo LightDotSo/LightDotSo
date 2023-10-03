@@ -17,6 +17,8 @@ export * from "./src/utils";
 export * from "./src/components/ui/accordion";
 export * from "./src/components/ui/alert-dialog";
 export * from "./src/components/ui/alert";
+export * from "./src/components/ui/aspect-ratio";
+export * from "./src/components/ui/avatar";
 export * from "./src/components/ui/badge";
 export * from "./src/components/ui/button";
 export * from "./src/components/ui/calendar";

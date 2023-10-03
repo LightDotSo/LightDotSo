@@ -24,13 +24,13 @@ use axum::{
     Json, Router,
 };
 use ethers_main::{
-    types::{H160, U256},
+    types::{H160, H256, U256},
     utils::to_checksum,
 };
 use eyre::Result;
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
-use lightdotso_solutions::{image_hash_of_wallet_config, Signer, WalletConfig};
+use lightdotso_solutions::{get_address, image_hash_of_wallet_config, Signer, WalletConfig};
 use lightdotso_tracing::{
     tracing::{info_span, trace},
     tracing_futures::Instrument,
@@ -41,20 +41,41 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
+    // The address of the wallet.
     pub address: String,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
+    // The offset of the first wallet to return.
     pub offset: Option<i64>,
+    // The maximum number of wallets to return.
     pub limit: Option<i64>,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
+    // TODO: Support all wallet types and config
+    // The address of the single owner of the wallet.
     pub address: String,
+    // The salt is used to calculate the new wallet address.
+    pub salt: String,
+}
+
+/// Wallet operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum WalletError {
+    // Wallet query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Wallet already exists conflict.
+    #[schema(example = "Wallet already exists")]
+    Conflict(String),
+    /// Wallet not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }
 
 /// Item to do.
@@ -93,6 +114,7 @@ pub(crate) fn router() -> Router<AppState> {
         ),
         responses(
             (status = 200, description = "Wallet returned successfully", body = Wallet),
+            (status = 404, description = "Wallet not found", body = WalletError),
         )
     )]
 #[autometrics]
@@ -133,6 +155,7 @@ async fn v1_get_handler(
         ),
         responses(
             (status = 200, description = "Wallets returned successfully", body = [Wallet]),
+            (status = 500, description = "Wallet bad request", body = WalletError),
         )
     )]
 #[autometrics]
@@ -169,6 +192,7 @@ async fn v1_list_handler(
         ),
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
+            (status = 500, description = "Wallet internal error", body = WalletError),
         )
     )]
 #[autometrics]
@@ -180,7 +204,6 @@ async fn v1_post_handler(
     let Query(query) = post;
 
     let address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&address, None);
     let factory_address: H160 = LIGHT_WALLET_FACTORY_ADDRESS.to_string().parse()?;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
@@ -196,6 +219,15 @@ async fn v1_post_handler(
     // If the image hash of the wallet could not be simulated, return a 404.
     let image_hash = res.map_err(|_| AppError::NotFound)?;
 
+    // Parse the image hash to bytes.
+    let image_hash_bytes: H256 = image_hash.parse()?;
+
+    // Parse the salt to bytes.
+    let salt_bytes: H256 = query.salt.parse()?;
+
+    // Calculate the new wallet address.
+    let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
+
     let wallet: Result<lightdotso_prisma::wallet::Data> = client
         .client
         .unwrap()
@@ -204,7 +236,7 @@ async fn v1_post_handler(
             // Create the configurations to the database.
             let configuration_data = client
                 .configuration()
-                .create(to_checksum(&address, None), image_hash.clone(), 1, 1, vec![])
+                .create(to_checksum(&new_wallet_address, None), image_hash.clone(), 1, 1, vec![])
                 .exec()
                 .await?;
             trace!(?configuration_data);
@@ -228,7 +260,7 @@ async fn v1_post_handler(
             // Get the wallets from the database.
             let wallet = client
                 .wallet()
-                .create(checksum_address, 0, checksum_factory_address, vec![])
+                .create(to_checksum(&new_wallet_address, None), 0, checksum_factory_address, vec![])
                 .exec()
                 .instrument(info_span!("create_receipt"))
                 .await?;

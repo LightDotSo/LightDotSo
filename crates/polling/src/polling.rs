@@ -15,7 +15,6 @@
 
 use crate::config::PollingArgs;
 use autometrics::autometrics;
-use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use chrono::Timelike;
 use ethers::{
@@ -23,14 +22,10 @@ use ethers::{
     providers::Middleware,
 };
 use eyre::Result;
-use lightdotso_constants::TESTNET_CHAIN_IDS;
 use lightdotso_contracts::provider::get_provider;
-use lightdotso_db::{
-    db::{create_client, create_wallet},
-    error::DbError,
-};
+use lightdotso_db::db::create_client;
 use lightdotso_graphql::polling::{
-    light_wallets::{run_light_wallets_query, BigInt, GetLightWalletsQueryVariables, LightWallet},
+    light_wallets::{run_light_wallets_query, BigInt, GetLightWalletsQueryVariables},
     min_block::run_min_block_query,
 };
 use lightdotso_kafka::{
@@ -41,6 +36,7 @@ use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{sync::Arc, time::Duration};
 
+#[allow(dead_code)]
 #[derive(Clone)]
 pub struct Polling {
     chain_id: u64,
@@ -198,10 +194,10 @@ impl Polling {
                     if let Some(hash) = &wallet.image_hash {
                         if !hash.0.is_empty() {
                             // Create the wallet in the db.
-                            let res = self.db_create_wallet(wallet).await;
-                            if (res.is_err()) {
-                                error!("db_create_wallet error: {:?}", res);
-                            }
+                            // let res = self.db_create_wallet(wallet).await;
+                            // if res.is_err() {
+                            //     error!("db_create_wallet error: {:?}", res);
+                            // }
 
                             // Send the tx queue if live.
                             if self.live && self.kafka_client.is_some() && self.provider.is_some() {
@@ -230,25 +226,16 @@ impl Polling {
     }
 
     /// Create a new wallet in the db
-    #[autometrics]
-    pub async fn db_create_wallet(
-        &self,
-        wallet: &LightWallet,
-    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
-        {
-            || {
-                create_wallet(
-                    self.db_client.clone(),
-                    wallet.address.0.parse().unwrap(),
-                    self.chain_id as i64,
-                    wallet.factory.0.parse().unwrap(),
-                    Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
-                )
-            }
-        }
-        .retry(&ExponentialBuilder::default())
-        .await
-    }
+    // TODO Blocked by `solutions` api to generate the Configuration
+    // #[autometrics]
+    // pub async fn db_create_wallet(
+    //     &self,
+    //     wallet: &LightWallet,
+    // ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> { { || { create_wallet(
+    //   self.db_client.clone(), wallet.address.0.parse().unwrap(), self.chain_id as i64,
+    //   wallet.factory.0.parse().unwrap(), Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)), ) } }
+    //   .retry(&ExponentialBuilder::default()) .await
+    // }
 
     /// Add a new tx in the queue
     #[autometrics]

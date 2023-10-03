@@ -44,6 +44,17 @@ pub struct PostQuery {
     pub address: String,
 }
 
+/// Wallet operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum ConfigurationError {
+    // Configuration query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Configuration not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+}
+
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Configuration {
@@ -74,6 +85,7 @@ pub(crate) fn router() -> Router<AppState> {
         ),
         responses(
             (status = 200, description = "Configuration returned successfully", body = Configuration),
+            (status = 404, description = "Configuration not found", body = ConfigurationError),
         )
     )]
 #[autometrics]
@@ -114,6 +126,7 @@ async fn v1_get_handler(
         ),
         responses(
             (status = 200, description = "Configuration created successfully", body = Configuration),
+            (status = 500, description = "Configuration bad request", body = ConfigurationError),
         )
     )]
 #[autometrics]
@@ -136,7 +149,7 @@ async fn v1_post_handler(
     let res = image_hash_of_wallet_config(config);
 
     // If the image hash of the wallet could not be simulated, return a 404.
-    let image_hash = res.map_err(|_| AppError::NotFound)?;
+    let image_hash = res.map_err(|_| AppError::BadRequest)?;
 
     // Create the configurations to the database.
     let configuration = client
