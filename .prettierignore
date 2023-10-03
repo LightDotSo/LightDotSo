@@ -5,6 +5,7 @@ apps/subgraph/generated/**/*.ts
 apps/ui/src/components/**
 apps/extension/**
 configurations/prisma/src/zod/**
+packages/client/src/*.d.ts
 ios/LightWallet
 ios/LightWalletSafariExtension/Resources/**
 
