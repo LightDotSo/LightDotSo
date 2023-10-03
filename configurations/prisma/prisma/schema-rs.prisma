@@ -50,7 +50,6 @@ model User {
   accounts Account[]
   sessions Session[]
   wallets  Wallet[]
-  owners   Owner[]
 }
 
 model VerificationRequest {
@@ -86,7 +85,6 @@ model Configuration {
   threshold BigInt
   nonce     BigInt
 
-  owners  Owner[]
   wallets Wallet[]
 
   @@unique([imageHash, nonce])
@@ -99,11 +97,6 @@ model Owner {
   imageHash String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  configurationId String
-
-  configuration Configuration @relation(fields: [configurationId], references: [id])
-  user          User?         @relation(fields: [address], references: [address])
 
   @@unique([address, weight])
 }
