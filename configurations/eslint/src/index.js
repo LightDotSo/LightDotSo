@@ -37,6 +37,7 @@ module.exports = {
     "generated.ts",
     "apps/ui/src/components/ui/**",
     "apps/extension/*/**.js",
+    "packages/client/src/**.d.ts",
     "ios/LightWalletSafariExtension/Resources/**",
   ],
   parser: "@typescript-eslint/parser",
