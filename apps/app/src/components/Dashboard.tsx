@@ -246,7 +246,7 @@ export function Dashboard() {
                       <Metric className="truncate">{item.metric}</Metric>
                     </div>
                     <BadgeDelta
-                      className="dark:bg-background"
+                      className="bg-transparent"
                       deltaType={item.deltaType}
                     >
                       {item.delta}

@@ -104,7 +104,7 @@ export function WalletSwitcher({
             role="combobox"
             aria-expanded={open}
             aria-label="Select a wallet"
-            className={cn("w-[200px] justify-between", className)}
+            className={cn("w-[200px] mx-3", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
@@ -114,7 +114,7 @@ export function WalletSwitcher({
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
             {selectedWallet.label}
-            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
