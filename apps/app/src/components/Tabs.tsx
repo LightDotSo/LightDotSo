@@ -16,12 +16,12 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import type { Tab } from "@/hooks/useTabs";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const transition = {
   type: "tween",
@@ -49,6 +49,14 @@ export const Tabs = ({
   }, [tabs.length]);
 
   const router = useRouter();
+  const pathname = usePathname();
+
+  const firstSlug = useMemo(() => {
+    // Split the path using '/' as delimiter and remove empty strings
+    const slugs = pathname.split("/").filter(slug => slug);
+    // Return the first slug if it exists, otherwise return '/'
+    return slugs.length > 0 ? "/" + slugs[0] : "/";
+  }, [pathname]);
 
   const navRef = useRef<HTMLDivElement>(null);
   const navRect = navRef.current?.getBoundingClientRect();
@@ -68,6 +76,7 @@ export const Tabs = ({
     >
       {tabs.map((item, i) => {
         const isActive = hoveredTabIndex === i || selectedTabIndex === i;
+        const href = firstSlug + item.href;
 
         return (
           <motion.button
@@ -82,13 +91,13 @@ export const Tabs = ({
             ref={el => (buttonRefs[i] = el)}
             onPointerEnter={() => {
               setHoveredTabIndex(i);
-              router.prefetch(item.href);
+              router.prefetch(href);
             }}
             onFocus={() => {
               setHoveredTabIndex(i);
             }}
             onClick={() => {
-              router.push(item.href);
+              router.push(href);
               setSelectedTab([i, i > selectedTabIndex ? 1 : -1]);
             }}
           >
