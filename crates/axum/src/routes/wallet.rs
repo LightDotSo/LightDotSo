@@ -57,7 +57,7 @@ pub struct ListQuery {
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    // TODO: Support all tx types
+    // TODO: Support all wallet types and config
     // The address of the single owner of the wallet.
     pub address: String,
     // The salt is used to calculate the new wallet address.
