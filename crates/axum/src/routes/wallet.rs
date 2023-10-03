@@ -57,6 +57,20 @@ pub struct PostQuery {
     pub address: String,
 }
 
+/// Wallet operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum WalletError {
+    // Wallet query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Wallet already exists conflict.
+    #[schema(example = "Wallet already exists")]
+    Conflict(String),
+    /// Wallet not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+}
+
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Wallet {
@@ -93,6 +107,7 @@ pub(crate) fn router() -> Router<AppState> {
         ),
         responses(
             (status = 200, description = "Wallet returned successfully", body = Wallet),
+            (status = 404, description = "Wallet not found", body = WalletError),
         )
     )]
 #[autometrics]
@@ -133,6 +148,7 @@ async fn v1_get_handler(
         ),
         responses(
             (status = 200, description = "Wallets returned successfully", body = [Wallet]),
+            (status = 500, description = "Wallet bad request", body = WalletError),
         )
     )]
 #[autometrics]
@@ -169,6 +185,7 @@ async fn v1_list_handler(
         ),
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
+            (status = 500, description = "Wallet internal error", body = WalletError),
         )
     )]
 #[autometrics]

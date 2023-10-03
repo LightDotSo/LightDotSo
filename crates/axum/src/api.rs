@@ -41,7 +41,9 @@ use crate::routes::{check, configuration, health, wallet};
 #[openapi(
     components(
         schemas(configuration::Configuration),
-        schemas(wallet::Wallet)
+        schemas(configuration::ConfigurationError),
+        schemas(wallet::Wallet),
+        schemas(wallet::WalletError),
     ),
     paths(
         check::handler,
