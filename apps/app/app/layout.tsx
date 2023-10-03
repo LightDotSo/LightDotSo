@@ -20,6 +20,7 @@ import { WalletSwitcher } from "@/components/WalletSwitcher";
 import { Logo } from "@/components/Logo";
 import { UserNav } from "@/components/UserNav";
 import { MainNav } from "@/components/MainNav";
+import { NotificationPopover } from "@/components/NotificationPopover";
 import { FeedbackPopover } from "@/components/FeedbackPopover";
 import Link from "next/link";
 import { Connect } from "./connect";
@@ -54,6 +55,7 @@ export default function RootLayout({
                       <div className="ml-auto flex items-center space-x-4">
                         {/* <Search /> */}
                         <FeedbackPopover />
+                        <NotificationPopover />
                         <UserNav />
                         <Connect />
                       </div>
