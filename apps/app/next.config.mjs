@@ -42,6 +42,8 @@ const nextConfig = {
 
   transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],
   webpack: (config, { isServer }) => {
+    config.resolve.fallback = { fs: false };
+
     if (isServer) {
       config.plugins = [...config.plugins, new PrismaPlugin()];
     }
