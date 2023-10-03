@@ -32,12 +32,10 @@ use ethers::{
 };
 use ethers_providers::StreamExt;
 use eyre::eyre;
-use lightdotso_constants::{
-    FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS, TESTNET_CHAIN_IDS,
-};
+use lightdotso_constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
-    db::{create_transaction_category, create_transaction_with_log_receipt, create_wallet},
+    db::{create_transaction_category, create_transaction_with_log_receipt},
     error::DbError,
 };
 use lightdotso_kafka::{
@@ -484,17 +482,17 @@ impl Indexer {
                                 // If the category is a wallet initialized
                                 if category == &LIGHT_WALLET_INITIALIZED.to_string() {
                                     // Get the wallet entry
-                                    let wallet_entry =
-                                        wallet_address_hashmap.get(&unique_wallet_tx_hash);
+                                    // let wallet_entry =
+                                    //     wallet_address_hashmap.get(&unique_wallet_tx_hash);
 
                                     // Get the key for the wallet entry that matches the `from`
                                     // value
-                                    let factory_address = wallet_entry
-                                        .unwrap()
-                                        .iter()
-                                        .find(|(_, &v)| v == *addr)
-                                        .unwrap()
-                                        .0;
+                                    // let factory_address = wallet_entry
+                                    //     .unwrap()
+                                    //     .iter()
+                                    //     .find(|(_, &v)| v == *addr)
+                                    //     .unwrap()
+                                    //     .0;
 
                                     // Get the log that matches the tx hash
                                     // let initialized_logs = block_logs
@@ -529,13 +527,13 @@ impl Indexer {
                                     //     })?;
 
                                     // Create the wallet
-                                    let _ = self
-                                        .db_create_wallet(
-                                            Arc::clone(&db_client),
-                                            *addr,
-                                            *factory_address,
-                                        )
-                                        .await;
+                                    // let _ = self
+                                    //     .db_create_wallet(
+                                    //         Arc::clone(&db_client),
+                                    //         *addr,
+                                    //         *factory_address,
+                                    //     )
+                                    //     .await;
                                 }
 
                                 // Create the transaction category if wallet exists
@@ -783,27 +781,18 @@ impl Indexer {
     }
 
     /// Creates a new wallet in the database
-    #[autometrics]
-    pub async fn db_create_wallet(
-        &self,
-        db_client: Arc<PrismaClient>,
-        address: ethers::types::H160,
-        factory_address: ethers::types::H160,
-    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
-        {
-            || {
-                create_wallet(
-                    db_client.clone(),
-                    address,
-                    self.chain_id as i64,
-                    factory_address,
-                    Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)),
-                )
-            }
-        }
-        .retry(&ExponentialBuilder::default())
-        .await
-    }
+    // TODO: Blocked by `solutions` api to generate the Configuration
+    // #[autometrics]
+    // pub async fn db_create_wallet(
+    //     &self,
+    //     db_client: Arc<PrismaClient>,
+    //     address: ethers::types::H160,
+    //     factory_address: ethers::types::H160,
+    // ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> { { || { create_wallet(
+    //   db_client.clone(), address, self.chain_id as i64, factory_address,
+    //   Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)), ) } }
+    //   .retry(&ExponentialBuilder::default()) .await
+    // }
 
     /// Creates a new transaction category in the database
     #[autometrics]
