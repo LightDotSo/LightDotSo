@@ -32,7 +32,8 @@ const transition = {
 type Props = {
   selectedTabIndex: number;
   tabs: Tab[];
-  setSelectedTab: (input: [number, number]) => void;
+  // eslint-disable-next-line no-unused-vars
+  setSelectedTab: (_input: [number, number]) => void;
 };
 
 export const Tabs = ({

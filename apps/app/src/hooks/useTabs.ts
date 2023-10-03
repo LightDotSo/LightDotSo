@@ -24,7 +24,7 @@ export type Tab = {
   id: string;
   href: string;
   number: number;
-  icon: (props: { className?: string }) => ReactNode;
+  icon: (_props: { className?: string }) => ReactNode;
 };
 
 export function useTabs({
@@ -34,7 +34,7 @@ export function useTabs({
 }: {
   tabs: Tab[];
   initialTabId: string;
-  onChange?: (id: string) => void;
+  onChange?: (_id: string) => void;
 }) {
   const [[selectedTabIndex, direction], setSelectedTab] = useState(() => {
     const indexOfInitialTab = tabs.findIndex(tab => tab.id === initialTabId);
