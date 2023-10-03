@@ -41,7 +41,7 @@ export default async function Page() {
     <main>
       <div className="hidden flex-col md:flex">
         <div className="border-b py-2">
-          <div className="flex h-16 items-center px-10">
+          <div className="flex h-16 items-center px-12">
             <div className="flex items-center">
               <Link href="/" className="hover:rounded-md hover:bg-accent">
                 <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />

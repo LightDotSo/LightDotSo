@@ -43,7 +43,7 @@ export function MainNav({
         label: "Overview",
         id: "Overview",
         href: "/",
-        number: 3,
+        number: 0,
         icon: (
           props: React.JSX.IntrinsicAttributes &
             IconProps &
@@ -54,7 +54,7 @@ export function MainNav({
         label: "Transactions",
         id: "Transactions",
         href: "/",
-        number: 3,
+        number: 10,
         icon: props => <WidthIcon {...props} />,
       },
       {
@@ -75,7 +75,7 @@ export function MainNav({
         label: "Support",
         id: "Support",
         href: "/",
-        number: 3,
+        number: 0,
         icon: props => <ChatBubbleIcon {...props} />,
       },
     ],

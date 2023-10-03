@@ -89,6 +89,11 @@ export const Tabs = ({
           >
             {<item.icon className="mr-2 h-4 w-4" />}
             {item.label}
+            {item.number > 0 && (
+              <span className="font-sm ml-2 rounded-full bg-accent px-2 py-0.5">
+                {item.number}
+              </span>
+            )}
           </motion.button>
         );
       })}
