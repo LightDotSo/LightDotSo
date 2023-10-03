@@ -20,11 +20,20 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::get,
+    routing::{get, post},
     Json, Router,
 };
-use ethers_main::{types::H160, utils::to_checksum};
+use ethers_main::{
+    types::{H160, U256},
+    utils::to_checksum,
+};
+use eyre::Result;
 use lightdotso_prisma::wallet;
+use lightdotso_solutions::{image_hash_of_wallet_config, Signer, WalletConfig};
+use lightdotso_tracing::{
+    tracing::{info_span, trace},
+    tracing_futures::Instrument,
+};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -36,9 +45,15 @@ pub struct GetQuery {
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
-pub struct PaginationQuery {
+pub struct ListQuery {
     pub offset: Option<i64>,
     pub limit: Option<i64>,
+}
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct PostQuery {
+    pub address: String,
 }
 
 /// Item to do.
@@ -65,6 +80,7 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/wallet/get", get(v1_get_handler))
         .route("/wallet/list", get(v1_list_handler))
+        .route("/wallet/create", post(v1_post_handler))
 }
 
 /// Get a wallet
@@ -112,7 +128,7 @@ async fn v1_get_handler(
         get,
         path = "/v1/wallet/list",
         params(
-            PaginationQuery
+            ListQuery
         ),
         responses(
             (status = 200, description = "Wallets returned successfully", body = [Wallet]),
@@ -120,7 +136,7 @@ async fn v1_get_handler(
     )]
 #[autometrics]
 async fn v1_list_handler(
-    pagination: Option<Query<PaginationQuery>>,
+    pagination: Option<Query<ListQuery>>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
     // Get the pagination query.
@@ -141,4 +157,77 @@ async fn v1_list_handler(
     let wallets: Vec<Wallet> = wallets.into_iter().map(Wallet::from).collect();
 
     Ok(Json::from(wallets))
+}
+
+/// Create a wallet
+#[utoipa::path(
+        post,
+        path = "/v1/wallet/create",
+        params(
+            PostQuery
+        ),
+        responses(
+            (status = 200, description = "Wallet created successfully", body = Wallet),
+        )
+    )]
+#[autometrics]
+async fn v1_post_handler(
+    post: Query<PostQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<Wallet> {
+    // Get the post query.
+    let Query(query) = post;
+
+    let address: H160 = query.address.parse()?;
+    let checksum_address = to_checksum(&address, None);
+
+    let config = WalletConfig {
+        checkpoint: U256::from(1u64),
+        threshold: U256::from(1u64),
+        signers: vec![Signer { weight: 1, address }],
+    };
+
+    // Simulate the image hash of the wallet config.
+    let res = image_hash_of_wallet_config(config);
+
+    // If the image hash of the wallet could not be simulated, return a 404.
+    let image_hash = res.map_err(|_| AppError::NotFound)?;
+
+    let wallet: Result<lightdotso_prisma::wallet::Data> = client
+        .client
+        .unwrap()
+        ._transaction()
+        .run(|client| async move {
+            // Create the configurations to the database.
+            let configuration_data = client
+                .configuration()
+                .create(to_checksum(&address, None), image_hash, 1, 1, vec![])
+                .exec()
+                .await?;
+            trace!(?configuration_data);
+
+            // Get the wallets from the database.
+            let wallet = client
+                .wallet()
+                .create(
+                    checksum_address,
+                    0,
+                    "0x0000000000756D3E6464f5efe7e413a0Af1C7474".to_string(),
+                    vec![],
+                )
+                .exec()
+                .instrument(info_span!("create_receipt"))
+                .await?;
+
+            Ok(wallet)
+        })
+        .await;
+
+    // If the wallet is not created, return a 500.
+    let wallet = wallet.map_err(|_| AppError::InternalError)?;
+
+    // Change the wallet to the format that the API expects.
+    let wallet: Wallet = wallet.into();
+
+    Ok(Json::from(wallet))
 }

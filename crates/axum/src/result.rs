@@ -35,7 +35,9 @@ pub enum AppError {
     PrismaError(QueryError),
     RedisError(RedisError),
     FromHexError(FromHexError),
+    BadRequest,
     NotFound,
+    InternalError,
 }
 
 impl From<FromHexError> for AppError {
@@ -70,7 +72,9 @@ impl IntoResponse for AppError {
             AppError::PrismaError(_) => StatusCode::BAD_REQUEST,
             AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::FromHexError(_) => StatusCode::BAD_REQUEST,
+            AppError::BadRequest => StatusCode::BAD_REQUEST,
             AppError::NotFound => StatusCode::NOT_FOUND,
+            AppError::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
         };
 
         status.into_response()
