@@ -181,6 +181,8 @@ async fn v1_post_handler(
 
     let address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&address, None);
+    let factory_address: H160 = LIGHT_WALLET_FACTORY_ADDRESS.to_string().parse()?;
+    let checksum_factory_address = to_checksum(&factory_address, None);
 
     let config = WalletConfig {
         checkpoint: U256::from(1u64),
@@ -202,15 +204,31 @@ async fn v1_post_handler(
             // Create the configurations to the database.
             let configuration_data = client
                 .configuration()
-                .create(to_checksum(&address, None), image_hash, 1, 1, vec![])
+                .create(to_checksum(&address, None), image_hash.clone(), 1, 1, vec![])
                 .exec()
                 .await?;
             trace!(?configuration_data);
 
+            // Create the owners to the database.
+            let owner_data = client
+                .owner()
+                .create(
+                    to_checksum(&address, None),
+                    1,
+                    image_hash.clone(),
+                    lightdotso_prisma::configuration::UniqueWhereParam::IdEquals(
+                        configuration_data.id,
+                    ),
+                    vec![],
+                )
+                .exec()
+                .await?;
+            trace!(?owner_data);
+
             // Get the wallets from the database.
             let wallet = client
                 .wallet()
-                .create(checksum_address, 0, LIGHT_WALLET_FACTORY_ADDRESS.to_string(), vec![])
+                .create(checksum_address, 0, checksum_factory_address, vec![])
                 .exec()
                 .instrument(info_span!("create_receipt"))
                 .await?;
