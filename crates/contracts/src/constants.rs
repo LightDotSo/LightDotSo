@@ -24,12 +24,20 @@ lazy_static! {
       "0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap();
 }
 
-// The paymaster addresses
+// The factory addresses
 lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_WALLET_FACTORY_ADDRESS: Address =
       // v0.1.0
       "0x0000000000756D3E6464f5efe7e413a0Af1C7474".parse().unwrap();
+}
+
+// The factory implementation addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS: Address =
+      // v0.1.0
+      "0x8fb3cfdf2082c2be7d3205d361067748ea1abf63".parse().unwrap();
 }
 
 // The entrypoint addresses
