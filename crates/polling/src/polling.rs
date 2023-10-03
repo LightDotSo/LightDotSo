@@ -183,9 +183,12 @@ impl Polling {
         if let Some(d) = data {
             // Get the wallets.
             let wallets = d.light_wallets;
-            info!(
+            trace!(
                 "Polling run, chain_id: {} min_block: {} index: {} wallets: {:?}",
-                self.chain_id, min_block, index, wallets
+                self.chain_id,
+                min_block,
+                index,
+                wallets
             );
 
             // If the wallets is not empty, loop through the wallets.
