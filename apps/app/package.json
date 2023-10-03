@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@babel/core": "^7.22.11",
+    "@heroicons/react": "^2.0.11",
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
@@ -39,6 +40,7 @@
     "@tanstack/react-query": "^5.0.0-beta.9",
     "@tanstack/react-query-devtools": "^5.0.0-beta.9",
     "@tanstack/react-query-next-experimental": "^5.0.0-beta.9",
+    "@tremor/react": "^3.8.2",
     "@trpc/client": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
     "@trpc/next": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
     "@trpc/react-query": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",

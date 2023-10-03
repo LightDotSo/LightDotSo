@@ -16,26 +16,26 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Connect } from "./connect";
-import { EnsName, preload } from "@/components/EnsName";
-import { invoker } from "@lightdotso/trpc";
-import { getAuthSession } from "@lightdotso/next-auth";
-import { User } from "./user";
-import { SIWEButton } from "./siwe";
-import { Suspense } from "react";
+// import { EnsName, preload } from "@/components/EnsName";
+// import { invoker } from "@lightdotso/trpc";
+// import { getAuthSession } from "@lightdotso/next-auth";
+// import { User } from "./user";
+// import { SIWEButton } from "./siwe";
+// import { Suspense } from "react";
 import { WalletSwitcher } from "@/components/WalletSwitcher";
 import { Logo } from "@/components/Logo";
 import { UserNav } from "@/components/UserNav";
 import { MainNav } from "@/components/MainNav";
 import { FeedbackPopover } from "@/components/FeedbackPopover";
-import { AspectRatio } from "@lightdotso/ui";
 import Link from "next/link";
+import { Dashboard } from "@/components/Dashboard";
 
 export default async function Page() {
-  const user = await invoker.user.me.query({});
+  // const user = await invoker.user.me.query({});
 
-  const session = await getAuthSession();
+  // const session = await getAuthSession();
 
-  preload(session?.user?.name as `0x${string}`);
+  // preload(session?.user?.name as `0x${string}`);
 
   return (
     <main>
@@ -61,16 +61,10 @@ export default async function Page() {
         <div className="flex-1 space-y-4 p-8 pt-10">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
-            <div className="mx-auto max-w-3xl">
-              <AspectRatio ratio={16 / 9} className="bg-muted">
-                <img
-                  src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
-                  alt="Photo by Drew Beamer"
-                  className="rounded-md object-cover"
-                />
-              </AspectRatio>
-              {/* Content goes here */}{" "}
-              <pre>{JSON.stringify(session, null, 2)}</pre>
+            <div className="mx-auto max-w-4xl">
+              <Dashboard />
+              {/* Content goes here */}
+              {/* <pre>{JSON.stringify(session, null, 2)}</pre>
               <EnsName
                 params={{ address: session?.user?.name as `0x${string}` }}
               />
@@ -78,7 +72,7 @@ export default async function Page() {
               <Suspense>
                 <User />
               </Suspense>
-              <SIWEButton />
+              <SIWEButton /> */}
             </div>
           </div>
         </div>
