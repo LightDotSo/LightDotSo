@@ -32,7 +32,7 @@ use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
 use lightdotso_solutions::{get_address, image_hash_of_wallet_config, Signer, WalletConfig};
 use lightdotso_tracing::{
-    tracing::{info_span, trace},
+    tracing::{info, info_span, trace},
     tracing_futures::Instrument,
 };
 use serde::{Deserialize, Serialize};
@@ -204,7 +204,7 @@ async fn v1_post_handler(
     let Query(query) = post;
 
     let address: H160 = query.address.parse()?;
-    let factory_address: H160 = LIGHT_WALLET_FACTORY_ADDRESS.to_string().parse()?;
+    let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
     let config = WalletConfig {
@@ -271,6 +271,7 @@ async fn v1_post_handler(
 
     // If the wallet is not created, return a 500.
     let wallet = wallet.map_err(|_| AppError::InternalError)?;
+    info!(?wallet);
 
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();
