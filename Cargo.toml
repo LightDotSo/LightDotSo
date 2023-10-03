@@ -29,6 +29,7 @@
     "crates/redis",
     "crates/rpc",
     "crates/simulator",
+    "crates/solutions",
     "crates/tauri",
     "crates/telegram",
     "crates/tracing",
@@ -113,6 +114,7 @@
   lightdotso-prisma = { path = "./crates/prisma" }
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
+  lightdotso-solutions = { path = "./crates/solutions" }
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }

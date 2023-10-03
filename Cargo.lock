@@ -6264,6 +6264,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-solutions"
+version = "0.1.0"
+dependencies = [
+ "ethers 2.0.8",
+ "eyre",
+ "lightdotso-contracts",
+ "serde",
+]
+
+[[package]]
 name = "lightdotso-tauri"
 version = "0.1.0"
 dependencies = [
