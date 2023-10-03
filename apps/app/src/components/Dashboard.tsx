@@ -246,7 +246,7 @@ export function Dashboard() {
                       <Metric className="truncate">{item.metric}</Metric>
                     </div>
                     <BadgeDelta
-                      className="bg-background"
+                      className="dark:bg-background"
                       deltaType={item.deltaType}
                     >
                       {item.delta}
@@ -402,6 +402,7 @@ export function Dashboard() {
                             </TableCell>
                             <TableCell className="text-right">
                               <BadgeDelta
+                                className="dark:bg-background"
                                 deltaType={deltaTypes[item.status]}
                                 size="xs"
                               >
