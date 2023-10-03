@@ -19,9 +19,9 @@ import { notFound } from "next/navigation";
 export const handler = async (params: { address: string }) => {
   let res = await getWallet(params.address);
 
-  if (res.error) {
+  if (res.isErr()) {
     return notFound();
   }
 
-  return res.data;
+  return res._unsafeUnwrap();
 };
