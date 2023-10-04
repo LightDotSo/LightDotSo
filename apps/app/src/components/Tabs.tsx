@@ -83,10 +83,10 @@ export const Tabs = ({
           <Link key={i} href={href} passHref legacyBehavior>
             <motion.a
               className={clsx(
-                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-primary",
+                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-accent-foreground",
                 {
-                  "text-muted-foreground": !isActive, // Default color for non-active tabs
-                  "text-white/90": isActive, // Color for active tabs
+                  "text-muted-foreground": !isActive,
+                  "text-primary": isActive,
                 },
               )}
               ref={el => (anchorRefs[i] = el)}
@@ -118,7 +118,7 @@ export const Tabs = ({
         {hoveredRect && navRect && (
           <motion.div
             key={"hover"}
-            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-zinc-200 p-1 dark:bg-zinc-800 "
+            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-accent"
             initial={{
               x: hoveredRect.left - navRect.left,
               y: hoveredRect.top - navRect.top,
@@ -147,9 +147,7 @@ export const Tabs = ({
 
       {selectedRect && navRect && (
         <motion.div
-          className={
-            "absolute bottom-0 left-0.5 z-10 h-[3px] bg-zinc-700 dark:bg-zinc-200"
-          }
+          className={"absolute bottom-0 left-0.5 z-10 h-[3px] bg-primary"}
           initial={false}
           animate={{
             width: selectedRect.width * 0.8,
