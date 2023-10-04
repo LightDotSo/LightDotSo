@@ -32,7 +32,7 @@ const transition = {
 
 type Props = {
   setSelectedTabIndex: (_index: number) => void;
-  selectedTabIndex: number;
+  selectedTabIndex: number | undefined;
   tabs: Tab[];
 };
 
@@ -62,7 +62,10 @@ export const Tabs = ({
   const navRef = useRef<HTMLDivElement>(null);
   const navRect = navRef.current?.getBoundingClientRect();
 
-  const selectedRect = anchorRefs[selectedTabIndex]?.getBoundingClientRect();
+  const selectedRect =
+    selectedTabIndex !== undefined
+      ? anchorRefs[selectedTabIndex]?.getBoundingClientRect()
+      : undefined;
 
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const hoveredRect =
@@ -76,7 +79,8 @@ export const Tabs = ({
       onPointerLeave={e => setHoveredTabIndex(null)}
     >
       {tabs.map((item, i) => {
-        const isActive = hoveredTabIndex === i || selectedTabIndex === i;
+        const isActive =
+          hoveredTabIndex === i || selectedTabIndex === i || false;
         const href = firstSlug + item.href;
 
         return (
@@ -84,10 +88,7 @@ export const Tabs = ({
             <motion.a
               className={clsx(
                 "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-accent-foreground",
-                {
-                  "text-muted-foreground": !isActive,
-                  "text-primary": isActive,
-                },
+                !isActive ? "text-muted-foreground" : "text-primary",
               )}
               ref={el => (anchorRefs[i] = el)}
               onPointerEnter={() => {
