@@ -92,6 +92,10 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Install sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.3
+        with:
+          version: "v0.5.2"
       - if: matrix.workspace
         name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -161,6 +165,10 @@ jobs:
         continue-on-error: true
         with:
           sarif_file: rust-clippy-results.sarif
+      - if: always()
+        name: Run sccache stats
+        shell: bash
+        run: ${SCCACHE_PATH} --show-stats
       - if: always()
         name: Rust Finish
         uses: wallet-rs/wallet-rs/.github/actions/rust-finish@main
