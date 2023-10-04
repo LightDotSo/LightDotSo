@@ -43,7 +43,7 @@
     "postgres": "^3.3.5",
     "prisma": "^5.2.0",
     "prisma-kysely": "^1.7.0",
-    "zod": "^3.22.2",
+    "zod": "^3.22.3",
     "zod-prisma": "^0.5.4"
   },
   "devDependencies": {
