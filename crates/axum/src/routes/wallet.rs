@@ -236,7 +236,13 @@ async fn v1_post_handler(
             // Create the configurations to the database.
             let configuration_data = client
                 .configuration()
-                .create(to_checksum(&new_wallet_address, None), image_hash.clone(), 1, 1, vec![])
+                .create(
+                    to_checksum(&new_wallet_address, None),
+                    image_hash.clone(),
+                    1,
+                    query.salt.clone(),
+                    vec![],
+                )
                 .exec()
                 .await?;
             trace!(?configuration_data);

@@ -17,13 +17,6 @@ export interface paths {
      */
     get: operations["handler"];
   };
-  "/v1/configuration/create": {
-    /**
-     * Create a configuration
-     * @description Create a configuration
-     */
-    post: operations["v1_post_handler"];
-  };
   "/v1/configuration/get": {
     /**
      * Get a configuration
@@ -120,6 +113,31 @@ export interface operations {
     };
   };
   /**
+   * Get a wallet
+   * @description Get a wallet
+   */
+  v1_get_handler: {
+    parameters: {
+      query: {
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Wallet returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Wallet"];
+        };
+      };
+      /** @description Wallet not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
    * Create a wallet
    * @description Create a wallet
    */
@@ -139,31 +157,6 @@ export interface operations {
       };
       /** @description Wallet internal error */
       500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a wallet
-   * @description Get a wallet
-   */
-  v1_get_handler: {
-    parameters: {
-      query: {
-        address: string;
-      };
-    };
-    responses: {
-      /** @description Wallet returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Wallet"];
-        };
-      };
-      /** @description Wallet not found */
-      404: {
         content: {
           "application/json": components["schemas"]["WalletError"];
         };

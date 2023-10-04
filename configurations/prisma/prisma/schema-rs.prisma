@@ -84,17 +84,17 @@ model Configuration {
   address   String @unique
   imageHash String
   threshold BigInt
-  nonce     BigInt
+  salt      String
 
-  owners  Owner[]
   wallets Wallet[]
+  owners  Owner[]
 
-  @@unique([imageHash, nonce])
+  @@unique([imageHash, salt])
 }
 
 model Owner {
   id        String   @id @default(cuid())
-  address   String   @unique
+  address   String
   weight    BigInt
   imageHash String
   createdAt DateTime @default(now())
@@ -104,8 +104,6 @@ model Owner {
 
   configuration Configuration @relation(fields: [configurationId], references: [id])
   user          User?         @relation(fields: [address], references: [address])
-
-  @@unique([address, weight])
 }
 
 /// ethers-rs Log struct converted to Prisma model.
