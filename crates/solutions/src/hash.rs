@@ -105,6 +105,14 @@ mod tests {
                 .try_into()
                 .unwrap(),
             threshold: 1,
+            weight: 1,
+            image_hash: [0; 31]
+                .iter()
+                .chain(&[1])
+                .copied()
+                .collect::<Vec<u8>>()
+                .try_into()
+                .unwrap(),
             signers: vec![Signer {
                 weight: 1,
                 address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),

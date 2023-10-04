@@ -31,6 +31,10 @@ pub struct WalletConfig {
     pub checkpoint: [u8; 32],
     // Uint16 threshold
     pub threshold: u16,
+    // Uint256 weight
+    pub weight: u16,
+    // Image hash of the wallet config
+    pub image_hash: [u8; 32],
     // Signers of the wallet
     pub signers: Vec<Signer>,
 }

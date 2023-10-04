@@ -57,9 +57,9 @@ fn recover(sig: Signature) -> Result<WalletConfig> {
     let (threshold, checkpoint) = recover_threshold_checkpoint(sig.clone())?;
 
     // If the length is greater than 34 bytes, it's a branch signature
-    let (_weight, digest) = recover_branch(sig)?;
+    let (weight, digest) = recover_branch(sig)?;
 
-    let _image_hash = keccak256(encode(&[
+    let image_hash = keccak256(encode(&[
         Token::FixedBytes(
             keccak256(encode(&[
                 Token::FixedBytes(digest.to_vec()),
@@ -70,10 +70,10 @@ fn recover(sig: Signature) -> Result<WalletConfig> {
         Token::Uint(U256::from(checkpoint)),
     ]));
 
-    Ok(WalletConfig { threshold, checkpoint, signers: vec![] })
+    Ok(WalletConfig { threshold, checkpoint, image_hash, weight, signers: vec![] })
 }
 
-fn recover_branch(sig: Signature) -> Result<(u128, [u8; 32])> {
+fn recover_branch(sig: Signature) -> Result<(u16, [u8; 32])> {
     let s = sig.len();
 
     // If the length is none bytes, it's an invalid signature
