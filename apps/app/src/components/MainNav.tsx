@@ -113,7 +113,9 @@ export function MainNav({
     const matchingId = tabIds.find(slug => slugs.includes(slug));
     // Set the initialTabId to the matching slug
     setHookProps(prev => ({ ...prev, initialTabId: matchingId ?? "overview" }));
-  }, [pathname]);
+    // Only run on initial render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <nav
