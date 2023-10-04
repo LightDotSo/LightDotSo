@@ -19,7 +19,7 @@ use crate::types::WalletConfig;
 
 pub type Signature = Vec<u8>;
 
-pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
+fn recover(sig: Signature) -> Result<WalletConfig> {
     let s = sig.len();
 
     // If the length is lees than 2 bytes, it's an invalid signature
@@ -47,13 +47,24 @@ pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
     Ok(WalletConfig { checkpoint, threshold, signers: vec![] })
 }
 
+pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
+    let s = sig.len();
+
+    // If the length is lees than 2 bytes, it's an invalid signature
+    if s < 1 {
+        return Err(eyre!("Invalid signature"));
+    }
+
+    recover(sig)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use eyre::eyre;
 
     #[test]
-    fn test_decode_threshold() {
+    fn test_recover_threshold() {
         let signature: Signature = vec![0x11, 0x11];
 
         let res = decode_signature(signature).unwrap();
@@ -61,7 +72,7 @@ mod tests {
     }
 
     #[test]
-    fn test_decode_checkpoint() {
+    fn test_recover_checkpoint() {
         let signature: Signature = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
 
         let res = decode_signature(signature).unwrap();
