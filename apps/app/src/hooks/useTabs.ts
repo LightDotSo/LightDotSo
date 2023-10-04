@@ -59,7 +59,7 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
       selectedTabIndex,
       setSelectedTabIndex,
     },
-    selectedTab: tabs[selectedTabIndex],
+    selectedTab: selectedTabIndex !== undefined ? tabs[selectedTabIndex] : null,
     contentProps: {
       direction: 0,
       selectedTabIndex,
