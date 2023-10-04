@@ -236,7 +236,13 @@ async fn v1_post_handler(
             // Create the configurations to the database.
             let configuration_data = client
                 .configuration()
-                .create(to_checksum(&new_wallet_address, None), image_hash.clone(), 1, 1, vec![])
+                .create(
+                    to_checksum(&new_wallet_address, None),
+                    image_hash.clone(),
+                    1,
+                    query.salt.clone(),
+                    vec![],
+                )
                 .exec()
                 .await?;
             trace!(?configuration_data);
@@ -244,15 +250,7 @@ async fn v1_post_handler(
             // Create the owners to the database.
             let owner_data = client
                 .owner()
-                .create(
-                    to_checksum(&address, None),
-                    1,
-                    image_hash.clone(),
-                    lightdotso_prisma::configuration::UniqueWhereParam::IdEquals(
-                        configuration_data.id,
-                    ),
-                    vec![],
-                )
+                .create(to_checksum(&address, None), 1, image_hash.clone(), vec![])
                 .exec()
                 .await?;
             trace!(?owner_data);
