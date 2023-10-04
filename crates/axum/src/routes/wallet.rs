@@ -204,6 +204,7 @@ async fn v1_post_handler(
     let Query(query) = post;
 
     let address: H160 = query.address.parse()?;
+    info!(?address);
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
@@ -228,6 +229,17 @@ async fn v1_post_handler(
     // Calculate the new wallet address.
     let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
 
+    // Attempt to create a user in case it does not exist.
+    let res = client
+        .clone()
+        .client
+        .unwrap()
+        .user()
+        .create(vec![lightdotso_prisma::user::address::set(Some(to_checksum(&address, None)))])
+        .exec()
+        .await;
+    info!(?res);
+
     let wallet: Result<lightdotso_prisma::wallet::Data> = client
         .client
         .unwrap()
@@ -250,15 +262,7 @@ async fn v1_post_handler(
             // Create the owners to the database.
             let owner_data = client
                 .owner()
-                .create(
-                    to_checksum(&address, None),
-                    1,
-                    image_hash.clone(),
-                    lightdotso_prisma::configuration::UniqueWhereParam::IdEquals(
-                        configuration_data.id,
-                    ),
-                    vec![],
-                )
+                .create(to_checksum(&address, None), 1, image_hash.clone(), vec![])
                 .exec()
                 .await?;
             trace!(?owner_data);
@@ -274,6 +278,7 @@ async fn v1_post_handler(
             Ok(wallet)
         })
         .await;
+    info!(?wallet);
 
     // If the wallet is not created, return a 500.
     let wallet = wallet.map_err(|_| AppError::InternalError)?;
