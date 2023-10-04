@@ -88,10 +88,7 @@ export const Tabs = ({
             <motion.a
               className={clsx(
                 "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-accent-foreground",
-                selectedTabIndex !== undefined && {
-                  "text-muted-foreground": !isActive,
-                  "text-primary": isActive,
-                },
+                !isActive ? "text-muted-foreground" : "text-primary",
               )}
               ref={el => (anchorRefs[i] = el)}
               onPointerEnter={() => {
