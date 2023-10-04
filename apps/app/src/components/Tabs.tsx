@@ -42,12 +42,12 @@ export const Tabs = ({
   selectedTabIndex,
   setSelectedTab,
 }: Props): JSX.Element => {
-  const [buttonRefs, setButtonRefs] = useState<Array<HTMLButtonElement | null>>(
+  const [anchorRefs, setAnchorRefs] = useState<Array<HTMLAnchorElement | null>>(
     [],
   );
 
   useEffect(() => {
-    setButtonRefs(prev => prev.slice(0, tabs.length));
+    setAnchorRefs(prev => prev.slice(0, tabs.length));
   }, [tabs.length]);
 
   const router = useRouter();
@@ -63,11 +63,11 @@ export const Tabs = ({
   const navRef = useRef<HTMLDivElement>(null);
   const navRect = navRef.current?.getBoundingClientRect();
 
-  const selectedRect = buttonRefs[selectedTabIndex]?.getBoundingClientRect();
+  const selectedRect = anchorRefs[selectedTabIndex]?.getBoundingClientRect();
 
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const hoveredRect =
-    buttonRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
+    anchorRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
 
   return (
     <nav
@@ -82,7 +82,7 @@ export const Tabs = ({
 
         return (
           <Link key={i} href={href} passHref legacyBehavior>
-            <motion.button
+            <motion.a
               className={clsx(
                 "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-primary",
                 {
@@ -90,7 +90,7 @@ export const Tabs = ({
                   "text-white/90": isActive, // Color for active tabs
                 },
               )}
-              ref={el => (buttonRefs[i] = el)}
+              ref={el => (anchorRefs[i] = el)}
               onPointerEnter={() => {
                 setHoveredTabIndex(i);
                 router.prefetch(href);
@@ -109,7 +109,7 @@ export const Tabs = ({
                   {item.number}
                 </span>
               )}
-            </motion.button>
+            </motion.a>
           </Link>
         );
       })}
