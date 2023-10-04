@@ -31,11 +31,16 @@ const transition = {
 };
 
 type Props = {
+  setSelectedTabIndex: (_index: number) => void;
   selectedTabIndex: number;
   tabs: Tab[];
 };
 
-export const Tabs = ({ tabs, selectedTabIndex }: Props): JSX.Element => {
+export const Tabs = ({
+  tabs,
+  selectedTabIndex,
+  setSelectedTabIndex,
+}: Props): JSX.Element => {
   const [anchorRefs, setAnchorRefs] = useState<Array<HTMLAnchorElement | null>>(
     [],
   );
@@ -91,6 +96,10 @@ export const Tabs = ({ tabs, selectedTabIndex }: Props): JSX.Element => {
               }}
               onFocus={() => {
                 setHoveredTabIndex(i);
+              }}
+              onClick={() => {
+                setHoveredTabIndex(null);
+                setSelectedTabIndex(i);
               }}
             >
               {<item.icon className="mr-2 h-4 w-4" />}

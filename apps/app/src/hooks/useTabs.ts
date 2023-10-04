@@ -55,6 +55,7 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
     tabProps: {
       tabs,
       selectedTabIndex,
+      setSelectedTabIndex,
     },
     selectedTab: tabs[selectedTabIndex],
     contentProps: {
