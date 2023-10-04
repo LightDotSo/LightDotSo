@@ -77,7 +77,17 @@ pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
         return decode_base_signature(sig[1..].to_vec());
     }
 
-    Err(eyre!("Invalid signature"))
+    // No ChainId signature
+    if signature_type == 0x02 {
+        return decode_base_signature(sig[1..].to_vec());
+    }
+
+    // ChainId signature
+    if signature_type == 0x03 {
+        return decode_base_signature(sig[1..].to_vec());
+    }
+
+    Err(eyre!("Invalid signature type"))
 }
 
 #[cfg(test)]
@@ -106,6 +116,16 @@ mod tests {
         let signature: Signature = vec![];
 
         let expected_err = eyre!("Invalid signature length");
+
+        let res = decode_signature(signature).unwrap_err();
+        assert_eq!(res.to_string(), expected_err.to_string());
+    }
+
+    #[test]
+    fn test_decode_invalid_signature_type() {
+        let signature: Signature = vec![0x9];
+
+        let expected_err = eyre!("Invalid signature type");
 
         let res = decode_signature(signature).unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
