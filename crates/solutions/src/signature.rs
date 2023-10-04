@@ -13,13 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use ethers::{
+    abi::{encode, Token},
+    types::U256,
+    utils::keccak256,
+};
 use eyre::{eyre, Result};
 
 use crate::types::WalletConfig;
 
 pub type Signature = Vec<u8>;
 
-fn recover(sig: Signature) -> Result<(u16, [u8; 32])> {
+fn recover_threshold_checkpoint(sig: Signature) -> Result<(u16, [u8; 32])> {
     let s = sig.len();
 
     // If the length is lees than 2 bytes, it's an invalid signature
@@ -47,10 +52,52 @@ fn recover(sig: Signature) -> Result<(u16, [u8; 32])> {
     Ok((threshold, checkpoint))
 }
 
-fn decode_base_signature(sig: Signature) -> Result<WalletConfig> {
-    let (threshold, checkpoint) = recover(sig)?;
+fn recover(sig: Signature) -> Result<WalletConfig> {
+    // Get the threshold and checkpoint from the signature
+    let (threshold, checkpoint) = recover_threshold_checkpoint(sig.clone())?;
+
+    // If the length is greater than 34 bytes, it's a branch signature
+    let (_weight, digest) = recover_branch(sig)?;
+
+    let _image_hash = keccak256(encode(&[
+        Token::FixedBytes(
+            keccak256(encode(&[
+                Token::FixedBytes(digest.to_vec()),
+                Token::Uint(U256::from(threshold)),
+            ]))
+            .to_vec(),
+        ),
+        Token::Uint(U256::from(checkpoint)),
+    ]));
 
     Ok(WalletConfig { threshold, checkpoint, signers: vec![] })
+}
+
+fn recover_branch(sig: Signature) -> Result<(u128, [u8; 32])> {
+    let s = sig.len();
+
+    // If the length is none bytes, it's an invalid signature
+    if s == 0 {
+        return Err(eyre!("Invalid signature"));
+    }
+
+    // Iterating over the signature while length is greater than 0
+    let mut data = sig;
+    while !data.is_empty() {
+        // Get the first byte of the signature
+        let signature_type = data[0];
+
+        match signature_type {
+            0 => data = data[1..].to_vec(),
+            _ => return Err(eyre!("Invalid signature type")),
+        }
+    }
+
+    Ok((0, [0; 32]))
+}
+
+fn decode_base_signature(sig: Signature) -> Result<WalletConfig> {
+    recover(sig)
 }
 
 pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
@@ -97,18 +144,18 @@ mod tests {
 
     #[test]
     fn test_recover_threshold() {
-        let signature: Signature = vec![0x1, 0x11, 0x11];
+        let signature: Signature = vec![0x11, 0x11];
 
-        let res = decode_signature(signature).unwrap();
-        assert!(res.threshold == 4369);
+        let res = recover_threshold_checkpoint(signature).unwrap();
+        assert!(res.0 == 4369);
     }
 
     #[test]
     fn test_recover_checkpoint() {
-        let signature: Signature = [0].iter().copied().chain([1; 34].iter().copied()).collect();
+        let signature: Signature = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
 
-        let res = decode_signature(signature).unwrap();
-        assert!(res.checkpoint == [1; 32]);
+        let res = recover_threshold_checkpoint(signature).unwrap();
+        assert!(res.1 == [1; 32]);
     }
 
     #[test]
