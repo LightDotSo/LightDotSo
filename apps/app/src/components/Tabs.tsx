@@ -32,7 +32,7 @@ const transition = {
 
 type Props = {
   setSelectedTabIndex: (_index: number) => void;
-  selectedTabIndex: number;
+  selectedTabIndex: number | undefined;
   tabs: Tab[];
 };
 
