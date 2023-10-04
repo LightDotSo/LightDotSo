@@ -16,15 +16,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Dashboard } from "@/components/Dashboard";
-import { handler } from "@/handlers/[address]";
 
 export default async function Page({
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
   params,
 }: {
   params: { address: string };
 }) {
-  await handler(params);
-
   return (
     <div>
       <Dashboard />
