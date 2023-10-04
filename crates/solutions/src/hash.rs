@@ -23,23 +23,6 @@ use lightdotso_contracts::constants::{
     LIGHT_WALLET_FACTORY_ADDRESS, LIGHT_WALLET_FACTORY_IMPLEMENTATION_ADDRESS,
 };
 
-// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
-// License: Apache-2.0
-#[derive(Debug)]
-pub struct Signer {
-    pub weight: u8,
-    pub address: Address,
-}
-
-// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
-// License: Apache-2.0
-#[derive(Debug)]
-pub struct WalletConfig {
-    pub checkpoint: U256,
-    pub threshold: U256,
-    pub signers: Vec<Signer>,
-}
-
 // Encoding the wallet config into bytes and hash it using keccak256
 pub fn image_hash_of_wallet_config(wallet_config: WalletConfig) -> Result<String> {
     let signer_bytes = wallet_config
