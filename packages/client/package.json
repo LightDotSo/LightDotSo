@@ -19,9 +19,10 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "pnpm run build:open && pnpm tsup",
-    "build:open": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts",
-    "clean": "rimraf -rf dist"
+    "build": "pnpm run build:openapi && pnpm run build:prepare && pnpm tsup",
+    "build:openapi": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts",
+    "build:prepare": "./prepend.sh",
+    "clean": "rimraf -rf dist && rimraf -rf src/v1.d.ts"
   },
   "dependencies": {
     "clsx": "^2.0.0",
