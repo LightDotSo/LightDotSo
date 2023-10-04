@@ -50,6 +50,7 @@ model User {
   accounts Account[]
   sessions Session[]
   wallets  Wallet[]
+  owners   Owner[]
 }
 
 model VerificationRequest {
@@ -86,19 +87,23 @@ model Configuration {
   salt      String
 
   wallets Wallet[]
+  owners  Owner[]
 
   @@unique([imageHash, salt])
 }
 
 model Owner {
   id        String   @id @default(cuid())
-  address   String   @unique
+  address   String
   weight    BigInt
   imageHash String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([address, weight])
+  configurationId String
+
+  configuration Configuration @relation(fields: [configurationId], references: [id])
+  user          User?         @relation(fields: [address], references: [address])
 }
 
 /// ethers-rs Log struct converted to Prisma model.
