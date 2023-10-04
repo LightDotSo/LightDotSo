@@ -33,7 +33,9 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
   const tabIds = tabs.map(tab => tab.id);
 
   // The index of the selected tab
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [selectedTabIndex, setSelectedTabIndex] = useState<number | undefined>(
+    undefined,
+  );
 
   // Set the initialTabId to the matching slug in tabIds array
   useEffect(() => {
