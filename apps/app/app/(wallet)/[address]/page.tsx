@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -13,4 +15,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export default async function Page() {}
+import { Dashboard } from "@/components/Dashboard";
+
+export default async function Page({
+  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+  params,
+}: {
+  params: { address: string };
+}) {
+  return (
+    <div>
+      <Dashboard />
+    </div>
+  );
+}

@@ -13,17 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWallet } from "@lightdotso/client";
-import { notFound } from "next/navigation";
+import { NewWallet } from "@/components/NewWallet";
 
-export const handler = async (params: { address: string }) => {
-  let res = await getWallet(params.address);
-
-  res.map(response => {
-    if (response && response.response && response.response.status !== 200) {
-      return notFound();
-    }
-  });
-
-  return res._unsafeUnwrap();
-};
+export default async function Page() {
+  return <NewWallet />;
+}

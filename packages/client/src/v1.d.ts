@@ -4,11 +4,6 @@
  */
 
 
-/** OneOf type helpers */
-type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
-type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
-
 export interface paths {
   "/v1/check": {
     /**
@@ -16,6 +11,13 @@ export interface paths {
      * @description Check if the server is running.
      */
     get: operations["handler"];
+  };
+  "/v1/configuration/create": {
+    /**
+     * Create a configuration
+     * @description Create a configuration
+     */
+    post: operations["v1_post_handler"];
   };
   "/v1/configuration/get": {
     /**
@@ -63,29 +65,12 @@ export interface components {
       address: string;
       id: string;
     };
-    /** @description Wallet operation errors */
-    ConfigurationError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description Configuration not found by id. */
-      NotFound: string;
-    }]>;
     /** @description Item to do. */
     Wallet: {
       address: string;
       factory_address: string;
       id: string;
     };
-    /** @description Wallet operation errors */
-    WalletError: OneOf<[{
-      BadRequest: string;
-    }, {
-      /** @description Wallet already exists conflict. */
-      Conflict: string;
-    }, {
-      /** @description Wallet not found by id. */
-      NotFound: string;
-    }]>;
   };
   responses: never;
   parameters: never;
@@ -113,6 +98,25 @@ export interface operations {
     };
   };
   /**
+   * Create a wallet
+   * @description Create a wallet
+   */
+  v1_post_handler: {
+    parameters: {
+      query: {
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Wallet created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Wallet"];
+        };
+      };
+    };
+  };
+  /**
    * Get a wallet
    * @description Get a wallet
    */
@@ -127,38 +131,6 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Wallet"];
-        };
-      };
-      /** @description Wallet not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
-  /**
-   * Create a wallet
-   * @description Create a wallet
-   */
-  v1_post_handler: {
-    parameters: {
-      query: {
-        address: string;
-        salt: string;
-      };
-    };
-    responses: {
-      /** @description Wallet created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Wallet"];
-        };
-      };
-      /** @description Wallet internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
         };
       };
     };
@@ -179,12 +151,6 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Wallet"][];
-        };
-      };
-      /** @description Wallet bad request */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
         };
       };
     };
