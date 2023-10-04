@@ -52,7 +52,7 @@ pub fn image_hash_of_wallet_config(wallet_config: WalletConfig) -> Result<String
     // Encode the checkpoint into bytes
     let checkpoint_bytes = keccak256(encode(&[
         Token::FixedBytes(threshold_bytes.to_vec()),
-        Token::Uint(wallet_config.checkpoint),
+        Token::Uint(U256::from(wallet_config.checkpoint)),
     ]));
 
     Ok(format!("0x{}", ethers::utils::hex::encode(checkpoint_bytes)))
@@ -97,7 +97,13 @@ mod tests {
     fn test_image_hash_of_wallet_config() {
         // From: contracts/src/test/utils/LightWalletUtils.sol
         let wc = WalletConfig {
-            checkpoint: U256::from(1u64),
+            checkpoint: [0; 31]
+                .iter()
+                .chain(&[1])
+                .copied()
+                .collect::<Vec<u8>>()
+                .try_into()
+                .unwrap(),
             threshold: 1,
             signers: vec![Signer {
                 weight: 1,

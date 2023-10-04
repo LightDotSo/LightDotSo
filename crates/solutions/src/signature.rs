@@ -22,16 +22,29 @@ pub type Signature = Vec<u8>;
 pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
     let s = sig.len();
 
-    // If the length is lees than 1, it's an invalid signature
-    if s < 1 {
+    // If the length is lees than 2 bytes, it's an invalid signature
+    if s < 2 {
         return Err(eyre!("Invalid signature"));
     }
 
     // Threshold is the first two bytes of the signature
     // Hex: 0x0000 ~ 0xFFFF
+    // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L269C9-L269C9
+    // License: Apache-2.0
     let threshold = u16::from_be_bytes([sig[0], sig[1]]);
 
-    Ok(WalletConfig { checkpoint: 1.into(), threshold, signers: vec![] })
+    // If the length is less than 34 bytes, it doesn't have a checkpoint
+    if s < 34 {
+        return Ok(WalletConfig { checkpoint: [0; 32], threshold, signers: vec![] });
+    }
+
+    // Checkpoint is the next 32 bytes of the signature
+    // Hex: 0x00000000
+    // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L270C7-L270C17
+    // License: Apache-2.0
+    let checkpoint: [u8; 32] = sig[2..34].try_into()?;
+
+    Ok(WalletConfig { checkpoint, threshold, signers: vec![] })
 }
 
 #[cfg(test)]
@@ -45,6 +58,14 @@ mod tests {
 
         let res = decode_signature(signature).unwrap();
         assert!(res.threshold == 4369);
+    }
+
+    #[test]
+    fn test_decode_checkpoint() {
+        let signature: Signature = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
+
+        let res = decode_signature(signature).unwrap();
+        assert!(res.checkpoint == [1; 32]);
     }
 
     #[test]

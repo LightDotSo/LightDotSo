@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::{Address, U256};
+use ethers::types::Address;
 
 // Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
 // License: Apache-2.0
@@ -27,7 +27,10 @@ pub struct Signer {
 // License: Apache-2.0
 #[derive(Debug)]
 pub struct WalletConfig {
-    pub checkpoint: U256,
+    // Bytes32 hash of the checkpoint
+    pub checkpoint: [u8; 32],
+    // Uint16 threshold
     pub threshold: u16,
+    // Signers of the wallet
     pub signers: Vec<Signer>,
 }
