@@ -97,7 +97,6 @@ export function MainNav({
 }: React.HTMLAttributes<HTMLElement>) {
   const [hookProps] = useState({
     tabs,
-    initialTabId: undefined,
   });
   const framer = useTabs(hookProps);
 
