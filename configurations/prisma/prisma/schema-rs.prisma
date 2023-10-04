@@ -83,11 +83,11 @@ model Configuration {
   address   String @unique
   imageHash String
   threshold BigInt
-  nonce     BigInt
+  salt      String
 
   wallets Wallet[]
 
-  @@unique([imageHash, nonce])
+  @@unique([imageHash, salt])
 }
 
 model Owner {
