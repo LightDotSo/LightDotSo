@@ -18,7 +18,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Tabs } from "@/components/Tabs";
 import { cn } from "@lightdotso/ui";
@@ -31,64 +31,96 @@ import {
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
+import { usePathname } from "next/navigation";
+
+const tabs = [
+  {
+    label: "Overview",
+    id: "overview",
+    href: "/",
+    number: 0,
+    icon: (
+      props: React.JSX.IntrinsicAttributes &
+        IconProps &
+        React.RefAttributes<SVGSVGElement>,
+    ) => <DashboardIcon {...props} />,
+  },
+  {
+    label: "Transactions",
+    id: "transactions",
+    href: "/transactions",
+    number: 10,
+    icon: (
+      props: React.JSX.IntrinsicAttributes &
+        IconProps &
+        React.RefAttributes<SVGSVGElement>,
+    ) => <WidthIcon {...props} />,
+  },
+  {
+    label: "Members",
+    id: "members",
+    href: "/members",
+    number: 3,
+    icon: (
+      props: React.JSX.IntrinsicAttributes &
+        IconProps &
+        React.RefAttributes<SVGSVGElement>,
+    ) => <PersonIcon {...props} />,
+  },
+  {
+    label: "Settings",
+    id: "settings",
+    href: "/settings",
+    number: 3,
+    icon: (
+      props: React.JSX.IntrinsicAttributes &
+        IconProps &
+        React.RefAttributes<SVGSVGElement>,
+    ) => <MixerVerticalIcon {...props} />,
+  },
+  {
+    label: "Support",
+    id: "support",
+    href: "/support",
+    number: 0,
+    icon: (
+      props: React.JSX.IntrinsicAttributes &
+        IconProps &
+        React.RefAttributes<SVGSVGElement>,
+    ) => <ChatBubbleIcon {...props} />,
+  },
+];
+const tabIds = tabs.map(tab => tab.id);
 
 export function MainNav({
   // eslint-disable-next-line react/prop-types
   className = "",
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
-  const [hookProps] = useState({
-    tabs: [
-      {
-        label: "Overview",
-        id: "Overview",
-        href: "/",
-        number: 0,
-        icon: (
-          props: React.JSX.IntrinsicAttributes &
-            IconProps &
-            React.RefAttributes<SVGSVGElement>,
-        ) => <DashboardIcon {...props} />,
-      },
-      {
-        label: "Transactions",
-        id: "Transactions",
-        href: "/transactions",
-        number: 10,
-        icon: props => <WidthIcon {...props} />,
-      },
-      {
-        label: "Members",
-        id: "Members",
-        href: "/members",
-        number: 3,
-        icon: props => <PersonIcon {...props} />,
-      },
-      {
-        label: "Settings",
-        id: "Settings",
-        href: "/settings",
-        number: 3,
-        icon: props => <MixerVerticalIcon {...props} />,
-      },
-      {
-        label: "Support",
-        id: "Support",
-        href: "/support",
-        number: 0,
-        icon: props => <ChatBubbleIcon {...props} />,
-      },
-    ],
-    initialTabId: "Overview",
+  const pathname = usePathname();
+
+  const [hookProps, setHookProps] = useState({
+    tabs,
+    initialTabId: "",
   });
   const framer = useTabs(hookProps);
+
+  // Set the initialTabId to the matching slug in tabIds array
+  useEffect(() => {
+    // Split the path using '/' as delimiter and remove empty strings
+    const slugs = pathname.split("/").filter(slug => slug);
+    // Get the matching slug in tabIds array
+    const matchingId = tabIds.find(slug => slugs.includes(slug));
+    // Set the initialTabId to the matching slug
+    setHookProps(prev => ({ ...prev, initialTabId: matchingId ?? "overview" }));
+  }, [pathname]);
 
   return (
     <nav
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
-      <Tabs {...framer.tabProps} />
+      {hookProps.initialTabId !== "" && <Tabs {...framer.tabProps} />}
     </nav>
   );
 }
