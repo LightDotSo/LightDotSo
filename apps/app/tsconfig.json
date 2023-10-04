@@ -4,6 +4,7 @@
     "plugins": [{ "name": "next" }],
     "strict": true,
     "paths": {
+      "@/app/*": ["./app/*"],
       "@/*": ["./src/*"]
     }
   },

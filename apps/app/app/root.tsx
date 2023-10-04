@@ -27,10 +27,12 @@ import { Connect } from "./connect";
 import { siweConfig } from "./siwe";
 import Script from "next/script";
 
-export default function RootLayout({
+export default function Root({
   children,
+  isTabEnabled = false,
 }: {
   children: React.ReactNode;
+  isTabEnabled?: boolean;
 }) {
   return (
     <html lang="en">
@@ -60,7 +62,9 @@ export default function RootLayout({
                         <Connect />
                       </div>
                     </div>
-                    <MainNav className="h-10 items-center px-12" />
+                    {isTabEnabled && (
+                      <MainNav className="h-10 items-center px-12" />
+                    )}
                   </div>
                   <div className="flex-1 space-y-4 p-8 pt-10">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
