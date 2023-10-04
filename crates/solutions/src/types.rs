@@ -13,6 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod hash;
-pub mod signature;
-pub mod types;
+use ethers::types::{Address, U256};
+
+// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
+// License: Apache-2.0
+#[derive(Debug)]
+pub struct Signer {
+    pub weight: u8,
+    pub address: Address,
+}
+
+// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
+// License: Apache-2.0
+#[derive(Debug)]
+pub struct WalletConfig {
+    pub checkpoint: U256,
+    pub threshold: U256,
+    pub signers: Vec<Signer>,
+}

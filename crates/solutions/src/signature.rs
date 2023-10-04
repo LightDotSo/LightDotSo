@@ -13,6 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod hash;
-pub mod signature;
-pub mod types;
+use eyre::{eyre, Result};
+
+use crate::types::WalletConfig;
+
+pub type Signature = Vec<u8>;
+
+pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
+    let s = sig.len();
+
+    // If the length is lees than 1, it's an invalid signature
+    if s < 1 {
+        return Err(eyre!("Invalid signature"));
+    }
+
+    Ok(WalletConfig { checkpoint: 1.into(), threshold: 1.into(), signers: vec![] })
+}
