@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import { notFound } from "next/navigation";
+import { isAddress } from "viem";
 
-import { ConnectKitButton } from "connectkit";
-
-export function Connect() {
-  return <ConnectKitButton />;
-}
+export const validateAddress = (address: string) => {
+  if (!isAddress(address)) {
+    return notFound();
+  }
+};

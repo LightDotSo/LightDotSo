@@ -15,9 +15,24 @@
 
 import { getWallet } from "@lightdotso/client";
 import { notFound } from "next/navigation";
+import { validateAddress } from "./validators/address";
 
 export const handler = async (params: { address: string }) => {
+  // -------------------------------------------------------------------------
+  // Validators
+  // -------------------------------------------------------------------------
+
+  validateAddress(params.address);
+
+  // -------------------------------------------------------------------------
+  // Fetch
+  // -------------------------------------------------------------------------
+
   let res = await getWallet(params.address);
+
+  // -------------------------------------------------------------------------
+  // Parse
+  // -------------------------------------------------------------------------
 
   res.map(response => {
     if (response && response.response && response.response.status !== 200) {
