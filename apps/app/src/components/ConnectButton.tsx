@@ -13,23 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import createClient from "openapi-fetch";
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-import type { paths, Without, XOR, OneOf } from "./v1";
-import { ResultAsync } from "neverthrow";
+"use client";
 
-const client = createClient<paths>({
-  baseUrl: "https://api.light.so/",
-});
+import { ConnectKitButton } from "connectkit";
 
-export const getWallet = async (address: string) =>
-  ResultAsync.fromPromise(
-    client.GET("/v1/wallet/get", {
-      params: {
-        query: {
-          address: address,
-        },
-      },
-    }),
-    () => new Error("Database error"),
-  );
+export function ConnectButton() {
+  return <ConnectKitButton />;
+}

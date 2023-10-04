@@ -17,7 +17,8 @@
 // License: MIT
 
 import type { ReactNode } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export type Tab = {
   label: string;
@@ -27,30 +28,38 @@ export type Tab = {
   icon: (_props: { className?: string }) => ReactNode;
 };
 
-export function useTabs({
-  tabs,
-  initialTabId,
-  onChange,
-}: {
-  tabs: Tab[];
-  initialTabId: string;
-  onChange?: (_id: string) => void;
-}) {
-  const [[selectedTabIndex, direction], setSelectedTab] = useState(() => {
-    const indexOfInitialTab = tabs.findIndex(tab => tab.id === initialTabId);
-    return [indexOfInitialTab === -1 ? 0 : indexOfInitialTab, 0];
-  });
+export function useTabs({ tabs }: { tabs: Tab[] }) {
+  const pathname = usePathname();
+  const tabIds = tabs.map(tab => tab.id);
+
+  // The index of the selected tab
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+
+  // Set the initialTabId to the matching slug in tabIds array
+  useEffect(() => {
+    // Split the path using '/' as delimiter and remove empty strings
+    const slugs = pathname.split("/").filter(slug => slug);
+    // Get the matching slug in tabIds array
+    const matchingId = tabIds.find(slug => slugs.includes(slug));
+    // Set the mount id
+    const mountId = matchingId || "overview";
+    // Set the initialTabId to the mount id
+    const indexOfInitialTab = tabs.findIndex(tab => tab.id === mountId);
+    // Set the initial tab
+    setSelectedTabIndex(indexOfInitialTab === -1 ? 0 : indexOfInitialTab);
+    // Only run on initial render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     tabProps: {
       tabs,
       selectedTabIndex,
-      onChange,
-      setSelectedTab,
+      setSelectedTabIndex,
     },
     selectedTab: tabs[selectedTabIndex],
     contentProps: {
-      direction,
+      direction: 0,
       selectedTabIndex,
     },
   };

@@ -22,6 +22,7 @@ import type { Tab } from "@/hooks/useTabs";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 
 const transition = {
   type: "tween",
@@ -30,23 +31,22 @@ const transition = {
 };
 
 type Props = {
+  setSelectedTabIndex: (_index: number) => void;
   selectedTabIndex: number;
   tabs: Tab[];
-  // eslint-disable-next-line no-unused-vars
-  setSelectedTab: (_input: [number, number]) => void;
 };
 
 export const Tabs = ({
   tabs,
   selectedTabIndex,
-  setSelectedTab,
+  setSelectedTabIndex,
 }: Props): JSX.Element => {
-  const [buttonRefs, setButtonRefs] = useState<Array<HTMLButtonElement | null>>(
+  const [anchorRefs, setAnchorRefs] = useState<Array<HTMLAnchorElement | null>>(
     [],
   );
 
   useEffect(() => {
-    setButtonRefs(prev => prev.slice(0, tabs.length));
+    setAnchorRefs(prev => prev.slice(0, tabs.length));
   }, [tabs.length]);
 
   const router = useRouter();
@@ -62,11 +62,11 @@ export const Tabs = ({
   const navRef = useRef<HTMLDivElement>(null);
   const navRect = navRef.current?.getBoundingClientRect();
 
-  const selectedRect = buttonRefs[selectedTabIndex]?.getBoundingClientRect();
+  const selectedRect = anchorRefs[selectedTabIndex]?.getBoundingClientRect();
 
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const hoveredRect =
-    buttonRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
+    anchorRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
 
   return (
     <nav
@@ -80,36 +80,37 @@ export const Tabs = ({
         const href = firstSlug + item.href;
 
         return (
-          <motion.button
-            key={i}
-            className={clsx(
-              "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-primary",
-              {
-                "text-muted-foreground": !isActive, // Default color for non-active tabs
-                "text-white/90": isActive, // Color for active tabs
-              },
-            )}
-            ref={el => (buttonRefs[i] = el)}
-            onPointerEnter={() => {
-              setHoveredTabIndex(i);
-              router.prefetch(href);
-            }}
-            onFocus={() => {
-              setHoveredTabIndex(i);
-            }}
-            onClick={() => {
-              router.push(href);
-              setSelectedTab([i, i > selectedTabIndex ? 1 : -1]);
-            }}
-          >
-            {<item.icon className="mr-2 h-4 w-4" />}
-            {item.label}
-            {item.number > 0 && (
-              <span className="font-sm ml-2 rounded-full bg-accent px-2 py-0.5">
-                {item.number}
-              </span>
-            )}
-          </motion.button>
+          <Link key={i} href={href} passHref legacyBehavior>
+            <motion.a
+              className={clsx(
+                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-accent-foreground",
+                {
+                  "text-muted-foreground": !isActive,
+                  "text-primary": isActive,
+                },
+              )}
+              ref={el => (anchorRefs[i] = el)}
+              onPointerEnter={() => {
+                setHoveredTabIndex(i);
+                router.prefetch(href);
+              }}
+              onFocus={() => {
+                setHoveredTabIndex(i);
+              }}
+              onClick={() => {
+                setHoveredTabIndex(null);
+                setSelectedTabIndex(i);
+              }}
+            >
+              {<item.icon className="mr-2 h-4 w-4" />}
+              {item.label}
+              {item.number > 0 && (
+                <span className="font-sm ml-2 rounded-full bg-accent px-2 py-0.5">
+                  {item.number}
+                </span>
+              )}
+            </motion.a>
+          </Link>
         );
       })}
 
@@ -117,7 +118,7 @@ export const Tabs = ({
         {hoveredRect && navRect && (
           <motion.div
             key={"hover"}
-            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-zinc-200 p-1 dark:bg-zinc-800 "
+            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-accent"
             initial={{
               x: hoveredRect.left - navRect.left,
               y: hoveredRect.top - navRect.top,
@@ -146,9 +147,7 @@ export const Tabs = ({
 
       {selectedRect && navRect && (
         <motion.div
-          className={
-            "absolute bottom-0 left-0.5 z-10 h-[3px] bg-zinc-700 dark:bg-zinc-200"
-          }
+          className={"absolute bottom-0 left-0.5 z-10 h-[3px] bg-primary"}
           initial={false}
           animate={{
             width: selectedRect.width * 0.8,

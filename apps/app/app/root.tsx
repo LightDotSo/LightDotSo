@@ -22,9 +22,9 @@ import { UserNav } from "@/components/UserNav";
 import { MainNav } from "@/components/MainNav";
 import { NotificationPopover } from "@/components/NotificationPopover";
 import { FeedbackPopover } from "@/components/FeedbackPopover";
+import { ConnectButton } from "@/components/ConnectButton";
+import { siweConfig } from "@/components/SIWEButton";
 import Link from "next/link";
-import { Connect } from "./connect";
-import { siweConfig } from "./siwe";
 import Script from "next/script";
 
 export default function Root({
@@ -59,7 +59,7 @@ export default function Root({
                         <FeedbackPopover />
                         <NotificationPopover />
                         <UserNav />
-                        <Connect />
+                        <ConnectButton />
                       </div>
                     </div>
                     {isTabEnabled && (
