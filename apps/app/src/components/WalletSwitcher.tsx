@@ -21,6 +21,7 @@ import {
   CheckIcon,
   PlusCircledIcon,
 } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 
 import {
   cn,
@@ -61,14 +62,17 @@ const groups = [
       {
         label: "Shun Kakinoki",
         value: "personal",
+        href: "/0x10DbbE70128929723c1b982e53c51653232e4Ff2",
       },
       {
         label: "Family Wallet",
         value: "family",
+        href: "/0x10DbbE70128929723c1b982e53c51653232e4Ff2",
       },
       {
         label: "Monsters Inc.",
         value: "monsters",
+        href: "/0x10DbbE70128929723c1b982e53c51653232e4Ff2",
       },
     ],
   },
@@ -94,6 +98,7 @@ export function WalletSwitcher({
   const [selectedWallet, setSelectedWallet] = React.useState<Wallet>(
     groups[0].wallets[0],
   );
+  const router = useRouter();
 
   return (
     <Dialog open={showNewWalletDialog} onOpenChange={setShowNewWalletDialog}>
@@ -130,6 +135,7 @@ export function WalletSwitcher({
                       onSelect={() => {
                         setSelectedWallet(wallet);
                         setOpen(false);
+                        router.push(wallet.href);
                       }}
                       className="text-sm"
                     >
