@@ -22,6 +22,7 @@ import type { Tab } from "@/hooks/useTabs";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 
 const transition = {
   type: "tween",
@@ -80,36 +81,36 @@ export const Tabs = ({
         const href = firstSlug + item.href;
 
         return (
-          <motion.button
-            key={i}
-            className={clsx(
-              "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-primary",
-              {
-                "text-muted-foreground": !isActive, // Default color for non-active tabs
-                "text-white/90": isActive, // Color for active tabs
-              },
-            )}
-            ref={el => (buttonRefs[i] = el)}
-            onPointerEnter={() => {
-              setHoveredTabIndex(i);
-              router.prefetch(href);
-            }}
-            onFocus={() => {
-              setHoveredTabIndex(i);
-            }}
-            onClick={() => {
-              router.push(href);
-              setSelectedTab([i, i > selectedTabIndex ? 1 : -1]);
-            }}
-          >
-            {<item.icon className="mr-2 h-4 w-4" />}
-            {item.label}
-            {item.number > 0 && (
-              <span className="font-sm ml-2 rounded-full bg-accent px-2 py-0.5">
-                {item.number}
-              </span>
-            )}
-          </motion.button>
+          <Link key={i} href={href} passHref legacyBehavior>
+            <motion.button
+              className={clsx(
+                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-primary",
+                {
+                  "text-muted-foreground": !isActive, // Default color for non-active tabs
+                  "text-white/90": isActive, // Color for active tabs
+                },
+              )}
+              ref={el => (buttonRefs[i] = el)}
+              onPointerEnter={() => {
+                setHoveredTabIndex(i);
+                router.prefetch(href);
+              }}
+              onFocus={() => {
+                setHoveredTabIndex(i);
+              }}
+              onClick={() => {
+                setSelectedTab([i, i > selectedTabIndex ? 1 : -1]);
+              }}
+            >
+              {<item.icon className="mr-2 h-4 w-4" />}
+              {item.label}
+              {item.number > 0 && (
+                <span className="font-sm ml-2 rounded-full bg-accent px-2 py-0.5">
+                  {item.number}
+                </span>
+              )}
+            </motion.button>
+          </Link>
         );
       })}
 
