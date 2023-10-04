@@ -92,9 +92,6 @@ export const Tabs = ({ tabs, selectedTabIndex }: Props): JSX.Element => {
               onFocus={() => {
                 setHoveredTabIndex(i);
               }}
-              onClick={() => {
-                setSelectedTab([i, i > selectedTabIndex ? 1 : -1]);
-              }}
             >
               {<item.icon className="mr-2 h-4 w-4" />}
               {item.label}
