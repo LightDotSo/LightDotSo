@@ -62,7 +62,10 @@ export const Tabs = ({
   const navRef = useRef<HTMLDivElement>(null);
   const navRect = navRef.current?.getBoundingClientRect();
 
-  const selectedRect = anchorRefs[selectedTabIndex]?.getBoundingClientRect();
+  const selectedRect =
+    selectedTabIndex !== undefined
+      ? anchorRefs[selectedTabIndex]?.getBoundingClientRect()
+      : undefined;
 
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const hoveredRect =
@@ -76,7 +79,8 @@ export const Tabs = ({
       onPointerLeave={e => setHoveredTabIndex(null)}
     >
       {tabs.map((item, i) => {
-        const isActive = hoveredTabIndex === i || selectedTabIndex === i;
+        const isActive =
+          hoveredTabIndex === i || selectedTabIndex === i || false;
         const href = firstSlug + item.href;
 
         return (
