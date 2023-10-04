@@ -18,7 +18,7 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Tabs } from "@/components/Tabs";
 import { cn } from "@lightdotso/ui";
@@ -31,7 +31,6 @@ import {
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import { usePathname } from "next/navigation";
 
 const tabs = [
   {
@@ -90,39 +89,25 @@ const tabs = [
     ) => <ChatBubbleIcon {...props} />,
   },
 ];
-const tabIds = tabs.map(tab => tab.id);
 
 export function MainNav({
   // eslint-disable-next-line react/prop-types
   className = "",
   ...props
 }: React.HTMLAttributes<HTMLElement>) {
-  const pathname = usePathname();
-
-  const [hookProps, setHookProps] = useState({
+  const [hookProps] = useState({
     tabs,
-    initialTabId: "",
+    initialTabId: undefined,
   });
   const framer = useTabs(hookProps);
-
-  // Set the initialTabId to the matching slug in tabIds array
-  useEffect(() => {
-    // Split the path using '/' as delimiter and remove empty strings
-    const slugs = pathname.split("/").filter(slug => slug);
-    // Get the matching slug in tabIds array
-    const matchingId = tabIds.find(slug => slugs.includes(slug));
-    // Set the initialTabId to the matching slug
-    setHookProps(prev => ({ ...prev, initialTabId: matchingId ?? "overview" }));
-    // Only run on initial render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <nav
       className={cn("flex items-center space-x-4 lg:space-x-6", className)}
       {...props}
     >
-      {hookProps.initialTabId !== "" && <Tabs {...framer.tabProps} />}
+      {/* Render upon mount */}
+      {framer && <Tabs {...framer.tabProps} />}
     </nav>
   );
 }

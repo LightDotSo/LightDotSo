@@ -33,15 +33,9 @@ const transition = {
 type Props = {
   selectedTabIndex: number;
   tabs: Tab[];
-  // eslint-disable-next-line no-unused-vars
-  setSelectedTab: (_input: [number, number]) => void;
 };
 
-export const Tabs = ({
-  tabs,
-  selectedTabIndex,
-  setSelectedTab,
-}: Props): JSX.Element => {
+export const Tabs = ({ tabs, selectedTabIndex }: Props): JSX.Element => {
   const [anchorRefs, setAnchorRefs] = useState<Array<HTMLAnchorElement | null>>(
     [],
   );
