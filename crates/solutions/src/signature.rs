@@ -95,7 +95,7 @@ mod tests {
 
     #[test]
     fn test_recover_checkpoint() {
-        let signature: Signature = Iterator::collect::<Vec<u8>>([1; 35].iter().copied());
+        let signature: Signature = [0].iter().copied().chain([1; 34].iter().copied()).collect();
 
         let res = decode_signature(signature).unwrap();
         assert!(res.checkpoint == [1; 32]);
