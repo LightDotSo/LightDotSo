@@ -100,10 +100,10 @@ model Owner {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  configurationId String
+  configurationId String?
 
-  configuration Configuration @relation(fields: [configurationId], references: [id])
-  user          User?         @relation(fields: [address], references: [address])
+  configuration Configuration? @relation(fields: [configurationId], references: [id])
+  user          User?          @relation(fields: [address], references: [address])
 }
 
 /// ethers-rs Log struct converted to Prisma model.
