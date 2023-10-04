@@ -250,7 +250,15 @@ async fn v1_post_handler(
             // Create the owners to the database.
             let owner_data = client
                 .owner()
-                .create(to_checksum(&address, None), 1, image_hash.clone(), vec![])
+                .create(
+                    to_checksum(&address, None),
+                    1,
+                    image_hash.clone(),
+                    lightdotso_prisma::configuration::UniqueWhereParam::IdEquals(
+                        configuration_data.id,
+                    ),
+                    vec![],
+                )
                 .exec()
                 .await?;
             trace!(?owner_data);
