@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::types::WalletConfig;
 use ethers::{
     abi::{encode, encode_packed, Token},
     types::{Address, Bytes, H256, U256},
@@ -45,7 +46,7 @@ pub fn image_hash_of_wallet_config(wallet_config: WalletConfig) -> Result<String
 
     let threshold_bytes = keccak256(encode(&[
         Token::FixedBytes(padded.to_vec()),
-        Token::Uint(wallet_config.threshold),
+        Token::Uint(U256::from(wallet_config.threshold)),
     ]));
 
     // Encode the checkpoint into bytes
@@ -88,6 +89,8 @@ pub fn get_address(hash: H256, salt: H256) -> Address {
 
 #[cfg(test)]
 mod tests {
+    use crate::types::Signer;
+
     use super::*;
 
     #[test]
@@ -95,7 +98,7 @@ mod tests {
         // From: contracts/src/test/utils/LightWalletUtils.sol
         let wc = WalletConfig {
             checkpoint: U256::from(1u64),
-            threshold: U256::from(1u64),
+            threshold: 1,
             signers: vec![Signer {
                 weight: 1,
                 address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),

@@ -27,5 +27,33 @@ pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
         return Err(eyre!("Invalid signature"));
     }
 
-    Ok(WalletConfig { checkpoint: 1.into(), threshold: 1.into(), signers: vec![] })
+    // Threshold is the first two bytes of the signature
+    // Hex: 0x0000 ~ 0xFFFF
+    let threshold = u16::from_be_bytes([sig[0], sig[1]]);
+
+    Ok(WalletConfig { checkpoint: 1.into(), threshold, signers: vec![] })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use eyre::eyre;
+
+    #[test]
+    fn test_decode_threshold() {
+        let signature: Signature = vec![0x11, 0x11];
+
+        let res = decode_signature(signature).unwrap();
+        assert!(res.threshold == 4369);
+    }
+
+    #[test]
+    fn test_decode_signature_empty() {
+        let signature: Signature = vec![];
+
+        let expected_err = eyre!("Invalid signature");
+
+        let res = decode_signature(signature).unwrap_err();
+        assert_eq!(res.to_string(), expected_err.to_string());
+    }
 }

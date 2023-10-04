@@ -28,6 +28,6 @@ pub struct Signer {
 #[derive(Debug)]
 pub struct WalletConfig {
     pub checkpoint: U256,
-    pub threshold: U256,
+    pub threshold: u16,
     pub signers: Vec<Signer>,
 }
