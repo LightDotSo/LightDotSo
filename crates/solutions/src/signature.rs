@@ -19,7 +19,7 @@ use crate::types::WalletConfig;
 
 pub type Signature = Vec<u8>;
 
-fn recover(sig: Signature) -> Result<WalletConfig> {
+fn recover(sig: Signature) -> Result<(u16, [u8; 32])> {
     let s = sig.len();
 
     // If the length is lees than 2 bytes, it's an invalid signature
@@ -35,7 +35,7 @@ fn recover(sig: Signature) -> Result<WalletConfig> {
 
     // If the length is less than 34 bytes, it doesn't have a checkpoint
     if s < 34 {
-        return Ok(WalletConfig { checkpoint: [0; 32], threshold, signers: vec![] });
+        return Ok((threshold, [0; 32]));
     }
 
     // Checkpoint is the next 32 bytes of the signature
@@ -44,7 +44,13 @@ fn recover(sig: Signature) -> Result<WalletConfig> {
     // License: Apache-2.0
     let checkpoint: [u8; 32] = sig[2..34].try_into()?;
 
-    Ok(WalletConfig { checkpoint, threshold, signers: vec![] })
+    Ok((threshold, checkpoint))
+}
+
+fn decode_base_signature(sig: Signature) -> Result<WalletConfig> {
+    let (threshold, checkpoint) = recover(sig)?;
+
+    Ok(WalletConfig { threshold, checkpoint, signers: vec![] })
 }
 
 pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
@@ -52,10 +58,26 @@ pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
 
     // If the length is lees than 2 bytes, it's an invalid signature
     if s < 1 {
-        return Err(eyre!("Invalid signature"));
+        return Err(eyre!("Invalid signature length"));
     }
 
-    recover(sig)
+    // Signature type is the first byte of the signature
+    // Hex: 0x00 ~ 0xFF
+    // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/ModuleAuth.sol#L56
+    // License: Apache-2.0
+    let signature_type = sig[0];
+
+    // Legacy signature
+    if signature_type == 0x00 {
+        return decode_base_signature(sig);
+    }
+
+    // Dynamic signature
+    if signature_type == 0x01 {
+        return decode_base_signature(sig[1..].to_vec());
+    }
+
+    Err(eyre!("Invalid signature"))
 }
 
 #[cfg(test)]
@@ -65,7 +87,7 @@ mod tests {
 
     #[test]
     fn test_recover_threshold() {
-        let signature: Signature = vec![0x11, 0x11];
+        let signature: Signature = vec![0x1, 0x11, 0x11];
 
         let res = decode_signature(signature).unwrap();
         assert!(res.threshold == 4369);
@@ -73,7 +95,7 @@ mod tests {
 
     #[test]
     fn test_recover_checkpoint() {
-        let signature: Signature = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
+        let signature: Signature = Iterator::collect::<Vec<u8>>([1; 35].iter().copied());
 
         let res = decode_signature(signature).unwrap();
         assert!(res.checkpoint == [1; 32]);
@@ -83,7 +105,7 @@ mod tests {
     fn test_decode_signature_empty() {
         let signature: Signature = vec![];
 
-        let expected_err = eyre!("Invalid signature");
+        let expected_err = eyre!("Invalid signature length");
 
         let res = decode_signature(signature).unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
