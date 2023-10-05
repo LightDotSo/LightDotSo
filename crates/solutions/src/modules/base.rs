@@ -14,10 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    signature::recover_ecdsa_signature,
+    signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{Signature, WalletConfig},
-    utils::{hash_keccak_256, read_uint8_address},
+    utils::{hash_keccak_256, read_uint16, read_uint8, read_uint8_address},
 };
 use ethers::{
     abi::{encode, Token},
@@ -65,10 +65,28 @@ impl BaseSigModule {
     }
 
     fn decode_ecdsa_signature(&mut self) -> Result<()> {
-        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
+        let (addr_weight, rindex) = read_uint8(&self.sig, self.rindex)?;
 
         let nrindex = rindex + 66;
-        let _signature_type = recover_ecdsa_signature(&self.sig, rindex)?;
+        let signature_type = recover_ecdsa_signature(&self.sig, rindex)?;
+        self.rindex = nrindex;
+
+        self.weight += addr_weight;
+
+        let node = self.leaf_for_address_and_weight(signature_type.address, addr_weight);
+        self.return_valid_root(node);
+
+        Ok(())
+    }
+
+    fn decode_dynamic_signature(&mut self) -> Result<()> {
+        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
+
+        // Read signature size
+        let (size, rindex) = read_uint16(&self.sig, rindex)?;
+
+        let nrindex = rindex + size as usize;
+        let _signature_type = recover_dynamic_signature(&self.sig, rindex, nrindex)?;
         self.rindex = nrindex;
 
         self.weight += addr_weight;
@@ -95,6 +113,7 @@ impl BaseSigModule {
             match signature_type {
                 0 => self.decode_address_signature()?,
                 1 => self.decode_ecdsa_signature()?,
+                2 => self.decode_dynamic_signature()?,
                 _ => return Err(eyre!("Invalid signature type")),
             }
         }

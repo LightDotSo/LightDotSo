@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{ECDSASignatureType, SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH};
+use crate::types::{
+    DynamicSignatureType, ECDSASignatureType, SignatureTreeDynamicSignatureLeaf,
+    SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH,
+};
+use ethers::types::Address;
 use eyre::{eyre, Result};
 
 pub(crate) fn recover_ecdsa_signature(
@@ -21,7 +25,7 @@ pub(crate) fn recover_ecdsa_signature(
     starting_index: usize,
 ) -> Result<SignatureTreeECDSASignatureLeaf> {
     // Add 1 for the weight, 1 for the signature type
-    let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1 + 1;
+    let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1;
 
     // Check that the data is long enough to contain the signature
     if data.len() < new_pointer {
@@ -30,9 +34,8 @@ pub(crate) fn recover_ecdsa_signature(
 
     let slice = &data[starting_index..new_pointer];
 
-    let weight = slice[0];
-
-    let signature_type = match slice[1] {
+    // The last byte is the signature type
+    let signature_type = match slice[new_pointer - 1] {
         1 => ECDSASignatureType::ECDSASignatureTypeEIP712,
         2 => ECDSASignatureType::ECDSASignatureTypeEthSign,
         _ => return Err(eyre!("Unexpected ECDSASignatureType value")),
@@ -40,9 +43,40 @@ pub(crate) fn recover_ecdsa_signature(
 
     // The length is shorter because the signature type is omitted
     let mut signature = [0; ECDSA_SIGNATURE_LENGTH];
-    signature.copy_from_slice(&slice[2..]);
+    signature.copy_from_slice(&slice[1..ECDSA_SIGNATURE_LENGTH + 1]);
 
-    Ok(SignatureTreeECDSASignatureLeaf { weight, signature_type, signature })
+    // Recover the address from the signature
+    let address = Address::zero();
+
+    Ok(SignatureTreeECDSASignatureLeaf { address, signature_type, signature })
+}
+
+pub(crate) fn recover_dynamic_signature(
+    data: &[u8],
+    starting_index: usize,
+    end_index: usize,
+) -> Result<SignatureTreeDynamicSignatureLeaf> {
+    // Check that the data is long enough to contain the signature
+    if data.len() < end_index {
+        return Err(eyre!("index is out of bounds of the input data"));
+    }
+
+    let slice = &data[starting_index..end_index];
+
+    // The last byte is the signature type
+    let signature_type = match slice[end_index - 1] {
+        1 => DynamicSignatureType::DynamicSignatureTypeEIP712,
+        2 => DynamicSignatureType::DynamicSignatureTypeEthSign,
+        _ => return Err(eyre!("Unexpected DynamicSignatureType value")),
+    };
+
+    // The length is the remaining length of the slice
+    let signature = slice[1..].to_vec();
+
+    // Recover the address from the signature
+    let address = Address::zero();
+
+    Ok(SignatureTreeDynamicSignatureLeaf { address, signature_type, signature })
 }
 
 #[cfg(test)]
@@ -51,18 +85,16 @@ mod tests {
 
     #[test]
     fn test_recover_ecdsa_signature() {
-        let test_data: [u8; 66] = [
-            1, // Encoded Weight
-            2, // ECDSASignatureType::ECDSASignatureTypeEthSign
+        let test_data: [u8; 65] = [
             // The rest is the signature data
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
             24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
             46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+            2, // ECDSASignatureType::ECDSASignatureTypeEthSign
         ];
 
         let result = recover_ecdsa_signature(&test_data, 0).unwrap();
 
-        assert_eq!(result.weight, 1);
         assert_eq!(result.signature_type, ECDSASignatureType::ECDSASignatureTypeEthSign);
         assert_eq!(result.signature[0], 0);
         assert_eq!(result.signature[63], 63);

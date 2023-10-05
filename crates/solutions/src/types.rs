@@ -75,7 +75,24 @@ pub const ECDSA_SIGNATURE_LENGTH: usize = 64;
 
 #[derive(Debug, PartialEq)]
 pub struct SignatureTreeECDSASignatureLeaf {
-    pub weight: u8,
+    pub address: Address,
     pub signature_type: ECDSASignatureType,
     pub signature: [u8; ECDSA_SIGNATURE_LENGTH],
+}
+
+/// The struct representation of a Dynamic signature leaf type
+#[derive(Debug, PartialEq)]
+#[repr(u8)]
+pub enum DynamicSignatureType {
+    DynamicSignatureTypeEIP712 = 1,
+    DynamicSignatureTypeEthSign = 2,
+    DynamicSignatureTypeEIP1271 = 3,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct SignatureTreeDynamicSignatureLeaf {
+    // pub weight: u8,
+    pub address: Address,
+    pub signature_type: DynamicSignatureType,
+    pub signature: Vec<u8>,
 }

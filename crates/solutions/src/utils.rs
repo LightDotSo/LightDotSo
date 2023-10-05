@@ -39,6 +39,32 @@ pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Addre
     Ok((a, b, new_pointer))
 }
 
+pub(crate) fn read_uint8(data: &[u8], index: usize) -> Result<(u8, usize)> {
+    let new_pointer = index + 1;
+
+    if data.len() < new_pointer {
+        return Err(eyre!("index is out of bounds of the input data"));
+    }
+
+    let a = data[index];
+
+    Ok((a, new_pointer))
+}
+
+pub(crate) fn read_uint16(data: &[u8], index: usize) -> Result<(u16, usize)> {
+    let new_pointer = index + 2;
+
+    if data.len() < new_pointer {
+        return Err(eyre!("index is out of bounds of the input data"));
+    }
+
+    let slice = &data[index..new_pointer];
+
+    let a = u16::from_be_bytes([slice[0], slice[1]]);
+
+    Ok((a, new_pointer))
+}
+
 pub(crate) fn hash_keccak_256(a: [u8; 32], b: [u8; 32]) -> [u8; 32] {
     keccak256(encode(&[Token::FixedBytes(a.to_vec()), Token::FixedBytes(b.to_vec())]))
 }
@@ -70,6 +96,19 @@ mod tests {
         let (a, _b, new_pointer) = result.unwrap();
         assert_eq!(a, 1);
         assert_eq!(new_pointer, 21);
+    }
+
+    #[test]
+    fn test_read_uint16() {
+        let data: [u8; 4] = [0x01, 0x02, 0xab, 0xcd];
+        let index: usize = 0;
+        let result = read_uint16(&data, index);
+
+        assert!(result.is_ok());
+        let (value, new_pointer) = result.unwrap();
+
+        assert_eq!(value, 0x0102);
+        assert_eq!(new_pointer, 2);
     }
 
     #[test]
