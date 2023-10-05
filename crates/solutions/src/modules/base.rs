@@ -30,11 +30,12 @@ pub(crate) struct BaseSigModule {
     rindex: usize,
     root: [u8; 32],
     sig: Signature,
+    weight: u8,
 }
 
 impl BaseSigModule {
     pub fn new() -> Self {
-        Self { rindex: 0, root: [0; 32], sig: vec![] }
+        Self { rindex: 0, root: [0; 32], sig: vec![], weight: 0 }
     }
 
     pub fn set_signature(&mut self, sig: Signature) -> &mut Self {
@@ -69,6 +70,8 @@ impl BaseSigModule {
         let nrindex = rindex + 66;
         let _signature_type = recover_ecdsa_signature(&self.sig, rindex)?;
         self.rindex = nrindex;
+
+        self.weight += addr_weight;
 
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);

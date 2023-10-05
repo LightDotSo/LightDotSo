@@ -13,22 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{ECDSASignatureType, SignatureTreeECDSASignatureLeaf};
+use crate::types::{ECDSASignatureType, SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH};
 use eyre::{eyre, Result};
 
 pub(crate) fn recover_ecdsa_signature(
     data: &[u8],
-    index: usize,
+    starting_index: usize,
 ) -> Result<SignatureTreeECDSASignatureLeaf> {
-    let new_pointer = index + 21;
+    let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1;
 
     if data.len() < new_pointer {
         return Err(eyre!("index is out of bounds of the input data"));
     }
 
-    Ok(SignatureTreeECDSASignatureLeaf {
-        weight: 0,
-        signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
-        signature: [0; 65],
-    })
+    let slice = &data[starting_index..new_pointer];
+
+    let weight = slice[0];
+
+    let signature_type = match slice[1] {
+        1 => ECDSASignatureType::ECDSASignatureTypeEIP712,
+        2 => ECDSASignatureType::ECDSASignatureTypeEthSign,
+        _ => return Err(eyre!("Unexpected ECDSASignatureType value")),
+    };
+
+    let mut signature = [0; ECDSA_SIGNATURE_LENGTH];
+    signature.copy_from_slice(&slice[2..]);
+
+    Ok(SignatureTreeECDSASignatureLeaf { weight, signature_type, signature })
 }
