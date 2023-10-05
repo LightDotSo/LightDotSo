@@ -19,6 +19,10 @@ use crate::{
     utils::read_uint24,
 };
 use async_recursion::async_recursion;
+use ethers::{
+    abi::{encode_packed, Token},
+    utils::keccak256,
+};
 use eyre::{eyre, Result};
 
 #[async_recursion]
@@ -73,8 +77,49 @@ async fn recover_chained(digest: [u8; 32], signature: Signature) -> Result<Walle
     let rindex: usize = 1;
 
     let (sig_size, rindex) = read_uint24(&signature, rindex)?;
+    let nrindex = rindex + (sig_size as usize);
 
-    recover_signature(digest, signature[rindex..(sig_size as usize)].to_vec()).await
+    let config = recover_signature(digest, signature[rindex..nrindex].to_vec()).await?;
+
+    if config.weight < config.threshold.into() {
+        return Err(eyre!("Less than threshold"));
+    }
+
+    let mut rindex = nrindex;
+    let mut checkpoint = config.checkpoint;
+
+    while rindex < signature.len() {
+        let (sig_size, sig_rindex) = read_uint24(&signature, rindex)?;
+        let nrindex = sig_rindex + (sig_size as usize);
+
+        let new_image_hash = set_image_hash(signature[sig_rindex..nrindex].to_vec());
+
+        let config =
+            recover_signature(new_image_hash, signature[sig_rindex..nrindex].to_vec()).await?;
+
+        if config.weight < config.threshold.into() {
+            return Err(eyre!("Less than threshold"));
+        }
+
+        if config.checkpoint >= checkpoint {
+            return Err(eyre!("Invalid checkpoint"));
+        }
+
+        checkpoint = config.checkpoint;
+        rindex = nrindex;
+    }
+
+    recover_signature(digest, signature[rindex..nrindex].to_vec()).await
+}
+
+fn set_image_hash(sig_hash: Vec<u8>) -> [u8; 32] {
+    keccak256(
+        encode_packed(&[
+            Token::FixedBytes(keccak256("SetImageHash(bytes32 imageHash)").to_vec()),
+            Token::FixedBytes(sig_hash),
+        ])
+        .unwrap(),
+    )
 }
 
 #[cfg(test)]
