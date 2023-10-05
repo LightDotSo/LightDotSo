@@ -36,7 +36,7 @@ pub struct WalletConfig {
     // Uint16 threshold
     pub threshold: u16,
     // Uint256 weight
-    pub weight: u16,
+    pub weight: usize,
     // Image hash of the wallet config
     pub image_hash: [u8; 32],
     // Signers of the wallet

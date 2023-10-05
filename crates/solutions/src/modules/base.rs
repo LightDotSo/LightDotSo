@@ -17,8 +17,11 @@ use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{Signature, WalletConfig},
-    utils::{hash_keccak_256, read_uint16, read_uint8, read_uint8_address},
+    utils::{
+        hash_keccak_256, read_bytes32, read_uint16, read_uint24, read_uint8, read_uint8_address,
+    },
 };
+use async_recursion::async_recursion;
 use ethers::{
     abi::{encode, Token},
     types::{Address, U256},
@@ -32,7 +35,7 @@ pub(crate) struct BaseSigModule {
     subdigest: [u8; 32],
     root: [u8; 32],
     sig: Signature,
-    weight: u8,
+    weight: usize,
 }
 
 impl BaseSigModule {
@@ -80,7 +83,7 @@ impl BaseSigModule {
         let signature_type = recover_ecdsa_signature(&self.sig, &self.subdigest, rindex)?;
         self.rindex = nrindex;
 
-        self.weight += addr_weight;
+        self.weight += addr_weight as usize;
 
         let node = self.leaf_for_address_and_weight(signature_type.address, addr_weight);
         self.return_valid_root(node);
@@ -100,7 +103,7 @@ impl BaseSigModule {
             .await?;
         self.rindex = nrindex;
 
-        self.weight += addr_weight;
+        self.weight += addr_weight as usize;
 
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
@@ -108,8 +111,34 @@ impl BaseSigModule {
         Ok(())
     }
 
+    /// Decodes a node signature
+    fn decode_node_signature(&mut self) -> Result<()> {
+        let (node, _rindex) = read_bytes32(&self.sig, self.rindex)?;
+        self.return_valid_root(node);
+
+        Ok(())
+    }
+
+    /// Decodes a branch signature
+    #[async_recursion]
+    async fn decode_branch_signature(&mut self) -> Result<()> {
+        // Read signature size
+        let (size, rindex) = read_uint24(&self.sig, self.rindex)?;
+        let nrindex = rindex + size as usize;
+
+        let mut base_sig_module = BaseSigModule::new(self.subdigest);
+        base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
+        let (nweight, node) = base_sig_module.recover_branch().await?;
+
+        self.weight += nweight;
+        self.root = hash_keccak_256(self.root, node);
+
+        Ok(())
+    }
+
     /// Recovers the branch of the merkle tree
-    async fn recover_branch(&mut self) -> Result<(u16, [u8; 32])> {
+    #[async_recursion]
+    async fn recover_branch(&mut self) -> Result<(usize, [u8; 32])> {
         let s = self.sig.len();
 
         // If the length is none bytes, it's an invalid signature
@@ -126,6 +155,8 @@ impl BaseSigModule {
                 0 => self.decode_address_signature()?,
                 1 => self.decode_ecdsa_signature()?,
                 2 => self.decode_dynamic_signature().await?,
+                3 => self.decode_node_signature()?,
+                4 => self.decode_branch_signature().await?,
                 _ => return Err(eyre!("Invalid signature type")),
             }
         }

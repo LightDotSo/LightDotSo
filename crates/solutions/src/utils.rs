@@ -65,6 +65,35 @@ pub(crate) fn read_uint16(data: &[u8], index: usize) -> Result<(u16, usize)> {
     Ok((a, new_pointer))
 }
 
+pub(crate) fn read_uint24(data: &[u8], index: usize) -> Result<(u32, usize), eyre::Error> {
+    let new_pointer = index + 3;
+
+    if data.len() < new_pointer {
+        return Err(eyre::eyre!("index out of bounds of the input data"));
+    }
+
+    let slice = &data[index..new_pointer];
+    let mut array = [0; 4];
+    array[1..4].copy_from_slice(slice);
+    let a = u32::from_be_bytes(array);
+
+    Ok((a, new_pointer))
+}
+
+pub(crate) fn read_bytes32(data: &[u8], index: usize) -> Result<([u8; 32], usize), eyre::Error> {
+    let new_pointer = index + 32;
+
+    if data.len() < new_pointer {
+        return Err(eyre::eyre!("index is out of bounds of the input data"));
+    }
+
+    let slice = &data[index..new_pointer];
+    let mut bytes32 = [0u8; 32];
+    bytes32.copy_from_slice(slice);
+
+    Ok((bytes32, new_pointer))
+}
+
 pub(crate) fn hash_keccak_256(a: [u8; 32], b: [u8; 32]) -> [u8; 32] {
     keccak256(encode(&[Token::FixedBytes(a.to_vec()), Token::FixedBytes(b.to_vec())]))
 }
@@ -109,6 +138,42 @@ mod tests {
 
         assert_eq!(value, 0x0102);
         assert_eq!(new_pointer, 2);
+    }
+
+    #[test]
+    fn test_read_uint24() {
+        let data: [u8; 5] = [0x01, 0xab, 0xcd, 0xef, 0x23];
+        let index: usize = 0;
+        let result = read_uint24(&data, index);
+
+        assert!(result.is_ok());
+        let (value, new_pointer) = result.unwrap();
+
+        assert_eq!(value, 0x01abcd);
+        assert_eq!(new_pointer, 3);
+    }
+
+    #[test]
+    fn test_read_bytes32() {
+        let data: [u8; 40] = [
+            0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e,
+            0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c,
+            0x1d, 0x1e, 0x1f, 0x20, 0xab, 0xcd, 0xef, 0x01, 0x23, 0x45, 0x67, 0x89,
+        ];
+        let index: usize = 0;
+        let result = read_bytes32(&data, index);
+
+        assert!(result.is_ok());
+        let (value, new_pointer) = result.unwrap();
+
+        let expected: [u8; 32] = [
+            0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e,
+            0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c,
+            0x1d, 0x1e, 0x1f, 0x20,
+        ];
+
+        assert_eq!(value, expected);
+        assert_eq!(new_pointer, 32);
     }
 
     #[test]
