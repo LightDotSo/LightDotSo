@@ -35,25 +35,29 @@ pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
     // Legacy signature
     if signature_type == 0x00 {
         let mut base_sig_module = BaseSigModule::new();
-        return base_sig_module.recover(sig);
+        base_sig_module.set_signature(sig);
+        return base_sig_module.recover();
     }
 
     // Dynamic signature
     if signature_type == 0x01 {
         let mut base_sig_module = BaseSigModule::new();
-        return base_sig_module.recover(sig);
+        base_sig_module.set_signature(sig);
+        return base_sig_module.recover();
     }
 
     // No ChainId signature
     if signature_type == 0x02 {
         let mut base_sig_module = BaseSigModule::new();
-        return base_sig_module.recover(sig);
+        base_sig_module.set_signature(sig);
+        return base_sig_module.recover();
     }
 
     // ChainId signature
     if signature_type == 0x03 {
         let mut base_sig_module = BaseSigModule::new();
-        return base_sig_module.recover(sig);
+        base_sig_module.set_signature(sig);
+        return base_sig_module.recover();
     }
 
     Err(eyre!("Invalid signature type"))

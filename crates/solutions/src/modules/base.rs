@@ -29,11 +29,17 @@ use eyre::{eyre, Result};
 pub(crate) struct BaseSigModule {
     rindex: usize,
     root: [u8; 32],
+    sig: Signature,
 }
 
 impl BaseSigModule {
     pub fn new() -> Self {
-        Self { rindex: 0, root: [0; 32] }
+        Self { rindex: 0, root: [0; 32], sig: vec![] }
+    }
+
+    pub fn set_signature(&mut self, sig: Signature) -> &mut Self {
+        self.sig = sig;
+        self
     }
 
     // From:
@@ -43,12 +49,17 @@ impl BaseSigModule {
         (weight_shifted | addr_u256).into()
     }
 
-    fn decode_address_signature(&self) -> Result<(u8, Address)> {
-        Ok((0, Address::zero()))
+    fn decode_address_signature(&mut self) -> Result<()> {
+        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
+        self.rindex = rindex;
+        let node = self.leaf_for_address_and_weight(addr, addr_weight);
+        self.root = if self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
+
+        Ok(())
     }
 
-    fn recover_branch(&mut self, sig: Signature) -> Result<(u16, [u8; 32])> {
-        let s = sig.len();
+    fn recover_branch(&mut self) -> Result<(u16, [u8; 32])> {
+        let s = self.sig.len();
 
         // If the length is none bytes, it's an invalid signature
         if s == 0 {
@@ -56,18 +67,12 @@ impl BaseSigModule {
         }
 
         // Iterating over the signature while length is greater than 0
-        while (self.rindex < sig.len()) {
+        while self.rindex < s {
             // Get the first byte of the signature
-            let signature_type = sig[0];
+            let signature_type = self.sig[0];
 
             match signature_type {
-                0 => {
-                    let (addr_weight, addr, rindex) = read_uint8_address(&sig, self.rindex)?;
-                    self.rindex = rindex;
-                    let node = self.leaf_for_address_and_weight(addr, addr_weight);
-                    self.root =
-                        if self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
-                }
+                0 => self.decode_address_signature()?,
                 _ => return Err(eyre!("Invalid signature type")),
             }
         }
@@ -75,8 +80,8 @@ impl BaseSigModule {
         Ok((0, [0; 32]))
     }
 
-    fn recover_threshold_checkpoint(&self, sig: Signature) -> Result<(u16, [u8; 32])> {
-        let s = sig.len();
+    fn recover_threshold_checkpoint(&self) -> Result<(u16, [u8; 32])> {
+        let s = self.sig.len();
 
         // If the length is lees than 2 bytes, it's an invalid signature
         if s < 2 {
@@ -87,7 +92,7 @@ impl BaseSigModule {
         // Hex: 0x0000 ~ 0xFFFF
         // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L269C9-L269C9
         // License: Apache-2.0
-        let threshold = u16::from_be_bytes([sig[0], sig[1]]);
+        let threshold = u16::from_be_bytes([self.sig[0], self.sig[1]]);
 
         // If the length is less than 34 bytes, it doesn't have a checkpoint
         if s < 34 {
@@ -98,17 +103,17 @@ impl BaseSigModule {
         // Hex: 0x00000000
         // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L270C7-L270C17
         // License: Apache-2.0
-        let checkpoint: [u8; 32] = sig[2..34].try_into()?;
+        let checkpoint: [u8; 32] = self.sig[2..34].try_into()?;
 
         Ok((threshold, checkpoint))
     }
 
-    pub(crate) fn recover(&mut self, sig: Signature) -> Result<WalletConfig> {
+    pub(crate) fn recover(&mut self) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
-        let (threshold, checkpoint) = self.recover_threshold_checkpoint(sig.clone())?;
+        let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
 
         // If the length is greater than 34 bytes, it's a branch signature
-        let (weight, digest) = self.recover_branch(sig)?;
+        let (weight, digest) = self.recover_branch()?;
 
         let image_hash = keccak256(encode(&[
             Token::FixedBytes(
@@ -148,19 +153,19 @@ mod tests {
 
     #[test]
     fn test_base_recover_threshold() {
-        let base_sig_module = BaseSigModule::new();
-        let signature: Signature = vec![0x11, 0x11];
+        let mut base_sig_module = BaseSigModule::new();
+        base_sig_module.sig = vec![0x11, 0x11];
 
-        let res = base_sig_module.recover_threshold_checkpoint(signature).unwrap();
+        let res = base_sig_module.recover_threshold_checkpoint().unwrap();
         assert!(res.0 == 4369);
     }
 
     #[test]
     fn test_base_recover_checkpoint() {
-        let base_sig_module = BaseSigModule::new();
-        let signature: Signature = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
+        let mut base_sig_module = BaseSigModule::new();
+        base_sig_module.sig = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
 
-        let res = base_sig_module.recover_threshold_checkpoint(signature).unwrap();
+        let res = base_sig_module.recover_threshold_checkpoint().unwrap();
         assert!(res.1 == [1; 32]);
     }
 }
