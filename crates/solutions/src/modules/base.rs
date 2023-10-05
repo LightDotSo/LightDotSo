@@ -77,13 +77,13 @@ impl BaseSigModule {
         )
     }
 
-    pub fn get_subdigest_base(&self, digest: [u8; 32]) -> [u8; 32] {
-        self.get_subdigest(digest)
+    pub fn set_subdigest_base(&mut self, digest: [u8; 32]) {
+        self.subdigest = self.get_subdigest(digest)
     }
 
-    pub fn get_subdigest_no_chain_id(&mut self, digest: [u8; 32]) -> [u8; 32] {
+    pub fn set_subdigest_no_chain_id(&mut self, digest: [u8; 32]) {
         self.chain_id = 0;
-        self.get_subdigest(digest)
+        self.subdigest = self.get_subdigest(digest)
     }
 
     /// Sets the root of the merkle tree

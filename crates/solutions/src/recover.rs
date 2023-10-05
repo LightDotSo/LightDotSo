@@ -16,10 +16,13 @@
 use crate::{
     modules::base::BaseSigModule,
     types::{Signature, WalletConfig},
+    utils::read_uint24,
 };
+use async_recursion::async_recursion;
 use eyre::{eyre, Result};
 
-pub async fn recover_signature(sig: Signature) -> Result<WalletConfig> {
+#[async_recursion]
+pub async fn recover_signature(digest: [u8; 32], sig: Signature) -> Result<WalletConfig> {
     let s = sig.len();
 
     // If the length is lees than 2 bytes, it's an invalid signature
@@ -37,6 +40,7 @@ pub async fn recover_signature(sig: Signature) -> Result<WalletConfig> {
     if signature_type == 0x00 {
         let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.set_signature(sig);
+        base_sig_module.set_subdigest_base(digest);
         return base_sig_module.recover().await;
     }
 
@@ -45,24 +49,32 @@ pub async fn recover_signature(sig: Signature) -> Result<WalletConfig> {
         let mut base_sig_module = BaseSigModule::empty();
         // Set the signature after the first byte
         base_sig_module.set_signature(sig[1..].to_vec());
+        base_sig_module.set_subdigest_base(digest);
         return base_sig_module.recover().await;
     }
 
     // No ChainId signature
     if signature_type == 0x02 {
-        let mut base_sig_module = BaseSigModule::empty();
-        base_sig_module.set_signature(sig);
-        return base_sig_module.recover().await;
+        return recover_chained(digest, sig).await;
     }
 
     // ChainId signature
     if signature_type == 0x03 {
         let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.set_signature(sig);
+        base_sig_module.set_subdigest_no_chain_id(digest);
         return base_sig_module.recover().await;
     }
 
     Err(eyre!("Invalid signature type"))
+}
+
+async fn recover_chained(digest: [u8; 32], signature: Signature) -> Result<WalletConfig> {
+    let rindex: usize = 1;
+
+    let (sig_size, rindex) = read_uint24(&signature, rindex)?;
+
+    recover_signature(digest, signature[rindex..(sig_size as usize)].to_vec()).await
 }
 
 #[cfg(test)]
@@ -76,7 +88,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature length");
 
-        let res = recover_signature(signature).await.unwrap_err();
+        let res = recover_signature([1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
     }
 
@@ -86,7 +98,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature type");
 
-        let res = recover_signature(signature).await.unwrap_err();
+        let res = recover_signature([1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
     }
 }
