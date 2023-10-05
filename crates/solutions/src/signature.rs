@@ -19,7 +19,10 @@ use crate::types::{
     DynamicSignatureType, ECDSASignatureType, SignatureTreeDynamicSignatureLeaf,
     SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH,
 };
-use ethers::types::{transaction::eip712::TypedData, Address, RecoveryMessage, Signature, H256};
+use ethers::{
+    types::{transaction::eip712::TypedData, Address, RecoveryMessage, Signature, H256},
+    utils::hash_message,
+};
 use eyre::{eyre, Result};
 
 pub(crate) fn recover_ecdsa_signature(
@@ -27,7 +30,7 @@ pub(crate) fn recover_ecdsa_signature(
     subdigest: &[u8; 32],
     starting_index: usize,
 ) -> Result<SignatureTreeECDSASignatureLeaf> {
-    // Add 1 for the signature type, 1 for next
+    // Add 1 for the signature type
     let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1;
 
     // Check that the data is long enough to contain the signature
@@ -58,9 +61,7 @@ pub(crate) fn recover_ecdsa_signature(
             signature.recover(message)?
         }
         ECDSASignatureType::ECDSASignatureTypeEthSign => {
-            let mut message = [0; 32];
-            message.copy_from_slice(&subdigest[..]);
-            // `ethers-rs` hashes the message internally
+            let message = RecoveryMessage::Hash(hash_message(H256::from(subdigest)));
             signature.recover(message)?
         }
     };
@@ -115,8 +116,8 @@ mod tests {
     use super::*;
     use ethers::signers::{LocalWallet, Signer};
 
-    #[test]
-    fn test_recover_ecdsa_signature() {
+    #[tokio::test]
+    async fn test_recover_ecdsa_signature() {
         let wallet = LocalWallet::new(&mut rand::thread_rng());
 
         let subdigest = [1u8; 32];
@@ -132,7 +133,7 @@ mod tests {
         assert_eq!(recovered_sig.signature_type, ECDSASignatureType::ECDSASignatureTypeEIP712);
 
         // Sign the subdigest w/ EIP 191
-        let signature = wallet.sign_hash(subdigest.into()).unwrap();
+        let signature = wallet.sign_message(subdigest).await.unwrap();
         let mut data = signature.to_vec();
         data.push(2);
 
