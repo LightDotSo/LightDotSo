@@ -43,7 +43,8 @@ pub async fn recover_signature(sig: Signature) -> Result<WalletConfig> {
     // Dynamic signature
     if signature_type == 0x01 {
         let mut base_sig_module = BaseSigModule::empty();
-        base_sig_module.set_signature(sig);
+        // Set the signature after the first byte
+        base_sig_module.set_signature(sig[1..].to_vec());
         return base_sig_module.recover().await;
     }
 

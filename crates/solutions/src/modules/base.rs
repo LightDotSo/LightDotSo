@@ -30,6 +30,7 @@ use ethers::{
 use eyre::{eyre, Result};
 
 pub(crate) struct BaseSigModule {
+    address: Address,
     chain_id: u64,
     rindex: usize,
     subdigest: [u8; 32],
@@ -40,17 +41,49 @@ pub(crate) struct BaseSigModule {
 
 impl BaseSigModule {
     pub fn new(subdigest: [u8; 32]) -> Self {
+        let address = Address::zero();
         let chain_id = 1;
-        Self { subdigest, rindex: 0, root: [0; 32], sig: vec![], weight: 0, chain_id }
+        Self { address, subdigest, rindex: 0, root: [0; 32], sig: vec![], weight: 0, chain_id }
     }
 
     pub fn empty() -> Self {
         Self::new([0; 32])
     }
 
+    pub fn set_address(&mut self, address: Address) -> &mut Self {
+        self.address = address;
+        self
+    }
+
+    pub fn set_chain_id(&mut self, chain_id: u64) -> &mut Self {
+        self.chain_id = chain_id;
+        self
+    }
+
     pub fn set_signature(&mut self, sig: Signature) -> &mut Self {
         self.sig = sig;
         self
+    }
+
+    pub fn get_subdigest(&self, digest: [u8; 32]) -> [u8; 32] {
+        keccak256(
+            encode_packed(&[
+                Token::String("\x19\x01".to_string()),
+                Token::Uint(U256::from(self.chain_id)),
+                Token::Address(self.address),
+                Token::FixedBytes(digest.to_vec()),
+            ])
+            .unwrap(),
+        )
+    }
+
+    pub fn get_subdigest_base(&self, digest: [u8; 32]) -> [u8; 32] {
+        self.get_subdigest(digest)
+    }
+
+    pub fn get_subdigest_no_chain_id(&mut self, digest: [u8; 32]) -> [u8; 32] {
+        self.chain_id = 0;
+        self.get_subdigest(digest)
     }
 
     /// Sets the root of the merkle tree
@@ -69,7 +102,7 @@ impl BaseSigModule {
     fn leaf_for_nested(&self, internal_root: [u8; 32], internal_threshold: u16) -> [u8; 32] {
         keccak256(
             encode_packed(&[
-                Token::String("Sequence nested config:\n".to_string()),
+                Token::String("Sequence nested digest:\n".to_string()),
                 Token::FixedBytes(internal_root.to_vec()),
                 Token::Uint(U256::from(internal_threshold)),
                 Token::Uint(U256::from(self.weight)),
@@ -82,7 +115,7 @@ impl BaseSigModule {
     fn leaf_for_hardcoded_subdigest(&self, hardcoded_subdigest: [u8; 32]) -> [u8; 32] {
         keccak256(
             encode_packed(&[
-                Token::String("Sequence nested config:\n".to_string()),
+                Token::String("Sequence nested digest:\n".to_string()),
                 Token::FixedBytes(hardcoded_subdigest.to_vec()),
             ])
             .unwrap(),
