@@ -23,7 +23,7 @@ use crate::{
 };
 use async_recursion::async_recursion;
 use ethers::{
-    abi::{encode, Token},
+    abi::{encode, encode_packed, Token},
     types::{Address, U256},
     utils::keccak256,
 };
@@ -63,6 +63,30 @@ impl BaseSigModule {
         let weight_shifted = U256::from(weight) << 160;
         let addr_u256 = U256::from_big_endian(addr.as_bytes());
         (weight_shifted | addr_u256).into()
+    }
+
+    /// Recovers the wallet config from the signature
+    fn leaf_for_nested(&self, internal_root: [u8; 32], internal_threshold: u16) -> [u8; 32] {
+        keccak256(
+            encode_packed(&[
+                Token::String("Sequence nested config:\n".to_string()),
+                Token::FixedBytes(internal_root.to_vec()),
+                Token::Uint(U256::from(internal_threshold)),
+                Token::Uint(U256::from(self.weight)),
+            ])
+            .unwrap(),
+        )
+    }
+
+    /// Recovers the wallet config from the signature
+    fn leaf_for_hardcoded_subdigest(&self, hardcoded_subdigest: [u8; 32]) -> [u8; 32] {
+        keccak256(
+            encode_packed(&[
+                Token::String("Sequence nested config:\n".to_string()),
+                Token::FixedBytes(hardcoded_subdigest.to_vec()),
+            ])
+            .unwrap(),
+        )
     }
 
     /// Decodes an address signature
@@ -136,6 +160,43 @@ impl BaseSigModule {
         Ok(())
     }
 
+    /// Decodes a nested signature
+    #[async_recursion]
+    async fn decode_nested_signature(&mut self) -> Result<()> {
+        let (external_weight, rindex) = read_uint8(&self.sig, self.rindex)?;
+
+        let (internal_threshold, rindex) = read_uint16(&self.sig, rindex)?;
+
+        let (size, rindex) = read_uint24(&self.sig, rindex)?;
+        let nrindex = rindex + size as usize;
+
+        let mut base_sig_module = BaseSigModule::new(self.subdigest);
+        base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
+        let (internal_weight, internal_root) = base_sig_module.recover_branch().await?;
+        self.rindex = nrindex;
+
+        if (internal_weight as u16) >= internal_threshold {
+            self.weight += external_weight as usize;
+        }
+
+        let node = self.leaf_for_nested(internal_root, internal_threshold);
+        self.return_valid_root(node);
+
+        Ok(())
+    }
+
+    fn decode_digest_signature(&mut self) -> Result<()> {
+        let (hardcoded, _rindex) = read_bytes32(&self.sig, self.rindex)?;
+        if hardcoded == self.subdigest {
+            self.weight = usize::MAX;
+        }
+
+        let node = self.leaf_for_hardcoded_subdigest(hardcoded);
+        self.return_valid_root(node);
+
+        Ok(())
+    }
+
     /// Recovers the branch of the merkle tree
     #[async_recursion]
     async fn recover_branch(&mut self) -> Result<(usize, [u8; 32])> {
@@ -157,6 +218,8 @@ impl BaseSigModule {
                 2 => self.decode_dynamic_signature().await?,
                 3 => self.decode_node_signature()?,
                 4 => self.decode_branch_signature().await?,
+                5 => self.decode_nested_signature().await?,
+                6 => self.decode_digest_signature()?,
                 _ => return Err(eyre!("Invalid signature type")),
             }
         }
