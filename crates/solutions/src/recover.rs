@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    modules::base::BaseSigModule,
+    module::SigModule,
     types::{Signature, WalletConfig},
     utils::read_uint24,
 };
@@ -42,7 +42,7 @@ pub async fn recover_signature(digest: [u8; 32], sig: Signature) -> Result<Walle
 
     // Legacy signature
     if signature_type == 0x00 {
-        let mut base_sig_module = BaseSigModule::empty();
+        let mut base_sig_module = SigModule::empty();
         base_sig_module.set_signature(sig);
         base_sig_module.set_subdigest_base(digest);
         return base_sig_module.recover().await;
@@ -50,7 +50,7 @@ pub async fn recover_signature(digest: [u8; 32], sig: Signature) -> Result<Walle
 
     // Dynamic signature
     if signature_type == 0x01 {
-        let mut base_sig_module = BaseSigModule::empty();
+        let mut base_sig_module = SigModule::empty();
         // Set the signature after the first byte
         base_sig_module.set_signature(sig[1..].to_vec());
         base_sig_module.set_subdigest_base(digest);
@@ -64,7 +64,7 @@ pub async fn recover_signature(digest: [u8; 32], sig: Signature) -> Result<Walle
 
     // ChainId signature
     if signature_type == 0x03 {
-        let mut base_sig_module = BaseSigModule::empty();
+        let mut base_sig_module = SigModule::empty();
         base_sig_module.set_signature(sig);
         base_sig_module.set_subdigest_no_chain_id(digest);
         return base_sig_module.recover().await;

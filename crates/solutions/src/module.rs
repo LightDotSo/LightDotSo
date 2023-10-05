@@ -29,7 +29,7 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
-pub(crate) struct BaseSigModule {
+pub(crate) struct SigModule {
     address: Address,
     chain_id: u64,
     rindex: usize,
@@ -39,7 +39,7 @@ pub(crate) struct BaseSigModule {
     weight: usize,
 }
 
-impl BaseSigModule {
+impl SigModule {
     pub fn new(subdigest: [u8; 32]) -> Self {
         let address = Address::zero();
         let chain_id = 1;
@@ -82,7 +82,7 @@ impl BaseSigModule {
     }
 
     pub fn set_subdigest_no_chain_id(&mut self, digest: [u8; 32]) {
-        self.chain_id = 0;
+        self.set_chain_id(0);
         self.subdigest = self.get_subdigest(digest)
     }
 
@@ -183,7 +183,7 @@ impl BaseSigModule {
         let (size, rindex) = read_uint24(&self.sig, self.rindex)?;
         let nrindex = rindex + size as usize;
 
-        let mut base_sig_module = BaseSigModule::new(self.subdigest);
+        let mut base_sig_module = SigModule::new(self.subdigest);
         base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
         let (nweight, node) = base_sig_module.recover_branch().await?;
 
@@ -203,7 +203,7 @@ impl BaseSigModule {
         let (size, rindex) = read_uint24(&self.sig, rindex)?;
         let nrindex = rindex + size as usize;
 
-        let mut base_sig_module = BaseSigModule::new(self.subdigest);
+        let mut base_sig_module = SigModule::new(self.subdigest);
         base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
         let (internal_weight, internal_root) = base_sig_module.recover_branch().await?;
         self.rindex = nrindex;
@@ -320,7 +320,7 @@ mod tests {
 
     #[test]
     fn test_leaf_for_address_and_weight() {
-        let base_sig_module = BaseSigModule::empty();
+        let base_sig_module = SigModule::empty();
         let test_addr = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse::<Address>().unwrap();
         let test_weight = 1;
         let expected_output = parse_hex_to_bytes32(
@@ -335,7 +335,7 @@ mod tests {
 
     #[test]
     fn test_base_recover_threshold() {
-        let mut base_sig_module = BaseSigModule::empty();
+        let mut base_sig_module = SigModule::empty();
         base_sig_module.sig = vec![0x11, 0x11];
 
         let res = base_sig_module.recover_threshold_checkpoint().unwrap();
@@ -344,7 +344,7 @@ mod tests {
 
     #[test]
     fn test_base_recover_checkpoint() {
-        let mut base_sig_module = BaseSigModule::empty();
+        let mut base_sig_module = SigModule::empty();
         base_sig_module.sig = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
 
         let res = base_sig_module.recover_threshold_checkpoint().unwrap();
