@@ -28,14 +28,19 @@ use eyre::{eyre, Result};
 
 pub(crate) struct BaseSigModule {
     rindex: usize,
+    subdigest: [u8; 32],
     root: [u8; 32],
     sig: Signature,
     weight: u8,
 }
 
 impl BaseSigModule {
-    pub fn new() -> Self {
-        Self { rindex: 0, root: [0; 32], sig: vec![], weight: 0 }
+    pub fn new(subdigest: [u8; 32]) -> Self {
+        Self { subdigest, rindex: 0, root: [0; 32], sig: vec![], weight: 0 }
+    }
+
+    pub fn empty() -> Self {
+        Self::new([0; 32])
     }
 
     pub fn set_signature(&mut self, sig: Signature) -> &mut Self {
@@ -48,13 +53,14 @@ impl BaseSigModule {
         self.root = if self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
     }
 
-    // Generates a leaf node for the merkle tree
+    /// Generates a leaf node for the merkle tree
     fn leaf_for_address_and_weight(&self, addr: Address, weight: u8) -> [u8; 32] {
         let weight_shifted = U256::from(weight) << 160;
         let addr_u256 = U256::from_big_endian(addr.as_bytes());
         (weight_shifted | addr_u256).into()
     }
 
+    /// Decodes an address signature
     fn decode_address_signature(&mut self) -> Result<()> {
         let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
         self.rindex = rindex;
@@ -64,11 +70,12 @@ impl BaseSigModule {
         Ok(())
     }
 
+    /// Decodes an ECDSA signature
     fn decode_ecdsa_signature(&mut self) -> Result<()> {
         let (addr_weight, rindex) = read_uint8(&self.sig, self.rindex)?;
 
         let nrindex = rindex + 66;
-        let signature_type = recover_ecdsa_signature(&self.sig, rindex)?;
+        let signature_type = recover_ecdsa_signature(&self.sig, &self.subdigest, rindex)?;
         self.rindex = nrindex;
 
         self.weight += addr_weight;
@@ -79,6 +86,7 @@ impl BaseSigModule {
         Ok(())
     }
 
+    /// Decodes a dynamic signature
     fn decode_dynamic_signature(&mut self) -> Result<()> {
         let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
 
@@ -86,7 +94,7 @@ impl BaseSigModule {
         let (size, rindex) = read_uint16(&self.sig, rindex)?;
 
         let nrindex = rindex + size as usize;
-        let _signature_type = recover_dynamic_signature(&self.sig, rindex, nrindex)?;
+        recover_dynamic_signature(&self.sig, &self.subdigest, addr, rindex, nrindex)?;
         self.rindex = nrindex;
 
         self.weight += addr_weight;
@@ -97,6 +105,7 @@ impl BaseSigModule {
         Ok(())
     }
 
+    /// Recovers the branch of the merkle tree
     fn recover_branch(&mut self) -> Result<(u16, [u8; 32])> {
         let s = self.sig.len();
 
@@ -121,6 +130,7 @@ impl BaseSigModule {
         Ok((0, [0; 32]))
     }
 
+    /// Recovers the threshold and checkpoint from the signature
     fn recover_threshold_checkpoint(&self) -> Result<(u16, [u8; 32])> {
         let s = self.sig.len();
 
@@ -149,6 +159,7 @@ impl BaseSigModule {
         Ok((threshold, checkpoint))
     }
 
+    /// Recovers the wallet config from the signature
     pub(crate) fn recover(&mut self) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
         let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
@@ -179,7 +190,7 @@ mod tests {
 
     #[test]
     fn test_leaf_for_address_and_weight() {
-        let base_sig_module = BaseSigModule::new();
+        let base_sig_module = BaseSigModule::empty();
         let test_addr = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse::<Address>().unwrap();
         let test_weight = 1;
         let expected_output = parse_hex_to_bytes32(
@@ -194,7 +205,7 @@ mod tests {
 
     #[test]
     fn test_base_recover_threshold() {
-        let mut base_sig_module = BaseSigModule::new();
+        let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.sig = vec![0x11, 0x11];
 
         let res = base_sig_module.recover_threshold_checkpoint().unwrap();
@@ -203,7 +214,7 @@ mod tests {
 
     #[test]
     fn test_base_recover_checkpoint() {
-        let mut base_sig_module = BaseSigModule::new();
+        let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.sig = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
 
         let res = base_sig_module.recover_threshold_checkpoint().unwrap();

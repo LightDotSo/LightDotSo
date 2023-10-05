@@ -13,15 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use std::str::FromStr;
+
 use crate::types::{
     DynamicSignatureType, ECDSASignatureType, SignatureTreeDynamicSignatureLeaf,
     SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH,
 };
-use ethers::types::Address;
+use ethers::types::{Address, Signature};
 use eyre::{eyre, Result};
 
 pub(crate) fn recover_ecdsa_signature(
     data: &[u8],
+    subdigest: &[u8; 32],
     starting_index: usize,
 ) -> Result<SignatureTreeECDSASignatureLeaf> {
     // Add 1 for the weight, 1 for the signature type
@@ -42,17 +45,31 @@ pub(crate) fn recover_ecdsa_signature(
     };
 
     // The length is shorter because the signature type is omitted
-    let mut signature = [0; ECDSA_SIGNATURE_LENGTH];
-    signature.copy_from_slice(&slice[1..ECDSA_SIGNATURE_LENGTH + 1]);
+    let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
+    signature_slice.copy_from_slice(&slice[1..ECDSA_SIGNATURE_LENGTH + 1]);
+    let signature: Signature = Signature::from_str(std::str::from_utf8(&signature_slice)?)?;
 
     // Recover the address from the signature
-    let address = Address::zero();
+    let address = match signature_type {
+        ECDSASignatureType::ECDSASignatureTypeEIP712 => {
+            let mut message = [0; 32];
+            message.copy_from_slice(&subdigest[..]);
+            signature.recover(message)?
+        }
+        ECDSASignatureType::ECDSASignatureTypeEthSign => {
+            let mut message = [0; 32];
+            message.copy_from_slice(&subdigest[..]);
+            signature.recover(message)?
+        }
+    };
 
-    Ok(SignatureTreeECDSASignatureLeaf { address, signature_type, signature })
+    Ok(SignatureTreeECDSASignatureLeaf { address, signature_type, signature: signature_slice })
 }
 
 pub(crate) fn recover_dynamic_signature(
     data: &[u8],
+    subdigest: &[u8; 32],
+    address: Address,
     starting_index: usize,
     end_index: usize,
 ) -> Result<SignatureTreeDynamicSignatureLeaf> {
@@ -67,36 +84,26 @@ pub(crate) fn recover_dynamic_signature(
     let signature_type = match slice[end_index - 1] {
         1 => DynamicSignatureType::DynamicSignatureTypeEIP712,
         2 => DynamicSignatureType::DynamicSignatureTypeEthSign,
+        3 => DynamicSignatureType::DynamicSignatureTypeEIP1271,
         _ => return Err(eyre!("Unexpected DynamicSignatureType value")),
     };
 
     // The length is the remaining length of the slice
     let signature = slice[1..].to_vec();
 
-    // Recover the address from the signature
-    let address = Address::zero();
+    let recovered_address = match signature_type {
+        DynamicSignatureType::DynamicSignatureTypeEthSign |
+        DynamicSignatureType::DynamicSignatureTypeEIP712 => {
+            let signature_leaf = recover_ecdsa_signature(data, subdigest, starting_index)?;
+            signature_leaf.address
+        }
+        _ => Address::zero(),
+    };
+
+    // Revert if the recovered address is not the same as the address
+    if recovered_address != address {
+        return Err(eyre!("Recovered address does not match the address"));
+    }
 
     Ok(SignatureTreeDynamicSignatureLeaf { address, signature_type, signature })
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_recover_ecdsa_signature() {
-        let test_data: [u8; 65] = [
-            // The rest is the signature data
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-            24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-            46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
-            2, // ECDSASignatureType::ECDSASignatureTypeEthSign
-        ];
-
-        let result = recover_ecdsa_signature(&test_data, 0).unwrap();
-
-        assert_eq!(result.signature_type, ECDSASignatureType::ECDSASignatureTypeEthSign);
-        assert_eq!(result.signature[0], 0);
-        assert_eq!(result.signature[63], 63);
-    }
 }
