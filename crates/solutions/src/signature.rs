@@ -27,7 +27,7 @@ pub(crate) fn recover_ecdsa_signature(
     subdigest: &[u8; 32],
     starting_index: usize,
 ) -> Result<SignatureTreeECDSASignatureLeaf> {
-    // Add 1 for the weight, 1 for the signature type
+    // Add 1 for the signature type, 1 for next
     let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1;
 
     // Check that the data is long enough to contain the signature
@@ -38,7 +38,7 @@ pub(crate) fn recover_ecdsa_signature(
     let slice = &data[starting_index..new_pointer];
 
     // The last byte is the signature type
-    let signature_type = match slice[new_pointer - 1] {
+    let signature_type = match slice[ECDSA_SIGNATURE_LENGTH] {
         1 => ECDSASignatureType::ECDSASignatureTypeEIP712,
         2 => ECDSASignatureType::ECDSASignatureTypeEthSign,
         _ => return Err(eyre!("Unexpected ECDSASignatureType value")),
@@ -46,8 +46,10 @@ pub(crate) fn recover_ecdsa_signature(
 
     // The length is shorter because the signature type is omitted
     let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
-    signature_slice.copy_from_slice(&slice[1..ECDSA_SIGNATURE_LENGTH + 1]);
-    let signature: Signature = Signature::from_str(std::str::from_utf8(&signature_slice)?)?;
+    signature_slice.copy_from_slice(&slice[..ECDSA_SIGNATURE_LENGTH]);
+
+    let signature: Signature =
+        Signature::from_str(&ethers::utils::hex::encode(signature_slice)).unwrap();
 
     // Recover the address from the signature
     let address = match signature_type {
@@ -106,4 +108,26 @@ pub(crate) fn recover_dynamic_signature(
     }
 
     Ok(SignatureTreeDynamicSignatureLeaf { address, signature_type, signature })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use ethers::signers::{LocalWallet, Signer};
+
+    #[tokio::test]
+    async fn test_recover_ecdsa_signature() {
+        let wallet = LocalWallet::new(&mut rand::thread_rng());
+
+        let subdigest = [1u8; 32];
+        let signature = wallet.sign_message(subdigest).await.unwrap();
+        let mut data = signature.to_vec();
+        data.push(2);
+
+        // Retrieve the signature struct
+        let recovered_sig = recover_ecdsa_signature(&data, &subdigest, 0).unwrap();
+
+        assert_eq!(recovered_sig.address, wallet.address());
+        assert_eq!(recovered_sig.signature_type, ECDSASignatureType::ECDSASignatureTypeEthSign);
+    }
 }

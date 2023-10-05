@@ -12,4 +12,6 @@
   ethers = { workspace = true }
   eyre = { workspace = true }
   lightdotso-contracts = { workspace = true }
+  rand = { workspace = true }
   serde = { workspace = true }
+  tokio = { workspace = true }

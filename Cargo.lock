@@ -6272,7 +6272,9 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "lightdotso-contracts",
+ "rand 0.8.5",
  "serde",
+ "tokio",
 ]
 
 [[package]]

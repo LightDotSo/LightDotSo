@@ -69,9 +69,9 @@ pub enum ECDSASignatureType {
 }
 
 /// The constant length of an ECDSA signature
-/// The length of the signature is 64 bytes + 1 byte for the signature type
+/// The actual length of the signature is 65 bytes + 1 byte for the signature type
 /// Add 1 byte for the signature type
-pub const ECDSA_SIGNATURE_LENGTH: usize = 64;
+pub const ECDSA_SIGNATURE_LENGTH: usize = 65;
 
 #[derive(Debug, PartialEq)]
 pub struct SignatureTreeECDSASignatureLeaf {
