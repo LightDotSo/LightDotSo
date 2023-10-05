@@ -19,7 +19,7 @@ use crate::{
 };
 use eyre::{eyre, Result};
 
-pub fn recover_signature(sig: Signature) -> Result<WalletConfig> {
+pub async fn recover_signature(sig: Signature) -> Result<WalletConfig> {
     let s = sig.len();
 
     // If the length is lees than 2 bytes, it's an invalid signature
@@ -37,28 +37,28 @@ pub fn recover_signature(sig: Signature) -> Result<WalletConfig> {
     if signature_type == 0x00 {
         let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
+        return base_sig_module.recover().await;
     }
 
     // Dynamic signature
     if signature_type == 0x01 {
         let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
+        return base_sig_module.recover().await;
     }
 
     // No ChainId signature
     if signature_type == 0x02 {
         let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
+        return base_sig_module.recover().await;
     }
 
     // ChainId signature
     if signature_type == 0x03 {
         let mut base_sig_module = BaseSigModule::empty();
         base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
+        return base_sig_module.recover().await;
     }
 
     Err(eyre!("Invalid signature type"))
@@ -69,23 +69,23 @@ mod tests {
     use super::*;
     use eyre::eyre;
 
-    #[test]
-    fn test_recover_signature_empty() {
+    #[tokio::test]
+    async fn test_recover_signature_empty() {
         let signature: Signature = vec![];
 
         let expected_err = eyre!("Invalid signature length");
 
-        let res = recover_signature(signature).unwrap_err();
+        let res = recover_signature(signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
     }
 
-    #[test]
-    fn test_decode_invalid_signature_type() {
+    #[tokio::test]
+    async fn test_decode_invalid_signature_type() {
         let signature: Signature = vec![0x9];
 
         let expected_err = eyre!("Invalid signature type");
 
-        let res = recover_signature(signature).unwrap_err();
+        let res = recover_signature(signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
     }
 }

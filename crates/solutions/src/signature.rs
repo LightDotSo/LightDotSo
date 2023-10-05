@@ -17,13 +17,14 @@ use std::str::FromStr;
 
 use crate::types::{
     DynamicSignatureType, ECDSASignatureType, SignatureTreeDynamicSignatureLeaf,
-    SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH,
+    SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
 };
 use ethers::{
-    types::{transaction::eip712::TypedData, Address, RecoveryMessage, Signature, H256},
+    types::{Address, RecoveryMessage, Signature, H256},
     utils::hash_message,
 };
 use eyre::{eyre, Result};
+use lightdotso_contracts::erc1271::get_erc_1271_wallet;
 
 pub(crate) fn recover_ecdsa_signature(
     data: &[u8],
@@ -69,7 +70,8 @@ pub(crate) fn recover_ecdsa_signature(
     Ok(SignatureTreeECDSASignatureLeaf { address, signature_type, signature: signature_slice })
 }
 
-pub(crate) fn recover_dynamic_signature(
+pub(crate) async fn recover_dynamic_signature(
+    chain_id: u64,
     data: &[u8],
     subdigest: &[u8; 32],
     address: Address,
@@ -100,7 +102,20 @@ pub(crate) fn recover_dynamic_signature(
             let signature_leaf = recover_ecdsa_signature(data, subdigest, starting_index)?;
             signature_leaf.address
         }
-        _ => Address::zero(),
+        DynamicSignatureType::DynamicSignatureTypeEIP1271 => {
+            // Omit the signature by removing the last byte
+            let sig = &slice[..slice.len() - 1];
+
+            // Call the contract on-chain to verify the signature
+            let wallet = get_erc_1271_wallet(chain_id, address).await?;
+            let res =
+                wallet.is_valid_signature(subdigest.to_vec().into(), sig.to_vec().into()).await?;
+            if res == ERC1271_MAGICVALUE_BYTES32 {
+                address
+            } else {
+                Address::zero()
+            }
+        }
     };
 
     // Revert if the recovered address is not the same as the address

@@ -73,6 +73,8 @@ pub enum ECDSASignatureType {
 /// Add 1 byte for the signature type
 pub const ECDSA_SIGNATURE_LENGTH: usize = 65;
 
+pub const ERC1271_MAGICVALUE_BYTES32: [u8; 4] = [22, 38, 186, 126];
+
 #[derive(Debug, PartialEq)]
 pub struct SignatureTreeECDSASignatureLeaf {
     pub address: Address,

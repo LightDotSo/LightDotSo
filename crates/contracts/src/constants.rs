@@ -40,6 +40,14 @@ lazy_static! {
       "0x8fb3cfdf2082c2be7d3205d361067748ea1abf63".parse().unwrap();
 }
 
+// The example wallet addresses
+lazy_static! {
+    #[derive(Debug)]
+    pub static ref LIGHT_WALLET_EXAMPLE_ADDRESS: Address =
+      // v0.1.0
+      "0x10DbbE70128929723c1b982e53c51653232e4Ff2".parse().unwrap();
+}
+
 // The entrypoint addresses
 lazy_static! {
     #[derive(Debug)]

@@ -27,6 +27,7 @@ use ethers::{
 use eyre::{eyre, Result};
 
 pub(crate) struct BaseSigModule {
+    chain_id: u64,
     rindex: usize,
     subdigest: [u8; 32],
     root: [u8; 32],
@@ -36,7 +37,8 @@ pub(crate) struct BaseSigModule {
 
 impl BaseSigModule {
     pub fn new(subdigest: [u8; 32]) -> Self {
-        Self { subdigest, rindex: 0, root: [0; 32], sig: vec![], weight: 0 }
+        let chain_id = 1;
+        Self { subdigest, rindex: 0, root: [0; 32], sig: vec![], weight: 0, chain_id }
     }
 
     pub fn empty() -> Self {
@@ -87,14 +89,15 @@ impl BaseSigModule {
     }
 
     /// Decodes a dynamic signature
-    fn decode_dynamic_signature(&mut self) -> Result<()> {
+    async fn decode_dynamic_signature(&mut self) -> Result<()> {
         let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
 
         // Read signature size
         let (size, rindex) = read_uint16(&self.sig, rindex)?;
 
         let nrindex = rindex + size as usize;
-        recover_dynamic_signature(&self.sig, &self.subdigest, addr, rindex, nrindex)?;
+        recover_dynamic_signature(self.chain_id, &self.sig, &self.subdigest, addr, rindex, nrindex)
+            .await?;
         self.rindex = nrindex;
 
         self.weight += addr_weight;
@@ -106,7 +109,7 @@ impl BaseSigModule {
     }
 
     /// Recovers the branch of the merkle tree
-    fn recover_branch(&mut self) -> Result<(u16, [u8; 32])> {
+    async fn recover_branch(&mut self) -> Result<(u16, [u8; 32])> {
         let s = self.sig.len();
 
         // If the length is none bytes, it's an invalid signature
@@ -122,7 +125,7 @@ impl BaseSigModule {
             match signature_type {
                 0 => self.decode_address_signature()?,
                 1 => self.decode_ecdsa_signature()?,
-                2 => self.decode_dynamic_signature()?,
+                2 => self.decode_dynamic_signature().await?,
                 _ => return Err(eyre!("Invalid signature type")),
             }
         }
@@ -160,12 +163,12 @@ impl BaseSigModule {
     }
 
     /// Recovers the wallet config from the signature
-    pub(crate) fn recover(&mut self) -> Result<WalletConfig> {
+    pub(crate) async fn recover(&mut self) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
         let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
 
         // If the length is greater than 34 bytes, it's a branch signature
-        let (weight, digest) = self.recover_branch()?;
+        let (weight, digest) = self.recover_branch().await?;
 
         let image_hash = keccak256(encode(&[
             Token::FixedBytes(
