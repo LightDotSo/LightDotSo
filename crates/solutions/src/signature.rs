@@ -120,7 +120,7 @@ mod tests {
         let wallet = LocalWallet::new(&mut rand::thread_rng());
 
         let subdigest = [1u8; 32];
-        let signature = wallet.sign_message(subdigest).await.unwrap();
+        let signature = wallet.sign_hash(subdigest.into()).unwrap();
         let mut data = signature.to_vec();
         data.push(2);
 
