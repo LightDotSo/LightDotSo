@@ -46,6 +46,7 @@ pub struct WalletConfig {
 /// The enum representation of a signature leaf type
 /// Derived from: https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L102
 /// License: Apache-2.0
+#[derive(Debug)]
 #[repr(u8)]
 pub enum SignatureLeafType {
     SignatureLeafTypeAddress = 0,
@@ -60,6 +61,7 @@ pub enum SignatureLeafType {
 /// The struct representation of an ECDSA signature leaf type
 /// Derived from: https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/utils/SignatureValidator.sol#L83
 /// License: Apache-2.0
+#[derive(Debug, PartialEq)]
 #[repr(u8)]
 pub enum ECDSASignatureType {
     ECDSASignatureTypeEIP712 = 1,
@@ -69,8 +71,9 @@ pub enum ECDSASignatureType {
 /// The constant length of an ECDSA signature
 /// The length of the signature is 64 bytes + 1 byte for the signature type
 /// Add 1 byte for the signature type
-pub const ECDSA_SIGNATURE_LENGTH: usize = 64 + 1;
+pub const ECDSA_SIGNATURE_LENGTH: usize = 64;
 
+#[derive(Debug, PartialEq)]
 pub struct SignatureTreeECDSASignatureLeaf {
     pub weight: u8,
     pub signature_type: ECDSASignatureType,

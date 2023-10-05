@@ -20,8 +20,10 @@ pub(crate) fn recover_ecdsa_signature(
     data: &[u8],
     starting_index: usize,
 ) -> Result<SignatureTreeECDSASignatureLeaf> {
-    let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1;
+    // Add 1 for the weight, 1 for the signature type
+    let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1 + 1;
 
+    // Check that the data is long enough to contain the signature
     if data.len() < new_pointer {
         return Err(eyre!("index is out of bounds of the input data"));
     }
@@ -36,8 +38,33 @@ pub(crate) fn recover_ecdsa_signature(
         _ => return Err(eyre!("Unexpected ECDSASignatureType value")),
     };
 
+    // The length is shorter because the signature type is omitted
     let mut signature = [0; ECDSA_SIGNATURE_LENGTH];
     signature.copy_from_slice(&slice[2..]);
 
     Ok(SignatureTreeECDSASignatureLeaf { weight, signature_type, signature })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_recover_ecdsa_signature() {
+        let test_data: [u8; 66] = [
+            1, // Encoded Weight
+            2, // ECDSASignatureType::ECDSASignatureTypeEthSign
+            // The rest is the signature data
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+            24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+            46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,
+        ];
+
+        let result = recover_ecdsa_signature(&test_data, 0).unwrap();
+
+        assert_eq!(result.weight, 1);
+        assert_eq!(result.signature_type, ECDSASignatureType::ECDSASignatureTypeEthSign);
+        assert_eq!(result.signature[0], 0);
+        assert_eq!(result.signature[63], 63);
+    }
 }
