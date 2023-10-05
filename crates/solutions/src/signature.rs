@@ -19,7 +19,7 @@ use crate::types::{
     DynamicSignatureType, ECDSASignatureType, SignatureTreeDynamicSignatureLeaf,
     SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH,
 };
-use ethers::types::{Address, Signature};
+use ethers::types::{transaction::eip712::TypedData, Address, RecoveryMessage, Signature, H256};
 use eyre::{eyre, Result};
 
 pub(crate) fn recover_ecdsa_signature(
@@ -54,13 +54,13 @@ pub(crate) fn recover_ecdsa_signature(
     // Recover the address from the signature
     let address = match signature_type {
         ECDSASignatureType::ECDSASignatureTypeEIP712 => {
-            let mut message = [0; 32];
-            message.copy_from_slice(&subdigest[..]);
+            let message = RecoveryMessage::Hash(H256::from(subdigest));
             signature.recover(message)?
         }
         ECDSASignatureType::ECDSASignatureTypeEthSign => {
             let mut message = [0; 32];
             message.copy_from_slice(&subdigest[..]);
+            // `ethers-rs` hashes the message internally
             signature.recover(message)?
         }
     };
@@ -115,11 +115,23 @@ mod tests {
     use super::*;
     use ethers::signers::{LocalWallet, Signer};
 
-    #[tokio::test]
-    async fn test_recover_ecdsa_signature() {
+    #[test]
+    fn test_recover_ecdsa_signature() {
         let wallet = LocalWallet::new(&mut rand::thread_rng());
 
         let subdigest = [1u8; 32];
+
+        // Sign the subdigest w/ type EIP712
+        let signature = wallet.sign_hash(subdigest.into()).unwrap();
+        let mut data = signature.to_vec();
+        data.push(1);
+
+        // Retrieve the signature struct
+        let recovered_sig = recover_ecdsa_signature(&data, &subdigest, 0).unwrap();
+        assert_eq!(recovered_sig.address, wallet.address());
+        assert_eq!(recovered_sig.signature_type, ECDSASignatureType::ECDSASignatureTypeEIP712);
+
+        // Sign the subdigest w/ EIP 191
         let signature = wallet.sign_hash(subdigest.into()).unwrap();
         let mut data = signature.to_vec();
         data.push(2);
