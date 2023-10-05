@@ -13,78 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{modules::base::BaseSigModule, types::WalletConfig};
+use crate::types::{ECDSASignatureType, SignatureTreeECDSASignatureLeaf};
 use eyre::{eyre, Result};
 
-pub type Signature = Vec<u8>;
+pub(crate) fn recover_ecdsa_signature(
+    data: &[u8],
+    index: usize,
+) -> Result<SignatureTreeECDSASignatureLeaf> {
+    let new_pointer = index + 21;
 
-pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
-    let s = sig.len();
-
-    // If the length is lees than 2 bytes, it's an invalid signature
-    if s < 1 {
-        return Err(eyre!("Invalid signature length"));
+    if data.len() < new_pointer {
+        return Err(eyre!("index is out of bounds of the input data"));
     }
 
-    // Signature type is the first byte of the signature
-    // Hex: 0x00 ~ 0xFF
-    // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/ModuleAuth.sol#L56
-    // License: Apache-2.0
-    let signature_type = sig[0];
-
-    // Legacy signature
-    if signature_type == 0x00 {
-        let mut base_sig_module = BaseSigModule::new();
-        base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
-    }
-
-    // Dynamic signature
-    if signature_type == 0x01 {
-        let mut base_sig_module = BaseSigModule::new();
-        base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
-    }
-
-    // No ChainId signature
-    if signature_type == 0x02 {
-        let mut base_sig_module = BaseSigModule::new();
-        base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
-    }
-
-    // ChainId signature
-    if signature_type == 0x03 {
-        let mut base_sig_module = BaseSigModule::new();
-        base_sig_module.set_signature(sig);
-        return base_sig_module.recover();
-    }
-
-    Err(eyre!("Invalid signature type"))
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use eyre::eyre;
-
-    #[test]
-    fn test_decode_signature_empty() {
-        let signature: Signature = vec![];
-
-        let expected_err = eyre!("Invalid signature length");
-
-        let res = decode_signature(signature).unwrap_err();
-        assert_eq!(res.to_string(), expected_err.to_string());
-    }
-
-    #[test]
-    fn test_decode_invalid_signature_type() {
-        let signature: Signature = vec![0x9];
-
-        let expected_err = eyre!("Invalid signature type");
-
-        let res = decode_signature(signature).unwrap_err();
-        assert_eq!(res.to_string(), expected_err.to_string());
-    }
+    Ok(SignatureTreeECDSASignatureLeaf {
+        weight: 0,
+        signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
+        signature: [0; 65],
+    })
 }

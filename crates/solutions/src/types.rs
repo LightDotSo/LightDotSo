@@ -15,16 +15,20 @@
 
 use ethers::types::Address;
 
-// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
-// License: Apache-2.0
+pub type Signature = Vec<u8>;
+
+/// The struct representation of a wallet signer
+/// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
+/// License: Apache-2.0
 #[derive(Debug)]
 pub struct Signer {
     pub weight: u8,
     pub address: Address,
 }
 
-// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
-// License: Apache-2.0
+/// The struct representation of a wallet config
+/// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
+/// License: Apache-2.0
 #[derive(Debug)]
 pub struct WalletConfig {
     // Bytes32 hash of the checkpoint
@@ -37,4 +41,38 @@ pub struct WalletConfig {
     pub image_hash: [u8; 32],
     // Signers of the wallet
     pub signers: Vec<Signer>,
+}
+
+/// The enum representation of a signature leaf type
+/// Derived from: https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L102
+/// License: Apache-2.0
+#[repr(u8)]
+pub enum SignatureLeafType {
+    SignatureLeafTypeAddress = 0,
+    SignatureLeafTypeECDSASignature = 1,
+    SignatureLeafTypeDynamicSignature = 2,
+    SignatureLeafTypeNode = 3,
+    SignatureLeafTypeBranch = 4,
+    SignatureLeafTypeNested = 5,
+    SignatureLeafTypeSubdigest = 6,
+}
+
+/// The struct representation of an ECDSA signature leaf type
+/// Derived from: https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/utils/SignatureValidator.sol#L83
+/// License: Apache-2.0
+#[repr(u8)]
+pub enum ECDSASignatureType {
+    ECDSASignatureTypeEIP712 = 1,
+    ECDSASignatureTypeEthSign = 2,
+}
+
+/// The constant length of an ECDSA signature
+/// The length of the signature is 64 bytes + 1 byte for the signature type
+/// Add 1 byte for the signature type
+pub const ECDSA_SIGNATURE_LENGTH: usize = 64 + 1;
+
+pub struct SignatureTreeECDSASignatureLeaf {
+    pub weight: u8,
+    pub signature_type: ECDSASignatureType,
+    pub signature: [u8; ECDSA_SIGNATURE_LENGTH],
 }

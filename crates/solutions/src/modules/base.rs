@@ -14,9 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    signature::Signature,
+    signature::recover_ecdsa_signature,
     traits::IsZero,
-    types::WalletConfig,
+    types::{Signature, WalletConfig},
     utils::{hash_keccak_256, read_uint8_address},
 };
 use ethers::{
@@ -42,7 +42,12 @@ impl BaseSigModule {
         self
     }
 
-    // From:
+    /// Sets the root of the merkle tree
+    pub fn return_valid_root(&mut self, node: [u8; 32]) {
+        self.root = if self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
+    }
+
+    // Generates a leaf node for the merkle tree
     fn leaf_for_address_and_weight(&self, addr: Address, weight: u8) -> [u8; 32] {
         let weight_shifted = U256::from(weight) << 160;
         let addr_u256 = U256::from_big_endian(addr.as_bytes());
@@ -53,7 +58,20 @@ impl BaseSigModule {
         let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
         self.rindex = rindex;
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
-        self.root = if self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
+        self.return_valid_root(node);
+
+        Ok(())
+    }
+
+    fn decode_ecdsa_signature(&mut self) -> Result<()> {
+        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
+
+        let nrindex = rindex + 66;
+        let _signature_type = recover_ecdsa_signature(&self.sig, rindex)?;
+        self.rindex = nrindex;
+
+        let node = self.leaf_for_address_and_weight(addr, addr_weight);
+        self.return_valid_root(node);
 
         Ok(())
     }
@@ -73,6 +91,7 @@ impl BaseSigModule {
 
             match signature_type {
                 0 => self.decode_address_signature()?,
+                1 => self.decode_ecdsa_signature()?,
                 _ => return Err(eyre!("Invalid signature type")),
             }
         }

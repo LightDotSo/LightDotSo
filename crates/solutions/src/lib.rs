@@ -15,6 +15,7 @@
 
 pub mod hash;
 pub mod modules;
+pub mod recover;
 pub mod signature;
 pub mod traits;
 pub mod types;
