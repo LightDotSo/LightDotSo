@@ -40,14 +40,12 @@ pub(crate) struct SigModule {
 }
 
 impl SigModule {
-    pub fn new(subdigest: [u8; 32]) -> Self {
-        let address = Address::zero();
-        let chain_id = 1;
+    pub fn new(address: Address, chain_id: u64, subdigest: [u8; 32]) -> Self {
         Self { address, subdigest, rindex: 0, root: [0; 32], sig: vec![], weight: 0, chain_id }
     }
 
     pub fn empty() -> Self {
-        Self::new([0; 32])
+        Self::new(Address::zero(), 1, [0; 32])
     }
 
     pub fn set_address(&mut self, address: Address) -> &mut Self {
@@ -78,11 +76,6 @@ impl SigModule {
     }
 
     pub fn set_subdigest_base(&mut self, digest: [u8; 32]) {
-        self.subdigest = self.get_subdigest(digest)
-    }
-
-    pub fn set_subdigest_no_chain_id(&mut self, digest: [u8; 32]) {
-        self.set_chain_id(0);
         self.subdigest = self.get_subdigest(digest)
     }
 
@@ -183,7 +176,7 @@ impl SigModule {
         let (size, rindex) = read_uint24(&self.sig, self.rindex)?;
         let nrindex = rindex + size as usize;
 
-        let mut base_sig_module = SigModule::new(self.subdigest);
+        let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest);
         base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
         let (nweight, node) = base_sig_module.recover_branch().await?;
 
@@ -203,7 +196,7 @@ impl SigModule {
         let (size, rindex) = read_uint24(&self.sig, rindex)?;
         let nrindex = rindex + size as usize;
 
-        let mut base_sig_module = SigModule::new(self.subdigest);
+        let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest);
         base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
         let (internal_weight, internal_root) = base_sig_module.recover_branch().await?;
         self.rindex = nrindex;

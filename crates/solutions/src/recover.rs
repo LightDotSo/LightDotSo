@@ -21,12 +21,18 @@ use crate::{
 use async_recursion::async_recursion;
 use ethers::{
     abi::{encode_packed, Token},
+    types::Address,
     utils::keccak256,
 };
 use eyre::{eyre, Result};
 
 #[async_recursion]
-pub async fn recover_signature(digest: [u8; 32], sig: Signature) -> Result<WalletConfig> {
+pub async fn recover_signature(
+    address: Address,
+    chain_id: u64,
+    digest: [u8; 32],
+    sig: Signature,
+) -> Result<WalletConfig> {
     let s = sig.len();
 
     // If the length is lees than 2 bytes, it's an invalid signature
@@ -59,27 +65,31 @@ pub async fn recover_signature(digest: [u8; 32], sig: Signature) -> Result<Walle
 
     // No ChainId signature
     if signature_type == 0x02 {
-        return recover_chained(digest, sig).await;
+        return recover_chained(address, 0, digest, sig).await;
     }
 
     // ChainId signature
     if signature_type == 0x03 {
-        let mut base_sig_module = SigModule::empty();
-        base_sig_module.set_signature(sig);
-        base_sig_module.set_subdigest_no_chain_id(digest);
+        let mut base_sig_module = SigModule::new(address, chain_id, digest);
         return base_sig_module.recover().await;
     }
 
     Err(eyre!("Invalid signature type"))
 }
 
-async fn recover_chained(digest: [u8; 32], signature: Signature) -> Result<WalletConfig> {
+async fn recover_chained(
+    address: Address,
+    chain_id: u64,
+    digest: [u8; 32],
+    signature: Signature,
+) -> Result<WalletConfig> {
     let rindex: usize = 1;
 
     let (sig_size, rindex) = read_uint24(&signature, rindex)?;
     let nrindex = rindex + (sig_size as usize);
 
-    let config = recover_signature(digest, signature[rindex..nrindex].to_vec()).await?;
+    let config =
+        recover_signature(address, chain_id, digest, signature[rindex..nrindex].to_vec()).await?;
 
     if config.weight < config.threshold.into() {
         return Err(eyre!("Less than threshold"));
@@ -94,8 +104,13 @@ async fn recover_chained(digest: [u8; 32], signature: Signature) -> Result<Walle
 
         let new_image_hash = set_image_hash(signature[sig_rindex..nrindex].to_vec());
 
-        let config =
-            recover_signature(new_image_hash, signature[sig_rindex..nrindex].to_vec()).await?;
+        let config = recover_signature(
+            address,
+            chain_id,
+            new_image_hash,
+            signature[sig_rindex..nrindex].to_vec(),
+        )
+        .await?;
 
         if config.weight < config.threshold.into() {
             return Err(eyre!("Less than threshold"));
@@ -109,7 +124,7 @@ async fn recover_chained(digest: [u8; 32], signature: Signature) -> Result<Walle
         rindex = nrindex;
     }
 
-    recover_signature(digest, signature[rindex..nrindex].to_vec()).await
+    recover_signature(address, chain_id, digest, signature[rindex..nrindex].to_vec()).await
 }
 
 fn set_image_hash(sig_hash: Vec<u8>) -> [u8; 32] {
@@ -133,7 +148,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature length");
 
-        let res = recover_signature([1u8; 32], signature).await.unwrap_err();
+        let res = recover_signature(Address::zero(), 1, [1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
     }
 
@@ -143,7 +158,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature type");
 
-        let res = recover_signature([1u8; 32], signature).await.unwrap_err();
+        let res = recover_signature(Address::zero(), 1, [1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
     }
 }
