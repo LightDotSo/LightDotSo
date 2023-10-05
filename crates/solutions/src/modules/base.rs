@@ -13,7 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{signature::Signature, types::WalletConfig};
+use crate::{
+    signature::Signature,
+    traits::IsZero,
+    types::WalletConfig,
+    utils::{hash_keccak_256, read_uint8_address},
+};
 use ethers::{
     abi::{encode, Token},
     types::{Address, U256},
@@ -21,16 +26,28 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
-pub(crate) struct BaseSigModule;
+pub(crate) struct BaseSigModule {
+    rindex: usize,
+    root: [u8; 32],
+}
 
 impl BaseSigModule {
-    fn leaf_for_address_and_weight(&self, addr: Address, weight: u128) -> [u8; 32] {
+    pub fn new() -> Self {
+        Self { rindex: 0, root: [0; 32] }
+    }
+
+    // From:
+    fn leaf_for_address_and_weight(&self, addr: Address, weight: u8) -> [u8; 32] {
         let weight_shifted = U256::from(weight) << 160;
         let addr_u256 = U256::from_big_endian(addr.as_bytes());
         (weight_shifted | addr_u256).into()
     }
 
-    fn recover_branch(&self, sig: Signature) -> Result<(u16, [u8; 32])> {
+    fn decode_address_signature(&self) -> Result<(u8, Address)> {
+        Ok((0, Address::zero()))
+    }
+
+    fn recover_branch(&mut self, sig: Signature) -> Result<(u16, [u8; 32])> {
         let s = sig.len();
 
         // If the length is none bytes, it's an invalid signature
@@ -39,13 +56,18 @@ impl BaseSigModule {
         }
 
         // Iterating over the signature while length is greater than 0
-        let mut data = sig;
-        while !data.is_empty() {
+        while (self.rindex < sig.len()) {
             // Get the first byte of the signature
-            let signature_type = data[0];
+            let signature_type = sig[0];
 
             match signature_type {
-                0 => data = data[1..].to_vec(),
+                0 => {
+                    let (addr_weight, addr, rindex) = read_uint8_address(&sig, self.rindex)?;
+                    self.rindex = rindex;
+                    let node = self.leaf_for_address_and_weight(addr, addr_weight);
+                    self.root =
+                        if self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
+                }
                 _ => return Err(eyre!("Invalid signature type")),
             }
         }
@@ -81,7 +103,7 @@ impl BaseSigModule {
         Ok((threshold, checkpoint))
     }
 
-    pub(crate) fn recover(self, sig: Signature) -> Result<WalletConfig> {
+    pub(crate) fn recover(&mut self, sig: Signature) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
         let (threshold, checkpoint) = self.recover_threshold_checkpoint(sig.clone())?;
 
@@ -111,9 +133,9 @@ mod tests {
 
     #[test]
     fn test_leaf_for_address_and_weight() {
-        let base_sig_module = BaseSigModule {};
+        let base_sig_module = BaseSigModule::new();
         let test_addr = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse::<Address>().unwrap();
-        let test_weight = 1u128;
+        let test_weight = 1;
         let expected_output = parse_hex_to_bytes32(
             "0x0000000000000000000000014fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
         )
@@ -126,7 +148,7 @@ mod tests {
 
     #[test]
     fn test_base_recover_threshold() {
-        let base_sig_module = BaseSigModule {};
+        let base_sig_module = BaseSigModule::new();
         let signature: Signature = vec![0x11, 0x11];
 
         let res = base_sig_module.recover_threshold_checkpoint(signature).unwrap();
@@ -135,7 +157,7 @@ mod tests {
 
     #[test]
     fn test_base_recover_checkpoint() {
-        let base_sig_module = BaseSigModule {};
+        let base_sig_module = BaseSigModule::new();
         let signature: Signature = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
 
         let res = base_sig_module.recover_threshold_checkpoint(signature).unwrap();

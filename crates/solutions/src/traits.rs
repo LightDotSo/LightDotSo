@@ -13,9 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod hash;
-pub mod modules;
-pub mod signature;
-pub mod traits;
-pub mod types;
-pub mod utils;
+pub trait IsZero {
+    fn is_zero(&self) -> bool;
+}
+
+impl IsZero for [u8; 32] {
+    fn is_zero(&self) -> bool {
+        self.iter().all(|&byte| byte == 0)
+    }
+}

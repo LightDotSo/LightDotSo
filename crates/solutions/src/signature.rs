@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{modules::base::BaseSigModule, types::WalletConfig, utils::read_uint8_address};
+use crate::{modules::base::BaseSigModule, types::WalletConfig};
 use eyre::{eyre, Result};
 
 pub type Signature = Vec<u8>;
@@ -34,25 +34,25 @@ pub fn decode_signature(sig: Signature) -> Result<WalletConfig> {
 
     // Legacy signature
     if signature_type == 0x00 {
-        let base_sig_module = BaseSigModule {};
+        let mut base_sig_module = BaseSigModule::new();
         return base_sig_module.recover(sig);
     }
 
     // Dynamic signature
     if signature_type == 0x01 {
-        let base_sig_module = BaseSigModule {};
+        let mut base_sig_module = BaseSigModule::new();
         return base_sig_module.recover(sig);
     }
 
     // No ChainId signature
     if signature_type == 0x02 {
-        let base_sig_module = BaseSigModule {};
+        let mut base_sig_module = BaseSigModule::new();
         return base_sig_module.recover(sig);
     }
 
     // ChainId signature
     if signature_type == 0x03 {
-        let base_sig_module = BaseSigModule {};
+        let mut base_sig_module = BaseSigModule::new();
         return base_sig_module.recover(sig);
     }
 

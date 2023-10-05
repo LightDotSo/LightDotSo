@@ -14,8 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::{
+    abi::{encode, Token},
     types::{Address, H160},
-    utils::hex,
+    utils::{hex, keccak256},
 };
 use eyre::{eyre, Result};
 
@@ -38,6 +39,10 @@ pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Addre
     Ok((a, b, new_pointer))
 }
 
+pub(crate) fn hash_keccak_256(a: [u8; 32], b: [u8; 32]) -> [u8; 32] {
+    keccak256(encode(&[Token::FixedBytes(a.to_vec()), Token::FixedBytes(b.to_vec())]))
+}
+
 pub(crate) fn parse_hex_to_bytes32(hex: &str) -> Result<[u8; 32]> {
     let stripped = hex.strip_prefix("0x").unwrap_or(hex);
     let vec = hex::decode(stripped)?;
@@ -49,4 +54,37 @@ pub(crate) fn parse_hex_to_bytes32(hex: &str) -> Result<[u8; 32]> {
     let mut arr = [0u8; 32];
     arr.copy_from_slice(&vec);
     Ok(arr)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_read_uint8_address() {
+        let data = [1u8; 25];
+        let index = 0usize;
+        let result = read_uint8_address(&data, index);
+
+        assert!(result.is_ok());
+        let (a, _b, new_pointer) = result.unwrap();
+        assert_eq!(a, 1);
+        assert_eq!(new_pointer, 21);
+    }
+
+    #[test]
+    fn test_hash_keccak_256() {
+        let a: [u8; 32] = [1; 32];
+        let b: [u8; 32] = [2; 32];
+        let result = hash_keccak_256(a, b);
+        assert_ne!(a, result);
+    }
+
+    #[test]
+    fn test_parse_hex_to_bytes32() {
+        let hex = "0x28691a6618bc54d40e2d3af7bda922140e8c3f5e8f7abc5a6462e7b4528f4000";
+        let result = parse_hex_to_bytes32(hex);
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap().len(), 32);
+    }
 }
