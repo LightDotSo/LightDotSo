@@ -23,6 +23,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./mdx/**/*.{mjs,mdx,js,ts,jsx,tsx}",
     "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
     "../../apps/ui/src/components/**/*.{ts,tsx}",
     "../../apps/ui/.storybook/**/*.{ts,tsx}",
@@ -189,6 +190,7 @@ module.exports = {
           "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
       },
       fontSize: {
+        "2xs": ".6875rem",
         "tremor-label": ["0.75rem"],
         "tremor-default": ["0.875rem", { lineHeight: "1.25rem" }],
         "tremor-title": ["1.125rem", { lineHeight: "1.75rem" }],
@@ -199,6 +201,8 @@ module.exports = {
       },
       fontFamily: {
         clash: ["ClashGrotesk-Semibold", ...defaultTheme.fontFamily.sans],
+        sans: "var(--font-inter)",
+        display: "var(--font-mona-sans)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -228,6 +232,11 @@ module.exports = {
         lg: "1024px",
         xl: "1280px",
         "2xl": "1536px",
+      },
+      opacity: {
+        2.5: "0.025",
+        7.5: "0.075",
+        15: "0.15",
       },
     },
   },

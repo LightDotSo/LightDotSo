@@ -13,24 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import nextMDX from "@next/mdx";
+import { type MDXComponents } from "mdx/types";
 
-import { recmaPlugins } from "./mdx/recma.mjs";
-import { rehypePlugins } from "./mdx/rehype.mjs";
-import { remarkPlugins } from "./mdx/remark.mjs";
+import * as mdxComponents from "@/components/mdx";
 
-const withMDX = nextMDX({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins,
-    rehypePlugins,
-    recmaPlugins,
-  },
-});
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
-};
-
-export default withMDX(nextConfig);
+export function useMDXComponents(components: MDXComponents) {
+  return {
+    ...components,
+    ...mdxComponents,
+  };
+}
