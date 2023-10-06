@@ -206,6 +206,14 @@ cargo-generate:
 prisma: cargo-generate ## Add clippy ignore.
 	./scripts/add_clippy_ignore.sh
 
+##@ Rundler
+
+.PHONY: rundler
+rundler: ## Run rundler.
+	pnpm --filter @lightdotso/crates rundler
+
+#@ anvil
+
 #@ anvil
 .PHONY: anvil
 anvil: ## Run anvil

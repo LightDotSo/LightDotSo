@@ -1299,6 +1299,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "cargo_metadata"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb9ac64500cc83ce4b9f8dafa78186aa008c8dea77a09b94cd307fd0cd5022a8"
+dependencies = [
+ "camino",
+ "cargo-platform",
+ "semver 1.0.18",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
 name = "cargo_toml"
 version = "0.15.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5029,6 +5043,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "if_chain"
+version = "1.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cb56e1aa765b4b4f3aadfab769793b7087bb03a4ea4920644a6d238e2df5b9ed"
+
+[[package]]
 name = "ignore"
 version = "0.4.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6287,6 +6307,7 @@ dependencies = [
  "rand 0.8.5",
  "serde",
  "serde_json",
+ "test-fuzz",
  "tokio",
 ]
 
@@ -11671,6 +11692,59 @@ dependencies = [
 ]
 
 [[package]]
+name = "test-fuzz"
+version = "4.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e47fe9eb29998b02f6d93627531603da1bc5d7b758e87567af1fafa8c960d876"
+dependencies = [
+ "serde",
+ "test-fuzz-internal",
+ "test-fuzz-macro",
+ "test-fuzz-runtime",
+]
+
+[[package]]
+name = "test-fuzz-internal"
+version = "4.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "52d59630b15f1a2f396030f3003d43c30ae9e99998dab992194cb26a85431851"
+dependencies = [
+ "bincode",
+ "cargo_metadata 0.18.0",
+ "serde",
+]
+
+[[package]]
+name = "test-fuzz-macro"
+version = "4.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "372a64c51728f98776a624e87b6ed0a8c3e7f2bd18513f56b14281225db513d8"
+dependencies = [
+ "darling 0.20.3",
+ "if_chain",
+ "itertools 0.11.0",
+ "once_cell",
+ "proc-macro2",
+ "quote",
+ "subprocess",
+ "syn 2.0.29",
+ "toolchain_find",
+]
+
+[[package]]
+name = "test-fuzz-runtime"
+version = "4.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a16256c08ddf5ec8cf9bcf46512b460a3696f5bdbc9c76a834a5eef5fbada951"
+dependencies = [
+ "hex",
+ "num-traits",
+ "serde",
+ "sha-1 0.10.1",
+ "test-fuzz-internal",
+]
+
+[[package]]
 name = "text-size"
 version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -12105,6 +12179,19 @@ dependencies = [
  "tower-layer",
  "tower-service",
  "tracing",
+]
+
+[[package]]
+name = "toolchain_find"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ebc8c9a7f0a2966e1acdaf0461023d0b01471eeead645370cf4c3f5cff153f2a"
+dependencies = [
+ "home",
+ "once_cell",
+ "regex",
+ "semver 1.0.18",
+ "walkdir",
 ]
 
 [[package]]

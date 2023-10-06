@@ -89,6 +89,8 @@ jobs:
     steps:
       - name: Fetch Head
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - if: matrix.workspace
         name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
@@ -123,6 +125,10 @@ jobs:
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
+      - if: matrix.workspace
+        name: Make Rundler
+        run: |
+          make rundler
       # - name: Rust Build
       #   run: |
       #     cargo build --target ${{ matrix.target }} ${{ matrix.package }}

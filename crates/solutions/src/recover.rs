@@ -48,18 +48,16 @@ pub async fn recover_signature(
 
     // Legacy signature
     if signature_type == 0x00 {
-        let mut base_sig_module = SigModule::empty();
+        let mut base_sig_module = SigModule::new(address, chain_id, digest);
         base_sig_module.set_signature(sig);
-        base_sig_module.set_subdigest_base(digest);
         return base_sig_module.recover().await;
     }
 
     // Dynamic signature
     if signature_type == 0x01 {
-        let mut base_sig_module = SigModule::empty();
+        let mut base_sig_module = SigModule::new(address, chain_id, digest);
         // Set the signature after the first byte
         base_sig_module.set_signature(sig[1..].to_vec());
-        base_sig_module.set_subdigest_base(digest);
         return base_sig_module.recover().await;
     }
 
@@ -139,6 +137,8 @@ fn set_image_hash(sig_hash: Vec<u8>) -> [u8; 32] {
 
 #[cfg(test)]
 mod tests {
+    use crate::utils::parse_hex_to_bytes32;
+
     use super::*;
     use eyre::eyre;
 
@@ -160,5 +160,21 @@ mod tests {
 
         let res = recover_signature(Address::zero(), 1, [1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
+    }
+
+    #[test]
+    fn test_set_image_hash() {
+        let digest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+        let expected_output = parse_hex_to_bytes32(
+            "0xb5e1f9d781177bfdce4895e85793155c359e351caedd1c17a5c684d110566de7",
+        )
+        .unwrap();
+
+        let result = set_image_hash(digest.to_vec());
+
+        assert_eq!(result, expected_output);
     }
 }
