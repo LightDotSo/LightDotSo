@@ -9648,7 +9648,7 @@ checksum = "e666a5496a0b2186dbcd0ff6106e29e093c15591bde62c20d3842007c6978a09"
 [[package]]
 name = "rundler-provider"
 version = "0.1.0-beta"
-source = "git+https://github.com/alchemyplatform/rundler?rev=22fc250166cf525596faa9db84f5f56ca945a40b#22fc250166cf525596faa9db84f5f56ca945a40b"
+source = "git+https://github.com/alchemyplatform/rundler?rev=b337dcb090c2ec26418878b3a4d3eb82f452257f#b337dcb090c2ec26418878b3a4d3eb82f452257f"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -9663,7 +9663,7 @@ dependencies = [
 [[package]]
 name = "rundler-sim"
 version = "0.1.0-beta"
-source = "git+https://github.com/alchemyplatform/rundler?rev=22fc250166cf525596faa9db84f5f56ca945a40b#22fc250166cf525596faa9db84f5f56ca945a40b"
+source = "git+https://github.com/alchemyplatform/rundler?rev=b337dcb090c2ec26418878b3a4d3eb82f452257f#b337dcb090c2ec26418878b3a4d3eb82f452257f"
 dependencies = [
  "anyhow",
  "arrayvec",
@@ -9689,7 +9689,7 @@ dependencies = [
 [[package]]
 name = "rundler-types"
 version = "0.1.0-beta"
-source = "git+https://github.com/alchemyplatform/rundler?rev=22fc250166cf525596faa9db84f5f56ca945a40b#22fc250166cf525596faa9db84f5f56ca945a40b"
+source = "git+https://github.com/alchemyplatform/rundler?rev=b337dcb090c2ec26418878b3a4d3eb82f452257f#b337dcb090c2ec26418878b3a4d3eb82f452257f"
 dependencies = [
  "anyhow",
  "chrono",
@@ -9704,7 +9704,7 @@ dependencies = [
 [[package]]
 name = "rundler-utils"
 version = "0.1.0-beta"
-source = "git+https://github.com/alchemyplatform/rundler?rev=22fc250166cf525596faa9db84f5f56ca945a40b#22fc250166cf525596faa9db84f5f56ca945a40b"
+source = "git+https://github.com/alchemyplatform/rundler?rev=b337dcb090c2ec26418878b3a4d3eb82f452257f#b337dcb090c2ec26418878b3a4d3eb82f452257f"
 dependencies = [
  "anyhow",
  "ethers 2.0.9 (registry+https://github.com/rust-lang/crates.io-index)",
