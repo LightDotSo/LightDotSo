@@ -88,9 +88,15 @@ impl SigModule {
         )
     }
 
-    /// Sets the subdigest
+    /// Sets the subdigest w/ the digest function
+    #[allow(dead_code)]
     pub fn set_subdigest(&mut self, digest: [u8; 32]) {
         self.subdigest = self.get_subdigest(digest)
+    }
+
+    /// Sets the subdigest directly (bypassing digest function))
+    pub fn set_subdigest_direct(&mut self, digest: [u8; 32]) {
+        self.subdigest = digest
     }
 
     /// Sets the root of the merkle tree
@@ -434,7 +440,7 @@ mod tests {
         .unwrap();
 
         let mut base_sig_module = SigModule::empty();
-        base_sig_module.set_subdigest(subdigest);
+        base_sig_module.set_subdigest_direct(subdigest);
         let empty_node_sig=
             // 3u8 is the signature type for a node signature
             encode_packed(&[Token::Uint(3u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
@@ -455,7 +461,7 @@ mod tests {
         .unwrap();
 
         let mut base_sig_module = SigModule::empty();
-        base_sig_module.set_subdigest(subdigest);
+        base_sig_module.set_subdigest_direct(subdigest);
         let empty_sig = vec![];
         base_sig_module.set_signature(empty_sig);
 
@@ -474,7 +480,7 @@ mod tests {
         .unwrap();
 
         let mut base_sig_module = SigModule::empty();
-        base_sig_module.set_subdigest(subdigest);
+        base_sig_module.set_subdigest_direct(subdigest);
         let empty_sig = vec![];
         base_sig_module.set_signature(empty_sig);
 
@@ -500,6 +506,29 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn test_recover_branch_signature() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+        let sig_str = "0x00606673ffad2147741f04772b6f921f0ba6af0c1e77fc439e65c36dedf4092e88984c1a971652e0ada880120ef8025e709fff2080c4a39aae068d12eed009b68c891c01";
+        let sig = from_hex_string(sig_str).unwrap();
+
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_subdigest_direct(subdigest);
+        base_sig_module.set_signature(sig);
+
+        let expected_root = parse_hex_to_bytes32(
+            "0x0000000000000000000000607e5f4552091a69125d5dfcb7b8c2659029395bdf",
+        )
+        .unwrap();
+
+        let config = base_sig_module.recover_branch().await.unwrap();
+        assert_eq!(config.0, 96);
+        assert_eq!(config.1, expected_root)
+    }
+
+    #[tokio::test]
     async fn test_recover_branch_address() {
         let subdigest = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000000001",
@@ -509,7 +538,7 @@ mod tests {
 
         let sig = from_hex_string(sig_str).unwrap();
         let mut base_sig_module = SigModule::empty();
-        base_sig_module.set_subdigest(subdigest);
+        base_sig_module.set_subdigest_direct(subdigest);
         base_sig_module.set_signature(sig);
         base_sig_module.set_weight(8);
 
@@ -533,7 +562,7 @@ mod tests {
 
         let sig = from_hex_string(sig_str).unwrap();
         let mut base_sig_module = SigModule::empty();
-        base_sig_module.set_subdigest(subdigest);
+        base_sig_module.set_subdigest_direct(subdigest);
         base_sig_module.set_signature(sig);
 
         let expected_root = parse_hex_to_bytes32(
