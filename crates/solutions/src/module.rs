@@ -134,17 +134,6 @@ impl SigModule {
             .unwrap(),
         )
     }
-
-    /// Decodes an address signature
-    fn decode_address_signature(&mut self) -> Result<()> {
-        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
-        self.rindex = rindex;
-        let node = self.leaf_for_address_and_weight(addr, addr_weight);
-        self.return_valid_root(node);
-
-        Ok(())
-    }
-
     /// Decodes an ECDSA signature
     fn decode_ecdsa_signature(&mut self) -> Result<()> {
         let (addr_weight, rindex) = read_uint8(&self.sig, self.rindex)?;
@@ -156,6 +145,17 @@ impl SigModule {
         self.weight += addr_weight as u64;
 
         let node = self.leaf_for_address_and_weight(signature_type.address, addr_weight);
+        self.return_valid_root(node);
+
+        Ok(())
+    }
+
+    /// Decodes an address signature
+    fn decode_address_signature(&mut self) -> Result<()> {
+        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
+
+        self.rindex = rindex;
+        let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
 
         Ok(())
@@ -208,6 +208,19 @@ impl SigModule {
         Ok(())
     }
 
+    /// Decodes a digest signature
+    fn decode_digest_signature(&mut self) -> Result<()> {
+        let (hardcoded, _rindex) = read_bytes32(&self.sig, self.rindex)?;
+        if hardcoded == self.subdigest {
+            self.weight = u64::MAX;
+        }
+
+        let node = self.leaf_for_hardcoded_subdigest(hardcoded);
+        self.return_valid_root(node);
+
+        Ok(())
+    }
+
     /// Decodes a nested signature
     #[async_recursion]
     async fn decode_nested_signature(&mut self) -> Result<()> {
@@ -233,19 +246,6 @@ impl SigModule {
         Ok(())
     }
 
-    /// Decodes a digest signature
-    fn decode_digest_signature(&mut self) -> Result<()> {
-        let (hardcoded, _rindex) = read_bytes32(&self.sig, self.rindex)?;
-        if hardcoded == self.subdigest {
-            self.weight = u64::MAX;
-        }
-
-        let node = self.leaf_for_hardcoded_subdigest(hardcoded);
-        self.return_valid_root(node);
-
-        Ok(())
-    }
-
     /// Recovers the branch of the merkle tree
     async fn recover_branch(&mut self) -> Result<(usize, [u8; 32])> {
         let s = self.sig.len();
@@ -262,8 +262,8 @@ impl SigModule {
                 2 => self.decode_dynamic_signature().await?,
                 3 => self.decode_node_signature()?,
                 4 => self.decode_branch_signature().await?,
-                5 => self.decode_nested_signature().await?,
-                6 => self.decode_digest_signature()?,
+                5 => self.decode_digest_signature()?,
+                6 => self.decode_nested_signature().await?,
                 _ => return Err(eyre!("Invalid signature flag")),
             }
         }
@@ -305,9 +305,11 @@ impl SigModule {
         // Get the threshold and checkpoint from the signature
         let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
 
+        // Trim the signature to remove the threshold and checkpoint
+        self.sig = self.sig[6..].to_vec();
+
         // If the length is greater than 34 bytes, it's a branch signature
         let (weight, digest) = self.recover_branch().await?;
-
         let image_hash = keccak256(encode(&[
             Token::FixedBytes(
                 keccak256(encode(&[
@@ -573,5 +575,30 @@ mod tests {
         let config = base_sig_module.recover_branch().await.unwrap();
         assert_eq!(config.0, 0);
         assert_eq!(config.1, expected_root)
+    }
+
+    #[tokio::test]
+    async fn test_recover_simple() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x21c816235ccd179f03e4027691a68a7f70387fdd70cef9dba02a39ffba192856",
+        )
+        .unwrap();
+        let sig_str = "0x00110000000000025381b31277854cdcbf3feba4366454231d6f938c714464fb6a5ab564d6fe5fc76b8fb4513c4eda90e96c2cf7586bdfb25f55dcea82146288781d1cf82b95d9771b01";
+
+        let sig = from_hex_string(sig_str).unwrap();
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_subdigest_direct(subdigest);
+        base_sig_module.set_signature(sig);
+
+        let expected_root = parse_hex_to_bytes32(
+            "0x50ec12b237887c47767742e6425b98694ac9f793a31729766ea4748b382ea648",
+        )
+        .unwrap();
+
+        let config = base_sig_module.recover().await.unwrap();
+        assert_eq!(config.threshold, 17);
+        // assert_eq!(config.checkpoint, [0; 32]);
+        assert_eq!(config.weight, 2);
+        // assert_eq!(config.image_hash, expected_root);
     }
 }
