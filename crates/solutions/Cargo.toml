@@ -16,4 +16,5 @@
   rand = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
+  test-fuzz = "4.0.2"
   tokio = { workspace = true }

@@ -448,6 +448,25 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn test_recover_fail_empty() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000002b45",
+        )
+        .unwrap();
+
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_subdigest(subdigest);
+        let empty_sig = vec![];
+        base_sig_module.set_signature(empty_sig);
+
+        let expected_err = eyre!("Invalid signature");
+
+        let res = base_sig_module.recover().await.unwrap_err();
+        assert_eq!(res.to_string(), expected_err.to_string());
+        println!("{:?}", res);
+    }
+
+    #[tokio::test]
     async fn test_recover_branch_empty_signature() {
         let subdigest = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000002b45",
