@@ -164,16 +164,10 @@ impl SigModule {
     /// Decodes a dynamic signature
     async fn decode_dynamic_signature(&mut self) -> Result<()> {
         let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
-        println!("Addr_weight: {}", addr_weight);
-        println!("Addr: {}", addr);
-        println!("Rindex: {}", rindex);
 
         // Read signature size
         let (size, rindex) = read_uint24(&self.sig, rindex)?;
         let nrindex = rindex + size as usize;
-        println!("Size: {}", size);
-        println!("Rindex: {}", rindex);
-        println!("Nrindex: {}", nrindex);
 
         recover_dynamic_signature(self.chain_id, &self.sig, &self.subdigest, addr, rindex, nrindex)
             .await?;
@@ -538,29 +532,30 @@ mod tests {
         assert_eq!(config.1, expected_root)
     }
 
-    // #[tokio::test]
-    // async fn test_recover_branch_signatures() {
-    //     let subdigest = parse_hex_to_bytes32(
-    //         "0x8135063f3715f6b6fead77308d0dff538e81f12a1a005d7ed36f5fa4f8dc4385",
-    //     )
-    //     .unwrap();
-    //     let sig_str =
-    // "0x016a5c6bd1597b1411cce0e79a0841fd11073120493b02602772c5eb924d7d661948d57e17785b4ef414c67e0000422643549ee4ebb680818e94599fdeb0eae9a7f66773712e9f0bf09ac2614dfe0f0116d8e3e5300f19d657bebf9382d7cb4fab11c041397e828742949f98f7bcdb1c010073f92e1700afc4288e948b2524c7e3d5ce9eba1f54bc8e8f01735ee27cf5cf0fc11c83b48afb9c48c4601b530fdd31d0c80cac22b8e537b84c3897091b4e5e91de1c01"
-    // ;     let sig = from_hex_string(sig_str).unwrap();
+    #[tokio::test]
+    async fn test_recover_branch_signatures() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x8135063f3715f6b6fead77308d0dff538e81f12a1a005d7ed36f5fa4f8dc4385",
+        )
+        .unwrap();
+        let sig_str =
+    "0x016a5c6bd1597b1411cce0e79a0841fd11073120493b02602772c5eb924d7d661948d57e17785b4ef414c67e0000422643549ee4ebb680818e94599fdeb0eae9a7f66773712e9f0bf09ac2614dfe0f0116d8e3e5300f19d657bebf9382d7cb4fab11c041397e828742949f98f7bcdb1c010073f92e1700afc4288e948b2524c7e3d5ce9eba1f54bc8e8f01735ee27cf5cf0fc11c83b48afb9c48c4601b530fdd31d0c80cac22b8e537b84c3897091b4e5e91de1c01"
+    ;
+        let sig = from_hex_string(sig_str).unwrap();
 
-    //     let mut base_sig_module = SigModule::empty();
-    //     base_sig_module.set_subdigest_direct(subdigest);
-    //     base_sig_module.set_signature(sig);
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_subdigest_direct(subdigest);
+        base_sig_module.set_signature(sig);
 
-    //     let expected_root = parse_hex_to_bytes32(
-    //         "0xbdee0174cb6901d03d656b19023a24727bb42562e4966821acc43566a5862fb9",
-    //     )
-    //     .unwrap();
+        let expected_root = parse_hex_to_bytes32(
+            "0xbdee0174cb6901d03d656b19023a24727bb42562e4966821acc43566a5862fb9",
+        )
+        .unwrap();
 
-    //     let config = base_sig_module.recover_branch().await.unwrap();
-    //     assert_eq!(config.0, 211);
-    //     assert_eq!(config.1, expected_root)
-    // }
+        let config = base_sig_module.recover_branch().await.unwrap();
+        assert_eq!(config.0, 211);
+        assert_eq!(config.1, expected_root)
+    }
 
     #[tokio::test]
     async fn test_recover_branch_address() {
