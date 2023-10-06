@@ -14,7 +14,9 @@
         "../rust-toolchain.toml",
         "../rustfmt.toml"
       ],
-      "outputs": []
+      "outputs": [
+        "../../../../.cargo/git/checkouts/rundler-*/**/craets/sim/tracer/**"
+      ]
     }
   }
 }
