@@ -80,6 +80,20 @@ pub(crate) fn read_uint24(data: &[u8], index: usize) -> Result<(u32, usize), eyr
     Ok((a, new_pointer))
 }
 
+pub(crate) fn read_uint32(data: &[u8], index: usize) -> Result<(u32, usize), eyre::Error> {
+    let new_pointer = index + 4;
+
+    if data.len() < new_pointer {
+        return Err(eyre::eyre!("Index out of bounds of the input data"));
+    }
+
+    let slice = &data[index..new_pointer];
+
+    let a = u32::from_be_bytes([slice[0], slice[1], slice[2], slice[3]]);
+
+    Ok((a, new_pointer))
+}
+
 pub(crate) fn read_bytes32(data: &[u8], index: usize) -> Result<([u8; 32], usize), eyre::Error> {
     let new_pointer = index + 32;
 
@@ -184,6 +198,19 @@ mod tests {
 
         assert_eq!(value, 0x01abcd);
         assert_eq!(new_pointer, 3);
+    }
+
+    #[test]
+    fn test_read_uint32() {
+        let data: [u8; 5] = [0x01, 0xab, 0xcd, 0xef, 0x23];
+        let index: usize = 0;
+        let result = read_uint32(&data, index);
+
+        assert!(result.is_ok());
+        let (value, new_pointer) = result.unwrap();
+
+        assert_eq!(value, 0x01abcdef);
+        assert_eq!(new_pointer, 4);
     }
 
     #[test]

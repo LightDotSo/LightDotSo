@@ -19,7 +19,7 @@ use crate::{
     types::{Signature, WalletConfig},
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u64_to_bytes32, read_bytes32,
-        read_uint16, read_uint24, read_uint8, read_uint8_address,
+        read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
@@ -272,7 +272,7 @@ impl SigModule {
     }
 
     /// Recovers the threshold and checkpoint from the signature
-    fn recover_threshold_checkpoint(&self) -> Result<(u16, [u8; 32])> {
+    fn recover_threshold_checkpoint(&self) -> Result<(u16, u32)> {
         let s = self.sig.len();
 
         // If the length is lees than 2 bytes, it's an invalid signature
@@ -288,14 +288,14 @@ impl SigModule {
 
         // If the length is less than 34 bytes, it doesn't have a checkpoint
         if s < 34 {
-            return Ok((threshold, [0; 32]));
+            return Ok((threshold, 0));
         }
 
         // Checkpoint is the next 32 bytes of the signature
         // Hex: 0x00000000
         // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L270C7-L270C17
         // License: Apache-2.0
-        let checkpoint: [u8; 32] = self.sig[2..34].try_into()?;
+        let (checkpoint, _) = read_uint32(&self.sig, 2)?;
 
         Ok((threshold, checkpoint))
     }
@@ -431,7 +431,9 @@ mod tests {
         base_sig_module.sig = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
 
         let res = base_sig_module.recover_threshold_checkpoint().unwrap();
-        assert!(res.1 == [1; 32]);
+
+        assert_eq!(res.0, 257);
+        assert_eq!(res.1, 16843009);
     }
 
     #[tokio::test]
@@ -597,8 +599,8 @@ mod tests {
 
         let config = base_sig_module.recover().await.unwrap();
         assert_eq!(config.threshold, 17);
-        // assert_eq!(config.checkpoint, [0; 32]);
+        assert_eq!(config.checkpoint, 0);
         assert_eq!(config.weight, 2);
-        // assert_eq!(config.image_hash, expected_root);
+        assert_eq!(config.image_hash, expected_root);
     }
 }
