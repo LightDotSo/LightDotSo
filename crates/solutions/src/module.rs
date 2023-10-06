@@ -69,7 +69,7 @@ impl SigModule {
             encode_packed(&[
                 // Token::String("\x19\x01".to_string()),
                 // Token::Uint(U256::from(self.chain_id)),
-                // Token::Address(self.address),
+                Token::Address(self.address),
                 Token::FixedBytes(digest.to_vec()),
             ])
             .unwrap(),
@@ -341,7 +341,7 @@ mod tests {
         let res = base_sig_module.get_subdigest(digest);
 
         let expected = parse_hex_to_bytes32(
-            "0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6",
+            "0xf24fcc54ec8d0565a0e1db9db2db8153befb9d8380df70c26c8a16dc2c227f21",
         )
         .unwrap();
 
