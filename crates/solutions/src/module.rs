@@ -18,8 +18,8 @@ use crate::{
     traits::IsZero,
     types::{Signature, WalletConfig},
     utils::{
-        hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u64_to_bytes32, read_bytes32,
-        read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
+        hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
+        read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
@@ -314,11 +314,11 @@ impl SigModule {
             Token::FixedBytes(
                 keccak256(encode(&[
                     Token::FixedBytes(digest.to_vec()),
-                    Token::Uint(U256::from(threshold)),
+                    Token::Uint(left_pad_u16_to_bytes32(threshold).into()),
                 ]))
                 .to_vec(),
             ),
-            Token::Uint(U256::from(checkpoint)),
+            Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
         ]));
 
         Ok(WalletConfig { threshold, checkpoint, image_hash, weight, signers: vec![] })
