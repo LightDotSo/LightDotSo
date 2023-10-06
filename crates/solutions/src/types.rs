@@ -29,7 +29,7 @@ pub struct Signer {
 /// The struct representation of a wallet config
 /// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
 /// License: Apache-2.0
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct WalletConfig {
     // Bytes32 hash of the checkpoint
     pub checkpoint: [u8; 32],
