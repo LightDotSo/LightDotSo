@@ -53,3 +53,6 @@
 [submodule "lib/surl"]
 	path = lib/surl
 	url = https://github.com/memester-xyz/surl
+[submodule "lib/rundler"]
+	path = lib/rundler
+	url = https://github.com/alchemyplatform/rundler

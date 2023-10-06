@@ -45,8 +45,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      - run: |
-          pwd
       - name: Fetch Head
         uses: actions/checkout@v4
       - name: Node Install

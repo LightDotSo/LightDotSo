@@ -15,12 +15,6 @@
         "../rustfmt.toml"
       ],
       "outputs": []
-    },
-    "rundler": {
-      "inputs": ["**"],
-      "outputs": [
-        "../../../../.cargo/git/checkouts/rundler-*/**/crates/sim/tracer/**"
-      ]
     }
   }
 }
