@@ -18,3 +18,4 @@ ignores:
   - postcss
   - tailwindcss
   - typescript
+  - sharp

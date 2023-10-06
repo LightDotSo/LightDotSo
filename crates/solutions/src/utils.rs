@@ -129,6 +129,14 @@ pub(crate) fn left_pad_u64_to_bytes32(input: u64) -> [u8; 32] {
     left_pad_to_bytes32(&input.to_be_bytes())
 }
 
+pub fn to_hex_string(data: &[u8]) -> String {
+    format!("0x{}", hex::encode(data))
+}
+
+pub fn print_hex_string(data: &[u8]) {
+    println!("{}", to_hex_string(data));
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
