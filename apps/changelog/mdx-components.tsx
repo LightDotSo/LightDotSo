@@ -13,11 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { type MDXComponents } from "mdx/types";
-
 import * as mdxComponents from "@/components/mdx";
 
-export function useMDXComponents(components: MDXComponents) {
+export function useMDXComponents(components: any) {
   return {
     ...components,
     ...mdxComponents,
