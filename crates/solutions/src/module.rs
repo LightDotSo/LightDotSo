@@ -18,15 +18,14 @@ use crate::{
     traits::IsZero,
     types::{Signature, WalletConfig},
     utils::{
-        hash_keccak_256, parse_hex_to_bytes32, read_bytes32, read_uint16, read_uint24, read_uint8,
-        read_uint8_address,
+        hash_keccak_256, read_bytes32, read_uint16, read_uint24, read_uint8, read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
 use ethers::{
     abi::{encode, encode_packed, Token},
     types::{Address, U256},
-    utils::{keccak256, parse_bytes32_string},
+    utils::keccak256,
 };
 use eyre::{eyre, Result};
 
@@ -66,20 +65,15 @@ impl SigModule {
 
     /// Returns the subdigest of the signature
     pub fn get_subdigest(&self, digest: [u8; 32]) -> [u8; 32] {
+        let chain_id_bytes = self.chain_id.to_be_bytes();
+
+        let mut chain_id_padded = [0u8; 32];
+        chain_id_padded[24..].copy_from_slice(&chain_id_bytes);
+
         keccak256(
             encode_packed(&[
                 Token::String("\x19\x01".to_string()),
-                // Token::Uint(U256::from(self.chain_id)),
-                // Token::FixedBytes(
-                //     U256::from(self.chain_id).0.to_vec().iter().map(|&i| i as u8).collect(),
-                // ),
-                Token::FixedBytes(
-                    parse_hex_to_bytes32(
-                        "0x0000000000000000000000000000000000000000000000000000000000000001",
-                    )
-                    .unwrap()
-                    .into(),
-                ),
+                Token::FixedBytes(chain_id_padded.to_vec()),
                 Token::Address(self.address),
                 Token::FixedBytes(digest.to_vec()),
             ])
