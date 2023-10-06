@@ -251,8 +251,8 @@ impl SigModule {
             self.rindex = rindex;
 
             match flag {
-                0 => self.decode_address_signature()?,
-                1 => self.decode_ecdsa_signature()?,
+                0 => self.decode_ecdsa_signature()?,
+                1 => self.decode_address_signature()?,
                 2 => self.decode_dynamic_signature().await?,
                 3 => self.decode_node_signature()?,
                 4 => self.decode_branch_signature().await?,
@@ -320,7 +320,7 @@ impl SigModule {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::{parse_hex_to_bytes32, print_hex_string, to_hex_string};
+    use crate::utils::{from_hex_string, parse_hex_to_bytes32, print_hex_string, to_hex_string};
     use ethers::core::types::Address;
 
     #[test]
@@ -497,5 +497,52 @@ mod tests {
 
         let res = base_sig_module.recover_branch().await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
+    }
+
+    #[tokio::test]
+    async fn test_recover_branch_address() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+        let sig_str = "0x01080000000000000000000000000000000000000001";
+
+        let sig = from_hex_string(sig_str).unwrap();
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_subdigest(subdigest);
+        base_sig_module.set_signature(sig);
+        base_sig_module.set_weight(8);
+
+        let expected_root = parse_hex_to_bytes32(
+            "0x0000000000000000000000080000000000000000000000000000000000000001",
+        )
+        .unwrap();
+
+        let config = base_sig_module.recover_branch().await.unwrap();
+        assert_eq!(config.0, 8);
+        assert_eq!(config.1, expected_root)
+    }
+
+    #[tokio::test]
+    async fn test_recover_branch_node() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+        let sig_str = "0x0300000000000000000000000000000000000000000000000000000000deadbeef";
+
+        let sig = from_hex_string(sig_str).unwrap();
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_subdigest(subdigest);
+        base_sig_module.set_signature(sig);
+
+        let expected_root = parse_hex_to_bytes32(
+            "0x00000000000000000000000000000000000000000000000000000000deadbeef",
+        )
+        .unwrap();
+
+        let config = base_sig_module.recover_branch().await.unwrap();
+        assert_eq!(config.0, 0);
+        assert_eq!(config.1, expected_root)
     }
 }
