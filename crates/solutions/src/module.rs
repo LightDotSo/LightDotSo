@@ -18,14 +18,15 @@ use crate::{
     traits::IsZero,
     types::{Signature, WalletConfig},
     utils::{
-        hash_keccak_256, read_bytes32, read_uint16, read_uint24, read_uint8, read_uint8_address,
+        hash_keccak_256, parse_hex_to_bytes32, read_bytes32, read_uint16, read_uint24, read_uint8,
+        read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
 use ethers::{
     abi::{encode, encode_packed, Token},
     types::{Address, U256},
-    utils::keccak256,
+    utils::{keccak256, parse_bytes32_string},
 };
 use eyre::{eyre, Result};
 
@@ -69,6 +70,16 @@ impl SigModule {
             encode_packed(&[
                 Token::String("\x19\x01".to_string()),
                 // Token::Uint(U256::from(self.chain_id)),
+                // Token::FixedBytes(
+                //     U256::from(self.chain_id).0.to_vec().iter().map(|&i| i as u8).collect(),
+                // ),
+                Token::FixedBytes(
+                    parse_hex_to_bytes32(
+                        "0x0000000000000000000000000000000000000000000000000000000000000001",
+                    )
+                    .unwrap()
+                    .into(),
+                ),
                 Token::Address(self.address),
                 Token::FixedBytes(digest.to_vec()),
             ])
@@ -341,7 +352,7 @@ mod tests {
         let res = base_sig_module.get_subdigest(digest);
 
         let expected = parse_hex_to_bytes32(
-            "0x28bc0f61f0836bca70d8ba223c88e1fbb79f339ae1cc0521105ae173501b4e3e",
+            "0x349298d2e05ff7da41925abdea9f3453feada8ea0b96bac074d14609ce004ded",
         )
         .unwrap();
 
