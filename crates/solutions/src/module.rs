@@ -67,7 +67,7 @@ impl SigModule {
     pub fn get_subdigest(&self, digest: [u8; 32]) -> [u8; 32] {
         keccak256(
             encode_packed(&[
-                // Token::String("\x19\x01".to_string()),
+                Token::String("\x19\x01".to_string()),
                 // Token::Uint(U256::from(self.chain_id)),
                 Token::Address(self.address),
                 Token::FixedBytes(digest.to_vec()),
@@ -341,7 +341,7 @@ mod tests {
         let res = base_sig_module.get_subdigest(digest);
 
         let expected = parse_hex_to_bytes32(
-            "0xf24fcc54ec8d0565a0e1db9db2db8153befb9d8380df70c26c8a16dc2c227f21",
+            "0x28bc0f61f0836bca70d8ba223c88e1fbb79f339ae1cc0521105ae173501b4e3e",
         )
         .unwrap();
 
