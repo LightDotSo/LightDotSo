@@ -24,13 +24,16 @@ use axum::{
     Json, Router,
 };
 use ethers_main::{
-    types::{H160, H256, U256},
+    types::{H160, H256},
     utils::to_checksum,
 };
 use eyre::Result;
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
-use lightdotso_solutions::{get_address, image_hash_of_wallet_config, Signer, WalletConfig};
+use lightdotso_solutions::{
+    hash::{get_address, image_hash_of_wallet_config},
+    types::WalletConfig,
+};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
@@ -208,11 +211,7 @@ async fn v1_post_handler(
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
-    let config = WalletConfig {
-        checkpoint: U256::from(1u64),
-        threshold: U256::from(1u64),
-        signers: vec![Signer { weight: 1, address }],
-    };
+    let config = WalletConfig::default();
 
     // Simulate the image hash of the wallet config.
     let res = image_hash_of_wallet_config(config);

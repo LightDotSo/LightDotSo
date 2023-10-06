@@ -14,5 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod constants;
+pub mod erc1271;
 pub mod paymaster;
 pub mod provider;

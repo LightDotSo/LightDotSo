@@ -69,7 +69,17 @@ jobs:
       - rust-turbo
     runs-on: ${{ matrix.os }}
     env:
+      CARGO_INCREMENTAL: 0
+      SCCACHE_GHA_ENABLED: "true"
+      RUST_BACKTRACE: 1
+      RUST_LOG: "sccache=trace"
+      RUSTC_WRAPPER: "sccache"
       RUSTFLAGS: "-A warnings"
+      AWS_ACCESS_KEY_ID: ${{ secrets.SCCACHE_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
+      SCCACHE_BUCKET: "sccache"
+      SCCACHE_ENDPOINT: ${{ secrets.SCCACHE_ENDPOINT }}
+      SCCACHE_REGION: auto
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
     permissions:
@@ -89,6 +99,10 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Install sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.3
+        with:
+          version: "v0.5.2"
       - if: matrix.workspace
         name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -158,6 +172,10 @@ jobs:
         continue-on-error: true
         with:
           sarif_file: rust-clippy-results.sarif
+      - if: always()
+        name: Run sccache stats
+        shell: bash
+        run: ${SCCACHE_PATH} --show-stats
       - if: always()
         name: Rust Finish
         uses: wallet-rs/wallet-rs/.github/actions/rust-finish@main

@@ -155,10 +155,10 @@
     "optional_block_gas_limit",
     "optional_no_base_fee",
   ] }
-  rundler-provider = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-provider" }
-  rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-sim" }
-  rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-types" }
-  rundler-utils = { git = "https://github.com/alchemyplatform/rundler", rev = "22fc250166cf525596faa9db84f5f56ca945a40b", package = "rundler-utils" }
+  rundler-provider = { git = "https://github.com/alchemyplatform/rundler", rev = "b337dcb090c2ec26418878b3a4d3eb82f452257f", package = "rundler-provider" }
+  rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "b337dcb090c2ec26418878b3a4d3eb82f452257f", package = "rundler-sim" }
+  rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "b337dcb090c2ec26418878b3a4d3eb82f452257f", package = "rundler-types" }
+  rundler-utils = { git = "https://github.com/alchemyplatform/rundler", rev = "b337dcb090c2ec26418878b3a4d3eb82f452257f", package = "rundler-utils" }
   rustc-hex = "2.1.0"
   serde = "1.0.183"
   serde_json = "1.0.104"
