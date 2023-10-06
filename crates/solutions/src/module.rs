@@ -320,14 +320,18 @@ impl SigModule {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::{parse_hex_to_bytes32, print_hex_string};
+    use crate::utils::{parse_hex_to_bytes32, print_hex_string, to_hex_string};
     use ethers::core::types::Address;
 
     #[test]
     fn test_print_hex_string() {
         let test_bytes: [u8; 4] = [0x11, 0x22, 0x33, 0x44];
+        let expected_output = "0x11223344";
 
+        let result = to_hex_string(&test_bytes);
         print_hex_string(&test_bytes);
+
+        assert_eq!(result, expected_output);
     }
 
     #[test]
