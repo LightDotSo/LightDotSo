@@ -49,11 +49,13 @@ impl SigModule {
         Self::new(Address::zero(), 1, [0; 32])
     }
 
+    #[allow(dead_code)]
     pub fn set_address(&mut self, address: Address) -> &mut Self {
         self.address = address;
         self
     }
 
+    #[allow(dead_code)]
     pub fn set_chain_id(&mut self, chain_id: u64) -> &mut Self {
         self.chain_id = chain_id;
         self
@@ -64,6 +66,7 @@ impl SigModule {
         self
     }
 
+    #[allow(dead_code)]
     pub fn set_weight(&mut self, weight: u64) -> &mut Self {
         self.weight = weight;
         self
@@ -105,7 +108,7 @@ impl SigModule {
                 Token::String("Sequence nested config:\n".to_string()),
                 Token::FixedBytes(internal_root.to_vec()),
                 Token::FixedBytes(left_pad_u16_to_bytes32(internal_threshold).to_vec()),
-                Token::FixedBytes(left_pad_u64_to_bytes32(self.weight).to_vec()),
+                // Token::FixedBytes(left_pad_u64_to_bytes32(self.weight).to_vec()),
             ])
             .unwrap(),
         )

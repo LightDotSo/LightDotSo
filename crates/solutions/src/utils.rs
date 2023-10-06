@@ -98,7 +98,7 @@ pub(crate) fn hash_keccak_256(a: [u8; 32], b: [u8; 32]) -> [u8; 32] {
     keccak256(encode(&[Token::FixedBytes(a.to_vec()), Token::FixedBytes(b.to_vec())]))
 }
 
-pub(crate) fn parse_hex_to_bytes32(hex: &str) -> Result<[u8; 32]> {
+pub fn parse_hex_to_bytes32(hex: &str) -> Result<[u8; 32]> {
     let stripped = hex.strip_prefix("0x").unwrap_or(hex);
     let vec = hex::decode(stripped)?;
 
@@ -117,9 +117,9 @@ pub(crate) fn left_pad_to_bytes32(input: &'_ [u8]) -> [u8; 32] {
     output
 }
 
-pub(crate) fn left_pad_u8_to_bytes32(input: u8) -> [u8; 32] {
-    left_pad_to_bytes32(&input.to_be_bytes())
-}
+// pub(crate) fn left_pad_u8_to_bytes32(input: u8) -> [u8; 32] {
+//     left_pad_to_bytes32(&input.to_be_bytes())
+// }
 
 pub(crate) fn left_pad_u16_to_bytes32(input: u16) -> [u8; 32] {
     left_pad_to_bytes32(&input.to_be_bytes())
