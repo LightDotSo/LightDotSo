@@ -468,7 +468,7 @@ mod tests {
     async fn test_recover_branch_fail_invalid_flag() {
         let mut base_sig_module = SigModule::empty();
         let empty_node_sig=
-            // 3u8 is the signature type for a node signature
+            // 9u8 is an invalid signature type
             encode_packed(&[Token::Uint(9u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
                 .unwrap();
 
