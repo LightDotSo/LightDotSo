@@ -244,11 +244,6 @@ impl SigModule {
     async fn recover_branch(&mut self) -> Result<(usize, [u8; 32])> {
         let s = self.sig.len();
 
-        // If the length is none bytes, it's an invalid signature
-        if s == 0 {
-            return Err(eyre!("Invalid signature"));
-        }
-
         // Iterating over the signature while length is greater than 0
         while self.rindex < s {
             // Get the first byte of the signature
@@ -429,14 +424,31 @@ mod tests {
 
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest(subdigest);
-        let empty_sig =
+        let empty_node_sig=
             // 3u8 is the signature type for a node signature
             encode_packed(&[Token::Uint(3u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
                 .unwrap();
 
-        base_sig_module.set_signature(empty_sig.clone());
+        base_sig_module.set_signature(empty_node_sig.clone());
         // Print the signature in hex format
-        print_hex_string(&empty_sig);
+        print_hex_string(&empty_node_sig);
+
+        let (weight, root) = base_sig_module.recover_branch().await.unwrap();
+        assert_eq!(weight, 0);
+        assert_eq!(root, [0; 32]);
+    }
+
+    #[tokio::test]
+    async fn test_recover_branch_empty_signature() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000002b45",
+        )
+        .unwrap();
+
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_subdigest(subdigest);
+        let empty_sig = vec![];
+        base_sig_module.set_signature(empty_sig);
 
         let (weight, root) = base_sig_module.recover_branch().await.unwrap();
         assert_eq!(weight, 0);
