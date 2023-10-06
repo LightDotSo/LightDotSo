@@ -324,6 +324,13 @@ mod tests {
     use ethers::core::types::Address;
 
     #[test]
+    fn test_print_hex_string() {
+        let test_bytes: [u8; 4] = [0x11, 0x22, 0x33, 0x44];
+
+        print_hex_string(&test_bytes);
+    }
+
+    #[test]
     fn test_leaf_for_address_and_weight() {
         let base_sig_module = SigModule::empty();
         let test_addr = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse::<Address>().unwrap();
