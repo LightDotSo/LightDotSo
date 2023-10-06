@@ -63,12 +63,13 @@ impl SigModule {
         self
     }
 
+    /// Returns the subdigest of the signature
     pub fn get_subdigest(&self, digest: [u8; 32]) -> [u8; 32] {
         keccak256(
             encode_packed(&[
-                Token::String("\x19\x01".to_string()),
-                Token::Uint(U256::from(self.chain_id)),
-                Token::Address(self.address),
+                // Token::String("\x19\x01".to_string()),
+                // Token::Uint(U256::from(self.chain_id)),
+                // Token::Address(self.address),
                 Token::FixedBytes(digest.to_vec()),
             ])
             .unwrap(),
@@ -324,6 +325,27 @@ mod tests {
         let result = base_sig_module.leaf_for_address_and_weight(test_addr, test_weight);
 
         assert_eq!(result, expected_output);
+    }
+
+    #[test]
+    fn test_get_subdigest() {
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_chain_id(1);
+        base_sig_module.set_address("0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f".parse().unwrap());
+
+        let digest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+
+        let res = base_sig_module.get_subdigest(digest);
+
+        let expected = parse_hex_to_bytes32(
+            "0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6",
+        )
+        .unwrap();
+
+        assert!(res == expected);
     }
 
     #[test]
