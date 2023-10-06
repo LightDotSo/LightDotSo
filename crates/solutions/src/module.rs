@@ -108,7 +108,7 @@ impl SigModule {
                 Token::String("Sequence nested config:\n".to_string()),
                 Token::FixedBytes(internal_root.to_vec()),
                 Token::FixedBytes(left_pad_u16_to_bytes32(internal_threshold).to_vec()),
-                // Token::FixedBytes(left_pad_u64_to_bytes32(self.weight).to_vec()),
+                Token::FixedBytes(left_pad_u64_to_bytes32(self.weight).to_vec()),
             ])
             .unwrap(),
         )
