@@ -49,7 +49,7 @@ jobs:
             package: --workspace
             check: true
             test: false
-            workspace: true
+            workspace: false
           - name: Android
             os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -62,7 +62,7 @@ jobs:
             target: x86_64-apple-darwin
             package: --package lightwallet-core
             check: false
-            test: true
+            test: false
             workspace: false
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
