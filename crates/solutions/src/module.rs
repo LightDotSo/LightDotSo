@@ -18,7 +18,8 @@ use crate::{
     traits::IsZero,
     types::{Signature, WalletConfig},
     utils::{
-        hash_keccak_256, read_bytes32, read_uint16, read_uint24, read_uint8, read_uint8_address,
+        hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u64_to_bytes32, read_bytes32,
+        read_uint16, read_uint24, read_uint8, read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
@@ -36,7 +37,7 @@ pub(crate) struct SigModule {
     subdigest: [u8; 32],
     root: [u8; 32],
     sig: Signature,
-    weight: usize,
+    weight: u64,
 }
 
 impl SigModule {
@@ -63,17 +64,17 @@ impl SigModule {
         self
     }
 
+    pub fn set_weight(&mut self, weight: u64) -> &mut Self {
+        self.weight = weight;
+        self
+    }
+
     /// Returns the subdigest of the signature
     pub fn get_subdigest(&self, digest: [u8; 32]) -> [u8; 32] {
-        let chain_id_bytes = self.chain_id.to_be_bytes();
-
-        let mut chain_id_padded = [0u8; 32];
-        chain_id_padded[24..].copy_from_slice(&chain_id_bytes);
-
         keccak256(
             encode_packed(&[
                 Token::String("\x19\x01".to_string()),
-                Token::FixedBytes(chain_id_padded.to_vec()),
+                Token::FixedBytes(left_pad_u64_to_bytes32(self.chain_id).to_vec()),
                 Token::Address(self.address),
                 Token::FixedBytes(digest.to_vec()),
             ])
@@ -101,10 +102,10 @@ impl SigModule {
     fn leaf_for_nested(&self, internal_root: [u8; 32], internal_threshold: u16) -> [u8; 32] {
         keccak256(
             encode_packed(&[
-                Token::String("Sequence nested digest:\n".to_string()),
+                Token::String("Sequence nested config:\n".to_string()),
                 Token::FixedBytes(internal_root.to_vec()),
-                Token::Uint(U256::from(internal_threshold)),
-                Token::Uint(U256::from(self.weight)),
+                Token::FixedBytes(left_pad_u16_to_bytes32(internal_threshold).to_vec()),
+                Token::FixedBytes(left_pad_u64_to_bytes32(self.weight).to_vec()),
             ])
             .unwrap(),
         )
@@ -139,7 +140,7 @@ impl SigModule {
         let signature_type = recover_ecdsa_signature(&self.sig, &self.subdigest, rindex)?;
         self.rindex = nrindex;
 
-        self.weight += addr_weight as usize;
+        self.weight += addr_weight as u64;
 
         let node = self.leaf_for_address_and_weight(signature_type.address, addr_weight);
         self.return_valid_root(node);
@@ -159,7 +160,7 @@ impl SigModule {
             .await?;
         self.rindex = nrindex;
 
-        self.weight += addr_weight as usize;
+        self.weight += addr_weight as u64;
 
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
@@ -186,7 +187,7 @@ impl SigModule {
         base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
         let (nweight, node) = base_sig_module.recover_branch().await?;
 
-        self.weight += nweight;
+        self.weight += nweight as u64;
         self.root = hash_keccak_256(self.root, node);
 
         Ok(())
@@ -208,7 +209,7 @@ impl SigModule {
         self.rindex = nrindex;
 
         if (internal_weight as u16) >= internal_threshold {
-            self.weight += external_weight as usize;
+            self.weight += external_weight as u64;
         }
 
         let node = self.leaf_for_nested(internal_root, internal_threshold);
@@ -220,7 +221,7 @@ impl SigModule {
     fn decode_digest_signature(&mut self) -> Result<()> {
         let (hardcoded, _rindex) = read_bytes32(&self.sig, self.rindex)?;
         if hardcoded == self.subdigest {
-            self.weight = usize::MAX;
+            self.weight = u64::MAX;
         }
 
         let node = self.leaf_for_hardcoded_subdigest(hardcoded);
@@ -328,6 +329,27 @@ mod tests {
         .unwrap();
 
         let result = base_sig_module.leaf_for_address_and_weight(test_addr, test_weight);
+
+        assert_eq!(result, expected_output);
+    }
+
+    #[test]
+    fn test_leaf_for_nested() {
+        let mut base_sig_module = SigModule::empty();
+        base_sig_module.set_weight(1);
+
+        let test_node = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+        let test_threshold = 1;
+        let expected_output = parse_hex_to_bytes32(
+            "0x907152f3fb1d245b378d4a00af6de7e68f3458fdfbeab39db0e2fb84c676e449",
+        )
+        .unwrap();
+
+        let result = base_sig_module.leaf_for_nested(test_node, test_threshold);
+        println!("{:?}", result);
 
         assert_eq!(result, expected_output);
     }

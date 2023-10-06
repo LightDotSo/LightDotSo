@@ -111,6 +111,24 @@ pub(crate) fn parse_hex_to_bytes32(hex: &str) -> Result<[u8; 32]> {
     Ok(arr)
 }
 
+pub(crate) fn left_pad_to_bytes32(input: &'_ [u8]) -> [u8; 32] {
+    let mut output = [0; 32];
+    output[32 - input.len()..].copy_from_slice(input);
+    output
+}
+
+pub(crate) fn left_pad_u8_to_bytes32(input: u8) -> [u8; 32] {
+    left_pad_to_bytes32(&input.to_be_bytes())
+}
+
+pub(crate) fn left_pad_u16_to_bytes32(input: u16) -> [u8; 32] {
+    left_pad_to_bytes32(&input.to_be_bytes())
+}
+
+pub(crate) fn left_pad_u64_to_bytes32(input: u64) -> [u8; 32] {
+    left_pad_to_bytes32(&input.to_be_bytes())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
