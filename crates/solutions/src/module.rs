@@ -258,7 +258,7 @@ impl SigModule {
                 4 => self.decode_branch_signature().await?,
                 5 => self.decode_nested_signature().await?,
                 6 => self.decode_digest_signature()?,
-                _ => return Err(eyre!("Invalid signature type")),
+                _ => return Err(eyre!("Invalid signature flag")),
             }
         }
 
@@ -430,8 +430,6 @@ mod tests {
                 .unwrap();
 
         base_sig_module.set_signature(empty_node_sig.clone());
-        // Print the signature in hex format
-        print_hex_string(&empty_node_sig);
 
         let (weight, root) = base_sig_module.recover_branch().await.unwrap();
         assert_eq!(weight, 0);
@@ -453,5 +451,21 @@ mod tests {
         let (weight, root) = base_sig_module.recover_branch().await.unwrap();
         assert_eq!(weight, 0);
         assert_eq!(root, [0; 32]);
+    }
+
+    #[tokio::test]
+    async fn test_recover_branch_fail_invalid_flag() {
+        let mut base_sig_module = SigModule::empty();
+        let empty_node_sig=
+            // 3u8 is the signature type for a node signature
+            encode_packed(&[Token::Uint(9u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
+                .unwrap();
+
+        base_sig_module.set_signature(empty_node_sig.clone());
+
+        let expected_err = eyre!("Invalid signature flag");
+
+        let res = base_sig_module.recover_branch().await.unwrap_err();
+        assert_eq!(res.to_string(), expected_err.to_string());
     }
 }
