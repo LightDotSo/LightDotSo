@@ -15,7 +15,7 @@
 
 use lightdotso_solutions::{
     recover::recover_signature,
-    utils::{from_hex_string, parse_hex_to_bytes32},
+    utils::{from_hex_string, parse_hex_to_bytes32, print_hex_string},
 };
 
 pub const FIRST_SIG: &str = "0x0001000000010001783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b01";
@@ -37,6 +37,8 @@ async fn test_integration_module_first() {
     assert_eq!(config.threshold, 1);
     assert_eq!(config.weight, 1);
     // assert_eq!(config.image_hash, image_hash);
+
+    print_hex_string(&config.image_hash);
 
     // TODO: Check the signers after tree construction is done.
     assert_eq!(config.signers.len(), 0);
