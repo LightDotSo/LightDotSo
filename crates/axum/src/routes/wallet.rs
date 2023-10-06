@@ -32,7 +32,7 @@ use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
 use lightdotso_solutions::{
     hash::{get_address, image_hash_of_wallet_config},
-    types::WalletConfig,
+    types::{WalletConfig, Signer},
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -211,7 +211,13 @@ async fn v1_post_handler(
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
-    let config = WalletConfig::default();
+    let config = WalletConfig {
+        checkpoint: 1,
+        threshold: 1,
+        weight: 1,
+        image_hash: [0; 32],
+        signers: vec![Signer { weight: 1, address }],
+    };
 
     // Simulate the image hash of the wallet config.
     let res = image_hash_of_wallet_config(config);
