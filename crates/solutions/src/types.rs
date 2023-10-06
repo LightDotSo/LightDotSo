@@ -32,7 +32,7 @@ pub struct Signer {
 #[derive(Debug, Default)]
 pub struct WalletConfig {
     // Bytes32 hash of the checkpoint
-    pub checkpoint: [u8; 32],
+    pub checkpoint: u32,
     // Uint16 threshold
     pub threshold: u16,
     // Uint256 weight

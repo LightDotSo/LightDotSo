@@ -97,13 +97,7 @@ mod tests {
     fn test_image_hash_of_wallet_config() {
         // From: contracts/src/test/utils/LightWalletUtils.sol
         let wc = WalletConfig {
-            checkpoint: [0; 31]
-                .iter()
-                .chain(&[1])
-                .copied()
-                .collect::<Vec<u8>>()
-                .try_into()
-                .unwrap(),
+            checkpoint: 1,
             threshold: 1,
             weight: 1,
             image_hash: [0; 31]

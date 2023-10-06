@@ -86,7 +86,7 @@ pub(crate) async fn recover_dynamic_signature(
     let slice = &data[starting_index..end_index];
 
     // The last byte is the signature type
-    let signature_type = match slice[end_index - 1] {
+    let signature_type = match slice[slice.len() - 1] {
         1 => DynamicSignatureType::DynamicSignatureTypeEIP712,
         2 => DynamicSignatureType::DynamicSignatureTypeEthSign,
         3 => DynamicSignatureType::DynamicSignatureTypeEIP1271,
@@ -94,7 +94,7 @@ pub(crate) async fn recover_dynamic_signature(
     };
 
     // The length is the remaining length of the slice
-    let signature = slice[1..].to_vec();
+    let signature = slice[..slice.len() - 1].to_vec();
 
     let recovered_address = match signature_type {
         DynamicSignatureType::DynamicSignatureTypeEthSign |
@@ -103,13 +103,11 @@ pub(crate) async fn recover_dynamic_signature(
             signature_leaf.address
         }
         DynamicSignatureType::DynamicSignatureTypeEIP1271 => {
-            // Omit the signature by removing the last byte
-            let sig = &slice[..slice.len() - 1];
-
             // Call the contract on-chain to verify the signature
             let wallet = get_erc_1271_wallet(chain_id, address).await?;
-            let res =
-                wallet.is_valid_signature(subdigest.to_vec().into(), sig.to_vec().into()).await?;
+            let res = wallet
+                .is_valid_signature(subdigest.to_vec().into(), signature.clone().into())
+                .await?;
             if res == ERC1271_MAGICVALUE_BYTES32 {
                 address
             } else {
