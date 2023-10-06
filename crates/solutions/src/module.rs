@@ -114,7 +114,7 @@ impl SigModule {
     fn leaf_for_hardcoded_subdigest(&self, hardcoded_subdigest: [u8; 32]) -> [u8; 32] {
         keccak256(
             encode_packed(&[
-                Token::String("Sequence nested digest:\n".to_string()),
+                Token::String("Sequence static digest:\n".to_string()),
                 Token::FixedBytes(hardcoded_subdigest.to_vec()),
             ])
             .unwrap(),
@@ -333,6 +333,23 @@ mod tests {
     }
 
     #[test]
+    fn test_leaf_for_hardcoded_subdigest() {
+        let base_sig_module = SigModule::empty();
+        let test_hardcoded_digest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+        let expected_output = parse_hex_to_bytes32(
+            "0x1773e5bd11cd42e98b2e68005291627c91f4554148dd1a0e3941a681d892b516",
+        )
+        .unwrap();
+
+        let result = base_sig_module.leaf_for_hardcoded_subdigest(test_hardcoded_digest);
+
+        assert_eq!(result, expected_output);
+    }
+
+    #[test]
     fn test_get_subdigest() {
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_chain_id(1);
@@ -350,7 +367,7 @@ mod tests {
         )
         .unwrap();
 
-        assert!(res == expected);
+        assert_eq!(res, expected);
     }
 
     #[test]
