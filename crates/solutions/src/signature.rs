@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::str::FromStr;
-
 use crate::types::{
     DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType,
     ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
@@ -25,6 +23,7 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::erc1271::get_erc_1271_wallet;
+use std::str::FromStr;
 
 pub(crate) fn recover_ecdsa_signature(
     data: &[u8],
