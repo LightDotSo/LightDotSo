@@ -32,7 +32,7 @@ use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
 use lightdotso_solutions::{
     hash::get_address,
-    types::{Signer, SignerNode, WalletConfig},
+    types::{SignatureLeafType, Signer, SignerNode, WalletConfig},
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -216,7 +216,16 @@ async fn v1_post_handler(
         threshold: 1,
         weight: 1,
         image_hash: [0; 32],
-        tree: SignerNode { signer: Some(Signer { address, weight: 1 }), left: None, right: None },
+        tree: SignerNode {
+            signer: Some(Signer {
+                address,
+                weight: 1,
+                leaf_type: SignatureLeafType::SignatureLeafTypeAddress,
+            }),
+            left: None,
+            right: None,
+        },
+        internal_root: None,
     };
 
     // Simulate the image hash of the wallet config.

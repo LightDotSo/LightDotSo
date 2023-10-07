@@ -46,7 +46,7 @@ impl WalletConfig {
         padded[32 - bytes.len()..].copy_from_slice(&bytes);
 
         print_hex_string(&padded);
-        print_hex_string(&self.internal_root);
+        print_hex_string(&self.internal_root.unwrap());
 
         let threshold_bytes = keccak256(encode(&[
             Token::FixedBytes(padded.to_vec()),
@@ -119,7 +119,7 @@ mod tests {
                 left: None,
                 right: None,
             },
-            internal_root: [0u8; 32],
+            internal_root: Some([0u8; 32]),
         };
 
         let expected = "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";
@@ -167,7 +167,7 @@ mod tests {
             weight: 20,
             image_hash: [0u8; 32],
             tree,
-            internal_root: [0u8; 32],
+            internal_root: None,
         };
 
         // Test the function
@@ -219,7 +219,7 @@ mod tests {
             weight: 20,
             image_hash: [0u8; 32],
             tree,
-            internal_root: [0u8; 32],
+            internal_root: None,
         };
 
         // The config has valid threshold

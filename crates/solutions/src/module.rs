@@ -377,7 +377,7 @@ impl SigModule {
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
         ]));
         let tree = self.tree.clone();
-        let internal_root = self.calculate_internal_root();
+        let internal_root = Some(self.calculate_internal_root());
 
         Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
     }

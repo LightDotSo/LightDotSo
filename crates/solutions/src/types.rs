@@ -51,7 +51,7 @@ pub struct WalletConfig {
     // Signers of the wallet
     pub tree: SignerNode,
     // Internal field used to store the image hash of the wallet config
-    pub internal_root: [u8; 32],
+    pub internal_root: Option<[u8; 32]>,
 }
 
 /// The enum representation of a signature leaf type

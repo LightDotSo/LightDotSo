@@ -37,7 +37,7 @@ async fn test_integration_hash_first() {
             left: None,
             right: None,
         },
-        internal_root: [0u8; 32],
+        internal_root: Some([0u8; 32]),
     };
 
     // Simulate the image hash of the wallet config.
