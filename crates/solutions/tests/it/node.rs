@@ -134,109 +134,109 @@ async fn test_integration_node_nested() {
     );
 }
 
-// #[tokio::test(flavor = "multi_thread")]
-// async fn test_integration_node_complex() {
-//     let module = SigModule::new(
-//         Address::zero(),
-//         1,
-//         [0; 32],
-//         Some(SignerNode {
-//             signer: Some(Signer {
-//                 address: Address::zero(),
-//                 weight: 1,
-//                 leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-//             }),
-//             left: Some(Box::new(SignerNode {
-//                 left: Some(Box::new(SignerNode {
-//                     left: None,
-//                     right: None,
-//                     signer: Some(Signer {
-//                         address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
-//                         weight: 3,
-//                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-//                             address:
-// "0x1111111111111111111111111111111111111111".parse().unwrap(),                         }),
-//                     }),
-//                 })),
-//                 right: Some(Box::new(SignerNode {
-//                     left: None,
-//                     right: None,
-//                     signer: Some(Signer {
-//                         address: "0x2222222222222222222222222222222222222222".parse().unwrap(),
-//                         weight: 3,
-//                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-//                             address:
-// "0x2222222222222222222222222222222222222222".parse().unwrap(),                         }),
-//                     }),
-//                 })),
-//                 signer: Some(Signer {
-//                     address: Address::zero(),
-//                     weight: 1,
-//                     leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-//                 }),
-//             })),
-//             right: Some(Box::new(SignerNode {
-//                 left: Some(Box::new(SignerNode {
-//                     left: None,
-//                     right: None,
-//                     signer: Some(Signer {
-//                         address: "0x3333333333333333333333333333333333333333".parse().unwrap(),
-//                         weight: 3,
-//                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-//                             address:
-// "0x3333333333333333333333333333333333333333".parse().unwrap(),                         }),
-//                     }),
-//                 })),
-//                 right: Some(Box::new(SignerNode {
-//                     left: Some(Box::new(SignerNode {
-//                         left: None,
-//                         right: None,
-//                         signer: Some(Signer {
-//                             address:
-// "0x4444444444444444444444444444444444444444".parse().unwrap(),
-// weight: 1,                             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf
-// {                                 address: "0x4444444444444444444444444444444444444444"
-//                                     .parse()
-//                                     .unwrap(),
-//                             }),
-//                         }),
-//                     })),
-//                     right: Some(Box::new(SignerNode {
-//                         left: None,
-//                         right: None,
-//                         signer: Some(Signer {
-//                             address:
-// "0x5555555555555555555555555555555555555555".parse().unwrap(),
-// weight: 1,                             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf
-// {                                 address: "0x5555555555555555555555555555555555555555"
-//                                     .parse()
-//                                     .unwrap(),
-//                             }),
-//                         }),
-//                     })),
-//                     signer: Some(Signer {
-//                         address: Address::zero(),
-//                         weight: 1,
-//                         leaf: SignatureLeaf::NestedSignature(NestedLeaf {
-//                             external_weight: 2,
-//                             internal_threshold: 1,
-//                             address: Address::zero(),
-//                             internal_root: [0; 32],
-//                         }),
-//                     }),
-//                 })),
-//                 signer: Some(Signer {
-//                     address: Address::zero(),
-//                     weight: 1,
-//                     leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-//                 }),
-//             })),
-//         }),
-//     );
+#[tokio::test(flavor = "multi_thread")]
+async fn test_integration_node_complex() {
+    let module = SigModule::new(
+        Address::zero(),
+        1,
+        [0; 32],
+        Some(SignerNode {
+            signer: Some(Signer {
+                address: Address::zero(),
+                weight: 1,
+                leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+            }),
+            left: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
+                        weight: 3,
+                        leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                            address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        address: "0x2222222222222222222222222222222222222222".parse().unwrap(),
+                        weight: 3,
+                        leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                            address: "0x2222222222222222222222222222222222222222".parse().unwrap(),
+                        }),
+                    }),
+                })),
+                signer: Some(Signer {
+                    address: Address::zero(),
+                    weight: 1,
+                    leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+                }),
+            })),
+            right: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        address: "0x3333333333333333333333333333333333333333".parse().unwrap(),
+                        weight: 3,
+                        leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                            address: "0x3333333333333333333333333333333333333333".parse().unwrap(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: Some(Box::new(SignerNode {
+                        left: None,
+                        right: None,
+                        signer: Some(Signer {
+                            address: "0x4444444444444444444444444444444444444444".parse().unwrap(),
+                            weight: 1,
+                            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                                address: "0x4444444444444444444444444444444444444444"
+                                    .parse()
+                                    .unwrap(),
+                            }),
+                        }),
+                    })),
+                    right: Some(Box::new(SignerNode {
+                        left: None,
+                        right: None,
+                        signer: Some(Signer {
+                            address: "0x5555555555555555555555555555555555555555".parse().unwrap(),
+                            weight: 1,
+                            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                                address: "0x5555555555555555555555555555555555555555"
+                                    .parse()
+                                    .unwrap(),
+                            }),
+                        }),
+                    })),
+                    signer: Some(Signer {
+                        address: Address::zero(),
+                        weight: 1,
+                        leaf: SignatureLeaf::NestedSignature(NestedLeaf {
+                            external_weight: 2,
+                            internal_threshold: 1,
+                            address: Address::zero(),
+                            internal_root: [0; 32],
+                        }),
+                    }),
+                })),
+                signer: Some(Signer {
+                    address: Address::zero(),
+                    weight: 1,
+                    leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+                }),
+            })),
+        }),
+    );
 
-//     let config = module.get_initial_image_hash_config(5, 1).unwrap();
-//     assert_eq!(
-//         config.image_hash_of_wallet_config().unwrap(),
-//         "0xd491b760c0ac4b1572e361f32e3c349a8db7886b683226014764019465a52592"
-//     );
-// }
+    let config = module.get_initial_image_hash_config(5, 1).unwrap();
+    assert_eq!(
+        config.image_hash_of_wallet_config().unwrap(),
+        "0xd491b760c0ac4b1572e361f32e3c349a8db7886b683226014764019465a52592"
+    );
+}

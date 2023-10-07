@@ -384,14 +384,11 @@ impl SigModule {
                 SignatureLeaf::SubdigestSignature(_) => self.calculate_image_hash_from_node(node),
                 SignatureLeaf::NestedSignature(leaf) => {
                     let node = node.clone();
-                    let h = hash_keccak_256(
+                    let node_hash = hash_keccak_256(
                         self.calculate_image_hash_from_node(&node.left.unwrap()),
                         self.calculate_image_hash_from_node(&node.right.unwrap()),
                     );
-                    print_hex_string(&h);
-                    let s = self.leaf_for_nested(h, leaf.internal_threshold, leaf.external_weight);
-                    print_hex_string(&s);
-                    s
+                    self.leaf_for_nested(node_hash, leaf.internal_threshold, leaf.external_weight)
                 }
             },
             None => [0; 32],
