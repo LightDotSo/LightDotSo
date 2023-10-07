@@ -309,11 +309,11 @@ impl SigModule {
         self.sig = self.sig[6..].to_vec();
 
         // If the length is greater than 34 bytes, it's a branch signature
-        let (weight, digest) = self.recover_branch().await?;
+        let (weight, image_hash) = self.recover_branch().await?;
         let image_hash = keccak256(encode(&[
             Token::FixedBytes(
                 keccak256(encode(&[
-                    Token::FixedBytes(digest.to_vec()),
+                    Token::FixedBytes(image_hash.to_vec()),
                     Token::Uint(left_pad_u16_to_bytes32(threshold).into()),
                 ]))
                 .to_vec(),

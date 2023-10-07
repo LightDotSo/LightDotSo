@@ -31,8 +31,8 @@ use eyre::Result;
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
 use lightdotso_solutions::{
-    hash::{get_address, image_hash_of_wallet_config},
-    types::{WalletConfig, Signer},
+    hash::get_address,
+    types::{Signer, WalletConfig},
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -220,7 +220,7 @@ async fn v1_post_handler(
     };
 
     // Simulate the image hash of the wallet config.
-    let res = image_hash_of_wallet_config(config);
+    let res = config.image_hash_of_wallet_config();
 
     // If the image hash of the wallet could not be simulated, return a 404.
     let image_hash = res.map_err(|_| AppError::NotFound)?;

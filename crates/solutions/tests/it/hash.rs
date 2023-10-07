@@ -15,7 +15,7 @@
 
 use ethers::types::{Address, H160, H256};
 use lightdotso_solutions::{
-    hash::{get_address, image_hash_of_wallet_config},
+    hash::get_address,
     types::{Signer, WalletConfig},
 };
 
@@ -32,7 +32,7 @@ async fn test_integration_hash_first() {
     };
 
     // Simulate the image hash of the wallet config.
-    let image_hash = image_hash_of_wallet_config(config).unwrap();
+    let image_hash = config.image_hash_of_wallet_config().unwrap();
 
     // Parse the image hash to bytes.
     let image_hash_bytes: H256 = image_hash.parse().unwrap();
