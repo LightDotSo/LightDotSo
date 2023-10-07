@@ -13,12 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod hash;
-pub mod io;
-pub mod module;
-pub mod recover;
-pub mod signature;
-pub mod traits;
-pub mod types;
-pub mod utils;
+use lightdotso_solutions::io::read_wallet_config;
+
+#[test]
+fn test_wallet_config_from_json() {
+    // Load JSON from file
+    let wallet_config = read_wallet_config("tests/samples/sample1_out.json").unwrap();
+
+    // Parse JSON to WalletConfig
+    // let wallet_config: WalletConfig = serde_json::from_str(&wallet_config_json).unwrap();
+
+    // Now you can use your WalletConfig struct
+    println!("Checkpoint: {}", &wallet_config.checkpoint);
+    // add more tests...
+}
