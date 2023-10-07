@@ -14,33 +14,41 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::Address;
+use serde::{Deserialize, Serialize};
 
 pub type Signature = Vec<u8>;
 
 /// The struct representation of a wallet signer
 /// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
 /// License: Apache-2.0
-#[derive(Debug)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct Signer {
     pub weight: u8,
     pub address: Address,
 }
 
+#[derive(Debug, Default, Serialize, Deserialize)]
+pub struct SignerNode {
+    pub signer: Option<Signer>,
+    pub left: Option<Box<SignerNode>>,
+    pub right: Option<Box<SignerNode>>,
+}
+
 /// The struct representation of a wallet config
 /// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
 /// License: Apache-2.0
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Serialize, Deserialize)]
 pub struct WalletConfig {
     // Bytes32 hash of the checkpoint
     pub checkpoint: u32,
     // Uint16 threshold
     pub threshold: u16,
-    // Uint256 weight
+    // Uint256 weight of the retured signature
     pub weight: usize,
-    // Image hash of the wallet config
+    // Image hash of the wallet config that is used to verify the wallet
     pub image_hash: [u8; 32],
     // Signers of the wallet
-    pub signers: Vec<Signer>,
+    pub tree: SignerNode,
 }
 
 /// The enum representation of a signature leaf type

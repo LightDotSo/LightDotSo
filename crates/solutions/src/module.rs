@@ -16,7 +16,7 @@
 use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
-    types::{Signature, WalletConfig},
+    types::{Signature, Signer, SignerNode, WalletConfig},
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
         read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
@@ -31,12 +31,19 @@ use ethers::{
 use eyre::{eyre, Result};
 
 pub(crate) struct SigModule {
+    /// The address of the wallet
     address: Address,
+    /// The chain id of the network
     chain_id: u64,
+    /// The index position of the signature
     rindex: usize,
+    /// The subdigest used as the message of the signature
     subdigest: [u8; 32],
+    /// The root of the merkle tree (will get updated as the signature is decoded)
     root: [u8; 32],
+    /// The signature in bytes
     sig: Signature,
+    /// The weight of the signature
     weight: u64,
 }
 
@@ -309,11 +316,11 @@ impl SigModule {
         self.sig = self.sig[6..].to_vec();
 
         // If the length is greater than 34 bytes, it's a branch signature
-        let (weight, digest) = self.recover_branch().await?;
+        let (weight, image_hash) = self.recover_branch().await?;
         let image_hash = keccak256(encode(&[
             Token::FixedBytes(
                 keccak256(encode(&[
-                    Token::FixedBytes(digest.to_vec()),
+                    Token::FixedBytes(image_hash.to_vec()),
                     Token::Uint(left_pad_u16_to_bytes32(threshold).into()),
                 ]))
                 .to_vec(),
@@ -321,7 +328,20 @@ impl SigModule {
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
         ]));
 
-        Ok(WalletConfig { threshold, checkpoint, image_hash, weight, signers: vec![] })
+        Ok(WalletConfig {
+            threshold,
+            checkpoint,
+            image_hash,
+            weight,
+            tree: SignerNode {
+                signer: Some(Signer {
+                    weight: 1,
+                    address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+                }),
+                left: None,
+                right: None,
+            },
+        })
     }
 }
 

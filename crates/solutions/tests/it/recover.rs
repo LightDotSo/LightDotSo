@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use lightdotso_solutions::{
-    hash::image_hash_of_wallet_config,
     recover::recover_signature,
     utils::{from_hex_string, parse_hex_to_bytes32},
 };
@@ -37,5 +36,5 @@ async fn test_integration_module_first() {
     assert_eq!(config.checkpoint, 1);
     assert_eq!(config.threshold, 1);
     assert_eq!(config.weight, 1);
-    assert_eq!(image_hash_of_wallet_config(config).unwrap(), image_hash);
+    assert_eq!(config.image_hash_of_wallet_config().unwrap(), image_hash);
 }
