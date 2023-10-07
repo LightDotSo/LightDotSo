@@ -31,12 +31,19 @@ use ethers::{
 use eyre::{eyre, Result};
 
 pub(crate) struct SigModule {
+    /// The address of the wallet
     address: Address,
+    /// The chain id of the network
     chain_id: u64,
+    /// The index position of the signature
     rindex: usize,
+    /// The subdigest used as the message of the signature
     subdigest: [u8; 32],
+    /// The root of the merkle tree (will get updated as the signature is decoded)
     root: [u8; 32],
+    /// The signature in bytes
     sig: Signature,
+    /// The weight of the signature
     weight: u64,
 }
 
@@ -327,7 +334,10 @@ impl SigModule {
             image_hash,
             weight,
             tree: SignerNode {
-                signer: Some(Signer { weight: 0, address: Address::zero() }),
+                signer: Some(Signer {
+                    weight: 1,
+                    address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+                }),
                 left: None,
                 right: None,
             },
