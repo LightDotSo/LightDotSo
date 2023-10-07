@@ -358,6 +358,16 @@ impl SigModule {
         Ok((threshold, checkpoint))
     }
 
+    fn get_node_hash(&self, node: &SignerNode) -> [u8; 32] {
+        let node = node.clone();
+        let h = hash_keccak_256(
+            self.calculate_image_hash_from_node(&node.left.unwrap()),
+            self.calculate_image_hash_from_node(&node.right.unwrap()),
+        );
+        print_hex_string(&h);
+        h
+    }
+
     // Iterate over the tree and calculate the image hash
     pub fn calculate_image_hash_from_node(&self, node: &SignerNode) -> [u8; 32] {
         match &node.signer {
@@ -371,23 +381,13 @@ impl SigModule {
                 SignatureLeaf::DynamicSignature(leaf) => {
                     self.leaf_for_address_and_weight(leaf.address, signer.weight)
                 }
-                SignatureLeaf::NodeSignature(_) => {
-                    let node = self.tree.clone();
-                    hash_keccak_256(
-                        self.calculate_image_hash_from_node(&node.left.unwrap()),
-                        self.calculate_image_hash_from_node(&node.right.unwrap()),
-                    )
-                }
+                SignatureLeaf::NodeSignature(_) => self.get_node_hash(node),
                 SignatureLeaf::BranchSignature(_) => {
                     self.leaf_for_hardcoded_subdigest(self.subdigest)
                 }
                 SignatureLeaf::SubdigestSignature(_) => self.calculate_image_hash_from_node(node),
                 SignatureLeaf::NestedSignature(leaf) => {
-                    let node = node.clone();
-                    let node_hash = hash_keccak_256(
-                        self.calculate_image_hash_from_node(&node.left.unwrap()),
-                        self.calculate_image_hash_from_node(&node.right.unwrap()),
-                    );
+                    let node_hash = self.get_node_hash(node);
                     self.leaf_for_nested(node_hash, leaf.internal_threshold, leaf.external_weight)
                 }
             },

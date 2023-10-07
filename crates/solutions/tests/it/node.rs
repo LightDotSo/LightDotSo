@@ -181,7 +181,7 @@ async fn test_integration_node_complex() {
                     right: None,
                     signer: Some(Signer {
                         address: "0x3333333333333333333333333333333333333333".parse().unwrap(),
-                        weight: 3,
+                        weight: 2,
                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                             address: "0x3333333333333333333333333333333333333333".parse().unwrap(),
                         }),
@@ -237,6 +237,6 @@ async fn test_integration_node_complex() {
     let config = module.get_initial_image_hash_config(5, 1).unwrap();
     assert_eq!(
         config.image_hash_of_wallet_config().unwrap(),
-        "0xd491b760c0ac4b1572e361f32e3c349a8db7886b683226014764019465a52592"
+        "0xc9761153e2633291df0b2f139ec3f4d05e5d89ce21576e6e7cc533320609b8fe"
     );
 }
