@@ -21,7 +21,7 @@ pub type Signature = Vec<u8>;
 /// The struct representation of a wallet signer
 /// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L17
 /// License: Apache-2.0
-#[derive(Debug, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq)]
 pub struct Signer {
     pub weight: u8,
     pub address: Address,
