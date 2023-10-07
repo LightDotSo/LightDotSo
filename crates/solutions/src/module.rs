@@ -343,9 +343,22 @@ impl SigModule {
         match &node.signer {
             Some(signer) => match signer.leaf_type {
                 SignatureLeafType::SignatureLeafTypeAddress |
-                SignatureLeafType::SignatureLeafTypeECDSASignature => {
+                SignatureLeafType::SignatureLeafTypeECDSASignature |
+                SignatureLeafType::SignatureLeafTypeDynamicSignature => {
                     self.leaf_for_address_and_weight(signer.address, signer.weight)
                 }
+                // SignatureLeafType::SignatureLeafTypeNode => hash_keccak_256(
+                // self.leaf_for_address_and_weight(signer.address, signer.weight),
+                // self.leaf_for_address_and_weight(signer.address, signer.weight),
+                // ),
+                SignatureLeafType::SignatureLeafTypeSubdigest => {
+                    self.leaf_for_hardcoded_subdigest(self.subdigest)
+                }
+                // SignatureLeafType::SignatureLeafTypeNested => self.leaf_for_nested(
+                // self.image_hash,
+                // self.threshold,
+                // ),
+                // SignatureLeafType::SignatureLeafTypeBranch => [0; 32],
                 _ => [0; 32],
             },
             None => [0; 32],
