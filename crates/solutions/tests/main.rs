@@ -34,8 +34,8 @@ fn test_wallet_config_from_json() {
 }
 
 #[test]
-fn test_wallet_complex_to_json() {
-    let leaf = ECDSASignatureLeaf {
+fn test_wallet_ecdsa_to_json() {
+    let ecdsa_leaf = ECDSASignatureLeaf {
         address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
         signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
         signature: [0u8; 65].into(),
@@ -48,7 +48,7 @@ fn test_wallet_complex_to_json() {
         internal_root: Some([0; 32].into()),
         image_hash: [0; 32].into(),
         tree: SignerNode {
-            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(leaf) }),
+            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(ecdsa_leaf) }),
             left: None,
             right: None,
         },
