@@ -133,7 +133,6 @@ impl SigModule {
 
     /// Generates a leaf node for the merkle tree
     fn leaf_for_address_and_weight(&self, addr: Address, weight: u8) -> [u8; 32] {
-        println!("leaf_for_address_and_weight: addr: {:?}, weight: {:?}", addr, weight);
         let weight_shifted = U256::from(weight) << 160;
         let addr_u256 = U256::from_big_endian(addr.as_bytes());
         let a: [u8; 32] = (weight_shifted | addr_u256).into();
@@ -382,11 +381,17 @@ impl SigModule {
                 SignatureLeaf::BranchSignature(_) => {
                     self.leaf_for_hardcoded_subdigest(self.subdigest)
                 }
-                SignatureLeaf::SubdigestSignature(_) => {
-                    self.calculate_image_hash_from_node(&self.tree)
-                }
-                SignatureLeaf::NestedSignature(_) => {
-                    self.leaf_for_hardcoded_subdigest(self.subdigest)
+                SignatureLeaf::SubdigestSignature(_) => self.calculate_image_hash_from_node(node),
+                SignatureLeaf::NestedSignature(leaf) => {
+                    let node = node.clone();
+                    let h = hash_keccak_256(
+                        self.calculate_image_hash_from_node(&node.left.unwrap()),
+                        self.calculate_image_hash_from_node(&node.right.unwrap()),
+                    );
+                    print_hex_string(&h);
+                    let s = self.leaf_for_nested(h, leaf.internal_threshold, leaf.external_weight);
+                    print_hex_string(&s);
+                    s
                 }
             },
             None => [0; 32],
