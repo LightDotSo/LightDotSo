@@ -66,7 +66,7 @@ pub(crate) fn recover_ecdsa_signature(
         }
     };
 
-    Ok(ECDSASignatureLeaf { address, signature_type, signature: signature_slice })
+    Ok(ECDSASignatureLeaf { address, signature_type, signature: signature_slice.into() })
 }
 
 pub(crate) async fn recover_dynamic_signature(

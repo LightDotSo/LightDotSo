@@ -81,7 +81,7 @@ mod tests {
         let leaf = ECDSASignatureLeaf {
             address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
             signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
-            signature: [0u8; 65],
+            signature: [0u8; 65].into(),
         };
 
         // From: contracts/src/test/utils/LightWalletUtils.sol

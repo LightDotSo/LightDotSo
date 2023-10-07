@@ -13,9 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::{Address, H256};
-use serde::{Deserialize, Serialize};
-use serde_with::{serde_as, Bytes};
+use ethers::{
+    types::{Address, H256},
+    utils::hex,
+};
+use serde::{
+    de::{self, Visitor},
+    Deserialize, Deserializer, Serialize, Serializer,
+};
+use serde_with::serde_as;
 pub type Signature = Vec<u8>;
 
 /// The struct representation of a wallet signer
@@ -90,19 +96,21 @@ pub enum ECDSASignatureType {
 }
 
 /// The constant length of an ECDSA signature
-/// The actual length of the signature is 65 bytes + 1 byte for the signature type
-/// Add 1 byte for the signature type
+/// The actual length of the signature is 65 bytes
+/// Internally, the original length is + 1 byte for the signature type
 pub const ECDSA_SIGNATURE_LENGTH: usize = 65;
 
 pub const ERC1271_MAGICVALUE_BYTES32: [u8; 4] = [22, 38, 186, 126];
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct ECDSASignature(pub [u8; ECDSA_SIGNATURE_LENGTH]);
 
 #[serde_as]
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct ECDSASignatureLeaf {
     pub address: Address,
     pub signature_type: ECDSASignatureType,
-    #[serde_as(as = "Bytes")]
-    pub signature: [u8; ECDSA_SIGNATURE_LENGTH],
+    pub signature: ECDSASignature,
 }
 
 #[serde_as]
@@ -141,5 +149,56 @@ pub struct NestedLeaf {
     pub internal_threshold: u16,
     pub external_weight: u8,
     pub address: Address,
-    pub internal_root: [u8; 32],
+    pub internal_root: H256,
+}
+
+impl From<[u8; ECDSA_SIGNATURE_LENGTH]> for ECDSASignature {
+    fn from(item: [u8; ECDSA_SIGNATURE_LENGTH]) -> Self {
+        ECDSASignature(item)
+    }
+}
+
+impl Serialize for ECDSASignature {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let hex_string = format!("0x{}", hex::encode(self.0));
+        serializer.serialize_str(&hex_string)
+    }
+}
+
+struct ECDSASignatureVisitor;
+
+impl<'de> Visitor<'de> for ECDSASignatureVisitor {
+    type Value = ECDSASignature;
+
+    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+        formatter.write_str("a string starts with 0x followed by 260 hexadecimal characters")
+    }
+
+    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+    where
+        E: de::Error,
+    {
+        if !value.starts_with("0x") {
+            return Err(E::custom("Expected string to start with '0x'"));
+        }
+        let bytes = hex::decode(&value[2..]).map_err(de::Error::custom)?;
+        if bytes.len() != ECDSA_SIGNATURE_LENGTH {
+            return Err(E::custom("Expected 65 bytes"));
+        }
+        let mut array = [0u8; ECDSA_SIGNATURE_LENGTH];
+        array.copy_from_slice(&bytes);
+        Ok(ECDSASignature(array))
+    }
+}
+
+impl<'de> Deserialize<'de> for ECDSASignature {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        deserializer.deserialize_str(ECDSASignatureVisitor)
+    }
 }
