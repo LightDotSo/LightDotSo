@@ -17,6 +17,7 @@ use ethers::types::{Address, H160, H256};
 use lightdotso_solutions::{
     hash::get_address,
     types::{SignatureLeafType, Signer, SignerNode, WalletConfig},
+    utils::parse_hex_to_bytes32,
 };
 
 #[tokio::test(flavor = "multi_thread")]
@@ -37,7 +38,12 @@ async fn test_integration_hash_first() {
             left: None,
             right: None,
         },
-        internal_root: Some([0u8; 32]),
+        internal_root: Some(
+            parse_hex_to_bytes32(
+                "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
+            )
+            .unwrap(),
+        ),
     };
 
     // Simulate the image hash of the wallet config.

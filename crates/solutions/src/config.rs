@@ -13,12 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    types::{Signer, SignerNode, WalletConfig},
-    utils::print_hex_string,
-};
+use crate::types::{Signer, SignerNode, WalletConfig};
 use ethers::{
-    abi::{encode, encode_packed, Bytes, Token},
+    abi::{encode, Token},
     types::U256,
     utils::keccak256,
 };
@@ -27,29 +24,8 @@ use eyre::Result;
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
     pub fn image_hash_of_wallet_config(&self) -> Result<String> {
-        // Get the signer address
-        // Get the signer address and weight
-        let signer = self.tree.signer.as_ref().unwrap();
-        let signer_address = signer.address;
-        let signer_weight = signer.weight;
-        let signer_bytes =
-            encode_packed(&[Token::Uint(signer_weight.into()), Token::Address(signer_address)])
-                .unwrap();
-
-        // Convert the signer bytes into [u8]
-        let bytes: Bytes = signer_bytes;
-
-        // left pad with zeros to 32 bytes
-        // From: https://github.com/gakonst/ethers-rs/blob/fa3017715a298728d9fb341933818a5d0d84c2dc/ethers-core/src/utils/mod.rs#L506
-        // License: Apache-2.0
-        let mut padded = [0u8; 32];
-        padded[32 - bytes.len()..].copy_from_slice(&bytes);
-
-        print_hex_string(&padded);
-        print_hex_string(&self.internal_root.unwrap());
-
         let threshold_bytes = keccak256(encode(&[
-            Token::FixedBytes(padded.to_vec()),
+            Token::FixedBytes(self.internal_root.unwrap().to_vec()),
             Token::Uint(U256::from(self.threshold)),
         ]));
 
@@ -93,7 +69,10 @@ impl WalletConfig {
 
 #[cfg(test)]
 mod tests {
-    use crate::types::{SignatureLeafType, Signer, SignerNode, WalletConfig};
+    use crate::{
+        types::{SignatureLeafType, Signer, SignerNode, WalletConfig},
+        utils::parse_hex_to_bytes32,
+    };
     use ethers::types::Address;
 
     #[test]
@@ -119,7 +98,12 @@ mod tests {
                 left: None,
                 right: None,
             },
-            internal_root: Some([0u8; 32]),
+            internal_root: Some(
+                parse_hex_to_bytes32(
+                    "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
+                )
+                .unwrap(),
+            ),
         };
 
         let expected = "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";
