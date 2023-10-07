@@ -16,7 +16,7 @@
 use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
-    types::{Signature, Signer, SignerNode, WalletConfig},
+    types::{Signature, SignatureLeafType, Signer, SignerNode, WalletConfig},
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
         read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
@@ -45,12 +45,23 @@ pub(crate) struct SigModule {
     sig: Signature,
     /// The weight of the signature
     weight: u64,
+    /// The internal tree of the module
+    tree: SignerNode,
 }
 
 impl SigModule {
     /// Initializes a new SigModule
     pub fn new(address: Address, chain_id: u64, subdigest: [u8; 32]) -> Self {
-        Self { address, subdigest, rindex: 0, root: [0; 32], sig: vec![], weight: 0, chain_id }
+        Self {
+            address,
+            subdigest,
+            rindex: 0,
+            root: [0; 32],
+            sig: vec![],
+            weight: 0,
+            chain_id,
+            tree: SignerNode { signer: None, left: None, right: None },
+        }
     }
 
     /// Initializes a new empty SigModule
@@ -154,6 +165,16 @@ impl SigModule {
         let node = self.leaf_for_address_and_weight(signature_type.address, addr_weight);
         self.return_valid_root(node);
 
+        let signer = Signer {
+            weight: addr_weight,
+            address: signature_type.address,
+            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+        };
+
+        if self.tree.signer.is_none() {
+            self.tree.signer = Some(signer);
+        }
+
         Ok(())
     }
 
@@ -164,6 +185,16 @@ impl SigModule {
         self.rindex = rindex;
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
+
+        let signer = Signer {
+            weight: addr_weight,
+            address: addr,
+            leaf_type: SignatureLeafType::SignatureLeafTypeAddress,
+        };
+
+        if self.tree.signer.is_none() {
+            self.tree.signer = Some(signer);
+        }
 
         Ok(())
     }
@@ -307,6 +338,24 @@ impl SigModule {
         Ok((threshold, checkpoint))
     }
 
+    // Iterate over the tree and calculate the image hash
+    fn calculate_image_hash_from_node(&self, node: &SignerNode) -> [u8; 32] {
+        match &node.signer {
+            Some(signer) => match signer.leaf_type {
+                SignatureLeafType::SignatureLeafTypeAddress |
+                SignatureLeafType::SignatureLeafTypeECDSASignature => {
+                    self.leaf_for_address_and_weight(signer.address, signer.weight)
+                }
+                _ => [0; 32],
+            },
+            None => [0; 32],
+        }
+    }
+
+    fn calculate_internal_root(&self) -> [u8; 32] {
+        self.calculate_image_hash_from_node(&self.tree)
+    }
+
     /// Recovers the wallet config from the signature
     pub(crate) async fn recover(&mut self) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
@@ -327,21 +376,10 @@ impl SigModule {
             ),
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
         ]));
+        let tree = self.tree.clone();
+        let internal_root = self.calculate_internal_root();
 
-        Ok(WalletConfig {
-            threshold,
-            checkpoint,
-            image_hash,
-            weight,
-            tree: SignerNode {
-                signer: Some(Signer {
-                    weight: 1,
-                    address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
-                }),
-                left: None,
-                right: None,
-            },
-        })
+        Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
     }
 }
 

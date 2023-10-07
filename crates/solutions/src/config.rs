@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{Signer, SignerNode, WalletConfig};
+use crate::{
+    types::{Signer, SignerNode, WalletConfig},
+    utils::print_hex_string,
+};
 use ethers::{
     abi::{encode, encode_packed, Bytes, Token},
     types::U256,
@@ -41,6 +44,9 @@ impl WalletConfig {
         // License: Apache-2.0
         let mut padded = [0u8; 32];
         padded[32 - bytes.len()..].copy_from_slice(&bytes);
+
+        print_hex_string(&padded);
+        print_hex_string(&self.internal_root);
 
         let threshold_bytes = keccak256(encode(&[
             Token::FixedBytes(padded.to_vec()),
@@ -87,7 +93,7 @@ impl WalletConfig {
 
 #[cfg(test)]
 mod tests {
-    use crate::types::{Signer, SignerNode, WalletConfig};
+    use crate::types::{SignatureLeafType, Signer, SignerNode, WalletConfig};
     use ethers::types::Address;
 
     #[test]
@@ -108,10 +114,12 @@ mod tests {
                 signer: Some(Signer {
                     address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
                     weight: 1,
+                    leaf_type: SignatureLeafType::SignatureLeafTypeAddress,
                 }),
                 left: None,
                 right: None,
             },
+            internal_root: [0u8; 32],
         };
 
         let expected = "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";
@@ -121,9 +129,21 @@ mod tests {
     #[test]
     fn test_get_signers() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, address: Address::zero() };
-        let signer2 = Signer { weight: 2, address: Address::zero() };
-        let signer3 = Signer { weight: 3, address: Address::zero() };
+        let signer1 = Signer {
+            weight: 1,
+            address: Address::zero(),
+            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+        };
+        let signer2 = Signer {
+            weight: 2,
+            address: Address::zero(),
+            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+        };
+        let signer3 = Signer {
+            weight: 3,
+            address: Address::zero(),
+            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+        };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -147,6 +167,7 @@ mod tests {
             weight: 20,
             image_hash: [0u8; 32],
             tree,
+            internal_root: [0u8; 32],
         };
 
         // Test the function
@@ -160,9 +181,21 @@ mod tests {
     #[test]
     fn test_is_wallet_valid() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, address: Address::zero() };
-        let signer2 = Signer { weight: 2, address: Address::zero() };
-        let signer3 = Signer { weight: 3, address: Address::zero() };
+        let signer1 = Signer {
+            weight: 1,
+            address: Address::zero(),
+            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+        };
+        let signer2 = Signer {
+            weight: 2,
+            address: Address::zero(),
+            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+        };
+        let signer3 = Signer {
+            weight: 3,
+            address: Address::zero(),
+            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+        };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -180,8 +213,14 @@ mod tests {
         };
 
         // Construct the wallet config
-        let mut config =
-            WalletConfig { checkpoint: 123, threshold: 3, weight: 20, image_hash: [0u8; 32], tree };
+        let mut config = WalletConfig {
+            checkpoint: 123,
+            threshold: 3,
+            weight: 20,
+            image_hash: [0u8; 32],
+            tree,
+            internal_root: [0u8; 32],
+        };
 
         // The config has valid threshold
         assert!(config.is_wallet_valid());
