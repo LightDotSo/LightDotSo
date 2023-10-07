@@ -24,18 +24,18 @@ use eyre::Result;
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
     pub fn image_hash_of_wallet_config(&self) -> Result<String> {
-        let threshold_bytes = keccak256(encode(&[
-            Token::FixedBytes(self.internal_root.unwrap().to_vec()),
-            Token::Uint(U256::from(self.threshold)),
-        ]));
-
-        // Encode the checkpoint into bytes
-        let checkpoint_bytes = keccak256(encode(&[
-            Token::FixedBytes(threshold_bytes.to_vec()),
+        let image_hash_bytes = keccak256(encode(&[
+            Token::FixedBytes(
+                keccak256(encode(&[
+                    Token::FixedBytes(self.internal_root.unwrap().to_vec()),
+                    Token::Uint(U256::from(self.threshold)),
+                ]))
+                .to_vec(),
+            ),
             Token::Uint(U256::from(self.checkpoint)),
         ]));
 
-        Ok(format!("0x{}", ethers::utils::hex::encode(checkpoint_bytes)))
+        Ok(format!("0x{}", ethers::utils::hex::encode(image_hash_bytes)))
     }
 
     pub fn get_signers(&self) -> Vec<Signer> {
