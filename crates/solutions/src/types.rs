@@ -15,7 +15,7 @@
 
 use ethers::types::Address;
 use serde::{Deserialize, Serialize};
-
+use serde_with::{serde_as, Bytes};
 pub type Signature = Vec<u8>;
 
 /// The struct representation of a wallet signer
@@ -25,7 +25,7 @@ pub type Signature = Vec<u8>;
 pub struct Signer {
     pub weight: u8,
     pub address: Address,
-    pub leaf_type: SignatureLeafType,
+    pub leaf: SignatureLeaf,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -54,25 +54,36 @@ pub struct WalletConfig {
     pub internal_root: Option<[u8; 32]>,
 }
 
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub enum SignatureLeaf {
+    ECDSASignature(ECDSASignatureLeaf),
+    AddressSignature(AddressSignatureLeaf),
+    DynamicSignature(DynamicSignatureLeaf),
+    NodeSignature(NodeLeaf),
+    BranchSignature(BranchLeaf),
+    SubdigestSignature(SubdigestLeaf),
+    NestedSignature(NestedLeaf),
+}
+
 /// The enum representation of a signature leaf type
 /// Derived from: https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L102
 /// License: Apache-2.0
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[repr(u8)]
 pub enum SignatureLeafType {
-    SignatureLeafTypeECDSASignature = 0,
-    SignatureLeafTypeAddress = 1,
-    SignatureLeafTypeDynamicSignature = 2,
-    SignatureLeafTypeNode = 3,
-    SignatureLeafTypeBranch = 4,
-    SignatureLeafTypeSubdigest = 5,
-    SignatureLeafTypeNested = 6,
+    ECDSASignature = 0,
+    Address = 1,
+    DynamicSignature = 2,
+    Node = 3,
+    Branch = 4,
+    Subdigest = 5,
+    Nested = 6,
 }
 
 /// The struct representation of an ECDSA signature leaf type
 /// Derived from: https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/utils/SignatureValidator.sol#L83
 /// License: Apache-2.0
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[repr(u8)]
 pub enum ECDSASignatureType {
     ECDSASignatureTypeEIP712 = 1,
@@ -86,15 +97,23 @@ pub const ECDSA_SIGNATURE_LENGTH: usize = 65;
 
 pub const ERC1271_MAGICVALUE_BYTES32: [u8; 4] = [22, 38, 186, 126];
 
-#[derive(Debug, PartialEq)]
-pub struct SignatureTreeECDSASignatureLeaf {
+#[serde_as]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct ECDSASignatureLeaf {
     pub address: Address,
     pub signature_type: ECDSASignatureType,
+    #[serde_as(as = "Bytes")]
     pub signature: [u8; ECDSA_SIGNATURE_LENGTH],
 }
 
+#[serde_as]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct AddressSignatureLeaf {
+    pub address: Address,
+}
+
 /// The struct representation of a Dynamic signature leaf type
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[repr(u8)]
 pub enum DynamicSignatureType {
     DynamicSignatureTypeEIP712 = 1,
@@ -102,10 +121,26 @@ pub enum DynamicSignatureType {
     DynamicSignatureTypeEIP1271 = 3,
 }
 
-#[derive(Debug, PartialEq)]
-pub struct SignatureTreeDynamicSignatureLeaf {
-    // pub weight: u8,
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct DynamicSignatureLeaf {
     pub address: Address,
     pub signature_type: DynamicSignatureType,
     pub signature: Vec<u8>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct NodeLeaf {}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct BranchLeaf {}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct SubdigestLeaf {}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct NestedLeaf {
+    pub internal_threshold: u16,
+    pub external_weight: u8,
+    pub address: Address,
+    pub internal_root: [u8; 32],
 }

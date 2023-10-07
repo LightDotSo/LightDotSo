@@ -16,7 +16,7 @@
 use ethers::types::{Address, H160, H256};
 use lightdotso_solutions::{
     hash::get_address,
-    types::{SignatureLeafType, Signer, SignerNode, WalletConfig},
+    types::{NodeLeaf, SignatureLeaf, Signer, SignerNode, WalletConfig},
     utils::parse_hex_to_bytes32,
 };
 
@@ -33,7 +33,7 @@ async fn test_integration_hash_first() {
             signer: Some(Signer {
                 address: signer_address,
                 weight: 1,
-                leaf_type: SignatureLeafType::SignatureLeafTypeAddress,
+                leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
             }),
             left: None,
             right: None,

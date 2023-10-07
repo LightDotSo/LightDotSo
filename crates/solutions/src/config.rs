@@ -70,13 +70,22 @@ impl WalletConfig {
 #[cfg(test)]
 mod tests {
     use crate::{
-        types::{SignatureLeafType, Signer, SignerNode, WalletConfig},
+        types::{
+            ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf, Signer, SignerNode,
+            WalletConfig,
+        },
         utils::parse_hex_to_bytes32,
     };
     use ethers::types::Address;
 
     #[test]
     fn test_image_hash_of_wallet_config() {
+        let leaf = ECDSASignatureLeaf {
+            address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+            signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
+            signature: [0u8; 65],
+        };
+
         // From: contracts/src/test/utils/LightWalletUtils.sol
         let wc = WalletConfig {
             checkpoint: 1,
@@ -93,7 +102,7 @@ mod tests {
                 signer: Some(Signer {
                     address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
                     weight: 1,
-                    leaf_type: SignatureLeafType::SignatureLeafTypeAddress,
+                    leaf: SignatureLeaf::ECDSASignature(leaf),
                 }),
                 left: None,
                 right: None,
@@ -116,17 +125,17 @@ mod tests {
         let signer1 = Signer {
             weight: 1,
             address: Address::zero(),
-            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
         };
         let signer2 = Signer {
             weight: 2,
             address: Address::zero(),
-            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
         };
         let signer3 = Signer {
             weight: 3,
             address: Address::zero(),
-            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
         };
 
         // Construct the signer tree
@@ -168,17 +177,17 @@ mod tests {
         let signer1 = Signer {
             weight: 1,
             address: Address::zero(),
-            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
         };
         let signer2 = Signer {
             weight: 2,
             address: Address::zero(),
-            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
         };
         let signer3 = Signer {
             weight: 3,
             address: Address::zero(),
-            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
         };
 
         // Construct the signer tree

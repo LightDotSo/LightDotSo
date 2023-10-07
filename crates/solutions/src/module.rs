@@ -16,7 +16,10 @@
 use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
-    types::{Signature, SignatureLeafType, Signer, SignerNode, WalletConfig},
+    types::{
+        AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, Signature, SignatureLeaf,
+        Signer, SignerNode, WalletConfig,
+    },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
         left_pad_u8_to_bytes32, read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8,
@@ -174,7 +177,11 @@ impl SigModule {
         let signer = Signer {
             weight: addr_weight,
             address: signature_type.address,
-            leaf_type: SignatureLeafType::SignatureLeafTypeECDSASignature,
+            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+                address: signature_type.address,
+                signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
+                signature: signature_type.signature,
+            }),
         };
 
         if self.tree.signer.is_none() {
@@ -195,7 +202,7 @@ impl SigModule {
         let signer = Signer {
             weight: addr_weight,
             address: addr,
-            leaf_type: SignatureLeafType::SignatureLeafTypeAddress,
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf { address: addr }),
         };
 
         if self.tree.signer.is_none() {
@@ -347,29 +354,32 @@ impl SigModule {
     // Iterate over the tree and calculate the image hash
     fn calculate_image_hash_from_node(&self, node: &SignerNode) -> [u8; 32] {
         match &node.signer {
-            Some(signer) => match signer.leaf_type {
-                SignatureLeafType::SignatureLeafTypeAddress |
-                SignatureLeafType::SignatureLeafTypeECDSASignature |
-                SignatureLeafType::SignatureLeafTypeDynamicSignature => {
-                    self.leaf_for_address_and_weight(signer.address, signer.weight)
+            Some(signer) => match &signer.leaf {
+                SignatureLeaf::ECDSASignature(leaf) => {
+                    self.leaf_for_address_and_weight(leaf.address, signer.weight)
                 }
-                SignatureLeafType::SignatureLeafTypeNode => {
+                SignatureLeaf::AddressSignature(leaf) => {
+                    self.leaf_for_address_and_weight(leaf.address, signer.weight)
+                }
+                SignatureLeaf::DynamicSignature(leaf) => {
+                    self.leaf_for_address_and_weight(leaf.address, signer.weight)
+                }
+                SignatureLeaf::NodeSignature(_) => {
                     let node = self.tree.clone();
                     hash_keccak_256(
                         self.calculate_image_hash_from_node(&node.left.unwrap()),
                         self.calculate_image_hash_from_node(&node.right.unwrap()),
                     )
                 }
-                SignatureLeafType::SignatureLeafTypeSubdigest => {
+                SignatureLeaf::BranchSignature(_) => {
                     self.leaf_for_hardcoded_subdigest(self.subdigest)
                 }
-                // SignatureLeafType::SignatureLeafTypeNested => {
-                //     self.leaf_for_nested(self.image_hash, self.threshold)
-                // }
-                SignatureLeafType::SignatureLeafTypeBranch => {
+                SignatureLeaf::SubdigestSignature(_) => {
                     self.calculate_image_hash_from_node(&self.tree)
                 }
-                _ => [0; 32],
+                SignatureLeaf::NestedSignature(_) => {
+                    self.leaf_for_hardcoded_subdigest(self.subdigest)
+                }
             },
             None => [0; 32],
         }
