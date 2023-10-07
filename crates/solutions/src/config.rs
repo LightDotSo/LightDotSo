@@ -23,8 +23,8 @@ use eyre::Result;
 
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
-    pub fn image_hash_of_wallet_config(&self) -> Result<String> {
-        let image_hash_bytes = keccak256(encode(&[
+    pub fn image_hash_of_wallet_config(&self) -> Result<[u8; 32]> {
+        Ok(keccak256(encode(&[
             Token::FixedBytes(
                 keccak256(encode(&[
                     Token::FixedBytes(self.internal_root.unwrap().to_vec()),
@@ -33,11 +33,10 @@ impl WalletConfig {
                 .to_vec(),
             ),
             Token::Uint(U256::from(self.checkpoint)),
-        ]));
-
-        Ok(format!("0x{}", ethers::utils::hex::encode(image_hash_bytes)))
+        ])))
     }
 
+    /// Get all signers in the wallet config in an array
     pub fn get_signers(&self) -> Vec<Signer> {
         self.get_signers_recursive(&self.tree)
     }
@@ -110,7 +109,10 @@ mod tests {
             ),
         };
 
-        let expected = "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";
+        let expected = parse_hex_to_bytes32(
+            "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
+        )
+        .unwrap();
         assert_eq!(expected, wc.image_hash_of_wallet_config().unwrap());
     }
 

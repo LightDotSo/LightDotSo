@@ -30,7 +30,7 @@ async fn test_integration_module_first() {
     let sig = from_hex_string(FIRST_SIG).unwrap();
     let user_op_hash = parse_hex_to_bytes32(FIRST_USER_OP_HASH).unwrap();
     let wallet = FIRST_WALLET.parse().unwrap();
-    let image_hash = FIRST_IMAGE_HASH;
+    let image_hash = parse_hex_to_bytes32(FIRST_IMAGE_HASH).unwrap();
 
     let mut config = recover_signature(wallet, 11155111, user_op_hash, sig).await.unwrap();
     // FIXME: This is a hack to make the test pass

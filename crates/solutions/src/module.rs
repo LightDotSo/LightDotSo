@@ -17,8 +17,8 @@ use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{
-        AddressSignatureLeaf, DynamicSignatureLeaf, NodeLeaf, Signature, SignatureLeaf, Signer,
-        SignerNode, SubdigestLeaf, WalletConfig,
+        AddressSignatureLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode,
+        SubdigestLeaf, WalletConfig,
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
@@ -79,23 +79,27 @@ impl SigModule {
         Self::new(Address::zero(), 1, [0; 32], None)
     }
 
+    /// Sets the address of the wallet
     #[allow(dead_code)]
     pub fn set_address(&mut self, address: Address) -> &mut Self {
         self.address = address;
         self
     }
 
+    /// Sets the chain id of the network
     #[allow(dead_code)]
     pub fn set_chain_id(&mut self, chain_id: u64) -> &mut Self {
         self.chain_id = chain_id;
         self
     }
 
+    /// Sets the signature
     pub fn set_signature(&mut self, sig: Signature) -> &mut Self {
         self.sig = sig;
         self
     }
 
+    /// Sets the weight of the signature
     #[allow(dead_code)]
     pub fn set_weight(&mut self, weight: u64) -> &mut Self {
         self.weight = weight;

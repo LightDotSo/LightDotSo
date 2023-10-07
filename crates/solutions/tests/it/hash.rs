@@ -44,7 +44,7 @@ async fn test_integration_hash_first() {
     let image_hash = config.image_hash_of_wallet_config().unwrap();
 
     // Parse the image hash to bytes.
-    let image_hash_bytes: H256 = image_hash.parse().unwrap();
+    let image_hash_bytes: H256 = image_hash.into();
 
     // Parse the salt to bytes.
     let salt_bytes: H256 =
