@@ -138,9 +138,9 @@ pub(crate) fn left_pad_to_bytes32(input: &'_ [u8]) -> [u8; 32] {
     output
 }
 
-// pub(crate) fn left_pad_u8_to_bytes32(input: u8) -> [u8; 32] {
-//     left_pad_to_bytes32(&input.to_be_bytes())
-// }
+pub(crate) fn left_pad_u8_to_bytes32(input: u8) -> [u8; 32] {
+    left_pad_to_bytes32(&input.to_be_bytes())
+}
 
 pub(crate) fn left_pad_u16_to_bytes32(input: u16) -> [u8; 32] {
     left_pad_to_bytes32(&input.to_be_bytes())
