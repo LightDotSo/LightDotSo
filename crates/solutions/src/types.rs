@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::Address;
+use ethers::types::{Address, H256};
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, Bytes};
 pub type Signature = Vec<u8>;
@@ -46,11 +46,11 @@ pub struct WalletConfig {
     // Uint256 weight of the retured signature
     pub weight: usize,
     // Image hash of the wallet config that is used to verify the wallet
-    pub image_hash: [u8; 32],
+    pub image_hash: H256,
     // Signers of the wallet
     pub tree: SignerNode,
     // Internal field used to store the image hash of the wallet config
-    pub internal_root: Option<[u8; 32]>,
+    pub internal_root: Option<H256>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]

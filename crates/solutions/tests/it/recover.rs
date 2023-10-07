@@ -36,7 +36,8 @@ async fn test_integration_module_first() {
     // FIXME: This is a hack to make the test pass
     config.internal_root = Some(
         parse_hex_to_bytes32("0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d")
-            .unwrap(),
+            .unwrap()
+            .into(),
     );
     println!("{:?}", config);
 

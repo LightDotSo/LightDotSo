@@ -49,8 +49,8 @@ mod tests {
             checkpoint: 0,
             threshold: 0,
             weight: 0,
-            internal_root: Some([0; 32]),
-            image_hash: [0; 32],
+            internal_root: Some([0; 32].into()),
+            image_hash: [0; 32].into(),
             tree: SignerNode { signer: None, left: None, right: None },
         };
 

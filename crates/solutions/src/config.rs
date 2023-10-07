@@ -27,7 +27,7 @@ impl WalletConfig {
         Ok(keccak256(encode(&[
             Token::FixedBytes(
                 keccak256(encode(&[
-                    Token::FixedBytes(self.internal_root.unwrap().to_vec()),
+                    Token::FixedBytes(self.internal_root.unwrap().0.to_vec()),
                     Token::Uint(U256::from(self.threshold)),
                 ]))
                 .to_vec(),
@@ -89,13 +89,7 @@ mod tests {
             checkpoint: 1,
             threshold: 1,
             weight: 1,
-            image_hash: [0; 31]
-                .iter()
-                .chain(&[1])
-                .copied()
-                .collect::<Vec<u8>>()
-                .try_into()
-                .unwrap(),
+            image_hash: [0; 32].into(),
             tree: SignerNode {
                 signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(leaf) }),
                 left: None,
@@ -105,7 +99,8 @@ mod tests {
                 parse_hex_to_bytes32(
                     "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
                 )
-                .unwrap(),
+                .unwrap()
+                .into(),
             ),
         };
 
@@ -143,7 +138,7 @@ mod tests {
             checkpoint: 123,
             threshold: 10,
             weight: 20,
-            image_hash: [0u8; 32],
+            image_hash: [0; 32].into(),
             tree,
             internal_root: None,
         };
@@ -183,7 +178,7 @@ mod tests {
             checkpoint: 123,
             threshold: 3,
             weight: 20,
-            image_hash: [0u8; 32],
+            image_hash: [0; 32].into(),
             tree,
             internal_root: None,
         };

@@ -467,12 +467,12 @@ impl SigModule {
         threshold: u16,
         checkpoint: u32,
     ) -> Result<WalletConfig> {
-        let internal_root = self.calculate_image_hash_from_node(&self.tree);
+        let internal_root = self.calculate_image_hash_from_node(&self.tree).into();
 
         Ok(WalletConfig {
             threshold,
             checkpoint,
-            image_hash: [0; 32],
+            image_hash: [0; 32].into(),
             weight: 0,
             tree: self.tree.clone(),
             internal_root: Some(internal_root),
@@ -498,9 +498,10 @@ impl SigModule {
                 .to_vec(),
             ),
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
-        ]));
+        ]))
+        .into();
         let tree = self.tree.clone();
-        let internal_root = Some(self.calculate_image_hash_from_node(&self.tree));
+        let internal_root = Some(self.calculate_image_hash_from_node(&self.tree).into());
 
         Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
     }
@@ -869,7 +870,8 @@ mod tests {
         let expected_root = parse_hex_to_bytes32(
             "0x50ec12b237887c47767742e6425b98694ac9f793a31729766ea4748b382ea648",
         )
-        .unwrap();
+        .unwrap()
+        .into();
 
         let config = base_sig_module.recover().await.unwrap();
         assert_eq!(config.threshold, 17);

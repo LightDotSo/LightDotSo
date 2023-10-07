@@ -26,7 +26,7 @@ async fn test_integration_hash_first() {
         checkpoint: 1,
         threshold: 1,
         weight: 1,
-        image_hash: [0; 32],
+        image_hash: [0; 32].into(),
         tree: SignerNode {
             signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
             left: None,
@@ -36,7 +36,8 @@ async fn test_integration_hash_first() {
             parse_hex_to_bytes32(
                 "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
             )
-            .unwrap(),
+            .unwrap()
+            .into(),
         ),
     };
 
