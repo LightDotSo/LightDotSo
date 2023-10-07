@@ -40,22 +40,27 @@ pub struct SigModule {
     /// The chain id of the network
     pub chain_id: u64,
     /// The index position of the signature
-    pub rindex: usize,
+    rindex: usize,
     /// The subdigest used as the message of the signature
     pub subdigest: [u8; 32],
     /// The root of the merkle tree (will get updated as the signature is decoded)
-    pub root: [u8; 32],
+    root: [u8; 32],
     /// The signature in bytes
     pub sig: Signature,
-    /// The weight of the signature
-    pub weight: u64,
+    /// The cumulative weight of the signature
+    weight: u64,
     /// The internal tree of the module
     pub tree: SignerNode,
 }
 
 impl SigModule {
     /// Initializes a new SigModule
-    pub fn new(address: Address, chain_id: u64, subdigest: [u8; 32]) -> Self {
+    pub fn new(
+        address: Address,
+        chain_id: u64,
+        subdigest: [u8; 32],
+        tree: Option<SignerNode>,
+    ) -> Self {
         Self {
             address,
             subdigest,
@@ -64,14 +69,14 @@ impl SigModule {
             sig: vec![],
             weight: 0,
             chain_id,
-            tree: SignerNode { signer: None, left: None, right: None },
+            tree: tree.unwrap_or_else(|| SignerNode { signer: None, left: None, right: None }),
         }
     }
 
     /// Initializes a new empty SigModule
     #[allow(dead_code)]
     pub fn empty() -> Self {
-        Self::new(Address::zero(), 1, [0; 32])
+        Self::new(Address::zero(), 1, [0; 32], None)
     }
 
     #[allow(dead_code)]
@@ -251,7 +256,7 @@ impl SigModule {
         let (size, rindex) = read_uint24(&self.sig, self.rindex)?;
         let nrindex = rindex + size as usize;
 
-        let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest);
+        let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest, None);
         base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
         let (nweight, node) = base_sig_module.recover_branch().await?;
 
@@ -285,7 +290,7 @@ impl SigModule {
         let (size, rindex) = read_uint24(&self.sig, rindex)?;
         let nrindex = rindex + size as usize;
 
-        let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest);
+        let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest, None);
         base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
         let (internal_weight, internal_root) = base_sig_module.recover_branch().await?;
         self.rindex = nrindex;

@@ -16,20 +16,16 @@
 use ethers::types::Address;
 use lightdotso_solutions::{
     module::SigModule,
-    types::{AddressSignatureLeaf, NodeLeaf, SignatureLeaf, Signer, SignerNode, WalletConfig},
+    types::{AddressSignatureLeaf, NodeLeaf, SignatureLeaf, Signer, SignerNode},
 };
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_node_simple() {
-    let module = SigModule {
-        address: Address::zero(),
-        chain_id: 1,
-        rindex: 0,
-        subdigest: [0; 32],
-        root: [0; 32],
-        sig: vec![],
-        weight: 1,
-        tree: SignerNode {
+    let module = SigModule::new(
+        Address::zero(),
+        1,
+        [0; 32],
+        Some(SignerNode {
             signer: Some(Signer {
                 address: Address::zero(),
                 weight: 1,
@@ -57,8 +53,8 @@ async fn test_integration_node_simple() {
                     }),
                 }),
             })),
-        },
-    };
+        }),
+    );
 
     let config = module.get_initial_image_hash_config(5, 1).unwrap();
     assert_eq!(

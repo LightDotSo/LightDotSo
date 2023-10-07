@@ -48,14 +48,14 @@ pub async fn recover_signature(
 
     // Legacy signature
     if signature_type == 0x00 {
-        let mut base_sig_module = SigModule::new(address, chain_id, digest);
+        let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
         base_sig_module.set_signature(sig);
         return base_sig_module.recover().await;
     }
 
     // Dynamic signature
     if signature_type == 0x01 {
-        let mut base_sig_module = SigModule::new(address, chain_id, digest);
+        let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
         // Set the signature after the first byte
         base_sig_module.set_signature(sig[1..].to_vec());
         return base_sig_module.recover().await;
@@ -68,7 +68,7 @@ pub async fn recover_signature(
 
     // ChainId signature
     if signature_type == 0x03 {
-        let mut base_sig_module = SigModule::new(address, chain_id, digest);
+        let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
         return base_sig_module.recover().await;
     }
 
