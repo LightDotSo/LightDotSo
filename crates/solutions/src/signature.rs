@@ -16,8 +16,8 @@
 use std::str::FromStr;
 
 use crate::types::{
-    DynamicSignatureType, ECDSASignatureType, SignatureTreeDynamicSignatureLeaf,
-    SignatureTreeECDSASignatureLeaf, ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
+    DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType,
+    ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
 };
 use ethers::{
     types::{Address, RecoveryMessage, Signature, H256},
@@ -30,7 +30,7 @@ pub(crate) fn recover_ecdsa_signature(
     data: &[u8],
     subdigest: &[u8; 32],
     starting_index: usize,
-) -> Result<SignatureTreeECDSASignatureLeaf> {
+) -> Result<ECDSASignatureLeaf> {
     // Add 1 for the signature type
     let new_pointer = starting_index + ECDSA_SIGNATURE_LENGTH + 1;
 
@@ -67,7 +67,7 @@ pub(crate) fn recover_ecdsa_signature(
         }
     };
 
-    Ok(SignatureTreeECDSASignatureLeaf { address, signature_type, signature: signature_slice })
+    Ok(ECDSASignatureLeaf { address, signature_type, signature: signature_slice })
 }
 
 pub(crate) async fn recover_dynamic_signature(
@@ -77,7 +77,7 @@ pub(crate) async fn recover_dynamic_signature(
     address: Address,
     starting_index: usize,
     end_index: usize,
-) -> Result<SignatureTreeDynamicSignatureLeaf> {
+) -> Result<DynamicSignatureLeaf> {
     // Check that the data is long enough to contain the signature
     if data.len() < end_index {
         return Err(eyre!("index is out of bounds of the input data"));
@@ -121,7 +121,7 @@ pub(crate) async fn recover_dynamic_signature(
         return Err(eyre!("Recovered address does not match the address"));
     }
 
-    Ok(SignatureTreeDynamicSignatureLeaf { address, signature_type, signature })
+    Ok(DynamicSignatureLeaf { address, signature_type, signature })
 }
 
 #[cfg(test)]

@@ -15,7 +15,7 @@
 
 use crate::types::{Signer, SignerNode, WalletConfig};
 use ethers::{
-    abi::{encode, encode_packed, Bytes, Token},
+    abi::{encode, Token},
     types::U256,
     utils::keccak256,
 };
@@ -24,36 +24,18 @@ use eyre::Result;
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
     pub fn image_hash_of_wallet_config(&self) -> Result<String> {
-        // Get the signer address
-        // Get the signer address and weight
-        let signer = self.tree.signer.as_ref().unwrap();
-        let signer_address = signer.address;
-        let signer_weight = signer.weight;
-        let signer_bytes =
-            encode_packed(&[Token::Uint(signer_weight.into()), Token::Address(signer_address)])
-                .unwrap();
-
-        // Convert the signer bytes into [u8]
-        let bytes: Bytes = signer_bytes;
-
-        // left pad with zeros to 32 bytes
-        // From: https://github.com/gakonst/ethers-rs/blob/fa3017715a298728d9fb341933818a5d0d84c2dc/ethers-core/src/utils/mod.rs#L506
-        // License: Apache-2.0
-        let mut padded = [0u8; 32];
-        padded[32 - bytes.len()..].copy_from_slice(&bytes);
-
-        let threshold_bytes = keccak256(encode(&[
-            Token::FixedBytes(padded.to_vec()),
-            Token::Uint(U256::from(self.threshold)),
-        ]));
-
-        // Encode the checkpoint into bytes
-        let checkpoint_bytes = keccak256(encode(&[
-            Token::FixedBytes(threshold_bytes.to_vec()),
+        let image_hash_bytes = keccak256(encode(&[
+            Token::FixedBytes(
+                keccak256(encode(&[
+                    Token::FixedBytes(self.internal_root.unwrap().to_vec()),
+                    Token::Uint(U256::from(self.threshold)),
+                ]))
+                .to_vec(),
+            ),
             Token::Uint(U256::from(self.checkpoint)),
         ]));
 
-        Ok(format!("0x{}", ethers::utils::hex::encode(checkpoint_bytes)))
+        Ok(format!("0x{}", ethers::utils::hex::encode(image_hash_bytes)))
     }
 
     pub fn get_signers(&self) -> Vec<Signer> {
@@ -87,11 +69,23 @@ impl WalletConfig {
 
 #[cfg(test)]
 mod tests {
-    use crate::types::{Signer, SignerNode, WalletConfig};
+    use crate::{
+        types::{
+            ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf, Signer, SignerNode,
+            WalletConfig,
+        },
+        utils::parse_hex_to_bytes32,
+    };
     use ethers::types::Address;
 
     #[test]
     fn test_image_hash_of_wallet_config() {
+        let leaf = ECDSASignatureLeaf {
+            address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+            signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
+            signature: [0u8; 65],
+        };
+
         // From: contracts/src/test/utils/LightWalletUtils.sol
         let wc = WalletConfig {
             checkpoint: 1,
@@ -108,10 +102,17 @@ mod tests {
                 signer: Some(Signer {
                     address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
                     weight: 1,
+                    leaf: SignatureLeaf::ECDSASignature(leaf),
                 }),
                 left: None,
                 right: None,
             },
+            internal_root: Some(
+                parse_hex_to_bytes32(
+                    "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
+                )
+                .unwrap(),
+            ),
         };
 
         let expected = "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";
@@ -121,9 +122,21 @@ mod tests {
     #[test]
     fn test_get_signers() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, address: Address::zero() };
-        let signer2 = Signer { weight: 2, address: Address::zero() };
-        let signer3 = Signer { weight: 3, address: Address::zero() };
+        let signer1 = Signer {
+            weight: 1,
+            address: Address::zero(),
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+        };
+        let signer2 = Signer {
+            weight: 2,
+            address: Address::zero(),
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+        };
+        let signer3 = Signer {
+            weight: 3,
+            address: Address::zero(),
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+        };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -147,6 +160,7 @@ mod tests {
             weight: 20,
             image_hash: [0u8; 32],
             tree,
+            internal_root: None,
         };
 
         // Test the function
@@ -160,9 +174,21 @@ mod tests {
     #[test]
     fn test_is_wallet_valid() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, address: Address::zero() };
-        let signer2 = Signer { weight: 2, address: Address::zero() };
-        let signer3 = Signer { weight: 3, address: Address::zero() };
+        let signer1 = Signer {
+            weight: 1,
+            address: Address::zero(),
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+        };
+        let signer2 = Signer {
+            weight: 2,
+            address: Address::zero(),
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+        };
+        let signer3 = Signer {
+            weight: 3,
+            address: Address::zero(),
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+        };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -180,8 +206,14 @@ mod tests {
         };
 
         // Construct the wallet config
-        let mut config =
-            WalletConfig { checkpoint: 123, threshold: 3, weight: 20, image_hash: [0u8; 32], tree };
+        let mut config = WalletConfig {
+            checkpoint: 123,
+            threshold: 3,
+            weight: 20,
+            image_hash: [0u8; 32],
+            tree,
+            internal_root: None,
+        };
 
         // The config has valid threshold
         assert!(config.is_wallet_valid());
