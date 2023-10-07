@@ -104,7 +104,10 @@ mod tests {
                 .try_into()
                 .unwrap(),
             tree: SignerNode {
-                signer: Some(Signer { address: Address::zero(), weight: 0 }),
+                signer: Some(Signer {
+                    address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+                    weight: 0,
+                }),
                 left: None,
                 right: None,
             },
