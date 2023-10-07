@@ -78,6 +78,11 @@ impl WalletConfig {
 
         signers
     }
+
+    pub fn is_wallet_valid(&self) -> bool {
+        let total_weight: u8 = self.get_signers().iter().map(|signer| signer.weight).sum();
+        total_weight >= self.threshold as u8
+    }
 }
 
 #[cfg(test)]
@@ -150,5 +155,39 @@ mod tests {
         assert!(signers.contains(&signer1));
         assert!(signers.contains(&signer2));
         assert!(signers.contains(&signer3));
+    }
+
+    #[test]
+    fn test_is_wallet_valid() {
+        // Define some dummy signers
+        let signer1 = Signer { weight: 1, address: Address::zero() };
+        let signer2 = Signer { weight: 2, address: Address::zero() };
+        let signer3 = Signer { weight: 3, address: Address::zero() };
+
+        // Construct the signer tree
+        let tree = SignerNode {
+            signer: Some(signer1.clone()),
+            left: Some(Box::new(SignerNode {
+                signer: Some(signer2.clone()),
+                left: None,
+                right: None,
+            })),
+            right: Some(Box::new(SignerNode {
+                signer: Some(signer3.clone()),
+                left: None,
+                right: None,
+            })),
+        };
+
+        // Construct the wallet config
+        let mut config =
+            WalletConfig { checkpoint: 123, threshold: 3, weight: 20, image_hash: [0u8; 32], tree };
+
+        // The config has valid threshold
+        assert!(config.is_wallet_valid());
+
+        // The config has invalid threshold
+        config.threshold = 100;
+        assert!(!config.is_wallet_valid());
     }
 }
