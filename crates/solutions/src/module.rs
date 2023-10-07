@@ -379,15 +379,17 @@ impl SigModule {
                 SignatureLeaf::DynamicSignature(leaf) => {
                     self.leaf_for_address_and_weight(leaf.address, signer.weight)
                 }
-                SignatureLeaf::NodeSignature(_) | SignatureLeaf::BranchSignature(_) => {
-                    self.get_node_hash(node)
-                }
+                SignatureLeaf::NodeSignature(_) => self.get_node_hash(node),
                 SignatureLeaf::SubdigestSignature(_) => {
                     self.leaf_for_hardcoded_subdigest(self.subdigest)
                 }
                 SignatureLeaf::NestedSignature(leaf) => {
                     let node_hash = self.get_node_hash(node);
                     self.leaf_for_nested(node_hash, leaf.internal_threshold, leaf.external_weight)
+                }
+                SignatureLeaf::BranchSignature(_) => {
+                    // Panic here because we should never get a branch signature in the tree
+                    panic!("Branch signature found in tree")
                 }
             },
             None => [0; 32],
