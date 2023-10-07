@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::{Address, H160, H256};
+use ethers::types::{Address, H256};
 use lightdotso_solutions::{
     hash::get_address,
     types::{NodeLeaf, SignatureLeaf, Signer, SignerNode, WalletConfig},
@@ -22,19 +22,13 @@ use lightdotso_solutions::{
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_hash_first() {
-    let signer_address: H160 = "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap();
-
     let config = WalletConfig {
         checkpoint: 1,
         threshold: 1,
         weight: 1,
         image_hash: [0; 32],
         tree: SignerNode {
-            signer: Some(Signer {
-                address: signer_address,
-                weight: 1,
-                leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-            }),
+            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
             left: None,
             right: None,
         },

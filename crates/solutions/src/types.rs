@@ -24,7 +24,6 @@ pub type Signature = Vec<u8>;
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct Signer {
     pub weight: u8,
-    pub address: Address,
     pub leaf: SignatureLeaf,
 }
 

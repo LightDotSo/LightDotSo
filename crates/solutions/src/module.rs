@@ -17,8 +17,7 @@ use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{
-        AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, Signature, SignatureLeaf,
-        Signer, SignerNode, WalletConfig,
+        AddressSignatureLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode, WalletConfig,
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
@@ -181,20 +180,6 @@ impl SigModule {
         let node = self.leaf_for_address_and_weight(signature_type.address, addr_weight);
         self.return_valid_root(node);
 
-        let signer = Signer {
-            weight: addr_weight,
-            address: signature_type.address,
-            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
-                address: signature_type.address,
-                signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
-                signature: signature_type.signature,
-            }),
-        };
-
-        if self.tree.signer.is_none() {
-            self.tree.signer = Some(signer);
-        }
-
         Ok(())
     }
 
@@ -208,7 +193,6 @@ impl SigModule {
 
         let signer = Signer {
             weight: addr_weight,
-            address: addr,
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf { address: addr }),
         };
 
@@ -244,6 +228,12 @@ impl SigModule {
         let (node, rindex) = read_bytes32(&self.sig, self.rindex)?;
         self.return_valid_root(node);
         self.rindex = rindex;
+
+        let node = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+
+        if self.tree.signer.is_none() {
+            self.tree.signer = Some(node);
+        }
 
         Ok(())
     }

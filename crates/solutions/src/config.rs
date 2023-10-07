@@ -76,7 +76,6 @@ mod tests {
         },
         utils::parse_hex_to_bytes32,
     };
-    use ethers::types::Address;
 
     #[test]
     fn test_image_hash_of_wallet_config() {
@@ -99,11 +98,7 @@ mod tests {
                 .try_into()
                 .unwrap(),
             tree: SignerNode {
-                signer: Some(Signer {
-                    address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
-                    weight: 1,
-                    leaf: SignatureLeaf::ECDSASignature(leaf),
-                }),
+                signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(leaf) }),
                 left: None,
                 right: None,
             },
@@ -122,21 +117,9 @@ mod tests {
     #[test]
     fn test_get_signers() {
         // Define some dummy signers
-        let signer1 = Signer {
-            weight: 1,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer2 = Signer {
-            weight: 2,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer3 = Signer {
-            weight: 3,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
+        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -174,21 +157,9 @@ mod tests {
     #[test]
     fn test_is_wallet_valid() {
         // Define some dummy signers
-        let signer1 = Signer {
-            weight: 1,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer2 = Signer {
-            weight: 2,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer3 = Signer {
-            weight: 3,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
+        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
 
         // Construct the signer tree
         let tree = SignerNode {
