@@ -27,8 +27,14 @@ use lightdotso_contracts::constants::{
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
     pub fn image_hash_of_wallet_config(&self) -> Result<String> {
+        // Get the signer address
+        // Get the signer address and weight
+        let signer = self.tree.signer.as_ref().unwrap();
+        let signer_address = signer.address;
+        let signer_weight = signer.weight;
         let signer_bytes =
-            encode_packed(&[Token::Uint(0.into()), Token::Address(Address::zero())]).unwrap();
+            encode_packed(&[Token::Uint(signer_weight.into()), Token::Address(signer_address)])
+                .unwrap();
 
         // Convert the signer bytes into [u8]
         let bytes: Bytes = signer_bytes.into();
@@ -106,7 +112,7 @@ mod tests {
             tree: SignerNode {
                 signer: Some(Signer {
                     address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
-                    weight: 0,
+                    weight: 1,
                 }),
                 left: None,
                 right: None,
