@@ -22,8 +22,8 @@ use crate::{
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
-        left_pad_u8_to_bytes32, read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8,
-        read_uint8_address,
+        left_pad_u8_to_bytes32, print_hex_string, read_bytes32, read_uint16, read_uint24,
+        read_uint32, read_uint8, read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
@@ -34,23 +34,23 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
-pub(crate) struct SigModule {
+pub struct SigModule {
     /// The address of the wallet
-    address: Address,
+    pub address: Address,
     /// The chain id of the network
-    chain_id: u64,
+    pub chain_id: u64,
     /// The index position of the signature
-    rindex: usize,
+    pub rindex: usize,
     /// The subdigest used as the message of the signature
-    subdigest: [u8; 32],
+    pub subdigest: [u8; 32],
     /// The root of the merkle tree (will get updated as the signature is decoded)
-    root: [u8; 32],
+    pub root: [u8; 32],
     /// The signature in bytes
-    sig: Signature,
+    pub sig: Signature,
     /// The weight of the signature
-    weight: u64,
+    pub weight: u64,
     /// The internal tree of the module
-    tree: SignerNode,
+    pub tree: SignerNode,
 }
 
 impl SigModule {
@@ -128,8 +128,11 @@ impl SigModule {
 
     /// Generates a leaf node for the merkle tree
     fn leaf_for_address_and_weight(&self, addr: Address, weight: u8) -> [u8; 32] {
+        println!("leaf_for_address_and_weight: addr: {:?}, weight: {:?}", addr, weight);
         let weight_shifted = U256::from(weight) << 160;
         let addr_u256 = U256::from_big_endian(addr.as_bytes());
+        let a: [u8; 32] = (weight_shifted | addr_u256).into();
+        print_hex_string(&a);
         (weight_shifted | addr_u256).into()
     }
 
@@ -352,7 +355,7 @@ impl SigModule {
     }
 
     // Iterate over the tree and calculate the image hash
-    fn calculate_image_hash_from_node(&self, node: &SignerNode) -> [u8; 32] {
+    pub fn calculate_image_hash_from_node(&self, node: &SignerNode) -> [u8; 32] {
         match &node.signer {
             Some(signer) => match &signer.leaf {
                 SignatureLeaf::ECDSASignature(leaf) => {
@@ -385,8 +388,25 @@ impl SigModule {
         }
     }
 
+    pub fn get_initial_image_hash_config(
+        &self,
+        threshold: u16,
+        checkpoint: u32,
+    ) -> Result<WalletConfig> {
+        let internal_root = self.calculate_image_hash_from_node(&self.tree);
+
+        Ok(WalletConfig {
+            threshold,
+            checkpoint,
+            image_hash: [0; 32],
+            weight: 0,
+            tree: self.tree.clone(),
+            internal_root: Some(internal_root),
+        })
+    }
+
     /// Recovers the wallet config from the signature
-    pub(crate) async fn recover(&mut self) -> Result<WalletConfig> {
+    pub async fn recover(&mut self) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
         let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
 
