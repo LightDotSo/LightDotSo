@@ -27,14 +27,8 @@ use lightdotso_contracts::constants::{
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
     pub fn image_hash_of_wallet_config(&self) -> Result<String> {
-        let signer_bytes = self
-            .signers
-            .first()
-            .map(|signer| {
-                encode_packed(&[Token::Uint(signer.weight.into()), Token::Address(signer.address)])
-                    .unwrap()
-            })
-            .unwrap();
+        let signer_bytes =
+            encode_packed(&[Token::Uint(0.into()), Token::Address(Address::zero())]).unwrap();
 
         // Convert the signer bytes into [u8]
         let bytes: Bytes = signer_bytes.into();
@@ -91,7 +85,7 @@ pub fn get_address(hash: H256, salt: H256) -> Address {
 
 #[cfg(test)]
 mod tests {
-    use crate::types::Signer;
+    use crate::types::{Signer, SignerNode};
 
     use super::*;
 
@@ -109,10 +103,11 @@ mod tests {
                 .collect::<Vec<u8>>()
                 .try_into()
                 .unwrap(),
-            signers: vec![Signer {
-                weight: 1,
-                address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
-            }],
+            tree: SignerNode {
+                signer: Some(Signer { address: Address::zero(), weight: 0 }),
+                left: None,
+                right: None,
+            },
         };
 
         let expected = "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";

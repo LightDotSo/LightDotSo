@@ -16,19 +16,23 @@
 use ethers::types::{Address, H160, H256};
 use lightdotso_solutions::{
     hash::get_address,
-    types::{Signer, WalletConfig},
+    types::{Signer, SignerNode, WalletConfig},
 };
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_hash_first() {
-    let address: H160 = "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap();
+    let signer_address: H160 = "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap();
 
     let config = WalletConfig {
         checkpoint: 1,
         threshold: 1,
         weight: 1,
         image_hash: [0; 32],
-        signers: vec![Signer { weight: 1, address }],
+        tree: SignerNode {
+            signer: Some(Signer { address: signer_address, weight: 1 }),
+            left: None,
+            right: None,
+        },
     };
 
     // Simulate the image hash of the wallet config.

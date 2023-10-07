@@ -16,7 +16,7 @@
 use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
-    types::{Signature, WalletConfig},
+    types::{Signature, Signer, SignerNode, WalletConfig},
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
         read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
@@ -321,7 +321,17 @@ impl SigModule {
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
         ]));
 
-        Ok(WalletConfig { threshold, checkpoint, image_hash, weight, signers: vec![] })
+        Ok(WalletConfig {
+            threshold,
+            checkpoint,
+            image_hash,
+            weight,
+            tree: SignerNode {
+                signer: Some(Signer { weight: 0, address: Address::zero() }),
+                left: None,
+                right: None,
+            },
+        })
     }
 }
 
