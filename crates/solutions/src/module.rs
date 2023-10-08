@@ -379,7 +379,6 @@ impl SigModule {
         while self.rindex < s {
             // Get the first byte of the signature
             let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
-            println!("Flag: {}", flag);
             self.rindex = rindex;
 
             match flag {

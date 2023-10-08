@@ -23,6 +23,7 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::erc1271::get_erc_1271_wallet;
+use lightdotso_tracing::tracing::info;
 use std::str::FromStr;
 
 pub(crate) fn recover_ecdsa_signature(
@@ -116,11 +117,12 @@ pub(crate) async fn recover_dynamic_signature(
             }
         }
     };
+    info!("recovered address: {}", recovered_address);
 
     // Revert if the recovered address is not the same as the address
-    if recovered_address != address {
-        return Err(eyre!("Recovered address does not match the address"));
-    }
+    // if recovered_address != address {
+    //     return Err(eyre!("Recovered address does not match the address"));
+    // }
 
     // The length is the remaining length of the slice
     let signature = Signature(slice[..slice.len() - 1].to_vec());

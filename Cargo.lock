@@ -6304,6 +6304,7 @@ dependencies = [
  "ethers 2.0.8",
  "eyre",
  "lightdotso-contracts",
+ "lightdotso-tracing",
  "rand 0.8.5",
  "serde",
  "serde_bytes",
