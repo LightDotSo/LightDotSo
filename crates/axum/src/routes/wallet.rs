@@ -215,7 +215,7 @@ async fn v1_post_handler(
         checkpoint: 1,
         threshold: 1,
         weight: 1,
-        image_hash: [0; 32],
+        image_hash: [0; 32].into(),
         tree: SignerNode { signer: None, left: None, right: None },
         internal_root: None,
     };

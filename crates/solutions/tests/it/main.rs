@@ -20,3 +20,4 @@
 mod hash;
 mod node;
 mod recover;
+mod signatures;
