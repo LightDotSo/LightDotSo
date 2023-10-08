@@ -13,18 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::str::FromStr;
-
 use crate::types::{
-    DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType,
+    DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType, Signature,
     ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
 };
 use ethers::{
-    types::{Address, RecoveryMessage, Signature, H256},
+    types::{Address, RecoveryMessage, Signature as EthersSignature, H256},
     utils::hash_message,
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::erc1271::get_erc_1271_wallet;
+use std::str::FromStr;
 
 pub(crate) fn recover_ecdsa_signature(
     data: &[u8],
@@ -52,8 +51,8 @@ pub(crate) fn recover_ecdsa_signature(
     let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
     signature_slice.copy_from_slice(&slice[..ECDSA_SIGNATURE_LENGTH]);
 
-    let signature: Signature =
-        Signature::from_str(&ethers::utils::hex::encode(signature_slice)).unwrap();
+    let signature: EthersSignature =
+        EthersSignature::from_str(&ethers::utils::hex::encode(signature_slice)).unwrap();
 
     // Recover the address from the signature
     let address = match signature_type {
@@ -67,7 +66,7 @@ pub(crate) fn recover_ecdsa_signature(
         }
     };
 
-    Ok(ECDSASignatureLeaf { address, signature_type, signature: signature_slice })
+    Ok(ECDSASignatureLeaf { address, signature_type, signature: signature_slice.into() })
 }
 
 pub(crate) async fn recover_dynamic_signature(
@@ -94,7 +93,7 @@ pub(crate) async fn recover_dynamic_signature(
     };
 
     // The length is the remaining length of the slice
-    let signature = slice[..slice.len() - 1].to_vec();
+    let signature = Signature(slice[..slice.len() - 1].to_vec());
 
     let recovered_address = match signature_type {
         DynamicSignatureType::DynamicSignatureTypeEthSign |
@@ -106,7 +105,10 @@ pub(crate) async fn recover_dynamic_signature(
             // Call the contract on-chain to verify the signature
             let wallet = get_erc_1271_wallet(chain_id, address).await?;
             let res = wallet
-                .is_valid_signature(subdigest.to_vec().into(), signature.clone().into())
+                .is_valid_signature(
+                    subdigest.to_vec().into(),
+                    signature.clone().as_slice().to_vec().into(),
+                )
                 .await?;
             if res == ERC1271_MAGICVALUE_BYTES32 {
                 address

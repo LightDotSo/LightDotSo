@@ -17,8 +17,8 @@ use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{
-        AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, Signature, SignatureLeaf,
-        Signer, SignerNode, WalletConfig,
+        AddressSignatureLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode,
+        SubdigestLeaf, WalletConfig,
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
@@ -66,7 +66,7 @@ impl SigModule {
             subdigest,
             rindex: 0,
             root: [0; 32],
-            sig: vec![],
+            sig: vec![].into(),
             weight: 0,
             chain_id,
             tree: tree.unwrap_or_else(|| SignerNode { signer: None, left: None, right: None }),
@@ -79,23 +79,27 @@ impl SigModule {
         Self::new(Address::zero(), 1, [0; 32], None)
     }
 
+    /// Sets the address of the wallet
     #[allow(dead_code)]
     pub fn set_address(&mut self, address: Address) -> &mut Self {
         self.address = address;
         self
     }
 
+    /// Sets the chain id of the network
     #[allow(dead_code)]
     pub fn set_chain_id(&mut self, chain_id: u64) -> &mut Self {
         self.chain_id = chain_id;
         self
     }
 
+    /// Sets the signature
     pub fn set_signature(&mut self, sig: Signature) -> &mut Self {
         self.sig = sig;
         self
     }
 
+    /// Sets the weight of the signature
     #[allow(dead_code)]
     pub fn set_weight(&mut self, weight: u64) -> &mut Self {
         self.weight = weight;
@@ -170,10 +174,10 @@ impl SigModule {
     }
     /// Decodes an ECDSA signature
     fn decode_ecdsa_signature(&mut self) -> Result<()> {
-        let (addr_weight, rindex) = read_uint8(&self.sig, self.rindex)?;
+        let (addr_weight, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
 
         let nrindex = rindex + 66;
-        let signature_type = recover_ecdsa_signature(&self.sig, &self.subdigest, rindex)?;
+        let signature_type = recover_ecdsa_signature(self.sig.as_slice(), &self.subdigest, rindex)?;
         self.rindex = nrindex;
 
         self.weight += addr_weight as u64;
@@ -183,16 +187,19 @@ impl SigModule {
 
         let signer = Signer {
             weight: addr_weight,
-            address: signature_type.address,
-            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                 address: signature_type.address,
-                signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
-                signature: signature_type.signature,
             }),
         };
+        let signer_node =
+            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
 
         if self.tree.signer.is_none() {
             self.tree.signer = Some(signer);
+        } else if self.tree.left.is_none() {
+            self.tree.left = signer_node.clone();
+        } else if self.tree.right.is_none() {
+            self.tree.right = signer_node.clone();
         }
 
         Ok(())
@@ -200,7 +207,7 @@ impl SigModule {
 
     /// Decodes an address signature
     fn decode_address_signature(&mut self) -> Result<()> {
-        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
+        let (addr_weight, addr, rindex) = read_uint8_address(self.sig.as_slice(), self.rindex)?;
 
         self.rindex = rindex;
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
@@ -208,12 +215,17 @@ impl SigModule {
 
         let signer = Signer {
             weight: addr_weight,
-            address: addr,
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf { address: addr }),
         };
+        let signer_node =
+            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
 
         if self.tree.signer.is_none() {
             self.tree.signer = Some(signer);
+        } else if self.tree.left.is_none() {
+            self.tree.left = signer_node.clone();
+        } else if self.tree.right.is_none() {
+            self.tree.right = signer_node.clone();
         }
 
         Ok(())
@@ -221,14 +233,21 @@ impl SigModule {
 
     /// Decodes a dynamic signature
     async fn decode_dynamic_signature(&mut self) -> Result<()> {
-        let (addr_weight, addr, rindex) = read_uint8_address(&self.sig, self.rindex)?;
+        let (addr_weight, addr, rindex) = read_uint8_address(self.sig.as_slice(), self.rindex)?;
 
         // Read signature size
-        let (size, rindex) = read_uint24(&self.sig, rindex)?;
+        let (size, rindex) = read_uint24(self.sig.as_slice(), rindex)?;
         let nrindex = rindex + size as usize;
 
-        recover_dynamic_signature(self.chain_id, &self.sig, &self.subdigest, addr, rindex, nrindex)
-            .await?;
+        let leaf = recover_dynamic_signature(
+            self.chain_id,
+            self.sig.as_slice(),
+            &self.subdigest,
+            addr,
+            rindex,
+            nrindex,
+        )
+        .await?;
         self.rindex = nrindex;
 
         self.weight += addr_weight as u64;
@@ -236,14 +255,32 @@ impl SigModule {
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
 
+        let signer = Signer { weight: addr_weight, leaf: SignatureLeaf::DynamicSignature(leaf) };
+        let signer_node =
+            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
+
+        if self.tree.signer.is_none() {
+            self.tree.signer = Some(signer);
+        } else if self.tree.left.is_none() {
+            self.tree.left = signer_node.clone();
+        } else if self.tree.right.is_none() {
+            self.tree.right = signer_node.clone();
+        }
+
         Ok(())
     }
 
     /// Decodes a node signature
     fn decode_node_signature(&mut self) -> Result<()> {
-        let (node, rindex) = read_bytes32(&self.sig, self.rindex)?;
+        let (node, rindex) = read_bytes32(self.sig.as_slice(), self.rindex)?;
         self.return_valid_root(node);
         self.rindex = rindex;
+
+        let node = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+
+        if self.tree.signer.is_none() {
+            self.tree.signer = Some(node);
+        }
 
         Ok(())
     }
@@ -252,23 +289,31 @@ impl SigModule {
     #[async_recursion]
     async fn decode_branch_signature(&mut self) -> Result<()> {
         // Read signature size
-        let (size, rindex) = read_uint24(&self.sig, self.rindex)?;
+        let (size, rindex) = read_uint24(self.sig.as_slice(), self.rindex)?;
         let nrindex = rindex + size as usize;
 
         let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest, None);
-        base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
+        base_sig_module.set_signature(self.sig.as_slice()[rindex..nrindex].to_vec().into());
         let (nweight, node) = base_sig_module.recover_branch().await?;
 
         self.weight += nweight as u64;
         self.root = hash_keccak_256(self.root, node);
         self.rindex = nrindex;
 
+        let signer_node = Some(Box::new(base_sig_module.tree));
+
+        if self.tree.left.is_none() {
+            self.tree.left = signer_node.clone();
+        } else if self.tree.right.is_none() {
+            self.tree.right = signer_node.clone();
+        }
+
         Ok(())
     }
 
     /// Decodes a digest signature
     fn decode_digest_signature(&mut self) -> Result<()> {
-        let (hardcoded, _rindex) = read_bytes32(&self.sig, self.rindex)?;
+        let (hardcoded, _rindex) = read_bytes32(self.sig.as_slice(), self.rindex)?;
         if hardcoded == self.subdigest {
             self.weight = u64::MAX;
         }
@@ -276,21 +321,34 @@ impl SigModule {
         let node = self.leaf_for_hardcoded_subdigest(hardcoded);
         self.return_valid_root(node);
 
+        let signer =
+            Signer { weight: 1, leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {}) };
+        let signer_node =
+            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
+
+        if self.tree.signer.is_none() {
+            self.tree.signer = Some(signer);
+        } else if self.tree.left.is_none() {
+            self.tree.left = signer_node.clone();
+        } else if self.tree.right.is_none() {
+            self.tree.right = signer_node.clone();
+        }
+
         Ok(())
     }
 
     /// Decodes a nested signature
     #[async_recursion]
     async fn decode_nested_signature(&mut self) -> Result<()> {
-        let (external_weight, rindex) = read_uint8(&self.sig, self.rindex)?;
+        let (external_weight, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
 
-        let (internal_threshold, rindex) = read_uint16(&self.sig, rindex)?;
+        let (internal_threshold, rindex) = read_uint16(self.sig.as_slice(), rindex)?;
 
-        let (size, rindex) = read_uint24(&self.sig, rindex)?;
+        let (size, rindex) = read_uint24(self.sig.as_slice(), rindex)?;
         let nrindex = rindex + size as usize;
 
         let mut base_sig_module = SigModule::new(self.address, self.chain_id, self.subdigest, None);
-        base_sig_module.set_signature(self.sig[rindex..nrindex].to_vec());
+        base_sig_module.set_signature(Signature(self.sig.as_slice()[rindex..nrindex].to_vec()));
         let (internal_weight, internal_root) = base_sig_module.recover_branch().await?;
         self.rindex = nrindex;
 
@@ -300,6 +358,14 @@ impl SigModule {
 
         let node = self.leaf_for_nested(internal_root, internal_threshold, external_weight);
         self.return_valid_root(node);
+
+        let signer_node = Some(Box::new(base_sig_module.tree));
+
+        if self.tree.left.is_none() {
+            self.tree.left = signer_node.clone();
+        } else if self.tree.right.is_none() {
+            self.tree.right = signer_node.clone();
+        }
 
         Ok(())
     }
@@ -311,7 +377,7 @@ impl SigModule {
         // Iterating over the signature while length is greater than 0
         while self.rindex < s {
             // Get the first byte of the signature
-            let (flag, rindex) = read_uint8(&self.sig, self.rindex)?;
+            let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
             self.rindex = rindex;
 
             match flag {
@@ -342,7 +408,7 @@ impl SigModule {
         // Hex: 0x0000 ~ 0xFFFF
         // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L269C9-L269C9
         // License: Apache-2.0
-        let threshold = u16::from_be_bytes([self.sig[0], self.sig[1]]);
+        let threshold = u16::from_be_bytes([self.sig.as_slice()[0], self.sig.as_slice()[1]]);
 
         // If the length is less than 34 bytes, it doesn't have a checkpoint
         if s < 34 {
@@ -353,7 +419,7 @@ impl SigModule {
         // Hex: 0x00000000
         // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/submodules/auth/SequenceBaseSig.sol#L270C7-L270C17
         // License: Apache-2.0
-        let (checkpoint, _) = read_uint32(&self.sig, 2)?;
+        let (checkpoint, _) = read_uint32(self.sig.as_slice(), 2)?;
 
         Ok((threshold, checkpoint))
     }
@@ -401,12 +467,12 @@ impl SigModule {
         threshold: u16,
         checkpoint: u32,
     ) -> Result<WalletConfig> {
-        let internal_root = self.calculate_image_hash_from_node(&self.tree);
+        let internal_root = self.calculate_image_hash_from_node(&self.tree).into();
 
         Ok(WalletConfig {
             threshold,
             checkpoint,
-            image_hash: [0; 32],
+            image_hash: [0; 32].into(),
             weight: 0,
             tree: self.tree.clone(),
             internal_root: Some(internal_root),
@@ -419,7 +485,7 @@ impl SigModule {
         let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
 
         // Trim the signature to remove the threshold and checkpoint
-        self.sig = self.sig[6..].to_vec();
+        self.sig = self.sig.as_slice()[6..].to_vec().into();
 
         // If the length is greater than 34 bytes, it's a branch signature
         let (weight, image_hash) = self.recover_branch().await?;
@@ -432,9 +498,10 @@ impl SigModule {
                 .to_vec(),
             ),
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
-        ]));
+        ]))
+        .into();
         let tree = self.tree.clone();
-        let internal_root = Some(self.calculate_image_hash_from_node(&self.tree));
+        let internal_root = Some(self.calculate_image_hash_from_node(&self.tree).into());
 
         Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
     }
@@ -533,7 +600,7 @@ mod tests {
     #[test]
     fn test_base_recover_threshold() {
         let mut base_sig_module = SigModule::empty();
-        base_sig_module.sig = vec![0x11, 0x11];
+        base_sig_module.sig = vec![0x11, 0x11].into();
 
         let res = base_sig_module.recover_threshold_checkpoint().unwrap();
         assert!(res.0 == 4369);
@@ -542,7 +609,7 @@ mod tests {
     #[test]
     fn test_base_recover_checkpoint() {
         let mut base_sig_module = SigModule::empty();
-        base_sig_module.sig = Iterator::collect::<Vec<u8>>([1; 34].iter().copied());
+        base_sig_module.sig = Signature(Iterator::collect::<Vec<u8>>([1; 34].iter().copied()));
 
         let res = base_sig_module.recover_threshold_checkpoint().unwrap();
 
@@ -564,7 +631,7 @@ mod tests {
             encode_packed(&[Token::Uint(3u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
                 .unwrap();
 
-        base_sig_module.set_signature(empty_node_sig.clone());
+        base_sig_module.set_signature(empty_node_sig.clone().into());
 
         let (weight, root) = base_sig_module.recover_branch().await.unwrap();
         assert_eq!(weight, 0);
@@ -581,7 +648,7 @@ mod tests {
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
         let empty_sig = vec![];
-        base_sig_module.set_signature(empty_sig);
+        base_sig_module.set_signature(empty_sig.into());
 
         let expected_err = eyre!("Invalid signature");
 
@@ -600,7 +667,7 @@ mod tests {
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
         let empty_sig = vec![];
-        base_sig_module.set_signature(empty_sig);
+        base_sig_module.set_signature(empty_sig.into());
 
         let (weight, root) = base_sig_module.recover_branch().await.unwrap();
         assert_eq!(weight, 0);
@@ -615,7 +682,7 @@ mod tests {
             encode_packed(&[Token::Uint(9u8.into()), Token::FixedBytes([0u8; 32].to_vec())])
                 .unwrap();
 
-        base_sig_module.set_signature(empty_node_sig.clone());
+        base_sig_module.set_signature(empty_node_sig.clone().into());
 
         let expected_err = eyre!("Invalid signature flag");
 
@@ -634,7 +701,7 @@ mod tests {
 
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
 
         let expected_root = parse_hex_to_bytes32(
             "0x0000000000000000000000607e5f4552091a69125d5dfcb7b8c2659029395bdf",
@@ -659,7 +726,7 @@ mod tests {
 
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
 
         let expected_root = parse_hex_to_bytes32(
             "0xbdee0174cb6901d03d656b19023a24727bb42562e4966821acc43566a5862fb9",
@@ -682,7 +749,7 @@ mod tests {
         let sig = from_hex_string(sig_str).unwrap();
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
         base_sig_module.set_weight(8);
 
         let expected_root = parse_hex_to_bytes32(
@@ -706,7 +773,7 @@ mod tests {
         let sig = from_hex_string(sig_str).unwrap();
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
 
         let expected_root = parse_hex_to_bytes32(
             "0xccbac9f84ae4bcdea556e517867a13fcbbd78828afbff50830cad3e8568f7d4c",
@@ -729,7 +796,7 @@ mod tests {
 
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
 
         let expected_root = parse_hex_to_bytes32(
             "0x0000000000000000000000c4839d96957f21e82fbcca0d42a1f12ef6e1cf82e9",
@@ -752,7 +819,7 @@ mod tests {
         let sig = from_hex_string(sig_str).unwrap();
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
 
         let expected_root = parse_hex_to_bytes32(
             "0x00000000000000000000000000000000000000000000000000000000deadbeef",
@@ -775,7 +842,7 @@ mod tests {
         let sig = from_hex_string(sig_str).unwrap();
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
 
         let expected_root = parse_hex_to_bytes32(
             "0x9e8610d05930c453860bcd5933b00e758b46d91d44f3c32087cd3f4e7e4d3de3",
@@ -798,12 +865,13 @@ mod tests {
         let sig = from_hex_string(sig_str).unwrap();
         let mut base_sig_module = SigModule::empty();
         base_sig_module.set_subdigest_direct(subdigest);
-        base_sig_module.set_signature(sig);
+        base_sig_module.set_signature(sig.into());
 
         let expected_root = parse_hex_to_bytes32(
             "0x50ec12b237887c47767742e6425b98694ac9f793a31729766ea4748b382ea648",
         )
-        .unwrap();
+        .unwrap()
+        .into();
 
         let config = base_sig_module.recover().await.unwrap();
         assert_eq!(config.threshold, 17);

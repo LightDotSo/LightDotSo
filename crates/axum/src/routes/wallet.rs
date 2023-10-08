@@ -227,7 +227,7 @@ async fn v1_post_handler(
     let image_hash = res.map_err(|_| AppError::NotFound)?;
 
     // Parse the image hash to bytes.
-    let image_hash_bytes: H256 = image_hash.parse()?;
+    let image_hash_bytes: H256 = image_hash.into();
 
     // Parse the salt to bytes.
     let salt_bytes: H256 = query.salt.parse()?;
@@ -256,7 +256,7 @@ async fn v1_post_handler(
                 .configuration()
                 .create(
                     to_checksum(&new_wallet_address, None),
-                    image_hash.clone(),
+                    format!("{:?}", image_hash_bytes),
                     1,
                     query.salt.clone(),
                     vec![],
@@ -271,7 +271,7 @@ async fn v1_post_handler(
                 .create(
                     to_checksum(&address, None),
                     1,
-                    image_hash.clone(),
+                    format!("{:?}", image_hash_bytes),
                     vec![lightdotso_prisma::owner::configuration_id::set(Some(
                         configuration_data.id,
                     ))],

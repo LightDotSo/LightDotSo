@@ -27,16 +27,17 @@ pub const FIRST_IMAGE_HASH: &str =
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_module_first() {
-    let sig = from_hex_string(FIRST_SIG).unwrap();
+    let sig = from_hex_string(FIRST_SIG).unwrap().into();
     let user_op_hash = parse_hex_to_bytes32(FIRST_USER_OP_HASH).unwrap();
     let wallet = FIRST_WALLET.parse().unwrap();
-    let image_hash = FIRST_IMAGE_HASH;
+    let image_hash = parse_hex_to_bytes32(FIRST_IMAGE_HASH).unwrap();
 
     let mut config = recover_signature(wallet, 11155111, user_op_hash, sig).await.unwrap();
     // FIXME: This is a hack to make the test pass
     config.internal_root = Some(
         parse_hex_to_bytes32("0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d")
-            .unwrap(),
+            .unwrap()
+            .into(),
     );
     println!("{:?}", config);
 

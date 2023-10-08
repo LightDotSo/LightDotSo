@@ -23,21 +23,20 @@ use eyre::Result;
 
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
-    pub fn image_hash_of_wallet_config(&self) -> Result<String> {
-        let image_hash_bytes = keccak256(encode(&[
+    pub fn image_hash_of_wallet_config(&self) -> Result<[u8; 32]> {
+        Ok(keccak256(encode(&[
             Token::FixedBytes(
                 keccak256(encode(&[
-                    Token::FixedBytes(self.internal_root.unwrap().to_vec()),
+                    Token::FixedBytes(self.internal_root.unwrap().0.to_vec()),
                     Token::Uint(U256::from(self.threshold)),
                 ]))
                 .to_vec(),
             ),
             Token::Uint(U256::from(self.checkpoint)),
-        ]));
-
-        Ok(format!("0x{}", ethers::utils::hex::encode(image_hash_bytes)))
+        ])))
     }
 
+    /// Get all signers in the wallet config in an array
     pub fn get_signers(&self) -> Vec<Signer> {
         self.get_signers_recursive(&self.tree)
     }
@@ -76,14 +75,13 @@ mod tests {
         },
         utils::parse_hex_to_bytes32,
     };
-    use ethers::types::Address;
 
     #[test]
     fn test_image_hash_of_wallet_config() {
         let leaf = ECDSASignatureLeaf {
             address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
             signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
-            signature: [0u8; 65],
+            signature: [0u8; 65].into(),
         };
 
         // From: contracts/src/test/utils/LightWalletUtils.sol
@@ -91,19 +89,9 @@ mod tests {
             checkpoint: 1,
             threshold: 1,
             weight: 1,
-            image_hash: [0; 31]
-                .iter()
-                .chain(&[1])
-                .copied()
-                .collect::<Vec<u8>>()
-                .try_into()
-                .unwrap(),
+            image_hash: [0; 32].into(),
             tree: SignerNode {
-                signer: Some(Signer {
-                    address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
-                    weight: 1,
-                    leaf: SignatureLeaf::ECDSASignature(leaf),
-                }),
+                signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(leaf) }),
                 left: None,
                 right: None,
             },
@@ -111,32 +99,24 @@ mod tests {
                 parse_hex_to_bytes32(
                     "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
                 )
-                .unwrap(),
+                .unwrap()
+                .into(),
             ),
         };
 
-        let expected = "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";
+        let expected = parse_hex_to_bytes32(
+            "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
+        )
+        .unwrap();
         assert_eq!(expected, wc.image_hash_of_wallet_config().unwrap());
     }
 
     #[test]
     fn test_get_signers() {
         // Define some dummy signers
-        let signer1 = Signer {
-            weight: 1,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer2 = Signer {
-            weight: 2,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer3 = Signer {
-            weight: 3,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
+        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -158,7 +138,7 @@ mod tests {
             checkpoint: 123,
             threshold: 10,
             weight: 20,
-            image_hash: [0u8; 32],
+            image_hash: [0; 32].into(),
             tree,
             internal_root: None,
         };
@@ -174,21 +154,9 @@ mod tests {
     #[test]
     fn test_is_wallet_valid() {
         // Define some dummy signers
-        let signer1 = Signer {
-            weight: 1,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer2 = Signer {
-            weight: 2,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
-        let signer3 = Signer {
-            weight: 3,
-            address: Address::zero(),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
-        };
+        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -210,7 +178,7 @@ mod tests {
             checkpoint: 123,
             threshold: 3,
             weight: 20,
-            image_hash: [0u8; 32],
+            image_hash: [0; 32].into(),
             tree,
             internal_root: None,
         };
