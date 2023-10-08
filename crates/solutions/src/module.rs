@@ -313,7 +313,8 @@ impl SigModule {
 
     /// Decodes a digest signature
     fn decode_digest_signature(&mut self) -> Result<()> {
-        let (hardcoded, _rindex) = read_bytes32(self.sig.as_slice(), self.rindex)?;
+        let (hardcoded, rindex) = read_bytes32(self.sig.as_slice(), self.rindex)?;
+        self.rindex = rindex;
         if hardcoded == self.subdigest {
             self.weight = u64::MAX;
         }
@@ -378,6 +379,7 @@ impl SigModule {
         while self.rindex < s {
             // Get the first byte of the signature
             let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
+            println!("Flag: {}", flag);
             self.rindex = rindex;
 
             match flag {
