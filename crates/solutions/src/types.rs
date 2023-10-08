@@ -22,6 +22,7 @@ use serde::{
     Deserialize, Deserializer, Serialize, Serializer,
 };
 use serde_with::serde_as;
+use std::convert::TryFrom;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Signature(pub Vec<u8>);
@@ -183,6 +184,22 @@ impl From<Vec<u8>> for Signature {
 impl From<[u8; ECDSA_SIGNATURE_LENGTH]> for ECDSASignature {
     fn from(item: [u8; ECDSA_SIGNATURE_LENGTH]) -> Self {
         ECDSASignature(item)
+    }
+}
+
+impl TryFrom<Vec<u8>> for ECDSASignature {
+    type Error = &'static str; // You can use a more specific error type here
+
+    fn try_from(bytes: Vec<u8>) -> Result<Self, Self::Error> {
+        if bytes.len() != ECDSA_SIGNATURE_LENGTH {
+            return Err("Invalid length for ECDSASignature");
+        }
+
+        let mut array = [0u8; ECDSA_SIGNATURE_LENGTH];
+        for (place, element) in array.iter_mut().zip(bytes.iter()) {
+            *place = *element;
+        }
+        Ok(ECDSASignature(array))
     }
 }
 

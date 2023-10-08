@@ -13,9 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{
-    DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType, Signature,
-    ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
+use crate::{
+    types::{
+        DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType,
+        Signature, ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
+    },
+    utils::print_hex_string,
 };
 use ethers::{
     types::{Address, RecoveryMessage, Signature as EthersSignature, H256},
@@ -92,9 +95,6 @@ pub(crate) async fn recover_dynamic_signature(
         _ => return Err(eyre!("Unexpected DynamicSignatureType value")),
     };
 
-    // The length is the remaining length of the slice
-    let signature = Signature(slice[..slice.len() - 1].to_vec());
-
     let recovered_address = match signature_type {
         DynamicSignatureType::DynamicSignatureTypeEthSign |
         DynamicSignatureType::DynamicSignatureTypeEIP712 => {
@@ -102,6 +102,8 @@ pub(crate) async fn recover_dynamic_signature(
             signature_leaf.address
         }
         DynamicSignatureType::DynamicSignatureTypeEIP1271 => {
+            // The length is the remaining length of the slice
+            let signature = Signature(slice[..slice.len() - 1].to_vec());
             // Call the contract on-chain to verify the signature
             let wallet = get_erc_1271_wallet(chain_id, address).await?;
             let res = wallet
@@ -123,6 +125,9 @@ pub(crate) async fn recover_dynamic_signature(
         return Err(eyre!("Recovered address does not match the address"));
     }
 
+    // The length is the remaining length of the slice
+    let signature = Signature(slice[..slice.len() - 1].to_vec());
+
     Ok(DynamicSignatureLeaf { address, signature_type, signature })
 }
 
@@ -139,23 +144,62 @@ mod tests {
 
         // Sign the subdigest w/ type EIP712
         let signature = wallet.sign_hash(subdigest.into()).unwrap();
-        let mut data = signature.to_vec();
+        let mut data = signature.clone().to_vec();
+        // Set the `ECDSASignatureType` to `ECDSASignatureTypeEIP712`
         data.push(1);
 
         // Retrieve the signature struct
         let recovered_sig = recover_ecdsa_signature(&data, &subdigest, 0).unwrap();
         assert_eq!(recovered_sig.address, wallet.address());
+        assert_eq!(recovered_sig.signature, signature.to_vec().try_into().unwrap());
         assert_eq!(recovered_sig.signature_type, ECDSASignatureType::ECDSASignatureTypeEIP712);
 
         // Sign the subdigest w/ EIP 191
         let signature = wallet.sign_message(subdigest).await.unwrap();
-        let mut data = signature.to_vec();
+        let mut data = signature.clone().to_vec();
+        // Set the `ECDSASignatureType` to `ECDSASignatureTypeEthSign`
         data.push(2);
 
         // Retrieve the signature struct
         let recovered_sig = recover_ecdsa_signature(&data, &subdigest, 0).unwrap();
 
         assert_eq!(recovered_sig.address, wallet.address());
+        assert_eq!(recovered_sig.signature, signature.to_vec().try_into().unwrap());
         assert_eq!(recovered_sig.signature_type, ECDSASignatureType::ECDSASignatureTypeEthSign);
+    }
+
+    #[tokio::test]
+    async fn test_recover_dynamic_signature() {
+        let wallet = LocalWallet::new(&mut rand::thread_rng());
+
+        let subdigest = [1u8; 32];
+
+        // Sign the subdigest w/ type EIP712
+        let signature = wallet.sign_hash(subdigest.into()).unwrap();
+        let mut data = signature.clone().to_vec();
+        // Set the `ECDSASignatureType` to `ECDSASignatureTypeEIP712`
+        data.push(1);
+        // Set the `DynamicSignatureType` to `DynamicSignatureTypeEIP712`
+        data.push(1);
+
+        let recovered_sig =
+            recover_dynamic_signature(1, &data, &subdigest, wallet.address(), 0, 66).await.unwrap();
+        assert_eq!(recovered_sig.address, wallet.address());
+        assert_eq!(recovered_sig.signature, signature.to_vec().try_into().unwrap());
+        assert_eq!(recovered_sig.signature_type, DynamicSignatureType::DynamicSignatureTypeEIP712);
+
+        // Sign the subdigest w/ EIP 191
+        let signature = wallet.sign_message(subdigest).await.unwrap();
+        let mut data = signature.clone().to_vec();
+        // Set the `ECDSASignatureType` to `ECDSASignatureTypeEthSign`
+        data.push(2);
+        // Set the `DynamicSignatureType` to `DynamicSignatureTypeEthSign`
+        data.push(2);
+
+        let recovered_sig =
+            recover_dynamic_signature(1, &data, &subdigest, wallet.address(), 0, 66).await.unwrap();
+        assert_eq!(recovered_sig.address, wallet.address());
+        assert_eq!(recovered_sig.signature, signature.to_vec().try_into().unwrap());
+        assert_eq!(recovered_sig.signature_type, DynamicSignatureType::DynamicSignatureTypeEthSign);
     }
 }
