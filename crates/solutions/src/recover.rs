@@ -63,13 +63,14 @@ pub async fn recover_signature(
 
     // No ChainId signature
     if signature_type == 0x02 {
-        return recover_chained(address, 0, digest, sig).await;
+        let mut base_sig_module = SigModule::new(address, 0, digest, None);
+        base_sig_module.set_signature(sig.as_slice()[1..].to_vec().into());
+        return base_sig_module.recover().await;
     }
 
-    // ChainId signature
+    // Chained signature
     if signature_type == 0x03 {
-        let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
-        return base_sig_module.recover().await;
+        return recover_chained(address, chain_id, digest, sig).await;
     }
 
     Err(eyre!("Invalid signature type"))
