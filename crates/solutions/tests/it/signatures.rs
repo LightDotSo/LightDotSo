@@ -30,7 +30,7 @@ const SIGNATURES: &[&str] = &[
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_signatures() {
-    for (i, signature) in SIGNATURES.iter().enumerate() {
+    for signature in SIGNATURES.iter() {
         let sig = from_hex_string(signature).unwrap().into();
         let user_op_hash = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000000001",
