@@ -379,7 +379,6 @@ impl SigModule {
             // Get the first byte of the signature
             let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
             self.rindex = rindex;
-            println!("rindex: {:?}", rindex);
 
             match flag {
                 0 => self.decode_ecdsa_signature()?,
