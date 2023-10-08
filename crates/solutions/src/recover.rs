@@ -127,13 +127,7 @@ async fn recover_chained(
         rindex = nrindex;
     }
 
-    recover_signature(
-        address,
-        chain_id,
-        digest,
-        signature.as_slice()[rindex..nrindex].to_vec().into(),
-    )
-    .await
+    Ok(config)
 }
 
 fn set_image_hash(sig_hash: Vec<u8>) -> [u8; 32] {

@@ -371,7 +371,7 @@ impl SigModule {
     }
 
     /// Recovers the branch of the merkle tree
-    async fn recover_branch(&mut self) -> Result<(usize, [u8; 32])> {
+    pub async fn recover_branch(&mut self) -> Result<(usize, [u8; 32])> {
         let s = self.sig.len();
 
         // Iterating over the signature while length is greater than 0
@@ -426,10 +426,18 @@ impl SigModule {
 
     fn get_node_hash(&self, node: &SignerNode) -> [u8; 32] {
         let node = node.clone();
-        hash_keccak_256(
-            self.calculate_image_hash_from_node(&node.left.unwrap()),
-            self.calculate_image_hash_from_node(&node.right.unwrap()),
-        )
+        let left = if node.left.is_some() {
+            self.calculate_image_hash_from_node(&node.left.unwrap())
+        } else {
+            [0; 32]
+        };
+        let right = if node.right.is_some() {
+            self.calculate_image_hash_from_node(&node.right.unwrap())
+        } else {
+            [0; 32]
+        };
+
+        hash_keccak_256(left, right)
     }
 
     // Iterate over the tree and calculate the image hash
