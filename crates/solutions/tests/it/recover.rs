@@ -27,7 +27,7 @@ pub const FIRST_IMAGE_HASH: &str =
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_module_first() {
-    let sig = from_hex_string(FIRST_SIG).unwrap();
+    let sig = from_hex_string(FIRST_SIG).unwrap().into();
     let user_op_hash = parse_hex_to_bytes32(FIRST_USER_OP_HASH).unwrap();
     let wallet = FIRST_WALLET.parse().unwrap();
     let image_hash = parse_hex_to_bytes32(FIRST_IMAGE_HASH).unwrap();

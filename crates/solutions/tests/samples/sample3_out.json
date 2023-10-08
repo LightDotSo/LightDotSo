@@ -27,9 +27,9 @@
         "signer": {
           "weight": 2,
           "leaf": {
-            "ECDSASignature": {
-              "address": "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d",
-              "signature_type": "ECDSASignatureTypeEIP712",
+            "DynamicSignature": {
+              "address": "0x0000000000000000000000000000000000000000",
+              "signature_type": "DynamicSignatureTypeEIP1271",
               "signature": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
             }
           }
@@ -40,9 +40,7 @@
             "leaf": {
               "NodeSignature": {}
             }
-          },
-          "left": null,
-          "right": null
+          }
         },
         "right": {
           "signer": {
@@ -55,23 +53,26 @@
                 "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
               }
             }
-          },
-          "left": null,
-          "right": null
+          }
         }
       },
       "right": {
         "signer": {
           "weight": 2,
           "leaf": {
-            "BranchSignature": {}
+            "SubdigestSignature": {}
           }
-        },
-        "left": null,
-        "right": null
+        }
       }
     },
-    "right": null
+    "right": {
+      "signer": {
+        "weight": 2,
+        "leaf": {
+          "BranchSignature": {}
+        }
+      }
+    }
   },
   "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
 }

@@ -44,7 +44,7 @@ pub async fn recover_signature(
     // Hex: 0x00 ~ 0xFF
     // Ref: https://github.com/0xsequence/wallet-contracts/blob/46838284e90baf27cf93b944b056c0b4a64c9733/contracts/modules/commons/ModuleAuth.sol#L56
     // License: Apache-2.0
-    let signature_type = sig[0];
+    let signature_type = sig.as_slice()[0];
 
     // Legacy signature
     if signature_type == 0x00 {
@@ -57,7 +57,7 @@ pub async fn recover_signature(
     if signature_type == 0x01 {
         let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
         // Set the signature after the first byte
-        base_sig_module.set_signature(sig[1..].to_vec());
+        base_sig_module.set_signature(sig.as_slice()[1..].to_vec().into());
         return base_sig_module.recover().await;
     }
 
@@ -83,11 +83,16 @@ async fn recover_chained(
 ) -> Result<WalletConfig> {
     let rindex: usize = 1;
 
-    let (sig_size, rindex) = read_uint24(&signature, rindex)?;
+    let (sig_size, rindex) = read_uint24(signature.as_slice(), rindex)?;
     let nrindex = rindex + (sig_size as usize);
 
-    let config =
-        recover_signature(address, chain_id, digest, signature[rindex..nrindex].to_vec()).await?;
+    let config = recover_signature(
+        address,
+        chain_id,
+        digest,
+        signature.as_slice()[rindex..nrindex].to_vec().into(),
+    )
+    .await?;
 
     if config.weight < config.threshold.into() {
         return Err(eyre!("Less than threshold"));
@@ -97,16 +102,16 @@ async fn recover_chained(
     let mut checkpoint = config.checkpoint;
 
     while rindex < signature.len() {
-        let (sig_size, sig_rindex) = read_uint24(&signature, rindex)?;
+        let (sig_size, sig_rindex) = read_uint24(signature.as_slice(), rindex)?;
         let nrindex = sig_rindex + (sig_size as usize);
 
-        let new_image_hash = set_image_hash(signature[sig_rindex..nrindex].to_vec());
+        let new_image_hash = set_image_hash(signature.as_slice()[sig_rindex..nrindex].to_vec());
 
         let config = recover_signature(
             address,
             chain_id,
             new_image_hash,
-            signature[sig_rindex..nrindex].to_vec(),
+            signature.as_slice()[sig_rindex..nrindex].to_vec().into(),
         )
         .await?;
 
@@ -122,7 +127,13 @@ async fn recover_chained(
         rindex = nrindex;
     }
 
-    recover_signature(address, chain_id, digest, signature[rindex..nrindex].to_vec()).await
+    recover_signature(
+        address,
+        chain_id,
+        digest,
+        signature.as_slice()[rindex..nrindex].to_vec().into(),
+    )
+    .await
 }
 
 fn set_image_hash(sig_hash: Vec<u8>) -> [u8; 32] {
@@ -144,7 +155,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_recover_signature_empty() {
-        let signature: Signature = vec![];
+        let signature: Signature = vec![].into();
 
         let expected_err = eyre!("Invalid signature length");
 
@@ -154,7 +165,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_decode_invalid_signature_type() {
-        let signature: Signature = vec![0x9];
+        let signature: Signature = vec![0x9].into();
 
         let expected_err = eyre!("Invalid signature type");
 
