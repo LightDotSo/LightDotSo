@@ -27,9 +27,16 @@ pub fn read_wallet_config<P: AsRef<Path>>(path: P) -> Result<WalletConfig> {
     Ok(wallet_config)
 }
 
-pub fn write_wallet_config<P: AsRef<Path>>(wallet_config: &WalletConfig, path: P) -> Result<()> {
+pub fn config_to_json(wallet_config: &WalletConfig) -> Result<String> {
     // Convert struct into a JSON string
     let wallet_config_json = serde_json::to_string_pretty(wallet_config)?;
+
+    Ok(wallet_config_json)
+}
+
+pub fn write_wallet_config<P: AsRef<Path>>(wallet_config: &WalletConfig, path: P) -> Result<()> {
+    // Convert struct into a JSON string
+    let wallet_config_json = config_to_json(wallet_config)?;
 
     // Write the JSON string to a file
     fs::write(path, wallet_config_json)?;
