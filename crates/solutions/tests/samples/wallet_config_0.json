@@ -1,0 +1,22 @@
+{
+  "checkpoint": 1667830200,
+  "threshold": 1,
+  "weight": 1,
+  "image_hash": "0x3c7c47668549468614372bd6aa127818a22807918fa1b83bb672c10aac7cced2",
+  "tree": {
+    "left": {
+      "signer": {
+        "weight": 1,
+        "leaf": {
+          "type": "ECDSASignature",
+          "content": {
+            "address": "0x6a202a0ba513f87db9174e44300378b25f1950bb",
+            "signature_type": "ECDSASignatureTypeEthSign",
+            "signature": "0x9fa7b7e8ed25088c413074818ac10ab3bbcddb120bbec85083f3ba254e5547d953fe615a6474fd365326244dedd7afa3911ad39c956ca096d721064d6b29055d1b"
+          }
+        }
+      }
+    }
+  },
+  "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
+}

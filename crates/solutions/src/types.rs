@@ -32,7 +32,8 @@ pub struct Signature(pub Vec<u8>);
 /// License: Apache-2.0
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct Signer {
-    pub weight: u8,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub weight: Option<u8>,
     pub leaf: SignatureLeaf,
 }
 
@@ -124,7 +125,9 @@ pub struct DynamicSignatureLeaf {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-pub struct NodeLeaf {}
+pub struct NodeLeaf {
+    pub hash: H256,
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct BranchLeaf {}

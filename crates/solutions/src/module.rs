@@ -172,6 +172,19 @@ impl SigModule {
             .unwrap(),
         )
     }
+
+    fn inject_signer_node(&mut self, signer: Signer, node: SignerNode) -> Result<()> {
+        let signer_node = Some(Box::new(node));
+
+        if self.tree.left.is_none() {
+            self.tree.left = signer_node;
+        } else {
+            self.tree.right = signer_node;
+        }
+
+        Ok(())
+    }
+
     /// Decodes an ECDSA signature
     fn decode_ecdsa_signature(&mut self) -> Result<()> {
         let (addr_weight, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
@@ -185,18 +198,12 @@ impl SigModule {
         let node = self.leaf_for_address_and_weight(signature_leaf.address, addr_weight);
         self.return_valid_root(node);
 
-        let signer =
-            Signer { weight: addr_weight, leaf: SignatureLeaf::ECDSASignature(signature_leaf) };
-        let signer_node =
-            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
-
-        if self.tree.signer.is_none() {
-            self.tree.signer = Some(signer);
-        } else if self.tree.left.is_none() {
-            self.tree.left = signer_node.clone();
-        } else if self.tree.right.is_none() {
-            self.tree.right = signer_node.clone();
-        }
+        let signer = Signer {
+            weight: Some(addr_weight),
+            leaf: SignatureLeaf::ECDSASignature(signature_leaf),
+        };
+        let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
+        self.inject_signer_node(signer, signer_node)?;
 
         Ok(())
     }
@@ -210,19 +217,11 @@ impl SigModule {
         self.return_valid_root(node);
 
         let signer = Signer {
-            weight: addr_weight,
+            weight: Some(addr_weight),
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf { address: addr }),
         };
-        let signer_node =
-            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
-
-        if self.tree.signer.is_none() {
-            self.tree.signer = Some(signer);
-        } else if self.tree.left.is_none() {
-            self.tree.left = signer_node.clone();
-        } else if self.tree.right.is_none() {
-            self.tree.right = signer_node.clone();
-        }
+        let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
+        self.inject_signer_node(signer, signer_node)?;
 
         Ok(())
     }
@@ -251,17 +250,10 @@ impl SigModule {
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
 
-        let signer = Signer { weight: addr_weight, leaf: SignatureLeaf::DynamicSignature(leaf) };
-        let signer_node =
-            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
-
-        if self.tree.signer.is_none() {
-            self.tree.signer = Some(signer);
-        } else if self.tree.left.is_none() {
-            self.tree.left = signer_node.clone();
-        } else if self.tree.right.is_none() {
-            self.tree.right = signer_node.clone();
-        }
+        let signer =
+            Signer { weight: Some(addr_weight), leaf: SignatureLeaf::DynamicSignature(leaf) };
+        let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
+        self.inject_signer_node(signer, signer_node)?;
 
         Ok(())
     }
@@ -272,10 +264,37 @@ impl SigModule {
         self.return_valid_root(node);
         self.rindex = rindex;
 
-        let node = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let node = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: node.into() }),
+        };
+
+        // if self.tree.left.is_some() && self.tree.right.is_some() && self.tree.signer.is_none() {
+        //     self.tree.signer = Some(node);
+        // }
+
+        // if self.tree.left.is_some() {
+        //     self.tree.right =
+        //         Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
+        //     return Ok(());
+        // }
+
+        // if self.tree.right.is_some() {
+        //     self.tree.left =
+        //         Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
+        //     return Ok(());
+        // }
+
+        // self.tree.signer = Some(node);
 
         if self.tree.signer.is_none() {
             self.tree.signer = Some(node);
+        } else if self.tree.left.is_none() {
+            self.tree.left =
+                Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
+        } else if self.tree.right.is_none() {
+            self.tree.right =
+                Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
         }
 
         Ok(())
@@ -319,7 +338,7 @@ impl SigModule {
         self.return_valid_root(node);
 
         let signer =
-            Signer { weight: 1, leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {}) };
+            Signer { weight: None, leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {}) };
         let signer_node =
             Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
 
@@ -442,13 +461,13 @@ impl SigModule {
         match &node.signer {
             Some(signer) => match &signer.leaf {
                 SignatureLeaf::ECDSASignature(leaf) => {
-                    self.leaf_for_address_and_weight(leaf.address, signer.weight)
+                    self.leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
                 }
                 SignatureLeaf::AddressSignature(leaf) => {
-                    self.leaf_for_address_and_weight(leaf.address, signer.weight)
+                    self.leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
                 }
                 SignatureLeaf::DynamicSignature(leaf) => {
-                    self.leaf_for_address_and_weight(leaf.address, signer.weight)
+                    self.leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
                 }
                 SignatureLeaf::NodeSignature(_) => self.get_node_hash(node),
                 SignatureLeaf::SubdigestSignature(_) => {

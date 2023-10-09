@@ -29,7 +29,10 @@ async fn test_integration_hash_first() {
         weight: 1,
         image_hash: [0; 32].into(),
         tree: SignerNode {
-            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
+            signer: Some(Signer {
+                weight: None,
+                leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+            }),
             left: None,
             right: None,
         },

@@ -84,7 +84,8 @@ impl WalletConfig {
     }
 
     pub fn is_wallet_valid(&self) -> bool {
-        let total_weight: u8 = self.get_signers().iter().map(|signer| signer.weight).sum();
+        let total_weight: u8 =
+            self.get_signers().iter().map(|signer| signer.weight.unwrap_or(0)).sum();
         total_weight >= self.threshold as u8
     }
 }
@@ -114,7 +115,7 @@ mod tests {
             weight: 1,
             image_hash: [0; 32].into(),
             tree: SignerNode {
-                signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(leaf) }),
+                signer: Some(Signer { weight: Some(1), leaf: SignatureLeaf::ECDSASignature(leaf) }),
                 left: None,
                 right: None,
             },
@@ -137,9 +138,18 @@ mod tests {
     #[test]
     fn test_get_signers() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer1 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer2 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer3 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -177,9 +187,18 @@ mod tests {
     #[test]
     fn test_is_wallet_valid() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer1 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer2 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer3 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
 
         // Construct the signer tree
         let tree = SignerNode {
