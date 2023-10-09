@@ -47,6 +47,7 @@ pub struct SignerNode {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "type", content = "content")]
 pub enum SignatureLeaf {
     ECDSASignature(ECDSASignatureLeaf),
     AddressSignature(AddressSignatureLeaf),

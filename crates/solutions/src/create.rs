@@ -13,13 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod create;
-pub mod hash;
-pub mod io;
-pub mod module;
-pub mod recover;
-pub mod signature;
-pub mod traits;
-pub mod types;
-pub mod utils;
+use crate::{config::WalletConfig, types::SignerNode};
+use eyre::Result;
+
+pub fn create_initial_wallet_config(signer: SignerNode, threshold: u16) -> Result<WalletConfig> {
+    // Iterate over the signers and create a SignerNode for each one
+    let wc = WalletConfig {
+        checkpoint: 1,
+        threshold,
+        weight: 1,
+        image_hash: [0; 32].into(),
+        tree: signer,
+        internal_root: None,
+    };
+
+    Ok(wc)
+}
