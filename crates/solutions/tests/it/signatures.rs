@@ -37,7 +37,7 @@ async fn test_integration_signatures() {
         )
         .unwrap();
 
-        let recovered = recover_signature(Address::zero(), 1, user_op_hash, sig).await;
+        let recovered = recover_signature(Address::zero(), 1, user_op_hash, sig).await.unwrap();
         println!("recovered: {:?}", recovered);
     }
 }

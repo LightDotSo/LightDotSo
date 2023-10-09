@@ -87,7 +87,7 @@ async fn recover_chained(
     let (sig_size, rindex) = read_uint24(signature.as_slice(), rindex)?;
     let nrindex = rindex + (sig_size as usize);
 
-    let config = recover_signature(
+    let initial_config = recover_signature(
         address,
         chain_id,
         digest,
@@ -95,40 +95,50 @@ async fn recover_chained(
     )
     .await?;
 
-    if config.weight < config.threshold.into() {
+    if initial_config.weight < initial_config.threshold.into() {
         return Err(eyre!("Less than threshold"));
     }
 
+    let mut config: Option<WalletConfig> = None;
     let mut rindex = nrindex;
-    let mut checkpoint = config.checkpoint;
+    let mut checkpoint = initial_config.checkpoint;
 
     while rindex < signature.len() {
         let (sig_size, sig_rindex) = read_uint24(signature.as_slice(), rindex)?;
         let nrindex = sig_rindex + (sig_size as usize);
 
-        let new_image_hash = set_image_hash(signature.as_slice()[sig_rindex..nrindex].to_vec());
+        let hashed_digest = set_image_hash(signature.as_slice()[sig_rindex..nrindex].to_vec());
+        config = Some(
+            recover_signature(
+                address,
+                chain_id,
+                hashed_digest,
+                signature.as_slice()[sig_rindex..nrindex].to_vec().into(),
+            )
+            .await?,
+        );
 
-        let config = recover_signature(
-            address,
-            chain_id,
-            new_image_hash,
-            signature.as_slice()[sig_rindex..nrindex].to_vec().into(),
-        )
-        .await?;
-
-        if config.weight < config.threshold.into() {
+        if config.as_ref().unwrap().weight < config.as_ref().unwrap().threshold.into() {
             return Err(eyre!("Less than threshold"));
         }
 
-        if config.checkpoint >= checkpoint {
+        if config.as_ref().unwrap().checkpoint >= checkpoint {
             return Err(eyre!("Invalid checkpoint"));
         }
 
-        checkpoint = config.checkpoint;
+        checkpoint = config.as_ref().unwrap().checkpoint;
         rindex = nrindex;
     }
 
-    Ok(config)
+    match &mut config {
+        // If the config is Some, return the config w/ the initial image hash
+        Some(config) => {
+            config.image_hash = initial_config.image_hash;
+            Ok(config.clone())
+        }
+        // If the config is None, return the initial config
+        None => Ok(initial_config),
+    }
 }
 
 fn set_image_hash(sig_hash: Vec<u8>) -> [u8; 32] {
