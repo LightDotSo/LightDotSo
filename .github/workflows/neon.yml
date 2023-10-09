@@ -96,6 +96,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       - name: Prisma Migrate Deploy
         working-directory: configurations/prisma
+        continue-on-error: false
         run: |
           pnpm run build
           pnpm run db:migrate:deploy
