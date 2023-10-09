@@ -21,3 +21,6 @@
   serde_with = "3.3.0"
   test-fuzz = "4.0.2"
   tokio = { workspace = true }
+
+[dev-dependencies]
+  lazy_static = { workspace = true }

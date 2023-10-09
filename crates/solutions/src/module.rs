@@ -177,20 +177,16 @@ impl SigModule {
         let (addr_weight, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
 
         let nrindex = rindex + 66;
-        let signature_type = recover_ecdsa_signature(self.sig.as_slice(), &self.subdigest, rindex)?;
+        let signature_leaf = recover_ecdsa_signature(self.sig.as_slice(), &self.subdigest, rindex)?;
         self.rindex = nrindex;
 
         self.weight += addr_weight as u64;
 
-        let node = self.leaf_for_address_and_weight(signature_type.address, addr_weight);
+        let node = self.leaf_for_address_and_weight(signature_leaf.address, addr_weight);
         self.return_valid_root(node);
 
-        let signer = Signer {
-            weight: addr_weight,
-            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                address: signature_type.address,
-            }),
-        };
+        let signer =
+            Signer { weight: addr_weight, leaf: SignatureLeaf::ECDSASignature(signature_leaf) };
         let signer_node =
             Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
 
