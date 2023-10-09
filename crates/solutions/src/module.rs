@@ -14,11 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    config::WalletConfig,
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{
-        AddressSignatureLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode,
-        SubdigestLeaf, WalletConfig,
+        AddressSignatureLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode, SubdigestLeaf,
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,

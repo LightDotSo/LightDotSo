@@ -13,16 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{Signer, SignerNode, WalletConfig};
+use crate::types::{Signer, SignerNode};
 use ethers::{
     abi::{encode, Token},
-    types::U256,
+    types::{H256, U256},
     utils::keccak256,
 };
 use eyre::Result;
+use serde::{Deserialize, Serialize};
+
+/// The struct representation of a wallet config
+/// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
+/// License: Apache-2.0
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct WalletConfig {
+    // Bytes32 hash of the checkpoint
+    pub checkpoint: u32,
+    // Uint16 threshold
+    pub threshold: u16,
+    // Uint256 weight of the retured signature
+    pub weight: usize,
+    // Image hash of the wallet config that is used to verify the wallet
+    pub image_hash: H256,
+    // Signers of the wallet
+    pub tree: SignerNode,
+    // Internal field used to store the image hash of the wallet config
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub internal_root: Option<H256>,
+}
 
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
+    // Requires the internal_root to be set before calling this function
+    // internal_root is computed by the module
     pub fn image_hash_of_wallet_config(&self) -> Result<[u8; 32]> {
         Ok(keccak256(encode(&[
             Token::FixedBytes(
@@ -68,10 +91,10 @@ impl WalletConfig {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use crate::{
         types::{
             ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf, Signer, SignerNode,
-            WalletConfig,
         },
         utils::parse_hex_to_bytes32,
     };

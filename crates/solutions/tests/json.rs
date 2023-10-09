@@ -15,11 +15,12 @@
 
 use ethers::types::Address;
 use lightdotso_solutions::{
+    config::WalletConfig,
     io::{read_wallet_config, write_wallet_config},
     types::{
         AddressSignatureLeaf, BranchLeaf, DynamicSignatureLeaf, DynamicSignatureType,
         ECDSASignatureLeaf, ECDSASignatureType, NestedLeaf, NodeLeaf, Signature, SignatureLeaf,
-        Signer, SignerNode, SubdigestLeaf, WalletConfig,
+        Signer, SignerNode, SubdigestLeaf,
     },
 };
 

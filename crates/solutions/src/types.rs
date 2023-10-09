@@ -46,26 +46,6 @@ pub struct SignerNode {
     pub right: Option<Box<SignerNode>>,
 }
 
-/// The struct representation of a wallet config
-/// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
-/// License: Apache-2.0
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-pub struct WalletConfig {
-    // Bytes32 hash of the checkpoint
-    pub checkpoint: u32,
-    // Uint16 threshold
-    pub threshold: u16,
-    // Uint256 weight of the retured signature
-    pub weight: usize,
-    // Image hash of the wallet config that is used to verify the wallet
-    pub image_hash: H256,
-    // Signers of the wallet
-    pub tree: SignerNode,
-    // Internal field used to store the image hash of the wallet config
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub internal_root: Option<H256>,
-}
-
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub enum SignatureLeaf {
     ECDSASignature(ECDSASignatureLeaf),

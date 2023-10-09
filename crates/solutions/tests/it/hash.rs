@@ -15,8 +15,9 @@
 
 use ethers::types::{Address, H256};
 use lightdotso_solutions::{
+    config::WalletConfig,
     hash::get_address,
-    types::{NodeLeaf, SignatureLeaf, Signer, SignerNode, WalletConfig},
+    types::{NodeLeaf, SignatureLeaf, Signer, SignerNode},
     utils::parse_hex_to_bytes32,
 };
 
