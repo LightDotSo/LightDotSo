@@ -5,7 +5,6 @@
   "image_hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "tree": {
     "signer": {
-      "weight": 1,
       "leaf": {
         "type": "ECDSASignature",
         "content": {
@@ -17,7 +16,7 @@
     },
     "left": {
       "signer": {
-        "weight": 3,
+        "weight": 2,
         "leaf": {
           "type": "AddressSignature",
           "content": {
@@ -27,7 +26,7 @@
       },
       "left": {
         "signer": {
-          "weight": 2,
+          "weight": 1,
           "leaf": {
             "type": "DynamicSignature",
             "content": {
@@ -39,10 +38,11 @@
         },
         "left": {
           "signer": {
-            "weight": 2,
             "leaf": {
               "type": "NodeSignature",
-              "content": {}
+              "content": {
+                "hash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+              }
             }
           }
         },
@@ -63,7 +63,6 @@
       },
       "right": {
         "signer": {
-          "weight": 2,
           "leaf": {
             "type": "SubdigestSignature",
             "content": {}
