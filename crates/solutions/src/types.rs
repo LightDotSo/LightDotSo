@@ -91,7 +91,7 @@ pub const ECDSA_SIGNATURE_LENGTH: usize = 65;
 
 pub const ERC1271_MAGICVALUE_BYTES32: [u8; 4] = [22, 38, 186, 126];
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub struct ECDSASignature(pub [u8; ECDSA_SIGNATURE_LENGTH]);
 
 #[serde_as]
@@ -166,6 +166,12 @@ impl From<Vec<u8>> for Signature {
     }
 }
 
+impl std::fmt::Debug for ECDSASignature {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "0x{}", hex::encode(self.0))
+    }
+}
+
 impl From<[u8; ECDSA_SIGNATURE_LENGTH]> for ECDSASignature {
     fn from(item: [u8; ECDSA_SIGNATURE_LENGTH]) -> Self {
         ECDSASignature(item)
@@ -173,7 +179,7 @@ impl From<[u8; ECDSA_SIGNATURE_LENGTH]> for ECDSASignature {
 }
 
 impl TryFrom<Vec<u8>> for ECDSASignature {
-    type Error = &'static str; // You can use a more specific error type here
+    type Error = &'static str;
 
     fn try_from(bytes: Vec<u8>) -> Result<Self, Self::Error> {
         if bytes.len() != ECDSA_SIGNATURE_LENGTH {
