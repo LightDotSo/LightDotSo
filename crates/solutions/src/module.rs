@@ -22,8 +22,8 @@ use crate::{
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
-        left_pad_u8_to_bytes32, print_hex_string, read_bytes32, read_uint16, read_uint24,
-        read_uint32, read_uint8, read_uint8_address,
+        left_pad_u8_to_bytes32, read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8,
+        read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
@@ -34,6 +34,7 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
+#[derive(Clone, Debug)]
 pub struct SigModule {
     /// The address of the wallet
     pub address: Address,
@@ -139,8 +140,6 @@ impl SigModule {
     fn leaf_for_address_and_weight(&self, addr: Address, weight: u8) -> [u8; 32] {
         let weight_shifted = U256::from(weight) << 160;
         let addr_u256 = U256::from_big_endian(addr.as_bytes());
-        let a: [u8; 32] = (weight_shifted | addr_u256).into();
-        print_hex_string(&a);
         (weight_shifted | addr_u256).into()
     }
 
@@ -176,7 +175,8 @@ impl SigModule {
     fn inject_signer_node(&mut self, signer: Signer, node: SignerNode) -> Result<()> {
         let signer_node = Some(Box::new(node));
 
-        if self.root.is_empty() {
+        // If the tree is empty, set the signer
+        if self.root == [0; 32] {
             self.tree.signer = Some(signer);
         } else if self.tree.left.is_none() {
             self.tree.left = signer_node;
@@ -269,24 +269,6 @@ impl SigModule {
             weight: None,
             leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: node.into() }),
         };
-
-        // if self.tree.left.is_some() && self.tree.right.is_some() && self.tree.signer.is_none() {
-        //     self.tree.signer = Some(node);
-        // }
-
-        // if self.tree.left.is_some() {
-        //     self.tree.right =
-        //         Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
-        //     return Ok(());
-        // }
-
-        // if self.tree.right.is_some() {
-        //     self.tree.left =
-        //         Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
-        //     return Ok(());
-        // }
-
-        // self.tree.signer = Some(node);
 
         if self.tree.signer.is_none() {
             self.tree.signer = Some(node);
@@ -398,6 +380,9 @@ impl SigModule {
             // Get the first byte of the signature
             let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
             self.rindex = rindex;
+
+            // Print the flag
+            println!("Flag: {}", flag);
 
             match flag {
                 0 => self.decode_ecdsa_signature()?,
