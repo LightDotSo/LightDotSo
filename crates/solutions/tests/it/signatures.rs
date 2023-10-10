@@ -33,6 +33,8 @@ const SIGNATURES: &[&str] = &[
 async fn test_integration_signatures() {
     for (i, signature) in SIGNATURES.iter().enumerate() {
         let sig = from_hex_string(signature).unwrap().into();
+        // Notice that the recovered addresses are hypothetical as we don't have the original
+        // user_op_hash that was used for the subdigest.
         let user_op_hash = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000000001",
         )
