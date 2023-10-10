@@ -178,7 +178,7 @@ impl SigModule {
         // If the tree is empty, set the signer
         if (self.tree.signer.is_none()) && (self.tree.left.is_none()) && (self.tree.right.is_none())
         {
-            self.tree.right = node;
+            self.tree.left = node;
             return Ok(());
         }
 
@@ -197,7 +197,7 @@ impl SigModule {
         self.tree = SignerNode {
             signer: None,
             left: Some(Box::new(SignerNode {
-                signer: None,
+                signer: self.tree.signer.clone(),
                 left: self.tree.left.clone(),
                 right: self.tree.right.clone(),
             })),

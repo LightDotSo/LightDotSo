@@ -6,7 +6,7 @@
   "tree": {
     "left": {
       "left": {
-        "right": {
+        "left": {
           "signer": {
             "leaf": {
               "type": "NodeSignature",
@@ -19,7 +19,7 @@
       },
       "right": {
         "left": {
-          "right": {
+          "left": {
             "signer": {
               "leaf": {
                 "type": "NodeSignature",
@@ -33,7 +33,7 @@
         "right": {
           "left": {
             "left": {
-              "right": {
+              "left": {
                 "signer": {
                   "weight": 1,
                   "leaf": {
@@ -75,7 +75,7 @@
     "right": {
       "left": {
         "left": {
-          "right": {
+          "left": {
             "signer": {
               "leaf": {
                 "type": "NodeSignature",
@@ -88,7 +88,7 @@
         },
         "right": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "leaf": {
                   "type": "NodeSignature",
@@ -101,7 +101,7 @@
           },
           "right": {
             "left": {
-              "right": {
+              "left": {
                 "signer": {
                   "weight": 1,
                   "leaf": {

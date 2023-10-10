@@ -9,7 +9,7 @@
         "left": {
           "left": {
             "left": {
-              "right": {
+              "left": {
                 "signer": {
                   "leaf": {
                     "type": "NodeSignature",
@@ -22,7 +22,7 @@
             },
             "right": {
               "left": {
-                "right": {
+                "left": {
                   "signer": {
                     "leaf": {
                       "type": "NodeSignature",
@@ -35,7 +35,7 @@
               },
               "right": {
                 "left": {
-                  "right": {
+                  "left": {
                     "signer": {
                       "leaf": {
                         "type": "SubdigestSignature",

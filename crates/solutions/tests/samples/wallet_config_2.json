@@ -8,7 +8,7 @@
       "left": {
         "left": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
@@ -34,7 +34,7 @@
         },
         "right": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
@@ -62,7 +62,7 @@
       "right": {
         "left": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
@@ -88,7 +88,7 @@
         },
         "right": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
@@ -120,7 +120,7 @@
       "left": {
         "left": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
@@ -146,7 +146,7 @@
         },
         "right": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
@@ -174,7 +174,7 @@
       "right": {
         "left": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
@@ -202,7 +202,7 @@
         },
         "right": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {

@@ -5,7 +5,7 @@
   "image_hash": "0xe92a9c6a8d48e440605e8700f4a78aee45edccf76ca4119362ad478b71ce67e6",
   "tree": {
     "left": {
-      "right": {
+      "left": {
         "signer": {
           "leaf": {
             "type": "NodeSignature",
@@ -19,7 +19,7 @@
     "right": {
       "left": {
         "left": {
-          "right": {
+          "left": {
             "signer": {
               "leaf": {
                 "type": "NodeSignature",
@@ -32,7 +32,7 @@
         },
         "right": {
           "left": {
-            "right": {
+            "left": {
               "signer": {
                 "weight": 1,
                 "leaf": {
