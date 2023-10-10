@@ -122,9 +122,8 @@ impl SigModule {
     }
 
     /// Sets the subdigest w/ the digest function
-    #[allow(dead_code)]
-    pub fn set_subdigest(&mut self, digest: [u8; 32]) {
-        self.subdigest = self.get_subdigest(digest)
+    pub fn set_subdigest(&mut self) {
+        self.subdigest = self.get_subdigest(self.subdigest)
     }
 
     /// Sets the subdigest directly (bypassing digest function))
