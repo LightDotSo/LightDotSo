@@ -13,16 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{Signer, SignerNode, WalletConfig};
+use crate::types::{Signer, SignerNode};
 use ethers::{
     abi::{encode, Token},
-    types::U256,
+    types::{H256, U256},
     utils::keccak256,
 };
 use eyre::Result;
+use serde::{Deserialize, Serialize};
+
+/// The struct representation of a wallet config
+/// Derived from: https://github.com/0xsequence/go-sequence/blob/eabca0c348b5d87dd943a551908c80f61c347899/config.go#L12
+/// License: Apache-2.0
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+pub struct WalletConfig {
+    // Bytes32 hash of the checkpoint
+    pub checkpoint: u32,
+    // Uint16 threshold
+    pub threshold: u16,
+    // Uint256 weight of the retured signature
+    pub weight: usize,
+    // Image hash of the wallet config that is used to verify the wallet
+    pub image_hash: H256,
+    // Signers of the wallet
+    pub tree: SignerNode,
+    // Internal field used to store the image hash of the wallet config
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub internal_root: Option<H256>,
+}
 
 impl WalletConfig {
     // Encoding the wallet config into bytes and hash it using keccak256
+    // Requires the internal_root to be set before calling this function
+    // internal_root is computed by the module
     pub fn image_hash_of_wallet_config(&self) -> Result<[u8; 32]> {
         Ok(keccak256(encode(&[
             Token::FixedBytes(
@@ -61,17 +84,19 @@ impl WalletConfig {
     }
 
     pub fn is_wallet_valid(&self) -> bool {
-        let total_weight: u8 = self.get_signers().iter().map(|signer| signer.weight).sum();
+        let total_weight: u8 =
+            self.get_signers().iter().map(|signer| signer.weight.unwrap_or(0)).sum();
         total_weight >= self.threshold as u8
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use crate::{
         types::{
-            ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf, Signer, SignerNode,
-            WalletConfig,
+            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf,
+            Signer, SignerNode,
         },
         utils::parse_hex_to_bytes32,
     };
@@ -91,7 +116,7 @@ mod tests {
             weight: 1,
             image_hash: [0; 32].into(),
             tree: SignerNode {
-                signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(leaf) }),
+                signer: Some(Signer { weight: Some(1), leaf: SignatureLeaf::ECDSASignature(leaf) }),
                 left: None,
                 right: None,
             },
@@ -114,9 +139,18 @@ mod tests {
     #[test]
     fn test_get_signers() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer1 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer2 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer3 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
 
         // Construct the signer tree
         let tree = SignerNode {
@@ -154,9 +188,24 @@ mod tests {
     #[test]
     fn test_is_wallet_valid() {
         // Define some dummy signers
-        let signer1 = Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer2 = Signer { weight: 2, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
-        let signer3 = Signer { weight: 3, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) };
+        let signer1 = Signer {
+            weight: Some(1),
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                address: "0x6FFEcCF6F31e0a469D55DEdE5651D34A6ECd9FC5".parse().unwrap(),
+            }),
+        };
+        let signer2 = Signer {
+            weight: Some(3),
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse().unwrap(),
+            }),
+        };
+        let signer3 = Signer {
+            weight: Some(6),
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                address: "0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf".parse().unwrap(),
+            }),
+        };
 
         // Construct the signer tree
         let tree = SignerNode {

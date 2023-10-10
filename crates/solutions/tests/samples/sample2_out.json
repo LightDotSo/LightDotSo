@@ -7,7 +7,8 @@
     "signer": {
       "weight": 1,
       "leaf": {
-        "ECDSASignature": {
+        "type": "ECDSASignature",
+        "content": {
           "address": "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d",
           "signature_type": "ECDSASignatureTypeEIP712",
           "signature": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"

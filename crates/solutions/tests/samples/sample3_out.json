@@ -5,9 +5,9 @@
   "image_hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
   "tree": {
     "signer": {
-      "weight": 1,
       "leaf": {
-        "ECDSASignature": {
+        "type": "ECDSASignature",
+        "content": {
           "address": "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d",
           "signature_type": "ECDSASignatureTypeEIP712",
           "signature": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
@@ -16,18 +16,20 @@
     },
     "left": {
       "signer": {
-        "weight": 3,
+        "weight": 2,
         "leaf": {
-          "AddressSignature": {
+          "type": "AddressSignature",
+          "content": {
             "address": "0x1111111111111111111111111111111111111111"
           }
         }
       },
       "left": {
         "signer": {
-          "weight": 2,
+          "weight": 1,
           "leaf": {
-            "DynamicSignature": {
+            "type": "DynamicSignature",
+            "content": {
               "address": "0x0000000000000000000000000000000000000000",
               "signature_type": "DynamicSignatureTypeEIP1271",
               "signature": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
@@ -36,9 +38,11 @@
         },
         "left": {
           "signer": {
-            "weight": 2,
             "leaf": {
-              "NodeSignature": {}
+              "type": "NodeSignature",
+              "content": {
+                "hash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+              }
             }
           }
         },
@@ -46,7 +50,8 @@
           "signer": {
             "weight": 2,
             "leaf": {
-              "NestedSignature": {
+              "type": "NestedSignature",
+              "content": {
                 "internal_threshold": 0,
                 "external_weight": 0,
                 "address": "0x0000000000000000000000000000000000000000",
@@ -58,9 +63,9 @@
       },
       "right": {
         "signer": {
-          "weight": 2,
           "leaf": {
-            "SubdigestSignature": {}
+            "type": "SubdigestSignature",
+            "content": {}
           }
         }
       }
@@ -69,7 +74,8 @@
       "signer": {
         "weight": 2,
         "leaf": {
-          "BranchSignature": {}
+          "type": "BranchSignature",
+          "content": {}
         }
       }
     }

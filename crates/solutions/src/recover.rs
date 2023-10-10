@@ -13,11 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    module::SigModule,
-    types::{Signature, WalletConfig},
-    utils::read_uint24,
-};
+use crate::{config::WalletConfig, module::SigModule, types::Signature, utils::read_uint24};
 use async_recursion::async_recursion;
 use ethers::{
     abi::{encode_packed, Token},

@@ -30,10 +30,7 @@ use ethers_main::{
 use eyre::Result;
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
-use lightdotso_solutions::{
-    hash::get_address,
-    types::{SignerNode, WalletConfig},
-};
+use lightdotso_solutions::{config::WalletConfig, hash::get_address, types::SignerNode};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,

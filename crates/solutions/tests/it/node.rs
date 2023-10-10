@@ -27,12 +27,15 @@ async fn test_integration_node_simple() {
         1,
         [0; 32],
         Some(SignerNode {
-            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
+            signer: Some(Signer {
+                weight: Some(1),
+                leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+            }),
             left: Some(Box::new(SignerNode {
                 left: None,
                 right: None,
                 signer: Some(Signer {
-                    weight: 3,
+                    weight: Some(3),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                         address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
                     }),
@@ -42,7 +45,7 @@ async fn test_integration_node_simple() {
                 left: None,
                 right: None,
                 signer: Some(Signer {
-                    weight: 3,
+                    weight: Some(3),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                         address: "0x2222222222222222222222222222222222222222".parse().unwrap(),
                     }),
@@ -66,12 +69,15 @@ async fn test_integration_node_nested() {
         1,
         [0; 32],
         Some(SignerNode {
-            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
+            signer: Some(Signer {
+                weight: Some(1),
+                leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+            }),
             left: Some(Box::new(SignerNode {
                 left: None,
                 right: None,
                 signer: Some(Signer {
-                    weight: 3,
+                    weight: Some(3),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                         address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
                     }),
@@ -82,7 +88,7 @@ async fn test_integration_node_nested() {
                     left: None,
                     right: None,
                     signer: Some(Signer {
-                        weight: 1,
+                        weight: Some(1),
                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                             address: "0x2222222222222222222222222222222222222222".parse().unwrap(),
                         }),
@@ -92,14 +98,14 @@ async fn test_integration_node_nested() {
                     left: None,
                     right: None,
                     signer: Some(Signer {
-                        weight: 1,
+                        weight: Some(1),
                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                             address: "0x3333333333333333333333333333333333333333".parse().unwrap(),
                         }),
                     }),
                 })),
                 signer: Some(Signer {
-                    weight: 2,
+                    weight: Some(2),
                     leaf: SignatureLeaf::NestedSignature(NestedLeaf {
                         external_weight: 2,
                         internal_threshold: 1,
@@ -130,13 +136,16 @@ async fn test_integration_node_complex() {
         1,
         [0; 32],
         Some(SignerNode {
-            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
+            signer: Some(Signer {
+                weight: Some(1),
+                leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+            }),
             left: Some(Box::new(SignerNode {
                 left: Some(Box::new(SignerNode {
                     left: None,
                     right: None,
                     signer: Some(Signer {
-                        weight: 3,
+                        weight: Some(3),
                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                             address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
                         }),
@@ -146,20 +155,23 @@ async fn test_integration_node_complex() {
                     left: None,
                     right: None,
                     signer: Some(Signer {
-                        weight: 3,
+                        weight: Some(3),
                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                             address: "0x2222222222222222222222222222222222222222".parse().unwrap(),
                         }),
                     }),
                 })),
-                signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
+                signer: Some(Signer {
+                    weight: Some(1),
+                    leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+                }),
             })),
             right: Some(Box::new(SignerNode {
                 left: Some(Box::new(SignerNode {
                     left: None,
                     right: None,
                     signer: Some(Signer {
-                        weight: 2,
+                        weight: Some(2),
                         leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                             address: "0x3333333333333333333333333333333333333333".parse().unwrap(),
                         }),
@@ -170,7 +182,7 @@ async fn test_integration_node_complex() {
                         left: None,
                         right: None,
                         signer: Some(Signer {
-                            weight: 1,
+                            weight: Some(1),
                             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                                 address: "0x4444444444444444444444444444444444444444"
                                     .parse()
@@ -182,7 +194,7 @@ async fn test_integration_node_complex() {
                         left: None,
                         right: None,
                         signer: Some(Signer {
-                            weight: 1,
+                            weight: Some(1),
                             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                                 address: "0x5555555555555555555555555555555555555555"
                                     .parse()
@@ -191,7 +203,7 @@ async fn test_integration_node_complex() {
                         }),
                     })),
                     signer: Some(Signer {
-                        weight: 1,
+                        weight: Some(1),
                         leaf: SignatureLeaf::NestedSignature(NestedLeaf {
                             external_weight: 2,
                             internal_threshold: 1,
@@ -200,7 +212,10 @@ async fn test_integration_node_complex() {
                         }),
                     }),
                 })),
-                signer: Some(Signer { weight: 1, leaf: SignatureLeaf::NodeSignature(NodeLeaf {}) }),
+                signer: Some(Signer {
+                    weight: Some(1),
+                    leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+                }),
             })),
         }),
     );

@@ -15,11 +15,12 @@
 
 use ethers::types::Address;
 use lightdotso_solutions::{
+    config::WalletConfig,
     io::{read_wallet_config, write_wallet_config},
     types::{
         AddressSignatureLeaf, BranchLeaf, DynamicSignatureLeaf, DynamicSignatureType,
         ECDSASignatureLeaf, ECDSASignatureType, NestedLeaf, NodeLeaf, Signature, SignatureLeaf,
-        Signer, SignerNode, SubdigestLeaf, WalletConfig,
+        Signer, SignerNode, SubdigestLeaf,
     },
 };
 
@@ -51,7 +52,10 @@ fn test_wallet_ecdsa_to_json() {
         internal_root: Some([0; 32].into()),
         image_hash: [0; 32].into(),
         tree: SignerNode {
-            signer: Some(Signer { weight: 1, leaf: SignatureLeaf::ECDSASignature(ecdsa_leaf) }),
+            signer: Some(Signer {
+                weight: Some(1),
+                leaf: SignatureLeaf::ECDSASignature(ecdsa_leaf),
+            }),
             left: None,
             right: None,
         },
@@ -89,7 +93,7 @@ fn test_wallet_complex_to_json() {
         image_hash: [0; 32].into(),
         tree: SignerNode {
             signer: Some(Signer {
-                weight: 1,
+                weight: None,
                 leaf: SignatureLeaf::ECDSASignature(ecdsa_leaf.clone()),
             }),
             left: Some(Box::new(SignerNode {
@@ -98,15 +102,15 @@ fn test_wallet_complex_to_json() {
                         left: None,
                         right: None,
                         signer: Some(Signer {
-                            weight: 2,
-                            leaf: SignatureLeaf::NodeSignature(NodeLeaf {}),
+                            weight: None,
+                            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
                         }),
                     })),
                     right: Some(Box::new(SignerNode {
                         left: None,
                         right: None,
                         signer: Some(Signer {
-                            weight: 2,
+                            weight: Some(2),
                             leaf: SignatureLeaf::NestedSignature(NestedLeaf {
                                 internal_root: [0; 32].into(),
                                 internal_threshold: 0,
@@ -116,7 +120,7 @@ fn test_wallet_complex_to_json() {
                         }),
                     })),
                     signer: Some(Signer {
-                        weight: 2,
+                        weight: Some(1),
                         leaf: SignatureLeaf::DynamicSignature(DynamicSignatureLeaf {
                             address: Address::zero(),
                             signature_type: DynamicSignatureType::DynamicSignatureTypeEIP1271,
@@ -128,12 +132,12 @@ fn test_wallet_complex_to_json() {
                     left: None,
                     right: None,
                     signer: Some(Signer {
-                        weight: 2,
+                        weight: None,
                         leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {}),
                     }),
                 })),
                 signer: Some(Signer {
-                    weight: 3,
+                    weight: Some(2),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
                         address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
                     }),
@@ -143,7 +147,7 @@ fn test_wallet_complex_to_json() {
                 left: None,
                 right: None,
                 signer: Some(Signer {
-                    weight: 2,
+                    weight: Some(2),
                     leaf: SignatureLeaf::BranchSignature(BranchLeaf {}),
                 }),
             })),
