@@ -1,0 +1,169 @@
+---
+source: crates/solutions/tests/it/signatures.rs
+expression: recovered.tree
+---
+SignerNode {
+    signer: None,
+    left: Some(
+        SignerNode {
+            signer: None,
+            left: Some(
+                SignerNode {
+                    signer: None,
+                    left: Some(
+                        SignerNode {
+                            signer: None,
+                            left: Some(
+                                SignerNode {
+                                    signer: None,
+                                    left: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: None,
+                                                    leaf: NodeSignature(
+                                                        NodeLeaf {
+                                                            hash: 0x2b4c067647ee1f154214b4ad83bbbe7e57a528ca0df587e34ded382ca7348c10,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                    right: Some(
+                                        SignerNode {
+                                            signer: None,
+                                            left: Some(
+                                                SignerNode {
+                                                    signer: Some(
+                                                        Signer {
+                                                            weight: None,
+                                                            leaf: NodeSignature(
+                                                                NodeLeaf {
+                                                                    hash: 0xc702696d354063d18d750cc686a1f356e503f85516c54375ef5878250a227587,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    left: None,
+                                                    right: None,
+                                                },
+                                            ),
+                                            right: Some(
+                                                SignerNode {
+                                                    signer: None,
+                                                    left: Some(
+                                                        SignerNode {
+                                                            signer: Some(
+                                                                Signer {
+                                                                    weight: None,
+                                                                    leaf: SubdigestSignature(
+                                                                        SubdigestLeaf {
+                                                                            hash: 0x4cd7065b01927d3429db64e0a7ec956fa5506dab23fa37c767eb4375fab7898b,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            left: None,
+                                                            right: None,
+                                                        },
+                                                    ),
+                                                    right: Some(
+                                                        SignerNode {
+                                                            signer: Some(
+                                                                Signer {
+                                                                    weight: None,
+                                                                    leaf: NodeSignature(
+                                                                        NodeLeaf {
+                                                                            hash: 0x2acf6636e813600f741841733e57a7e0cb4131f3c68db7ba7014fb94525f5de2,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            left: None,
+                                                            right: None,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                },
+                            ),
+                            right: Some(
+                                SignerNode {
+                                    signer: Some(
+                                        Signer {
+                                            weight: None,
+                                            leaf: NodeSignature(
+                                                NodeLeaf {
+                                                    hash: 0x02c10a9634e89b4293346a7408364eeece764491bd465d043f7c826518c2bc95,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    left: None,
+                                    right: None,
+                                },
+                            ),
+                        },
+                    ),
+                    right: Some(
+                        SignerNode {
+                            signer: Some(
+                                Signer {
+                                    weight: Some(
+                                        1,
+                                    ),
+                                    leaf: AddressSignature(
+                                        AddressSignatureLeaf {
+                                            address: 0x1a9bd9f98e2c0c81bcf51da26c3a7cfcc18c43b4,
+                                        },
+                                    ),
+                                },
+                            ),
+                            left: None,
+                            right: None,
+                        },
+                    ),
+                },
+            ),
+            right: Some(
+                SignerNode {
+                    signer: Some(
+                        Signer {
+                            weight: None,
+                            leaf: NodeSignature(
+                                NodeLeaf {
+                                    hash: 0x0c389524f715de03757bcbc7a084f52c5d54def431bb8080a18d0075e26b859c,
+                                },
+                            ),
+                        },
+                    ),
+                    left: None,
+                    right: None,
+                },
+            ),
+        },
+    ),
+    right: Some(
+        SignerNode {
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        1,
+                    ),
+                    leaf: AddressSignature(
+                        AddressSignatureLeaf {
+                            address: 0x379b2a7a384376b420d3d19c5c5717abaad3a969,
+                        },
+                    ),
+                },
+            ),
+            left: None,
+            right: None,
+        },
+    ),
+}

@@ -1,0 +1,219 @@
+---
+source: crates/solutions/tests/it/signatures.rs
+expression: recovered.tree
+---
+SignerNode {
+    signer: None,
+    left: Some(
+        SignerNode {
+            signer: None,
+            left: Some(
+                SignerNode {
+                    signer: Some(
+                        Signer {
+                            weight: None,
+                            leaf: NodeSignature(
+                                NodeLeaf {
+                                    hash: 0x4a062f86183c9d46e129f0331f2a42f6ba22a3525a46ecd197fa23d177d75f2d,
+                                },
+                            ),
+                        },
+                    ),
+                    left: None,
+                    right: None,
+                },
+            ),
+            right: Some(
+                SignerNode {
+                    signer: None,
+                    left: Some(
+                        SignerNode {
+                            signer: Some(
+                                Signer {
+                                    weight: None,
+                                    leaf: NodeSignature(
+                                        NodeLeaf {
+                                            hash: 0x3fce59919d0a4ee44a8066a3b1d0083760d89a06ae89edadf8a58e0e5c5ac504,
+                                        },
+                                    ),
+                                },
+                            ),
+                            left: None,
+                            right: None,
+                        },
+                    ),
+                    right: Some(
+                        SignerNode {
+                            signer: None,
+                            left: Some(
+                                SignerNode {
+                                    signer: None,
+                                    left: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: Some(
+                                                        1,
+                                                    ),
+                                                    leaf: AddressSignature(
+                                                        AddressSignatureLeaf {
+                                                            address: 0x6ffeccf6f31e0a469d55dede5651d34a6ecd9fc5,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                    right: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: Some(
+                                                        1,
+                                                    ),
+                                                    leaf: ECDSASignature(
+                                                        ECDSASignatureLeaf {
+                                                            address: 0xc89edaafc5524c07d5266a7a7a5e82acca4e4119,
+                                                            signature_type: ECDSASignatureTypeEthSign,
+                                                            signature: 0x7052a0438a13da22242bcd20c219630d839c364cd2b6042add1bee32774c37d72ba2ace8b7a79c95a536d4c0fed3fe05883c6e1188a4191a91623a903e4ec21c1b,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                },
+                            ),
+                            right: Some(
+                                SignerNode {
+                                    signer: Some(
+                                        Signer {
+                                            weight: None,
+                                            leaf: NodeSignature(
+                                                NodeLeaf {
+                                                    hash: 0xad5831467806b6edd059ff5ac9809f2bb6e80512ceb5d466a67251ffb842fae1,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    left: None,
+                                    right: None,
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+        },
+    ),
+    right: Some(
+        SignerNode {
+            signer: None,
+            left: Some(
+                SignerNode {
+                    signer: None,
+                    left: Some(
+                        SignerNode {
+                            signer: Some(
+                                Signer {
+                                    weight: None,
+                                    leaf: NodeSignature(
+                                        NodeLeaf {
+                                            hash: 0x14b729622595218cdbef06c630daeea028e25e8ca048d97bc170d75feb9066ad,
+                                        },
+                                    ),
+                                },
+                            ),
+                            left: None,
+                            right: None,
+                        },
+                    ),
+                    right: Some(
+                        SignerNode {
+                            signer: None,
+                            left: Some(
+                                SignerNode {
+                                    signer: Some(
+                                        Signer {
+                                            weight: None,
+                                            leaf: NodeSignature(
+                                                NodeLeaf {
+                                                    hash: 0x0c8c0bb7e8c5ec8eed444ae25f3a1796597bcfacf5f6b758ae4fadd6fc416f56,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    left: None,
+                                    right: None,
+                                },
+                            ),
+                            right: Some(
+                                SignerNode {
+                                    signer: None,
+                                    left: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: Some(
+                                                        1,
+                                                    ),
+                                                    leaf: ECDSASignature(
+                                                        ECDSASignatureLeaf {
+                                                            address: 0x25a0b8bee2d548c4b110695213edf50b6f74c58b,
+                                                            signature_type: ECDSASignatureTypeEthSign,
+                                                            signature: 0xe7618f1b7b012d7fc48f518f498bb6823dc2a8308984287501873cb535b6d5bf526fb91a220297f461ac5a2434d0e8e768c3bf166c329366ddc885bf2e1676271c,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                    right: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: Some(
+                                                        1,
+                                                    ),
+                                                    leaf: AddressSignature(
+                                                        AddressSignatureLeaf {
+                                                            address: 0x4ef7ec718f66ae3920ea119b9d7ddf39337601f7,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            right: Some(
+                SignerNode {
+                    signer: Some(
+                        Signer {
+                            weight: None,
+                            leaf: NodeSignature(
+                                NodeLeaf {
+                                    hash: 0xfdea4c5fb23fb3cc2b2360057abef1ff7e7195acbdc4db555c27cc588a4585a6,
+                                },
+                            ),
+                        },
+                    ),
+                    left: None,
+                    right: None,
+                },
+            ),
+        },
+    ),
+}

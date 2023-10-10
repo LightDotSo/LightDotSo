@@ -1,0 +1,22 @@
+---
+source: crates/solutions/tests/it/signatures.rs
+expression: recovered.tree
+---
+SignerNode {
+    signer: Some(
+        Signer {
+            weight: Some(
+                1,
+            ),
+            leaf: ECDSASignature(
+                ECDSASignatureLeaf {
+                    address: 0x6a202a0ba513f87db9174e44300378b25f1950bb,
+                    signature_type: ECDSASignatureTypeEthSign,
+                    signature: 0x9fa7b7e8ed25088c413074818ac10ab3bbcddb120bbec85083f3ba254e5547d953fe615a6474fd365326244dedd7afa3911ad39c956ca096d721064d6b29055d1b,
+                },
+            ),
+        },
+    ),
+    left: None,
+    right: None,
+}

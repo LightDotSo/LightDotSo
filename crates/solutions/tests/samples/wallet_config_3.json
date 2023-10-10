@@ -1,0 +1,83 @@
+{
+  "checkpoint": 2,
+  "threshold": 1,
+  "weight": 4,
+  "image_hash": "0xe92a9c6a8d48e440605e8700f4a78aee45edccf76ca4119362ad478b71ce67e6",
+  "tree": {
+    "left": {
+      "signer": {
+        "leaf": {
+          "type": "NodeSignature",
+          "content": {
+            "hash": "0xf6dc189f16bb65c588ccd5c63aa805bcbeb6e90dd8a049cfba0936050f299087"
+          }
+        }
+      }
+    },
+    "right": {
+      "signer": {
+        "weight": 4,
+        "leaf": {
+          "type": "NestedSignature",
+          "content": {
+            "internal_threshold": 2,
+            "external_weight": 4,
+            "internal_root": "0xfcda4678b72c678ae3e83dab5bef853f731c51d8dd2b0b849c6542d8bb05452c"
+          }
+        }
+      },
+      "left": {
+        "left": {
+          "signer": {
+            "leaf": {
+              "type": "NodeSignature",
+              "content": {
+                "hash": "0x7c989a96925302993812c1ec3924bce3ba2ca0e8f7e3655e30f5b24d965aa18b"
+              }
+            }
+          }
+        },
+        "right": {
+          "left": {
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "ECDSASignature",
+                "content": {
+                  "address": "0xa4ab6e1f791e1d0339f1ed5d4b681e3b58f4a3f7",
+                  "signature_type": "ECDSASignatureTypeEthSign",
+                  "signature": "0xa73ce16a9cc7075c18bd2b4fd2649812fecb51460353a55bf62f821bf884443a169e0d0e04113d7ef2c2d15f1ecf46531f291259542065c556f0e721a82b3c581b"
+                }
+              }
+            }
+          },
+          "right": {
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "ECDSASignature",
+                "content": {
+                  "address": "0x8c84d0b5deff3c1ac3ab77a2716e7de18c652ad9",
+                  "signature_type": "ECDSASignatureTypeEthSign",
+                  "signature": "0x93f1f388009f68763df43632153155960ea6604723bb517e90788822ff21e38722be4387e8f67c0db677b74d9a0c2a804183e6a3eebd2ba53dbfc54432f1a10f1b"
+                }
+              }
+            }
+          }
+        }
+      },
+      "right": {
+        "signer": {
+          "weight": 1,
+          "leaf": {
+            "type": "AddressSignature",
+            "content": {
+              "address": "0x907c144d2490f49838c6499507ee5914f4a22b5b"
+            }
+          }
+        }
+      }
+    }
+  },
+  "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
+}

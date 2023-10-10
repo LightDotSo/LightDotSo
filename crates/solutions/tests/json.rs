@@ -115,7 +115,6 @@ fn test_wallet_complex_to_json() {
                                 internal_root: [0; 32].into(),
                                 internal_threshold: 0,
                                 external_weight: 0,
-                                address: Address::zero(),
                             }),
                         }),
                     })),
@@ -133,7 +132,9 @@ fn test_wallet_complex_to_json() {
                     right: None,
                     signer: Some(Signer {
                         weight: None,
-                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {}),
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: [0; 32].into(),
+                        }),
                     }),
                 })),
                 signer: Some(Signer {

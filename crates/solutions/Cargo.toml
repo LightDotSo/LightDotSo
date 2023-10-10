@@ -23,4 +23,5 @@
   tokio = { workspace = true }
 
 [dev-dependencies]
+  insta = "1.17"
   lazy_static = { workspace = true }
