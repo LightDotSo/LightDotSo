@@ -95,7 +95,8 @@ mod tests {
     use super::*;
     use crate::{
         types::{
-            ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf, Signer, SignerNode,
+            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf,
+            Signer, SignerNode,
         },
         utils::parse_hex_to_bytes32,
     };
@@ -188,16 +189,22 @@ mod tests {
     fn test_is_wallet_valid() {
         // Define some dummy signers
         let signer1 = Signer {
-            weight: None,
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+            weight: Some(1),
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                address: "0x6FFEcCF6F31e0a469D55DEdE5651D34A6ECd9FC5".parse().unwrap(),
+            }),
         };
         let signer2 = Signer {
-            weight: None,
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+            weight: Some(3),
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse().unwrap(),
+            }),
         };
         let signer3 = Signer {
-            weight: None,
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+            weight: Some(6),
+            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                address: "0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf".parse().unwrap(),
+            }),
         };
 
         // Construct the signer tree
