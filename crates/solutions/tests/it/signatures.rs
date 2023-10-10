@@ -13,15 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::{types::Address, utils::hex};
-use lazy_static::lazy_static;
+use ethers::types::Address;
 use lightdotso_solutions::{
     io::write_wallet_config,
     recover::recover_signature,
-    types::{
-        AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf,
-        Signer, SignerNode,
-    },
     utils::{from_hex_string, parse_hex_to_bytes32},
 };
 
@@ -34,106 +29,8 @@ const SIGNATURES: &[&str] = &[
     "0x010002636a33a501012093ec341be249baa0c8afa35fef368a90a483900201cd907cf455a1a00a4ebe37ef5f4bb7abc3770a6900004228230cc5c4ee221c093054fef22c12d534f4d63782bc94a160c2f781cef142e019b84d82070b67cb750ec9ba46ae49e6687591810099f6e58811fbe35ea3db451c0202014bffabff5819087514d8db622543c3d0d89cd64d000042844e002b27098ba6144bc9eb7950cd20a4062d265bdd042bffbb7ec8405caf7f60f1c5bdcd8ea4f4acee17d5ac9eac6bcdb40a20a41796d40a153278ab062b211c020101e8c4a6eb40ece266c7a58670493ee0727be4d20a"
 ];
 
-lazy_static! {
-    pub static ref NODE_1: SignerNode = SignerNode {
-        left: None,
-        right: None,
-        signer: Some(Signer {
-            weight: Some(1),
-            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
-                address: "0x6a202a0ba513f87db9174e44300378b25f1950bb".parse().unwrap(),
-                signature_type: ECDSASignatureType::ECDSASignatureTypeEthSign,
-                signature: hex::decode("0x9fa7b7e8ed25088c413074818ac10ab3bbcddb120bbec85083f3ba254e5547d953fe615a6474fd365326244dedd7afa3911ad39c956ca096d721064d6b29055d1b").unwrap().try_into().unwrap(),
-            }),
-        }),
-    };
-
-}
-
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_signatures() {
-    let _node: SignerNode = SignerNode {
-        signer: Some(Signer {
-            weight: Some(1),
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf {
-                hash: parse_hex_to_bytes32(
-                    "0x4a062f86183c9d46e129f0331f2a42f6ba22a3525a46ecd197fa23d177d75f2d",
-                )
-                .unwrap()
-                .into(),
-            }),
-        }),
-        left: Some(Box::new(SignerNode {
-            signer: Some(Signer {
-                weight: Some(1),
-                leaf: SignatureLeaf::NodeSignature(NodeLeaf {
-                    hash: parse_hex_to_bytes32(
-                        "0x3fce59919d0a4ee44a8066a3b1d0083760d89a06ae89edadf8a58e0e5c5ac504",
-                    )
-                    .unwrap()
-                    .into(),
-                }),
-            }),
-            left: Some(Box::new(SignerNode {
-                signer: Some(Signer {
-                    weight: Some(1),
-                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0x6FFEcCF6F31e0a469D55DEdE5651D34A6ECd9FC5".parse().unwrap(),
-                    }),
-                }),
-                left: Some(Box::new(SignerNode {
-                    signer: Some(Signer {
-                        weight: Some(1),
-                        leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                            address: "0xc89edaafc5524c07d5266a7a7a5e82acca4e4119".parse().unwrap(),
-                        }),
-                    }),
-                    left: None,
-                    right: None,
-                })),
-                right: None,
-            })),
-            right: None,
-        })),
-        right: Some(Box::new(SignerNode {
-            signer: Some(Signer {
-                weight: Some(1),
-                leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
-            }),
-            left: Some(Box::new(SignerNode {
-                signer: Some(Signer {
-                    weight: Some(1),
-                    leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
-                }),
-                left: Some(Box::new(SignerNode {
-                    signer: Some(Signer {
-                        weight: Some(1),
-                        leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                            address: "0x25a0b8bee2d548c4b110695213edf50b6f74c58b".parse().unwrap(),
-                        }),
-                    }),
-                    left: Some(Box::new(SignerNode {
-                        signer: Some(Signer {
-                            weight: Some(1),
-                            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                                address: "0x4ef7ec718f66ae3920ea119b9d7ddf39337601f7"
-                                    .parse()
-                                    .unwrap(),
-                            }),
-                        }),
-                        left: None,
-                        right: None,
-                    })),
-                    right: None,
-                })),
-                right: None,
-            })),
-            right: None,
-        })),
-    };
-
-    let _tres: Vec<&SignerNode> = vec![&NODE_1];
-
     for (i, signature) in SIGNATURES.iter().enumerate() {
         let sig = from_hex_string(signature).unwrap().into();
         let user_op_hash = parse_hex_to_bytes32(
@@ -142,13 +39,11 @@ async fn test_integration_signatures() {
         .unwrap();
 
         let recovered = recover_signature(Address::zero(), 1, user_op_hash, sig).await.unwrap();
-        println!("recovered: {:?}", recovered);
 
         let path_name = format!("tests/samples/wallet_config_{}.json", i);
 
         // Write WalletConfig back to a different JSON file
         write_wallet_config(&recovered, path_name).unwrap();
-
-        // assert_eq!(recovered.tree, tres[i].clone());
+        insta::assert_debug_snapshot!(i.to_string(), recovered.tree);
     }
 }

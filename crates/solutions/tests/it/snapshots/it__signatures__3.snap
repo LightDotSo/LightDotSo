@@ -1,0 +1,262 @@
+---
+source: crates/solutions/tests/it/signatures.rs
+expression: recovered.tree
+---
+SignerNode {
+    signer: None,
+    left: Some(
+        SignerNode {
+            signer: Some(
+                Signer {
+                    weight: None,
+                    leaf: NodeSignature(
+                        NodeLeaf {
+                            hash: 0xf6dc189f16bb65c588ccd5c63aa805bcbeb6e90dd8a049cfba0936050f299087,
+                        },
+                    ),
+                },
+            ),
+            left: None,
+            right: None,
+        },
+    ),
+    right: Some(
+        SignerNode {
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        4,
+                    ),
+                    leaf: NestedSignature(
+                        NestedLeaf {
+                            internal_threshold: 2,
+                            external_weight: 4,
+                            address: 0x0000000000000000000000000000000000000000,
+                            internal_root: 0xfcda4678b72c678ae3e83dab5bef853f731c51d8dd2b0b849c6542d8bb05452c,
+                        },
+                    ),
+                },
+            ),
+            left: Some(
+                SignerNode {
+                    signer: None,
+                    left: Some(
+                        SignerNode {
+                            signer: Some(
+                                Signer {
+                                    weight: None,
+                                    leaf: NodeSignature(
+                                        NodeLeaf {
+                                            hash: 0x7c989a96925302993812c1ec3924bce3ba2ca0e8f7e3655e30f5b24d965aa18b,
+                                        },
+                                    ),
+                                },
+                            ),
+                            left: None,
+                            right: None,
+                        },
+                    ),
+                    right: Some(
+                        SignerNode {
+                            signer: None,
+                            left: Some(
+                                SignerNode {
+                                    signer: Some(
+                                        Signer {
+                                            weight: Some(
+                                                1,
+                                            ),
+                                            leaf: ECDSASignature(
+                                                ECDSASignatureLeaf {
+                                                    address: 0xa4ab6e1f791e1d0339f1ed5d4b681e3b58f4a3f7,
+                                                    signature_type: ECDSASignatureTypeEthSign,
+                                                    signature: ECDSASignature(
+                                                        [
+                                                            167,
+                                                            60,
+                                                            225,
+                                                            106,
+                                                            156,
+                                                            199,
+                                                            7,
+                                                            92,
+                                                            24,
+                                                            189,
+                                                            43,
+                                                            79,
+                                                            210,
+                                                            100,
+                                                            152,
+                                                            18,
+                                                            254,
+                                                            203,
+                                                            81,
+                                                            70,
+                                                            3,
+                                                            83,
+                                                            165,
+                                                            91,
+                                                            246,
+                                                            47,
+                                                            130,
+                                                            27,
+                                                            248,
+                                                            132,
+                                                            68,
+                                                            58,
+                                                            22,
+                                                            158,
+                                                            13,
+                                                            14,
+                                                            4,
+                                                            17,
+                                                            61,
+                                                            126,
+                                                            242,
+                                                            194,
+                                                            209,
+                                                            95,
+                                                            30,
+                                                            207,
+                                                            70,
+                                                            83,
+                                                            31,
+                                                            41,
+                                                            18,
+                                                            89,
+                                                            84,
+                                                            32,
+                                                            101,
+                                                            197,
+                                                            86,
+                                                            240,
+                                                            231,
+                                                            33,
+                                                            168,
+                                                            43,
+                                                            60,
+                                                            88,
+                                                            27,
+                                                        ],
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    left: None,
+                                    right: None,
+                                },
+                            ),
+                            right: Some(
+                                SignerNode {
+                                    signer: Some(
+                                        Signer {
+                                            weight: Some(
+                                                1,
+                                            ),
+                                            leaf: ECDSASignature(
+                                                ECDSASignatureLeaf {
+                                                    address: 0x8c84d0b5deff3c1ac3ab77a2716e7de18c652ad9,
+                                                    signature_type: ECDSASignatureTypeEthSign,
+                                                    signature: ECDSASignature(
+                                                        [
+                                                            147,
+                                                            241,
+                                                            243,
+                                                            136,
+                                                            0,
+                                                            159,
+                                                            104,
+                                                            118,
+                                                            61,
+                                                            244,
+                                                            54,
+                                                            50,
+                                                            21,
+                                                            49,
+                                                            85,
+                                                            150,
+                                                            14,
+                                                            166,
+                                                            96,
+                                                            71,
+                                                            35,
+                                                            187,
+                                                            81,
+                                                            126,
+                                                            144,
+                                                            120,
+                                                            136,
+                                                            34,
+                                                            255,
+                                                            33,
+                                                            227,
+                                                            135,
+                                                            34,
+                                                            190,
+                                                            67,
+                                                            135,
+                                                            232,
+                                                            246,
+                                                            124,
+                                                            13,
+                                                            182,
+                                                            119,
+                                                            183,
+                                                            77,
+                                                            154,
+                                                            12,
+                                                            42,
+                                                            128,
+                                                            65,
+                                                            131,
+                                                            230,
+                                                            163,
+                                                            238,
+                                                            189,
+                                                            43,
+                                                            165,
+                                                            61,
+                                                            191,
+                                                            197,
+                                                            68,
+                                                            50,
+                                                            241,
+                                                            161,
+                                                            15,
+                                                            27,
+                                                        ],
+                                                    ),
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    left: None,
+                                    right: None,
+                                },
+                            ),
+                        },
+                    ),
+                },
+            ),
+            right: Some(
+                SignerNode {
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                1,
+                            ),
+                            leaf: AddressSignature(
+                                AddressSignatureLeaf {
+                                    address: 0x907c144d2490f49838c6499507ee5914f4a22b5b,
+                                },
+                            ),
+                        },
+                    ),
+                    left: None,
+                    right: None,
+                },
+            ),
+        },
+    ),
+}

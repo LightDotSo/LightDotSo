@@ -6303,6 +6303,7 @@ dependencies = [
  "async-recursion",
  "ethers 2.0.8",
  "eyre",
+ "insta",
  "lazy_static",
  "lightdotso-contracts",
  "lightdotso-tracing",
