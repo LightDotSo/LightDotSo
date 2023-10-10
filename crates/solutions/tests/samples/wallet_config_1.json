@@ -6,26 +6,22 @@
   "tree": {
     "left": {
       "left": {
-        "left": {
-          "signer": {
-            "leaf": {
-              "type": "NodeSignature",
-              "content": {
-                "hash": "0x4a062f86183c9d46e129f0331f2a42f6ba22a3525a46ecd197fa23d177d75f2d"
-              }
+        "signer": {
+          "leaf": {
+            "type": "NodeSignature",
+            "content": {
+              "hash": "0x4a062f86183c9d46e129f0331f2a42f6ba22a3525a46ecd197fa23d177d75f2d"
             }
           }
         }
       },
       "right": {
         "left": {
-          "left": {
-            "signer": {
-              "leaf": {
-                "type": "NodeSignature",
-                "content": {
-                  "hash": "0x3fce59919d0a4ee44a8066a3b1d0083760d89a06ae89edadf8a58e0e5c5ac504"
-                }
+          "signer": {
+            "leaf": {
+              "type": "NodeSignature",
+              "content": {
+                "hash": "0x3fce59919d0a4ee44a8066a3b1d0083760d89a06ae89edadf8a58e0e5c5ac504"
               }
             }
           }
@@ -33,14 +29,12 @@
         "right": {
           "left": {
             "left": {
-              "left": {
-                "signer": {
-                  "weight": 1,
-                  "leaf": {
-                    "type": "AddressSignature",
-                    "content": {
-                      "address": "0x6ffeccf6f31e0a469d55dede5651d34a6ecd9fc5"
-                    }
+              "signer": {
+                "weight": 1,
+                "leaf": {
+                  "type": "AddressSignature",
+                  "content": {
+                    "address": "0x6ffeccf6f31e0a469d55dede5651d34a6ecd9fc5"
                   }
                 }
               }
@@ -75,42 +69,36 @@
     "right": {
       "left": {
         "left": {
-          "left": {
-            "signer": {
-              "leaf": {
-                "type": "NodeSignature",
-                "content": {
-                  "hash": "0x14b729622595218cdbef06c630daeea028e25e8ca048d97bc170d75feb9066ad"
-                }
+          "signer": {
+            "leaf": {
+              "type": "NodeSignature",
+              "content": {
+                "hash": "0x14b729622595218cdbef06c630daeea028e25e8ca048d97bc170d75feb9066ad"
               }
             }
           }
         },
         "right": {
           "left": {
-            "left": {
-              "signer": {
-                "leaf": {
-                  "type": "NodeSignature",
-                  "content": {
-                    "hash": "0x0c8c0bb7e8c5ec8eed444ae25f3a1796597bcfacf5f6b758ae4fadd6fc416f56"
-                  }
+            "signer": {
+              "leaf": {
+                "type": "NodeSignature",
+                "content": {
+                  "hash": "0x0c8c0bb7e8c5ec8eed444ae25f3a1796597bcfacf5f6b758ae4fadd6fc416f56"
                 }
               }
             }
           },
           "right": {
             "left": {
-              "left": {
-                "signer": {
-                  "weight": 1,
-                  "leaf": {
-                    "type": "ECDSASignature",
-                    "content": {
-                      "address": "0x25a0b8bee2d548c4b110695213edf50b6f74c58b",
-                      "signature_type": "ECDSASignatureTypeEthSign",
-                      "signature": "0xe7618f1b7b012d7fc48f518f498bb6823dc2a8308984287501873cb535b6d5bf526fb91a220297f461ac5a2434d0e8e768c3bf166c329366ddc885bf2e1676271c"
-                    }
+              "signer": {
+                "weight": 1,
+                "leaf": {
+                  "type": "ECDSASignature",
+                  "content": {
+                    "address": "0x25a0b8bee2d548c4b110695213edf50b6f74c58b",
+                    "signature_type": "ECDSASignatureTypeEthSign",
+                    "signature": "0xe7618f1b7b012d7fc48f518f498bb6823dc2a8308984287501873cb535b6d5bf526fb91a220297f461ac5a2434d0e8e768c3bf166c329366ddc885bf2e1676271c"
                   }
                 }
               }

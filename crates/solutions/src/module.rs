@@ -185,8 +185,8 @@ impl SigModule {
         // If the right node is empty, move the left node to the left, and set the node to the right
         if self.tree.right.is_none() {
             self.tree.left = Some(Box::new(SignerNode {
-                signer: None,
-                left: self.tree.left.clone(),
+                signer: self.tree.left.clone().unwrap().signer,
+                left: None,
                 right: None,
             }));
             self.tree.right = node;

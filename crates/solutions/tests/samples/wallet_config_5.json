@@ -7,14 +7,12 @@
     "left": {
       "left": {
         "left": {
-          "left": {
-            "signer": {
-              "weight": 1,
-              "leaf": {
-                "type": "AddressSignature",
-                "content": {
-                  "address": "0x2093ec341be249baa0c8afa35fef368a90a48390"
-                }
+          "signer": {
+            "weight": 1,
+            "leaf": {
+              "type": "AddressSignature",
+              "content": {
+                "address": "0x2093ec341be249baa0c8afa35fef368a90a48390"
               }
             }
           }

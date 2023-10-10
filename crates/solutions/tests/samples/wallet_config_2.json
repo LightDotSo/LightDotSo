@@ -8,14 +8,12 @@
       "left": {
         "left": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "AddressSignature",
-                  "content": {
-                    "address": "0xa653f5900ef5c538142cd8aef1ce750390b29a3e"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xa653f5900ef5c538142cd8aef1ce750390b29a3e"
                 }
               }
             }
@@ -34,14 +32,12 @@
         },
         "right": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "AddressSignature",
-                  "content": {
-                    "address": "0xddfba5791de0b8da80d46b43915ae34c4876c4f8"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xddfba5791de0b8da80d46b43915ae34c4876c4f8"
                 }
               }
             }
@@ -62,14 +58,12 @@
       "right": {
         "left": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "AddressSignature",
-                  "content": {
-                    "address": "0xe8e7c96af0d472a8d0e60e86009a97290fbc0f6d"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xe8e7c96af0d472a8d0e60e86009a97290fbc0f6d"
                 }
               }
             }
@@ -88,14 +82,12 @@
         },
         "right": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "AddressSignature",
-                  "content": {
-                    "address": "0x653ca45307922091337376cb305485c0d889a7a1"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0x653ca45307922091337376cb305485c0d889a7a1"
                 }
               }
             }
@@ -120,14 +112,12 @@
       "left": {
         "left": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "AddressSignature",
-                  "content": {
-                    "address": "0xa18522682c76e7e4083fcef379839347a533f782"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xa18522682c76e7e4083fcef379839347a533f782"
                 }
               }
             }
@@ -146,14 +136,12 @@
         },
         "right": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "AddressSignature",
-                  "content": {
-                    "address": "0xc31ee68141cb47d2b260fe5a6e48b37d021d8f19"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xc31ee68141cb47d2b260fe5a6e48b37d021d8f19"
                 }
               }
             }
@@ -174,16 +162,14 @@
       "right": {
         "left": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "ECDSASignature",
-                  "content": {
-                    "address": "0x1f2dcfa639d690dbe3b79e405101940965f5f630",
-                    "signature_type": "ECDSASignatureTypeEthSign",
-                    "signature": "0x47f646e6d13434b2df65fc1ab9086264bed1030e485e3513ed01686d03d127df510efc468bbeedde677c3af1fda7b0dbffc7186e07203eb09718cc256cf6b5d11b"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "ECDSASignature",
+                "content": {
+                  "address": "0x1f2dcfa639d690dbe3b79e405101940965f5f630",
+                  "signature_type": "ECDSASignatureTypeEthSign",
+                  "signature": "0x47f646e6d13434b2df65fc1ab9086264bed1030e485e3513ed01686d03d127df510efc468bbeedde677c3af1fda7b0dbffc7186e07203eb09718cc256cf6b5d11b"
                 }
               }
             }
@@ -202,14 +188,12 @@
         },
         "right": {
           "left": {
-            "left": {
-              "signer": {
-                "weight": 1,
-                "leaf": {
-                  "type": "AddressSignature",
-                  "content": {
-                    "address": "0x0b6a69349728615d6e1c8d4fd133e49aafd5b91b"
-                  }
+            "signer": {
+              "weight": 1,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0x0b6a69349728615d6e1c8d4fd133e49aafd5b91b"
                 }
               }
             }
