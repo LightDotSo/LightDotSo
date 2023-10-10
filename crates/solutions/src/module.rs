@@ -18,7 +18,8 @@ use crate::{
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{
-        AddressSignatureLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode, SubdigestLeaf,
+        AddressSignatureLeaf, NestedLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode,
+        SubdigestLeaf,
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
@@ -360,6 +361,20 @@ impl SigModule {
         self.return_valid_root(node);
 
         let signer_node = base_sig_module.tree;
+        let nested_signer = Signer {
+            weight: Some(external_weight),
+            leaf: SignatureLeaf::NestedSignature(NestedLeaf {
+                internal_threshold,
+                external_weight,
+                address: self.address,
+                internal_root: internal_root.into(),
+            }),
+        };
+        let signer_node = SignerNode {
+            signer: Some(nested_signer.clone()),
+            left: signer_node.left,
+            right: signer_node.right,
+        };
         self.inject_signer_node(signer_node)?;
 
         Ok(())
@@ -506,8 +521,17 @@ impl SigModule {
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
         ]))
         .into();
-        let tree = self.tree.clone();
+        let mut tree = self.tree.clone();
         let internal_root = Some(self.calculate_image_hash_from_node(&self.tree).into());
+
+        // If the tree is single (right is empty), set the tree as left tree signer
+        if self.tree.right.is_none() {
+            tree = SignerNode {
+                signer: self.clone().tree.clone().left.unwrap().signer,
+                left: None,
+                right: None,
+            };
+        }
 
         Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
     }
