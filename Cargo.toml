@@ -88,6 +88,7 @@
   http-body = "0.4.5"
   hyper = { version = "0.14", features = ["full"] }
   hyper-rustls = "0.24.1"
+  insta = "1.17"
   js-sys = "=0.3.64"
   jsonrpsee = { version = "0.20.1", features = ["server", "macros", "client"] }
   lazy_static = "1.4.0"
