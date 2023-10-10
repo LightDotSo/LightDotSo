@@ -24,7 +24,7 @@ use serde::{
 use serde_with::serde_as;
 use std::convert::TryFrom;
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, PartialEq)]
 pub struct Signature(pub Vec<u8>);
 
 /// The struct representation of a wallet signer
@@ -157,6 +157,12 @@ impl Signature {
     pub fn as_slice(&self) -> &[u8] {
         let Signature(inner) = self;
         inner.as_slice()
+    }
+}
+
+impl std::fmt::Debug for Signature {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "0x{}", hex::encode(self.as_slice()))
     }
 }
 
