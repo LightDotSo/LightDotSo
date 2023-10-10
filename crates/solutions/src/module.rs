@@ -388,9 +388,6 @@ impl SigModule {
             let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
             self.rindex = rindex;
 
-            // Print the flag
-            println!("Flag: {}", flag);
-
             match flag {
                 0 => self.decode_ecdsa_signature()?,
                 1 => self.decode_address_signature()?,
@@ -519,9 +516,8 @@ impl SigModule {
             Token::Uint(left_pad_u32_to_bytes32(checkpoint).into()),
         ]))
         .into();
-        let mut tree = self.tree.clone();
-        let internal_root = Some(self.calculate_image_hash_from_node(&self.tree).into());
 
+        let mut tree = self.tree.clone();
         // If the tree is single (right is empty), set the tree as left tree signer
         if self.tree.right.is_none() {
             tree = SignerNode {
@@ -530,6 +526,8 @@ impl SigModule {
                 right: None,
             };
         }
+
+        let internal_root = Some(self.calculate_image_hash_from_node(&tree.clone()).into());
 
         Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
     }
