@@ -176,7 +176,9 @@ impl SigModule {
     fn inject_signer_node(&mut self, signer: Signer, node: SignerNode) -> Result<()> {
         let signer_node = Some(Box::new(node));
 
-        if self.tree.left.is_none() {
+        if self.tree.left.is_none() && self.tree.right.is_none() {
+            self.tree.signer = Some(signer);
+        } else if self.tree.left.is_none() {
             self.tree.left = signer_node;
         } else {
             self.tree.right = signer_node;

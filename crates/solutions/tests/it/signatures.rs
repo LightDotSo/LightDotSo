@@ -132,7 +132,7 @@ async fn test_integration_signatures() {
         })),
     };
 
-    let TREES: Vec<&SignerNode> = vec![&NODE_1, &NODE_2];
+    let tres: Vec<&SignerNode> = vec![&NODE_1, &NODE_2];
 
     for (i, signature) in SIGNATURES.iter().enumerate() {
         let sig = from_hex_string(signature).unwrap().into();

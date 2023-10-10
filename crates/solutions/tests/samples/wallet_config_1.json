@@ -23,33 +23,22 @@
       },
       "left": {
         "signer": {
+          "weight": 1,
           "leaf": {
-            "type": "NodeSignature",
+            "type": "ECDSASignature",
             "content": {
-              "hash": "0xad5831467806b6edd059ff5ac9809f2bb6e80512ceb5d466a67251ffb842fae1"
+              "address": "0xc89edaafc5524c07d5266a7a7a5e82acca4e4119",
+              "signature_type": "ECDSASignatureTypeEthSign",
+              "signature": "0x7052a0438a13da22242bcd20c219630d839c364cd2b6042add1bee32774c37d72ba2ace8b7a79c95a536d4c0fed3fe05883c6e1188a4191a91623a903e4ec21c1b"
             }
           }
         },
         "left": {
           "signer": {
-            "weight": 1,
             "leaf": {
-              "type": "AddressSignature",
+              "type": "NodeSignature",
               "content": {
-                "address": "0x6ffeccf6f31e0a469d55dede5651d34a6ecd9fc5"
-              }
-            }
-          }
-        },
-        "right": {
-          "signer": {
-            "weight": 1,
-            "leaf": {
-              "type": "ECDSASignature",
-              "content": {
-                "address": "0xc89edaafc5524c07d5266a7a7a5e82acca4e4119",
-                "signature_type": "ECDSASignatureTypeEthSign",
-                "signature": "0x7052a0438a13da22242bcd20c219630d839c364cd2b6042add1bee32774c37d72ba2ace8b7a79c95a536d4c0fed3fe05883c6e1188a4191a91623a903e4ec21c1b"
+                "hash": "0xad5831467806b6edd059ff5ac9809f2bb6e80512ceb5d466a67251ffb842fae1"
               }
             }
           }
@@ -75,27 +64,12 @@
           }
         },
         "left": {
-          "left": {
-            "signer": {
-              "weight": 1,
-              "leaf": {
-                "type": "ECDSASignature",
-                "content": {
-                  "address": "0x25a0b8bee2d548c4b110695213edf50b6f74c58b",
-                  "signature_type": "ECDSASignatureTypeEthSign",
-                  "signature": "0xe7618f1b7b012d7fc48f518f498bb6823dc2a8308984287501873cb535b6d5bf526fb91a220297f461ac5a2434d0e8e768c3bf166c329366ddc885bf2e1676271c"
-                }
-              }
-            }
-          },
-          "right": {
-            "signer": {
-              "weight": 1,
-              "leaf": {
-                "type": "AddressSignature",
-                "content": {
-                  "address": "0x4ef7ec718f66ae3920ea119b9d7ddf39337601f7"
-                }
+          "signer": {
+            "weight": 1,
+            "leaf": {
+              "type": "AddressSignature",
+              "content": {
+                "address": "0x4ef7ec718f66ae3920ea119b9d7ddf39337601f7"
               }
             }
           }
@@ -113,5 +87,5 @@
       }
     }
   },
-  "internal_root": "0xe6ed45117f647ac88df9c58d42b867d70ebc00127367013aecb1b9d491db7848"
+  "internal_root": "0xad78c8a0006e53989c2439160131016194230f616a7c73eedc991f807c747731"
 }
