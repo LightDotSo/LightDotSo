@@ -172,17 +172,37 @@ impl SigModule {
         )
     }
 
-    fn inject_signer_node(&mut self, signer: Signer, node: SignerNode) -> Result<()> {
-        let signer_node = Some(Box::new(node));
+    fn inject_signer_node(&mut self, signer_node: SignerNode) -> Result<()> {
+        let node = Some(Box::new(signer_node));
 
         // If the tree is empty, set the signer
-        if self.root == [0; 32] {
-            self.tree.signer = Some(signer);
-        } else if self.tree.left.is_none() {
-            self.tree.left = signer_node;
-        } else {
-            self.tree.right = signer_node;
+        if (self.tree.signer.is_none()) && (self.tree.left.is_none()) && (self.tree.right.is_none())
+        {
+            self.tree.right = node;
+            return Ok(());
         }
+
+        // If the right node is empty, move the left node to the left, and set the node to the right
+        if self.tree.right.is_none() {
+            self.tree.left = Some(Box::new(SignerNode {
+                signer: None,
+                left: self.tree.left.clone(),
+                right: None,
+            }));
+            self.tree.right = node;
+            return Ok(());
+        }
+
+        // Push the current tree to the left, and set the node to the right
+        self.tree = SignerNode {
+            signer: None,
+            left: Some(Box::new(SignerNode {
+                signer: None,
+                left: self.tree.left.clone(),
+                right: self.tree.right.clone(),
+            })),
+            right: node,
+        };
 
         Ok(())
     }
@@ -202,7 +222,7 @@ impl SigModule {
             leaf: SignatureLeaf::ECDSASignature(signature_leaf.clone()),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer, signer_node)?;
+        self.inject_signer_node(signer_node)?;
 
         let node = self.leaf_for_address_and_weight(signature_leaf.address, addr_weight);
         self.return_valid_root(node);
@@ -219,7 +239,7 @@ impl SigModule {
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf { address: addr }),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer, signer_node)?;
+        self.inject_signer_node(signer_node)?;
 
         self.rindex = rindex;
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
@@ -251,7 +271,7 @@ impl SigModule {
         let signer =
             Signer { weight: Some(addr_weight), leaf: SignatureLeaf::DynamicSignature(leaf) };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer, signer_node)?;
+        self.inject_signer_node(signer_node)?;
 
         let node = self.leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
@@ -265,20 +285,12 @@ impl SigModule {
         self.return_valid_root(node);
         self.rindex = rindex;
 
-        let node = Signer {
+        let signer = Signer {
             weight: None,
             leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: node.into() }),
         };
-
-        if self.tree.signer.is_none() {
-            self.tree.signer = Some(node);
-        } else if self.tree.left.is_none() {
-            self.tree.left =
-                Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
-        } else if self.tree.right.is_none() {
-            self.tree.right =
-                Some(Box::new(SignerNode { signer: Some(node), left: None, right: None }));
-        }
+        let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
+        self.inject_signer_node(signer_node)?;
 
         Ok(())
     }
@@ -298,13 +310,8 @@ impl SigModule {
         self.root = hash_keccak_256(self.root, node);
         self.rindex = nrindex;
 
-        let signer_node = Some(Box::new(base_sig_module.tree));
-
-        if self.tree.left.is_none() {
-            self.tree.left = signer_node.clone();
-        } else if self.tree.right.is_none() {
-            self.tree.right = signer_node.clone();
-        }
+        let signer_node = base_sig_module.tree;
+        self.inject_signer_node(signer_node)?;
 
         Ok(())
     }
@@ -324,16 +331,8 @@ impl SigModule {
             weight: None,
             leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf { hash: hardcoded.into() }),
         };
-        let signer_node =
-            Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
-
-        if self.tree.signer.is_none() {
-            self.tree.signer = Some(signer);
-        } else if self.tree.left.is_none() {
-            self.tree.left = signer_node.clone();
-        } else if self.tree.right.is_none() {
-            self.tree.right = signer_node.clone();
-        }
+        let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
+        self.inject_signer_node(signer_node)?;
 
         Ok(())
     }
@@ -360,13 +359,8 @@ impl SigModule {
         let node = self.leaf_for_nested(internal_root, internal_threshold, external_weight);
         self.return_valid_root(node);
 
-        let signer_node = Some(Box::new(base_sig_module.tree));
-
-        if self.tree.left.is_none() {
-            self.tree.left = signer_node.clone();
-        } else if self.tree.right.is_none() {
-            self.tree.right = signer_node.clone();
-        }
+        let signer_node = base_sig_module.tree;
+        self.inject_signer_node(signer_node)?;
 
         Ok(())
     }
