@@ -141,7 +141,6 @@ pub struct SubdigestLeaf {
 pub struct NestedLeaf {
     pub internal_threshold: u16,
     pub external_weight: u8,
-    pub address: Address,
     pub internal_root: H256,
 }
 

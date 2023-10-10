@@ -366,7 +366,6 @@ impl SigModule {
             leaf: SignatureLeaf::NestedSignature(NestedLeaf {
                 internal_threshold,
                 external_weight,
-                address: self.address,
                 internal_root: internal_root.into(),
             }),
         };

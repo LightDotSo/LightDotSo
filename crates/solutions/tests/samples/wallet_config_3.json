@@ -22,7 +22,6 @@
           "content": {
             "internal_threshold": 2,
             "external_weight": 4,
-            "address": "0x0000000000000000000000000000000000000000",
             "internal_root": "0xfcda4678b72c678ae3e83dab5bef853f731c51d8dd2b0b849c6542d8bb05452c"
           }
         }

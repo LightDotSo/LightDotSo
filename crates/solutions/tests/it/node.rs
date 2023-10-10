@@ -109,7 +109,6 @@ async fn test_integration_node_nested() {
                     leaf: SignatureLeaf::NestedSignature(NestedLeaf {
                         external_weight: 2,
                         internal_threshold: 1,
-                        address: Address::zero(),
                         internal_root: parse_hex_to_bytes32(
                             "0x5eef3b121e46ef31a9565af83a3e96e31a98a64d52cf22d20259a1a01cee9972",
                         )
@@ -207,7 +206,6 @@ async fn test_integration_node_complex() {
                         leaf: SignatureLeaf::NestedSignature(NestedLeaf {
                             external_weight: 2,
                             internal_threshold: 1,
-                            address: Address::zero(),
                             internal_root: [0; 32].into(),
                         }),
                     }),
