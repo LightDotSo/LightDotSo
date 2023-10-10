@@ -133,7 +133,9 @@ fn test_wallet_complex_to_json() {
                     right: None,
                     signer: Some(Signer {
                         weight: None,
-                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {}),
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: [0; 32].into(),
+                        }),
                     }),
                 })),
                 signer: Some(Signer {

@@ -338,8 +338,10 @@ impl SigModule {
         let node = self.leaf_for_hardcoded_subdigest(hardcoded);
         self.return_valid_root(node);
 
-        let signer =
-            Signer { weight: None, leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {}) };
+        let signer = Signer {
+            weight: None,
+            leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf { hash: hardcoded.into() }),
+        };
         let signer_node =
             Some(Box::new(SignerNode { signer: Some(signer.clone()), left: None, right: None }));
 

@@ -133,7 +133,9 @@ pub struct NodeLeaf {
 pub struct BranchLeaf {}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-pub struct SubdigestLeaf {}
+pub struct SubdigestLeaf {
+    pub hash: H256,
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct NestedLeaf {

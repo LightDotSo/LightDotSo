@@ -1,0 +1,31 @@
+{
+  "checkpoint": 1667904421,
+  "threshold": 2,
+  "weight": 2,
+  "image_hash": "0x1daedb5253cad3e0df370cf9342cba4ebf8bd2e1890fa0cb42e3b4b94aa07be1",
+  "tree": {
+    "left": {
+      "signer": {
+        "weight": 1,
+        "leaf": {
+          "type": "AddressSignature",
+          "content": {
+            "address": "0x2093ec341be249baa0c8afa35fef368a90a48390"
+          }
+        }
+      }
+    },
+    "right": {
+      "signer": {
+        "weight": 1,
+        "leaf": {
+          "type": "AddressSignature",
+          "content": {
+            "address": "0xe8c4a6eb40ece266c7a58670493ee0727be4d20a"
+          }
+        }
+      }
+    }
+  },
+  "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
+}
