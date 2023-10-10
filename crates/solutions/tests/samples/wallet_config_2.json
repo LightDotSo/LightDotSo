@@ -4,13 +4,22 @@
   "weight": 3,
   "image_hash": "0x4162949c962c72afb392dd40c58d3b6669011af7d529c6c35e1699a52bd51790",
   "tree": {
+    "signer": {
+      "weight": 1,
+      "leaf": {
+        "type": "AddressSignature",
+        "content": {
+          "address": "0xa653f5900ef5c538142cd8aef1ce750390b29a3e"
+        }
+      }
+    },
     "left": {
       "signer": {
         "weight": 1,
         "leaf": {
           "type": "AddressSignature",
           "content": {
-            "address": "0xa653f5900ef5c538142cd8aef1ce750390b29a3e"
+            "address": "0xa54e174d851bcffe8c1332c00e23156b4982204d"
           }
         }
       }
@@ -21,11 +30,22 @@
         "leaf": {
           "type": "AddressSignature",
           "content": {
-            "address": "0xa54e174d851bcffe8c1332c00e23156b4982204d"
+            "address": "0xddfba5791de0b8da80d46b43915ae34c4876c4f8"
+          }
+        }
+      },
+      "left": {
+        "signer": {
+          "weight": 1,
+          "leaf": {
+            "type": "AddressSignature",
+            "content": {
+              "address": "0xf50834aa68dec4d9d151b1ff1c509c81431ddc45"
+            }
           }
         }
       }
     }
   },
-  "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  "internal_root": "0x000000000000000000000001a653f5900ef5c538142cd8aef1ce750390b29a3e"
 }

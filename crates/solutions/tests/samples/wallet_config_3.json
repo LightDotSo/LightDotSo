@@ -22,20 +22,18 @@
         }
       },
       "left": {
-        "left": {
-          "signer": {
-            "weight": 1,
-            "leaf": {
-              "type": "ECDSASignature",
-              "content": {
-                "address": "0xa4ab6e1f791e1d0339f1ed5d4b681e3b58f4a3f7",
-                "signature_type": "ECDSASignatureTypeEthSign",
-                "signature": "0xa73ce16a9cc7075c18bd2b4fd2649812fecb51460353a55bf62f821bf884443a169e0d0e04113d7ef2c2d15f1ecf46531f291259542065c556f0e721a82b3c581b"
-              }
+        "signer": {
+          "weight": 1,
+          "leaf": {
+            "type": "ECDSASignature",
+            "content": {
+              "address": "0xa4ab6e1f791e1d0339f1ed5d4b681e3b58f4a3f7",
+              "signature_type": "ECDSASignatureTypeEthSign",
+              "signature": "0xa73ce16a9cc7075c18bd2b4fd2649812fecb51460353a55bf62f821bf884443a169e0d0e04113d7ef2c2d15f1ecf46531f291259542065c556f0e721a82b3c581b"
             }
           }
         },
-        "right": {
+        "left": {
           "signer": {
             "weight": 1,
             "leaf": {
@@ -62,5 +60,5 @@
       }
     }
   },
-  "internal_root": "0xa27aa74781bf953dd588c8557df216395339136e55179f63811b9f7e2c1b16b2"
+  "internal_root": "0x033b05e993e516a97717c94e8a2173fb0ba7587dfcd6aea6d302f9aedd72391a"
 }
