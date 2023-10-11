@@ -234,29 +234,32 @@ async fn test_integration_signatures() {
       tree: SignerNode{
         left: Some(Box::new(SignerNode {
             left: Some(Box::new(SignerNode {
-                left: None,
-                right: None,
-                signer: Some(Signer {
-                    weight: Some(2),
-                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
-                    }),
-                }),
-            })),
-            right: Some(Box::new(SignerNode {
                 left: Some(Box::new(SignerNode {
-                    left: None,
-                    right: None,
-                    signer: Some(Signer {
-                        weight: None,
-                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
-                            hash: parse_hex_to_bytes32(
-                                "0x0000000000000000000000000000000000000000000000000000000000000006",
-                            )
-                            .unwrap()
-                            .into(),
+                    left: Some(Box::new(SignerNode {
+                        left: None,
+                        right: None,
+                        signer: Some(Signer {
+                            weight: Some(2),
+                            leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                                address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                            }),
                         }),
-                    }),
+                    })),
+                    right: Some(Box::new(SignerNode {
+                        left: None,
+                        right: None,
+                        signer: Some(Signer {
+                            weight: Some(2),
+                            leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                                hash: parse_hex_to_bytes32(
+                                    "0x0000000000000000000000000000000000000000000000000000000000000006",
+                                )
+                                .unwrap()
+                                .into(),
+                                }),
+                        }),
+                    })),
+                    signer: None
                 })),
                 right: Some(Box::new(SignerNode {
                     left: None,
@@ -272,48 +275,45 @@ async fn test_integration_signatures() {
                         }),
                     }),
                 })),
-                signer: None
+                signer: Some(Signer {
+                    weight: None,
+                    leaf: SignatureLeaf::NestedSignature(NestedLeaf {
+                        internal_root: [0; 32].into(),
+                        internal_threshold: 2,
+                        external_weight: 90,
+                    })
+                }),
             })),
-            signer: Some(Signer {
-                weight: None,
-                leaf: SignatureLeaf::NestedSignature(NestedLeaf {
-                    internal_root: [0; 32].into(),
-                    internal_threshold: 2,
-                    external_weight: 90,
-                })
-            }),
+            right: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: None,
+                    leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                        hash: parse_hex_to_bytes32(
+                            "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
+                        )
+                        .unwrap()
+                        .into(),
+                    }),
+                }),
+            })),
+            signer: None,
         })),
         right: Some(Box::new(SignerNode {
             left: Some(Box::new(SignerNode {
-                left: Some(Box::new(SignerNode {
-                    left: None,
-                    right: None,
-                    signer: Some(Signer {
-                        weight: None,
-                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
-                            hash: parse_hex_to_bytes32(
-                                "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
-                            )
-                            .unwrap()
-                            .into(),
-                        }),
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: None,
+                    leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                        hash: parse_hex_to_bytes32(
+                            "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
+                        )
+                        .unwrap()
+                        .into(),
                     }),
-                })),
-                right: Some(Box::new(SignerNode {
-                    left: None,
-                    right: None,
-                    signer: Some(Signer {
-                        weight: None,
-                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
-                            hash: parse_hex_to_bytes32(
-                                "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
-                            )
-                            .unwrap()
-                            .into(),
-                        }),
-                    }),
-                })),
-                signer: None
+                }),
             })),
             right: Some(Box::new(SignerNode {
                 left: None,
