@@ -1,0 +1,165 @@
+---
+source: crates/solutions/src/builder.rs
+expression: node
+---
+SignerNode {
+    signer: None,
+    left: Some(
+        SignerNode {
+            signer: None,
+            left: Some(
+                SignerNode {
+                    signer: None,
+                    left: Some(
+                        SignerNode {
+                            signer: None,
+                            left: Some(
+                                SignerNode {
+                                    signer: None,
+                                    left: Some(
+                                        SignerNode {
+                                            signer: None,
+                                            left: Some(
+                                                SignerNode {
+                                                    signer: None,
+                                                    left: Some(
+                                                        SignerNode {
+                                                            signer: Some(
+                                                                Signer {
+                                                                    weight: None,
+                                                                    leaf: SubdigestSignature(
+                                                                        SubdigestLeaf {
+                                                                            hash: 0x0000000000000000000000000000000000000000000000000000000000000000,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            left: None,
+                                                            right: None,
+                                                        },
+                                                    ),
+                                                    right: Some(
+                                                        SignerNode {
+                                                            signer: Some(
+                                                                Signer {
+                                                                    weight: None,
+                                                                    leaf: SubdigestSignature(
+                                                                        SubdigestLeaf {
+                                                                            hash: 0x0000000000000000000000000000000000000000000000000000000000000001,
+                                                                        },
+                                                                    ),
+                                                                },
+                                                            ),
+                                                            left: None,
+                                                            right: None,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            right: Some(
+                                                SignerNode {
+                                                    signer: Some(
+                                                        Signer {
+                                                            weight: None,
+                                                            leaf: SubdigestSignature(
+                                                                SubdigestLeaf {
+                                                                    hash: 0x0000000000000000000000000000000000000000000000000000000000000002,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                    left: None,
+                                                    right: None,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    right: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: None,
+                                                    leaf: SubdigestSignature(
+                                                        SubdigestLeaf {
+                                                            hash: 0x0000000000000000000000000000000000000000000000000000000000000003,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                },
+                            ),
+                            right: Some(
+                                SignerNode {
+                                    signer: Some(
+                                        Signer {
+                                            weight: None,
+                                            leaf: SubdigestSignature(
+                                                SubdigestLeaf {
+                                                    hash: 0x0000000000000000000000000000000000000000000000000000000000000004,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    left: None,
+                                    right: None,
+                                },
+                            ),
+                        },
+                    ),
+                    right: Some(
+                        SignerNode {
+                            signer: Some(
+                                Signer {
+                                    weight: None,
+                                    leaf: SubdigestSignature(
+                                        SubdigestLeaf {
+                                            hash: 0x0000000000000000000000000000000000000000000000000000000000000005,
+                                        },
+                                    ),
+                                },
+                            ),
+                            left: None,
+                            right: None,
+                        },
+                    ),
+                },
+            ),
+            right: Some(
+                SignerNode {
+                    signer: Some(
+                        Signer {
+                            weight: None,
+                            leaf: SubdigestSignature(
+                                SubdigestLeaf {
+                                    hash: 0x0000000000000000000000000000000000000000000000000000000000000006,
+                                },
+                            ),
+                        },
+                    ),
+                    left: None,
+                    right: None,
+                },
+            ),
+        },
+    ),
+    right: Some(
+        SignerNode {
+            signer: Some(
+                Signer {
+                    weight: None,
+                    leaf: SubdigestSignature(
+                        SubdigestLeaf {
+                            hash: 0x0000000000000000000000000000000000000000000000000000000000000007,
+                        },
+                    ),
+                },
+            ),
+            left: None,
+            right: None,
+        },
+    ),
+}

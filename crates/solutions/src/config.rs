@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{Signer, SignerNode};
+use crate::types::SignerNode;
 use ethers::{
     abi::{encode, Token},
     types::{H256, U256},
@@ -67,33 +67,9 @@ impl WalletConfig {
         Ok(())
     }
 
-    /// Get all signers in the wallet config in an array
-    pub fn get_signers(&self) -> Vec<Signer> {
-        self.get_signers_recursive(&self.tree)
-    }
-
-    #[allow(clippy::only_used_in_recursion)]
-    fn get_signers_recursive(&self, node: &SignerNode) -> Vec<Signer> {
-        let mut signers = Vec::new();
-
-        if let Some(signer) = &node.signer {
-            signers.push(signer.clone());
-        }
-
-        if let Some(left) = &node.left {
-            signers.extend(self.get_signers_recursive(left));
-        }
-
-        if let Some(right) = &node.right {
-            signers.extend(self.get_signers_recursive(right));
-        }
-
-        signers
-    }
-
     pub fn is_wallet_valid(&self) -> bool {
         let total_weight: u8 =
-            self.get_signers().iter().map(|signer| signer.weight.unwrap_or(0)).sum();
+            self.tree.get_signers().iter().map(|signer| signer.weight.unwrap_or(0)).sum();
         total_weight >= self.threshold as u8
     }
 }
@@ -103,8 +79,8 @@ mod tests {
     use super::*;
     use crate::{
         types::{
-            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf,
-            Signer, SignerNode,
+            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, SignatureLeaf, Signer,
+            SignerNode,
         },
         utils::parse_hex_to_bytes32,
     };
@@ -142,55 +118,6 @@ mod tests {
         )
         .unwrap();
         assert_eq!(expected, wc.image_hash_of_wallet_config().unwrap());
-    }
-
-    #[test]
-    fn test_get_signers() {
-        // Define some dummy signers
-        let signer1 = Signer {
-            weight: None,
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
-        };
-        let signer2 = Signer {
-            weight: None,
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
-        };
-        let signer3 = Signer {
-            weight: None,
-            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
-        };
-
-        // Construct the signer tree
-        let tree = SignerNode {
-            signer: Some(signer1.clone()),
-            left: Some(Box::new(SignerNode {
-                signer: Some(signer2.clone()),
-                left: None,
-                right: None,
-            })),
-            right: Some(Box::new(SignerNode {
-                signer: Some(signer3.clone()),
-                left: None,
-                right: None,
-            })),
-        };
-
-        // Construct the wallet config
-        let config = WalletConfig {
-            checkpoint: 123,
-            threshold: 10,
-            weight: 20,
-            image_hash: [0; 32].into(),
-            tree,
-            internal_root: None,
-        };
-
-        // Test the function
-        let signers = config.get_signers();
-        assert_eq!(signers.len(), 3);
-        assert!(signers.contains(&signer1));
-        assert!(signers.contains(&signer2));
-        assert!(signers.contains(&signer3));
     }
 
     #[test]
