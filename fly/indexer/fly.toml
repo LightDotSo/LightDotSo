@@ -1,0 +1,39 @@
+# fly.toml app configuration file generated for lightdotso-indexer on 2023-07-17T01:35:40-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "lightdotso-indexer"
+primary_region = "sjc"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[experimental]
+  entrypoint = ["/usr/local/bin/indexer"]
+
+[build]
+  image = "ghcr.io/lightdotso/lightdotso:latest"
+
+[deploy]
+  strategy = "canary"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+
+[checks]
+  [checks.health]
+    port = 9091
+    type = "http"
+    interval = "15s"
+    timeout = "10s"
+    grace_period = "30s"
+    method = "get"
+    path = "/health"
+
+[metrics]
+  port = 9091
+  path = "/metrics"
