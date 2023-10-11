@@ -59,7 +59,7 @@ pub struct ListQuery {
     pub limit: Option<i64>,
 }
 
-#[derive(Clone, Debug, Deserialize, Default, IntoParams)]
+#[derive(Clone, Debug, Deserialize, IntoParams)]
 #[into_params(parameter_in = Query)]
 #[serde(default)]
 pub struct PostQuery {
@@ -69,6 +69,16 @@ pub struct PostQuery {
     pub salt: String,
     // The threshold of the wallet.
     pub threshold: u16,
+}
+
+impl Default for PostQuery {
+    fn default() -> Self {
+        Self {
+            owners: vec![Owner::default()],
+            salt: "0x0000000000000000000000000000000000000000000000000000000000000001".to_string(),
+            threshold: 3,
+        }
+    }
 }
 
 /// Wallet owner.
