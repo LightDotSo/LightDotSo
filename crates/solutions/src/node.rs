@@ -228,15 +228,7 @@ mod tests {
             "0x7cf15e50f6d44f71912ca6575b7fd911a5c6f19d0195692c7d35a102ad5ae98b",
         )
         .unwrap();
-        assert_eq!(
-            expected_hex,
-            leaf.calculate_image_hash_from_node(
-                parse_hex_to_bytes32(
-                    "0xb38b3da0ef56c3094675167fed4a263c3346b325dddb6e56a3eb9a10ed7539ed",
-                )
-                .unwrap()
-            )
-        );
+        assert_eq!(expected_hex, leaf.calculate_image_hash_from_node([0; 32]));
     }
 
     #[test]
@@ -301,14 +293,42 @@ mod tests {
             "0x6cca65d12b31379a7b429e43443969524821e57d2c6a7fafae8e30bd31a5295b",
         )
         .unwrap();
-        assert_eq!(
-            expected_hex,
-            leaf.calculate_image_hash_from_node(
-                parse_hex_to_bytes32(
-                    "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
-                )
-                .unwrap()
-            )
-        );
+        assert_eq!(expected_hex, leaf.calculate_image_hash_from_node([0; 32]));
+    }
+
+    #[test]
+    fn test_hash_signature_leaf_node() {
+        let leaf = SignerNode {
+            signer: None,
+            left: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: Some(129),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                    }),
+                }),
+            })),
+            right: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: None,
+                    leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                        hash: parse_hex_to_bytes32(
+                            "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
+                        )
+                        .unwrap()
+                        .into(),
+                    }),
+                }),
+            })),
+        };
+        let expected_hex = parse_hex_to_bytes32(
+            "0x47dcfac6c5622054a0ac762baa1a5eb10705484ea1e000869bbc11a093bec97e",
+        )
+        .unwrap();
+        assert_eq!(expected_hex, leaf.calculate_image_hash_from_node([0; 32]));
     }
 }
