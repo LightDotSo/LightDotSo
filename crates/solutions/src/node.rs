@@ -84,45 +84,28 @@ impl SignerNode {
         let res = match &self.signer {
             Some(signer) => match &signer.leaf {
                 SignatureLeaf::ECDSASignature(ref leaf) => {
-                    let res = leaf_for_address_and_weight(leaf.address, signer.weight.unwrap());
-                    print_hex_string(&res);
-                    return res;
+                    leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
                 }
                 SignatureLeaf::AddressSignature(ref leaf) => {
-                    let res = leaf_for_address_and_weight(leaf.address, signer.weight.unwrap());
-                    print_hex_string(&res);
-                    return res;
+                    leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
                 }
                 SignatureLeaf::DynamicSignature(ref leaf) => {
-                    let res = leaf_for_address_and_weight(leaf.address, signer.weight.unwrap());
-                    print_hex_string(&res);
-                    return res;
+                    leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
                 }
                 SignatureLeaf::NodeSignature(_) => self.get_node_hash(subdigest),
                 SignatureLeaf::SubdigestSignature(leaf) => {
-                    print_hex_string(&leaf.hash.0);
-                    let res = leaf_for_hardcoded_subdigest(leaf.hash.into());
-                    print_hex_string(&res);
-                    return res;
+                    leaf_for_hardcoded_subdigest(leaf.hash.into())
                 }
                 SignatureLeaf::NestedSignature(ref leaf) => {
-                    println!("Nested leaf: {:?}", leaf);
                     let node_hash = self.get_node_hash(subdigest);
-                    print_hex_string(&node_hash);
-                    let res =
-                        leaf_for_nested(node_hash, leaf.internal_threshold, leaf.external_weight);
-                    print_hex_string(&res);
-                    return res;
+                    leaf_for_nested(node_hash, leaf.internal_threshold, leaf.external_weight)
                 }
-                SignatureLeaf::BranchSignature(_) => {
-                    return [0; 32];
-                    // Panic here because we should never get a branch signature in the tree
-                    // panic!("Branch signature found in tree")
-                }
+                SignatureLeaf::BranchSignature(_) => [0; 32],
             },
             None => [0; 32],
         };
 
+        // Return if not empty
         if res != [0; 32] {
             return res;
         }
@@ -132,20 +115,16 @@ impl SignerNode {
                 Some(right) => {
                     let left_hash = left.calculate_image_hash_from_node(subdigest);
                     let right_hash = right.calculate_image_hash_from_node(subdigest);
-                    print_hex_string(&left_hash);
-                    print_hex_string(&right_hash);
                     hash_keccak_256(left_hash, right_hash)
                 }
                 None => {
                     let left_hash = left.calculate_image_hash_from_node(subdigest);
-                    print_hex_string(&left_hash);
                     hash_keccak_256(left_hash, [0; 32])
                 }
             },
             None => match &self.right {
                 Some(right) => {
                     let right_hash = right.calculate_image_hash_from_node(subdigest);
-                    print_hex_string(&right_hash);
                     hash_keccak_256([0; 32], right_hash)
                 }
                 None => [0; 32],

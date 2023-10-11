@@ -437,15 +437,15 @@ impl SigModule {
         ]))
         .into();
 
-        let mut tree = self.tree.clone();
         // If the tree is single (right is empty), set the tree as left tree signer
         if self.tree.right.is_none() {
-            tree = SignerNode {
-                signer: self.clone().tree.clone().left.unwrap().signer,
+            self.tree = SignerNode {
+                signer: self.tree.clone().left.unwrap().signer,
                 left: None,
                 right: None,
             };
         }
+        let tree = self.tree.clone();
 
         let internal_root = Some(self.tree.calculate_image_hash_from_node(self.subdigest).into());
 

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::{types::Address, utils::hex};
+use ethers::utils::hex;
 use lightdotso_solutions::{
     config::WalletConfig,
     types::{ECDSASignatureLeaf, ECDSASignatureType, SignatureLeaf, Signer, SignerNode},

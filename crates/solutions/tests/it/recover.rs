@@ -37,6 +37,7 @@ async fn test_integration_module_first() {
     let image_hash = parse_hex_to_bytes32(FIRST_IMAGE_HASH).unwrap();
 
     let config = recover_signature(wallet, 11155111, user_op_hash, sig).await.unwrap();
+    println!("{:?}", config);
 
     assert_eq!(config.checkpoint, 1);
     assert_eq!(config.threshold, 1);
