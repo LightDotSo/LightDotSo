@@ -342,5 +342,6 @@ async fn test_integration_signatures() {
         let _ = config.regenerate_image_hash([0; 32]);
         let r = config.image_hash_of_wallet_config().unwrap();
         assert_eq!(r, parse_hex_to_bytes32(image_hashes[i]).unwrap());
+        println!("signers: {:?}", config.tree.get_signers());
     }
 }

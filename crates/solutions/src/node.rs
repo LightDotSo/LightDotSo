@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    types::{SignatureLeaf, SignerNode},
+    types::{SignatureLeaf, Signer, SignerNode},
     utils::{hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u8_to_bytes32},
 };
 use ethers::{
@@ -107,13 +107,31 @@ impl SignerNode {
 
         self.get_node_hash(subdigest)
     }
+
+    pub fn get_signers(&self) -> Vec<Signer> {
+        let mut signers = Vec::new();
+
+        if let Some(signer) = &self.signer {
+            signers.push(signer.clone());
+        }
+
+        if let Some(left) = &self.left {
+            signers.extend(left.get_signers());
+        }
+
+        if let Some(right) = &self.right {
+            signers.extend(right.get_signers());
+        }
+
+        signers
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::{
-        types::{AddressSignatureLeaf, NestedLeaf, Signer, SubdigestLeaf},
+        types::{AddressSignatureLeaf, NestedLeaf, NodeLeaf, Signer, SubdigestLeaf},
         utils::parse_hex_to_bytes32,
     };
 
@@ -306,5 +324,44 @@ mod tests {
         )
         .unwrap();
         assert_eq!(expected_hex, leaf.calculate_image_hash_from_node([0; 32]));
+    }
+
+    #[test]
+    fn test_get_signers() {
+        // Define some dummy signers
+        let signer1 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer2 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+        let signer3 = Signer {
+            weight: None,
+            leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: [0; 32].into() }),
+        };
+
+        // Construct the signer tree
+        let tree = SignerNode {
+            signer: Some(signer1.clone()),
+            left: Some(Box::new(SignerNode {
+                signer: Some(signer2.clone()),
+                left: None,
+                right: None,
+            })),
+            right: Some(Box::new(SignerNode {
+                signer: Some(signer3.clone()),
+                left: None,
+                right: None,
+            })),
+        };
+
+        // Test the function
+        let signers = tree.get_signers();
+        assert_eq!(signers.len(), 3);
+        assert!(signers.contains(&signer1));
+        assert!(signers.contains(&signer2));
+        assert!(signers.contains(&signer3));
     }
 }

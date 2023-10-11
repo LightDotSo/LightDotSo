@@ -1,0 +1,138 @@
+---
+source: crates/solutions/src/builder.rs
+expression: node
+---
+SignerNode {
+    signer: None,
+    left: Some(
+        SignerNode {
+            signer: None,
+            left: Some(
+                SignerNode {
+                    signer: None,
+                    left: Some(
+                        SignerNode {
+                            signer: Some(
+                                Signer {
+                                    weight: None,
+                                    leaf: NestedSignature(
+                                        NestedLeaf {
+                                            internal_threshold: 0,
+                                            external_weight: 3,
+                                            internal_root: 0x0000000000000000000000000000000000000000000000000000000000000000,
+                                        },
+                                    ),
+                                },
+                            ),
+                            left: Some(
+                                SignerNode {
+                                    signer: None,
+                                    left: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: Some(
+                                                        2,
+                                                    ),
+                                                    leaf: AddressSignature(
+                                                        AddressSignatureLeaf {
+                                                            address: 0x07ab71fe97f9122a2dbe3797aa441623f5a59db1,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                    right: Some(
+                                        SignerNode {
+                                            signer: Some(
+                                                Signer {
+                                                    weight: None,
+                                                    leaf: SubdigestSignature(
+                                                        SubdigestLeaf {
+                                                            hash: 0x0000000000000000000000000000000000000000000000000000000000000006,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                            left: None,
+                                            right: None,
+                                        },
+                                    ),
+                                },
+                            ),
+                            right: Some(
+                                SignerNode {
+                                    signer: Some(
+                                        Signer {
+                                            weight: None,
+                                            leaf: SubdigestSignature(
+                                                SubdigestLeaf {
+                                                    hash: 0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df10000000000000000,
+                                                },
+                                            ),
+                                        },
+                                    ),
+                                    left: None,
+                                    right: None,
+                                },
+                            ),
+                        },
+                    ),
+                    right: Some(
+                        SignerNode {
+                            signer: Some(
+                                Signer {
+                                    weight: None,
+                                    leaf: SubdigestSignature(
+                                        SubdigestLeaf {
+                                            hash: 0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed,
+                                        },
+                                    ),
+                                },
+                            ),
+                            left: None,
+                            right: None,
+                        },
+                    ),
+                },
+            ),
+            right: Some(
+                SignerNode {
+                    signer: Some(
+                        Signer {
+                            weight: None,
+                            leaf: SubdigestSignature(
+                                SubdigestLeaf {
+                                    hash: 0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60,
+                                },
+                            ),
+                        },
+                    ),
+                    left: None,
+                    right: None,
+                },
+            ),
+        },
+    ),
+    right: Some(
+        SignerNode {
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        1,
+                    ),
+                    leaf: AddressSignature(
+                        AddressSignatureLeaf {
+                            address: 0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5,
+                        },
+                    ),
+                },
+            ),
+            left: None,
+            right: None,
+        },
+    ),
+}
