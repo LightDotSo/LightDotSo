@@ -330,12 +330,12 @@ async fn test_integration_signatures() {
         signer: None
     }};
 
-    let mut configs = vec![config_1, config_2];
+    let mut configs = vec![config_1, config_2, config_3];
 
     let image_hashes = [
         "0xb32cf48e38905abbd1058a568141c82b1abd0d548df003e019ea86e2824e3caa",
         "0xed7d9160a0bdcdfd9b3b83e29ddb5f94a07c1e4d1c79561b77c9f2d914f293eb",
-        // "0xc5272cd2176bd13988f3c1ab21994214ff3d84db081f95ee4d28f39d60ec834c",
+        "0xc5272cd2176bd13988f3c1ab21994214ff3d84db081f95ee4d28f39d60ec834c",
     ];
 
     for (i, config) in configs.iter_mut().enumerate() {
