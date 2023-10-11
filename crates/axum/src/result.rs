@@ -40,6 +40,12 @@ pub enum AppError {
     InternalError,
 }
 
+impl From<eyre::Error> for AppError {
+    fn from(error: eyre::Error) -> Self {
+        AppError::InternalError
+    }
+}
+
 impl From<FromHexError> for AppError {
     fn from(error: FromHexError) -> Self {
         AppError::FromHexError(error)

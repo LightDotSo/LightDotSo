@@ -30,7 +30,12 @@ use ethers_main::{
 use eyre::Result;
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
-use lightdotso_solutions::{config::WalletConfig, hash::get_address, types::SignerNode};
+use lightdotso_solutions::{
+    builder::rooted_node_builder,
+    config::WalletConfig,
+    hash::get_address,
+    types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
+};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
@@ -61,9 +66,11 @@ pub struct PostQuery {
     pub owners: Vec<Owner>,
     // The salt is used to calculate the new wallet address.
     pub salt: String,
+    // The threshold of the wallet.
+    pub threshold: u16,
 }
 
-/// Wallet to do.
+/// Wallet to create.
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Owner {
     address: String,
@@ -212,12 +219,47 @@ async fn v1_post_handler(
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
+    // Check if all of the owner address can be parsed to H160.
+    let _ = query
+        .owners
+        .iter()
+        .map(|owner| owner.address.parse::<H160>())
+        .collect::<Result<Vec<H160>, _>>()?;
+
+    // Check if the threshold is greater than 0
+    if query.threshold == 0 {
+        return Err(AppError::BadRequest);
+    }
+
+    // Parse the salt to bytes.
+    let salt_bytes: H256 = query.salt.parse()?;
+
+    // Conver the owners to SignerNode.
+    let owners: Vec<SignerNode> = query
+        .owners
+        .iter()
+        .map(|owner| SignerNode {
+            signer: Some(Signer {
+                weight: Some(owner.weight),
+                leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                    address: owner.address.parse().unwrap(),
+                }),
+            }),
+            left: None,
+            right: None,
+        })
+        .collect();
+
+    // Build the node tree.
+    let tree = rooted_node_builder(owners)?;
+
+    // Create a wallet config
     let config = WalletConfig {
-        checkpoint: 1,
-        threshold: 1,
+        checkpoint: 0,
+        threshold: query.threshold,
         weight: 1,
         image_hash: [0; 32].into(),
-        tree: SignerNode { signer: None, left: None, right: None },
+        tree,
         internal_root: None,
     };
 
@@ -230,18 +272,8 @@ async fn v1_post_handler(
     // Parse the image hash to bytes.
     let image_hash_bytes: H256 = image_hash.into();
 
-    // Parse the salt to bytes.
-    let salt_bytes: H256 = query.salt.parse()?;
-
     // Calculate the new wallet address.
     let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
-
-    // Check if all of the owner address can be parsed to H160.
-    let _ = query
-        .owners
-        .iter()
-        .map(|owner| owner.address.parse::<H160>())
-        .collect::<Result<Vec<H160>, _>>()?;
 
     // Attempt to create a user in case it does not exist.
     let res = client
@@ -278,7 +310,7 @@ async fn v1_post_handler(
                 .create(
                     to_checksum(&new_wallet_address, None),
                     format!("{:?}", image_hash_bytes),
-                    1,
+                    query.threshold.into(),
                     query.salt.clone(),
                     vec![],
                 )
