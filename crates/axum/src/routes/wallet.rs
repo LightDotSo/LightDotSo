@@ -61,6 +61,7 @@ pub struct ListQuery {
 
 #[derive(Clone, Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
+#[serde(default)]
 pub struct PostQuery {
     // The array of owners of the wallet.
     pub owners: Vec<Owner>,
@@ -70,11 +71,18 @@ pub struct PostQuery {
     pub threshold: u16,
 }
 
-/// Wallet to create.
+/// Wallet owner.
 #[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
+#[schema(default)]
 pub(crate) struct Owner {
     address: String,
     weight: u8,
+}
+
+impl Default for Owner {
+    fn default() -> Self {
+        Self { address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string(), weight: 1 }
+    }
 }
 
 /// Wallet operation errors
