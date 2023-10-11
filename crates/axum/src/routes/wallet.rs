@@ -59,10 +59,8 @@ pub struct ListQuery {
     pub limit: Option<i64>,
 }
 
-#[derive(Clone, Debug, Deserialize, IntoParams)]
-#[into_params(parameter_in = Query)]
-#[serde(default)]
-pub struct PostQuery {
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub struct PostRequestParams {
     // The array of owners of the wallet.
     pub owners: Vec<Owner>,
     // The salt is used to calculate the new wallet address.
@@ -71,19 +69,8 @@ pub struct PostQuery {
     pub threshold: u16,
 }
 
-impl Default for PostQuery {
-    fn default() -> Self {
-        Self {
-            owners: vec![Owner::default()],
-            salt: "0x0000000000000000000000000000000000000000000000000000000000000001".to_string(),
-            threshold: 3,
-        }
-    }
-}
-
 /// Wallet owner.
-#[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
-#[schema(default)]
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Owner {
     address: String,
     weight: u8,
@@ -218,9 +205,7 @@ async fn v1_list_handler(
 #[utoipa::path(
         post,
         path = "/v1/wallet/create",
-        params(
-            PostQuery
-        ),
+        request_body = PostRequestParams,
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
             (status = 500, description = "Wallet internal error", body = WalletError),
@@ -228,33 +213,32 @@ async fn v1_list_handler(
     )]
 #[autometrics]
 async fn v1_post_handler(
-    post: Query<PostQuery>,
     State(client): State<AppState>,
+    Json(params): Json<PostRequestParams>,
 ) -> AppJsonResult<Wallet> {
-    // Get the post query.
-    let Query(query) = post;
-
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
+    let owners = &params.owners;
+    let threshold = params.threshold;
+    let salt = params.salt.clone();
+
     // Check if all of the owner address can be parsed to H160.
-    let _ = query
-        .owners
+    let _ = owners
         .iter()
         .map(|owner| owner.address.parse::<H160>())
         .collect::<Result<Vec<H160>, _>>()?;
 
     // Check if the threshold is greater than 0
-    if query.threshold == 0 {
+    if params.threshold == 0 {
         return Err(AppError::BadRequest);
     }
 
     // Parse the salt to bytes.
-    let salt_bytes: H256 = query.salt.parse()?;
+    let salt_bytes: H256 = params.salt.parse()?;
 
     // Conver the owners to SignerNode.
-    let owners: Vec<SignerNode> = query
-        .owners
+    let owner_nodes: Vec<SignerNode> = owners
         .iter()
         .map(|owner| SignerNode {
             signer: Some(Signer {
@@ -269,12 +253,12 @@ async fn v1_post_handler(
         .collect();
 
     // Build the node tree.
-    let tree = rooted_node_builder(owners)?;
+    let tree = rooted_node_builder(owner_nodes)?;
 
     // Create a wallet config
     let config = WalletConfig {
         checkpoint: 0,
-        threshold: query.threshold,
+        threshold: params.threshold,
         weight: 1,
         image_hash: [0; 32].into(),
         tree,
@@ -300,8 +284,7 @@ async fn v1_post_handler(
         .unwrap()
         .user()
         .create_many(
-            query
-                .owners
+            owners
                 .iter()
                 .map(|owner| {
                     lightdotso_prisma::user::create_unchecked(vec![
@@ -328,8 +311,8 @@ async fn v1_post_handler(
                 .create(
                     to_checksum(&new_wallet_address, None),
                     format!("{:?}", image_hash_bytes),
-                    query.threshold.into(),
-                    query.salt.clone(),
+                    threshold.into(),
+                    salt,
                     vec![],
                 )
                 .exec()
@@ -340,8 +323,7 @@ async fn v1_post_handler(
             let owner_data = client
                 .owner()
                 .create_many(
-                    query
-                        .owners
+                    owners
                         .iter()
                         .map(|owner| {
                             lightdotso_prisma::owner::create_unchecked(
