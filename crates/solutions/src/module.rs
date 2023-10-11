@@ -437,7 +437,7 @@ impl SigModule {
         ]))
         .into();
 
-        // If the tree is single (right is empty), set the tree as left tree signer
+        // If the tree is single (right is empty), set the tree as root tree signer
         if self.tree.right.is_none() {
             self.tree = SignerNode {
                 signer: self.tree.clone().left.unwrap().signer,
