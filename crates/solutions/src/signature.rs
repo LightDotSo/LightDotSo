@@ -133,7 +133,37 @@ pub(crate) async fn recover_dynamic_signature(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ethers::signers::{LocalWallet, Signer};
+    use crate::utils::{left_pad_u64_to_bytes32, parse_hex_to_bytes32};
+    use ethers::{
+        abi::{encode_packed, Token},
+        signers::{LocalWallet, Signer},
+        utils::keccak256,
+    };
+
+    #[test]
+    fn test_userop_recover() {
+        let subdigest = parse_hex_to_bytes32(
+            "0x1a8d7c5989225f7ef86fd7844c64b74e04d361734664fa6d2bf307414327875a",
+        )
+        .unwrap();
+
+        // Hash the subdigest w/ https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/ModuleAuth.sol#L60
+        let hash = keccak256(
+            encode_packed(&[
+                Token::String("\x19\x01".to_string()),
+                Token::FixedBytes(left_pad_u64_to_bytes32(11155111).to_vec()),
+                Token::Address("0x10dbbe70128929723c1b982e53c51653232e4ff2".parse().unwrap()),
+                Token::FixedBytes(subdigest.to_vec()),
+            ])
+            .unwrap(),
+        );
+
+        // For ECDSASignatureTypeEIP712
+        let message = RecoveryMessage::Hash(hash.into());
+        let signature = EthersSignature::from_str("0x783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b").unwrap();
+        let a = signature.recover(message).unwrap();
+        assert_eq!(a, "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d".parse().unwrap());
+    }
 
     #[tokio::test]
     async fn test_recover_ecdsa_signature() {

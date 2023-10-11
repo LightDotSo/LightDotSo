@@ -59,6 +59,14 @@ impl WalletConfig {
         ])))
     }
 
+    /// Regenerate the image hash of the wallet config from the internal tree root to the image hash
+    /// setter
+    pub fn regenerate_image_hash(&mut self, subdigest: [u8; 32]) -> Result<()> {
+        self.internal_root = Some(self.tree.calculate_image_hash_from_node(subdigest).into());
+        self.image_hash_of_wallet_config()?;
+        Ok(())
+    }
+
     /// Get all signers in the wallet config in an array
     pub fn get_signers(&self) -> Vec<Signer> {
         self.get_signers_recursive(&self.tree)

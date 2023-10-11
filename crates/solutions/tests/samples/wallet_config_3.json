@@ -2,7 +2,7 @@
   "checkpoint": 2,
   "threshold": 1,
   "weight": 4,
-  "image_hash": "0xe92a9c6a8d48e440605e8700f4a78aee45edccf76ca4119362ad478b71ce67e6",
+  "image_hash": "0x4b82e35988d1b6b83382e8947043cfd88dc990b1ad73cbe170221ceb87311a3b",
   "tree": {
     "left": {
       "signer": {
@@ -22,7 +22,7 @@
           "content": {
             "internal_threshold": 2,
             "external_weight": 4,
-            "internal_root": "0xfcda4678b72c678ae3e83dab5bef853f731c51d8dd2b0b849c6542d8bb05452c"
+            "internal_root": "0x4eb12975cb2269ea1f8d44aee55fdc110e56ad15a3265b4c25de3cef4fd9645b"
           }
         }
       },
@@ -44,7 +44,7 @@
               "leaf": {
                 "type": "ECDSASignature",
                 "content": {
-                  "address": "0xa4ab6e1f791e1d0339f1ed5d4b681e3b58f4a3f7",
+                  "address": "0x7ac88b6712dbcd7c94339d0ccd79a8527870447a",
                   "signature_type": "ECDSASignatureTypeEthSign",
                   "signature": "0xa73ce16a9cc7075c18bd2b4fd2649812fecb51460353a55bf62f821bf884443a169e0d0e04113d7ef2c2d15f1ecf46531f291259542065c556f0e721a82b3c581b"
                 }
@@ -57,7 +57,7 @@
               "leaf": {
                 "type": "ECDSASignature",
                 "content": {
-                  "address": "0x8c84d0b5deff3c1ac3ab77a2716e7de18c652ad9",
+                  "address": "0x739ca34b6bdcae45cc8565d405f9b00735b4467c",
                   "signature_type": "ECDSASignatureTypeEthSign",
                   "signature": "0x93f1f388009f68763df43632153155960ea6604723bb517e90788822ff21e38722be4387e8f67c0db677b74d9a0c2a804183e6a3eebd2ba53dbfc54432f1a10f1b"
                 }
@@ -79,5 +79,5 @@
       }
     }
   },
-  "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  "internal_root": "0x3da5f63380e010065ccbc006edb048650e95dc06f1d572bf4c9c057304c9fc7f"
 }

@@ -2,7 +2,7 @@
   "checkpoint": 1667831412,
   "threshold": 3,
   "weight": 3,
-  "image_hash": "0x4162949c962c72afb392dd40c58d3b6669011af7d529c6c35e1699a52bd51790",
+  "image_hash": "0x7d4644659dd2fc7c709ad522ef52639506fd788438a7915cfa56547fc8182f8b",
   "tree": {
     "left": {
       "left": {
@@ -98,7 +98,7 @@
               "leaf": {
                 "type": "ECDSASignature",
                 "content": {
-                  "address": "0x5de7b35499470b6371fad80801da37cc002b8f12",
+                  "address": "0x1c2b3f28b8ed98da81a9457a4f9f39751b8a2464",
                   "signature_type": "ECDSASignatureTypeEthSign",
                   "signature": "0xd9b2a3142267255c50581c8023648916a3e8c3ae7ca50f6752b6874a20e76e496b30c4e1b653691b3ae9fea40a66966f3d1f2a35cedb52fbf07ae09269fb3c8e1b"
                 }
@@ -167,7 +167,7 @@
               "leaf": {
                 "type": "ECDSASignature",
                 "content": {
-                  "address": "0x1f2dcfa639d690dbe3b79e405101940965f5f630",
+                  "address": "0x95bbfb2a36c59fcb68ced11b6fa0f85f6c8cf7b4",
                   "signature_type": "ECDSASignatureTypeEthSign",
                   "signature": "0x47f646e6d13434b2df65fc1ab9086264bed1030e485e3513ed01686d03d127df510efc468bbeedde677c3af1fda7b0dbffc7186e07203eb09718cc256cf6b5d11b"
                 }
@@ -204,7 +204,7 @@
               "leaf": {
                 "type": "ECDSASignature",
                 "content": {
-                  "address": "0xe5a0162cb85d9c1d7e974dfa97604f31a82966e4",
+                  "address": "0x37f0100a622cff639b1772104cb0b6998ae19756",
                   "signature_type": "ECDSASignatureTypeEthSign",
                   "signature": "0xaaac151a6ad4bf7f966db203164551a7c3c3969d15666dd2c75202231623f5ee2059711c84d2f216126bf3dc6cc63223eba079262e73c58da4f97583747c790b1c"
                 }
@@ -215,5 +215,5 @@
       }
     }
   },
-  "internal_root": "0x0000000000000000000000000000000000000000000000000000000000000000"
+  "internal_root": "0x8678030c0a8f3291b4c3d30ad9d7f39f8f2b8d6f5c7b2349beb359b9ff05a85e"
 }

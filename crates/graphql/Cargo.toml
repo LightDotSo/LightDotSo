@@ -19,7 +19,7 @@
   tokio = { workspace = true }
 
 [dev-dependencies]
-  insta = "1.17"
+  insta = { workspace = true }
 
 [build-dependencies]
   cynic-codegen = { version = "3.2.2" }

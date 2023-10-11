@@ -33,17 +33,32 @@ const SIGNATURES: &[&str] = &[
 async fn test_integration_signatures() {
     for (i, signature) in SIGNATURES.iter().enumerate() {
         let sig = from_hex_string(signature).unwrap().into();
+        // Notice that the recovered addresses are hypothetical as we don't have the original
+        // user_op_hash that was used for the subdigest.
         let user_op_hash = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000000001",
         )
         .unwrap();
 
-        let recovered = recover_signature(Address::zero(), 1, user_op_hash, sig).await.unwrap();
+        let recovered_config =
+            recover_signature(Address::zero(), 1, user_op_hash, sig).await.unwrap();
+
+        // Check that the recovered config matches the expected config image hash
+        if i == 0 {
+            assert_eq!(
+                recovered_config.image_hash,
+                parse_hex_to_bytes32(
+                    "0xc9185cef7e5a78ba5220f4f1e7854a8e257cc0191aab3a3b8c3f9e2cca6f6bb2"
+                )
+                .unwrap()
+                .into()
+            );
+        }
 
         let path_name = format!("tests/samples/wallet_config_{}.json", i);
 
         // Write WalletConfig back to a different JSON file
-        write_wallet_config(&recovered, path_name).unwrap();
-        insta::assert_debug_snapshot!(i.to_string(), recovered.tree);
+        write_wallet_config(&recovered_config.clone(), path_name).unwrap();
+        insta::assert_debug_snapshot!(i.to_string(), recovered_config.clone().tree);
     }
 }
