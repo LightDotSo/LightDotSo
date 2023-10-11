@@ -14,7 +14,7 @@
   "author": "Light, Inc.",
   "scripts": {
     "build": "exit 0",
-    "rundler": "cd ../lib/rundler/crates/sim/tracer && yarn install && yarn run build && cp -r dist ~/.cargo/git/checkouts/rundler-afbc6e8113d271a8/b337dcb/crates/sim/tracer/dist/"
+    "rundler": "cd ../lib/rundler/crates/sim/tracer && yarn install && yarn run build && cp -r dist ~/.cargo/git/checkouts/rundler-afbc6e8113d271a8/b253c48/crates/sim/tracer/dist/"
   },
   "publishConfig": {
     "access": "public"
