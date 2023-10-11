@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{Signer, SignerNode};
+use crate::types::SignerNode;
 use ethers::{
     abi::{encode, Token},
     types::{H256, U256},
@@ -79,8 +79,8 @@ mod tests {
     use super::*;
     use crate::{
         types::{
-            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, NodeLeaf, SignatureLeaf,
-            Signer, SignerNode,
+            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, SignatureLeaf, Signer,
+            SignerNode,
         },
         utils::parse_hex_to_bytes32,
     };

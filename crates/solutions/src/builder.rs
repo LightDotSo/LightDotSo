@@ -13,33 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{SignatureLeaf, SignerNode};
+use crate::types::SignerNode;
 use eyre::{eyre, Result};
-
-pub fn rooted_sort_nested(node: SignerNode) -> Result<SignerNode> {
-    // Get the signers from the node
-    let signers = node.get_signers();
-
-    let mut acc = SignerNode { signer: Some(signers[0].clone()), left: None, right: None };
-    for signer in signers.iter().skip(1) {
-        let node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        acc = SignerNode { signer: None, left: Some(Box::new(acc)), right: Some(Box::new(node)) }
-    }
-    Ok(acc)
-}
 
 pub fn rooted_node_builder(members: Vec<SignerNode>) -> Result<SignerNode> {
     if members.is_empty() {
         return Err(eyre!("Empty members vector"));
-    }
-
-    // If SignerNode has a nested signature, it must be root sorted
-    for mut member in members.iter() {
-        if let Some(signer) = &member.signer {
-            if let SignatureLeaf::NestedSignature(_) = &signer.leaf {
-                member = &rooted_sort_nested(member.clone())?;
-            }
-        }
     }
 
     let mut acc = members[0].clone();
