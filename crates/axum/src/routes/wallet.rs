@@ -62,24 +62,27 @@ pub struct ListQuery {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct PostRequestParams {
     // The array of owners of the wallet.
+    #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
     pub owners: Vec<Owner>,
     // The salt is used to calculate the new wallet address.
+    #[schema(
+        example = "0x0000000000000000000000000000000000000000000000000000000000000006",
+        default = "0x0000000000000000000000000000000000000000000000000000000000000001"
+    )]
     pub salt: String,
     // The threshold of the wallet.
+    #[schema(example = 3, default = 1)]
     pub threshold: u16,
 }
 
 /// Wallet owner.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
 pub(crate) struct Owner {
+    /// The address of the owner.
     address: String,
+    /// The weight of the owner.
     weight: u8,
-}
-
-impl Default for Owner {
-    fn default() -> Self {
-        Self { address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string(), weight: 1 }
-    }
 }
 
 /// Wallet operation errors
