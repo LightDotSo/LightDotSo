@@ -61,10 +61,9 @@ impl WalletConfig {
 
     /// Regenerate the image hash of the wallet config from the internal tree root to the image hash
     /// setter
-    pub fn regenerate_image_hash(&mut self, subdigest: [u8; 32]) -> Result<()> {
+    pub fn regenerate_image_hash(&mut self, subdigest: [u8; 32]) -> Result<[u8; 32]> {
         self.internal_root = Some(self.tree.calculate_image_hash_from_node(subdigest).into());
-        self.image_hash_of_wallet_config()?;
-        Ok(())
+        Ok(self.image_hash_of_wallet_config()?)
     }
 
     pub fn is_wallet_valid(&self) -> bool {

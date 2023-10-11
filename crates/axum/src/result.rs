@@ -50,7 +50,7 @@ impl From<eyre::Error> for AppError {
 
 impl From<serde_json::Error> for AppError {
     fn from(error: serde_json::Error) -> Self {
-        AppError::SerdeJsonError(error.into())
+        AppError::SerdeJsonError(error)
     }
 }
 

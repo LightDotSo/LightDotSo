@@ -259,7 +259,7 @@ async fn v1_post_handler(
     let tree = rooted_node_builder(owner_nodes)?;
 
     // Create a wallet config
-    let config = WalletConfig {
+    let mut config = WalletConfig {
         checkpoint: 0,
         threshold: params.threshold,
         weight: 1,
@@ -269,7 +269,7 @@ async fn v1_post_handler(
     };
 
     // Simulate the image hash of the wallet config.
-    let res = config.image_hash_of_wallet_config();
+    let res = config.regenerate_image_hash([0; 32]);
 
     // If the image hash of the wallet could not be simulated, return a 404.
     let image_hash = res.map_err(|_| AppError::NotFound)?;
