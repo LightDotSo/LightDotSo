@@ -13,15 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::{
+    types::{SignatureLeaf, SignerNode},
+    utils::{hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u8_to_bytes32},
+};
 use ethers::{
     abi::{encode_packed, Token},
     types::{Address, U256},
     utils::keccak256,
-};
-
-use crate::{
-    types::{SignatureLeaf, SignerNode},
-    utils::{hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u8_to_bytes32, print_hex_string},
 };
 
 /// Generates a leaf node for the merkle tree
@@ -62,16 +61,12 @@ pub fn leaf_for_hardcoded_subdigest(hardcoded_subdigest: [u8; 32]) -> [u8; 32] {
 impl SignerNode {
     fn get_node_hash(&self, subdigest: [u8; 32]) -> [u8; 32] {
         let left = if self.left.is_some() {
-            let res = self.left.as_ref().unwrap().calculate_image_hash_from_node(subdigest);
-            print_hex_string(&res);
-            res
+            self.left.as_ref().unwrap().calculate_image_hash_from_node(subdigest)
         } else {
             [0; 32]
         };
         let right = if self.right.is_some() {
-            let res = self.right.as_ref().unwrap().calculate_image_hash_from_node(subdigest);
-            print_hex_string(&res);
-            res
+            self.right.as_ref().unwrap().calculate_image_hash_from_node(subdigest)
         } else {
             [0; 32]
         };
@@ -110,26 +105,7 @@ impl SignerNode {
             return res;
         }
 
-        match &self.left {
-            Some(left) => match &self.right {
-                Some(right) => {
-                    let left_hash = left.calculate_image_hash_from_node(subdigest);
-                    let right_hash = right.calculate_image_hash_from_node(subdigest);
-                    hash_keccak_256(left_hash, right_hash)
-                }
-                None => {
-                    let left_hash = left.calculate_image_hash_from_node(subdigest);
-                    hash_keccak_256(left_hash, [0; 32])
-                }
-            },
-            None => match &self.right {
-                Some(right) => {
-                    let right_hash = right.calculate_image_hash_from_node(subdigest);
-                    hash_keccak_256([0; 32], right_hash)
-                }
-                None => [0; 32],
-            },
-        }
+        self.get_node_hash(subdigest)
     }
 }
 
