@@ -15,6 +15,7 @@
 
 use crate::{
     config::WalletConfig,
+    node::{leaf_for_address_and_weight, leaf_for_hardcoded_subdigest, leaf_for_nested},
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     traits::IsZero,
     types::{
@@ -23,14 +24,13 @@ use crate::{
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
-        left_pad_u8_to_bytes32, read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8,
-        read_uint8_address,
+        read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
     },
 };
 use async_recursion::async_recursion;
 use ethers::{
     abi::{encode, encode_packed, Token},
-    types::{Address, U256},
+    types::Address,
     utils::keccak256,
 };
 use eyre::{eyre, Result};
@@ -101,6 +101,12 @@ impl SigModule {
         self
     }
 
+    /// Sets the tree of the signature
+    pub fn set_tree(&mut self, tree: SignerNode) -> &mut Self {
+        self.tree = tree;
+        self
+    }
+
     /// Sets the weight of the signature
     #[allow(dead_code)]
     pub fn set_weight(&mut self, weight: u64) -> &mut Self {
@@ -134,42 +140,6 @@ impl SigModule {
     /// Sets the root of the merkle tree
     pub fn return_valid_root(&mut self, node: [u8; 32]) {
         self.root = if !self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
-    }
-
-    /// Generates a leaf node for the merkle tree
-    fn leaf_for_address_and_weight(&self, addr: Address, weight: u8) -> [u8; 32] {
-        let weight_shifted = U256::from(weight) << 160;
-        let addr_u256 = U256::from_big_endian(addr.as_bytes());
-        (weight_shifted | addr_u256).into()
-    }
-
-    /// Recovers the wallet config from the signature
-    fn leaf_for_nested(
-        &self,
-        internal_root: [u8; 32],
-        internal_threshold: u16,
-        external_weight: u8,
-    ) -> [u8; 32] {
-        keccak256(
-            encode_packed(&[
-                Token::String("Sequence nested config:\n".to_string()),
-                Token::FixedBytes(internal_root.to_vec()),
-                Token::FixedBytes(left_pad_u16_to_bytes32(internal_threshold).to_vec()),
-                Token::FixedBytes(left_pad_u8_to_bytes32(external_weight).to_vec()),
-            ])
-            .unwrap(),
-        )
-    }
-
-    /// Recovers the wallet config from the signature
-    fn leaf_for_hardcoded_subdigest(&self, hardcoded_subdigest: [u8; 32]) -> [u8; 32] {
-        keccak256(
-            encode_packed(&[
-                Token::String("Sequence static digest:\n".to_string()),
-                Token::FixedBytes(hardcoded_subdigest.to_vec()),
-            ])
-            .unwrap(),
-        )
     }
 
     fn inject_signer_node(&mut self, signer_node: SignerNode) -> Result<()> {
@@ -224,7 +194,7 @@ impl SigModule {
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
         self.inject_signer_node(signer_node)?;
 
-        let node = self.leaf_for_address_and_weight(signature_leaf.address, addr_weight);
+        let node = leaf_for_address_and_weight(signature_leaf.address, addr_weight);
         self.return_valid_root(node);
 
         Ok(())
@@ -242,7 +212,7 @@ impl SigModule {
         self.inject_signer_node(signer_node)?;
 
         self.rindex = rindex;
-        let node = self.leaf_for_address_and_weight(addr, addr_weight);
+        let node = leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
 
         Ok(())
@@ -273,7 +243,7 @@ impl SigModule {
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
         self.inject_signer_node(signer_node)?;
 
-        let node = self.leaf_for_address_and_weight(addr, addr_weight);
+        let node = leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
 
         Ok(())
@@ -324,7 +294,7 @@ impl SigModule {
             self.weight = u64::MAX;
         }
 
-        let node = self.leaf_for_hardcoded_subdigest(hardcoded);
+        let node = leaf_for_hardcoded_subdigest(hardcoded);
         self.return_valid_root(node);
 
         let signer = Signer {
@@ -356,7 +326,7 @@ impl SigModule {
             self.weight += external_weight as u64;
         }
 
-        let node = self.leaf_for_nested(internal_root, internal_threshold, external_weight);
+        let node = leaf_for_nested(internal_root, internal_threshold, external_weight);
         self.return_valid_root(node);
 
         let signer_node = base_sig_module.tree;
@@ -432,58 +402,8 @@ impl SigModule {
         Ok((threshold, checkpoint))
     }
 
-    fn get_node_hash(&self, node: &SignerNode) -> [u8; 32] {
-        let node = node.clone();
-        let left = if node.left.is_some() {
-            self.calculate_image_hash_from_node(&node.left.unwrap())
-        } else {
-            [0; 32]
-        };
-        let right = if node.right.is_some() {
-            self.calculate_image_hash_from_node(&node.right.unwrap())
-        } else {
-            [0; 32]
-        };
-
-        hash_keccak_256(left, right)
-    }
-
-    // Iterate over the tree and calculate the image hash
-    pub fn calculate_image_hash_from_node(&self, node: &SignerNode) -> [u8; 32] {
-        match &node.signer {
-            Some(signer) => match &signer.leaf {
-                SignatureLeaf::ECDSASignature(leaf) => {
-                    self.leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
-                }
-                SignatureLeaf::AddressSignature(leaf) => {
-                    self.leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
-                }
-                SignatureLeaf::DynamicSignature(leaf) => {
-                    self.leaf_for_address_and_weight(leaf.address, signer.weight.unwrap())
-                }
-                SignatureLeaf::NodeSignature(_) => self.get_node_hash(node),
-                SignatureLeaf::SubdigestSignature(_) => {
-                    self.leaf_for_hardcoded_subdigest(self.subdigest)
-                }
-                SignatureLeaf::NestedSignature(leaf) => {
-                    let node_hash = self.get_node_hash(node);
-                    self.leaf_for_nested(node_hash, leaf.internal_threshold, leaf.external_weight)
-                }
-                SignatureLeaf::BranchSignature(_) => {
-                    // Panic here because we should never get a branch signature in the tree
-                    panic!("Branch signature found in tree")
-                }
-            },
-            None => [0; 32],
-        }
-    }
-
-    pub fn get_initial_image_hash_config(
-        &self,
-        threshold: u16,
-        checkpoint: u32,
-    ) -> Result<WalletConfig> {
-        let internal_root = self.calculate_image_hash_from_node(&self.tree).into();
+    pub fn get_computed_config(&self, threshold: u16, checkpoint: u32) -> Result<WalletConfig> {
+        let internal_root = self.tree.calculate_image_hash_from_node(self.subdigest).into();
 
         Ok(WalletConfig {
             threshold,
@@ -527,7 +447,7 @@ impl SigModule {
             };
         }
 
-        let internal_root = Some(self.calculate_image_hash_from_node(&tree.clone()).into());
+        let internal_root = Some(self.tree.calculate_image_hash_from_node(self.subdigest).into());
 
         Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
     }
@@ -537,7 +457,6 @@ impl SigModule {
 mod tests {
     use super::*;
     use crate::utils::{from_hex_string, parse_hex_to_bytes32, print_hex_string, to_hex_string};
-    use ethers::core::types::Address;
 
     #[test]
     fn test_print_hex_string() {
@@ -546,58 +465,6 @@ mod tests {
 
         let result = to_hex_string(&test_bytes);
         print_hex_string(&test_bytes);
-
-        assert_eq!(result, expected_output);
-    }
-
-    #[test]
-    fn test_leaf_for_address_and_weight() {
-        let base_sig_module = SigModule::empty();
-        let test_addr = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse::<Address>().unwrap();
-        let test_weight = 1;
-        let expected_output = parse_hex_to_bytes32(
-            "0x0000000000000000000000014fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
-        )
-        .unwrap();
-
-        let result = base_sig_module.leaf_for_address_and_weight(test_addr, test_weight);
-
-        assert_eq!(result, expected_output);
-    }
-
-    #[test]
-    fn test_leaf_for_nested() {
-        let base_sig_module = SigModule::empty();
-
-        let test_node = parse_hex_to_bytes32(
-            "0x0000000000000000000000000000000000000000000000000000000000000001",
-        )
-        .unwrap();
-        let test_threshold = 1;
-        let expected_output = parse_hex_to_bytes32(
-            "0x907152f3fb1d245b378d4a00af6de7e68f3458fdfbeab39db0e2fb84c676e449",
-        )
-        .unwrap();
-
-        let result = base_sig_module.leaf_for_nested(test_node, test_threshold, 1);
-        println!("{:?}", result);
-
-        assert_eq!(result, expected_output);
-    }
-
-    #[test]
-    fn test_leaf_for_hardcoded_subdigest() {
-        let base_sig_module = SigModule::empty();
-        let test_hardcoded_digest = parse_hex_to_bytes32(
-            "0x0000000000000000000000000000000000000000000000000000000000000001",
-        )
-        .unwrap();
-        let expected_output = parse_hex_to_bytes32(
-            "0x1773e5bd11cd42e98b2e68005291627c91f4554148dd1a0e3941a681d892b516",
-        )
-        .unwrap();
-
-        let result = base_sig_module.leaf_for_hardcoded_subdigest(test_hardcoded_digest);
 
         assert_eq!(result, expected_output);
     }
