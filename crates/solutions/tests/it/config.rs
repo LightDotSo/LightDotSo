@@ -13,34 +13,334 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::utils::hex;
 use lightdotso_solutions::{
     config::WalletConfig,
-    types::{ECDSASignatureLeaf, ECDSASignatureType, SignatureLeaf, Signer, SignerNode},
+    types::{AddressSignatureLeaf, NestedLeaf, SignatureLeaf, Signer, SignerNode, SubdigestLeaf},
+    utils::parse_hex_to_bytes32,
 };
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_signatures() {
     let config_1: WalletConfig = WalletConfig {
-      checkpoint:0,
-      weight: 0,
-      threshold:0,
-      image_hash: [0;32].into(),
+      checkpoint: 999999,
+      weight: 1,
+      threshold: 11,
+      image_hash: [0; 32].into(),
       internal_root: None,
       tree: SignerNode{
-        left: None,
-        right: None,
-        signer: Some(Signer {
-            weight: Some(1),
-            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
-                address: "0x6a202a0ba513f87db9174e44300378b25f1950bb".parse().unwrap(),
-                signature_type: ECDSASignatureType::ECDSASignatureTypeEthSign,
-                signature: hex::decode("0x9fa7b7e8ed25088c413074818ac10ab3bbcddb120bbec85083f3ba254e5547d953fe615a6474fd365326244dedd7afa3911ad39c956ca096d721064d6b29055d1b").unwrap().try_into().unwrap(),
-            }),
-        }),
+        left: Some(Box::new(SignerNode {
+            left: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: Some(2),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                    }),
+                }),
+            })),
+            right: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: None,
+                    leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                        hash: parse_hex_to_bytes32(
+                            "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
+                        )
+                        .unwrap()
+                        .into(),
+                    }),
+                }),
+            })),
+            signer: None,
+        })),
+        right: Some(Box::new(SignerNode {
+            left: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: None,
+                    leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                        hash: parse_hex_to_bytes32(
+                            "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
+                        )
+                        .unwrap()
+                        .into(),
+                    }),
+                }),
+            })),
+            right: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: Some(1),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse().unwrap(),
+                    }),
+                }),
+            })),
+            signer: None,
+        })),
+        signer: None
     }};
 
-    let configs = vec![config_1];
+    let config_2: WalletConfig = WalletConfig {
+      checkpoint: 2,
+      weight: 1,
+      threshold: 1,
+      image_hash: [0; 32].into(),
+      internal_root: None,
+      tree: SignerNode{
+        left: Some(Box::new(SignerNode {
+            left: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000000",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000001",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                signer: None
+            })),
+            right: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000002",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000003",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                signer: None,
+            })),
+            signer: None,
+        })),
+        right: Some(Box::new(SignerNode {
+            left: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000004",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000005",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                signer: None
+            })),
+            right: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000006",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000007",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                signer: None,
+            })),
+            signer: None,
+        })),
+        signer: None
+    }};
 
-    for (i, config) in configs.iter().enumerate() {}
+    let config_3: WalletConfig = WalletConfig {
+      checkpoint: 3,
+      weight: 1,
+      threshold: 2,
+      image_hash: [0; 32].into(),
+      internal_root: None,
+      tree: SignerNode{
+        left: Some(Box::new(SignerNode {
+            left: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: Some(2),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                    }),
+                }),
+            })),
+            right: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x0000000000000000000000000000000000000000000000000000000000000006",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df10000000000000000",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                signer: None
+            })),
+            signer: Some(Signer {
+                weight: None,
+                leaf: SignatureLeaf::NestedSignature(NestedLeaf {
+                    internal_root: [0; 32].into(),
+                    internal_threshold: 2,
+                    external_weight: 90,
+                })
+            }),
+        })),
+        right: Some(Box::new(SignerNode {
+            left: Some(Box::new(SignerNode {
+                left: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                right: Some(Box::new(SignerNode {
+                    left: None,
+                    right: None,
+                    signer: Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
+                            hash: parse_hex_to_bytes32(
+                                "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
+                            )
+                            .unwrap()
+                            .into(),
+                        }),
+                    }),
+                })),
+                signer: None
+            })),
+            right: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: Some(1),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse().unwrap(),
+                    }),
+                }),
+            })),
+            signer: None,
+        })),
+        signer: None
+    }};
+
+    let mut configs = vec![config_1, config_2];
+
+    let image_hashes = [
+        "0xb32cf48e38905abbd1058a568141c82b1abd0d548df003e019ea86e2824e3caa",
+        "0xed7d9160a0bdcdfd9b3b83e29ddb5f94a07c1e4d1c79561b77c9f2d914f293eb",
+        // "0xc5272cd2176bd13988f3c1ab21994214ff3d84db081f95ee4d28f39d60ec834c",
+    ];
+
+    for (i, config) in configs.iter_mut().enumerate() {
+        let _ = config.regenerate_image_hash([0; 32]);
+        let r = config.image_hash_of_wallet_config().unwrap();
+        assert_eq!(r, parse_hex_to_bytes32(image_hashes[i]).unwrap());
+    }
 }
