@@ -54,14 +54,20 @@ pub struct ListQuery {
     pub limit: Option<i64>,
 }
 
-#[derive(Debug, Deserialize, Default, IntoParams)]
+#[derive(Clone, Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    // TODO: Support all wallet types and config
-    // The address of the single owner of the wallet.
-    pub address: String,
+    // The array of owners of the wallet.
+    pub owners: Vec<Owner>,
     // The salt is used to calculate the new wallet address.
     pub salt: String,
+}
+
+/// Wallet to do.
+#[derive(Debug, Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct Owner {
+    address: String,
+    weight: u8,
 }
 
 /// Wallet operation errors
@@ -78,7 +84,7 @@ pub(crate) enum WalletError {
     NotFound(String),
 }
 
-/// Item to do.
+/// Wallet to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Wallet {
     id: String,
@@ -203,8 +209,6 @@ async fn v1_post_handler(
     // Get the post query.
     let Query(query) = post;
 
-    let address: H160 = query.address.parse()?;
-    info!(?address);
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
     let checksum_factory_address = to_checksum(&factory_address, None);
 
@@ -232,13 +236,33 @@ async fn v1_post_handler(
     // Calculate the new wallet address.
     let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
 
+    // Check if all of the owner address can be parsed to H160.
+    let _ = query
+        .owners
+        .iter()
+        .map(|owner| owner.address.parse::<H160>())
+        .collect::<Result<Vec<H160>, _>>()?;
+
     // Attempt to create a user in case it does not exist.
     let res = client
         .clone()
         .client
         .unwrap()
         .user()
-        .create(vec![lightdotso_prisma::user::address::set(Some(to_checksum(&address, None)))])
+        .create_many(
+            query
+                .owners
+                .iter()
+                .map(|owner| {
+                    lightdotso_prisma::user::create_unchecked(vec![
+                        lightdotso_prisma::user::address::set(Some(to_checksum(
+                            &owner.address.parse::<H160>().unwrap(),
+                            None,
+                        ))),
+                    ])
+                })
+                .collect(),
+        )
         .exec()
         .await;
     info!(?res);
@@ -248,7 +272,7 @@ async fn v1_post_handler(
         .unwrap()
         ._transaction()
         .run(|client| async move {
-            // Create the configurations to the database.
+            // Create the configuration to the database.
             let configuration_data = client
                 .configuration()
                 .create(
@@ -265,19 +289,27 @@ async fn v1_post_handler(
             // Create the owners to the database.
             let owner_data = client
                 .owner()
-                .create(
-                    to_checksum(&address, None),
-                    1,
-                    format!("{:?}", image_hash_bytes),
-                    vec![lightdotso_prisma::owner::configuration_id::set(Some(
-                        configuration_data.id,
-                    ))],
+                .create_many(
+                    query
+                        .owners
+                        .iter()
+                        .map(|owner| {
+                            lightdotso_prisma::owner::create_unchecked(
+                                to_checksum(&owner.address.parse::<H160>().unwrap(), None),
+                                owner.weight.into(),
+                                format!("{:?}", image_hash_bytes),
+                                vec![lightdotso_prisma::owner::configuration_id::set(Some(
+                                    configuration_data.clone().id,
+                                ))],
+                            )
+                        })
+                        .collect(),
                 )
                 .exec()
                 .await?;
             trace!(?owner_data);
 
-            // Get the wallets from the database.
+            // Get the wallet from the database.
             let wallet = client
                 .wallet()
                 .create(to_checksum(&new_wallet_address, None), 0, checksum_factory_address, vec![])
