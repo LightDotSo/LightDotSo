@@ -66,7 +66,15 @@ impl WalletConfig {
         self.image_hash_of_wallet_config()
     }
 
+    /// Check if the wallet config is valid or not by checking the threshold and the total weight of
+    /// the signers
     pub fn is_wallet_valid(&self) -> bool {
+        // Check if the threshold is not zero
+        if self.threshold == 0 {
+            return false;
+        }
+
+        // Check if the total weight of the signers is greater than or equal to the threshold
         let total_weight: u8 =
             self.tree.get_signers().iter().map(|signer| signer.weight.unwrap_or(0)).sum();
         total_weight >= self.threshold as u8

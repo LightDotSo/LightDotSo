@@ -27,7 +27,7 @@ use ethers_main::{
     types::{H160, H256},
     utils::to_checksum,
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
 use lightdotso_solutions::{
@@ -37,7 +37,7 @@ use lightdotso_solutions::{
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
 use lightdotso_tracing::{
-    tracing::{info, info_span, trace},
+    tracing::{error, info, info_span, trace},
     tracing_futures::Instrument,
 };
 use serde::{Deserialize, Serialize};
@@ -97,6 +97,11 @@ pub(crate) enum WalletError {
     /// Wallet not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
+    /// Wallet configuration is invalid.
+    /// The threshold is greater than the number of owners.
+    /// The threshold is 0.
+    #[schema(example = "Invalid configuration")]
+    InvalidConfiguration(String),
 }
 
 /// Wallet to do.
@@ -211,6 +216,7 @@ async fn v1_list_handler(
         request_body = PostRequestParams,
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
+            (status = 400, description = "Invalid Configuration", body = WalletError),
             (status = 500, description = "Wallet internal error", body = WalletError),
         )
     )]
@@ -277,6 +283,15 @@ async fn v1_post_handler(
 
     // Calculate the new wallet address.
     let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
+
+    // Check if the wallet configuration is valid.
+    let valid = config.is_wallet_valid();
+
+    // If the wallet configuration is invalid, return a 500.
+    if !valid {
+        error!("Invalid configuration");
+        return Err(eyre!("Invalid configuration").into());
+    }
 
     // Attempt to create a user in case it does not exist.
     let res = client

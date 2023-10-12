@@ -51,11 +51,13 @@ use crate::routes::{check, configuration, health, wallet};
         check::handler,
         health::handler,
         configuration::v1_get_handler,
+        configuration::v1_list_handler,
         wallet::v1_get_handler,
         wallet::v1_list_handler,
         wallet::v1_post_handler,
     ),
     tags(
+        (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "health", description = "Health API"),
         (name = "wallet", description = "Wallet API")
@@ -110,7 +112,11 @@ pub async fn start_api_server() -> Result<()> {
     );
 
     // Create the API
-    let api = Router::new().merge(check::router()).merge(health::router()).merge(wallet::router());
+    let api = Router::new()
+        .merge(check::router())
+        .merge(health::router())
+        .merge(wallet::router())
+        .merge(configuration::router());
 
     // Create the app for the server
     let app = Router::new()
