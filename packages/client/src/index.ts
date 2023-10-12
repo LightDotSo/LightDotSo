@@ -41,7 +41,7 @@ export const getWallet = async ({
 }) => {
   const client = getClient(isPublic);
 
-  ResultAsync.fromPromise(
+  return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
       params: {
         query: {
