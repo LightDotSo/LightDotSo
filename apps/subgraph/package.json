@@ -40,16 +40,16 @@
     "test": "graph test"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.57.0",
+    "@graphprotocol/graph-cli": "^0.59.0",
     "@graphprotocol/graph-ts": "^0.31.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.5.7",
-    "assemblyscript": "^0.19.20",
-    "matchstick-as": "0.5.0",
+    "@types/node": "^20.8.4",
+    "assemblyscript": "^0.27.13",
+    "matchstick-as": "0.6.0",
     "typescript": "^5.2.2",
-    "wabt": "1.0.24"
+    "wabt": "1.0.32"
   },
   "publishConfig": {
     "access": "restricted"
