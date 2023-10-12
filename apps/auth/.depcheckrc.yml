@@ -24,3 +24,4 @@ ignores:
   - eslint-plugin-turbo
   - swagger-ui-react
   - "@types/swagger-ui-react"
+  - typescript
