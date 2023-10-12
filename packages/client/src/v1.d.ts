@@ -24,6 +24,13 @@ export interface paths {
      */
     get: operations["v1_get_handler"];
   };
+  "/v1/configuration/list": {
+    /**
+     * Returns a list of configurations.
+     * @description Returns a list of configurations.
+     */
+    get: operations["v1_list_handler"];
+  };
   "/v1/health": {
     /**
      * Check the health of the server.
@@ -63,14 +70,52 @@ export interface components {
       address: string;
       id: string;
     };
-    /** @description Wallet operation errors */
+    /** @description Configuration operation errors */
     ConfigurationError: OneOf<[{
       BadRequest: string;
     }, {
       /** @description Configuration not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to do. */
+    /**
+     * @description Wallet owner.
+     * @example {
+     *   "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+     *   "weight": 1
+     * }
+     */
+    Owner: {
+      /** @description The address of the owner. */
+      address: string;
+      /**
+       * Format: int32
+       * @description The weight of the owner.
+       */
+      weight: number;
+    };
+    PostRequestParams: {
+      /**
+       * @example [
+       *   {
+       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+       *     "weight": 1
+       *   }
+       * ]
+       */
+      owners: components["schemas"]["Owner"][];
+      /**
+       * @default 0x0000000000000000000000000000000000000000000000000000000000000001
+       * @example 0x0000000000000000000000000000000000000000000000000000000000000006
+       */
+      salt: string;
+      /**
+       * Format: int32
+       * @default 1
+       * @example 3
+       */
+      threshold: number;
+    };
+    /** @description Wallet to do. */
     Wallet: {
       address: string;
       factory_address: string;
@@ -85,6 +130,13 @@ export interface components {
     }, {
       /** @description Wallet not found by id. */
       NotFound: string;
+    }, {
+      /**
+       * @description Wallet configuration is invalid.
+       * The threshold is greater than the number of owners.
+       * The threshold is 0.
+       */
+      InvalidConfiguration: string;
     }]>;
   };
   responses: never;
@@ -138,32 +190,6 @@ export interface operations {
     };
   };
   /**
-   * Create a wallet
-   * @description Create a wallet
-   */
-  v1_post_handler: {
-    parameters: {
-      query: {
-        address: string;
-        salt: string;
-      };
-    };
-    responses: {
-      /** @description Wallet created successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["Wallet"];
-        };
-      };
-      /** @description Wallet internal error */
-      500: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
-        };
-      };
-    };
-  };
-  /**
    * Returns a list of wallets.
    * @description Returns a list of wallets.
    */
@@ -182,6 +208,37 @@ export interface operations {
         };
       };
       /** @description Wallet bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a wallet
+   * @description Create a wallet
+   */
+  v1_post_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["PostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Wallet created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Wallet"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+      /** @description Wallet internal error */
       500: {
         content: {
           "application/json": components["schemas"]["WalletError"];
