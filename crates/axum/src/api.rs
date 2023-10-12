@@ -141,7 +141,7 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(cors)
                 .into_inner(),
         )
-        .nest("/admin", api.clone())
+        .nest("/admin/v1", api.clone())
         .layer(
             ServiceBuilder::new()
                 .layer(middleware::from_fn(admin))

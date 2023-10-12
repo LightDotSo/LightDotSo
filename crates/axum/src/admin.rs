@@ -42,9 +42,14 @@ pub async fn admin<B>(
 }
 
 fn token_is_valid(token: &str) -> bool {
-    let secret_env = std::env::var("SECRET_ENV").expect("SECRET_ENV must be set");
-    let secrets: Vec<&str> = secret_env.split(',').collect();
+    let admin_secret_env = std::env::var("ADMIN_SECRET_ENV");
 
-    // If token matches any of the secrets, return true
-    secrets.contains(&token)
+    match admin_secret_env {
+        Ok(secrets) => {
+            let secrets: Vec<&str> = secrets.split(',').collect();
+            // If token matches any of the secrets, return true
+            secrets.contains(&token)
+        }
+        Err(_) => false,
+    }
 }
