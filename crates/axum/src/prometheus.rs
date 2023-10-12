@@ -35,7 +35,7 @@ async fn handler(
 ) -> Response<Body> {
     let org_slug = "lightdotso";
     let query = req.uri().query().unwrap_or_default();
-    let full_path = format!("{}/api/v1/{}", org_slug, path);
+    let full_path = format!("{}/api/{}", org_slug, path);
 
     let uri = format!("https://api.fly.io/prometheus/{}?{}", full_path, query);
     info!("uri: {}", uri);
@@ -68,7 +68,7 @@ pub async fn start_prometheus_server() -> Result<()> {
     let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
 
     let app = Router::new()
-        .route("/api/v1/:anything", get(handler)) // fallback route that will handle all other paths
+        .route("/api/:anything", get(handler)) // fallback route that will handle all other paths
         .with_state(client);
 
     let socket_addr = "0.0.0.0:3002".parse()?;

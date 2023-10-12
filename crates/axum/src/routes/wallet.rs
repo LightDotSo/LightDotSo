@@ -134,7 +134,7 @@ pub(crate) fn router() -> Router<AppState> {
 /// Get a wallet
 #[utoipa::path(
         get,
-        path = "/v1/wallet/get",
+        path = "/wallet/get",
         params(
             GetQuery
         ),
@@ -175,7 +175,7 @@ async fn v1_get_handler(
 /// Returns a list of wallets.
 #[utoipa::path(
         get,
-        path = "/v1/wallet/list",
+        path = "/wallet/list",
         params(
             ListQuery
         ),
@@ -212,7 +212,7 @@ async fn v1_list_handler(
 /// Create a wallet
 #[utoipa::path(
         post,
-        path = "/v1/wallet/create",
+        path = "/wallet/create",
         request_body = PostRequestParams,
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),

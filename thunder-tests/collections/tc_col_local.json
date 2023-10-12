@@ -253,11 +253,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
       "name": "configuration/get",
-      "url": "http://localhost:3000/configuration/get?address=0x0d4428aA9Bc2e854477CcCC9135883947EAEb120",
+      "url": "http://localhost:3000/v1/configuration/get?address=0x0d4428aA9Bc2e854477CcCC9135883947EAEb120",
       "method": "GET",
       "sortNum": 50000,
       "created": "2023-10-12T04:34:19.773Z",
-      "modified": "2023-10-12T04:42:42.873Z",
+      "modified": "2023-10-12T19:51:49.185Z",
       "headers": [],
       "params": [
         {
@@ -273,11 +273,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
       "name": "wallet/list",
-      "url": "http://localhost:3000/wallet/list",
+      "url": "http://localhost:3000/v1/wallet/list",
       "method": "GET",
       "sortNum": 60000,
       "created": "2023-10-12T04:34:39.909Z",
-      "modified": "2023-10-12T04:35:03.117Z",
+      "modified": "2023-10-12T19:52:06.278Z",
       "headers": [],
       "params": [],
       "tests": []
@@ -287,11 +287,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
       "name": "wallet/get",
-      "url": "http://localhost:3000/wallet/get?address=0x0d4428aA9Bc2e854477CcCC9135883947EAEb120",
+      "url": "http://localhost:3000/v1/wallet/get?address=0x0d4428aA9Bc2e854477CcCC9135883947EAEb120",
       "method": "GET",
       "sortNum": 55000,
       "created": "2023-10-12T04:35:05.507Z",
-      "modified": "2023-10-12T04:35:32.152Z",
+      "modified": "2023-10-12T19:52:02.673Z",
       "headers": [],
       "params": [
         {
@@ -307,11 +307,11 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
       "name": "configuration/list",
-      "url": "http://localhost:3000/configuration/list",
+      "url": "http://localhost:3000/v1/configuration/list",
       "method": "GET",
       "sortNum": 52500,
       "created": "2023-10-12T04:41:06.558Z",
-      "modified": "2023-10-12T04:41:14.149Z",
+      "modified": "2023-10-12T19:51:51.105Z",
       "headers": [],
       "params": [],
       "tests": []
@@ -333,6 +333,25 @@
         "raw": "{\n  \"owners\": [\n    {\n      \"address\": \"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed\",\n      \"weight\": 1\n    }\n  ],\n  \"salt\": \"0x0000000000000000000000000000000000000000000000000000000000000006\",\n  \"threshold\": 1\n}",
         "form": []
       },
+      "tests": []
+    },
+    {
+      "_id": "5b1591cd-8718-4713-a4e4-8d9e9c41e267",
+      "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
+      "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
+      "name": "admin/wallet/list",
+      "url": "http://localhost:3000/admin/v1/wallet/list",
+      "method": "GET",
+      "sortNum": 70000,
+      "created": "2023-10-12T20:21:25.546Z",
+      "modified": "2023-10-12T20:33:31.974Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer a"
+        }
+      ],
+      "params": [],
       "tests": []
     }
   ]

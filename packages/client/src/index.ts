@@ -19,12 +19,12 @@ import type { paths, Without, XOR, OneOf } from "./v1";
 import { ResultAsync } from "neverthrow";
 
 const client = createClient<paths>({
-  baseUrl: "https://api.light.so/",
+  baseUrl: "https://api.light.so/v1",
 });
 
 export const getWallet = async (address: string) =>
   ResultAsync.fromPromise(
-    client.GET("/v1/wallet/get", {
+    client.GET("/wallet/get", {
       params: {
         query: {
           address: address,

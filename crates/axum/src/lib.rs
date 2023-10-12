@@ -16,6 +16,7 @@
 use axum::{http::StatusCode, response::IntoResponse, BoxError};
 use std::borrow::Cow;
 
+pub mod admin;
 pub mod api;
 pub mod internal;
 pub mod prometheus;

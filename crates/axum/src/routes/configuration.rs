@@ -80,7 +80,7 @@ pub(crate) fn router() -> Router<AppState> {
 /// Get a configuration
 #[utoipa::path(
         get,
-        path = "/v1/configuration/get",
+        path = "/configuration/get",
         params(
             GetQuery
         ),
@@ -126,7 +126,7 @@ async fn v1_get_handler(
 /// Returns a list of configurations.
 #[utoipa::path(
         get,
-        path = "/v1/configuration/list",
+        path = "/configuration/list",
         params(
             ListQuery
         ),

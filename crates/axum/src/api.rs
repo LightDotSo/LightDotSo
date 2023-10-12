@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{handle_error, state::AppState};
-use axum::{error_handling::HandleErrorLayer, routing::get, Router};
+use crate::{admin::admin, handle_error, state::AppState};
+use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
@@ -65,12 +65,12 @@ use crate::routes::{check, configuration, health, wallet};
 )]
 #[openapi(
     servers(
-        (url = "https://api.light.so", description = "Official API",
+        (url = "https://api.light.so/v1", description = "Official API",
             variables(
                 ("username" = (default = "demo", description = "Default username for API")),
             )
         ),
-        (url = "http://localhost:3000", description = "Local server"),
+        (url = "http://localhost:3000/v1", description = "Local server"),
     )
 )]
 struct ApiDoc;
@@ -121,13 +121,21 @@ pub async fn start_api_server() -> Result<()> {
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
-        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
-        .merge(Redoc::with_url("/redoc", ApiDoc::openapi()))
+        .nest("/admin/v1", api.clone())
+        .layer(
+            ServiceBuilder::new()
+                .layer(middleware::from_fn(admin))
+                .layer(OtelInResponseLayer)
+                .layer(OtelAxumLayer::default())
+                .into_inner(),
+        )
+        .merge(api.clone())
+        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
+        .merge(Redoc::with_url("/v1/redoc", ApiDoc::openapi()))
         // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
         // via SwaggerUi instead we only make rapidoc to point to the existing doc.
-        .merge(RapiDoc::new("/api-docs/openapi.json").path("/rapidoc"))
+        .merge(RapiDoc::new("/v1/api-docs/openapi.json").path("/rapidoc"))
         .nest("/v1", api.clone())
-        .merge(api)
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
