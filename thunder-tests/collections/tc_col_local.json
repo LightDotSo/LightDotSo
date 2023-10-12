@@ -315,6 +315,25 @@
       "headers": [],
       "params": [],
       "tests": []
+    },
+    {
+      "_id": "5792f306-79ea-40eb-ae85-47fe91db5195",
+      "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
+      "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
+      "name": "wallet/create",
+      "url": "http://localhost:3000/v1/wallet/create",
+      "method": "POST",
+      "sortNum": 53750,
+      "created": "2023-10-12T05:05:54.598Z",
+      "modified": "2023-10-12T05:08:10.400Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"owners\": [\n    {\n      \"address\": \"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed\",\n      \"weight\": 1\n    }\n  ],\n  \"salt\": \"0x0000000000000000000000000000000000000000000000000000000000000006\",\n  \"threshold\": 3\n}",
+        "form": []
+      },
+      "tests": []
     }
   ]
 }
