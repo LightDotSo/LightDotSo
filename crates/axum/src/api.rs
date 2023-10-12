@@ -121,14 +121,6 @@ pub async fn start_api_server() -> Result<()> {
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
-        .nest("/admin/v1", api.clone())
-        .layer(
-            ServiceBuilder::new()
-                .layer(middleware::from_fn(admin))
-                .layer(OtelInResponseLayer)
-                .layer(OtelAxumLayer::default())
-                .into_inner(),
-        )
         .merge(api.clone())
         .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
         .merge(Redoc::with_url("/v1/redoc", ApiDoc::openapi()))
@@ -148,6 +140,16 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(OtelAxumLayer::default())
                 .layer(cors)
                 .into_inner(),
+        )
+        .nest(
+            "/admin/v1",
+            api.clone().layer(
+                ServiceBuilder::new()
+                    .layer(middleware::from_fn(admin))
+                    .layer(OtelInResponseLayer)
+                    .layer(OtelAxumLayer::default())
+                    .into_inner(),
+            ),
         )
         .with_state(state);
 
