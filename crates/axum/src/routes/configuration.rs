@@ -25,6 +25,8 @@ use axum::{
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::configuration;
+use lightdotso_tracing::tracing::info;
+use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -34,7 +36,16 @@ pub struct GetQuery {
     pub address: String,
 }
 
-/// Wallet operation errors
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct ListQuery {
+    // The offset of the first configuration to return.
+    pub offset: Option<i64>,
+    // The maximum number of configurations to return.
+    pub limit: Option<i64>,
+}
+
+/// Configuration operation errors
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(crate) enum ConfigurationError {
     // Configuration query error.
@@ -61,7 +72,9 @@ impl From<configuration::Data> for Configuration {
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/configuration/get", get(v1_get_handler))
+    Router::new()
+        .route("/configuration/get", get(v1_get_handler))
+        .route("/configuration/list", get(v1_list_handler))
 }
 
 /// Get a configuration
@@ -84,8 +97,12 @@ async fn v1_get_handler(
     // Get the get query.
     let Query(query) = get;
 
+    info!("Get configuration for address: {:?}", query);
+
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
+
+    info!("Get configuration for checksum address: {:?}", checksum_address);
 
     // Get the configurations from the database.
     let configuration = client
@@ -93,6 +110,7 @@ async fn v1_get_handler(
         .unwrap()
         .configuration()
         .find_first(vec![configuration::address::equals(checksum_address)])
+        .order_by(configuration::checkpoint::order(Direction::Desc))
         .exec()
         .await?;
 
@@ -103,4 +121,42 @@ async fn v1_get_handler(
     let configuration: Configuration = configuration.into();
 
     Ok(Json::from(configuration))
+}
+
+/// Returns a list of configurations.
+#[utoipa::path(
+        get,
+        path = "/v1/configuration/list",
+        params(
+            ListQuery
+        ),
+        responses(
+            (status = 200, description = "Configurations returned successfully", body = [Configuration]),
+            (status = 500, description = "Configuration bad request", body = ConfigurationError),
+        )
+    )]
+#[autometrics]
+async fn v1_list_handler(
+    pagination: Option<Query<ListQuery>>,
+    State(client): State<AppState>,
+) -> AppJsonResult<Vec<Configuration>> {
+    // Get the pagination query.
+    let Query(pagination) = pagination.unwrap_or_default();
+
+    // Get the configurations from the database.
+    let configurations = client
+        .client
+        .unwrap()
+        .configuration()
+        .find_many(vec![])
+        .skip(pagination.offset.unwrap_or(0))
+        .take(pagination.limit.unwrap_or(10))
+        .exec()
+        .await?;
+
+    // Change the configurations to the format that the API expects.
+    let configurations: Vec<Configuration> =
+        configurations.into_iter().map(Configuration::from).collect();
+
+    Ok(Json::from(configurations))
 }

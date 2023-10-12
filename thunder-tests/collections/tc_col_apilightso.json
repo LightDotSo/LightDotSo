@@ -18,6 +18,20 @@
       "headers": [],
       "params": [],
       "tests": []
+    },
+    {
+      "_id": "b00fe035-90b6-4984-8e18-2125d25db173",
+      "colId": "90010c79-933e-468c-92a4-3ccac076fbb0",
+      "containerId": "",
+      "name": "wallet/list",
+      "url": "https://api.light.so/wallet/list",
+      "method": "GET",
+      "sortNum": 20000,
+      "created": "2023-10-12T04:32:59.438Z",
+      "modified": "2023-10-12T04:33:11.914Z",
+      "headers": [],
+      "params": [],
+      "tests": []
     }
   ]
 }
