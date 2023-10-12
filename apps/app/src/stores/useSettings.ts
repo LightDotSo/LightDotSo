@@ -13,13 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { inngest } from "./client";
+import { create } from "zustand";
 
-export const helloWorld = inngest.createFunction(
-  { id: "Hello World" },
-  { event: "test/hello.world" },
-  async ({ event, step }) => {
-    await step.sleep({ id: "Hello World" }, "1s");
-    return { event, body: "Hello, World!" };
-  },
-);
+export const useSettings = create(set => ({
+  bears: 0,
+  increasePopulation: () =>
+    set((state: { bears: number }) => ({ bears: state.bears + 1 })),
+  removeAllBears: () => set({ bears: 0 }),
+}));

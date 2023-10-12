@@ -13,7 +13,7 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "next build || true",
+    "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start"

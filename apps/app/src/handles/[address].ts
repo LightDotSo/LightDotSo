@@ -28,7 +28,7 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // -------------------------------------------------------------------------
 
-  let res = await getWallet(params.address);
+  let res = await getWallet({ address: params.address, isPublic: false });
 
   // -------------------------------------------------------------------------
   // Parse
