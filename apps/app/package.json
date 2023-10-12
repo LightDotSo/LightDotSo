@@ -63,7 +63,8 @@
     "siwe": "^2.1.4",
     "superjson": "^2.0.0",
     "viem": "^1.16.4",
-    "wagmi": "^1.4.3"
+    "wagmi": "^1.4.3",
+    "zustand": "^4.4.3"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
