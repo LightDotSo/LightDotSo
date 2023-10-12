@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use server";
+// "use server";
 
-import { invoker, createAction } from "@lightdotso/trpc";
+// import { invoker, createAction } from "@lightdotso/trpc";
 
-export const createPostAction = createAction(invoker.playground.createPost, {
-  revalidates: [invoker.playground.getLatestPost],
-});
+// export const createPostAction = createAction(invoker.playground.createPost, {
+//   revalidates: [invoker.playground.getLatestPost],
+// });

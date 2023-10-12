@@ -9,7 +9,7 @@ overrides:
 
 patchedDependencies:
   next@13.5.4:
-    hash: hgbvkidzzx46rzz7khbvyq3gpu
+    hash: g5wjcye6jvbl3og3hwmhmufj4i
     path: patches/next@13.5.4.patch
 
 importers:
@@ -18,7 +18,7 @@ importers:
     dependencies:
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(react-dom@18.2.0)(react@18.2.0)
       solc:
         specifier: 0.8.18
         version: 0.8.18
@@ -409,7 +409,7 @@ importers:
         version: 1.1.1(kysely@0.26.3)(postgres@3.4.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -505,7 +505,7 @@ importers:
         version: 1.23.3
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -611,7 +611,7 @@ importers:
         version: 10.16.4
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -727,7 +727,7 @@ importers:
         version: 7.73.0(next@13.5.4)(react@18.2.0)(webpack@5.88.2)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       nextra:
         specifier: ^2.13.2
         version: 2.13.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -839,7 +839,7 @@ importers:
         version: 1.1.1(kysely@0.26.3)(postgres@3.4.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -967,7 +967,7 @@ importers:
         version: 0.0.20
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1117,7 +1117,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1344,7 +1344,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1540,7 +1540,7 @@ importers:
         version: 3.13.0(tailwindcss@3.3.3)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(react-dom@18.2.0)(react@18.2.0)
 
   configurations/kysely:
     dependencies:
@@ -1818,7 +1818,7 @@ importers:
         version: 0.4.4-canary.81(@prisma/client@5.4.2)(next-auth@4.23.2)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1864,7 +1864,7 @@ importers:
         version: 4.0.0
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1946,7 +1946,7 @@ importers:
         version: 1.23.3
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -9999,7 +9999,7 @@ packages:
       '@sentry/vercel-edge': 7.73.0
       '@sentry/webpack-plugin': 1.20.0
       chalk: 3.0.0
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       rollup: 2.78.0
       stacktrace-parser: 0.1.10
@@ -11496,7 +11496,7 @@ packages:
       fs-extra: 11.1.1
       image-size: 1.0.2
       loader-utils: 3.2.1
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.88.2)
       pnp-webpack-plugin: 1.7.0(typescript@5.2.2)
       postcss: 8.4.31
@@ -12391,7 +12391,7 @@ packages:
       react-dom: ^18.0.0
     dependencies:
       '@tanstack/react-query': 5.0.0-beta.9(react-dom@18.2.0)(react@18.2.0)
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -12669,7 +12669,7 @@ packages:
       '@trpc/client': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)
       '@trpc/react-query': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-ssr-prepass: 1.5.0(react@18.2.0)
@@ -26589,7 +26589,7 @@ packages:
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
       jose: 4.14.4
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.4.3
       preact: 10.16.0
@@ -26614,7 +26614,7 @@ packages:
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
       jose: 4.14.4
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.4.3
       preact: 10.16.0
@@ -26648,7 +26648,7 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -26660,12 +26660,12 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /next@13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+93un5S779gho8y9ASQhb/bTkQF17FNQOtXLKAj3lsNgltEcF0C5PMLLncDmH+8X1EnJH1kbqAERa29nRXqhjA==}
     engines: {node: '>=16.14.0'}
     hasBin: true
@@ -26705,7 +26705,7 @@ packages:
       - babel-plugin-macros
     patched: true
 
-  /next@13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+93un5S779gho8y9ASQhb/bTkQF17FNQOtXLKAj3lsNgltEcF0C5PMLLncDmH+8X1EnJH1kbqAERa29nRXqhjA==}
     engines: {node: '>=16.14.0'}
     hasBin: true
@@ -26762,7 +26762,7 @@ packages:
       git-url-parse: 13.1.0
       intersection-observer: 0.12.2
       match-sorter: 6.3.1
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-seo: 6.1.0(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
       next-themes: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
       nextra: 2.13.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -26792,7 +26792,7 @@ packages:
       gray-matter: 4.0.3
       katex: 0.16.9
       lodash.get: 4.4.2
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=g5wjcye6jvbl3og3hwmhmufj4i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-mdx-remote: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       p-limit: 3.1.0
       react: 18.2.0
