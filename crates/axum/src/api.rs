@@ -121,13 +121,13 @@ pub async fn start_api_server() -> Result<()> {
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
-        .merge(SwaggerUi::new("/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
-        .merge(Redoc::with_url("/redoc", ApiDoc::openapi()))
+        .merge(api.clone())
+        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
+        .merge(Redoc::with_url("/v1/redoc", ApiDoc::openapi()))
         // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
         // via SwaggerUi instead we only make rapidoc to point to the existing doc.
-        .merge(RapiDoc::new("/api-docs/openapi.json").path("/rapidoc"))
+        .merge(RapiDoc::new("/v1/api-docs/openapi.json").path("/rapidoc"))
         .nest("/v1", api.clone())
-        .merge(api)
         .layer(
             // Set up error handling, rate limiting, and CORS
             // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L96C1-L105C19
@@ -139,6 +139,13 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
                 .layer(cors)
+                .into_inner(),
+        )
+        .nest("/admin", api.clone())
+        .layer(
+            ServiceBuilder::new()
+                .layer(OtelInResponseLayer)
+                .layer(OtelAxumLayer::default())
                 .into_inner(),
         )
         .with_state(state);
