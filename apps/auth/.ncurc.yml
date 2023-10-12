@@ -1,4 +1,1 @@
 upgrade: true
-reject:
-  - "@trpc/next"
-  - "@trpc/server"

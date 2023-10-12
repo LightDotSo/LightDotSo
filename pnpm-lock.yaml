@@ -9,7 +9,7 @@ overrides:
 
 patchedDependencies:
   next@13.5.4:
-    hash: hgbvkidzzx46rzz7khbvyq3gpu
+    hash: ddsey55dk3veilhurmyzi5rl2i
     path: patches/next@13.5.4.patch
 
 importers:
@@ -18,7 +18,7 @@ importers:
     dependencies:
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(react-dom@18.2.0)(react@18.2.0)
       solc:
         specifier: 0.8.18
         version: 0.8.18
@@ -401,12 +401,15 @@ importers:
       framer-motion:
         specifier: ^10.16.4
         version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+      inngest:
+        specifier: ^3.1.1
+        version: 3.1.1(typescript@5.2.2)
       kysely-postgres-js:
         specifier: ^1.1.1
         version: 1.1.1(kysely@0.26.3)(postgres@3.4.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -485,9 +488,6 @@ importers:
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
-      '@lightdotso/trpc':
-        specifier: workspace:*
-        version: link:../../packages/trpc
       '@prisma/client':
         specifier: ^5.4.2
         version: 5.4.2(prisma@5.4.2)
@@ -497,27 +497,15 @@ importers:
       '@sentry/nextjs':
         specifier: ^7.73.0
         version: 7.73.0(next@13.5.4)(react@18.2.0)(webpack@5.88.2)
-      '@trpc-limiter/core':
-        specifier: ^0.0.8
-        version: 0.0.8(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)
-      '@trpc/next':
-        specifier: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
-        version: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/react-query@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
-      '@trpc/server':
-        specifier: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde
-        version: 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53
       '@upstash/ratelimit':
         specifier: ^0.4.4
         version: 0.4.4
       '@upstash/redis':
         specifier: ^1.23.3
         version: 1.23.3
-      inngest:
-        specifier: ^3.1.1
-        version: 3.1.1(typescript@5.2.2)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -533,12 +521,6 @@ importers:
       superjson:
         specifier: ^2.0.0
         version: 2.0.0
-      swagger-ui-react:
-        specifier: ^5.9.0
-        version: 5.9.0(@types/react-dom@18.2.13)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)
-      trpc-openapi:
-        specifier: ^1.2.0
-        version: 1.2.0(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -564,9 +546,6 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.13
         version: 18.2.13
-      '@types/swagger-ui-react':
-        specifier: ^4.18.1
-        version: 4.18.1
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
@@ -632,7 +611,7 @@ importers:
         version: 10.16.4
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -748,7 +727,7 @@ importers:
         version: 7.73.0(next@13.5.4)(react@18.2.0)(webpack@5.88.2)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       nextra:
         specifier: ^2.13.2
         version: 2.13.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -860,7 +839,7 @@ importers:
         version: 1.1.1(kysely@0.26.3)(postgres@3.4.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -988,7 +967,7 @@ importers:
         version: 0.0.20
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1138,7 +1117,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.1
         version: 4.23.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1365,7 +1344,7 @@ importers:
         version: 0.263.1(react@18.2.0)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1561,7 +1540,7 @@ importers:
         version: 3.13.0(tailwindcss@3.3.3)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(react-dom@18.2.0)(react@18.2.0)
 
   configurations/kysely:
     dependencies:
@@ -1839,7 +1818,7 @@ importers:
         version: 0.4.4-canary.81(@prisma/client@5.4.2)(next-auth@4.23.2)
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -1885,7 +1864,7 @@ importers:
         version: 4.0.0
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -1967,7 +1946,7 @@ importers:
         version: 1.23.3
       next:
         specifier: 13.5.4
-        version: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0)
+        version: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(react-dom@18.2.0)(react@18.2.0)
       next-auth:
         specifier: ^4.23.2
         version: 4.23.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -3833,7 +3812,7 @@ packages:
     resolution: {integrity: sha512-JppheLu7S114aEs157fOZDjFqUDpm7eHdq5E8SSR0gUBTEK0cNSHsrSR5a66xs0z3RWuo46QvA3vawp8BxDHvg==}
     dependencies:
       dataloader: 1.4.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
     dev: true
@@ -6188,7 +6167,7 @@ packages:
       detect-libc: 2.0.2
       https-proxy-agent: 5.0.1
       make-dir: 3.1.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
@@ -7553,7 +7532,7 @@ packages:
       '@octokit/request-error': 3.0.3
       '@octokit/types': 9.3.2
       is-plain-object: 5.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       universal-user-agent: 6.0.0
     transitivePeerDependencies:
       - encoding
@@ -9905,7 +9884,7 @@ packages:
       '@lukeed/uuid': 2.0.1
       '@segment/analytics-core': 1.3.0
       buffer: 6.0.3
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       tslib: 2.6.2
     transitivePeerDependencies:
       - encoding
@@ -9941,7 +9920,7 @@ packages:
     dependencies:
       https-proxy-agent: 5.0.1
       mkdirp: 0.5.6
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       progress: 2.0.3
       proxy-from-env: 1.1.0
       which: 2.0.2
@@ -10020,7 +9999,7 @@ packages:
       '@sentry/vercel-edge': 7.73.0
       '@sentry/webpack-plugin': 1.20.0
       chalk: 3.0.0
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       rollup: 2.78.0
       stacktrace-parser: 0.1.10
@@ -10242,7 +10221,7 @@ packages:
       buffer: 6.0.3
       fast-stable-stringify: 1.0.0
       jayson: 4.1.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       rpc-websockets: 7.5.1
       superstruct: 0.14.2
     transitivePeerDependencies:
@@ -11197,7 +11176,7 @@ packages:
       glob: 10.3.3
       handlebars: 4.7.8
       lazy-universal-dotenv: 4.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       picomatch: 2.3.1
       pkg-dir: 5.0.0
       pretty-hrtime: 1.0.3
@@ -11517,7 +11496,7 @@ packages:
       fs-extra: 11.1.1
       image-size: 1.0.2
       loader-utils: 3.2.1
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       node-polyfill-webpack-plugin: 2.0.1(webpack@5.88.2)
       pnp-webpack-plugin: 1.7.0(typescript@5.2.2)
       postcss: 8.4.31
@@ -12412,7 +12391,7 @@ packages:
       react-dom: ^18.0.0
     dependencies:
       '@tanstack/react-query': 5.0.0-beta.9(react-dom@18.2.0)(react@18.2.0)
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -12690,7 +12669,7 @@ packages:
       '@trpc/client': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)
       '@trpc/react-query': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53(@tanstack/react-query@5.0.0-beta.9)(@trpc/client@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(@trpc/server@10.32.1-alpha-actions-2-2023-08-14-10-36-36.53)(react-dom@18.2.0)(react@18.2.0)
       '@trpc/server': 10.32.1-alpha-actions-2-2023-08-14-10-36-36.53
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-ssr-prepass: 1.5.0(react@18.2.0)
@@ -13315,12 +13294,6 @@ packages:
 
   /@types/stack-utils@2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
-    dev: true
-
-  /@types/swagger-ui-react@4.18.1:
-    resolution: {integrity: sha512-nYhNi+cyN78vve1/QY5PNKYzHYlDKETtXj+gQAhuoCRB+GxGT3MVJUj8WCdwYj4vF0s1j68qkLv/66DGe5ZlnA==}
-    dependencies:
-      '@types/react': 18.2.28
     dev: true
 
   /@types/trusted-types@2.0.3:
@@ -17457,7 +17430,7 @@ packages:
   /cross-fetch@3.1.8:
     resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
     dependencies:
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -17465,7 +17438,7 @@ packages:
   /cross-fetch@4.0.0:
     resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
     dependencies:
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -21191,7 +21164,7 @@ packages:
       defu: 6.1.2
       https-proxy-agent: 5.0.1
       mri: 1.2.0
-      node-fetch-native: 1.2.0
+      node-fetch-native: 1.4.0
       pathe: 1.1.1
       tar: 6.1.15
     transitivePeerDependencies:
@@ -21674,8 +21647,8 @@ packages:
       defu: 6.1.2
       destr: 2.0.1
       iron-webcrypto: 0.7.1
-      radix3: 1.0.1
-      ufo: 1.2.0
+      radix3: 1.1.0
+      ufo: 1.3.1
       uncrypto: 0.1.3
     dev: false
 
@@ -22812,8 +22785,8 @@ packages:
       it-to-stream: 1.0.0
       merge-options: 3.0.4
       nanoid: 3.3.6
-      native-fetch: 3.0.0(node-fetch@2.6.12)
-      node-fetch: 2.6.12
+      native-fetch: 3.0.0(node-fetch@2.7.0)
+      node-fetch: 2.7.0
       react-native-fetch-api: 3.0.0
       stream-to-it: 0.2.4
     transitivePeerDependencies:
@@ -26206,7 +26179,7 @@ packages:
       acorn: 8.10.0
       pathe: 1.1.1
       pkg-types: 1.0.3
-      ufo: 1.2.0
+      ufo: 1.3.1
     dev: true
 
   /mnemonist@0.38.5:
@@ -26508,12 +26481,12 @@ packages:
       abort-controller: 3.0.0
     dev: false
 
-  /native-fetch@3.0.0(node-fetch@2.6.12):
+  /native-fetch@3.0.0(node-fetch@2.7.0):
     resolution: {integrity: sha512-G3Z7vx0IFb/FQ4JxvtqGABsOTIqRWvgQz6e+erkB+JJD6LrszQtMozEHI4EkmgZQvnGHrpLVzUWk7t4sJCIkVw==}
     peerDependencies:
       node-fetch: '*'
     dependencies:
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
     dev: false
 
   /native-fetch@3.0.0(node-fetch@3.3.2):
@@ -26616,7 +26589,7 @@ packages:
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
       jose: 4.14.4
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.4.3
       preact: 10.16.0
@@ -26641,7 +26614,7 @@ packages:
       '@panva/hkdf': 1.1.1
       cookie: 0.5.0
       jose: 4.14.4
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       oauth: 0.9.15
       openid-client: 5.4.3
       preact: 10.16.0
@@ -26675,7 +26648,7 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -26687,12 +26660,12 @@ packages:
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /next@13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+93un5S779gho8y9ASQhb/bTkQF17FNQOtXLKAj3lsNgltEcF0C5PMLLncDmH+8X1EnJH1kbqAERa29nRXqhjA==}
     engines: {node: '>=16.14.0'}
     hasBin: true
@@ -26732,7 +26705,7 @@ packages:
       - babel-plugin-macros
     patched: true
 
-  /next@13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-+93un5S779gho8y9ASQhb/bTkQF17FNQOtXLKAj3lsNgltEcF0C5PMLLncDmH+8X1EnJH1kbqAERa29nRXqhjA==}
     engines: {node: '>=16.14.0'}
     hasBin: true
@@ -26789,7 +26762,7 @@ packages:
       git-url-parse: 13.1.0
       intersection-observer: 0.12.2
       match-sorter: 6.3.1
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-seo: 6.1.0(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
       next-themes: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
       nextra: 2.13.2(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
@@ -26819,7 +26792,7 @@ packages:
       gray-matter: 4.0.3
       katex: 0.16.9
       lodash.get: 4.4.2
-      next: 13.5.4(patch_hash=hgbvkidzzx46rzz7khbvyq3gpu)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next: 13.5.4(patch_hash=ddsey55dk3veilhurmyzi5rl2i)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       next-mdx-remote: 4.4.1(react-dom@18.2.0)(react@18.2.0)
       p-limit: 3.1.0
       react: 18.2.0
@@ -26896,13 +26869,8 @@ packages:
       web-streams-polyfill: 3.2.1
     dev: false
 
-  /node-fetch-native@1.2.0:
-    resolution: {integrity: sha512-5IAMBTl9p6PaAjYCnMv5FmqIF6GcZnawAVnzaCG0rX2aYZJ4CxEkZNtVPuTRug7fL7wyM5BQYTlAzcyMPi6oTQ==}
-    dev: true
-
   /node-fetch-native@1.4.0:
     resolution: {integrity: sha512-F5kfEj95kX8tkDhUCYdV8dg3/8Olx/94zB8+ZNthFs6Bz31UpUi8Xh40TN3thLwXgrwXry1pEg9lJ++tLWTcqA==}
-    dev: false
 
   /node-fetch@2.6.12:
     resolution: {integrity: sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==}
@@ -26949,7 +26917,6 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
-    dev: false
 
   /node-fetch@3.3.1:
     resolution: {integrity: sha512-cRVc/kyto/7E5shrWca1Wsea4y6tL9iYJE5FBCius3JQfb/4P4I295PfhgbJQBLTx6lATE4z+wK0rPM4VS2uow==}
@@ -29279,10 +29246,6 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
     dev: true
-
-  /radix3@1.0.1:
-    resolution: {integrity: sha512-y+AcwZ3HcUIGc9zGsNVf5+BY/LxL+z+4h4J3/pp8jxSmy1STaCocPS3qrj4tA5ehUSzqtqK+0Aygvz/r/8vy4g==}
-    dev: false
 
   /radix3@1.1.0:
     resolution: {integrity: sha512-pNsHDxbGORSvuSScqNJ+3Km6QAVqk8CfsCBIEoDgpqLrkD2f3QM4I7d1ozJJ172OmIcoUcerZaNWqtLkRXTV3A==}
@@ -33446,12 +33409,8 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /ufo@1.2.0:
-    resolution: {integrity: sha512-RsPyTbqORDNDxqAdQPQBpgqhWle1VcTSou/FraClYlHf6TZnQcGslpLcAphNR+sQW4q5lLWLbOsRlh9j24baQg==}
-
   /ufo@1.3.1:
     resolution: {integrity: sha512-uY/99gMLIOlJPwATcMVYfqDSxUR9//AUcgZMzwfSTJPDKzA1S8mX4VLqa+fiAtveraQUBCz4FFcwVZBGbwBXIw==}
-    dev: false
 
   /uglify-js@3.17.4:
     resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
