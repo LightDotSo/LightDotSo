@@ -18,11 +18,29 @@ import createClient from "openapi-fetch";
 import type { paths, Without, XOR, OneOf } from "./v1";
 import { ResultAsync } from "neverthrow";
 
-const client = createClient<paths>({
+const publicClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
 });
 
-export const getWallet = async (address: string) =>
+const adminClient = createClient<paths>({
+  baseUrl: "https://api.light.so/admin/v1",
+  headers: {
+    Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
+  },
+});
+
+const getClient = (isPublic: boolean) =>
+  isPublic ? publicClient : adminClient;
+
+export const getWallet = async ({
+  address,
+  isPublic = false,
+}: {
+  address: string;
+  isPublic?: boolean;
+}) => {
+  const client = getClient(isPublic);
+
   ResultAsync.fromPromise(
     client.GET("/wallet/get", {
       params: {
@@ -33,3 +51,4 @@ export const getWallet = async (address: string) =>
     }),
     () => new Error("Database error"),
   );
+};

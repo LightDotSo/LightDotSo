@@ -99,7 +99,6 @@ export const Tabs = ({
                 setHoveredTabIndex(i);
               }}
               onClick={() => {
-                setHoveredTabIndex(null);
                 setSelectedTabIndex(i);
               }}
             >

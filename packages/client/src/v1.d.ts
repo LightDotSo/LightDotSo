@@ -5,54 +5,54 @@
 
 
 /** OneOf type helpers */
-export type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-export type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
-export type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
 
 export interface paths {
-  "/v1/check": {
+  "/check": {
     /**
      * Check if the server is running.
      * @description Check if the server is running.
      */
     get: operations["handler"];
   };
-  "/v1/configuration/get": {
+  "/configuration/get": {
     /**
      * Get a configuration
      * @description Get a configuration
      */
     get: operations["v1_get_handler"];
   };
-  "/v1/configuration/list": {
+  "/configuration/list": {
     /**
      * Returns a list of configurations.
      * @description Returns a list of configurations.
      */
     get: operations["v1_list_handler"];
   };
-  "/v1/health": {
+  "/health": {
     /**
      * Check the health of the server.
      * @description Check the health of the server.
      */
     get: operations["handler"];
   };
-  "/v1/wallet/create": {
+  "/wallet/create": {
     /**
      * Create a wallet
      * @description Create a wallet
      */
     post: operations["v1_post_handler"];
   };
-  "/v1/wallet/get": {
+  "/wallet/get": {
     /**
      * Get a wallet
      * @description Get a wallet
      */
     get: operations["v1_get_handler"];
   };
-  "/v1/wallet/list": {
+  "/wallet/list": {
     /**
      * Returns a list of wallets.
      * @description Returns a list of wallets.
