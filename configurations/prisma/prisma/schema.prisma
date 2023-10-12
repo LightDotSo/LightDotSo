@@ -23,9 +23,9 @@ generator kysely {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("DIRECT_DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Account {
@@ -42,6 +42,7 @@ model Account {
   user               User      @relation(fields: [userId], references: [id])
 
   @@unique([providerId, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -54,6 +55,8 @@ model Session {
   updatedAt    DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model User {
@@ -125,12 +128,15 @@ model Owner {
   configuration Configuration? @relation(fields: [configurationId], references: [id])
   user          User?          @relation(fields: [userId], references: [id])
   userId        String?
+
+  @@index([userId])
+  @@index([configurationId])
 }
 
 /// ethers-rs Log struct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/log.rs#L6-L62
 model Log {
-  id                  String   @id @default(cuid())
+  id                  String     @id @default(cuid())
   /// H160. the contract that emitted the log
   /// pub address: Address
   address             String
@@ -139,7 +145,7 @@ model Log {
   /// (e.g. `Deposit(address,bytes32,uint256)`), except you declared the event
   /// with the anonymous specifier.)
   /// pub topics: Vec<H256>
-  topics              String[]
+  topics              LogTopic[]
   /// Data
   /// pub data: Bytes
   data                String
@@ -172,8 +178,15 @@ model Log {
 
   receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
 
-  // Index based on the gin index on the topics column.
-  @@index([topics(ops: ArrayOps)], type: Gin)
+  @@index([transactionHash])
+}
+
+model LogTopic {
+  id String @unique
+
+  log Log @relation(fields: [id], references: [id])
+
+  @@index([id])
 }
 
 /// ethers-rs TransactionReceipt struct converted to Prisma model.
@@ -231,6 +244,8 @@ model Receipt {
   logs Log[]
 
   transaction Transaction? @relation(fields: [transactionHash], references: [hash])
+
+  @@index([transactionHash])
 }
 
 /// ethers-rs Transactionstruct converted to Prisma model.
@@ -315,4 +330,6 @@ model TransactionCategory {
   category String
 
   transaction Transaction @relation(fields: [id], references: [hash])
+
+  @@index([id])
 }
