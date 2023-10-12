@@ -16,7 +16,7 @@
 use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
-use ethers::utils::to_checksum;
+use ethers::{types::H256, utils::to_checksum};
 use lightdotso_prisma::{log, receipt, transaction, transaction_category, wallet, PrismaClient};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -44,6 +44,7 @@ pub async fn create_wallet_with_configuration(
     db: Database,
     address: ethers::types::H160,
     chain_id: i64,
+    salt: H256,
     factory_address: ethers::types::H160,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
@@ -54,6 +55,7 @@ pub async fn create_wallet_with_configuration(
         .create(
             to_checksum(&address, None),
             chain_id,
+            format!("{:?}", salt),
             to_checksum(&factory_address, None),
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
         )

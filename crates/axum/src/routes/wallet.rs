@@ -220,11 +220,9 @@ async fn v1_post_handler(
     Json(params): Json<PostRequestParams>,
 ) -> AppJsonResult<Wallet> {
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
-    let checksum_factory_address = to_checksum(&factory_address, None);
 
     let owners = &params.owners;
     let threshold = params.threshold;
-    let salt = params.salt.clone();
 
     // Check if all of the owner address can be parsed to H160.
     let _ = owners
@@ -313,14 +311,30 @@ async fn v1_post_handler(
                 .configuration()
                 .create(
                     to_checksum(&new_wallet_address, None),
+                    0,
                     format!("{:?}", image_hash_bytes),
                     threshold.into(),
-                    salt,
                     vec![],
                 )
                 .exec()
                 .await?;
             trace!(?configuration_data);
+
+            let user_data = client
+                .user()
+                .find_many(
+                    owners
+                        .iter()
+                        .map(|owner| {
+                            lightdotso_prisma::user::address::equals(Some(to_checksum(
+                                &owner.address.parse::<H160>().unwrap(),
+                                None,
+                            )))
+                        })
+                        .collect(),
+                )
+                .exec()
+                .await?;
 
             // Create the owners to the database.
             let owner_data = client
@@ -333,9 +347,25 @@ async fn v1_post_handler(
                                 to_checksum(&owner.address.parse::<H160>().unwrap(), None),
                                 owner.weight.into(),
                                 format!("{:?}", image_hash_bytes),
-                                vec![lightdotso_prisma::owner::configuration_id::set(Some(
-                                    configuration_data.clone().id,
-                                ))],
+                                vec![
+                                    lightdotso_prisma::owner::configuration_id::set(Some(
+                                        configuration_data.clone().id,
+                                    )),
+                                    lightdotso_prisma::owner::user_id::set(Some(
+                                        user_data
+                                            .iter()
+                                            .find(|user| {
+                                                user.address ==
+                                                    Some(to_checksum(
+                                                        &owner.address.parse::<H160>().unwrap(),
+                                                        None,
+                                                    ))
+                                            })
+                                            .unwrap()
+                                            .id
+                                            .clone(),
+                                    )),
+                                ],
                             )
                         })
                         .collect(),
@@ -347,7 +377,13 @@ async fn v1_post_handler(
             // Get the wallet from the database.
             let wallet = client
                 .wallet()
-                .create(to_checksum(&new_wallet_address, None), 0, checksum_factory_address, vec![])
+                .create(
+                    to_checksum(&new_wallet_address, None),
+                    0,
+                    format!("{:?}", salt_bytes),
+                    to_checksum(&factory_address, None),
+                    vec![],
+                )
                 .exec()
                 .instrument(info_span!("create_receipt"))
                 .await?;

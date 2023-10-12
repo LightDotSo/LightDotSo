@@ -68,28 +68,29 @@ model Wallet {
   id             String   @id @default(cuid())
   address        String
   chainId        BigInt
+  salt           String
   factoryAddress String
   testnet        Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  configuration Configuration? @relation(fields: [address], references: [address])
+  configuration Configuration[]
   users         User[]
 
   @@unique([address, chainId])
 }
 
 model Configuration {
-  id        String @id @default(cuid())
-  address   String @unique
-  imageHash String
-  threshold BigInt
-  salt      String
+  id         String @id @default(cuid())
+  address    String
+  checkpoint BigInt
+  imageHash  String @unique
+  threshold  BigInt
 
   wallets Wallet[]
   owners  Owner[]
 
-  @@unique([imageHash, salt])
+  @@unique([address, checkpoint])
 }
 
 model Owner {
@@ -103,7 +104,8 @@ model Owner {
   configurationId String?
 
   configuration Configuration? @relation(fields: [configurationId], references: [id])
-  user          User?          @relation(fields: [address], references: [address])
+  user          User?          @relation(fields: [userId], references: [id])
+  userId        String?
 }
 
 /// ethers-rs Log struct converted to Prisma model.

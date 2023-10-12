@@ -41,7 +41,7 @@
     "@prisma/client": "5.2.0",
     "kysely-postgres-js": "^1.1.1",
     "postgres": "^3.3.5",
-    "prisma": "^5.2.0",
+    "prisma": "^5.4.2",
     "prisma-kysely": "^1.7.0",
     "zod": "^3.22.2",
     "zod-prisma": "^0.5.4"
