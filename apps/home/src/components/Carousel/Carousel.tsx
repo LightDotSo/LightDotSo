@@ -19,7 +19,7 @@ import clsx from "clsx";
 import Image from "next/legacy/image";
 import { useEffect, useState } from "react";
 import type { FC } from "react";
-import { Mousewheel, Pagination, Navigation, Autoplay } from "swiper";
+import { Mousewheel, Pagination, Navigation, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
 import "swiper/css";
