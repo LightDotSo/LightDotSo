@@ -16,8 +16,10 @@
 use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
-use ethers::utils::to_checksum;
-use lightdotso_prisma::{log, receipt, transaction, transaction_category, wallet, PrismaClient};
+use ethers::{types::H256, utils::to_checksum};
+use lightdotso_prisma::{
+    log, log_topic, receipt, transaction, transaction_category, wallet, PrismaClient,
+};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
@@ -44,6 +46,7 @@ pub async fn create_wallet_with_configuration(
     db: Database,
     address: ethers::types::H160,
     chain_id: i64,
+    salt: H256,
     factory_address: ethers::types::H160,
     testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
@@ -54,6 +57,7 @@ pub async fn create_wallet_with_configuration(
         .create(
             to_checksum(&address, None),
             chain_id,
+            format!("{:?}", salt),
             to_checksum(&factory_address, None),
             vec![wallet::testnet::set(testnet.unwrap_or(false))],
         )
@@ -191,6 +195,23 @@ pub async fn create_transaction_with_log_receipt(
     let _ = db
         ._transaction()
         .run(|client| async move {
+            let _ = logs
+                .iter()
+                .map(|log| {
+                    client.log_topic().create_many(
+                        log.topics
+                            .iter()
+                            .map(|id| {
+                                lightdotso_prisma::log_topic::create_unchecked(
+                                    format!("{:?}", id),
+                                    vec![],
+                                )
+                            })
+                            .collect(),
+                    )
+                })
+                .collect::<Vec<_>>();
+
             let logs_create_items = logs
                 .iter()
                 .map(|log| {
@@ -199,7 +220,12 @@ pub async fn create_transaction_with_log_receipt(
                         log.data.to_string(),
                         vec![
                             log::topics::set(
-                                log.topics.iter().map(|topic| format!("{:?}", topic)).collect(),
+                                log.topics
+                                    .iter()
+                                    .map(|id| {
+                                        log_topic::UniqueWhereParam::IdEquals(format!("{:?}", id))
+                                    })
+                                    .collect(),
                             ),
                             log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
                             log::block_number::set(log.block_number.map(|bn| bn.as_u32() as i32)),

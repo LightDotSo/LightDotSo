@@ -30,7 +30,12 @@ use ethers_main::{
 use eyre::Result;
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
 use lightdotso_prisma::wallet;
-use lightdotso_solutions::{config::WalletConfig, hash::get_address, types::SignerNode};
+use lightdotso_solutions::{
+    builder::rooted_node_builder,
+    config::WalletConfig,
+    hash::get_address,
+    types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
+};
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
@@ -54,14 +59,30 @@ pub struct ListQuery {
     pub limit: Option<i64>,
 }
 
-#[derive(Debug, Deserialize, Default, IntoParams)]
-#[into_params(parameter_in = Query)]
-pub struct PostQuery {
-    // TODO: Support all wallet types and config
-    // The address of the single owner of the wallet.
-    pub address: String,
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub struct PostRequestParams {
+    // The array of owners of the wallet.
+    #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
+    pub owners: Vec<Owner>,
     // The salt is used to calculate the new wallet address.
+    #[schema(
+        example = "0x0000000000000000000000000000000000000000000000000000000000000006",
+        default = "0x0000000000000000000000000000000000000000000000000000000000000001"
+    )]
     pub salt: String,
+    // The threshold of the wallet.
+    #[schema(example = 3, default = 1)]
+    pub threshold: u16,
+}
+
+/// Wallet owner.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
+pub(crate) struct Owner {
+    /// The address of the owner.
+    address: String,
+    /// The weight of the owner.
+    weight: u8,
 }
 
 /// Wallet operation errors
@@ -78,7 +99,7 @@ pub(crate) enum WalletError {
     NotFound(String),
 }
 
-/// Item to do.
+/// Wallet to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Wallet {
     id: String,
@@ -187,9 +208,7 @@ async fn v1_list_handler(
 #[utoipa::path(
         post,
         path = "/v1/wallet/create",
-        params(
-            PostQuery
-        ),
+        request_body = PostRequestParams,
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
             (status = 500, description = "Wallet internal error", body = WalletError),
@@ -197,37 +216,64 @@ async fn v1_list_handler(
     )]
 #[autometrics]
 async fn v1_post_handler(
-    post: Query<PostQuery>,
     State(client): State<AppState>,
+    Json(params): Json<PostRequestParams>,
 ) -> AppJsonResult<Wallet> {
-    // Get the post query.
-    let Query(query) = post;
-
-    let address: H160 = query.address.parse()?;
-    info!(?address);
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
-    let checksum_factory_address = to_checksum(&factory_address, None);
 
-    let config = WalletConfig {
-        checkpoint: 1,
-        threshold: 1,
+    let owners = &params.owners;
+    let threshold = params.threshold;
+
+    // Check if all of the owner address can be parsed to H160.
+    let _ = owners
+        .iter()
+        .map(|owner| owner.address.parse::<H160>())
+        .collect::<Result<Vec<H160>, _>>()?;
+
+    // Check if the threshold is greater than 0
+    if params.threshold == 0 {
+        return Err(AppError::BadRequest);
+    }
+
+    // Parse the salt to bytes.
+    let salt_bytes: H256 = params.salt.parse()?;
+
+    // Conver the owners to SignerNode.
+    let owner_nodes: Vec<SignerNode> = owners
+        .iter()
+        .map(|owner| SignerNode {
+            signer: Some(Signer {
+                weight: Some(owner.weight),
+                leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                    address: owner.address.parse().unwrap(),
+                }),
+            }),
+            left: None,
+            right: None,
+        })
+        .collect();
+
+    // Build the node tree.
+    let tree = rooted_node_builder(owner_nodes)?;
+
+    // Create a wallet config
+    let mut config = WalletConfig {
+        checkpoint: 0,
+        threshold: params.threshold,
         weight: 1,
         image_hash: [0; 32].into(),
-        tree: SignerNode { signer: None, left: None, right: None },
+        tree,
         internal_root: None,
     };
 
     // Simulate the image hash of the wallet config.
-    let res = config.image_hash_of_wallet_config();
+    let res = config.regenerate_image_hash([0; 32]);
 
     // If the image hash of the wallet could not be simulated, return a 404.
     let image_hash = res.map_err(|_| AppError::NotFound)?;
 
     // Parse the image hash to bytes.
     let image_hash_bytes: H256 = image_hash.into();
-
-    // Parse the salt to bytes.
-    let salt_bytes: H256 = query.salt.parse()?;
 
     // Calculate the new wallet address.
     let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
@@ -238,7 +284,19 @@ async fn v1_post_handler(
         .client
         .unwrap()
         .user()
-        .create(vec![lightdotso_prisma::user::address::set(Some(to_checksum(&address, None)))])
+        .create_many(
+            owners
+                .iter()
+                .map(|owner| {
+                    lightdotso_prisma::user::create_unchecked(vec![
+                        lightdotso_prisma::user::address::set(Some(to_checksum(
+                            &owner.address.parse::<H160>().unwrap(),
+                            None,
+                        ))),
+                    ])
+                })
+                .collect(),
+        )
         .exec()
         .await;
     info!(?res);
@@ -248,39 +306,84 @@ async fn v1_post_handler(
         .unwrap()
         ._transaction()
         .run(|client| async move {
-            // Create the configurations to the database.
+            // Create the configuration to the database.
             let configuration_data = client
                 .configuration()
                 .create(
                     to_checksum(&new_wallet_address, None),
+                    0,
                     format!("{:?}", image_hash_bytes),
-                    1,
-                    query.salt.clone(),
+                    threshold.into(),
                     vec![],
                 )
                 .exec()
                 .await?;
             trace!(?configuration_data);
 
+            let user_data = client
+                .user()
+                .find_many(
+                    owners
+                        .iter()
+                        .map(|owner| {
+                            lightdotso_prisma::user::address::equals(Some(to_checksum(
+                                &owner.address.parse::<H160>().unwrap(),
+                                None,
+                            )))
+                        })
+                        .collect(),
+                )
+                .exec()
+                .await?;
+
             // Create the owners to the database.
             let owner_data = client
                 .owner()
-                .create(
-                    to_checksum(&address, None),
-                    1,
-                    format!("{:?}", image_hash_bytes),
-                    vec![lightdotso_prisma::owner::configuration_id::set(Some(
-                        configuration_data.id,
-                    ))],
+                .create_many(
+                    owners
+                        .iter()
+                        .map(|owner| {
+                            lightdotso_prisma::owner::create_unchecked(
+                                to_checksum(&owner.address.parse::<H160>().unwrap(), None),
+                                owner.weight.into(),
+                                format!("{:?}", image_hash_bytes),
+                                vec![
+                                    lightdotso_prisma::owner::configuration_id::set(Some(
+                                        configuration_data.clone().id,
+                                    )),
+                                    lightdotso_prisma::owner::user_id::set(Some(
+                                        user_data
+                                            .iter()
+                                            .find(|user| {
+                                                user.address ==
+                                                    Some(to_checksum(
+                                                        &owner.address.parse::<H160>().unwrap(),
+                                                        None,
+                                                    ))
+                                            })
+                                            .unwrap()
+                                            .id
+                                            .clone(),
+                                    )),
+                                ],
+                            )
+                        })
+                        .collect(),
                 )
                 .exec()
                 .await?;
             trace!(?owner_data);
 
-            // Get the wallets from the database.
+            // Get the wallet from the database.
             let wallet = client
                 .wallet()
-                .create(to_checksum(&new_wallet_address, None), 0, checksum_factory_address, vec![])
+                .create(
+                    to_checksum(&new_wallet_address, None),
+                    0,
+                    format!("{:?}", salt_bytes),
+                    to_checksum(&factory_address, None),
+                    vec![],
+                )
                 .exec()
                 .instrument(info_span!("create_receipt"))
                 .await?;

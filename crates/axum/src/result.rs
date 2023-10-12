@@ -32,12 +32,26 @@ pub type AppJsonResult<T> = AppResult<Json<T>>;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L118
 pub enum AppError {
+    EyreError(eyre::Error),
     PrismaError(QueryError),
     RedisError(RedisError),
+    SerdeJsonError(serde_json::Error),
     FromHexError(FromHexError),
     BadRequest,
     NotFound,
     InternalError,
+}
+
+impl From<eyre::Error> for AppError {
+    fn from(error: eyre::Error) -> Self {
+        AppError::EyreError(error)
+    }
+}
+
+impl From<serde_json::Error> for AppError {
+    fn from(error: serde_json::Error) -> Self {
+        AppError::SerdeJsonError(error)
+    }
 }
 
 impl From<FromHexError> for AppError {
@@ -69,8 +83,10 @@ impl IntoResponse for AppError {
             AppError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
                 StatusCode::CONFLICT
             }
-            AppError::PrismaError(_) => StatusCode::BAD_REQUEST,
+            AppError::EyreError(_) => StatusCode::BAD_REQUEST,
+            AppError::PrismaError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
+            AppError::SerdeJsonError(_) => StatusCode::BAD_REQUEST,
             AppError::FromHexError(_) => StatusCode::BAD_REQUEST,
             AppError::BadRequest => StatusCode::BAD_REQUEST,
             AppError::NotFound => StatusCode::NOT_FOUND,

@@ -26,13 +26,12 @@
     "db:migrate:dev": "dotenv prisma migrate dev --create-only",
     "db:push": "prisma db push",
     "dev:prisma": "pnpm run db:migrate:deploy:dev && pnpm run studio:dev",
-    "generate": "pnpm run shell:copy && pnpm run shell:generate && pnpm run prisma:generate && pnpm run prisma:format",
+    "generate": "pnpm run shell:generate && pnpm run prisma:generate && pnpm run prisma:format",
     "predev": "npm run generate",
     "prisma:format": "pnpm run prisma:format:main && pnpm run prisma:format:rs",
     "prisma:format:main": "prisma format --schema=./prisma/schema.prisma",
     "prisma:format:rs": "prisma format --schema=./prisma/schema-rs.prisma",
     "prisma:generate": "prisma generate",
-    "shell:copy": "bash ./copy_env_variables.sh || true",
     "shell:generate": "bash ./generate.sh",
     "studio": "prisma studio",
     "studio:dev": "dotenv -e .env.development prisma studio"
@@ -41,7 +40,7 @@
     "@prisma/client": "5.2.0",
     "kysely-postgres-js": "^1.1.1",
     "postgres": "^3.3.5",
-    "prisma": "^5.2.0",
+    "prisma": "^5.4.2",
     "prisma-kysely": "^1.7.0",
     "zod": "^3.22.2",
     "zod-prisma": "^0.5.4"

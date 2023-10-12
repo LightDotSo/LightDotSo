@@ -42,6 +42,8 @@ use crate::routes::{check, configuration, health, wallet};
     components(
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
+        schemas(wallet::Owner),
+        schemas(wallet::PostRequestParams),
         schemas(wallet::Wallet),
         schemas(wallet::WalletError),
     ),
