@@ -14,15 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // import { readFile } from "node:fs/promises";
-// import { Button } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 // import { CodeBlock } from "@/components/codeblocks";
 // import { CollapsiblePreview } from "@/components/collapsible-preview";
-// import { Input } from "@/components/input";
+import { Input } from "@/components/input";
 import { JsonPreTag } from "@/components/json-pretag";
 import { http } from "@lightdotso/trpc";
 // import { Suspense } from "react";
-// import { createPostAction } from "./_actions";
-// import { WithHook } from "./with-hook";
+import { createPostAction } from "./_actions";
+import { WithHook } from "./with-hook";
 
 export default async function Page() {
   const post = await http.playground.getLatestPost.query();
@@ -35,13 +35,13 @@ export default async function Page() {
       </div>
 
       <h1 className="text-xl font-bold">Create post</h1>
-      {/* <form action={createPostAction} className="space-y-2">
+      <form action={createPostAction} className="space-y-2">
         <Input type="text" name="title" placeholder="title" />
         <Input type="text" name="content" placeholder="content" />
         <Button type="submit">Create</Button>
-      </form> */}
+      </form>
 
-      {/* <WithHook /> */}
+      <WithHook />
 
       <div className="space-y-2">
         <h2 className="text-lg font-bold">Code</h2>
