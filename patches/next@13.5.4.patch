@@ -1,18 +1,3 @@
-# Copyright (C) 2023 Light, Inc.
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 diff --git a/dist/build/webpack/loaders/next-flight-loader/action-proxy.js b/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
 index 308995a3d78958f2ba58ff4166a3e03790125e6a..4f935e036c1f6c52f051cee268d9f205a38b1626 100644
 --- a/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
