@@ -325,12 +325,12 @@
       "method": "POST",
       "sortNum": 53750,
       "created": "2023-10-12T05:05:54.598Z",
-      "modified": "2023-10-12T05:08:10.400Z",
+      "modified": "2023-10-12T05:10:02.591Z",
       "headers": [],
       "params": [],
       "body": {
         "type": "json",
-        "raw": "{\n  \"owners\": [\n    {\n      \"address\": \"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed\",\n      \"weight\": 1\n    }\n  ],\n  \"salt\": \"0x0000000000000000000000000000000000000000000000000000000000000006\",\n  \"threshold\": 3\n}",
+        "raw": "{\n  \"owners\": [\n    {\n      \"address\": \"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed\",\n      \"weight\": 1\n    }\n  ],\n  \"salt\": \"0x0000000000000000000000000000000000000000000000000000000000000006\",\n  \"threshold\": 1\n}",
         "form": []
       },
       "tests": []
