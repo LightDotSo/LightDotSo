@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{handle_error, state::AppState};
-use axum::{error_handling::HandleErrorLayer, routing::get, Router};
+use crate::{admin::admin, handle_error, state::AppState};
+use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
@@ -144,6 +144,7 @@ pub async fn start_api_server() -> Result<()> {
         .nest("/admin", api.clone())
         .layer(
             ServiceBuilder::new()
+                .layer(middleware::from_fn(admin))
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
                 .into_inner(),

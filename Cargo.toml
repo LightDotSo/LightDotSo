@@ -67,7 +67,7 @@
     "opentelemetry-0_20",
     "prometheus-exporter",
   ], default-features = false }
-  axum = { version = "0.6.16", features = ["macros", "ws"] }
+  axum = { version = "0.6.16", features = ["headers", "macros", "ws"] }
   backon = "0.4.1"
   base64 = "0.21.3"
   byteorder = "1.4.3"
