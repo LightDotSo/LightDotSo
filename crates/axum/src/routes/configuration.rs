@@ -149,6 +149,7 @@ async fn v1_list_handler(
         .unwrap()
         .configuration()
         .find_many(vec![])
+        .order_by(configuration::checkpoint::order(Direction::Desc))
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
         .exec()
