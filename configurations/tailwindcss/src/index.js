@@ -201,7 +201,8 @@ module.exports = {
       },
       fontFamily: {
         clash: ["ClashGrotesk-Semibold", ...defaultTheme.fontFamily.sans],
-        sans: "var(--font-inter)",
+        sans: ["var(--font-inter)"],
+        mono: ["var(--font-roboto-mono)"],
         display: "var(--font-mona-sans)",
       },
       borderRadius: {

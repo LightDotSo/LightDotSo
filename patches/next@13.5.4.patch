@@ -1,0 +1,58 @@
+diff --git a/dist/build/webpack/loaders/next-flight-loader/action-proxy.js b/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
+index 308995a3d78958f2ba58ff4166a3e03790125e6a..8c7aacce740c910d4a4a78c27ed24521215162ce 100644
+--- a/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
++++ b/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
+@@ -36,16 +36,20 @@ function createActionProxy(id, bound, action, originalAction) {
+     }
+     Object.defineProperties(action, {
+         $$typeof: {
+-            value: SERVER_REFERENCE_TAG
++            value: SERVER_REFERENCE_TAG,
++            configurable: true
+         },
+         $$id: {
+-            value: id
++            value: id,
++            configurable: true
+         },
+         $$bound: {
+-            value: bound
++            value: bound,
++            configurable: true
+         },
+         bind: {
+-            value: bindImpl
++            value: bindImpl,
++            configurable: true
+         }
+     });
+ }
+diff --git a/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js b/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js
+index 3b1ef848836bd2863e284d8eea581624056894da..8725605d952421d3e1f903daba7f1fe09fd1cd8e 100644
+--- a/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js
++++ b/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js
+@@ -26,16 +26,20 @@ export function createActionProxy(id, bound, action, originalAction) {
+     }
+     Object.defineProperties(action, {
+         $$typeof: {
+-            value: SERVER_REFERENCE_TAG
++            value: SERVER_REFERENCE_TAG,
++            configurable: true
+         },
+         $$id: {
+-            value: id
++            value: id,
++            configurable: true
+         },
+         $$bound: {
+-            value: bound
++            value: bound,
++            configurable: true
+         },
+         bind: {
+-            value: bindImpl
++            value: bindImpl,
++            configurable: true
+         }
+     });
+ }

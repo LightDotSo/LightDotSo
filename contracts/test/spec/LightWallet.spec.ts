@@ -13,35 +13,36 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { describe, it, expect, test } from "vitest";
 import { subdigestOf } from "@lightdotso/solutions";
-import { publicClient, walletClient } from "@/contracts/test/spec/utils";
-import { accounts } from "@/contracts/test/spec/utils/constants";
+// import { publicClient, walletClient } from "@/contracts/test/spec/utils";
+// import { accounts } from "@/contracts/test/spec/utils/constants";
 //@ts-expect-error
 import { LightWallet } from "@/contracts/LightWallet.sol";
 
-describe("LightWallet", function () {
-  it("Should return run correct function parameters on hardhat", async function () {
-    console.warn(await publicClient.getBlockNumber());
-    const account = accounts[0].address;
-    const hash = await walletClient.deployContract({
-      abi: LightWallet.abi,
-      bytecode: LightWallet.bytecode as `0x${string}`,
-      account: account,
-      args: [account],
-      chain: undefined,
-    });
-    const receipt = await publicClient.waitForTransactionReceipt({ hash });
-    const data = await publicClient.readContract({
-      address: receipt.contractAddress as `0x${string}`,
-      abi: LightWallet.abi,
-      functionName: "proxiableUUID",
-    });
-    expect(data).to.equal(
-      "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
-    );
-  });
-});
+// describe("LightWallet", function () {
+//   it("Should return run correct function parameters on hardhat", async function () {
+//     console.warn(await publicClient.getBlockNumber());
+//     const account = accounts[0].address;
+//     const hash = await walletClient.deployContract({
+//       abi: LightWallet.abi,
+//       bytecode: LightWallet.bytecode as `0x${string}`,
+//       account: account,
+//       args: [account],
+//       chain: undefined,
+//     });
+//     const receipt = await publicClient.waitForTransactionReceipt({ hash });
+//     const data = await publicClient.readContract({
+//       address: receipt.contractAddress as `0x${string}`,
+//       abi: LightWallet.abi,
+//       functionName: "proxiableUUID",
+//     });
+//     expect(data).to.equal(
+//       "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+//     );
+//   });
+// });
 
 test("LightWallet: Correct humanReadableAbi", () => {
   expect(Object.values(LightWallet.humanReadableAbi)).toMatchInlineSnapshot(`

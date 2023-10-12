@@ -72,6 +72,7 @@
     "configurations/prisma/src/zod/**/*.ts",
     "fly/graph/nginx/**",
     "packages/client/src/**/*.d.ts",
+    "patches/**",
     "ios/LightWalletSafariExtension/Resources/**/*.js",
     "**/__snapshots__/**",
     "**/*.app/**",

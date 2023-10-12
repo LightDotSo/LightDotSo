@@ -13,16 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// "use client";
+import { serve } from "inngest/next";
+import { inngest } from "@/inngest/client";
+import { helloWorld } from "@/inngest/helloWorld";
 
-// import SwaggerUI from "swagger-ui-react";
-// import "swagger-ui-react/swagger-ui.css";
-
-// // Url for local development, vercel deployment
-// const url = process.env.NEXT_PUBLIC_VERCEL_URL
-//   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/trpc/openapi.json`
-//   : "http://localhost:3000/api/trpc/openapi.json";
-
-// export default function Page() {
-//   return <SwaggerUI url={url} />;
-// }
+// Create an API that serves zero functions
+export const { GET, POST, PUT } = serve({
+  client: inngest,
+  functions: [
+    /* your functions will be passed here later! */
+    helloWorld,
+  ],
+});

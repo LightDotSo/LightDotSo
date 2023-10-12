@@ -13,12 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { serve } from "inngest/next";
-import { inngest } from "@/inngest/client";
-import { helloWorld } from "@/inngest/helloWorld";
+import { Inngest } from "inngest";
 
-// Create an API that serves zero functions
-export const { GET, POST, PUT } = serve(inngest, [
-  /* your functions will be passed here later! */
-  helloWorld,
-]);
+// Create a client to send and receive events
+export const inngest = new Inngest({ id: "Light" });

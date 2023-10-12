@@ -1,12 +1,10 @@
 ignores:
   - "@babel/core"
   - "@prisma/client"
-  - "@trpc-limiter/core"
   - "@upstash/ratelimit"
   - "@upstash/redis"
   - prisma
   - superjson
-  - trpc-openapi
   - zod
   - "@lightdotso/prisma"
   - "@lightdotso/tailwindcss"

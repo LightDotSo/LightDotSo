@@ -22,11 +22,11 @@
     "@neondatabase/serverless": "^0.6.0",
     "kysely": "^0.26.3",
     "kysely-postgres-js": "^1.1.1",
-    "postgres": "^3.3.5"
+    "postgres": "^3.4.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.8.4",
     "typescript": "^5.2.2"
   },
   "publishConfig": {
