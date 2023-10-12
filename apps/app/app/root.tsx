@@ -26,6 +26,13 @@ import { ConnectButton } from "@/components/ConnectButton";
 import { siweConfig } from "@/components/SIWEButton";
 import Link from "next/link";
 import Script from "next/script";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  variable: "--inter-font",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function Root({
   children,
@@ -35,7 +42,7 @@ export default function Root({
   isTabEnabled?: boolean;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} font-sans`}>
       <body className="min-h-[100dvh] bg-white dark:bg-black">
         <ThemeProvider attribute="class">
           <TrpcProvider headers={headers()}>
