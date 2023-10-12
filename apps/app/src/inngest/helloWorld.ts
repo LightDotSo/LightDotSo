@@ -16,10 +16,10 @@
 import { inngest } from "./client";
 
 export const helloWorld = inngest.createFunction(
-  { name: "Hello World" },
+  { id: "Hello World" },
   { event: "test/hello.world" },
   async ({ event, step }) => {
-    await step.sleep("1s");
+    await step.sleep({ id: "Hello World" }, "1s");
     return { event, body: "Hello, World!" };
   },
 );

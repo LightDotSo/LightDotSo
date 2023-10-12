@@ -16,20 +16,21 @@
 import { inngest } from "./client";
 
 inngest.createFunction(
-  { name: "Customer Onboarding" },
+  { id: "Customer Onboarding" },
   { event: "test/user.signed.up" },
   async ({ step }) => {
     await step.run("Send welcome email", async () => {
       // Send welcome email
     });
 
-    await step.sleep("2s"); // Replace with 2 days in production
+    await step.sleep({ id: "Hello World" }, "2s"); // Replace with 2 days in production
 
     await step.run("Send “New in Stock” email", async () => {
       // Send “New in Stock” email
     });
 
     const emailOpenedEvent = await step.waitForEvent("app/email.opened", {
+      event: "app/email.opened",
       timeout: "3s", // Replace with 3 days in production
       if:
         "event.data.userId == async.data.userId &&" +
