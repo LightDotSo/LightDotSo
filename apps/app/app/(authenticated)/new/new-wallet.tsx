@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import {
   Button,
   Card,
@@ -25,9 +27,37 @@ import {
   Label,
 } from "@lightdotso/ui";
 
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, type ChangeEvent, useEffect } from "react";
+
 export function NewWallet() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const nameParam = searchParams.get("name");
+
+  const [name, setName] = useState(nameParam || "");
+
+  // Function to handle input change
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  };
+
+  // React to the changes
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    if (name === "") {
+      url.searchParams.delete("name");
+      router.replace(url.toString());
+      return;
+    }
+    url.searchParams.set("name", name);
+    router.replace(url.toString());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
+
   return (
-    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-12">
+    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-10">
       <CardHeader className="gap-3">
         <CardTitle>Create a New Wallet</CardTitle>
         <CardDescription>Select a name for your new wallet.</CardDescription>
@@ -35,14 +65,27 @@ export function NewWallet() {
       <CardContent className="grid gap-10">
         <div className="grid gap-3">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="Your Wallet Name" />
+          <Input
+            onChange={handleInputChange}
+            id="name"
+            placeholder="Your Wallet Name"
+          />
           <CardDescription className="text-sm">
             By creating a new wallet, you are accepting our term and conditions
           </CardDescription>
         </div>
       </CardContent>
       <CardFooter className="justify-end">
-        <Button className="w-32">Continue</Button>
+        <Button
+          disabled={nameParam === ""}
+          variant={nameParam !== "" ? "default" : "ghost"}
+          onClick={() => {
+            router.push("/new/settings");
+          }}
+          className="w-32"
+        >
+          Continue
+        </Button>
       </CardFooter>
     </Card>
   );
