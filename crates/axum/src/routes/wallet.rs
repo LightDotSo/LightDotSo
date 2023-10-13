@@ -227,6 +227,7 @@ async fn v1_list_handler(
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
             (status = 400, description = "Invalid Configuration", body = WalletError),
+            (status = 409, description = "Wallet already exists", body = WalletError),
             (status = 500, description = "Wallet internal error", body = WalletError),
         )
     )]
@@ -309,6 +310,23 @@ async fn v1_post_handler(
 
     // If the simulate flag is set, return the wallet address.
     if post.simulate.unwrap_or(false) {
+        // Check if the wallet exists.
+        let wallet = client
+            .client
+            .unwrap()
+            .wallet()
+            .find_first(vec![wallet::address::equals(to_checksum(
+                &new_wallet_address,
+                None,
+            ))])
+            .exec()
+            .await?;
+        
+        // If the wallet exists, return a 409.
+        if wallet.is_some() {
+            return Err(AppError::Conflict);
+        }
+
         return Ok(Json::from(Wallet {
             id: "".to_string(),
             address: to_checksum(&new_wallet_address, None),
