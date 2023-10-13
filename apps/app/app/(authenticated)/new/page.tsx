@@ -57,7 +57,7 @@ export default async function Page() {
                     aria-current="step"
                   >
                     <span
-                      className="absolute top-0 h-full w-1 bg-transparent group-hover:bg-primary/80 lg:bottom-0 lg:right-5 lg:top-auto lg:h-1 lg:w-full"
+                      className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary/80 sm:bottom-0 sm:left-auto sm:right-5 sm:top-auto sm:h-1 sm:w-full"
                       aria-hidden="true"
                     />
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
@@ -71,7 +71,7 @@ export default async function Page() {
                   <a href={step.href} className="group flex items-center">
                     <span className="flex items-center px-6 py-4 text-sm font-medium">
                       <span
-                        className="absolute right-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary lg:bottom-0 lg:top-auto lg:h-1 lg:w-[calc(100%+1.25rem)]"
+                        className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary sm:left-auto sm:right-0 lg:bottom-0 lg:right-0 lg:top-auto lg:h-1 lg:w-[calc(100%+1.25rem)]"
                         aria-hidden="true"
                       />
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
