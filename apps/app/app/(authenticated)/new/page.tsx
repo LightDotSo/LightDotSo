@@ -13,8 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NewWallet } from "@/app/(authenticated)/new/new-wallet";
+import { DashboardIcon } from "@radix-ui/react-icons";
+import { Button } from "@lightdotso/ui";
 
 export default async function Page() {
-  return <NewWallet />;
+  return (
+    <div className="mt-8 h-96 w-full rounded-md border border-border bg-card">
+      <div className="mx-auto flex max-w-xl flex-col">
+        <div className="mt-20 flex justify-center">
+          <div className="flex flex-col">
+            <Button
+              size="unsized"
+              className="rounded-full border fill-muted-foreground p-4"
+              variant="secondary"
+            >
+              <DashboardIcon className="h-8 w-8"></DashboardIcon>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
