@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Separator } from "@lightdotso/ui";
-import { ProfileForm } from "@/app/(authenticated)/settings/profile-form";
+import { NotificationsForm } from "@/app/(authenticated)/settings/notifications/notifications-form";
 import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
 export default function SettingsProfilePage() {
@@ -24,7 +24,7 @@ export default function SettingsProfilePage() {
       description="Configure how you receive notifications."
     >
       <Separator />
-      <ProfileForm />
+      <NotificationsForm />
     </SettingsSection>
   );
 }

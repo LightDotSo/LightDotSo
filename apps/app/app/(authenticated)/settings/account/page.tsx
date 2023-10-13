@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Separator } from "@lightdotso/ui";
-import { ProfileForm } from "@/app/(authenticated)/settings/profile-form";
+import { AccountForm } from "@/app/(authenticated)/settings/account/account-form";
 import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
 export default function SettingsProfilePage() {
@@ -25,7 +25,7 @@ export default function SettingsProfilePage() {
           timezone."
     >
       <Separator />
-      <ProfileForm />
+      <AccountForm />
     </SettingsSection>
   );
 }

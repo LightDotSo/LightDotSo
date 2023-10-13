@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Separator } from "@lightdotso/ui";
-import { ProfileForm } from "@/app/(authenticated)/settings/profile-form";
+import { AppearanceForm } from "@/app/(authenticated)/settings/appearance/appearance-form";
 import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
 export default function SettingsProfilePage() {
@@ -25,7 +25,7 @@ export default function SettingsProfilePage() {
           and night themes."
     >
       <Separator />
-      <ProfileForm />
+      <AppearanceForm />
     </SettingsSection>
   );
 }
