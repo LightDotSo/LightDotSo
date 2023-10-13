@@ -13,25 +13,99 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { DashboardIcon } from "@radix-ui/react-icons";
-import { Button } from "@lightdotso/ui";
+import { CheckIcon } from "@heroicons/react/24/solid";
+
+const steps = [
+  { id: "01", name: "Wallet Name", href: "#", status: "complete" },
+  { id: "02", name: "Wallet Settings", href: "#", status: "current" },
+  { id: "03", name: "Preview", href: "#", status: "upcoming" },
+];
 
 export default async function Page() {
   return (
-    <div className="mt-8 h-96 w-full rounded-md border border-border bg-card">
-      <div className="mx-auto flex max-w-xl flex-col">
-        <div className="mt-20 flex justify-center">
-          <div className="flex flex-col">
-            <Button
-              size="unsized"
-              className="rounded-full border fill-muted-foreground p-4"
-              variant="secondary"
-            >
-              <DashboardIcon className="h-8 w-8"></DashboardIcon>
-            </Button>
-          </div>
+    <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-12 lg:space-y-0">
+      <div className="w-full flex-1 space-y-6">
+        <nav aria-label="Progress">
+          <ol className="divide-y divide-border rounded-md border border-border md:flex md:divide-y-0">
+            {steps.map((step, stepIdx) => (
+              <li key={step.name} className="relative md:flex md:flex-1">
+                {step.status === "complete" ? (
+                  <a
+                    href={step.href}
+                    className="group flex w-full items-center"
+                  >
+                    <span className="flex items-center px-6 py-4 text-sm font-medium">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card group-hover:bg-card/80">
+                        <CheckIcon
+                          className="h-6 w-6 text-border"
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <span className="ml-4 text-sm font-medium text-muted">
+                        {step.name}
+                      </span>
+                    </span>
+                  </a>
+                ) : step.status === "current" ? (
+                  <a
+                    href={step.href}
+                    className="flex items-center px-6 py-4 text-sm font-medium"
+                    aria-current="step"
+                  >
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
+                      <span className="text-primary">{step.id}</span>
+                    </span>
+                    <span className="ml-4 text-sm font-medium text-primary">
+                      {step.name}
+                    </span>
+                  </a>
+                ) : (
+                  <a href={step.href} className="group flex items-center">
+                    <span className="flex items-center px-6 py-4 text-sm font-medium">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border group-hover:border-border/80">
+                        <span className="text-muted group-hover:text-muted-foreground">
+                          {step.id}
+                        </span>
+                      </span>
+                      <span className="ml-4 text-sm font-medium text-muted group-hover:text-muted-foreground">
+                        {step.name}
+                      </span>
+                    </span>
+                  </a>
+                )}
+                {stepIdx !== steps.length - 1 ? (
+                  <>
+                    <div
+                      className="absolute right-0 top-0 hidden h-full w-5 md:block"
+                      aria-hidden="true"
+                    >
+                      <svg
+                        className="h-full w-full text-border"
+                        viewBox="0 0 22 80"
+                        fill="none"
+                        preserveAspectRatio="none"
+                      >
+                        <path
+                          d="M0 -2L20 40L0 82"
+                          vectorEffect="non-scaling-stroke"
+                          stroke="currentcolor"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  </>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <div className="mx-auto flex h-96 flex-col rounded-md border border-border bg-card">
+          <div className="mt-20 flex justify-center"></div>
         </div>
       </div>
+      <aside className="lg:w-1/4">
+        <div className="h-96 rounded-md border border-border bg-card"></div>
+      </aside>
     </div>
   );
 }
