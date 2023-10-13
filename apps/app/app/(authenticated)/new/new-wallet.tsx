@@ -69,6 +69,7 @@ export function NewWallet() {
             onChange={handleInputChange}
             id="name"
             placeholder="Your Wallet Name"
+            value={name}
           />
           <CardDescription className="text-sm">
             By creating a new wallet, you are accepting our term and conditions
@@ -77,8 +78,8 @@ export function NewWallet() {
       </CardContent>
       <CardFooter className="justify-end">
         <Button
-          disabled={nameParam === ""}
-          variant={nameParam !== "" ? "default" : "ghost"}
+          disabled={!nameParam}
+          variant={nameParam ? "default" : "ghost"}
           onClick={() => {
             router.push("/new/settings");
           }}

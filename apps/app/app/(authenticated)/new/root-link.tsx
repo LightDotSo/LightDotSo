@@ -16,9 +16,11 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
+import type { Step } from "./root";
 import { steps, StepsEnum } from "./root";
 import { CheckIcon } from "@heroicons/react/24/solid";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useCallback } from "react";
 
 interface RootLinkProps {
   stepType: StepsEnum;
@@ -26,6 +28,7 @@ interface RootLinkProps {
 }
 
 export function RootLink({ currentStepType, stepType }: RootLinkProps) {
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const name = searchParams.get("name");
@@ -67,10 +70,26 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
   const step =
     linkSteps.find(step => step.href.includes(stepType)) ?? linkSteps[0];
 
+  const navigateToStep = useCallback(
+    (step: Step) => {
+      const url = new URL(step.href, window.location.origin);
+      url.searchParams.set("name", name || "");
+      router.push(url.toString());
+    },
+    [name, router],
+  );
+
   return (
     <button
-      disabled={stepType !== StepsEnum.New && !name}
+      disabled={
+        // If stepType is `new`, it's always enabled
+        stepType !== StepsEnum.New &&
+        // If stepType is `settings` or `confirm`, it's disabled if the name is not set
+        !name &&
+        (stepType === StepsEnum.Settings || stepType === StepsEnum.Confirm)
+      }
       className="group flex w-full items-center disabled:cursor-not-allowed"
+      onClick={() => navigateToStep(step)}
     >
       <span
         className={cn(
