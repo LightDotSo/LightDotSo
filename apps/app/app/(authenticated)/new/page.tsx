@@ -14,12 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
+import { NewWallet } from "./new-wallet";
 
 export default async function Page() {
   return (
     <>
       <NewRoot currentStepType={StepsEnum.New}>
-        <div>New</div>
+        <NewWallet />
       </NewRoot>
     </>
   );

@@ -27,19 +27,22 @@ import {
 
 export function NewWallet() {
   return (
-    <Card className="mx-auto max-w-xl">
-      <CardHeader>
+    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-8 lg:py-6">
+      <CardHeader className="gap-4">
         <CardTitle>Create a New Wallet</CardTitle>
-        <CardDescription>Create your own multisig wallet.</CardDescription>
+        <CardDescription>Select a name for your new wallet.</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-6">
-        <div className="grid gap-2">
+      <CardContent className="grid gap-10">
+        <div className="grid gap-3">
           <Label htmlFor="name">Name</Label>
-          <Input id="name" placeholder="First Last" />
+          <Input id="name" placeholder="Your Wallet Name" />
+          <CardDescription className="text-sm">
+            By creating a new wallet, you are accepting our term and conditions
+          </CardDescription>
         </div>
       </CardContent>
-      <CardFooter>
-        <Button className="w-full">Continue</Button>
+      <CardFooter className="justify-end">
+        <Button className="w-32">Continue</Button>
       </CardFooter>
     </Card>
   );
