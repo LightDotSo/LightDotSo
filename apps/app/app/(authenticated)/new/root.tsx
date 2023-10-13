@@ -15,6 +15,7 @@
 
 import { CheckIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { cn } from "@lightdotso/utils";
 
 export enum StepsEnum {
   // eslint-disable-next-line no-unused-vars
@@ -64,13 +65,18 @@ export async function NewRoot({ stepType, children }: NewRootProps) {
           <ol className="divide-y divide-border rounded-md border border-border md:flex md:divide-y-0">
             {steps.map((step, stepIdx) => (
               <li key={step.name} className="relative md:flex md:flex-1">
-                {step.status === "complete" ? (
+                {step.id === "01" ? (
                   <Link
                     href={step.href}
                     className="group flex w-full items-center"
                   >
                     <span
-                      className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary/70 md:bottom-0 md:top-auto md:h-1 md:w-[calc(100%-1.25rem)]"
+                      className={cn(
+                        "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:top-auto md:h-1 md:w-[calc(100%-1.25rem)]",
+                        stepType === StepsEnum.New
+                          ? "bg-primary/70"
+                          : " group-hover:bg-primary/40",
+                      )}
                       aria-hidden="true"
                     />
                     <span className="flex items-center px-6 py-4 text-sm font-medium">
@@ -80,25 +86,44 @@ export async function NewRoot({ stepType, children }: NewRootProps) {
                           aria-hidden="true"
                         />
                       </span>
-                      <span className="ml-4 text-sm font-medium text-muted-foreground group-hover:text-muted-foreground/80">
+                      <span
+                        className={cn(
+                          "ml-4 text-sm font-medium",
+                          stepType === StepsEnum.New
+                            ? "text-primary"
+                            : "text-muted-foreground group-hover:text-muted-foreground/80",
+                        )}
+                      >
                         {step.name}
                       </span>
                     </span>
                   </Link>
-                ) : step.status === "current" ? (
+                ) : step.id === "02" ? (
                   <Link
                     href={step.href}
                     className="group flex items-center px-6 py-4 text-sm font-medium"
                     aria-current="step"
                   >
                     <span
-                      className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary/80 md:bottom-0 md:left-auto md:right-5 md:top-auto md:h-1 md:w-full"
+                      className={cn(
+                        "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:left-auto md:right-5 md:top-auto md:h-1 md:w-full",
+                        stepType === StepsEnum.Settings
+                          ? "bg-primary/80"
+                          : "group-hover:bg-primary/40",
+                      )}
                       aria-hidden="true"
                     />
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
                       <span className="text-primary">{step.id}</span>
                     </span>
-                    <span className="ml-4 text-sm font-medium text-primary">
+                    <span
+                      className={cn(
+                        "ml-4 text-sm font-medium text-primary",
+                        stepType === StepsEnum.Settings
+                          ? "text-primary"
+                          : "text-muted-foreground group-hover:text-muted-foreground/80",
+                      )}
+                    >
                       {step.name}
                     </span>
                   </Link>
@@ -106,13 +131,25 @@ export async function NewRoot({ stepType, children }: NewRootProps) {
                   <Link href={step.href} className="group flex items-center">
                     <span className="flex items-center px-6 py-4 text-sm font-medium">
                       <span
-                        className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary md:bottom-0  md:left-auto md:right-0 md:top-auto md:h-1 md:w-[calc(100%+1.25rem)]"
+                        className={cn(
+                          "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:h-1 md:w-[calc(100%+1.25rem)]",
+                          stepType === StepsEnum.Confirm
+                            ? "bg-primary"
+                            : "group-hover:bg-primary/40",
+                        )}
                         aria-hidden="true"
                       />
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
                         <span className="text-muted-foreground">{step.id}</span>
                       </span>
-                      <span className="ml-4 text-sm font-medium text-muted-foreground group-hover:text-primary">
+                      <span
+                        className={cn(
+                          "ml-4 text-sm font-medium text-muted-foreground group-hover:text-primary",
+                          stepType === StepsEnum.Confirm
+                            ? "text-primary"
+                            : "text-muted-foreground group-hover:text-muted-foreground/80",
+                        )}
+                      >
                         {step.name}
                       </span>
                     </span>
