@@ -69,14 +69,16 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
       <span
         className={cn(
           stepType === StepsEnum.New &&
-            "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:top-auto md:h-1 md:w-[calc(100%-1.25rem)]",
+            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:top-auto md:w-[calc(100%-1.25rem)]",
           stepType === StepsEnum.Settings &&
-            "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:left-auto md:right-5 md:top-auto md:h-1 md:w-full",
+            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-5 md:top-auto md:w-full",
           stepType === StepsEnum.Confirm &&
-            "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:h-1 md:w-[calc(100%+1.25rem)]",
+            "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:w-[calc(100%+1.25rem)]",
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
-          step.status === "current" ? "bg-primary" : "bg-border",
+          step.status === "current"
+            ? "bg-primary w-1 md:h-1"
+            : "bg-border w-0 md:h-0",
         )}
         aria-hidden="true"
       />
