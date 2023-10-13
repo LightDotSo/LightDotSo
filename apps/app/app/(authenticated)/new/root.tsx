@@ -13,9 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { CheckIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
-import { cn } from "@lightdotso/utils";
+import { RootLink } from "./root-link";
 
 export enum StepsEnum {
   // eslint-disable-next-line no-unused-vars
@@ -26,38 +24,40 @@ export enum StepsEnum {
   Confirm = "confirm",
 }
 
-interface Step {
+export interface Step {
+  enum: StepsEnum;
   id: string;
   name: string;
   href: string;
-  status: string;
 }
 
 interface NewRootProps {
   children: React.ReactNode;
-  stepType: StepsEnum;
+  currentStepType: StepsEnum;
 }
 
-export async function NewRoot({ stepType, children }: NewRootProps) {
-  let steps: Step[] = [
-    { id: "01", name: "Wallet Name", href: "/new", status: "complete" },
-    {
-      id: "02",
-      name: "Wallet Settings",
-      href: "/new/settings",
-      status: "current",
-    },
-    { id: "03", name: "Confirm", href: "/new/confirm", status: "upcoming" },
-  ];
+export const steps: Step[] = [
+  {
+    enum: StepsEnum.New,
+    id: "01",
+    name: "Wallet Name",
+    href: "/new",
+  },
+  {
+    enum: StepsEnum.Settings,
+    id: "02",
+    name: "Wallet Settings",
+    href: "/new/settings",
+  },
+  {
+    enum: StepsEnum.Confirm,
+    id: "03",
+    name: "Confirm",
+    href: "/new/confirm",
+  },
+];
 
-  steps = steps.map(step => {
-    if (step.href.includes(stepType)) {
-      return { ...step, status: "current" };
-    }
-
-    return step;
-  });
-
+export async function NewRoot({ currentStepType, children }: NewRootProps) {
   return (
     <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-12 lg:space-y-0">
       <div className="w-full flex-1 space-y-6">
@@ -65,96 +65,10 @@ export async function NewRoot({ stepType, children }: NewRootProps) {
           <ol className="divide-y divide-border rounded-md border border-border md:flex md:divide-y-0">
             {steps.map((step, stepIdx) => (
               <li key={step.name} className="relative md:flex md:flex-1">
-                {step.id === "01" ? (
-                  <Link
-                    href={step.href}
-                    className="group flex w-full items-center"
-                  >
-                    <span
-                      className={cn(
-                        "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:top-auto md:h-1 md:w-[calc(100%-1.25rem)]",
-                        stepType === StepsEnum.New
-                          ? "bg-primary/70"
-                          : " group-hover:bg-primary/40",
-                      )}
-                      aria-hidden="true"
-                    />
-                    <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-card">
-                        <CheckIcon
-                          className="h-4 w-4 text-muted-foreground"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <span
-                        className={cn(
-                          "ml-4 text-sm font-medium",
-                          stepType === StepsEnum.New
-                            ? "text-primary"
-                            : "text-muted-foreground group-hover:text-muted-foreground/80",
-                        )}
-                      >
-                        {step.name}
-                      </span>
-                    </span>
-                  </Link>
-                ) : step.id === "02" ? (
-                  <Link
-                    href={step.href}
-                    className="group flex items-center px-6 py-4 text-sm font-medium"
-                    aria-current="step"
-                  >
-                    <span
-                      className={cn(
-                        "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:left-auto md:right-5 md:top-auto md:h-1 md:w-full",
-                        stepType === StepsEnum.Settings
-                          ? "bg-primary/80"
-                          : "group-hover:bg-primary/40",
-                      )}
-                      aria-hidden="true"
-                    />
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
-                      <span className="text-primary">{step.id}</span>
-                    </span>
-                    <span
-                      className={cn(
-                        "ml-4 text-sm font-medium text-primary",
-                        stepType === StepsEnum.Settings
-                          ? "text-primary"
-                          : "text-muted-foreground group-hover:text-muted-foreground/80",
-                      )}
-                    >
-                      {step.name}
-                    </span>
-                  </Link>
-                ) : (
-                  <Link href={step.href} className="group flex items-center">
-                    <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span
-                        className={cn(
-                          "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:h-1 md:w-[calc(100%+1.25rem)]",
-                          stepType === StepsEnum.Confirm
-                            ? "bg-primary"
-                            : "group-hover:bg-primary/40",
-                        )}
-                        aria-hidden="true"
-                      />
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
-                        <span className="text-muted-foreground">{step.id}</span>
-                      </span>
-                      <span
-                        className={cn(
-                          "ml-4 text-sm font-medium text-muted-foreground group-hover:text-primary",
-                          stepType === StepsEnum.Confirm
-                            ? "text-primary"
-                            : "text-muted-foreground group-hover:text-muted-foreground/80",
-                        )}
-                      >
-                        {step.name}
-                      </span>
-                    </span>
-                  </Link>
-                )}
+                <RootLink
+                  currentStepType={currentStepType}
+                  stepType={step.enum}
+                ></RootLink>
                 {stepIdx !== steps.length - 1 ? (
                   <>
                     <div
