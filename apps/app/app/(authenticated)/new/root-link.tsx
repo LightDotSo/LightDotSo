@@ -15,11 +15,10 @@
 
 "use client";
 
-import Link from "next/link";
-
 import { cn } from "@lightdotso/utils";
 import { steps, StepsEnum } from "./root";
 import { CheckIcon } from "@heroicons/react/24/solid";
+import { useSearchParams } from "next/navigation";
 
 interface RootLinkProps {
   stepType: StepsEnum;
@@ -27,6 +26,10 @@ interface RootLinkProps {
 }
 
 export function RootLink({ currentStepType, stepType }: RootLinkProps) {
+  const searchParams = useSearchParams();
+
+  const name = searchParams.get("name");
+
   const linkSteps = steps.map(step => {
     // Update the status of the step based on the current step
     if (step.enum === currentStepType) {
@@ -65,7 +68,11 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     linkSteps.find(step => step.href.includes(stepType)) ?? linkSteps[0];
 
   return (
-    <Link href={step.href} className="group flex w-full items-center">
+    <button
+      // If the name is not set, then we want to disable the button
+      disabled={!name}
+      className="group flex w-full items-center disabled:cursor-not-allowed"
+    >
       <span
         className={cn(
           stepType === StepsEnum.New &&
@@ -110,6 +117,6 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
           {step.name}
         </span>
       </span>
-    </Link>
+    </button>
   );
 }
