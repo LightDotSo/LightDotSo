@@ -35,13 +35,13 @@ export default async function Page() {
                     className="group flex w-full items-center"
                   >
                     <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-card group-hover:bg-card/80">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-card">
                         <CheckIcon
-                          className="h-6 w-6 text-border"
+                          className="h-4 w-4 text-muted-foreground"
                           aria-hidden="true"
                         />
                       </span>
-                      <span className="ml-4 text-sm font-medium text-muted">
+                      <span className="ml-4 text-sm font-medium text-muted-foreground">
                         {step.name}
                       </span>
                     </span>
@@ -62,12 +62,10 @@ export default async function Page() {
                 ) : (
                   <a href={step.href} className="group flex items-center">
                     <span className="flex items-center px-6 py-4 text-sm font-medium">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border group-hover:border-border/80">
-                        <span className="text-muted group-hover:text-muted-foreground">
-                          {step.id}
-                        </span>
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
+                        <span className="text-muted-foreground">{step.id}</span>
                       </span>
-                      <span className="ml-4 text-sm font-medium text-muted group-hover:text-muted-foreground">
+                      <span className="ml-4 text-sm font-medium text-muted-foreground">
                         {step.name}
                       </span>
                     </span>
