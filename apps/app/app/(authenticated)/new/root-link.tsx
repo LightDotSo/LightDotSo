@@ -69,8 +69,7 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
 
   return (
     <button
-      // If the name is not set, then we want to disable the button
-      disabled={!name}
+      disabled={stepType !== StepsEnum.New && !name}
       className="group flex w-full items-center disabled:cursor-not-allowed"
     >
       <span
