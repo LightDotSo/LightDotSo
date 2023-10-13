@@ -15,6 +15,7 @@
 
 import { headers } from "next/headers";
 import {
+  TailwindIndicator,
   ThemeProvider,
   TrpcProvider,
   Web3Provider,
@@ -85,6 +86,7 @@ export default function Root({
             </Web3Provider>
           </TrpcProvider>
         </ThemeProvider>
+        <TailwindIndicator />
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>

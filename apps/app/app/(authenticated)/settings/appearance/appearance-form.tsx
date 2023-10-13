@@ -117,8 +117,8 @@ export function AppearanceForm() {
                 defaultValue={field.value}
                 className="grid max-w-md grid-cols-2 gap-8 pt-2"
               >
-                <FormItem className="cursor-pointer">
-                  <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+                <FormItem>
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-primary">
                     <FormControl>
                       <RadioGroupItem value="light" className="sr-only" />
                     </FormControl>
@@ -143,8 +143,8 @@ export function AppearanceForm() {
                     </span>
                   </FormLabel>
                 </FormItem>
-                <FormItem className="cursor-pointer">
-                  <FormLabel className="[&:has([data-state=checked])>div]:border-primary">
+                <FormItem>
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-primary">
                     <FormControl>
                       <RadioGroupItem value="dark" className="sr-only" />
                     </FormControl>

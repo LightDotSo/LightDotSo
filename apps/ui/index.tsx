@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export * from "./src/utils";
+export * from "./src/components/dev/tailwind-indicator";
 export * from "./src/components/ui/accordion";
 export * from "./src/components/ui/alert-dialog";
 export * from "./src/components/ui/alert";
