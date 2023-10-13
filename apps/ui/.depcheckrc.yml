@@ -14,6 +14,7 @@ ignores:
   - "@storybook/addon-measure"
   - "@storybook/addon-outline"
   - "@storybook/addon-postcss"
+  - "@storybook/addon-themes"
   - "@storybook/addons"
   - "@storybook/channel-postmessage"
   - "@storybook/channel-websocket"

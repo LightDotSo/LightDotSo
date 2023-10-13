@@ -93,6 +93,7 @@
     "@storybook/addon-measure": "^7.4.6",
     "@storybook/addon-outline": "^7.4.6",
     "@storybook/addon-postcss": "^2.0.0",
+    "@storybook/addon-themes": "^7.4.6",
     "@storybook/addons": "^7.4.6",
     "@storybook/channel-postmessage": "^7.4.6",
     "@storybook/channel-websocket": "^7.4.6",
