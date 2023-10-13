@@ -40,6 +40,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@lightdotso/ui";
+import { PlaceholderOrb } from "./PlaceholderOrb";
 
 const groups = [
   {
@@ -96,10 +97,11 @@ export function WalletSwitcher({
           className={cn("mx-2 justify-start", className)}
         >
           <Avatar className="mr-2 h-6 w-6">
-            <AvatarImage
+            {/* <AvatarImage
               src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
               alt={selectedWallet.label}
-            />
+            /> */}
+            <PlaceholderOrb address={selectedWallet.href.substring(1)} />
             <AvatarFallback>SC</AvatarFallback>
           </Avatar>
           {selectedWallet.label}
