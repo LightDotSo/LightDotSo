@@ -15,18 +15,16 @@
 
 import { Separator } from "@lightdotso/ui";
 import { ProfileForm } from "@/app/(authenticated)/settings/profile-form";
+import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
 export default function SettingsProfilePage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Profile</h3>
-        <p className="text-sm text-muted-foreground">
-          This is how others will see you on the site.
-        </p>
-      </div>
+    <SettingsSection
+      title="Profile"
+      description="This is how others will see you on the site."
+    >
       <Separator />
       <ProfileForm />
-    </div>
+    </SettingsSection>
   );
 }

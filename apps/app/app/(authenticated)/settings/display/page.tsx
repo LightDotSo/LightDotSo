@@ -15,18 +15,16 @@
 
 import { Separator } from "@lightdotso/ui";
 import { DisplayForm } from "@/app/(authenticated)/settings/display/display-form";
+import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
 export default function SettingsDisplayPage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Display</h3>
-        <p className="text-sm text-muted-foreground">
-          Turn items on or off to control what&apos;s displayed in the app.
-        </p>
-      </div>
+    <SettingsSection
+      title="Display"
+      description="Turn items on or off to control what's displayed in the app."
+    >
       <Separator />
       <DisplayForm />
-    </div>
+    </SettingsSection>
   );
 }
