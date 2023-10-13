@@ -15,19 +15,17 @@
 
 import { Separator } from "@lightdotso/ui";
 import { AppearanceForm } from "@/app/(authenticated)/settings/appearance/appearance-form";
+import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
-export default function SettingsAppearancePage() {
+export default function SettingsProfilePage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Appearance</h3>
-        <p className="text-sm text-muted-foreground">
-          Customize the appearance of the app. Automatically switch between day
-          and night themes.
-        </p>
-      </div>
+    <SettingsSection
+      title="Appearance"
+      description="Customize the appearance of the app. Automatically switch between day
+          and night themes."
+    >
       <Separator />
       <AppearanceForm />
-    </div>
+    </SettingsSection>
   );
 }

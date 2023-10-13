@@ -416,6 +416,9 @@ importers:
       kysely-postgres-js:
         specifier: ^1.1.1
         version: 1.1.1(kysely@0.26.3)(postgres@3.4.0)
+      lucide-react:
+        specifier: ^0.263.1
+        version: 0.263.1(react@18.2.0)
       next:
         specifier: 13.5.4
         version: 13.5.4(patch_hash=juiw5wip7zv7g3r2isugivrwwm)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)

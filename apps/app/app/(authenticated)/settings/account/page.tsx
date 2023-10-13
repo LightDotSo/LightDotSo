@@ -15,19 +15,17 @@
 
 import { Separator } from "@lightdotso/ui";
 import { AccountForm } from "@/app/(authenticated)/settings/account/account-form";
+import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
-export default function SettingsAccountPage() {
+export default function SettingsProfilePage() {
   return (
-    <div className="space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">Account</h3>
-        <p className="text-sm text-muted-foreground">
-          Update your account settings. Set your preferred language and
-          timezone.
-        </p>
-      </div>
+    <SettingsSection
+      title="Account"
+      description="Update your account settings. Set your preferred language and
+          timezone."
+    >
       <Separator />
       <AccountForm />
-    </div>
+    </SettingsSection>
   );
 }

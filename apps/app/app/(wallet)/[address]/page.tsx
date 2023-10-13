@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Dashboard } from "@/components/Dashboard";
+import { Dashboard } from "@/components/tremor-dashboard";
 import { handler } from "@/handles/[address]";
 
 export default async function Page({

@@ -26,8 +26,6 @@ import { useRouter } from "next/navigation";
 import {
   cn,
   Avatar,
-  AvatarFallback,
-  AvatarImage,
   Button,
   Popover,
   PopoverContent,
@@ -40,6 +38,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@lightdotso/ui";
+import { PlaceholderOrb } from "./placeholder-orb";
 
 const groups = [
   {
@@ -95,12 +94,13 @@ export function WalletSwitcher({
           aria-label="Select a wallet"
           className={cn("mx-2 justify-start", className)}
         >
-          <Avatar className="mr-2 h-6 w-6">
-            <AvatarImage
+          <Avatar className="mr-3 h-7 w-7">
+            {/* <AvatarImage
               src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
               alt={selectedWallet.label}
-            />
-            <AvatarFallback>SC</AvatarFallback>
+            /> */}
+            <PlaceholderOrb address={selectedWallet.href.substring(1)} />
+            {/* <AvatarFallback>SC</AvatarFallback> */}
           </Avatar>
           {selectedWallet.label}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -124,12 +124,13 @@ export function WalletSwitcher({
                     className="text-sm"
                   >
                     <Avatar className="mr-2 h-5 w-5">
-                      <AvatarImage
+                      {/* <AvatarImage
                         src={`https://avatar.vercel.sh/${wallet.value}.png`}
                         alt={wallet.label}
                         className="grayscale"
                       />
-                      <AvatarFallback>SC</AvatarFallback>
+                      <AvatarFallback>SC</AvatarFallback> */}
+                      <PlaceholderOrb address={wallet.href.substring(1)} />
                     </Avatar>
                     {wallet.label}
                     <CheckIcon

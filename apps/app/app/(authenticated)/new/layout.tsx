@@ -13,28 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import type { Metadata } from "next";
+import { BannerLayout } from "@/app/banner";
 
-import { api } from "@lightdotso/trpc";
-import React from "react";
+export const metadata: Metadata = {
+  title: "New Wallet",
+  description: "Create a new wallet.",
+};
 
-export function User() {
-  let [user] = api.user.me.useSuspenseQuery({});
+interface NewWalletLayoutProps {
+  children: React.ReactNode;
+}
 
-  const trpcContext = api.useContext();
-
+export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
   return (
     <>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
-          gap: 20,
-        }}
+      <BannerLayout
+        title="New Wallet"
+        description="Create your own new Light Wallet."
       >
-        {user && JSON.stringify(user, null, 2)}
-      </div>
-      <button onClick={() => trpcContext.user.me.invalidate()}>Click me</button>
+        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+          <div className="mx-auto max-w-7xl flex-1">{children}</div>
+        </div>
+      </BannerLayout>
     </>
   );
 }

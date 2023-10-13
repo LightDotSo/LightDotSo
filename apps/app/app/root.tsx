@@ -21,14 +21,14 @@ import {
   Toaster,
 } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
-import { WalletSwitcher } from "@/components/WalletSwitcher";
-import { Logo } from "@/components/Logo";
-import { UserNav } from "@/components/UserNav";
-import { MainNav } from "@/components/MainNav";
-import { NotificationPopover } from "@/components/NotificationPopover";
-import { FeedbackPopover } from "@/components/FeedbackPopover";
-import { ConnectButton } from "@/components/ConnectButton";
-import { siweConfig } from "@/components/SIWEButton";
+import { WalletSwitcher } from "@/components/wallet-switcher";
+import { Logo } from "@/components/light-logo";
+import { UserNav } from "@/components/user-nav";
+import { MainNav } from "@/components/main-nav";
+import { NotificationPopover } from "@/components/notification-popover";
+import { FeedbackPopover } from "@/components/feedback-popover";
+import { ConnectButton } from "@/components/connect-button";
+import { siweConfig } from "@/components/siwe-button";
 import Link from "next/link";
 import Script from "next/script";
 import { Inter } from "next/font/google";
@@ -55,7 +55,7 @@ export default function Root({
               <main>
                 <div className="flex flex-col">
                   <div className="border-b py-2">
-                    <div className="flex h-16 items-center px-12">
+                    <div className="flex h-16 items-center px-4 lg:px-12">
                       <div className="flex items-center">
                         <Link
                           href="/"
@@ -66,7 +66,7 @@ export default function Root({
                         <span className="ml-2 mr-1 text-primary/60">/</span>
                         <WalletSwitcher />
                       </div>
-                      <div className="ml-auto flex items-center space-x-4">
+                      <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
                         <FeedbackPopover />
                         <NotificationPopover />
@@ -78,9 +78,7 @@ export default function Root({
                       <MainNav className="h-10 items-center px-12" />
                     )}
                   </div>
-                  <div className="flex-1 space-y-4">
-                    <div className="mx-auto max-w-7xl">{children}</div>
-                  </div>
+                  {children}
                 </div>
               </main>
               <Toaster />

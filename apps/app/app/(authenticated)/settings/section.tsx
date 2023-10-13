@@ -13,18 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
-import { NotificationsForm } from "@/app/(authenticated)/settings/notifications/notifications-form";
-import { SettingsSection } from "@/app/(authenticated)/settings/section";
+interface SettingsSectionProps {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}
 
-export default function SettingsProfilePage() {
+export function SettingsSection({
+  title,
+  description,
+  children,
+}: SettingsSectionProps) {
   return (
-    <SettingsSection
-      title="Notifications"
-      description="Configure how you receive notifications."
-    >
-      <Separator />
-      <NotificationsForm />
-    </SettingsSection>
+    <div className="space-y-6">
+      <div>
+        <h3 className="text-xl font-medium tracking-tight md:text-2xl">
+          {title}
+        </h3>
+        <p className="md:text-md mt-4 text-sm leading-6 text-muted-foreground">
+          {description}
+        </p>
+      </div>
+      {children}
+    </div>
   );
 }
