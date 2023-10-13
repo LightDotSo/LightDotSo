@@ -96,13 +96,11 @@ export async function NewRoot({ currentStepType, children }: NewRootProps) {
           </ol>
         </nav>
         <div className="mx-auto flex h-96 flex-col rounded-md border border-border bg-card">
-          <div className="mt-20 flex justify-center"></div>
+          <div className="mt-20 flex justify-center">{children}</div>
         </div>
       </div>
       <aside className="lg:w-1/4">
-        <div className="h-96 rounded-md border border-border bg-card">
-          {children}
-        </div>
+        <div className="h-96 rounded-md border border-border bg-card"></div>
       </aside>
     </div>
   );
