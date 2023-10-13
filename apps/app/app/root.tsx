@@ -78,9 +78,7 @@ export default function Root({
                       <MainNav className="h-10 items-center px-12" />
                     )}
                   </div>
-                  <div className="flex-1 space-y-4">
-                    <div className="mx-auto max-w-7xl">{children}</div>
-                  </div>
+                  {children}
                 </div>
               </main>
               <Toaster />

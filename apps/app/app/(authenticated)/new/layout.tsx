@@ -29,16 +29,16 @@ interface NewWalletLayoutProps {
 export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
   return (
     <>
-      <div className="block space-y-3 p-4 pb-8 md:space-y-6 md:p-8 md:pb-12 md:pt-20">
-        <div className="space-y-0.5">
-          <h2 className="text-3xl font-bold tracking-tight">New Wallet</h2>
+      <div className="block flex-1 space-y-3 md:space-y-6">
+        <div className="mx-auto max-w-7xl space-y-0.5 md:pb-8 md:pt-16">
+          <h2 className="pb-8 text-3xl font-bold tracking-tight">New Wallet</h2>
           <p className="text-muted-foreground">
             Create your own new Light Wallet.
           </p>
         </div>
         <Separator className="my-6" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="flex-1 lg:max-w-2xl">{children}</div>
+          <div className="mx-auto max-w-7xl flex-1">{children}</div>
         </div>
       </div>
     </>

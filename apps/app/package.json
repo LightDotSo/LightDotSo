@@ -55,6 +55,7 @@
     "framer-motion": "^10.16.4",
     "inngest": "^3.1.1",
     "kysely-postgres-js": "^1.1.1",
+    "lucide-react": "^0.263.1",
     "next": "^13.5.4",
     "next-auth": "^4.23.2",
     "next-themes": "^0.2.1",
