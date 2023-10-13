@@ -76,33 +76,33 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
             "absolute left-0 top-0 h-full w-1 bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:h-1 md:w-[calc(100%+1.25rem)]",
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
-          step.status === "current"
-            ? "bg-primary"
-            : step.status === "complete"
-            ? "bg-muted-foreground"
-            : "bg-border",
+          step.status === "current" ? "bg-primary" : "bg-border",
         )}
         aria-hidden="true"
       />
       <span className="flex items-center px-6 py-4 text-sm font-medium">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-card">
+        <span
+          className={cn(
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-card",
+            step.status === "current" ? "border-primary" : "border-border",
+          )}
+        >
           {step.status === "complete" ? (
-            <CheckIcon
-              className="h-4 w-4 text-muted-foreground"
-              aria-hidden="true"
-            />
+            <CheckIcon className="h-4 w-4 text-border" aria-hidden="true" />
           ) : (
-            <span className="text-primary">{step.id}</span>
+            <span
+              className={cn(
+                step.status === "current" ? "text-primary" : "text-border",
+              )}
+            >
+              {step.id}
+            </span>
           )}
         </span>
         <span
           className={cn(
             "ml-4 text-sm font-medium",
-            step.status === "current"
-              ? "text-primary"
-              : step.status === "complete"
-              ? "text-muted-foreground"
-              : "text-border",
+            step.status === "current" ? "text-primary" : "text-border",
           )}
         >
           {step.name}
