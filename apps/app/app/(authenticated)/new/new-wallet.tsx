@@ -26,9 +26,9 @@ import {
   Input,
   Label,
 } from "@lightdotso/ui";
-
+import { steps } from "./root";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, type ChangeEvent, useEffect } from "react";
+import { useState, type ChangeEvent, useEffect, useCallback } from "react";
 
 export function NewWallet() {
   const router = useRouter();
@@ -56,6 +56,13 @@ export function NewWallet() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
 
+  const navigateToStep = useCallback(() => {
+    const url = new URL(steps[1].href, window.location.origin);
+    url.searchParams.set("name", name || "");
+    router.push(url.toString());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name]);
+
   return (
     <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-10">
       <CardHeader className="gap-3">
@@ -80,9 +87,7 @@ export function NewWallet() {
         <Button
           disabled={!nameParam}
           variant={nameParam ? "default" : "ghost"}
-          onClick={() => {
-            router.push("/new/settings");
-          }}
+          onClick={() => navigateToStep()}
           className="w-32"
         >
           Continue
