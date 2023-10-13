@@ -86,7 +86,7 @@ export function NewWallet() {
       <CardFooter className="justify-end">
         <Button
           disabled={!nameParam}
-          variant={nameParam ? "default" : "ghost"}
+          variant={nameParam ? "default" : "outline"}
           onClick={() => navigateToStep()}
           className="w-32"
         >
