@@ -20,7 +20,7 @@
 
 import React, { useState } from "react";
 
-import { Tabs } from "@/components/Tabs";
+import { Tabs } from "@/components/tabs-nav";
 import { cn } from "@lightdotso/ui";
 import { useTabs } from "@/hooks/useTabs";
 import {

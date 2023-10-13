@@ -21,14 +21,14 @@ import {
   Toaster,
 } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
-import { WalletSwitcher } from "@/components/WalletSwitcher";
-import { Logo } from "@/components/Logo";
-import { UserNav } from "@/components/UserNav";
-import { MainNav } from "@/components/MainNav";
-import { NotificationPopover } from "@/components/NotificationPopover";
-import { FeedbackPopover } from "@/components/FeedbackPopover";
-import { ConnectButton } from "@/components/ConnectButton";
-import { siweConfig } from "@/components/SIWEButton";
+import { WalletSwitcher } from "@/components/wallet-switcher";
+import { Logo } from "@/components/light-logo";
+import { UserNav } from "@/components/user-nav";
+import { MainNav } from "@/components/main-nav";
+import { NotificationPopover } from "@/components/notification-popover";
+import { FeedbackPopover } from "@/components/feedback-popover";
+import { ConnectButton } from "@/components/connect-button";
+import { siweConfig } from "@/components/siwe-button";
 import Link from "next/link";
 import Script from "next/script";
 import { Inter } from "next/font/google";

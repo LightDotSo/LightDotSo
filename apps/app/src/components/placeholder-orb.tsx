@@ -16,7 +16,7 @@
 import clsx from "clsx";
 import type { FC, InsHTMLAttributes } from "react";
 
-import s from "./PlaceholderOrb.module.css";
+import s from "./placeholder-orb.module.css";
 
 export type PlaceholderOrbProps = {
   address: string;

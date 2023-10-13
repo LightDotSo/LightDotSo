@@ -38,7 +38,7 @@ import {
   CommandList,
   CommandSeparator,
 } from "@lightdotso/ui";
-import { PlaceholderOrb } from "./PlaceholderOrb";
+import { PlaceholderOrb } from "./placeholder-orb";
 
 const groups = [
   {
