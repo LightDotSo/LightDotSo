@@ -32,6 +32,7 @@ import {
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 export function UserNav() {
   const { theme, setTheme } = useTheme();
@@ -66,19 +67,15 @@ export function UserNav() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+          <DropdownMenuItem asChild>
+            <Link href="/settings">
+              Settings
+              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            Billing
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+          <DropdownMenuItem asChild>
+            <Link href="/new">New Wallet</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

@@ -14,7 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { headers } from "next/headers";
-import { ThemeProvider, TrpcProvider, Web3Provider } from "@lightdotso/ui";
+import {
+  ThemeProvider,
+  TrpcProvider,
+  Web3Provider,
+  Toaster,
+} from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 import { WalletSwitcher } from "@/components/WalletSwitcher";
 import { Logo } from "@/components/Logo";
@@ -48,7 +53,7 @@ export default function Root({
           <TrpcProvider headers={headers()}>
             <Web3Provider siweConfig={siweConfig}>
               <main>
-                <div className="hidden flex-col md:flex">
+                <div className="flex flex-col">
                   <div className="border-b py-2">
                     <div className="flex h-16 items-center px-12">
                       <div className="flex items-center">
@@ -73,13 +78,12 @@ export default function Root({
                       <MainNav className="h-10 items-center px-12" />
                     )}
                   </div>
-                  <div className="flex-1 space-y-4 p-8 pt-10">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                      <div className="mx-auto max-w-4xl">{children}</div>
-                    </div>
+                  <div className="flex-1 space-y-4">
+                    <div className="mx-auto max-w-7xl">{children}</div>
                   </div>
                 </div>
               </main>
+              <Toaster />
             </Web3Provider>
           </TrpcProvider>
         </ThemeProvider>
