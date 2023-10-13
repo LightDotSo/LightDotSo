@@ -314,6 +314,9 @@ importers:
       '@heroicons/react':
         specifier: ^2.0.18
         version: 2.0.18(react@18.2.0)
+      '@hookform/resolvers':
+        specifier: ^3.3.2
+        version: 3.3.2(react-hook-form@7.47.0)
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../../packages/client
@@ -335,6 +338,9 @@ importers:
       '@lightdotso/ui':
         specifier: workspace:*
         version: link:../ui
+      '@lightdotso/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@next-auth/prisma-adapter':
         specifier: 0.4.4-canary.81
         version: 0.4.4-canary.81(@prisma/client@5.4.2)(next-auth@4.23.2)
@@ -428,6 +434,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
+      react-hook-form:
+        specifier: ^7.47.0
+        version: 7.47.0(react@18.2.0)
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
@@ -443,6 +452,9 @@ importers:
       wagmi:
         specifier: ^1.4.3
         version: 1.4.3(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(viem@1.16.4)(zod@3.22.4)
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
       zustand:
         specifier: ^4.4.3
         version: 4.4.3(@types/react@18.2.28)(react@18.2.0)
@@ -1292,7 +1304,7 @@ importers:
         specifier: ^1.0.4
         version: 1.0.4(@types/react-dom@18.2.13)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toast':
-        specifier: ^1.1.5
+        specifier: ^1.1.4
         version: 1.1.5(@types/react-dom@18.2.13)(@types/react@18.2.28)(react-dom@18.2.0)(react@18.2.0)
       '@radix-ui/react-toggle':
         specifier: ^1.0.3

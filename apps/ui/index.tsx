@@ -51,6 +51,7 @@ export * from "./src/components/ui/toast";
 export * from "./src/components/ui/toaster";
 export * from "./src/components/ui/toggle";
 export * from "./src/components/ui/tooltip";
+export * from "./src/components/ui/use-toast";
 // export * from "./src/components/ui/typography";
 export * from "./src/providers/theme-provider";
 export * from "./src/providers/trpc";
