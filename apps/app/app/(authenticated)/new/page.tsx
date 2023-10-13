@@ -34,6 +34,10 @@ export default async function Page() {
                     href={step.href}
                     className="group flex w-full items-center"
                   >
+                    <span
+                      className="absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary/70 lg:bottom-0 lg:top-auto lg:h-1 lg:w-[calc(100%-1.25rem)]"
+                      aria-hidden="true"
+                    />
                     <span className="flex items-center px-6 py-4 text-sm font-medium">
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border bg-card">
                         <CheckIcon
@@ -41,7 +45,7 @@ export default async function Page() {
                           aria-hidden="true"
                         />
                       </span>
-                      <span className="ml-4 text-sm font-medium text-muted-foreground">
+                      <span className="ml-4 text-sm font-medium text-muted-foreground group-hover:text-muted-foreground/80">
                         {step.name}
                       </span>
                     </span>
@@ -49,9 +53,13 @@ export default async function Page() {
                 ) : step.status === "current" ? (
                   <a
                     href={step.href}
-                    className="flex items-center px-6 py-4 text-sm font-medium"
+                    className="group flex items-center px-6 py-4 text-sm font-medium"
                     aria-current="step"
                   >
+                    <span
+                      className="absolute top-0 h-full w-1 bg-transparent group-hover:bg-primary/80 lg:bottom-0 lg:right-5 lg:top-auto lg:h-1 lg:w-full"
+                      aria-hidden="true"
+                    />
                     <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
                       <span className="text-primary">{step.id}</span>
                     </span>
@@ -62,10 +70,14 @@ export default async function Page() {
                 ) : (
                   <a href={step.href} className="group flex items-center">
                     <span className="flex items-center px-6 py-4 text-sm font-medium">
+                      <span
+                        className="absolute right-0 top-0 h-full w-1 bg-transparent group-hover:bg-primary lg:bottom-0 lg:top-auto lg:h-1 lg:w-[calc(100%+1.25rem)]"
+                        aria-hidden="true"
+                      />
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-border">
                         <span className="text-muted-foreground">{step.id}</span>
                       </span>
-                      <span className="ml-4 text-sm font-medium text-muted-foreground">
+                      <span className="ml-4 text-sm font-medium text-muted-foreground group-hover:text-primary">
                         {step.name}
                       </span>
                     </span>
