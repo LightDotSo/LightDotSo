@@ -19,6 +19,7 @@ import { cn } from "@lightdotso/utils";
 import type { Step } from "./root";
 import { steps, StepsEnum } from "./root";
 import { CheckIcon } from "@heroicons/react/24/solid";
+import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
 
@@ -79,14 +80,37 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     [name, router],
   );
 
+  const validateParams = (
+    params: ReadonlyURLSearchParams,
+    requiredParams: string[],
+  ) => {
+    for (let i = 0; i < requiredParams.length; i++) {
+      if (!params.has(requiredParams[i]) || !params.get(requiredParams[i])) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  let requiredParams = [
+    "name",
+    "owners[0][address]",
+    "owners[0][weight]",
+    "salt",
+    "threshold",
+  ];
+
   return (
     <button
       disabled={
         // If stepType is `new`, it's always enabled
-        stepType !== StepsEnum.New &&
-        // If stepType is `settings` or `confirm`, it's disabled if the name is not set
-        !name &&
-        (stepType === StepsEnum.Settings || stepType === StepsEnum.Confirm)
+        (!(stepType === StepsEnum.New) &&
+          // If stepType is `settings` it's disabled if the name is not set
+          stepType === StepsEnum.Settings &&
+          !name) ||
+        // If stepType is `confirm` it's disabled if the validateParams returns false
+        (stepType === StepsEnum.Confirm &&
+          !validateParams(searchParams, requiredParams))
       }
       className="group flex w-full items-center disabled:cursor-not-allowed"
       onClick={() => navigateToStep(step)}
