@@ -40,6 +40,7 @@ pub enum AppError {
     BadRequest,
     NotFound,
     InternalError,
+    Conflict
 }
 
 impl From<eyre::Error> for AppError {
@@ -88,6 +89,7 @@ impl IntoResponse for AppError {
             AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::SerdeJsonError(_) => StatusCode::BAD_REQUEST,
             AppError::FromHexError(_) => StatusCode::BAD_REQUEST,
+            AppError::Conflict => StatusCode::CONFLICT,
             AppError::BadRequest => StatusCode::BAD_REQUEST,
             AppError::NotFound => StatusCode::NOT_FOUND,
             AppError::InternalError => StatusCode::INTERNAL_SERVER_ERROR,

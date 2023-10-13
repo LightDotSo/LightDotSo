@@ -59,18 +59,25 @@ pub struct ListQuery {
     pub limit: Option<i64>,
 }
 
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct PostQuery {
+    /// Whether to simulate the wallet creation.
+    pub simulate: Option<bool>,
+}
+
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct PostRequestParams {
-    // The array of owners of the wallet.
+    /// The array of owners of the wallet.
     #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
     pub owners: Vec<Owner>,
-    // The salt is used to calculate the new wallet address.
+    /// The salt is used to calculate the new wallet address.
     #[schema(
         example = "0x0000000000000000000000000000000000000000000000000000000000000006",
         default = "0x0000000000000000000000000000000000000000000000000000000000000001"
     )]
     pub salt: String,
-    // The threshold of the wallet.
+    /// The threshold of the wallet.
     #[schema(example = 3, default = 1)]
     pub threshold: u16,
 }
@@ -213,18 +220,26 @@ async fn v1_list_handler(
 #[utoipa::path(
         post,
         path = "/wallet/create",
+        params(
+            PostQuery
+        ),
         request_body = PostRequestParams,
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
             (status = 400, description = "Invalid Configuration", body = WalletError),
+            (status = 409, description = "Wallet already exists", body = WalletError),
             (status = 500, description = "Wallet internal error", body = WalletError),
         )
     )]
 #[autometrics]
 async fn v1_post_handler(
+    post: Option<Query<PostQuery>>,
     State(client): State<AppState>,
     Json(params): Json<PostRequestParams>,
 ) -> AppJsonResult<Wallet> {
+    // Get the post query.
+    let Query(post) = post.unwrap_or_default();
+
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
 
     let owners = &params.owners;
@@ -291,6 +306,32 @@ async fn v1_post_handler(
     if !valid {
         error!("Invalid configuration");
         return Err(eyre!("Invalid configuration").into());
+    }
+
+    // If the simulate flag is set, return the wallet address.
+    if post.simulate.unwrap_or(false) {
+        // Check if the wallet exists.
+        let wallet = client
+            .client
+            .unwrap()
+            .wallet()
+            .find_first(vec![wallet::address::equals(to_checksum(
+                &new_wallet_address,
+                None,
+            ))])
+            .exec()
+            .await?;
+        
+        // If the wallet exists, return a 409.
+        if wallet.is_some() {
+            return Err(AppError::Conflict);
+        }
+
+        return Ok(Json::from(Wallet {
+            id: "".to_string(),
+            address: to_checksum(&new_wallet_address, None),
+            factory_address: to_checksum(&factory_address, None),
+        }));
     }
 
     // Attempt to create a user in case it does not exist.
