@@ -18,8 +18,8 @@ import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
 export default async function Page() {
   return (
     <>
-      <NewRoot stepType={StepsEnum.New}>
-        <div>New</div>
+      <NewRoot stepType={StepsEnum.Settings}>
+        <div>Settings</div>
       </NewRoot>
     </>
   );

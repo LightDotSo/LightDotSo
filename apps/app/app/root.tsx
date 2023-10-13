@@ -86,9 +86,9 @@ export default function Root({
             </Web3Provider>
           </TrpcProvider>
         </ThemeProvider>
+        <TailwindIndicator />
       </body>
       <Script async src="https://data.light.so/p.js" />
-      <TailwindIndicator />
     </html>
   );
 }
