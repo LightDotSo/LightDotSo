@@ -77,7 +77,7 @@ interface WalletSwitcherProps extends PopoverTriggerProps {}
 export function WalletSwitcher({
   // eslint-disable-next-line react/prop-types
   className,
-}: WalletSwitcherProps): React.JSX.Element {
+}: WalletSwitcherProps) {
   const [open, setOpen] = React.useState(false);
   const [selectedWallet, setSelectedWallet] = React.useState<Wallet>(
     groups[0].wallets[0],
