@@ -40,7 +40,7 @@ pub enum AppError {
     BadRequest,
     NotFound,
     InternalError,
-    Conflict
+    Conflict,
 }
 
 impl From<eyre::Error> for AppError {
