@@ -77,6 +77,9 @@ pub struct PostRequestParams {
         default = "0x0000000000000000000000000000000000000000000000000000000000000001"
     )]
     pub salt: String,
+    /// The name of the wallet.
+    #[schema(example = "My Wallet", default = "My Wallet")]
+    pub name: String,
     /// The threshold of the wallet.
     #[schema(example = 3, default = 1)]
     pub threshold: u16,
@@ -244,6 +247,7 @@ async fn v1_post_handler(
 
     let owners = &params.owners;
     let threshold = params.threshold;
+    let name = params.name;
 
     // Check if all of the owner address can be parsed to H160.
     let _ = owners
@@ -315,13 +319,10 @@ async fn v1_post_handler(
             .client
             .unwrap()
             .wallet()
-            .find_first(vec![wallet::address::equals(to_checksum(
-                &new_wallet_address,
-                None,
-            ))])
+            .find_first(vec![wallet::address::equals(to_checksum(&new_wallet_address, None))])
             .exec()
             .await?;
-        
+
         // If the wallet exists, return a 409.
         if wallet.is_some() {
             return Err(AppError::Conflict);
@@ -438,7 +439,7 @@ async fn v1_post_handler(
                     0,
                     format!("{:?}", salt_bytes),
                     to_checksum(&factory_address, None),
-                    vec![],
+                    vec![lightdotso_prisma::wallet::name::set(name)],
                 )
                 .exec()
                 .instrument(info_span!("create_receipt"))
