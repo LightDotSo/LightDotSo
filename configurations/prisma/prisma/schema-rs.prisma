@@ -73,6 +73,7 @@ model Wallet {
   chainId        BigInt
   salt           String
   factoryAddress String
+  name           String   @default("")
   testnet        Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt

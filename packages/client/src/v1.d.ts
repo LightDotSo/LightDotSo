@@ -95,6 +95,7 @@ export interface components {
     };
     PostRequestParams: {
       /**
+       * @description The array of owners of the wallet.
        * @example [
        *   {
        *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
@@ -104,12 +105,14 @@ export interface components {
        */
       owners: components["schemas"]["Owner"][];
       /**
+       * @description The salt is used to calculate the new wallet address.
        * @default 0x0000000000000000000000000000000000000000000000000000000000000001
        * @example 0x0000000000000000000000000000000000000000000000000000000000000006
        */
       salt: string;
       /**
        * Format: int32
+       * @description The threshold of the wallet.
        * @default 1
        * @example 3
        */
@@ -220,6 +223,12 @@ export interface operations {
    * @description Create a wallet
    */
   v1_post_handler: {
+    parameters: {
+      query?: {
+        /** @description Whether to simulate the wallet creation. */
+        simulate?: boolean | null;
+      };
+    };
     requestBody: {
       content: {
         "application/json": components["schemas"]["PostRequestParams"];
@@ -234,6 +243,12 @@ export interface operations {
       };
       /** @description Invalid Configuration */
       400: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+      /** @description Wallet already exists */
+      409: {
         content: {
           "application/json": components["schemas"]["WalletError"];
         };
