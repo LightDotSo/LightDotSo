@@ -31,9 +31,16 @@ import {
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { MixerVerticalIcon } from "@radix-ui/react-icons";
+import { useAccount } from "wagmi";
 
 export function UserNav() {
   const { theme, setTheme } = useTheme();
+  const { address } = useAccount();
+
+  // If the address is empty, return null
+  if (!address) {
+    return null;
+  }
 
   return (
     <DropdownMenu>

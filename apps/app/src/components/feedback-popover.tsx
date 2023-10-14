@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import {
   Popover,
   PopoverTrigger,
@@ -21,8 +23,16 @@ import {
   Label,
   Input,
 } from "@lightdotso/ui";
+import { useAccount } from "wagmi";
 
 export function FeedbackPopover() {
+  const { address } = useAccount();
+
+  // If the address is empty, return null
+  if (!address) {
+    return null;
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>
