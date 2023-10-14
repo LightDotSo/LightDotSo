@@ -22,7 +22,7 @@ import {
   PlusCircledIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-
+import { useAccount } from "wagmi";
 import {
   cn,
   Avatar,
@@ -83,86 +83,95 @@ export function WalletSwitcher({
     groups[0].wallets[0],
   );
   const router = useRouter();
+  const { address } = useAccount();
+
+  // If the address is empty, return null
+  if (!address) {
+    return null;
+  }
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          role="combobox"
-          aria-expanded={open}
-          aria-label="Select a wallet"
-          className={cn("mx-2 justify-start", className)}
-        >
-          <Avatar className="mr-3 h-7 w-7">
-            {/* <AvatarImage
+    <>
+      <span className="ml-2 mr-1 text-primary/60">/</span>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="ghost"
+            role="combobox"
+            aria-expanded={open}
+            aria-label="Select a wallet"
+            className={cn("mx-2 justify-start", className)}
+          >
+            <Avatar className="mr-3 h-7 w-7">
+              {/* <AvatarImage
               src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
               alt={selectedWallet.label}
             /> */}
-            <PlaceholderOrb address={selectedWallet.href.substring(1)} />
-            {/* <AvatarFallback>SC</AvatarFallback> */}
-          </Avatar>
-          {selectedWallet.label}
-          <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="ml-24 w-[300px] p-0">
-        <Command>
-          <CommandList>
-            <CommandInput placeholder="Search wallet..." />
-            <CommandEmpty>No wallet found.</CommandEmpty>
-            {groups.map(group => (
-              <CommandGroup key={group.label} heading={group.label}>
-                {group.wallets.map(wallet => (
-                  <CommandItem
-                    key={wallet.value}
-                    onSelect={() => {
-                      setSelectedWallet(wallet);
-                      setOpen(false);
-                      router.push(wallet.href);
-                    }}
-                    className="text-sm"
-                  >
-                    <Avatar className="mr-2 h-5 w-5">
-                      {/* <AvatarImage
+              <PlaceholderOrb address={selectedWallet.href.substring(1)} />
+              {/* <AvatarFallback>SC</AvatarFallback> */}
+            </Avatar>
+            {selectedWallet.label}
+            <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="ml-24 w-[300px] p-0">
+          <Command>
+            <CommandList>
+              <CommandInput placeholder="Search wallet..." />
+              <CommandEmpty>No wallet found.</CommandEmpty>
+              {groups.map(group => (
+                <CommandGroup key={group.label} heading={group.label}>
+                  {group.wallets.map(wallet => (
+                    <CommandItem
+                      key={wallet.value}
+                      onSelect={() => {
+                        setSelectedWallet(wallet);
+                        setOpen(false);
+                        router.push(wallet.href);
+                      }}
+                      className="text-sm"
+                    >
+                      <Avatar className="mr-2 h-5 w-5">
+                        {/* <AvatarImage
                         src={`https://avatar.vercel.sh/${wallet.value}.png`}
                         alt={wallet.label}
                         className="grayscale"
                       />
                       <AvatarFallback>SC</AvatarFallback> */}
-                      <PlaceholderOrb address={wallet.href.substring(1)} />
-                    </Avatar>
-                    {wallet.label}
-                    <CheckIcon
-                      className={cn(
-                        "ml-auto h-4 w-4",
-                        selectedWallet.value === wallet.value
-                          ? "opacity-100"
-                          : "opacity-0",
-                      )}
-                    />
-                  </CommandItem>
-                ))}
+                        <PlaceholderOrb address={wallet.href.substring(1)} />
+                      </Avatar>
+                      {wallet.label}
+                      <CheckIcon
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          selectedWallet.value === wallet.value
+                            ? "opacity-100"
+                            : "opacity-0",
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ))}
+            </CommandList>
+            <CommandSeparator />
+            <CommandList>
+              <CommandGroup>
+                <CommandItem
+                  className="text-sm"
+                  onSelect={() => {
+                    setOpen(false);
+                    router.push("/new");
+                  }}
+                >
+                  <PlusCircledIcon className="mr-2 h-5 w-5" />
+                  New Wallet
+                </CommandItem>
               </CommandGroup>
-            ))}
-          </CommandList>
-          <CommandSeparator />
-          <CommandList>
-            <CommandGroup>
-              <CommandItem
-                className="text-sm"
-                onSelect={() => {
-                  setOpen(false);
-                  router.push("/new");
-                }}
-              >
-                <PlusCircledIcon className="mr-2 h-5 w-5" />
-                New Wallet
-              </CommandItem>
-            </CommandGroup>
-          </CommandList>
-        </Command>
-      </PopoverContent>
-    </Popover>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </>
   );
 }

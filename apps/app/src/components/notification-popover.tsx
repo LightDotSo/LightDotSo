@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import {
   Popover,
   PopoverTrigger,
@@ -27,6 +29,7 @@ import {
 } from "@lightdotso/ui";
 import { BellIcon } from "@radix-ui/react-icons";
 import { BellRing, Check } from "lucide-react";
+import { useAccount } from "wagmi";
 
 const notifications = [
   {
@@ -44,6 +47,13 @@ const notifications = [
 ];
 
 export function NotificationPopover() {
+  const { address } = useAccount();
+
+  // If the address is empty, return null
+  if (!address) {
+    return null;
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>

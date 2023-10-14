@@ -31,6 +31,7 @@ import {
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
+import { useAccount } from "wagmi";
 
 const tabs = [
   {
@@ -99,6 +100,12 @@ export function MainNav({
     tabs,
   });
   const framer = useTabs(hookProps);
+  const { address } = useAccount();
+
+  // If the address is empty, return null
+  if (!address) {
+    return null;
+  }
 
   return (
     <nav

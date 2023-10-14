@@ -64,7 +64,6 @@ export default function Root({
                         >
                           <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
                         </Link>
-                        <span className="ml-2 mr-1 text-primary/60">/</span>
                         <WalletSwitcher />
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">
