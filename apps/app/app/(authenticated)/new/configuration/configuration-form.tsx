@@ -407,10 +407,17 @@ export function ConfigurationForm() {
                                 min="1"
                                 type="number"
                                 {...field}
+                                onChange={e =>
+                                  field.onChange(
+                                    e.target.value
+                                      ? parseInt(e.target.value, 10)
+                                      : "",
+                                  )
+                                }
                               />
+                              <FormMessage />
                             </div>
                           </FormControl>
-                          <FormMessage />
                         </>
                       )}
                     />
