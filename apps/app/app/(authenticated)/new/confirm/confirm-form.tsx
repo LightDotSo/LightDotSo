@@ -28,7 +28,7 @@ import {
 } from "@lightdotso/ui";
 import { steps } from "../root";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
@@ -48,6 +48,7 @@ export function ConfirmForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setFormValues } = useNewFormStore();
+  const [isInitialValitation, setIsInitialValidation] = useState(false);
 
   const nameParam = searchParams.get("name");
   const typeParam = searchParams.get("type");
@@ -100,43 +101,6 @@ export function ConfirmForm() {
     if (isAddress(addressParam)) {
       // If the address is valid, set the value of key address
       owner.address = addressParam;
-    } else if (
-      addressParam &&
-      addressParam.length > 3 &&
-      addressParam.includes(".") &&
-      /[a-zA-Z]/.test(addressParam)
-    ) {
-      // If the address is not valid, try to resolve it as an ENS name
-      try {
-        publicClient
-          .getEnsAddress({
-            name: normalize(addressParam),
-          })
-          .then(ensNameAddress => {
-            if (ensNameAddress) {
-              // If the ENS name resolves, set the value of key address
-              owner.address = ensNameAddress;
-            } else {
-              // Show an error on the message
-              // Since we're not using form, we'll need to handle this differently
-              console.error(
-                "The ENS name did not resolve. Please enter a valid address or ENS name",
-              );
-              owner.address = "";
-            }
-          })
-          .catch(() => {
-            // Show an error on the message
-            console.error("Please enter a valid address or ENS name");
-            owner.address = "";
-          });
-      } catch {
-        // Show an error on the message
-        console.error("Please enter a valid address or ENS name");
-        owner.address = "";
-      }
-    } else {
-      owner.address = "";
     }
 
     owners.push(owner);
@@ -200,10 +164,40 @@ export function ConfirmForm() {
     form.setValue("threshold", defaultValues.threshold);
     form.setValue("salt", defaultValues.salt);
     form.setValue("owners", owners);
-
     setFormValues(defaultValues);
-
     form.trigger();
+
+    async function fetchENSNametoAddress() {
+      // We will use newOwners array instead of mutating owners directly
+      let newOwners = [...owners];
+      for (let i = 0; i < newOwners.length; i++) {
+        if (!isAddress(newOwners[i].addressOrEns)) {
+          try {
+            const ensNameAddress = await publicClient.getEnsAddress({
+              name: normalize(newOwners[i].addressOrEns),
+            });
+            if (ensNameAddress) {
+              newOwners[i].address = ensNameAddress;
+            } else {
+              console.error(
+                "The ENS name did not resolve. Please enter a valid address or ENS name",
+              );
+            }
+          } catch (error) {
+            console.error(
+              "An error occurred while resolving the ENS name",
+              error,
+            );
+          }
+        }
+      }
+      form.setValue("owners", newOwners);
+      setFormValues({ ...defaultValues, owners: newOwners });
+      form.trigger();
+      setIsInitialValidation(true);
+    }
+    fetchENSNametoAddress();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -237,11 +231,11 @@ export function ConfirmForm() {
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {form.formState.errors && (
-                <p className="text-sm font-medium text-destructive">
+              {isInitialValitation && form.formState.errors && (
+                <pre className="text-sm font-medium text-destructive">
                   {/* Print any message one line at a time */}
                   {extractDeeperErrors(form.formState.errors).join("\n")}
-                </p>
+                </pre>
               )}
               <CardFooter className="flex justify-between px-0 pt-12">
                 <Button
@@ -255,7 +249,9 @@ export function ConfirmForm() {
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}
-                  onClick={() => navigateToStep()}
+                  onClick={() => {
+                    navigateToStep();
+                  }}
                   type="submit"
                 >
                   Continue
