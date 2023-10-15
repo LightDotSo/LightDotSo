@@ -196,6 +196,24 @@ export function ConfirmForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Utility function to extract all error messages from the form state
+  // Geneated by Chat-GPT
+  const extractDeeperErrors = (obj: any): string[] => {
+    if (typeof obj !== "object" || obj === null) return [];
+
+    return Object.entries(obj).reduce((messages: string[], [key, value]) => {
+      if (typeof value === "object" && value !== null) {
+        return messages.concat(extractDeeperErrors(value));
+      }
+
+      if (key === "message" && typeof value === "string") {
+        return messages.concat(value);
+      }
+
+      return messages;
+    }, []);
+  };
+
   return (
     <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
       <CardHeader className="gap-3">
@@ -208,7 +226,13 @@ export function ConfirmForm() {
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <CardFooter className="flex justify-between px-0">
+              {form.formState.errors && (
+                <p className="text-sm font-medium text-destructive">
+                  {/* Print any message one line at a time */}
+                  {extractDeeperErrors(form.formState.errors).join("\n")}
+                </p>
+              )}
+              <CardFooter className="flex justify-between px-0 pt-12">
                 <Button
                   variant="outline"
                   onClick={() => {
