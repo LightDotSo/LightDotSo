@@ -33,6 +33,7 @@ import {
   FormLabel,
   Input,
   Label,
+  Separator,
   TooltipProvider,
   toast,
 } from "@lightdotso/ui";
@@ -131,10 +132,16 @@ export function ConfigurationForm() {
       newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
         ? newFormConfigurationSchema.shape.salt.parse(saltParam)
         : timestampToBytes32(Math.floor(Date.now())),
-    owners: owners.length ? owners : [defaultOwner],
+    // If typeParam is personal, add two owners
+    owners: owners.length
+      ? owners
+      : typeParam === "personal"
+      ? [defaultOwner, defaultOwner]
+      : [defaultOwner],
   };
 
   const form = useForm<NewFormValues>({
+    mode: "onChange",
     resolver: zodResolver(
       newFormConfigurationSchema.superRefine((value, ctx) => {
         // The sum of the weights of all owners must be greater than or equal to the threshold.
@@ -146,8 +153,23 @@ export function ConfigurationForm() {
             message:
               "The sum of the weights of all owners must be greater than or equal to the threshold.",
             minimum: value.threshold,
+            path: ["threshold"],
             type: "number",
             inclusive: true,
+          });
+        }
+
+        // Check if no two owners have the same address
+        const addresses = value.owners
+          .map(owner => owner?.address)
+          .filter(address => address && address.trim() !== "");
+        const uniqueAddresses = new Set(addresses);
+        if (uniqueAddresses.size !== addresses.length) {
+          // Add an error to the duplicate address
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Duplicate address",
+            path: ["duplicate"],
           });
         }
 
@@ -191,6 +213,9 @@ export function ConfigurationForm() {
       // Set the salt from the default values to the url
       if (defaultValues.salt) {
         url.searchParams.set("salt", defaultValues.salt);
+      }
+      if (defaultValues.threshold) {
+        url.searchParams.set("threshold", defaultValues.threshold.toString());
       }
 
       if (name === "threshold") {
@@ -263,6 +288,9 @@ export function ConfigurationForm() {
 
   // Set the form values from the URL on mount
   useEffect(() => {
+    // Validate the form on mount
+    form.trigger();
+
     // Set the form values from the default values
     setFormValues({
       ...defaultValues,
@@ -326,37 +354,47 @@ export function ConfigurationForm() {
       /[a-zA-Z]/.test(address)
     ) {
       // If the address is not valid, try to resolve it as an ENS name
-      publicClient
-        .getEnsAddress({
-          name: normalize(address),
-        })
-        .then(ensNameAddress => {
-          if (ensNameAddress) {
-            // If the ENS name resolves, set the value of key address
-            form.setValue(`owners.${index}.address`, ensNameAddress);
-            form.clearErrors(`owners.${index}.addressOrEns`);
-          } else {
+      try {
+        publicClient
+          .getEnsAddress({
+            name: normalize(address),
+          })
+          .then(ensNameAddress => {
+            if (ensNameAddress) {
+              // If the ENS name resolves, set the value of key address
+              form.setValue(`owners.${index}.address`, ensNameAddress);
+            } else {
+              // Show an error on the message
+              form.setError(`owners.${index}.addressOrEns`, {
+                type: "manual",
+                message:
+                  "The ENS name did not resolve. Please enter a valid address or ENS name",
+              });
+              // Clear the value of key address
+              form.setValue(`owners.${index}.address`, "");
+            }
+          })
+          .catch(() => {
             // Show an error on the message
             form.setError(`owners.${index}.addressOrEns`, {
               type: "manual",
-              message:
-                "The ENS name did not resolve. Please enter a valid address or ENS name",
+              message: "Please enter a valid address or ENS name",
             });
-          }
-        })
-        .catch(() => {
-          // Show an error on the message
-          form.setError(`owners.${index}.addressOrEns`, {
-            type: "manual",
-            message: "Please enter a valid address or ENS name",
+            // Clear the value of key address
+            form.setValue(`owners.${index}.address`, "");
           });
+      } catch {
+        // Show an error on the message
+        form.setError(`owners.${index}.addressOrEns`, {
+          type: "manual",
+          message: "Please enter a valid address or ENS name",
         });
+        // Clear the value of key address
+        form.setValue(`owners.${index}.address`, "");
+      }
     } else {
-      // Show an error on the message
-      form.setError(`owners.${index}.addressOrEns`, {
-        type: "manual",
-        message: "Please enter a valid address or ENS name",
-      });
+      // Clear the value of key address
+      form.setValue(`owners.${index}.address`, "");
     }
   }
 
@@ -384,125 +422,165 @@ export function ConfigurationForm() {
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div>
-                <FormLabel>Owners</FormLabel>
-                <FormDescription className="mt-1.5">
-                  Add the owner and their corresponding weight.
-                </FormDescription>
-              </div>
               <div className="space-y-4">
                 {fields.map((field, index) => (
-                  <FormItem
-                    key={field.id}
-                    className="grid grid-cols-8 gap-4 space-y-0"
-                  >
-                    <FormField
-                      control={form.control}
-                      name={`owners.${index}.addressOrEns`}
-                      render={({ field }) => (
-                        <div className="space-y-2 lg:col-span-6">
-                          <Label htmlFor="address">Address or ENS</Label>
-                          <div className="flex items-center space-x-3">
-                            <Avatar className="h-8 w-8">
-                              {/* If the address is valid, try resolving an ens Avatar */}
-                              <PlaceholderOrb
-                                address={
-                                  // If the address is a valid address
-                                  isAddress(field?.value)
-                                    ? field?.value
-                                    : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
-                                }
-                                className={cn(
-                                  // If the field is not valid, add opacity
-                                  form.formState.errors.owners &&
-                                    form.formState.errors.owners[index] &&
-                                    form.formState.errors.owners[index]
-                                      ?.addressOrEns
-                                    ? "opacity-50"
-                                    : "opacity-100",
-                                )}
-                              />
-                            </Avatar>
-                            <Input
-                              id="address"
-                              className=""
-                              {...field}
-                              placeholder="Your address or ENS name"
-                              onBlur={e => {
-                                // Validate the address
-                                if (!e.target.value) return;
-                                const address = e.target.value;
-
-                                validateAddress(address, index);
-                              }}
-                              onChange={e => {
-                                // Update the field value
-                                field.onChange(e.target.value || "");
-
-                                // Validate the address
-                                const address = e.target.value;
-
-                                if (address) {
-                                  validateAddress(address, index);
-                                }
-                              }}
-                            />
-                          </div>
-                          <FormMessage />
-                        </div>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      key={field.id}
-                      name={`owners.${index}.weight`}
-                      render={({ field }) => (
-                        <>
-                          <FormControl>
-                            <div className="col-span-1 space-y-2">
-                              <Label htmlFor="weight">Weight</Label>
-                              <Input
-                                id="weight"
-                                min="1"
-                                type="number"
-                                {...field}
-                                onChange={e =>
-                                  field.onChange(
-                                    e.target.value
-                                      ? parseInt(e.target.value, 10)
-                                      : "",
-                                  )
-                                }
-                              />
-                              <FormMessage />
-                            </div>
-                          </FormControl>
-                        </>
-                      )}
-                    />
-                    <div
+                  <>
+                    {/* A hack to make a padding above the separator */}
+                    {typeParam === "personal" && index === 1 && (
+                      <div className="pt-4" />
+                    )}
+                    {/* If the type is personal, add a separator on index 1 */}
+                    {typeParam === "personal" && index === 1 && <Separator />}
+                    {/* A hack to make a padding below the separator */}
+                    {typeParam === "personal" && index === 1 && (
+                      <div className="pb-6" />
+                    )}
+                    <FormLabel
                       className={cn(
-                        "flex h-full flex-col col-span-1",
-                        // If there is error, justify center, else end
-                        form.formState.errors.owners &&
-                          form.formState.errors.owners[index] &&
-                          form.formState.errors.owners[index]?.addressOrEns
-                          ? "justify-center"
-                          : "justify-end",
+                        typeParam === "personal" && index > 1 && "sr-only",
+                        typeParam !== "personal" && index !== 0 && "sr-only",
                       )}
                     >
-                      <Button
-                        type="button"
-                        disabled={fields.length < 2}
-                        variant="outline"
-                        size="icon"
-                        className="mt-1.5 rounded-full"
-                        onClick={() => remove(index)}
+                      {typeParam === "personal" && index === 0 && "Primary Key"}
+                      {typeParam === "personal" && index === 1 && "Backup Keys"}
+                      {typeParam !== "personal" && "Owners"}
+                    </FormLabel>
+                    <FormDescription
+                      className={cn(
+                        typeParam === "personal" && index > 1 && "sr-only",
+                        typeParam !== "personal" && index !== 0 && "sr-only",
+                      )}
+                    >
+                      Add the owner and their corresponding weight.
+                    </FormDescription>
+                    <FormItem
+                      key={field.id}
+                      className="grid grid-cols-8 gap-4 space-y-0"
+                    >
+                      <FormField
+                        control={form.control}
+                        name={`owners.${index}.addressOrEns`}
+                        render={({ field }) => (
+                          <div className="space-y-2 lg:col-span-6">
+                            <Label htmlFor="address">Address or ENS</Label>
+                            <div className="flex items-center space-x-3">
+                              <Avatar className="h-8 w-8">
+                                {/* If the address is valid, try resolving an ens Avatar */}
+                                <PlaceholderOrb
+                                  address={
+                                    // If the address is a valid address
+                                    isAddress(field?.value)
+                                      ? field?.value
+                                      : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                  }
+                                  className={cn(
+                                    // If the field is not valid, add opacity
+                                    form.formState.errors.owners &&
+                                      form.formState.errors.owners[index] &&
+                                      form.formState.errors.owners[index]
+                                        ?.addressOrEns
+                                      ? "opacity-50"
+                                      : "opacity-100",
+                                  )}
+                                />
+                              </Avatar>
+                              <Input
+                                id="address"
+                                className=""
+                                {...field}
+                                placeholder="Your address or ENS name"
+                                onBlur={e => {
+                                  // Validate the address
+                                  if (!e.target.value) {
+                                    // Clear the value of key address
+                                    form.setValue(
+                                      `owners.${index}.address`,
+                                      "",
+                                    );
+                                  }
+                                  const address = e.target.value;
+
+                                  validateAddress(address, index);
+
+                                  // Trigger the form validation
+                                  form.trigger();
+                                }}
+                                onChange={e => {
+                                  // Update the field value
+                                  field.onChange(e.target.value || "");
+
+                                  // Validate the address
+                                  const address = e.target.value;
+
+                                  if (address) {
+                                    validateAddress(address, index);
+
+                                    // Trigger the form validation
+                                    form.trigger();
+                                  }
+                                }}
+                              />
+                            </div>
+                            <FormMessage />
+                          </div>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        key={field.id}
+                        name={`owners.${index}.weight`}
+                        render={({ field }) => (
+                          <>
+                            <FormControl>
+                              <div className="col-span-1 space-y-2">
+                                <Label htmlFor="weight">Weight</Label>
+                                <Input
+                                  id="weight"
+                                  min="1"
+                                  type="number"
+                                  {...field}
+                                  onChange={e => {
+                                    field.onChange(
+                                      e.target.value
+                                        ? parseInt(e.target.value, 10)
+                                        : "",
+                                    );
+                                    form.trigger();
+                                  }}
+                                />
+                                <FormMessage />
+                              </div>
+                            </FormControl>
+                          </>
+                        )}
+                      />
+                      <div
+                        className={cn(
+                          "flex h-full flex-col col-span-1",
+                          // If there is error, justify center, else end
+                          form.formState.errors.owners &&
+                            form.formState.errors.owners[index] &&
+                            form.formState.errors.owners[index]?.addressOrEns
+                            ? "justify-center"
+                            : "justify-end",
+                        )}
                       >
-                        <UserMinus2 className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </FormItem>
+                        <Button
+                          type="button"
+                          disabled={fields.length < 2}
+                          variant="outline"
+                          size="icon"
+                          className="mt-1.5 rounded-full"
+                          onClick={() => {
+                            remove(index);
+                            form.trigger();
+                          }}
+                        >
+                          <UserMinus2 className="h-5 w-5" />
+                        </Button>
+                      </div>
+                    </FormItem>
+                  </>
                 ))}
               </div>
               <div>
@@ -511,10 +589,15 @@ export function ConfigurationForm() {
                   variant="outline"
                   size="sm"
                   className="mt-2"
-                  onClick={() => append({ addressOrEns: "", weight: 1 })}
+                  onClick={() => {
+                    append({ addressOrEns: "", weight: 1 });
+                    form.trigger();
+                  }}
                 >
                   <UserPlus2 className="mr-2 h-5 w-5" />
-                  Add New Owner
+
+                  {typeParam === "personal" && "Add Backup Key"}
+                  {typeParam !== "personal" && "Add New Owner"}
                 </Button>
               </div>
               <FormField
@@ -542,10 +625,33 @@ export function ConfigurationForm() {
                       Enter a threshold for your new wallet
                     </FormDescription>
                     <FormMessage />
+                    {form.formState.errors && (
+                      <p className="text-sm font-medium text-destructive">
+                        {/* Print any message one line at a time */}
+                        {Object.entries(form.formState.errors)
+                          .filter(
+                            ([key]) =>
+                              !key.startsWith("threshold") &&
+                              !key.startsWith("owners"),
+                          )
+                          .map(([_key, error]: [string, any]) => error.message)
+                          .join("\n")}
+                      </p>
+                    )}
+                    {/* Show all errors for debugging */}
+                    {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
                   </FormItem>
                 )}
               />
-              <CardFooter className="justify-end px-0">
+              <CardFooter className="flex justify-between px-0 pt-12">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  Go Back
+                </Button>
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}

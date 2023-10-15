@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import * as z from "zod";
+import { isAddress } from "viem";
 
 export const newFormSchema = z.object({
   type: z.enum(["multi", "personal", "2fa"], {
@@ -49,3 +50,63 @@ export const newFormConfigurationSchema = z.object({
     }),
   ),
 });
+
+export const newFormConfigurationRefinedSchema =
+  newFormConfigurationSchema.superRefine((value, ctx) => {
+    // The sum of the weights of all owners must be greater than or equal to the threshold.
+    const sum = value.owners.reduce((acc, owner) => acc + owner.weight, 0);
+
+    if (sum < value.threshold) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.too_small,
+        message:
+          "The sum of the weights of all owners must be greater than or equal to the threshold.",
+        minimum: value.threshold,
+        path: ["threshold"],
+        type: "number",
+        inclusive: true,
+      });
+    }
+
+    // Check if no two owners have the same address
+    const addresses = value.owners
+      .map(owner => owner?.address)
+      .filter(address => address && address.trim() !== "");
+    const uniqueAddresses = new Set(addresses);
+    if (uniqueAddresses.size !== addresses.length) {
+      // Add an error to the duplicate address
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Duplicate address",
+        path: ["duplicate"],
+      });
+    }
+
+    // Also expect that all owners w/ key address are valid addresses and are not empty
+    value.owners.forEach((owner, index) => {
+      // Check if the address is not empty
+      if (!owner.address) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Address is required",
+          path: ["owners", index, "address"],
+        });
+      }
+
+      if (owner.address && !isAddress(owner.address)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.invalid_type,
+          message: "Invalid address",
+          path: ["owners", index, "address"],
+          expected: "string",
+          received: "string",
+        });
+      }
+    });
+  });
+
+// Import and combine all schemas
+export const newFormStoreSchema = z.intersection(
+  newFormSchema,
+  newFormConfigurationRefinedSchema,
+);

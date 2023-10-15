@@ -14,12 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
+import { ConfirmForm } from "@/app/(authenticated)/new/confirm/confirm-form";
 
 export default async function Page() {
   return (
     <>
       <NewRoot currentStepType={StepsEnum.Confirm}>
-        <div>Confirm</div>
+        <ConfirmForm />
       </NewRoot>
     </>
   );
