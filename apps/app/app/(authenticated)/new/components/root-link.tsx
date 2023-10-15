@@ -46,8 +46,8 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
       return { ...step, status: "upcoming" };
     }
 
-    // If the current step is `settings`, then we want to set `new` as `complete` and `settings` as `upcoming`
-    if (currentStepType === StepsEnum.Settings) {
+    // If the current step is `configuration`, then we want to set `new` as `complete` and `configuration` as `upcoming`
+    if (currentStepType === StepsEnum.Configuration) {
       if (step.enum === StepsEnum.New) {
         return { ...step, status: "complete" };
       }
@@ -55,10 +55,10 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
       return { ...step, status: "upcoming" };
     }
 
-    // If the current step is `confirm`, then we want to set `new` and `settings` as `complete`
+    // If the current step is `confirm`, then we want to set `new` and `configuration` as `complete`
     if (
       currentStepType === StepsEnum.Confirm &&
-      (step.enum === StepsEnum.New || step.enum === StepsEnum.Settings)
+      (step.enum === StepsEnum.New || step.enum === StepsEnum.Configuration)
     ) {
       return { ...step, status: "complete" };
     }
@@ -107,8 +107,8 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
       disabled={
         // If stepType is `new`, it's always enabled
         (!(stepType === StepsEnum.New) &&
-          // If stepType is `settings` it's disabled if the name is not set
-          stepType === StepsEnum.Settings &&
+          // If stepType is `configuration` it's disabled if the name is not set
+          stepType === StepsEnum.Configuration &&
           !name) ||
         // If stepType is `confirm` it's disabled if the validateParams returns false
         (stepType === StepsEnum.Confirm &&
@@ -121,7 +121,7 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
         className={cn(
           stepType === StepsEnum.New &&
             "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:top-auto md:w-[calc(100%-1.25rem)]",
-          stepType === StepsEnum.Settings &&
+          stepType === StepsEnum.Configuration &&
             "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-5 md:top-auto md:w-full",
           stepType === StepsEnum.Confirm &&
             "absolute left-0 top-0 h-full bg-transparent md:bottom-0 md:left-auto md:right-0 md:top-auto md:w-[calc(100%+1.25rem)]",

@@ -13,20 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import { createPublicClient, http } from "viem";
+import { mainnet } from "viem/chains";
 
-import { useNewFormStore } from "@/stores/useNewForm";
-
-export function RootContext() {
-  const { formValues } = useNewFormStore();
-
-  return (
-    <div>
-      <pre className="mt-2 w-full overflow-auto rounded-md p-4">
-        <code className="break-all text-primary">
-          {JSON.stringify(formValues, null, 2)}
-        </code>
-      </pre>
-    </div>
-  );
-}
+export const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+});

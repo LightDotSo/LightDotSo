@@ -24,3 +24,24 @@ export const newFormSchema = z.object({
     .min(1, { message: "Name cannot be empty." })
     .max(30, { message: "Name should be less than 30 characters." }),
 });
+
+const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
+
+export const newFormConfigurationSchema = z.object({
+  salt: z.string().refine(value => BYTES32_REGEX.test(value), {
+    message: "Input should be a valid bytes32 value",
+  }),
+  threshold: z
+    .number()
+    .int()
+    .min(1, { message: "Threshold must be at least 1." }),
+  owners: z.array(
+    z.object({
+      address: z.string().url({ message: "Please enter a valid URL." }),
+      weight: z
+        .number()
+        .int()
+        .min(1, { message: "Weight must be at least 1." }),
+    }),
+  ),
+});

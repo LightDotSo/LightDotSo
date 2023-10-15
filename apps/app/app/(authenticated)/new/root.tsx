@@ -20,7 +20,7 @@ export enum StepsEnum {
   // eslint-disable-next-line no-unused-vars
   New = "new",
   // eslint-disable-next-line no-unused-vars
-  Settings = "settings",
+  Configuration = "configuration",
   // eslint-disable-next-line no-unused-vars
   Confirm = "confirm",
 }
@@ -45,10 +45,10 @@ export const steps: Step[] = [
     href: "/new",
   },
   {
-    enum: StepsEnum.Settings,
+    enum: StepsEnum.Configuration,
     id: "02",
-    name: "Wallet Settings",
-    href: "/new/settings",
+    name: "Wallet Configuration",
+    href: "/new/configuration",
   },
   {
     enum: StepsEnum.Confirm,
@@ -96,10 +96,10 @@ export async function NewRoot({ currentStepType, children }: NewRootProps) {
             ))}
           </ol>
         </nav>
-        <div className="mx-auto flex h-96 flex-col">{children}</div>
+        <div className="mx-auto flex h-full flex-col">{children}</div>
       </div>
       <aside className="lg:w-1/4">
-        <div className="h-96 rounded-md border border-border bg-card">
+        <div className="h-full rounded-md border border-border bg-card">
           <RootContext></RootContext>
         </div>
       </aside>
