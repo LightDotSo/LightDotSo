@@ -311,12 +311,20 @@ export function ConfigurationForm() {
   }, [router, searchParams]);
 
   function validateAddress(address: string, index: number) {
+    // If the address is empty, return
+    if (!address || address.length <= 3) return;
+
     // Try to parse the address
     if (isAddress(address)) {
       // If the address is valid, set the value of key address
       form.setValue(`owners.${index}.address`, address);
       form.clearErrors(`owners.${index}.addressOrEns`);
-    } else if (address.includes(".")) {
+    } else if (
+      address &&
+      address.length > 3 &&
+      address.includes(".") &&
+      /[a-zA-Z]/.test(address)
+    ) {
       // If the address is not valid, try to resolve it as an ENS name
       publicClient
         .getEnsAddress({
@@ -426,6 +434,17 @@ export function ConfigurationForm() {
                                 const address = e.target.value;
 
                                 validateAddress(address, index);
+                              }}
+                              onChange={e => {
+                                // Update the field value
+                                field.onChange(e.target.value || "");
+
+                                // Validate the address
+                                const address = e.target.value;
+
+                                if (address) {
+                                  validateAddress(address, index);
+                                }
                               }}
                             />
                           </div>
