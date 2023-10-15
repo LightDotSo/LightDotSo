@@ -41,8 +41,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import type * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
-import { newFormConfigurationSchema } from "@/schemas/newForm";
-import { cn } from "@lightdotso/utils";
+import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -91,6 +90,7 @@ export function ConfigurationForm() {
     // Parse and assign address
     if (
       addressParam &&
+      weightParam &&
       newFormConfigurationSchema.shape.owners.element.safeParse({
         address: addressParam,
         weight: parseInt(weightParam),
@@ -135,24 +135,27 @@ export function ConfigurationForm() {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    const subscription = form.watch((value, { name: _name }) => {
+    const subscription = form.watch((value, { name }) => {
+      // @ts-expect-error
       setFormValues(value);
       if (name === "salt") {
-        if (value.name === undefined || value.salt === "") {
+        if (value.salt === undefined || value.salt === "") {
           url.searchParams.delete("salt");
         } else {
           url.searchParams.set("salt", value.salt);
         }
       }
       if (name === "threshold") {
-        if (value.name === undefined || value.threshold === "") {
+        if (value.threshold === undefined || !isNaN(value.threshold)) {
           url.searchParams.delete("threshold");
         } else {
-          url.searchParams.set("threshold", value.threshold);
+          url.searchParams.set("threshold", value.threshold.toString());
         }
       }
       if (Array.isArray(value.owners)) {
         value.owners.forEach((owner, index) => {
+          // Return if the owner is undefined
+          if (owner === undefined) return;
           if (owner.address) {
             url.searchParams.set(`owners[${index}][address]`, owner.address);
           } else {
@@ -160,7 +163,10 @@ export function ConfigurationForm() {
           }
 
           if (owner.weight) {
-            url.searchParams.set(`owners[${index}][weight]`, owner.weight);
+            url.searchParams.set(
+              `owners[${index}][weight]`,
+              owner.weight.toString(),
+            );
           } else {
             url.searchParams.delete(`owners[${index}][weight]`);
           }
@@ -176,7 +182,14 @@ export function ConfigurationForm() {
   // Set the form values from the URL on mount
   useEffect(() => {
     // Set the form values from the default values
-    setFormValues({ ...defaultValues, name: nameParam, type: typeParam });
+    setFormValues({
+      ...defaultValues,
+      name: nameParam ?? "",
+      type:
+        typeParam && newFormSchema.shape.type.safeParse(typeParam).success
+          ? newFormSchema.shape.type.parse(typeParam)
+          : "multi",
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -210,28 +223,29 @@ export function ConfigurationForm() {
       <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <div>
+                <FormLabel>Owners</FormLabel>
+                <FormDescription className="mt-2">
+                  Add the owner and their corresponding weight.
+                </FormDescription>
+              </div>
+              <div className="space-y-4">
                 {fields.map((field, index) => (
-                  <div key={field.id}>
+                  <FormItem
+                    key={field.id}
+                    className="grid grid-cols-6 gap-4 space-y-0"
+                  >
                     <FormField
                       control={form.control}
                       name={`owners.${index}.address`}
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className={cn(index !== 0 && "sr-only")}>
-                            Owners
-                          </FormLabel>
-                          <FormDescription
-                            className={cn(index !== 0 && "sr-only")}
-                          >
-                            Add the owner and their corresponding weight.
-                          </FormDescription>
+                        <>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="lg:col-span-5" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
+                        </>
                       )}
                     />
                     <FormField
@@ -239,16 +253,18 @@ export function ConfigurationForm() {
                       key={field.id}
                       name={`owners.${index}.weight`}
                       render={({ field }) => (
-                        <FormItem>
+                        <>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="" type="number" {...field} />
                           </FormControl>
                           <FormMessage />
-                        </FormItem>
+                        </>
                       )}
                     />
-                  </div>
+                  </FormItem>
                 ))}
+              </div>
+              <div>
                 <Button
                   type="button"
                   variant="outline"
