@@ -80,7 +80,11 @@ export function ConfigurationForm() {
   };
 
   // create owners array
-  let owners = [];
+  let owners: {
+    address?: string;
+    addressOrEns: string;
+    weight: number;
+  }[] = [];
 
   let ownerIndex = 0;
   // Loop through the owners in the URL
@@ -341,7 +345,7 @@ export function ConfigurationForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, searchParams]);
 
-  function validateAddress(address: string, index: number) {
+  async function validateAddress(address: string, index: number) {
     // If the address is empty, return
     if (!address || address.length <= 3) return;
 
