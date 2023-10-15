@@ -325,6 +325,9 @@ export function ConfigurationForm() {
       ownerIndex++;
     }
 
+    // Trigger the form validation
+    form.trigger();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -373,6 +376,9 @@ export function ConfigurationForm() {
               // Clear the value of key address
               form.setValue(`owners.${index}.address`, "");
             }
+
+            // Trigger the form validation
+            form.trigger();
           })
           .catch(() => {
             // Show an error on the message
