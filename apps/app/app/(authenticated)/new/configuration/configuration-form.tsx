@@ -160,27 +160,41 @@ export function ConfigurationForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <div>
                 {fields.map((field, index) => (
-                  <FormField
-                    control={form.control}
-                    key={field.id}
-                    name={`owners.${index}.address`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className={cn(index !== 0 && "sr-only")}>
-                          Owners
-                        </FormLabel>
-                        <FormDescription
-                          className={cn(index !== 0 && "sr-only")}
-                        >
-                          Add the owner and their corresponding weight.
-                        </FormDescription>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div key={field.id}>
+                    <FormField
+                      control={form.control}
+                      name={`owners.${index}.address`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className={cn(index !== 0 && "sr-only")}>
+                            Owners
+                          </FormLabel>
+                          <FormDescription
+                            className={cn(index !== 0 && "sr-only")}
+                          >
+                            Add the owner and their corresponding weight.
+                          </FormDescription>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      key={field.id}
+                      name={`owners.${index}.weight`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 ))}
                 <Button
                   type="button"
