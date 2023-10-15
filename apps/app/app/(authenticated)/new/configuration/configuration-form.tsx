@@ -426,11 +426,15 @@ export function ConfigurationForm() {
                 {fields.map((field, index) => (
                   <>
                     {/* A hack to make a padding above the separator */}
-                    {typeParam === "personal" && index === 1 && <div />}
+                    {typeParam === "personal" && index === 1 && (
+                      <div className="pt-4" />
+                    )}
                     {/* If the type is personal, add a separator on index 1 */}
                     {typeParam === "personal" && index === 1 && <Separator />}
                     {/* A hack to make a padding below the separator */}
-                    {typeParam === "personal" && index === 1 && <div />}
+                    {typeParam === "personal" && index === 1 && (
+                      <div className="pb-6" />
+                    )}
                     <FormLabel
                       className={cn(
                         typeParam === "personal" && index > 1 && "sr-only",
