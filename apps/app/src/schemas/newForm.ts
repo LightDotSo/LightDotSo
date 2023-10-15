@@ -13,25 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { create } from "zustand";
 import * as z from "zod";
-import { newFormSchema } from "@/schemas/newForm";
 
-// Import and combine all schemas
-const newFormStoreSchema = z.intersection(newFormSchema, newFormSchema);
-
-type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
-
-interface FormStore {
-  formValues: Partial<NewFormStoreValues>;
-  setFormValues: (values: Partial<NewFormStoreValues>) => void;
-}
-
-export const useNewFormStore = create<FormStore>(set => ({
-  formValues: {
-    type: "multi",
-    name: "",
-  },
-  setFormValues: values =>
-    set(state => ({ formValues: { ...state.formValues, ...values } })),
-}));
+export const newFormSchema = z.object({
+  type: z.enum(["multi", "personal", "2fa"], {
+    required_error: "Please select a type.",
+  }),
+  name: z
+    .string()
+    .min(1, { message: "Name cannot be empty." })
+    .max(30, { message: "Name should be less than 30 characters." }),
+});

@@ -47,20 +47,11 @@ import {
   ShieldExclamationIcon,
 } from "@heroicons/react/24/solid";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import type * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NotionLinks } from "@lightdotso/const";
 import { useNewFormStore } from "@/stores/useNewForm";
-
-export const newFormSchema = z.object({
-  type: z.enum(["multi", "personal", "2fa"], {
-    required_error: "Please select a type.",
-  }),
-  name: z
-    .string()
-    .min(1, { message: "Name cannot be empty." })
-    .max(30, { message: "Name should be less than 30 characters." }),
-});
+import { newFormSchema } from "@/schemas/newForm";
 
 type NewFormValues = z.infer<typeof newFormSchema>;
 
