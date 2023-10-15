@@ -132,7 +132,12 @@ export function ConfigurationForm() {
       newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
         ? newFormConfigurationSchema.shape.salt.parse(saltParam)
         : timestampToBytes32(Math.floor(Date.now())),
-    owners: owners.length ? owners : [defaultOwner],
+    // If typeParam is personal, add two owners
+    owners: owners.length
+      ? owners
+      : typeParam === "personal"
+      ? [defaultOwner, defaultOwner]
+      : [defaultOwner],
   };
 
   const form = useForm<NewFormValues>({
@@ -153,8 +158,11 @@ export function ConfigurationForm() {
             inclusive: true,
           });
         }
+
         // Check if no two owners have the same address
-        const addresses = value.owners.map(owner => owner.address);
+        const addresses = value.owners
+          .map(owner => owner?.address)
+          .filter(address => address && address.trim() !== "");
         const uniqueAddresses = new Set(addresses);
         if (uniqueAddresses.size !== addresses.length) {
           // Add an error to the duplicate address
@@ -414,6 +422,8 @@ export function ConfigurationForm() {
               <div className="space-y-4">
                 {fields.map((field, index) => (
                   <>
+                    {/* A hack to make a padding above the separator */}
+                    {typeParam === "personal" && index === 1 && <div />}
                     {/* If the type is personal, add a separator on index 1 */}
                     {typeParam === "personal" && index === 1 && <Separator />}
                     {/* A hack to make a padding below the separator */}
