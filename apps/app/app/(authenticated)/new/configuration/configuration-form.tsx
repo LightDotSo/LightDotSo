@@ -31,6 +31,7 @@ import {
   FormMessage,
   FormLabel,
   Input,
+  Label,
   TooltipProvider,
   toast,
 } from "@lightdotso/ui";
@@ -42,6 +43,7 @@ import type * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
+import { UserMinus2 } from "lucide-react";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -67,7 +69,7 @@ export function ConfigurationForm() {
   // create default owner object
   const defaultOwner = {
     address: "",
-    weight: 0,
+    weight: 1,
   };
 
   // create owners array
@@ -128,7 +130,7 @@ export function ConfigurationForm() {
     defaultValues,
   });
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: "owners",
     control: form.control,
   });
@@ -234,7 +236,7 @@ export function ConfigurationForm() {
                 {fields.map((field, index) => (
                   <FormItem
                     key={field.id}
-                    className="grid grid-cols-6 gap-4 space-y-0"
+                    className="grid grid-cols-8 gap-4 space-y-0"
                   >
                     <FormField
                       control={form.control}
@@ -242,7 +244,10 @@ export function ConfigurationForm() {
                       render={({ field }) => (
                         <>
                           <FormControl>
-                            <Input className="lg:col-span-5" {...field} />
+                            <div className="space-y-2 lg:col-span-6">
+                              <Label htmlFor="address">Address or ENS</Label>
+                              <Input id="address" className="" {...field} />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </>
@@ -255,17 +260,32 @@ export function ConfigurationForm() {
                       render={({ field }) => (
                         <>
                           <FormControl>
-                            <Input
-                              className=""
-                              min="1"
-                              type="number"
-                              {...field}
-                            />
+                            <div className="space-y-2">
+                              <Label htmlFor="weight">Weight</Label>
+                              <Input
+                                id="weight"
+                                className=""
+                                min="1"
+                                type="number"
+                                {...field}
+                              />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </>
                       )}
                     />
+                    <div className="flex h-full flex-col justify-end">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="rounded-full"
+                        onClick={() => remove(index)}
+                      >
+                        <UserMinus2 className="h-5 w-5" />
+                      </Button>
+                    </div>
                   </FormItem>
                 ))}
               </div>
