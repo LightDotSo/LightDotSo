@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { RootContext } from "./root-context";
 import { RootLink } from "./root-link";
 
 export enum StepsEnum {
@@ -98,7 +99,9 @@ export async function NewRoot({ currentStepType, children }: NewRootProps) {
         <div className="mx-auto flex h-96 flex-col">{children}</div>
       </div>
       <aside className="lg:w-1/4">
-        <div className="h-96 rounded-md border border-border bg-card"></div>
+        <div className="h-96 rounded-md border border-border bg-card">
+          <RootContext></RootContext>
+        </div>
       </aside>
     </div>
   );

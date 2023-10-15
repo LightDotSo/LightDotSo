@@ -50,6 +50,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NotionLinks } from "@lightdotso/const";
+import { useNewFormStore } from "@/stores/useNewForm";
 
 const newFormSchema = z.object({
   type: z.enum(["multi", "personal", "2fa"], {
@@ -66,6 +67,7 @@ type NewFormValues = z.infer<typeof newFormSchema>;
 export function NewWalletForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { setFormValues } = useNewFormStore();
 
   const nameParam = searchParams.get("name");
   const typeParam = searchParams.get("type");
@@ -88,6 +90,7 @@ export function NewWalletForm() {
   useEffect(() => {
     const url = new URL(window.location.href);
     const subscription = form.watch((value, { name }) => {
+      setFormValues(value);
       if (name === "name") {
         if (value.name === undefined || value.name === "") {
           url.searchParams.delete("name");
