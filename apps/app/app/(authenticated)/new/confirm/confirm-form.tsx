@@ -227,8 +227,8 @@ export function ConfirmForm() {
                 </Button>
               </CardFooter>
               {/* Show all errors for debugging */}
-              <pre>{JSON.stringify(defaultValues, null, 2)}</pre>
-              <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre>
+              {/* <pre>{JSON.stringify(defaultValues, null, 2)}</pre> */}
+              {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
             </form>
           </Form>
         </TooltipProvider>
