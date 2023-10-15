@@ -135,6 +135,7 @@ export function ConfigurationForm() {
   };
 
   const form = useForm<NewFormValues>({
+    mode: "onChange",
     resolver: zodResolver(newFormConfigurationSchema),
     defaultValues,
   });
@@ -334,10 +335,10 @@ export function ConfigurationForm() {
       <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div>
                 <FormLabel>Owners</FormLabel>
-                <FormDescription className="mt-2">
+                <FormDescription className="mt-1.5">
                   Add the owner and their corresponding weight.
                 </FormDescription>
               </div>
@@ -401,7 +402,6 @@ export function ConfigurationForm() {
                               <Label htmlFor="weight">Weight</Label>
                               <Input
                                 id="weight"
-                                className=""
                                 min="1"
                                 type="number"
                                 {...field}
@@ -454,7 +454,7 @@ export function ConfigurationForm() {
                 name="threshold"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="threshold">threshold</FormLabel>
+                    <FormLabel htmlFor="threshold">Threshold</FormLabel>
                     <div className="grid gap-3">
                       <Input
                         className="w-32"
@@ -462,13 +462,18 @@ export function ConfigurationForm() {
                         type="number"
                         min="1"
                         placeholder="Your Wallet threshold"
-                        defaultValue={field.value}
-                        onChange={field.onChange}
+                        {...field}
+                        onChange={e =>
+                          field.onChange(
+                            e.target.value ? parseInt(e.target.value, 10) : "",
+                          )
+                        }
                       />
                     </div>
                     <FormDescription>
                       Enter a threshold for your new wallet
                     </FormDescription>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
