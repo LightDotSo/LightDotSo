@@ -74,10 +74,12 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
   const navigateToStep = useCallback(
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
-      url.searchParams.set("name", name || "");
+      // Forward the search params to the next step
+      url.search = searchParams.toString();
+
       router.push(url.toString());
     },
-    [name, router],
+    [router, searchParams],
   );
 
   const validateParams = (
