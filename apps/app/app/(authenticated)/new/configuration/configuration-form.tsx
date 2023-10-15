@@ -97,8 +97,7 @@ export function ConfigurationForm() {
 
   useEffect(() => {
     // const url = new URL(window.location.href);
-    const subscription = form.watch((value, { _name }) => {
-      // @ts-expect-error
+    const subscription = form.watch((value, { name: _name }) => {
       setFormValues(value);
       //   if (name === "name") {
       //     if (value.name === undefined || value.name === "") {
