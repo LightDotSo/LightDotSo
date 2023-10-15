@@ -347,7 +347,7 @@ export function ConfigurationForm() {
                       render={({ field }) => (
                         <div className="space-y-2 lg:col-span-6">
                           <Label htmlFor="address">Address or ENS</Label>
-                          <div className="flex items-center space-x-4">
+                          <div className="flex items-center space-x-3">
                             <Avatar className="h-8 w-8">
                               {/* If the address is valid, try resolving an ens Avatar */}
                               <PlaceholderOrb
@@ -362,7 +362,7 @@ export function ConfigurationForm() {
                                     form.formState.errors.owners[index]
                                       ?.addressOrEns
                                     ? "opacity-50"
-                                    : "",
+                                    : "opacity-100",
                                 )}
                               />
                             </Avatar>
