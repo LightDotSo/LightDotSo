@@ -40,7 +40,6 @@ import { steps } from "../root";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import type * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
@@ -50,6 +49,7 @@ import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
 import { normalize } from "viem/ens";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
+import * as z from "zod";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -136,21 +136,43 @@ export function ConfigurationForm() {
 
   const form = useForm<NewFormValues>({
     resolver: zodResolver(
-      newFormConfigurationSchema.refine(
-        value => {
-          // The sum of the weights of all owners must be greater than or equal to the threshold.
-          const sum = value.owners.reduce(
-            (acc, owner) => acc + owner.weight,
-            0,
-          );
-          return sum >= value.threshold;
-        },
-        {
-          path: ["threshold"],
-          message:
-            "The sum of the weights of all owners must be greater than or equal to the threshold.",
-        },
-      ),
+      newFormConfigurationSchema.superRefine((value, ctx) => {
+        // The sum of the weights of all owners must be greater than or equal to the threshold.
+        const sum = value.owners.reduce((acc, owner) => acc + owner.weight, 0);
+
+        if (sum < value.threshold) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.too_small,
+            message:
+              "The sum of the weights of all owners must be greater than or equal to the threshold.",
+            minimum: value.threshold,
+            type: "number",
+            inclusive: true,
+          });
+        }
+
+        // Also expect that all owners w/ key address are valid addresses and are not empty
+        value.owners.forEach((owner, index) => {
+          // Check if the address is not empty
+          if (!owner.address) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: "Address is required",
+              path: ["owners", index, "address"],
+            });
+          }
+
+          if (owner.address && !isAddress(owner.address)) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.invalid_type,
+              message: "Invalid address",
+              path: ["owners", index, "address"],
+              expected: "string",
+              received: "string",
+            });
+          }
+        });
+      }),
     ),
     defaultValues,
   });
@@ -279,6 +301,9 @@ export function ConfigurationForm() {
   }, []);
 
   const navigateToStep = useCallback(() => {
+    // Validate the form
+    form.trigger();
+
     const url = new URL(steps[2].href, window.location.origin);
     url.search = searchParams.toString();
     router.push(url.toString());
