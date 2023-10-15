@@ -15,12 +15,12 @@
 
 import { create } from "zustand";
 import * as z from "zod";
-import { newFormSchema, newFormConfigurationsSchema } from "@/schemas/newForm";
+import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 
 // Import and combine all schemas
 const newFormStoreSchema = z.intersection(
   newFormSchema,
-  newFormConfigurationsSchema,
+  newFormConfigurationSchema,
 );
 
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;

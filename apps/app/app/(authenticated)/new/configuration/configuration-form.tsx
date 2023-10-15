@@ -60,8 +60,51 @@ export function ConfigurationForm() {
   const searchParams = useSearchParams();
   const { setFormValues } = useNewFormStore();
 
+  const nameParam = searchParams.get("name");
+  const typeParam = searchParams.get("type");
   const thresholdParam = searchParams.get("threshold");
   const saltParam = searchParams.get("salt");
+
+  // create default owner object
+  const defaultOwner = {
+    address: "",
+    weight: 0,
+  };
+
+  // create owners array
+  let owners = [];
+
+  let ownerIndex = 0;
+  // Loop through the owners in the URL
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const addressParam = searchParams.get(`owners[${ownerIndex}][address]`);
+    const weightParam = searchParams.get(`owners[${ownerIndex}][weight]`);
+
+    // if both parameters for this index do not exist, stop parsing
+    if ((!addressParam && !weightParam) || isNaN(parseInt(weightParam || ""))) {
+      break;
+    }
+
+    let owner = { ...defaultOwner };
+
+    // Parse and assign address
+    if (
+      addressParam &&
+      newFormConfigurationSchema.shape.owners.element.safeParse({
+        address: addressParam,
+        weight: parseInt(weightParam),
+      }).success
+    ) {
+      owner = newFormConfigurationSchema.shape.owners.element.parse({
+        address: addressParam,
+        weight: parseInt(weightParam),
+      });
+    }
+
+    owners.push(owner);
+    ownerIndex++;
+  }
 
   // // This can come from your database or API.
   const defaultValues: Partial<NewFormValues> = {
@@ -77,12 +120,7 @@ export function ConfigurationForm() {
       newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
         ? newFormConfigurationSchema.shape.salt.parse(saltParam)
         : timestampToBytes32(Math.floor(Date.now())),
-    owners: [
-      {
-        address: "",
-        weight: 0,
-      },
-    ],
+    owners: owners.length ? owners : [defaultOwner],
   };
 
   const form = useForm<NewFormValues>({
@@ -96,24 +134,39 @@ export function ConfigurationForm() {
   });
 
   useEffect(() => {
-    // const url = new URL(window.location.href);
+    const url = new URL(window.location.href);
     const subscription = form.watch((value, { name: _name }) => {
       setFormValues(value);
-      //   if (name === "name") {
-      //     if (value.name === undefined || value.name === "") {
-      //       url.searchParams.delete("name");
-      //     } else {
-      //       url.searchParams.set("name", value.name);
-      //     }
-      //   }
-      //   if (name === "type") {
-      //     if (value.type === "multi") {
-      //       url.searchParams.delete("type");
-      //     } else {
-      //       url.searchParams.set("type", value.type ?? "multi");
-      //     }
-      //   }
-      //   router.replace(url.toString());
+      if (name === "salt") {
+        if (value.name === undefined || value.salt === "") {
+          url.searchParams.delete("salt");
+        } else {
+          url.searchParams.set("salt", value.salt);
+        }
+      }
+      if (name === "threshold") {
+        if (value.name === undefined || value.threshold === "") {
+          url.searchParams.delete("threshold");
+        } else {
+          url.searchParams.set("threshold", value.threshold);
+        }
+      }
+      if (Array.isArray(value.owners)) {
+        value.owners.forEach((owner, index) => {
+          if (owner.address) {
+            url.searchParams.set(`owners[${index}][address]`, owner.address);
+          } else {
+            url.searchParams.delete(`owners[${index}][address]`);
+          }
+
+          if (owner.weight) {
+            url.searchParams.set(`owners[${index}][weight]`, owner.weight);
+          } else {
+            url.searchParams.delete(`owners[${index}][weight]`);
+          }
+        });
+      }
+      router.replace(url.toString());
       return;
     });
     return () => subscription.unsubscribe();
@@ -123,7 +176,7 @@ export function ConfigurationForm() {
   // Set the form values from the URL on mount
   useEffect(() => {
     // Set the form values from the default values
-    setFormValues(defaultValues);
+    setFormValues({ ...defaultValues, name: nameParam, type: typeParam });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
