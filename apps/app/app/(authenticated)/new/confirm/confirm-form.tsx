@@ -153,7 +153,7 @@ export function ConfirmForm() {
       saltParam &&
       newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
         ? newFormConfigurationSchema.shape.salt.parse(saltParam)
-        : timestampToBytes32(Math.floor(Date.now())),
+        : "",
     // If typeParam is personal, add two owners
     owners: owners,
   };
