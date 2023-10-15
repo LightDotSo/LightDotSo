@@ -37,7 +37,11 @@ export const newFormConfigurationSchema = z.object({
     .min(1, { message: "Threshold must be at least 1." }),
   owners: z.array(
     z.object({
-      address: z.string().min(1, { message: "Please enter a valid address." }),
+      address: z
+        .string()
+        .min(1, { message: "Please enter a valid address." })
+        .optional(),
+      addressOrEns: z.string(),
       weight: z
         .number()
         .int()

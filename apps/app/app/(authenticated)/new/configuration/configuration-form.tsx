@@ -98,12 +98,12 @@ export function ConfigurationForm() {
       addressParam &&
       weightParam &&
       newFormConfigurationSchema.shape.owners.element.safeParse({
-        address: addressParam,
+        addressOrEns: addressParam,
         weight: parseInt(weightParam),
       }).success
     ) {
       owner = newFormConfigurationSchema.shape.owners.element.parse({
-        address: addressParam,
+        addressOrEns: addressParam,
         weight: parseInt(weightParam),
       });
     }
@@ -164,8 +164,11 @@ export function ConfigurationForm() {
           // Return if the owner is undefined
           if (owner === undefined) {
             url.searchParams.delete(`owners[${index}][address]`);
-          } else if (owner.address) {
-            url.searchParams.set(`owners[${index}][address]`, owner.address);
+          } else if (owner.addressOrEns) {
+            url.searchParams.set(
+              `owners[${index}][address]`,
+              owner.addressOrEns,
+            );
           } else {
             url.searchParams.delete(`owners[${index}][address]`);
           }
@@ -224,6 +227,30 @@ export function ConfigurationForm() {
           ? newFormSchema.shape.type.parse(typeParam)
           : "multi",
     });
+
+    // Recursively iterate the owners and validate the addresses on mount
+    let ownerIndex = 0;
+    // Loop through the owners in the URL
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const addressParam = searchParams.get(`owners[${ownerIndex}][address]`);
+      const weightParam = searchParams.get(`owners[${ownerIndex}][weight]`);
+
+      // Validate the address
+      if (addressParam) {
+        validateAddress(addressParam, ownerIndex);
+      }
+
+      // if both parameters for this index do not exist, stop parsing
+      if (
+        (!addressParam && !weightParam) ||
+        isNaN(parseInt(weightParam || ""))
+      ) {
+        break;
+      }
+
+      ownerIndex++;
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -233,6 +260,48 @@ export function ConfigurationForm() {
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, searchParams]);
+
+  function validateAddress(address: string, index: number) {
+    // Try to parse the address
+    if (isAddress(address)) {
+      // If the address is valid, set the value of key address
+      form.setValue(`owners.${index}.address`, address);
+      form.clearErrors(`owners.${index}.addressOrEns`);
+    } else if (address.includes(".")) {
+      // If the address is not valid, try to resolve it as an ENS name
+      publicClient
+        .getEnsAddress({
+          name: normalize(address),
+        })
+        .then(ensNameAddress => {
+          if (ensNameAddress) {
+            // If the ENS name resolves, set the value of key address
+            form.setValue(`owners.${index}.address`, ensNameAddress);
+            form.clearErrors(`owners.${index}.addressOrEns`);
+          } else {
+            // Show an error on the message
+            form.setError(`owners.${index}.addressOrEns`, {
+              type: "manual",
+              message:
+                "The ENS name did not resolve. Please enter a valid address or ENS name",
+            });
+          }
+        })
+        .catch(() => {
+          // Show an error on the message
+          form.setError(`owners.${index}.addressOrEns`, {
+            type: "manual",
+            message: "Please enter a valid address or ENS name",
+          });
+        });
+    } else {
+      // Show an error on the message
+      form.setError(`owners.${index}.addressOrEns`, {
+        type: "manual",
+        message: "Please enter a valid address or ENS name",
+      });
+    }
+  }
 
   function onSubmit(data: NewFormValues) {
     toast({
@@ -272,7 +341,7 @@ export function ConfigurationForm() {
                   >
                     <FormField
                       control={form.control}
-                      name={`owners.${index}.address`}
+                      name={`owners.${index}.addressOrEns`}
                       render={({ field }) => (
                         <>
                           <FormControl>
@@ -288,61 +357,14 @@ export function ConfigurationForm() {
                                   if (!e.target.value) return;
                                   const address = e.target.value;
 
-                                  // Try to parse the address
-                                  if (isAddress(address)) {
-                                    // If the address is valid, set the value
-                                    field.onChange({
-                                      target: { value: address },
-                                    });
-                                  } else if (address.includes(".")) {
-                                    // If the address is not valid, try to resolve it as an ENS name
-                                    publicClient
-                                      .getEnsAddress({
-                                        name: normalize(address),
-                                      })
-                                      .then(ensNameAddress => {
-                                        if (ensNameAddress) {
-                                          // If the ENS name resolves, set the value
-                                          field.onChange({
-                                            target: {
-                                              value: ensNameAddress,
-                                            },
-                                          });
-                                        } else {
-                                          // If the ENS name does not resolve, set the value to empty
-                                          field.onChange({
-                                            target: { value: address },
-                                          });
-                                          // Show an error on the message
-                                          form.setError(
-                                            `owners.${index}.address`,
-                                            {
-                                              type: "manual",
-                                              message:
-                                                "The ENS name did not resolve. Please enter a valid address or ENS name",
-                                            },
-                                          );
-                                        }
-                                      })
-                                      .catch(() => {
-                                        // Show an error on the message
-                                        form.setError(
-                                          `owners.${index}.address`,
-                                          {
-                                            type: "manual",
-                                            message:
-                                              "Please enter a valid address or ENS name",
-                                          },
-                                        );
-                                      });
-                                  } else {
-                                    // Show an error on the message
-                                    form.setError(`owners.${index}.address`, {
-                                      type: "manual",
-                                      message:
-                                        "Please enter a valid address or ENS name",
-                                    });
-                                  }
+                                  validateAddress(address, index);
+                                }}
+                                onChange={e => {
+                                  // Validate the address
+                                  if (!e.target.value) return;
+                                  const address = e.target.value;
+
+                                  validateAddress(address, index);
                                 }}
                               />
                               <FormMessage />
@@ -379,7 +401,7 @@ export function ConfigurationForm() {
                         // If there is error, justify center, else end
                         form.formState.errors.owners &&
                           form.formState.errors.owners[index] &&
-                          form.formState.errors.owners[index]?.address
+                          form.formState.errors.owners[index]?.addressOrEns
                           ? "justify-center"
                           : "justify-end",
                       )}
@@ -404,7 +426,7 @@ export function ConfigurationForm() {
                   variant="outline"
                   size="sm"
                   className="mt-2"
-                  onClick={() => append({ address: "", weight: 1 })}
+                  onClick={() => append({ addressOrEns: "", weight: 1 })}
                 >
                   <UserPlus2 className="mr-2 h-5 w-5" />
                   Add New Owner
