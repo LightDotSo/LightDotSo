@@ -74,7 +74,7 @@ export function ConfigurationForm() {
 
   // create default owner object
   const defaultOwner = {
-    address: "",
+    addressOrEns: "",
     weight: 1,
   };
 
