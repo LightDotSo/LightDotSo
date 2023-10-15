@@ -16,6 +16,7 @@
 "use client";
 
 import {
+  Avatar,
   Button,
   Card,
   CardContent,
@@ -48,6 +49,7 @@ import { isAddress } from "viem";
 import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
 import { normalize } from "viem/ens";
+import { PlaceholderOrb } from "@/components/placeholder-orb";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -343,34 +345,43 @@ export function ConfigurationForm() {
                       control={form.control}
                       name={`owners.${index}.addressOrEns`}
                       render={({ field }) => (
-                        <>
-                          <FormControl>
-                            <div className="space-y-2 lg:col-span-6">
-                              <Label htmlFor="address">Address or ENS</Label>
-                              <Input
-                                id="address"
-                                className=""
-                                {...field}
-                                placeholder="Your address or ENS name"
-                                onBlur={e => {
-                                  // Validate the address
-                                  if (!e.target.value) return;
-                                  const address = e.target.value;
-
-                                  validateAddress(address, index);
-                                }}
-                                onChange={e => {
-                                  // Validate the address
-                                  if (!e.target.value) return;
-                                  const address = e.target.value;
-
-                                  validateAddress(address, index);
-                                }}
+                        <div className="space-y-2 lg:col-span-6">
+                          <Label htmlFor="address">Address or ENS</Label>
+                          <div className="flex items-center space-x-4">
+                            <Avatar className="h-8 w-8">
+                              {/* If the address is valid, try resolving an ens Avatar */}
+                              <PlaceholderOrb
+                                address={
+                                  field?.address?.substring(1) ??
+                                  "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                }
+                                className={cn(
+                                  // If the field is not valid, add opacity
+                                  form.formState.errors.owners &&
+                                    form.formState.errors.owners[index] &&
+                                    form.formState.errors.owners[index]
+                                      ?.addressOrEns
+                                    ? "opacity-50"
+                                    : "",
+                                )}
                               />
-                              <FormMessage />
-                            </div>
-                          </FormControl>
-                        </>
+                            </Avatar>
+                            <Input
+                              id="address"
+                              className=""
+                              {...field}
+                              placeholder="Your address or ENS name"
+                              onBlur={e => {
+                                // Validate the address
+                                if (!e.target.value) return;
+                                const address = e.target.value;
+
+                                validateAddress(address, index);
+                              }}
+                            />
+                          </div>
+                          <FormMessage />
+                        </div>
                       )}
                     />
                     <FormField
@@ -380,7 +391,7 @@ export function ConfigurationForm() {
                       render={({ field }) => (
                         <>
                           <FormControl>
-                            <div className="space-y-2">
+                            <div className="col-span-1 space-y-2">
                               <Label htmlFor="weight">Weight</Label>
                               <Input
                                 id="weight"
@@ -397,7 +408,7 @@ export function ConfigurationForm() {
                     />
                     <div
                       className={cn(
-                        "flex h-full flex-col",
+                        "flex h-full flex-col col-span-1",
                         // If there is error, justify center, else end
                         form.formState.errors.owners &&
                           form.formState.errors.owners[index] &&
