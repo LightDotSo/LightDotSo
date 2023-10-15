@@ -320,6 +320,9 @@ importers:
       '@lightdotso/client':
         specifier: workspace:*
         version: link:../../packages/client
+      '@lightdotso/const':
+        specifier: workspace:*
+        version: link:../../packages/const
       '@lightdotso/kysely':
         specifier: workspace:*
         version: link:../../configurations/kysely

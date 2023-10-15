@@ -49,6 +49,7 @@ import {
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { NotionLinks } from "@lightdotso/const";
 
 const newFormSchema = z.object({
   type: z.enum(["card", "paypal", "2fa"], {
@@ -67,10 +68,15 @@ export function NewWalletForm() {
   const searchParams = useSearchParams();
 
   const nameParam = searchParams.get("name");
+  const typeParam = searchParams.get("type");
 
   // This can come from your database or API.
   const defaultValues: Partial<NewFormValues> = {
-    type: "card",
+    // Check if the type is valid
+    type:
+      typeParam && newFormSchema.shape.type.safeParse(typeParam).success
+        ? newFormSchema.shape.type.parse(typeParam)
+        : "card",
     name: nameParam ? nameParam : "",
   };
 
@@ -81,15 +87,15 @@ export function NewWalletForm() {
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    const subscription = form.watch(value => {
-      if (value.name) {
-        if (value.name === "") {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "name") {
+        if (value.name === undefined || value.name === "") {
           url.searchParams.delete("name");
         } else {
           url.searchParams.set("name", value.name);
         }
       }
-      if (value.type) {
+      if (name === "type" && value.type) {
         url.searchParams.set("type", value.type);
       }
       router.replace(url.toString());
@@ -241,8 +247,15 @@ export function NewWalletForm() {
               />
               <div>
                 <CardDescription className="text-base text-primary">
-                  By creating a new wallet, you are accepting our term and
-                  conditions
+                  By creating a new wallet, you are accepting our{" "}
+                  <a
+                    className="underline"
+                    href={NotionLinks["Terms of Service"]}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    term and conditions
+                  </a>
                 </CardDescription>
               </div>
               <CardFooter className="justify-end">
