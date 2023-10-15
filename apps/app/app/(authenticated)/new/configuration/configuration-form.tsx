@@ -44,10 +44,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 import { UserMinus2, UserPlus2 } from "lucide-react";
-import type { Address } from "viem";
 import { isAddress } from "viem";
 import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
+import { normalize } from "viem/ens";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -297,14 +297,16 @@ export function ConfigurationForm() {
                                   } else if (address.includes(".")) {
                                     // If the address is not valid, try to resolve it as an ENS name
                                     publicClient
-                                      .getEnsName({
-                                        address: address as Address,
+                                      .getEnsAddress({
+                                        name: normalize(address),
                                       })
-                                      .then(ensName => {
-                                        if (ensName) {
+                                      .then(ensNameAddress => {
+                                        if (ensNameAddress) {
                                           // If the ENS name resolves, set the value
                                           field.onChange({
-                                            target: { value: address },
+                                            target: {
+                                              value: ensNameAddress,
+                                            },
                                           });
                                         } else {
                                           // If the ENS name does not resolve, set the value to empty
