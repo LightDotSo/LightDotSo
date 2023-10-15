@@ -391,10 +391,16 @@ export function ConfigurationForm() {
         });
         // Clear the value of key address
         form.setValue(`owners.${index}.address`, "");
+      } finally {
+        // Trigger the form validation
+        form.trigger();
       }
     } else {
       // Clear the value of key address
       form.setValue(`owners.${index}.address`, "");
+
+      // Trigger the form validation
+      form.trigger();
     }
   }
 
@@ -501,9 +507,6 @@ export function ConfigurationForm() {
                                   const address = e.target.value;
 
                                   validateAddress(address, index);
-
-                                  // Trigger the form validation
-                                  form.trigger();
                                 }}
                                 onChange={e => {
                                   // Update the field value
@@ -514,9 +517,6 @@ export function ConfigurationForm() {
 
                                   if (address) {
                                     validateAddress(address, index);
-
-                                    // Trigger the form validation
-                                    form.trigger();
                                   }
                                 }}
                               />
