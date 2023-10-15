@@ -43,7 +43,7 @@ import type * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-import { UserMinus2 } from "lucide-react";
+import { UserMinus2, UserPlus2 } from "lucide-react";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -295,8 +295,9 @@ export function ConfigurationForm() {
                   variant="outline"
                   size="sm"
                   className="mt-2"
-                  onClick={() => append({ address: "", weight: 0 })}
+                  onClick={() => append({ address: "", weight: 1 })}
                 >
+                  <UserPlus2 className="mr-2 h-5 w-5" />
                   Add New Owner
                 </Button>
               </div>
