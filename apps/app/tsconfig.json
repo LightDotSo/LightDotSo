@@ -6,7 +6,8 @@
     "paths": {
       "@/app/*": ["./app/*"],
       "@/*": ["./src/*"]
-    }
+    },
+    "target": "es2015"
   },
   "include": [
     "next-auth.d.ts",

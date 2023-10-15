@@ -125,7 +125,7 @@ export function ConfigurationForm() {
         ? newFormConfigurationSchema.shape.threshold.parse(
             parseInt(thresholdParam),
           )
-        : 0,
+        : 1,
     salt:
       saltParam &&
       newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
@@ -135,8 +135,23 @@ export function ConfigurationForm() {
   };
 
   const form = useForm<NewFormValues>({
-    mode: "onChange",
-    resolver: zodResolver(newFormConfigurationSchema),
+    resolver: zodResolver(
+      newFormConfigurationSchema.refine(
+        value => {
+          // The sum of the weights of all owners must be greater than or equal to the threshold.
+          const sum = value.owners.reduce(
+            (acc, owner) => acc + owner.weight,
+            0,
+          );
+          return sum <= value.threshold;
+        },
+        {
+          path: ["threshold"],
+          message:
+            "The sum of the weights of all owners must be greater than or equal to the threshold.",
+        },
+      ),
+    ),
     defaultValues,
   });
 
@@ -361,7 +376,7 @@ export function ConfigurationForm() {
                                 address={
                                   // If the address is a valid address
                                   isAddress(field?.value)
-                                    ? field?.value?.substring(1)
+                                    ? field?.value
                                     : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
                                 }
                                 className={cn(

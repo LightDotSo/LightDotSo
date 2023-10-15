@@ -86,11 +86,32 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     params: ReadonlyURLSearchParams,
     requiredParams: string[],
   ) => {
+    let totalWeight = 0;
+    let threshold = 0;
+
+    // Iterate over each key-value pair
+    for (const [key, value] of params.entries()) {
+      // If the key matches the pattern "owners[i][weight]"
+      if (/^owners\[\d+\]\[weight\]$/.test(key)) {
+        // Add the parsed integer value to the total weight
+        totalWeight += parseInt(value, 10);
+      }
+      // If the key matches the "threshold"
+      if (key === "threshold") {
+        // Store the parsed integer value
+        threshold = parseInt(value, 10);
+      }
+    }
+
     for (let i = 0; i < requiredParams.length; i++) {
       if (!params.has(requiredParams[i]) || !params.get(requiredParams[i])) {
         return false;
       }
     }
+
+    // If the total weight is greater than the threshold, then return false
+    if (totalWeight > threshold) return false;
+
     return true;
   };
 
