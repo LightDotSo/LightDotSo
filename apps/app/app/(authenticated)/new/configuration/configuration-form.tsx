@@ -214,6 +214,9 @@ export function ConfigurationForm() {
       if (defaultValues.salt) {
         url.searchParams.set("salt", defaultValues.salt);
       }
+      if (defaultValues.threshold) {
+        url.searchParams.set("threshold", defaultValues.threshold.toString());
+      }
 
       if (name === "threshold") {
         if (value.threshold === undefined) {
