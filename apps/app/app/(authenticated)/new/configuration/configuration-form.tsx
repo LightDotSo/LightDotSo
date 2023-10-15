@@ -44,6 +44,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 import { UserMinus2, UserPlus2 } from "lucide-react";
+import type { Address } from "viem";
+import { isAddress } from "viem";
+import { publicClient } from "@/clients/public";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -246,7 +249,45 @@ export function ConfigurationForm() {
                           <FormControl>
                             <div className="space-y-2 lg:col-span-6">
                               <Label htmlFor="address">Address or ENS</Label>
-                              <Input id="address" className="" {...field} />
+                              <Input
+                                id="address"
+                                className=""
+                                {...field}
+                                onBlur={e => {
+                                  // Validate the address
+                                  if (!e.target.value) return;
+                                  const address = e.target.value;
+                                  if (!isAddress(address)) {
+                                    // If the address is not valid, try to resolve it as an ENS name
+                                    publicClient
+                                      .getEnsName({
+                                        address: address as Address,
+                                      })
+                                      .then(ensName => {
+                                        if (ensName) {
+                                          // If the ENS name resolves, set the value
+                                          field.onChange({
+                                            target: { value: address },
+                                          });
+                                        } else {
+                                          // If the ENS name does not resolve, set the value to empty
+                                          field.onChange({
+                                            target: { value: address },
+                                          });
+                                          // Show an error on the message
+                                          form.setError(
+                                            `owners.${index}.address`,
+                                            {
+                                              type: "manual",
+                                              message:
+                                                "Please enter a valid address or ENS name",
+                                            },
+                                          );
+                                        }
+                                      });
+                                  }
+                                }}
+                              />
                             </div>
                           </FormControl>
                           <FormMessage />
