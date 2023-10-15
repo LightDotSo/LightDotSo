@@ -13,13 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { RootLink } from "./root-link";
+import { RootContext } from "./components/root-context";
+import { RootLink } from "./components/root-link";
 
 export enum StepsEnum {
   // eslint-disable-next-line no-unused-vars
   New = "new",
   // eslint-disable-next-line no-unused-vars
-  Settings = "settings",
+  Configuration = "configuration",
   // eslint-disable-next-line no-unused-vars
   Confirm = "confirm",
 }
@@ -44,10 +45,10 @@ export const steps: Step[] = [
     href: "/new",
   },
   {
-    enum: StepsEnum.Settings,
+    enum: StepsEnum.Configuration,
     id: "02",
-    name: "Wallet Settings",
-    href: "/new/settings",
+    name: "Wallet Configuration",
+    href: "/new/configuration",
   },
   {
     enum: StepsEnum.Confirm,
@@ -95,10 +96,12 @@ export async function NewRoot({ currentStepType, children }: NewRootProps) {
             ))}
           </ol>
         </nav>
-        <div className="mx-auto flex h-96 flex-col">{children}</div>
+        <div className="mx-auto flex h-full flex-col">{children}</div>
       </div>
       <aside className="lg:w-1/4">
-        <div className="h-96 rounded-md border border-border bg-card"></div>
+        <div className="h-full rounded-md border border-border bg-card">
+          <RootContext></RootContext>
+        </div>
       </aside>
     </div>
   );

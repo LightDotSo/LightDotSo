@@ -15,20 +15,18 @@
 
 "use client";
 
-const TailwindIndicator = () => {
-  if (process.env.NODE_ENV === "production") return null;
+import { useNewFormStore } from "@/stores/useNewForm";
+
+export function RootContext() {
+  const { formValues } = useNewFormStore();
 
   return (
-    <div className="fixed bottom-1 left-1 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 p-6 font-mono text-sm text-white">
-      <div className="block sm:hidden">xs</div>
-      <div className="hidden sm:block md:hidden">sm</div>
-      <div className="hidden md:block lg:hidden">md</div>
-      <div className="hidden lg:block xl:hidden">lg</div>
-      <div className="hidden xl:block 2xl:hidden">xl</div>
-      <div className="hidden 2xl:block">2xl</div>
+    <div>
+      <pre className="mt-2 w-full overflow-auto rounded-md p-4">
+        <code className="break-all text-primary">
+          {JSON.stringify(formValues, null, 2)}
+        </code>
+      </pre>
     </div>
   );
-};
-TailwindIndicator.displayName = "TailwindIndicator";
-
-export { TailwindIndicator };
+}

@@ -39,6 +39,7 @@ import {
   CommandSeparator,
 } from "@lightdotso/ui";
 import { PlaceholderOrb } from "./placeholder-orb";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
 const groups = [
   {
@@ -78,6 +79,7 @@ export function WalletSwitcher({
   // eslint-disable-next-line react/prop-types
   className,
 }: WalletSwitcherProps) {
+  const isMounted = useIsMounted();
   const [open, setOpen] = React.useState(false);
   const [selectedWallet, setSelectedWallet] = React.useState<Wallet>(
     groups[0].wallets[0],
@@ -85,8 +87,8 @@ export function WalletSwitcher({
   const router = useRouter();
   const { address } = useAccount();
 
-  // If the address is empty, return null
-  if (!address) {
+  // If the address is empty or is not mounted, don't render
+  if (!isMounted || !address) {
     return null;
   }
 

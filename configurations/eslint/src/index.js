@@ -86,6 +86,7 @@ module.exports = {
       rules: {
         "import/no-unresolved": "off",
         "no-undef": "off",
+        "no-unused-vars": "off",
       },
     },
     {

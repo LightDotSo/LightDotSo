@@ -13,22 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import { createPublicClient, http } from "viem";
+import { mainnet } from "viem/chains";
 
-const TailwindIndicator = () => {
-  if (process.env.NODE_ENV === "production") return null;
-
-  return (
-    <div className="fixed bottom-1 left-1 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 p-6 font-mono text-sm text-white">
-      <div className="block sm:hidden">xs</div>
-      <div className="hidden sm:block md:hidden">sm</div>
-      <div className="hidden md:block lg:hidden">md</div>
-      <div className="hidden lg:block xl:hidden">lg</div>
-      <div className="hidden xl:block 2xl:hidden">xl</div>
-      <div className="hidden 2xl:block">2xl</div>
-    </div>
-  );
-};
-TailwindIndicator.displayName = "TailwindIndicator";
-
-export { TailwindIndicator };
+export const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http(),
+});

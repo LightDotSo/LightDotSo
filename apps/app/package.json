@@ -23,6 +23,7 @@
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.3.2",
     "@lightdotso/client": "workspace:*",
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
