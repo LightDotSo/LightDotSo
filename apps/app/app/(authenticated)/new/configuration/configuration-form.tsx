@@ -135,6 +135,7 @@ export function ConfigurationForm() {
   };
 
   const form = useForm<NewFormValues>({
+    mode: "onChange",
     resolver: zodResolver(
       newFormConfigurationSchema.superRefine((value, ctx) => {
         // The sum of the weights of all owners must be greater than or equal to the threshold.
@@ -146,8 +147,20 @@ export function ConfigurationForm() {
             message:
               "The sum of the weights of all owners must be greater than or equal to the threshold.",
             minimum: value.threshold,
+            path: ["threshold"],
             type: "number",
             inclusive: true,
+          });
+        }
+        // Check if no two owners have the same address
+        const addresses = value.owners.map(owner => owner.address);
+        const uniqueAddresses = new Set(addresses);
+        if (uniqueAddresses.size !== addresses.length) {
+          // Add an error to the duplicate address
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Duplicate address",
+            path: ["duplicate"],
           });
         }
 
@@ -263,6 +276,9 @@ export function ConfigurationForm() {
 
   // Set the form values from the URL on mount
   useEffect(() => {
+    // Validate the form on mount
+    form.trigger();
+
     // Set the form values from the default values
     setFormValues({
       ...defaultValues,
@@ -326,37 +342,47 @@ export function ConfigurationForm() {
       /[a-zA-Z]/.test(address)
     ) {
       // If the address is not valid, try to resolve it as an ENS name
-      publicClient
-        .getEnsAddress({
-          name: normalize(address),
-        })
-        .then(ensNameAddress => {
-          if (ensNameAddress) {
-            // If the ENS name resolves, set the value of key address
-            form.setValue(`owners.${index}.address`, ensNameAddress);
-            form.clearErrors(`owners.${index}.addressOrEns`);
-          } else {
+      try {
+        publicClient
+          .getEnsAddress({
+            name: normalize(address),
+          })
+          .then(ensNameAddress => {
+            if (ensNameAddress) {
+              // If the ENS name resolves, set the value of key address
+              form.setValue(`owners.${index}.address`, ensNameAddress);
+            } else {
+              // Show an error on the message
+              form.setError(`owners.${index}.addressOrEns`, {
+                type: "manual",
+                message:
+                  "The ENS name did not resolve. Please enter a valid address or ENS name",
+              });
+              // Clear the value of key address
+              form.setValue(`owners.${index}.address`, "");
+            }
+          })
+          .catch(() => {
             // Show an error on the message
             form.setError(`owners.${index}.addressOrEns`, {
               type: "manual",
-              message:
-                "The ENS name did not resolve. Please enter a valid address or ENS name",
+              message: "Please enter a valid address or ENS name",
             });
-          }
-        })
-        .catch(() => {
-          // Show an error on the message
-          form.setError(`owners.${index}.addressOrEns`, {
-            type: "manual",
-            message: "Please enter a valid address or ENS name",
+            // Clear the value of key address
+            form.setValue(`owners.${index}.address`, "");
           });
+      } catch {
+        // Show an error on the message
+        form.setError(`owners.${index}.addressOrEns`, {
+          type: "manual",
+          message: "Please enter a valid address or ENS name",
         });
+        // Clear the value of key address
+        form.setValue(`owners.${index}.address`, "");
+      }
     } else {
-      // Show an error on the message
-      form.setError(`owners.${index}.addressOrEns`, {
-        type: "manual",
-        message: "Please enter a valid address or ENS name",
-      });
+      // Clear the value of key address
+      form.setValue(`owners.${index}.address`, "");
     }
   }
 
@@ -434,6 +460,9 @@ export function ConfigurationForm() {
                                 const address = e.target.value;
 
                                 validateAddress(address, index);
+
+                                // Trigger the form validation
+                                form.trigger();
                               }}
                               onChange={e => {
                                 // Update the field value
@@ -444,6 +473,9 @@ export function ConfigurationForm() {
 
                                 if (address) {
                                   validateAddress(address, index);
+
+                                  // Trigger the form validation
+                                  form.trigger();
                                 }
                               }}
                             />
@@ -497,7 +529,10 @@ export function ConfigurationForm() {
                         variant="outline"
                         size="icon"
                         className="mt-1.5 rounded-full"
-                        onClick={() => remove(index)}
+                        onClick={() => {
+                          remove(index);
+                          form.trigger();
+                        }}
                       >
                         <UserMinus2 className="h-5 w-5" />
                       </Button>
@@ -542,6 +577,19 @@ export function ConfigurationForm() {
                       Enter a threshold for your new wallet
                     </FormDescription>
                     <FormMessage />
+                    {form.formState.errors && (
+                      <p className="text-sm font-medium text-destructive">
+                        {/* Print any message one line at a time */}
+                        {Object.entries(form.formState.errors)
+                          .filter(
+                            ([key]) =>
+                              !key.startsWith("threshold") &&
+                              !key.startsWith("owners"),
+                          )
+                          .map(([_key, error]: [string, any]) => error.message)
+                          .join("\n")}
+                      </p>
+                    )}
                   </FormItem>
                 )}
               />
