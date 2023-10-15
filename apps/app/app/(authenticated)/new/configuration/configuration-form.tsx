@@ -158,17 +158,21 @@ export function ConfigurationForm() {
           url.searchParams.set("threshold", value.threshold.toString());
         }
       }
+
       if (Array.isArray(value.owners)) {
         value.owners.forEach((owner, index) => {
           // Return if the owner is undefined
-          if (owner === undefined) return;
-          if (owner.address) {
+          if (owner === undefined) {
+            url.searchParams.delete(`owners[${index}][address]`);
+          } else if (owner.address) {
             url.searchParams.set(`owners[${index}][address]`, owner.address);
           } else {
             url.searchParams.delete(`owners[${index}][address]`);
           }
 
-          if (owner.weight) {
+          if (owner === undefined) {
+            url.searchParams.delete(`owners[${index}][weight]`);
+          } else if (owner.weight) {
             url.searchParams.set(
               `owners[${index}][weight]`,
               owner.weight.toString(),
@@ -178,6 +182,30 @@ export function ConfigurationForm() {
           }
         });
       }
+
+      // Delete all the owners that are not in the form
+      let ownerIndex = value && value.owners ? value.owners.length : 0;
+
+      // Loop through the owners in the URL
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const addressParam = url.searchParams.get(
+          `owners[${ownerIndex}][address]`,
+        );
+        const weightParam = url.searchParams.get(
+          `owners[${ownerIndex}][weight]`,
+        );
+
+        url.searchParams.delete(`owners[${ownerIndex}][address]`);
+        url.searchParams.delete(`owners[${ownerIndex}][weight]`);
+
+        // if either parameters for this index do not exist, stop parsing
+        if (!addressParam || !weightParam) {
+          break;
+        }
+        ownerIndex++;
+      }
+
       router.replace(url.toString());
       return;
     });
