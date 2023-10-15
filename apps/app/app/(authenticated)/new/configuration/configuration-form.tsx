@@ -254,6 +254,7 @@ export function ConfigurationForm() {
                                 id="address"
                                 className=""
                                 {...field}
+                                placeholder="Your address or ENS name"
                                 onBlur={e => {
                                   // Validate the address
                                   if (!e.target.value) return;
