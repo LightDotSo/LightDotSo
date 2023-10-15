@@ -119,9 +119,12 @@ export function ConfigurationForm() {
     // Check if the type is valid
     threshold:
       thresholdParam &&
-      newFormConfigurationSchema.shape.threshold.safeParse(thresholdParam)
-        .success
-        ? newFormConfigurationSchema.shape.threshold.parse(thresholdParam)
+      newFormConfigurationSchema.shape.threshold.safeParse(
+        parseInt(thresholdParam),
+      ).success
+        ? newFormConfigurationSchema.shape.threshold.parse(
+            parseInt(thresholdParam),
+          )
         : 0,
     salt:
       saltParam &&
@@ -146,18 +149,20 @@ export function ConfigurationForm() {
     const subscription = form.watch((value, { name }) => {
       // @ts-expect-error
       setFormValues(value);
-      if (name === "salt") {
-        if (value.salt === undefined || value.salt === "") {
-          url.searchParams.delete("salt");
-        } else {
-          url.searchParams.set("salt", value.salt);
-        }
+
+      // Set the salt from the default values to the url
+      if (defaultValues.salt) {
+        url.searchParams.set("salt", defaultValues.salt);
       }
+
       if (name === "threshold") {
-        if (value.threshold === undefined || !isNaN(value.threshold)) {
+        if (value.threshold === undefined) {
           url.searchParams.delete("threshold");
         } else {
-          url.searchParams.set("threshold", value.threshold.toString());
+          // Set the threshold if the value is valid integer
+          if (newFormConfigurationSchema.shape.threshold.safeParse(value)) {
+            url.searchParams.set("threshold", value.threshold.toString());
+          }
         }
       }
 
@@ -253,6 +258,7 @@ export function ConfigurationForm() {
 
       ownerIndex++;
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -443,6 +449,29 @@ export function ConfigurationForm() {
                   Add New Owner
                 </Button>
               </div>
+              <FormField
+                control={form.control}
+                name="threshold"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="threshold">threshold</FormLabel>
+                    <div className="grid gap-3">
+                      <Input
+                        className="w-32"
+                        id="threshold"
+                        type="number"
+                        min="1"
+                        placeholder="Your Wallet threshold"
+                        defaultValue={field.value}
+                        onChange={field.onChange}
+                      />
+                    </div>
+                    <FormDescription>
+                      Enter a threshold for your new wallet
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
               <CardFooter className="justify-end px-0">
                 <Button
                   disabled={!form.formState.isValid}
