@@ -359,8 +359,10 @@ export function ConfigurationForm() {
                               {/* If the address is valid, try resolving an ens Avatar */}
                               <PlaceholderOrb
                                 address={
-                                  field?.address?.substring(1) ??
-                                  "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                  // If the address is a valid address
+                                  isAddress(field?.value)
+                                    ? field?.value?.substring(1)
+                                    : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
                                 }
                                 className={cn(
                                   // If the field is not valid, add opacity
