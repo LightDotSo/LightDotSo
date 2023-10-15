@@ -130,16 +130,14 @@ export function NewWalletForm() {
   }
 
   return (
-    <Form {...form}>
-      <TooltipProvider delayDuration={300}>
-        <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
-          <CardHeader className="gap-3">
-            <CardTitle>Create a New Wallet</CardTitle>
-            <CardDescription>
-              Select a name for your new wallet.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-10">
+    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
+      <CardHeader className="gap-3">
+        <CardTitle>Create a New Wallet</CardTitle>
+        <CardDescription>Select a name for your new wallet.</CardDescription>
+      </CardHeader>
+      <CardContent className="grid gap-10">
+        <TooltipProvider delayDuration={300}>
+          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
@@ -263,21 +261,20 @@ export function NewWalletForm() {
                   </a>
                 </CardDescription>
               </div>
-              <CardFooter className="justify-end">
+              <CardFooter className="justify-end px-0">
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}
                   onClick={() => navigateToStep()}
-                  className="w-32"
                   type="submit"
                 >
                   Continue
                 </Button>
               </CardFooter>
             </form>
-          </CardContent>
-        </Card>
-      </TooltipProvider>
-    </Form>
+          </Form>
+        </TooltipProvider>
+      </CardContent>
+    </Card>
   );
 }

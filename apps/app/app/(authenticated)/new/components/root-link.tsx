@@ -16,8 +16,8 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import type { Step } from "./root";
-import { steps, StepsEnum } from "./root";
+import type { Step } from "../root";
+import { steps, StepsEnum } from "../root";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
