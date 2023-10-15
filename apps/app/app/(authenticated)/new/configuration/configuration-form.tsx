@@ -143,7 +143,7 @@ export function ConfigurationForm() {
             (acc, owner) => acc + owner.weight,
             0,
           );
-          return sum <= value.threshold;
+          return sum >= value.threshold;
         },
         {
           path: ["threshold"],

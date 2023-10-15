@@ -109,8 +109,8 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
       }
     }
 
-    // If the total weight is greater than the threshold, then return false
-    if (totalWeight > threshold) return false;
+    // If the total weight is lesser than the threshold, then return false
+    if (totalWeight < threshold) return false;
 
     return true;
   };
