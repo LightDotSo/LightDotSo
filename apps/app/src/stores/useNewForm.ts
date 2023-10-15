@@ -14,14 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { create } from "zustand";
-import * as z from "zod";
-import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-
-// Import and combine all schemas
-const newFormStoreSchema = z.intersection(
-  newFormSchema,
-  newFormConfigurationSchema,
-);
+import type * as z from "zod";
+import type { newFormStoreSchema } from "@/schemas/newForm";
 
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
 
