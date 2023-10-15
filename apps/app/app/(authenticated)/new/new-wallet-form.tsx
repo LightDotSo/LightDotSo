@@ -52,7 +52,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { NotionLinks } from "@lightdotso/const";
 
 const newFormSchema = z.object({
-  type: z.enum(["card", "paypal", "2fa"], {
+  type: z.enum(["multi", "personal", "2fa"], {
     required_error: "Please select a type.",
   }),
   name: z
@@ -76,7 +76,7 @@ export function NewWalletForm() {
     type:
       typeParam && newFormSchema.shape.type.safeParse(typeParam).success
         ? newFormSchema.shape.type.parse(typeParam)
-        : "card",
+        : "multi",
     name: nameParam ? nameParam : "",
   };
 
@@ -95,8 +95,12 @@ export function NewWalletForm() {
           url.searchParams.set("name", value.name);
         }
       }
-      if (name === "type" && value.type) {
-        url.searchParams.set("type", value.type);
+      if (name === "type") {
+        if (value.type === "multi") {
+          url.searchParams.delete("type");
+        } else {
+          url.searchParams.set("type", value.type ?? "multi");
+        }
       }
       router.replace(url.toString());
       return;
@@ -126,7 +130,7 @@ export function NewWalletForm() {
 
   return (
     <Form {...form}>
-      <TooltipProvider>
+      <TooltipProvider delayDuration={300}>
         <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
           <CardHeader className="gap-3">
             <CardTitle>Create a New Wallet</CardTitle>
@@ -151,13 +155,13 @@ export function NewWalletForm() {
                       <div>
                         <Tooltip>
                           <RadioGroupItem
-                            value="card"
-                            id="card"
+                            value="multi"
+                            id="multi"
                             className="peer sr-only"
                           />
                           <TooltipTrigger asChild>
                             <Label
-                              htmlFor="card"
+                              htmlFor="multi"
                               className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                             >
                               <BuildingLibraryIcon className="mb-3 h-6 w-6"></BuildingLibraryIcon>
@@ -175,13 +179,13 @@ export function NewWalletForm() {
                       <div>
                         <Tooltip>
                           <RadioGroupItem
-                            value="paypal"
-                            id="paypal"
+                            value="personal"
+                            id="personal"
                             className="peer sr-only"
                           />
                           <TooltipTrigger asChild>
                             <Label
-                              htmlFor="paypal"
+                              htmlFor="personal"
                               className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                             >
                               <BanknotesIcon className="mb-3 h-6 w-6"></BanknotesIcon>
