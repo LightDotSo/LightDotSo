@@ -639,7 +639,15 @@ export function ConfigurationForm() {
                   </FormItem>
                 )}
               />
-              <CardFooter className="justify-end px-0">
+              <CardFooter className="flex justify-between px-0 pt-12">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  Go Back
+                </Button>
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}

@@ -208,7 +208,15 @@ export function ConfirmForm() {
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <CardFooter className="justify-end px-0">
+              <CardFooter className="flex justify-between px-0">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  Go Back
+                </Button>
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}
