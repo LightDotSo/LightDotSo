@@ -33,6 +33,7 @@ import {
   FormLabel,
   Input,
   Label,
+  Separator,
   TooltipProvider,
   toast,
 } from "@lightdotso/ui";
@@ -410,134 +411,159 @@ export function ConfigurationForm() {
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div>
-                <FormLabel>Owners</FormLabel>
-                <FormDescription className="mt-1.5">
-                  Add the owner and their corresponding weight.
-                </FormDescription>
-              </div>
               <div className="space-y-4">
                 {fields.map((field, index) => (
-                  <FormItem
-                    key={field.id}
-                    className="grid grid-cols-8 gap-4 space-y-0"
-                  >
-                    <FormField
-                      control={form.control}
-                      name={`owners.${index}.addressOrEns`}
-                      render={({ field }) => (
-                        <div className="space-y-2 lg:col-span-6">
-                          <Label htmlFor="address">Address or ENS</Label>
-                          <div className="flex items-center space-x-3">
-                            <Avatar className="h-8 w-8">
-                              {/* If the address is valid, try resolving an ens Avatar */}
-                              <PlaceholderOrb
-                                address={
-                                  // If the address is a valid address
-                                  isAddress(field?.value)
-                                    ? field?.value
-                                    : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
-                                }
-                                className={cn(
-                                  // If the field is not valid, add opacity
-                                  form.formState.errors.owners &&
-                                    form.formState.errors.owners[index] &&
-                                    form.formState.errors.owners[index]
-                                      ?.addressOrEns
-                                    ? "opacity-50"
-                                    : "opacity-100",
-                                )}
-                              />
-                            </Avatar>
-                            <Input
-                              id="address"
-                              className=""
-                              {...field}
-                              placeholder="Your address or ENS name"
-                              onBlur={e => {
-                                // Validate the address
-                                if (!e.target.value) return;
-                                const address = e.target.value;
+                  <>
+                    {/* If the type is personal, add a separator on index 1 */}
+                    {typeParam === "personal" && index === 1 && <Separator />}
+                    {/* A hack to make a padding below the separator */}
+                    {typeParam === "personal" && index === 1 && <div />}
+                    <FormLabel
+                      className={cn(
+                        typeParam === "personal" && index > 1 && "sr-only",
+                        typeParam !== "personal" && index !== 0 && "sr-only",
+                      )}
+                    >
+                      {typeParam === "personal" && index === 0 && "Primary Key"}
+                      {typeParam === "personal" && index === 1 && "Backup Keys"}
+                      {typeParam !== "personal" && "Owners"}
+                    </FormLabel>
+                    <FormDescription
+                      className={cn(
+                        typeParam === "personal" && index > 1 && "sr-only",
+                        typeParam !== "personal" && index !== 0 && "sr-only",
+                      )}
+                    >
+                      Add the owner and their corresponding weight.
+                    </FormDescription>
+                    <FormItem
+                      key={field.id}
+                      className="grid grid-cols-8 gap-4 space-y-0"
+                    >
+                      <FormField
+                        control={form.control}
+                        name={`owners.${index}.addressOrEns`}
+                        render={({ field }) => (
+                          <div className="space-y-2 lg:col-span-6">
+                            <Label htmlFor="address">Address or ENS</Label>
+                            <div className="flex items-center space-x-3">
+                              <Avatar className="h-8 w-8">
+                                {/* If the address is valid, try resolving an ens Avatar */}
+                                <PlaceholderOrb
+                                  address={
+                                    // If the address is a valid address
+                                    isAddress(field?.value)
+                                      ? field?.value
+                                      : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                  }
+                                  className={cn(
+                                    // If the field is not valid, add opacity
+                                    form.formState.errors.owners &&
+                                      form.formState.errors.owners[index] &&
+                                      form.formState.errors.owners[index]
+                                        ?.addressOrEns
+                                      ? "opacity-50"
+                                      : "opacity-100",
+                                  )}
+                                />
+                              </Avatar>
+                              <Input
+                                id="address"
+                                className=""
+                                {...field}
+                                placeholder="Your address or ENS name"
+                                onBlur={e => {
+                                  // Validate the address
+                                  if (!e.target.value) {
+                                    // Clear the value of key address
+                                    form.setValue(
+                                      `owners.${index}.address`,
+                                      "",
+                                    );
+                                  }
+                                  const address = e.target.value;
 
-                                validateAddress(address, index);
-
-                                // Trigger the form validation
-                                form.trigger();
-                              }}
-                              onChange={e => {
-                                // Update the field value
-                                field.onChange(e.target.value || "");
-
-                                // Validate the address
-                                const address = e.target.value;
-
-                                if (address) {
                                   validateAddress(address, index);
 
                                   // Trigger the form validation
                                   form.trigger();
-                                }
-                              }}
-                            />
-                          </div>
-                          <FormMessage />
-                        </div>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      key={field.id}
-                      name={`owners.${index}.weight`}
-                      render={({ field }) => (
-                        <>
-                          <FormControl>
-                            <div className="col-span-1 space-y-2">
-                              <Label htmlFor="weight">Weight</Label>
-                              <Input
-                                id="weight"
-                                min="1"
-                                type="number"
-                                {...field}
-                                onChange={e =>
-                                  field.onChange(
-                                    e.target.value
-                                      ? parseInt(e.target.value, 10)
-                                      : "",
-                                  )
-                                }
+                                }}
+                                onChange={e => {
+                                  // Update the field value
+                                  field.onChange(e.target.value || "");
+
+                                  // Validate the address
+                                  const address = e.target.value;
+
+                                  if (address) {
+                                    validateAddress(address, index);
+
+                                    // Trigger the form validation
+                                    form.trigger();
+                                  }
+                                }}
                               />
-                              <FormMessage />
                             </div>
-                          </FormControl>
-                        </>
-                      )}
-                    />
-                    <div
-                      className={cn(
-                        "flex h-full flex-col col-span-1",
-                        // If there is error, justify center, else end
-                        form.formState.errors.owners &&
-                          form.formState.errors.owners[index] &&
-                          form.formState.errors.owners[index]?.addressOrEns
-                          ? "justify-center"
-                          : "justify-end",
-                      )}
-                    >
-                      <Button
-                        type="button"
-                        disabled={fields.length < 2}
-                        variant="outline"
-                        size="icon"
-                        className="mt-1.5 rounded-full"
-                        onClick={() => {
-                          remove(index);
-                          form.trigger();
-                        }}
+                            <FormMessage />
+                          </div>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        key={field.id}
+                        name={`owners.${index}.weight`}
+                        render={({ field }) => (
+                          <>
+                            <FormControl>
+                              <div className="col-span-1 space-y-2">
+                                <Label htmlFor="weight">Weight</Label>
+                                <Input
+                                  id="weight"
+                                  min="1"
+                                  type="number"
+                                  {...field}
+                                  onChange={e => {
+                                    field.onChange(
+                                      e.target.value
+                                        ? parseInt(e.target.value, 10)
+                                        : "",
+                                    );
+                                    form.trigger();
+                                  }}
+                                />
+                                <FormMessage />
+                              </div>
+                            </FormControl>
+                          </>
+                        )}
+                      />
+                      <div
+                        className={cn(
+                          "flex h-full flex-col col-span-1",
+                          // If there is error, justify center, else end
+                          form.formState.errors.owners &&
+                            form.formState.errors.owners[index] &&
+                            form.formState.errors.owners[index]?.addressOrEns
+                            ? "justify-center"
+                            : "justify-end",
+                        )}
                       >
-                        <UserMinus2 className="h-5 w-5" />
-                      </Button>
-                    </div>
-                  </FormItem>
+                        <Button
+                          type="button"
+                          disabled={fields.length < 2}
+                          variant="outline"
+                          size="icon"
+                          className="mt-1.5 rounded-full"
+                          onClick={() => {
+                            remove(index);
+                            form.trigger();
+                          }}
+                        >
+                          <UserMinus2 className="h-5 w-5" />
+                        </Button>
+                      </div>
+                    </FormItem>
+                  </>
                 ))}
               </div>
               <div>
@@ -546,10 +572,15 @@ export function ConfigurationForm() {
                   variant="outline"
                   size="sm"
                   className="mt-2"
-                  onClick={() => append({ addressOrEns: "", weight: 1 })}
+                  onClick={() => {
+                    append({ addressOrEns: "", weight: 1 });
+                    form.trigger();
+                  }}
                 >
                   <UserPlus2 className="mr-2 h-5 w-5" />
-                  Add New Owner
+
+                  {typeParam === "personal" && "Add Backup Key"}
+                  {typeParam !== "personal" && "Add New Owner"}
                 </Button>
               </div>
               <FormField
@@ -590,6 +621,8 @@ export function ConfigurationForm() {
                           .join("\n")}
                       </p>
                     )}
+                    {/* Show all errors for debugging */}
+                    {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
                   </FormItem>
                 )}
               />
