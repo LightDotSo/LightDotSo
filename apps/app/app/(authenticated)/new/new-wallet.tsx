@@ -27,10 +27,19 @@ import {
   RadioGroupItem,
   Input,
   Label,
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
 } from "@lightdotso/ui";
 import { steps } from "./root";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type ChangeEvent, useEffect, useCallback } from "react";
+import {
+  BanknotesIcon,
+  BuildingLibraryIcon,
+  ShieldExclamationIcon,
+} from "@heroicons/react/24/solid";
 
 export function NewWallet() {
   const router = useRouter();
@@ -86,96 +95,125 @@ export function NewWallet() {
   }, [name]);
 
   return (
-    <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
-      <CardHeader className="gap-3">
-        <CardTitle>Create a New Wallet</CardTitle>
-        <CardDescription>Select a name for your new wallet.</CardDescription>
-      </CardHeader>
-      <CardContent className="grid gap-10">
-        <div className="grid gap-3">
-          <Label htmlFor="type">Type</Label>
-          <RadioGroup
-            defaultValue={type}
-            id="type"
-            className="grid grid-cols-3 gap-4"
-            onChange={handleTypeChange}
+    <TooltipProvider>
+      <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
+        <CardHeader className="gap-3">
+          <CardTitle>Create a New Wallet</CardTitle>
+          <CardDescription>Select a name for your new wallet.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-10">
+          <div className="grid gap-3">
+            <Label htmlFor="type">Type</Label>
+            <RadioGroup
+              defaultValue={type}
+              id="type"
+              className="grid grid-cols-3 gap-4"
+              onChange={handleTypeChange}
+            >
+              <div>
+                <Tooltip>
+                  <RadioGroupItem
+                    value="card"
+                    id="card"
+                    className="peer sr-only"
+                  />
+                  <TooltipTrigger asChild>
+                    <Label
+                      htmlFor="card"
+                      className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <BuildingLibraryIcon className="mb-3 h-6 w-6"></BuildingLibraryIcon>
+                      Multi-sig
+                    </Label>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      A standard multi-sig wallet that requires multiple
+                      signers.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <div>
+                <Tooltip>
+                  <RadioGroupItem
+                    value="paypal"
+                    id="paypal"
+                    className="peer sr-only"
+                  />
+                  <TooltipTrigger asChild>
+                    <Label
+                      htmlFor="paypal"
+                      className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <BanknotesIcon className="mb-3 h-6 w-6"></BanknotesIcon>
+                      Personal Vault
+                    </Label>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      Protect your personal assets using backup key signers.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              <div>
+                <Tooltip>
+                  <RadioGroupItem
+                    value="2fa"
+                    id="2fa"
+                    disabled
+                    className="peer sr-only"
+                  />
+                  <TooltipTrigger asChild>
+                    <Label
+                      htmlFor="2fa"
+                      className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                    >
+                      <ShieldExclamationIcon className="mb-3 h-6 w-6"></ShieldExclamationIcon>
+                      2FA (Coming Soon)
+                    </Label>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Coming soon ...</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </RadioGroup>
+            <CardDescription className="text-sm">
+              Select the type of wallet you want to create
+            </CardDescription>
+          </div>
+          <div className="grid gap-3">
+            <Label htmlFor="name">Name</Label>
+            <Input
+              onChange={handleNameChange}
+              id="name"
+              placeholder="Your Wallet Name"
+              value={name}
+            />
+            <CardDescription className="text-sm">
+              Enter a name for your new wallet
+            </CardDescription>
+          </div>
+          <div>
+            <CardDescription className="text-base text-primary">
+              By creating a new wallet, you are accepting our term and
+              conditions
+            </CardDescription>
+          </div>
+        </CardContent>
+        <CardFooter className="justify-end">
+          <Button
+            disabled={!nameParam}
+            variant={nameParam ? "default" : "outline"}
+            onClick={() => navigateToStep()}
+            className="w-32"
           >
-            <div>
-              <RadioGroupItem value="card" id="card" className="peer sr-only" />
-              <Label
-                htmlFor="card"
-                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  className="mb-3 h-6 w-6"
-                >
-                  <rect width="20" height="14" x="2" y="5" rx="2" />
-                  <path d="M2 10h20" />
-                </svg>
-                Multi-sig
-              </Label>
-            </div>
-            <div>
-              <RadioGroupItem
-                value="paypal"
-                id="paypal"
-                className="peer sr-only"
-              />
-              <Label
-                htmlFor="paypal"
-                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-              >
-                {/* <Icons.paypal className="mb-3 h-6 w-6" /> */}
-                Personal Vault
-              </Label>
-            </div>
-            <div>
-              <RadioGroupItem
-                value="2fa"
-                id="2fa"
-                disabled
-                className="peer sr-only"
-              />
-              <Label
-                htmlFor="2fa"
-                className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
-              >
-                {/* <Icons.2fa className="mb-3 h-6 w-6" /> */}
-                2FA (Coming Soon)
-              </Label>
-            </div>
-          </RadioGroup>
-        </div>
-        <div className="grid gap-3">
-          <Label htmlFor="name">Name</Label>
-          <Input
-            onChange={handleNameChange}
-            id="name"
-            placeholder="Your Wallet Name"
-            value={name}
-          />
-          <CardDescription className="text-sm">
-            By creating a new wallet, you are accepting our term and conditions
-          </CardDescription>
-        </div>
-      </CardContent>
-      <CardFooter className="justify-end">
-        <Button
-          disabled={!nameParam}
-          variant={nameParam ? "default" : "outline"}
-          onClick={() => navigateToStep()}
-          className="w-32"
-        >
-          Continue
-        </Button>
-      </CardFooter>
-    </Card>
+            Continue
+          </Button>
+        </CardFooter>
+      </Card>
+    </TooltipProvider>
   );
 }
