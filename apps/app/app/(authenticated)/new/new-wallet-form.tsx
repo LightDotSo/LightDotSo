@@ -52,7 +52,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { NotionLinks } from "@lightdotso/const";
 import { useNewFormStore } from "@/stores/useNewForm";
 
-const newFormSchema = z.object({
+export const newFormSchema = z.object({
   type: z.enum(["multi", "personal", "2fa"], {
     required_error: "Please select a type.",
   }),
@@ -111,6 +111,13 @@ export function NewWalletForm() {
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.watch]);
+
+  // Set the form values from the URL on mount
+  useEffect(() => {
+    // Set the form values from the default values
+    setFormValues(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[1].href, window.location.origin);
