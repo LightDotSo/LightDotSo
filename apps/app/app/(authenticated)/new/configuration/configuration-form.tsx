@@ -47,6 +47,7 @@ import { UserMinus2, UserPlus2 } from "lucide-react";
 import type { Address } from "viem";
 import { isAddress } from "viem";
 import { publicClient } from "@/clients/public";
+import { cn } from "@lightdotso/utils";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -257,7 +258,14 @@ export function ConfigurationForm() {
                                   // Validate the address
                                   if (!e.target.value) return;
                                   const address = e.target.value;
-                                  if (!isAddress(address)) {
+
+                                  // Try to parse the address
+                                  if (isAddress(address)) {
+                                    // If the address is valid, set the value
+                                    field.onChange({
+                                      target: { value: address },
+                                    });
+                                  } else if (address.includes(".")) {
                                     // If the address is not valid, try to resolve it as an ENS name
                                     publicClient
                                       .getEnsName({
@@ -280,17 +288,35 @@ export function ConfigurationForm() {
                                             {
                                               type: "manual",
                                               message:
-                                                "Please enter a valid address or ENS name",
+                                                "The ENS name did not resolve. Please enter a valid address or ENS name",
                                             },
                                           );
                                         }
+                                      })
+                                      .catch(() => {
+                                        // Show an error on the message
+                                        form.setError(
+                                          `owners.${index}.address`,
+                                          {
+                                            type: "manual",
+                                            message:
+                                              "Please enter a valid address or ENS name",
+                                          },
+                                        );
                                       });
+                                  } else {
+                                    // Show an error on the message
+                                    form.setError(`owners.${index}.address`, {
+                                      type: "manual",
+                                      message:
+                                        "Please enter a valid address or ENS name",
+                                    });
                                   }
                                 }}
                               />
+                              <FormMessage />
                             </div>
                           </FormControl>
-                          <FormMessage />
                         </>
                       )}
                     />
@@ -316,12 +342,23 @@ export function ConfigurationForm() {
                         </>
                       )}
                     />
-                    <div className="flex h-full flex-col justify-end">
+                    <div
+                      className={cn(
+                        "flex h-full flex-col",
+                        // If there is error, justify center, else end
+                        form.formState.errors.owners &&
+                          form.formState.errors.owners[index] &&
+                          form.formState.errors.owners[index]?.address
+                          ? "justify-center"
+                          : "justify-end",
+                      )}
+                    >
                       <Button
                         type="button"
+                        disabled={fields.length < 2}
                         variant="outline"
                         size="icon"
-                        className="rounded-full"
+                        className="mt-1.5 rounded-full"
                         onClick={() => remove(index)}
                       >
                         <UserMinus2 className="h-5 w-5" />
