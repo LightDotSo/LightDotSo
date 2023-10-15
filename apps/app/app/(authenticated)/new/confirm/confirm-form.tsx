@@ -40,6 +40,7 @@ import {
 import { publicClient } from "@/clients/public";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
+import type * as z from "zod";
 
 type NewFormValues = z.infer<typeof newFormStoreSchema>;
 
@@ -54,7 +55,17 @@ export function ConfirmForm() {
   const saltParam = searchParams.get("salt");
 
   // create owners array
-  let owners = [];
+  let owners: {
+    address?: string;
+    addressOrEns: string;
+    weight: number;
+  }[] = [];
+
+  let owner: {
+    address?: string;
+    addressOrEns: string;
+    weight: number;
+  };
 
   let ownerIndex = 0;
 
@@ -68,8 +79,6 @@ export function ConfirmForm() {
     if ((!addressParam && !weightParam) || isNaN(parseInt(weightParam || ""))) {
       break;
     }
-
-    let owner;
 
     // Parse and assign address
     if (
@@ -160,6 +169,8 @@ export function ConfirmForm() {
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
+    // TODO: Fix this type error w/ zod
+    // @ts-expect-error
     resolver: zodResolver(newFormStoreSchema, defaultValues),
   });
 
