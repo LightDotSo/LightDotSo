@@ -255,7 +255,12 @@ export function ConfigurationForm() {
                       render={({ field }) => (
                         <>
                           <FormControl>
-                            <Input className="" type="number" {...field} />
+                            <Input
+                              className=""
+                              min="1"
+                              type="number"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </>
