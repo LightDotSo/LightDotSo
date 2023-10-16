@@ -23,6 +23,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import { isAddress } from "viem";
 
 const transition = {
   type: "tween",
@@ -55,8 +56,9 @@ export const Tabs = ({
   const firstSlug = useMemo(() => {
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
-    // Return the first slug if it exists, otherwise return '/'
-    return slugs.length > 0 ? "/" + slugs[0] : "/";
+
+    // Return the first slug if it is an address
+    return slugs.length > 0 && isAddress(slugs[0]) ? "/" + slugs[0] : "";
   }, [pathname]);
 
   const navRef = useRef<HTMLDivElement>(null);
