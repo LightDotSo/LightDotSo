@@ -30,6 +30,7 @@ import {
   FormControl,
   FormLabel,
   TooltipProvider,
+  toast,
 } from "@lightdotso/ui";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
@@ -51,7 +52,7 @@ type NewFormValues = z.infer<typeof newFormStoreSchema>;
 export function ConfirmForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setFormValues } = useNewFormStore();
+  const { setFormValues, fetchToCreate } = useNewFormStore();
 
   const nameParam = searchParams.get("name");
   const typeParam = searchParams.get("type");
@@ -144,11 +145,27 @@ export function ConfirmForm() {
 
   // Create a function to submit the form
   const onSubmit = useCallback(
-    (_values: NewFormValues) => {
+    () => {
+      // Navigate to the next step
+      toast({
+        title: "Creating wallet...",
+      });
       // Set the form values
       // setFormValues(values);
-      // Navigate to the next step
-      // navigateToStep();
+      fetchToCreate(true)
+        .then(() => {
+          toast({
+            title: "Wallet created!",
+            description: "You can now use your wallet.",
+          });
+          router.push("/");
+        })
+        .catch(() => {
+          toast({
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request.",
+          });
+        });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [setFormValues],

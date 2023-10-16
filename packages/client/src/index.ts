@@ -53,8 +53,9 @@ export const getWallet = async ({
   );
 };
 
-export const simulateWallet = async ({
+export const createWallet = async ({
   params,
+  simulate = true,
 }: {
   params: {
     name: string;
@@ -65,6 +66,7 @@ export const simulateWallet = async ({
     salt: string;
     threshold: number;
   };
+  simulate?: boolean;
 }) => {
   const client = getClient(true);
 
@@ -72,7 +74,7 @@ export const simulateWallet = async ({
     client.POST("/wallet/create", {
       params: {
         query: {
-          simulate: true,
+          simulate,
         },
       },
       body: params,

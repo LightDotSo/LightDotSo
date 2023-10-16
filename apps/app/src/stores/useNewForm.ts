@@ -16,7 +16,7 @@
 import { create } from "zustand";
 import type * as z from "zod";
 import { newFormStoreSchema } from "@/schemas/newForm";
-import { simulateWallet } from "@lightdotso/client";
+import { createWallet } from "@lightdotso/client";
 import { isEqual } from "lodash";
 
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
@@ -27,7 +27,7 @@ interface FormStore {
   formValues: Partial<NewFormStoreValues>;
   setFormValues: (values: Partial<NewFormStoreValues>) => void;
   validate: () => void;
-  fetchToSimulate: () => Promise<void>; // if your fetch returns an address
+  fetchToCreate: (isCreate: boolean) => Promise<void>; // if your fetch returns an address
   isValid: boolean;
   isLoading: boolean;
   errors: z.ZodError | null;
@@ -56,7 +56,7 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
     // Check if object properties changed and if form is valid
     if (!isEqual(currentState, nextState) && get().isValid) {
       // If valid, fetch to simulate
-      await get().fetchToSimulate();
+      await get().fetchToCreate(false);
     }
 
     // Update prevState
@@ -69,7 +69,7 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
       errors: result.success ? null : result.error,
     });
   },
-  fetchToSimulate: async function () {
+  fetchToCreate: async function (isCreate: boolean) {
     // Run validation before fetching
     get().validate();
 
@@ -81,7 +81,7 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
     set({ isLoading: true });
 
     // Replace with your actual fetch logic
-    const res = await simulateWallet({
+    const res = await createWallet({
       params: {
         name: get().formValues.name!,
         salt: get().formValues.salt!,
@@ -91,6 +91,7 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
           address: owner.address!,
         })),
       },
+      simulate: !isCreate,
     });
 
     // Parse the response and set the address
