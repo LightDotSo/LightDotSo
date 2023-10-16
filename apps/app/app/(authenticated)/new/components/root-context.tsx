@@ -18,13 +18,15 @@
 import { useNewFormStore } from "@/stores/useNewForm";
 
 export function RootContext() {
-  const { errors, formValues, isValid } = useNewFormStore();
+  const { address, errors, formValues, isValid } = useNewFormStore();
 
   return (
     <div>
       <pre className="mt-2 w-full overflow-auto rounded-md p-4">
         <code className="break-all text-primary">
           {isValid ? "Valid" : "Invalid"}
+          <br></br>
+          {JSON.stringify(address, null, 2)}
           <br></br>
           {JSON.stringify(errors, null, 2)}
           <br></br>

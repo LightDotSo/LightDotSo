@@ -16,18 +16,22 @@
 import { create } from "zustand";
 import type * as z from "zod";
 import { newFormStoreSchema } from "@/schemas/newForm";
+import { simulateWallet } from "@lightdotso/client";
 
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
 
 interface FormStore {
+  address: string | null;
   formValues: Partial<NewFormStoreValues>;
   setFormValues: (values: Partial<NewFormStoreValues>) => void;
   validate: () => void;
+  fetchToSimulate: () => Promise<void>; // if your fetch returns an address
   isValid: boolean;
   errors: z.ZodError | null;
 }
 
 export const useNewFormStore = create<FormStore>((set, get) => ({
+  address: null,
   formValues: {
     type: "multi",
     name: "",
@@ -43,6 +47,33 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
     set({
       isValid: result.success,
       errors: result.success ? null : result.error,
+    });
+  },
+  fetchToSimulate: async function () {
+    // Run validation before fetching
+    this.validate();
+
+    // Replace with your actual fetch logic
+    const res = await simulateWallet({
+      params: {
+        name: get().formValues.name!,
+        salt: get().formValues.salt!,
+        threshold: get().formValues.threshold!,
+        owners: get().formValues.owners!.map(owner => ({
+          weight: owner.weight!,
+          address: owner.address!,
+        })),
+      },
+    });
+
+    // Parse the response and set the address
+    res.map(response => {
+      if (response && response.response && response.response.status === 200) {
+        // assuming address is a field in formValues
+        set(() => ({
+          address: response.data?.address,
+        }));
+      }
     });
   },
   isValid: false,
