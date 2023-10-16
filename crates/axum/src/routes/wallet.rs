@@ -29,7 +29,7 @@ use ethers_main::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
-use lightdotso_prisma::wallet;
+use lightdotso_prisma::{user, wallet};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -46,17 +46,19 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    // The address of the wallet.
+    /// The address of the wallet.
     pub address: String,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    // The offset of the first wallet to return.
+    /// The offset of the first wallet to return.
     pub offset: Option<i64>,
-    // The maximum number of wallets to return.
+    /// The maximum number of wallets to return.
     pub limit: Option<i64>,
+    /// A filter to return wallets w/ a given owner.
+    pub owner: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -202,12 +204,20 @@ async fn v1_list_handler(
     // Get the pagination query.
     let Query(pagination) = pagination.unwrap_or_default();
 
+    let query = match pagination.owner {
+        Some(owner) => vec![
+            wallet::users::some(vec![user::address::equals(Some(owner))]),
+            wallet::chain_id::equals(0),
+        ],
+        None => vec![],
+    };
+
     // Get the wallets from the database.
     let wallets = client
         .client
         .unwrap()
         .wallet()
-        .find_many(vec![])
+        .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
         .exec()
@@ -377,6 +387,7 @@ async fn v1_post_handler(
                 .await?;
             trace!(?configuration_data);
 
+            // Get the users from the database.
             let user_data = client
                 .user()
                 .find_many(
@@ -439,7 +450,18 @@ async fn v1_post_handler(
                     0,
                     format!("{:?}", salt_bytes),
                     to_checksum(&factory_address, None),
-                    vec![lightdotso_prisma::wallet::name::set(name)],
+                    vec![
+                        lightdotso_prisma::wallet::name::set(name),
+                        lightdotso_prisma::wallet::configuration::connect(vec![
+                            lightdotso_prisma::configuration::id::equals(configuration_data.id),
+                        ]),
+                        lightdotso_prisma::wallet::users::connect(
+                            user_data
+                                .iter()
+                                .map(|user| lightdotso_prisma::user::id::equals(user.id.clone()))
+                                .collect(),
+                        ),
+                    ],
                 )
                 .exec()
                 .instrument(info_span!("create_receipt"))
