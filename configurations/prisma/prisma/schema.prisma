@@ -149,7 +149,7 @@ model Log {
   topics              LogTopic[]
   /// Data
   /// pub data: Bytes
-  data                String
+  data                Bytes
   /// Block Hash
   /// pub block_hash: Option<H256>
   blockHash           String?
@@ -230,7 +230,7 @@ model Receipt {
   root              String?
   /// Logs bloom
   /// pub logs_bloom: Bloom
-  logsBloom         String
+  logsBloom         Bytes
   /// Transaction type, Some(1) for AccessList transaction, None for Legacy
   /// pub transaction_type: Option<U64>
   transactionType   Int?
@@ -284,7 +284,7 @@ model Transaction {
   gas                  String
   /// Input data
   /// pub input: Bytes
-  input                String
+  input                Bytes
   /// ECDSA recovery id
   /// pub v: U64
   v                    String
