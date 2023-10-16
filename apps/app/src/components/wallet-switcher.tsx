@@ -15,14 +15,13 @@
 
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   CaretSortIcon,
   CheckIcon,
   PlusCircledIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { useAccount } from "wagmi";
 import {
   cn,
   Avatar,
@@ -42,6 +41,7 @@ import { PlaceholderOrb } from "./placeholder-orb";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useQuery } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";
+import { useAuth } from "@/stores/useAuth";
 
 // Entire file from: https://github.com/shadcn/ui/blob/ece54dd362a458b056a1e86481518f0193967e82/apps/www/app/examples/dashboard/components/team-switcher.tsx
 // License: MIT
@@ -57,14 +57,14 @@ export function WalletSwitcher({
   className,
 }: WalletSwitcherProps) {
   const isMounted = useIsMounted();
-  const [open, setOpen] = React.useState(false);
-  const [selectedWallet, setSelectedWallet] = React.useState<{
+  const [open, setOpen] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<{
     address: string;
     factory_address: string;
     id: string;
   }>();
   const router = useRouter();
-  const { address } = useAccount();
+  const { address } = useAuth();
 
   const { data } = useQuery({
     queryKey: ["wallets", address],
@@ -73,7 +73,9 @@ export function WalletSwitcher({
 
       // Return if the response is 200
       return res.match(
-        data => data?.data,
+        data => {
+          return data?.data;
+        },
         err => {
           console.error(err);
           return null;
@@ -81,6 +83,15 @@ export function WalletSwitcher({
       );
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      // Get the first wallet
+      const wallet = data[0];
+
+      setSelectedWallet(wallet);
+    }
+  }, [data, address]);
 
   // If the address is empty or is not mounted, don't render
   if (!isMounted || !address) {

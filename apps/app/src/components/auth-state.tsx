@@ -13,19 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import Root from "@/app/root";
+"use client";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <Root type="unauthenticated">
-      <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1">{children}</div>
-      </div>
-    </Root>
-  );
-}
+import { useEffect } from "react";
+import { useAuth } from "@/stores/useAuth";
+import { useAccount } from "wagmi";
+
+export const AuthState = () => {
+  const { address } = useAccount();
+  const { setAddress } = useAuth();
+
+  // On component mount, or when the address from useAccount changes,
+  // update the auth state's address
+  useEffect(() => {
+    setAddress(address);
+  }, [address, setAddress]);
+
+  return null; // or return children if there are children to render
+};

@@ -35,6 +35,7 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { VercelToolbar } from "@/components/vercel-toolbar";
+import { AuthState } from "@/components/auth-state";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -91,6 +92,7 @@ export default function Root({
                   {children}
                 </div>
               </main>
+              <AuthState />
               <Toaster />
             </Web3Provider>
           </TrpcProvider>

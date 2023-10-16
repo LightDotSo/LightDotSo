@@ -29,7 +29,8 @@ import {
 } from "@lightdotso/ui";
 import { BellIcon } from "@radix-ui/react-icons";
 import { BellRing, Check } from "lucide-react";
-import { useAccount } from "wagmi";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import { useAuth } from "@/stores/useAuth";
 
 const notifications = [
   {
@@ -47,10 +48,11 @@ const notifications = [
 ];
 
 export function NotificationPopover() {
-  const { address } = useAccount();
+  const isMounted = useIsMounted();
+  const { address } = useAuth();
 
   // If the address is empty, return null
-  if (!address) {
+  if (!isMounted || !address) {
     return null;
   }
 

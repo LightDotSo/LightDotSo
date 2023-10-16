@@ -13,19 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import Root from "@/app/root";
+import { create } from "zustand";
+import type { Address } from "viem";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <Root type="unauthenticated">
-      <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1">{children}</div>
-      </div>
-    </Root>
-  );
+interface AuthState {
+  address: Address | undefined;
+  setAddress: (address: Address | undefined) => void;
+  removeAddress: () => void;
 }
+
+export const useAuth = create<AuthState>(set => ({
+  address: undefined,
+  setAddress: (address: Address | undefined) => set({ address }),
+  removeAddress: () => set({ address: undefined }),
+}));
