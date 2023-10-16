@@ -67,9 +67,13 @@ export function WalletSwitcher({
   const { address } = useAuth();
 
   const { data } = useQuery({
+    enabled: !!address,
     queryKey: ["wallets", address],
     queryFn: async () => {
-      const res = await getWallets({ isPublic: true });
+      const res = await getWallets({
+        owner: address!,
+        isPublic: true,
+      });
 
       // Return if the response is 200
       return res.match(

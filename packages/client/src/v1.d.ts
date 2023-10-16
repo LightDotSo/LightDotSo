@@ -180,6 +180,7 @@ export interface operations {
   v1_get_handler: {
     parameters: {
       query: {
+        /** @description The address of the wallet. */
         address: string;
       };
     };
@@ -205,8 +206,12 @@ export interface operations {
   v1_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first wallet to return. */
         offset?: number | null;
+        /** @description The maximum number of wallets to return. */
         limit?: number | null;
+        /** @description A filter to return wallets w/ a given owner. */
+        owner?: string | null;
       };
     };
     responses: {
