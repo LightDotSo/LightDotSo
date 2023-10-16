@@ -31,7 +31,7 @@ import {
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import { useAccount } from "wagmi";
+import type { RootType } from "@/app/root";
 
 const tabs = [
   {
@@ -94,18 +94,15 @@ const tabs = [
 export function MainNav({
   // eslint-disable-next-line react/prop-types
   className = "",
+  type,
   ...props
-}: React.HTMLAttributes<HTMLElement>) {
+}: React.HTMLAttributes<HTMLElement> & {
+  type: RootType;
+}) {
   const [hookProps] = useState({
-    tabs,
+    tabs: type === "wallet" ? tabs : tabs.slice(0, 3),
   });
   const framer = useTabs(hookProps);
-  const { address } = useAccount();
-
-  // If the address is empty, return null
-  if (!address) {
-    return null;
-  }
 
   return (
     <nav

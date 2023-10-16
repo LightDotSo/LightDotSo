@@ -21,5 +21,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Root>{children}</Root>;
+  return <Root type="authenticated">{children}</Root>;
 }

@@ -42,12 +42,14 @@ const inter = Inter({
   display: "swap",
 });
 
+export type RootType = "authenticated" | "unauthenticated" | "wallet";
+
 export default function Root({
   children,
-  isTabEnabled = false,
+  type,
 }: {
   children: React.ReactNode;
-  isTabEnabled?: boolean;
+  type: RootType;
 }) {
   return (
     <html lang="en" className={`${inter.variable} font-sans`}>
@@ -66,7 +68,8 @@ export default function Root({
                         >
                           <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
                         </Link>
-                        {isTabEnabled && <WalletSwitcher />}
+                        <span className="ml-2 mr-1 text-primary/60">/</span>
+                        {type === "unauthenticated" && <WalletSwitcher />}
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
@@ -76,7 +79,12 @@ export default function Root({
                         <ConnectButton />
                       </div>
                     </div>
-                    <MainNav className="h-10 items-center px-12" />
+                    {(type === "unauthenticated" || type === "wallet") && (
+                      <MainNav
+                        type={type}
+                        className="h-10 items-center px-12"
+                      />
+                    )}
                   </div>
                   {children}
                 </div>

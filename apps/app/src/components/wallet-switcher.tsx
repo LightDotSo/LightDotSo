@@ -94,7 +94,6 @@ export function WalletSwitcher({
 
   return (
     <>
-      <span className="ml-2 mr-1 text-primary/60">/</span>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
