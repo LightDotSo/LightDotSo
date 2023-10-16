@@ -40,34 +40,11 @@ import {
 } from "@lightdotso/ui";
 import { PlaceholderOrb } from "./placeholder-orb";
 import { useIsMounted } from "@/hooks/useIsMounted";
-
-const groups = [
-  {
-    label: "Wallets",
-    wallets: [
-      {
-        label: "Shun Kakinoki",
-        value: "personal",
-        href: "/0x10DbbE70128929723c1b982e53c51653232e4Ff2",
-      },
-      {
-        label: "Family Wallet",
-        value: "family",
-        href: "/0x10DbbE70128929723c1b982e53c51653232e4Ff2",
-      },
-      {
-        label: "Monsters Inc.",
-        value: "monsters",
-        href: "/0x10DbbE70128929723c1b982e53c51653232e4Ff2",
-      },
-    ],
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getWallets } from "@lightdotso/client";
 
 // Entire file from: https://github.com/shadcn/ui/blob/ece54dd362a458b056a1e86481518f0193967e82/apps/www/app/examples/dashboard/components/team-switcher.tsx
 // License: MIT
-
-type Wallet = (typeof groups)[number]["wallets"][number];
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -81,11 +58,29 @@ export function WalletSwitcher({
 }: WalletSwitcherProps) {
   const isMounted = useIsMounted();
   const [open, setOpen] = React.useState(false);
-  const [selectedWallet, setSelectedWallet] = React.useState<Wallet>(
-    groups[0].wallets[0],
-  );
+  const [selectedWallet, setSelectedWallet] = React.useState<{
+    address: string;
+    factory_address: string;
+    id: string;
+  }>();
   const router = useRouter();
   const { address } = useAccount();
+
+  const { data } = useQuery({
+    queryKey: ["wallets", address],
+    queryFn: async () => {
+      const res = await getWallets({ isPublic: true });
+
+      // Return if the response is 200
+      return res.match(
+        data => data?.data,
+        err => {
+          console.error(err);
+          return null;
+        },
+      );
+    },
+  });
 
   // If the address is empty or is not mounted, don't render
   if (!isMounted || !address) {
@@ -108,10 +103,10 @@ export function WalletSwitcher({
               src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
               alt={selectedWallet.label}
             /> */}
-              <PlaceholderOrb address={selectedWallet.href.substring(1)} />
+              <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
               {/* <AvatarFallback>SC</AvatarFallback> */}
             </Avatar>
-            {selectedWallet.label}
+            {selectedWallet?.address}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -120,15 +115,15 @@ export function WalletSwitcher({
             <CommandList>
               <CommandInput placeholder="Search wallet..." />
               <CommandEmpty>No wallet found.</CommandEmpty>
-              {groups.map(group => (
-                <CommandGroup key={group.label} heading={group.label}>
-                  {group.wallets.map(wallet => (
+              <CommandGroup>
+                {data &&
+                  data.map(wallet => (
                     <CommandItem
-                      key={wallet.value}
+                      key={wallet.id}
                       onSelect={() => {
                         setSelectedWallet(wallet);
                         setOpen(false);
-                        router.push(wallet.href);
+                        router.push(`/${wallet.address}`);
                       }}
                       className="text-sm"
                     >
@@ -139,21 +134,20 @@ export function WalletSwitcher({
                         className="grayscale"
                       />
                       <AvatarFallback>SC</AvatarFallback> */}
-                        <PlaceholderOrb address={wallet.href.substring(1)} />
+                        <PlaceholderOrb address={wallet.address} />
                       </Avatar>
-                      {wallet.label}
+                      {wallet.address}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
-                          selectedWallet.value === wallet.value
+                          selectedWallet?.address === wallet.address
                             ? "opacity-100"
                             : "opacity-0",
                         )}
                       />
                     </CommandItem>
                   ))}
-                </CommandGroup>
-              ))}
+              </CommandGroup>
             </CommandList>
             <CommandSeparator />
             <CommandList>

@@ -53,6 +53,19 @@ export const getWallet = async ({
   );
 };
 
+export const getWallets = async ({
+  isPublic = false,
+}: {
+  isPublic?: boolean;
+}) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/wallet/list"),
+    () => new Error("Database error"),
+  );
+};
+
 export const createWallet = async ({
   params,
   simulate = true,
