@@ -18,12 +18,12 @@ import type { Address } from "viem";
 
 interface AuthState {
   address: Address | undefined;
-  setAddress: (address: Address) => void;
+  setAddress: (address: Address | undefined) => void;
   removeAddress: () => void;
 }
 
 export const useAuth = create<AuthState>(set => ({
   address: undefined,
-  setAddress: (address: Address) => set({ address }),
+  setAddress: (address: Address | undefined) => set({ address }),
   removeAddress: () => set({ address: undefined }),
 }));
