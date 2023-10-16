@@ -29,6 +29,7 @@ export const handler = async (params: { address: string }) => {
   // -------------------------------------------------------------------------
 
   let res = await getWallet({ address: params.address, isPublic: false });
+  console.info(JSON.stringify(res));
 
   // -------------------------------------------------------------------------
   // Parse
