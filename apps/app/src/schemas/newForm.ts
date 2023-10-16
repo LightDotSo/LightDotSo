@@ -105,8 +105,12 @@ export const newFormConfigurationRefinedSchema =
     });
   });
 
+export const newFormConfirmSchema = z.object({
+  check: z.boolean(),
+});
+
 // Import and combine all schemas
 export const newFormStoreSchema = z.intersection(
-  newFormSchema,
-  newFormConfigurationRefinedSchema,
+  z.intersection(newFormSchema, newFormConfigurationRefinedSchema),
+  newFormConfirmSchema,
 );
