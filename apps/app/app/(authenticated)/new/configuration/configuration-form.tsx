@@ -66,7 +66,7 @@ function timestampToBytes32(timestamp: number): string {
 export function ConfigurationForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setFormValues } = useNewFormStore();
+  const { setFormValues, fetchToSimulate } = useNewFormStore();
 
   const nameParam = searchParams.get("name");
   const typeParam = searchParams.get("type");
@@ -559,6 +559,12 @@ export function ConfigurationForm() {
                                         : "",
                                     );
                                     form.trigger();
+                                  }}
+                                  onBlur={() => {
+                                    // First, trigger than simulate Form
+                                    form.trigger().then(async () => {
+                                      await fetchToSimulate();
+                                    });
                                   }}
                                 />
                                 <FormMessage />

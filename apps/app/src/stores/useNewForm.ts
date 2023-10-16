@@ -53,18 +53,10 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
 
     const nextState = get().formValues;
 
-    // Check if object properties changed
-    if (!isEqual(currentState, nextState)) {
-      if (get().isValid) {
-        // Set loading state to true before starting async operation
-        set({ isLoading: true });
-
-        // If valid, fetch to simulate
-        await get().fetchToSimulate();
-
-        // Set loading state to false after async operation is finished
-        set({ isLoading: false });
-      }
+    // Check if object properties changed and if form is valid
+    if (!isEqual(currentState, nextState) && get().isValid) {
+      // If valid, fetch to simulate
+      await get().fetchToSimulate();
     }
 
     // Update prevState
@@ -79,7 +71,14 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
   },
   fetchToSimulate: async function () {
     // Run validation before fetching
-    this.validate();
+    get().validate();
+
+    if (!get().isValid) {
+      return;
+    }
+
+    // Set loading state to true before starting async operation
+    set({ isLoading: true });
 
     // Replace with your actual fetch logic
     const res = await simulateWallet({
@@ -103,5 +102,8 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
         }));
       }
     });
+
+    // Set loading state to false after async operation is finished
+    set({ isLoading: false });
   },
 }));
