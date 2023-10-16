@@ -54,15 +54,11 @@ impl Polling {
         let db_client = Arc::new(create_client().await.unwrap());
 
         // Create the kafka client
-        let kafka_client: Option<Arc<FutureProducer>> = if live {
-            get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)))
-        } else {
-            None
-        };
+        let kafka_client: Option<Arc<FutureProducer>> =
+            get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)));
 
         // Create the provider
-        let provider: Option<Arc<Provider<Http>>> =
-            if live { get_provider(chain_id).await.ok().map(Arc::new) } else { None };
+        let provider: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
 
         // Create the polling
         Self { chain_id, live, db_client, kafka_client, provider }
@@ -193,14 +189,17 @@ impl Polling {
                     // Create to db if the wallet has a image_hash
                     if let Some(hash) = &wallet.image_hash {
                         if !hash.0.is_empty() {
+                            // Log the wallet along with the chain id.
+                            info!("Wallet found, chain_id: {} wallet: {:?}", self.chain_id, wallet);
+
                             // Create the wallet in the db.
                             // let res = self.db_create_wallet(wallet).await;
                             // if res.is_err() {
                             //     error!("db_create_wallet error: {:?}", res);
                             // }
 
-                            // Send the tx queue if live.
-                            if self.live && self.kafka_client.is_some() && self.provider.is_some() {
+                            // Send the tx queue on all modes.
+                            if self.kafka_client.is_some() && self.provider.is_some() {
                                 let _ = self
                                     .send_tx_queue(wallet.block_number.0.parse().unwrap())
                                     .await;
