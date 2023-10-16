@@ -15,20 +15,36 @@
 
 import { create } from "zustand";
 import type * as z from "zod";
-import type { newFormStoreSchema } from "@/schemas/newForm";
+import { newFormStoreSchema } from "@/schemas/newForm";
 
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
 
 interface FormStore {
   formValues: Partial<NewFormStoreValues>;
   setFormValues: (values: Partial<NewFormStoreValues>) => void;
+  validate: () => void;
+  isValid: boolean;
+  errors: z.ZodError | null;
 }
 
-export const useNewFormStore = create<FormStore>(set => ({
+export const useNewFormStore = create<FormStore>((set, get) => ({
   formValues: {
     type: "multi",
     name: "",
   },
-  setFormValues: values =>
-    set(state => ({ formValues: { ...state.formValues, ...values } })),
+  setFormValues: values => {
+    set(prevState => ({ formValues: { ...prevState?.formValues, ...values } }));
+
+    // After state has been set, run validation
+    get().validate();
+  },
+  validate: function () {
+    const result = newFormStoreSchema.safeParse(this?.formValues ?? {});
+    set({
+      isValid: result.success,
+      errors: result.success ? null : result.error,
+    });
+  },
+  isValid: false,
+  errors: null,
 }));
