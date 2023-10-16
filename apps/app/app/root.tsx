@@ -74,9 +74,7 @@ export default function Root({
                         <ConnectButton />
                       </div>
                     </div>
-                    {isTabEnabled && (
-                      <MainNav className="h-10 items-center px-12" />
-                    )}
+                    <MainNav className="h-10 items-center px-12" />
                   </div>
                   {children}
                 </div>
