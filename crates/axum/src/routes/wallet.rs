@@ -29,7 +29,7 @@ use ethers_main::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
-use lightdotso_prisma::wallet;
+use lightdotso_prisma::{user, wallet};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -204,12 +204,20 @@ async fn v1_list_handler(
     // Get the pagination query.
     let Query(pagination) = pagination.unwrap_or_default();
 
+    let query = match pagination.owner {
+        Some(owner) => vec![
+            wallet::users::some(vec![user::address::equals(Some(owner))]),
+            wallet::chain_id::equals(0),
+        ],
+        None => vec![],
+    };
+
     // Get the wallets from the database.
     let wallets = client
         .client
         .unwrap()
         .wallet()
-        .find_many(vec![wallet::address::equals(pagination.owner.unwrap_or("".to_string()))])
+        .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
         .exec()
