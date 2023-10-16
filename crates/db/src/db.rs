@@ -219,12 +219,10 @@ pub async fn create_transaction_with_log_receipt(
                         to_checksum(&log.address, None),
                         log.data.to_string(),
                         vec![
-                            log::topics::set(
+                            log::topics::connect(
                                 log.topics
                                     .iter()
-                                    .map(|id| {
-                                        log_topic::UniqueWhereParam::IdEquals(format!("{:?}", id))
-                                    })
+                                    .map(|id| log_topic::id::equals(format!("{:?}", id)))
                                     .collect(),
                             ),
                             log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
