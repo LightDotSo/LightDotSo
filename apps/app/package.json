@@ -51,6 +51,7 @@
     "@trpc/react-query": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
     "@trpc/server": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
     "@types/lodash": "^4.14.199",
+    "@vercel/toolbar": "^0.1.5",
     "clsx": "^2.0.0",
     "connectkit": "^1.5.3",
     "date-fns": "^2.30.0",

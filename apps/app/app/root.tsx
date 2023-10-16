@@ -33,6 +33,8 @@ import { siweConfig } from "@/components/siwe-button";
 import Link from "next/link";
 import Script from "next/script";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
+import { VercelToolbar } from "@/components/vercel-toolbar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -84,6 +86,9 @@ export default function Root({
           </TrpcProvider>
         </ThemeProvider>
         <TailwindIndicator />
+        <Suspense>
+          <VercelToolbar />
+        </Suspense>
       </body>
       <Script async src="https://data.light.so/p.js" />
     </html>
