@@ -67,9 +67,9 @@ export function WalletSwitcher({
   const { address } = useAccount();
 
   const { data } = useQuery({
-    queryKey: [address, "wallets"],
+    queryKey: ["wallets", address],
     queryFn: async () => {
-      const res = await getWallets({});
+      const res = await getWallets({ isPublic: true });
 
       // Return if the response is 200
       return res.match(
@@ -136,7 +136,7 @@ export function WalletSwitcher({
                       <AvatarFallback>SC</AvatarFallback> */}
                         <PlaceholderOrb address={wallet.address} />
                       </Avatar>
-                      {wallet.factory_address}
+                      {wallet.address}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
