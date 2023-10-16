@@ -22,6 +22,7 @@ type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
 
 interface FormStore {
   address: string | null;
+  prevState: Partial<NewFormStoreValues> | null;
   formValues: Partial<NewFormStoreValues>;
   setFormValues: (values: Partial<NewFormStoreValues>) => void;
   validate: () => void;
@@ -32,15 +33,31 @@ interface FormStore {
 
 export const useNewFormStore = create<FormStore>((set, get) => ({
   address: null,
+  prevState: null,
   formValues: {
     type: "multi",
     name: "",
   },
-  setFormValues: values => {
+  setFormValues: async values => {
+    const currentState = get().formValues;
+
     set(prevState => ({ formValues: { ...prevState?.formValues, ...values } }));
 
     // After state has been set, run validation
     get().validate();
+
+    const nextState = get().formValues;
+
+    // Check if object properties changed
+    if (JSON.stringify(currentState) !== JSON.stringify(nextState)) {
+      if (get().isValid) {
+        // If valid, fetch to simulate
+        await get().fetchToSimulate();
+      }
+    }
+
+    // Update prevState
+    set({ prevState: currentState });
   },
   validate: function () {
     const result = newFormStoreSchema.safeParse(this?.formValues ?? {});

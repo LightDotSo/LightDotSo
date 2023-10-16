@@ -480,7 +480,7 @@ export function ConfigurationForm() {
                         control={form.control}
                         name={`owners.${index}.addressOrEns`}
                         render={({ field }) => (
-                          <div className="space-y-2 lg:col-span-6">
+                          <div className="col-span-6 space-y-2">
                             <Label htmlFor="address">Address or ENS</Label>
                             <div className="flex items-center space-x-3">
                               <Avatar className="h-8 w-8">
