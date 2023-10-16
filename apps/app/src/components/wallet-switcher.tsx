@@ -15,7 +15,7 @@
 
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   CaretSortIcon,
   CheckIcon,
@@ -57,8 +57,8 @@ export function WalletSwitcher({
   className,
 }: WalletSwitcherProps) {
   const isMounted = useIsMounted();
-  const [open, setOpen] = React.useState(false);
-  const [selectedWallet, setSelectedWallet] = React.useState<{
+  const [open, setOpen] = useState(false);
+  const [selectedWallet, setSelectedWallet] = useState<{
     address: string;
     factory_address: string;
     id: string;
@@ -73,7 +73,9 @@ export function WalletSwitcher({
 
       // Return if the response is 200
       return res.match(
-        data => data?.data,
+        data => {
+          return data?.data;
+        },
         err => {
           console.error(err);
           return null;
@@ -81,6 +83,15 @@ export function WalletSwitcher({
       );
     },
   });
+
+  useEffect(() => {
+    if (data) {
+      // Get the first wallet
+      const wallet = data[0];
+
+      setSelectedWallet(wallet);
+    }
+  }, [data, address]);
 
   // If the address is empty or is not mounted, don't render
   if (!isMounted || !address) {
