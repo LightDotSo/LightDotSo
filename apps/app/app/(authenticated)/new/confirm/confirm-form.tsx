@@ -23,12 +23,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Checkbox,
   Form,
+  FormField,
+  FormItem,
+  FormControl,
+  FormLabel,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "../root";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
@@ -48,7 +52,6 @@ export function ConfirmForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setFormValues } = useNewFormStore();
-  const [isInitialValitation, setIsInitialValidation] = useState(false);
 
   const nameParam = searchParams.get("name");
   const typeParam = searchParams.get("type");
@@ -108,6 +111,7 @@ export function ConfirmForm() {
   }
 
   const defaultValues: NewFormValues = {
+    check: false,
     name: nameParam ?? "",
     type:
       typeParam && newFormSchema.shape.type.safeParse(typeParam).success
@@ -138,13 +142,6 @@ export function ConfirmForm() {
     resolver: zodResolver(newFormStoreSchema, defaultValues),
   });
 
-  const navigateToStep = useCallback(() => {
-    const url = new URL(steps[1].href, window.location.origin);
-    url.search = searchParams.toString();
-    router.push(url.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, searchParams]);
-
   // Create a function to submit the form
   const onSubmit = useCallback(
     (_values: NewFormValues) => {
@@ -154,7 +151,7 @@ export function ConfirmForm() {
       // navigateToStep();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [navigateToStep, setFormValues],
+    [setFormValues],
   );
 
   // Set the form values on mount
@@ -165,7 +162,6 @@ export function ConfirmForm() {
     form.setValue("salt", defaultValues.salt);
     form.setValue("owners", owners);
     setFormValues(defaultValues);
-    form.trigger();
 
     async function fetchENSNametoAddress() {
       // We will use newOwners array instead of mutating owners directly
@@ -193,8 +189,6 @@ export function ConfirmForm() {
       }
       form.setValue("owners", newOwners);
       setFormValues({ ...defaultValues, owners: newOwners });
-      form.trigger();
-      setIsInitialValidation(true);
     }
     fetchENSNametoAddress();
 
@@ -231,12 +225,35 @@ export function ConfirmForm() {
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {isInitialValitation && form.formState.errors && (
+              {form.formState.errors && (
                 <pre className="text-sm font-medium text-destructive">
                   {/* Print any message one line at a time */}
                   {extractDeeperErrors(form.formState.errors).join("\n")}
                 </pre>
               )}
+              <FormField
+                control={form.control}
+                name="check"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onBlur={() => {
+                          form.trigger();
+                        }}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>
+                        Confirm that the above settings are correct and that the
+                        action is irreversible.
+                      </FormLabel>
+                    </div>
+                  </FormItem>
+                )}
+              />
               <CardFooter className="flex justify-between px-0 pt-12">
                 <Button
                   variant="outline"
@@ -249,12 +266,9 @@ export function ConfirmForm() {
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}
-                  onClick={() => {
-                    navigateToStep();
-                  }}
                   type="submit"
                 >
-                  Continue
+                  Create Wallet
                 </Button>
               </CardFooter>
               {/* Show all errors for debugging */}
