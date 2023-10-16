@@ -52,3 +52,31 @@ export const getWallet = async ({
     () => new Error("Database error"),
   );
 };
+
+export const simulateWallet = async ({
+  params,
+}: {
+  params: {
+    name: string;
+    owners: {
+      address: string;
+      weight: number;
+    }[];
+    salt: string;
+    threshold: number;
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/wallet/create", {
+      params: {
+        query: {
+          simulate: true,
+        },
+      },
+      body: params,
+    }),
+    () => new Error("Database error"),
+  );
+};

@@ -95,6 +95,12 @@ export interface components {
     };
     PostRequestParams: {
       /**
+       * @description The name of the wallet.
+       * @default My Wallet
+       * @example My Wallet
+       */
+      name: string;
+      /**
        * @description The array of owners of the wallet.
        * @example [
        *   {

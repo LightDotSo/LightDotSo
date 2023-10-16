@@ -18,12 +18,20 @@
 import { useNewFormStore } from "@/stores/useNewForm";
 
 export function RootContext() {
-  const { formValues } = useNewFormStore();
+  const { address, errors, formValues, isValid, isLoading } = useNewFormStore();
 
   return (
     <div>
       <pre className="mt-2 w-full overflow-auto rounded-md p-4">
         <code className="break-all text-primary">
+          {isLoading ? "IsLoading" : "Loaded"}
+          <br></br>
+          {isValid ? "Valid" : "Invalid"}
+          <br></br>
+          {JSON.stringify(address, null, 2)}
+          <br></br>
+          {JSON.stringify(errors, null, 2)}
+          <br></br>
           {JSON.stringify(formValues, null, 2)}
         </code>
       </pre>

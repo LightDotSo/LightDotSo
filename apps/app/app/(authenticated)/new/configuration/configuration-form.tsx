@@ -66,7 +66,7 @@ function timestampToBytes32(timestamp: number): string {
 export function ConfigurationForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setFormValues } = useNewFormStore();
+  const { setFormValues, fetchToSimulate } = useNewFormStore();
 
   const nameParam = searchParams.get("name");
   const typeParam = searchParams.get("type");
@@ -80,7 +80,11 @@ export function ConfigurationForm() {
   };
 
   // create owners array
-  let owners = [];
+  let owners: {
+    address?: string;
+    addressOrEns: string;
+    weight: number;
+  }[] = [];
 
   let ownerIndex = 0;
   // Loop through the owners in the URL
@@ -325,6 +329,9 @@ export function ConfigurationForm() {
       ownerIndex++;
     }
 
+    // Trigger the form validation
+    form.trigger();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -338,7 +345,7 @@ export function ConfigurationForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, searchParams]);
 
-  function validateAddress(address: string, index: number) {
+  async function validateAddress(address: string, index: number) {
     // If the address is empty, return
     if (!address || address.length <= 3) return;
 
@@ -373,6 +380,9 @@ export function ConfigurationForm() {
               // Clear the value of key address
               form.setValue(`owners.${index}.address`, "");
             }
+
+            // Trigger the form validation
+            form.trigger();
           })
           .catch(() => {
             // Show an error on the message
@@ -382,6 +392,9 @@ export function ConfigurationForm() {
             });
             // Clear the value of key address
             form.setValue(`owners.${index}.address`, "");
+
+            // Trigger the form validation
+            form.trigger();
           });
       } catch {
         // Show an error on the message
@@ -391,10 +404,16 @@ export function ConfigurationForm() {
         });
         // Clear the value of key address
         form.setValue(`owners.${index}.address`, "");
+      } finally {
+        // Trigger the form validation
+        form.trigger();
       }
     } else {
       // Clear the value of key address
       form.setValue(`owners.${index}.address`, "");
+
+      // Trigger the form validation
+      form.trigger();
     }
   }
 
@@ -461,7 +480,7 @@ export function ConfigurationForm() {
                         control={form.control}
                         name={`owners.${index}.addressOrEns`}
                         render={({ field }) => (
-                          <div className="space-y-2 lg:col-span-6">
+                          <div className="col-span-6 space-y-2">
                             <Label htmlFor="address">Address or ENS</Label>
                             <div className="flex items-center space-x-3">
                               <Avatar className="h-8 w-8">
@@ -501,9 +520,6 @@ export function ConfigurationForm() {
                                   const address = e.target.value;
 
                                   validateAddress(address, index);
-
-                                  // Trigger the form validation
-                                  form.trigger();
                                 }}
                                 onChange={e => {
                                   // Update the field value
@@ -514,9 +530,6 @@ export function ConfigurationForm() {
 
                                   if (address) {
                                     validateAddress(address, index);
-
-                                    // Trigger the form validation
-                                    form.trigger();
                                   }
                                 }}
                               />
@@ -546,6 +559,12 @@ export function ConfigurationForm() {
                                         : "",
                                     );
                                     form.trigger();
+                                  }}
+                                  onBlur={() => {
+                                    // First, trigger than simulate Form
+                                    form.trigger().then(async () => {
+                                      await fetchToSimulate();
+                                    });
                                   }}
                                 />
                                 <FormMessage />

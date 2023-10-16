@@ -15,20 +15,95 @@
 
 import { create } from "zustand";
 import type * as z from "zod";
-import type { newFormStoreSchema } from "@/schemas/newForm";
+import { newFormStoreSchema } from "@/schemas/newForm";
+import { simulateWallet } from "@lightdotso/client";
+import { isEqual } from "lodash";
 
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
 
 interface FormStore {
+  address: string | null;
+  prevState: Partial<NewFormStoreValues> | null;
   formValues: Partial<NewFormStoreValues>;
   setFormValues: (values: Partial<NewFormStoreValues>) => void;
+  validate: () => void;
+  fetchToSimulate: () => Promise<void>; // if your fetch returns an address
+  isValid: boolean;
+  isLoading: boolean;
+  errors: z.ZodError | null;
 }
 
-export const useNewFormStore = create<FormStore>(set => ({
+export const useNewFormStore = create<FormStore>((set, get) => ({
+  address: null,
+  prevState: null,
+  isValid: false,
+  isLoading: false,
+  errors: null,
   formValues: {
     type: "multi",
     name: "",
   },
-  setFormValues: values =>
-    set(state => ({ formValues: { ...state.formValues, ...values } })),
+  setFormValues: async values => {
+    const currentState = get().formValues;
+
+    set(prevState => ({ formValues: { ...prevState?.formValues, ...values } }));
+
+    // After state has been set, run validation
+    get().validate();
+
+    const nextState = get().formValues;
+
+    // Check if object properties changed and if form is valid
+    if (!isEqual(currentState, nextState) && get().isValid) {
+      // If valid, fetch to simulate
+      await get().fetchToSimulate();
+    }
+
+    // Update prevState
+    set({ prevState: currentState });
+  },
+  validate: function () {
+    const result = newFormStoreSchema.safeParse(this?.formValues ?? {});
+    set({
+      isValid: result.success,
+      errors: result.success ? null : result.error,
+    });
+  },
+  fetchToSimulate: async function () {
+    // Run validation before fetching
+    get().validate();
+
+    if (!get().isValid) {
+      return;
+    }
+
+    // Set loading state to true before starting async operation
+    set({ isLoading: true });
+
+    // Replace with your actual fetch logic
+    const res = await simulateWallet({
+      params: {
+        name: get().formValues.name!,
+        salt: get().formValues.salt!,
+        threshold: get().formValues.threshold!,
+        owners: get().formValues.owners!.map(owner => ({
+          weight: owner.weight!,
+          address: owner.address!,
+        })),
+      },
+    });
+
+    // Parse the response and set the address
+    res.map(response => {
+      if (response && response.response && response.response.status === 200) {
+        // assuming address is a field in formValues
+        set(() => ({
+          address: response.data?.address,
+        }));
+      }
+    });
+
+    // Set loading state to false after async operation is finished
+    set({ isLoading: false });
+  },
 }));
