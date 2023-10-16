@@ -54,14 +54,22 @@ export const getWallet = async ({
 };
 
 export const getWallets = async ({
+  owner,
   isPublic = false,
 }: {
+  owner: string;
   isPublic?: boolean;
 }) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
-    client.GET("/wallet/list"),
+    client.GET("/wallet/list", {
+      params: {
+        query: {
+          owner,
+        },
+      },
+    }),
     () => new Error("Database error"),
   );
 };
