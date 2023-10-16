@@ -17,6 +17,7 @@ import { create } from "zustand";
 import type * as z from "zod";
 import { newFormStoreSchema } from "@/schemas/newForm";
 import { simulateWallet } from "@lightdotso/client";
+import { isEqual } from "lodash";
 
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
 
@@ -28,12 +29,16 @@ interface FormStore {
   validate: () => void;
   fetchToSimulate: () => Promise<void>; // if your fetch returns an address
   isValid: boolean;
+  isLoading: boolean;
   errors: z.ZodError | null;
 }
 
 export const useNewFormStore = create<FormStore>((set, get) => ({
   address: null,
   prevState: null,
+  isValid: false,
+  isLoading: false,
+  errors: null,
   formValues: {
     type: "multi",
     name: "",
@@ -49,10 +54,16 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
     const nextState = get().formValues;
 
     // Check if object properties changed
-    if (JSON.stringify(currentState) !== JSON.stringify(nextState)) {
+    if (!isEqual(currentState, nextState)) {
       if (get().isValid) {
+        // Set loading state to true before starting async operation
+        set({ isLoading: true });
+
         // If valid, fetch to simulate
         await get().fetchToSimulate();
+
+        // Set loading state to false after async operation is finished
+        set({ isLoading: false });
       }
     }
 
@@ -93,6 +104,4 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
       }
     });
   },
-  isValid: false,
-  errors: null,
 }));
