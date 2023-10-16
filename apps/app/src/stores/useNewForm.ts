@@ -101,6 +101,9 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
         set(() => ({
           address: response.data?.address,
         }));
+      } else {
+        // throw error
+        throw new Error("Error creating wallet");
       }
     });
 
