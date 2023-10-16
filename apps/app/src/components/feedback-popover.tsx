@@ -23,13 +23,15 @@ import {
   Label,
   Input,
 } from "@lightdotso/ui";
-import { useAccount } from "wagmi";
+import { useAuth } from "@/stores/useAuth";
+import { useIsMounted } from "@/hooks/useIsMounted";
 
 export function FeedbackPopover() {
-  const { address } = useAccount();
+  const isMounted = useIsMounted();
+  const { address } = useAuth();
 
   // If the address is empty, return null
-  if (!address) {
+  if (!isMounted || !address) {
     return null;
   }
 

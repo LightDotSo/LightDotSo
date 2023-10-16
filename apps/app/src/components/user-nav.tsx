@@ -31,14 +31,16 @@ import {
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { MixerVerticalIcon } from "@radix-ui/react-icons";
-import { useAccount } from "wagmi";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import { useAuth } from "@/stores/useAuth";
 
 export function UserNav() {
+  const isMounted = useIsMounted();
   const { theme, setTheme } = useTheme();
-  const { address } = useAccount();
+  const { address } = useAuth();
 
   // If the address is empty, return null
-  if (!address) {
+  if (!isMounted || !address) {
     return null;
   }
 

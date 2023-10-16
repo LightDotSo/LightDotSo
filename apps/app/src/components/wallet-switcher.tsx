@@ -22,7 +22,6 @@ import {
   PlusCircledIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { useAccount } from "wagmi";
 import {
   cn,
   Avatar,
@@ -42,6 +41,7 @@ import { PlaceholderOrb } from "./placeholder-orb";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useQuery } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";
+import { useAuth } from "@/stores/useAuth";
 
 // Entire file from: https://github.com/shadcn/ui/blob/ece54dd362a458b056a1e86481518f0193967e82/apps/www/app/examples/dashboard/components/team-switcher.tsx
 // License: MIT
@@ -64,7 +64,7 @@ export function WalletSwitcher({
     id: string;
   }>();
   const router = useRouter();
-  const { address } = useAccount();
+  const { address } = useAuth();
 
   const { data } = useQuery({
     queryKey: ["wallets", address],
