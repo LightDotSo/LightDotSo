@@ -63,6 +63,7 @@
     "next": "^13.5.4",
     "next-auth": "^4.23.2",
     "next-themes": "^0.2.1",
+    "permissionless": "^0.0.6",
     "postgres": "^3.4.0",
     "prisma": "^5.4.2",
     "react": "^18.2.0",

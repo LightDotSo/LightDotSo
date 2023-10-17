@@ -440,6 +440,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
+      permissionless:
+        specifier: ^0.0.6
+        version: 0.0.6(viem@1.16.4)
       postgres:
         specifier: ^3.4.0
         version: 3.4.0
@@ -28445,6 +28448,14 @@ packages:
       '@types/estree': 1.0.1
       estree-walker: 3.0.3
       is-reference: 3.0.1
+    dev: false
+
+  /permissionless@0.0.6(viem@1.16.4):
+    resolution: {integrity: sha512-Lhv0Ni0Oz0aa9SaCg26FgPPhROnHnPCGKQ3S6I3Bw0AcdnvvSbMLHZCDoU1fiB/q1gFwHncdztrAdfaUnXHovQ==}
+    peerDependencies:
+      viem: ^1.14.0
+    dependencies:
+      viem: 1.16.4(typescript@5.2.2)(zod@3.22.4)
     dev: false
 
   /pg-int8@1.0.1:

@@ -68,6 +68,7 @@ jobs:
           version: nightly
       - name: Node Test
         run: |
+          pnpm run test:compile
           pnpm turbo run test:coverage
       - name: Codecov
         uses: codecov/codecov-action@v3
