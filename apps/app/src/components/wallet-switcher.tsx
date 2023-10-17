@@ -126,7 +126,7 @@ export function WalletSwitcher({
               <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
               {/* <AvatarFallback>SC</AvatarFallback> */}
             </Avatar>
-            {selectedWallet?.address}
+            {selectedWallet?.name}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

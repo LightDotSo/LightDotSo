@@ -149,7 +149,9 @@ export const Tabs = ({
 
       {selectedRect && navRect && (
         <motion.div
-          className={"absolute bottom-0 left-0.5 z-10 h-[3px] bg-primary"}
+          className={
+            "absolute bottom-0 left-0.5 z-10 h-[3px] rounded-lg bg-primary"
+          }
           initial={false}
           animate={{
             width: selectedRect.width * 0.8,
