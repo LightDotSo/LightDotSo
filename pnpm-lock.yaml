@@ -440,6 +440,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@13.5.4)(react-dom@18.2.0)(react@18.2.0)
+      permissionless:
+        specifier: ^0.0.6
+        version: 0.0.6(viem@1.16.4)
       postgres:
         specifier: ^3.4.0
         version: 3.4.0
@@ -1737,6 +1740,9 @@ importers:
 
   packages/client:
     dependencies:
+      '@lightdotso/schemas':
+        specifier: workspace:*
+        version: link:../schemas
       clsx:
         specifier: ^2.0.0
         version: 2.0.0
@@ -1752,6 +1758,9 @@ importers:
       openapi-fetch:
         specifier: ^0.7.10
         version: 0.7.10
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@lightdotso/tsconfig':
         specifier: workspace:*
@@ -1931,6 +1940,22 @@ importers:
         version: 5.2.2
 
   packages/resources: {}
+
+  packages/schemas:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.8.4
+        version: 20.8.4
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
 
   packages/solutions:
     dependencies:
@@ -28423,6 +28448,14 @@ packages:
       '@types/estree': 1.0.1
       estree-walker: 3.0.3
       is-reference: 3.0.1
+    dev: false
+
+  /permissionless@0.0.6(viem@1.16.4):
+    resolution: {integrity: sha512-Lhv0Ni0Oz0aa9SaCg26FgPPhROnHnPCGKQ3S6I3Bw0AcdnvvSbMLHZCDoU1fiB/q1gFwHncdztrAdfaUnXHovQ==}
+    peerDependencies:
+      viem: ^1.14.0
+    dependencies:
+      viem: 1.16.4(typescript@5.2.2)(zod@3.22.4)
     dev: false
 
   /pg-int8@1.0.1:

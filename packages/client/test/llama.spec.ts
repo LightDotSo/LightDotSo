@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
-/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -15,12 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Dashboard } from "@/components/tremor-dashboard";
+import { test, expect } from "vitest";
+import { getLlama } from "../src"; // Replace with your actual file path
 
-export default async function Page() {
-  return (
-    <div>
-      <Dashboard />
-    </div>
-  );
-}
+test("getLlama", async () => {
+  // Call your function with actual address
+  const actualAddress = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"; // replace with actual address
+  const result = await getLlama(actualAddress);
+
+  expect(result.status, "status").toBe("success");
+  // Check that the array length is greater than 0
+  expect(result.protocols.length, "protocols").toBeGreaterThan(1);
+});

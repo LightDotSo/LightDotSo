@@ -21,4 +21,13 @@ export default defineWorkspace([
       environment: "node",
     },
   },
+  {
+    extends: "./vitest.config.ts",
+    test: {
+      include: ["packages/client/test/**/*.spec.ts"],
+      name: "client",
+      environment: "node",
+      testTimeout: 100_000,
+    },
+  },
 ]);

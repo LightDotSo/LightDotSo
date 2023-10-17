@@ -61,12 +61,21 @@ pub(crate) enum ConfigurationError {
 pub(crate) struct Configuration {
     id: String,
     address: String,
+    image_hash: String,
+    checkpoint: i64,
+    threshold: i64,
 }
 
 // Implement From<configuration::Data> for Configuration.
 impl From<configuration::Data> for Configuration {
     fn from(configuration: configuration::Data) -> Self {
-        Self { id: configuration.id.to_string(), address: configuration.address.to_string() }
+        Self {
+            id: configuration.id.to_string(),
+            address: configuration.address.to_string(),
+            image_hash: configuration.image_hash.to_string(),
+            checkpoint: configuration.checkpoint,
+            threshold: configuration.threshold,
+        }
     }
 }
 

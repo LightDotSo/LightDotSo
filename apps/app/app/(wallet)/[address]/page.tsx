@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Dashboard } from "@/components/tremor-dashboard";
 import { handler } from "@/handles/[address]";
+import { getLlama } from "@lightdotso/client";
 
 export default async function Page({
   params,
@@ -25,9 +25,13 @@ export default async function Page({
 }) {
   await handler(params);
 
+  const res = await getLlama(params.address);
+
   return (
     <div>
-      <Dashboard />
+      <pre>
+        <code>{JSON.stringify(res, null, 2)}</code>
+      </pre>
     </div>
   );
 }

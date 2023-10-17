@@ -1,0 +1,4 @@
+ignores:
+  - "@lightdotso/tsconfig"
+  - tsup
+  - "@types/node"
