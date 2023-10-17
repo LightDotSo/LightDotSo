@@ -5,9 +5,9 @@
 
 
 /** OneOf type helpers */
-export type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
-export type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
-export type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
+type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never };
+type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U;
+type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
 
 export interface paths {
   "/check": {
@@ -68,7 +68,12 @@ export interface components {
     /** @description Item to do. */
     Configuration: {
       address: string;
+      /** Format: int64 */
+      checkpoint: number;
       id: string;
+      image_hash: string;
+      /** Format: int64 */
+      threshold: number;
     };
     /** @description Configuration operation errors */
     ConfigurationError: OneOf<[{
@@ -129,6 +134,8 @@ export interface components {
       address: string;
       factory_address: string;
       id: string;
+      name: string;
+      salt: string;
     };
     /** @description Wallet operation errors */
     WalletError: OneOf<[{
@@ -182,6 +189,8 @@ export interface operations {
       query: {
         /** @description The address of the wallet. */
         address: string;
+        /** @description The chain id of the wallet. */
+        chain_id?: number | null;
       };
     };
     responses: {
