@@ -13,4 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export default async function Page() {}
+import { TransactionDialog } from "@/components/transaction-dialog";
+import { Button, DialogTrigger } from "@lightdotso/ui";
+
+export default async function Page() {
+  return (
+    <TransactionDialog>
+      <DialogTrigger asChild>
+        <Button>Deploy on Sepolia</Button>
+      </DialogTrigger>
+    </TransactionDialog>
+  );
+}
