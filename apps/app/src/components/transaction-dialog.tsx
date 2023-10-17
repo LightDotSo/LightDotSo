@@ -27,7 +27,7 @@ import {
 import { useTransactionStore } from "@/stores/useTransaction";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { Hex } from "viem";
 import { toHex, fromHex } from "viem";
@@ -40,14 +40,13 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
   const {
     chainId,
     userOperation,
-    isLoading,
     resetUserOp,
     isValid,
     setGasValues,
     setPaymasterAndData,
     getUserOpHash,
-    setIsLoading,
   } = useTransactionStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { signMessage } = useSignMessage({
     message: "gm wagmi frens",
@@ -60,6 +59,7 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       let res = await getPaymasterGasAndPaymasterAndData(chainId, [
         {
           sender: userOperation.sender,
@@ -83,12 +83,11 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
         fromHex(res.maxPriorityFeePerGas as Hex, { to: "bigint" }),
       );
       setPaymasterAndData(res.paymasterAndData as Hex);
+      setIsLoading(false);
     };
 
     if (!chainId) return;
-    setIsLoading(true);
     fetchData();
-    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId]);
 
@@ -116,6 +115,11 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
             <code className="break-all text-primary">
               userOpHash: {userOpHash}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              isLoading: {isLoading ? "true" : "false"}
             </code>
           </pre>
         </div>
