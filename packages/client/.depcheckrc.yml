@@ -5,3 +5,5 @@ ignores:
   - "@lightdotso/tsconfig"
   - tsup
   - clsx
+  - openapi-typescript
+  - vitest
