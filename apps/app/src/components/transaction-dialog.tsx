@@ -25,13 +25,17 @@ import {
   DialogTitle,
 } from "@lightdotso/ui";
 import { useTransactionStore } from "@/stores/useTransaction";
+import { useSignMessage } from "wagmi";
 
 type TransactionDialogProps = {
   children: React.ReactNode;
 };
 
 export function TransactionDialog({ children }: TransactionDialogProps) {
-  const { calldata, initcode } = useTransactionStore();
+  const { calldata, initCode } = useTransactionStore();
+  const { isLoading, signMessage } = useSignMessage({
+    message: "gm wagmi frens",
+  });
 
   return (
     <Dialog>
@@ -46,17 +50,19 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
         <div className="grid gap-4 py-4">
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
             <code className="break-all text-primary">
-              {JSON.stringify(calldata, null, 2)}
+              calldata: {JSON.stringify(calldata, null, 2)}
             </code>
           </pre>
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
             <code className="break-all text-primary">
-              {JSON.stringify(initcode, null, 2)}
+              initCode: {JSON.stringify(initCode, null, 2)}
             </code>
           </pre>
         </div>
         <DialogFooter>
-          <Button type="submit">Sign Transaction</Button>
+          <Button disabled={isLoading} onClick={() => signMessage()}>
+            Sign Transaction
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
