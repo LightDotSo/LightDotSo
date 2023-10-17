@@ -49,7 +49,7 @@ export function DeployButton({
         encodeAbiParameters(
           [
             {
-              type: "bytes",
+              type: "bytes4",
             },
             {
               type: "bytes32",
