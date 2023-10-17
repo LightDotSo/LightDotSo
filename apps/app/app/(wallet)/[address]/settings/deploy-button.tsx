@@ -69,7 +69,7 @@ export function DeployButton({
     setInitCode(initCode);
     setChainId(chainId);
     setSender(wallet);
-  }, [chainId, setChainId, setInitCode, setSender, wallet]);
+  }, [chainId, image_hash, salt, setChainId, setInitCode, setSender, wallet]);
 
   return (
     <DialogTrigger asChild>
