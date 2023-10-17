@@ -1932,6 +1932,22 @@ importers:
 
   packages/resources: {}
 
+  packages/schemas:
+    dependencies:
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+    devDependencies:
+      '@lightdotso/tsconfig':
+        specifier: workspace:*
+        version: link:../../configurations/tsconfig
+      '@types/node':
+        specifier: ^20.8.4
+        version: 20.8.4
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+
   packages/solutions:
     dependencies:
       viem:
