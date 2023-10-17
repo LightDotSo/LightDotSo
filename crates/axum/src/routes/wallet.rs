@@ -122,6 +122,8 @@ pub(crate) struct Wallet {
     id: String,
     address: String,
     factory_address: String,
+    name: String,
+    salt: String,
 }
 
 // Implement From<wallet::Data> for Wallet.
@@ -131,6 +133,8 @@ impl From<wallet::Data> for Wallet {
             id: wallet.id.to_string(),
             address: wallet.address.to_string(),
             factory_address: wallet.factory_address.to_string(),
+            name: wallet.name.to_string(),
+            salt: wallet.salt.to_string(),
         }
     }
 }
@@ -171,7 +175,7 @@ async fn v1_get_handler(
         .client
         .unwrap()
         .wallet()
-        .find_first(vec![wallet::address::equals(checksum_address)])
+        .find_first(vec![wallet::address::equals(checksum_address), wallet::chain_id::equals(0)])
         .exec()
         .await?;
 
@@ -340,6 +344,8 @@ async fn v1_post_handler(
 
         return Ok(Json::from(Wallet {
             id: "".to_string(),
+            name: "".to_string(),
+            salt: format!("{:?}", salt_bytes),
             address: to_checksum(&new_wallet_address, None),
             factory_address: to_checksum(&factory_address, None),
         }));
