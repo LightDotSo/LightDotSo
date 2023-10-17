@@ -37,10 +37,13 @@ interface JsonResponseSchema {
   id: string | number;
 }
 
-export async function zodJsonRpcFetch<TResponseSchema extends z.Schema>(
+export async function zodJsonRpcFetch<
+  TParams,
+  TResponseSchema extends z.Schema,
+>(
   url: string,
   method: string,
-  params: unknown[],
+  params: TParams,
   responseSchema: TResponseSchema,
   id: string | number = Math.random(),
 ): Promise<z.infer<TResponseSchema>> {

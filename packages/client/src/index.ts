@@ -32,6 +32,10 @@ const adminClient = createClient<paths>({
   },
 });
 
+const rpcClient = (chainId: number) => {
+  return `https://rpc.light.so/${chainId}`;
+};
+
 const getClient = (isPublic?: boolean) =>
   isPublic === undefined || isPublic ? publicClient : adminClient;
 
@@ -148,5 +152,50 @@ export const getChainId = async () => {
     "eth_chainId",
     [],
     EthChainIdResultSchema,
+  );
+};
+
+const HexStringSchema = z
+  .string()
+  .refine(value => /^0x[0-9a-fA-F]*$/.test(value), {
+    message: "Must be a hexadecimal string",
+  });
+
+const PaymasterGasAndPaymasterAndData = z.object({
+  paymasterAndData: HexStringSchema,
+  callGasLimit: HexStringSchema,
+  verificationGasLimit: HexStringSchema,
+  preVerificationGas: HexStringSchema,
+  maxFeePerGas: HexStringSchema,
+  maxPriorityFeePerGas: HexStringSchema,
+});
+
+const PaymasterGasAndPaymasterAndDataRequest = z.object({
+  sender: HexStringSchema,
+  nonce: HexStringSchema,
+  initCode: HexStringSchema,
+  callData: HexStringSchema,
+  signature: HexStringSchema,
+  paymasterAndData: HexStringSchema,
+  callGasLimit: HexStringSchema.optional(),
+  verificationGasLimit: HexStringSchema.optional(),
+  preVerificationGas: HexStringSchema.optional(),
+  maxFeePerGas: HexStringSchema.optional(),
+  maxPriorityFeePerGas: HexStringSchema.optional(),
+});
+
+type PaymasterGasAndPaymasterAndDataRequestType = z.infer<
+  typeof PaymasterGasAndPaymasterAndDataRequest
+>;
+
+export const getPaymasterGasAndPaymasterAndData = async (
+  chainId: number,
+  params: PaymasterGasAndPaymasterAndDataRequestType,
+) => {
+  return zodJsonRpcFetch(
+    rpcClient(chainId),
+    "paymaster_requestGasAndPaymasterAndData",
+    params,
+    PaymasterGasAndPaymasterAndData,
   );
 };
