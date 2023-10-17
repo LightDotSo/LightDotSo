@@ -18,10 +18,25 @@
 import { useEffect } from "react";
 import { useAuth } from "@/stores/useAuth";
 import { useAccount } from "wagmi";
+import { usePathname } from "next/navigation";
+import { isAddress } from "viem";
 
 export const AuthState = () => {
   const { address } = useAccount();
-  const { setAddress } = useAuth();
+  const { setAddress, setWallet } = useAuth();
+  const pathname = usePathname();
+
+  // Check if the first segment of the pathname is a valid address w/ isAddress
+  // If it is, set the auth state's wallet to that address
+  useEffect(() => {
+    const segments = pathname.split("/");
+    if (segments.length > 1) {
+      const maybeAddress = segments[1];
+      if (isAddress(maybeAddress)) {
+        setWallet(maybeAddress);
+      }
+    }
+  }, [pathname, address, setWallet]);
 
   // On component mount, or when the address from useAccount changes,
   // update the auth state's address

@@ -48,6 +48,8 @@ use utoipa::{IntoParams, ToSchema};
 pub struct GetQuery {
     /// The address of the wallet.
     pub address: String,
+    /// The chain id of the wallet.
+    pub chain_id: Option<i64>,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -175,7 +177,10 @@ async fn v1_get_handler(
         .client
         .unwrap()
         .wallet()
-        .find_first(vec![wallet::address::equals(checksum_address), wallet::chain_id::equals(0)])
+        .find_first(vec![
+            wallet::address::equals(checksum_address),
+            wallet::chain_id::equals(query.chain_id.unwrap_or(0)),
+        ])
         .exec()
         .await?;
 

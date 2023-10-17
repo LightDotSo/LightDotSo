@@ -7,7 +7,7 @@
       "@/app/*": ["./app/*"],
       "@/*": ["./src/*"]
     },
-    "target": "es2015"
+    "target": "es2020"
   },
   "include": [
     "next-auth.d.ts",

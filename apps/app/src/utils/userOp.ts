@@ -13,17 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TransactionDialog } from "@/components/transaction-dialog";
-import { DeployButton } from "./deploy-button";
+import type { UserOperation } from "permissionless";
 
-export default async function Page() {
-  return (
-    <TransactionDialog>
-      <div className="space-x-4">
-        <DeployButton>Deploy to Sepolia</DeployButton>
-        <DeployButton chainId={1}>Deploy to Mainnet</DeployButton>
-        <DeployButton chainId={137}>Deploy to Polygon</DeployButton>
-      </div>
-    </TransactionDialog>
+export const serializeUserOperation = (userOp: UserOperation): string => {
+  return JSON.stringify(
+    userOp,
+    (_, value) => (typeof value === "bigint" ? value.toString() : value), // convert bigint to string
+    2,
   );
-}
+};

@@ -13,17 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TransactionDialog } from "@/components/transaction-dialog";
-import { DeployButton } from "./deploy-button";
-
-export default async function Page() {
-  return (
-    <TransactionDialog>
-      <div className="space-x-4">
-        <DeployButton>Deploy to Sepolia</DeployButton>
-        <DeployButton chainId={1}>Deploy to Mainnet</DeployButton>
-        <DeployButton chainId={137}>Deploy to Polygon</DeployButton>
-      </div>
-    </TransactionDialog>
-  );
+/* eslint-disable no-unused-vars */
+export enum Contract {
+  V1_FACTORY = "Factory",
 }
+
+export const ContractLinks: {
+  readonly [key in Contract]: string;
+} = {
+  [Contract.V1_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+};
