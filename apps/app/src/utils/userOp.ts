@@ -13,21 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { create } from "zustand";
-import type { Address } from "viem";
+import type { UserOperation } from "permissionless";
 
-interface AuthState {
-  address: Address | undefined;
-  setAddress: (address: Address | undefined) => void;
-  wallet: Address | undefined;
-  setWallet: (wallet: Address | undefined) => void;
-  removeAddress: () => void;
-}
-
-export const useAuth = create<AuthState>(set => ({
-  address: undefined,
-  setAddress: (address: Address | undefined) => set({ address }),
-  wallet: undefined,
-  setWallet: (wallet: Address | undefined) => set({ wallet }),
-  removeAddress: () => set({ address: undefined }),
-}));
+export const serializeUserOperation = (userOp: UserOperation): string => {
+  return JSON.stringify(
+    userOp,
+    (_, value) => (typeof value === "bigint" ? value.toString() : value), // convert bigint to string
+    2,
+  );
+};

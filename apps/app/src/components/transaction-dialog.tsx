@@ -26,13 +26,14 @@ import {
 } from "@lightdotso/ui";
 import { useTransactionStore } from "@/stores/useTransaction";
 import { useSignMessage } from "wagmi";
+import { serializeUserOperation } from "@/utils/userOp";
 
 type TransactionDialogProps = {
   children: React.ReactNode;
 };
 
 export function TransactionDialog({ children }: TransactionDialogProps) {
-  const { calldata, initCode } = useTransactionStore();
+  const { chainId, userOperation } = useTransactionStore();
   const { isLoading, signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
@@ -49,14 +50,10 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-primary">
-              calldata: {JSON.stringify(calldata, null, 2)}
-            </code>
+            <code>userOperation: {serializeUserOperation(userOperation)}</code>
           </pre>
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-primary">
-              initCode: {JSON.stringify(initCode, null, 2)}
-            </code>
+            <code className="break-all text-primary">chainId: {chainId}</code>
           </pre>
         </div>
         <DialogFooter>
