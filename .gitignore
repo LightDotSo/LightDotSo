@@ -50,6 +50,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# thunderclient
+thunder-tests/collections/tc_col_apilightso-admin.json
+
 # local env files
 .env
 .env.local

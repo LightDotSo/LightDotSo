@@ -32,6 +32,26 @@
       "headers": [],
       "params": [],
       "tests": []
+    },
+    {
+      "_id": "a204ce0e-d005-4b73-9b83-85f0d49322ce",
+      "colId": "90010c79-933e-468c-92a4-3ccac076fbb0",
+      "containerId": "",
+      "name": "wallet/get",
+      "url": "https://api.light.so/v1/wallet/get?address=0xC6469298e77Ea97695d8A2e0E67b20d71a4c6B18",
+      "method": "GET",
+      "sortNum": 15000,
+      "created": "2023-10-17T16:31:51.024Z",
+      "modified": "2023-10-17T16:32:19.085Z",
+      "headers": [],
+      "params": [
+        {
+          "name": "address",
+          "value": "0xC6469298e77Ea97695d8A2e0E67b20d71a4c6B18",
+          "isPath": false
+        }
+      ],
+      "tests": []
     }
   ]
 }
