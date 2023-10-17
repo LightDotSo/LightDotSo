@@ -17,8 +17,9 @@ import createClient from "openapi-fetch";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { paths, Without, XOR, OneOf } from "./v1";
 import { ResultAsync } from "neverthrow";
-import { zodFetch } from "./zod";
+import { zodFetch, zodJsonRpcFetch } from "./zod";
 import { llamaSchema } from "@lightdotso/schemas";
+import { z } from "zod";
 
 const publicClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
@@ -132,5 +133,20 @@ export const getLlama = async (address: string) => {
   return zodFetch(
     `https://api.llamafolio.com/balances/${address}`,
     llamaSchema,
+  );
+};
+
+const EthChainIdResultSchema = z
+  .string()
+  .refine(value => /^0x[0-9a-fA-F]+$/.test(value), {
+    message: "ChainId must be a hexadecimal string",
+  });
+
+export const getChainId = async () => {
+  return zodJsonRpcFetch(
+    "https://rpc.light.so/1",
+    "eth_chainId",
+    [],
+    EthChainIdResultSchema,
   );
 };
