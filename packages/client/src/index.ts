@@ -32,7 +32,7 @@ const adminClient = createClient<paths>({
 });
 
 const getClient = (isPublic?: boolean) =>
-  isPublic ? publicClient : adminClient;
+  isPublic === undefined || isPublic ? publicClient : adminClient;
 
 export const getConfiguration = async (
   {
