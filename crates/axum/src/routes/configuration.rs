@@ -82,8 +82,8 @@ impl From<configuration::Data> for Configuration {
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/configuration/get", get(v1_get_handler))
-        .route("/configuration/list", get(v1_list_handler))
+        .route("/configuration/get", get(v1_configuration_get_handler))
+        .route("/configuration/list", get(v1_configuration_list_handler))
 }
 
 /// Get a configuration
@@ -99,7 +99,7 @@ pub(crate) fn router() -> Router<AppState> {
         )
     )]
 #[autometrics]
-async fn v1_get_handler(
+async fn v1_configuration_get_handler(
     get: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Configuration> {
@@ -145,7 +145,7 @@ async fn v1_get_handler(
         )
     )]
 #[autometrics]
-async fn v1_list_handler(
+async fn v1_configuration_list_handler(
     pagination: Option<Query<ListQuery>>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Configuration>> {

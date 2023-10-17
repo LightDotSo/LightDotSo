@@ -50,11 +50,11 @@ use crate::routes::{check, configuration, health, wallet};
     paths(
         check::handler,
         health::handler,
-        configuration::v1_get_handler,
-        configuration::v1_list_handler,
-        wallet::v1_get_handler,
-        wallet::v1_list_handler,
-        wallet::v1_post_handler,
+        configuration::v1_configuration_get_handler,
+        configuration::v1_configuration_list_handler,
+        wallet::v1_wallet_get_handler,
+        wallet::v1_wallet_list_handler,
+        wallet::v1_wallet_post_handler,
     ),
     tags(
         (name = "configuration", description = "Configuration API"),
@@ -65,7 +65,8 @@ use crate::routes::{check, configuration, health, wallet};
 )]
 #[openapi(
     servers(
-        (url = "https://api.light.so/v1", description = "Official API",
+        (url = "https://api.light.so/v1", description = "Official API"),
+        (url = "https://api.light.so/admin/v1", description = "Internal Admin API",
             variables(
                 ("username" = (default = "demo", description = "Default username for API")),
             )

@@ -144,9 +144,9 @@ impl From<wallet::Data> for Wallet {
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/wallet/get", get(v1_get_handler))
-        .route("/wallet/list", get(v1_list_handler))
-        .route("/wallet/create", post(v1_post_handler))
+        .route("/wallet/get", get(v1_wallet_get_handler))
+        .route("/wallet/list", get(v1_wallet_list_handler))
+        .route("/wallet/create", post(v1_wallet_post_handler))
 }
 
 /// Get a wallet
@@ -162,7 +162,7 @@ pub(crate) fn router() -> Router<AppState> {
         )
     )]
 #[autometrics]
-async fn v1_get_handler(
+async fn v1_wallet_get_handler(
     get: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Wallet> {
@@ -206,7 +206,7 @@ async fn v1_get_handler(
         )
     )]
 #[autometrics]
-async fn v1_list_handler(
+async fn v1_wallet_list_handler(
     pagination: Option<Query<ListQuery>>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
@@ -254,7 +254,7 @@ async fn v1_list_handler(
         )
     )]
 #[autometrics]
-async fn v1_post_handler(
+async fn v1_wallet_post_handler(
     post: Option<Query<PostQuery>>,
     State(client): State<AppState>,
     Json(params): Json<PostRequestParams>,
