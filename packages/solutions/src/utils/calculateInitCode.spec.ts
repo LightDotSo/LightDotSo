@@ -13,6 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { calculateImageHash } from "./calculateImageHash";
-export { calculateInitCode } from "./calculateInitCode";
-export { subdigestOf } from "./subdigestOf";
+import { expect, test } from "vitest";
+import { calculateInitCode } from ".";
+
+test("calculateInitCode", () => {
+  const initCode = calculateInitCode(
+    "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+    "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
+    "0x00000000000000000000000000000000000000000000000000000000000004fb",
+  );
+
+  expect(initCode).toBe(
+    "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c8b7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed600000000000000000000000000000000000000000000000000000000000004fb",
+  );
+});
