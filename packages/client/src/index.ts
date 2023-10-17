@@ -18,7 +18,6 @@ import createClient from "openapi-fetch";
 import type { paths, Without, XOR, OneOf } from "./v1";
 import { ResultAsync } from "neverthrow";
 import { zodFetch } from "./zod";
-import { z } from "zod";
 import { llamaSchema } from "@lightdotso/schemas";
 
 const publicClient = createClient<paths>({
@@ -108,10 +107,8 @@ export const createWallet = async ({
 };
 
 export const getLlama = async (address: string) => {
-  zodFetch(
+  return zodFetch(
     `https://api.llamafolio.com/balances/${address}`,
-    z.unknown(),
-    undefined,
     llamaSchema,
   );
 };

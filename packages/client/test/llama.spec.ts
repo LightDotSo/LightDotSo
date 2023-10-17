@@ -13,19 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { z } from "zod";
+import { test, expect } from "vitest";
+import { getLlama } from "../src"; // Replace with your actual file path
 
-// From: https://stackoverflow.com/questions/74616841/how-to-implement-a-generic-fetch-function-that-validates-the-query-parameter-and
-export const zodFetch = async <TResponseSchema extends z.Schema>(
-  url: string,
-  responseSchema: TResponseSchema,
-): Promise<z.infer<TResponseSchema>> => {
-  const response = await fetch(url, {
-    method: "GET",
-    headers: {
-      "content-type": "application/json",
-    },
-  });
+test("getLlama", async () => {
+  // Call your function with actual address
+  const actualAddress = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"; // replace with actual address
+  const result = await getLlama(actualAddress);
 
-  return responseSchema.parse(await response.json());
-};
+  expect(result.status, "status").toBe("success");
+});
