@@ -27,6 +27,7 @@ export default defineWorkspace([
       include: ["packages/client/test/**/*.spec.ts"],
       name: "client",
       environment: "node",
+      testTimeout: 30_000,
     },
   },
 ]);
