@@ -27,6 +27,7 @@
     "@lightdotso/kysely": "workspace:*",
     "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
+    "@lightdotso/solutions": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/trpc": "workspace:*",
     "@lightdotso/ui": "workspace:*",

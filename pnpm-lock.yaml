@@ -332,6 +332,9 @@ importers:
       '@lightdotso/prisma':
         specifier: workspace:*
         version: link:../../configurations/prisma
+      '@lightdotso/solutions':
+        specifier: workspace:*
+        version: link:../../packages/solutions
       '@lightdotso/styles':
         specifier: workspace:*
         version: link:../../configurations/styles
