@@ -22,4 +22,6 @@ test("getLlama", async () => {
   const result = await getLlama(actualAddress);
 
   expect(result.status, "status").toBe("success");
+  // Check that the array length is greater than 0
+  expect(result.protocols.length, "protocols").toBeGreaterThan(1);
 });
