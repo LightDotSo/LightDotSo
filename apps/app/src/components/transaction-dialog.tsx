@@ -29,14 +29,16 @@ import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
 import { useEffect } from "react";
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
-import { toHex } from "viem";
+import type { Hex } from "viem";
+import { toHex, fromHex } from "viem";
 
 type TransactionDialogProps = {
   children: React.ReactNode;
 };
 
 export function TransactionDialog({ children }: TransactionDialogProps) {
-  const { chainId, userOperation, isValid } = useTransactionStore();
+  const { chainId, userOperation, isValid, setGasValues, setPaymasterAndData } =
+    useTransactionStore();
   const { isLoading, signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
@@ -51,9 +53,21 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
           initCode: userOperation.initCode,
           callData: userOperation.callData,
           signature: userOperation.signature,
+          callGasLimit: "0x44E1C0",
+          verificationGasLimit: "0x1C4B40",
+          preVerificationGas: "0x1C4B40",
+          maxFeePerGas: "0xD320B3B35",
+          maxPriorityFeePerGas: "0xB323DBB31",
         },
       ]);
-      console.info(res);
+      setGasValues(
+        fromHex(res.callGasLimit as Hex, { to: "bigint" }),
+        fromHex(res.verificationGasLimit as Hex, { to: "bigint" }),
+        fromHex(res.preVerificationGas as Hex, { to: "bigint" }),
+        fromHex(res.maxFeePerGas as Hex, { to: "bigint" }),
+        fromHex(res.maxPriorityFeePerGas as Hex, { to: "bigint" }),
+      );
+      setPaymasterAndData(res.paymasterAndData as Hex);
     };
 
     if (!chainId) return;

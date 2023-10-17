@@ -25,6 +25,15 @@ interface TransactionStore {
   setCalldata: (callData: Hex) => void;
   setInitCode: (initcode: Hex) => void;
   setSender: (sender: Address) => void;
+  setNonce: (nonce: bigint) => void;
+  setGasValues: (
+    callGasLimit: bigint,
+    verificationGasLimit: bigint,
+    preVerificationGas: bigint,
+    maxFeePerGas: bigint,
+    maxPriorityFeePerGas: bigint,
+  ) => void;
+  setPaymasterAndData: (data: Hex) => void;
   isValid: () => boolean;
   getHash: () => Hex;
 }
@@ -52,6 +61,29 @@ export const useTransactionStore = create<TransactionStore>((set, get) => ({
     set(state => ({ userOperation: { ...state.userOperation, initCode } })),
   setSender: sender =>
     set(state => ({ userOperation: { ...state.userOperation, sender } })),
+  setNonce: (nonce: bigint) =>
+    set(state => ({ userOperation: { ...state.userOperation, nonce } })),
+  setGasValues: (
+    callGasLimit: bigint,
+    verificationGasLimit: bigint,
+    preVerificationGas: bigint,
+    maxFeePerGas: bigint,
+    maxPriorityFeePerGas: bigint,
+  ) =>
+    set(state => ({
+      userOperation: {
+        ...state.userOperation,
+        callGasLimit,
+        verificationGasLimit,
+        preVerificationGas,
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+      },
+    })),
+  setPaymasterAndData: (paymasterAndData: Hex) =>
+    set(state => ({
+      userOperation: { ...state.userOperation, paymasterAndData },
+    })),
   isValid: () =>
     get().userOperation.sender !==
       "0x0000000000000000000000000000000000000000" &&
