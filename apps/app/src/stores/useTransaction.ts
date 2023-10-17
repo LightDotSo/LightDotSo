@@ -32,7 +32,7 @@ interface TransactionStore {
 export const useTransactionStore = create<TransactionStore>((set, get) => ({
   chainId: 0,
   userOperation: {
-    sender: "0x0000000000000000000000000000000000000",
+    sender: "0x0000000000000000000000000000000000000000",
     nonce: 0n,
     initCode: "0x",
     callData: "0x",
@@ -52,8 +52,16 @@ export const useTransactionStore = create<TransactionStore>((set, get) => ({
   setSender: sender =>
     set(state => ({ userOperation: { ...state.userOperation, sender } })),
   isValid: () =>
+    get().userOperation.sender !==
+      "0x0000000000000000000000000000000000000000" &&
     get().userOperation.callData !== "0x" &&
-    get().userOperation.initCode !== "0x",
+    get().userOperation.initCode !== "0x" &&
+    get().userOperation.signature !== "0x" &&
+    get().userOperation.callGasLimit !== 0n &&
+    get().userOperation.verificationGasLimit !== 0n &&
+    get().userOperation.preVerificationGas !== 0n &&
+    get().userOperation.maxFeePerGas !== 0n &&
+    get().userOperation.maxPriorityFeePerGas !== 0n,
   getHash: () => {
     const userOperation = get().userOperation;
     const chainId = get().chainId;

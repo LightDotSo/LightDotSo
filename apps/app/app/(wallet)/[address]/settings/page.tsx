@@ -15,14 +15,42 @@
 
 import { TransactionDialog } from "@/components/transaction-dialog";
 import { DeployButton } from "./deploy-button";
+import { getWallet, getConfiguration } from "@lightdotso/client";
+import type { Hex } from "viem";
 
-export default async function Page() {
+const chains = [
+  { name: "Sepolia", chainId: undefined },
+  { name: "Mainnet", chainId: 1 },
+  { name: "Polygon", chainId: 137 },
+];
+
+export default async function Page({
+  params: { address },
+}: {
+  params: { address: string };
+}) {
+  let config = (
+    await getConfiguration({ address, isPublic: false })
+  )._unsafeUnwrap();
+  let wallet = (await getWallet({ address, isPublic: true }))._unsafeUnwrap();
+
+  // @ts-expect-error
+  if (!config?.data!.image_hash || !wallet?.data?.salt) return;
+
   return (
     <TransactionDialog>
       <div className="space-x-4">
-        <DeployButton>Deploy to Sepolia</DeployButton>
-        <DeployButton chainId={1}>Deploy to Mainnet</DeployButton>
-        <DeployButton chainId={137}>Deploy to Polygon</DeployButton>
+        {chains.map(chain => (
+          <DeployButton
+            key={chain.name}
+            salt={wallet!.data!.salt as Hex}
+            // @ts-expect-error
+            image_hash={config!.data!.image_hash as Hex}
+            chainId={chain.chainId}
+          >
+            {`Deploy to ${chain.name}`}
+          </DeployButton>
+        ))}
       </div>
     </TransactionDialog>
   );
