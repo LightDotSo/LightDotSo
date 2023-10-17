@@ -170,19 +170,21 @@ const PaymasterGasAndPaymasterAndData = z.object({
   maxPriorityFeePerGas: HexStringSchema,
 });
 
-const PaymasterGasAndPaymasterAndDataRequest = z.object({
-  sender: HexStringSchema,
-  nonce: HexStringSchema,
-  initCode: HexStringSchema,
-  callData: HexStringSchema,
-  signature: HexStringSchema,
-  paymasterAndData: HexStringSchema,
-  callGasLimit: HexStringSchema.optional(),
-  verificationGasLimit: HexStringSchema.optional(),
-  preVerificationGas: HexStringSchema.optional(),
-  maxFeePerGas: HexStringSchema.optional(),
-  maxPriorityFeePerGas: HexStringSchema.optional(),
-});
+const PaymasterGasAndPaymasterAndDataRequest = z.array(
+  z.object({
+    sender: HexStringSchema,
+    nonce: HexStringSchema,
+    initCode: HexStringSchema,
+    callData: HexStringSchema,
+    signature: HexStringSchema,
+    paymasterAndData: HexStringSchema,
+    callGasLimit: HexStringSchema.optional(),
+    verificationGasLimit: HexStringSchema.optional(),
+    preVerificationGas: HexStringSchema.optional(),
+    maxFeePerGas: HexStringSchema.optional(),
+    maxPriorityFeePerGas: HexStringSchema.optional(),
+  }),
+);
 
 type PaymasterGasAndPaymasterAndDataRequestType = z.infer<
   typeof PaymasterGasAndPaymasterAndDataRequest

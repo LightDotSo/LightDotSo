@@ -43,14 +43,16 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
 
   useEffect(() => {
     const fetchData = async () => {
-      let res = await getPaymasterGasAndPaymasterAndData(chainId, {
-        sender: userOperation.sender,
-        paymasterAndData: userOperation.paymasterAndData,
-        nonce: toHex(userOperation.nonce),
-        initCode: userOperation.initCode,
-        callData: userOperation.callData,
-        signature: userOperation.signature,
-      });
+      let res = await getPaymasterGasAndPaymasterAndData(chainId, [
+        {
+          sender: userOperation.sender,
+          paymasterAndData: userOperation.paymasterAndData,
+          nonce: toHex(userOperation.nonce),
+          initCode: userOperation.initCode,
+          callData: userOperation.callData,
+          signature: userOperation.signature,
+        },
+      ]);
       console.info(res);
     };
 
