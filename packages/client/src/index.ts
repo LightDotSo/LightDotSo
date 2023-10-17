@@ -17,6 +17,9 @@ import createClient from "openapi-fetch";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { paths, Without, XOR, OneOf } from "./v1";
 import { ResultAsync } from "neverthrow";
+import { zodFetch } from "./zod";
+import { z } from "zod";
+import { llamaSchema } from "@lightdotso/schemas";
 
 const publicClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
@@ -101,5 +104,14 @@ export const createWallet = async ({
       body: params,
     }),
     () => new Error("Database error"),
+  );
+};
+
+export const getLlama = async (address: string) => {
+  zodFetch(
+    `https://api.llamafolio.com/balances/${address}`,
+    z.unknown(),
+    undefined,
+    llamaSchema,
   );
 };

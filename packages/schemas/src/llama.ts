@@ -61,7 +61,7 @@ export const protocolSchema = z.object({
   groups: z.array(groupSchema),
 });
 
-export const rootSchema = z.object({
+export const llamaSchema = z.object({
   status: z.string(),
   updatedAt: z.number(),
   nextUpdateAt: z.number(),
