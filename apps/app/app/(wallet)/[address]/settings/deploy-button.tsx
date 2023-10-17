@@ -18,6 +18,7 @@
 import { Button, DialogTrigger } from "@lightdotso/ui";
 import { useTransactionStore } from "@/stores/useTransaction";
 import { useCallback } from "react";
+import { encodePacked, encodeAbiParameters, getFunctionSelector } from "viem";
 
 type DeployButtonProps = {
   chainId?: number;
@@ -28,11 +29,36 @@ export function DeployButton({
   chainId = 11155111,
   children,
 }: DeployButtonProps) {
-  const { setInitCode } = useTransactionStore();
+  const { setInitCode, setChainId } = useTransactionStore();
 
   const deploy = useCallback(() => {
-    setInitCode(chainId.toString());
-  }, [chainId, setInitCode]);
+    let initCode = encodePacked(
+      ["address", "bytes"],
+      [
+        "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+        encodeAbiParameters(
+          [
+            {
+              type: "bytes",
+            },
+            {
+              type: "bytes32",
+            },
+            {
+              type: "bytes32",
+            },
+          ],
+          [
+            getFunctionSelector("createAccount(bytes32,bytes32)"),
+            "0x0000000000000000000000000000000000000000000000000000000000000003",
+            "0x0000000000000000000000000000000000000000000000000000000000000003",
+          ],
+        ),
+      ],
+    );
+    setInitCode(initCode);
+    setChainId(chainId);
+  }, [chainId, setChainId, setInitCode]);
 
   return (
     <DialogTrigger asChild>
