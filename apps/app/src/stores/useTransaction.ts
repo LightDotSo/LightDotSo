@@ -21,6 +21,7 @@ import type { Hex, Address } from "viem";
 interface TransactionStore {
   chainId: number;
   userOperation: UserOperation;
+  resetUserOp: () => void;
   setChainId: (chainId: number) => void;
   setCalldata: (callData: Hex) => void;
   setInitCode: (initcode: Hex) => void;
@@ -35,7 +36,7 @@ interface TransactionStore {
   ) => void;
   setPaymasterAndData: (data: Hex) => void;
   isValid: () => boolean;
-  getHash: () => Hex;
+  getUserOpHash: () => Hex;
 }
 
 export const useTransactionStore = create<TransactionStore>((set, get) => ({
@@ -54,6 +55,23 @@ export const useTransactionStore = create<TransactionStore>((set, get) => ({
     signature:
       "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
   },
+  resetUserOp: () =>
+    set({
+      userOperation: {
+        sender: "0x0000000000000000000000000000000000000000",
+        nonce: 0n,
+        initCode: "0x",
+        callData: "0x",
+        callGasLimit: 0n,
+        verificationGasLimit: 0n,
+        preVerificationGas: 0n,
+        maxFeePerGas: 0n,
+        maxPriorityFeePerGas: 0n,
+        paymasterAndData: "0x",
+        signature:
+          "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
+      },
+    }),
   setChainId: chainId => set({ chainId }),
   setCalldata: callData =>
     set(state => ({ userOperation: { ...state.userOperation, callData } })),
@@ -87,15 +105,22 @@ export const useTransactionStore = create<TransactionStore>((set, get) => ({
   isValid: () =>
     get().userOperation.sender !==
       "0x0000000000000000000000000000000000000000" &&
-    get().userOperation.callData !== "0x" &&
-    get().userOperation.initCode !== "0x" &&
+    ((get().userOperation.callData === "0x" &&
+      get().userOperation.initCode !== "0x") ||
+      (get().userOperation.callData !== "0x" &&
+        get().userOperation.initCode === "0x")) &&
     get().userOperation.signature !== "0x" &&
     get().userOperation.callGasLimit !== 0n &&
     get().userOperation.verificationGasLimit !== 0n &&
     get().userOperation.preVerificationGas !== 0n &&
     get().userOperation.maxFeePerGas !== 0n &&
-    get().userOperation.maxPriorityFeePerGas !== 0n,
-  getHash: () => {
+    get().userOperation.maxPriorityFeePerGas !== 0n &&
+    get().userOperation.signature !==
+      "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
+  getUserOpHash: () => {
+    // Return if not valid
+    if (!get().isValid()) return "0x";
+
     const userOperation = get().userOperation;
     const chainId = get().chainId;
 

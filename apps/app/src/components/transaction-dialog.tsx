@@ -37,8 +37,15 @@ type TransactionDialogProps = {
 };
 
 export function TransactionDialog({ children }: TransactionDialogProps) {
-  const { chainId, userOperation, isValid, setGasValues, setPaymasterAndData } =
-    useTransactionStore();
+  const {
+    chainId,
+    userOperation,
+    resetUserOp,
+    isValid,
+    setGasValues,
+    setPaymasterAndData,
+    getUserOpHash,
+  } = useTransactionStore();
   const { isLoading, signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
@@ -77,7 +84,11 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
   }, [chainId]);
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={() => {
+        resetUserOp();
+      }}
+    >
       {children}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="mt-4 space-y-3">
@@ -92,6 +103,11 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
           </pre>
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
             <code className="break-all text-primary">chainId: {chainId}</code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              userOpHash: {getUserOpHash()}
+            </code>
           </pre>
         </div>
         <DialogFooter>
