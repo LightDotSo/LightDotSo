@@ -27,7 +27,7 @@ import {
 import { useTransactionStore } from "@/stores/useTransaction";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import type { Hex } from "viem";
 import { toHex, fromHex } from "viem";
@@ -40,15 +40,23 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
   const {
     chainId,
     userOperation,
+    isLoading,
     resetUserOp,
     isValid,
     setGasValues,
     setPaymasterAndData,
     getUserOpHash,
+    setIsLoading,
   } = useTransactionStore();
-  const { isLoading, signMessage } = useSignMessage({
+
+  const { signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
+
+  const userOpHash = useMemo(() => {
+    return getUserOpHash();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, getUserOpHash]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,8 +86,9 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
     };
 
     if (!chainId) return;
-
+    setIsLoading(true);
     fetchData();
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId]);
 
@@ -106,7 +115,7 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
           </pre>
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
             <code className="break-all text-primary">
-              userOpHash: {getUserOpHash()}
+              userOpHash: {userOpHash}
             </code>
           </pre>
         </div>

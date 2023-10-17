@@ -22,7 +22,9 @@ import { immer } from "zustand/middleware/immer";
 interface TransactionStore {
   chainId: number;
   userOperation: UserOperation;
+  isLoading: boolean;
   resetUserOp: () => void;
+  setIsLoading: (isLoading: boolean) => void;
   setChainId: (chainId: number) => void;
   setCalldata: (callData: Hex) => void;
   setInitCode: (initcode: Hex) => void;
@@ -57,6 +59,7 @@ export const useTransactionStore = create(
       signature:
         "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
     },
+    isLoading: false,
     resetUserOp: () =>
       set({
         userOperation: {
@@ -74,6 +77,7 @@ export const useTransactionStore = create(
             "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
         },
       }),
+    setIsLoading: (isLoading: boolean) => set({ isLoading }),
     setChainId: chainId => set({ chainId }),
     setCalldata: callData =>
       set(state => ({ userOperation: { ...state.userOperation, callData } })),
