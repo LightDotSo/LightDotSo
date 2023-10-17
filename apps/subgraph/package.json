@@ -40,13 +40,13 @@
     "test": "graph test"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.59.0",
+    "@graphprotocol/graph-cli": "^0.60.0",
     "@graphprotocol/graph-ts": "^0.31.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.8.4",
-    "assemblyscript": "^0.19.20",
+    "@types/node": "^20.8.6",
+    "assemblyscript": "^0.27.13",
     "matchstick-as": "0.6.0",
     "typescript": "^5.2.2",
     "wabt": "1.0.32"

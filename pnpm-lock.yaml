@@ -380,8 +380,11 @@ importers:
       '@sentry/nextjs':
         specifier: ^7.73.0
         version: 7.73.0(next@13.5.4)(react@18.2.0)(webpack@5.88.2)
+      '@tanstack/query-core':
+        specifier: 5.0.0-beta.9
+        version: 5.0.0-beta.9
       '@tanstack/react-query':
-        specifier: ^5.0.0-beta.9
+        specifier: 5.0.0-beta.9
         version: 5.0.0-beta.9(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-query-devtools':
         specifier: ^5.0.0-beta.9
