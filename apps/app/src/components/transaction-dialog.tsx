@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import {
   Button,
   Dialog,
@@ -21,14 +23,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  Label,
 } from "@lightdotso/ui";
+import { useTransactionStore } from "@/stores/useTransaction";
 
 type TransactionDialogProps = {
   children: React.ReactNode;
 };
+
 export function TransactionDialog({ children }: TransactionDialogProps) {
+  const { calldata, initcode } = useTransactionStore();
+
   return (
     <Dialog>
       {children}
@@ -36,33 +40,23 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
         <DialogHeader className="mt-4 space-y-3">
           <DialogTitle>Transaction</DialogTitle>
           <DialogDescription>
-            Are you sure you want to propose this transaction?
+            Are you sure you want to sign this transaction?
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              {JSON.stringify(calldata, null, 2)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              {JSON.stringify(initcode, null, 2)}
+            </code>
+          </pre>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit">Sign Transaction</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

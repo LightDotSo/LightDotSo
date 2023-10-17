@@ -13,17 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TransactionDialog } from "@/components/transaction-dialog";
-import { DeployButton } from "./deploy-button";
+import { create } from "zustand";
 
-export default async function Page() {
-  return (
-    <TransactionDialog>
-      <div className="space-x-4">
-        <DeployButton>Deploy to Sepolia</DeployButton>
-        <DeployButton chainId={1}>Deploy to Mainnet</DeployButton>
-        <DeployButton chainId={137}>Deploy to Polygon</DeployButton>
-      </div>
-    </TransactionDialog>
-  );
+interface TransactionStore {
+  calldata: string | null;
+  initCode: string | null;
+  setCalldata: (calldata: string) => void;
+  setInitCode: (initcode: string) => void;
 }
+
+export const useTransactionStore = create<TransactionStore>(set => ({
+  calldata: null,
+  initCode: null,
+  setCalldata: calldata => set({ calldata }),
+  setInitCode: initcode => set({ initcode }),
+}));

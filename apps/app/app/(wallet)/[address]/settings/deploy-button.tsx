@@ -13,17 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TransactionDialog } from "@/components/transaction-dialog";
-import { DeployButton } from "./deploy-button";
+"use client";
 
-export default async function Page() {
+import { Button, DialogTrigger } from "@lightdotso/ui";
+import { useTransactionStore } from "@/stores/useTransaction";
+import { useCallback } from "react";
+
+type DeployButtonProps = {
+  chainId?: number;
+  children: React.ReactNode;
+};
+
+export function DeployButton({
+  chainId = 11155111,
+  children,
+}: DeployButtonProps) {
+  const { setInitCode } = useTransactionStore();
+
+  const deploy = useCallback(() => {
+    setInitCode(chainId.toString());
+  }, [chainId, setInitCode]);
+
   return (
-    <TransactionDialog>
-      <div className="space-x-4">
-        <DeployButton>Deploy to Sepolia</DeployButton>
-        <DeployButton chainId={1}>Deploy to Mainnet</DeployButton>
-        <DeployButton chainId={137}>Deploy to Polygon</DeployButton>
-      </div>
-    </TransactionDialog>
+    <DialogTrigger asChild>
+      <Button onClick={deploy}>{children}</Button>
+    </DialogTrigger>
   );
 }
