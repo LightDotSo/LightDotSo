@@ -60,7 +60,7 @@
     "taplo:fix": "taplo format *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "taplo:lint": "taplo lint *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "test": "vitest",
-    "test:compile": "turbo run build --filter=contracts --filter=solutions",
+    "test:compile": "turbo run build --filter=contracts --filter=solutions --filter=schemas --filter=client",
     "test:coverage": "vitest --coverage --single-thread",
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
