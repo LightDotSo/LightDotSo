@@ -30,11 +30,13 @@ export default async function Page({
   params: { address: string };
 }) {
   let config = (
-    await getConfiguration({ address, isPublic: false })
+    await getConfiguration({ params: { query: { address } } }, false)
   )._unsafeUnwrap();
-  let wallet = (await getWallet({ address, isPublic: false }))._unsafeUnwrap();
+  let wallet = (
+    await getWallet({ params: { query: { address } } }, false)
+  )._unsafeUnwrap();
 
-  if (!config?.data!.image_hash || !wallet?.data?.salt) return;
+  if (!config?.data?.image_hash || !wallet?.data?.salt) return;
 
   return (
     <TransactionDialog>

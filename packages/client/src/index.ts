@@ -31,67 +31,70 @@ const adminClient = createClient<paths>({
   },
 });
 
-const getClient = (isPublic: boolean) =>
+const getClient = (isPublic?: boolean) =>
   isPublic ? publicClient : adminClient;
 
-export const getConfiguration = async ({
-  address,
-  isPublic = false,
-}: {
-  address: string;
-  isPublic?: boolean;
-}) => {
+export const getConfiguration = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  isPublic?: boolean,
+) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
-      params: {
-        query: {
-          address: address,
-        },
-      },
+      params,
     }),
     () => new Error("Database error"),
   );
 };
 
-export const getWallet = async ({
-  address,
-  isPublic = false,
-}: {
-  address: string;
-  isPublic?: boolean;
-}) => {
+export const getWallet = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string; chain_id?: number | null | undefined };
+    };
+  },
+  isPublic?: boolean,
+) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
-      params: {
-        query: {
-          address: address,
-        },
-      },
+      params,
     }),
     () => new Error("Database error"),
   );
 };
 
-export const getWallets = async ({
-  owner,
-  isPublic = false,
-}: {
-  owner: string;
-  isPublic?: boolean;
-}) => {
+export const getWallets = async (
+  {
+    params,
+  }: {
+    params: {
+      query?:
+        | {
+            offset?: number | null | undefined;
+            limit?: number | null | undefined;
+            owner?: string | null | undefined;
+          }
+        | undefined;
+    };
+  },
+  isPublic?: boolean,
+) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
-      params: {
-        query: {
-          owner,
-        },
-      },
+      params,
     }),
     () => new Error("Database error"),
   );
@@ -99,9 +102,12 @@ export const getWallets = async ({
 
 export const createWallet = async ({
   params,
-  simulate = true,
+  body,
 }: {
   params: {
+    query?: { simulate?: boolean | null | undefined } | undefined;
+  };
+  body: {
     name: string;
     owners: {
       address: string;
@@ -110,18 +116,13 @@ export const createWallet = async ({
     salt: string;
     threshold: number;
   };
-  simulate?: boolean;
 }) => {
   const client = getClient(true);
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
-      params: {
-        query: {
-          simulate,
-        },
-      },
-      body: params,
+      params,
+      body,
     }),
     () => new Error("Database error"),
   );
