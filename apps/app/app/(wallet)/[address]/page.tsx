@@ -17,6 +17,7 @@
 
 import { Dashboard } from "@/components/tremor-dashboard";
 import { handler } from "@/handles/[address]";
+import { getLlama } from "@lightdotso/client";
 
 export default async function Page({
   params,
@@ -25,9 +26,14 @@ export default async function Page({
 }) {
   await handler(params);
 
+  const res = await getLlama(params.address);
+
   return (
     <div>
       <Dashboard />
+      <pre>
+        <code>{JSON.stringify(res, null, 2)}</code>
+      </pre>
     </div>
   );
 }
