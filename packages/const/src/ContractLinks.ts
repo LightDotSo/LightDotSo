@@ -13,9 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { ContractLinks } from "./ContractLinks";
-export { InternalLinks } from "./InternalLinks";
-export { RedirectPrefixes } from "./RedirectPrefixes";
-export { NavigationLinks } from "./NavigationLinks";
-export { NotionLinks } from "./NotionLinks";
-export { Social, SocialLinks } from "./SocialLinks";
+/* eslint-disable no-unused-vars */
+export enum Contract {
+  V1_FACTORY = "Factory",
+}
+
+export const ContractLinks: {
+  readonly [key in Contract]: string;
+} = {
+  [Contract.V1_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+};
