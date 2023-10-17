@@ -27,6 +27,9 @@ import {
 import { useTransactionStore } from "@/stores/useTransaction";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
+import { useEffect } from "react";
+import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import { toHex } from "viem";
 
 type TransactionDialogProps = {
   children: React.ReactNode;
@@ -37,6 +40,25 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
   const { isLoading, signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let res = await getPaymasterGasAndPaymasterAndData(chainId, {
+        sender: userOperation.sender,
+        paymasterAndData: userOperation.paymasterAndData,
+        nonce: toHex(userOperation.nonce),
+        initCode: userOperation.initCode,
+        callData: userOperation.callData,
+        signature: userOperation.signature,
+      });
+      console.info(res);
+    };
+
+    if (!chainId) return;
+
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId]);
 
   return (
     <Dialog>

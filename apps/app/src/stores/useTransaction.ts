@@ -42,7 +42,8 @@ export const useTransactionStore = create<TransactionStore>((set, get) => ({
     maxFeePerGas: 0n,
     maxPriorityFeePerGas: 0n,
     paymasterAndData: "0x",
-    signature: "0x",
+    signature:
+      "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
   },
   setChainId: chainId => set({ chainId }),
   setCalldata: callData =>

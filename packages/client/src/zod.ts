@@ -45,7 +45,7 @@ export async function zodJsonRpcFetch<
   method: string,
   params: TParams,
   responseSchema: TResponseSchema,
-  id: string | number = Math.random(),
+  id: string | number = Math.floor(Math.random() * 100),
 ): Promise<z.infer<TResponseSchema>> {
   const response = await fetch(url, {
     method: "POST",
