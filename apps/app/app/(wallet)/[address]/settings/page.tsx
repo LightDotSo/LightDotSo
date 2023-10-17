@@ -34,7 +34,6 @@ export default async function Page({
   )._unsafeUnwrap();
   let wallet = (await getWallet({ address, isPublic: false }))._unsafeUnwrap();
 
-  // @ts-expect-error
   if (!config?.data!.image_hash || !wallet?.data?.salt) return;
 
   return (
@@ -44,7 +43,6 @@ export default async function Page({
           <DeployButton
             key={chain.name}
             salt={wallet!.data!.salt as Hex}
-            // @ts-expect-error
             image_hash={config!.data!.image_hash as Hex}
             chainId={chain.chainId}
           >
