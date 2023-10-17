@@ -32,7 +32,7 @@ export default async function Page({
   let config = (
     await getConfiguration({ address, isPublic: false })
   )._unsafeUnwrap();
-  let wallet = (await getWallet({ address, isPublic: true }))._unsafeUnwrap();
+  let wallet = (await getWallet({ address, isPublic: false }))._unsafeUnwrap();
 
   // @ts-expect-error
   if (!config?.data!.image_hash || !wallet?.data?.salt) return;
