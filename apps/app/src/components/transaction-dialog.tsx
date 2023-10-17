@@ -33,7 +33,7 @@ type TransactionDialogProps = {
 };
 
 export function TransactionDialog({ children }: TransactionDialogProps) {
-  const { chainId, userOperation } = useTransactionStore();
+  const { chainId, userOperation, isValid } = useTransactionStore();
   const { isLoading, signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
@@ -57,7 +57,10 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
           </pre>
         </div>
         <DialogFooter>
-          <Button disabled={isLoading} onClick={() => signMessage()}>
+          <Button
+            disabled={isLoading || !isValid()}
+            onClick={() => signMessage()}
+          >
             Sign Transaction
           </Button>
         </DialogFooter>

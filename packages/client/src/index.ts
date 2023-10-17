@@ -34,6 +34,27 @@ const adminClient = createClient<paths>({
 const getClient = (isPublic: boolean) =>
   isPublic ? publicClient : adminClient;
 
+export const getConfiguration = async ({
+  address,
+  isPublic = false,
+}: {
+  address: string;
+  isPublic?: boolean;
+}) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/configuration/get", {
+      params: {
+        query: {
+          address: address,
+        },
+      },
+    }),
+    () => new Error("Database error"),
+  );
+};
+
 export const getWallet = async ({
   address,
   isPublic = false,

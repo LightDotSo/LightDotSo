@@ -4,6 +4,4 @@ ignores:
   - dotenv
   - "@lightdotso/tsconfig"
   - tsup
-  - clsx
-  - openapi-typescript
   - vitest

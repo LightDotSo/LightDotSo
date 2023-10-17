@@ -18,18 +18,22 @@
 import { Button, DialogTrigger } from "@lightdotso/ui";
 import { useTransactionStore } from "@/stores/useTransaction";
 import { useCallback } from "react";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 import { encodePacked, encodeAbiParameters, getFunctionSelector } from "viem";
 import { useAuth } from "@/stores/useAuth";
 import { ContractLinks } from "@lightdotso/const";
 
 type DeployButtonProps = {
   chainId?: number;
+  image_hash: Hex;
+  salt: Hex;
   children: React.ReactNode;
 };
 
 export function DeployButton({
   chainId = 11155111,
+  image_hash,
+  salt,
   children,
 }: DeployButtonProps) {
   const { wallet } = useAuth();
@@ -56,8 +60,8 @@ export function DeployButton({
           ],
           [
             getFunctionSelector("createAccount(bytes32,bytes32)"),
-            "0x0000000000000000000000000000000000000000000000000000000000000003",
-            "0x0000000000000000000000000000000000000000000000000000000000000003",
+            image_hash,
+            salt,
           ],
         ),
       ],

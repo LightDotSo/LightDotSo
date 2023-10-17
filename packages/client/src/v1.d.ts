@@ -68,7 +68,12 @@ export interface components {
     /** @description Item to do. */
     Configuration: {
       address: string;
+      /** Format: int64 */
+      checkpoint: number;
       id: string;
+      image_hash: string;
+      /** Format: int64 */
+      threshold: number;
     };
     /** @description Configuration operation errors */
     ConfigurationError: OneOf<[{
@@ -129,6 +134,8 @@ export interface components {
       address: string;
       factory_address: string;
       id: string;
+      name: string;
+      salt: string;
     };
     /** @description Wallet operation errors */
     WalletError: OneOf<[{
@@ -182,6 +189,8 @@ export interface operations {
       query: {
         /** @description The address of the wallet. */
         address: string;
+        /** @description The chain id of the wallet. */
+        chain_id?: number | null;
       };
     };
     responses: {

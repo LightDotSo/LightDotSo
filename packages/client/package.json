@@ -19,12 +19,13 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup",
-    "clean": "rimraf -rf dist"
+    "build": "pnpm run build:light && pnpm run build:prepare && pnpm tsup",
+    "build:light": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts",
+    "build:prepare": "./prepend.sh",
+    "clean": "rimraf -rf dist && rimraf -rf src/v1.d.ts"
   },
   "dependencies": {
     "@lightdotso/schemas": "workspace:*",
-    "clsx": "^2.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "neverthrow": "^6.0.0",
