@@ -26,6 +26,12 @@ export const AuthState = () => {
   const { setAddress, setWallet } = useAuth();
   const pathname = usePathname();
 
+  // On component mount, rehydrate the auth state from local storage
+  // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getoptions
+  useEffect(() => {
+    useAuth.persist.rehydrate();
+  }, []);
+
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address
   useEffect(() => {
