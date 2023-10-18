@@ -23,6 +23,7 @@ use axum::{
     routing::get,
     Json, Router,
 };
+use ethers_main::utils::hex;
 use lightdotso_prisma::user_operation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -57,9 +58,17 @@ pub(crate) enum UserOperationError {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperation {
     hash: String,
-    #[schema(value_type = String)]
     chain_id: i64,
     sender: String,
+    nonce: i64,
+    init_code: String,
+    call_data: String,
+    call_gas_limit: i64,
+    verification_gas_limit: i64,
+    pre_verification_gas: i64,
+    max_fee_per_gas: i64,
+    max_priority_fee_per_gas: i64,
+    paymaster_and_data: String,
 }
 
 // Implement From<user_operation::Data> for User operation.
@@ -69,6 +78,15 @@ impl From<user_operation::Data> for UserOperation {
             hash: user_operation.hash,
             chain_id: user_operation.chain_id,
             sender: user_operation.sender,
+            nonce: user_operation.nonce,
+            init_code: format!("0x{}", hex::encode(user_operation.init_code)),
+            call_data: format!("0x{}", hex::encode(user_operation.call_data)),
+            call_gas_limit: user_operation.call_gas_limit,
+            verification_gas_limit: user_operation.verification_gas_limit,
+            pre_verification_gas: user_operation.pre_verification_gas,
+            max_fee_per_gas: user_operation.max_fee_per_gas,
+            max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
+            paymaster_and_data: format!("0x{}", hex::encode(user_operation.paymaster_and_data)),
         }
     }
 }
