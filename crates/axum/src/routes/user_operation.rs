@@ -56,13 +56,20 @@ pub(crate) enum UserOperationError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperation {
-    id: String,
+    hash: String,
+    #[schema(value_type = String)]
+    chain_id: i64,
+    sender: String,
 }
 
 // Implement From<user_operation::Data> for User_operation.
 impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
-        Self { id: user_operation.hash.to_string() }
+        Self {
+            hash: user_operation.hash,
+            chain_id: user_operation.chain_id,
+            sender: user_operation.sender,
+        }
     }
 }
 
@@ -81,8 +88,8 @@ pub(crate) fn router() -> Router<AppState> {
             GetQuery
         ),
         responses(
-            (status = 200, description = "User_operation returned successfully", body = User_operation),
-            (status = 404, description = "User_operation not found", body = User_operationError),
+            (status = 200, description = "User_operation returned successfully", body = UserOperation),
+            (status = 404, description = "User_operation not found", body = UserOperationError),
         )
     )]
 #[autometrics]
@@ -119,8 +126,8 @@ async fn v1_user_operation_get_handler(
             ListQuery
         ),
         responses(
-            (status = 200, description = "User_operations returned successfully", body = [User_operation]),
-            (status = 500, description = "User_operation bad request", body = User_operationError),
+            (status = 200, description = "User Operations returned successfully", body = [UserOperation]),
+            (status = 500, description = "User Operation bad request", body = UserOperationError),
         )
     )]
 #[autometrics]
