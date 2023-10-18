@@ -104,7 +104,6 @@ model Wallet {
 model Configuration {
   id         String @id @default(cuid())
   address    String
-  chainId    BigInt
   checkpoint BigInt
   imageHash  String @unique
   threshold  BigInt
@@ -112,7 +111,7 @@ model Configuration {
   owners  Owner[]
   wallets Wallet[]
 
-  @@unique([address, chainId, checkpoint])
+  @@unique([address, checkpoint])
 }
 
 model Owner {
@@ -123,16 +122,16 @@ model Owner {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  configuration   Configuration? @relation(fields: [configurationId], references: [id])
   configurationId String?
 
-  configuration Configuration? @relation(fields: [configurationId], references: [id])
-  user          User?          @relation(fields: [userId], references: [id])
-  userId        String?
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
 
   signatures Signature[]
 
-  @@index([userId])
   @@index([configurationId])
+  @@index([userId])
 }
 
 /// ethers-rs Log struct converted to Prisma model.
@@ -382,8 +381,8 @@ model UserOperation {
 
   chainId BigInt
 
-  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
-  transactionHash String      @unique
+  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
+  transactionHash String?      @unique
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String

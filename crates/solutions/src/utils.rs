@@ -14,11 +14,23 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::{
-    abi::{encode, Token},
+    abi::{encode, encode_packed, Token},
     types::{Address, H160},
     utils::{hex, keccak256},
 };
 use eyre::{eyre, Result};
+
+pub fn render_subdigest(chain_id: u64, address: Address, digest: [u8; 32]) -> [u8; 32] {
+    keccak256(
+        encode_packed(&[
+            Token::String("\x19\x01".to_string()),
+            Token::FixedBytes(left_pad_u64_to_bytes32(chain_id).to_vec()),
+            Token::Address(address),
+            Token::FixedBytes(digest.to_vec()),
+        ])
+        .unwrap(),
+    )
+}
 
 pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Address, usize)> {
     let new_pointer = index + 21;

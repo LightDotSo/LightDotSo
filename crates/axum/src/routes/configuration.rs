@@ -34,6 +34,8 @@ use utoipa::{IntoParams, ToSchema};
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
     pub address: String,
+    // The optional checkpoint to filter by.
+    pub checkpoint: Option<i64>,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -114,14 +116,27 @@ async fn v1_configuration_get_handler(
     info!("Get configuration for checksum address: {:?}", checksum_address);
 
     // Get the configurations from the database.
-    let configuration = client
-        .client
-        .unwrap()
-        .configuration()
-        .find_first(vec![configuration::address::equals(checksum_address)])
-        .order_by(configuration::checkpoint::order(Direction::Desc))
-        .exec()
-        .await?;
+    let configuration = match query.checkpoint {
+        Some(checkpoint) => {
+            client
+                .client
+                .unwrap()
+                .configuration()
+                .find_unique(configuration::address_checkpoint(checksum_address, checkpoint))
+                .exec()
+                .await?
+        }
+        None => {
+            client
+                .client
+                .unwrap()
+                .configuration()
+                .find_first(vec![configuration::address::equals(checksum_address)])
+                .order_by(configuration::checkpoint::order(Direction::Desc))
+                .exec()
+                .await?
+        }
+    };
 
     // If the configuration is not found, return a 404.
     let configuration = configuration.ok_or(AppError::NotFound)?;
@@ -146,11 +161,11 @@ async fn v1_configuration_get_handler(
     )]
 #[autometrics]
 async fn v1_configuration_list_handler(
-    pagination: Option<Query<ListQuery>>,
+    pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Configuration>> {
     // Get the pagination query.
-    let Query(pagination) = pagination.unwrap_or_default();
+    let Query(pagination) = pagination;
 
     // Get the configurations from the database.
     let configurations = client

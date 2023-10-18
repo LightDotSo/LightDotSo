@@ -18,6 +18,7 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
+use ethers_main::utils::hex;
 use lightdotso_redis::redis::RedisError;
 use prisma_client_rust::{
     prisma_errors::query_engine::{RecordNotFound, UniqueKeyViolation},
@@ -36,6 +37,7 @@ pub enum AppError {
     PrismaError(QueryError),
     RedisError(RedisError),
     SerdeJsonError(serde_json::Error),
+    FromEthersHexError(hex::FromHexError),
     FromHexError(FromHexError),
     BadRequest,
     NotFound,
@@ -52,6 +54,12 @@ impl From<eyre::Error> for AppError {
 impl From<serde_json::Error> for AppError {
     fn from(error: serde_json::Error) -> Self {
         AppError::SerdeJsonError(error)
+    }
+}
+
+impl From<hex::FromHexError> for AppError {
+    fn from(error: hex::FromHexError) -> Self {
+        AppError::FromEthersHexError(error)
     }
 }
 
@@ -88,6 +96,7 @@ impl IntoResponse for AppError {
             AppError::PrismaError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::SerdeJsonError(_) => StatusCode::BAD_REQUEST,
+            AppError::FromEthersHexError(_) => StatusCode::BAD_REQUEST,
             AppError::FromHexError(_) => StatusCode::BAD_REQUEST,
             AppError::Conflict => StatusCode::CONFLICT,
             AppError::BadRequest => StatusCode::BAD_REQUEST,

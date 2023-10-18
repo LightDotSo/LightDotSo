@@ -23,13 +23,13 @@ use crate::{
         SubdigestLeaf,
     },
     utils::{
-        hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, left_pad_u64_to_bytes32,
-        read_bytes32, read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address,
+        hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, read_bytes32,
+        read_uint16, read_uint24, read_uint32, read_uint8, read_uint8_address, render_subdigest,
     },
 };
 use async_recursion::async_recursion;
 use ethers::{
-    abi::{encode, encode_packed, Token},
+    abi::{encode, Token},
     types::Address,
     utils::keccak256,
 };
@@ -116,15 +116,7 @@ impl SigModule {
 
     /// Returns the subdigest of the signature
     pub fn get_subdigest(&self, digest: [u8; 32]) -> [u8; 32] {
-        keccak256(
-            encode_packed(&[
-                Token::String("\x19\x01".to_string()),
-                Token::FixedBytes(left_pad_u64_to_bytes32(self.chain_id).to_vec()),
-                Token::Address(self.address),
-                Token::FixedBytes(digest.to_vec()),
-            ])
-            .unwrap(),
-        )
+        render_subdigest(self.chain_id, self.address, digest)
     }
 
     /// Sets the subdigest w/ the digest function
@@ -455,6 +447,8 @@ impl SigModule {
 
 #[cfg(test)]
 mod tests {
+    use ethers::abi::encode_packed;
+
     use super::*;
     use crate::utils::{from_hex_string, parse_hex_to_bytes32, print_hex_string, to_hex_string};
 

@@ -26,7 +26,7 @@ use lightdotso_contracts::erc1271::get_erc_1271_wallet;
 use lightdotso_tracing::tracing::info;
 use std::str::FromStr;
 
-pub(crate) fn recover_ecdsa_signature(
+pub fn recover_ecdsa_signature(
     data: &[u8],
     subdigest: &[u8; 32],
     starting_index: usize,
@@ -70,7 +70,7 @@ pub(crate) fn recover_ecdsa_signature(
     Ok(ECDSASignatureLeaf { address, signature_type, signature: signature_slice.into() })
 }
 
-pub(crate) async fn recover_dynamic_signature(
+pub async fn recover_dynamic_signature(
     chain_id: u64,
     data: &[u8],
     subdigest: &[u8; 32],
