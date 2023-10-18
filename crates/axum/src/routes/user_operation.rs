@@ -289,6 +289,8 @@ async fn v1_user_operation_post_handler(
             user_operation.max_priority_fee_per_gas,
             user_operation.paymaster_and_data,
             chain_id,
+            wallet::address::equals(wallet.address),
+            vec![],
         )
         .exec()
         .await?;
