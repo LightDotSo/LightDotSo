@@ -323,21 +323,11 @@ model Transaction {
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
   walletAddress String?
 
-  Receipt             Receipt?
-  TransactionCategory TransactionCategory[]
-  UserOperation       UserOperation[]
+  receipt Receipt?
+
+  userOperations UserOperation[]
 
   @@index([walletAddress])
-}
-
-model TransactionCategory {
-  id       String @id @default(cuid())
-  address  String
-  category String
-
-  transaction Transaction @relation(fields: [id], references: [hash])
-
-  @@index([id])
 }
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
@@ -386,11 +376,22 @@ model UserOperation {
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
-  signatures Signature[]
+  signatures            Signature[]
+  userOperationCategory UserOperationCategory[]
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])
   @@index([walletAddress])
+}
+
+model UserOperationCategory {
+  id       String @id @default(cuid())
+  address  String
+  category String
+
+  userOperation UserOperation @relation(fields: [id], references: [hash])
+
+  @@index([id])
 }
 
 model Signature {
