@@ -15,6 +15,7 @@
 
 import { TransactionDialog } from "@/components/transaction-dialog";
 import { handler } from "@/handles/transaction/[chainId]";
+import { parseNumber } from "@/handles/parsers/number";
 
 export default async function Page({
   params,
@@ -27,10 +28,11 @@ export default async function Page({
   };
 }) {
   let { userOperation, hash } = await handler(params, searchParams);
+  const chainId = parseNumber(params.chainId);
 
   return (
     <TransactionDialog
-      chainId={1}
+      chainId={chainId}
       userOpHash={hash}
       userOperation={userOperation}
     ></TransactionDialog>
