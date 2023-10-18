@@ -338,22 +338,43 @@ model TransactionCategory {
   @@index([id])
 }
 
+/// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
 model UserOperation {
   /// The userOperation's hash
   /// pub hash: H256
   hash                 String @id
-  /// Sender
-  ///pub from: Address
+  /// The account making the operation
+  /// address
   sender               String
+  /// Anti-replay parameter (see “Semi-abstracted Nonce Support” )
+  /// uint256
   nonce                BigInt
+  /// The initCode of the account (needed if and only if the account is not yet on-chain and needs to be created)
+  /// bytes
   initCode             Bytes
+  /// The data to pass to the sender during the main execution call
+  /// bytes
   callData             Bytes
+  /// The amount of gas to allocate the main execution call
+  /// uint256
   callGasLimit         BigInt
+  /// The amount of gas to allocate for the verification step
+  /// uint256
   verificationGasLimit BigInt
+  /// The amount of gas to pay for to compensate the bundler for pre-verification execution, calldata and any gas overhead that can’t be tracked on-chain
+  /// uint256
   preVerificationGas   BigInt
+  /// Maximum fee per gas (similar to EIP-1559 max_fee_per_gas)
+  /// uint256
   maxFeePerGas         BigInt
+  /// Maximum priority fee per gas (similar to EIP-1559 max_priority_fee_per_gas)
+  /// uint256
   maxPriorityFeePerGas BigInt
+  /// Address of paymaster sponsoring the transaction, followed by extra data to send to the paymaster (empty for self-sponsored transaction)
+  /// bytes
   paymasterAndData     Bytes
+  /// Data passed into the account along with the nonce during the verification step
+  signature            Bytes?
 
   wallet   Wallet @relation(fields: [walletId], references: [id])
   walletId String
