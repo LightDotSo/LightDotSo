@@ -19,21 +19,24 @@ import { Button } from "@lightdotso/ui";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
 import type { UserOperation } from "permissionless";
-import type { Hex } from "viem";
+import type { Address } from "viem";
+import { subdigestOf } from "@lightdotso/solutions";
 
 type TransactionDialogProps = {
+  address: Address;
   chainId: number;
   userOperation: UserOperation;
-  userOpHash: Hex;
+  userOpHash: Uint8Array;
 };
 
 export function TransactionDialog({
+  address,
   chainId,
   userOperation,
   userOpHash,
 }: TransactionDialogProps) {
   const { signMessage } = useSignMessage({
-    message: "gm wagmi frens",
+    message: subdigestOf(address, userOpHash, BigInt(chainId)),
   });
 
   return (
