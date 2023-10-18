@@ -15,7 +15,7 @@
 
 import { DeployButton } from "./deploy-button";
 import { getWallet, getConfiguration } from "@lightdotso/client";
-import type { Hex } from "viem";
+import type { Address, Hex } from "viem";
 
 const chains = [
   { name: "Sepolia", chainId: undefined },
@@ -45,6 +45,7 @@ export default async function Page({
           salt={wallet!.data!.salt as Hex}
           image_hash={config!.data!.image_hash as Hex}
           chainId={chain.chainId}
+          wallet={address as Address}
         >
           {`Deploy to ${chain.name}`}
         </DeployButton>

@@ -13,21 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
 import { Button } from "@lightdotso/ui";
-import { useCallback } from "react";
 import type { Address, Hex } from "viem";
-import { useAuth } from "@/stores/useAuth";
 import { ContractLinks } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type DeployButtonProps = {
   chainId?: number;
   image_hash: Hex;
   salt: Hex;
   children: React.ReactNode;
+  wallet: Address;
 };
 
 export function DeployButton({
@@ -35,29 +32,19 @@ export function DeployButton({
   image_hash,
   salt,
   children,
+  wallet,
 }: DeployButtonProps) {
-  const { wallet } = useAuth();
-  const router = useRouter();
-
-  const deploy = useCallback(() => {
-    if (!wallet) return;
-
-    let initCode = calculateInitCode(
-      ContractLinks["Factory"] as Address,
-      image_hash,
-      salt,
-    );
-
-    router.push(`/${wallet}/transaction/${chainId}?initCode=${initCode}`);
-  }, [chainId, image_hash, router, salt, wallet]);
+  let initCode = calculateInitCode(
+    ContractLinks["Factory"] as Address,
+    image_hash,
+    salt,
+  );
 
   return (
-    <Button
-      onClick={() => {
-        deploy();
-      }}
-    >
-      {children}
+    <Button asChild>
+      <Link href={`/${wallet}/transaction/${chainId}?initCode=${initCode}`}>
+        {children}
+      </Link>
     </Button>
   );
 }
