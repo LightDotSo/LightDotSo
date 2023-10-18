@@ -87,9 +87,7 @@ model VerificationRequest {
 }
 
 model Wallet {
-  id             String   @id @default(cuid())
-  address        String
-  chainId        BigInt
+  address        String   @id
   salt           String
   factoryAddress String
   name           String   @default("")
@@ -100,8 +98,7 @@ model Wallet {
   configuration  Configuration[]
   users          User[]
   userOperations UserOperation[]
-
-  @@unique([address, chainId])
+  transactions   Transaction[]
 }
 
 model Configuration {
@@ -324,8 +321,14 @@ model Transaction {
   timestamp DateTime
   trace     Json
 
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
+
   Receipt             Receipt?
   TransactionCategory TransactionCategory[]
+  UserOperation       UserOperation[]
+
+  @@index([walletAddress])
 }
 
 model TransactionCategory {
@@ -376,19 +379,27 @@ model UserOperation {
   /// Data passed into the account along with the nonce during the verification step
   signature            Bytes?
 
-  wallet   Wallet @relation(fields: [walletId], references: [id])
-  walletId String
+  chainId BigInt
+
+  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
+  transactionHash String
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
 
   signatures Signature[]
 
-  @@index([walletId])
+  @@index([walletAddress])
+  @@index([transactionHash])
+  @@index([chainId, walletAddress])
 }
 
 model Signature {
-  id        String   @id @default(cuid())
-  signature Bytes
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(cuid())
+  signature      Bytes
+  signature_type Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String
