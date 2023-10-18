@@ -99,7 +99,6 @@ model Owner {
   id        String   @id @default(cuid())
   address   String
   weight    BigInt
-  imageHash String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

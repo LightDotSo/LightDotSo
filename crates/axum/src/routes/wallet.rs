@@ -416,7 +416,6 @@ async fn v1_wallet_post_handler(
                             lightdotso_prisma::owner::create_unchecked(
                                 to_checksum(&owner.address.parse::<H160>().unwrap(), None),
                                 owner.weight.into(),
-                                format!("{:?}", image_hash_bytes),
                                 vec![
                                     lightdotso_prisma::owner::configuration_id::set(Some(
                                         configuration_data.clone().id,
