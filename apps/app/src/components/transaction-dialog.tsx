@@ -17,7 +17,6 @@
 
 import {
   Button,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -44,7 +43,7 @@ export function TransactionDialog({
   });
 
   return (
-    <DialogContent className="sm:max-w-[425px]">
+    <>
       <DialogHeader className="mt-4 space-y-3">
         <DialogTitle>Transaction</DialogTitle>
         <DialogDescription>
@@ -67,6 +66,6 @@ export function TransactionDialog({
       <DialogFooter>
         <Button onClick={() => signMessage()}>Sign Transaction</Button>
       </DialogFooter>
-    </DialogContent>
+    </>
   );
 }

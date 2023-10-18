@@ -16,6 +16,7 @@
 import { Modal } from "@/components/modal";
 import { TransactionDialog } from "@/components/transaction-dialog";
 import { handler } from "@/handles/transaction/[chainId]";
+import { getUserOperationHash } from "permissionless";
 
 export default async function Page({
   params,
@@ -27,14 +28,19 @@ export default async function Page({
     callData?: string;
   };
 }) {
-  let op = await handler(params, searchParams);
+  let userOperation = await handler(params, searchParams);
+  let hash = getUserOperationHash({
+    userOperation,
+    entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    chainId: parseInt(params.chainId),
+  });
 
   return (
     <Modal>
       <TransactionDialog
         chainId={1}
-        userOpHash="0x"
-        userOperation={op}
+        userOpHash={hash}
+        userOperation={userOperation}
       ></TransactionDialog>
     </Modal>
   );

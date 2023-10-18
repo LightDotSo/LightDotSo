@@ -50,7 +50,8 @@ export const handler = async (
     nonce: 0n,
     initCode: (searchParams?.initCode as Hex) ?? "0x",
     callData: (searchParams?.callData as Hex) ?? "0x",
-    signature: "0x",
+    signature:
+      "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
     callGasLimit: fromHex("0x44E1C0" as Hex, { to: "bigint" }),
     verificationGasLimit: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
     preVerificationGas: fromHex("0x1C4B40" as Hex, { to: "bigint" }),
@@ -61,7 +62,7 @@ export const handler = async (
   // Fetch
   // -------------------------------------------------------------------------
 
-  let res = await getPaymasterGasAndPaymasterAndData(0, [
+  let res = await getPaymasterGasAndPaymasterAndData(parseInt(params.chainId), [
     {
       sender: params.address,
       paymasterAndData: "0x",

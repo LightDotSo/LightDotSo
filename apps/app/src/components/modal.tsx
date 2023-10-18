@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
 import { Dialog, DialogContent } from "@lightdotso/ui";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -29,7 +31,7 @@ export function Modal({ children }: ModalProps) {
 
   return (
     <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
-      <DialogContent>{children}</DialogContent>
+      <DialogContent className="sm:max-w-[425px]">{children}</DialogContent>
     </Dialog>
   );
 }
