@@ -26,7 +26,7 @@ use axum::{
 };
 use ethers_main::utils::hex;
 use eyre::Result;
-use lightdotso_prisma::{configuration, user_operation, wallet};
+use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -230,7 +230,7 @@ async fn v1_user_operation_post_handler(
     let chain_id = post.chain_id;
 
     let user_operation = params.user_operation;
-    // let user_operation_hash = params.user_operation_hash;
+    let user_operation_hash = params.user_operation_hash;
     let signature = params.signature;
 
     // Get the wallet from the database.
@@ -282,6 +282,19 @@ async fn v1_user_operation_post_handler(
         .unwrap()
         ._transaction()
         .run(|client| async move {
+            let signature = client
+                .signature()
+                .create(
+                    signature.signature.into(),
+                    signature.signature_type,
+                    owner::id::equals(signature.owner_id),
+                    user_operation::hash::equals(user_operation_hash),
+                    vec![],
+                )
+                .exec()
+                .await?;
+            info!(?signature);
+
             let user_operation = client
                 .user_operation()
                 .create(
@@ -298,7 +311,9 @@ async fn v1_user_operation_post_handler(
                     user_operation.paymaster_and_data.into(),
                     chain_id,
                     wallet::address::equals(wallet.address),
-                    vec![],
+                    vec![user_operation::signatures::connect(vec![signature::id::equals(
+                        signature.id,
+                    )])],
                 )
                 .exec()
                 .await?;
@@ -307,7 +322,6 @@ async fn v1_user_operation_post_handler(
             Ok(user_operation)
         })
         .await;
-    info!(?user_operation);
 
     // If the user_operation is not created, return a 500.
     let user_operation = user_operation.map_err(|_| AppError::InternalError)?;

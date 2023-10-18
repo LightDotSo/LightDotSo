@@ -66,7 +66,7 @@ pub(crate) struct Signature {
     // The signature of the user operation in hex.
     pub signature: String,
     // The type of the signature.
-    pub signature_type: String,
+    pub signature_type: i32,
     // The owner id of the signature.
     pub owner_id: String,
 }
@@ -77,7 +77,7 @@ impl From<signature::Data> for Signature {
         Self {
             id: signature.id.to_string(),
             signature: format!("0x{}", hex::encode(signature.signature)),
-            signature_type: signature.signature_type.to_string(),
+            signature_type: signature.signature_type,
             owner_id: signature.owner_id.to_string(),
         }
     }
