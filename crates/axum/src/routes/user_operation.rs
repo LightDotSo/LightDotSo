@@ -298,6 +298,7 @@ async fn v1_user_operation_post_handler(
         )
         .exec()
         .await?;
+      info!(?user_operation);
 
     // Change the user operation to the format that the API expects.
     let user_operation: UserOperation = user_operation.into();
