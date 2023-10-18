@@ -18,7 +18,7 @@ const webServer: PlaywrightTestConfig["webServer"] = [
   {
     command: "pnpm turbo run dev --filter @lightdotso/app",
     port: 3001,
-    timeout: 100_000,
+    timeout: 300_000,
     reuseExistingServer: !process.env.CI,
   },
 ];
@@ -27,7 +27,7 @@ if (IS_AUTH_TEST) {
   webServer.push({
     command: "pnpm turbo run dev --filter @lightdotso/auth",
     port: 3000,
-    timeout: 100_000,
+    timeout: 300_000,
     reuseExistingServer: !process.env.CI,
   });
 }
@@ -36,7 +36,7 @@ if (IS_PLAYGROUND_TEST) {
   webServer.push({
     command: "pnpm turbo run dev --filter @lightdotso/playground",
     port: 3004,
-    timeout: 100_000,
+    timeout: 300_000,
     reuseExistingServer: !process.env.CI,
   });
 }
