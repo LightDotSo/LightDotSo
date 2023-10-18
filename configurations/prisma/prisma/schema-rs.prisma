@@ -108,7 +108,7 @@ model Owner {
 
   configuration Configuration? @relation(fields: [configurationId], references: [id])
   user          User?          @relation(fields: [userId], references: [id])
-  userId        String?        @unique
+  userId        String?
 
   signatures Signature[]
 
@@ -304,7 +304,7 @@ model Transaction {
   trace     Json
 
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String? @unique
+  walletAddress String?
 
   Receipt             Receipt?
   TransactionCategory TransactionCategory[]
