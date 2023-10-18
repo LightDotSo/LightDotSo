@@ -171,7 +171,7 @@
       "next": "$next"
     },
     "patchedDependencies": {
-      "next@13.5.4": "patches/next@13.5.4.patch"
+      "next@13.5.5": "patches/next@13.5.5.patch"
     }
   }
 }
