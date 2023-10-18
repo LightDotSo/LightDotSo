@@ -28,6 +28,7 @@ export default async function Page({
 }: {
   params: { address: string };
 }) {
+  console.info("server render at: ", new Date().toISOString());
   let config = (
     await getConfiguration({ params: { query: { address } } }, false)
   )._unsafeUnwrap();
