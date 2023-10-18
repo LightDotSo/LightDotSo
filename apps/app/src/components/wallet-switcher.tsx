@@ -61,7 +61,6 @@ export function WalletSwitcher({
   const [selectedWallet, setSelectedWallet] = useState<{
     address: string;
     factory_address: string;
-    id: string;
     name: string;
     salt: string;
   }>();
@@ -139,7 +138,7 @@ export function WalletSwitcher({
                 {data &&
                   data.map(wallet => (
                     <CommandItem
-                      key={wallet.id}
+                      key={wallet.address}
                       onSelect={() => {
                         setSelectedWallet(wallet);
                         setOpen(false);

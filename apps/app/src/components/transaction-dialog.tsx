@@ -21,6 +21,9 @@ import { serializeUserOperation } from "@/utils/userOp";
 import type { UserOperation } from "permissionless";
 import type { Address } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
+import { useEffect } from "react";
+import { createUserOperation } from "@lightdotso/client";
+import { toHex } from "viem";
 
 type TransactionDialogProps = {
   address: Address;
@@ -35,8 +38,49 @@ export function TransactionDialog({
   userOperation,
   userOpHash,
 }: TransactionDialogProps) {
-  const { signMessage } = useSignMessage({
+  const { data, signMessage } = useSignMessage({
     message: subdigestOf(address, userOpHash, BigInt(chainId)),
+  });
+
+  useEffect(() => {
+    const fetchUserOp = async () => {
+      if (!data) return;
+
+      const res = await createUserOperation({
+        params: {
+          query: {
+            chain_id: chainId,
+          },
+        },
+        body: {
+          signature: {
+            id: "1",
+            signature: data,
+            signature_type: 1,
+            owner_id: "1",
+          },
+          user_operation: {
+            hash: toHex(userOpHash),
+            nonce: Number(userOperation.nonce),
+            init_code: userOperation.initCode,
+            sender: userOperation.sender,
+            call_data: userOperation.callData,
+            call_gas_limit: Number(userOperation.callGasLimit),
+            verification_gas_limit: Number(userOperation.verificationGasLimit),
+            pre_verification_gas: Number(userOperation.preVerificationGas),
+            max_fee_per_gas: Number(userOperation.maxFeePerGas),
+            max_priority_fee_per_gas: Number(
+              userOperation.maxPriorityFeePerGas,
+            ),
+            paymaster_and_data: userOperation.paymasterAndData,
+          },
+        },
+      });
+
+      console.info(res);
+    };
+
+    fetchUserOp();
   });
 
   return (

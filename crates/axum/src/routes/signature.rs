@@ -69,8 +69,6 @@ pub(crate) enum SignatureError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Signature {
-    // The id of the signature.
-    pub id: String,
     // The signature of the user operation in hex.
     pub signature: String,
     // The type of the signature.
@@ -89,7 +87,6 @@ pub struct SignaturePostRequestParams {
 impl From<signature::Data> for Signature {
     fn from(signature: signature::Data) -> Self {
         Self {
-            id: signature.id.to_string(),
             signature: format!("0x{}", hex::encode(signature.signature)),
             signature_type: signature.signature_type,
             owner_id: signature.owner_id.to_string(),

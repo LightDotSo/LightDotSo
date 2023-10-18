@@ -359,7 +359,9 @@ async fn v1_user_operation_post_handler(
                     user_operation.paymaster_and_data.hex_to_bytes()?,
                     chain_id,
                     wallet::address::equals(wallet.address),
-                    vec![user_operation::signatures::connect(vec![signature::id::equals(sig.id)])],
+                    vec![user_operation::signatures::connect(vec![signature::id::equals(
+                        signature.id,
+                    )])],
                 )
                 .exec()
                 .await?;

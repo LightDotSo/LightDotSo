@@ -81,6 +81,12 @@ jobs:
         run: |
           pnpm graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
           pnpm run deploy:hosted
+      - name: Deploy Satsuma
+        working-directory: apps/satsuma
+        run: |
+          pnpm run deploy:satsuma
+        env:
+          SATSUMA_DEPLOY_KEY: ${{ secrets.SATSUMA_DEPLOY_KEY }}
   deploy-check:
     if: always()
     needs:

@@ -128,6 +128,7 @@ export interface components {
       checkpoint: number;
       id: string;
       image_hash: string;
+      owners: components["schemas"]["Owner"][];
       /** Format: int64 */
       threshold: number;
     };
