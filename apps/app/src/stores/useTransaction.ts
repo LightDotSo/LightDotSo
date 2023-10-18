@@ -125,7 +125,7 @@ export const useTransactionStore = create(
         "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
     getUserOpHash: () => {
       // Return if not valid
-      if (!get().isValid()) return "0x";
+      // if (!get().isValid()) return "0x";
 
       const userOperation = get().userOperation;
       const chainId = get().chainId;
