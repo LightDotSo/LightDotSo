@@ -13,29 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Modal } from "@/components/modal";
-import { TransactionDialog } from "@/components/transaction-dialog";
-import { handler } from "@/handles/transaction/[chainId]";
+import { Dialog, DialogContent } from "@lightdotso/ui";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
-  params: { address: string; chainId: string };
-  searchParams: {
-    initCode?: string;
-    callData?: string;
-  };
-}) {
-  let op = await handler(params, searchParams);
+interface ModalProps {
+  children: React.ReactNode;
+}
+
+export function Modal({ children }: ModalProps) {
+  const router = useRouter();
+  const onDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
 
   return (
-    <Modal>
-      <TransactionDialog
-        chainId={1}
-        userOpHash="0x"
-        userOperation={op}
-      ></TransactionDialog>
-    </Modal>
+    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
+      <DialogContent>{children}</DialogContent>
+    </Dialog>
   );
 }
