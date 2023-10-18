@@ -78,8 +78,9 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  configuration Configuration[]
-  users         User[]
+  configuration  Configuration[]
+  users          User[]
+  userOperations UserOperation[]
 
   @@unique([address, chainId])
 }
@@ -110,6 +111,8 @@ model Owner {
   configuration Configuration? @relation(fields: [configurationId], references: [id])
   user          User?          @relation(fields: [userId], references: [id])
   userId        String?
+
+  signatures Signature[]
 
   @@index([userId])
   @@index([configurationId])
@@ -314,4 +317,45 @@ model TransactionCategory {
   transaction Transaction @relation(fields: [id], references: [hash])
 
   @@index([id])
+}
+
+model UserOperation {
+  /// The userOperation's hash
+  /// pub hash: H256
+  hash                 String @id
+  /// Sender
+  ///pub from: Address
+  sender               String
+  nonce                BigInt
+  initCode             Bytes
+  callData             Bytes
+  callGasLimit         BigInt
+  verificationGasLimit BigInt
+  preVerificationGas   BigInt
+  maxFeePerGas         BigInt
+  maxPriorityFeePerGas BigInt
+  paymasterAndData     Bytes
+
+  wallet   Wallet @relation(fields: [walletId], references: [id])
+  walletId String
+
+  signatures Signature[]
+
+  @@index([walletId])
+}
+
+model Signature {
+  id        String   @id @default(cuid())
+  signature Bytes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
+  owner   Owner  @relation(fields: [ownerId], references: [id])
+  ownerId String
+
+  @@index([userOperationHash])
+  @@index([ownerId])
 }
