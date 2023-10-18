@@ -15,13 +15,13 @@
 
 "use client";
 
-import { Button, DialogTrigger } from "@lightdotso/ui";
-import { useTransactionStore } from "@/stores/useTransaction";
+import { Button } from "@lightdotso/ui";
 import { useCallback } from "react";
 import type { Address, Hex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 import { ContractLinks } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
+import { useRouter } from "next/navigation";
 
 type DeployButtonProps = {
   chainId?: number;
@@ -37,7 +37,7 @@ export function DeployButton({
   children,
 }: DeployButtonProps) {
   const { wallet } = useAuth();
-  const { setInitCode, setChainId, setSender } = useTransactionStore();
+  const router = useRouter();
 
   const deploy = useCallback(() => {
     if (!wallet) return;
@@ -47,14 +47,17 @@ export function DeployButton({
       image_hash,
       salt,
     );
-    setInitCode(initCode);
-    setChainId(chainId);
-    setSender(wallet);
-  }, [chainId, image_hash, salt, setChainId, setInitCode, setSender, wallet]);
+
+    router.push(`/${wallet}/transaction/${chainId}?initCode=${initCode}`);
+  }, [chainId, image_hash, router, salt, wallet]);
 
   return (
-    <DialogTrigger asChild>
-      <Button onClick={deploy}>{children}</Button>
-    </DialogTrigger>
+    <Button
+      onClick={() => {
+        deploy();
+      }}
+    >
+      {children}
+    </Button>
   );
 }

@@ -13,21 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import Root from "@/app/root";
-
-export default function RootLayout(props: {
-  children: React.ReactNode;
-  transaction: React.ReactNode;
+export default function Page({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   return (
-    <Root type="wallet">
-      <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1">
-          {props.children}
-          {props.transaction}
-        </div>
-      </div>
-    </Root>
+    <div>
+      <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+        <code className="break-all text-primary">
+          params: {JSON.stringify(params, null, 2)}
+        </code>
+      </pre>
+      <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+        <code className="break-all text-primary">
+          searchParams: {JSON.stringify(searchParams, null, 2)}
+        </code>
+      </pre>
+    </div>
   );
 }
