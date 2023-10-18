@@ -364,7 +364,7 @@ model UserOperation {
   chainId BigInt
 
   transaction     Transaction @relation(fields: [transactionHash], references: [hash])
-  transactionHash String
+  transactionHash String      @unique
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
@@ -387,7 +387,7 @@ model Signature {
   ownerId String
 
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String
+  userOperationHash String        @unique
 
   @@index([ownerId])
   @@index([userOperationHash])
