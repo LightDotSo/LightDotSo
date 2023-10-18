@@ -23,7 +23,7 @@ import type { Address } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
-import { toHex } from "viem";
+import { isAddressEqual, toHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 
 type TransactionDialogProps = {
@@ -49,13 +49,17 @@ export function TransactionDialog({
     message: subdigestOf(address, userOpHash, BigInt(chainId)),
   });
 
-  const owner_id = useMemo(() => {
-    return owners.find(owner => owner.address === userAddress)?.address;
+  const owner = useMemo(() => {
+    if (!userAddress) return;
+
+    return owners?.find(owner =>
+      isAddressEqual(owner.address as Address, userAddress),
+    );
   }, [owners, userAddress]);
 
   useEffect(() => {
     const fetchUserOp = async () => {
-      if (!data || !owner_id) return;
+      if (!data || !owner) return;
 
       const res = await createUserOperation({
         params: {
@@ -64,10 +68,12 @@ export function TransactionDialog({
           },
         },
         body: {
+          // @ts-expect-error
           signature: {
+            // @ts-expect-error
+            owner_id: owner.id,
             signature: data,
             signature_type: 1,
-            owner_id: owner_id,
           },
           user_operation: {
             hash: toHex(userOpHash),
@@ -115,9 +121,14 @@ export function TransactionDialog({
             userOpHash: {userOpHash}
           </code>
         </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">
+            owner: {JSON.stringify(owners, null, 2)}
+          </code>
+        </pre>
       </div>
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-        <Button disabled={!owner_id} onClick={() => signMessage()}>
+        <Button disabled={!owner} onClick={() => signMessage()}>
           Sign Transaction
         </Button>
       </div>

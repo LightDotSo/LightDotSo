@@ -123,22 +123,45 @@ export interface components {
   schemas: {
     /** @description Item to do. */
     Configuration: {
+      /** @description The address of the configuration. */
       address: string;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The checkpoint of the configuration.
+       */
       checkpoint: number;
+      /** @description The id of the configuration. */
       id: string;
+      /** @description The image hash of the configuration. */
       image_hash: string;
-      owners: components["schemas"]["Owner"][];
-      /** Format: int64 */
+      /** @description The owners of the configuration. */
+      owners: components["schemas"]["ConfigurationOwner"][];
+      /**
+       * Format: int64
+       * @description The threshold of the configuration.
+       */
       threshold: number;
     };
     /** @description Configuration operation errors */
     ConfigurationError: OneOf<[{
+      /** @description Configuration query error. */
       BadRequest: string;
     }, {
       /** @description Configuration not found by id. */
       NotFound: string;
     }]>;
+    /** @description Owner */
+    ConfigurationOwner: {
+      /** @description The address of the owner. */
+      address: string;
+      /** @description The id of the owner. */
+      id: string;
+      /**
+       * Format: int64
+       * @description The weight of the owner.
+       */
+      weight: number;
+    };
     /**
      * @description Wallet owner.
      * @example {
@@ -303,6 +326,7 @@ export interface operations {
     parameters: {
       query: {
         address: string;
+        /** @description The optional checkpoint to filter by. */
         checkpoint?: number | null;
       };
     };
@@ -328,7 +352,9 @@ export interface operations {
   v1_configuration_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first configuration to return. */
         offset?: number | null;
+        /** @description The maximum number of configurations to return. */
         limit?: number | null;
       };
     };
