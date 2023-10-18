@@ -390,9 +390,9 @@ model UserOperation {
 
   signatures Signature[]
 
-  @@index([walletAddress])
-  @@index([transactionHash])
   @@index([chainId, walletAddress])
+  @@index([transactionHash])
+  @@index([walletAddress])
 }
 
 model Signature {
@@ -402,12 +402,12 @@ model Signature {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String
-
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
 
-  @@index([userOperationHash])
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
   @@index([ownerId])
+  @@index([userOperationHash])
 }
