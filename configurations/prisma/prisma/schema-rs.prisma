@@ -306,9 +306,19 @@ model Transaction {
 
   receipt Receipt?
 
-  userOperations UserOperation[]
+  userOperations      UserOperation[]
+  transactionCategory TransactionCategory[]
 
   @@index([walletAddress])
+}
+
+model TransactionCategory {
+  id       String @id @default(cuid())
+  category String
+
+  transaction Transaction @relation(fields: [id], references: [hash])
+
+  @@index([id])
 }
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337

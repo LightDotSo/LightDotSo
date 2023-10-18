@@ -68,7 +68,6 @@ pub async fn create_wallet_with_configuration(
 #[autometrics]
 pub async fn create_transaction_category(
     db: Database,
-    address: ethers::types::H160,
     category: String,
     transaction_hash: ethers::types::H256,
 ) -> AppJsonResult<transaction_category::Data> {
@@ -77,7 +76,6 @@ pub async fn create_transaction_category(
     let category = db
         .transaction_category()
         .create(
-            to_checksum(&address, None),
             category,
             transaction::UniqueWhereParam::HashEquals(format!("{:?}", transaction_hash)),
             vec![],
