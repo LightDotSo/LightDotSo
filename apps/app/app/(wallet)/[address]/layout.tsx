@@ -18,14 +18,14 @@ import Root from "@/app/root";
 
 export default function RootLayout(props: {
   children: React.ReactNode;
-  transaction?: React.ReactNode;
+  transaction: React.ReactNode;
 }) {
   return (
     <Root type="wallet">
       <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
         <div className="mx-auto max-w-7xl flex-1">{props.children}</div>
       </div>
-      {props?.transaction}
+      {props.transaction}
     </Root>
   );
 }
