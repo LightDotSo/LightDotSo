@@ -57,6 +57,7 @@
     "connectkit": "^1.5.3",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.16.4",
+    "immer": "^10.0.3",
     "inngest": "^3.2.1",
     "kysely-postgres-js": "^1.1.1",
     "lodash": "^4.17.21",
