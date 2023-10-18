@@ -204,6 +204,7 @@ cargo-generate:
 
 .PHONY: prisma
 prisma: cargo-generate ## Add clippy ignore.
+	./scripts/add_recursive_flag.sh
 	./scripts/add_clippy_ignore.sh
 
 ##@ Rundler
