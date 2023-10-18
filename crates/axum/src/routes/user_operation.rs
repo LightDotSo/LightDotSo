@@ -235,6 +235,8 @@ async fn v1_user_operation_post_handler(
     let user_operation_hash = params.user_operation_hash;
     let sig = params.signature;
 
+    // TODO: Check that the user operation hash is the same as the user operation.
+
     // Parse the user operation address.
     let sender_address: H160 = user_operation.sender.parse()?;
 

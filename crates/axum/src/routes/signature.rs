@@ -16,6 +16,7 @@
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
+    traits::HexToBytes,
 };
 use autometrics::autometrics;
 use axum::{
@@ -24,7 +25,7 @@ use axum::{
     Json, Router,
 };
 use ethers_main::utils::hex;
-use lightdotso_prisma::signature;
+use lightdotso_prisma::{owner, signature, user_operation};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -45,6 +46,13 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     // The user operation hash to filter by.
     pub user_operation_hash: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct PostQuery {
+    // The hash of the user operation.
+    pub user_operation_hash: String,
 }
 
 /// Signature operation errors
@@ -69,6 +77,12 @@ pub(crate) struct Signature {
     pub signature_type: i32,
     // The owner id of the signature.
     pub owner_id: String,
+}
+
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub struct PostRequestParams {
+    /// The result of the signature.
+    pub signature: Signature,
 }
 
 // Implement From<signature::Data> for Signature.
@@ -176,4 +190,56 @@ async fn v1_signature_list_handler(
     let signatures: Vec<Signature> = signatures.into_iter().map(Signature::from).collect();
 
     Ok(Json::from(signatures))
+}
+
+/// Create a signature
+#[utoipa::path(
+        post,
+        path = "/signature/create",
+        params(
+            PostQuery
+        ),
+        request_body = PostRequestParams,
+        responses(
+            (status = 200, description = "Signature created successfully", body = UserOperation),
+            (status = 400, description = "Invalid Configuration", body = UserOperationError),
+            (status = 409, description = "Signature already exists", body = UserOperationError),
+            (status = 500, description = "Signature internal error", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+async fn v1_signature_create_handler(
+    post: Query<PostQuery>,
+    State(client): State<AppState>,
+    Json(params): Json<PostRequestParams>,
+) -> AppJsonResult<Signature> {
+    // Get the post query.
+    let Query(post) = post;
+
+    // Get the chain id from the post query.
+    let user_operation_hash = post.user_operation_hash;
+
+    // Get the signature from the post body.
+    let sig = params.signature;
+
+    // Create the signature the database.
+    let signature = client
+        .client
+        .unwrap()
+        .signature()
+        .create(
+            sig.signature.hex_to_bytes()?,
+            sig.signature_type,
+            owner::id::equals(sig.owner_id),
+            user_operation::hash::equals(user_operation_hash),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?signature);
+
+    // Change the signatures to the format that the API expects.
+    let signature: Signature = signature.into();
+
+    Ok(Json::from(signature))
 }
