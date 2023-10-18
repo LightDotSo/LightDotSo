@@ -157,7 +157,6 @@ export interface components {
     };
     /** @description Item to do. */
     Signature: {
-      id: string;
       owner_id: string;
       signature: string;
       /** Format: int32 */

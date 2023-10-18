@@ -45,6 +45,7 @@ use utoipa_swagger_ui::SwaggerUi;
     components(
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
+        schemas(configuration::ConfigurationOwner),
         schemas(signature::Signature),
         schemas(signature::SignatureError),
         schemas(signature::SignaturePostRequestParams),
