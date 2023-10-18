@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::signature::Signature;
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
@@ -67,7 +66,18 @@ pub struct UserOperationPostRequestParams {
     // The user operation to create.
     pub user_operation: UserOperation,
     // The signature of the user operation.
-    pub signature: Signature,
+    pub signature: UserOperationSignature,
+}
+
+/// Owner
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationSignature {
+    /// The id of the owner of the signature.
+    owner_id: String,
+    /// The signature in hex string.
+    signature: String,
+    /// The signature type
+    signature_type: i32,
 }
 
 /// User operation operation errors

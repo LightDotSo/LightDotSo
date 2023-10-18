@@ -54,6 +54,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(user_operation::UserOperation),
         schemas(user_operation::UserOperationError),
         schemas(user_operation::UserOperationPostRequestParams),
+        schemas(user_operation::UserOperationSignature),
         schemas(wallet::Owner),
         schemas(wallet::Wallet),
         schemas(wallet::WalletError),
