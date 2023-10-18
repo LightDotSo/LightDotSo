@@ -38,6 +38,13 @@ export interface paths {
      */
     get: operations["handler"];
   };
+  "/signature/create": {
+    /**
+     * Create a signature
+     * @description Create a signature
+     */
+    post: operations["v1_signature_post_handler"];
+  };
   "/signature/get": {
     /**
      * Get a signature
@@ -65,6 +72,13 @@ export interface paths {
      * @description Returns a list of transactions.
      */
     get: operations["v1_transaction_list_handler"];
+  };
+  "/user_operation/create": {
+    /**
+     * Create a user operation
+     * @description Create a user operation
+     */
+    post: operations["v1_user_operation_post_handler"];
   };
   "/user_operation/get": {
     /**
@@ -140,37 +154,6 @@ export interface components {
        */
       weight: number;
     };
-    PostRequestParams: {
-      /**
-       * @description The name of the wallet.
-       * @default My Wallet
-       * @example My Wallet
-       */
-      name: string;
-      /**
-       * @description The array of owners of the wallet.
-       * @example [
-       *   {
-       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
-       *     "weight": 1
-       *   }
-       * ]
-       */
-      owners: components["schemas"]["Owner"][];
-      /**
-       * @description The salt is used to calculate the new wallet address.
-       * @default 0x0000000000000000000000000000000000000000000000000000000000000001
-       * @example 0x0000000000000000000000000000000000000000000000000000000000000006
-       */
-      salt: string;
-      /**
-       * Format: int32
-       * @description The threshold of the wallet.
-       * @default 1
-       * @example 3
-       */
-      threshold: number;
-    };
     /** @description Item to do. */
     Signature: {
       id: string;
@@ -186,6 +169,9 @@ export interface components {
       /** @description Signature not found by id. */
       NotFound: string;
     }]>;
+    SignaturePostRequestParams: {
+      signature: components["schemas"]["Signature"];
+    };
     /** @description Item to do. */
     Transaction: {
       hash: string;
@@ -224,6 +210,10 @@ export interface components {
       /** @description User operation not found by id. */
       NotFound: string;
     }]>;
+    UserOperationPostRequestParams: {
+      signature: components["schemas"]["Signature"];
+      user_operation: components["schemas"]["UserOperation"];
+    };
     /** @description Wallet to do. */
     Wallet: {
       address: string;
@@ -248,6 +238,37 @@ export interface components {
        */
       InvalidConfiguration: string;
     }]>;
+    WalletPostRequestParams: {
+      /**
+       * @description The name of the wallet.
+       * @default My Wallet
+       * @example My Wallet
+       */
+      name: string;
+      /**
+       * @description The array of owners of the wallet.
+       * @example [
+       *   {
+       *     "address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+       *     "weight": 1
+       *   }
+       * ]
+       */
+      owners: components["schemas"]["Owner"][];
+      /**
+       * @description The salt is used to calculate the new wallet address.
+       * @default 0x0000000000000000000000000000000000000000000000000000000000000001
+       * @example 0x0000000000000000000000000000000000000000000000000000000000000006
+       */
+      salt: string;
+      /**
+       * Format: int32
+       * @description The threshold of the wallet.
+       * @default 1
+       * @example 3
+       */
+      threshold: number;
+    };
   };
   responses: never;
   parameters: never;
@@ -322,6 +343,48 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["ConfigurationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a signature
+   * @description Create a signature
+   */
+  v1_signature_post_handler: {
+    parameters: {
+      query: {
+        user_operation_hash: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SignaturePostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Signature created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description Signature already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description Signature internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
         };
       };
     };
@@ -430,6 +493,48 @@ export interface operations {
     };
   };
   /**
+   * Create a user operation
+   * @description Create a user operation
+   */
+  v1_user_operation_post_handler: {
+    parameters: {
+      query: {
+        chain_id: number;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["UserOperationPostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description User Operation created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+      /** @description User Operation internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
    * Get a user operation
    * @description Get a user operation
    */
@@ -494,7 +599,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["PostRequestParams"];
+        "application/json": components["schemas"]["WalletPostRequestParams"];
       };
     };
     responses: {

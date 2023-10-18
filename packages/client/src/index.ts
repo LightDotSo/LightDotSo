@@ -137,6 +137,48 @@ export const createWallet = async ({
   );
 };
 
+export const createUserOperation = async ({
+  params,
+  body,
+}: {
+  params: {
+    query: {
+      chain_id: number;
+    };
+  };
+  body: {
+    signature: {
+      id: string;
+      owner_id: string;
+      signature: string;
+      signature_type: number;
+    };
+    user_operation: {
+      call_data: string;
+      call_gas_limit: number;
+      hash: string;
+      init_code: string;
+      max_fee_per_gas: number;
+      max_priority_fee_per_gas: number;
+      nonce: number;
+      paymaster_and_data: string;
+      pre_verification_gas: number;
+      sender: string;
+      verification_gas_limit: number;
+    };
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/user_operation/create", {
+      params,
+      body,
+    }),
+    () => new Error("Database error"),
+  );
+};
+
 export const getLlama = async (address: string) => {
   return zodFetch(
     `https://api.llamafolio.com/balances/${address}`,
