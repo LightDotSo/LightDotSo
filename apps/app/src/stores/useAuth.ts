@@ -15,6 +15,7 @@
 
 import { create } from "zustand";
 import type { Address } from "viem";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface AuthState {
   address: Address | undefined;
@@ -24,10 +25,19 @@ interface AuthState {
   removeAddress: () => void;
 }
 
-export const useAuth = create<AuthState>(set => ({
-  address: undefined,
-  setAddress: (address: Address | undefined) => set({ address }),
-  wallet: undefined,
-  setWallet: (wallet: Address | undefined) => set({ wallet }),
-  removeAddress: () => set({ address: undefined }),
-}));
+export const useAuth = create(
+  persist<AuthState>(
+    set => ({
+      address: undefined,
+      setAddress: (address: Address | undefined) => set({ address }),
+      wallet: undefined,
+      setWallet: (wallet: Address | undefined) => set({ wallet }),
+      removeAddress: () => set({ address: undefined }),
+    }),
+    {
+      name: "auth-state-v1", // name of the item in the storage (must be unique)
+      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+      skipHydration: true,
+    },
+  ),
+);
