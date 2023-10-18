@@ -277,7 +277,6 @@ async fn v1_user_operation_post_handler(
     // TODO: Check that the signature is valid.
 
     // Create the user operation in the database w/ the signature.
-
     let user_operation: Result<lightdotso_prisma::user_operation::Data> = client
         .client
         .unwrap()
