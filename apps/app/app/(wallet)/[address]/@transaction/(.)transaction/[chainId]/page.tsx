@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Modal } from "@/components/modal";
+import { Dialog } from "@lightdotso/ui";
 
 export default function Page({
   params,
@@ -23,7 +23,7 @@ export default function Page({
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   return (
-    <Modal>
+    <Dialog open={true}>
       <div>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
@@ -36,6 +36,6 @@ export default function Page({
           </code>
         </pre>
       </div>
-    </Modal>
+    </Dialog>
   );
 }
