@@ -416,25 +416,21 @@ async fn v1_wallet_post_handler(
                             lightdotso_prisma::owner::create_unchecked(
                                 to_checksum(&owner.address.parse::<H160>().unwrap(), None),
                                 owner.weight.into(),
-                                vec![
-                                    lightdotso_prisma::owner::configuration_id::set(Some(
-                                        configuration_data.clone().id,
-                                    )),
-                                    lightdotso_prisma::owner::user_id::set(Some(
-                                        user_data
-                                            .iter()
-                                            .find(|user| {
-                                                user.address ==
-                                                    Some(to_checksum(
-                                                        &owner.address.parse::<H160>().unwrap(),
-                                                        None,
-                                                    ))
-                                            })
-                                            .unwrap()
-                                            .id
-                                            .clone(),
-                                    )),
-                                ],
+                                configuration_data.clone().id,
+                                vec![lightdotso_prisma::owner::user_id::set(Some(
+                                    user_data
+                                        .iter()
+                                        .find(|user| {
+                                            user.address ==
+                                                Some(to_checksum(
+                                                    &owner.address.parse::<H160>().unwrap(),
+                                                    None,
+                                                ))
+                                        })
+                                        .unwrap()
+                                        .id
+                                        .clone(),
+                                ))],
                             )
                         })
                         .collect(),
