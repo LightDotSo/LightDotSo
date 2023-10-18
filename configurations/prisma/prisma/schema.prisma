@@ -104,7 +104,6 @@ model Wallet {
 model Configuration {
   id         String @id @default(cuid())
   address    String
-  chainId    BigInt
   checkpoint BigInt
   imageHash  String @unique
   threshold  BigInt
@@ -112,7 +111,7 @@ model Configuration {
   owners  Owner[]
   wallets Wallet[]
 
-  @@unique([address, chainId, checkpoint])
+  @@unique([address, checkpoint])
 }
 
 model Owner {
