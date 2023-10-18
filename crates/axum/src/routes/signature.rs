@@ -43,6 +43,8 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     // The maximum number of signatures to return.
     pub limit: Option<i64>,
+    // The user operation hash to filter by.
+    pub user_operation_hash: Option<String>,
 }
 
 /// Signature operation errors
@@ -144,12 +146,19 @@ async fn v1_signature_list_handler(
     // Get the pagination query.
     let Query(pagination) = pagination.unwrap_or_default();
 
+    let query = match pagination.user_operation_hash {
+        Some(user_operation_hash) => {
+            vec![signature::user_operation_hash::equals(user_operation_hash)]
+        }
+        None => vec![],
+    };
+
     // Get the signatures from the database.
     let signatures = client
         .client
         .unwrap()
         .signature()
-        .find_many(vec![])
+        .find_many(query)
         .order_by(signature::created_at::order(Direction::Desc))
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))

@@ -34,6 +34,10 @@ use utoipa::{IntoParams, ToSchema};
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
     pub address: String,
+    // The optional chain id to filter by.
+    pub chain_id: Option<i64>,
+    // The optional checkpoint to filter by.
+    pub checkpoint: Option<i64>,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -110,18 +114,39 @@ async fn v1_configuration_get_handler(
 
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
+    let chain_id = query.chain_id.unwrap_or(0);
 
     info!("Get configuration for checksum address: {:?}", checksum_address);
 
     // Get the configurations from the database.
-    let configuration = client
-        .client
-        .unwrap()
-        .configuration()
-        .find_first(vec![configuration::address::equals(checksum_address)])
-        .order_by(configuration::checkpoint::order(Direction::Desc))
-        .exec()
-        .await?;
+    let configuration = match query.checkpoint {
+        Some(checkpoint) => {
+            client
+                .client
+                .unwrap()
+                .configuration()
+                .find_unique(configuration::address_chain_id_checkpoint(
+                    checksum_address,
+                    chain_id,
+                    checkpoint,
+                ))
+                .exec()
+                .await?
+        }
+        None => {
+            client
+                .client
+                .unwrap()
+                .configuration()
+                .find_first(vec![
+                    configuration::address::equals(checksum_address),
+                    configuration::chain_id::equals(chain_id),
+                ])
+                .order_by(configuration::checkpoint::order(Direction::Desc))
+                .exec()
+                .await?
+        }
+    };
 
     // If the configuration is not found, return a 404.
     let configuration = configuration.ok_or(AppError::NotFound)?;
