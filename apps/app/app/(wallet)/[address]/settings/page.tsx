@@ -18,7 +18,7 @@ import { getWallet, getConfiguration } from "@lightdotso/client";
 import type { Address, Hex } from "viem";
 
 const chains = [
-  { name: "Sepolia", chainId: undefined },
+  { name: "Sepolia", chainId: 11155111 },
   { name: "Mainnet", chainId: 1 },
   { name: "Polygon", chainId: 137 },
 ];
