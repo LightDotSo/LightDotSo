@@ -66,8 +66,6 @@ pub struct PostQuery {
 pub struct UserOperationPostRequestParams {
     // The user operation to create.
     pub user_operation: UserOperation,
-    // The hash of the user operation.
-    pub user_operation_hash: String,
     // The signature of the user operation.
     pub signature: Signature,
 }
@@ -255,8 +253,8 @@ async fn v1_user_operation_post_handler(
     // Get the chain id from the post query.
     let chain_id = post.chain_id;
 
-    let user_operation = params.user_operation;
-    let user_operation_hash = params.user_operation_hash;
+    let user_operation = params.user_operation.clone();
+    let user_operation_hash = params.user_operation.clone().hash;
     let sig = params.signature;
 
     let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
