@@ -71,8 +71,9 @@ model User {
 
   accounts Account[]
   sessions Session[]
-  wallets  Wallet[]
-  owners   Owner[]
+
+  owners  Owner[]
+  wallets Wallet[]
 }
 
 model VerificationRequest {
@@ -94,10 +95,10 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  configuration  Configuration[]
-  users          User[]
-  userOperations UserOperation[]
+  configurations Configuration[]
   transactions   Transaction[]
+  userOperations UserOperation[]
+  users          User[]
 }
 
 model Configuration {
@@ -108,8 +109,8 @@ model Configuration {
   imageHash  String @unique
   threshold  BigInt
 
-  wallets Wallet[]
   owners  Owner[]
+  wallets Wallet[]
 
   @@unique([address, chainId, checkpoint])
 }
