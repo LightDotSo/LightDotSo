@@ -17,6 +17,9 @@ import { notFound } from "next/navigation";
 import { isAddress } from "viem";
 
 export const validateNumber = (value: string) => {
+  // Regular expression to check if value is Hex
+  const hexRegex = /^0x[0-9a-fA-F]+$/;
+
   // Check if the value is a non-negative integer
   if (/^\d+$/.test(value)) {
     return;
