@@ -32,10 +32,13 @@ export default async function Page({
   await handler(params);
 
   let config = (
-    await getConfiguration({ params: { query: { address } } }, false)
+    await getConfiguration(
+      { params: { query: { address: params.address } } },
+      false,
+    )
   )._unsafeUnwrap();
   let wallet = (
-    await getWallet({ params: { query: { address } } }, false)
+    await getWallet({ params: { query: { address: params.address } } }, false)
   )._unsafeUnwrap();
 
   if (!config?.data?.image_hash || !wallet?.data?.salt) {
@@ -52,7 +55,7 @@ export default async function Page({
           salt={wallet!.data!.salt as Hex}
           image_hash={config!.data!.image_hash as Hex}
           chainId={chain.chainId}
-          wallet={address as Address}
+          wallet={params.address as Address}
         >
           {`Deploy to ${chain.name}`}
         </DeployButton>
