@@ -381,7 +381,6 @@ async fn v1_wallet_post_handler(
                 .create(
                     to_checksum(&new_wallet_address, None),
                     0,
-                    0,
                     format!("{:?}", image_hash_bytes),
                     threshold.into(),
                     vec![],

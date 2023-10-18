@@ -253,10 +253,7 @@ async fn v1_user_operation_post_handler(
         .client
         .unwrap()
         .configuration()
-        .find_first(vec![
-            configuration::address::equals(user_operation.clone().sender),
-            configuration::chain_id::equals(chain_id),
-        ])
+        .find_first(vec![configuration::address::equals(user_operation.clone().sender)])
         .order_by(configuration::checkpoint::order(Direction::Desc))
         .with(configuration::owners::fetch(vec![]))
         .exec()
