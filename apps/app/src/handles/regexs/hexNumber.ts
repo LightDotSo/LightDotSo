@@ -13,22 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { notFound } from "next/navigation";
-import { isAddress } from "viem";
-import { hexRegex } from "../regexs/hexNumber";
-
-export const validateNumber = (value: string) => {
-  // Check if the value is a non-negative integer
-  if (/^\d+$/.test(value)) {
-    return;
-  }
-
-  // Check if the value is Hex
-  if (hexRegex.test(value)) {
-    return;
-  }
-
-  if (!isAddress(address)) {
-    return notFound();
-  }
-};
+export const hexRegex = /^0x[0-9a-fA-F]+$/;
