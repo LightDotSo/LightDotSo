@@ -202,11 +202,11 @@ async fn v1_wallet_get_handler(
     )]
 #[autometrics]
 async fn v1_wallet_list_handler(
-    pagination: Option<Query<ListQuery>>,
+    pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
     // Get the pagination query.
-    let Query(pagination) = pagination.unwrap_or_default();
+    let Query(pagination) = pagination;
 
     let query = match pagination.owner {
         Some(owner) => vec![wallet::users::some(vec![user::address::equals(Some(owner))])],
@@ -247,12 +247,12 @@ async fn v1_wallet_list_handler(
     )]
 #[autometrics]
 async fn v1_wallet_post_handler(
-    post: Option<Query<PostQuery>>,
+    post: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<PostRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Get the post query.
-    let Query(post) = post.unwrap_or_default();
+    let Query(post) = post;
 
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
 

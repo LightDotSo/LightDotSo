@@ -140,11 +140,11 @@ async fn v1_signature_get_handler(
     )]
 #[autometrics]
 async fn v1_signature_list_handler(
-    pagination: Option<Query<ListQuery>>,
+    pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Signature>> {
     // Get the pagination query.
-    let Query(pagination) = pagination.unwrap_or_default();
+    let Query(pagination) = pagination;
 
     let query = match pagination.user_operation_hash {
         Some(user_operation_hash) => {

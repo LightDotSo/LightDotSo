@@ -171,11 +171,11 @@ async fn v1_configuration_get_handler(
     )]
 #[autometrics]
 async fn v1_configuration_list_handler(
-    pagination: Option<Query<ListQuery>>,
+    pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Configuration>> {
     // Get the pagination query.
-    let Query(pagination) = pagination.unwrap_or_default();
+    let Query(pagination) = pagination;
 
     // Get the configurations from the database.
     let configurations = client

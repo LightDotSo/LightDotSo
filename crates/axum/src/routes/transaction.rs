@@ -128,11 +128,11 @@ async fn v1_transaction_get_handler(
     )]
 #[autometrics]
 async fn v1_transaction_list_handler(
-    pagination: Option<Query<ListQuery>>,
+    pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Transaction>> {
     // Get the pagination query.
-    let Query(pagination) = pagination.unwrap_or_default();
+    let Query(pagination) = pagination;
 
     // Get the transactions from the database.
     let transactions = client
