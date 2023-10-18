@@ -16,6 +16,7 @@
 import { DeployButton } from "./deploy-button";
 import { getWallet, getConfiguration } from "@lightdotso/client";
 import type { Address, Hex } from "viem";
+import { handler } from "@/handles/[address]";
 
 const chains = [
   { name: "Sepolia", chainId: 11155111 },
@@ -24,11 +25,12 @@ const chains = [
 ];
 
 export default async function Page({
-  params: { address },
+  params,
 }: {
   params: { address: string };
 }) {
-  console.info("server render at: ", new Date().toISOString());
+  await handler(params);
+
   let config = (
     await getConfiguration({ params: { query: { address } } }, false)
   )._unsafeUnwrap();
@@ -36,7 +38,11 @@ export default async function Page({
     await getWallet({ params: { query: { address } } }, false)
   )._unsafeUnwrap();
 
-  if (!config?.data?.image_hash || !wallet?.data?.salt) return;
+  if (!config?.data?.image_hash || !wallet?.data?.salt) {
+    // Log error
+    console.error("Missing image_hash or salt, returning null.");
+    return null;
+  }
 
   return (
     <div className="space-x-4">
