@@ -80,7 +80,7 @@ pub(crate) struct Signature {
 }
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub struct PostRequestParams {
+pub struct SignaturePostRequestParams {
     /// The result of the signature.
     pub signature: Signature,
 }
@@ -102,6 +102,7 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/signature/get", get(v1_signature_get_handler))
         .route("/signature/list", get(v1_signature_list_handler))
+        .route("/signature/create", get(v1_signature_post_handler))
 }
 
 /// Get a signature
@@ -199,7 +200,7 @@ async fn v1_signature_list_handler(
         params(
             PostQuery
         ),
-        request_body = PostRequestParams,
+        request_body = SignaturePostRequestParams,
         responses(
             (status = 200, description = "Signature created successfully", body = UserOperation),
             (status = 400, description = "Invalid Configuration", body = UserOperationError),
@@ -208,10 +209,10 @@ async fn v1_signature_list_handler(
         )
     )]
 #[autometrics]
-async fn v1_signature_create_handler(
+async fn v1_signature_post_handler(
     post: Query<PostQuery>,
     State(client): State<AppState>,
-    Json(params): Json<PostRequestParams>,
+    Json(params): Json<SignaturePostRequestParams>,
 ) -> AppJsonResult<Signature> {
     // Get the post query.
     let Query(post) = post;

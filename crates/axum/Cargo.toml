@@ -30,6 +30,7 @@
   lightdotso-solutions = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }
+  rundler-types = { workspace = true }
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }

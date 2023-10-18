@@ -47,14 +47,16 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(configuration::ConfigurationError),
         schemas(signature::Signature),
         schemas(signature::SignatureError),
+        schemas(signature::SignaturePostRequestParams),
         schemas(transaction::Transaction),
         schemas(transaction::TransactionError),
         schemas(user_operation::UserOperation),
         schemas(user_operation::UserOperationError),
+        schemas(user_operation::UserOperationPostRequestParams),
         schemas(wallet::Owner),
-        schemas(wallet::PostRequestParams),
         schemas(wallet::Wallet),
         schemas(wallet::WalletError),
+        schemas(wallet::WalletPostRequestParams),
     ),
     paths(
         check::handler,
@@ -63,10 +65,12 @@ use utoipa_swagger_ui::SwaggerUi;
         configuration::v1_configuration_list_handler,
         signature::v1_signature_get_handler,
         signature::v1_signature_list_handler,
+        signature::v1_signature_post_handler,
         transaction::v1_transaction_get_handler,
         transaction::v1_transaction_list_handler,
         user_operation::v1_user_operation_get_handler,
         user_operation::v1_user_operation_list_handler,
+        user_operation::v1_user_operation_post_handler,
         wallet::v1_wallet_get_handler,
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
@@ -75,7 +79,10 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "health", description = "Health API"),
-        (name = "wallet", description = "Wallet API")
+        (name = "wallet", description = "Wallet API"),
+        (name = "signature", description = "Signature API"),
+        (name = "transaction", description = "Transaction API"),
+        (name = "user_operation", description = "User Operation API"),
     )
 )]
 #[openapi(

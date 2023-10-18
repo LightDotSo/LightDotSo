@@ -77,21 +77,25 @@ export const handler = async (
   // Fetch
   // -------------------------------------------------------------------------
 
-  let res = await getPaymasterGasAndPaymasterAndData(chainId, [
-    {
-      sender: params.address,
-      paymasterAndData: "0x",
-      nonce: toHex(0),
-      initCode: searchParams?.initCode ?? "0x",
-      callData: searchParams?.callData ?? "0x",
-      signature: "0x",
-      callGasLimit: toHex(op.callGasLimit),
-      verificationGasLimit: toHex(op.verificationGasLimit),
-      preVerificationGas: toHex(op.preVerificationGas),
-      maxFeePerGas: toHex(op.maxFeePerGas),
-      maxPriorityFeePerGas: toHex(op.maxPriorityFeePerGas),
-    },
-  ]);
+  let res = await getPaymasterGasAndPaymasterAndData(
+    chainId,
+    [
+      {
+        sender: params.address,
+        paymasterAndData: "0x",
+        nonce: toHex(0),
+        initCode: searchParams?.initCode ?? "0x",
+        callData: searchParams?.callData ?? "0x",
+        signature: "0x",
+        callGasLimit: toHex(op.callGasLimit),
+        verificationGasLimit: toHex(op.verificationGasLimit),
+        preVerificationGas: toHex(op.preVerificationGas),
+        maxFeePerGas: toHex(op.maxFeePerGas),
+        maxPriorityFeePerGas: toHex(op.maxPriorityFeePerGas),
+      },
+    ],
+    false,
+  );
 
   if (!res?.callGasLimit) {
     throw notFound();

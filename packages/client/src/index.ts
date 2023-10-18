@@ -21,23 +21,27 @@ import { zodFetch, zodJsonRpcFetch } from "./zod";
 import { llamaSchema } from "@lightdotso/schemas";
 import { z } from "zod";
 
-const publicClient = createClient<paths>({
+const publicApiClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
 });
 
-const adminClient = createClient<paths>({
+const adminApiClient = createClient<paths>({
   baseUrl: "https://api.light.so/admin/v1",
   headers: {
     Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
   },
 });
 
-const rpcClient = (chainId: number) => {
-  return `https://rpc.light.so/${chainId}`;
+const rpcClient = (chainId: number, isPublic?: boolean) => {
+  if (isPublic === undefined || isPublic) {
+    return `https://rpc.light.so/${chainId}`;
+  }
+
+  return `https://rpc.light.so/protected/${process.env.LIGHT_RPC_TOKEN}/${chainId}`;
 };
 
 const getClient = (isPublic?: boolean) =>
-  isPublic === undefined || isPublic ? publicClient : adminClient;
+  isPublic === undefined || isPublic ? publicApiClient : adminApiClient;
 
 export const getConfiguration = async (
   {
@@ -193,9 +197,10 @@ type PaymasterGasAndPaymasterAndDataRequestType = z.infer<
 export const getPaymasterGasAndPaymasterAndData = async (
   chainId: number,
   params: PaymasterGasAndPaymasterAndDataRequestType,
+  isPublic?: boolean,
 ) => {
   return zodJsonRpcFetch(
-    rpcClient(chainId),
+    rpcClient(chainId, isPublic),
     "paymaster_requestGasAndPaymasterAndData",
     params,
     PaymasterGasAndPaymasterAndData,

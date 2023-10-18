@@ -38,6 +38,48 @@ export interface paths {
      */
     get: operations["handler"];
   };
+  "/signature/get": {
+    /**
+     * Get a signature
+     * @description Get a signature
+     */
+    get: operations["v1_signature_get_handler"];
+  };
+  "/signature/list": {
+    /**
+     * Returns a list of signatures.
+     * @description Returns a list of signatures.
+     */
+    get: operations["v1_signature_list_handler"];
+  };
+  "/transaction/get": {
+    /**
+     * Get a transaction
+     * @description Get a transaction
+     */
+    get: operations["v1_transaction_get_handler"];
+  };
+  "/transaction/list": {
+    /**
+     * Returns a list of transactions.
+     * @description Returns a list of transactions.
+     */
+    get: operations["v1_transaction_list_handler"];
+  };
+  "/user_operation/get": {
+    /**
+     * Get a user operation
+     * @description Get a user operation
+     */
+    get: operations["v1_user_operation_get_handler"];
+  };
+  "/user_operation/list": {
+    /**
+     * Returns a list of user operations.
+     * @description Returns a list of user operations.
+     */
+    get: operations["v1_user_operation_list_handler"];
+  };
   "/wallet/create": {
     /**
      * Create a wallet
@@ -129,11 +171,63 @@ export interface components {
        */
       threshold: number;
     };
+    /** @description Item to do. */
+    Signature: {
+      id: string;
+      owner_id: string;
+      signature: string;
+      /** Format: int32 */
+      signature_type: number;
+    };
+    /** @description Signature operation errors */
+    SignatureError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Signature not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to do. */
+    Transaction: {
+      hash: string;
+    };
+    /** @description Transaction operation errors */
+    TransactionError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Transaction not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to do. */
+    UserOperation: {
+      call_data: string;
+      /** Format: int64 */
+      call_gas_limit: number;
+      hash: string;
+      init_code: string;
+      /** Format: int64 */
+      max_fee_per_gas: number;
+      /** Format: int64 */
+      max_priority_fee_per_gas: number;
+      /** Format: int64 */
+      nonce: number;
+      paymaster_and_data: string;
+      /** Format: int64 */
+      pre_verification_gas: number;
+      sender: string;
+      /** Format: int64 */
+      verification_gas_limit: number;
+    };
+    /** @description User operation operation errors */
+    UserOperationError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description User operation not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Wallet to do. */
     Wallet: {
       address: string;
       factory_address: string;
-      id: string;
       name: string;
       salt: string;
     };
@@ -188,6 +282,7 @@ export interface operations {
     parameters: {
       query: {
         address: string;
+        checkpoint?: number | null;
       };
     };
     responses: {
@@ -227,6 +322,161 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["ConfigurationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a signature
+   * @description Get a signature
+   */
+  v1_signature_get_handler: {
+    parameters: {
+      query: {
+        user_operation_hash: string;
+      };
+    };
+    responses: {
+      /** @description Signature returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Signature"];
+        };
+      };
+      /** @description Signature not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of signatures.
+   * @description Returns a list of signatures.
+   */
+  v1_signature_list_handler: {
+    parameters: {
+      query?: {
+        offset?: number | null;
+        limit?: number | null;
+        user_operation_hash?: string | null;
+      };
+    };
+    responses: {
+      /** @description Signatures returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Signature"][];
+        };
+      };
+      /** @description Signature bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a transaction
+   * @description Get a transaction
+   */
+  v1_transaction_get_handler: {
+    parameters: {
+      query: {
+        transaction_hash: string;
+      };
+    };
+    responses: {
+      /** @description Transaction returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Transaction"];
+        };
+      };
+      /** @description Transaction not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["TransactionError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of transactions.
+   * @description Returns a list of transactions.
+   */
+  v1_transaction_list_handler: {
+    parameters: {
+      query?: {
+        offset?: number | null;
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Transactions returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Transaction"][];
+        };
+      };
+      /** @description Transaction bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["TransactionError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a user operation
+   * @description Get a user operation
+   */
+  v1_user_operation_get_handler: {
+    parameters: {
+      query: {
+        user_operation_hash: string;
+      };
+    };
+    responses: {
+      /** @description User Operation returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"];
+        };
+      };
+      /** @description User Operation not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of user operations.
+   * @description Returns a list of user operations.
+   */
+  v1_user_operation_list_handler: {
+    parameters: {
+      query?: {
+        offset?: number | null;
+        limit?: number | null;
+        address?: string | null;
+      };
+    };
+    responses: {
+      /** @description User Operations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"][];
+        };
+      };
+      /** @description User Operation bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
         };
       };
     };
