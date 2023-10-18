@@ -18,6 +18,7 @@ use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
     traits::HexToBytes,
+    utils::hex_to_bytes,
 };
 use autometrics::autometrics;
 use axum::{
@@ -26,11 +27,13 @@ use axum::{
     Json, Router,
 };
 use ethers_main::{types::H160, utils::hex};
-use eyre::Result;
+use eyre::{Report, Result};
+use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
 use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
+use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -94,6 +97,26 @@ pub(crate) struct UserOperation {
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
+}
+
+impl TryFrom<UserOperation> for RundlerUserOperation {
+    type Error = Report;
+
+    fn try_from(op: UserOperation) -> Result<Self> {
+        Ok(RundlerUserOperation {
+            sender: op.sender.parse()?,
+            nonce: op.nonce.into(),
+            init_code: hex_to_bytes(&op.init_code)?.into(),
+            call_data: hex_to_bytes(&op.call_data)?.into(),
+            call_gas_limit: op.call_gas_limit.into(),
+            verification_gas_limit: op.verification_gas_limit.into(),
+            pre_verification_gas: op.pre_verification_gas.into(),
+            max_fee_per_gas: op.max_fee_per_gas.into(),
+            max_priority_fee_per_gas: op.max_priority_fee_per_gas.into(),
+            paymaster_and_data: hex_to_bytes(&op.paymaster_and_data)?.into(),
+            signature: vec![].into(),
+        })
+    }
 }
 
 // Implement From<user_operation::Data> for User operation.
@@ -235,7 +258,13 @@ async fn v1_user_operation_post_handler(
     let user_operation_hash = params.user_operation_hash;
     let sig = params.signature;
 
-    // TODO: Check that the user operation hash is the same as the user operation.
+    let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
+    let rundler_hash = rundler_user_operation.op_hash(*ENTRYPOINT_V060_ADDRESS, chain_id as u64);
+
+    // Assert that the hex hash of rundler_hash is the same as the user_operation_hash (prefix 0x)
+    if (format!("0x{}", hex::encode(rundler_hash)) != user_operation_hash) {
+        return Err(AppError::BadRequest);
+    }
 
     // Parse the user operation address.
     let sender_address: H160 = user_operation.sender.parse()?;
@@ -349,4 +378,31 @@ async fn v1_user_operation_post_handler(
     let user_operation: UserOperation = user_operation.into();
 
     Ok(Json::from(user_operation))
+}
+
+// Create tests for rundler user operation
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_conversion() {
+        let user_op = UserOperation {
+            hash: "0x9e1a7c8".to_string(),
+            sender: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string(),
+            nonce: 1,
+            init_code: "0x1234".to_string(),
+            call_data: "0x5678".to_string(),
+            call_gas_limit: 1,
+            verification_gas_limit: 1,
+            pre_verification_gas: 1,
+            max_fee_per_gas: 1,
+            max_priority_fee_per_gas: 1,
+            paymaster_and_data: "0x1234".to_string(),
+        };
+
+        let result = RundlerUserOperation::try_from(user_op);
+
+        assert!(result.is_ok());
+    }
 }
