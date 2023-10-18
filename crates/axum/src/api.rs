@@ -13,7 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{admin::admin, handle_error, state::AppState};
+use crate::{
+    admin::admin,
+    handle_error,
+    routes::{check, configuration, health, signature, transaction, user_operation, wallet},
+    state::AppState,
+};
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
@@ -30,8 +35,6 @@ use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
 
-use crate::routes::{check, configuration, health, wallet};
-
 #[derive(OpenApi)]
 #[openapi(info(
     title = "api.light.so",
@@ -42,6 +45,12 @@ use crate::routes::{check, configuration, health, wallet};
     components(
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
+        schemas(signature::Signature),
+        schemas(signature::SignatureError),
+        schemas(transaction::Transaction),
+        schemas(transaction::TransactionError),
+        schemas(user_operation::UserOperation),
+        schemas(user_operation::UserOperationError),
         schemas(wallet::Owner),
         schemas(wallet::PostRequestParams),
         schemas(wallet::Wallet),
@@ -52,6 +61,12 @@ use crate::routes::{check, configuration, health, wallet};
         health::handler,
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
+        signature::v1_signature_get_handler,
+        signature::v1_signature_list_handler,
+        transaction::v1_transaction_get_handler,
+        transaction::v1_transaction_list_handler,
+        user_operation::v1_user_operation_get_handler,
+        user_operation::v1_user_operation_list_handler,
         wallet::v1_wallet_get_handler,
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
@@ -117,7 +132,10 @@ pub async fn start_api_server() -> Result<()> {
         .merge(check::router())
         .merge(health::router())
         .merge(wallet::router())
-        .merge(configuration::router());
+        .merge(configuration::router())
+        .merge(signature::router())
+        .merge(transaction::router())
+        .merge(user_operation::router());
 
     // Create the app for the server
     let app = Router::new()

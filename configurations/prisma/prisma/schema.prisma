@@ -127,7 +127,7 @@ model Owner {
 
   configuration Configuration? @relation(fields: [configurationId], references: [id])
   user          User?          @relation(fields: [userId], references: [id])
-  userId        String?
+  userId        String?        @unique
 
   signatures Signature[]
 
@@ -323,7 +323,7 @@ model Transaction {
   trace     Json
 
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
+  walletAddress String? @unique
 
   Receipt             Receipt?
   TransactionCategory TransactionCategory[]
@@ -383,7 +383,7 @@ model UserOperation {
   chainId BigInt
 
   transaction     Transaction @relation(fields: [transactionHash], references: [hash])
-  transactionHash String
+  transactionHash String      @unique
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
@@ -406,7 +406,7 @@ model Signature {
   ownerId String
 
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String
+  userOperationHash String        @unique
 
   @@index([ownerId])
   @@index([userOperationHash])
