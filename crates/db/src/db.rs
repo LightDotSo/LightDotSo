@@ -48,7 +48,6 @@ pub async fn create_wallet_with_configuration(
     chain_id: i64,
     salt: H256,
     factory_address: ethers::types::H160,
-    testnet: Option<bool>,
 ) -> AppJsonResult<wallet::Data> {
     info!("Creating wallet at address: {:?} chain_id: {:?}", address, chain_id);
 
@@ -56,10 +55,9 @@ pub async fn create_wallet_with_configuration(
         .wallet()
         .create(
             to_checksum(&address, None),
-            chain_id,
             format!("{:?}", salt),
             to_checksum(&factory_address, None),
-            vec![wallet::testnet::set(testnet.unwrap_or(false))],
+            vec![],
         )
         .exec()
         .await?;

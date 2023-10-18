@@ -121,7 +121,6 @@ pub(crate) enum WalletError {
 /// Wallet to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Wallet {
-    id: String,
     address: String,
     factory_address: String,
     name: String,
@@ -132,7 +131,6 @@ pub(crate) struct Wallet {
 impl From<wallet::Data> for Wallet {
     fn from(wallet: wallet::Data) -> Self {
         Self {
-            id: wallet.id.to_string(),
             address: wallet.address.to_string(),
             factory_address: wallet.factory_address.to_string(),
             name: wallet.name.to_string(),
@@ -177,10 +175,7 @@ async fn v1_wallet_get_handler(
         .client
         .unwrap()
         .wallet()
-        .find_first(vec![
-            wallet::address::equals(checksum_address),
-            wallet::chain_id::equals(query.chain_id.unwrap_or(0)),
-        ])
+        .find_unique(wallet::address::equals(checksum_address))
         .exec()
         .await?;
 
@@ -214,10 +209,7 @@ async fn v1_wallet_list_handler(
     let Query(pagination) = pagination.unwrap_or_default();
 
     let query = match pagination.owner {
-        Some(owner) => vec![
-            wallet::users::some(vec![user::address::equals(Some(owner))]),
-            wallet::chain_id::equals(0),
-        ],
+        Some(owner) => vec![wallet::users::some(vec![user::address::equals(Some(owner))])],
         None => vec![],
     };
 
@@ -348,7 +340,6 @@ async fn v1_wallet_post_handler(
         }
 
         return Ok(Json::from(Wallet {
-            id: "".to_string(),
             name: "".to_string(),
             salt: format!("{:?}", salt_bytes),
             address: to_checksum(&new_wallet_address, None),
@@ -458,7 +449,6 @@ async fn v1_wallet_post_handler(
                 .wallet()
                 .create(
                     to_checksum(&new_wallet_address, None),
-                    0,
                     format!("{:?}", salt_bytes),
                     to_checksum(&factory_address, None),
                     vec![
