@@ -102,6 +102,7 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/signature/get", get(v1_signature_get_handler))
         .route("/signature/list", get(v1_signature_list_handler))
+        .route("/signature/create", get(v1_signature_post_handler))
 }
 
 /// Get a signature
@@ -208,7 +209,7 @@ async fn v1_signature_list_handler(
         )
     )]
 #[autometrics]
-async fn v1_signature_create_handler(
+async fn v1_signature_post_handler(
     post: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<PostRequestParams>,

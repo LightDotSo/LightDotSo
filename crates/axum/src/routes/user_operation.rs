@@ -143,6 +143,7 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/user_operation/get", get(v1_user_operation_get_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
+        .route("/user_operation/create", get(v1_user_operation_post_handler))
 }
 
 /// Get a user operation
