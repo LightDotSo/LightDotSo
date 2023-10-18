@@ -16,6 +16,11 @@
 use ethers_main::utils::hex;
 
 pub fn hex_to_bytes(hex_str: &str) -> Result<Vec<u8>, hex::FromHexError> {
+    // Check if the hex string has the 0x prefix
+    if !hex_str.starts_with("0x") {
+        return Err(hex::FromHexError::InvalidStringLength);
+    }
+
     // Remove the 0x prefix
     let pure_hex = &hex_str[2..];
     hex::decode(pure_hex) // Decode hex string to Vec<u8>
