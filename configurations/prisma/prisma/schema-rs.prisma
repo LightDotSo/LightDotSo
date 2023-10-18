@@ -52,8 +52,9 @@ model User {
 
   accounts Account[]
   sessions Session[]
-  wallets  Wallet[]
-  owners   Owner[]
+
+  owners  Owner[]
+  wallets Wallet[]
 }
 
 model VerificationRequest {
@@ -68,34 +69,31 @@ model VerificationRequest {
 }
 
 model Wallet {
-  id             String   @id @default(cuid())
-  address        String
-  chainId        BigInt
+  address        String   @id
   salt           String
   factoryAddress String
   name           String   @default("")
-  testnet        Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  configuration  Configuration[]
-  users          User[]
+  configurations Configuration[]
+  transactions   Transaction[]
   userOperations UserOperation[]
-
-  @@unique([address, chainId])
+  users          User[]
 }
 
 model Configuration {
   id         String @id @default(cuid())
   address    String
+  chainId    BigInt
   checkpoint BigInt
   imageHash  String @unique
   threshold  BigInt
 
-  wallets Wallet[]
   owners  Owner[]
+  wallets Wallet[]
 
-  @@unique([address, checkpoint])
+  @@unique([address, chainId, checkpoint])
 }
 
 model Owner {
@@ -305,8 +303,14 @@ model Transaction {
   timestamp DateTime
   trace     Json
 
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
+
   Receipt             Receipt?
   TransactionCategory TransactionCategory[]
+  UserOperation       UserOperation[]
+
+  @@index([walletAddress])
 }
 
 model TransactionCategory {
@@ -357,26 +361,34 @@ model UserOperation {
   /// Data passed into the account along with the nonce during the verification step
   signature            Bytes?
 
-  wallet   Wallet @relation(fields: [walletId], references: [id])
-  walletId String
+  chainId BigInt
+
+  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
+  transactionHash String
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
 
   signatures Signature[]
 
-  @@index([walletId])
+  @@index([chainId, walletAddress])
+  @@index([transactionHash])
+  @@index([walletAddress])
 }
 
 model Signature {
-  id        String   @id @default(cuid())
-  signature Bytes
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String
+  id             String   @id @default(cuid())
+  signature      Bytes
+  signature_type Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
 
-  @@index([userOperationHash])
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
   @@index([ownerId])
+  @@index([userOperationHash])
 }
