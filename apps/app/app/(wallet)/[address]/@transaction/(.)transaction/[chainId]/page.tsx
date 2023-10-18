@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Dialog } from "@lightdotso/ui";
+"use client";
+
+import { Dialog, DialogContent } from "@lightdotso/ui";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page({
   params,
@@ -22,20 +26,27 @@ export default function Page({
   params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  const router = useRouter();
+  const onDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
+
   return (
-    <Dialog open={true}>
-      <div>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
-            params: {JSON.stringify(params, null, 2)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
-            searchParams: {JSON.stringify(searchParams, null, 2)}
-          </code>
-        </pre>
-      </div>
+    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
+      <DialogContent>
+        <div>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              params: {JSON.stringify(params, null, 2)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              searchParams: {JSON.stringify(searchParams, null, 2)}
+            </code>
+          </pre>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 }
