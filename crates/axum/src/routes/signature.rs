@@ -61,9 +61,14 @@ pub(crate) enum SignatureError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Signature {
-    id: String,
-    signature: String,
-    signature_type: String,
+    // The id of the signature.
+    pub id: String,
+    // The signature of the user operation in hex.
+    pub signature: String,
+    // The type of the signature.
+    pub signature_type: String,
+    // The owner id of the signature.
+    pub owner_id: String,
 }
 
 // Implement From<signature::Data> for Signature.
@@ -73,6 +78,7 @@ impl From<signature::Data> for Signature {
             id: signature.id.to_string(),
             signature: format!("0x{}", hex::encode(signature.signature)),
             signature_type: signature.signature_type.to_string(),
+            owner_id: signature.owner_id.to_string(),
         }
     }
 }
@@ -114,6 +120,7 @@ async fn v1_signature_get_handler(
         .unwrap()
         .signature()
         .find_unique(signature::user_operation_hash::equals(user_operation_hash))
+        .with(signature::owner::fetch())
         .exec()
         .await?;
 

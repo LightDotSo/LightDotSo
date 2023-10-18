@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use super::signature::Signature;
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
@@ -24,7 +25,8 @@ use axum::{
     Json, Router,
 };
 use ethers_main::utils::hex;
-use lightdotso_prisma::user_operation;
+use lightdotso_prisma::{configuration, user_operation, wallet};
+use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -42,8 +44,25 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     // The maximum number of user operations to return.
     pub limit: Option<i64>,
-    // The wallet address to filter by.
+    // The sender address to filter by.
     pub address: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct PostQuery {
+    // The chain id to create the user operation for.
+    pub chain_id: i64,
+}
+
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub struct PostRequestParams {
+    // The user operation to create.
+    pub user_operation: UserOperation,
+    // The hash of the user operation.
+    pub user_operation_hash: String,
+    // The signature of the user operation.
+    pub signature: Signature,
 }
 
 /// User operation operation errors
@@ -61,7 +80,6 @@ pub(crate) enum UserOperationError {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperation {
     hash: String,
-    chain_id: i64,
     sender: String,
     nonce: i64,
     init_code: String,
@@ -79,7 +97,6 @@ impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
             hash: user_operation.hash,
-            chain_id: user_operation.chain_id,
             sender: user_operation.sender,
             nonce: user_operation.nonce,
             init_code: format!("0x{}", hex::encode(user_operation.init_code)),
@@ -181,4 +198,100 @@ async fn v1_user_operation_list_handler(
         user_operations.into_iter().map(UserOperation::from).collect();
 
     Ok(Json::from(user_operations))
+}
+
+/// Create a user operation
+#[utoipa::path(
+        post,
+        path = "/user_operation/create",
+        params(
+            PostQuery
+        ),
+        request_body = PostRequestParams,
+        responses(
+            (status = 200, description = "User Operation created successfully", body = UserOperation),
+            (status = 400, description = "Invalid Configuration", body = UserOperationError),
+            (status = 409, description = "User Operation already exists", body = UserOperationError),
+            (status = 500, description = "User Operation internal error", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+async fn v1_user_operation_post_handler(
+    post: Query<PostQuery>,
+    State(client): State<AppState>,
+    Json(params): Json<PostRequestParams>,
+) -> AppJsonResult<UserOperation> {
+    // Get the post query.
+    let Query(post) = post;
+
+    // Get the chain id from the post query.
+    let chain_id = post.chain_id;
+
+    let user_operation = params.user_operation;
+    let user_operation_hash = params.user_operation_hash;
+    let signature = params.signature;
+
+    // Get the wallet from the database.
+    let wallet = client
+        .client
+        .unwrap()
+        .wallet()
+        .find_unique(wallet::address::equals(user_operation.sender))
+        .exec()
+        .await?;
+
+    // If the wallet is not found, return a 404.
+    let wallet = wallet.ok_or(AppError::NotFound)?;
+
+    // Get the current configuration for the wallet.
+    let configuration = client
+        .client
+        .unwrap()
+        .configuration()
+        .find_first(vec![
+            configuration::address::equals(user_operation.sender),
+            configuration::chain_id::equals(user_operation.chain_id),
+        ])
+        .order_by(configuration::checkpoint::order(Direction::Desc))
+        .with(configuration::owners::fetch(vec![]))
+        .exec()
+        .await?;
+
+    // If the configuration is not found, return a 404.
+    let configuration = configuration.ok_or(AppError::NotFound)?;
+
+    // If the owners are not found, return a 404.
+    let owners = configuration.owners.ok_or(AppError::NotFound)?;
+
+    // Check that the signature sender is one of the owners.
+    if !owners.iter().any(|owner| owner.id == signature.owner_id) {
+        return Err(AppError::BadRequest);
+    }
+
+    // Check that the signature is valid.
+    // TODO: Check that the signature is valid.
+
+    // Create the user operation in the database w/ the signature.
+    let user_operation = client
+        .client
+        .unwrap()
+        .user_operation()
+        .create(
+            user_operation_hash,
+            user_operation.sender,
+            user_operation.nonce,
+            user_operation.init_code,
+            user_operation.call_data,
+            user_operation.call_gas_limit,
+            user_operation.verification_gas_limit,
+            user_operation.pre_verification_gas,
+            user_operation.max_fee_per_gas,
+            user_operation.max_priority_fee_per_gas,
+            user_operation.paymaster_and_data,
+            chain_id,
+        )
+        .exec()
+        .await?;
+
+    Ok(Json::from(user_operation))
 }
