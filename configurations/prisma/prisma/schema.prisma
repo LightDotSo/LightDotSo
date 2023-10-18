@@ -386,7 +386,6 @@ model UserOperation {
 
 model UserOperationCategory {
   id       String @id @default(cuid())
-  address  String
   category String
 
   userOperation UserOperation @relation(fields: [id], references: [hash])
