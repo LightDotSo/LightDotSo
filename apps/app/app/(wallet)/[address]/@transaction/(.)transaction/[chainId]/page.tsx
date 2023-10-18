@@ -15,7 +15,8 @@
 
 import { Modal } from "@/components/modal";
 import { TransactionDialog } from "@/components/transaction-dialog";
-import { handler } from "@/handles/transaction/[chainId]";
+import { handler } from "@/handles/[address]";
+import { handler as userOpHandler } from "@/handles/transaction/[chainId]";
 import { parseNumber } from "@/handles/parsers/number";
 import type { Address } from "viem";
 import { hexToBytes } from "viem";
@@ -30,12 +31,14 @@ export default async function Page({
     callData?: string;
   };
 }) {
-  let { userOperation, hash } = await handler(params, searchParams);
+  let { config } = await handler(params);
+  let { userOperation, hash } = await userOpHandler(params, searchParams);
   const chainId = parseNumber(params.chainId);
 
   return (
     <Modal>
       <TransactionDialog
+        owners={config.owners}
         address={params.address as Address}
         chainId={chainId}
         userOpHash={hexToBytes(hash)}

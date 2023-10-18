@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getWallet } from "@lightdotso/client";
+import { getConfiguration, getWallet } from "@lightdotso/client";
 import { notFound } from "next/navigation";
 import { validateAddress } from "./validators/address";
 
@@ -28,7 +28,7 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // -------------------------------------------------------------------------
 
-  let res = await getWallet(
+  let wallet = await getWallet(
     {
       params: {
         query: {
@@ -39,15 +39,41 @@ export const handler = async (params: { address: string }) => {
     false,
   );
 
+  let config = await getConfiguration(
+    { params: { query: { address: params.address } } },
+    false,
+  );
+
   // -------------------------------------------------------------------------
   // Parse
   // -------------------------------------------------------------------------
 
-  res.map(response => {
-    if (response && response.response && response.response.status !== 200) {
+  wallet.map(response => {
+    if (
+      response &&
+      response.response &&
+      response.response.status !== 200 &&
+      !response.data &&
+      response.data !== undefined
+    ) {
       return notFound();
     }
   });
 
-  return res._unsafeUnwrap();
+  config.map(response => {
+    if (
+      response &&
+      response.response &&
+      response.response.status !== 200 &&
+      !response.data &&
+      response.data !== undefined
+    ) {
+      return notFound();
+    }
+  });
+
+  return {
+    wallet: wallet._unsafeUnwrap().data!,
+    config: config._unsafeUnwrap().data!,
+  };
 };

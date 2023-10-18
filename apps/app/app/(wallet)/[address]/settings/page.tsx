@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { DeployButton } from "./deploy-button";
-import { getWallet, getConfiguration } from "@lightdotso/client";
 import type { Address, Hex } from "viem";
 import { handler } from "@/handles/[address]";
 
@@ -29,33 +28,15 @@ export default async function Page({
 }: {
   params: { address: string };
 }) {
-  await handler(params);
-
-  let config = (
-    await getConfiguration(
-      { params: { query: { address: params.address } } },
-      false,
-    )
-  )._unsafeUnwrap();
-  let wallet = (
-    await getWallet({ params: { query: { address: params.address } } }, false)
-  )._unsafeUnwrap();
-
-  if (!config?.data?.image_hash || !wallet?.data?.salt) {
-    // Log error
-    console.error("Missing image_hash or salt, returning null.");
-    // Log the data of the config and wallet
-    console.error(config?.data, wallet?.data);
-    return null;
-  }
+  const { wallet, config } = await handler(params);
 
   return (
     <div className="space-x-4">
       {chains.map(chain => (
         <DeployButton
           key={chain.name}
-          salt={wallet!.data!.salt as Hex}
-          image_hash={config!.data!.image_hash as Hex}
+          salt={wallet.salt as Hex}
+          image_hash={config.image_hash as Hex}
           chainId={chain.chainId}
           wallet={params.address as Address}
         >

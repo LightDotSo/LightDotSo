@@ -21,13 +21,18 @@ import { serializeUserOperation } from "@/utils/userOp";
 import type { UserOperation } from "permissionless";
 import type { Address } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
 import { toHex } from "viem";
+import { useAuth } from "@/stores/useAuth";
 
 type TransactionDialogProps = {
   address: Address;
   chainId: number;
+  owners: {
+    address: string;
+    weight: number;
+  }[];
   userOperation: UserOperation;
   userOpHash: Uint8Array;
 };
@@ -37,14 +42,20 @@ export function TransactionDialog({
   chainId,
   userOperation,
   userOpHash,
+  owners,
 }: TransactionDialogProps) {
+  const { address: userAddress } = useAuth();
   const { data, signMessage } = useSignMessage({
     message: subdigestOf(address, userOpHash, BigInt(chainId)),
   });
 
+  const owner_id = useMemo(() => {
+    return owners.find(owner => owner.address === userAddress)?.address;
+  }, [owners, userAddress]);
+
   useEffect(() => {
     const fetchUserOp = async () => {
-      if (!data) return;
+      if (!data || !owner_id) return;
 
       const res = await createUserOperation({
         params: {
@@ -54,10 +65,9 @@ export function TransactionDialog({
         },
         body: {
           signature: {
-            id: "1",
             signature: data,
             signature_type: 1,
-            owner_id: "1",
+            owner_id: owner_id,
           },
           user_operation: {
             hash: toHex(userOpHash),
@@ -107,7 +117,9 @@ export function TransactionDialog({
         </pre>
       </div>
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-        <Button onClick={() => signMessage()}>Sign Transaction</Button>
+        <Button disabled={!owner_id} onClick={() => signMessage()}>
+          Sign Transaction
+        </Button>
       </div>
     </>
   );
