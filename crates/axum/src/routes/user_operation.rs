@@ -31,6 +31,7 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
+    // The user operation hash to get.
     pub user_operation_hash: String,
 }
 
@@ -41,6 +42,8 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     // The maximum number of user operations to return.
     pub limit: Option<i64>,
+    // The wallet address to filter by.
+    pub address: Option<String>,
 }
 
 /// User operation operation errors
@@ -150,20 +153,26 @@ async fn v1_user_operation_get_handler(
     )]
 #[autometrics]
 async fn v1_user_operation_list_handler(
-    pagination: Option<Query<ListQuery>>,
+    pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<UserOperation>> {
     // Get the pagination query.
-    let Query(pagination) = pagination.unwrap_or_default();
+    let Query(pagination) = pagination;
+
+    let query = match pagination.address {
+        Some(owner) => vec![user_operation::sender::equals(owner)],
+        None => vec![],
+    };
 
     // Get the user operations from the database.
     let user_operations = client
         .client
         .unwrap()
         .user_operation()
-        .find_many(vec![])
+        .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
+        .order_by(user_operation::nonce::order(prisma_client_rust::Direction::Desc))
         .exec()
         .await?;
 
