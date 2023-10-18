@@ -30,6 +30,7 @@ type TransactionDialogProps = {
   address: Address;
   chainId: number;
   owners: {
+    id: string;
     address: string;
     weight: number;
   }[];
@@ -68,9 +69,8 @@ export function TransactionDialog({
           },
         },
         body: {
-          // @ts-expect-error
+          //@ts-expect-error
           signature: {
-            // @ts-expect-error
             owner_id: owner.id,
             signature: data,
             signature_type: 1,
@@ -123,7 +123,7 @@ export function TransactionDialog({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            owner: {JSON.stringify(owners, null, 2)}
+            owners: {JSON.stringify(owners, null, 2)}
           </code>
         </pre>
       </div>
