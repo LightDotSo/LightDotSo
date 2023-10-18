@@ -13,29 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Modal } from "@/components/modal";
-import { TransactionDialog } from "@/components/transaction-dialog";
-import { handler } from "@/handles/transaction/[chainId]";
+import { notFound } from "next/navigation";
+import { isHex } from "viem";
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
-  params: { address: string; chainId: string };
-  searchParams: {
-    initCode?: string;
-    callData?: string;
-  };
-}) {
-  let { userOperation, hash } = await handler(params, searchParams);
-
-  return (
-    <Modal>
-      <TransactionDialog
-        chainId={1}
-        userOpHash={hash}
-        userOperation={userOperation}
-      ></TransactionDialog>
-    </Modal>
-  );
-}
+export const validateHex = (str: string) => {
+  if (!isHex(str)) {
+    return notFound();
+  }
+};

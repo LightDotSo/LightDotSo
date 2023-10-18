@@ -19,7 +19,8 @@ import { validateAddress } from "../validators/address";
 import { handler as addressHandler } from "../[address]";
 import type { Address, Hex } from "viem";
 import { toHex, fromHex } from "viem";
-import type { UserOperation } from "permissionless";
+import { getUserOperationHash, type UserOperation } from "permissionless";
+import { validateHex } from "../validators/hex";
 
 export const handler = async (
   params: { address: string; chainId: string },
@@ -27,7 +28,7 @@ export const handler = async (
     initCode?: string;
     callData?: string;
   },
-): Promise<UserOperation> => {
+): Promise<{ userOperation: UserOperation; hash: Hex }> => {
   // -------------------------------------------------------------------------
   // Handlers
   // -------------------------------------------------------------------------
@@ -39,6 +40,14 @@ export const handler = async (
   // -------------------------------------------------------------------------
 
   validateAddress(params.address);
+
+  if (searchParams?.initCode) {
+    validateHex(searchParams.initCode);
+  }
+
+  if (searchParams?.callData) {
+    validateHex(searchParams.callData);
+  }
 
   // -------------------------------------------------------------------------
   // Defaults
@@ -86,7 +95,7 @@ export const handler = async (
   // Parse
   // -------------------------------------------------------------------------
 
-  let setOp = {
+  let userOperation = {
     ...op,
     callGasLimit: fromHex(res.callGasLimit as Hex, { to: "bigint" }),
     verificationGasLimit: fromHex(res.verificationGasLimit as Hex, {
@@ -102,5 +111,11 @@ export const handler = async (
     paymasterAndData: res.paymasterAndData as Hex,
   };
 
-  return setOp;
+  let hash = getUserOperationHash({
+    userOperation,
+    entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+    chainId: parseInt(params.chainId),
+  });
+
+  return { userOperation, hash };
 };

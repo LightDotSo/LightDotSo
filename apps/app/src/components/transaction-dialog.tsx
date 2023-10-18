@@ -15,13 +15,7 @@
 
 "use client";
 
-import {
-  Button,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
 import type { UserOperation } from "permissionless";
@@ -44,12 +38,14 @@ export function TransactionDialog({
 
   return (
     <>
-      <DialogHeader className="mt-4 space-y-3">
-        <DialogTitle>Transaction</DialogTitle>
-        <DialogDescription>
+      <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
+        <header className="text-lg font-semibold leading-none tracking-tight">
+          Transaction
+        </header>
+        <p className="text-sm text-muted-foreground">
           Are you sure you want to sign this transaction?
-        </DialogDescription>
-      </DialogHeader>
+        </p>
+      </div>
       <div className="grid gap-4 py-4">
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code>userOperation: {serializeUserOperation(userOperation)}</code>
@@ -63,9 +59,9 @@ export function TransactionDialog({
           </code>
         </pre>
       </div>
-      <DialogFooter>
+      <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
         <Button onClick={() => signMessage()}>Sign Transaction</Button>
-      </DialogFooter>
+      </div>
     </>
   );
 }

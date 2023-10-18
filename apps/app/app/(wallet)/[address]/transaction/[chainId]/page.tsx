@@ -13,25 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export default function Page({
+import { TransactionDialog } from "@/components/transaction-dialog";
+import { handler } from "@/handles/transaction/[chainId]";
+
+export default async function Page({
   params,
   searchParams,
 }: {
-  params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: { address: string; chainId: string };
+  searchParams: {
+    initCode?: string;
+    callData?: string;
+  };
 }) {
+  let { userOperation, hash } = await handler(params, searchParams);
+
   return (
-    <div>
-      <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-        <code className="break-all text-primary">
-          params: {JSON.stringify(params, null, 2)}
-        </code>
-      </pre>
-      <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-        <code className="break-all text-primary">
-          searchParams: {JSON.stringify(searchParams, null, 2)}
-        </code>
-      </pre>
-    </div>
+    <TransactionDialog
+      chainId={1}
+      userOpHash={hash}
+      userOperation={userOperation}
+    ></TransactionDialog>
   );
 }
