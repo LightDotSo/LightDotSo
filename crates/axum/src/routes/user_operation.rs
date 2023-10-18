@@ -63,7 +63,7 @@ pub struct PostQuery {
 }
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub struct PostRequestParams {
+pub struct UserOperationPostRequestParams {
     // The user operation to create.
     pub user_operation: UserOperation,
     // The hash of the user operation.
@@ -235,7 +235,7 @@ async fn v1_user_operation_list_handler(
         params(
             PostQuery
         ),
-        request_body = PostRequestParams,
+        request_body = UserOperationPostRequestParams,
         responses(
             (status = 200, description = "User Operation created successfully", body = UserOperation),
             (status = 400, description = "Invalid Configuration", body = UserOperationError),
@@ -247,7 +247,7 @@ async fn v1_user_operation_list_handler(
 async fn v1_user_operation_post_handler(
     post: Query<PostQuery>,
     State(client): State<AppState>,
-    Json(params): Json<PostRequestParams>,
+    Json(params): Json<UserOperationPostRequestParams>,
 ) -> AppJsonResult<UserOperation> {
     // Get the post query.
     let Query(post) = post;

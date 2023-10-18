@@ -71,7 +71,7 @@ pub struct PostQuery {
 }
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub struct PostRequestParams {
+pub struct WalletPostRequestParams {
     /// The array of owners of the wallet.
     #[schema(example = json!([{"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}]))]
     pub owners: Vec<Owner>,
@@ -237,7 +237,7 @@ async fn v1_wallet_list_handler(
         params(
             PostQuery
         ),
-        request_body = PostRequestParams,
+        request_body = WalletPostRequestParams,
         responses(
             (status = 200, description = "Wallet created successfully", body = Wallet),
             (status = 400, description = "Invalid Configuration", body = WalletError),
@@ -249,7 +249,7 @@ async fn v1_wallet_list_handler(
 async fn v1_wallet_post_handler(
     post: Query<PostQuery>,
     State(client): State<AppState>,
-    Json(params): Json<PostRequestParams>,
+    Json(params): Json<WalletPostRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Get the post query.
     let Query(post) = post;
