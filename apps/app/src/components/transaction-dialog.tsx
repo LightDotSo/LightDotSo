@@ -15,123 +15,53 @@
 
 "use client";
 
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@lightdotso/ui";
-import { useTransactionStore } from "@/stores/useTransaction";
+import { Button } from "@lightdotso/ui";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
-import { useEffect, useMemo, useState } from "react";
-import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import type { UserOperation } from "permissionless";
 import type { Hex } from "viem";
-import { toHex, fromHex } from "viem";
 
 type TransactionDialogProps = {
-  children: React.ReactNode;
+  chainId: number;
+  userOperation: UserOperation;
+  userOpHash: Hex;
 };
 
-export function TransactionDialog({ children }: TransactionDialogProps) {
-  const {
-    chainId,
-    userOperation,
-    resetUserOp,
-    isValid,
-    setGasValues,
-    setPaymasterAndData,
-    getUserOpHash,
-  } = useTransactionStore();
-  const [isLoading, setIsLoading] = useState(false);
-
+export function TransactionDialog({
+  chainId,
+  userOperation,
+  userOpHash,
+}: TransactionDialogProps) {
   const { signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
 
-  const userOpHash = useMemo(() => {
-    return getUserOpHash();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading, getUserOpHash]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      let res = await getPaymasterGasAndPaymasterAndData(chainId, [
-        {
-          sender: userOperation.sender,
-          paymasterAndData: userOperation.paymasterAndData,
-          nonce: toHex(userOperation.nonce),
-          initCode: userOperation.initCode,
-          callData: userOperation.callData,
-          signature: userOperation.signature,
-          callGasLimit: "0x44E1C0",
-          verificationGasLimit: "0x1C4B40",
-          preVerificationGas: "0x1C4B40",
-          maxFeePerGas: "0xD320B3B35",
-          maxPriorityFeePerGas: "0xB323DBB31",
-        },
-      ]);
-      setGasValues(
-        fromHex(res.callGasLimit as Hex, { to: "bigint" }),
-        fromHex(res.verificationGasLimit as Hex, { to: "bigint" }),
-        fromHex(res.preVerificationGas as Hex, { to: "bigint" }),
-        fromHex(res.maxFeePerGas as Hex, { to: "bigint" }),
-        fromHex(res.maxPriorityFeePerGas as Hex, { to: "bigint" }),
-      );
-      setPaymasterAndData(res.paymasterAndData as Hex);
-      setIsLoading(false);
-    };
-
-    if (!chainId) return;
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainId]);
-
   return (
-    <Dialog
-      onOpenChange={() => {
-        resetUserOp();
-      }}
-    >
-      {children}
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className="mt-4 space-y-3">
-          <DialogTitle>Transaction</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to sign this transaction?
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code>userOperation: {serializeUserOperation(userOperation)}</code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-primary">chainId: {chainId}</code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-primary">
-              userOpHash: {userOpHash}
-            </code>
-          </pre>
-          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-            <code className="break-all text-primary">
-              isLoading: {isLoading ? "true" : "false"}
-            </code>
-          </pre>
-        </div>
-        <DialogFooter>
-          <Button
-            disabled={isLoading || !isValid()}
-            onClick={() => signMessage()}
-          >
-            Sign Transaction
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <>
+      <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
+        <header className="text-lg font-semibold leading-none tracking-tight">
+          Transaction
+        </header>
+        <p className="text-sm text-muted-foreground">
+          Are you sure you want to sign this transaction?
+        </p>
+      </div>
+      <div className="grid gap-4 py-4">
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code>userOperation: {serializeUserOperation(userOperation)}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">chainId: {chainId}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">
+            userOpHash: {userOpHash}
+          </code>
+        </pre>
+      </div>
+      <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+        <Button onClick={() => signMessage()}>Sign Transaction</Button>
+      </div>
+    </>
   );
 }

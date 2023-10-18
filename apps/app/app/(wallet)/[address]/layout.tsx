@@ -13,38 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Button } from "@lightdotso/ui";
-import type { Address, Hex } from "viem";
-import { ContractLinks } from "@lightdotso/const";
-import { calculateInitCode } from "@lightdotso/solutions";
-import Link from "next/link";
+import "@lightdotso/styles/global.css";
+import Root from "@/app/root";
 
-type DeployButtonProps = {
-  chainId?: number;
-  image_hash: Hex;
-  salt: Hex;
+export default function RootLayout(props: {
   children: React.ReactNode;
-  wallet: Address;
-};
-
-export function DeployButton({
-  chainId = 11155111,
-  image_hash,
-  salt,
-  children,
-  wallet,
-}: DeployButtonProps) {
-  let initCode = calculateInitCode(
-    ContractLinks["Factory"] as Address,
-    image_hash,
-    salt,
-  );
-
+  transaction: React.ReactNode;
+}) {
   return (
-    <Button asChild>
-      <Link href={`/${wallet}/transaction/${chainId}?initCode=${initCode}`}>
-        {children}
-      </Link>
-    </Button>
+    <Root type="wallet">
+      <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="mx-auto max-w-7xl flex-1">{props.children}</div>
+      </div>
+      {props.transaction}
+    </Root>
   );
 }

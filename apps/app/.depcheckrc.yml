@@ -24,3 +24,4 @@ ignores:
   - jsonc-eslint-parser
   - "@next/eslint-plugin-next"
   - eslint-plugin-turbo
+  - immer

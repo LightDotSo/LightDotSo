@@ -13,38 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Button } from "@lightdotso/ui";
-import type { Address, Hex } from "viem";
-import { ContractLinks } from "@lightdotso/const";
-import { calculateInitCode } from "@lightdotso/solutions";
-import Link from "next/link";
+"use client";
 
-type DeployButtonProps = {
-  chainId?: number;
-  image_hash: Hex;
-  salt: Hex;
+import { Dialog, DialogContent } from "@lightdotso/ui";
+import { useCallback } from "react";
+import { useRouter } from "next/navigation";
+
+interface ModalProps {
   children: React.ReactNode;
-  wallet: Address;
-};
+}
 
-export function DeployButton({
-  chainId = 11155111,
-  image_hash,
-  salt,
-  children,
-  wallet,
-}: DeployButtonProps) {
-  let initCode = calculateInitCode(
-    ContractLinks["Factory"] as Address,
-    image_hash,
-    salt,
-  );
+export function Modal({ children }: ModalProps) {
+  const router = useRouter();
+  const onDismiss = useCallback(() => {
+    router.back();
+  }, [router]);
 
   return (
-    <Button asChild>
-      <Link href={`/${wallet}/transaction/${chainId}?initCode=${initCode}`}>
-        {children}
-      </Link>
-    </Button>
+    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
+      <DialogContent className="sm:max-w-[425px]">{children}</DialogContent>
+    </Dialog>
   );
 }

@@ -13,10 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TransactionDialog } from "@/components/transaction-dialog";
 import { DeployButton } from "./deploy-button";
 import { getWallet, getConfiguration } from "@lightdotso/client";
-import type { Hex } from "viem";
+import type { Address, Hex } from "viem";
 
 const chains = [
   { name: "Sepolia", chainId: undefined },
@@ -39,19 +38,18 @@ export default async function Page({
   if (!config?.data?.image_hash || !wallet?.data?.salt) return;
 
   return (
-    <TransactionDialog>
-      <div className="space-x-4">
-        {chains.map(chain => (
-          <DeployButton
-            key={chain.name}
-            salt={wallet!.data!.salt as Hex}
-            image_hash={config!.data!.image_hash as Hex}
-            chainId={chain.chainId}
-          >
-            {`Deploy to ${chain.name}`}
-          </DeployButton>
-        ))}
-      </div>
-    </TransactionDialog>
+    <div className="space-x-4">
+      {chains.map(chain => (
+        <DeployButton
+          key={chain.name}
+          salt={wallet!.data!.salt as Hex}
+          image_hash={config!.data!.image_hash as Hex}
+          chainId={chain.chainId}
+          wallet={address as Address}
+        >
+          {`Deploy to ${chain.name}`}
+        </DeployButton>
+      ))}
+    </div>
   );
 }

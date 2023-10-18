@@ -13,19 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import Root from "@/app/root";
+import { TransactionDialog } from "@/components/transaction-dialog";
+import { handler } from "@/handles/transaction/[chainId]";
+import { parseNumber } from "@/handles/parsers/number";
 
-export default function RootLayout({
-  children,
+export default async function Page({
+  params,
+  searchParams,
 }: {
-  children: React.ReactNode;
+  params: { address: string; chainId: string };
+  searchParams: {
+    initCode?: string;
+    callData?: string;
+  };
 }) {
+  let { userOperation, hash } = await handler(params, searchParams);
+  const chainId = parseNumber(params.chainId);
+
   return (
-    <Root type="wallet">
-      <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1">{children}</div>
-      </div>
-    </Root>
+    <TransactionDialog
+      chainId={chainId}
+      userOpHash={hash}
+      userOperation={userOperation}
+    ></TransactionDialog>
   );
 }
