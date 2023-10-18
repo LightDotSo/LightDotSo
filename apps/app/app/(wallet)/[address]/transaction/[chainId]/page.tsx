@@ -16,6 +16,8 @@
 import { TransactionDialog } from "@/components/transaction-dialog";
 import { handler } from "@/handles/transaction/[chainId]";
 import { parseNumber } from "@/handles/parsers/number";
+import type { Address } from "viem";
+import { hexToBytes } from "viem";
 
 export default async function Page({
   params,
@@ -32,8 +34,9 @@ export default async function Page({
 
   return (
     <TransactionDialog
+      address={params.address as Address}
       chainId={chainId}
-      userOpHash={hash}
+      userOpHash={hexToBytes(hash)}
       userOperation={userOperation}
     ></TransactionDialog>
   );
