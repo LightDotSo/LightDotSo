@@ -36,19 +36,19 @@ pub struct GetQuery {
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    // The offset of the first user_operation to return.
+    // The offset of the first user operation to return.
     pub offset: Option<i64>,
-    // The maximum number of user_operations to return.
+    // The maximum number of user operations to return.
     pub limit: Option<i64>,
 }
 
-/// User_operation operation errors
+/// User operation operation errors
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(crate) enum UserOperationError {
-    // User_operation query error.
+    // User operation query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
-    /// User_operation not found by id.
+    /// User operation not found by id.
     #[schema(example = "id = 1")]
     NotFound(String),
 }
@@ -62,7 +62,7 @@ pub(crate) struct UserOperation {
     sender: String,
 }
 
-// Implement From<user_operation::Data> for User_operation.
+// Implement From<user_operation::Data> for User operation.
 impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
@@ -80,7 +80,7 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/user_operation/list", get(v1_user_operation_list_handler))
 }
 
-/// Get a user_operation
+/// Get a user operation
 #[utoipa::path(
         get,
         path = "/user_operation/get",
@@ -100,7 +100,7 @@ async fn v1_user_operation_get_handler(
     // Get the get query.
     let Query(query) = get;
 
-    // Get the user_operations from the database.
+    // Get the user operations from the database.
     let user_operation = client
         .client
         .unwrap()
@@ -109,16 +109,16 @@ async fn v1_user_operation_get_handler(
         .exec()
         .await?;
 
-    // If the user_operation is not found, return a 404.
+    // If the user operation is not found, return a 404.
     let user_operation = user_operation.ok_or(AppError::NotFound)?;
 
-    // Change the user_operation to the format that the API expects.
+    // Change the user operation to the format that the API expects.
     let user_operation: UserOperation = user_operation.into();
 
     Ok(Json::from(user_operation))
 }
 
-/// Returns a list of user_operations.
+/// Returns a list of user operations.
 #[utoipa::path(
         get,
         path = "/user_operation/list",
@@ -138,7 +138,7 @@ async fn v1_user_operation_list_handler(
     // Get the pagination query.
     let Query(pagination) = pagination.unwrap_or_default();
 
-    // Get the user_operations from the database.
+    // Get the user operations from the database.
     let user_operations = client
         .client
         .unwrap()
@@ -149,7 +149,7 @@ async fn v1_user_operation_list_handler(
         .exec()
         .await?;
 
-    // Change the user_operations to the format that the API expects.
+    // Change the user operations to the format that the API expects.
     let user_operations: Vec<UserOperation> =
         user_operations.into_iter().map(UserOperation::from).collect();
 
