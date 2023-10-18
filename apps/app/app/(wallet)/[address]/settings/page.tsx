@@ -44,6 +44,8 @@ export default async function Page({
   if (!config?.data?.image_hash || !wallet?.data?.salt) {
     // Log error
     console.error("Missing image_hash or salt, returning null.");
+    // Log the data of the config and wallet
+    console.error(config?.data, wallet?.data);
     return null;
   }
 

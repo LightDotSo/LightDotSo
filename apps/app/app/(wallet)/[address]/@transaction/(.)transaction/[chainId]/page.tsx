@@ -30,7 +30,6 @@ export default async function Page({
 }) {
   let { userOperation, hash } = await handler(params, searchParams);
   const chainId = parseNumber(params.chainId);
-  console.info("server render at: ", new Date().toISOString());
 
   return (
     <Modal>
