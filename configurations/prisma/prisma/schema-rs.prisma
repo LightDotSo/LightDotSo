@@ -72,7 +72,6 @@ model Wallet {
   salt           String
   factoryAddress String
   name           String   @default("")
-  testnet        Boolean  @default(false)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
