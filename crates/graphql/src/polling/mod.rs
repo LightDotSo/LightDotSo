@@ -15,3 +15,4 @@
 
 pub mod light_wallets;
 pub mod min_block;
+pub mod user_operations;

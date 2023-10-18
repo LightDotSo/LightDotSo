@@ -354,11 +354,8 @@ impl Indexer {
         // Loop over the hashes
         if !wallet_address_hashmap.is_empty() {
             // Loop over the logs
-            for (tx_hash, hashmap) in &wallet_address_hashmap {
+            for (tx_hash, _hashmap) in &wallet_address_hashmap {
                 info!("wallet tx_hash: {:?}", tx_hash);
-
-                // Get the address
-                let address = hashmap.values().next().unwrap();
 
                 // Get the trace
                 let trace = self.get_geth_trace(&block, tx_hash, &traced_block);
@@ -372,7 +369,6 @@ impl Indexer {
                 let _ = self
                     .db_create_transaction_category(
                         db_client.clone(),
-                        address,
                         &LIGHT_WALLET_INITIALIZED.to_string(),
                         *tx_hash,
                     )
@@ -541,7 +537,6 @@ impl Indexer {
                                     let _ = self
                                         .db_create_transaction_category(
                                             db_client.clone(),
-                                            addr,
                                             category,
                                             unique_wallet_tx_hash,
                                         )
@@ -799,22 +794,12 @@ impl Indexer {
     pub async fn db_create_transaction_category(
         &self,
         db_client: Arc<PrismaClient>,
-        address: &ethers::types::H160,
         category: &str,
         tx_hash: ethers::types::H256,
     ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
-        {
-            || {
-                create_transaction_category(
-                    db_client.clone(),
-                    *address,
-                    category.to_string(),
-                    tx_hash,
-                )
-            }
-        }
-        .retry(&ExponentialBuilder::default())
-        .await
+        { || create_transaction_category(db_client.clone(), category.to_string(), tx_hash) }
+            .retry(&ExponentialBuilder::default())
+            .await
     }
 
     /// Creates a new transaction with log receipt in the database

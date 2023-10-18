@@ -1,0 +1,16 @@
+---
+source: crates/graphql/src/polling/user_operations.rs
+expression: query.query
+---
+query GetUserOperationsQuery($minBlock: BigInt!, $minIndex: BigInt!) {
+  userOperationEvents(first: 300, where: {blockNumber_gt: $minBlock, index_gt: $minIndex, }, orderBy: index) {
+    index
+    userOpHash
+    sender
+    paymaster
+    nonce
+    transactionHash
+  }
+}
+
+
