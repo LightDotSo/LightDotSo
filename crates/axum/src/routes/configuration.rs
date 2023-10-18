@@ -34,23 +34,23 @@ use utoipa::{IntoParams, ToSchema};
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
     pub address: String,
-    // The optional checkpoint to filter by.
+    /// The optional checkpoint to filter by.
     pub checkpoint: Option<i64>,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    // The offset of the first configuration to return.
+    /// The offset of the first configuration to return.
     pub offset: Option<i64>,
-    // The maximum number of configurations to return.
+    /// The maximum number of configurations to return.
     pub limit: Option<i64>,
 }
 
 /// Configuration operation errors
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(crate) enum ConfigurationError {
-    // Configuration query error.
+    /// Configuration query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
     /// Configuration not found by id.
@@ -61,19 +61,28 @@ pub(crate) enum ConfigurationError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Configuration {
+    /// The id of the configuration.
     id: String,
+    /// The address of the configuration.
     address: String,
+    /// The image hash of the configuration.
     image_hash: String,
+    /// The checkpoint of the configuration.
     checkpoint: i64,
+    /// The threshold of the configuration.
     threshold: i64,
-    owners: Vec<Owner>,
+    /// The owners of the configuration.
+    owners: Vec<ConfigurationOwner>,
 }
 
 /// Owner
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct Owner {
+pub(crate) struct ConfigurationOwner {
+    /// The id of the owner.
     id: String,
+    /// The address of the owner.
     address: String,
+    /// The weight of the owner.
     weight: i64,
 }
 
@@ -86,15 +95,15 @@ impl From<configuration::Data> for Configuration {
             image_hash: configuration.image_hash.to_string(),
             checkpoint: configuration.checkpoint,
             threshold: configuration.threshold,
-            owners: configuration
-                .owners
-                .map_or(Vec::new(), |owners| owners.into_iter().map(Owner::from).collect()),
+            owners: configuration.owners.map_or(Vec::new(), |owners| {
+                owners.into_iter().map(ConfigurationOwner::from).collect()
+            }),
         }
     }
 }
 
 // Implement From<owner::Data> for Owner.
-impl From<owner::Data> for Owner {
+impl From<owner::Data> for ConfigurationOwner {
     fn from(owner: owner::Data) -> Self {
         Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
     }
