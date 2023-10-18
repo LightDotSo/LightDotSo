@@ -17,6 +17,7 @@ use super::signature::Signature;
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
+    traits::HexToBytes,
 };
 use autometrics::autometrics;
 use axum::{
@@ -285,7 +286,7 @@ async fn v1_user_operation_post_handler(
             let signature = client
                 .signature()
                 .create(
-                    signature.signature.into(),
+                    signature.signature.hex_to_bytes()?,
                     signature.signature_type,
                     owner::id::equals(signature.owner_id),
                     user_operation::hash::equals(user_operation_hash),
@@ -301,14 +302,14 @@ async fn v1_user_operation_post_handler(
                     user_operation.hash,
                     user_operation.sender,
                     user_operation.nonce,
-                    user_operation.init_code.into(),
-                    user_operation.call_data.into(),
+                    user_operation.init_code.hex_to_bytes()?,
+                    user_operation.call_data.hex_to_bytes()?,
                     user_operation.call_gas_limit,
                     user_operation.verification_gas_limit,
                     user_operation.pre_verification_gas,
                     user_operation.max_fee_per_gas,
                     user_operation.max_priority_fee_per_gas,
-                    user_operation.paymaster_and_data.into(),
+                    user_operation.paymaster_and_data.hex_to_bytes()?,
                     chain_id,
                     wallet::address::equals(wallet.address),
                     vec![user_operation::signatures::connect(vec![signature::id::equals(
