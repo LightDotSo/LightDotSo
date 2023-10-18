@@ -21,6 +21,8 @@ import type { Address, Hex } from "viem";
 import { toHex, fromHex } from "viem";
 import { getUserOperationHash, type UserOperation } from "permissionless";
 import { validateHex } from "../validators/hex";
+import { validateNumber } from "../validators/number";
+import { parseNumber } from "../parsers/number";
 
 export const handler = async (
   params: { address: string; chainId: string },
@@ -41,6 +43,8 @@ export const handler = async (
 
   validateAddress(params.address);
 
+  validateNumber(params.chainId);
+
   if (searchParams?.initCode) {
     validateHex(searchParams.initCode);
   }
@@ -48,6 +52,8 @@ export const handler = async (
   if (searchParams?.callData) {
     validateHex(searchParams.callData);
   }
+
+  const chainId = parseNumber(params.chainId);
 
   // -------------------------------------------------------------------------
   // Defaults
@@ -71,7 +77,7 @@ export const handler = async (
   // Fetch
   // -------------------------------------------------------------------------
 
-  let res = await getPaymasterGasAndPaymasterAndData(parseInt(params.chainId), [
+  let res = await getPaymasterGasAndPaymasterAndData(chainId, [
     {
       sender: params.address,
       paymasterAndData: "0x",
@@ -114,7 +120,7 @@ export const handler = async (
   let hash = getUserOperationHash({
     userOperation,
     entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-    chainId: parseInt(params.chainId),
+    chainId,
   });
 
   return { userOperation, hash };
