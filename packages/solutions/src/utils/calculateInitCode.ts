@@ -13,6 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { calculateImageHash } from "./calculateImageHash";
-export { calculateInitCode } from "./calculateInitCode";
-export { subdigestOf } from "./subdigestOf";
+import type { Address, Hex } from "viem";
+import { encodePacked, getFunctionSelector } from "viem";
+
+export const calculateInitCode = (
+  factory_address: Address,
+  image_hash: Hex,
+  salt: Hex,
+) => {
+  return encodePacked(
+    ["address", "bytes"],
+    [
+      factory_address,
+      encodePacked(
+        ["bytes4", "bytes32", "bytes32"],
+        [
+          getFunctionSelector("createAccount(bytes32,bytes32)"),
+          image_hash,
+          salt,
+        ],
+      ),
+    ],
+  );
+};

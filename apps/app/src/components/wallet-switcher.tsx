@@ -62,6 +62,8 @@ export function WalletSwitcher({
     address: string;
     factory_address: string;
     id: string;
+    name: string;
+    salt: string;
   }>();
   const router = useRouter();
   const { address } = useAuth();
@@ -71,8 +73,11 @@ export function WalletSwitcher({
     queryKey: ["wallets", address],
     queryFn: async () => {
       const res = await getWallets({
-        owner: address!,
-        isPublic: true,
+        params: {
+          query: {
+            owner: address,
+          },
+        },
       });
 
       // Return if the response is 200
@@ -121,7 +126,7 @@ export function WalletSwitcher({
               <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
               {/* <AvatarFallback>SC</AvatarFallback> */}
             </Avatar>
-            {selectedWallet?.address}
+            {selectedWallet?.name}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -151,7 +156,7 @@ export function WalletSwitcher({
                       <AvatarFallback>SC</AvatarFallback> */}
                         <PlaceholderOrb address={wallet.address} />
                       </Avatar>
-                      {wallet.address}
+                      {wallet.name}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",

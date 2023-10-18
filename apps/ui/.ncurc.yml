@@ -6,3 +6,5 @@ reject:
   - "@trpc/react-query"
   - "@trpc/server"
   - lucide-react
+  - "@radix-ui/react-alert-dialog"
+  - "@radix-ui/react-dialog"

@@ -29,3 +29,43 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
 
   return responseSchema.parse(await response.json());
 };
+
+interface JsonResponseSchema {
+  jsonrpc: string;
+  result?: any;
+  error?: { code: number; message: string; data?: any };
+  id: string | number;
+}
+
+export async function zodJsonRpcFetch<
+  TParams,
+  TResponseSchema extends z.Schema,
+>(
+  url: string,
+  method: string,
+  params: TParams,
+  responseSchema: TResponseSchema,
+  id: string | number = Math.floor(Math.random() * 100),
+): Promise<z.infer<TResponseSchema>> {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method,
+      params,
+      id,
+    }),
+  });
+
+  const data = (await response.json()) as JsonResponseSchema;
+
+  if (data?.error) {
+    throw new Error(`JSON-RPC Error: ${data.error.message}`);
+  }
+
+  /* Parse and validate response using schema */
+  return responseSchema.parse(data.result);
+}

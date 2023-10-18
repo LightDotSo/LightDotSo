@@ -22,14 +22,14 @@ export interface paths {
      * Get a configuration
      * @description Get a configuration
      */
-    get: operations["v1_get_handler"];
+    get: operations["v1_configuration_get_handler"];
   };
   "/configuration/list": {
     /**
      * Returns a list of configurations.
      * @description Returns a list of configurations.
      */
-    get: operations["v1_list_handler"];
+    get: operations["v1_configuration_list_handler"];
   };
   "/health": {
     /**
@@ -43,21 +43,21 @@ export interface paths {
      * Create a wallet
      * @description Create a wallet
      */
-    post: operations["v1_post_handler"];
+    post: operations["v1_wallet_post_handler"];
   };
   "/wallet/get": {
     /**
      * Get a wallet
      * @description Get a wallet
      */
-    get: operations["v1_get_handler"];
+    get: operations["v1_wallet_get_handler"];
   };
   "/wallet/list": {
     /**
      * Returns a list of wallets.
      * @description Returns a list of wallets.
      */
-    get: operations["v1_list_handler"];
+    get: operations["v1_wallet_list_handler"];
   };
 }
 
@@ -181,59 +181,52 @@ export interface operations {
     };
   };
   /**
-   * Get a wallet
-   * @description Get a wallet
+   * Get a configuration
+   * @description Get a configuration
    */
-  v1_get_handler: {
+  v1_configuration_get_handler: {
     parameters: {
       query: {
-        /** @description The address of the wallet. */
         address: string;
-        /** @description The chain id of the wallet. */
-        chain_id?: number | null;
       };
     };
     responses: {
-      /** @description Wallet returned successfully */
+      /** @description Configuration returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["Wallet"];
+          "application/json": components["schemas"]["Configuration"];
         };
       };
-      /** @description Wallet not found */
+      /** @description Configuration not found */
       404: {
         content: {
-          "application/json": components["schemas"]["WalletError"];
+          "application/json": components["schemas"]["ConfigurationError"];
         };
       };
     };
   };
   /**
-   * Returns a list of wallets.
-   * @description Returns a list of wallets.
+   * Returns a list of configurations.
+   * @description Returns a list of configurations.
    */
-  v1_list_handler: {
+  v1_configuration_list_handler: {
     parameters: {
       query?: {
-        /** @description The offset of the first wallet to return. */
         offset?: number | null;
-        /** @description The maximum number of wallets to return. */
         limit?: number | null;
-        /** @description A filter to return wallets w/ a given owner. */
-        owner?: string | null;
       };
     };
     responses: {
-      /** @description Wallets returned successfully */
+      /** @description Configurations returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["Wallet"][];
+          "application/json": components["schemas"]["Configuration"][];
         };
       };
-      /** @description Wallet bad request */
+      /** @description Configuration bad request */
       500: {
         content: {
-          "application/json": components["schemas"]["WalletError"];
+          "application/json": components["schemas"]["ConfigurationError"];
         };
       };
     };
@@ -242,7 +235,7 @@ export interface operations {
    * Create a wallet
    * @description Create a wallet
    */
-  v1_post_handler: {
+  v1_wallet_post_handler: {
     parameters: {
       query?: {
         /** @description Whether to simulate the wallet creation. */
@@ -274,6 +267,64 @@ export interface operations {
         };
       };
       /** @description Wallet internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a wallet
+   * @description Get a wallet
+   */
+  v1_wallet_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet. */
+        address: string;
+        /** @description The chain id of the wallet. */
+        chain_id?: number | null;
+      };
+    };
+    responses: {
+      /** @description Wallet returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Wallet"];
+        };
+      };
+      /** @description Wallet not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of wallets.
+   * @description Returns a list of wallets.
+   */
+  v1_wallet_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first wallet to return. */
+        offset?: number | null;
+        /** @description The maximum number of wallets to return. */
+        limit?: number | null;
+        /** @description A filter to return wallets w/ a given owner. */
+        owner?: string | null;
+      };
+    };
+    responses: {
+      /** @description Wallets returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Wallet"][];
+        };
+      };
+      /** @description Wallet bad request */
       500: {
         content: {
           "application/json": components["schemas"]["WalletError"];

@@ -27,19 +27,76 @@ import {
 import { useTransactionStore } from "@/stores/useTransaction";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
+import { useEffect, useMemo, useState } from "react";
+import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import type { Hex } from "viem";
+import { toHex, fromHex } from "viem";
 
 type TransactionDialogProps = {
   children: React.ReactNode;
 };
 
 export function TransactionDialog({ children }: TransactionDialogProps) {
-  const { chainId, userOperation, isValid } = useTransactionStore();
-  const { isLoading, signMessage } = useSignMessage({
+  const {
+    chainId,
+    userOperation,
+    resetUserOp,
+    isValid,
+    setGasValues,
+    setPaymasterAndData,
+    getUserOpHash,
+  } = useTransactionStore();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { signMessage } = useSignMessage({
     message: "gm wagmi frens",
   });
 
+  const userOpHash = useMemo(() => {
+    return getUserOpHash();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, getUserOpHash]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      let res = await getPaymasterGasAndPaymasterAndData(chainId, [
+        {
+          sender: userOperation.sender,
+          paymasterAndData: userOperation.paymasterAndData,
+          nonce: toHex(userOperation.nonce),
+          initCode: userOperation.initCode,
+          callData: userOperation.callData,
+          signature: userOperation.signature,
+          callGasLimit: "0x44E1C0",
+          verificationGasLimit: "0x1C4B40",
+          preVerificationGas: "0x1C4B40",
+          maxFeePerGas: "0xD320B3B35",
+          maxPriorityFeePerGas: "0xB323DBB31",
+        },
+      ]);
+      setGasValues(
+        fromHex(res.callGasLimit as Hex, { to: "bigint" }),
+        fromHex(res.verificationGasLimit as Hex, { to: "bigint" }),
+        fromHex(res.preVerificationGas as Hex, { to: "bigint" }),
+        fromHex(res.maxFeePerGas as Hex, { to: "bigint" }),
+        fromHex(res.maxPriorityFeePerGas as Hex, { to: "bigint" }),
+      );
+      setPaymasterAndData(res.paymasterAndData as Hex);
+      setIsLoading(false);
+    };
+
+    if (!chainId) return;
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chainId]);
+
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={() => {
+        resetUserOp();
+      }}
+    >
       {children}
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="mt-4 space-y-3">
@@ -54,6 +111,16 @@ export function TransactionDialog({ children }: TransactionDialogProps) {
           </pre>
           <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
             <code className="break-all text-primary">chainId: {chainId}</code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              userOpHash: {userOpHash}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-primary">
+              isLoading: {isLoading ? "true" : "false"}
+            </code>
           </pre>
         </div>
         <DialogFooter>

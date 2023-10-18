@@ -30,12 +30,13 @@ export default async function Page({
   params: { address: string };
 }) {
   let config = (
-    await getConfiguration({ address, isPublic: false })
+    await getConfiguration({ params: { query: { address } } }, false)
   )._unsafeUnwrap();
-  let wallet = (await getWallet({ address, isPublic: false }))._unsafeUnwrap();
+  let wallet = (
+    await getWallet({ params: { query: { address } } }, false)
+  )._unsafeUnwrap();
 
-  // @ts-expect-error
-  if (!config?.data!.image_hash || !wallet?.data?.salt) return;
+  if (!config?.data?.image_hash || !wallet?.data?.salt) return;
 
   return (
     <TransactionDialog>
@@ -44,7 +45,6 @@ export default async function Page({
           <DeployButton
             key={chain.name}
             salt={wallet!.data!.salt as Hex}
-            // @ts-expect-error
             image_hash={config!.data!.image_hash as Hex}
             chainId={chain.chainId}
           >

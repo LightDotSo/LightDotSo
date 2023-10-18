@@ -83,6 +83,11 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
     // Replace with your actual fetch logic
     const res = await createWallet({
       params: {
+        query: {
+          simulate: !isCreate,
+        },
+      },
+      body: {
         name: get().formValues.name!,
         salt: get().formValues.salt!,
         threshold: get().formValues.threshold!,
@@ -91,7 +96,6 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
           address: owner.address!,
         })),
       },
-      simulate: !isCreate,
     });
 
     // Parse the response and set the address

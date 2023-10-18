@@ -17,8 +17,9 @@ import createClient from "openapi-fetch";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { paths, Without, XOR, OneOf } from "./v1";
 import { ResultAsync } from "neverthrow";
-import { zodFetch } from "./zod";
+import { zodFetch, zodJsonRpcFetch } from "./zod";
 import { llamaSchema } from "@lightdotso/schemas";
+import { z } from "zod";
 
 const publicClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
@@ -31,67 +32,74 @@ const adminClient = createClient<paths>({
   },
 });
 
-const getClient = (isPublic: boolean) =>
-  isPublic ? publicClient : adminClient;
+const rpcClient = (chainId: number) => {
+  return `https://rpc.light.so/${chainId}`;
+};
 
-export const getConfiguration = async ({
-  address,
-  isPublic = false,
-}: {
-  address: string;
-  isPublic?: boolean;
-}) => {
+const getClient = (isPublic?: boolean) =>
+  isPublic === undefined || isPublic ? publicClient : adminClient;
+
+export const getConfiguration = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  isPublic?: boolean,
+) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
-      params: {
-        query: {
-          address: address,
-        },
-      },
+      params,
     }),
     () => new Error("Database error"),
   );
 };
 
-export const getWallet = async ({
-  address,
-  isPublic = false,
-}: {
-  address: string;
-  isPublic?: boolean;
-}) => {
+export const getWallet = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string; chain_id?: number | null | undefined };
+    };
+  },
+  isPublic?: boolean,
+) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
-      params: {
-        query: {
-          address: address,
-        },
-      },
+      params,
     }),
     () => new Error("Database error"),
   );
 };
 
-export const getWallets = async ({
-  owner,
-  isPublic = false,
-}: {
-  owner: string;
-  isPublic?: boolean;
-}) => {
+export const getWallets = async (
+  {
+    params,
+  }: {
+    params: {
+      query?:
+        | {
+            offset?: number | null | undefined;
+            limit?: number | null | undefined;
+            owner?: string | null | undefined;
+          }
+        | undefined;
+    };
+  },
+  isPublic?: boolean,
+) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
-      params: {
-        query: {
-          owner,
-        },
-      },
+      params,
     }),
     () => new Error("Database error"),
   );
@@ -99,9 +107,12 @@ export const getWallets = async ({
 
 export const createWallet = async ({
   params,
-  simulate = true,
+  body,
 }: {
   params: {
+    query?: { simulate?: boolean | null | undefined } | undefined;
+  };
+  body: {
     name: string;
     owners: {
       address: string;
@@ -110,18 +121,13 @@ export const createWallet = async ({
     salt: string;
     threshold: number;
   };
-  simulate?: boolean;
 }) => {
   const client = getClient(true);
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
-      params: {
-        query: {
-          simulate,
-        },
-      },
-      body: params,
+      params,
+      body,
     }),
     () => new Error("Database error"),
   );
@@ -131,5 +137,67 @@ export const getLlama = async (address: string) => {
   return zodFetch(
     `https://api.llamafolio.com/balances/${address}`,
     llamaSchema,
+  );
+};
+
+const EthChainIdResultSchema = z
+  .string()
+  .refine(value => /^0x[0-9a-fA-F]+$/.test(value), {
+    message: "ChainId must be a hexadecimal string",
+  });
+
+export const getChainId = async () => {
+  return zodJsonRpcFetch(
+    "https://rpc.light.so/1",
+    "eth_chainId",
+    [],
+    EthChainIdResultSchema,
+  );
+};
+
+const HexStringSchema = z
+  .string()
+  .refine(value => /^0x[0-9a-fA-F]*$/.test(value), {
+    message: "Must be a hexadecimal string",
+  });
+
+const PaymasterGasAndPaymasterAndData = z.object({
+  paymasterAndData: HexStringSchema,
+  callGasLimit: HexStringSchema,
+  verificationGasLimit: HexStringSchema,
+  preVerificationGas: HexStringSchema,
+  maxFeePerGas: HexStringSchema,
+  maxPriorityFeePerGas: HexStringSchema,
+});
+
+const PaymasterGasAndPaymasterAndDataRequest = z.array(
+  z.object({
+    sender: HexStringSchema,
+    nonce: HexStringSchema,
+    initCode: HexStringSchema,
+    callData: HexStringSchema,
+    signature: HexStringSchema,
+    paymasterAndData: HexStringSchema,
+    callGasLimit: HexStringSchema.optional(),
+    verificationGasLimit: HexStringSchema.optional(),
+    preVerificationGas: HexStringSchema.optional(),
+    maxFeePerGas: HexStringSchema.optional(),
+    maxPriorityFeePerGas: HexStringSchema.optional(),
+  }),
+);
+
+type PaymasterGasAndPaymasterAndDataRequestType = z.infer<
+  typeof PaymasterGasAndPaymasterAndDataRequest
+>;
+
+export const getPaymasterGasAndPaymasterAndData = async (
+  chainId: number,
+  params: PaymasterGasAndPaymasterAndDataRequestType,
+) => {
+  return zodJsonRpcFetch(
+    rpcClient(chainId),
+    "paymaster_requestGasAndPaymasterAndData",
+    params,
+    PaymasterGasAndPaymasterAndData,
   );
 };

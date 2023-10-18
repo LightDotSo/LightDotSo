@@ -13,6 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { calculateImageHash } from "./calculateImageHash";
-export { calculateInitCode } from "./calculateInitCode";
-export { subdigestOf } from "./subdigestOf";
+import { expect, test } from "vitest";
+import { getChainId } from "../src"; // Replace with your actual file path
+
+test("getChainId", async () => {
+  const result = await getChainId();
+
+  expect(result).toBe("0x1");
+});
