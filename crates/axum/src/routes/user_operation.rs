@@ -25,6 +25,7 @@ use axum::{
     Json, Router,
 };
 use ethers_main::utils::hex;
+use eyre::Result;
 use lightdotso_prisma::{configuration, user_operation, wallet};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
@@ -275,30 +276,42 @@ async fn v1_user_operation_post_handler(
     // TODO: Check that the signature is valid.
 
     // Create the user operation in the database w/ the signature.
-    let user_operation = client
-        .clone()
+
+    let user_operation: Result<lightdotso_prisma::user_operation::Data> = client
         .client
         .unwrap()
-        .user_operation()
-        .create(
-            user_operation.clone().hash,
-            user_operation.clone().sender,
-            user_operation.clone().nonce,
-            user_operation.init_code.into(),
-            user_operation.call_data.into(),
-            user_operation.call_gas_limit,
-            user_operation.verification_gas_limit,
-            user_operation.pre_verification_gas,
-            user_operation.max_fee_per_gas,
-            user_operation.max_priority_fee_per_gas,
-            user_operation.paymaster_and_data.into(),
-            chain_id,
-            wallet::address::equals(wallet.address),
-            vec![],
-        )
-        .exec()
-        .await?;
-      info!(?user_operation);
+        ._transaction()
+        .run(|client| async move {
+            let user_operation = client
+                .user_operation()
+                .create(
+                    user_operation.hash,
+                    user_operation.sender,
+                    user_operation.nonce,
+                    user_operation.init_code.into(),
+                    user_operation.call_data.into(),
+                    user_operation.call_gas_limit,
+                    user_operation.verification_gas_limit,
+                    user_operation.pre_verification_gas,
+                    user_operation.max_fee_per_gas,
+                    user_operation.max_priority_fee_per_gas,
+                    user_operation.paymaster_and_data.into(),
+                    chain_id,
+                    wallet::address::equals(wallet.address),
+                    vec![],
+                )
+                .exec()
+                .await?;
+            info!(?user_operation);
+
+            Ok(user_operation)
+        })
+        .await;
+    info!(?user_operation);
+
+    // If the user_operation is not created, return a 500.
+    let user_operation = user_operation.map_err(|_| AppError::InternalError)?;
+    info!(?user_operation);
 
     // Change the user operation to the format that the API expects.
     let user_operation: UserOperation = user_operation.into();
