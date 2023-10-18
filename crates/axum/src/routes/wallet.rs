@@ -381,6 +381,7 @@ async fn v1_wallet_post_handler(
                 .create(
                     to_checksum(&new_wallet_address, None),
                     0,
+                    0,
                     format!("{:?}", image_hash_bytes),
                     threshold.into(),
                     vec![],
@@ -453,7 +454,7 @@ async fn v1_wallet_post_handler(
                     to_checksum(&factory_address, None),
                     vec![
                         lightdotso_prisma::wallet::name::set(name),
-                        lightdotso_prisma::wallet::configuration::connect(vec![
+                        lightdotso_prisma::wallet::configurations::connect(vec![
                             lightdotso_prisma::configuration::id::equals(configuration_data.id),
                         ]),
                         lightdotso_prisma::wallet::users::connect(
