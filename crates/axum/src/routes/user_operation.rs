@@ -88,8 +88,8 @@ pub(crate) fn router() -> Router<AppState> {
             GetQuery
         ),
         responses(
-            (status = 200, description = "User_operation returned successfully", body = UserOperation),
-            (status = 404, description = "User_operation not found", body = UserOperationError),
+            (status = 200, description = "User Operation returned successfully", body = UserOperation),
+            (status = 404, description = "User Operation not found", body = UserOperationError),
         )
     )]
 #[autometrics]
