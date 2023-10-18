@@ -25,9 +25,10 @@ use axum::{
     routing::get,
     Json, Router,
 };
-use ethers_main::utils::hex;
+use ethers_main::{types::H160, utils::hex};
 use eyre::Result;
 use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
+use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -234,6 +235,9 @@ async fn v1_user_operation_post_handler(
     let user_operation_hash = params.user_operation_hash;
     let signature = params.signature;
 
+    // Parse the user operation address.
+    let sender_address: H160 = user_operation.sender.parse()?;
+
     // Get the wallet from the database.
     let wallet = client
         .clone()
@@ -271,7 +275,24 @@ async fn v1_user_operation_post_handler(
     }
 
     // Check that the signature is valid.
-    // TODO: Check that the signature is valid.
+    let sig_bytes = signature.signature.hex_to_bytes()?;
+    let digest_chain_id = match signature.signature_type {
+        0 => chain_id,
+        1 => chain_id,
+        2 => 0,
+        _ => return Err(AppError::BadRequest),
+    };
+    let subdigest = render_subdigest(
+        digest_chain_id as u64,
+        sender_address,
+        user_operation_hash.hex_to_bytes32()?,
+    );
+    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
+
+    // Check that the recovered signature is the same as the signature sender.
+    if recovered_sig.address != sender_address {
+        return Err(AppError::BadRequest);
+    }
 
     // Create the user operation in the database w/ the signature.
     let user_operation: Result<lightdotso_prisma::user_operation::Data> = client

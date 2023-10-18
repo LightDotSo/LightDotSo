@@ -13,17 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::utils::hex_to_bytes;
+use crate::utils::{hex_to_bytes, hex_to_bytes32};
 use ethers_main::utils::hex;
+use eyre::Result;
 
 pub trait HexToBytes {
     fn hex_to_bytes(&self) -> Result<Vec<u8>, hex::FromHexError>;
+
+    fn hex_to_bytes32(&self) -> Result<[u8; 32]>;
 }
 
 impl HexToBytes for str {
     fn hex_to_bytes(&self) -> Result<Vec<u8>, hex::FromHexError> {
         // call the function directly
         hex_to_bytes(self)
+    }
+
+    fn hex_to_bytes32(&self) -> Result<[u8; 32]> {
+        // call the function directly
+        hex_to_bytes32(self)
     }
 }
 
