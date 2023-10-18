@@ -233,7 +233,7 @@ async fn v1_user_operation_post_handler(
 
     let user_operation = params.user_operation;
     let user_operation_hash = params.user_operation_hash;
-    let signature = params.signature;
+    let sig = params.signature;
 
     // Parse the user operation address.
     let sender_address: H160 = user_operation.sender.parse()?;
@@ -270,13 +270,13 @@ async fn v1_user_operation_post_handler(
     let owners = configuration.owners.ok_or(AppError::NotFound)?;
 
     // Check that the signature sender is one of the owners.
-    if !owners.iter().any(|owner| owner.id == signature.owner_id) {
+    if !owners.iter().any(|owner| owner.id == sig.owner_id) {
         return Err(AppError::BadRequest);
     }
 
     // Check that the signature is valid.
-    let sig_bytes = signature.signature.hex_to_bytes()?;
-    let digest_chain_id = match signature.signature_type {
+    let sig_bytes = sig.signature.hex_to_bytes()?;
+    let digest_chain_id = match sig.signature_type {
         0 => chain_id,
         1 => chain_id,
         2 => 0,
@@ -294,7 +294,7 @@ async fn v1_user_operation_post_handler(
         return Err(AppError::BadRequest);
     }
 
-    // Create the user operation in the database w/ the signature.
+    // Create the user operation in the database w/ the sig.
     let user_operation: Result<lightdotso_prisma::user_operation::Data> = client
         .client
         .unwrap()
@@ -303,9 +303,9 @@ async fn v1_user_operation_post_handler(
             let signature = client
                 .signature()
                 .create(
-                    signature.signature.hex_to_bytes()?,
-                    signature.signature_type,
-                    owner::id::equals(signature.owner_id),
+                    sig.signature.hex_to_bytes()?,
+                    sig.signature_type,
+                    owner::id::equals(sig.owner_id),
                     user_operation::hash::equals(user_operation_hash),
                     vec![],
                 )
@@ -329,9 +329,7 @@ async fn v1_user_operation_post_handler(
                     user_operation.paymaster_and_data.hex_to_bytes()?,
                     chain_id,
                     wallet::address::equals(wallet.address),
-                    vec![user_operation::signatures::connect(vec![signature::id::equals(
-                        signature.id,
-                    )])],
+                    vec![user_operation::signatures::connect(vec![signature::id::equals(sig.id)])],
                 )
                 .exec()
                 .await?;
