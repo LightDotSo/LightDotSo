@@ -26,6 +26,7 @@ use axum::{
 };
 use ethers_main::utils::hex;
 use lightdotso_prisma::{configuration, user_operation, wallet};
+use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -228,15 +229,16 @@ async fn v1_user_operation_post_handler(
     let chain_id = post.chain_id;
 
     let user_operation = params.user_operation;
-    let user_operation_hash = params.user_operation_hash;
+    // let user_operation_hash = params.user_operation_hash;
     let signature = params.signature;
 
     // Get the wallet from the database.
     let wallet = client
+        .clone()
         .client
         .unwrap()
         .wallet()
-        .find_unique(wallet::address::equals(user_operation.sender))
+        .find_unique(wallet::address::equals(user_operation.clone().sender))
         .exec()
         .await?;
 
@@ -245,12 +247,13 @@ async fn v1_user_operation_post_handler(
 
     // Get the current configuration for the wallet.
     let configuration = client
+        .clone()
         .client
         .unwrap()
         .configuration()
         .find_first(vec![
-            configuration::address::equals(user_operation.sender),
-            configuration::chain_id::equals(user_operation.chain_id),
+            configuration::address::equals(user_operation.clone().sender),
+            configuration::chain_id::equals(chain_id),
         ])
         .order_by(configuration::checkpoint::order(Direction::Desc))
         .with(configuration::owners::fetch(vec![]))
@@ -273,27 +276,31 @@ async fn v1_user_operation_post_handler(
 
     // Create the user operation in the database w/ the signature.
     let user_operation = client
+        .clone()
         .client
         .unwrap()
         .user_operation()
         .create(
-            user_operation_hash,
-            user_operation.sender,
-            user_operation.nonce,
-            user_operation.init_code,
-            user_operation.call_data,
+            user_operation.clone().hash,
+            user_operation.clone().sender,
+            user_operation.clone().nonce,
+            user_operation.init_code.into(),
+            user_operation.call_data.into(),
             user_operation.call_gas_limit,
             user_operation.verification_gas_limit,
             user_operation.pre_verification_gas,
             user_operation.max_fee_per_gas,
             user_operation.max_priority_fee_per_gas,
-            user_operation.paymaster_and_data,
+            user_operation.paymaster_and_data.into(),
             chain_id,
             wallet::address::equals(wallet.address),
             vec![],
         )
         .exec()
         .await?;
+
+    // Change the user operation to the format that the API expects.
+    let user_operation: UserOperation = user_operation.into();
 
     Ok(Json::from(user_operation))
 }
