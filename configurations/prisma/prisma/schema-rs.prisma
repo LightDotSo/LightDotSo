@@ -99,12 +99,11 @@ model Owner {
   id        String   @id @default(cuid())
   address   String
   weight    BigInt
-  imageHash String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  configuration   Configuration? @relation(fields: [configurationId], references: [id])
-  configurationId String?
+  configuration   Configuration @relation(fields: [configurationId], references: [id])
+  configurationId String
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String?

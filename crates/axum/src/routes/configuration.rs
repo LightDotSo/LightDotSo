@@ -24,7 +24,7 @@ use axum::{
     Json, Router,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::configuration;
+use lightdotso_prisma::{configuration, owner};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -66,6 +66,15 @@ pub(crate) struct Configuration {
     image_hash: String,
     checkpoint: i64,
     threshold: i64,
+    owners: Vec<Owner>,
+}
+
+/// Owner
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct Owner {
+    id: String,
+    address: String,
+    weight: i64,
 }
 
 // Implement From<configuration::Data> for Configuration.
@@ -77,7 +86,17 @@ impl From<configuration::Data> for Configuration {
             image_hash: configuration.image_hash.to_string(),
             checkpoint: configuration.checkpoint,
             threshold: configuration.threshold,
+            owners: configuration
+                .owners
+                .map_or(Vec::new(), |owners| owners.into_iter().map(Owner::from).collect()),
         }
+    }
+}
+
+// Implement From<owner::Data> for Owner.
+impl From<owner::Data> for Owner {
+    fn from(owner: owner::Data) -> Self {
+        Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
     }
 }
 
@@ -123,6 +142,7 @@ async fn v1_configuration_get_handler(
                 .unwrap()
                 .configuration()
                 .find_unique(configuration::address_checkpoint(checksum_address, checkpoint))
+                .with(configuration::owners::fetch(vec![]))
                 .exec()
                 .await?
         }
@@ -133,6 +153,7 @@ async fn v1_configuration_get_handler(
                 .configuration()
                 .find_first(vec![configuration::address::equals(checksum_address)])
                 .order_by(configuration::checkpoint::order(Direction::Desc))
+                .with(configuration::owners::fetch(vec![]))
                 .exec()
                 .await?
         }
