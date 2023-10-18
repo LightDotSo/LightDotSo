@@ -27,7 +27,7 @@
     "deploy:hosted:celo": "graph deploy --product hosted-service lightdotso/celo --network celo",
     "deploy:hosted:fantom": "graph deploy --product hosted-service lightdotso/fantom --network fantom",
     "deploy:hosted:gnosis": "graph deploy --product hosted-service lightdotso/gnosis --network gnosis",
-    "deploy:hosted:hosted": "graph deploy --product hosted-service lightdotso/mainnet --network mainnet",
+    "deploy:hosted:mainnet": "graph deploy --product hosted-service lightdotso/mainnet --network mainnet",
     "deploy:hosted:matic": "graph deploy --product hosted-service lightdotso/matic --network matic",
     "deploy:hosted:mumbai": "graph deploy --product hosted-service lightdotso/mumbai --network mumbai",
     "deploy:hosted:optimism": "graph deploy --product hosted-service lightdotso/optimism --network optimism",
@@ -35,6 +35,8 @@
     "deploy:hosted:sepolia": "graph deploy --product hosted-service lightdotso/sepolia --network sepolia",
     "deploy:local": "graph deploy --node http://localhost:8020 --ipfs http://localhost:5001 @lightdotso/mainnet",
     "deploy:mainnet": "graph deploy --node http://lightdotso-graph.internal:9020 --ipfs http://lightdotso-ipfs.internal:5001 mainnet --network mainnet",
+    "deploy:satsuma": "concurrently \"pnpm:deploy:satsuma:*\" --max-processes 1",
+    "deploy:satsuma:mainnet": "graph deploy --node https://app.satsuma.xyz/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz mainnet --deploy-key $SATSUMA_DEPLOY_KEY --network mainnet",
     "remove:local": "graph remove --node http://localhost:8020 @lightdotso/mainnet",
     "remove:mainnet": "graph remove --node http://lightdotso-graph.internal:9020 mainnet",
     "test": "graph test"
