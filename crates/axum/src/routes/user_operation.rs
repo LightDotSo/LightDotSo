@@ -28,7 +28,7 @@ use axum::{
 use ethers_main::{types::H160, utils::hex};
 use eyre::{Report, Result};
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
-use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
+use lightdotso_prisma::{configuration, owner, user_operation, wallet};
 use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::Direction;
