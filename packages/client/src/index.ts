@@ -22,7 +22,10 @@ import { llamaSchema } from "@lightdotso/schemas";
 import { z } from "zod";
 
 const devApiClient = createClient<paths>({
-  baseUrl: "http://localhost:3000/v1",
+  baseUrl: "http://localhost:3000/admin/v1",
+  headers: {
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_LIGHT_ADMIN_TOKEN}`,
+  },
 });
 
 const publicApiClient = createClient<paths>({
