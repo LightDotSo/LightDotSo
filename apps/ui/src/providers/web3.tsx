@@ -20,11 +20,13 @@ import { WagmiConfig, createConfig } from "wagmi";
 import type { SIWEConfig } from "connectkit";
 import { ConnectKitProvider, SIWEProvider, getDefaultConfig } from "connectkit";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import { mainnet, sepolia } from "wagmi/chains";
 
 const config = createConfig(
   getDefaultConfig({
     appName: "Light",
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+    chains: [mainnet, sepolia],
   }),
 );
 
