@@ -17,6 +17,9 @@ import { handler } from "@/handles/[address]";
 import { getUserOperations } from "@lightdotso/client";
 import { Avatar, AvatarFallback, Button } from "@lightdotso/ui";
 import Link from "next/link";
+
+export const revalidate = 0;
+
 export default async function Page({
   params,
 }: {
@@ -38,7 +41,7 @@ export default async function Page({
       {res.value.data.map(userOperation => (
         <div key={userOperation.hash} className="flex items-center">
           <Avatar className="h-9 w-9">
-            <AvatarFallback>Tx</AvatarFallback>
+            <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
           </Avatar>
           <div className="ml-4 space-y-1">
             <p className="text-sm font-medium leading-none">
@@ -51,7 +54,7 @@ export default async function Page({
           <div className="ml-auto font-medium">
             <Button asChild>
               <Link
-                href={`/${params.address}/transaction/11155111/${userOperation.hash}`}
+                href={`/${params.address}/transaction/${userOperation.chain_id}/${userOperation.hash}`}
               >
                 Confirm
               </Link>

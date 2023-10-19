@@ -32,7 +32,7 @@ export default async function Page({
 
   return (
     <ConfirmDialog
-      owners={config.owners}
+      config={config}
       address={params.address as Address}
       chainId={chainId}
       userOperation={userOperation}

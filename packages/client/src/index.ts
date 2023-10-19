@@ -273,19 +273,21 @@ const HexStringSchema = z
 const SendUserOperationResponse = z.string();
 
 const SendUserOperationRequest = z.array(
-  z.object({
-    sender: HexStringSchema,
-    nonce: HexStringSchema,
-    initCode: HexStringSchema,
-    callData: HexStringSchema,
-    signature: HexStringSchema,
-    paymasterAndData: HexStringSchema,
-    callGasLimit: HexStringSchema.optional(),
-    verificationGasLimit: HexStringSchema.optional(),
-    preVerificationGas: HexStringSchema.optional(),
-    maxFeePerGas: HexStringSchema.optional(),
-    maxPriorityFeePerGas: HexStringSchema.optional(),
-  }),
+  z
+    .object({
+      sender: HexStringSchema,
+      nonce: HexStringSchema,
+      initCode: HexStringSchema,
+      callData: HexStringSchema,
+      signature: HexStringSchema,
+      paymasterAndData: HexStringSchema,
+      callGasLimit: HexStringSchema.optional(),
+      verificationGasLimit: HexStringSchema.optional(),
+      preVerificationGas: HexStringSchema.optional(),
+      maxFeePerGas: HexStringSchema.optional(),
+      maxPriorityFeePerGas: HexStringSchema.optional(),
+    })
+    .or(z.string()),
 );
 
 type SendUserOperationRequestType = z.infer<typeof SendUserOperationRequest>;
