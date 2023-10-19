@@ -18,7 +18,7 @@ use crate::{
         DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType,
         Signature, ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
     },
-    utils::hash_message,
+    utils::hash_message_bytes32,
 };
 use ethers::types::{Address, RecoveryMessage, Signature as EthersSignature, H256};
 use eyre::{eyre, Result};
@@ -62,9 +62,7 @@ pub fn recover_ecdsa_signature(
             signature.recover(message)?
         }
         ECDSASignatureType::ECDSASignatureTypeEthSign => {
-            let message = RecoveryMessage::Hash(
-                hash_message(H256::from(subdigest).0.to_vec().as_ref()).into(),
-            );
+            let message = RecoveryMessage::Hash(hash_message_bytes32(subdigest).into());
             signature.recover(message)?
         }
     };
@@ -135,9 +133,7 @@ pub async fn recover_dynamic_signature(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::{
-        hash_message, left_pad_u64_to_bytes32, parse_hex_to_bytes32, to_hex_string,
-    };
+    use crate::utils::{left_pad_u64_to_bytes32, parse_hex_to_bytes32, to_hex_string};
     use ethers::{
         abi::{encode_packed, Token},
         signers::{LocalWallet, Signer},
@@ -199,17 +195,16 @@ mod tests {
         .unwrap();
 
         // For ECDSASignatureTypeEthSign
-        println!("hashed: {}", to_hex_string(&hash_message(&sub_digest)));
+        println!("hashed: {}", to_hex_string(&hash_message_bytes32(&sub_digest)));
         assert_eq!(
-            hash_message(&sub_digest),
+            hash_message_bytes32(&sub_digest),
             parse_hex_to_bytes32(
                 "0x40c09d5ca383f6cde27820509adc3615d655176faff18f5d1387b295eb5cb413"
             )
             .unwrap()
         );
 
-        let message =
-            RecoveryMessage::Hash(hash_message(H256::from(sub_digest).0.to_vec().as_ref()).into());
+        let message = RecoveryMessage::Hash(hash_message_bytes32(&sub_digest).into());
         let signature = EthersSignature::from_str("0x166eea25379ac86dc049781d2a147637a9e37542dbbbd3b170d7ca08f453663c4dc8aaddf9e794a66d31e928f13e5c6ee9f74665ef1670a0ced3dd893848d0061c").unwrap();
         let a = signature.recover(message).unwrap();
         assert_eq!(a, "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse().unwrap());

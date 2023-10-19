@@ -20,11 +20,11 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
-pub fn hash_message(message: &[u8]) -> [u8; 32] {
+pub fn hash_message_bytes32(msg: &[u8; 32]) -> [u8; 32] {
     keccak256(
         encode_packed(&[
-            Token::String(format!("\x19Ethereum Signed Message:\n{}", message.len()).to_string()),
-            Token::FixedBytes(message.to_vec()),
+            Token::String("\x19Ethereum Signed Message:\n32".to_string()),
+            Token::FixedBytes(msg.to_vec()),
         ])
         .unwrap(),
     )
@@ -186,34 +186,23 @@ pub fn print_hex_string(data: &[u8]) {
 
 #[cfg(test)]
 mod tests {
+    use ethers::utils::hash_message;
+
     use super::*;
 
     #[test]
-    // From: https://github.com/wagmi-dev/viem/blob/1638d1332bdf18cde41a0920c1f98c01f83db840/src/utils/signature/hashMessage.test.ts#L6-L20
     fn test_hash_message() {
-        let message = "hello world";
-        let result = hash_message(message.as_bytes());
-        let expected = parse_hex_to_bytes32(
-            "0xd9eba16ed0ecae432b71fe008c98cc872bb4cc214d3220a36f365326cf807d68",
+        let message = parse_hex_to_bytes32(
+            "0x0617e48dc36f4c33bd6da834291db969fddcf9adeef4d65aefb046e0ff1a909c",
         )
         .unwrap();
-        assert_eq!(expected, result);
-
-        let message = "🤗";
-        let result = hash_message(message.as_bytes());
+        let result_1 = hash_message_bytes32(&message);
+        let result: [u8; 32] = hash_message(message).into();
         let expected = parse_hex_to_bytes32(
-            "0x716ce69c5d2d629c168bc02e24a961456bdc5a362d366119305aea73978a0332",
+            "0x40c09d5ca383f6cde27820509adc3615d655176faff18f5d1387b295eb5cb413",
         )
         .unwrap();
-        assert_eq!(expected, result);
-
-        let message = "0x68656c6c6f20776f726c64";
-        let result = hash_message(from_hex_string(message).unwrap().as_slice());
-        let expected = parse_hex_to_bytes32(
-            "0xd9eba16ed0ecae432b71fe008c98cc872bb4cc214d3220a36f365326cf807d68",
-        )
-        .unwrap();
-        assert_eq!(expected, result);
+        assert_eq!(result_1, result);
     }
 
     #[test]
