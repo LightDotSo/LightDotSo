@@ -94,6 +94,7 @@ pub(crate) enum UserOperationError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperation {
+    chain_id: i64,
     hash: String,
     sender: String,
     nonce: i64,
@@ -131,6 +132,7 @@ impl TryFrom<UserOperation> for RundlerUserOperation {
 impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
+            chain_id: user_operation.chain_id,
             hash: user_operation.hash,
             sender: user_operation.sender,
             nonce: user_operation.nonce,
@@ -180,6 +182,7 @@ async fn v1_user_operation_get_handler(
         .unwrap()
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
+        .with(user_operation::signatures::fetch(vec![]))
         .exec()
         .await?;
 
@@ -437,6 +440,7 @@ mod tests {
     #[test]
     fn test_conversion() {
         let user_op = UserOperation {
+            chain_id: 1,
             hash: "0x9e1a7c8".to_string(),
             sender: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string(),
             nonce: 1,
