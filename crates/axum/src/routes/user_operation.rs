@@ -94,6 +94,7 @@ pub(crate) enum UserOperationError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperation {
+    chain_id: i64,
     hash: String,
     sender: String,
     nonce: i64,
@@ -105,6 +106,7 @@ pub(crate) struct UserOperation {
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
+    signatures: Vec<UserOperationSignature>,
 }
 
 impl TryFrom<UserOperation> for RundlerUserOperation {
@@ -131,6 +133,7 @@ impl TryFrom<UserOperation> for RundlerUserOperation {
 impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
+            chain_id: user_operation.chain_id,
             hash: user_operation.hash,
             sender: user_operation.sender,
             nonce: user_operation.nonce,
@@ -142,6 +145,20 @@ impl From<user_operation::Data> for UserOperation {
             max_fee_per_gas: user_operation.max_fee_per_gas,
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
             paymaster_and_data: format!("0x{}", hex::encode(user_operation.paymaster_and_data)),
+            signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
+                signature.into_iter().map(UserOperationSignature::from).collect()
+            }),
+        }
+    }
+}
+
+// Implement From<signature::Data> for Owner.
+impl From<signature::Data> for UserOperationSignature {
+    fn from(signature: signature::Data) -> Self {
+        Self {
+            owner_id: signature.owner_id.to_string(),
+            signature: format!("0x{:?}", signature.signature),
+            signature_type: signature.signature_type,
         }
     }
 }
@@ -180,6 +197,7 @@ async fn v1_user_operation_get_handler(
         .unwrap()
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
+        .with(user_operation::signatures::fetch(vec![]))
         .exec()
         .await?;
 
@@ -369,6 +387,7 @@ async fn v1_user_operation_post_handler(
 
     // Check that the signature sender is one of the owners.
     if !owners.iter().any(|owner| owner.id == sig.owner_id) {
+        error!("owners not found sig.owner_id: {}, owners: {:?}", sig.owner_id, owners);
         return Err(AppError::BadRequest);
     }
 
@@ -378,19 +397,6 @@ async fn v1_user_operation_post_handler(
         .unwrap()
         ._transaction()
         .run(|client| async move {
-            let signature = client
-                .signature()
-                .create(
-                    sig.signature.hex_to_bytes()?,
-                    sig.signature_type,
-                    owner::id::equals(sig.owner_id),
-                    user_operation::hash::equals(user_operation_hash),
-                    vec![],
-                )
-                .exec()
-                .await?;
-            info!(?signature);
-
             let user_operation = client
                 .user_operation()
                 .create(
@@ -407,17 +413,29 @@ async fn v1_user_operation_post_handler(
                     user_operation.paymaster_and_data.hex_to_bytes()?,
                     chain_id,
                     wallet::address::equals(wallet.address),
-                    vec![user_operation::signatures::connect(vec![signature::id::equals(
-                        signature.id,
-                    )])],
+                    vec![],
                 )
                 .exec()
                 .await?;
             info!(?user_operation);
 
+            let signature = client
+                .signature()
+                .create(
+                    sig.signature.hex_to_bytes()?,
+                    sig.signature_type,
+                    owner::id::equals(sig.owner_id),
+                    user_operation::hash::equals(user_operation_hash),
+                    vec![],
+                )
+                .exec()
+                .await?;
+            info!(?signature);
+
             Ok(user_operation)
         })
         .await;
+    info!(?user_operation);
 
     // If the user_operation is not created, return a 500.
     let user_operation = user_operation.map_err(|_| AppError::InternalError)?;
@@ -437,6 +455,7 @@ mod tests {
     #[test]
     fn test_conversion() {
         let user_op = UserOperation {
+            chain_id: 1,
             hash: "0x9e1a7c8".to_string(),
             sender: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string(),
             nonce: 1,
@@ -448,6 +467,7 @@ mod tests {
             max_fee_per_gas: 1,
             max_priority_fee_per_gas: 1,
             paymaster_and_data: "0x1234".to_string(),
+            signatures: vec![],
         };
 
         let result = RundlerUserOperation::try_from(user_op);

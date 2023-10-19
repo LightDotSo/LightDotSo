@@ -17,6 +17,18 @@ use crate::utils::{hex_to_bytes, hex_to_bytes32};
 use ethers_main::utils::hex;
 use eyre::Result;
 
+pub trait VecU8ToHex {
+    fn to_hex_string(&self) -> String;
+}
+
+#[allow(clippy::format_collect)]
+impl VecU8ToHex for Vec<u8> {
+    fn to_hex_string(&self) -> String {
+        let hex: String = self.iter().map(|byte| format!("{:02x}", byte)).collect();
+        format!("0x{}", hex)
+    }
+}
+
 pub trait HexToBytes {
     fn hex_to_bytes(&self) -> Result<Vec<u8>, hex::FromHexError>;
 
@@ -38,6 +50,12 @@ impl HexToBytes for str {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_to_hex_string() {
+        let bytes: Vec<u8> = vec![0, 255, 128, 64];
+        assert_eq!(bytes.to_hex_string(), "0x00ff8040");
+    }
 
     #[test]
     fn test_valid_hex() {

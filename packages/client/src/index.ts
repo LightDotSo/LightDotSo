@@ -21,6 +21,10 @@ import { zodFetch, zodJsonRpcFetch } from "./zod";
 import { llamaSchema } from "@lightdotso/schemas";
 import { z } from "zod";
 
+const devApiClient = createClient<paths>({
+  baseUrl: "http://localhost:3000/v1",
+});
+
 const publicApiClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
 });
@@ -41,7 +45,11 @@ const rpcClient = (chainId: number, isPublic?: boolean) => {
 };
 
 const getClient = (isPublic?: boolean) =>
-  isPublic === undefined || isPublic ? publicApiClient : adminApiClient;
+  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+    ? devApiClient
+    : isPublic === undefined || isPublic
+    ? publicApiClient
+    : adminApiClient;
 
 export const getConfiguration = async (
   {
@@ -174,6 +182,52 @@ export const createUserOperation = async ({
     client.POST("/user_operation/create", {
       params,
       body,
+    }),
+    () => new Error("Database error"),
+  );
+};
+
+export const getUserOperation = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { user_operation_hash: string };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user_operation/get", {
+      params,
+    }),
+    () => new Error("Database error"),
+  );
+};
+
+export const getUserOperations = async (
+  {
+    params,
+  }: {
+    params: {
+      query?:
+        | {
+            offset?: number | null | undefined;
+            limit?: number | null | undefined;
+            address?: string | null | undefined;
+          }
+        | undefined;
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user_operation/list", {
+      params,
     }),
     () => new Error("Database error"),
   );
