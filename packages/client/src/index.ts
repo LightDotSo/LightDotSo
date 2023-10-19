@@ -22,7 +22,10 @@ import { llamaSchema } from "@lightdotso/schemas";
 import { z } from "zod";
 
 const devApiClient = createClient<paths>({
-  baseUrl: "http://localhost:3000/v1",
+  baseUrl: "http://localhost:3000/admin/v1",
+  headers: {
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_LIGHT_ADMIN_TOKEN}`,
+  },
 });
 
 const publicApiClient = createClient<paths>({
@@ -162,6 +165,7 @@ export const createUserOperation = async ({
       signature_type: number;
     };
     user_operation: {
+      chain_id: number;
       call_data: string;
       call_gas_limit: number;
       hash: string;
@@ -173,6 +177,11 @@ export const createUserOperation = async ({
       pre_verification_gas: number;
       sender: string;
       verification_gas_limit: number;
+      signatures: {
+        owner_id: string;
+        signature: string;
+        signature_type: number;
+      }[];
     };
   };
 }) => {
@@ -261,7 +270,40 @@ const HexStringSchema = z
     message: "Must be a hexadecimal string",
   });
 
-const PaymasterGasAndPaymasterAndData = z.object({
+const SendUserOperationResponse = z.string();
+
+const SendUserOperationRequest = z.array(
+  z.object({
+    sender: HexStringSchema,
+    nonce: HexStringSchema,
+    initCode: HexStringSchema,
+    callData: HexStringSchema,
+    signature: HexStringSchema,
+    paymasterAndData: HexStringSchema,
+    callGasLimit: HexStringSchema.optional(),
+    verificationGasLimit: HexStringSchema.optional(),
+    preVerificationGas: HexStringSchema.optional(),
+    maxFeePerGas: HexStringSchema.optional(),
+    maxPriorityFeePerGas: HexStringSchema.optional(),
+  }),
+);
+
+type SendUserOperationRequestType = z.infer<typeof SendUserOperationRequest>;
+
+export const sendUserOperation = async (
+  chainId: number,
+  params: SendUserOperationRequestType,
+  isPublic?: boolean,
+) => {
+  return zodJsonRpcFetch(
+    rpcClient(chainId, isPublic),
+    "eth_sendUserOperation",
+    params,
+    SendUserOperationResponse,
+  );
+};
+
+const PaymasterGasAndPaymasterAndDataResponse = z.object({
   paymasterAndData: HexStringSchema,
   callGasLimit: HexStringSchema,
   verificationGasLimit: HexStringSchema,
@@ -299,6 +341,6 @@ export const getPaymasterGasAndPaymasterAndData = async (
     rpcClient(chainId, isPublic),
     "paymaster_requestGasAndPaymasterAndData",
     params,
-    PaymasterGasAndPaymasterAndData,
+    PaymasterGasAndPaymasterAndDataResponse,
   );
 };

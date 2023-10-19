@@ -99,6 +99,7 @@ export function TransactionDialog({
             signature_type: 1,
           },
           user_operation: {
+            chain_id: Number(chainId),
             hash: toHex(userOpHash),
             nonce: Number(userOperation.nonce),
             init_code: userOperation.initCode,
@@ -112,6 +113,7 @@ export function TransactionDialog({
               userOperation.maxPriorityFeePerGas,
             ),
             paymaster_and_data: userOperation.paymasterAndData,
+            signatures: [],
           },
         },
       });

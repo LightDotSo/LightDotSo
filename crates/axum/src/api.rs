@@ -166,7 +166,7 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
-                .layer(cors)
+                .layer(cors.clone())
                 .into_inner(),
         )
         .nest(
@@ -179,6 +179,7 @@ pub async fn start_api_server() -> Result<()> {
                     .into_inner(),
             ),
         )
+        .layer(ServiceBuilder::new().layer(cors).into_inner())
         .with_state(state);
 
     let socket_addr = "[::]:3000".parse()?;

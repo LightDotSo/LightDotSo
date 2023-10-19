@@ -9,6 +9,7 @@
         "LIGHT_ADMIN_TOKEN",
         "LIGHT_RPC_TOKEN",
         "LOCAL_ENV",
+        "NEXT_PUBLIC_LIGHT_ADMIN_TOKEN",
         "NEXT_PUBLIC_LOCAL_ENV"
       ],
       "inputs": ["src/**"],

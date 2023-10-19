@@ -15,17 +15,27 @@
 
 "use client";
 
+import { Button } from "@lightdotso/ui";
 import type { Address } from "viem";
+import { useCallback } from "react";
 
 type ConfirmDialogProps = {
   address: Address;
   chainId: number;
-  owners: {
-    id: string;
+  config: {
     address: string;
-    weight: number;
-  }[];
+    checkpoint: number;
+    id: string;
+    image_hash: string;
+    owners: {
+      address: string;
+      id: string;
+      weight: number;
+    }[];
+    threshold: number;
+  };
   userOperation: {
+    chain_id: number;
     call_data: string;
     call_gas_limit: number;
     hash: string;
@@ -37,21 +47,37 @@ type ConfirmDialogProps = {
     pre_verification_gas: number;
     sender: string;
     verification_gas_limit: number;
+    signatures: {
+      owner_id: string;
+      signature: string;
+      signature_type: number;
+    }[];
   };
   // userOpHash: Uint8Array;
 };
 
 export function ConfirmDialog({
-  address,
+  // address,
   chainId,
   userOperation,
-  // userOpHash,
-  owners,
+  config,
 }: ConfirmDialogProps) {
-  console.info("address", address);
-  // console.info("userOpHash", toHex(userOpHash));
-  console.info("chainId", chainId);
-  // console.info("subdigest", subdigest);
+  // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
+  const isValid =
+    userOperation.signatures.reduce((acc, signature) => {
+      return (
+        acc +
+        ((config &&
+          config.owners.find(owner => owner.id === signature?.owner_id)
+            ?.weight) ||
+          0)
+      );
+    }, 0) >= (config ? config.threshold : 0);
+
+  // A `useCallback` handler for confirming the operation
+  const handleConfirm = useCallback(() => {
+    // Construct the signature object
+  }, []);
 
   return (
     <>
@@ -72,14 +98,14 @@ export function ConfirmDialog({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            owners: {JSON.stringify(owners, null, 2)}
+            config: {JSON.stringify(config, null, 2)}
           </code>
         </pre>
       </div>
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-        {/* <Button disabled={!owner} onClick={() => signMessage()}>
+        <Button disabled={!isValid} onClick={() => handleConfirm()}>
           Sign Confirm
-        </Button> */}
+        </Button>
       </div>
     </>
   );
