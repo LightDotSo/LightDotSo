@@ -157,7 +157,7 @@ impl From<signature::Data> for UserOperationSignature {
     fn from(signature: signature::Data) -> Self {
         Self {
             owner_id: signature.owner_id.to_string(),
-            signature: format!("0x{:?}", signature.signature),
+            signature: signature.signature.to_hex_string(),
             signature_type: signature.signature_type,
         }
     }
