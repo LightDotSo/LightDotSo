@@ -81,7 +81,7 @@ export function TransactionDialog({
           signature: {
             owner_id: owner.id,
             signature: toHex(new Uint8Array([...toBytes(data), 2])),
-            signature_type: 2,
+            signature_type: 1,
           },
           user_operation: {
             hash: toHex(userOpHash),

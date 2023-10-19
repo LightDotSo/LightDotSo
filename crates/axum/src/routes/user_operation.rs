@@ -289,9 +289,14 @@ async fn v1_user_operation_post_handler(
     // Check that the signature is valid.
     let sig_bytes = sig.signature.hex_to_bytes()?;
     let digest_chain_id = match sig.signature_type {
+        // Legacy
         0 => chain_id,
+        // Dynamic
         1 => chain_id,
+        // No chainId
         2 => 0,
+        // Chained
+        // 3 => 0,
         _ => return Err(AppError::BadRequest),
     };
     let subdigest = render_subdigest(
