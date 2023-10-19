@@ -354,7 +354,7 @@ impl Indexer {
         // Loop over the hashes
         if !wallet_address_hashmap.is_empty() {
             // Loop over the logs
-            for (tx_hash, _hashmap) in &wallet_address_hashmap {
+            for tx_hash in wallet_address_hashmap.keys() {
                 info!("wallet tx_hash: {:?}", tx_hash);
 
                 // Get the trace
