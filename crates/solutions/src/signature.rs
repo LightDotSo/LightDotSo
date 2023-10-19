@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    types::{
-        DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType,
-        Signature, ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
-    },
-    utils::hash_message_bytes32,
+use crate::types::{
+    DynamicSignatureLeaf, DynamicSignatureType, ECDSASignatureLeaf, ECDSASignatureType, Signature,
+    ECDSA_SIGNATURE_LENGTH, ERC1271_MAGICVALUE_BYTES32,
 };
-use ethers::types::{Address, RecoveryMessage, Signature as EthersSignature, H256};
+use ethers::{
+    types::{Address, RecoveryMessage, Signature as EthersSignature, H256},
+    utils::hash_message,
+};
 use eyre::{eyre, Result};
 use lightdotso_contracts::erc1271::get_erc_1271_wallet;
 use lightdotso_tracing::tracing::info;
@@ -62,7 +62,7 @@ pub fn recover_ecdsa_signature(
             signature.recover(message)?
         }
         ECDSASignatureType::ECDSASignatureTypeEthSign => {
-            let message = RecoveryMessage::Hash(hash_message_bytes32(subdigest).into());
+            let message = RecoveryMessage::Hash(hash_message(H256::from(subdigest)));
             signature.recover(message)?
         }
     };
@@ -133,7 +133,9 @@ pub async fn recover_dynamic_signature(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::{left_pad_u64_to_bytes32, parse_hex_to_bytes32, to_hex_string};
+    use crate::utils::{
+        hash_message_bytes32, left_pad_u64_to_bytes32, parse_hex_to_bytes32, to_hex_string,
+    };
     use ethers::{
         abi::{encode_packed, Token},
         signers::{LocalWallet, Signer},
@@ -168,7 +170,7 @@ mod tests {
     #[test]
     fn test_userop_recover_eth_sign() {
         let user_op_hash = parse_hex_to_bytes32(
-            "0xdf86f1ef1cb4c1bdeab6186ae4bef09b1abda1213336fb8c810a6d9744588c1c",
+            "0x284707a564a3517ce2285e64b7680c6f93950f696bcfb9b1df9ab218ed14ee2f",
         )
         .unwrap();
 
@@ -185,27 +187,23 @@ mod tests {
         assert_eq!(
             sub_digest,
             parse_hex_to_bytes32(
-                "0xdb19917a4bb643ad35a8fc3cce7aa873db6155f3ca9be521663757f5aa6e5103"
+                "0x0d6314da272d68aacff4f20b15dce14b118c204cf080a717ed21210121d90c2f"
             )
             .unwrap()
         );
-        let sub_digest = parse_hex_to_bytes32(
-            "0x0617e48dc36f4c33bd6da834291db969fddcf9adeef4d65aefb046e0ff1a909c",
-        )
-        .unwrap();
 
         // For ECDSASignatureTypeEthSign
         println!("hashed: {}", to_hex_string(&hash_message_bytes32(&sub_digest)));
         assert_eq!(
             hash_message_bytes32(&sub_digest),
             parse_hex_to_bytes32(
-                "0x40c09d5ca383f6cde27820509adc3615d655176faff18f5d1387b295eb5cb413"
+                "0x17172167775499aece8c32f91904fb2e91e6489630ce1ed056314bead7f408c7"
             )
             .unwrap()
         );
 
         let message = RecoveryMessage::Hash(hash_message_bytes32(&sub_digest).into());
-        let signature = EthersSignature::from_str("0x166eea25379ac86dc049781d2a147637a9e37542dbbbd3b170d7ca08f453663c4dc8aaddf9e794a66d31e928f13e5c6ee9f74665ef1670a0ced3dd893848d0061c").unwrap();
+        let signature = EthersSignature::from_str("0xc2db3b0d1586ddb52005c1b9dbeba001a8c5bd7a6d5d74e6dabf3f79f85c81f43ca3ef079afeec48b9de9e1308b97c7faaab0040cfc0d1594cbc4ca16a5505571b").unwrap();
         let a = signature.recover(message).unwrap();
         assert_eq!(a, "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse().unwrap());
     }

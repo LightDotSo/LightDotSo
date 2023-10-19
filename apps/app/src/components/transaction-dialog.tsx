@@ -61,7 +61,7 @@ export function TransactionDialog({
   console.info("subdigest", subdigest);
 
   const { data, signMessage } = useSignMessage({
-    message: subdigest,
+    message: { raw: toBytes(subdigest) },
   });
 
   const owner = useMemo(() => {
