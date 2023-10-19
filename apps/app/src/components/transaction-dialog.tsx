@@ -70,6 +70,8 @@ export function TransactionDialog({
     const fetchUserOp = async () => {
       if (!data || !owner) return;
 
+      console.info(data);
+
       const res = await createUserOperation({
         params: {
           query: {
@@ -105,7 +107,7 @@ export function TransactionDialog({
     };
 
     fetchUserOp();
-  });
+  }, [data, owner, chainId, userOperation, userOpHash]);
 
   return (
     <>

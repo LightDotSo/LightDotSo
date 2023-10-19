@@ -141,8 +141,8 @@ mod tests {
     };
 
     #[test]
-    fn test_userop_recover() {
-        let subdigest = parse_hex_to_bytes32(
+    fn test_userop_recover_eip712() {
+        let user_op_hash = parse_hex_to_bytes32(
             "0x1a8d7c5989225f7ef86fd7844c64b74e04d361734664fa6d2bf307414327875a",
         )
         .unwrap();
@@ -153,7 +153,7 @@ mod tests {
                 Token::String("\x19\x01".to_string()),
                 Token::FixedBytes(left_pad_u64_to_bytes32(11155111).to_vec()),
                 Token::Address("0x10dbbe70128929723c1b982e53c51653232e4ff2".parse().unwrap()),
-                Token::FixedBytes(subdigest.to_vec()),
+                Token::FixedBytes(user_op_hash.to_vec()),
             ])
             .unwrap(),
         );
@@ -163,6 +163,38 @@ mod tests {
         let signature = EthersSignature::from_str("0x783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b").unwrap();
         let a = signature.recover(message).unwrap();
         assert_eq!(a, "0x6ca6d1e2d5347bfab1d91e883f1915560e09129d".parse().unwrap());
+    }
+
+    #[test]
+    fn test_userop_recover_eth_sign() {
+        let user_op_hash = parse_hex_to_bytes32(
+            "0xe5d9a9f3bf8d2020ae5658f525ac6a1e30fc7e4873e9af1025a4615c550e8390",
+        )
+        .unwrap();
+
+        // Hash the subdigest w/ https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/contracts/modules/commons/ModuleAuth.sol#L60
+        let hash = keccak256(
+            encode_packed(&[
+                Token::String("\x19\x01".to_string()),
+                Token::FixedBytes(left_pad_u64_to_bytes32(11155111).to_vec()),
+                Token::Address("0x5D04d44C02ff74C4423F71fA07E51a75E4B9895E".parse().unwrap()),
+                Token::FixedBytes(user_op_hash.to_vec()),
+            ])
+            .unwrap(),
+        );
+        assert_eq!(
+            hash,
+            parse_hex_to_bytes32(
+                "0xc0f32520491c39cd7c08a1d444cdbb11f0429e7211d0678a29a9c1c418c12bbc"
+            )
+            .unwrap()
+        );
+
+        // For ECDSASignatureTypeEthSign
+        let message = RecoveryMessage::Hash(hash_message(H256::from(hash)));
+        let signature = EthersSignature::from_str("0x166eea25379ac86dc049781d2a147637a9e37542dbbbd3b170d7ca08f453663c4dc8aaddf9e794a66d31e928f13e5c6ee9f74665ef1670a0ced3dd893848d0061c").unwrap();
+        let a = signature.recover(message).unwrap();
+        assert_eq!(a, "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse().unwrap());
     }
 
     #[tokio::test]
