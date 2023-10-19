@@ -53,7 +53,7 @@ export default async function Page({
               <Link
                 href={`/${params.address}/transaction/11155111/${userOperation.hash}`}
               >
-                Open
+                Confirm
               </Link>
             </Button>
           </div>
