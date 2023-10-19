@@ -28,7 +28,7 @@ use axum::{
 use ethers_main::{types::H160, utils::hex};
 use eyre::{Report, Result};
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
-use lightdotso_prisma::{configuration, owner, user_operation, wallet};
+use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
 use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::Direction;
@@ -106,6 +106,7 @@ pub(crate) struct UserOperation {
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
+    signatures: Vec<UserOperationSignature>,
 }
 
 impl TryFrom<UserOperation> for RundlerUserOperation {
@@ -144,6 +145,20 @@ impl From<user_operation::Data> for UserOperation {
             max_fee_per_gas: user_operation.max_fee_per_gas,
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
             paymaster_and_data: format!("0x{}", hex::encode(user_operation.paymaster_and_data)),
+            signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
+                signature.into_iter().map(UserOperationSignature::from).collect()
+            }),
+        }
+    }
+}
+
+// Implement From<signature::Data> for Owner.
+impl From<signature::Data> for UserOperationSignature {
+    fn from(signature: signature::Data) -> Self {
+        Self {
+            owner_id: signature.owner_id.to_string(),
+            signature: format!("0x{:?}", signature.signature),
+            signature_type: signature.signature_type,
         }
     }
 }
@@ -452,6 +467,7 @@ mod tests {
             max_fee_per_gas: 1,
             max_priority_fee_per_gas: 1,
             paymaster_and_data: "0x1234".to_string(),
+            signatures: vec![],
         };
 
         let result = RundlerUserOperation::try_from(user_op);
