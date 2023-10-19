@@ -299,6 +299,7 @@ async fn v1_user_operation_post_handler(
         sender_address,
         user_operation_hash.hex_to_bytes32()?,
     );
+    info!("subdigest: 0x{}", hex::encode(subdigest));
     let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
     info!(?recovered_sig);
 
