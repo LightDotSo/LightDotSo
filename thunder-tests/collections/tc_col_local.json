@@ -353,6 +353,20 @@
       ],
       "params": [],
       "tests": []
+    },
+    {
+      "_id": "f532a7d2-1c66-4d2c-9a40-bec278c07ec4",
+      "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
+      "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
+      "name": "user_operation/list",
+      "url": "http://localhost:3000/v1/user_operation/list",
+      "method": "GET",
+      "sortNum": 65000,
+      "created": "2023-10-19T19:23:12.301Z",
+      "modified": "2023-10-19T19:23:25.630Z",
+      "headers": [],
+      "params": [],
+      "tests": []
     }
   ]
 }

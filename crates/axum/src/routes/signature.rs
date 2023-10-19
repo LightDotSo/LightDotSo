@@ -16,7 +16,7 @@
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
-    traits::HexToBytes,
+    traits::{HexToBytes, VecU8ToHex},
 };
 use autometrics::autometrics;
 use axum::{
@@ -24,7 +24,6 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use ethers_main::utils::hex;
 use lightdotso_prisma::{owner, signature, user_operation};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
@@ -87,7 +86,7 @@ pub struct SignaturePostRequestParams {
 impl From<signature::Data> for Signature {
     fn from(signature: signature::Data) -> Self {
         Self {
-            signature: format!("0x{}", hex::encode(signature.signature)),
+            signature: signature.signature.to_hex_string(),
             signature_type: signature.signature_type,
             owner_id: signature.owner_id.to_string(),
         }
