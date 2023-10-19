@@ -187,6 +187,26 @@ export const createUserOperation = async ({
   );
 };
 
+export const getUserOperation = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { user_operation_hash: string };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user_operation/get", {
+      params,
+    }),
+    () => new Error("Database error"),
+  );
+};
+
 export const getUserOperations = async (
   {
     params,
