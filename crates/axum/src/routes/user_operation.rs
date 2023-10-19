@@ -343,6 +343,7 @@ async fn v1_user_operation_post_handler(
         .find_unique(wallet::address::equals(user_operation.clone().sender))
         .exec()
         .await?;
+    info!(?wallet);
 
     // If the wallet is not found, return a 404.
     let wallet = wallet.ok_or(AppError::NotFound)?;
@@ -358,6 +359,7 @@ async fn v1_user_operation_post_handler(
         .with(configuration::owners::fetch(vec![]))
         .exec()
         .await?;
+    info!(?configuration);
 
     // If the configuration is not found, return a 404.
     let configuration = configuration.ok_or(AppError::NotFound)?;
