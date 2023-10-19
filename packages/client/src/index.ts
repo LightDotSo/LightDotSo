@@ -21,6 +21,10 @@ import { zodFetch, zodJsonRpcFetch } from "./zod";
 import { llamaSchema } from "@lightdotso/schemas";
 import { z } from "zod";
 
+const devApiClient = createClient<paths>({
+  baseUrl: "http://localhost:3000/v1",
+});
+
 const publicApiClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
 });
@@ -41,7 +45,11 @@ const rpcClient = (chainId: number, isPublic?: boolean) => {
 };
 
 const getClient = (isPublic?: boolean) =>
-  isPublic === undefined || isPublic ? publicApiClient : adminApiClient;
+  process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
+    ? devApiClient
+    : isPublic === undefined || isPublic
+    ? publicApiClient
+    : adminApiClient;
 
 export const getConfiguration = async (
   {

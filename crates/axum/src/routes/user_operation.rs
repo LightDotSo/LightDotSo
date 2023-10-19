@@ -369,6 +369,7 @@ async fn v1_user_operation_post_handler(
 
     // Check that the signature sender is one of the owners.
     if !owners.iter().any(|owner| owner.id == sig.owner_id) {
+        error!("owners not found sig.owner_id: {}, owners: {:?}", sig.owner_id, owners);
         return Err(AppError::BadRequest);
     }
 
@@ -378,19 +379,6 @@ async fn v1_user_operation_post_handler(
         .unwrap()
         ._transaction()
         .run(|client| async move {
-            let signature = client
-                .signature()
-                .create(
-                    sig.signature.hex_to_bytes()?,
-                    sig.signature_type,
-                    owner::id::equals(sig.owner_id),
-                    user_operation::hash::equals(user_operation_hash),
-                    vec![],
-                )
-                .exec()
-                .await?;
-            info!(?signature);
-
             let user_operation = client
                 .user_operation()
                 .create(
@@ -407,17 +395,29 @@ async fn v1_user_operation_post_handler(
                     user_operation.paymaster_and_data.hex_to_bytes()?,
                     chain_id,
                     wallet::address::equals(wallet.address),
-                    vec![user_operation::signatures::connect(vec![signature::id::equals(
-                        signature.id,
-                    )])],
+                    vec![],
                 )
                 .exec()
                 .await?;
             info!(?user_operation);
 
+            let signature = client
+                .signature()
+                .create(
+                    sig.signature.hex_to_bytes()?,
+                    sig.signature_type,
+                    owner::id::equals(sig.owner_id),
+                    user_operation::hash::equals(user_operation_hash),
+                    vec![],
+                )
+                .exec()
+                .await?;
+            info!(?signature);
+
             Ok(user_operation)
         })
         .await;
+    info!(?user_operation);
 
     // If the user_operation is not created, return a 500.
     let user_operation = user_operation.map_err(|_| AppError::InternalError)?;
