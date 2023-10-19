@@ -281,7 +281,7 @@ async fn v1_user_operation_post_handler(
         );
         return Err(AppError::BadRequest);
     }
-    info!("rundler_hash: {}", hex::encode(rundler_hash));
+    info!("rundler_hash: 0x{}", hex::encode(rundler_hash));
 
     // Parse the user operation address.
     let sender_address: H160 = user_operation.sender.parse()?;
@@ -302,11 +302,28 @@ async fn v1_user_operation_post_handler(
     let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
     info!(?recovered_sig);
 
+    // Get the owner from the database.
+    let owner = client
+        .clone()
+        .client
+        .unwrap()
+        .owner()
+        .find_unique(owner::id::equals(sig.clone().owner_id))
+        .exec()
+        .await?;
+    info!(?owner);
+
+    // If the owner is not found, return a 404.
+    let owner = owner.ok_or(AppError::NotFound)?;
+
     // Check that the recovered signature is the same as the signature sender.
-    // if recovered_sig.address != sender_address {
-    //     error!("recovered_sig.address != sender_address");
-    //     return Err(AppError::BadRequest);
-    // }
+    if recovered_sig.address != owner.address.parse()? {
+        error!(
+            "recovered_sig.address: {}, owner.address: {}",
+            recovered_sig.address, owner.address
+        );
+        return Err(AppError::BadRequest);
+    }
 
     // Get the wallet from the database.
     let wallet = client
