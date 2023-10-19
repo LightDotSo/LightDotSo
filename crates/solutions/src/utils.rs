@@ -193,16 +193,17 @@ mod tests {
     #[test]
     fn test_hash_message() {
         let message = parse_hex_to_bytes32(
-            "0x0617e48dc36f4c33bd6da834291db969fddcf9adeef4d65aefb046e0ff1a909c",
+            "0x84fcef6a64ccef82e5436d5281e94687e0371478798a1ce226da0b9838113ce8",
         )
         .unwrap();
-        let result_1 = hash_message_bytes32(&message);
+        let result_original = hash_message_bytes32(&message);
         let result: [u8; 32] = hash_message(message).into();
-        let _expected = parse_hex_to_bytes32(
-            "0x40c09d5ca383f6cde27820509adc3615d655176faff18f5d1387b295eb5cb413",
+        let expected = parse_hex_to_bytes32(
+            "0xdafe5b72d714f0405b7b2c2c04bf346d94964b3fd39265cc05db27f6910dbb60",
         )
         .unwrap();
-        assert_eq!(result_1, result);
+        assert_eq!(result, result_original);
+        assert_eq!(result, expected);
     }
 
     #[test]

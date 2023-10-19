@@ -76,7 +76,8 @@ export function TransactionDialog({
     const fetchUserOp = async () => {
       if (!data || !owner) return;
 
-      console.info("hashed:", hashMessage(subdigest));
+      console.info("hash:", hashMessage(subdigest));
+      console.info("hashed:", hashMessage({ raw: toBytes(subdigest) }));
       const recoveredAddress = await recoverMessageAddress({
         message: subdigest,
         signature: data,
