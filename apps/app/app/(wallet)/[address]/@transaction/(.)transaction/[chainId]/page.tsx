@@ -21,6 +21,8 @@ import { parseNumber } from "@/handles/parsers/number";
 import type { Address } from "viem";
 import { hexToBytes } from "viem";
 
+export const revalidate = 0;
+
 export default async function Page({
   params,
   searchParams,
