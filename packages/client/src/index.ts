@@ -187,6 +187,32 @@ export const createUserOperation = async ({
   );
 };
 
+export const getUserOperations = async (
+  {
+    params,
+  }: {
+    params: {
+      query?:
+        | {
+            offset?: number | null | undefined;
+            limit?: number | null | undefined;
+            address?: string | null | undefined;
+          }
+        | undefined;
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user_operation/list", {
+      params,
+    }),
+    () => new Error("Database error"),
+  );
+};
+
 export const getLlama = async (address: string) => {
   return zodFetch(
     `https://api.llamafolio.com/balances/${address}`,

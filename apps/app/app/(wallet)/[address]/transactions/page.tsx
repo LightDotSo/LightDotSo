@@ -13,4 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export default async function Page() {}
+import { handler } from "@/handles/[address]";
+import { getUserOperations } from "@lightdotso/client";
+
+export default async function Page({
+  params,
+}: {
+  params: { address: string };
+}) {
+  await handler(params);
+
+  const res = await getUserOperations(
+    {
+      params: { query: { address: params.address } },
+    },
+    false,
+  );
+
+  return (
+    <div>
+      <pre>
+        <code>{JSON.stringify(res, null, 2)}</code>
+      </pre>
+    </div>
+  );
+}
