@@ -20,6 +20,16 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
+pub fn hash_message(message: &[u8]) -> [u8; 32] {
+    keccak256(
+        encode_packed(&[
+            Token::String(format!("\x19Ethereum Signed Message:\n{}", message.len()).to_string()),
+            Token::FixedBytes(message.to_vec()),
+        ])
+        .unwrap(),
+    )
+}
+
 pub fn render_subdigest(chain_id: u64, address: Address, digest: [u8; 32]) -> [u8; 32] {
     keccak256(
         encode_packed(&[
@@ -177,6 +187,34 @@ pub fn print_hex_string(data: &[u8]) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    // From: https://github.com/wagmi-dev/viem/blob/1638d1332bdf18cde41a0920c1f98c01f83db840/src/utils/signature/hashMessage.test.ts#L6-L20
+    fn test_hash_message() {
+        let message = "hello world";
+        let result = hash_message(message.as_bytes());
+        let expected = parse_hex_to_bytes32(
+            "0xd9eba16ed0ecae432b71fe008c98cc872bb4cc214d3220a36f365326cf807d68",
+        )
+        .unwrap();
+        assert_eq!(expected, result);
+
+        let message = "🤗";
+        let result = hash_message(message.as_bytes());
+        let expected = parse_hex_to_bytes32(
+            "0x716ce69c5d2d629c168bc02e24a961456bdc5a362d366119305aea73978a0332",
+        )
+        .unwrap();
+        assert_eq!(expected, result);
+
+        let message = "0x68656c6c6f20776f726c64";
+        let result = hash_message(from_hex_string(message).unwrap().as_slice());
+        let expected = parse_hex_to_bytes32(
+            "0xd9eba16ed0ecae432b71fe008c98cc872bb4cc214d3220a36f365326cf807d68",
+        )
+        .unwrap();
+        assert_eq!(expected, result);
+    }
 
     #[test]
     fn test_render_subdigest() {
