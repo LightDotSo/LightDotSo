@@ -15,11 +15,17 @@
 
 import { expect, test } from "vitest";
 import { subdigestOf } from "..";
+import { toBytes } from "viem";
 
 test("subdigestOf", () => {
-  const ls = subdigestOf(`0x${"00".repeat(20)}`, new Uint8Array(32), 1n);
-  console.warn(ls);
-  expect(ls).toBe(
-    "0x4f8026b280821a8d35671eb214849f3d4ed6caf6418ca57be15a139a0d8cf4e5",
+  const res = subdigestOf(
+    "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f",
+    toBytes(
+      "0x0000000000000000000000000000000000000000000000000000000000000001",
+    ),
+    1n,
+  );
+  expect(res).toBe(
+    "0x349298d2e05ff7da41925abdea9f3453feada8ea0b96bac074d14609ce004ded",
   );
 });
