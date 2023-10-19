@@ -23,7 +23,7 @@ import type { Address } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
-import { isAddressEqual, toHex } from "viem";
+import { isAddressEqual, toBytes, toHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 
 type TransactionDialogProps = {
@@ -80,8 +80,8 @@ export function TransactionDialog({
           //@ts-expect-error
           signature: {
             owner_id: owner.id,
-            signature: data,
-            signature_type: 1,
+            signature: toHex(new Uint8Array([...toBytes(data), 2])),
+            signature_type: 2,
           },
           user_operation: {
             hash: toHex(userOpHash),
