@@ -467,5 +467,113 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "5883033d-ad87-4231-befa-662711ec5f1c",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3001/_next/static/chunks/_app-pages-browser_node_modules_pnpm_tanstack_query-devtools_5_0_0_node_modules_tanstack_quer-7792fb.js",
+    "url": "http://localhost:3001/_next/static/chunks/_app-pages-browser_node_modules_pnpm_tanstack_query-devtools_5_0_0_node_modules_tanstack_quer-7792fb.js",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-10-19T20:36:14.803Z",
+    "modified": "2023-10-19T20:36:16.077Z",
+    "headers": [
+      {
+        "name": "Accept-Language",
+        "value": "en-US,en;q=0.9,ja;q=0.8"
+      },
+      {
+        "name": "Connection",
+        "value": "keep-alive"
+      },
+      {
+        "name": "Cookie",
+        "value": "__eventn_id=c1711922-aae0-4be7-b0c7-4502dc7bda84; next-auth.csrf-token=9831f473023c4e9e9ba29ffb65a884c77d9e68d161fb74d1c1bc1db9f9f18362%7C4e15e46b295494a82a2c8cba731567b69c8f737c1d2d887c9a3e061ffea1fabf; next-auth.callback-url=http%3A%2F%2Flocalhost%3A3001"
+      },
+      {
+        "name": "Referer",
+        "value": "http://localhost:3001/"
+      },
+      {
+        "name": "Sec-Fetch-Dest",
+        "value": "script"
+      },
+      {
+        "name": "Sec-Fetch-Mode",
+        "value": "no-cors"
+      },
+      {
+        "name": "Sec-Fetch-Site",
+        "value": "same-origin"
+      },
+      {
+        "name": "User-Agent",
+        "value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36"
+      },
+      {
+        "name": "sec-ch-ua",
+        "value": "Chromium\";v=\"118\", \"Google Chrome\";v=\"118\", \"Not=A?Brand\";v=\"99"
+      },
+      {
+        "name": "sec-ch-ua-mobile",
+        "value": "?1"
+      },
+      {
+        "name": "sec-ch-ua-platform",
+        "value": "Android"
+      }
+    ],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "e6cbeb96-d648-4812-b828-d8878378703d",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/admin/v1/wallet/list?owner=0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+    "url": "http://localhost:3000/admin/v1/wallet/list?owner=0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-10-19T20:36:32.155Z",
+    "modified": "2023-10-19T20:36:33.875Z",
+    "headers": [
+      {
+        "name": "sec-ch-ua",
+        "value": "Chromium\";v=\"118\", \"Google Chrome\";v=\"118\", \"Not=A?Brand\";v=\"99"
+      },
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "Referer",
+        "value": "http://localhost:3001/"
+      },
+      {
+        "name": "sec-ch-ua-mobile",
+        "value": "?1"
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer dev"
+      },
+      {
+        "name": "User-Agent",
+        "value": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Mobile Safari/537.36"
+      },
+      {
+        "name": "sec-ch-ua-platform",
+        "value": "Android"
+      }
+    ],
+    "params": [
+      {
+        "name": "owner",
+        "value": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed",
+        "isPath": false
+      }
+    ],
+    "tests": []
   }
 ]

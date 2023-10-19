@@ -270,7 +270,40 @@ const HexStringSchema = z
     message: "Must be a hexadecimal string",
   });
 
-const PaymasterGasAndPaymasterAndData = z.object({
+const SendUserOperationResponse = z.string();
+
+const SendUserOperationRequest = z.array(
+  z.object({
+    sender: HexStringSchema,
+    nonce: HexStringSchema,
+    initCode: HexStringSchema,
+    callData: HexStringSchema,
+    signature: HexStringSchema,
+    paymasterAndData: HexStringSchema,
+    callGasLimit: HexStringSchema.optional(),
+    verificationGasLimit: HexStringSchema.optional(),
+    preVerificationGas: HexStringSchema.optional(),
+    maxFeePerGas: HexStringSchema.optional(),
+    maxPriorityFeePerGas: HexStringSchema.optional(),
+  }),
+);
+
+type SendUserOperationRequestType = z.infer<typeof SendUserOperationRequest>;
+
+export const sendUserOperation = async (
+  chainId: number,
+  params: SendUserOperationRequestType,
+  isPublic?: boolean,
+) => {
+  return zodJsonRpcFetch(
+    rpcClient(chainId, isPublic),
+    "eth_sendUserOperation",
+    params,
+    SendUserOperationResponse,
+  );
+};
+
+const PaymasterGasAndPaymasterAndDataResponse = z.object({
   paymasterAndData: HexStringSchema,
   callGasLimit: HexStringSchema,
   verificationGasLimit: HexStringSchema,
@@ -308,6 +341,6 @@ export const getPaymasterGasAndPaymasterAndData = async (
     rpcClient(chainId, isPublic),
     "paymaster_requestGasAndPaymasterAndData",
     params,
-    PaymasterGasAndPaymasterAndData,
+    PaymasterGasAndPaymasterAndDataResponse,
   );
 };

@@ -17,6 +17,7 @@
 
 import { Button } from "@lightdotso/ui";
 import type { Address } from "viem";
+import { useCallback } from "react";
 
 type ConfirmDialogProps = {
   address: Address;
@@ -63,7 +64,7 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
   const isValid =
-    userOperation?.signatures.reduce((acc, signature) => {
+    userOperation.signatures.reduce((acc, signature) => {
       return (
         acc +
         ((config &&
@@ -72,6 +73,11 @@ export function ConfirmDialog({
           0)
       );
     }, 0) >= (config ? config.threshold : 0);
+
+  // A `useCallback` handler for confirming the operation
+  const handleConfirm = useCallback(() => {
+    // Construct the signature object
+  }, []);
 
   return (
     <>
@@ -97,7 +103,7 @@ export function ConfirmDialog({
         </pre>
       </div>
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
-        <Button disabled={!isValid} onClick={() => {}}>
+        <Button disabled={!isValid} onClick={() => handleConfirm()}>
           Sign Confirm
         </Button>
       </div>
