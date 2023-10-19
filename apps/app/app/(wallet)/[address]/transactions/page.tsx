@@ -15,7 +15,8 @@
 
 import { handler } from "@/handles/[address]";
 import { getUserOperations } from "@lightdotso/client";
-
+import { Avatar, AvatarFallback, Button } from "@lightdotso/ui";
+import Link from "next/link";
 export default async function Page({
   params,
 }: {
@@ -30,11 +31,34 @@ export default async function Page({
     false,
   );
 
+  if (res.isErr() || !res.value.data) return;
+
   return (
-    <div>
-      <pre>
-        <code>{JSON.stringify(res, null, 2)}</code>
-      </pre>
+    <div className="max-w-2xl space-y-8">
+      {res.value.data.map(userOperation => (
+        <div key={userOperation.hash} className="flex items-center">
+          <Avatar className="h-9 w-9">
+            <AvatarFallback>Tx</AvatarFallback>
+          </Avatar>
+          <div className="ml-4 space-y-1">
+            <p className="text-sm font-medium leading-none">
+              {userOperation.sender}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {userOperation.hash}
+            </p>
+          </div>
+          <div className="ml-auto font-medium">
+            <Button asChild>
+              <Link
+                href={`/${params.address}/transaction/11155111/${userOperation.hash}`}
+              >
+                Open
+              </Link>
+            </Button>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
