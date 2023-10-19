@@ -22,7 +22,7 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::get,
+    routing::{get, post},
     Json, Router,
 };
 use ethers_main::{types::H160, utils::hex};
@@ -151,7 +151,7 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/user_operation/get", get(v1_user_operation_get_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
-        .route("/user_operation/create", get(v1_user_operation_post_handler))
+        .route("/user_operation/create", post(v1_user_operation_post_handler))
 }
 
 /// Get a user operation
