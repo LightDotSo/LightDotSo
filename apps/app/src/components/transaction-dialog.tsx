@@ -46,8 +46,16 @@ export function TransactionDialog({
   owners,
 }: TransactionDialogProps) {
   const { address: userAddress } = useAuth();
+
+  const subdigest = subdigestOf(address, userOpHash, BigInt(chainId));
+
+  console.info("address", address);
+  console.info("userOpHash", toHex(userOpHash));
+  console.info("chainId", chainId);
+  console.info("subdigest", subdigest);
+
   const { data, signMessage } = useSignMessage({
-    message: subdigestOf(address, userOpHash, BigInt(chainId)),
+    message: subdigest,
   });
 
   const owner = useMemo(() => {
@@ -118,8 +126,11 @@ export function TransactionDialog({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            userOpHash: {userOpHash}
+            userOpHash: {toHex(userOpHash)}
           </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">subdigest: {subdigest}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">

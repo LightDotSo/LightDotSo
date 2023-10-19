@@ -67,7 +67,7 @@ export function WalletSwitcher({
   const router = useRouter();
   const { address } = useAuth();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     enabled: !!address,
     queryKey: ["wallets", address],
     queryFn: async () => {
@@ -102,8 +102,24 @@ export function WalletSwitcher({
   }, [data, address]);
 
   // If the address is empty or is not mounted, don't render
-  if (!isMounted || !address) {
+  if (!isMounted || !address || isLoading) {
     return null;
+  }
+
+  // If there is no wallet, render a button to create a new wallet
+  if (!data) {
+    return (
+      <Button
+        variant="ghost"
+        className={cn("mx-2 justify-start", className)}
+        onClick={() => {
+          router.push("/new");
+        }}
+      >
+        <PlusCircledIcon className="mr-2 h-5 w-5" />
+        New Wallet
+      </Button>
+    );
   }
 
   return (

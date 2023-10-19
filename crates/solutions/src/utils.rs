@@ -179,6 +179,27 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_render_subdigest() {
+        let digest = parse_hex_to_bytes32(
+            "0x0000000000000000000000000000000000000000000000000000000000000001",
+        )
+        .unwrap();
+
+        let res = render_subdigest(
+            1,
+            "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f".parse().unwrap(),
+            digest,
+        );
+
+        let expected = parse_hex_to_bytes32(
+            "0x349298d2e05ff7da41925abdea9f3453feada8ea0b96bac074d14609ce004ded",
+        )
+        .unwrap();
+
+        assert_eq!(res, expected);
+    }
+
+    #[test]
     fn test_read_uint8_address() {
         let data = [1u8; 25];
         let index = 0usize;
