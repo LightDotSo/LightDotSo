@@ -162,6 +162,7 @@ export const createUserOperation = async ({
       signature_type: number;
     };
     user_operation: {
+      chain_id: number;
       call_data: string;
       call_gas_limit: number;
       hash: string;
@@ -173,6 +174,11 @@ export const createUserOperation = async ({
       pre_verification_gas: number;
       sender: string;
       verification_gas_limit: number;
+      signatures: {
+        owner_id: string;
+        signature: string;
+        signature_type: number;
+      }[];
     };
   };
 }) => {

@@ -21,6 +21,7 @@
   "scripts": {
     "build": "pnpm run build:light && pnpm run build:prepare && pnpm tsup",
     "build:light": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts",
+    "build:local": "npx openapi-typescript http://localhost:3000/api-docs/openapi.json -o ./src/v1.d.ts",
     "build:prepare": "./prepend.sh",
     "clean": "rimraf -rf dist && rimraf -rf src/v1.d.ts"
   },

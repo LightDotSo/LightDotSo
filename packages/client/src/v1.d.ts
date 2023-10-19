@@ -211,6 +211,8 @@ export interface components {
       call_data: string;
       /** Format: int64 */
       call_gas_limit: number;
+      /** Format: int64 */
+      chain_id: number;
       hash: string;
       init_code: string;
       /** Format: int64 */
@@ -223,6 +225,7 @@ export interface components {
       /** Format: int64 */
       pre_verification_gas: number;
       sender: string;
+      signatures: components["schemas"]["UserOperationSignature"][];
       /** Format: int64 */
       verification_gas_limit: number;
     };
