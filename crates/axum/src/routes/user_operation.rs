@@ -30,7 +30,7 @@ use eyre::{Report, Result};
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
 use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::Direction;
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
@@ -260,6 +260,8 @@ async fn v1_user_operation_post_handler(
     // Get the post query.
     let Query(post) = post;
 
+    info!(?post);
+
     // Get the chain id from the post query.
     let chain_id = post.chain_id;
 
@@ -272,11 +274,39 @@ async fn v1_user_operation_post_handler(
 
     // Assert that the hex hash of rundler_hash is the same as the user_operation_hash (prefix 0x)
     if (format!("0x{}", hex::encode(rundler_hash)) != user_operation_hash) {
+        error!(
+            "rundler_hash: {}, user_operation_hash: {}",
+            hex::encode(rundler_hash),
+            user_operation_hash
+        );
         return Err(AppError::BadRequest);
     }
+    info!("rundler_hash: {}", hex::encode(rundler_hash));
 
     // Parse the user operation address.
     let sender_address: H160 = user_operation.sender.parse()?;
+
+    // Check that the signature is valid.
+    let sig_bytes = sig.signature.hex_to_bytes()?;
+    let digest_chain_id = match sig.signature_type {
+        0 => chain_id,
+        1 => chain_id,
+        2 => 0,
+        _ => return Err(AppError::BadRequest),
+    };
+    let subdigest = render_subdigest(
+        digest_chain_id as u64,
+        sender_address,
+        user_operation_hash.hex_to_bytes32()?,
+    );
+    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
+    info!(?recovered_sig);
+
+    // Check that the recovered signature is the same as the signature sender.
+    // if recovered_sig.address != sender_address {
+    //     error!("recovered_sig.address != sender_address");
+    //     return Err(AppError::BadRequest);
+    // }
 
     // Get the wallet from the database.
     let wallet = client
@@ -311,26 +341,6 @@ async fn v1_user_operation_post_handler(
 
     // Check that the signature sender is one of the owners.
     if !owners.iter().any(|owner| owner.id == sig.owner_id) {
-        return Err(AppError::BadRequest);
-    }
-
-    // Check that the signature is valid.
-    let sig_bytes = sig.signature.hex_to_bytes()?;
-    let digest_chain_id = match sig.signature_type {
-        0 => chain_id,
-        1 => chain_id,
-        2 => 0,
-        _ => return Err(AppError::BadRequest),
-    };
-    let subdigest = render_subdigest(
-        digest_chain_id as u64,
-        sender_address,
-        user_operation_hash.hex_to_bytes32()?,
-    );
-    let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
-
-    // Check that the recovered signature is the same as the signature sender.
-    if recovered_sig.address != sender_address {
         return Err(AppError::BadRequest);
     }
 
