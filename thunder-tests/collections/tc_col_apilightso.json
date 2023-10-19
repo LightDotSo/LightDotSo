@@ -34,15 +34,15 @@
       "tests": []
     },
     {
-      "_id": "a204ce0e-d005-4b73-9b83-85f0d49322ce",
+      "_id": "11b85fd8-b1f4-4327-bf30-f5a2377146f3",
       "colId": "90010c79-933e-468c-92a4-3ccac076fbb0",
       "containerId": "",
-      "name": "wallet/get",
+      "name": "wallet/get ",
       "url": "https://api.light.so/v1/wallet/get?address=0xC6469298e77Ea97695d8A2e0E67b20d71a4c6B18",
       "method": "GET",
-      "sortNum": 15000,
-      "created": "2023-10-17T16:31:51.024Z",
-      "modified": "2023-10-17T16:32:19.085Z",
+      "sortNum": 17500,
+      "created": "2023-10-19T19:22:48.692Z",
+      "modified": "2023-10-19T19:22:48.692Z",
       "headers": [],
       "params": [
         {

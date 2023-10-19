@@ -16,7 +16,7 @@
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
-    traits::HexToBytes,
+    traits::{HexToBytes, VecU8ToHex},
     utils::hex_to_bytes,
 };
 use autometrics::autometrics;
@@ -137,14 +137,14 @@ impl From<user_operation::Data> for UserOperation {
             hash: user_operation.hash,
             sender: user_operation.sender,
             nonce: user_operation.nonce,
-            init_code: format!("0x{}", hex::encode(user_operation.init_code)),
-            call_data: format!("0x{}", hex::encode(user_operation.call_data)),
+            init_code: user_operation.init_code.to_hex_string(),
+            call_data: user_operation.call_data.to_hex_string(),
             call_gas_limit: user_operation.call_gas_limit,
             verification_gas_limit: user_operation.verification_gas_limit,
             pre_verification_gas: user_operation.pre_verification_gas,
             max_fee_per_gas: user_operation.max_fee_per_gas,
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
-            paymaster_and_data: format!("0x{}", hex::encode(user_operation.paymaster_and_data)),
+            paymaster_and_data: user_operation.paymaster_and_data.to_hex_string(),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
                 signature.into_iter().map(UserOperationSignature::from).collect()
             }),
@@ -157,7 +157,7 @@ impl From<signature::Data> for UserOperationSignature {
     fn from(signature: signature::Data) -> Self {
         Self {
             owner_id: signature.owner_id.to_string(),
-            signature: format!("0x{:?}", signature.signature),
+            signature: signature.signature.to_hex_string(),
             signature_type: signature.signature_type,
         }
     }
