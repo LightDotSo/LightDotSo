@@ -198,7 +198,7 @@ mod tests {
         .unwrap();
         let result_1 = hash_message_bytes32(&message);
         let result: [u8; 32] = hash_message(message).into();
-        let expected = parse_hex_to_bytes32(
+        let _expected = parse_hex_to_bytes32(
             "0x40c09d5ca383f6cde27820509adc3615d655176faff18f5d1387b295eb5cb413",
         )
         .unwrap();
