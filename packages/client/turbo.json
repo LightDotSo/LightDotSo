@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV", "LIGHT_ADMIN_TOKEN", "LIGHT_RPC_TOKEN"],
+      "env": ["NODE_ENV", "LIGHT_ADMIN_TOKEN", "LIGHT_RPC_TOKEN", "VERCEL_ENV"],
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },

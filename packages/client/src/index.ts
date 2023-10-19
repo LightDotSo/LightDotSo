@@ -21,6 +21,10 @@ import { zodFetch, zodJsonRpcFetch } from "./zod";
 import { llamaSchema } from "@lightdotso/schemas";
 import { z } from "zod";
 
+const devApiClient = createClient<paths>({
+  baseUrl: "https://lightdotso-api.fly.dev/v1",
+});
+
 const publicApiClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
 });
@@ -41,7 +45,11 @@ const rpcClient = (chainId: number, isPublic?: boolean) => {
 };
 
 const getClient = (isPublic?: boolean) =>
-  isPublic === undefined || isPublic ? publicApiClient : adminApiClient;
+  isPublic === undefined || isPublic
+    ? publicApiClient
+    : process.env.VERCEL_ENV === "development"
+    ? devApiClient
+    : adminApiClient;
 
 export const getConfiguration = async (
   {
