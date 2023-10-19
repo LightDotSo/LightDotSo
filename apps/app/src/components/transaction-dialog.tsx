@@ -49,6 +49,11 @@ export function TransactionDialog({
 
   const subdigest = subdigestOf(address, userOpHash, BigInt(chainId));
 
+  console.info("address", address);
+  console.info("userOpHash", toHex(userOpHash));
+  console.info("chainId", chainId);
+  console.info("subdigest", subdigest);
+
   const { data, signMessage } = useSignMessage({
     message: subdigest,
   });
@@ -125,9 +130,7 @@ export function TransactionDialog({
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
-            subdigest: {toHex(subdigest)}
-          </code>
+          <code className="break-all text-primary">subdigest: {subdigest}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
