@@ -21,6 +21,8 @@ import { parseNumber } from "@/handles/parsers/number";
 import type { Address } from "viem";
 import { hexToBytes } from "viem";
 
+export const revalidate = 0;
+
 export default async function Page({
   params,
   searchParams,
@@ -31,8 +33,8 @@ export default async function Page({
     callData?: string;
   };
 }) {
-  let { config } = await handler(params);
-  let { userOperation, hash } = await userOpHandler(params, searchParams);
+  const { config } = await handler(params);
+  const { userOperation, hash } = await userOpHandler(params, searchParams);
   const chainId = parseNumber(params.chainId);
 
   return (

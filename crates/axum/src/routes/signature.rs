@@ -21,7 +21,7 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::get,
+    routing::{get, post},
     Json, Router,
 };
 use ethers_main::utils::hex;
@@ -99,7 +99,7 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/signature/get", get(v1_signature_get_handler))
         .route("/signature/list", get(v1_signature_list_handler))
-        .route("/signature/create", get(v1_signature_post_handler))
+        .route("/signature/create", post(v1_signature_post_handler))
 }
 
 /// Get a signature

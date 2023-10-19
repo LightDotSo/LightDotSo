@@ -234,8 +234,20 @@ export interface components {
       NotFound: string;
     }]>;
     UserOperationPostRequestParams: {
-      signature: components["schemas"]["Signature"];
+      signature: components["schemas"]["UserOperationSignature"];
       user_operation: components["schemas"]["UserOperation"];
+    };
+    /** @description Owner */
+    UserOperationSignature: {
+      /** @description The id of the owner of the signature. */
+      owner_id: string;
+      /** @description The signature in hex string. */
+      signature: string;
+      /**
+       * Format: int32
+       * @description The signature type
+       */
+      signature_type: number;
     };
     /** @description Wallet to do. */
     Wallet: {
