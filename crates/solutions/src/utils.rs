@@ -20,6 +20,16 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
+pub fn hash_message_bytes32(msg: &[u8; 32]) -> [u8; 32] {
+    keccak256(
+        encode_packed(&[
+            Token::String("\x19Ethereum Signed Message:\n32".to_string()),
+            Token::FixedBytes(msg.to_vec()),
+        ])
+        .unwrap(),
+    )
+}
+
 pub fn render_subdigest(chain_id: u64, address: Address, digest: [u8; 32]) -> [u8; 32] {
     keccak256(
         encode_packed(&[
@@ -176,7 +186,25 @@ pub fn print_hex_string(data: &[u8]) {
 
 #[cfg(test)]
 mod tests {
+    use ethers::utils::hash_message;
+
     use super::*;
+
+    #[test]
+    fn test_hash_message() {
+        let message = parse_hex_to_bytes32(
+            "0x84fcef6a64ccef82e5436d5281e94687e0371478798a1ce226da0b9838113ce8",
+        )
+        .unwrap();
+        let result_original = hash_message_bytes32(&message);
+        let result: [u8; 32] = hash_message(message).into();
+        let expected = parse_hex_to_bytes32(
+            "0xdafe5b72d714f0405b7b2c2c04bf346d94964b3fd39265cc05db27f6910dbb60",
+        )
+        .unwrap();
+        assert_eq!(result, result_original);
+        assert_eq!(result, expected);
+    }
 
     #[test]
     fn test_render_subdigest() {

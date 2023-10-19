@@ -23,7 +23,13 @@ import type { Address } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
-import { isAddressEqual, toBytes, toHex } from "viem";
+import {
+  hashMessage,
+  isAddressEqual,
+  recoverMessageAddress,
+  toBytes,
+  toHex,
+} from "viem";
 import { useAuth } from "@/stores/useAuth";
 
 type TransactionDialogProps = {
@@ -55,7 +61,7 @@ export function TransactionDialog({
   console.info("subdigest", subdigest);
 
   const { data, signMessage } = useSignMessage({
-    message: subdigest,
+    message: { raw: toBytes(subdigest) },
   });
 
   const owner = useMemo(() => {
@@ -70,7 +76,14 @@ export function TransactionDialog({
     const fetchUserOp = async () => {
       if (!data || !owner) return;
 
-      console.info(data);
+      console.info("hash:", hashMessage(subdigest));
+      console.info("hashed:", hashMessage({ raw: toBytes(subdigest) }));
+      const recoveredAddress = await recoverMessageAddress({
+        message: subdigest,
+        signature: data,
+      });
+      console.info("signed:", data);
+      console.info("recoveredAddress:", recoveredAddress);
 
       const res = await createUserOperation({
         params: {
@@ -107,7 +120,7 @@ export function TransactionDialog({
     };
 
     fetchUserOp();
-  }, [data, owner, chainId, userOperation, userOpHash]);
+  }, [data, owner, chainId, userOperation, userOpHash, subdigest]);
 
   return (
     <>

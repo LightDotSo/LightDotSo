@@ -1,0 +1,15 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index e1e00e221ded15c77f11dc34d84bda53839654a8..51ed4fbe3dc8af615979de9613a6587d69baf0f6 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -192,7 +192,9 @@ declare function getNetwork(): GetNetworkResult;
+ 
+ type SignMessageArgs = {
+     /** Message to sign with wallet */
+-    message: string;
++    message: string | {
++        raw: Uint8Array;
++    }
+ };
+ type SignMessageResult = SignMessageReturnType;
+ declare function signMessage(args: SignMessageArgs): Promise<SignMessageResult>;

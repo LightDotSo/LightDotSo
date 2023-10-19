@@ -171,7 +171,8 @@
       "next": "$next"
     },
     "patchedDependencies": {
-      "next@13.5.5": "patches/next@13.5.5.patch"
+      "next@13.5.5": "patches/next@13.5.5.patch",
+      "@wagmi/core@1.4.4": "patches/@wagmi__core@1.4.4.patch"
     }
   }
 }
