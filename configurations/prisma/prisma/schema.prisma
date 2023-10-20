@@ -105,7 +105,7 @@ model Configuration {
   id         String @id @default(cuid())
   address    String
   checkpoint BigInt
-  imageHash  String @unique
+  imageHash  String
   threshold  BigInt
 
   owners  Owner[]

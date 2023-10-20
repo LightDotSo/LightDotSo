@@ -36,10 +36,7 @@ use lightdotso_solutions::{
     hash::get_address,
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
-use lightdotso_tracing::{
-    tracing::{error, info, info_span, trace},
-    tracing_futures::Instrument,
-};
+use lightdotso_tracing::tracing::{error, info, trace};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -460,7 +457,6 @@ async fn v1_wallet_post_handler(
                     ],
                 )
                 .exec()
-                .instrument(info_span!("create_receipt"))
                 .await?;
 
             Ok(wallet)
