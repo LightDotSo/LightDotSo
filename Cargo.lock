@@ -1739,9 +1739,9 @@ dependencies = [
 
 [[package]]
 name = "const-hex"
-version = "1.6.2"
+version = "1.9.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca268df6cd88e646b564e6aff1a016834e5f42077c736ef6b6789c31ef9ec5dc"
+checksum = "c37be52ef5e3b394db27a2341010685ad5103c72ac15ce2e9420a7e8f93f342c"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -5945,6 +5945,7 @@ dependencies = [
  "axum 0.6.20",
  "axum-tracing-opentelemetry",
  "clap 4.4.0",
+ "const-hex",
  "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
  "governor 0.5.1",
@@ -5952,6 +5953,7 @@ dependencies = [
  "http-body",
  "hyper",
  "hyper-rustls",
+ "lightdotso-common",
  "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-indexer",
@@ -5963,7 +5965,6 @@ dependencies = [
  "lightdotso-tracing",
  "prisma-client-rust",
  "rundler-types",
- "rustc-hex",
  "serde",
  "serde_json",
  "tokio",
@@ -6038,6 +6039,14 @@ dependencies = [
  "serde_json",
  "thiserror",
  "tokio",
+]
+
+[[package]]
+name = "lightdotso-common"
+version = "0.1.0"
+dependencies = [
+ "const-hex",
+ "eyre",
 ]
 
 [[package]]
@@ -6344,6 +6353,7 @@ dependencies = [
  "eyre",
  "insta",
  "lazy_static",
+ "lightdotso-common",
  "lightdotso-contracts",
  "lightdotso-tracing",
  "rand 0.8.5",

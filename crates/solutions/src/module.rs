@@ -17,7 +17,6 @@ use crate::{
     config::WalletConfig,
     node::{leaf_for_address_and_weight, leaf_for_hardcoded_subdigest, leaf_for_nested},
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
-    traits::IsZero,
     types::{
         AddressSignatureLeaf, NestedLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode,
         SubdigestLeaf,
@@ -34,6 +33,7 @@ use ethers::{
     utils::keccak256,
 };
 use eyre::{eyre, Result};
+use lightdotso_common::traits::IsZero;
 
 #[derive(Clone, Debug)]
 pub struct SigModule {
@@ -134,6 +134,7 @@ impl SigModule {
         self.root = if !self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
     }
 
+    /// Injects a signer node into the tree
     fn inject_signer_node(&mut self, signer_node: SignerNode) -> Result<()> {
         let node = Some(Box::new(signer_node));
 
@@ -337,6 +338,10 @@ impl SigModule {
         };
         self.inject_signer_node(signer_node)?;
 
+        Ok(())
+    }
+
+    pub fn encode_signature(&mut self) -> Result<()> {
         Ok(())
     }
 

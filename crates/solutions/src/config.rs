@@ -79,6 +79,19 @@ impl WalletConfig {
             self.tree.get_signers().iter().map(|signer| signer.weight.unwrap_or(0)).sum();
         total_weight >= self.threshold as u8
     }
+
+    /// Encode the wallet config into bytes
+    /// Used for debugging purposes to check the encoding of the wallet config w/ the original
+    /// signature bytes
+    pub fn encode(&self) -> Result<Vec<u8>> {
+        Ok(encode(&[
+            Token::Uint(self.checkpoint.into()),
+            Token::Uint(self.threshold.into()),
+            Token::Uint(self.weight.into()),
+            // Token::FixedBytes(self.image_hash.0.to_vec()),
+            // self.tree.encode()?,
+        ]))
+    }
 }
 
 #[cfg(test)]

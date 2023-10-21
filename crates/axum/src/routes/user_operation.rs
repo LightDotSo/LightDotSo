@@ -16,8 +16,6 @@
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
-    traits::{HexToBytes, VecU8ToHex},
-    utils::hex_to_bytes,
 };
 use autometrics::autometrics;
 use axum::{
@@ -27,6 +25,10 @@ use axum::{
 };
 use ethers_main::{types::H160, utils::hex};
 use eyre::{Report, Result};
+use lightdotso_common::{
+    traits::{HexToBytes, VecU8ToHex},
+    utils::hex_to_bytes,
+};
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
 use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};

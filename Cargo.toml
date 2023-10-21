@@ -8,6 +8,7 @@
     "crates/autometrics",
     "crates/axum",
     "crates/bundler",
+    "crates/common",
     "crates/constants",
     "crates/consumer",
     "crates/core",
@@ -73,6 +74,7 @@
   byteorder = "1.4.3"
   chrono = "0.4.26"
   clap = "4.3.12"
+  const-hex = "1.9.1"
   dotenvy = "0.15"
   enumset = "1.1.2"
   ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
@@ -96,6 +98,7 @@
   lightdotso-autometrics = { path = "./crates/autometrics" }
   lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
+  lightdotso-common = { path = "./crates/common" }
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-constants = { path = "./crates/constants" }
   lightdotso-contracts = { path = "./crates/contracts" }
@@ -160,7 +163,6 @@
   rundler-sim = { git = "https://github.com/alchemyplatform/rundler", rev = "b253c4870b069ffdc16a8ca936fe9ad24e1ac44d", package = "rundler-sim" }
   rundler-types = { git = "https://github.com/alchemyplatform/rundler", rev = "b253c4870b069ffdc16a8ca936fe9ad24e1ac44d", package = "rundler-types" }
   rundler-utils = { git = "https://github.com/alchemyplatform/rundler", rev = "b253c4870b069ffdc16a8ca936fe9ad24e1ac44d", package = "rundler-utils" }
-  rustc-hex = "2.1.0"
   serde = "1.0.183"
   serde_json = "1.0.104"
   spki = "0.7.2"

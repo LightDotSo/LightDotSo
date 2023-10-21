@@ -12,6 +12,7 @@
   async-recursion = "1.0.5"
   ethers = { workspace = true }
   eyre = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-tracing = { workspace = true }
   rand = { workspace = true }
