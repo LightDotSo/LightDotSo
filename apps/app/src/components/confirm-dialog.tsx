@@ -120,6 +120,9 @@ export function ConfirmDialog({
     // Concatenate the pre_sig and signature arrays
     const sig = new Uint8Array([...pre_sig, ...signature]);
 
+    // Log the signature
+    console.info("sig", toHex(sig));
+
     // Sned the user operation
     const res = await sendUserOperation(chainId, [
       {
@@ -173,7 +176,7 @@ export function ConfirmDialog({
       </div>
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
         <Button disabled={!isValid} onClick={() => handleConfirm()}>
-          Sign Confirm
+          Confirm
         </Button>
       </div>
     </>
@@ -186,3 +189,5 @@ export function ConfirmDialog({
 // "0x00010000000100018676f4db87420ca3de1fdb1f6a513924ef36570bb11b5ba345c22fd2fe430f672890496b0ede044dcd7a17c1d2d3e0e31808a9fedadeca920f368322ab6804d01c01"
 // "0x0001000000010001783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b01"
 // "0x00010000000100018fb2dd47b62fa9e408827e63ea90c6a6607a42da44f2e497fc2ef75653b2873b61541c29124faa87fe3789ff9249420f937e678bb58a68693c6eeb6e068be2791b02"
+// "0x00010000000100015c137d8aaa4b9c15b16736e2264b151e606f57d477285b9fb861ea863336b833274a782f7da612eb6b079cb405b3b0519fe6e3d0a9b7cea7c22a1685d93f8a291c02"
+// "0x00010000000100012c4c6d589ede971636c7f3889c17da0524ab1fbb37f4be7cc0b1803f22b59e4c1867fae3afeee04b70aae9f02a0066505ff931d770a6e3a8fd9e20f79afe29861b02"

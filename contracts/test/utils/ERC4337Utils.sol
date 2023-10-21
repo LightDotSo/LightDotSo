@@ -102,7 +102,7 @@ library ERC4337Utils {
         bytes32 userOphash = _entryPoint.getUserOpHash(op);
 
         // Sign the hash
-        bytes memory sig = LightWalletUtils.signDigest(_vm, userOphash, _account, _key);
+        bytes memory sig = LightWalletUtils.signDigest(_vm, userOphash, _account, _key, false);
 
         // Pack the signature
         bytes memory signature = LightWalletUtils.packLegacySignature(sig, _weight, _threshold, _checkpoint);

@@ -17,6 +17,7 @@
 
 pragma solidity ^0.8.18;
 
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {Test, Vm} from "forge-std/Test.sol";
 
 /// @title LightWalletUtils
@@ -36,15 +37,22 @@ library LightWalletUtils {
         return expectedImageHash;
     }
 
-    function signDigest(Vm _vm, bytes32 hash, address account, uint256 userKey) internal view returns (bytes memory) {
+    function signDigest(Vm _vm, bytes32 hash, address account, uint256 userKey, bool isSign)
+        internal
+        view
+        returns (bytes memory)
+    {
         // Create the subdigest
         bytes32 subdigest = keccak256(abi.encodePacked("\x19\x01", block.chainid, address(account), hash));
 
+        // The actual hash that was signed w/ EIP-191 flag
+        bytes32 signed_subdigest = isSign ? ECDSA.toEthSignedMessageHash(subdigest) : subdigest;
+
         // Create the signature w/ the subdigest
-        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(userKey, subdigest);
+        (uint8 v, bytes32 r, bytes32 s) = _vm.sign(userKey, signed_subdigest);
 
         // Pack the signature w/ EIP-712 flag
-        bytes memory sig = abi.encodePacked(r, s, v, uint8(1));
+        bytes memory sig = abi.encodePacked(r, s, v, uint8(isSign ? 2 : 1));
 
         return sig;
     }
