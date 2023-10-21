@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::utils::{hex_to_bytes, hex_to_bytes32};
-use ethers_main::utils::hex;
+use const_hex::hex;
 use eyre::Result;
 
 pub trait VecU8ToHex {
@@ -44,6 +44,16 @@ impl HexToBytes for str {
     fn hex_to_bytes32(&self) -> Result<[u8; 32]> {
         // call the function directly
         hex_to_bytes32(self)
+    }
+}
+
+pub trait IsZero {
+    fn is_zero(&self) -> bool;
+}
+
+impl IsZero for [u8; 32] {
+    fn is_zero(&self) -> bool {
+        self.iter().all(|&byte| byte == 0)
     }
 }
 

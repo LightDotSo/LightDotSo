@@ -22,6 +22,5 @@ pub mod module;
 pub mod node;
 pub mod recover;
 pub mod signature;
-pub mod traits;
 pub mod types;
 pub mod utils;
