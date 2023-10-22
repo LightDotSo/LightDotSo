@@ -1,15 +1,48 @@
 ---
 source: crates/solutions/tests/it/signatures.rs
-expression: recovered_config.clone().tree
+expression: config.clone().tree
 ---
 SignerNode {
-    signer: None,
+    signer: Some(
+        Signer {
+            weight: Some(
+                2,
+            ),
+            leaf: BranchSignature(
+                BranchLeaf {
+                    size: 280,
+                },
+            ),
+        },
+    ),
     left: Some(
         SignerNode {
-            signer: None,
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        1,
+                    ),
+                    leaf: BranchSignature(
+                        BranchLeaf {
+                            size: 138,
+                        },
+                    ),
+                },
+            ),
             left: Some(
                 SignerNode {
-                    signer: None,
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                0,
+                            ),
+                            leaf: BranchSignature(
+                                BranchLeaf {
+                                    size: 44,
+                                },
+                            ),
+                        },
+                    ),
                     left: Some(
                         SignerNode {
                             signer: None,
@@ -96,7 +129,18 @@ SignerNode {
             ),
             right: Some(
                 SignerNode {
-                    signer: None,
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                1,
+                            ),
+                            leaf: BranchSignature(
+                                BranchLeaf {
+                                    size: 90,
+                                },
+                            ),
+                        },
+                    ),
                     left: Some(
                         SignerNode {
                             signer: None,
@@ -187,10 +231,32 @@ SignerNode {
     ),
     right: Some(
         SignerNode {
-            signer: None,
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        2,
+                    ),
+                    leaf: BranchSignature(
+                        BranchLeaf {
+                            size: 184,
+                        },
+                    ),
+                },
+            ),
             left: Some(
                 SignerNode {
-                    signer: None,
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                0,
+                            ),
+                            leaf: BranchSignature(
+                                BranchLeaf {
+                                    size: 44,
+                                },
+                            ),
+                        },
+                    ),
                     left: Some(
                         SignerNode {
                             signer: None,
@@ -277,7 +343,18 @@ SignerNode {
             ),
             right: Some(
                 SignerNode {
-                    signer: None,
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                1,
+                            ),
+                            leaf: BranchSignature(
+                                BranchLeaf {
+                                    size: 90,
+                                },
+                            ),
+                        },
+                    ),
                     left: Some(
                         SignerNode {
                             signer: None,

@@ -22,6 +22,7 @@ use ethers::{
     types::{Address, U256},
     utils::keccak256,
 };
+use eyre::{eyre, Result};
 
 /// Generates a leaf node for the merkle tree
 pub fn leaf_for_address_and_weight(addr: Address, weight: u8) -> [u8; 32] {
@@ -111,19 +112,94 @@ impl SignerNode {
     pub fn get_signers(&self) -> Vec<Signer> {
         let mut signers = Vec::new();
 
-        if let Some(signer) = &self.signer {
-            signers.push(signer.clone());
-        }
-
+        // Add the signers from the left
         if let Some(left) = &self.left {
             signers.extend(left.get_signers());
         }
 
+        // Add the sigers is not empty
+        if let Some(signer) = &self.signer {
+            signers.push(signer.clone());
+        }
+
+        // Add the signers from the right
         if let Some(right) = &self.right {
             signers.extend(right.get_signers());
         }
 
         signers
+    }
+
+    pub fn encode_hash_from_signers(&self) -> Result<Vec<u8>> {
+        let signers = self.get_signers();
+
+        // Set the encoding
+        let mut encoded = Vec::new();
+
+        // Iterate over the signers and encode them
+        for signer in signers.iter() {
+            let encoded_signer = match &signer.leaf {
+                SignatureLeaf::ECDSASignature(leaf) => [
+                    // Flag to indicate that the leaf is an ECDSA signature
+                    vec![0x0],
+                    // Assume that the weight is always encoded inside an ECDSA signature
+                    signer.weight.ok_or(eyre!("No weight found"))?.to_be_bytes().to_vec(),
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::AddressSignature(leaf) => [
+                    // Flag to indicate that the leaf is an ECDSA signature
+                    vec![0x1],
+                    // Assume that the weight is always encoded inside an ECDSA signature
+                    signer.weight.ok_or(eyre!("No weight found"))?.to_be_bytes().to_vec(),
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::DynamicSignature(leaf) => [
+                    // Flag to indicate that the leaf is an ECDSA signature
+                    vec![0x2],
+                    // Assume that the weight is always encoded inside an ECDSA signature
+                    signer.weight.ok_or(eyre!("No weight found"))?.to_be_bytes().to_vec(),
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::NodeSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x3],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::BranchSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x4],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::SubdigestSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x5],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::NestedSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x6],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+            };
+
+            encoded.extend(encoded_signer);
+        }
+
+        Ok(encoded)
     }
 }
 
@@ -234,6 +310,7 @@ mod tests {
                     internal_root: [0; 32].into(),
                     internal_threshold: 211,
                     external_weight: 90,
+                    size: 3,
                 })
             }),
             left: Some(Box::new(SignerNode {

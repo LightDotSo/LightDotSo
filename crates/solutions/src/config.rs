@@ -15,12 +15,11 @@
 
 use crate::types::SignerNode;
 use ethers::{
-    abi::{encode, encode_packed, Token},
+    abi::{encode, Token},
     types::{H256, U256},
     utils::keccak256,
 };
 use eyre::Result;
-use lightdotso_common::traits::VecU8ToHex;
 use serde::{Deserialize, Serialize};
 
 /// The struct representation of a wallet config
@@ -87,33 +86,27 @@ impl WalletConfig {
     /// Used for debugging purposes to check the encoding of the wallet config w/ the original
     /// signature bytes
     pub fn encode(&self) -> Result<Vec<u8>> {
-        // Print signature_type
-        println!("{}", vec![self.signature_type].to_hex_string());
-        println!("{}", self.threshold.to_be_bytes().to_vec().to_hex_string());
-        println!("{}", self.checkpoint.to_be_bytes().to_vec().to_hex_string());
-
         // If the signature type is 0, the signature type is not encoded
         // https://github.com/LightDotSo/LightDotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/ModuleAuth.sol#L61
         // as opposed to:
         // https://github.com/LightDotSo/LightDotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/submodules/auth/SequenceDynamicSig.sol#L29
         // where the signature type is encoded in the signature
         if self.signature_type == 0 {
-            return Ok(encode_packed(&[
-                Token::FixedBytes(self.threshold.to_be_bytes().to_vec()),
-                Token::FixedBytes(self.checkpoint.to_be_bytes().to_vec()),
-            ])
-            .unwrap());
+            return Ok([
+                self.threshold.to_be_bytes().to_vec(),
+                self.checkpoint.to_be_bytes().to_vec(),
+                self.tree.encode_hash_from_signers()?,
+            ]
+            .concat());
         }
 
-        Ok(encode_packed(&[
-            Token::FixedBytes(vec![self.signature_type]),
-            Token::FixedBytes(self.threshold.to_be_bytes().to_vec()),
-            Token::FixedBytes(self.checkpoint.to_be_bytes().to_vec()),
-            // Token::FixedBytes(self.weight.to_le_bytes().to_vec()),
-            // Token::FixedBytes(self.image_hash.0.to_vec()),
-            // self.tree.encode()?,
-        ])
-        .unwrap())
+        Ok([
+            vec![self.signature_type],
+            self.threshold.to_be_bytes().to_vec(),
+            self.checkpoint.to_be_bytes().to_vec(),
+            self.tree.encode_hash_from_signers()?,
+        ]
+        .concat())
     }
 }
 

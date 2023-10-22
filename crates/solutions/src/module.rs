@@ -18,8 +18,8 @@ use crate::{
     node::{leaf_for_address_and_weight, leaf_for_hardcoded_subdigest, leaf_for_nested},
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
     types::{
-        AddressSignatureLeaf, NestedLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode,
-        SubdigestLeaf,
+        AddressSignatureLeaf, BranchLeaf, NestedLeaf, NodeLeaf, Signature, SignatureLeaf, Signer,
+        SignerNode, SubdigestLeaf,
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, read_bytes32,
@@ -135,7 +135,11 @@ impl SigModule {
     }
 
     /// Injects a signer node into the tree
-    fn inject_signer_node(&mut self, signer_node: SignerNode) -> Result<()> {
+    fn inject_signer_node(
+        &mut self,
+        signer_node: SignerNode,
+        branch_signer: Option<Signer>,
+    ) -> Result<()> {
         let node = Some(Box::new(signer_node));
 
         // If the tree is empty, set the signer
@@ -153,12 +157,13 @@ impl SigModule {
                 right: None,
             }));
             self.tree.right = node;
+            self.tree.signer = branch_signer;
             return Ok(());
         }
 
         // Push the current tree to the left, and set the node to the right
         self.tree = SignerNode {
-            signer: None,
+            signer: branch_signer,
             left: Some(Box::new(SignerNode {
                 signer: self.tree.signer.clone(),
                 left: self.tree.left.clone(),
@@ -185,7 +190,7 @@ impl SigModule {
             leaf: SignatureLeaf::ECDSASignature(signature_leaf.clone()),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         let node = leaf_for_address_and_weight(signature_leaf.address, addr_weight);
         self.return_valid_root(node);
@@ -202,7 +207,7 @@ impl SigModule {
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf { address: addr }),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         self.rindex = rindex;
         let node = leaf_for_address_and_weight(addr, addr_weight);
@@ -234,7 +239,7 @@ impl SigModule {
         let signer =
             Signer { weight: Some(addr_weight), leaf: SignatureLeaf::DynamicSignature(leaf) };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         let node = leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
@@ -253,7 +258,7 @@ impl SigModule {
             leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: node.into() }),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         Ok(())
     }
@@ -274,7 +279,13 @@ impl SigModule {
         self.rindex = nrindex;
 
         let signer_node = base_sig_module.tree;
-        self.inject_signer_node(signer_node)?;
+
+        let branch_signer = Signer {
+            weight: Some(nweight as u8),
+            leaf: SignatureLeaf::BranchSignature(BranchLeaf { size }),
+        };
+
+        self.inject_signer_node(signer_node, Some(branch_signer))?;
 
         Ok(())
     }
@@ -295,7 +306,7 @@ impl SigModule {
             leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf { hash: hardcoded.into() }),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         Ok(())
     }
@@ -329,14 +340,12 @@ impl SigModule {
                 internal_threshold,
                 external_weight,
                 internal_root: internal_root.into(),
+                size,
             }),
         };
-        let signer_node = SignerNode {
-            signer: Some(nested_signer.clone()),
-            left: signer_node.left,
-            right: signer_node.right,
-        };
-        self.inject_signer_node(signer_node)?;
+        let signer_node =
+            SignerNode { signer: None, left: signer_node.left, right: signer_node.right };
+        self.inject_signer_node(signer_node, Some(nested_signer))?;
 
         Ok(())
     }

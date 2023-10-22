@@ -4,7 +4,25 @@
   "weight": 2,
   "image_hash": "0xa4ec4cf398bf3f0479fe0e2fe39140dd0ebcce930dfe2060d8e66ae9098c92ca",
   "tree": {
+    "signer": {
+      "weight": 1,
+      "leaf": {
+        "type": "BranchSignature",
+        "content": {
+          "size": 197
+        }
+      }
+    },
     "left": {
+      "signer": {
+        "weight": 1,
+        "leaf": {
+          "type": "BranchSignature",
+          "content": {
+            "size": 160
+          }
+        }
+      },
       "left": {
         "signer": {
           "leaf": {
@@ -16,6 +34,15 @@
         }
       },
       "right": {
+        "signer": {
+          "weight": 1,
+          "leaf": {
+            "type": "BranchSignature",
+            "content": {
+              "size": 123
+            }
+          }
+        },
         "left": {
           "signer": {
             "leaf": {
@@ -68,6 +95,15 @@
     },
     "right": {
       "left": {
+        "signer": {
+          "weight": 1,
+          "leaf": {
+            "type": "BranchSignature",
+            "content": {
+              "size": 127
+            }
+          }
+        },
         "left": {
           "signer": {
             "leaf": {
@@ -79,6 +115,15 @@
           }
         },
         "right": {
+          "signer": {
+            "weight": 1,
+            "leaf": {
+              "type": "BranchSignature",
+              "content": {
+                "size": 90
+              }
+            }
+          },
           "left": {
             "signer": {
               "leaf": {

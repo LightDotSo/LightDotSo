@@ -20,6 +20,7 @@ SignerNode {
                                             internal_threshold: 0,
                                             external_weight: 3,
                                             internal_root: 0x0000000000000000000000000000000000000000000000000000000000000000,
+                                            size: 3,
                                         },
                                     ),
                                 },
