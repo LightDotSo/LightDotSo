@@ -102,6 +102,12 @@ pub struct ECDSASignatureLeaf {
     pub signature: ECDSASignature,
 }
 
+impl From<ECDSASignature> for Vec<u8> {
+    fn from(item: ECDSASignature) -> Self {
+        item.0.to_vec()
+    }
+}
+
 #[serde_as]
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct AddressSignatureLeaf {
