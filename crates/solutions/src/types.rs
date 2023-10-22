@@ -17,7 +17,6 @@ use ethers::{
     types::{Address, H256},
     utils::hex,
 };
-use lightdotso_common::traits::VecU8ToHex;
 use serde::{
     de::{self, Visitor},
     Deserialize, Deserializer, Serialize, Serializer,
@@ -120,6 +119,12 @@ pub struct AddressSignatureLeaf {
     pub address: Address,
 }
 
+impl From<&AddressSignatureLeaf> for Vec<u8> {
+    fn from(item: &AddressSignatureLeaf) -> Self {
+        item.clone().address.0.to_vec()
+    }
+}
+
 /// The struct representation of a Dynamic signature leaf type
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 #[repr(u8)]
@@ -136,17 +141,46 @@ pub struct DynamicSignatureLeaf {
     pub signature: Signature,
 }
 
+impl From<&DynamicSignatureLeaf> for Vec<u8> {
+    fn from(item: &DynamicSignatureLeaf) -> Self {
+        // Concatenate the signature and signature type
+        let mut signature = item.clone().signature.0.to_vec();
+        // Insert type at end
+        signature.push(item.clone().signature_type as u8);
+
+        signature
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct NodeLeaf {
     pub hash: H256,
 }
 
+impl From<&NodeLeaf> for Vec<u8> {
+    fn from(item: &NodeLeaf) -> Self {
+        item.clone().hash.0.to_vec()
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct BranchLeaf {}
+
+impl From<&BranchLeaf> for Vec<u8> {
+    fn from(_item: &BranchLeaf) -> Self {
+        vec![]
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct SubdigestLeaf {
     pub hash: H256,
+}
+
+impl From<&SubdigestLeaf> for Vec<u8> {
+    fn from(item: &SubdigestLeaf) -> Self {
+        item.clone().hash.0.to_vec()
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -154,6 +188,17 @@ pub struct NestedLeaf {
     pub internal_threshold: u16,
     pub external_weight: u8,
     pub internal_root: H256,
+}
+
+impl From<&NestedLeaf> for Vec<u8> {
+    fn from(item: &NestedLeaf) -> Self {
+        // Concatenate the signature and signature type
+        let mut signature = vec![item.clone().external_weight];
+        // Push the internal threshold (Vec<u8>) to the end of the signature
+        signature.extend_from_slice(&item.clone().internal_threshold.to_be_bytes());
+
+        signature
+    }
 }
 
 impl Signature {

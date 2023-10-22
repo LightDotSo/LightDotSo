@@ -22,8 +22,7 @@ use ethers::{
     types::{Address, U256},
     utils::keccak256,
 };
-use eyre::Result;
-use lightdotso_common::traits::VecU8ToHex;
+use eyre::{eyre, Result};
 
 /// Generates a leaf node for the merkle tree
 pub fn leaf_for_address_and_weight(addr: Address, weight: u8) -> [u8; 32] {
@@ -137,40 +136,61 @@ impl SignerNode {
         // Iterate over the signers and encode them
         for signer in signers.iter() {
             let encoded_signer = match &signer.leaf {
-                SignatureLeaf::ECDSASignature(leaf) => {
-                    [vec![0x0, 0x1], Vec::<u8>::from(leaf)].concat()
-                }
-                SignatureLeaf::AddressSignature(leaf) => encode_packed(&[
-                    Token::FixedBytes(vec![0x1]),
-                    // Token::FixedBytes(leaf.address.as_bytes().to_vec()),
-                ])
-                .unwrap(),
-                SignatureLeaf::DynamicSignature(leaf) => encode_packed(&[
-                    Token::FixedBytes(vec![0x2]),
-                    // Token::FixedBytes(leaf.address.as_bytes().to_vec()),
-                ])
-                .unwrap(),
-                SignatureLeaf::NodeSignature(leaf) => encode_packed(&[
-                    Token::FixedBytes(vec![0x3]),
-                    // Token::FixedBytes(leaf.hash.0.to_vec()),
-                ])
-                .unwrap(),
-                SignatureLeaf::BranchSignature(leaf) => encode_packed(&[
-                    Token::FixedBytes(vec![0x4]),
-                    // Token::FixedBytes(leaf.hash.0.to_vec()),
-                ])
-                .unwrap(),
-                SignatureLeaf::SubdigestSignature(leaf) => encode_packed(&[
-                    Token::FixedBytes(vec![0x5]),
-                    // Token::FixedBytes(leaf.hash.0.to_vec()),
-                ])
-                .unwrap(),
-                SignatureLeaf::NestedSignature(leaf) => encode_packed(&[
-                    Token::FixedBytes(vec![0x6]),
-                    // Token::FixedBytes(vec![leaf.external_weight]),
-                    // Token::FixedBytes(leaf.internal_threshold.to_be_bytes().to_vec()),
-                ])
-                .unwrap(),
+                SignatureLeaf::ECDSASignature(leaf) => [
+                    // Flag to indicate that the leaf is an ECDSA signature
+                    vec![0x0],
+                    // Assume that the weight is always encoded inside an ECDSA signature
+                    signer.weight.ok_or(eyre!("No weight found"))?.to_be_bytes().to_vec(),
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::AddressSignature(leaf) => [
+                    // Flag to indicate that the leaf is an ECDSA signature
+                    vec![0x1],
+                    // Assume that the weight is always encoded inside an ECDSA signature
+                    signer.weight.ok_or(eyre!("No weight found"))?.to_be_bytes().to_vec(),
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::DynamicSignature(leaf) => [
+                    // Flag to indicate that the leaf is an ECDSA signature
+                    vec![0x2],
+                    // Assume that the weight is always encoded inside an ECDSA signature
+                    signer.weight.ok_or(eyre!("No weight found"))?.to_be_bytes().to_vec(),
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::NodeSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x3],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::BranchSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x4],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::SubdigestSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x5],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
+                SignatureLeaf::NestedSignature(leaf) => [
+                    // Flag to indicate that the leaf is an node
+                    vec![0x6],
+                    // Encode the signature for the leaf
+                    Vec::<u8>::from(leaf),
+                ]
+                .concat(),
             };
 
             encoded.extend(encoded_signer);

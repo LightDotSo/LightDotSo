@@ -261,6 +261,9 @@ impl SigModule {
     /// Decodes a branch signature
     #[async_recursion]
     async fn decode_branch_signature(&mut self) -> Result<()> {
+        // Log as branch
+        println!("Branch");
+
         // Read signature size
         let (size, rindex) = read_uint24(self.sig.as_slice(), self.rindex)?;
         let nrindex = rindex + size as usize;
