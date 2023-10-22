@@ -114,6 +114,7 @@ async fn test_integration_node_nested() {
                         )
                         .unwrap()
                         .into(),
+                        size: 3,
                     }),
                 }),
             })),
@@ -207,6 +208,7 @@ async fn test_integration_node_complex() {
                             external_weight: 2,
                             internal_threshold: 1,
                             internal_root: [0; 32].into(),
+                            size: 3,
                         }),
                     }),
                 })),

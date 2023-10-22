@@ -284,6 +284,7 @@ async fn test_integration_signatures() {
                         internal_root: [0; 32].into(),
                         internal_threshold: 2,
                         external_weight: 90,
+                        size: 3,
                     })
                 }),
             })),

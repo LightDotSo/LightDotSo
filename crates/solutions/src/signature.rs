@@ -127,7 +127,12 @@ pub async fn recover_dynamic_signature(
     // The length is the remaining length of the slice
     let signature = Signature(slice[..slice.len() - 1].to_vec());
 
-    Ok(DynamicSignatureLeaf { address, signature_type, signature })
+    Ok(DynamicSignatureLeaf {
+        address,
+        signature_type,
+        signature,
+        size: (end_index - starting_index) as u32,
+    })
 }
 
 #[cfg(test)]

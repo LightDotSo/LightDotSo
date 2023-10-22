@@ -307,6 +307,7 @@ mod tests {
                     internal_root: [0; 32].into(),
                     internal_threshold: 211,
                     external_weight: 90,
+                    size: 3,
                 })
             }),
             left: Some(Box::new(SignerNode {

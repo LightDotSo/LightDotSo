@@ -139,6 +139,7 @@ pub struct DynamicSignatureLeaf {
     pub address: Address,
     pub signature_type: DynamicSignatureType,
     pub signature: Signature,
+    pub size: u32,
 }
 
 impl From<&DynamicSignatureLeaf> for Vec<u8> {
@@ -147,6 +148,8 @@ impl From<&DynamicSignatureLeaf> for Vec<u8> {
         let mut signature = item.clone().signature.0.to_vec();
         // Insert type at end
         signature.push(item.clone().signature_type as u8);
+        // Push the size (Vec<u8>) to the end of the signature
+        signature.extend_from_slice(&item.clone().size.to_be_bytes());
 
         signature
     }
@@ -164,11 +167,13 @@ impl From<&NodeLeaf> for Vec<u8> {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-pub struct BranchLeaf {}
+pub struct BranchLeaf {
+    pub size: u32,
+}
 
 impl From<&BranchLeaf> for Vec<u8> {
-    fn from(_item: &BranchLeaf) -> Self {
-        vec![]
+    fn from(item: &BranchLeaf) -> Self {
+        item.clone().size.to_be_bytes().to_vec()
     }
 }
 
@@ -188,6 +193,7 @@ pub struct NestedLeaf {
     pub internal_threshold: u16,
     pub external_weight: u8,
     pub internal_root: H256,
+    pub size: u32,
 }
 
 impl From<&NestedLeaf> for Vec<u8> {
@@ -196,6 +202,8 @@ impl From<&NestedLeaf> for Vec<u8> {
         let mut signature = vec![item.clone().external_weight];
         // Push the internal threshold (Vec<u8>) to the end of the signature
         signature.extend_from_slice(&item.clone().internal_threshold.to_be_bytes());
+        // Push the size (Vec<u8>) to the end of the signature
+        signature.extend_from_slice(&item.clone().size.to_be_bytes());
 
         signature
     }
