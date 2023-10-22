@@ -53,6 +53,7 @@ mod tests {
     #[test]
     fn test_write_config_to_json() {
         let config = WalletConfig {
+            signature_type: 0,
             checkpoint: 0,
             threshold: 0,
             weight: 0,

@@ -46,6 +46,7 @@ fn test_wallet_ecdsa_to_json() {
     };
 
     let config = WalletConfig {
+        signature_type: 0,
         checkpoint: 0,
         threshold: 0,
         weight: 0,
@@ -86,6 +87,7 @@ fn test_wallet_complex_to_json() {
     };
 
     let config = WalletConfig {
+        signature_type: 0,
         checkpoint: 0,
         threshold: 0,
         weight: 0,
