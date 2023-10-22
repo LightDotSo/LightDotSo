@@ -364,8 +364,6 @@ impl SigModule {
             let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
             self.rindex = rindex;
 
-            println!("Flag: {}", flag);
-
             match flag {
                 0 => self.decode_ecdsa_signature()?,
                 1 => self.decode_address_signature()?,

@@ -144,16 +144,20 @@ pub struct DynamicSignatureLeaf {
 
 impl From<&DynamicSignatureLeaf> for Vec<u8> {
     fn from(item: &DynamicSignatureLeaf) -> Self {
-        // Concatenate the signature and signature type
-        let mut signature = item.clone().signature.0.to_vec();
-        // Insert type at end
-        signature.push(item.clone().signature_type as u8);
+        // Push the address
+        let mut signature = item.clone().address.0.to_vec();
+
         // Push the size (Vec<u8>) to the end of the signature
         // Not that the size is a solidity uint24, but we use u32 here, so we need to truncate
         // the first byte
         let mut size = item.clone().size.to_be_bytes().to_vec();
         size.remove(0);
         signature.extend_from_slice(&size);
+
+        // Concatenate the signature and signature type
+        signature.extend_from_slice(&item.clone().signature.0.to_vec());
+        // Insert type at end
+        signature.push(item.clone().signature_type as u8);
 
         signature
     }
