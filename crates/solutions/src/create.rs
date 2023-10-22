@@ -19,6 +19,7 @@ use eyre::Result;
 pub fn create_initial_wallet_config(signer: SignerNode, threshold: u16) -> Result<WalletConfig> {
     // Iterate over the signers and create a SignerNode for each one
     let wc = WalletConfig {
+        signature_type: 0,
         checkpoint: 1,
         threshold,
         weight: 1,

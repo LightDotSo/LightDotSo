@@ -403,6 +403,7 @@ impl SigModule {
         let internal_root = self.tree.calculate_image_hash_from_node(self.subdigest).into();
 
         Ok(WalletConfig {
+            signature_type: 0,
             threshold,
             checkpoint,
             image_hash: [0; 32].into(),
@@ -413,7 +414,7 @@ impl SigModule {
     }
 
     /// Recovers the wallet config from the signature
-    pub async fn recover(&mut self) -> Result<WalletConfig> {
+    pub async fn recover(&mut self, signature_type: u8) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
         let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
 
@@ -446,7 +447,15 @@ impl SigModule {
 
         let internal_root = Some(self.tree.calculate_image_hash_from_node(self.subdigest).into());
 
-        Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
+        Ok(WalletConfig {
+            signature_type,
+            threshold,
+            checkpoint,
+            image_hash,
+            weight: weight as u32,
+            tree,
+            internal_root,
+        })
     }
 }
 
@@ -544,7 +553,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature");
 
-        let res = base_sig_module.recover().await.unwrap_err();
+        let res = base_sig_module.recover(0).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
         println!("{:?}", res);
     }
@@ -765,7 +774,7 @@ mod tests {
         .unwrap()
         .into();
 
-        let config = base_sig_module.recover().await.unwrap();
+        let config = base_sig_module.recover(0).await.unwrap();
         assert_eq!(config.threshold, 17);
         assert_eq!(config.checkpoint, 0);
         assert_eq!(config.weight, 2);

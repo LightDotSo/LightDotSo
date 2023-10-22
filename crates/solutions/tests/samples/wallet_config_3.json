@@ -79,5 +79,6 @@
       }
     }
   },
+  "signature_type": 0,
   "internal_root": "0x3da5f63380e010065ccbc006edb048650e95dc06f1d572bf4c9c057304c9fc7f"
 }

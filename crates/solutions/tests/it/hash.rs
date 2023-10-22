@@ -24,6 +24,7 @@ use lightdotso_solutions::{
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_hash_first() {
     let config = WalletConfig {
+        signature_type: 0,
         checkpoint: 1,
         threshold: 1,
         weight: 1,
