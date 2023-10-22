@@ -17,6 +17,7 @@ use ethers::{
     types::{Address, H256},
     utils::hex,
 };
+use lightdotso_common::traits::VecU8ToHex;
 use serde::{
     de::{self, Visitor},
     Deserialize, Deserializer, Serialize, Serializer,
@@ -102,9 +103,14 @@ pub struct ECDSASignatureLeaf {
     pub signature: ECDSASignature,
 }
 
-impl From<ECDSASignature> for Vec<u8> {
-    fn from(item: ECDSASignature) -> Self {
-        item.0.to_vec()
+impl From<&ECDSASignatureLeaf> for Vec<u8> {
+    fn from(item: &ECDSASignatureLeaf) -> Self {
+        // Concatenate the signature and signature type
+        let mut signature = item.clone().signature.0.to_vec();
+        // Insert type at end
+        signature.push(item.clone().signature_type as u8);
+
+        signature
     }
 }
 

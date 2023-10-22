@@ -131,20 +131,15 @@ impl SignerNode {
     pub fn encode_hash_from_signers(&self) -> Result<Vec<u8>> {
         let signers = self.get_signers();
 
-        println!("signers: {:?}", signers);
-
         // Set the encoding
         let mut encoded = Vec::new();
 
         // Iterate over the signers and encode them
         for signer in signers.iter() {
             let encoded_signer = match &signer.leaf {
-                SignatureLeaf::ECDSASignature(leaf) => encode_packed(&[
-                    Token::FixedBytes(vec![0x0]),
-                    // Token::FixedBytes(leaf.address.as_bytes().to_vec()),
-                    // Token::FixedBytes(leaf.signature_type.),
-                ])
-                .unwrap(),
+                SignatureLeaf::ECDSASignature(leaf) => {
+                    [vec![0x0, 0x1], Vec::<u8>::from(leaf)].concat()
+                }
                 SignatureLeaf::AddressSignature(leaf) => encode_packed(&[
                     Token::FixedBytes(vec![0x1]),
                     // Token::FixedBytes(leaf.address.as_bytes().to_vec()),
@@ -180,8 +175,6 @@ impl SignerNode {
 
             encoded.extend(encoded_signer);
         }
-
-        println!("{}", encoded.to_hex_string());
 
         Ok(encoded)
     }
