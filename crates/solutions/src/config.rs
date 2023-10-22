@@ -20,6 +20,7 @@ use ethers::{
     utils::keccak256,
 };
 use eyre::Result;
+use lightdotso_common::traits::VecU8ToHex;
 use serde::{Deserialize, Serialize};
 
 /// The struct representation of a wallet config
