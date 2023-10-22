@@ -1,21 +1,10 @@
 ---
 source: crates/solutions/tests/it/signatures.rs
-assertion_line: 69
+assertion_line: 71
 expression: config.clone().tree
 ---
 SignerNode {
-    signer: Some(
-        Signer {
-            weight: Some(
-                1,
-            ),
-            leaf: BranchSignature(
-                BranchLeaf {
-                    size: 197,
-                },
-            ),
-        },
-    ),
+    signer: None,
     left: Some(
         SignerNode {
             signer: Some(
