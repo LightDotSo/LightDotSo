@@ -163,7 +163,7 @@ impl SigModule {
 
         // Push the current tree to the left, and set the node to the right
         self.tree = SignerNode {
-            signer: None,
+            signer: branch_signer,
             left: Some(Box::new(SignerNode {
                 signer: self.tree.signer.clone(),
                 left: self.tree.left.clone(),

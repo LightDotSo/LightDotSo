@@ -112,14 +112,14 @@ impl SignerNode {
     pub fn get_signers(&self) -> Vec<Signer> {
         let mut signers = Vec::new();
 
-        // Add the signers from the left
-        if let Some(left) = &self.left {
-            signers.extend(left.get_signers());
-        }
-
         // Add the sigers is not empty
         if let Some(signer) = &self.signer {
             signers.push(signer.clone());
+        }
+
+        // Add the signers from the left
+        if let Some(left) = &self.left {
+            signers.extend(left.get_signers());
         }
 
         // Add the signers from the right
