@@ -346,12 +346,9 @@ impl SigModule {
                 size,
             }),
         };
-        let signer_node = SignerNode {
-            signer: Some(nested_signer.clone()),
-            left: signer_node.left,
-            right: signer_node.right,
-        };
-        self.inject_signer_node(signer_node, None)?;
+        let signer_node =
+            SignerNode { signer: None, left: signer_node.left, right: signer_node.right };
+        self.inject_signer_node(signer_node, Some(nested_signer))?;
 
         Ok(())
     }

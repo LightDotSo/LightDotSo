@@ -4,6 +4,18 @@
   "weight": 4,
   "image_hash": "0x4b82e35988d1b6b83382e8947043cfd88dc990b1ad73cbe170221ceb87311a3b",
   "tree": {
+    "signer": {
+      "weight": 4,
+      "leaf": {
+        "type": "NestedSignature",
+        "content": {
+          "internal_threshold": 2,
+          "external_weight": 4,
+          "internal_root": "0x4eb12975cb2269ea1f8d44aee55fdc110e56ad15a3265b4c25de3cef4fd9645b",
+          "size": 195
+        }
+      }
+    },
     "left": {
       "signer": {
         "leaf": {
@@ -15,18 +27,6 @@
       }
     },
     "right": {
-      "signer": {
-        "weight": 4,
-        "leaf": {
-          "type": "NestedSignature",
-          "content": {
-            "internal_threshold": 2,
-            "external_weight": 4,
-            "internal_root": "0x4eb12975cb2269ea1f8d44aee55fdc110e56ad15a3265b4c25de3cef4fd9645b",
-            "size": 195
-          }
-        }
-      },
       "left": {
         "signer": {
           "weight": 2,
@@ -90,5 +90,5 @@
     }
   },
   "signature_type": 0,
-  "internal_root": "0x3da5f63380e010065ccbc006edb048650e95dc06f1d572bf4c9c057304c9fc7f"
+  "internal_root": "0xcf5754c5543c1a2efab0a2b9cc19f5697a56427913c1bc450ce7b567ed7d0b6b"
 }
