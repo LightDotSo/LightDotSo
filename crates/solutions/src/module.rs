@@ -266,9 +266,6 @@ impl SigModule {
     /// Decodes a branch signature
     #[async_recursion]
     async fn decode_branch_signature(&mut self) -> Result<()> {
-        // Log as branch
-        println!("Branch");
-
         // Read signature size
         let (size, rindex) = read_uint24(self.sig.as_slice(), self.rindex)?;
         let nrindex = rindex + size as usize;
@@ -366,6 +363,8 @@ impl SigModule {
             // Get the first byte of the signature
             let (flag, rindex) = read_uint8(self.sig.as_slice(), self.rindex)?;
             self.rindex = rindex;
+
+            println!("Flag: {}", flag);
 
             match flag {
                 0 => self.decode_ecdsa_signature()?,
