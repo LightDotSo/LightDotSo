@@ -25,7 +25,8 @@
               "content": {
                 "address": "0xcd907cf455a1a00a4ebe37ef5f4bb7abc3770a69",
                 "signature_type": "DynamicSignatureTypeEthSign",
-                "signature": "0x28230cc5c4ee221c093054fef22c12d534f4d63782bc94a160c2f781cef142e019b84d82070b67cb750ec9ba46ae49e6687591810099f6e58811fbe35ea3db451c"
+                "signature": "0x28230cc5c4ee221c093054fef22c12d534f4d63782bc94a160c2f781cef142e019b84d82070b67cb750ec9ba46ae49e6687591810099f6e58811fbe35ea3db451c",
+                "size": 66
               }
             }
           }
@@ -39,7 +40,8 @@
             "content": {
               "address": "0x4bffabff5819087514d8db622543c3d0d89cd64d",
               "signature_type": "DynamicSignatureTypeEthSign",
-              "signature": "0x844e002b27098ba6144bc9eb7950cd20a4062d265bdd042bffbb7ec8405caf7f60f1c5bdcd8ea4f4acee17d5ac9eac6bcdb40a20a41796d40a153278ab062b211c"
+              "signature": "0x844e002b27098ba6144bc9eb7950cd20a4062d265bdd042bffbb7ec8405caf7f60f1c5bdcd8ea4f4acee17d5ac9eac6bcdb40a20a41796d40a153278ab062b211c",
+              "size": 66
             }
           }
         }

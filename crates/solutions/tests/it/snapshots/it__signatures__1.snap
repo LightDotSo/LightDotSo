@@ -1,12 +1,23 @@
 ---
 source: crates/solutions/tests/it/signatures.rs
-expression: recovered_config.clone().tree
+expression: config.clone().tree
 ---
 SignerNode {
     signer: None,
     left: Some(
         SignerNode {
-            signer: None,
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        1,
+                    ),
+                    leaf: BranchSignature(
+                        BranchLeaf {
+                            size: 160,
+                        },
+                    ),
+                },
+            ),
             left: Some(
                 SignerNode {
                     signer: Some(
@@ -25,7 +36,18 @@ SignerNode {
             ),
             right: Some(
                 SignerNode {
-                    signer: None,
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                1,
+                            ),
+                            leaf: BranchSignature(
+                                BranchLeaf {
+                                    size: 123,
+                                },
+                            ),
+                        },
+                    ),
                     left: Some(
                         SignerNode {
                             signer: Some(
@@ -115,7 +137,18 @@ SignerNode {
             signer: None,
             left: Some(
                 SignerNode {
-                    signer: None,
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                1,
+                            ),
+                            leaf: BranchSignature(
+                                BranchLeaf {
+                                    size: 127,
+                                },
+                            ),
+                        },
+                    ),
                     left: Some(
                         SignerNode {
                             signer: Some(
@@ -134,7 +167,18 @@ SignerNode {
                     ),
                     right: Some(
                         SignerNode {
-                            signer: None,
+                            signer: Some(
+                                Signer {
+                                    weight: Some(
+                                        1,
+                                    ),
+                                    leaf: BranchSignature(
+                                        BranchLeaf {
+                                            size: 90,
+                                        },
+                                    ),
+                                },
+                            ),
                             left: Some(
                                 SignerNode {
                                     signer: Some(
