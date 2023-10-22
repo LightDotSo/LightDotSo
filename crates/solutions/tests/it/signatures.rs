@@ -70,6 +70,9 @@ async fn test_integration_signatures() {
         let recovered_signature = config.encode().unwrap();
         println!("{}", recovered_signature.to_hex_string());
         println!("{}", signature);
+        // Print if the recovered signature matches the original signature (true or false)
+        println!("{}", &recovered_signature.to_hex_string() == signature);
+        // assert_eq!(recovered_signature, sig);
 
         // Write WalletConfig back to a different JSON file
         let path_name = format!("tests/samples/wallet_config_{}.json", i);
