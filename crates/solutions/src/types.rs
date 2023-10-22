@@ -149,7 +149,11 @@ impl From<&DynamicSignatureLeaf> for Vec<u8> {
         // Insert type at end
         signature.push(item.clone().signature_type as u8);
         // Push the size (Vec<u8>) to the end of the signature
-        signature.extend_from_slice(&item.clone().size.to_be_bytes());
+        // Not that the size is a solidity uint24, but we use u32 here, so we need to truncate
+        // the first byte
+        let mut size = item.clone().size.to_be_bytes().to_vec();
+        size.remove(0);
+        signature.extend_from_slice(&size);
 
         signature
     }
@@ -173,7 +177,12 @@ pub struct BranchLeaf {
 
 impl From<&BranchLeaf> for Vec<u8> {
     fn from(item: &BranchLeaf) -> Self {
-        item.clone().size.to_be_bytes().to_vec()
+        // Push the size (Vec<u8>) to the end of the signature
+        // Not that the size is a solidity uint24, but we use u32 here, so we need to truncate
+        // the first byte
+        let mut size = item.clone().size.to_be_bytes().to_vec();
+        size.remove(0);
+        size
     }
 }
 
@@ -203,7 +212,11 @@ impl From<&NestedLeaf> for Vec<u8> {
         // Push the internal threshold (Vec<u8>) to the end of the signature
         signature.extend_from_slice(&item.clone().internal_threshold.to_be_bytes());
         // Push the size (Vec<u8>) to the end of the signature
-        signature.extend_from_slice(&item.clone().size.to_be_bytes());
+        // Not that the size is a solidity uint24, but we use u32 here, so we need to truncate
+        // the first byte
+        let mut size = item.clone().size.to_be_bytes().to_vec();
+        size.remove(0);
+        signature.extend_from_slice(&size);
 
         signature
     }
