@@ -229,6 +229,7 @@ mod tests {
                         internal_root: [0; 32].into(),
                         internal_threshold: 0,
                         external_weight: 3,
+                        size: 3,
                     }),
                 }),
                 left: Some(Box::new(

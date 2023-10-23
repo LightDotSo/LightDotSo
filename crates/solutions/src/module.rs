@@ -17,10 +17,9 @@ use crate::{
     config::WalletConfig,
     node::{leaf_for_address_and_weight, leaf_for_hardcoded_subdigest, leaf_for_nested},
     signature::{recover_dynamic_signature, recover_ecdsa_signature},
-    traits::IsZero,
     types::{
-        AddressSignatureLeaf, NestedLeaf, NodeLeaf, Signature, SignatureLeaf, Signer, SignerNode,
-        SubdigestLeaf,
+        AddressSignatureLeaf, BranchLeaf, NestedLeaf, NodeLeaf, Signature, SignatureLeaf, Signer,
+        SignerNode, SubdigestLeaf,
     },
     utils::{
         hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u32_to_bytes32, read_bytes32,
@@ -34,6 +33,7 @@ use ethers::{
     utils::keccak256,
 };
 use eyre::{eyre, Result};
+use lightdotso_common::traits::IsZero;
 
 #[derive(Clone, Debug)]
 pub struct SigModule {
@@ -134,7 +134,12 @@ impl SigModule {
         self.root = if !self.root.is_zero() { hash_keccak_256(self.root, node) } else { node };
     }
 
-    fn inject_signer_node(&mut self, signer_node: SignerNode) -> Result<()> {
+    /// Injects a signer node into the tree
+    fn inject_signer_node(
+        &mut self,
+        signer_node: SignerNode,
+        branch_signer: Option<Signer>,
+    ) -> Result<()> {
         let node = Some(Box::new(signer_node));
 
         // If the tree is empty, set the signer
@@ -152,12 +157,13 @@ impl SigModule {
                 right: None,
             }));
             self.tree.right = node;
+            self.tree.signer = branch_signer;
             return Ok(());
         }
 
         // Push the current tree to the left, and set the node to the right
         self.tree = SignerNode {
-            signer: None,
+            signer: branch_signer,
             left: Some(Box::new(SignerNode {
                 signer: self.tree.signer.clone(),
                 left: self.tree.left.clone(),
@@ -184,7 +190,7 @@ impl SigModule {
             leaf: SignatureLeaf::ECDSASignature(signature_leaf.clone()),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         let node = leaf_for_address_and_weight(signature_leaf.address, addr_weight);
         self.return_valid_root(node);
@@ -201,7 +207,7 @@ impl SigModule {
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf { address: addr }),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         self.rindex = rindex;
         let node = leaf_for_address_and_weight(addr, addr_weight);
@@ -233,7 +239,7 @@ impl SigModule {
         let signer =
             Signer { weight: Some(addr_weight), leaf: SignatureLeaf::DynamicSignature(leaf) };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         let node = leaf_for_address_and_weight(addr, addr_weight);
         self.return_valid_root(node);
@@ -252,7 +258,7 @@ impl SigModule {
             leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: node.into() }),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         Ok(())
     }
@@ -273,7 +279,13 @@ impl SigModule {
         self.rindex = nrindex;
 
         let signer_node = base_sig_module.tree;
-        self.inject_signer_node(signer_node)?;
+
+        let branch_signer = Signer {
+            weight: Some(nweight as u8),
+            leaf: SignatureLeaf::BranchSignature(BranchLeaf { size }),
+        };
+
+        self.inject_signer_node(signer_node, Some(branch_signer))?;
 
         Ok(())
     }
@@ -294,7 +306,7 @@ impl SigModule {
             leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf { hash: hardcoded.into() }),
         };
         let signer_node = SignerNode { signer: Some(signer.clone()), left: None, right: None };
-        self.inject_signer_node(signer_node)?;
+        self.inject_signer_node(signer_node, None)?;
 
         Ok(())
     }
@@ -328,15 +340,17 @@ impl SigModule {
                 internal_threshold,
                 external_weight,
                 internal_root: internal_root.into(),
+                size,
             }),
         };
-        let signer_node = SignerNode {
-            signer: Some(nested_signer.clone()),
-            left: signer_node.left,
-            right: signer_node.right,
-        };
-        self.inject_signer_node(signer_node)?;
+        let signer_node =
+            SignerNode { signer: None, left: signer_node.left, right: signer_node.right };
+        self.inject_signer_node(signer_node, Some(nested_signer))?;
 
+        Ok(())
+    }
+
+    pub fn encode_signature(&mut self) -> Result<()> {
         Ok(())
     }
 
@@ -398,6 +412,7 @@ impl SigModule {
         let internal_root = self.tree.calculate_image_hash_from_node(self.subdigest).into();
 
         Ok(WalletConfig {
+            signature_type: 0,
             threshold,
             checkpoint,
             image_hash: [0; 32].into(),
@@ -408,7 +423,7 @@ impl SigModule {
     }
 
     /// Recovers the wallet config from the signature
-    pub async fn recover(&mut self) -> Result<WalletConfig> {
+    pub async fn recover(&mut self, signature_type: u8) -> Result<WalletConfig> {
         // Get the threshold and checkpoint from the signature
         let (threshold, checkpoint) = self.recover_threshold_checkpoint()?;
 
@@ -441,7 +456,15 @@ impl SigModule {
 
         let internal_root = Some(self.tree.calculate_image_hash_from_node(self.subdigest).into());
 
-        Ok(WalletConfig { threshold, checkpoint, image_hash, weight, tree, internal_root })
+        Ok(WalletConfig {
+            signature_type,
+            threshold,
+            checkpoint,
+            image_hash,
+            weight: weight as u32,
+            tree,
+            internal_root,
+        })
     }
 }
 
@@ -539,7 +562,7 @@ mod tests {
 
         let expected_err = eyre!("Invalid signature");
 
-        let res = base_sig_module.recover().await.unwrap_err();
+        let res = base_sig_module.recover(0).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
         println!("{:?}", res);
     }
@@ -760,7 +783,7 @@ mod tests {
         .unwrap()
         .into();
 
-        let config = base_sig_module.recover().await.unwrap();
+        let config = base_sig_module.recover(0).await.unwrap();
         assert_eq!(config.threshold, 17);
         assert_eq!(config.checkpoint, 0);
         assert_eq!(config.weight, 2);

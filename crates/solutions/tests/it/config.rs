@@ -22,6 +22,7 @@ use lightdotso_solutions::{
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_signatures() {
     let config_1: WalletConfig = WalletConfig {
+      signature_type: 0,
       checkpoint: 999999,
       weight: 1,
       threshold: 11,
@@ -86,6 +87,7 @@ async fn test_integration_signatures() {
     }};
 
     let config_2: WalletConfig = WalletConfig {
+      signature_type: 0,
       checkpoint: 2,
       weight: 1,
       threshold: 1,
@@ -226,6 +228,7 @@ async fn test_integration_signatures() {
     }};
 
     let config_3: WalletConfig = WalletConfig {
+      signature_type: 0,
       checkpoint: 3,
       weight: 1,
       threshold: 2,
@@ -281,6 +284,7 @@ async fn test_integration_signatures() {
                         internal_root: [0; 32].into(),
                         internal_threshold: 2,
                         external_weight: 90,
+                        size: 3,
                     })
                 }),
             })),

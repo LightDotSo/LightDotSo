@@ -16,7 +16,6 @@
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
-    traits::{HexToBytes, VecU8ToHex},
 };
 use autometrics::autometrics;
 use axum::{
@@ -24,6 +23,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
+use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
 use lightdotso_prisma::{owner, signature, user_operation};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;

@@ -8,6 +8,7 @@
     "crates/autometrics",
     "crates/axum",
     "crates/bundler",
+    "crates/common",
     "crates/constants",
     "crates/consumer",
     "crates/core",
@@ -73,6 +74,7 @@
   byteorder = "1.4.3"
   chrono = "0.4.26"
   clap = "4.3.12"
+  const-hex = "1.9.1"
   dotenvy = "0.15"
   enumset = "1.1.2"
   ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
@@ -96,6 +98,7 @@
   lightdotso-autometrics = { path = "./crates/autometrics" }
   lightdotso-axum = { path = "./crates/axum" }
   lightdotso-bundler = { path = "./crates/bundler" }
+  lightdotso-common = { path = "./crates/common" }
   lightdotso-consumer = { path = "./crates/consumer" }
   lightdotso-constants = { path = "./crates/constants" }
   lightdotso-contracts = { path = "./crates/contracts" }

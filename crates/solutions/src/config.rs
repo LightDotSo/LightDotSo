@@ -32,11 +32,13 @@ pub struct WalletConfig {
     // Uint16 threshold
     pub threshold: u16,
     // Uint256 weight of the retured signature
-    pub weight: usize,
+    pub weight: u32,
     // Image hash of the wallet config that is used to verify the wallet
     pub image_hash: H256,
     // Signers of the wallet
     pub tree: SignerNode,
+    // The type of the recovery
+    pub signature_type: u8,
     // Internal field used to store the image hash of the wallet config
     #[serde(skip_serializing_if = "Option::is_none")]
     pub internal_root: Option<H256>,
@@ -79,6 +81,33 @@ impl WalletConfig {
             self.tree.get_signers().iter().map(|signer| signer.weight.unwrap_or(0)).sum();
         total_weight >= self.threshold as u8
     }
+
+    /// Encode the wallet config into bytes
+    /// Used for debugging purposes to check the encoding of the wallet config w/ the original
+    /// signature bytes
+    pub fn encode(&self) -> Result<Vec<u8>> {
+        // If the signature type is 0, the signature type is not encoded
+        // https://github.com/LightDotSo/LightDotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/ModuleAuth.sol#L61
+        // as opposed to:
+        // https://github.com/LightDotSo/LightDotSo/blob/3b0ea33499477d7f9d9f2544368bcbbe54a87ca2/contracts/modules/commons/submodules/auth/SequenceDynamicSig.sol#L29
+        // where the signature type is encoded in the signature
+        if self.signature_type == 0 {
+            return Ok([
+                self.threshold.to_be_bytes().to_vec(),
+                self.checkpoint.to_be_bytes().to_vec(),
+                self.tree.encode_hash_from_signers()?,
+            ]
+            .concat());
+        }
+
+        Ok([
+            vec![self.signature_type],
+            self.threshold.to_be_bytes().to_vec(),
+            self.checkpoint.to_be_bytes().to_vec(),
+            self.tree.encode_hash_from_signers()?,
+        ]
+        .concat())
+    }
 }
 
 #[cfg(test)]
@@ -102,6 +131,7 @@ mod tests {
 
         // From: contracts/src/test/utils/LightWalletUtils.sol
         let wc = WalletConfig {
+            signature_type: 1,
             checkpoint: 1,
             threshold: 1,
             weight: 1,
@@ -166,6 +196,7 @@ mod tests {
 
         // Construct the wallet config
         let mut config = WalletConfig {
+            signature_type: 0,
             checkpoint: 123,
             threshold: 3,
             weight: 20,

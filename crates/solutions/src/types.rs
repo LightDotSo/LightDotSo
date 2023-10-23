@@ -102,10 +102,27 @@ pub struct ECDSASignatureLeaf {
     pub signature: ECDSASignature,
 }
 
+impl From<&ECDSASignatureLeaf> for Vec<u8> {
+    fn from(item: &ECDSASignatureLeaf) -> Self {
+        // Concatenate the signature and signature type
+        let mut signature = item.clone().signature.0.to_vec();
+        // Insert type at end
+        signature.push(item.clone().signature_type as u8);
+
+        signature
+    }
+}
+
 #[serde_as]
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct AddressSignatureLeaf {
     pub address: Address,
+}
+
+impl From<&AddressSignatureLeaf> for Vec<u8> {
+    fn from(item: &AddressSignatureLeaf) -> Self {
+        item.clone().address.0.to_vec()
+    }
 }
 
 /// The struct representation of a Dynamic signature leaf type
@@ -122,6 +139,28 @@ pub struct DynamicSignatureLeaf {
     pub address: Address,
     pub signature_type: DynamicSignatureType,
     pub signature: Signature,
+    pub size: u32,
+}
+
+impl From<&DynamicSignatureLeaf> for Vec<u8> {
+    fn from(item: &DynamicSignatureLeaf) -> Self {
+        // Push the address
+        let mut signature = item.clone().address.0.to_vec();
+
+        // Push the size (Vec<u8>) to the end of the signature
+        // Not that the size is a solidity uint24, but we use u32 here, so we need to truncate
+        // the first byte
+        let mut size = item.clone().size.to_be_bytes().to_vec();
+        size.remove(0);
+        signature.extend_from_slice(&size);
+
+        // Concatenate the signature and signature type
+        signature.extend_from_slice(&item.clone().signature.0.to_vec());
+        // Insert type at end
+        signature.push(item.clone().signature_type as u8);
+
+        signature
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -129,12 +168,37 @@ pub struct NodeLeaf {
     pub hash: H256,
 }
 
+impl From<&NodeLeaf> for Vec<u8> {
+    fn from(item: &NodeLeaf) -> Self {
+        item.clone().hash.0.to_vec()
+    }
+}
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
-pub struct BranchLeaf {}
+pub struct BranchLeaf {
+    pub size: u32,
+}
+
+impl From<&BranchLeaf> for Vec<u8> {
+    fn from(item: &BranchLeaf) -> Self {
+        // Push the size (Vec<u8>) to the end of the signature
+        // Not that the size is a solidity uint24, but we use u32 here, so we need to truncate
+        // the first byte
+        let mut size = item.clone().size.to_be_bytes().to_vec();
+        size.remove(0);
+        size
+    }
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
 pub struct SubdigestLeaf {
     pub hash: H256,
+}
+
+impl From<&SubdigestLeaf> for Vec<u8> {
+    fn from(item: &SubdigestLeaf) -> Self {
+        item.clone().hash.0.to_vec()
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
@@ -142,6 +206,24 @@ pub struct NestedLeaf {
     pub internal_threshold: u16,
     pub external_weight: u8,
     pub internal_root: H256,
+    pub size: u32,
+}
+
+impl From<&NestedLeaf> for Vec<u8> {
+    fn from(item: &NestedLeaf) -> Self {
+        // Concatenate the signature and signature type
+        let mut signature = vec![item.clone().external_weight];
+        // Push the internal threshold (Vec<u8>) to the end of the signature
+        signature.extend_from_slice(&item.clone().internal_threshold.to_be_bytes());
+        // Push the size (Vec<u8>) to the end of the signature
+        // Not that the size is a solidity uint24, but we use u32 here, so we need to truncate
+        // the first byte
+        let mut size = item.clone().size.to_be_bytes().to_vec();
+        size.remove(0);
+        signature.extend_from_slice(&size);
+
+        signature
+    }
 }
 
 impl Signature {

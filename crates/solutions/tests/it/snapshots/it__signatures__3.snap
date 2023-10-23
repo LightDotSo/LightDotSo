@@ -1,9 +1,23 @@
 ---
 source: crates/solutions/tests/it/signatures.rs
-expression: recovered_config.clone().tree
+expression: config.clone().tree
 ---
 SignerNode {
-    signer: None,
+    signer: Some(
+        Signer {
+            weight: Some(
+                4,
+            ),
+            leaf: NestedSignature(
+                NestedLeaf {
+                    internal_threshold: 2,
+                    external_weight: 4,
+                    internal_root: 0x4eb12975cb2269ea1f8d44aee55fdc110e56ad15a3265b4c25de3cef4fd9645b,
+                    size: 195,
+                },
+            ),
+        },
+    ),
     left: Some(
         SignerNode {
             signer: Some(
@@ -22,23 +36,21 @@ SignerNode {
     ),
     right: Some(
         SignerNode {
-            signer: Some(
-                Signer {
-                    weight: Some(
-                        4,
-                    ),
-                    leaf: NestedSignature(
-                        NestedLeaf {
-                            internal_threshold: 2,
-                            external_weight: 4,
-                            internal_root: 0x4eb12975cb2269ea1f8d44aee55fdc110e56ad15a3265b4c25de3cef4fd9645b,
-                        },
-                    ),
-                },
-            ),
+            signer: None,
             left: Some(
                 SignerNode {
-                    signer: None,
+                    signer: Some(
+                        Signer {
+                            weight: Some(
+                                2,
+                            ),
+                            leaf: BranchSignature(
+                                BranchLeaf {
+                                    size: 136,
+                                },
+                            ),
+                        },
+                    ),
                     left: Some(
                         SignerNode {
                             signer: Some(

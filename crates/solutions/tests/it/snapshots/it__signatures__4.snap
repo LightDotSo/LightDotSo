@@ -1,6 +1,6 @@
 ---
 source: crates/solutions/tests/it/signatures.rs
-expression: recovered.tree
+expression: config.clone().tree
 ---
 SignerNode {
     signer: None,
@@ -15,7 +15,18 @@ SignerNode {
                             signer: None,
                             left: Some(
                                 SignerNode {
-                                    signer: None,
+                                    signer: Some(
+                                        Signer {
+                                            weight: Some(
+                                                0,
+                                            ),
+                                            leaf: BranchSignature(
+                                                BranchLeaf {
+                                                    size: 103,
+                                                },
+                                            ),
+                                        },
+                                    ),
                                     left: Some(
                                         SignerNode {
                                             signer: Some(
@@ -34,7 +45,18 @@ SignerNode {
                                     ),
                                     right: Some(
                                         SignerNode {
-                                            signer: None,
+                                            signer: Some(
+                                                Signer {
+                                                    weight: Some(
+                                                        0,
+                                                    ),
+                                                    leaf: BranchSignature(
+                                                        BranchLeaf {
+                                                            size: 66,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
                                             left: Some(
                                                 SignerNode {
                                                     signer: Some(

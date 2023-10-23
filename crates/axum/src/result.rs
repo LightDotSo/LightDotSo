@@ -18,13 +18,13 @@ use axum::{
     response::{IntoResponse, Response},
     Json,
 };
-use ethers_main::utils::hex;
+use const_hex::FromHexError;
 use lightdotso_redis::redis::RedisError;
 use prisma_client_rust::{
     prisma_errors::query_engine::{RecordNotFound, UniqueKeyViolation},
     QueryError,
 };
-use rustc_hex::FromHexError;
+use rustc_hex::FromHexError as RustHexError;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L18
 // type Database = Extension<Arc<PrismaClient>>;
@@ -37,8 +37,8 @@ pub enum AppError {
     PrismaError(QueryError),
     RedisError(RedisError),
     SerdeJsonError(serde_json::Error),
-    FromEthersHexError(hex::FromHexError),
     FromHexError(FromHexError),
+    RustHexError(RustHexError),
     BadRequest,
     NotFound,
     InternalError,
@@ -57,15 +57,15 @@ impl From<serde_json::Error> for AppError {
     }
 }
 
-impl From<hex::FromHexError> for AppError {
-    fn from(error: hex::FromHexError) -> Self {
-        AppError::FromEthersHexError(error)
-    }
-}
-
 impl From<FromHexError> for AppError {
     fn from(error: FromHexError) -> Self {
         AppError::FromHexError(error)
+    }
+}
+
+impl From<RustHexError> for AppError {
+    fn from(error: RustHexError) -> Self {
+        AppError::RustHexError(error)
     }
 }
 
@@ -96,8 +96,8 @@ impl IntoResponse for AppError {
             AppError::PrismaError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             AppError::SerdeJsonError(_) => StatusCode::BAD_REQUEST,
-            AppError::FromEthersHexError(_) => StatusCode::BAD_REQUEST,
             AppError::FromHexError(_) => StatusCode::BAD_REQUEST,
+            AppError::RustHexError(_) => StatusCode::BAD_REQUEST,
             AppError::Conflict => StatusCode::CONFLICT,
             AppError::BadRequest => StatusCode::BAD_REQUEST,
             AppError::NotFound => StatusCode::NOT_FOUND,

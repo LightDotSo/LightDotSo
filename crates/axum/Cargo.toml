@@ -13,6 +13,7 @@
   axum = { workspace = true }
   axum-tracing-opentelemetry = "0.13.1"
   clap = { workspace = true }
+  const-hex = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
   governor = "0.5.1"
@@ -20,6 +21,7 @@
   http-body = { workspace = true }
   hyper = { workspace = true }
   hyper-rustls = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }

@@ -8,6 +8,15 @@
       "left": {
         "left": {
           "left": {
+            "signer": {
+              "weight": 0,
+              "leaf": {
+                "type": "BranchSignature",
+                "content": {
+                  "size": 103
+                }
+              }
+            },
             "left": {
               "signer": {
                 "leaf": {
@@ -19,6 +28,15 @@
               }
             },
             "right": {
+              "signer": {
+                "weight": 0,
+                "leaf": {
+                  "type": "BranchSignature",
+                  "content": {
+                    "size": 66
+                  }
+                }
+              },
               "left": {
                 "signer": {
                   "leaf": {
@@ -99,5 +117,6 @@
       }
     }
   },
+  "signature_type": 2,
   "internal_root": "0x23e717650746a68247d1e9aaebe42319e1752f6d0494efa8ce9994c2c8ab58af"
 }

@@ -291,6 +291,7 @@ async fn v1_wallet_post_handler(
 
     // Create a wallet config
     let mut config = WalletConfig {
+        signature_type: 0,
         checkpoint: 0,
         threshold: params.threshold,
         weight: 1,

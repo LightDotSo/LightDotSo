@@ -12,6 +12,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 env:
+  TURBO_API: ${{ secrets.TURBO_API }}
+  TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
   TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
   TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
 jobs:
@@ -53,7 +55,7 @@ jobs:
           npx playwright install
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Docker Compose Up
         run: |
           docker-compose up -d --build
@@ -78,7 +80,7 @@ jobs:
           npx playwright install
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Docker Compose Up
         run: |
           docker-compose up -d --build
@@ -103,7 +105,7 @@ jobs:
           npx playwright install
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Docker Compose Up
         run: |
           docker-compose up -d --build

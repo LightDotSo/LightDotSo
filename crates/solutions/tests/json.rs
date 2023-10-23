@@ -46,6 +46,7 @@ fn test_wallet_ecdsa_to_json() {
     };
 
     let config = WalletConfig {
+        signature_type: 0,
         checkpoint: 0,
         threshold: 0,
         weight: 0,
@@ -86,6 +87,7 @@ fn test_wallet_complex_to_json() {
     };
 
     let config = WalletConfig {
+        signature_type: 0,
         checkpoint: 0,
         threshold: 0,
         weight: 0,
@@ -115,6 +117,7 @@ fn test_wallet_complex_to_json() {
                                 internal_root: [0; 32].into(),
                                 internal_threshold: 0,
                                 external_weight: 0,
+                                size: 3,
                             }),
                         }),
                     })),
@@ -124,6 +127,7 @@ fn test_wallet_complex_to_json() {
                             address: Address::zero(),
                             signature_type: DynamicSignatureType::DynamicSignatureTypeEIP1271,
                             signature: Signature([0u8; 65].to_vec()),
+                            size: 3,
                         }),
                     }),
                 })),
@@ -149,7 +153,7 @@ fn test_wallet_complex_to_json() {
                 right: None,
                 signer: Some(Signer {
                     weight: Some(2),
-                    leaf: SignatureLeaf::BranchSignature(BranchLeaf {}),
+                    leaf: SignatureLeaf::BranchSignature(BranchLeaf { size: 3 }),
                 }),
             })),
         },
