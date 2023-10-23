@@ -13,7 +13,6 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "tsc",
     "build:test": "concurrently \"pnpm:*:compile\"",
     "build:turbo": "dotenv -- turbo run build",
     "changeset": "changeset",
