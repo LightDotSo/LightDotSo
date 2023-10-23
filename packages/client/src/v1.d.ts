@@ -94,6 +94,13 @@ export interface paths {
      */
     get: operations["v1_user_operation_list_handler"];
   };
+  "/user_operation/signature": {
+    /**
+     * Check a user operation for its validity and return the computed signature if valid.
+     * @description Check a user operation for its validity and return the computed signature if valid.
+     */
+    get: operations["v1_user_operation_signature_handler"];
+  };
   "/wallet/create": {
     /**
      * Create a wallet
@@ -240,7 +247,7 @@ export interface components {
       signature: components["schemas"]["UserOperationSignature"];
       user_operation: components["schemas"]["UserOperation"];
     };
-    /** @description Owner */
+    /** @description Signature */
     UserOperationSignature: {
       /** @description The id of the owner of the signature. */
       owner_id: string;
@@ -621,6 +628,32 @@ export interface operations {
       };
       /** @description User Operation bad request */
       500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Check a user operation for its validity and return the computed signature if valid.
+   * @description Check a user operation for its validity and return the computed signature if valid.
+   */
+  v1_user_operation_signature_handler: {
+    parameters: {
+      query: {
+        user_operation_hash: string;
+        signature_type?: number | null;
+      };
+    };
+    responses: {
+      /** @description User Operation signature returned successfully */
+      200: {
+        content: {
+          "text/plain": string;
+        };
+      };
+      /** @description User Operation not found */
+      404: {
         content: {
           "application/json": components["schemas"]["UserOperationError"];
         };
