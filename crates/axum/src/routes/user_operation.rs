@@ -171,6 +171,7 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/user_operation/get", get(v1_user_operation_get_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/create", post(v1_user_operation_post_handler))
+        .route("/user_operation/check", get(v1_user_operation_get_handler))
 }
 
 /// Get a user operation
@@ -192,6 +193,7 @@ async fn v1_user_operation_get_handler(
 ) -> AppJsonResult<UserOperation> {
     // Get the get query.
     let Query(query) = get;
+    let user_operation_hash = query.user_operation_hash.clone();
 
     // Get the user operations from the database.
     let user_operation = client
@@ -199,7 +201,9 @@ async fn v1_user_operation_get_handler(
         .unwrap()
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
-        .with(user_operation::signatures::fetch(vec![]))
+        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+            user_operation_hash,
+        )]))
         .exec()
         .await?;
 
@@ -246,6 +250,7 @@ async fn v1_user_operation_list_handler(
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
         .order_by(user_operation::nonce::order(prisma_client_rust::Direction::Desc))
+        .with(user_operation::signatures::fetch(vec![]))
         .exec()
         .await?;
 
@@ -324,10 +329,8 @@ async fn v1_user_operation_post_handler(
         sender_address,
         user_operation_hash.hex_to_bytes32()?,
     );
-    info!("digest_chain_id: {}", digest_chain_id);
-    info!("sender_address: 0x{}", hex::encode(sender_address));
-    info!("user_operation_hash: 0x{}", hex::encode(user_operation_hash.hex_to_bytes32()?));
-    info!("subdigest: 0x{}", hex::encode(subdigest));
+    info!(?subdigest);
+
     let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
     info!(?recovered_sig);
 
@@ -442,6 +445,48 @@ async fn v1_user_operation_post_handler(
     // If the user_operation is not created, return a 500.
     let user_operation = user_operation.map_err(|_| AppError::InternalError)?;
     info!(?user_operation);
+
+    // Change the user operation to the format that the API expects.
+    let user_operation: UserOperation = user_operation.into();
+
+    Ok(Json::from(user_operation))
+}
+
+/// Check a user operation for its validity and return the computed signature if valid.
+#[utoipa::path(
+        get,
+        path = "/user_operation/check",
+        params(
+            GetQuery
+        ),
+        responses(
+            (status = 200, description = "User Operation returned successfully", body = UserOperation),
+            (status = 404, description = "User Operation not found", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+async fn v1_user_operation_check_handler(
+    get: Query<GetQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<UserOperation> {
+    // Get the get query.
+    let Query(query) = get;
+    let user_operation_hash = query.user_operation_hash.clone();
+
+    // Get the user operations from the database.
+    let user_operation = client
+        .client
+        .unwrap()
+        .user_operation()
+        .find_unique(user_operation::hash::equals(query.user_operation_hash))
+        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+            user_operation_hash,
+        )]))
+        .exec()
+        .await?;
+
+    // If the user operation is not found, return a 404.
+    let user_operation = user_operation.ok_or(AppError::NotFound)?;
 
     // Change the user operation to the format that the API expects.
     let user_operation: UserOperation = user_operation.into();
