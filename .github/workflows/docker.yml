@@ -79,6 +79,8 @@ jobs:
             AWS_ACCESS_KEY_ID=${{ secrets.SCCACHE_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.SCCACHE_SECRET_ACCESS_KEY }}
             SCCACHE_ENDPOINT=${{ secrets.SCCACHE_ENDPOINT }}
+            TURBO_API=${{ secrets.TURBO_API }}
+            TURBO_REMOTE_CACHE_SIGNATURE_KEY=${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
             TURBO_TEAM=${{ secrets.TURBO_TEAM }}
             TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
       - name: Docker List
