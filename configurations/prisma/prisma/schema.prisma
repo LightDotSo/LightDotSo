@@ -387,6 +387,7 @@ model UserOperation {
   signature            Bytes?
 
   chainId BigInt
+  status  UserOperationStatus @default(Proposed)
 
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?      @unique
@@ -404,6 +405,12 @@ model UserOperation {
   @@index([transactionHash])
   @@index([notificationId])
   @@index([walletAddress])
+}
+
+enum UserOperationStatus {
+  Proposed
+  Pending
+  Executed
 }
 
 model UserOperationCategory {
