@@ -31,7 +31,13 @@ use lightdotso_common::{
 };
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
-use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
+use lightdotso_solutions::{
+    builder::rooted_node_builder,
+    config::WalletConfig,
+    signature::recover_ecdsa_signature,
+    types::{ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode, ECDSA_SIGNATURE_LENGTH},
+    utils::render_subdigest,
+};
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::Direction;
 use rundler_types::UserOperation as RundlerUserOperation;
@@ -63,6 +69,15 @@ pub struct PostQuery {
     pub chain_id: i64,
 }
 
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct SignatureQuery {
+    // The user operation hash to get.
+    pub user_operation_hash: String,
+    // The type of signature to get for.
+    pub signature_type: Option<i64>,
+}
+
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct UserOperationPostRequestParams {
     // The user operation to create.
@@ -72,6 +87,17 @@ pub struct UserOperationPostRequestParams {
 }
 
 /// Owner
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationOwner {
+    /// The id of the owner.
+    id: String,
+    /// The address of the owner.
+    address: String,
+    /// The weight of the owner.
+    weight: i64,
+}
+
+/// Signature
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperationSignature {
     /// The id of the owner of the signature.
@@ -154,6 +180,13 @@ impl From<user_operation::Data> for UserOperation {
     }
 }
 
+// Implement From<owner::Data> for Owner.
+impl From<owner::Data> for UserOperationOwner {
+    fn from(owner: owner::Data) -> Self {
+        Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
+    }
+}
+
 // Implement From<signature::Data> for Owner.
 impl From<signature::Data> for UserOperationSignature {
     fn from(signature: signature::Data) -> Self {
@@ -171,6 +204,7 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/user_operation/get", get(v1_user_operation_get_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/create", post(v1_user_operation_post_handler))
+        .route("/user_operation/signature", get(v1_user_operation_signature_handler))
 }
 
 /// Get a user operation
@@ -192,6 +226,7 @@ async fn v1_user_operation_get_handler(
 ) -> AppJsonResult<UserOperation> {
     // Get the get query.
     let Query(query) = get;
+    let user_operation_hash = query.user_operation_hash.clone();
 
     // Get the user operations from the database.
     let user_operation = client
@@ -199,7 +234,9 @@ async fn v1_user_operation_get_handler(
         .unwrap()
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
-        .with(user_operation::signatures::fetch(vec![]))
+        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+            user_operation_hash,
+        )]))
         .exec()
         .await?;
 
@@ -246,6 +283,7 @@ async fn v1_user_operation_list_handler(
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
         .order_by(user_operation::nonce::order(prisma_client_rust::Direction::Desc))
+        .with(user_operation::signatures::fetch(vec![]))
         .exec()
         .await?;
 
@@ -324,10 +362,8 @@ async fn v1_user_operation_post_handler(
         sender_address,
         user_operation_hash.hex_to_bytes32()?,
     );
-    info!("digest_chain_id: {}", digest_chain_id);
-    info!("sender_address: 0x{}", hex::encode(sender_address));
-    info!("user_operation_hash: 0x{}", hex::encode(user_operation_hash.hex_to_bytes32()?));
-    info!("subdigest: 0x{}", hex::encode(subdigest));
+    info!(?subdigest);
+
     let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
     info!(?recovered_sig);
 
@@ -447,6 +483,148 @@ async fn v1_user_operation_post_handler(
     let user_operation: UserOperation = user_operation.into();
 
     Ok(Json::from(user_operation))
+}
+
+/// Check a user operation for its validity and return the computed signature if valid.
+#[utoipa::path(
+        get,
+        path = "/user_operation/signature",
+        params(
+            SignatureQuery
+        ),
+        responses(
+            (status = 200, description = "User Operation signature returned successfully", body = String),
+            (status = 404, description = "User Operation not found", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+async fn v1_user_operation_signature_handler(
+    signature: Query<SignatureQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<String> {
+    // Get the get query.
+    let Query(query) = signature;
+    let user_operation_hash = query.user_operation_hash.clone();
+    let signature_type = query.signature_type.unwrap_or(1);
+
+    // Get the user operations from the database.
+    let user_operation = client
+        .clone()
+        .client
+        .unwrap()
+        .user_operation()
+        .find_unique(user_operation::hash::equals(query.user_operation_hash))
+        .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
+            user_operation_hash,
+        )]))
+        .exec()
+        .await?;
+
+    // If the user operation is not found, return a 404.
+    let user_operation = user_operation.ok_or(AppError::NotFound)?;
+
+    // Map the signatures into type from the user_operation
+    let signatures = user_operation.clone().signatures.map_or(Vec::new(), |signature| {
+        signature.into_iter().map(UserOperationSignature::from).collect()
+    });
+
+    // Get the wallet from the database.
+    let wallet = client
+        .client
+        .unwrap()
+        .wallet()
+        .find_unique(wallet::address::equals(user_operation.clone().sender))
+        .with(
+            wallet::configurations::fetch(vec![configuration::address::equals(
+                user_operation.clone().sender,
+            )])
+            .with(configuration::owners::fetch(vec![])),
+        )
+        .exec()
+        .await?;
+    info!(?wallet);
+
+    // If the wallet is not found, return a 404.
+    let wallet = wallet.ok_or(AppError::NotFound)?;
+
+    // Parse the current wallet configuration.
+    // TODO: This should be the configuration with the signature required to upsert the most up to
+    // date configuration.
+    let configuration = wallet
+        .configurations
+        .ok_or(AppError::NotFound)?
+        .into_iter()
+        .max_by_key(|configuration| configuration.checkpoint)
+        .ok_or(AppError::NotFound)?;
+    info!(?configuration);
+
+    let owners = configuration.owners.ok_or(AppError::NotFound)?;
+    info!(?owners);
+    // Map the signatures into type from the user_operation
+    let owners: Vec<UserOperationOwner> =
+        owners.into_iter().map(UserOperationOwner::from).collect();
+
+    // Conver the signatures to SignerNode.
+    let owner_nodes: Result<Vec<SignerNode>> = signatures
+        .iter()
+        .map(|sig| {
+            // Filter the owner with the same id from `owners`
+            let owner = owners
+                .iter()
+                .find(|&owner| owner.id == sig.owner_id)
+                .ok_or(eyre::eyre!("Owner not found"))?;
+
+            let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
+            let bytes = sig.signature.hex_to_bytes()?;
+            signature_slice.copy_from_slice(&bytes[0..bytes.len() - 1]);
+            let signature_type = match bytes.last() {
+                Some(&0x1) => {
+                    lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEIP712
+                }
+                _ => lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
+            };
+
+            Ok(SignerNode {
+                signer: Some(Signer {
+                    weight: Some(owner.weight.try_into()?),
+                    leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+                        address: owner.address.parse()?,
+                        signature: signature_slice.try_into()?,
+                        signature_type,
+                    }),
+                }),
+                left: None,
+                right: None,
+            })
+        })
+        .collect();
+
+    // Build the node tree.
+    let tree = rooted_node_builder(owner_nodes?)?;
+
+    let wallet_config = WalletConfig {
+        checkpoint: configuration.checkpoint as u32,
+        threshold: configuration.threshold as u16,
+        weight: 0,
+        image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
+        tree,
+        signature_type: signature_type as u8,
+        internal_root: None,
+    };
+
+    // Check if the configuration is valid.
+    let is_valid = wallet_config.is_wallet_valid();
+    info!(?is_valid);
+
+    // If the configuration is not valid, return a 400.
+    if !is_valid {
+        return Err(AppError::BadRequest);
+    }
+
+    // Get the encoded user operation.
+    let sig = wallet_config.encode()?.to_hex_string();
+
+    Ok(Json::from(sig))
 }
 
 // Create tests for rundler user operation
