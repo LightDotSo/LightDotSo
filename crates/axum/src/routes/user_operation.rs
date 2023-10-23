@@ -35,7 +35,7 @@ use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
     signature::recover_ecdsa_signature,
-    types::{ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode},
+    types::{ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode, ECDSA_SIGNATURE_LENGTH},
     utils::render_subdigest,
 };
 use lightdotso_tracing::tracing::{error, info};
@@ -78,6 +78,17 @@ pub struct UserOperationPostRequestParams {
 }
 
 /// Owner
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationOwner {
+    /// The id of the owner.
+    id: String,
+    /// The address of the owner.
+    address: String,
+    /// The weight of the owner.
+    weight: i64,
+}
+
+/// Signature
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperationSignature {
     /// The id of the owner of the signature.
@@ -157,6 +168,13 @@ impl From<user_operation::Data> for UserOperation {
                 signature.into_iter().map(UserOperationSignature::from).collect()
             }),
         }
+    }
+}
+
+// Implement From<owner::Data> for Owner.
+impl From<owner::Data> for UserOperationOwner {
+    fn from(owner: owner::Data) -> Self {
+        Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
     }
 }
 
@@ -495,14 +513,10 @@ async fn v1_user_operation_check_handler(
     // If the user operation is not found, return a 404.
     let user_operation = user_operation.ok_or(AppError::NotFound)?;
 
-    let signatures = user_operation
-        .clone()
-        .signatures
-        .ok_or(AppError::NotFound)?
-        .into_iter()
-        .next()
-        .ok_or(AppError::NotFound)?;
-    info!(?signatures);
+    // Map the signatures into type from the user_operation
+    let signatures = user_operation.clone().signatures.map_or(Vec::new(), |signature| {
+        signature.into_iter().map(UserOperationSignature::from).collect()
+    });
 
     // Get the wallet from the database.
     let wallet = client
@@ -536,35 +550,48 @@ async fn v1_user_operation_check_handler(
 
     let owners = configuration.owners.ok_or(AppError::NotFound)?;
     info!(?owners);
+    // Map the signatures into type from the user_operation
+    let owners: Vec<UserOperationOwner> =
+        owners.into_iter().map(UserOperationOwner::from).collect();
 
     // Conver the signatures to SignerNode.
-    // let owner_nodes: Vec<SignerNode> = user_operation
-    //     .signatures
-    //     .iter()
-    //     .map(|sig| SignerNode {
-    //         signer: Some(Signer {
-    //             weight: Some(owner.weight),
-    //             leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
-    //                 address: sig.address,
-    //                 signature: sig.signature.hex_to_bytes().unwrap(),
-    //                 signature_type: sig.signature_type,
-    //             }),
-    //         }),
-    //         left: None,
-    //         right: None,
-    //     })
-    //     .collect();
+    let owner_nodes: Result<Vec<SignerNode>> = signatures
+        .iter()
+        .map(|sig| {
+            // Filter the owner with the same id from `owners`
+            let owner = owners
+                .iter()
+                .find(|&owner| owner.id == sig.owner_id)
+                .ok_or(eyre::eyre!("Owner not found"))?;
+
+            let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
+            signature_slice.copy_from_slice(&sig.signature.hex_to_bytes()?);
+
+            Ok(SignerNode {
+                signer: Some(Signer {
+                    weight: Some(owner.weight.try_into()?),
+                    leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+                        address: owner.address.parse()?,
+                        signature: signature_slice.try_into()?,
+                        signature_type: lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
+                    }),
+                }),
+                left: None,
+                right: None,
+            })
+        })
+        .collect();
 
     // Build the node tree.
-    // let tree = rooted_node_builder(owner_nodes)?;
+    let tree = rooted_node_builder(owner_nodes?)?;
 
     let wallet_config = WalletConfig {
         checkpoint: configuration.checkpoint as u32,
         threshold: configuration.threshold as u16,
         weight: 0,
         image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
-        tree: SignerNode { signer: None, left: None, right: None },
-        signature_type: 0,
+        tree,
+        signature_type: 1,
         internal_root: None,
     };
 
