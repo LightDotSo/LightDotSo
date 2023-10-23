@@ -505,7 +505,7 @@ async fn v1_user_operation_signature_handler(
     // Get the get query.
     let Query(query) = signature;
     let user_operation_hash = query.user_operation_hash.clone();
-    let signature_type = query.signature_type.unwrap_or(0);
+    let signature_type = query.signature_type.unwrap_or(1);
 
     // Get the user operations from the database.
     let user_operation = client
