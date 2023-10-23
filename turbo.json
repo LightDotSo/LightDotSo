@@ -73,5 +73,6 @@
     "test": {
       "dependsOn": ["^test"]
     }
-  }
+  },
+  "remoteCache": { "signature": true }
 }

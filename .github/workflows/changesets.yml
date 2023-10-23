@@ -45,7 +45,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Publish to NPM
         uses: changesets/action@v1
         continue-on-error: true

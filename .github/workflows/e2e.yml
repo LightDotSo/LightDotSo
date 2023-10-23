@@ -53,7 +53,7 @@ jobs:
           npx playwright install
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Docker Compose Up
         run: |
           docker-compose up -d --build
@@ -78,7 +78,7 @@ jobs:
           npx playwright install
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Docker Compose Up
         run: |
           docker-compose up -d --build
@@ -103,7 +103,7 @@ jobs:
           npx playwright install
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Docker Compose Up
         run: |
           docker-compose up -d --build

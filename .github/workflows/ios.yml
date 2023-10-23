@@ -71,7 +71,7 @@ jobs:
           xcode-version: "14.1"
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - name: Make iOS
         run: |
           make ios

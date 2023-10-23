@@ -31,7 +31,7 @@ jobs:
           version: nightly
       - name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
   node-lint:
     runs-on: ubuntu-latest
     timeout-minutes: 90

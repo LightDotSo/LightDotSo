@@ -113,7 +113,7 @@ jobs:
       - if: matrix.workspace
         name: Node Build
         run: |
-          pnpm turbo run build
+          pnpm run build:turbo
       - if: matrix.workspace
         name: Docker Compose Up
         run: |
