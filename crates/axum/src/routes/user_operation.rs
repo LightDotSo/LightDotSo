@@ -495,6 +495,15 @@ async fn v1_user_operation_check_handler(
     // If the user operation is not found, return a 404.
     let user_operation = user_operation.ok_or(AppError::NotFound)?;
 
+    let signatures = user_operation
+        .clone()
+        .signatures
+        .ok_or(AppError::NotFound)?
+        .into_iter()
+        .next()
+        .ok_or(AppError::NotFound)?;
+    info!(?signatures);
+
     // Get the wallet from the database.
     let wallet = client
         .client
@@ -524,6 +533,9 @@ async fn v1_user_operation_check_handler(
         .max_by_key(|configuration| configuration.checkpoint)
         .ok_or(AppError::NotFound)?;
     info!(?configuration);
+
+    let owners = configuration.owners.ok_or(AppError::NotFound)?;
+    info!(?owners);
 
     // Conver the signatures to SignerNode.
     // let owner_nodes: Vec<SignerNode> = user_operation
