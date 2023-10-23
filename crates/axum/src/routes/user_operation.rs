@@ -565,7 +565,14 @@ async fn v1_user_operation_check_handler(
                 .ok_or(eyre::eyre!("Owner not found"))?;
 
             let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
-            signature_slice.copy_from_slice(&sig.signature.hex_to_bytes()?);
+            let bytes = sig.signature.hex_to_bytes()?;
+            signature_slice.copy_from_slice(&bytes[0..bytes.len() - 1]);
+            let signature_type = match bytes.last() {
+                Some(&0x1) => {
+                    lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEIP712
+                }
+                _ => lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
+            };
 
             Ok(SignerNode {
                 signer: Some(Signer {
@@ -573,7 +580,7 @@ async fn v1_user_operation_check_handler(
                     leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
                         address: owner.address.parse()?,
                         signature: signature_slice.try_into()?,
-                        signature_type: lightdotso_solutions::types::ECDSASignatureType::ECDSASignatureTypeEthSign,
+                        signature_type,
                     }),
                 }),
                 left: None,
