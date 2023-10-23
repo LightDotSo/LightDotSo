@@ -69,6 +69,15 @@ pub struct PostQuery {
     pub chain_id: i64,
 }
 
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct SignatureQuery {
+    // The user operation hash to get.
+    pub user_operation_hash: String,
+    // The type of signature to get for.
+    pub signature_type: Option<i64>,
+}
+
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct UserOperationPostRequestParams {
     // The user operation to create.
@@ -195,7 +204,7 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/user_operation/get", get(v1_user_operation_get_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/create", post(v1_user_operation_post_handler))
-        .route("/user_operation/check", get(v1_user_operation_check_handler))
+        .route("/user_operation/signature", get(v1_user_operation_signature_handler))
 }
 
 /// Get a user operation
@@ -479,9 +488,9 @@ async fn v1_user_operation_post_handler(
 /// Check a user operation for its validity and return the computed signature if valid.
 #[utoipa::path(
         get,
-        path = "/user_operation/check",
+        path = "/user_operation/signature",
         params(
-            GetQuery
+            SignatureQuery
         ),
         responses(
             (status = 200, description = "User Operation signature returned successfully", body = String),
@@ -489,13 +498,14 @@ async fn v1_user_operation_post_handler(
         )
     )]
 #[autometrics]
-async fn v1_user_operation_check_handler(
-    get: Query<GetQuery>,
+async fn v1_user_operation_signature_handler(
+    signature: Query<SignatureQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<String> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = signature;
     let user_operation_hash = query.user_operation_hash.clone();
+    let signature_type = query.signature_type.unwrap_or(0);
 
     // Get the user operations from the database.
     let user_operation = client
@@ -598,7 +608,7 @@ async fn v1_user_operation_check_handler(
         weight: 0,
         image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
         tree,
-        signature_type: 1,
+        signature_type: signature_type as u8,
         internal_root: None,
     };
 
