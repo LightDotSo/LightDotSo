@@ -53,8 +53,9 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  owners  Owner[]
-  wallets Wallet[]
+  owners    Owner[]
+  wallets   Wallet[]
+  feedbacks Feedback[]
 }
 
 model VerificationRequest {
@@ -76,10 +77,12 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  configurations Configuration[]
-  transactions   Transaction[]
-  userOperations UserOperation[]
-  users          User[]
+  configurations  Configuration[]
+  transactions    Transaction[]
+  userOperations  UserOperation[]
+  users           User[]
+  notifications   Notification[]
+  supportRequests SupportRequest[]
 }
 
 model Configuration {
@@ -306,10 +309,14 @@ model Transaction {
 
   receipt Receipt?
 
+  notification   Notification? @relation(fields: [notificationId], references: [id])
+  notificationId String?
+
   userOperations      UserOperation[]
   transactionCategory TransactionCategory[]
 
   @@index([walletAddress])
+  @@index([notificationId])
 }
 
 model TransactionCategory {
@@ -367,11 +374,15 @@ model UserOperation {
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
+  notification   Notification? @relation(fields: [notificationId], references: [id])
+  notificationId String?
+
   signatures            Signature[]
   userOperationCategory UserOperationCategory[]
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])
+  @@index([notificationId])
   @@index([walletAddress])
 }
 
@@ -397,6 +408,55 @@ model Signature {
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String        @unique
 
+  notification   Notification? @relation(fields: [notificationId], references: [id])
+  notificationId String?
+
   @@index([ownerId])
   @@index([userOperationHash])
+  @@index([notificationId])
+}
+
+model Notification {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  readAt       DateTime?
+  readDeviceId String?
+
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
+
+  signatures     Signature[]
+  transactions   Transaction[]
+  userOperations UserOperation[]
+
+  @@index([walletAddress])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  text      String
+  emoji     String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
+}
+
+model SupportRequest {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  title       String
+  description String
+  area        String
+  severity    Int
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  @@index([walletAddress])
 }
