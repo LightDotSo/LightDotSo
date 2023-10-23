@@ -31,7 +31,13 @@ use lightdotso_common::{
 };
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
-use lightdotso_solutions::{signature::recover_ecdsa_signature, utils::render_subdigest};
+use lightdotso_solutions::{
+    builder::rooted_node_builder,
+    config::WalletConfig,
+    signature::recover_ecdsa_signature,
+    types::{ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode},
+    utils::render_subdigest,
+};
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::Direction;
 use rundler_types::UserOperation as RundlerUserOperation;
@@ -171,7 +177,7 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/user_operation/get", get(v1_user_operation_get_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/create", post(v1_user_operation_post_handler))
-        .route("/user_operation/check", get(v1_user_operation_get_handler))
+        .route("/user_operation/check", get(v1_user_operation_check_handler))
 }
 
 /// Get a user operation
@@ -460,7 +466,7 @@ async fn v1_user_operation_post_handler(
             GetQuery
         ),
         responses(
-            (status = 200, description = "User Operation returned successfully", body = UserOperation),
+            (status = 200, description = "User Operation signature returned successfully", body = String),
             (status = 404, description = "User Operation not found", body = UserOperationError),
         )
     )]
@@ -468,13 +474,14 @@ async fn v1_user_operation_post_handler(
 async fn v1_user_operation_check_handler(
     get: Query<GetQuery>,
     State(client): State<AppState>,
-) -> AppJsonResult<UserOperation> {
+) -> AppJsonResult<String> {
     // Get the get query.
     let Query(query) = get;
     let user_operation_hash = query.user_operation_hash.clone();
 
     // Get the user operations from the database.
     let user_operation = client
+        .clone()
         .client
         .unwrap()
         .user_operation()
@@ -488,10 +495,80 @@ async fn v1_user_operation_check_handler(
     // If the user operation is not found, return a 404.
     let user_operation = user_operation.ok_or(AppError::NotFound)?;
 
-    // Change the user operation to the format that the API expects.
-    let user_operation: UserOperation = user_operation.into();
+    // Get the wallet from the database.
+    let wallet = client
+        .client
+        .unwrap()
+        .wallet()
+        .find_unique(wallet::address::equals(user_operation.clone().sender))
+        .with(
+            wallet::configurations::fetch(vec![configuration::address::equals(
+                user_operation.clone().sender,
+            )])
+            .with(configuration::owners::fetch(vec![])),
+        )
+        .exec()
+        .await?;
+    info!(?wallet);
 
-    Ok(Json::from(user_operation))
+    // If the wallet is not found, return a 404.
+    let wallet = wallet.ok_or(AppError::NotFound)?;
+
+    // Parse the current wallet configuration.
+    // TODO: This should be the configuration with the signature required to upsert the most up to
+    // date configuration.
+    let configuration = wallet
+        .configurations
+        .ok_or(AppError::NotFound)?
+        .into_iter()
+        .max_by_key(|configuration| configuration.checkpoint)
+        .ok_or(AppError::NotFound)?;
+    info!(?configuration);
+
+    // Conver the signatures to SignerNode.
+    // let owner_nodes: Vec<SignerNode> = user_operation
+    //     .signatures
+    //     .iter()
+    //     .map(|sig| SignerNode {
+    //         signer: Some(Signer {
+    //             weight: Some(owner.weight),
+    //             leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+    //                 address: sig.address,
+    //                 signature: sig.signature.hex_to_bytes().unwrap(),
+    //                 signature_type: sig.signature_type,
+    //             }),
+    //         }),
+    //         left: None,
+    //         right: None,
+    //     })
+    //     .collect();
+
+    // Build the node tree.
+    // let tree = rooted_node_builder(owner_nodes)?;
+
+    let wallet_config = WalletConfig {
+        checkpoint: configuration.checkpoint as u32,
+        threshold: configuration.threshold as u16,
+        weight: 0,
+        image_hash: configuration.image_hash.hex_to_bytes32()?.into(),
+        tree: SignerNode { signer: None, left: None, right: None },
+        signature_type: 0,
+        internal_root: None,
+    };
+
+    // Check if the configuration is valid.
+    let is_valid = wallet_config.is_wallet_valid();
+    info!(?is_valid);
+
+    // If the configuration is not valid, return a 400.
+    if !is_valid {
+        return Err(AppError::BadRequest);
+    }
+
+    // Get the encoded user operation.
+    let sig = wallet_config.encode()?.to_hex_string();
+
+    Ok(Json::from(sig))
 }
 
 // Create tests for rundler user operation
