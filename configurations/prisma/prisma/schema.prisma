@@ -72,9 +72,10 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  owners    Owner[]
-  wallets   Wallet[]
-  feedbacks Feedback[]
+  owners        Owner[]
+  wallets       Wallet[]
+  feedbacks     Feedback[]
+  notifications Notification[]
 }
 
 model VerificationRequest {
@@ -445,11 +446,15 @@ model Notification {
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
   walletAddress String?
 
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
   signatures     Signature[]
   transactions   Transaction[]
   userOperations UserOperation[]
 
   @@index([walletAddress])
+  @@index([userId])
 }
 
 model Feedback {
