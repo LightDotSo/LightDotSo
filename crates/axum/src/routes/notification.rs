@@ -44,9 +44,9 @@ pub struct ListQuery {
 }
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub struct NotificationPostRequestParams {
+pub struct NotificationReadRequestParams {
     /// The array of the notifications to query.
-    pub notifications: Vec<NotificationRequest>,
+    pub notifications: Vec<NotificationReadRequest>,
 }
 
 /// Notification operation errors
@@ -68,7 +68,7 @@ pub(crate) struct Notification {
 
 /// Item to request.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct NotificationRequest {
+pub(crate) struct NotificationReadRequest {
     id: String,
 }
 
@@ -169,7 +169,7 @@ async fn v1_notification_list_handler(
 #[utoipa::path(
         post,
         path = "/notification/read",
-        request_body = NotificationPostRequestParams,
+        request_body = NotificationReadRequestParams,
         responses(
             (status = 200, description = "Notification created successfully", body = i64),
             (status = 500, description = "Notification internal error", body = UserOperationError),
@@ -178,7 +178,7 @@ async fn v1_notification_list_handler(
 #[autometrics]
 async fn v1_notification_read_handler(
     State(client): State<AppState>,
-    Json(params): Json<NotificationPostRequestParams>,
+    Json(params): Json<NotificationReadRequestParams>,
 ) -> AppJsonResult<i64> {
     // Get the notification from the post body.
     let notifications = params.notifications;
