@@ -49,11 +49,6 @@ export function TransactionDialog({
 
   const subdigest = subdigestOf(address, userOpHash, BigInt(chainId));
 
-  console.info("address", address);
-  console.info("userOpHash", toHex(userOpHash));
-  console.info("chainId", chainId);
-  console.info("subdigest", subdigest);
-
   const { data, signMessage } = useSignMessage({
     message: { raw: toBytes(subdigest) },
   });
@@ -135,14 +130,17 @@ export function TransactionDialog({
       </div>
       <div className="grid gap-4 py-4">
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code>userOperation: {serializeUserOperation(userOperation)}</code>
+          <code>
+            userOperation:{" "}
+            {userOperation && serializeUserOperation(userOperation)}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">chainId: {chainId}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            userOpHash: {toHex(userOpHash)}
+            userOpHash: {userOpHash && toHex(userOpHash)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -150,7 +148,7 @@ export function TransactionDialog({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            owners: {JSON.stringify(owners, null, 2)}
+            owners: {owners && JSON.stringify(owners, null, 2)}
           </code>
         </pre>
       </div>

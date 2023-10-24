@@ -59,7 +59,7 @@ export const handler = async (params: {
   // Parse
   // -------------------------------------------------------------------------
 
-  userOperation.match(
+  return userOperation.match(
     userOperation => {
       return { userOperation: userOperation };
     },
