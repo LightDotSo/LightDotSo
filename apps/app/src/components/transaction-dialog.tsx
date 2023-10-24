@@ -19,11 +19,11 @@ import { Button, toast } from "@lightdotso/ui";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
 import type { UserOperation } from "permissionless";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
-import { isAddressEqual, toBytes, toHex } from "viem";
+import { isAddressEqual, toBytes, hexToBytes, toHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 
 type TransactionDialogProps = {
@@ -35,7 +35,7 @@ type TransactionDialogProps = {
     weight: number;
   }[];
   userOperation: UserOperation;
-  userOpHash: Uint8Array;
+  userOpHash: Hex;
 };
 
 export function TransactionDialog({
@@ -47,7 +47,11 @@ export function TransactionDialog({
 }: TransactionDialogProps) {
   const { address: userAddress } = useAuth();
 
-  const subdigest = subdigestOf(address, userOpHash, BigInt(chainId));
+  const subdigest = subdigestOf(
+    address,
+    hexToBytes(userOpHash),
+    BigInt(chainId),
+  );
 
   const { data, signMessage } = useSignMessage({
     message: { raw: toBytes(subdigest) },

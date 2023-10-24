@@ -19,7 +19,6 @@ import { handler } from "@/handles/[address]";
 import { handler as userOpHandler } from "@/handles/transaction/[chainId]";
 import { parseNumber } from "@/handles/parsers/number";
 import type { Address } from "viem";
-import { hexToBytes } from "viem";
 
 export const revalidate = 0;
 
@@ -43,7 +42,7 @@ export default async function Page({
         owners={config.owners}
         address={params.address as Address}
         chainId={chainId}
-        userOpHash={hexToBytes(hash)}
+        userOpHash={hash}
         userOperation={userOperation}
       ></TransactionDialog>
     </Modal>

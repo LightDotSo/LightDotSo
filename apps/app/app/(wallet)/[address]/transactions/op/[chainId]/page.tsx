@@ -13,12 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// import { TransactionDialog } from "@/components/transaction-dialog";
+import { TransactionDialog } from "@/components/transaction-dialog";
 import { handler } from "@/handles/[address]";
 import { handler as userOpHandler } from "@/handles/transaction/[chainId]";
 import { parseNumber } from "@/handles/parsers/number";
-// import type { Address } from "viem";
-// import { hexToBytes } from "viem";
+import type { Address } from "viem";
 
 export const revalidate = 0;
 
@@ -33,18 +32,16 @@ export default async function Page({
   };
 }) {
   const { config } = await handler(params);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { userOperation, hash } = await userOpHandler(params, searchParams);
   const chainId = parseNumber(params.chainId);
 
   return (
-    <div>
-      <pre>
-        <code>{JSON.stringify(config, null, 2)}</code>
-        {/* <code>{JSON.stringify(userOperation, null, 2)}</code> */}
-        <code>{hash}</code>
-        <code>{chainId}</code>
-      </pre>
-    </div>
+    <TransactionDialog
+      owners={config.owners}
+      address={params.address as Address}
+      chainId={chainId}
+      userOpHash={hash}
+      userOperation={userOperation}
+    ></TransactionDialog>
   );
 }
