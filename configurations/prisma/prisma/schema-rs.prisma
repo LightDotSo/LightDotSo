@@ -367,8 +367,10 @@ model UserOperation {
   /// Data passed into the account along with the nonce during the verification step
   signature            Bytes?
 
-  chainId BigInt
-  status  UserOperationStatus @default(Proposed)
+  chainId    BigInt
+  /// The address of the entry point contract
+  entryPoint String              @default("0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789")
+  status     UserOperationStatus @default(Proposed)
 
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?      @unique
@@ -392,6 +394,7 @@ enum UserOperationStatus {
   Proposed
   Pending
   Executed
+  Reverted
 }
 
 model UserOperationCategory {
