@@ -443,6 +443,9 @@ importers:
       lucide-react:
         specifier: ^0.288.0
         version: 0.288.0(react@18.2.0)
+      neverthrow:
+        specifier: ^6.1.0
+        version: 6.1.0
       next:
         specifier: 13.5.6
         version: 13.5.6(patch_hash=juiw5wip7zv7g3r2isugivrwwm)(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)

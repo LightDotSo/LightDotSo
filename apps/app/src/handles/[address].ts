@@ -16,6 +16,7 @@
 import { getConfiguration, getWallet } from "@lightdotso/client";
 import { notFound } from "next/navigation";
 import { validateAddress } from "./validators/address";
+import { Result } from "neverthrow";
 
 export const handler = async (params: { address: string }) => {
   // -------------------------------------------------------------------------
@@ -28,7 +29,7 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // -------------------------------------------------------------------------
 
-  let wallet = await getWallet(
+  const wallet = await getWallet(
     {
       params: {
         query: {
@@ -39,7 +40,7 @@ export const handler = async (params: { address: string }) => {
     false,
   );
 
-  let config = await getConfiguration(
+  const config = await getConfiguration(
     { params: { query: { address: params.address } } },
     false,
   );
@@ -48,32 +49,17 @@ export const handler = async (params: { address: string }) => {
   // Parse
   // -------------------------------------------------------------------------
 
-  wallet.map(response => {
-    if (
-      response &&
-      response.response &&
-      response.response.status !== 200 &&
-      !response.data &&
-      response.data !== undefined
-    ) {
-      return notFound();
-    }
-  });
+  const res = Result.combineWithAllErrors([wallet, config]);
 
-  config.map(response => {
-    if (
-      response &&
-      response.response &&
-      response.response.status !== 200 &&
-      !response.data &&
-      response.data !== undefined
-    ) {
+  res.match(
+    ([wallet, config]) => {
+      return {
+        wallet: wallet,
+        config: config,
+      };
+    },
+    () => {
       return notFound();
-    }
-  });
-
-  return {
-    wallet: wallet._unsafeUnwrap().data!,
-    config: config._unsafeUnwrap().data!,
-  };
+    },
+  );
 };

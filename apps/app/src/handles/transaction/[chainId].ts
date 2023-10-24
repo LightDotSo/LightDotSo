@@ -59,7 +59,7 @@ export const handler = async (
   // Defaults
   // -------------------------------------------------------------------------
 
-  let op: UserOperation = {
+  const op: UserOperation = {
     sender: params.address as Address,
     paymasterAndData: "0x",
     nonce: 0n,
@@ -77,7 +77,7 @@ export const handler = async (
   // Fetch
   // -------------------------------------------------------------------------
 
-  let res = await getPaymasterGasAndPaymasterAndData(
+  const res = await getPaymasterGasAndPaymasterAndData(
     chainId,
     [
       {
@@ -97,31 +97,33 @@ export const handler = async (
     false,
   );
 
-  if (!res?.callGasLimit) {
-    throw notFound();
+  if (res.isErr()) {
+    return notFound();
   }
 
   // -------------------------------------------------------------------------
   // Parse
   // -------------------------------------------------------------------------
 
-  let userOperation = {
+  const parsedRes = res._unsafeUnwrap();
+
+  const userOperation = {
     ...op,
-    callGasLimit: fromHex(res.callGasLimit as Hex, { to: "bigint" }),
-    verificationGasLimit: fromHex(res.verificationGasLimit as Hex, {
+    callGasLimit: fromHex(parsedRes.callGasLimit as Hex, { to: "bigint" }),
+    verificationGasLimit: fromHex(parsedRes.verificationGasLimit as Hex, {
       to: "bigint",
     }),
-    preVerificationGas: fromHex(res.preVerificationGas as Hex, {
+    preVerificationGas: fromHex(parsedRes.preVerificationGas as Hex, {
       to: "bigint",
     }),
-    maxFeePerGas: fromHex(res.maxFeePerGas as Hex, { to: "bigint" }),
-    maxPriorityFeePerGas: fromHex(res.maxPriorityFeePerGas as Hex, {
+    maxFeePerGas: fromHex(parsedRes.maxFeePerGas as Hex, { to: "bigint" }),
+    maxPriorityFeePerGas: fromHex(parsedRes.maxPriorityFeePerGas as Hex, {
       to: "bigint",
     }),
-    paymasterAndData: res.paymasterAndData as Hex,
+    paymasterAndData: parsedRes.paymasterAndData as Hex,
   };
 
-  let hash = getUserOperationHash({
+  const hash = getUserOperationHash({
     userOperation,
     entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
     chainId,

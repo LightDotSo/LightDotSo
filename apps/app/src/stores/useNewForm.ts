@@ -99,17 +99,16 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
     });
 
     // Parse the response and set the address
-    res.map(response => {
-      if (response && response.response && response.response.status === 200) {
-        // assuming address is a field in formValues
+    res.match(
+      data => {
         set(() => ({
-          address: response.data?.address,
+          address: data?.address,
         }));
-      } else {
-        // throw error
+      },
+      () => {
         throw new Error("Error creating wallet");
-      }
-    });
+      },
+    );
 
     // Set loading state to false after async operation is finished
     set({ isLoading: false });

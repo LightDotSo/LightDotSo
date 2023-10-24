@@ -82,7 +82,7 @@ export function WalletSwitcher({
       // Return if the response is 200
       return res.match(
         data => {
-          return data?.data;
+          return data;
         },
         err => {
           console.error(err);

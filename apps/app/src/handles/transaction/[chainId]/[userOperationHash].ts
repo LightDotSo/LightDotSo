@@ -44,7 +44,7 @@ export const handler = async (params: {
   // Fetch
   // -------------------------------------------------------------------------
 
-  let userOperation = await getUserOperation(
+  const userOperation = await getUserOperation(
     {
       params: {
         query: {
@@ -59,17 +59,12 @@ export const handler = async (params: {
   // Parse
   // -------------------------------------------------------------------------
 
-  userOperation.map(response => {
-    if (
-      response &&
-      response.response &&
-      response.response.status !== 200 &&
-      !response.data &&
-      response.data !== undefined
-    ) {
+  userOperation.match(
+    userOperation => {
+      return { userOperation: userOperation };
+    },
+    () => {
       return notFound();
-    }
-  });
-
-  return { userOperation: userOperation._unsafeUnwrap().data! };
+    },
+  );
 };

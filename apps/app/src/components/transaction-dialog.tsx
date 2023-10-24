@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
+import { Button, toast } from "@lightdotso/ui";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
 import type { UserOperation } from "permissionless";
@@ -23,13 +23,7 @@ import type { Address } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
-import {
-  hashMessage,
-  isAddressEqual,
-  recoverMessageAddress,
-  toBytes,
-  toHex,
-} from "viem";
+import { isAddressEqual, toBytes, toHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 
 type TransactionDialogProps = {
@@ -76,15 +70,6 @@ export function TransactionDialog({
     const fetchUserOp = async () => {
       if (!data || !owner) return;
 
-      console.info("hash:", hashMessage(subdigest));
-      console.info("hashed:", hashMessage({ raw: toBytes(subdigest) }));
-      const recoveredAddress = await recoverMessageAddress({
-        message: subdigest,
-        signature: data,
-      });
-      console.info("signed:", data);
-      console.info("recoveredAddress:", recoveredAddress);
-
       const res = await createUserOperation({
         params: {
           query: {
@@ -118,7 +103,21 @@ export function TransactionDialog({
         },
       });
 
-      console.info(res);
+      res.match(
+        res => {
+          toast({
+            title: "You submitted the userOperation result",
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                <code className="text-white">
+                  {JSON.stringify(res, null, 2)}
+                </code>
+              </pre>
+            ),
+          });
+        },
+        () => {},
+      );
     };
 
     fetchUserOp();
