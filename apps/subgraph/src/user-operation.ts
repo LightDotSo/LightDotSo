@@ -35,7 +35,7 @@ export function handleUserOperationFromCalldata(
   // Decode the function parameters to hex
   const decodedFunctionParameters = Bytes.fromHexString(functionParameters);
   log.info("decodedFunctionParameters: {}", [
-    decodedFunctionParameters.toString(),
+    decodedFunctionParameters.toHexString(),
   ]);
 
   // Decode the hex function parameters to the user operation params
@@ -61,6 +61,23 @@ export function handleUserOperationFromCalldata(
       userOperationStructTuple = userOpStructTupletArray[i];
     }
   }
+
+  log.info(
+    "userOperationStructTuple: sender: {} nonce: {} initCode: {} callData: {} callGasLimit: {} verificationGasLimit: {} preVerificationGas: {} maxFeePerGas: {} maxPriorityFeePerGas: {} paymasterAndData: {} signature: {}",
+    [
+      userOperationStructTuple.sender.toHexString(),
+      userOperationStructTuple.nonce.toHexString(),
+      userOperationStructTuple.initCode.toHexString(),
+      userOperationStructTuple.callData.toHexString(),
+      userOperationStructTuple.callGasLimit.toString(),
+      userOperationStructTuple.verificationGasLimit.toString(),
+      userOperationStructTuple.preVerificationGas.toString(),
+      userOperationStructTuple.maxFeePerGas.toString(),
+      userOperationStructTuple.maxPriorityFeePerGas.toString(),
+      userOperationStructTuple.paymasterAndData.toHexString(),
+      userOperationStructTuple.signature.toHexString(),
+    ],
+  );
 
   return userOperationStructTuple;
 }
