@@ -97,9 +97,12 @@ use utoipa_swagger_ui::SwaggerUi;
     tags(
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
+        (name = "feedback", description = "Feedback API"),
         (name = "health", description = "Health API"),
+        (name = "notification", description = "Notification API"),
         (name = "wallet", description = "Wallet API"),
         (name = "signature", description = "Signature API"),
+        (name = "support_request", description = "Support Request API"),
         (name = "transaction", description = "Transaction API"),
         (name = "user_operation", description = "User Operation API"),
     )
