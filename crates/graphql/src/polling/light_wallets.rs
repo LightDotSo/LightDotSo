@@ -85,6 +85,8 @@ pub enum LightWalletOrderBy {
     BlockTimestamp,
     #[cynic(rename = "transactionHash")]
     TransactionHash,
+    #[cynic(rename = "userOperations")]
+    UserOperations,
 }
 
 #[derive(cynic::Scalar, Debug, Clone)]
