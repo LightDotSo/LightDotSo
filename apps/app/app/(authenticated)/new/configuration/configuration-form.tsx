@@ -35,7 +35,6 @@ import {
   Label,
   Separator,
   TooltipProvider,
-  toast,
 } from "@lightdotso/ui";
 import { steps } from "../root";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -51,6 +50,7 @@ import { cn } from "@lightdotso/utils";
 import { normalize } from "viem/ens";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
 import * as z from "zod";
+import { successToast } from "@/utils/toast";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -418,14 +418,7 @@ export function ConfigurationForm() {
   }
 
   function onSubmit(data: NewFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    successToast(data);
     navigateToStep();
   }
 

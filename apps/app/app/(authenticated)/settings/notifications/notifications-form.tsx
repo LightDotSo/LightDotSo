@@ -33,8 +33,8 @@ import {
   RadioGroup,
   RadioGroupItem,
   Switch,
-  toast,
 } from "@lightdotso/ui";
+import { successToast } from "@/utils/toast";
 
 const notificationsFormSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
@@ -64,14 +64,7 @@ export function NotificationsForm() {
   });
 
   function onSubmit(data: NotificationsFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    successToast(data);
   }
 
   return (

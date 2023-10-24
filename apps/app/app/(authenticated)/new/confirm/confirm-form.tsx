@@ -30,7 +30,6 @@ import {
   FormControl,
   FormLabel,
   TooltipProvider,
-  toast,
 } from "@lightdotso/ui";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect } from "react";
@@ -46,6 +45,7 @@ import { publicClient } from "@/clients/public";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
+import { errToast, infoToast, successToast } from "@/utils/toast";
 
 type NewFormValues = z.infer<typeof newFormStoreSchema>;
 
@@ -147,24 +147,16 @@ export function ConfirmForm() {
   const onSubmit = useCallback(
     () => {
       // Navigate to the next step
-      toast({
-        title: "Creating wallet...",
-      });
+      infoToast("Success!");
       // Set the form values
       // setFormValues(values);
       fetchToCreate(true)
         .then(() => {
-          toast({
-            title: "Wallet created!",
-            description: "You can now use your wallet.",
-          });
+          successToast("You can now use your wallet.");
           router.push("/");
         })
         .catch(() => {
-          toast({
-            title: "Uh oh! Something went wrong.",
-            description: "There was a problem with your request.",
-          });
+          errToast("There was a problem with your request.");
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
