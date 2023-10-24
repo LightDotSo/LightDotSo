@@ -172,6 +172,7 @@ export function WalletSwitcher({
                         <PlaceholderOrb address={wallet.address} />
                       </Avatar>
                       {wallet.name}
+                      <span className="hidden">{wallet.address}</span>
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
