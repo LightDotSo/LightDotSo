@@ -33,7 +33,7 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes32 hashed = keccak256(message);
 
         // Sign the hash
-        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey);
+        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey, false);
 
         // Pack the signature
         bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);
@@ -53,7 +53,7 @@ contract ERC1271FuzzTest is BaseFuzzTest {
         bytes32 hashed = keccak256(message);
 
         // Sign the hash
-        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey);
+        bytes memory sig = LightWalletUtils.signDigest(vm, hashed, address(account), userKey, false);
 
         // Pack the signature
         bytes memory signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);

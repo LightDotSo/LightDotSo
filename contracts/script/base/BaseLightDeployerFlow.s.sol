@@ -218,7 +218,8 @@ abstract contract BaseLightDeployerFlow is BaseLightDeployer, Script {
         UserOperation memory op = constructUserOperation(expectedAddress, 0, initCode, callData, true);
 
         // Sign the UserOperation
-        bytes memory sig = LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey);
+        bytes memory sig =
+            LightWalletUtils.signDigest(vm, entryPoint.getUserOpHash(op), expectedAddress, deployerKey, false);
 
         // Construct the UserOperation
         op.signature = LightWalletUtils.packLegacySignature(sig, weight, threshold, checkpoint);

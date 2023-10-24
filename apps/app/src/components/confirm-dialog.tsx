@@ -90,6 +90,9 @@ export function ConfirmDialog({
       return;
     }
 
+    // Log the signature
+    console.info("sig", toHex(sig));
+
     // Sned the user operation
     const res = await sendUserOperation(chainId, [
       {
@@ -143,7 +146,7 @@ export function ConfirmDialog({
       </div>
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
         <Button disabled={!isValid} onClick={() => handleConfirm()}>
-          Sign Confirm
+          Confirm
         </Button>
       </div>
     </>
