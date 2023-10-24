@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { BigInt, Bytes, ethereum, log } from "@graphprotocol/graph-ts";
-
 import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple } from "../generated/EntryPointv0.6.0/EntryPoint";
 
 export function handleUserOperationFromCalldata(
