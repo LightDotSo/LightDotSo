@@ -105,7 +105,11 @@ export function handleLightWalletUserOperationEvent(
     op.save();
 
     // Add the user operation to the LightWallet
-    lightWallet.userOperations?.push(event.params.userOpHash);
+    if (lightWallet.userOperations == null) {
+      [event.params.userOpHash];
+    } else {
+      lightWallet.userOperations!.push(event.params.userOpHash);
+    }
     lightWallet.save();
 
     if (event.params.success) {
@@ -167,7 +171,11 @@ export function handleLightWalletUserOperationRevertReason(
     op.save();
 
     // Add the user operation to the LightWallet
-    lightWallet.userOperations?.push(event.params.userOpHash);
+    if (lightWallet.userOperations == null) {
+      [event.params.userOpHash];
+    } else {
+      lightWallet.userOperations!.push(event.params.userOpHash);
+    }
     lightWallet.save();
 
     let entity = new UserOperationRevertReason(
