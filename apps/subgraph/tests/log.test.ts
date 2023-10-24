@@ -16,6 +16,8 @@
 import { test } from "matchstick-as/assembly/index";
 import { log } from "matchstick-as/assembly/log";
 
+// From: https://thegraph.com/docs/en/developing/unit-testing-framework
+
 test("Success", () => {
   log.success("Success!", []);
 });

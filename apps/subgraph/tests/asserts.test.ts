@@ -16,6 +16,9 @@
 import { describe, test, assert } from "matchstick-as";
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
 
+// From: https://github.com/LimeChain/demo-subgraph/blob/f43cb41a6bae431ac7f014eab8dbad1a4f13f041/tests/asserts.test.ts
+// License: MIT
+
 // The following tests are meant to check the assert functions work as expected
 // Currently there's no way to test the exact message printed by the assert functions
 // But we can observe it printed in the console when running the tests
