@@ -123,6 +123,7 @@ type Withdrawn @entity(immutable: true) {
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
 type UserOperation @entity {
   id: Bytes! # bytes32 (hash)
+  index: BigInt!
   sender: Bytes! # address
   nonce: BigInt! # uint256
   initCode: Bytes! #bytes

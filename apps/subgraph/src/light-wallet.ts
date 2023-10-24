@@ -30,6 +30,7 @@ import { lightWalletFactories } from "./config";
 import {
   getUserOpCount,
   getUserOpRevertCount,
+  getUserOpSuccessCount,
   getWalletCount,
   incrementUserOpCount,
   incrementUserOpRevertCount,
@@ -81,6 +82,8 @@ export function handleLightWalletUserOperationEvent(
   if (lightWallet != null) {
     // Increment the user operation count
     incrementUserOpCount();
+    // Increment the user operation revert count
+    incrementUserOpSuccessCount();
 
     // -------------------------------------------------------------------------
     // BOILERPLATE
@@ -88,6 +91,7 @@ export function handleLightWalletUserOperationEvent(
 
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
+    op.index = getUserOpCount();
     let struct = handleUserOperationFromCalldata(
       event.transaction.input.toHexString(),
       event.params.nonce,
@@ -125,7 +129,7 @@ export function handleLightWalletUserOperationEvent(
     }
 
     let entity = new UserOperationEvent(event.params.userOpHash);
-    entity.index = getUserOpCount();
+    entity.index = getUserOpSuccessCount();
     entity.userOpHash = event.params.userOpHash;
     entity.sender = event.params.sender;
     entity.paymaster = event.params.paymaster;
@@ -153,6 +157,8 @@ export function handleLightWalletUserOperationRevertReason(
 
   // Handle if the account exists
   if (lightWallet != null) {
+    // Increment the user operation count
+    incrementUserOpCount();
     // Increment the user operation revert count
     incrementUserOpRevertCount();
 
@@ -162,6 +168,7 @@ export function handleLightWalletUserOperationRevertReason(
 
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
+    op.index = getUserOpCount();
     let struct = handleUserOperationFromCalldata(
       event.transaction.input.toHexString(),
       event.params.nonce,
