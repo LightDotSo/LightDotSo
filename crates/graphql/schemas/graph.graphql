@@ -1561,6 +1561,7 @@ type Subscription {
 
 type UserOperation {
   id: Bytes!
+  index: BigInt!
   sender: Bytes!
   nonce: BigInt!
   initCode: Bytes!
@@ -1741,6 +1742,7 @@ enum UserOperationEvent_orderBy {
   transactionHash
   userOperation
   userOperation__id
+  userOperation__index
   userOperation__sender
   userOperation__nonce
   userOperation__initCode
@@ -1892,6 +1894,7 @@ enum UserOperationRevertReason_orderBy {
   transactionHash
   userOperation
   userOperation__id
+  userOperation__index
   userOperation__sender
   userOperation__nonce
   userOperation__initCode
@@ -1917,6 +1920,14 @@ input UserOperation_filter {
   id_not_in: [Bytes!]
   id_contains: Bytes
   id_not_contains: Bytes
+  index: BigInt
+  index_not: BigInt
+  index_gt: BigInt
+  index_lt: BigInt
+  index_gte: BigInt
+  index_lte: BigInt
+  index_in: [BigInt!]
+  index_not_in: [BigInt!]
   sender: Bytes
   sender_not: Bytes
   sender_gt: Bytes
@@ -2038,6 +2049,7 @@ input UserOperation_filter {
 
 enum UserOperation_orderBy {
   id
+  index
   sender
   nonce
   initCode
