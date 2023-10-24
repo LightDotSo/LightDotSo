@@ -51,7 +51,7 @@ export const handler = async (params: { address: string }) => {
 
   const res = Result.combineWithAllErrors([wallet, config]);
 
-  res.match(
+  return res.match(
     ([wallet, config]) => {
       return {
         wallet: wallet,
