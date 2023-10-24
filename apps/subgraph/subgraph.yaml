@@ -24,6 +24,8 @@ dataSources:
         - UserOperationEvent
         - UserOperationRevertReason
         - Withdrawn
+        - UserOperation
+        - Counter
       abis:
         - name: EntryPoint
           file: ./abis/EntryPoint.json

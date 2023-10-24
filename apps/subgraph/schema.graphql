@@ -80,7 +80,7 @@ type StakeWithdrawn @entity(immutable: true) {
 }
 
 type UserOperationEvent @entity(immutable: true) {
-  id: Bytes!
+  id: Bytes! # bytes32 (hash)
   index: BigInt!
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
@@ -92,10 +92,12 @@ type UserOperationEvent @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+
+  userOperation: UserOperation!
 }
 
 type UserOperationRevertReason @entity(immutable: true) {
-  id: Bytes!
+  id: Bytes! # bytes32 (hash)
   index: BigInt!
   userOpHash: Bytes! # bytes32
   sender: Bytes! # address
@@ -104,6 +106,8 @@ type UserOperationRevertReason @entity(immutable: true) {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+
+  userOperation: UserOperation!
 }
 
 type Withdrawn @entity(immutable: true) {
@@ -116,8 +120,30 @@ type Withdrawn @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+# Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
+type UserOperation @entity {
+  id: Bytes! # bytes32 (hash)
+  sender: Bytes! # address
+  nonce: BigInt! # uint256
+  initCode: Bytes! #bytes
+  callData: Bytes! #bytes
+  callGasLimit: BigInt! #uint256
+  verificationGasLimit: BigInt! #uint256
+  preVerificationGas: BigInt! #uint256
+  maxFeePerGas: BigInt! #uint256
+  maxPriorityFeePerGas: BigInt! #uint256
+  paymasterAndData: Bytes! #bytes
+  signature: Bytes! #bytes
+
+  entryPoint: Bytes! # address
+
+  lightWallet: LightWallet @derivedFrom(field: "userOperations")
+  userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
+  userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
+}
+
 type LightWallet @entity {
-  id: Bytes!
+  id: Bytes! # address of the wallet
   index: BigInt!
   address: Bytes! # address
   imageHash: Bytes # bytes32
@@ -128,6 +154,8 @@ type LightWallet @entity {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+
+  userOperations: [UserOperation!]
 }
 
 type Counter @entity {

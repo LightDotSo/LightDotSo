@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Bytes } from "@graphprotocol/graph-ts";
+import { Bytes, ethereum, log } from "@graphprotocol/graph-ts";
 import {
   AccountDeployed as AccountDeployedEvent,
   UserOperationEvent as UserOperationEventEvent,
@@ -79,6 +79,7 @@ export function handleLightWalletUserOperationEvent(
   if (lightWallet != null) {
     // Increment the user operation count
     incrementUserOpCount();
+
     if (event.params.success) {
       incrementUserOpSuccessCount();
     }
@@ -127,4 +128,39 @@ export function handleLightWalletUserOperationRevertReason(
 
     entity.save();
   }
+}
+
+export function handleUserOperationFromCalldata(
+  callData: String,
+): ethereum.Value {
+  // Decode the user operation from the input
+  log.info("callData: {}", [callData.toString()]);
+
+  // Get the function selector
+  let functionSelector = callData.substring(0, 10);
+  log.info("functionSelector: {}", [functionSelector.toString()]);
+
+  // Get the function parameters
+  let functionParameters = callData.substring(10);
+  log.info("functionParameters: {}", [functionParameters.toString()]);
+
+  // Decode the function parameters to hex
+  const decodedFunctionParameters = Bytes.fromHexString(functionParameters);
+  log.info("decodedFunctionParameters: {}", [
+    decodedFunctionParameters.toString(),
+  ]);
+
+  // Decode the hex function parameters to the user operation params
+  const decoded = ethereum.decode(
+    "(address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[]",
+    decodedFunctionParameters,
+  );
+
+  // If failed to decode, return null
+  if (decoded == null) {
+    return ethereum.Value.fromBytes(Bytes.fromHexString("0x"));
+  }
+
+  // Return the decoded user operation params
+  return decoded;
 }
