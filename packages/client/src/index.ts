@@ -279,9 +279,9 @@ export const getUserOperations = async (
 };
 
 export const getLlama = async (address: string) => {
-  return zodFetch(
-    `https://api.llamafolio.com/balances/${address}`,
-    llamaSchema,
+  return ResultAsync.fromPromise(
+    zodFetch(`https://api.llamafolio.com/balances/${address}`, llamaSchema),
+    () => new Error("Database error"),
   );
 };
 

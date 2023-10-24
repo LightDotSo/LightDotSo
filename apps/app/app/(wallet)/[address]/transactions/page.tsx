@@ -54,7 +54,7 @@ export default async function Page({
               <div className="ml-auto font-medium">
                 <Button asChild>
                   <Link
-                    href={`/${params.address}/transaction/${userOperation.chain_id}/${userOperation.hash}`}
+                    href={`/${params.address}/transactions/op/${userOperation.chain_id}/${userOperation.hash}`}
                   >
                     Confirm
                   </Link>
