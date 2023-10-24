@@ -82,6 +82,10 @@ export function handleLightWalletUserOperationEvent(
     // Increment the user operation count
     incrementUserOpCount();
 
+    // -------------------------------------------------------------------------
+    // BOILERPLATE
+    // -------------------------------------------------------------------------
+
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
     let struct = handleUserOperationFromCalldata(
@@ -111,6 +115,10 @@ export function handleLightWalletUserOperationEvent(
       lightWallet.userOperations!.push(event.params.userOpHash);
     }
     lightWallet.save();
+
+    // -------------------------------------------------------------------------
+    // BOILERPLATE
+    // -------------------------------------------------------------------------
 
     if (event.params.success) {
       incrementUserOpSuccessCount();
@@ -148,6 +156,10 @@ export function handleLightWalletUserOperationRevertReason(
     // Increment the user operation revert count
     incrementUserOpRevertCount();
 
+    // -------------------------------------------------------------------------
+    // BOILERPLATE
+    // -------------------------------------------------------------------------
+
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
     let struct = handleUserOperationFromCalldata(
@@ -177,6 +189,10 @@ export function handleLightWalletUserOperationRevertReason(
       lightWallet.userOperations!.push(event.params.userOpHash);
     }
     lightWallet.save();
+
+    // -------------------------------------------------------------------------
+    // BOILERPLATE
+    // -------------------------------------------------------------------------
 
     let entity = new UserOperationRevertReason(
       event.transaction.hash.concatI32(event.logIndex.toI32()),
