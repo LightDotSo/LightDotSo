@@ -86,7 +86,7 @@ jobs:
           pnpm graph auth --product hosted-service ${{ secrets.GRAPH_API_TOKEN }}
           pnpm run deploy:hosted
       - name: Deploy Satsuma
-        working-directory: apps/satsuma
+        working-directory: apps/subgraph
         run: |
           pnpm run deploy:satsuma
         env:

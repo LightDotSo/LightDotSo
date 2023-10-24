@@ -19,79 +19,27 @@ use eyre::Result;
 #[cynic::schema("graph")]
 mod schema {}
 
+#[derive(cynic::QueryVariables, Debug)]
+pub struct GetUserOperationsQueryVariables {
+    pub min_block: BigInt,
+    pub min_index: BigInt,
+}
+
 #[derive(cynic::QueryFragment, Debug)]
-#[cynic(graphql_type = "Query")]
+#[cynic(graphql_type = "Query", variables = "GetUserOperationsQueryVariables")]
 pub struct GetUserOperationsQuery {
-    #[arguments(first: 300)]
-    pub user_operations: Vec<UserOperation>,
-    pub _meta: Option<Meta>,
-}
-
-#[derive(cynic::QueryFragment, Debug)]
-#[cynic(graphql_type = "_Meta_")]
-pub struct Meta {
-    pub block: Block,
-}
-
-#[derive(cynic::QueryFragment, Debug)]
-#[cynic(graphql_type = "_Block_")]
-pub struct Block {
-    pub number: i32,
-}
-
-#[derive(cynic::QueryFragment, Debug)]
-pub struct UserOperation {
-    pub id: Bytes,
-    pub sender: Bytes,
-    pub nonce: BigInt,
-    pub init_code: Bytes,
-    pub call_data: Bytes,
-    pub call_gas_limit: BigInt,
-    pub verification_gas_limit: BigInt,
-    pub pre_verification_gas: BigInt,
-    pub max_fee_per_gas: BigInt,
-    pub max_priority_fee_per_gas: BigInt,
-    pub paymaster_and_data: Bytes,
-    pub signature: Bytes,
-    pub entry_point: Bytes,
-    pub user_operation_event: Option<UserOperationEvent>,
-    pub user_operation_revert_reason: Option<UserOperationRevertReason>,
-    pub light_wallet: LightWallet,
-}
-
-#[derive(cynic::QueryFragment, Debug)]
-pub struct UserOperationRevertReason {
-    pub id: Bytes,
-    pub index: BigInt,
-    pub user_op_hash: Bytes,
-    pub sender: Bytes,
-    pub nonce: BigInt,
-    pub revert_reason: Bytes,
-    pub transaction_hash: Bytes,
+    #[arguments(first: 300, where: { blockNumber_gt: $min_block, index_gt: $min_index }, orderBy: "index")]
+    pub user_operation_events: Vec<UserOperationEvent>,
 }
 
 #[derive(cynic::QueryFragment, Debug)]
 pub struct UserOperationEvent {
-    pub id: Bytes,
-    pub index: BigInt,
-    pub user_op_hash: Bytes,
-    pub paymaster: Bytes,
-    pub nonce: BigInt,
-    pub transaction_hash: Bytes,
-}
-
-#[derive(cynic::QueryFragment, Debug)]
-pub struct LightWallet {
-    pub id: Bytes,
-    pub index: BigInt,
-    pub address: Bytes,
-    pub image_hash: Option<Bytes>,
+    #[cynic(rename = "index")]
+    pub id: BigInt,
     pub user_op_hash: Bytes,
     pub sender: Bytes,
-    pub factory: Bytes,
     pub paymaster: Bytes,
-    pub block_number: BigInt,
-    pub block_timestamp: BigInt,
+    pub nonce: BigInt,
     pub transaction_hash: Bytes,
 }
 
