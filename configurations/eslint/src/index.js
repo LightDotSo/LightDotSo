@@ -52,11 +52,12 @@ module.exports = {
     ecmaVersion: 2021,
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "neverthrow"],
   rules: {
     "import/no-named-as-default": "off",
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "react/jsx-closing-bracket-location": ["error", "line-aligned"],
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
