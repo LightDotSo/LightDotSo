@@ -110,7 +110,7 @@ export function handleLightWalletUserOperationEvent(
 
     // Add the user operation to the LightWallet
     if (lightWallet.userOperations == null) {
-      [event.params.userOpHash];
+      lightWallet.userOperations = [event.params.userOpHash];
     } else {
       lightWallet.userOperations!.push(event.params.userOpHash);
     }
@@ -184,7 +184,7 @@ export function handleLightWalletUserOperationRevertReason(
 
     // Add the user operation to the LightWallet
     if (lightWallet.userOperations == null) {
-      [event.params.userOpHash];
+      lightWallet.userOperations = [event.params.userOpHash];
     } else {
       lightWallet.userOperations!.push(event.params.userOpHash);
     }
