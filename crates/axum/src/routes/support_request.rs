@@ -87,7 +87,7 @@ pub(crate) fn router() -> Router<AppState> {
         params(
             PostQuery
         ),
-        request_body = Support_requestPostRequestParams,
+        request_body = SupportRequestPostRequestParams,
         responses(
             (status = 200, description = "Support_request created successfully", body = UserOperation),
             (status = 500, description = "Support_request internal error", body = UserOperationError),
