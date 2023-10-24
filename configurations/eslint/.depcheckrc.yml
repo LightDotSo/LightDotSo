@@ -15,3 +15,4 @@ ignores:
   - eslint-plugin-react-hooks
   - eslint-plugin-simple-import-sort
   - eslint-plugin-tailwindcss
+  - eslint-plugin-neverthrow
