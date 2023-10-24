@@ -43,6 +43,12 @@ pub struct ListQuery {
     pub limit: Option<i64>,
 }
 
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub struct NotificationPostRequestParams {
+    /// The array of the notifications to query.
+    pub notifications: Vec<NotificationRequest>,
+}
+
 /// Notification operation errors
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(crate) enum NotificationError {
@@ -60,6 +66,12 @@ pub(crate) struct Notification {
     id: String,
 }
 
+/// Item to request.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct NotificationRequest {
+    id: String,
+}
+
 // Implement From<notification::Data> for Notification.
 impl From<notification::Data> for Notification {
     fn from(notification: notification::Data) -> Self {
@@ -72,6 +84,7 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/notification/get", get(v1_notification_get_handler))
         .route("/notification/list", get(v1_notification_list_handler))
+        .route("/notification/read", get(v1_notification_read_handler))
 }
 
 /// Get a notification
@@ -148,6 +161,42 @@ async fn v1_notification_list_handler(
     // Change the notifications to the format that the API expects.
     let notifications: Vec<Notification> =
         notifications.into_iter().map(Notification::from).collect();
+
+    Ok(Json::from(notifications))
+}
+
+/// Read a list of notifications
+#[utoipa::path(
+        post,
+        path = "/notification/read",
+        request_body = NotificationPostRequestParams,
+        responses(
+            (status = 200, description = "Notification created successfully", body = i64),
+            (status = 500, description = "Notification internal error", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+async fn v1_notification_read_handler(
+    State(client): State<AppState>,
+    Json(params): Json<NotificationPostRequestParams>,
+) -> AppJsonResult<i64> {
+    // Get the notification from the post body.
+    let notifications = params.notifications;
+
+    // Create the notification the database.
+    let notifications = client
+        .client
+        .unwrap()
+        .notification()
+        .update_many(
+            vec![lightdotso_prisma::notification::id::contains(
+                notifications.iter().map(|notification| notification.clone().id).collect(),
+            )],
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?notifications);
 
     Ok(Json::from(notifications))
 }
