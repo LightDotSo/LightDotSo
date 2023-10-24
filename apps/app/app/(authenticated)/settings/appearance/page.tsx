@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Separator } from "@lightdotso/ui";
-import { AppearanceForm } from "./AppearanceForm";
+import { AppearanceForm } from "@/app/(authenticated)/settings/appearance/appearance-form";
 import { SettingsSection } from "@/app/(authenticated)/settings/section";
 
 export default function SettingsProfilePage() {
