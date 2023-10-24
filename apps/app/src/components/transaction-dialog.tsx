@@ -15,21 +15,15 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
+import { Button, toast } from "@lightdotso/ui";
 import { useSignMessage } from "wagmi";
 import { serializeUserOperation } from "@/utils/userOp";
 import type { UserOperation } from "permissionless";
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
-import {
-  hashMessage,
-  isAddressEqual,
-  recoverMessageAddress,
-  toBytes,
-  toHex,
-} from "viem";
+import { isAddressEqual, toBytes, hexToBytes, toHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 
 type TransactionDialogProps = {
@@ -41,7 +35,7 @@ type TransactionDialogProps = {
     weight: number;
   }[];
   userOperation: UserOperation;
-  userOpHash: Uint8Array;
+  userOpHash: Hex;
 };
 
 export function TransactionDialog({
@@ -53,12 +47,11 @@ export function TransactionDialog({
 }: TransactionDialogProps) {
   const { address: userAddress } = useAuth();
 
-  const subdigest = subdigestOf(address, userOpHash, BigInt(chainId));
-
-  console.info("address", address);
-  console.info("userOpHash", toHex(userOpHash));
-  console.info("chainId", chainId);
-  console.info("subdigest", subdigest);
+  const subdigest = subdigestOf(
+    address,
+    hexToBytes(userOpHash),
+    BigInt(chainId),
+  );
 
   const { data, signMessage } = useSignMessage({
     message: { raw: toBytes(subdigest) },
@@ -75,15 +68,6 @@ export function TransactionDialog({
   useEffect(() => {
     const fetchUserOp = async () => {
       if (!data || !owner) return;
-
-      console.info("hash:", hashMessage(subdigest));
-      console.info("hashed:", hashMessage({ raw: toBytes(subdigest) }));
-      const recoveredAddress = await recoverMessageAddress({
-        message: subdigest,
-        signature: data,
-      });
-      console.info("signed:", data);
-      console.info("recoveredAddress:", recoveredAddress);
 
       const res = await createUserOperation({
         params: {
@@ -118,7 +102,21 @@ export function TransactionDialog({
         },
       });
 
-      console.info(res);
+      res.match(
+        res => {
+          toast({
+            title: "You submitted the userOperation result",
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                <code className="text-white">
+                  {JSON.stringify(res, null, 2)}
+                </code>
+              </pre>
+            ),
+          });
+        },
+        () => {},
+      );
     };
 
     fetchUserOp();
@@ -136,14 +134,17 @@ export function TransactionDialog({
       </div>
       <div className="grid gap-4 py-4">
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code>userOperation: {serializeUserOperation(userOperation)}</code>
+          <code>
+            userOperation:{" "}
+            {userOperation && serializeUserOperation(userOperation)}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">chainId: {chainId}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            userOpHash: {toHex(userOpHash)}
+            userOpHash: {userOpHash && toHex(userOpHash)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
@@ -151,7 +152,7 @@ export function TransactionDialog({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            owners: {JSON.stringify(owners, null, 2)}
+            owners: {owners && JSON.stringify(owners, null, 2)}
           </code>
         </pre>
       </div>

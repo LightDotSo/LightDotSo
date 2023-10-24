@@ -16,7 +16,7 @@
 import createClient from "openapi-fetch";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { paths, Without, XOR, OneOf } from "./v1";
-import { ResultAsync } from "neverthrow";
+import { ResultAsync, err, ok } from "neverthrow";
 import { zodFetch, zodJsonRpcFetch } from "./zod";
 import { llamaSchema } from "@lightdotso/schemas";
 import { z } from "zod";
@@ -71,7 +71,9 @@ export const getConfiguration = async (
       params,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const getWallet = async (
@@ -91,7 +93,9 @@ export const getWallet = async (
       params,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const getWallets = async (
@@ -117,7 +121,9 @@ export const getWallets = async (
       params,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const createWallet = async ({
@@ -145,7 +151,9 @@ export const createWallet = async ({
       body,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const createUserOperation = async ({
@@ -193,7 +201,9 @@ export const createUserOperation = async ({
       body,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const getUserOperation = async (
@@ -213,7 +223,9 @@ export const getUserOperation = async (
       params,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const getSignatureUserOperation = async (
@@ -233,7 +245,9 @@ export const getSignatureUserOperation = async (
       params,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const getUserOperations = async (
@@ -259,13 +273,15 @@ export const getUserOperations = async (
       params,
     }),
     () => new Error("Database error"),
-  );
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
 };
 
 export const getLlama = async (address: string) => {
-  return zodFetch(
-    `https://api.llamafolio.com/balances/${address}`,
-    llamaSchema,
+  return ResultAsync.fromPromise(
+    zodFetch(`https://api.llamafolio.com/balances/${address}`, llamaSchema),
+    () => new Error("Database error"),
   );
 };
 
@@ -276,11 +292,14 @@ const EthChainIdResultSchema = z
   });
 
 export const getChainId = async () => {
-  return zodJsonRpcFetch(
-    "https://rpc.light.so/1",
-    "eth_chainId",
-    [],
-    EthChainIdResultSchema,
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      "https://rpc.light.so/1",
+      "eth_chainId",
+      [],
+      EthChainIdResultSchema,
+    ),
+    () => new Error("Database error"),
   );
 };
 
@@ -317,11 +336,14 @@ export const sendUserOperation = async (
   params: SendUserOperationRequestType,
   isPublic?: boolean,
 ) => {
-  return zodJsonRpcFetch(
-    rpcClient(chainId, isPublic),
-    "eth_sendUserOperation",
-    params,
-    SendUserOperationResponse,
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, isPublic),
+      "eth_sendUserOperation",
+      params,
+      SendUserOperationResponse,
+    ),
+    () => new Error("Database error"),
   );
 };
 
@@ -359,10 +381,13 @@ export const getPaymasterGasAndPaymasterAndData = async (
   params: PaymasterGasAndPaymasterAndDataRequestType,
   isPublic?: boolean,
 ) => {
-  return zodJsonRpcFetch(
-    rpcClient(chainId, isPublic),
-    "paymaster_requestGasAndPaymasterAndData",
-    params,
-    PaymasterGasAndPaymasterAndDataResponse,
+  return ResultAsync.fromPromise(
+    zodJsonRpcFetch(
+      rpcClient(chainId, isPublic),
+      "paymaster_requestGasAndPaymasterAndData",
+      params,
+      PaymasterGasAndPaymasterAndDataResponse,
+    ),
+    () => new Error("Database error"),
   );
 };

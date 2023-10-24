@@ -34,34 +34,39 @@ export default async function Page({
     false,
   );
 
-  if (res.isErr() || !res.value.data) return;
-
-  return (
-    <div className="max-w-2xl space-y-8">
-      {res.value.data.map(userOperation => (
-        <div key={userOperation.hash} className="flex items-center">
-          <Avatar className="h-9 w-9">
-            <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
-          </Avatar>
-          <div className="ml-4 space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {userOperation.sender}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {userOperation.hash}
-            </p>
-          </div>
-          <div className="ml-auto font-medium">
-            <Button asChild>
-              <Link
-                href={`/${params.address}/transaction/${userOperation.chain_id}/${userOperation.hash}`}
-              >
-                Confirm
-              </Link>
-            </Button>
-          </div>
+  return res.match(
+    res => {
+      return (
+        <div className="max-w-2xl space-y-8">
+          {res.map(userOperation => (
+            <div key={userOperation.hash} className="flex items-center">
+              <Avatar className="h-9 w-9">
+                <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
+              </Avatar>
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {userOperation.sender}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {userOperation.hash}
+                </p>
+              </div>
+              <div className="ml-auto font-medium">
+                <Button asChild>
+                  <Link
+                    href={`/${params.address}/transactions/op/${userOperation.chain_id}/${userOperation.hash}`}
+                  >
+                    Confirm
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      );
+    },
+    _ => {
+      return null;
+    },
   );
 }

@@ -83,42 +83,47 @@ export function ConfirmDialog({
     const sigRes = await getSignatureUserOperation({
       params: { query: { user_operation_hash: userOperation.hash } },
     });
-    const sig = sigRes._unsafeUnwrap().data;
-    console.info(sig);
 
-    if (!sig) {
-      return;
-    }
+    await sigRes.match(
+      async sig => {
+        // Sned the user operation
+        const res = await sendUserOperation(chainId, [
+          {
+            sender: userOperation.sender,
+            nonce: toHex(userOperation.nonce),
+            initCode: userOperation.init_code,
+            callData: userOperation.call_data,
+            paymasterAndData: userOperation.paymaster_and_data,
+            callGasLimit: toHex(userOperation.call_gas_limit),
+            verificationGasLimit: toHex(userOperation.verification_gas_limit),
+            preVerificationGas: toHex(userOperation.pre_verification_gas),
+            maxFeePerGas: toHex(userOperation.max_fee_per_gas),
+            maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
+            signature: sig,
+          },
+          "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+        ]);
 
-    // Log the signature
-    console.info("sig", toHex(sig));
-
-    // Sned the user operation
-    const res = await sendUserOperation(chainId, [
-      {
-        sender: userOperation.sender,
-        nonce: toHex(userOperation.nonce),
-        initCode: userOperation.init_code,
-        callData: userOperation.call_data,
-        paymasterAndData: userOperation.paymaster_and_data,
-        callGasLimit: toHex(userOperation.call_gas_limit),
-        verificationGasLimit: toHex(userOperation.verification_gas_limit),
-        preVerificationGas: toHex(userOperation.pre_verification_gas),
-        maxFeePerGas: toHex(userOperation.max_fee_per_gas),
-        maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
-        signature: sig,
+        toast({
+          title: "You submitted the userOperation result",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{JSON.stringify(res, null, 2)}</code>
+            </pre>
+          ),
+        });
       },
-      "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-    ]);
-
-    toast({
-      title: "You submitted the userOperation result",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(res, null, 2)}</code>
-        </pre>
-      ),
-    });
+      async err => {
+        toast({
+          title: "You submitted the userOperation result",
+          description: (
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              <code className="text-white">{JSON.stringify(err, null, 2)}</code>
+            </pre>
+          ),
+        });
+      },
+    );
   }, [chainId, userOperation]);
 
   return (

@@ -19,5 +19,5 @@ import { getChainId } from "../src"; // Replace with your actual file path
 test("getChainId", async () => {
   const result = await getChainId();
 
-  expect(result).toBe("0x1");
+  expect(result._unsafeUnwrap()).toBe("0x1");
 });

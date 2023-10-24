@@ -82,7 +82,7 @@ export function WalletSwitcher({
       // Return if the response is 200
       return res.match(
         data => {
-          return data?.data;
+          return data;
         },
         err => {
           console.error(err);
@@ -172,6 +172,7 @@ export function WalletSwitcher({
                         <PlaceholderOrb address={wallet.address} />
                       </Avatar>
                       {wallet.name}
+                      <span className="hidden">{wallet.address}</span>
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",

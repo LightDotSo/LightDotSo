@@ -27,11 +27,16 @@ export default async function Page({
 
   const res = await getLlama(params.address);
 
-  return (
-    <div>
-      <pre>
-        <code>{JSON.stringify(res, null, 2)}</code>
-      </pre>
-    </div>
+  res.match(
+    data => {
+      return (
+        <div>
+          <pre>
+            <code>{JSON.stringify(data, null, 2)}</code>
+          </pre>
+        </div>
+      );
+    },
+    () => {},
   );
 }
