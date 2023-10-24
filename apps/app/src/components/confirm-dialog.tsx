@@ -151,7 +151,7 @@ export function ConfirmDialog({
       </div>
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
         <Button disabled={!isValid} onClick={() => handleConfirm()}>
-          Sign Confirm
+          Confirm
         </Button>
       </div>
     </>
