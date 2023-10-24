@@ -25,6 +25,7 @@ import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
 import { isAddressEqual, toBytes, hexToBytes, toHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
+import { errToast } from "@/utils/toast";
 
 type TransactionDialogProps = {
   address: Address;
@@ -84,7 +85,7 @@ export function TransactionDialog({
           },
           user_operation: {
             chain_id: Number(chainId),
-            hash: toHex(userOpHash),
+            hash: userOpHash,
             nonce: Number(userOperation.nonce),
             init_code: userOperation.initCode,
             sender: userOperation.sender,
@@ -115,7 +116,9 @@ export function TransactionDialog({
             ),
           });
         },
-        () => {},
+        err => {
+          errToast(err);
+        },
       );
     };
 
@@ -144,7 +147,7 @@ export function TransactionDialog({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
-            userOpHash: {userOpHash && toHex(userOpHash)}
+            userOpHash: {userOpHash}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

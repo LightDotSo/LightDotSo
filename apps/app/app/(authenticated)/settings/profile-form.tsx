@@ -37,8 +37,8 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
-  toast,
 } from "@lightdotso/ui";
+import { successToast } from "@/utils/toast";
 
 const profileFormSchema = z.object({
   username: z
@@ -88,14 +88,7 @@ export function ProfileForm() {
   });
 
   function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    successToast(data);
   }
 
   return (

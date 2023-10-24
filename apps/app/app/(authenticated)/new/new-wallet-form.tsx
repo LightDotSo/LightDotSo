@@ -36,7 +36,6 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-  toast,
 } from "@lightdotso/ui";
 import { steps } from "./root";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -52,6 +51,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { NotionLinks } from "@lightdotso/const";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema } from "@/schemas/newForm";
+import { successToast } from "@/utils/toast";
 
 type NewFormValues = z.infer<typeof newFormSchema>;
 
@@ -118,14 +118,7 @@ export function NewWalletForm() {
   }, [nameParam]);
 
   function onSubmit(data: NewFormValues) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+    successToast(data);
     navigateToStep();
   }
 

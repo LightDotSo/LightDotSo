@@ -13,19 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
-import { AppearanceForm } from "./AppearanceForm";
-import { SettingsSection } from "@/app/(authenticated)/settings/section";
+import { toast } from "@lightdotso/ui";
 
-export default function SettingsProfilePage() {
-  return (
-    <SettingsSection
-      title="Appearance"
-      description="Customize the appearance of the app. Automatically switch between day
-          and night themes."
-    >
-      <Separator />
-      <AppearanceForm />
-    </SettingsSection>
-  );
-}
+export const errToast = (err: any) =>
+  toast({
+    title: "You have encountered an error:",
+    description: (
+      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <code className="text-red-300">{JSON.stringify(err, null, 2)}</code>
+      </pre>
+    ),
+  });
+
+export const successToast = (data: any) =>
+  toast({
+    title: "You submitted the following values:",
+    description: (
+      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+      </pre>
+    ),
+  });
+
+export const infoToast = (title: string) =>
+  toast({
+    title,
+  });

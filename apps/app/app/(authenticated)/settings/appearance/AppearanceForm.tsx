@@ -12,14 +12,11 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
 import { cn } from "@lightdotso/utils";
 import {
   Button,
@@ -34,24 +31,8 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@lightdotso/ui";
-import { successToast } from "@/utils/toast";
-
-const appearanceFormSchema = z.object({
-  theme: z.enum(["light", "dark"], {
-    required_error: "Please select a theme.",
-  }),
-  font: z.enum(["inter", "manrope", "system"], {
-    invalid_type_error: "Select a font",
-    required_error: "Please select a font.",
-  }),
-});
-
-type AppearanceFormValues = z.infer<typeof appearanceFormSchema>;
-
-// This can come from your database or API.
-const defaultValues: Partial<AppearanceFormValues> = {
-  theme: "light",
-};
+import type { AppearanceFormValues } from "./appearance-form";
+import { appearanceFormSchema } from "./appearance-form";
 
 export function AppearanceForm() {
   const form = useForm<AppearanceFormValues>({
