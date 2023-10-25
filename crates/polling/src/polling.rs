@@ -21,6 +21,7 @@ use chrono::Timelike;
 use ethers::{
     prelude::{Http, Provider},
     providers::Middleware,
+    utils::to_checksum,
 };
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
@@ -39,7 +40,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::PrismaClient;
-use lightdotso_redis::{get_redis_client, redis::Client};
+use lightdotso_redis::{get_redis_client, redis::Client, wallet::add_to_wallets};
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{sync::Arc, time::Duration};
 
@@ -206,7 +207,10 @@ impl Polling {
                             self.chain_id, user_operation_event
                         );
 
-                        if self.redis_client.is_some() {}
+                        // Add the wallet to the cache.
+                        if self.redis_client.is_some() {
+                            let _ = self.add_to_wallets(op);
+                        }
 
                         // Create the user operation in the db.
                         let res = self.db_upsert_user_operation(op).await;
@@ -269,6 +273,25 @@ impl Polling {
         }
         .retry(&ExponentialBuilder::default())
         .await
+    }
+
+    /// Add a new wallet in the cache
+    #[autometrics]
+    pub fn add_to_wallets(
+        &self,
+        user_operation: &UserOperation,
+    ) -> Result<(), lightdotso_redis::redis::RedisError> {
+        let address = user_operation.sender.0.parse().unwrap();
+        let client = self.redis_client.clone().unwrap();
+        let con = client.get_connection();
+        if let Ok(mut con) = con {
+            { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
+                .retry(&ExponentialBuilder::default())
+                .call()
+        } else {
+            error!("Redis connection error, {:?}", con.err());
+            Ok(())
+        }
     }
 
     /// Add a new tx in the queue
