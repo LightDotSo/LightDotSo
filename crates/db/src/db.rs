@@ -19,7 +19,7 @@ use axum::extract::Json;
 use ethers::{types::H256, utils::to_checksum};
 use lightdotso_prisma::{
     log, log_topic, receipt, transaction, transaction_category, user_operation, wallet,
-    PrismaClient,
+    PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -250,7 +250,7 @@ pub async fn create_transaction_with_log_receipt(
 
 #[allow(clippy::too_many_arguments)]
 #[autometrics]
-pub async fn create_user_operation(
+pub async fn upsert_user_operation(
     db: Database,
     hash: ethers::types::H256,
     sender: ethers::types::H160,
@@ -270,22 +270,26 @@ pub async fn create_user_operation(
 
     let user_operation = db
         .user_operation()
-        .create(
-            format!("{:?}", hash),
-            to_checksum(&sender, None),
-            nonce,
-            init_code.to_vec(),
-            call_data.to_vec(),
-            call_gas_limit,
-            verification_gas_limit,
-            pre_verification_gas,
-            max_fee_per_gas,
-            max_priority_fee_per_gas,
-            paymaster_and_data.to_vec(),
-            chain_id,
-            to_checksum(&entry_point, None),
-            wallet::address::equals(to_checksum(&sender, None)),
-            vec![],
+        .upsert(
+            user_operation::hash::equals(format!("{:?}", hash)),
+            user_operation::create(
+                format!("{:?}", hash),
+                to_checksum(&sender, None),
+                nonce,
+                init_code.to_vec(),
+                call_data.to_vec(),
+                call_gas_limit,
+                verification_gas_limit,
+                pre_verification_gas,
+                max_fee_per_gas,
+                max_priority_fee_per_gas,
+                paymaster_and_data.to_vec(),
+                chain_id,
+                to_checksum(&entry_point, None),
+                wallet::address::equals(to_checksum(&sender, None)),
+                vec![],
+            ),
+            vec![user_operation::status::set(UserOperationStatus::Executed)],
         )
         .exec()
         .await?;

@@ -25,7 +25,7 @@ use ethers::{
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
-    db::{create_client, create_user_operation},
+    db::{create_client, upsert_user_operation},
     error::DbError,
 };
 use lightdotso_graphql::polling::{
@@ -201,7 +201,7 @@ impl Polling {
                         );
 
                         // Create the user operation in the db.
-                        let res = self.db_create_user_operation(op).await;
+                        let res = self.db_upsert_user_operation(op).await;
                         if res.is_err() {
                             error!("db_create_wallet error: {:?}", res);
                         }
@@ -231,7 +231,7 @@ impl Polling {
 
     /// Create a new wallet in the db
     #[autometrics]
-    pub async fn db_create_user_operation(
+    pub async fn db_upsert_user_operation(
         &self,
         user_operation: &UserOperation,
     ) -> Result<Json<lightdotso_prisma::user_operation::Data>, DbError> {
@@ -240,7 +240,7 @@ impl Polling {
 
         {
             || {
-                create_user_operation(
+                upsert_user_operation(
                     db_client.clone(),
                     user_operation.id.0.parse().unwrap(),
                     user_operation.sender.0.parse().unwrap(),
