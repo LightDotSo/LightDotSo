@@ -19,10 +19,15 @@ use eyre::Result;
 #[cynic::schema("graph")]
 mod schema {}
 
+#[derive(cynic::QueryVariables, Debug)]
+pub struct GetUserOperationsQueryVariables {
+    pub min_index: BigInt,
+}
+
 #[derive(cynic::QueryFragment, Debug)]
-#[cynic(graphql_type = "Query")]
+#[cynic(graphql_type = "Query", variables = "GetUserOperationsQueryVariables")]
 pub struct GetUserOperationsQuery {
-    #[arguments(first: 300)]
+    #[arguments(first: 300, where: { index_gt: $min_index }, orderBy: "index")]
     pub user_operations: Vec<UserOperation>,
     pub _meta: Option<Meta>,
 }
@@ -42,6 +47,7 @@ pub struct Block {
 #[derive(cynic::QueryFragment, Debug)]
 pub struct UserOperation {
     pub id: Bytes,
+    pub index: BigInt,
     pub sender: Bytes,
     pub nonce: BigInt,
     pub init_code: Bytes,
@@ -131,7 +137,6 @@ mod test {
         // and also helps ensure we don't change queries by mistake
 
         let query = build_user_operations_query(GetUserOperationsQueryVariables {
-            min_block: BigInt("0".to_string()),
             min_index: BigInt("0".to_string()),
         });
 
@@ -141,11 +146,8 @@ mod test {
     #[test]
     fn test_running_query() {
         let result = run_user_operations_query(
-            137,
-            GetUserOperationsQueryVariables {
-                min_block: BigInt("0".to_string()),
-                min_index: BigInt("0".to_string()),
-            },
+            1,
+            GetUserOperationsQueryVariables { min_index: BigInt("0".to_string()) },
         )
         .unwrap();
         if result.errors.is_some() {

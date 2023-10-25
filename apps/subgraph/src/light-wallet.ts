@@ -107,6 +107,9 @@ export function handleLightWalletUserOperationEvent(
     op.maxPriorityFeePerGas = struct.maxPriorityFeePerGas;
     op.paymasterAndData = struct.paymasterAndData;
     op.signature = struct.signature;
+    op.blockNumber = event.block.number;
+    op.blockTimestamp = event.block.timestamp;
+    op.transactionHash = event.transaction.hash;
 
     op.entryPoint = event.address;
 
@@ -184,6 +187,9 @@ export function handleLightWalletUserOperationRevertReason(
     op.maxPriorityFeePerGas = struct.maxPriorityFeePerGas;
     op.paymasterAndData = struct.paymasterAndData;
     op.signature = struct.signature;
+    op.blockNumber = event.block.number;
+    op.blockTimestamp = event.block.timestamp;
+    op.transactionHash = event.transaction.hash;
 
     op.entryPoint = event.address;
 

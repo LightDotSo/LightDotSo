@@ -2,14 +2,57 @@
 source: crates/graphql/src/polling/user_operations.rs
 expression: query.query
 ---
-query GetUserOperationsQuery($minBlock: BigInt!, $minIndex: BigInt!) {
-  userOperationEvents(first: 300, where: {blockNumber_gt: $minBlock, index_gt: $minIndex, }, orderBy: index) {
+query GetUserOperationsQuery($minIndex: BigInt!) {
+  userOperations(first: 300, where: {index_gt: $minIndex, }, orderBy: index) {
+    id
     index
-    userOpHash
     sender
-    paymaster
     nonce
-    transactionHash
+    initCode
+    callData
+    callGasLimit
+    verificationGasLimit
+    preVerificationGas
+    maxFeePerGas
+    maxPriorityFeePerGas
+    paymasterAndData
+    signature
+    entryPoint
+    userOperationEvent {
+      id
+      index
+      userOpHash
+      paymaster
+      nonce
+      transactionHash
+    }
+    userOperationRevertReason {
+      id
+      index
+      userOpHash
+      sender
+      nonce
+      revertReason
+      transactionHash
+    }
+    lightWallet {
+      id
+      index
+      address
+      imageHash
+      userOpHash
+      sender
+      factory
+      paymaster
+      blockNumber
+      blockTimestamp
+      transactionHash
+    }
+  }
+  _meta {
+    block {
+      number
+    }
   }
 }
 

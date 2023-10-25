@@ -135,6 +135,9 @@ type UserOperation @entity {
   maxPriorityFeePerGas: BigInt! #uint256
   paymasterAndData: Bytes! #bytes
   signature: Bytes! #bytes
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
 
   entryPoint: Bytes! # address
 
