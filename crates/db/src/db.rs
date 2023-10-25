@@ -263,6 +263,7 @@ pub async fn create_user_operation(
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: ethers::types::Bytes,
+    entry_point: ethers::types::H160,
     chain_id: i64,
 ) -> AppJsonResult<user_operation::Data> {
     info!("Creating user operation");
@@ -282,6 +283,7 @@ pub async fn create_user_operation(
             max_priority_fee_per_gas,
             paymaster_and_data.to_vec(),
             chain_id,
+            to_checksum(&entry_point, None),
             wallet::address::equals(to_checksum(&sender, None)),
             vec![],
         )

@@ -450,6 +450,7 @@ async fn v1_user_operation_post_handler(
                     user_operation.max_priority_fee_per_gas,
                     user_operation.paymaster_and_data.hex_to_bytes()?,
                     chain_id,
+                    "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
                     wallet::address::equals(wallet.address),
                     vec![],
                 )
