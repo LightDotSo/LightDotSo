@@ -18,7 +18,8 @@ use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{types::H256, utils::to_checksum};
 use lightdotso_prisma::{
-    log, log_topic, receipt, transaction, transaction_category, wallet, PrismaClient,
+    log, log_topic, receipt, transaction, transaction_category, user_operation, wallet,
+    PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -245,6 +246,56 @@ pub async fn create_transaction_with_log_receipt(
         .await?;
 
     Ok(Json::from(tx))
+}
+
+#[allow(clippy::too_many_arguments)]
+#[autometrics]
+pub async fn upsert_user_operation(
+    db: Database,
+    hash: ethers::types::H256,
+    sender: ethers::types::H160,
+    nonce: i64,
+    init_code: ethers::types::Bytes,
+    call_data: ethers::types::Bytes,
+    call_gas_limit: i64,
+    verification_gas_limit: i64,
+    pre_verification_gas: i64,
+    max_fee_per_gas: i64,
+    max_priority_fee_per_gas: i64,
+    paymaster_and_data: ethers::types::Bytes,
+    signature: ethers::types::Bytes,
+    entry_point: ethers::types::H160,
+    chain_id: i64,
+) -> AppJsonResult<user_operation::Data> {
+    info!("Creating user operation");
+
+    let user_operation = db
+        .user_operation()
+        .upsert(
+            user_operation::hash::equals(format!("{:?}", hash)),
+            user_operation::create(
+                format!("{:?}", hash),
+                to_checksum(&sender, None),
+                nonce,
+                init_code.to_vec(),
+                call_data.to_vec(),
+                call_gas_limit,
+                verification_gas_limit,
+                pre_verification_gas,
+                max_fee_per_gas,
+                max_priority_fee_per_gas,
+                paymaster_and_data.to_vec(),
+                chain_id,
+                to_checksum(&entry_point, None),
+                wallet::address::equals(to_checksum(&sender, None)),
+                vec![user_operation::signature::set(Some(signature.to_vec()))],
+            ),
+            vec![user_operation::status::set(UserOperationStatus::Executed)],
+        )
+        .exec()
+        .await?;
+
+    Ok(Json::from(user_operation))
 }
 
 // Tests
