@@ -15,6 +15,7 @@
 
 use crate::config::PollingArgs;
 use autometrics::autometrics;
+use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use chrono::Timelike;
 use ethers::{
@@ -23,10 +24,15 @@ use ethers::{
 };
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
-use lightdotso_db::db::create_client;
+use lightdotso_db::{
+    db::{create_client, create_user_operation},
+    error::DbError,
+};
 use lightdotso_graphql::polling::{
     min_block::run_min_block_query,
-    user_operations::{run_user_operations_query, BigInt, GetUserOperationsQueryVariables},
+    user_operations::{
+        run_user_operations_query, BigInt, GetUserOperationsQueryVariables, UserOperation,
+    },
 };
 use lightdotso_kafka::{
     get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
@@ -79,10 +85,10 @@ impl Polling {
             match result {
                 Ok(block) => {
                     let now = chrono::Utc::now();
-                    trace!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+                    // trace!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
 
-                    // Info if the second is 0.
-                    if now.second() == 0 {
+                    // Info if the second is divisible by 30
+                    if now.second() % 30 == 0 {
                         info!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
                     }
 
@@ -100,7 +106,7 @@ impl Polling {
                     }
 
                     // Sleep for 1 second.
-                    tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+                    tokio::time::sleep(std::time::Duration::from_secs(2)).await;
                 }
                 Err(e) => {
                     error!("run_task {} panicked: {:?}", self.chain_id, e);
@@ -195,10 +201,10 @@ impl Polling {
                         );
 
                         // Create the user operation in the db.
-                        // let res = self.db_create_wallet(wallet).await;
-                        // if res.is_err() {
-                        //     error!("db_create_wallet error: {:?}", res);
-                        // }
+                        let res = self.db_create_user_operation(op).await;
+                        if res.is_err() {
+                            error!("db_create_wallet error: {:?}", res);
+                        }
 
                         // Send the tx queue on all modes.
                         if self.kafka_client.is_some() && self.provider.is_some() {
@@ -224,16 +230,36 @@ impl Polling {
     }
 
     /// Create a new wallet in the db
-    // TODO Blocked by `solutions` api to generate the Configuration
-    // #[autometrics]
-    // pub async fn db_create_wallet(
-    //     &self,
-    //     wallet: &LightWallet,
-    // ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> { { || { create_wallet(
-    //   self.db_client.clone(), wallet.address.0.parse().unwrap(), self.chain_id as i64,
-    //   wallet.factory.0.parse().unwrap(), Some(TESTNET_CHAIN_IDS.contains(&self.chain_id)), ) } }
-    //   .retry(&ExponentialBuilder::default()) .await
-    // }
+    #[autometrics]
+    pub async fn db_create_user_operation(
+        &self,
+        user_operation: &UserOperation,
+    ) -> Result<Json<lightdotso_prisma::user_operation::Data>, DbError> {
+        let db_client = self.db_client.clone();
+        let chain_id = self.chain_id;
+
+        {
+            || {
+                create_user_operation(
+                    db_client.clone(),
+                    user_operation.id.0.parse().unwrap(),
+                    user_operation.sender.0.parse().unwrap(),
+                    user_operation.nonce.0.parse().unwrap(),
+                    user_operation.init_code.clone().0.into_bytes().into(),
+                    user_operation.call_data.clone().0.into_bytes().into(),
+                    user_operation.call_gas_limit.0.parse().unwrap(),
+                    user_operation.verification_gas_limit.0.parse().unwrap(),
+                    user_operation.pre_verification_gas.0.parse().unwrap(),
+                    user_operation.max_fee_per_gas.0.parse().unwrap(),
+                    user_operation.max_priority_fee_per_gas.0.parse().unwrap(),
+                    user_operation.paymaster_and_data.clone().0.into_bytes().into(),
+                    chain_id as i64,
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await
+    }
 
     /// Add a new tx in the queue
     #[autometrics]
