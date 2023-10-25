@@ -24,6 +24,7 @@ use ethers::{
     utils::to_checksum,
 };
 use eyre::Result;
+use lightdotso_common::traits::HexToBytes;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
     db::{create_client, create_wallet_with_configuration, upsert_user_operation},
@@ -39,7 +40,7 @@ use lightdotso_kafka::{
     get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
-use lightdotso_prisma::PrismaClient;
+use lightdotso_prisma::{PrismaClient, UserOperationStatus};
 use lightdotso_redis::{get_redis_client, redis::Client, wallet::add_to_wallets};
 use lightdotso_solutions::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
@@ -265,16 +266,17 @@ impl Polling {
                     user_operation.id.0.parse().unwrap(),
                     user_operation.sender.0.parse().unwrap(),
                     user_operation.nonce.0.parse().unwrap(),
-                    user_operation.init_code.clone().0.into_bytes().into(),
-                    user_operation.call_data.clone().0.into_bytes().into(),
+                    user_operation.init_code.clone().0.hex_to_bytes().unwrap().into(),
+                    user_operation.call_data.clone().0.hex_to_bytes().unwrap().into(),
                     user_operation.call_gas_limit.0.parse().unwrap(),
                     user_operation.verification_gas_limit.0.parse().unwrap(),
                     user_operation.pre_verification_gas.0.parse().unwrap(),
                     user_operation.max_fee_per_gas.0.parse().unwrap(),
                     user_operation.max_priority_fee_per_gas.0.parse().unwrap(),
-                    user_operation.paymaster_and_data.clone().0.into_bytes().into(),
-                    user_operation.signature.clone().0.into_bytes().into(),
+                    user_operation.paymaster_and_data.clone().0.hex_to_bytes().unwrap().into(),
+                    user_operation.signature.clone().0.hex_to_bytes().unwrap().into(),
                     user_operation.entry_point.0.parse().unwrap(),
+                    UserOperationStatus::Executed,
                     chain_id as i64,
                 )
             }

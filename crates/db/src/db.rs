@@ -265,6 +265,7 @@ pub async fn upsert_user_operation(
     paymaster_and_data: ethers::types::Bytes,
     signature: ethers::types::Bytes,
     entry_point: ethers::types::H160,
+    status: UserOperationStatus,
     chain_id: i64,
 ) -> AppJsonResult<user_operation::Data> {
     info!("Creating user operation");
@@ -288,7 +289,10 @@ pub async fn upsert_user_operation(
                 chain_id,
                 to_checksum(&entry_point, None),
                 wallet::address::equals(to_checksum(&sender, None)),
-                vec![user_operation::signature::set(Some(signature.to_vec()))],
+                vec![
+                    user_operation::signature::set(Some(signature.to_vec())),
+                    user_operation::status::set(status),
+                ],
             ),
             vec![user_operation::status::set(UserOperationStatus::Executed)],
         )

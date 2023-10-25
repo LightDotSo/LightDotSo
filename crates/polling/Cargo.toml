@@ -16,6 +16,7 @@
   clap = { workspace = true, features = ["derive"] }
   ethers = { workspace = true }
   eyre = { workspace = true }
+  lightdotso-common = { workspace = true }
   lightdotso-constants = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
