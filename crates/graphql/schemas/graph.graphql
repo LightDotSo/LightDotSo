@@ -1573,6 +1573,9 @@ type UserOperation {
   maxPriorityFeePerGas: BigInt!
   paymasterAndData: Bytes!
   signature: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
   entryPoint: Bytes!
   lightWallet: LightWallet!
   userOperationEvent: UserOperationEvent
@@ -1754,6 +1757,9 @@ enum UserOperationEvent_orderBy {
   userOperation__maxPriorityFeePerGas
   userOperation__paymasterAndData
   userOperation__signature
+  userOperation__blockNumber
+  userOperation__blockTimestamp
+  userOperation__transactionHash
   userOperation__entryPoint
 }
 
@@ -1906,6 +1912,9 @@ enum UserOperationRevertReason_orderBy {
   userOperation__maxPriorityFeePerGas
   userOperation__paymasterAndData
   userOperation__signature
+  userOperation__blockNumber
+  userOperation__blockTimestamp
+  userOperation__transactionHash
   userOperation__entryPoint
 }
 
@@ -2026,6 +2035,32 @@ input UserOperation_filter {
   signature_not_in: [Bytes!]
   signature_contains: Bytes
   signature_not_contains: Bytes
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  blockTimestamp: BigInt
+  blockTimestamp_not: BigInt
+  blockTimestamp_gt: BigInt
+  blockTimestamp_lt: BigInt
+  blockTimestamp_gte: BigInt
+  blockTimestamp_lte: BigInt
+  blockTimestamp_in: [BigInt!]
+  blockTimestamp_not_in: [BigInt!]
+  transactionHash: Bytes
+  transactionHash_not: Bytes
+  transactionHash_gt: Bytes
+  transactionHash_lt: Bytes
+  transactionHash_gte: Bytes
+  transactionHash_lte: Bytes
+  transactionHash_in: [Bytes!]
+  transactionHash_not_in: [Bytes!]
+  transactionHash_contains: Bytes
+  transactionHash_not_contains: Bytes
   entryPoint: Bytes
   entryPoint_not: Bytes
   entryPoint_gt: Bytes
@@ -2061,6 +2096,9 @@ enum UserOperation_orderBy {
   maxPriorityFeePerGas
   paymasterAndData
   signature
+  blockNumber
+  blockTimestamp
+  transactionHash
   entryPoint
   lightWallet
   lightWallet__id
