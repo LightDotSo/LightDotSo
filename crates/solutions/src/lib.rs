@@ -17,6 +17,7 @@ pub mod builder;
 pub mod config;
 pub mod create;
 pub mod hash;
+pub mod init;
 pub mod io;
 pub mod module;
 pub mod node;

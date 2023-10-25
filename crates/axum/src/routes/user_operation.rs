@@ -134,6 +134,7 @@ pub(crate) struct UserOperation {
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
+    status: String,
     signatures: Vec<UserOperationSignature>,
 }
 
@@ -173,6 +174,7 @@ impl From<user_operation::Data> for UserOperation {
             max_fee_per_gas: user_operation.max_fee_per_gas,
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
             paymaster_and_data: user_operation.paymaster_and_data.to_hex_string(),
+            status: user_operation.status.to_string(),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
                 signature.into_iter().map(UserOperationSignature::from).collect()
             }),
@@ -648,6 +650,7 @@ mod tests {
             max_fee_per_gas: 1,
             max_priority_fee_per_gas: 1,
             paymaster_and_data: "0x1234".to_string(),
+            status: "Pending".to_string(),
             signatures: vec![],
         };
 
