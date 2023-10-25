@@ -253,6 +253,7 @@ impl Polling {
                     user_operation.max_fee_per_gas.0.parse().unwrap(),
                     user_operation.max_priority_fee_per_gas.0.parse().unwrap(),
                     user_operation.paymaster_and_data.clone().0.into_bytes().into(),
+                    user_operation.signature.clone().0.into_bytes().into(),
                     user_operation.entry_point.0.parse().unwrap(),
                     chain_id as i64,
                 )

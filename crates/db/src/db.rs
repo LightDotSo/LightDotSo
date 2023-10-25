@@ -263,6 +263,7 @@ pub async fn upsert_user_operation(
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: ethers::types::Bytes,
+    signature: ethers::types::Bytes,
     entry_point: ethers::types::H160,
     chain_id: i64,
 ) -> AppJsonResult<user_operation::Data> {
@@ -287,7 +288,7 @@ pub async fn upsert_user_operation(
                 chain_id,
                 to_checksum(&entry_point, None),
                 wallet::address::equals(to_checksum(&sender, None)),
-                vec![],
+                vec![user_operation::signature::set(Some(signature.to_vec()))],
             ),
             vec![user_operation::status::set(UserOperationStatus::Executed)],
         )
