@@ -24,7 +24,10 @@ use ethers::{
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::db::create_client;
-use lightdotso_graphql::polling::min_block::run_min_block_query;
+use lightdotso_graphql::polling::{
+    min_block::run_min_block_query,
+    user_operations::{run_user_operations_query, BigInt, GetUserOperationsQueryVariables},
+};
 use lightdotso_kafka::{
     get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
 };
@@ -148,76 +151,74 @@ impl Polling {
 
         // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread
         // used by the underlying reqwest client. (blocking)
-        // let light_wallet = tokio::task::spawn_blocking(move || {
-        //     {
-        //         || {
-        //             run_light_wallets_query(
-        //                 chain_id,
-        //                 GetLightWalletsQueryVariables {
-        //                     min_block: BigInt(min_block.to_string()),
-        //                     min_index: BigInt(index.to_string()),
-        //                 },
-        //             )
-        //         }
-        //     }
-        //     .retry(&ExponentialBuilder::default())
-        //     .call()
-        // })
-        // .await?;
+        let user_operation = tokio::task::spawn_blocking(move || {
+            {
+                || {
+                    run_user_operations_query(
+                        chain_id,
+                        GetUserOperationsQueryVariables {
+                            min_block: BigInt(min_block.to_string()),
+                            min_index: BigInt(index.to_string()),
+                        },
+                    )
+                }
+            }
+            .retry(&ExponentialBuilder::default())
+            .call()
+        })
+        .await?;
 
-        // // Get the data from the response.
-        // let data = light_wallet?.data;
+        // Get the data from the response.
+        let data = user_operation?.data;
 
-        // // If can parse the data, loop through the wallets.
-        // if let Some(d) = data {
-        //     // Get the wallets.
-        //     let wallets = d.light_wallets;
-        //     trace!(
-        //         "Polling run, chain_id: {} min_block: {} index: {} wallets: {:?}",
-        //         self.chain_id,
-        //         min_block,
-        //         index,
-        //         wallets
-        //     );
+        // If can parse the data, loop through the wallets.
+        if let Some(d) = data {
+            // Get the wallets.
+            let user_operations = d.user_operations;
+            trace!(
+                "Polling run, chain_id: {} min_block: {} index: {} user_operations: {:?}",
+                self.chain_id,
+                min_block,
+                index,
+                user_operations
+            );
 
-        //     // If the wallets is not empty, loop through the wallets.
-        //     if !wallets.is_empty() {
-        //         for (index, wallet) in wallets.iter().enumerate() {
-        //             // Create to db if the wallet has a image_hash
-        //             if let Some(hash) = &wallet.image_hash {
-        //                 if !hash.0.is_empty() {
-        //                     // Log the wallet along with the chain id.
-        //                     info!("Wallet found, chain_id: {} wallet: {:?}", self.chain_id,
-        // wallet);
+            // If the wallets is not empty, loop through the wallets.
+            if !user_operations.is_empty() {
+                for (index, op) in user_operations.iter().enumerate() {
+                    // Create to db if the wallet has a successful event.
+                    if let Some(user_operation_event) = &op.user_operation_event {
+                        // Log the wallet along with the chain id.
+                        info!(
+                            "Wallet found, chain_id: {} user_operation_event: {:?}",
+                            self.chain_id, user_operation_event
+                        );
 
-        //                     // Create the wallet in the db.
-        //                     // let res = self.db_create_wallet(wallet).await;
-        //                     // if res.is_err() {
-        //                     //     error!("db_create_wallet error: {:?}", res);
-        //                     // }
+                        // Create the user operation in the db.
+                        // let res = self.db_create_wallet(wallet).await;
+                        // if res.is_err() {
+                        //     error!("db_create_wallet error: {:?}", res);
+                        // }
 
-        //                     // Send the tx queue on all modes.
-        //                     if self.kafka_client.is_some() && self.provider.is_some() {
-        //                         let _ = self
-        //                             .send_tx_queue(wallet.block_number.0.parse().unwrap())
-        //                             .await;
-        //                     }
-        //                 }
-        //             }
+                        // Send the tx queue on all modes.
+                        if self.kafka_client.is_some() && self.provider.is_some() {
+                            let _ = self.send_tx_queue(op.block_number.0.parse().unwrap()).await;
+                        }
+                    }
 
-        //             // Return the minimum block number for the last wallet.
-        //             if index == wallets.len() - 1 {
-        //                 return Ok(wallet.block_number.0.parse().unwrap_or(min_block));
-        //             }
-        //         }
-        //     }
+                    // Return the minimum block number for the last wallet.
+                    if index == user_operations.len() - 1 {
+                        return Ok(op.block_number.0.parse().unwrap_or(min_block));
+                    }
+                }
+            }
 
-        //     // Set the min block to the returned block.
-        //     let meta = d._meta;
-        //     if let Some(m) = meta {
-        //         min_block = m.block.number;
-        //     }
-        // }
+            // Set the min block to the returned block if the result is empty.
+            let meta = d._meta;
+            if let Some(m) = meta {
+                min_block = m.block.number;
+            }
+        }
 
         Ok(min_block)
     }
