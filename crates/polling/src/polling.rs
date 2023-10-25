@@ -39,6 +39,7 @@ use lightdotso_kafka::{
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::PrismaClient;
+use lightdotso_redis::{get_redis_client, redis::Client};
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{sync::Arc, time::Duration};
 
@@ -48,6 +49,7 @@ pub struct Polling {
     chain_id: u64,
     live: bool,
     db_client: Arc<PrismaClient>,
+    redis_client: Option<Arc<Client>>,
     kafka_client: Option<Arc<FutureProducer>>,
     provider: Option<Arc<Provider<Http>>>,
 }
@@ -59,6 +61,10 @@ impl Polling {
         // Create the db client
         let db_client = Arc::new(create_client().await.unwrap());
 
+        // Create the redis client
+        let redis_client: Option<Arc<Client>> =
+            get_redis_client().map_or_else(|_e| None, |client| Some(Arc::new(client)));
+
         // Create the kafka client
         let kafka_client: Option<Arc<FutureProducer>> =
             get_producer().map_or_else(|_e| None, |client| Some(Arc::new(client)));
@@ -67,7 +73,7 @@ impl Polling {
         let provider: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
 
         // Create the polling
-        Self { chain_id, live, db_client, kafka_client, provider }
+        Self { chain_id, live, db_client, redis_client, kafka_client, provider }
     }
 
     pub async fn run(&self) {
@@ -87,8 +93,8 @@ impl Polling {
                     let now = chrono::Utc::now();
                     // trace!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
 
-                    // Info if the second is divisible by 30
-                    if now.second() % 30 == 0 {
+                    // Info if the second is divisible by 30 or 30 + 1.
+                    if now.second() % 30 == 0 || now.second() % 30 == 1 {
                         info!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
                     }
 
@@ -155,7 +161,7 @@ impl Polling {
         let chain_id = self.chain_id;
         let index = 0;
 
-        // Get the light wallet data, spawn a blocking task to not block the tokio runtime thread
+        // Get the light operation data, spawn a blocking task to not block the tokio runtime thread
         // used by the underlying reqwest client. (blocking)
         let user_operation = tokio::task::spawn_blocking(move || {
             {
@@ -177,9 +183,9 @@ impl Polling {
         // Get the data from the response.
         let data = user_operation?.data;
 
-        // If can parse the data, loop through the wallets.
+        // If can parse the data, loop through the operations.
         if let Some(d) = data {
-            // Get the wallets.
+            // Get the operations.
             let user_operations = d.user_operations;
             trace!(
                 "Polling run, chain_id: {} min_block: {} index: {} user_operations: {:?}",
@@ -189,21 +195,23 @@ impl Polling {
                 user_operations
             );
 
-            // If the wallets is not empty, loop through the wallets.
+            // If the operations is not empty, loop through the operations.
             if !user_operations.is_empty() {
                 for (index, op) in user_operations.iter().enumerate() {
-                    // Create to db if the wallet has a successful event.
+                    // Create to db if the operation has a successful event.
                     if let Some(user_operation_event) = &op.user_operation_event {
-                        // Log the wallet along with the chain id.
+                        // Log the operation along with the chain id.
                         info!(
-                            "Wallet found, chain_id: {} user_operation_event: {:?}",
+                            "User Operation found, chain_id: {} user_operation_event: {:?}",
                             self.chain_id, user_operation_event
                         );
+
+                        if self.redis_client.is_some() {}
 
                         // Create the user operation in the db.
                         let res = self.db_upsert_user_operation(op).await;
                         if res.is_err() {
-                            error!("db_create_wallet error: {:?}", res);
+                            error!("db_upsert_user_operation error: {:?}", res);
                         }
 
                         // Send the tx queue on all modes.
@@ -212,7 +220,7 @@ impl Polling {
                         }
                     }
 
-                    // Return the minimum block number for the last wallet.
+                    // Return the minimum block number for the last operation.
                     if index == user_operations.len() - 1 {
                         return Ok(op.block_number.0.parse().unwrap_or(min_block));
                     }
@@ -229,7 +237,7 @@ impl Polling {
         Ok(min_block)
     }
 
-    /// Create a new wallet in the db
+    /// Create a new operation in the db
     #[autometrics]
     pub async fn db_upsert_user_operation(
         &self,

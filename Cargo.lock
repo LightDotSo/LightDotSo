@@ -6270,6 +6270,7 @@ dependencies = [
  "lightdotso-kafka",
  "lightdotso-opentelemetry",
  "lightdotso-prisma",
+ "lightdotso-redis",
  "lightdotso-tracing",
  "serde_json",
  "tokio",
