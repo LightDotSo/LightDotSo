@@ -21,13 +21,14 @@ mod schema {}
 
 #[derive(cynic::QueryVariables, Debug)]
 pub struct GetUserOperationsQueryVariables {
+    pub min_block: BigInt,
     pub min_index: BigInt,
 }
 
 #[derive(cynic::QueryFragment, Debug)]
 #[cynic(graphql_type = "Query", variables = "GetUserOperationsQueryVariables")]
 pub struct GetUserOperationsQuery {
-    #[arguments(first: 300, where: { index_gt: $min_index }, orderBy: "index")]
+    #[arguments(first: 300, where: { blockNumber_gt: $min_block, index_gt: $min_index }, orderBy: "index")]
     pub user_operations: Vec<UserOperation>,
     pub _meta: Option<Meta>,
 }
@@ -137,6 +138,7 @@ mod test {
         // and also helps ensure we don't change queries by mistake
 
         let query = build_user_operations_query(GetUserOperationsQueryVariables {
+            min_block: BigInt("0".to_string()),
             min_index: BigInt("0".to_string()),
         });
 
@@ -147,7 +149,10 @@ mod test {
     fn test_running_query() {
         let result = run_user_operations_query(
             1,
-            GetUserOperationsQueryVariables { min_index: BigInt("0".to_string()) },
+            GetUserOperationsQueryVariables {
+                min_block: BigInt("0".to_string()),
+                min_index: BigInt("0".to_string()),
+            },
         )
         .unwrap();
         if result.errors.is_some() {
