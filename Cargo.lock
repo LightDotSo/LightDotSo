@@ -6271,6 +6271,7 @@ dependencies = [
  "lightdotso-opentelemetry",
  "lightdotso-prisma",
  "lightdotso-redis",
+ "lightdotso-solutions",
  "lightdotso-tracing",
  "serde_json",
  "tokio",

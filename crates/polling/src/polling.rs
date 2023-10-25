@@ -26,7 +26,7 @@ use ethers::{
 use eyre::Result;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
-    db::{create_client, upsert_user_operation},
+    db::{create_client, create_wallet_with_configuration, upsert_user_operation},
     error::DbError,
 };
 use lightdotso_graphql::polling::{
@@ -41,6 +41,7 @@ use lightdotso_kafka::{
 use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{get_redis_client, redis::Client, wallet::add_to_wallets};
+use lightdotso_solutions::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
 use std::{sync::Arc, time::Duration};
 
@@ -212,6 +213,13 @@ impl Polling {
                             let _ = self.add_to_wallets(op);
                         }
 
+                        // Attempt to create the wallet in the db.
+                        // (Fail if the wallet already exists)
+                        let res = self.db_try_create_wallet(op).await;
+                        if res.is_err() {
+                            error!("db_try_create_wallet error: {:?}", res);
+                        }
+
                         // Create the user operation in the db.
                         let res = self.db_upsert_user_operation(op).await;
                         if res.is_err() {
@@ -272,6 +280,33 @@ impl Polling {
             }
         }
         .retry(&ExponentialBuilder::default())
+        .await
+    }
+
+    /// Attempt to create a new operation in the db
+    #[autometrics]
+    pub async fn db_try_create_wallet(
+        &self,
+        user_operation: &UserOperation,
+    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
+        let db_client = self.db_client.clone();
+        let chain_id = self.chain_id;
+        let (_, salt) =
+            get_image_hash_salt_from_init_code(user_operation.init_code.clone().0.into_bytes())
+                .unwrap();
+
+        {
+            || {
+                create_wallet_with_configuration(
+                    db_client.clone(),
+                    user_operation.sender.0.parse().unwrap(),
+                    chain_id as i64,
+                    salt.into(),
+                    user_operation.light_wallet.factory.0.parse().unwrap(),
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default().with_max_times(1))
         .await
     }
 

@@ -24,6 +24,7 @@
   lightdotso-opentelemetry = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-redis = { workspace = true }
+  lightdotso-solutions = { workspace = true }
   lightdotso-tracing = { workspace = true }
   serde_json = { workspace = true }
   tokio = { workspace = true }
