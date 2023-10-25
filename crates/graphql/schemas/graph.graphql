@@ -1757,6 +1757,9 @@ enum UserOperationEvent_orderBy {
   userOperation__maxPriorityFeePerGas
   userOperation__paymasterAndData
   userOperation__signature
+  userOperation__blockNumber
+  userOperation__blockTimestamp
+  userOperation__transactionHash
   userOperation__entryPoint
 }
 
@@ -1909,6 +1912,9 @@ enum UserOperationRevertReason_orderBy {
   userOperation__maxPriorityFeePerGas
   userOperation__paymasterAndData
   userOperation__signature
+  userOperation__blockNumber
+  userOperation__blockTimestamp
+  userOperation__transactionHash
   userOperation__entryPoint
 }
 
