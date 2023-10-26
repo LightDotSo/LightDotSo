@@ -16,7 +16,9 @@
 use crate::polling::Polling;
 use clap::Parser;
 use eyre::Result;
-use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
+use lightdotso_graphql::constants::{
+    SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_HOSTED_SERVICE_URLS,
+};
 use lightdotso_tracing::tracing::{error, info};
 
 #[derive(Debug, Clone, Parser, Default)]
@@ -43,11 +45,32 @@ impl PollingArgs {
         // Print the config
         info!("Config: {:?}", self);
 
+        // Make a new hash map w/ u64 keys and String values
+        let mut chain_id_to_urls = std::collections::HashMap::new();
+
+        // Iterate and push from the `THE_GRAPH_HOSTED_SERVICE_URLS` into the hash map
+        for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
+            chain_id_to_urls.insert(chain_id, url);
+        }
+
+        // Iterate and push from the `SATSUMA_LIVE_IDS` into the hash map
+        if self.satsuma_api_key.is_some() {
+            for (chain_id, id) in SATSUMA_LIVE_IDS.clone().into_iter() {
+                let url = format!(
+                    "{}/{}/{}",
+                    SATSUMA_BASE_URL.clone(),
+                    self.satsuma_api_key.clone().unwrap(),
+                    id
+                );
+                chain_id_to_urls.insert(chain_id, url);
+            }
+        }
+
         // Create a vector to store the handles to the spawned tasks.
         let mut handles = Vec::new();
 
         // Spawn a task for each chain id.
-        for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
+        for (chain_id, url) in chain_id_to_urls.clone().into_iter() {
             if self.live || self.mode == "all" {
                 let live_handle =
                     tokio::spawn(run_polling(self.clone(), chain_id, url.clone(), true));
