@@ -98,7 +98,6 @@ export function TransactionDialog({
               userOperation.maxPriorityFeePerGas,
             ),
             paymaster_and_data: userOperation.paymasterAndData,
-            signatures: [],
           },
         },
       });
