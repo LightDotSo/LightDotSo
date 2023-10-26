@@ -427,11 +427,12 @@ model UserOperationCategory {
 }
 
 model Signature {
-  id            String   @id @default(cuid())
-  signature     Bytes
-  signatureType Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             String   @id @default(cuid())
+  signature      Bytes
+  signature_type Int
+  signatureType  Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
