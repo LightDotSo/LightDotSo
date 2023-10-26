@@ -29,6 +29,9 @@ pub struct PollingArgs {
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "POLLING_MODE")]
     pub mode: String,
+    /// The infura API key
+    #[clap(long, env = "SATSUMA_API_KEY")]
+    pub infura_api_key: String,
 }
 
 impl PollingArgs {
