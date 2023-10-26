@@ -430,7 +430,7 @@ model Signature {
   id             String   @id @default(cuid())
   signature      Bytes
   signature_type Int
-  signatureType  Int
+  signatureType  Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
