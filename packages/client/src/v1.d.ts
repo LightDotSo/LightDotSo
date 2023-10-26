@@ -31,12 +31,40 @@ export interface paths {
      */
     get: operations["v1_configuration_list_handler"];
   };
+  "/feedback/create": {
+    /**
+     * Create a feedback
+     * @description Create a feedback
+     */
+    post: operations["v1_feedback_post_handler"];
+  };
   "/health": {
     /**
      * Check the health of the server.
      * @description Check the health of the server.
      */
     get: operations["handler"];
+  };
+  "/notification/get": {
+    /**
+     * Get a notification
+     * @description Get a notification
+     */
+    get: operations["v1_notification_get_handler"];
+  };
+  "/notification/list": {
+    /**
+     * Returns a list of notifications.
+     * @description Returns a list of notifications.
+     */
+    get: operations["v1_notification_list_handler"];
+  };
+  "/notification/read": {
+    /**
+     * Read a list of notifications
+     * @description Read a list of notifications
+     */
+    post: operations["v1_notification_read_handler"];
   };
   "/signature/create": {
     /**
@@ -58,6 +86,13 @@ export interface paths {
      * @description Returns a list of signatures.
      */
     get: operations["v1_signature_list_handler"];
+  };
+  "/support_request/create": {
+    /**
+     * Create a support_request
+     * @description Create a support_request
+     */
+    post: operations["v1_support_request_post_handler"];
   };
   "/transaction/get": {
     /**
@@ -169,6 +204,40 @@ export interface components {
        */
       weight: number;
     };
+    /** @description Item to do. */
+    Feedback: {
+      emoji: string;
+      text: string;
+    };
+    /** @description Feedback operation errors */
+    FeedbackError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Feedback not found by id. */
+      NotFound: string;
+    }]>;
+    FeedbackPostRequestParams: {
+      feedback: components["schemas"]["Feedback"];
+    };
+    /** @description Item to do. */
+    Notification: {
+      id: string;
+    };
+    /** @description Notification operation errors */
+    NotificationError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Notification not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to request. */
+    NotificationReadRequest: {
+      id: string;
+    };
+    NotificationReadRequestParams: {
+      /** @description The array of the notifications to query. */
+      notifications: components["schemas"]["NotificationReadRequest"][];
+    };
     /**
      * @description Wallet owner.
      * @example {
@@ -203,6 +272,24 @@ export interface components {
       signature: components["schemas"]["Signature"];
     };
     /** @description Item to do. */
+    SupportRequest: {
+      area: string;
+      description: string;
+      /** Format: int32 */
+      severity: number;
+      title: string;
+    };
+    /** @description Support_request operation errors */
+    SupportRequestError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Support_request not found by id. */
+      NotFound: string;
+    }]>;
+    SupportRequestPostRequestParams: {
+      support_request: components["schemas"]["SupportRequest"];
+    };
+    /** @description Item to do. */
     Transaction: {
       hash: string;
     };
@@ -233,6 +320,29 @@ export interface components {
       pre_verification_gas: number;
       sender: string;
       signatures: components["schemas"]["UserOperationSignature"][];
+      status: string;
+      /** Format: int64 */
+      verification_gas_limit: number;
+    };
+    /** @description Item to create. */
+    UserOperationCreate: {
+      call_data: string;
+      /** Format: int64 */
+      call_gas_limit: number;
+      /** Format: int64 */
+      chain_id: number;
+      hash: string;
+      init_code: string;
+      /** Format: int64 */
+      max_fee_per_gas: number;
+      /** Format: int64 */
+      max_priority_fee_per_gas: number;
+      /** Format: int64 */
+      nonce: number;
+      paymaster_and_data: string;
+      /** Format: int64 */
+      pre_verification_gas: number;
+      sender: string;
       /** Format: int64 */
       verification_gas_limit: number;
     };
@@ -245,7 +355,7 @@ export interface components {
     }]>;
     UserOperationPostRequestParams: {
       signature: components["schemas"]["UserOperationSignature"];
-      user_operation: components["schemas"]["UserOperation"];
+      user_operation: components["schemas"]["UserOperationCreate"];
     };
     /** @description Signature */
     UserOperationSignature: {
@@ -396,6 +506,112 @@ export interface operations {
     };
   };
   /**
+   * Create a feedback
+   * @description Create a feedback
+   */
+  v1_feedback_post_handler: {
+    parameters: {
+      query: {
+        user_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["FeedbackPostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Feedback created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"];
+        };
+      };
+      /** @description Feedback internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a notification
+   * @description Get a notification
+   */
+  v1_notification_get_handler: {
+    parameters: {
+      query: {
+        notification_id: string;
+      };
+    };
+    responses: {
+      /** @description Notification returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Notification"];
+        };
+      };
+      /** @description Notification not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["NotificationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of notifications.
+   * @description Returns a list of notifications.
+   */
+  v1_notification_list_handler: {
+    parameters: {
+      query?: {
+        offset?: number | null;
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Notifications returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Notification"][];
+        };
+      };
+      /** @description Notification bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["NotificationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Read a list of notifications
+   * @description Read a list of notifications
+   */
+  v1_notification_read_handler: {
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["NotificationReadRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Notification created successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description Notification internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
    * Create a signature
    * @description Create a signature
    */
@@ -485,6 +701,36 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["SignatureError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a support_request
+   * @description Create a support_request
+   */
+  v1_support_request_post_handler: {
+    parameters: {
+      query: {
+        wallet_address: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SupportRequestPostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description SupportRequest created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperation"];
+        };
+      };
+      /** @description SupportRequest internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
         };
       };
     };

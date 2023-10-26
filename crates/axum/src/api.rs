@@ -65,6 +65,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(transaction::Transaction),
         schemas(transaction::TransactionError),
         schemas(user_operation::UserOperation),
+        schemas(user_operation::UserOperationCreate),
         schemas(user_operation::UserOperationError),
         schemas(user_operation::UserOperationPostRequestParams),
         schemas(user_operation::UserOperationSignature),

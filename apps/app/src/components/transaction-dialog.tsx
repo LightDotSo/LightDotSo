@@ -77,7 +77,6 @@ export function TransactionDialog({
           },
         },
         body: {
-          //@ts-expect-error
           signature: {
             owner_id: owner.id,
             signature: toHex(new Uint8Array([...toBytes(data), 2])),
@@ -98,7 +97,6 @@ export function TransactionDialog({
               userOperation.maxPriorityFeePerGas,
             ),
             paymaster_and_data: userOperation.paymasterAndData,
-            signatures: [],
           },
         },
       });

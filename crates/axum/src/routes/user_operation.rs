@@ -81,9 +81,26 @@ pub struct SignatureQuery {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct UserOperationPostRequestParams {
     // The user operation to create.
-    pub user_operation: UserOperation,
+    pub user_operation: UserOperationCreate,
     // The signature of the user operation.
     pub signature: UserOperationSignature,
+}
+
+/// Item to create.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationCreate {
+    chain_id: i64,
+    hash: String,
+    sender: String,
+    nonce: i64,
+    init_code: String,
+    call_data: String,
+    call_gas_limit: i64,
+    verification_gas_limit: i64,
+    pre_verification_gas: i64,
+    max_fee_per_gas: i64,
+    max_priority_fee_per_gas: i64,
+    paymaster_and_data: String,
 }
 
 /// Owner
@@ -134,14 +151,14 @@ pub(crate) struct UserOperation {
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
-    user_operation_status: String,
+    status: String,
     signatures: Vec<UserOperationSignature>,
 }
 
-impl TryFrom<UserOperation> for RundlerUserOperation {
+impl TryFrom<UserOperationCreate> for RundlerUserOperation {
     type Error = Report;
 
-    fn try_from(op: UserOperation) -> Result<Self> {
+    fn try_from(op: UserOperationCreate) -> Result<Self> {
         Ok(RundlerUserOperation {
             sender: op.sender.parse()?,
             nonce: op.nonce.into(),
@@ -174,7 +191,7 @@ impl From<user_operation::Data> for UserOperation {
             max_fee_per_gas: user_operation.max_fee_per_gas,
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
             paymaster_and_data: user_operation.paymaster_and_data.to_hex_string(),
-            user_operation_status: user_operation.status.to_string(),
+            status: user_operation.status.to_string(),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
                 signature.into_iter().map(UserOperationSignature::from).collect()
             }),
@@ -637,7 +654,7 @@ mod tests {
 
     #[test]
     fn test_conversion() {
-        let user_op = UserOperation {
+        let user_op = UserOperationCreate {
             chain_id: 1,
             hash: "0x9e1a7c8".to_string(),
             sender: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".to_string(),
@@ -650,8 +667,6 @@ mod tests {
             max_fee_per_gas: 1,
             max_priority_fee_per_gas: 1,
             paymaster_and_data: "0x1234".to_string(),
-            user_operation_status: "PENDING".to_string(),
-            signatures: vec![],
         };
 
         let result = RundlerUserOperation::try_from(user_op);
