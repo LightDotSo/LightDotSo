@@ -31,7 +31,7 @@ pub struct PollingArgs {
     pub mode: String,
     /// The infura API key
     #[clap(long, env = "SATSUMA_API_KEY")]
-    pub infura_api_key: String,
+    pub satsuma_api_key: Option<String>,
 }
 
 impl PollingArgs {
