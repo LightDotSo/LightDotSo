@@ -320,7 +320,29 @@ export interface components {
       pre_verification_gas: number;
       sender: string;
       signatures: components["schemas"]["UserOperationSignature"][];
-      user_operation_status: string;
+      status: string;
+      /** Format: int64 */
+      verification_gas_limit: number;
+    };
+    /** @description Item to create. */
+    UserOperationCreate: {
+      call_data: string;
+      /** Format: int64 */
+      call_gas_limit: number;
+      /** Format: int64 */
+      chain_id: number;
+      hash: string;
+      init_code: string;
+      /** Format: int64 */
+      max_fee_per_gas: number;
+      /** Format: int64 */
+      max_priority_fee_per_gas: number;
+      /** Format: int64 */
+      nonce: number;
+      paymaster_and_data: string;
+      /** Format: int64 */
+      pre_verification_gas: number;
+      sender: string;
       /** Format: int64 */
       verification_gas_limit: number;
     };
@@ -333,7 +355,7 @@ export interface components {
     }]>;
     UserOperationPostRequestParams: {
       signature: components["schemas"]["UserOperationSignature"];
-      user_operation: components["schemas"]["UserOperation"];
+      user_operation: components["schemas"]["UserOperationCreate"];
     };
     /** @description Signature */
     UserOperationSignature: {
