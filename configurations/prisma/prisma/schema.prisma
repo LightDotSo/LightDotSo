@@ -400,6 +400,7 @@ model UserOperation {
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
+  history               History[]
   signatures            Signature[]
   userOperationCategory UserOperationCategory[]
 
@@ -426,11 +427,11 @@ model UserOperationCategory {
 }
 
 model Signature {
-  id             String   @id @default(cuid())
-  signature      Bytes
-  signature_type Int
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id            String   @id @default(cuid())
+  signature     Bytes
+  signatureType Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
@@ -444,6 +445,17 @@ model Signature {
   @@index([ownerId])
   @@index([userOperationHash])
   @@index([notificationId])
+}
+
+model History {
+  id        Int      @id @default(autoincrement())
+  timestamp DateTime @default(now())
+  operation String
+
+  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String?
+
+  @@index([userOperationHash])
 }
 
 model Notification {
