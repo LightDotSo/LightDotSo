@@ -389,7 +389,7 @@ model UserOperation {
   chainId    BigInt
   /// The address of the entry point contract
   entryPoint String
-  status     UserOperationStatus @default(Proposed)
+  status     UserOperationStatus @default(PROPOSED)
 
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?      @unique
@@ -410,10 +410,10 @@ model UserOperation {
 }
 
 enum UserOperationStatus {
-  Proposed
-  Pending
-  Executed
-  Reverted
+  PROPOSED
+  PENDING
+  EXECUTED
+  REVERTED
 }
 
 model UserOperationCategory {
