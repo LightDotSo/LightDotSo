@@ -248,6 +248,35 @@ pub async fn create_transaction_with_log_receipt(
     Ok(Json::from(tx))
 }
 
+/// Create a new wallet.
+#[autometrics]
+pub async fn upsert_wallet_with_configuration(
+    db: Database,
+    address: ethers::types::H160,
+    chain_id: i64,
+    salt: H256,
+    factory_address: ethers::types::H160,
+) -> AppJsonResult<wallet::Data> {
+    info!("Creating wallet at address: {:?} chain_id: {:?}", address, chain_id);
+
+    let wallet = db
+        .wallet()
+        .upsert(
+            wallet::address::equals(to_checksum(&address, None)),
+            wallet::create(
+                to_checksum(&address, None),
+                format!("{:?}", salt),
+                to_checksum(&factory_address, None),
+                vec![],
+            ),
+            vec![],
+        )
+        .exec()
+        .await?;
+
+    Ok(Json::from(wallet))
+}
+
 #[allow(clippy::too_many_arguments)]
 #[autometrics]
 pub async fn upsert_user_operation(

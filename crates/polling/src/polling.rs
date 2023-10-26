@@ -27,7 +27,7 @@ use eyre::Result;
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
-    db::{create_client, create_wallet_with_configuration, upsert_user_operation},
+    db::{create_client, upsert_user_operation, upsert_wallet_with_configuration},
     error::DbError,
 };
 use lightdotso_graphql::polling::{
@@ -50,6 +50,7 @@ use std::{sync::Arc, time::Duration};
 #[derive(Clone)]
 pub struct Polling {
     chain_id: u64,
+    url: String,
     live: bool,
     db_client: Arc<PrismaClient>,
     redis_client: Option<Arc<Client>>,
@@ -58,8 +59,11 @@ pub struct Polling {
 }
 
 impl Polling {
-    pub async fn new(_args: &PollingArgs, chain_id: u64, live: bool) -> Self {
+    pub async fn new(_args: &PollingArgs, chain_id: u64, url: String, live: bool) -> Self {
         info!("Polling new, starting");
+
+        // Create the url
+        let url = url.clone();
 
         // Create the db client
         let db_client = Arc::new(create_client().await.unwrap());
@@ -76,7 +80,7 @@ impl Polling {
         let provider: Option<Arc<Provider<Http>>> = get_provider(chain_id).await.ok().map(Arc::new);
 
         // Create the polling
-        Self { chain_id, live, db_client, redis_client, kafka_client, provider }
+        Self { chain_id, url, live, db_client, redis_client, kafka_client, provider }
     }
 
     pub async fn run(&self) {
@@ -131,11 +135,11 @@ impl Polling {
     #[autometrics]
     async fn get_min_block(&self) -> Result<i32> {
         // Escape the static lifetime.
-        let chain_id = self.chain_id;
+        let url = self.url.clone();
 
         // Get the min_block query from the graphql api.
         let min_block_res = tokio::task::spawn_blocking(move || {
-            { || run_min_block_query(chain_id) }.retry(&ExponentialBuilder::default()).call()
+            { || run_min_block_query(url.clone()) }.retry(&ExponentialBuilder::default()).call()
         })
         .await?;
 
@@ -161,7 +165,7 @@ impl Polling {
         PollingMetrics::set_attempt(self.chain_id);
 
         // Escape the static lifetime.
-        let chain_id = self.chain_id;
+        let url = self.url.clone();
         let index = 0;
 
         // Get the light operation data, spawn a blocking task to not block the tokio runtime thread
@@ -170,7 +174,7 @@ impl Polling {
             {
                 || {
                     run_user_operations_query(
-                        chain_id,
+                        url.clone(),
                         GetUserOperationsQueryVariables {
                             min_block: BigInt(min_block.to_string()),
                             min_index: BigInt(index.to_string()),
@@ -299,7 +303,7 @@ impl Polling {
 
         {
             || {
-                create_wallet_with_configuration(
+                upsert_wallet_with_configuration(
                     db_client.clone(),
                     user_operation.sender.0.parse().unwrap(),
                     chain_id as i64,
@@ -308,7 +312,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default().with_max_times(1))
+        .retry(&ExponentialBuilder::default())
         .await
     }
 

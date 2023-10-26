@@ -42,3 +42,28 @@ lazy_static! {
         m
     };
 }
+
+lazy_static! {
+    pub static ref SATSUMA_BASE_URL: String = "https://subgraph.satsuma-prod.com".to_string();
+}
+
+// The satsuma rpc urls
+lazy_static! {
+    pub static ref SATSUMA_LIVE_IDS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "lightdotso/mainnet/api".to_string());
+        m.insert(10, "lightdotso/optimism/api".to_string());
+        m.insert(137, "lightdotso/matic/api".to_string());
+        m.insert(8453, "lightdotso/base/api".to_string());
+        m.insert(42161, "lightdotso/arbitrum-one/api".to_string());
+
+
+        // Testnet
+        m.insert(80001, "lightdotso/mumbai/api".to_string());
+        m.insert(11155111, "lightdotso/sepolia/api".to_string());
+
+        m
+    };
+}

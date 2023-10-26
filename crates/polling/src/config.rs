@@ -16,7 +16,9 @@
 use crate::polling::Polling;
 use clap::Parser;
 use eyre::Result;
-use lightdotso_graphql::constants::THE_GRAPH_HOSTED_SERVICE_URLS;
+use lightdotso_graphql::constants::{
+    SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_HOSTED_SERVICE_URLS,
+};
 use lightdotso_tracing::tracing::{error, info};
 
 #[derive(Debug, Clone, Parser, Default)]
@@ -29,6 +31,9 @@ pub struct PollingArgs {
     #[arg(long, short, default_value_t = String::from(""))]
     #[clap(long, env = "POLLING_MODE")]
     pub mode: String,
+    /// The infura API key
+    #[clap(long, env = "SATSUMA_API_KEY")]
+    pub satsuma_api_key: Option<String>,
 }
 
 impl PollingArgs {
@@ -40,22 +45,42 @@ impl PollingArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        // Get the chain ids from the constants which is the keys of the
-        // THE_GRAPH_HOSTED_SERVICE_URLS map.
-        let chain_ids: Vec<u64> = THE_GRAPH_HOSTED_SERVICE_URLS.keys().cloned().collect();
+        // Make a new hash map w/ u64 keys and String values
+        let mut chain_id_to_urls = std::collections::HashMap::new();
+
+        // Iterate and push from the `THE_GRAPH_HOSTED_SERVICE_URLS` into the hash map
+        for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
+            chain_id_to_urls.insert(chain_id, url);
+        }
+
+        // Iterate and push from the `SATSUMA_LIVE_IDS` into the hash map
+        if self.satsuma_api_key.is_some() {
+            for (chain_id, id) in SATSUMA_LIVE_IDS.clone().into_iter() {
+                let url = format!(
+                    "{}/{}/{}",
+                    SATSUMA_BASE_URL.clone(),
+                    self.satsuma_api_key.clone().unwrap(),
+                    id
+                );
+                info!("url: {}", url);
+                chain_id_to_urls.insert(chain_id, url);
+            }
+        }
 
         // Create a vector to store the handles to the spawned tasks.
         let mut handles = Vec::new();
 
         // Spawn a task for each chain id.
-        for chain_id in chain_ids {
+        for (chain_id, url) in chain_id_to_urls.clone().into_iter() {
             if self.live || self.mode == "all" {
-                let live_handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
+                let live_handle =
+                    tokio::spawn(run_polling(self.clone(), chain_id, url.clone(), true));
                 handles.push(live_handle);
             }
 
             if !self.live || self.mode == "all" {
-                let past_handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
+                let past_handle =
+                    tokio::spawn(run_polling(self.clone(), chain_id, url.clone(), false));
                 handles.push(past_handle);
             }
         }
@@ -72,15 +97,15 @@ impl PollingArgs {
 }
 
 // Run the polling for a specific chain id.
-pub async fn run_polling(args: PollingArgs, chain_id: u64, live: bool) {
+pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bool) {
     match live {
         true => {
-            let polling = Polling::new(&args, chain_id, live).await;
+            let polling = Polling::new(&args, chain_id, url.clone(), live).await;
             polling.run().await;
         }
         false => {
             loop {
-                let polling = Polling::new(&args, chain_id, live).await;
+                let polling = Polling::new(&args, chain_id, url.clone(), live).await;
                 polling.run().await;
 
                 // Sleep for 1 hour
