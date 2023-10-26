@@ -27,7 +27,7 @@ use eyre::Result;
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
-    db::{create_client, create_wallet_with_configuration, upsert_user_operation},
+    db::{create_client, upsert_user_operation, upsert_wallet_with_configuration},
     error::DbError,
 };
 use lightdotso_graphql::polling::{
@@ -303,7 +303,7 @@ impl Polling {
 
         {
             || {
-                create_wallet_with_configuration(
+                upsert_wallet_with_configuration(
                     db_client.clone(),
                     user_operation.sender.0.parse().unwrap(),
                     chain_id as i64,
@@ -312,7 +312,7 @@ impl Polling {
                 )
             }
         }
-        .retry(&ExponentialBuilder::default().with_max_times(1))
+        .retry(&ExponentialBuilder::default())
         .await
     }
 
