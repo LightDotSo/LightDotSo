@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::utils::get_graphql_url;
 use eyre::Result;
 
 #[cynic::schema("graph")]
@@ -120,19 +119,20 @@ pub fn build_user_operations_query(
 }
 
 pub fn run_user_operations_query(
-    chain_id: u64,
+    url: String,
     vars: GetUserOperationsQueryVariables,
 ) -> Result<cynic::GraphQlResponse<GetUserOperationsQuery>> {
     use cynic::http::ReqwestBlockingExt;
 
     let query = build_user_operations_query(vars);
 
-    Ok(reqwest::blocking::Client::new().post(get_graphql_url(chain_id)?).run_graphql(query)?)
+    Ok(reqwest::blocking::Client::new().post(url).run_graphql(query)?)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::utils::get_graphql_url;
 
     #[test]
     fn snapshot_test_query() {
@@ -151,7 +151,7 @@ mod test {
     #[test]
     fn test_running_query() {
         let result = run_user_operations_query(
-            1,
+            get_graphql_url(1).unwrap(),
             GetUserOperationsQueryVariables {
                 min_block: BigInt("0".to_string()),
                 min_index: BigInt("0".to_string()),

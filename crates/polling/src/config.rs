@@ -43,22 +43,20 @@ impl PollingArgs {
         // Print the config
         info!("Config: {:?}", self);
 
-        // Get the chain ids from the constants which is the keys of the
-        // THE_GRAPH_HOSTED_SERVICE_URLS map.
-        let chain_ids: Vec<u64> = THE_GRAPH_HOSTED_SERVICE_URLS.keys().cloned().collect();
-
         // Create a vector to store the handles to the spawned tasks.
         let mut handles = Vec::new();
 
         // Spawn a task for each chain id.
-        for chain_id in chain_ids {
+        for (chain_id, url) in THE_GRAPH_HOSTED_SERVICE_URLS.clone().into_iter() {
             if self.live || self.mode == "all" {
-                let live_handle = tokio::spawn(run_polling(self.clone(), chain_id, true));
+                let live_handle =
+                    tokio::spawn(run_polling(self.clone(), chain_id, url.clone(), true));
                 handles.push(live_handle);
             }
 
             if !self.live || self.mode == "all" {
-                let past_handle = tokio::spawn(run_polling(self.clone(), chain_id, false));
+                let past_handle =
+                    tokio::spawn(run_polling(self.clone(), chain_id, url.clone(), false));
                 handles.push(past_handle);
             }
         }
@@ -75,15 +73,15 @@ impl PollingArgs {
 }
 
 // Run the polling for a specific chain id.
-pub async fn run_polling(args: PollingArgs, chain_id: u64, live: bool) {
+pub async fn run_polling(args: PollingArgs, chain_id: u64, url: String, live: bool) {
     match live {
         true => {
-            let polling = Polling::new(&args, chain_id, live).await;
+            let polling = Polling::new(&args, chain_id, url.clone(), live).await;
             polling.run().await;
         }
         false => {
             loop {
-                let polling = Polling::new(&args, chain_id, live).await;
+                let polling = Polling::new(&args, chain_id, url.clone(), live).await;
                 polling.run().await;
 
                 // Sleep for 1 hour
