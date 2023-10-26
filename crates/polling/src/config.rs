@@ -62,6 +62,7 @@ impl PollingArgs {
                     self.satsuma_api_key.clone().unwrap(),
                     id
                 );
+                info!("url: {}", url);
                 chain_id_to_urls.insert(chain_id, url);
             }
         }

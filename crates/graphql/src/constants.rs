@@ -55,11 +55,7 @@ lazy_static! {
         // Mainnet
         m.insert(1, "lightdotso/mainnet/api".to_string());
         m.insert(10, "lightdotso/optimism/api".to_string());
-        m.insert(56, "lightdotso/bsc/api".to_string());
-        m.insert(100, "lightdotso/gnosis/api".to_string());
         m.insert(137, "lightdotso/matic/api".to_string());
-        m.insert(250, "lightdotso/fantom/api".to_string());
-        m.insert(1101, "lightdotso/polygon-zkevm/api".to_string());
         m.insert(8453, "lightdotso/base/api".to_string());
         m.insert(42161, "lightdotso/arbitrum-one/api".to_string());
 
