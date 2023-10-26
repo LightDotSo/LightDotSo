@@ -429,7 +429,7 @@ model UserOperationCategory {
 model Signature {
   id            String   @id @default(cuid())
   signature     Bytes
-  signatureType Int      @default(0)
+  signatureType Int
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
