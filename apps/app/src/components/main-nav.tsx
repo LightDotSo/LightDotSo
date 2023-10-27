@@ -21,7 +21,7 @@
 import React, { useState } from "react";
 
 import { Tabs } from "@/components/tabs-nav";
-import { cn } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { useTabs } from "@/hooks/useTabs";
 import {
   DashboardIcon,
