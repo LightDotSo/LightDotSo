@@ -6,7 +6,9 @@ ignores:
   - "@next-auth/prisma-adapter"
   - "@prisma/client"
   - "@radix-ui/react-accordion"
+  - "@radix-ui/react-icons"
   - "@radix-ui/react-slot"
+  - "@tanstack/react-query"
   - "@tanstack/react-query-devtools"
   - "@tanstack/react-query-next-experimental"
   - "@types/node"
@@ -27,3 +29,5 @@ ignores:
   - postcss
   - tailwindcss
   - next-auth
+  - react-hook-form
+  - zod

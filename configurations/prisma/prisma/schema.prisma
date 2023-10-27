@@ -97,12 +97,38 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
+  masterWallet        Wallet?  @relation(name: "paymaster", fields: [masterWalletAddress], references: [address], onUpdate: NoAction, onDelete: NoAction)
+  masterWalletAddress String?
+  paymasters          Wallet[] @relation(name: "paymaster")
+
   configurations  Configuration[]
   transactions    Transaction[]
   userOperations  UserOperation[]
   users           User[]
   notifications   Notification[]
   supportRequests SupportRequest[]
+  walletBalances  WalletBalance[]
+
+  @@index([masterWalletAddress])
+}
+
+model WalletBalance {
+  id            String   @id @default(cuid())
+  wallet        Wallet   @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+  balance       Float
+  chainId       BigInt
+  timestamp     DateTime @default(now())
+
+  category WalletBalanceCategory
+
+  @@index([walletAddress])
+}
+
+enum WalletBalanceCategory {
+  BALANCE
+  DEBT
+  REWARD
 }
 
 model Configuration {
