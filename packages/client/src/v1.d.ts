@@ -863,6 +863,7 @@ export interface operations {
         offset?: number | null;
         limit?: number | null;
         address?: string | null;
+        status?: ("proposed" | "pending" | "executed" | "reverted") | null;
       };
     };
     responses: {
