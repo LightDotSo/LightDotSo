@@ -17,6 +17,8 @@ enum Category {
   Transactions = "Transactions",
   Profile = "Profile",
   Settings = "Settings",
+  Members = "Members",
+  Support = "Support",
 }
 
 type CategoryObject = {
@@ -36,5 +38,13 @@ export const TITLES: Record<Category, CategoryObject> = {
   [Category.Settings]: {
     title: "Settings",
     description: "Manage your account settings.",
+  },
+  [Category.Members]: {
+    title: "Members",
+    description: "Manage and view your wallet members.",
+  },
+  [Category.Support]: {
+    title: "Support",
+    description: "Get help from our support team.",
   },
 };
