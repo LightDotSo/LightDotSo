@@ -12,7 +12,6 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "type": "module",
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite",
