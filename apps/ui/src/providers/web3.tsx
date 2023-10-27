@@ -30,7 +30,7 @@ const config = createConfig(
   }),
 );
 
-export function Web3Provider({
+function Web3Provider({
   children,
   wagmiConfig = config,
   siweConfig,
@@ -49,3 +49,5 @@ export function Web3Provider({
     </WagmiConfig>
   );
 }
+
+export { Web3Provider };
