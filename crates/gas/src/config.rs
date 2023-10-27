@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{gas::GasServerImpl, gas_api::GasServer};
+use crate::{gas::GasApi, gas_api::GasApiServer};
 use clap::Parser;
 use eyre::{eyre, Result};
 use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
@@ -47,7 +47,7 @@ impl GasArgs {
                 );
 
                 // Add the gas server
-                server.add_methods(GasServerImpl {}.into_rpc(), JsonRpcServerType::Http).unwrap();
+                server.add_methods(GasApi {}.into_rpc(), JsonRpcServerType::Http).unwrap();
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));

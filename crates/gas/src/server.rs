@@ -13,21 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers_main::types::U256;
-use serde::{Deserialize, Serialize};
+use async_trait::async_trait;
+use jsonrpsee::core::RpcResult;
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct GasEstimationParams {
-    pub max_priority_fee_per_gas: U256,
-    pub max_fee_per_gas: U256,
-}
+use crate::{gas::GasApi, gas_api::GasApiServer, types::GasEstimation};
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase")]
-pub struct GasEstimation {
-    pub low: GasEstimationParams,
-    pub average: GasEstimationParams,
-    pub high: GasEstimationParams,
-    pub instant: GasEstimationParams,
+#[async_trait]
+impl GasApiServer for GasApi {
+    async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation> {
+        Ok(GasApi::request_gas_estimation(self, chain_id).await?)
+    }
 }

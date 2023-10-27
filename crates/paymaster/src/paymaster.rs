@@ -15,13 +15,11 @@
 
 use crate::{
     constants::OFFCHAIN_VERIFIER_ADDRESS,
-    paymaster_api::PaymasterServer,
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
         UserOperationRequest,
     },
 };
-use async_trait::async_trait;
 use ethers::{
     abi::{encode, Token},
     core::k256::ecdsa::SigningKey,
@@ -35,7 +33,7 @@ use lightdotso_contracts::{
     constants::LIGHT_PAYMASTER_ADDRESS,
     paymaster::{get_paymaster, UserOperation},
 };
-use lightdotso_gas::gas::GasEstimation;
+use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
     handle_response,
@@ -45,22 +43,21 @@ use lightdotso_tracing::tracing::{info, warn};
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-/// The paymaster server implementation.
-pub struct PaymasterServerImpl {}
+/// The paymaster api implementation.
+pub(crate) struct PaymasterApi {}
 
-#[async_trait]
-impl PaymasterServer for PaymasterServerImpl {
-    async fn request_paymaster_and_data(
+impl PaymasterApi {
+    pub(crate) async fn request_paymaster_and_data(
         &self,
         _user_operation: UserOperationRequest,
         _entry_point: Address,
         _chain_id: u64,
     ) -> RpcResult<PaymasterAndData> {
         // Return the default.
-        return Ok(PaymasterAndData::default());
+        Ok(PaymasterAndData::default())
     }
 
-    async fn request_gas_and_paymaster_and_data(
+    pub(crate) async fn request_gas_and_paymaster_and_data(
         &self,
         user_operation: UserOperationRequest,
         entry_point: Address,
@@ -83,14 +80,14 @@ impl PaymasterServer for PaymasterServerImpl {
         let paymater_and_data =
             get_paymaster_and_data(chain_id, construct.clone(), valid_until, valid_after).await?;
 
-        return Ok(GasAndPaymasterAndData {
+        Ok(GasAndPaymasterAndData {
             call_gas_limit: construct.call_gas_limit,
             verification_gas_limit: construct.verification_gas_limit,
             pre_verification_gas: construct.pre_verification_gas,
             max_fee_per_gas: construct.max_fee_per_gas,
             max_priority_fee_per_gas: construct.max_priority_fee_per_gas,
             paymaster_and_data: paymater_and_data,
-        });
+        })
     }
 }
 
