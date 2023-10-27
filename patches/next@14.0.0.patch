@@ -1,8 +1,8 @@
 diff --git a/dist/build/webpack/loaders/next-flight-loader/action-proxy.js b/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
-index 308995a3d78958f2ba58ff4166a3e03790125e6a..8c7aacce740c910d4a4a78c27ed24521215162ce 100644
+index ba3e71780a79676b7da2de2af851259a72f0b605..bd2f573b10062f9ce88742c622ad3fd2911b68d4 100644
 --- a/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
 +++ b/dist/build/webpack/loaders/next-flight-loader/action-proxy.js
-@@ -36,16 +36,20 @@ function createActionProxy(id, bound, action, originalAction) {
+@@ -36,16 +36,20 @@ function createActionProxy(id, boundArgsFromClosure, action, originalAction) {
      }
      Object.defineProperties(action, {
          $$typeof: {
@@ -16,8 +16,8 @@ index 308995a3d78958f2ba58ff4166a3e03790125e6a..8c7aacce740c910d4a4a78c27ed24521
 +            configurable: true
          },
          $$bound: {
--            value: bound
-+            value: bound,
+-            value: boundArgsFromClosure
++            value: boundArgsFromClosure,
 +            configurable: true
          },
          bind: {
@@ -28,10 +28,10 @@ index 308995a3d78958f2ba58ff4166a3e03790125e6a..8c7aacce740c910d4a4a78c27ed24521
      });
  }
 diff --git a/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js b/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js
-index 3b1ef848836bd2863e284d8eea581624056894da..8725605d952421d3e1f903daba7f1fe09fd1cd8e 100644
+index 82ba2b33db5de1ee0addedf1c7644d13fd821eac..6661ffa4824ff1fc243dbe95364d9094ce04f6d0 100644
 --- a/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js
 +++ b/dist/esm/build/webpack/loaders/next-flight-loader/action-proxy.js
-@@ -26,16 +26,20 @@ export function createActionProxy(id, bound, action, originalAction) {
+@@ -26,16 +26,20 @@ export function createActionProxy(id, boundArgsFromClosure, action, originalActi
      }
      Object.defineProperties(action, {
          $$typeof: {
@@ -45,8 +45,8 @@ index 3b1ef848836bd2863e284d8eea581624056894da..8725605d952421d3e1f903daba7f1fe0
 +            configurable: true
          },
          $$bound: {
--            value: bound
-+            value: bound,
+-            value: boundArgsFromClosure
++            value: boundArgsFromClosure,
 +            configurable: true
          },
          bind: {
