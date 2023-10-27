@@ -16,7 +16,7 @@
 import type { Metadata } from "next";
 
 import { SidebarNav } from "@/app/(authenticated)/settings/sidebar-nav";
-import { BannerLayout } from "@/app/banner";
+import { BannerSection } from "@/components/banner-section";
 
 export const metadata: Metadata = {
   title: "Forms",
@@ -53,7 +53,7 @@ interface SettingsLayoutProps {
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
-      <BannerLayout
+      <BannerSection
         title="Settings"
         description="Manage your account settings and set preferences."
       >
@@ -63,7 +63,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
           </aside>
           <div className="flex-1 lg:max-w-2xl">{children}</div>
         </div>
-      </BannerLayout>
+      </BannerSection>
     </>
   );
 }

@@ -13,21 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Label } from "./label"
+import { Label } from "./label";
 
 const meta: Meta<typeof Label> = {
   title: "ui/Label",
   component: Label,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Label>
+type Story = StoryObj<typeof Label>;
 
 export const Base: Story = {
-  render: (args) => <Label htmlFor="email">Your email address</Label>,
+  render: args => <Label htmlFor="email">Your email address</Label>,
   args: {},
-}
+};

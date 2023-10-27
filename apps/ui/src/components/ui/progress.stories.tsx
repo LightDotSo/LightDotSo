@@ -13,21 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Progress } from "./progress"
+import { Progress } from "./progress";
 
 const meta: Meta<typeof Progress> = {
   title: "ui/Progress",
   component: Progress,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Progress>
+type Story = StoryObj<typeof Progress>;
 
 export const Base: Story = {
-  render: (args) => <Progress value={33} />,
+  render: args => <Progress value={33} />,
   args: {},
-}
+};

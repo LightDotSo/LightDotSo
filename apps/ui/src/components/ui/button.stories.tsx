@@ -13,51 +13,51 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
-import { Loader2, Mail } from "lucide-react"
+import type { Meta, StoryObj } from "@storybook/react";
+import { Loader2, Mail } from "lucide-react";
 
-import { Button } from "./button"
+import { Button } from "./button";
 
 const meta: Meta<typeof Button> = {
   title: "ui/Button",
   component: Button,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Button>
+type Story = StoryObj<typeof Button>;
 
 export const Base: Story = {
-  render: (args) => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Button</Button>,
   args: {},
-}
+};
 export const Outline: Story = {
-  render: (args) => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Button</Button>,
   args: {
     variant: "outline",
   },
-}
+};
 export const Ghost: Story = {
-  render: (args) => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Button</Button>,
   args: {
     variant: "ghost",
   },
-}
+};
 export const Secondary: Story = {
-  render: (args) => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Button</Button>,
   args: {
     variant: "secondary",
   },
-}
+};
 export const Link: Story = {
-  render: (args) => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Button</Button>,
   args: {
     variant: "link",
   },
-}
+};
 export const Loading: Story = {
-  render: (args) => (
+  render: args => (
     <Button {...args}>
       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
       Button
@@ -66,9 +66,9 @@ export const Loading: Story = {
   args: {
     variant: "outline",
   },
-}
+};
 export const WithIcon: Story = {
-  render: (args) => (
+  render: args => (
     <Button {...args}>
       <Mail className="mr-2 h-4 w-4" /> Login with Email Button
     </Button>
@@ -76,4 +76,4 @@ export const WithIcon: Story = {
   args: {
     variant: "secondary",
   },
-}
+};

@@ -13,24 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "./avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 
 const meta: Meta<typeof Avatar> = {
   title: "ui/Avatar",
   component: Avatar,
   tags: ["autodocs"],
   argTypes: {},
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof Avatar>
+type Story = StoryObj<typeof Avatar>;
 
 export const Base: Story = {
   render: () => (
@@ -40,4 +36,4 @@ export const Base: Story = {
     </Avatar>
   ),
   args: {},
-}
+};

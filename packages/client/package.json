@@ -21,9 +21,9 @@
   "scripts": {
     "build": "tsup",
     "clean": "rimraf -rf dist && rimraf -rf src/v1.d.ts",
-    "generate": "pnpm run geenrate:light && pnpm run generate:prepare",
+    "generate": "pnpm run generate:light && pnpm run generate:prepare",
     "generate:light": "npx openapi-typescript https://api.light.so/api-docs/openapi.json -o ./src/v1.d.ts",
-    "generate:local": "pnpm run geenrate:local-api && pnpm run generate:prepare",
+    "generate:local": "pnpm run generate:local-api && pnpm run generate:prepare",
     "generate:local-api": "npx openapi-typescript http://localhost:3000/api-docs/openapi.json -o ./src/v1.d.ts",
     "generate:prepare": "./prepend.sh"
   },

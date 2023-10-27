@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Cloud,
   CreditCard,
@@ -29,9 +29,9 @@ import {
   User,
   UserPlus,
   Users,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "./button"
+import { Button } from "./button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -45,20 +45,20 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./dropdown-menu"
+} from "./dropdown-menu";
 
 const meta: Meta<typeof DropdownMenu> = {
   title: "ui/DropdownMenu",
   component: DropdownMenu,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof DropdownMenu>
+type Story = StoryObj<typeof DropdownMenu>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Open</Button>
@@ -146,4 +146,4 @@ export const Base: Story = {
     </DropdownMenu>
   ),
   args: {},
-}
+};

@@ -35,7 +35,8 @@ module.exports = {
     "**/_next/**",
     "**/generated/**",
     "generated.ts",
-    "apps/ui/src/components/ui/**",
+    "apps/ui/src/components/ui/**.tsx",
+    "!apps/ui/src/components/ui/**.stories.tsx",
     "apps/extension/*/**.js",
     "packages/client/src/**.d.ts",
     "ios/LightWalletSafariExtension/Resources/**",
@@ -88,6 +89,12 @@ module.exports = {
         "import/no-unresolved": "off",
         "no-undef": "off",
         "no-unused-vars": "off",
+      },
+    },
+    {
+      files: ["*.stories.tsx"],
+      rules: {
+        "@typescript-eslint/no-unused-vars": "off",
       },
     },
     {

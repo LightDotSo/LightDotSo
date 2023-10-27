@@ -13,30 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Button } from "./button"
-import { Input } from "./input"
-import { Label } from "./label"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "./tabs"
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
 const meta: Meta<typeof Tabs> = {
   title: "ui/Tabs",
   component: Tabs,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Tabs>
+type Story = StoryObj<typeof Tabs>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <Tabs {...args} className="w-[400px]">
       <TabsList>
         <TabsTrigger value="account">Account</TabsTrigger>
@@ -44,7 +39,7 @@ export const Base: Story = {
       </TabsList>
       <TabsContent value="account">
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Make changes to your account here. Click save when you're done.
+          Make changes to your account here. Click save when you&apos;re done.
         </p>
         <div className="grid gap-2 py-4">
           <div className="space-y-1">
@@ -62,7 +57,7 @@ export const Base: Story = {
       </TabsContent>
       <TabsContent value="password">
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Change your password here. After saving, you'll be logged out.
+          Change your password here. After saving, you&apos;ll be logged out.
         </p>
         <div className="grid gap-2 py-4">
           <div className="space-y-1">
@@ -83,4 +78,4 @@ export const Base: Story = {
   args: {
     defaultValue: "account",
   },
-}
+};

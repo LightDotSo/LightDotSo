@@ -105,12 +105,15 @@ export function MainNav({
   const framer = useTabs(hookProps);
 
   return (
-    <nav
-      className={cn("flex items-center space-x-4 lg:space-x-6", className)}
+    <div
+      className={cn(
+        "flex items-center space-x-4 lg:space-x-6 overflow-x-scroll overflow-y-visible lg:overflow-x-visible scrollbar-none",
+        className,
+      )}
       {...props}
     >
       {/* Render upon mount */}
       {framer && <Tabs {...framer.tabProps} />}
-    </nav>
+    </div>
   );
 }

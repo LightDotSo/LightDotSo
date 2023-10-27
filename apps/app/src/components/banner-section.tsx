@@ -15,19 +15,19 @@
 
 import { Separator } from "@lightdotso/ui";
 
-interface BannerLayoutProps {
+interface BannerSectionProps {
   title: string;
   description?: string;
   cta?: React.ReactNode;
   children: React.ReactNode;
 }
 
-export function BannerLayout({
+export function BannerSection({
   title,
   description,
   cta,
   children,
-}: BannerLayoutProps) {
+}: BannerSectionProps) {
   return (
     <>
       <div className="flex-1">

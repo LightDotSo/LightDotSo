@@ -38,7 +38,7 @@ export function FeedbackPopover() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className="hidden md:block">
           Feedback
           <span className="sr-only">Open popover</span>
         </Button>

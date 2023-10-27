@@ -59,7 +59,7 @@ export default function Root({
             <Web3Provider siweConfig={siweConfig}>
               <main>
                 <div className="flex flex-col">
-                  <div className="border-b py-2">
+                  <div className="border-b lg:py-2">
                     <div className="flex h-16 items-center px-4 lg:px-12">
                       <div className="flex items-center">
                         <Link
@@ -69,9 +69,7 @@ export default function Root({
                           <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
                         </Link>
                         <span className="ml-2 mr-1 text-primary/60">/</span>
-                        {(type === "unauthenticated" || type === "wallet") && (
-                          <WalletSwitcher />
-                        )}
+                        <WalletSwitcher />
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
@@ -84,7 +82,7 @@ export default function Root({
                     {(type === "unauthenticated" || type === "wallet") && (
                       <MainNav
                         type={type}
-                        className="h-10 items-center px-12"
+                        className="h-10 items-center px-4 lg:px-12"
                       />
                     )}
                   </div>

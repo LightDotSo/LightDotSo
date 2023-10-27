@@ -13,19 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Slider } from "./slider"
+import { Slider } from "./slider";
 
 const meta: Meta<typeof Slider> = {
   title: "ui/Slider",
   component: Slider,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Slider>
+type Story = StoryObj<typeof Slider>;
 
 export const Base: Story = {
   args: {
@@ -33,4 +33,4 @@ export const Base: Story = {
     max: 100,
     step: 1,
   },
-}
+};

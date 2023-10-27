@@ -28,7 +28,7 @@ export default async function Page({
 
   const res = await getUserOperations(
     {
-      params: { query: { address: params.address, status: "proposed" } },
+      params: { query: { address: params.address, status: "executed" } },
     },
     false,
   );

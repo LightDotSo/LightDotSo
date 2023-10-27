@@ -22,6 +22,7 @@ export * from "./src/components/ui/aspect-ratio";
 export * from "./src/components/ui/avatar";
 export * from "./src/components/ui/badge";
 export * from "./src/components/ui/button";
+export * from "./src/components/ui/button-group";
 export * from "./src/components/ui/calendar";
 export * from "./src/components/ui/card";
 export * from "./src/components/ui/checkbox";

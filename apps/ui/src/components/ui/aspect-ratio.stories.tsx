@@ -13,21 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import Image from "next/image"
-import { Meta, StoryObj } from "@storybook/react"
+import Image from "next/image";
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { AspectRatio } from "./aspect-ratio"
+import { AspectRatio } from "./aspect-ratio";
 
 const meta: Meta<typeof AspectRatio> = {
   title: "ui/AspectRatio",
   component: AspectRatio,
   tags: ["autodocs"],
   argTypes: {},
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof AspectRatio>
+type Story = StoryObj<typeof AspectRatio>;
 
 export const Base: Story = {
   render: () => (
@@ -41,4 +41,4 @@ export const Base: Story = {
     </AspectRatio>
   ),
   args: {},
-}
+};

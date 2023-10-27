@@ -1,5 +1,4 @@
 upgrade: true
 reject:
   - "@next-auth/prisma-adapter"
-  - "@tanstack/react-query-next-experimental"
   - lucide-react

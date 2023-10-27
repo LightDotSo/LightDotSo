@@ -15,25 +15,49 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
+import { TransactionsButtonLayout } from "@/app/(wallet)/[address]/transactions/button-layout";
 
 export const metadata: Metadata = {
-  title: "New Wallet",
-  description: "Create a new wallet.",
+  title: "Transactions",
+  description: "View your transactions history.",
 };
 
-interface NewWalletLayoutProps {
+interface TransactionsLayoutProps {
   children: React.ReactNode;
 }
 
-export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
+const transactionsNavItems = [
+  {
+    title: "Queue",
+    href: "/transactions",
+    id: "transactions",
+  },
+  {
+    title: "All",
+    href: "/transactions/all",
+    id: "all",
+  },
+  {
+    title: "History",
+    href: "/transactions/history",
+    id: "history",
+  },
+];
+
+export default function TransactionsLayout({
+  children,
+}: TransactionsLayoutProps) {
   return (
     <>
       <BannerSection
-        title="New Wallet"
-        description="Create your own new Light Wallet."
+        title="Transactions"
+        description="View your transactions history."
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-7xl flex-1">{children}</div>
+          <div className="mx-auto max-w-5xl flex-1 space-y-8">
+            <TransactionsButtonLayout items={transactionsNavItems} />
+            {children}
+          </div>
         </div>
       </BannerSection>
     </>

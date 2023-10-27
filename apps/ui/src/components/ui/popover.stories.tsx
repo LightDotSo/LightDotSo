@@ -13,30 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
-import { Settings2 } from "lucide-react"
+import type { Meta, StoryObj } from "@storybook/react";
+import { Settings2 } from "lucide-react";
 
-import { Button } from "./button"
-import { Input } from "./input"
-import { Label } from "./label"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "./popover"
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 const meta: Meta<typeof Popover> = {
   title: "ui/Popover",
   component: Popover,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Popover>
+type Story = StoryObj<typeof Popover>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-10 rounded-full p-0">
@@ -91,4 +87,4 @@ export const Base: Story = {
     </Popover>
   ),
   args: {},
-}
+};

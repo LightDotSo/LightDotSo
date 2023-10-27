@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Checkbox } from "./checkbox"
+import { Checkbox } from "./checkbox";
 
 const meta: Meta<typeof Checkbox> = {
   title: "ui/Checkbox",
   component: Checkbox,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Checkbox>
+type Story = StoryObj<typeof Checkbox>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <div className="items-top flex space-x-2">
       <Checkbox {...args} id="terms1" />
       <div className="grid gap-1.5 leading-none">
@@ -45,9 +45,9 @@ export const Base: Story = {
     </div>
   ),
   args: {},
-}
+};
 export const Disabled: Story = {
-  render: (args) => (
+  render: args => (
     <div className="flex items-center space-x-2">
       <Checkbox {...args} id="terms2" />
       <label
@@ -61,4 +61,4 @@ export const Disabled: Story = {
   args: {
     disabled: true,
   },
-}
+};

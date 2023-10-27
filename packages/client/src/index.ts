@@ -254,6 +254,7 @@ export const getUserOperations = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             address?: string | null | undefined;
+            status?: ("proposed" | "pending" | "executed" | "reverted") | null;
           }
         | undefined;
     };

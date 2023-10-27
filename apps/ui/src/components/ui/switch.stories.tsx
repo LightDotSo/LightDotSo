@@ -13,27 +13,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Label } from "./label"
-import { Switch } from "./switch"
+import { Label } from "./label";
+import { Switch } from "./switch";
 
 const meta: Meta<typeof Switch> = {
   title: "ui/Switch",
   component: Switch,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Switch>
+type Story = StoryObj<typeof Switch>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <div className="flex items-center space-x-2">
       <Switch id="airplane-mode" />
       <Label htmlFor="airplane-mode">Airplane Mode</Label>
     </div>
   ),
   args: {},
-}
+};

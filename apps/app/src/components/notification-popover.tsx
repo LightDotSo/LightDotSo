@@ -59,7 +59,7 @@ export function NotificationPopover() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="rounded-full p-3" variant="outline">
+        <Button className="hidden rounded-full p-3 md:block" variant="outline">
           <BellIcon className="h-4 w-4" />
           <span className="sr-only">Open popover</span>
         </Button>
