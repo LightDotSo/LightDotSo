@@ -15,9 +15,10 @@
 
 "use client";
 
-import { ButtonGroup, ButtonGroupItem } from "@lightdotso/ui";
+import { buttonVariants } from "@lightdotso/ui";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { cn } from "@lightdotso/utils";
 
 interface TransactionsButtonLayoutProps
   extends React.HTMLAttributes<HTMLElement> {
@@ -50,16 +51,64 @@ export function TransactionsButtonLayout({
   });
 
   return (
-    <div className="flex w-full justify-end pt-8">
-      <ButtonGroup defaultValue={id}>
-        {items.map(item => (
-          <ButtonGroupItem key={item.href} asChild value={item.id}>
-            <Link key={item.id} href={`/${address}${item.href}`}>
-              {item.title}
-            </Link>
-          </ButtonGroupItem>
-        ))}
-      </ButtonGroup>
+    <div className="flex w-full pt-8 lg:justify-end">
+      <div>
+        <div className="sm:hidden">
+          <label htmlFor="tabs" className="sr-only">
+            Select a tab
+          </label>
+          <select
+            id="tabs"
+            name="tabs"
+            defaultValue={id}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "block w-full px-8",
+            )}
+            onChange={event => {
+              // Get the selected value
+              const value = event.target.value;
+              // Get the item from the items
+              const item = items.find(item => item.id === value);
+              // If the item is not found, return
+              if (!item) return;
+              // Navigate to the item
+              router.push(`/${address}${item.href}`);
+            }}
+          >
+            {items.map(item => (
+              <option key={item.id}>{item.title}</option>
+            ))}
+          </select>
+        </div>
+        <div className="hidden sm:block">
+          <nav className="flex" aria-label="Tabs">
+            {items.map((item, index) => (
+              <Link
+                key={item.id}
+                href={`/${address}${item.href}`}
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  // If the item is the first, add rounded
+                  index === 0 ? "rounded-r-none border-r-0" : "border-l-0",
+                  // If the item is middle, don't add rounded
+                  index !== 0 && index !== items.length - 1
+                    ? "rounded-none"
+                    : "",
+                  // If the item is the last, add rounded
+                  index === items.length - 1 ? "rounded-l-none" : "border-r-0",
+                  // If the item is the selected, add bg-selected
+                  item.id === id ? "bg-accent" : "",
+                  // Add padding inside the button
+                )}
+                aria-current={item.id === id ? "page" : undefined}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </div>
     </div>
   );
 }
