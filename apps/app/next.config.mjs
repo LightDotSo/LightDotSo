@@ -25,7 +25,6 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     instrumentationHook: true,
-    appDir: true,
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",
@@ -36,10 +35,8 @@ const nextConfig = {
         "./node_modules/terser",
       ],
     },
-    serverActions: true,
     serverComponentsExternalPackages: [],
   },
-
   transpilePackages: ["@lightdotso/ui"],
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };

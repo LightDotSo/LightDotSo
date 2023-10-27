@@ -35,7 +35,6 @@ const nextConfig = {
         "./node_modules/terser",
       ],
     },
-    serverActions: true,
   },
   async headers() {
     // To help with local development...
