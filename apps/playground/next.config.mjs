@@ -26,7 +26,6 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
-    appDir: true,
     outputFileTracingExcludes: {
       "*": [
         "./node_modules/@swc/core-linux-x64-gnu",
@@ -37,7 +36,6 @@ const nextConfig = {
         "./node_modules/terser",
       ],
     },
-    serverActions: true,
     serverComponentsExternalPackages: [],
   },
 
