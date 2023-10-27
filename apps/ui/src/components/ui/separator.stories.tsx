@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Separator } from "./separator"
+import { Separator } from "./separator";
 
 const meta: Meta<typeof Separator> = {
   title: "ui/Separator",
   component: Separator,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Separator>
+type Story = StoryObj<typeof Separator>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <div>
       <div className="space-y-1">
         <h4 className="text-sm font-medium leading-none">Radix Primitives</h4>
@@ -47,4 +47,4 @@ export const Base: Story = {
     </div>
   ),
   args: {},
-}
+};

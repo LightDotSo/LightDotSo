@@ -13,44 +13,44 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Button } from "./button"
-import { Input } from "./input"
-import { Label } from "./label"
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
 
 const meta: Meta<typeof Input> = {
   title: "ui/Input",
   component: Input,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Input>
+type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {
-  render: (args) => <Input {...args} />,
+  render: args => <Input {...args} />,
   args: {
     type: "email",
     placeholder: "Email",
   },
-}
+};
 export const Disabled: Story = {
-  render: (args) => <Input disabled {...args} />,
+  render: args => <Input disabled {...args} />,
   args: { ...Default.args },
-}
+};
 export const WithLabel: Story = {
-  render: (args) => (
+  render: args => (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label htmlFor="email">{args.placeholder}</Label>
       <Input {...args} id="email" />
     </div>
   ),
   args: { ...Default.args },
-}
+};
 export const WithText: Story = {
-  render: (args) => (
+  render: args => (
     <div className="grid w-full max-w-sm items-center gap-1.5">
       <Label htmlFor="email-2">{args.placeholder}</Label>
       <Input {...args} id="email-2" />
@@ -58,13 +58,13 @@ export const WithText: Story = {
     </div>
   ),
   args: { ...Default.args },
-}
+};
 export const WithButton: Story = {
-  render: (args) => (
+  render: args => (
     <div className="flex w-full max-w-sm items-center space-x-2">
       <Input {...args} />
       <Button type="submit">Subscribe</Button>
     </div>
   ),
   args: { ...Default.args },
-}
+};

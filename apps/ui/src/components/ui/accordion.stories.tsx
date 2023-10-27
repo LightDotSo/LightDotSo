@@ -13,28 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "./accordion"
+} from "./accordion";
 
 const meta: Meta<typeof Accordion> = {
   title: "ui/Accordion",
   component: Accordion,
   tags: ["autodocs"],
   argTypes: {},
-}
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof Accordion>
+type Story = StoryObj<typeof Accordion>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <Accordion {...args}>
       <AccordionItem value="item-1">
         <AccordionTrigger>Is it accessible?</AccordionTrigger>
@@ -45,14 +45,15 @@ export const Base: Story = {
       <AccordionItem value="item-2">
         <AccordionTrigger>Is it styled?</AccordionTrigger>
         <AccordionContent>
-          Yes. It comes with default styles that matches the other components'
-          aesthetic.
+          Yes. It comes with default styles that matches the other
+          components&apos; aesthetic.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
         <AccordionTrigger>Is it animated?</AccordionTrigger>
         <AccordionContent>
-          Yes. It's animated by default, but you can disable it if you prefer.
+          Yes. It&apos;s animated by default, but you can disable it if you
+          prefer.
         </AccordionContent>
       </AccordionItem>
     </Accordion>
@@ -61,4 +62,4 @@ export const Base: Story = {
     type: "single",
     collapsible: true,
   },
-}
+};

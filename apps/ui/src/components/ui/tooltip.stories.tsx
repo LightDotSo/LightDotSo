@@ -13,29 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
-import { Plus } from "lucide-react"
+import type { Meta, StoryObj } from "@storybook/react";
+import { Plus } from "lucide-react";
 
-import { Button } from "./button"
+import { Button } from "./button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  TooltipProvider
-} from "./tooltip"
+  TooltipProvider,
+} from "./tooltip";
 
 const meta: Meta<typeof Tooltip> = {
   title: "ui/Tooltip",
   component: Tooltip,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Tooltip>
+type Story = StoryObj<typeof Tooltip>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
@@ -51,4 +51,4 @@ export const Base: Story = {
     </TooltipProvider>
   ),
   args: {},
-}
+};

@@ -13,23 +13,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { ButtonGroup, ButtonGroupItem } from "./button-group"
+import { ButtonGroup, ButtonGroupItem } from "./button-group";
 
 const meta: Meta<typeof ButtonGroup> = {
   title: "ui/ButtonGroup",
   component: ButtonGroup,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof ButtonGroup>
+type Story = StoryObj<typeof ButtonGroup>;
 
 export const Base: Story = {
-  render: (args) => <ButtonGroup {...args}>  <ButtonGroupItem value="low">Low</ButtonGroupItem>
-  <ButtonGroupItem value="medium">Medium</ButtonGroupItem>
-  <ButtonGroupItem value="high">High</ButtonGroupItem></ButtonGroup>,
+  render: args => (
+    <ButtonGroup {...args}>
+      <ButtonGroupItem value="low">Low</ButtonGroupItem>
+      <ButtonGroupItem value="medium">Medium</ButtonGroupItem>
+      <ButtonGroupItem value="high">High</ButtonGroupItem>
+    </ButtonGroup>
+  ),
   args: {},
-}
+};

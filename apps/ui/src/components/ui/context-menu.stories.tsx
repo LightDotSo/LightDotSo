@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
 import {
   ContextMenu,
@@ -29,20 +29,20 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
-} from "./context-menu"
+} from "./context-menu";
 
 const meta: Meta<typeof ContextMenu> = {
   title: "ui/ContextMenu",
   component: ContextMenu,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof ContextMenu>
+type Story = StoryObj<typeof ContextMenu>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <ContextMenu>
       <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed border-slate-200 text-sm dark:border-slate-700">
         Right click here
@@ -92,4 +92,4 @@ export const Base: Story = {
     </ContextMenu>
   ),
   args: {},
-}
+};

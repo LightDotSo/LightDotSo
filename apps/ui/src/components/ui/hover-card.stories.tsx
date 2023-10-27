@@ -13,33 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
-import { CalendarDays } from "lucide-react"
+import type { Meta, StoryObj } from "@storybook/react";
+import { CalendarDays } from "lucide-react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "./avatar"
-import { Button } from "./button"
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "./hover-card"
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Button } from "./button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 
 const meta: Meta<typeof HoverCard> = {
   title: "ui/HoverCard",
   component: HoverCard,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof HoverCard>
+type Story = StoryObj<typeof HoverCard>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <HoverCard>
       <HoverCardTrigger asChild>
         <Button variant="link">@nextjs</Button>
@@ -67,4 +59,4 @@ export const Base: Story = {
     </HoverCard>
   ),
   args: {},
-}
+};

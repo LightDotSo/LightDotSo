@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
-import { Button } from "./button"
+import { Button } from "./button";
 import {
   Dialog,
   DialogContent,
@@ -24,22 +24,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "./dialog"
-import { Input } from "./input"
-import { Label } from "./label"
+} from "./dialog";
+import { Input } from "./input";
+import { Label } from "./label";
 
 const meta: Meta<typeof Dialog> = {
   title: "ui/Dialog",
   component: Dialog,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Dialog>
+type Story = StoryObj<typeof Dialog>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">Edit Profile</Button>
@@ -48,7 +48,7 @@ export const Base: Story = {
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -72,4 +72,4 @@ export const Base: Story = {
     </Dialog>
   ),
   args: {},
-}
+};

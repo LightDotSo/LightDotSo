@@ -92,6 +92,12 @@ module.exports = {
       },
     },
     {
+      files: ["*.stories.tsx"],
+      rules: {
+        "@typescript-eslint/no-unused-vars": "off",
+      },
+    },
+    {
       files: ["**/subgraph/**/*.ts"],
       rules: {
         "@typescript-eslint/consistent-type-imports": "off",

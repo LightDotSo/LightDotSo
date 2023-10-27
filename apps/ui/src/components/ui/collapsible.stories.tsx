@@ -13,28 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
-import { ChevronsUpDown, Plus, X } from "lucide-react"
+import type { Meta, StoryObj } from "@storybook/react";
+import { ChevronsUpDown, Plus, X } from "lucide-react";
 
-import { Button } from "./button"
+import { Button } from "./button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "./collapsible"
+} from "./collapsible";
 
 const meta: Meta<typeof Collapsible> = {
   title: "ui/Collapsible",
   component: Collapsible,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Collapsible>
+type Story = StoryObj<typeof Collapsible>;
 
 export const Closed: Story = {
-  render: (args) => (
+  render: args => (
     <Collapsible {...args} className="w-[350px] space-y-2">
       <div className="flex items-center justify-between space-x-4 px-4">
         <h4 className="text-sm font-semibold">
@@ -64,9 +64,9 @@ export const Closed: Story = {
     open: false,
     onOpenChange: () => null,
   },
-}
+};
 export const Open: Story = {
-  render: (args) => (
+  render: args => (
     <Collapsible {...args} className="w-[350px] space-y-2">
       <div className="flex items-center justify-between space-x-4 px-4">
         <h4 className="text-sm font-semibold">
@@ -96,4 +96,4 @@ export const Open: Story = {
     open: true,
     onOpenChange: () => null,
   },
-}
+};

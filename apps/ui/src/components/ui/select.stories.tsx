@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
 import {
   Select,
@@ -24,20 +24,20 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "./select"
+} from "./select";
 
 const meta: Meta<typeof Select> = {
   title: "ui/Select",
   component: Select,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Select>
+type Story = StoryObj<typeof Select>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <Select>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select a fruit" />
@@ -74,4 +74,4 @@ export const Base: Story = {
     </Select>
   ),
   args: {},
-}
+};

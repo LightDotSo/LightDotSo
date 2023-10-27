@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react";
 
 import {
   Menubar,
@@ -29,20 +29,20 @@ import {
   MenubarSubContent,
   MenubarSubTrigger,
   MenubarTrigger,
-} from "./menubar"
+} from "./menubar";
 
 const meta: Meta<typeof Menubar> = {
   title: "ui/Menubar",
   component: Menubar,
   tags: ["autodocs"],
   argTypes: {},
-}
-export default meta
+};
+export default meta;
 
-type Story = StoryObj<typeof Menubar>
+type Story = StoryObj<typeof Menubar>;
 
 export const Base: Story = {
-  render: (args) => (
+  render: args => (
     <Menubar>
       <MenubarMenu>
         <MenubarTrigger>File</MenubarTrigger>
@@ -132,4 +132,4 @@ export const Base: Story = {
     </Menubar>
   ),
   args: {},
-}
+};
