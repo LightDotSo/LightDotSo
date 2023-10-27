@@ -76,7 +76,7 @@ export const Tabs = ({
   return (
     <nav
       ref={navRef}
-      className="relative z-0 flex shrink-0 items-center justify-center py-2"
+      className="relative z-0 mb-1.5 mt-2 flex shrink-0 items-center justify-center lg:my-0 lg:py-2"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       onPointerLeave={e => setHoveredTabIndex(null)}
     >
