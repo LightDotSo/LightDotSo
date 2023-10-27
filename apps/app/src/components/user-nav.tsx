@@ -47,7 +47,7 @@ export function UserNav() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="rounded-full p-3">
+        <Button variant="outline" className="hidden rounded-full p-3 md:block">
           <MixerVerticalIcon className="h-4 w-4" />
           <span className="sr-only">Open user settings</span>
         </Button>

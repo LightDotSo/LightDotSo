@@ -82,7 +82,7 @@ export default function Root({
                     {(type === "unauthenticated" || type === "wallet") && (
                       <MainNav
                         type={type}
-                        className="h-10 items-center px-12"
+                        className="h-10 items-center overflow-x-auto px-4 lg:px-12"
                       />
                     )}
                   </div>
