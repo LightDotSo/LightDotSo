@@ -81,24 +81,19 @@ export function TransactionsButtonLayout({
             ))}
           </select>
         </div>
-        <div className="hidden sm:block">
+        <div className="hidden rounded-md border border-input p-1 sm:block">
           <nav className="flex" aria-label="Tabs">
-            {items.map((item, index) => (
+            {items.map(item => (
               <Link
                 key={item.id}
                 href={`/${address}${item.href}`}
                 className={cn(
                   buttonVariants({ variant: "outline" }),
-                  // If the item is the first, add rounded
-                  index === 0 ? "rounded-r-none border-r-0" : "border-l-0",
-                  // If the item is middle, don't add rounded
-                  index !== 0 && index !== items.length - 1
-                    ? "rounded-none"
-                    : "",
-                  // If the item is the last, add rounded
-                  index === items.length - 1 ? "rounded-l-none" : "border-r-0",
+                  "text-secondary bg-transparent hover:bg-transparent border-none",
                   // If the item is the selected, add bg-selected
-                  item.id === id ? "bg-accent" : "",
+                  item.id === id
+                    ? "bg-accent text-primary hover:bg-accent"
+                    : "",
                   // Add padding inside the button
                 )}
                 aria-current={item.id === id ? "page" : undefined}
