@@ -33,7 +33,7 @@ use lightdotso_contracts::{
     constants::LIGHT_PAYMASTER_ADDRESS,
     paymaster::{get_paymaster, UserOperation},
 };
-use lightdotso_gas::gas::GasEstimation;
+use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
     handle_response,

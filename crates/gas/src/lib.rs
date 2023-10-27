@@ -17,4 +17,5 @@ pub mod chains;
 pub mod config;
 pub mod gas;
 pub mod gas_api;
+pub mod server;
 pub mod types;

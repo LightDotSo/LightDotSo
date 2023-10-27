@@ -13,12 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::gas::GasEstimation;
-pub use crate::gas::GasServerImpl;
+use crate::types::GasEstimation;
 use jsonrpsee::{core::RpcResult, proc_macros::rpc};
 
 #[rpc(server, namespace = "gas")]
-pub trait Gas {
+pub trait GasApi {
     #[method(name = "requestGasEstimation")]
     async fn request_gas_estimation(&self, chain_id: u64) -> RpcResult<GasEstimation>;
 }

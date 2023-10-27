@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::types::GasEstimationParams;
 use ethers::types::{u256_from_f64_saturating, U256};
 use eyre::{eyre, Result};
 use serde::{Deserialize, Serialize};
-
-use crate::gas::GasEstimationParams;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct GasData {
