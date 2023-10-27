@@ -30,7 +30,9 @@ use lightdotso_common::{
     utils::hex_to_bytes,
 };
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
-use lightdotso_prisma::{configuration, owner, signature, user_operation, wallet};
+use lightdotso_prisma::{
+    configuration, owner, signature, user_operation, wallet, UserOperationStatus,
+};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -60,6 +62,30 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     // The sender address to filter by.
     pub address: Option<String>,
+    // The status to filter by.
+    #[param(inline)]
+    pub status: Option<ListQueryStatus>,
+}
+
+#[derive(Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum ListQueryStatus {
+    Proposed,
+    Pending,
+    Executed,
+    Reverted,
+}
+
+// Implement From<owner::Data> for Owner.
+impl From<ListQueryStatus> for UserOperationStatus {
+    fn from(status: ListQueryStatus) -> Self {
+        match status {
+            ListQueryStatus::Proposed => UserOperationStatus::Proposed,
+            ListQueryStatus::Pending => UserOperationStatus::Pending,
+            ListQueryStatus::Executed => UserOperationStatus::Executed,
+            ListQueryStatus::Reverted => UserOperationStatus::Reverted,
+        }
+    }
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -288,9 +314,19 @@ async fn v1_user_operation_list_handler(
     // Get the pagination query.
     let Query(pagination) = pagination;
 
+    // If the address is provided, add it to the query.
     let query = match pagination.address {
         Some(owner) => vec![user_operation::sender::equals(owner)],
         None => vec![],
+    };
+
+    // If the status is provided, add it to the query.
+    let query = match pagination.status {
+        Some(status) => {
+            let status = user_operation::status::equals(status.into());
+            query.into_iter().chain(vec![status]).collect()
+        }
+        None => query,
     };
 
     // Get the user operations from the database.
