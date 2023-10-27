@@ -140,6 +140,8 @@ export function ConfirmForm() {
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
+    // TODO: Fix this type error w/ zod
+    // @ts-expect-error
     resolver: zodResolver(newFormStoreSchema, defaultValues),
   });
 
