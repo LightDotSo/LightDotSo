@@ -154,16 +154,19 @@ export function ConfirmForm() {
         .then(() => {
           successToast("You can now use your wallet.");
 
-          const response = await backOff(() =>
-            getWallet({ params: { address } }),
-          );
-
-          if (response.isOk()) {
-            router.push(`/wallet/${address}`);
-          } else {
-            errToast("There was a problem with navigating.");
-            router.push("/");
-          }
+          backOff(() => getWallet({ params: { address } }))
+            .then(res => {
+              if (res.isOk()) {
+                router.push(`/wallet/${address}`);
+              } else {
+                errToast("There was a problem with your request.");
+                router.push("/");
+              }
+            })
+            .catch(() => {
+              errToast("There was a problem with your request.");
+              router.push("/");
+            });
         })
         .catch(() => {
           errToast("There was a problem with your request.");
