@@ -54,7 +54,7 @@ export default function TransactionsLayout({
         description="View your transactions history."
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-5xl flex-1 space-y-4">
+          <div className="mx-auto max-w-5xl flex-1 space-y-8">
             <TransactionsButtonLayout items={transactionsNavItems} />
             {children}
           </div>

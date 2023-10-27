@@ -15,7 +15,15 @@
 
 import { handler } from "@/handles/[address]";
 import { getUserOperations } from "@lightdotso/client";
-import { Avatar, AvatarFallback, Button } from "@lightdotso/ui";
+import {
+  Avatar,
+  AvatarFallback,
+  Button,
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@lightdotso/ui";
 import Link from "next/link";
 
 export const revalidate = 0;
@@ -37,30 +45,44 @@ export default async function Page({
   return res.match(
     res => {
       return (
-        <div className="max-w-2xl space-y-8">
+        <div className="flex w-full space-y-8">
           {res.map(userOperation => (
-            <div key={userOperation.hash} className="flex items-center">
-              <Avatar className="h-9 w-9">
-                <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
-              </Avatar>
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {userOperation.sender}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {userOperation.hash}
-                </p>
-              </div>
-              <div className="ml-auto font-medium">
-                <Button asChild>
-                  <Link
-                    href={`/${params.address}/transactions/op/${userOperation.chain_id}/${userOperation.hash}`}
-                  >
-                    Confirm
-                  </Link>
-                </Button>
-              </div>
-            </div>
+            <Accordion
+              key={userOperation.hash}
+              type="single"
+              collapsible
+              className="w-full rounded-md border border-input"
+            >
+              <AccordionItem className="w-full " value="item-1">
+                <div key={userOperation.hash} className="flex items-center p-4">
+                  <Avatar className="h-9 w-9">
+                    <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
+                  </Avatar>
+                  <div className="ml-4 space-y-1">
+                    <p className="text-sm font-medium leading-none">
+                      {userOperation.sender}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {userOperation.hash}
+                    </p>
+                  </div>
+                  <div className="ml-auto font-medium">
+                    <AccordionTrigger></AccordionTrigger>
+                  </div>
+                </div>
+                <AccordionContent className="bg-accent px-4 pt-4">
+                  <div className="flex w-full justify-end">
+                    <Button asChild>
+                      <Link
+                        href={`/${params.address}/transactions/op/${userOperation.chain_id}/${userOperation.hash}`}
+                      >
+                        Confirm
+                      </Link>
+                    </Button>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           ))}
         </div>
       );
