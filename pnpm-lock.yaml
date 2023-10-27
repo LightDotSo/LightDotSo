@@ -387,8 +387,8 @@ importers:
         specifier: ^5.4.2
         version: 5.4.2(@tanstack/react-query@5.0.5)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-query-next-experimental':
-        specifier: ^5.0.0-beta.9
-        version: 5.0.0-beta.9(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^5.0.5
+        version: 5.0.5(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
       '@tremor/react':
         specifier: ^3.10.0
         version: 3.10.0(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.3.5)
@@ -613,8 +613,8 @@ importers:
         specifier: ^7.75.1
         version: 7.75.1(next@14.0.0)(react@18.2.0)(webpack@5.88.2)
       '@types/node':
-        specifier: 20.8.7
-        version: 20.8.7
+        specifier: 20.8.9
+        version: 20.8.9
       '@types/react':
         specifier: 18.2.33
         version: 18.2.33
@@ -847,8 +847,8 @@ importers:
         specifier: ^5.4.2
         version: 5.4.2(@tanstack/react-query@5.0.5)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-query-next-experimental':
-        specifier: ^5.0.0-beta.9
-        version: 5.0.0-beta.9(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^5.0.5
+        version: 5.0.5(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
       connectkit:
         specifier: ^1.5.3
         version: 1.5.3(@babel/core@7.23.2)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(viem@1.17.2)(wagmi@1.4.5)
@@ -1095,8 +1095,8 @@ importers:
         specifier: ^5.4.2
         version: 5.4.2(@tanstack/react-query@5.0.5)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-query-next-experimental':
-        specifier: ^5.0.0-beta.9
-        version: 5.0.0-beta.9(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^5.0.5
+        version: 5.0.5(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
       '@types/node':
         specifier: ^20.8.9
         version: 20.8.9
@@ -1304,8 +1304,8 @@ importers:
         specifier: ^5.4.2
         version: 5.4.2(@tanstack/react-query@5.0.5)(react-dom@18.2.0)(react@18.2.0)
       '@tanstack/react-query-next-experimental':
-        specifier: ^5.0.0-beta.9
-        version: 5.0.0-beta.9(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
+        specifier: ^5.0.5
+        version: 5.0.5(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -11900,10 +11900,10 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@tanstack/react-query-next-experimental@5.0.0-beta.9(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-SlM/N8g7fOmIf3QShuJu+4wvItSY3D/64KKFv6Exyo2M/vrEJvO7MZRC6WaT2V5kx35V2RAVEoa8sbgDs8NSPg==}
+  /@tanstack/react-query-next-experimental@5.0.5(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-R95det6CVE/HdOmFECC3iPA3E2hFMQUBaqJmpkM6Ozzf5Aoe93zyaosaJIGrsooHJJKIJRxjSXiR/oJpmx4ZaQ==}
     peerDependencies:
-      '@tanstack/react-query': 5.0.0-beta.9
+      '@tanstack/react-query': ^5.0.5
       next: 14.0.0
       react: ^18.0.0
       react-dom: ^18.0.0
@@ -12743,12 +12743,6 @@ packages:
 
   /@types/node@18.15.13:
     resolution: {integrity: sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==}
-
-  /@types/node@20.8.7:
-    resolution: {integrity: sha512-21TKHHh3eUHIi2MloeptJWALuCu5H7HQTdTrWIFReA8ad+aggoX+lRes3ex7/FtpC+sVUpFMQ+QTfYr74mruiQ==}
-    dependencies:
-      undici-types: 5.25.3
-    dev: false
 
   /@types/node@20.8.9:
     resolution: {integrity: sha512-UzykFsT3FhHb1h7yD4CA4YhBHq545JC0YnEz41xkipN88eKQtL6rSgocL5tbAP6Ola9Izm/Aw4Ora8He4x0BHg==}
@@ -32735,10 +32729,6 @@ packages:
 
   /uncrypto@0.1.3:
     resolution: {integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==}
-    dev: false
-
-  /undici-types@5.25.3:
-    resolution: {integrity: sha512-Ga1jfYwRn7+cP9v8auvEXN1rX3sWqlayd4HP7OKk4mZWylEmu3KzXDUGrQUN6Ol7qo1gPvB2e5gX6udnyEPgdA==}
     dev: false
 
   /undici-types@5.26.5:

@@ -1,6 +1,5 @@
 upgrade: true
 reject:
-  - "@tanstack/react-query-next-experimental"
   - lucide-react
   - "@radix-ui/react-alert-dialog"
   - "@radix-ui/react-dialog"
