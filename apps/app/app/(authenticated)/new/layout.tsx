@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-import { BannerLayout } from "@/app/banner";
+import { BannerSection } from "@/components/banner-section";
 
 export const metadata: Metadata = {
   title: "New Wallet",
@@ -28,14 +28,14 @@ interface NewWalletLayoutProps {
 export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
   return (
     <>
-      <BannerLayout
+      <BannerSection
         title="New Wallet"
         description="Create your own new Light Wallet."
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
           <div className="mx-auto max-w-7xl flex-1">{children}</div>
         </div>
-      </BannerLayout>
+      </BannerSection>
     </>
   );
 }

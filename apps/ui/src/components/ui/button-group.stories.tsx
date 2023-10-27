@@ -13,17 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import Root from "@/app/root";
+import type { Meta, StoryObj } from "@storybook/react"
 
-export default function RootLayout(props: {
-  children: React.ReactNode;
-  transactions: React.ReactNode;
-}) {
-  return (
-    <Root type="wallet">
-      {props.children}
-      {props.transactions}
-    </Root>
-  );
+import { ButtonGroup, ButtonGroupItem } from "./button-group"
+
+const meta: Meta<typeof ButtonGroup> = {
+  title: "ui/ButtonGroup",
+  component: ButtonGroup,
+  tags: ["autodocs"],
+  argTypes: {},
+}
+export default meta
+
+type Story = StoryObj<typeof ButtonGroup>
+
+export const Base: Story = {
+  render: (args) => <ButtonGroup {...args}>  <ButtonGroupItem value="low">Low</ButtonGroupItem>
+  <ButtonGroupItem value="medium">Medium</ButtonGroupItem>
+  <ButtonGroupItem value="high">High</ButtonGroupItem></ButtonGroup>,
+  args: {},
 }
