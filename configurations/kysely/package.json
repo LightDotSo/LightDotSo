@@ -21,12 +21,12 @@
     "@lightdotso/prisma": "workspace:*",
     "@neondatabase/serverless": "^0.6.0",
     "kysely": "^0.26.3",
-    "kysely-postgres-js": "^1.1.1",
+    "kysely-postgres-js": "^2.0.0",
     "postgres": "^3.4.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.8.7",
+    "@types/node": "^20.8.9",
     "typescript": "^5.2.2"
   },
   "publishConfig": {

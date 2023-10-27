@@ -55,5 +55,5 @@ export * from "./src/components/ui/tooltip";
 export * from "./src/components/ui/use-toast";
 // export * from "./src/components/ui/typography";
 export * from "./src/providers/theme-provider";
-export * from "./src/providers/trpc";
+export * from "./src/providers/react-query";
 export * from "./src/providers/web3";

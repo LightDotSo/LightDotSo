@@ -1,7 +1,3 @@
 upgrade: true
 reject:
   - "@next-auth/prisma-adapter"
-  - "@trpc/client"
-  - "@trpc/next"
-  - "@trpc/react-query"
-  - "@trpc/server"
