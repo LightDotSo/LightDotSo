@@ -46,13 +46,15 @@ import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
 import { errToast, infoToast, successToast } from "@/utils/toast";
+import { getWallet } from "@lightdotso/client";
+import { backOff } from "exponential-backoff";
 
 type NewFormValues = z.infer<typeof newFormStoreSchema>;
 
 export function ConfirmForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setFormValues, fetchToCreate } = useNewFormStore();
+  const { address, setFormValues, fetchToCreate } = useNewFormStore();
 
   const nameParam = searchParams.get("name");
   const typeParam = searchParams.get("type");
@@ -138,8 +140,6 @@ export function ConfirmForm() {
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
-    // TODO: Fix this type error w/ zod
-    // @ts-expect-error
     resolver: zodResolver(newFormStoreSchema, defaultValues),
   });
 
@@ -153,7 +153,17 @@ export function ConfirmForm() {
       fetchToCreate(true)
         .then(() => {
           successToast("You can now use your wallet.");
-          router.push("/");
+
+          const response = await backOff(() =>
+            getWallet({ params: { address } }),
+          );
+
+          if (response.isOk()) {
+            router.push(`/wallet/${address}`);
+          } else {
+            errToast("There was a problem with navigating.");
+            router.push("/");
+          }
         })
         .catch(() => {
           errToast("There was a problem with your request.");
