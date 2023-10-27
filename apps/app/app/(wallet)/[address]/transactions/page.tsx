@@ -23,8 +23,10 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
+  buttonVariants,
 } from "@lightdotso/ui";
 import Link from "next/link";
+import { cn } from "@lightdotso/utils";
 
 export const revalidate = 0;
 
@@ -53,7 +55,7 @@ export default async function Page({
               collapsible
               className="w-full rounded-md border border-input"
             >
-              <AccordionItem className="w-full " value="item-1">
+              <AccordionItem className="w-full border-none" value="item-1">
                 <div key={userOperation.hash} className="flex items-center p-4">
                   <Avatar className="h-9 w-9">
                     <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
@@ -67,7 +69,17 @@ export default async function Page({
                     </p>
                   </div>
                   <div className="ml-auto font-medium">
-                    <AccordionTrigger></AccordionTrigger>
+                    <AccordionTrigger>
+                      <span
+                        className={cn(
+                          buttonVariants({ variant: "ghost", size: "sm" }),
+                          "hover:bg-transparent",
+                        )}
+                      >
+                        {userOperation.status.charAt(0) +
+                          userOperation.status.slice(1).toLowerCase()}
+                      </span>
+                    </AccordionTrigger>
                   </div>
                 </div>
                 <AccordionContent className="bg-accent px-4 pt-4">

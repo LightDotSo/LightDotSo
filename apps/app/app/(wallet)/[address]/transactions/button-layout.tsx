@@ -93,7 +93,7 @@ export function TransactionsButtonLayout({
                   // If the item is the selected, add bg-selected
                   item.id === id
                     ? "bg-accent text-primary hover:bg-accent"
-                    : "",
+                    : "text-accent",
                   // Add padding inside the button
                 )}
                 aria-current={item.id === id ? "page" : undefined}
