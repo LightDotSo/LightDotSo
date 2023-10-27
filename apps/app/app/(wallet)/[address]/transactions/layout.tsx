@@ -15,6 +15,7 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
+import { TransactionsButtonLayout } from "@/app/(wallet)/[address]/transactions/button-layout";
 
 export const metadata: Metadata = {
   title: "Transactions",
@@ -24,6 +25,24 @@ export const metadata: Metadata = {
 interface TransactionsLayoutProps {
   children: React.ReactNode;
 }
+
+const transactionsNavItems = [
+  {
+    title: "Queue",
+    href: "/transactions",
+    id: "transactions",
+  },
+  {
+    title: "All",
+    href: "/transactions/all",
+    id: "all",
+  },
+  {
+    title: "History",
+    href: "/transactions/history",
+    id: "history",
+  },
+];
 
 export default function TransactionsLayout({
   children,
@@ -35,7 +54,10 @@ export default function TransactionsLayout({
         description="View your transactions history."
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-7xl flex-1">{children}</div>
+          <div className="mx-auto max-w-5xl flex-1 space-y-4">
+            <TransactionsButtonLayout items={transactionsNavItems} />
+            {children}
+          </div>
         </div>
       </BannerSection>
     </>
