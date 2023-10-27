@@ -2,8 +2,8 @@ generated.ts
 
 apps/docs/src/pages/posts/**/*.mdx
 apps/subgraph/generated/**/*.ts
-apps/ui/src/components/**.tsx
-!apps/ui/src/components/**.stories.tsx
+!apps/ui/src/components/ui/**.stories.tsx
+apps/ui/src/components/ui/**.tsx
 apps/extension/**
 configurations/prisma/src/zod/**
 crates/solutions/tests/samples/**
