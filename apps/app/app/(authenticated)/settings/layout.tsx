@@ -15,7 +15,7 @@
 
 import type { Metadata } from "next";
 
-import { SidebarNav } from "@/app/(authenticated)/settings/sidebar-nav";
+import { SidebarNav } from "@/components/sidebar-nav";
 import { BannerSection } from "@/components/banner-section";
 
 export const metadata: Metadata = {

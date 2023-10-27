@@ -13,19 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
-import { AppearanceForm } from "@/app/(authenticated)/settings/appearance/appearance-form";
-import { SettingsSection } from "@/components/settings-section";
+import type { Metadata } from "next";
+import { BannerSection } from "@/components/banner-section";
+import { TITLES } from "@/const/titles";
 
-export default function SettingsProfilePage() {
+export const metadata: Metadata = {
+  title: TITLES.Support.title,
+  description: TITLES.Support.description,
+};
+
+interface SupportLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function SupportLayout({ children }: SupportLayoutProps) {
   return (
-    <SettingsSection
-      title="Appearance"
-      description="Customize the appearance of the app. Automatically switch between day
-          and night themes."
-    >
-      <Separator />
-      <AppearanceForm />
-    </SettingsSection>
+    <>
+      <BannerSection
+        title={TITLES.Support.title}
+        description={TITLES.Support.description}
+      >
+        {children}
+      </BannerSection>
+    </>
   );
 }

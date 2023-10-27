@@ -13,19 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
-import { AppearanceForm } from "@/app/(authenticated)/settings/appearance/appearance-form";
-import { SettingsSection } from "@/components/settings-section";
-
-export default function SettingsProfilePage() {
-  return (
-    <SettingsSection
-      title="Appearance"
-      description="Customize the appearance of the app. Automatically switch between day
-          and night themes."
-    >
-      <Separator />
-      <AppearanceForm />
-    </SettingsSection>
-  );
-}
+export default async function Page() {}

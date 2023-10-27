@@ -14,51 +14,46 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+
+import { SidebarNav } from "@/components/sidebar-nav";
 import { BannerSection } from "@/components/banner-section";
-import { TransactionsButtonLayout } from "@/app/(wallet)/[address]/transactions/button-layout";
-import { TITLES } from "@/const/titles";
 
 export const metadata: Metadata = {
-  title: TITLES.Transactions.title,
-  description: TITLES.Transactions.description,
+  title: "Forms",
+  description: "Advanced form example using react-hook-form and Zod.",
 };
 
-interface TransactionsLayoutProps {
-  children: React.ReactNode;
-}
-
-const transactionsNavItems = [
+const sidebarNavItems = [
   {
-    title: "Queue",
-    href: "/transactions",
-    id: "transactions",
+    title: "Wallet Settings",
+    href: "/settings",
   },
   {
-    title: "All",
-    href: "/transactions/all",
-    id: "all",
+    title: "Account",
+    href: "/settings/account",
   },
   {
-    title: "History",
-    href: "/transactions/history",
-    id: "history",
+    title: "Billing",
+    href: "/settings/billing",
   },
 ];
 
-export default function TransactionsLayout({
-  children,
-}: TransactionsLayoutProps) {
+interface SettingsLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
       <BannerSection
-        title={TITLES.Transactions.title}
-        description={TITLES.Transactions.description}
+        title="Settings"
+        description="Manage your account settings and set preferences."
       >
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-5xl flex-1 space-y-8">
-            <TransactionsButtonLayout items={transactionsNavItems} />
-            {children}
-          </div>
+        <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-32 lg:space-y-0">
+          <aside className="lg:w-1/5">
+            <SidebarNav items={sidebarNavItems} baseRef />
+          </aside>
+          <div className="flex-1 lg:max-w-2xl">{children}</div>
         </div>
       </BannerSection>
     </>
