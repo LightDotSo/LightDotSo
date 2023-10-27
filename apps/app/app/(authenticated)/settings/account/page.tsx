@@ -15,7 +15,7 @@
 
 import { Separator } from "@lightdotso/ui";
 import { AccountForm } from "@/app/(authenticated)/settings/account/account-form";
-import { SettingsSection } from "@/app/(authenticated)/settings/section";
+import { SettingsSection } from "@/components/settings-section";
 
 export default function SettingsProfilePage() {
   return (

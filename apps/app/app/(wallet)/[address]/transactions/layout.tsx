@@ -16,10 +16,11 @@
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
 import { TransactionsButtonLayout } from "@/app/(wallet)/[address]/transactions/button-layout";
+import { TITLES } from "@/const/titles";
 
 export const metadata: Metadata = {
-  title: "Transactions",
-  description: "View your transactions history.",
+  title: TITLES.Transactions.title,
+  description: TITLES.Transactions.description,
 };
 
 interface TransactionsLayoutProps {
@@ -50,8 +51,8 @@ export default function TransactionsLayout({
   return (
     <>
       <BannerSection
-        title="Transactions"
-        description="View your transactions history."
+        title={TITLES.Transactions.title}
+        description={TITLES.Transactions.description}
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
           <div className="mx-auto max-w-5xl flex-1 space-y-8">
