@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   CaretSortIcon,
   CheckIcon,
@@ -36,15 +36,13 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
+  Skeleton,
 } from "@lightdotso/ui";
 import { PlaceholderOrb } from "./placeholder-orb";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";
 import { useAuth } from "@/stores/useAuth";
-
-// Entire file from: https://github.com/shadcn/ui/blob/ece54dd362a458b056a1e86481518f0193967e82/apps/www/app/examples/dashboard/components/team-switcher.tsx
-// License: MIT
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -52,7 +50,21 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
 
 interface WalletSwitcherProps extends PopoverTriggerProps {}
 
+// Entire file from: https://github.com/shadcn/ui/blob/ece54dd362a458b056a1e86481518f0193967e82/apps/www/app/examples/dashboard/components/team-switcher.tsx
+// License: MIT
+
 export function WalletSwitcher({
+  // eslint-disable-next-line react/prop-types
+  className,
+}: WalletSwitcherProps) {
+  return (
+    <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+      <WalletSwitcherButton className={className} />
+    </Suspense>
+  );
+}
+
+export function WalletSwitcherButton({
   // eslint-disable-next-line react/prop-types
   className,
 }: WalletSwitcherProps) {
@@ -67,10 +79,13 @@ export function WalletSwitcher({
   const router = useRouter();
   const { address } = useAuth();
 
-  const { data, isLoading } = useQuery({
-    enabled: !!address,
+  const { data, isLoading } = useSuspenseQuery({
     queryKey: ["wallets", address],
     queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
       const res = await getWallets({
         params: {
           query: {
