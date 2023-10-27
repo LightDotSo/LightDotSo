@@ -43,7 +43,7 @@
     "ncu:root": "ncu --packageFile package.json -u",
     "ncu:upgrade": "pnpm run ncu:root && pnpm run ncu:monorepo",
     "npm-package-json:lint": "npmPkgJsonLint ./apps ./android ./configuations ./contracts ./crates ./ios ./packages ./pods",
-    "pnpm:upgrade": "pnpm update --latest --recursive \"!solc\" \"!@next-auth/prisma-adapter\" \"next-auth\" \"!@trpc/*\"",
+    "pnpm:upgrade": "pnpm update --latest --recursive \"!solc\" \"!@next-auth/prisma-adapter\" \"next-auth\"",
     "prepare": "husky install",
     "prettier:cmd": "prettier",
     "prettier:fix": "prettier --write .",

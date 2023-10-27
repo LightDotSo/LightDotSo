@@ -2,9 +2,5 @@ upgrade: true
 reject:
   - "@next-auth/prisma-adapter"
   - "@tanstack/react-query-next-experimental"
-  - "@trpc/client"
-  - "@trpc/next"
-  - "@trpc/react-query"
-  - "@trpc/server"
   - lucide-react
   - next-auth

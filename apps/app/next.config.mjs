@@ -37,10 +37,10 @@ const nextConfig = {
       ],
     },
     serverActions: true,
-    serverComponentsExternalPackages: ["@trpc/server"],
+    serverComponentsExternalPackages: [],
   },
 
-  transpilePackages: ["@lightdotso/trpc", "@lightdotso/ui"],
+  transpilePackages: ["@lightdotso/ui"],
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
 

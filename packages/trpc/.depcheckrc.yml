@@ -1,7 +1,0 @@
-ignores:
-  - next-auth
-  - swagger-ui-react
-  - "@lightdotso/tsconfig"
-  - viem
-  - typescript
-  - pusher-http-edge

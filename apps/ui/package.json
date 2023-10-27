@@ -23,7 +23,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
     "@lightdotso/styles": "workspace:*",
-    "@lightdotso/trpc": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.4",
@@ -56,10 +55,6 @@
     "@tanstack/react-query": "^5.0.5",
     "@tanstack/react-query-devtools": "^5.4.2",
     "@tanstack/react-query-next-experimental": "^5.0.0-beta.9",
-    "@trpc/client": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
-    "@trpc/next": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
-    "@trpc/react-query": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
-    "@trpc/server": "10.32.1-alpha-actions-2-2023-08-14-10-36-36.53+ccbe40fde",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",

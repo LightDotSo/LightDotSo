@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { headers } from "next/headers";
 import {
   TailwindIndicator,
   ThemeProvider,
-  TrpcProvider,
+  ReactQueryProvider,
   Web3Provider,
   Toaster,
 } from "@lightdotso/ui";
@@ -56,7 +55,7 @@ export default function Root({
     <html lang="en" className={`${inter.variable} font-sans`}>
       <body className="min-h-[100dvh] bg-white dark:bg-black">
         <ThemeProvider attribute="class">
-          <TrpcProvider headers={headers()}>
+          <ReactQueryProvider>
             <Web3Provider siweConfig={siweConfig}>
               <main>
                 <div className="flex flex-col">
@@ -95,7 +94,7 @@ export default function Root({
               <AuthState />
               <Toaster />
             </Web3Provider>
-          </TrpcProvider>
+          </ReactQueryProvider>
         </ThemeProvider>
         <TailwindIndicator />
         <Suspense>
