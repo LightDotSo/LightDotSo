@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{paymaster::PaymasterServerImpl, paymaster_api::PaymasterServer};
 use clap::Parser;
 use ethers::types::Address;
 use eyre::{eyre, Result};
@@ -24,6 +23,8 @@ use std::{
     future::pending,
     net::{IpAddr, Ipv6Addr},
 };
+
+use crate::{paymaster::PaymasterApi, paymaster_api::PaymasterApiServer};
 
 #[derive(Debug, Clone, Parser)]
 pub struct PaymasterArgs {
@@ -56,9 +57,7 @@ impl PaymasterArgs {
                 );
 
                 // Add the paymaster server
-                server
-                    .add_methods(PaymasterServerImpl {}.into_rpc(), JsonRpcServerType::Http)
-                    .unwrap();
+                server.add_methods(PaymasterApi {}.into_rpc(), JsonRpcServerType::Http).unwrap();
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));

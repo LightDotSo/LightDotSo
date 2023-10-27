@@ -13,26 +13,40 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest};
+use async_trait::async_trait;
 use ethers::types::Address;
-use jsonrpsee::{core::RpcResult, proc_macros::rpc};
+use jsonrpsee::core::RpcResult;
 
-#[rpc(client, server, namespace = "paymaster")]
-#[cfg_attr(test, automock)]
-pub trait PaymasterApi {
-    #[method(name = "requestPaymasterAndData")]
+use crate::{
+    paymaster::PaymasterApi,
+    paymaster_api::PaymasterApiServer,
+    types::{GasAndPaymasterAndData, PaymasterAndData, UserOperationRequest},
+};
+
+#[async_trait]
+impl PaymasterApiServer for PaymasterApi {
     async fn request_paymaster_and_data(
         &self,
         user_operation: UserOperationRequest,
         entry_point: Address,
         chain_id: u64,
-    ) -> RpcResult<PaymasterAndData>;
+    ) -> RpcResult<PaymasterAndData> {
+        Ok(PaymasterApi::request_paymaster_and_data(self, user_operation, entry_point, chain_id)
+            .await?)
+    }
 
-    #[method(name = "requestGasAndPaymasterAndData")]
     async fn request_gas_and_paymaster_and_data(
         &self,
         user_operation: UserOperationRequest,
         entry_point: Address,
         chain_id: u64,
-    ) -> RpcResult<GasAndPaymasterAndData>;
+    ) -> RpcResult<GasAndPaymasterAndData> {
+        Ok(PaymasterApi::request_gas_and_paymaster_and_data(
+            self,
+            user_operation,
+            entry_point,
+            chain_id,
+        )
+        .await?)
+    }
 }
