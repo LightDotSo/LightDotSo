@@ -51,6 +51,7 @@
     "clsx": "^2.0.0",
     "connectkit": "^1.5.3",
     "date-fns": "^2.30.0",
+    "exponential-backoff": "^3.1.1",
     "framer-motion": "^10.16.4",
     "immer": "^10.0.3",
     "inngest": "^3.4.1",
