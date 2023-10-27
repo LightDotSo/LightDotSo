@@ -156,7 +156,7 @@ export function ConfirmForm() {
         .then(() => {
           successToast("You can now use your wallet.");
 
-          backOff(() => getWallet({ params: { address } }))
+          backOff(() => getWallet({ params: { query: { address: address! } } }))
             .then(res => {
               if (res.isOk()) {
                 router.push(`/wallet/${address}`);
