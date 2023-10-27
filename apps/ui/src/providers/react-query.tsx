@@ -21,10 +21,7 @@ import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experime
 import { useState } from "react";
 import superjson from "superjson";
 
-export function ReactQueryProvider(props: {
-  children: React.ReactNode;
-  headers: Headers;
-}) {
+export function ReactQueryProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
