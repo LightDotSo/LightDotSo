@@ -36,7 +36,7 @@ export default async function Page({
   return res.match(
     res => {
       return (
-        <div className="flex w-full flex-col space-y-8">
+        <div className="flex w-full flex-col space-y-4">
           {res.map(userOperation => (
             <OpCard
               key={userOperation.hash}
