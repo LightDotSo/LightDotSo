@@ -15,18 +15,7 @@
 
 import { handler } from "@/handles/[address]";
 import { getUserOperations } from "@lightdotso/client";
-import {
-  Avatar,
-  AvatarFallback,
-  Button,
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-  buttonVariants,
-} from "@lightdotso/ui";
-import Link from "next/link";
-import { cn } from "@lightdotso/utils";
+import { OpCard } from "@/app/(wallet)/[address]/transactions/op-card";
 
 export const revalidate = 0;
 
@@ -49,52 +38,11 @@ export default async function Page({
       return (
         <div className="flex w-full space-y-8">
           {res.map(userOperation => (
-            <Accordion
+            <OpCard
               key={userOperation.hash}
-              type="single"
-              collapsible
-              className="w-full rounded-md border border-input"
-            >
-              <AccordionItem className="w-full border-none" value="item-1">
-                <div key={userOperation.hash} className="flex items-center p-4">
-                  <Avatar className="h-9 w-9">
-                    <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
-                  </Avatar>
-                  <div className="ml-4 space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {userOperation.sender}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {userOperation.hash}
-                    </p>
-                  </div>
-                  <div className="ml-auto font-medium">
-                    <AccordionTrigger>
-                      <span
-                        className={cn(
-                          buttonVariants({ variant: "ghost", size: "sm" }),
-                          "hover:bg-transparent",
-                        )}
-                      >
-                        {userOperation.status.charAt(0) +
-                          userOperation.status.slice(1).toLowerCase()}
-                      </span>
-                    </AccordionTrigger>
-                  </div>
-                </div>
-                <AccordionContent className="bg-accent px-4 pt-4">
-                  <div className="flex w-full justify-end">
-                    <Button asChild>
-                      <Link
-                        href={`/${params.address}/transactions/op/${userOperation.chain_id}/${userOperation.hash}`}
-                      >
-                        Confirm
-                      </Link>
-                    </Button>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
+              address={params.address}
+              userOperation={userOperation}
+            />
           ))}
         </div>
       );

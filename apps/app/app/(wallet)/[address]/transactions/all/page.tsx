@@ -13,4 +13,42 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export default async function Page() {}
+import { handler } from "@/handles/[address]";
+import { getUserOperations } from "@lightdotso/client";
+import { OpCard } from "@/app/(wallet)/[address]/transactions/op-card";
+
+export const revalidate = 0;
+
+export default async function Page({
+  params,
+}: {
+  params: { address: string };
+}) {
+  await handler(params);
+
+  const res = await getUserOperations(
+    {
+      params: { query: { address: params.address } },
+    },
+    false,
+  );
+
+  return res.match(
+    res => {
+      return (
+        <div className="flex w-full space-y-8">
+          {res.map(userOperation => (
+            <OpCard
+              key={userOperation.hash}
+              address={params.address}
+              userOperation={userOperation}
+            />
+          ))}
+        </div>
+      );
+    },
+    _ => {
+      return null;
+    },
+  );
+}
