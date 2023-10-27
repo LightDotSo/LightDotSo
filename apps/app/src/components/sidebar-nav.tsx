@@ -26,10 +26,23 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
     href: string;
     title: string;
   }[];
+  baseRef?: boolean;
 }
 
-export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
+export function SidebarNav({
+  className,
+  baseRef,
+  items,
+  ...props
+}: SidebarNavProps) {
   const pathname = usePathname();
+
+  // Get the 1st part of the pathname, if baseRef is true
+  // This is used to highlight the current page in the sidebar
+  // For example, if the current pathname is "/0x1234/settings",
+  // the baseHref will be "/0x1234"
+
+  const baseHref = baseRef ? pathname.split("/")[1] : undefined;
 
   return (
     <nav
@@ -42,10 +55,10 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       {items.map(item => (
         <Link
           key={item.href}
-          href={item.href}
+          href={baseHref ? "/" + baseHref + item.href : item.href}
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            pathname === item.href
+            pathname === (baseHref ? "/" + baseHref + item.href : item.href)
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
             "justify-start",
