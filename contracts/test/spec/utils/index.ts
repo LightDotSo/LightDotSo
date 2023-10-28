@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { anvil } from "./anvil";
-export * from "./constants";
+export { accounts } from "./constants";
 export { publicClient } from "./publicClient";
 export { testClient } from "./testClient";
 export { walletClient } from "./walletClient";

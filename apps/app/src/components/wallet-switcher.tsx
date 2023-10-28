@@ -23,7 +23,6 @@ import {
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import {
-  cn,
   Avatar,
   Button,
   Popover,
@@ -38,6 +37,7 @@ import {
   CommandSeparator,
   Skeleton,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { PlaceholderOrb } from "./placeholder-orb";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useSuspenseQuery } from "@tanstack/react-query";

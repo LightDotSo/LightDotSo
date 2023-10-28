@@ -13,6 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export * from "./signature";
-export * from "./signer";
-export * from "./topology";
+export { SignatureType, SignaturePartType } from "./signature";
+export type { Signer } from "./signer";
+export type {
+  SignatureLeaf,
+  SubdigestLeaf,
+  NestedLeaf,
+  NodeLeaf,
+  Leaf,
+  Node,
+  Topology,
+  RecoverySignatureLeaf,
+  RecoveryDynamicSignatureLeaf,
+  RecoveryNodeLeaf,
+  RecoverySubdigestLeaf,
+  RecoveryNestedLeaf,
+  RecoveryLeaf,
+  RecoveryNode,
+  RecoveryTopology,
+} from "./topology";

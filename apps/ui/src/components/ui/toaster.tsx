@@ -25,7 +25,7 @@ import {
 } from "./toast"
 import { useToast } from "./use-toast"
 
-export function Toaster() {
+function Toaster() {
   const { toasts } = useToast()
 
   return (
@@ -48,3 +48,5 @@ export function Toaster() {
     </ToastProvider>
   )
 }
+
+export { Toaster }
