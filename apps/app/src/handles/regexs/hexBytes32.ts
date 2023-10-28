@@ -13,16 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { notFound } from "next/navigation";
-import { isHex } from "viem";
-import { hexBytes32Regex } from "../regexs";
-
-export const validateUserOperationHash = (str: string) => {
-  if (!isHex(str)) {
-    return notFound();
-  }
-
-  if (hexBytes32Regex.test(str)) {
-    return notFound();
-  }
-};
+export const hexBytes32Regex = /^0x[0-9a-fA-F]{64}$/i;
