@@ -88,12 +88,12 @@ export function TransactionsButtonLayout({
                 key={item.id}
                 href={`/${address}${item.href}`}
                 className={cn(
-                  buttonVariants({ variant: "outline" }),
-                  "text-secondary bg-transparent hover:bg-transparent border-none",
+                  buttonVariants({ variant: "outline", size: "sm" }),
+                  "text-secondary bg-transparent hover:bg-transparent border-none text-xs",
                   // If the item is the selected, add bg-selected
                   item.id === id
-                    ? "bg-accent text-primary hover:bg-accent"
-                    : "text-accent",
+                    ? "bg-accent text-primary font-semibold hover:bg-accent"
+                    : "text-muted-foreground",
                   // Add padding inside the button
                 )}
                 aria-current={item.id === id ? "page" : undefined}
