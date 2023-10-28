@@ -14,31 +14,54 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { handler } from "@/handles/[address]";
-import { OpCard } from "@/app/(wallet)/[address]/transactions/op-card";
 import type { Address } from "viem";
-import { getCachedUserOperations } from "@/services";
+import { getCachedUserOperations, getQueryClient } from "@/services";
+import { TransactionsList } from "@/components/transactions-list";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
+import { Skeleton } from "@lightdotso/ui";
 
 export default async function Page({
   params,
 }: {
   params: { address: string };
 }) {
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
   await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["transactions", "all", params.address],
+    queryFn: () => {
+      getCachedUserOperations(params.address as Address);
+    },
+  });
 
   const res = await getCachedUserOperations(params.address as Address);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return res.match(
-    res => {
+    _res => {
       return (
-        <div className="flex w-full flex-col space-y-4">
-          {res.map(userOperation => (
-            <OpCard
-              key={userOperation.hash}
-              address={params.address}
-              userOperation={userOperation}
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+            <TransactionsList
+              address={params.address as Address}
+              status="all"
             />
-          ))}
-        </div>
+          </Suspense>
+        </HydrationBoundary>
       );
     },
     _ => {
