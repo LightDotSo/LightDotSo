@@ -26,17 +26,27 @@ export default async function Page({
 }: {
   params: { address: string };
 }) {
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
   await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
 
   const queryClient = getQueryClient();
 
   const res = await getCachedLlama(params.address as Address);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   res.match(
     res => {
       queryClient.setQueryData(["llama", params.address], res);
-
-      if (!res.data) return null;
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
