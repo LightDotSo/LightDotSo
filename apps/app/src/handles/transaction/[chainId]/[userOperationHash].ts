@@ -13,11 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getUserOperation } from "@lightdotso/client";
 import { notFound } from "next/navigation";
-import { validateAddress } from "@/handles/validators/address";
 import { handler as addressHandler } from "@/handles/[address]";
-import { validateNumber } from "@/handles/validators/number";
+import {
+  validateAddress,
+  validateNumber,
+  validateUserOperationHash,
+} from "@/handles/validators";
+import { getCachedUserOperation } from "@/services/getCachedUserOperation";
+import type { Hex } from "viem";
 
 export const handler = async (params: {
   address: string;
@@ -38,21 +42,16 @@ export const handler = async (params: {
 
   validateNumber(params.chainId);
 
+  validateUserOperationHash(params.userOperationHash);
+
   // const chainId = parseNumber(params.chainId);
 
   // -------------------------------------------------------------------------
   // Fetch
   // -------------------------------------------------------------------------
 
-  const userOperation = await getUserOperation(
-    {
-      params: {
-        query: {
-          user_operation_hash: params.userOperationHash,
-        },
-      },
-    },
-    false,
+  const userOperation = await getCachedUserOperation(
+    params.userOperationHash as Hex,
   );
 
   // -------------------------------------------------------------------------

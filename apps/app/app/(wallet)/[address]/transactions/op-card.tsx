@@ -26,8 +26,6 @@ import {
 import Link from "next/link";
 import { cn } from "@lightdotso/utils";
 
-export const revalidate = 0;
-
 type OpCardProps = {
   address: string;
   userOperation: {

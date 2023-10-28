@@ -16,7 +16,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { handler } from "@/handles/[address]";
-import { getLlama } from "@lightdotso/client";
+import { getCachedLlama, getQueryClient } from "@/services";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import type { Address } from "viem";
 
 export default async function Page({
   params,
@@ -25,18 +27,24 @@ export default async function Page({
 }) {
   await handler(params);
 
-  const res = await getLlama(params.address);
+  const queryClient = getQueryClient();
 
-  res.match(
-    data => {
-      return (
-        <div>
-          <pre>
-            <code>{JSON.stringify(data, null, 2)}</code>
-          </pre>
-        </div>
-      );
+  await queryClient.prefetchQuery({
+    queryKey: ["llama", params.address],
+    queryFn: () => {
+      getCachedLlama(params.address as Address);
     },
-    () => {},
-  );
+  });
+
+  const res = await getCachedLlama(params.address as Address);
+
+  if (res) {
+    return (
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <pre>
+          <code>{JSON.stringify(res, null, 2)}</code>
+        </pre>
+      </HydrationBoundary>
+    );
+  }
 }

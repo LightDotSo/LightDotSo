@@ -14,10 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { handler } from "@/handles/[address]";
-import { getUserOperations } from "@lightdotso/client";
 import { OpCard } from "@/app/(wallet)/[address]/transactions/op-card";
-
-export const revalidate = 0;
+import type { Address } from "viem";
+import { getCachedUserOperations } from "@/services";
 
 export default async function Page({
   params,
@@ -26,12 +25,7 @@ export default async function Page({
 }) {
   await handler(params);
 
-  const res = await getUserOperations(
-    {
-      params: { query: { address: params.address } },
-    },
-    false,
-  );
+  const res = await getCachedUserOperations(params.address as Address);
 
   return res.match(
     res => {

@@ -17,9 +17,7 @@ import { ConfirmDialog } from "@/components/confirm-dialog";
 import { handler } from "@/handles/[address]";
 import { handler as userOpHandler } from "@/handles/transaction/[chainId]/[userOperationHash]";
 import type { Address } from "viem";
-import { parseNumber } from "@/handles/parsers/number";
-
-export const revalidate = 0;
+import { parseNumber } from "@/handles/parsers";
 
 export default async function Page({
   params,

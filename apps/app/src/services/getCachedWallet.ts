@@ -13,18 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { hexRegex } from "../regexs/hexNumber";
+import { getWallet } from "@lightdotso/client";
+import { cache } from "react";
+import "server-only";
+import type { Address } from "viem";
 
-export const parseNumber = (value: string) => {
-  // Check if the value is a non-negative integer
-  if (/^\d+$/.test(value)) {
-    return parseInt(value, 10);
-  }
+export const revalidate = 3600;
 
-  // Check if the value is Hex
-  if (hexRegex.test(value)) {
-    return parseInt(value, 16);
-  }
-
-  return parseInt(value);
+export const preload = (address: Address) => {
+  void getCachedWallet(address);
 };
+
+export const getCachedWallet = cache(async (address: Address) => {
+  return getWallet({ params: { query: { address: address } } }, false);
+});

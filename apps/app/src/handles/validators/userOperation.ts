@@ -13,18 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { hexRegex } from "../regexs/hexNumber";
+import { notFound } from "next/navigation";
+import { isHex } from "viem";
+import { hexBytes32Regex } from "../regexs";
 
-export const parseNumber = (value: string) => {
-  // Check if the value is a non-negative integer
-  if (/^\d+$/.test(value)) {
-    return parseInt(value, 10);
+export const validateUserOperationHash = (str: string) => {
+  if (!isHex(str)) {
+    return notFound();
   }
 
-  // Check if the value is Hex
-  if (hexRegex.test(value)) {
-    return parseInt(value, 16);
+  if (hexBytes32Regex.test(str)) {
+    return notFound();
   }
-
-  return parseInt(value);
 };
