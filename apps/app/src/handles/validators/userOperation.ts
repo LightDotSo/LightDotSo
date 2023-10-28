@@ -21,9 +21,9 @@ export const validateUserOperationHash = (str: string) => {
     return notFound();
   }
 
-  // If the string length is not 34, then it is not a valid user operation hash.
-  // (32 bytes + 0x prefix)
-  if (str.length !== 34) {
+  // If the string length is not 66, then it is not a valid user operation hash.
+  // (32 bytes = 64 chars + 0x prefix)
+  if (str.length !== 66) {
     return notFound();
   }
 };
