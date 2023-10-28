@@ -102,7 +102,10 @@ impl Polling {
 
                     // Info if the second is divisible by 30 or 30 + 1.
                     if now.second() % 30 == 0 || now.second() % 30 == 1 {
-                        info!("Polling run, chain_id: {} timestamp: {}", self.chain_id, now);
+                        info!(
+                            "Polling run, chain_id: {} timestamp: {} url: {}",
+                            self.chain_id, now, self.url
+                        );
                     }
 
                     // On success, set the min block to the returned block.
@@ -112,8 +115,8 @@ impl Polling {
                     // initial min block.
                     if !self.live && min_block >= initial_min_block {
                         warn!(
-                            "Polling exiting, chain_id: {} min_block: {} initial_min_block: {}",
-                            self.chain_id, min_block, initial_min_block
+                            "Polling exiting, chain_id: {} min_block: {} initial_min_block: {} at url: {}",
+                            self.chain_id, min_block, initial_min_block, self.url
                         );
                         break;
                     }
