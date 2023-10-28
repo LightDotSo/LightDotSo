@@ -63,7 +63,7 @@ export const handler = async (params: {
       return { userOperation: userOperation };
     },
     () => {
-      return notFound();
+      notFound();
     },
   );
 };

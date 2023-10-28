@@ -18,6 +18,6 @@ import { isHex } from "viem";
 
 export const validateHex = (str: string) => {
   if (!isHex(str)) {
-    return notFound();
+    notFound();
   }
 };
