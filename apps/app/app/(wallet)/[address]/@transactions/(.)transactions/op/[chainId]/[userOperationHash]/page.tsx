@@ -20,8 +20,6 @@ import { handler as userOpHandler } from "@/handles/transaction/[chainId]/[userO
 import type { Address } from "viem";
 import { parseNumber } from "@/handles/parsers/number";
 
-export const revalidate = 0;
-
 export default async function Page({
   params,
 }: {

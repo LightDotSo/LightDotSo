@@ -13,27 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ConfirmDialog } from "@/components/confirm-dialog";
-import { handler } from "@/handles/[address]";
-import { handler as userOpHandler } from "@/handles/transaction/[chainId]/[userOperationHash]";
+import { getWallet } from "@lightdotso/client";
+import { cache } from "react";
+import "server-only";
 import type { Address } from "viem";
-import { parseNumber } from "@/handles/parsers/number";
 
-export default async function Page({
-  params,
-}: {
-  params: { address: string; chainId: string; userOperationHash: string };
-}) {
-  const { config } = await handler(params);
-  const { userOperation } = await userOpHandler(params);
-  const chainId = parseNumber(params.chainId);
+export const revalidate = 3600;
 
-  return (
-    <ConfirmDialog
-      config={config}
-      address={params.address as Address}
-      chainId={chainId}
-      userOperation={userOperation}
-    ></ConfirmDialog>
-  );
-}
+export const preload = (address: Address) => {
+  void getCachedWallet(address);
+};
+
+export const getCachedWallet = cache(async (address: Address) => {
+  return getWallet({ params: { query: { address: address } } }, false);
+});

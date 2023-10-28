@@ -19,8 +19,6 @@ import { handler as userOpHandler } from "@/handles/transaction/[chainId]";
 import { parseNumber } from "@/handles/parsers/number";
 import type { Address } from "viem";
 
-export const revalidate = 0;
-
 export default async function Page({
   params,
   searchParams,

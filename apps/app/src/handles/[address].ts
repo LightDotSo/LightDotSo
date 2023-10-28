@@ -13,10 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getConfiguration, getWallet } from "@lightdotso/client";
+import { getCachedConfiguration, getCachedWallet } from "@/services";
 import { notFound } from "next/navigation";
 import { validateAddress } from "./validators/address";
 import { Result } from "neverthrow";
+import type { Address } from "viem";
 
 export const handler = async (params: { address: string }) => {
   // -------------------------------------------------------------------------
@@ -29,21 +30,11 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // -------------------------------------------------------------------------
 
-  const wallet = await getWallet(
-    {
-      params: {
-        query: {
-          address: params.address,
-        },
-      },
-    },
-    false,
-  );
+  const walletPromise = getCachedWallet(params.address as Address);
 
-  const config = await getConfiguration(
-    { params: { query: { address: params.address } } },
-    false,
-  );
+  const configPromise = getCachedConfiguration(params.address as Address);
+
+  const [wallet, config] = await Promise.all([walletPromise, configPromise]);
 
   // -------------------------------------------------------------------------
   // Parse
