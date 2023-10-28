@@ -38,13 +38,6 @@ export default async function Page({
 
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["transactions", "proposed", params.address],
-    queryFn: () => {
-      getCachedUserOperations(params.address as Address, "proposed");
-    },
-  });
-
   const res = await getCachedUserOperations(
     params.address as Address,
     "proposed",
@@ -55,7 +48,12 @@ export default async function Page({
   // ---------------------------------------------------------------------------
 
   return res.match(
-    _res => {
+    res => {
+      queryClient.setQueryData(
+        ["transactions", "proposed", params.address],
+        res,
+      );
+
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
           <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
