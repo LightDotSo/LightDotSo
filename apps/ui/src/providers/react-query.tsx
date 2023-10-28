@@ -16,10 +16,17 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import superjson from "superjson";
+
+const ReactQueryDevtoolsProduction = dynamic(() =>
+  //@ts-expect-error
+  import("@tanstack/react-query-devtools/production").then(d => ({
+    default: d.ReactQueryDevtools,
+  })),
+);
 
 function ReactQueryProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -38,7 +45,7 @@ function ReactQueryProvider(props: { children: React.ReactNode }) {
       <ReactQueryStreamedHydration transformer={superjson}>
         {props.children}
       </ReactQueryStreamedHydration>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtoolsProduction />
     </QueryClientProvider>
   );
 }
