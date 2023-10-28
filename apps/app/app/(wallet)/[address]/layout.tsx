@@ -16,7 +16,7 @@
 import "@lightdotso/styles/global.css";
 import Root from "@/app/root";
 
-export const runtime = "edge";
+export const runtime = "experimental-edge";
 
 export default function RootLayout(props: {
   children: React.ReactNode;
