@@ -56,7 +56,7 @@ export default async function Page({
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense fexecutedback={<Skeleton className="h-8 w-32"></Skeleton>}>
+          <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
             <TransactionsList
               address={params.address as Address}
               status="executed"
