@@ -19,6 +19,7 @@ import { handler } from "@/handles/[address]";
 import { getCachedLlama, getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
+import { notFound } from "next/navigation";
 
 export default async function Page({
   params,
@@ -29,22 +30,24 @@ export default async function Page({
 
   const queryClient = getQueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ["llama", params.address],
-    queryFn: () => {
-      getCachedLlama(params.address as Address);
-    },
-  });
-
   const res = await getCachedLlama(params.address as Address);
 
-  if (res) {
-    return (
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <pre>
-          <code>{JSON.stringify(res, null, 2)}</code>
-        </pre>
-      </HydrationBoundary>
-    );
-  }
+  res.match(
+    res => {
+      queryClient.setQueryData(["llama", params.address], res);
+
+      if (!res.data) return null;
+
+      return (
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <div>
+            <pre>
+              <code>{JSON.stringify(res, null, 2)}</code>
+            </pre>
+          </div>
+        </HydrationBoundary>
+      );
+    },
+    () => notFound(),
+  );
 }

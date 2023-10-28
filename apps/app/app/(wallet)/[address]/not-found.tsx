@@ -13,11 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { notFound } from "next/navigation";
-import { isAddress } from "viem";
+import { NotFound } from "@/components/not-found";
 
-export const validateAddress = (address: string) => {
-  if (!isAddress(address)) {
-    notFound();
-  }
-};
+export default async function Page() {
+  return <NotFound />;
+}

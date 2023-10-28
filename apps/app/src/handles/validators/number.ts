@@ -27,5 +27,5 @@ export const validateNumber = (value: string): void => {
     return;
   }
 
-  return notFound();
+  notFound();
 };

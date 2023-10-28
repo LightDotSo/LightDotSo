@@ -19,10 +19,10 @@ import { hexBytes32Regex } from "../regexs";
 
 export const validateUserOperationHash = (str: string) => {
   if (!isHex(str)) {
-    return notFound();
+    notFound();
   }
 
   if (hexBytes32Regex.test(str)) {
-    return notFound();
+    notFound();
   }
 };

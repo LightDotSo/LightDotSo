@@ -98,7 +98,7 @@ export const handler = async (
   );
 
   if (res.isErr()) {
-    return notFound();
+    notFound();
   }
 
   // -------------------------------------------------------------------------
