@@ -19,6 +19,7 @@ import { buttonVariants } from "@lightdotso/ui";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@lightdotso/utils";
+import { useEffect } from "react";
 
 interface TransactionsButtonLayoutProps
   extends React.HTMLAttributes<HTMLElement> {
@@ -45,10 +46,12 @@ export function TransactionsButtonLayout({
   // Address is the first part of the path
   const address = pathname.split("/")[1];
 
-  // Prefetch all the pages
-  items.forEach(item => {
-    router.prefetch(`/${address}${item.href}`);
-  });
+  useEffect(() => {
+    // Prefetch all the pages
+    items.forEach(item => {
+      router.prefetch(`/${address}${item.href}`);
+    });
+  }, [address, items, router]);
 
   return (
     <div className="flex w-full pt-8 lg:justify-end">
