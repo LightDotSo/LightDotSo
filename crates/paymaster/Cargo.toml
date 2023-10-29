@@ -18,6 +18,7 @@
   lightdotso-contracts = { workspace = true }
   lightdotso-gas = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
+  lightdotso-signer = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
   reqwest = { workspace = true }

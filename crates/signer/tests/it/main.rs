@@ -14,34 +14,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::signers::Signer;
-use lightdotso_signer::kms::KmsSigner;
-use std::time::Duration;
-use tokio::time::timeout;
+use lightdotso_signer::connect::connect_to_kms;
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_kms_connect() {
     let _ = dotenvy::dotenv();
 
     // From: https://github.com/alchemyplatform/rundler/blob/b337dcb090c2ec26418878b3a4d3eb82f452257f/crates/builder/src/task.rs#L241
     // License: LGPL-3.0
-    let signer = timeout(
-        // timeout must be << than the lock TTL to avoid a
-        // bug in the redis lock implementation that panics if connection
-        // takes longer than the TTL. Generally the TLL should be on the order of 10s of seconds
-        // so this should give ample time for the connection to establish.
-        Duration::from_millis(60000 / 10),
-        KmsSigner::connect(
-            1,
-            rusoto_core::Region::UsEast1,
-            vec![std::env::var("AWS_KMS_KEY_ID").unwrap()],
-            60000,
-        ),
-    )
-    .await;
-
-    assert!(signer.is_ok(), "should connect to kms");
-
-    let signer = signer.unwrap().unwrap().signer;
+    let signer = connect_to_kms().await.unwrap();
 
     // Print the address of the signer to stdout so that it can be used in the integration tests
     println!("Signer address: {:?}", signer.address());

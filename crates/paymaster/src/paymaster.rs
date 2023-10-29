@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    constants::OFFCHAIN_VERIFIER_ADDRESS,
+    constants::OFFCHAIN_VERIFIER_ADDRESSES,
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
         UserOperationRequest,
@@ -39,6 +39,7 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
+use lightdotso_signer::connect::connect_to_kms;
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -262,27 +263,32 @@ pub async fn estimate_user_operation_gas(
 
 /// Sign a message w/ the paymaster private key.
 pub async fn sign_message(hash: [u8; 32]) -> Result<Vec<u8>> {
-    let wallet: Wallet<SigningKey> =
-        std::env::var("PAYMASTER_PRIVATE_KEY").unwrap().parse().unwrap();
+    // Connect to the KMS signer.
+    let signer = connect_to_kms().await;
+
+    // Fall back to the private key if the KMS signer is not available.
+    if signer.is_err() {
+        warn!("Falling back to the private key");
+        let private_key_str = std::env::var("PAYMASTER_PRIVATE_KEY").unwrap();
+        let wallet: Wallet<SigningKey> = private_key_str.parse().unwrap();
+        return Ok(wallet.sign_message(hash).await?.to_vec());
+    }
+
+    let wallet = signer.unwrap();
 
     // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
     // `ENVIROMENT` is `local`.
     let address = wallet.address();
-    let verifying_paymaster_address = if std::env::var("ENVIRONMENT").unwrap_or_default() != "local"
-    {
-        *OFFCHAIN_VERIFIER_ADDRESS
-    } else {
-        "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf".parse().unwrap()
-    };
-    // warn!("verifying_paymaster_address: {:?}", verifying_paymaster_address);
+    let verifying_paymaster_addresses: Vec<Address> = OFFCHAIN_VERIFIER_ADDRESSES.clone();
 
-    if address != verifying_paymaster_address {
+    // If the address does not match the paymaster address, return an error.
+    if !verifying_paymaster_addresses.contains(&address) {
         return Err(eyre!(
-            "The address {:?} does not match the paymaster address {:?}",
+            "The address {:?} does not match one of the paymaster address {:?}",
             address,
-            verifying_paymaster_address
+            verifying_paymaster_addresses
         ));
-    }
+    };
 
     // Convert to typed message
     let msg = wallet.sign_message(hash).await?;

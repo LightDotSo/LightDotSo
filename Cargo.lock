@@ -6281,6 +6281,7 @@ dependencies = [
  "lightdotso-contracts",
  "lightdotso-gas",
  "lightdotso-jsonrpsee",
+ "lightdotso-signer",
  "lightdotso-tracing",
  "lightdotso-utils",
  "reqwest",
