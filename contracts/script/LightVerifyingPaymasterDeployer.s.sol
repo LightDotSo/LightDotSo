@@ -43,7 +43,7 @@ contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
         // solhint-disable-next-line no-console
         console.logBytes32(keccak256(initCode));
         // The init code hash of the LightVerifyingPaymaster
-        bytes32 initCodeHash = 0xb5e9d23a8d8ca943a255b36822b7927b53c12abb407bbb13b4313f3f494500b8;
+        bytes32 initCodeHash = 0x31a8cb463ff0f1b17f97a5b665b7b1e26f4965cad0b31d74928c4f199f94d9f7;
         // Assert that the init code is the expected value
         assert(keccak256(initCode) == initCodeHash);
 
