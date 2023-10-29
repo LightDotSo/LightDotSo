@@ -63,13 +63,26 @@ export default function Root({
                     <div className="flex h-16 items-center px-4 lg:px-12">
                       <div className="flex items-center">
                         <Link
-                          href="/"
+                          href={
+                            type === "unauthenticated"
+                              ? "/"
+                              : type === "authenticated"
+                              ? "/wallets"
+                              : // Get the wallet address from the path
+                              // Address is the first part of the path
+                              // e.g. /0x1234
+                              typeof window !== "undefined"
+                              ? `/${window.location.pathname.split("/")[1]}`
+                              : "/wallets"
+                          }
                           className="hover:rounded-md hover:bg-accent"
                         >
                           <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
                         </Link>
                         <span className="ml-2 mr-1 text-primary/60">/</span>
-                        {type === "wallet" && <WalletSwitcher />}
+                        {(type === "authenticated" || type === "wallet") && (
+                          <WalletSwitcher />
+                        )}
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
