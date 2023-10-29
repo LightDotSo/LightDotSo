@@ -26,9 +26,12 @@ pub async fn connect_to_kms() -> Result<AwsSigner, eyre::Report> {
         KmsSigner::connect(
             1,
             Region::UsEast1,
-            vec![std::env::var("AWS_KMS_KEY_ID")
-                .wrap_err("Failed to get AWS_KMS_KEY_ID from environment")?],
-            1000,
+            std::env::var("AWS_KMS_KEY_IDS")
+                .wrap_err("Failed to get AWS_KMS_KEY_IDS from environment")?
+                .split(',')
+                .map(|s| s.to_string())
+                .collect(),
+            3000,
         ),
     )
     .await
