@@ -23,7 +23,7 @@ import { isAddress } from "viem";
 
 export const AuthState = () => {
   const { address } = useAccount();
-  const { setAddress, setWallet } = useAuth();
+  const { setAddress, setWallet, logout } = useAuth();
   const pathname = usePathname();
 
   // On component mount, rehydrate the auth state from local storage
@@ -47,8 +47,12 @@ export const AuthState = () => {
   // On component mount, or when the address from useAccount changes,
   // update the auth state's address
   useEffect(() => {
-    setAddress(address);
-  }, [address, setAddress]);
+    if (address) {
+      setAddress(address);
+    } else {
+      logout();
+    }
+  }, [address, logout, setAddress]);
 
   return null; // or return children if there are children to render
 };

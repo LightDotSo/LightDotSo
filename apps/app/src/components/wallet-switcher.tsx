@@ -43,7 +43,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";
 import { useAuth } from "@/stores/useAuth";
-import { getAddress } from "viem";
+import { getAddress, isAddress } from "viem";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -110,10 +110,15 @@ export function WalletSwitcherButton({
   });
 
   useEffect(() => {
-    if (data) {
+    if (data && pathname && pathname.split("/").length > 1) {
       // Get the slug of the path and find the wallet
       // ex) /0x1234 -> 0x1234
       const slug = pathname.split("/")[1];
+
+      // If the slug is not an address, return
+      if (!isAddress(slug)) {
+        return;
+      }
 
       // Find the wallet from the slug
       const wallet = data.find(wallet => wallet.address === getAddress(slug));

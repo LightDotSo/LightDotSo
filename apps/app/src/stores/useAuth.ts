@@ -21,8 +21,10 @@ interface AuthState {
   address: Address | undefined;
   setAddress: (address: Address | undefined) => void;
   wallet: Address | undefined;
+  userId: string | undefined;
+  setUserId: (userId: string | undefined) => void;
   setWallet: (wallet: Address | undefined) => void;
-  removeAddress: () => void;
+  logout: () => void;
 }
 
 export const useAuth = create(
@@ -32,7 +34,10 @@ export const useAuth = create(
       setAddress: (address: Address | undefined) => set({ address }),
       wallet: undefined,
       setWallet: (wallet: Address | undefined) => set({ wallet }),
-      removeAddress: () => set({ address: undefined }),
+      userId: undefined,
+      setUserId: (userId: string | undefined) => set({ userId }),
+      removeAddress: () =>
+        set({ address: undefined, wallet: undefined, userId: undefined }),
     }),
     {
       name: "auth-state-v1", // name of the item in the storage (must be unique)
