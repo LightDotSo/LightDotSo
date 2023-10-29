@@ -16,7 +16,7 @@
 use ethers::signers::Signer;
 use lightdotso_signer::connect::connect_to_kms;
 
-// #[ignore]
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_kms_connect() {
     let _ = dotenvy::dotenv();
