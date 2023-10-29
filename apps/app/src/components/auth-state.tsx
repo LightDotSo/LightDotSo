@@ -18,13 +18,14 @@
 import { useEffect } from "react";
 import { useAuth } from "@/stores/useAuth";
 import { useAccount } from "wagmi";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { isAddress } from "viem";
 
 export const AuthState = () => {
   const { address } = useAccount();
   const { setAddress, setWallet, logout } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
 
   // On component mount, rehydrate the auth state from local storage
   // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getoptions
@@ -52,7 +53,20 @@ export const AuthState = () => {
     } else {
       logout();
     }
-  }, [address, logout, setAddress]);
+  }, [address, logout, router, setAddress]);
+
+  useEffect(() => {
+    // If on the home page and selected paths, and the user is logged in, redirect to `/wallets`
+    // This is to prevent the user from seeing the home page when they are logged in
+    if (
+      address &&
+      (pathname === "/" ||
+        pathname === "/transactions" ||
+        pathname === "/members")
+    ) {
+      router.push("/wallets");
+    }
+  }, [address, pathname, router]);
 
   return null; // or return children if there are children to render
 };
