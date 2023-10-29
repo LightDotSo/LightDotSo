@@ -22,13 +22,13 @@ use tokio::time::timeout;
 
 pub async fn connect_to_kms() -> Result<AwsSigner, eyre::Report> {
     let signer = timeout(
-        Duration::from_millis(60000 / 10),
+        Duration::from_millis(30000 / 10),
         KmsSigner::connect(
             1,
             Region::UsEast1,
             vec![std::env::var("AWS_KMS_KEY_ID")
                 .wrap_err("Failed to get AWS_KMS_KEY_ID from environment")?],
-            60000,
+            1000,
         ),
     )
     .await
