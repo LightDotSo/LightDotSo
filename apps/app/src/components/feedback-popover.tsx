@@ -20,11 +20,10 @@ import {
   PopoverTrigger,
   Button,
   PopoverContent,
-  Label,
-  Input,
 } from "@lightdotso/ui";
 import { useAuth } from "@/stores/useAuth";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { FeedbackForm } from "./feedback-form";
 
 export function FeedbackPopover() {
   const isMounted = useIsMounted();
@@ -44,48 +43,7 @@ export function FeedbackPopover() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <div className="space-y-2">
-            <h4 className="font-medium leading-none">Dimensions</h4>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
-              Set the dimensions for the layer.
-            </p>
-          </div>
-          <div className="grid gap-2">
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="width">Width</Label>
-              <Input
-                className="col-span-2 h-8"
-                defaultValue="100%"
-                id="width"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxWidth">Max. width</Label>
-              <Input
-                className="col-span-2 h-8"
-                defaultValue="300px"
-                id="maxWidth"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="height">Height</Label>
-              <Input
-                className="col-span-2 h-8"
-                defaultValue="25px"
-                id="height"
-              />
-            </div>
-            <div className="grid grid-cols-3 items-center gap-4">
-              <Label htmlFor="maxHeight">Max. height</Label>
-              <Input
-                className="col-span-2 h-8"
-                defaultValue="none"
-                id="maxHeight"
-              />
-            </div>
-          </div>
-        </div>
+        <FeedbackForm address={address} />
       </PopoverContent>
     </Popover>
   );
