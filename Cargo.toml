@@ -29,6 +29,7 @@
     "crates/prisma",
     "crates/redis",
     "crates/rpc",
+    "crates/signer",
     "crates/simulator",
     "crates/solutions",
     "crates/tauri",
@@ -77,7 +78,9 @@
   const-hex = "1.9.1"
   dotenvy = "0.15"
   enumset = "1.1.2"
-  ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers" }
+  ethers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers", features = [
+    "aws",
+  ] }
   ethers-core = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-core" }
   ethers-providers = { git = "https://github.com/gakonst/ethers-rs", rev = "fa3017715a298728d9fb341933818a5d0d84c2dc", package = "ethers-providers" }
   ethers-main = { git = "https://github.com/gakonst/ethers-rs", package = "ethers" }
@@ -119,6 +122,7 @@
   lightdotso-redis = { path = "./crates/redis" }
   lightdotso-rpc = { path = "./crates/rpc" }
   lightdotso-solutions = { path = "./crates/solutions" }
+  lightdotso-signer = { path = "./crates/signer" }
   lightdotso-simulator = { path = "./crates/simulator" }
   lightdotso-tauri = { path = "./crates/tauri" }
   lightdotso-telegram = { path = "./crates/telegram" }

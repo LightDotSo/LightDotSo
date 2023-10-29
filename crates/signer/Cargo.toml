@@ -1,0 +1,25 @@
+[package]
+  name = "lightdotso-signer"
+
+  version.workspace = true
+  edition.workspace = true
+  rust-version.workspace = true
+  license.workspace = true
+  homepage.workspace = true
+  repository.workspace = true
+
+[dependencies]
+  ethers = { workspace = true }
+  eyre = { workspace = true }
+  lightdotso-tracing = { workspace = true }
+  rslock = "0.2.2"
+  rusoto_core = { version = "0.48.0", default-features = false, features = [
+    "rustls",
+  ] }
+  rusoto_kms = { version = "0.48.0", default-features = false, features = [
+    "rustls",
+  ] }
+  tokio = { workspace = true }
+
+[dev-dependencies]
+  dotenvy = { workspace = true }
