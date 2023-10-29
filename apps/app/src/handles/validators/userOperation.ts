@@ -22,7 +22,7 @@ export const validateUserOperationHash = (str: string) => {
     notFound();
   }
 
-  if (hexBytes32Regex.test(str)) {
+  if (!hexBytes32Regex.test(str)) {
     notFound();
   }
 };
