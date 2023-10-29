@@ -60,7 +60,7 @@ export function SidebarNav({
             buttonVariants({ variant: "ghost" }),
             pathname === (baseHref ? "/" + baseHref + item.href : item.href)
               ? "bg-muted hover:bg-muted"
-              : "hover:bg-transparent hover:underline",
+              : "hover:bg-transparent hover:underline text-muted-foreground",
             "justify-start",
           )}
         >
