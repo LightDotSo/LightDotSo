@@ -15,8 +15,12 @@
 
 use ethers::signers::AwsSigner;
 use eyre::Context;
+use lightdotso_redis::{
+    get_redis_client,
+    lock::{LockGuard, LockManager},
+    redis::Client,
+};
 use lightdotso_tracing::tracing::{debug, error, info, warn};
-use rslock::{LockGuard, LockManager};
 use rusoto_core::Region;
 use rusoto_kms::KmsClient;
 use std::{future::Future, time::Duration};
@@ -37,12 +41,19 @@ impl KmsSigner {
         chain_id: u64,
         region: Region,
         key_ids: Vec<String>,
-        redis_uri: String,
         ttl_millis: u64,
     ) -> eyre::Result<Self> {
         let (tx, rx) = oneshot::channel::<String>();
+
+        // Create the redis client
+        let redis_client: Client = get_redis_client().unwrap();
+
         let kms_guard = SpawnGuard::spawn_with_guard(Self::lock_manager_loop(
-            redis_uri, key_ids, chain_id, ttl_millis, tx,
+            vec![redis_client],
+            key_ids,
+            chain_id,
+            ttl_millis,
+            tx,
         ));
         let key_id = rx.await.context("should lock key_id")?;
         let client = KmsClient::new(region);
@@ -53,13 +64,15 @@ impl KmsSigner {
     }
 
     async fn lock_manager_loop(
-        redis_url: String,
+        clients: Vec<Client>,
         key_ids: Vec<String>,
         chain_id: u64,
         ttl_millis: u64,
         locked_tx: oneshot::Sender<String>,
     ) {
-        let lm = LockManager::new(vec![redis_url]);
+        info!("starting lock manager loop");
+
+        let lm = LockManager::new(clients);
 
         let mut lock = None;
         let mut kid = None;

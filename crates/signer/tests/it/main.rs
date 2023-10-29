@@ -22,6 +22,8 @@ use tokio::time::timeout;
 async fn test_kms_connect() {
     let _ = dotenvy::dotenv();
 
+    // From: https://github.com/alchemyplatform/rundler/blob/b337dcb090c2ec26418878b3a4d3eb82f452257f/crates/builder/src/task.rs#L241
+    // License: LGPL-3.0
     let signer = timeout(
         // timeout must be << than the lock TTL to avoid a
         // bug in the redis lock implementation that panics if connection
@@ -32,7 +34,6 @@ async fn test_kms_connect() {
             1,
             rusoto_core::Region::UsEast1,
             vec![std::env::var("AWS_KMS_KEY_ID").unwrap()],
-            std::env::var("REDIS_URI").unwrap(),
             60000,
         ),
     )

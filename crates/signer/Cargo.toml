@@ -11,8 +11,8 @@
 [dependencies]
   ethers = { workspace = true }
   eyre = { workspace = true }
+  lightdotso-redis = { workspace = true }
   lightdotso-tracing = { workspace = true }
-  rslock = "0.2.2"
   rusoto_core = { version = "0.48.0", default-features = false, features = [
     "rustls",
   ] }
