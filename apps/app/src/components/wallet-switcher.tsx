@@ -21,7 +21,7 @@ import {
   CheckIcon,
   PlusCircledIcon,
 } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Avatar,
   Button,
@@ -43,6 +43,7 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";
 import { useAuth } from "@/stores/useAuth";
+import { getAddress, isAddress } from "viem";
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
@@ -58,7 +59,7 @@ export function WalletSwitcher({
   className,
 }: WalletSwitcherProps) {
   return (
-    <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+    <Suspense fallback={<Skeleton className="mx-2 h-8 w-32"></Skeleton>}>
       <WalletSwitcherButton className={className} />
     </Suspense>
   );
@@ -77,6 +78,7 @@ export function WalletSwitcherButton({
     salt: string;
   }>();
   const router = useRouter();
+  const pathname = usePathname();
   const { address } = useAuth();
 
   const { data, isLoading } = useSuspenseQuery({
@@ -108,13 +110,28 @@ export function WalletSwitcherButton({
   });
 
   useEffect(() => {
-    if (data) {
-      // Get the first wallet
-      const wallet = data[0];
+    if (data && pathname && pathname.split("/").length > 1) {
+      // Get the slug of the path and find the wallet
+      // ex) /0x1234 -> 0x1234
+      const slug = pathname.split("/")[1];
+
+      // If the slug is not an address, return
+      if (!isAddress(slug)) {
+        return;
+      }
+
+      // Find the wallet from the slug
+      const wallet = data.find(wallet => wallet.address === getAddress(slug));
+
+      // If there is no wallet, set the first wallet as the selected wallet
+      if (!wallet) {
+        setSelectedWallet(data[0]);
+        return;
+      }
 
       setSelectedWallet(wallet);
     }
-  }, [data, address]);
+  }, [data, address, pathname]);
 
   // If the address is empty or is not mounted, don't render
   if (!isMounted || !address || isLoading) {
@@ -166,38 +183,45 @@ export function WalletSwitcherButton({
               <CommandInput placeholder="Search wallet..." />
               <CommandEmpty>No wallet found.</CommandEmpty>
               <CommandGroup>
+                {selectedWallet && (
+                  <CommandItem className="text-sm">
+                    <Avatar className="mr-2 h-5 w-5">
+                      <PlaceholderOrb address={selectedWallet.address} />
+                    </Avatar>
+                    {selectedWallet.name}
+                    <span className="hidden">{selectedWallet.address}</span>
+                    <CheckIcon className="ml-auto h-4 w-4" />
+                  </CommandItem>
+                )}
                 {data &&
-                  data.map(wallet => (
-                    <CommandItem
-                      key={wallet.address}
-                      onSelect={() => {
-                        setSelectedWallet(wallet);
-                        setOpen(false);
-                        router.push(`/${wallet.address}`);
-                      }}
-                      className="text-sm"
-                    >
-                      <Avatar className="mr-2 h-5 w-5">
-                        {/* <AvatarImage
+                  // Filter out the selected wallet
+                  data
+                    .filter(
+                      wallet => wallet.address !== selectedWallet?.address,
+                    )
+                    .map(wallet => (
+                      <CommandItem
+                        key={wallet.address}
+                        onSelect={() => {
+                          setSelectedWallet(wallet);
+                          setOpen(false);
+                          router.push(`/${wallet.address}`);
+                        }}
+                        className="text-sm"
+                      >
+                        <Avatar className="mr-2 h-5 w-5">
+                          {/* <AvatarImage
                         src={`https://avatar.vercel.sh/${wallet.value}.png`}
                         alt={wallet.label}
                         className="grayscale"
                       />
                       <AvatarFallback>SC</AvatarFallback> */}
-                        <PlaceholderOrb address={wallet.address} />
-                      </Avatar>
-                      {wallet.name}
-                      <span className="hidden">{wallet.address}</span>
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          selectedWallet?.address === wallet.address
-                            ? "opacity-100"
-                            : "opacity-0",
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
+                          <PlaceholderOrb address={wallet.address} />
+                        </Avatar>
+                        {wallet.name}
+                        <span className="hidden">{wallet.address}</span>
+                      </CommandItem>
+                    ))}
               </CommandGroup>
             </CommandList>
             <CommandSeparator />
