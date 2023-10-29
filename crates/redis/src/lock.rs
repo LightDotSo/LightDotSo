@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// From: https://github.com/hexcowboy/rslock/blob/f40d149fb5afd1f66ea7c7d0cae14efe6c96f46e/src/lock.rs
+// License: BSD-3-Clause
+// Modified to use our redis client for locking implementation
+
 use futures::{future::join_all, Future};
 use rand::{thread_rng, Rng, RngCore};
 use redis::{Client, RedisResult, Value, Value::Okay};
