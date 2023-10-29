@@ -299,15 +299,6 @@ pub async fn sign_message_kms(
     let verifying_paymaster_addresses: Vec<Address> =
         PAYMASTER_ADDRESSES_MAP.keys().cloned().collect();
 
-    // If the address does not match the paymaster address, return an error.
-    if !verifying_paymaster_addresses.contains(&address) {
-        return Err(eyre!(
-            "The address {:?} does not match one of the paymaster address {:?}",
-            address,
-            verifying_paymaster_addresses
-        ));
-    };
-
     // Get the verifying paymaster contract address.
     let verifying_paymaster_address = *PAYMASTER_ADDRESSES_MAP.get(&address).ok_or_else(|| {
         eyre!(
