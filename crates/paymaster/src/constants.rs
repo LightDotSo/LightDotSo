@@ -13,19 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use std::collections::HashMap;
+
 use ethers::types::Address;
 use lazy_static::lazy_static;
 
 // The paymaster addresses
 lazy_static! {
     #[derive(Debug)]
-    pub static ref OFFCHAIN_VERIFIER_ADDRESSES: Vec<Address> =
-      // v1
-      [
-        "0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F",
-        "0xb806440350d9a8b657d6a2f9d9823e4dfb0c0372"
-      ]
-      .into_iter()
-      .map(|s| s.parse().unwrap())
-      .collect();
+    pub static ref PAYMASTER_ADDRESSES_MAP: HashMap<Address, Address> = {
+        let addresses = [
+            // Offchain_address, Onchain_address
+            // Fallback Verifier for `0x000000000018d32DF916ff115A25fbeFC70bAf8b`
+            ("0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F", "0x000000000018d32DF916ff115A25fbeFC70bAf8b"),
+            // Production verifier
+            ("0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F", "0x000000000018d32DF916ff115A25fbeFC70bAf8b"),
+        ];
+
+        addresses
+            .iter()
+            .map(|(offchain, onchain)| (offchain.parse().unwrap(), onchain.parse().unwrap()))
+            .collect()
+    };
 }

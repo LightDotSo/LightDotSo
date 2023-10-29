@@ -20,7 +20,7 @@ use lazy_static::lazy_static;
 lazy_static! {
     #[derive(Debug)]
     pub static ref LIGHT_PAYMASTER_ADDRESS: Address =
-      // v1
+      // v1 (Fallback)
       "0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap();
 }
 

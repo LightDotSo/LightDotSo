@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    constants::OFFCHAIN_VERIFIER_ADDRESSES,
+    constants::PAYMASTER_ADDRESSES_MAP,
     types::{
         EstimateResult, GasAndPaymasterAndData, PaymasterAndData, UserOperationConstruct,
         UserOperationRequest,
@@ -101,33 +101,56 @@ pub async fn get_paymaster_and_data(
 ) -> RpcResult<Bytes> {
     info!(chain_id, valid_until, valid_after);
 
-    // Get the address
-    let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
-    info!("verifying_paymaster_address: {:?}", to_checksum(&verifying_paymaster_address, None));
+    // Attempt to sign the message w/ the KMS.
+    let kms_res = sign_message_kms(chain_id, construct.clone(), valid_until, valid_after).await;
 
-    // Infinite valid until.
-    let hash = get_hash(
-        chain_id,
-        verifying_paymaster_address,
-        construct.clone(),
-        valid_until,
-        valid_after,
-    )
-    .await
-    .map_err(JsonRpcError::from)?;
+    // If the KMS signer is available, use it.
+    // Otherwise, fall back to the private key.
+    match kms_res {
+        Ok((msg, verifying_paymaster_address)) => {
+            // Construct the paymaster and data.
+            let paymater_and_data = construct_paymaster_and_data(
+                verifying_paymaster_address,
+                valid_until,
+                valid_after,
+                Some(&msg),
+            );
 
-    // Sign the message.
-    let msg = sign_message(hash).await.map_err(JsonRpcError::from)?;
+            Ok(paymater_and_data)
+        }
+        Err(_) => {
+            // Fallback to the environment fallback address
+            let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+            info!(
+                "verifying_paymaster_address: {:?}",
+                to_checksum(&verifying_paymaster_address, None)
+            );
 
-    // Construct the paymaster and data.
-    let paymater_and_data = construct_paymaster_and_data(
-        verifying_paymaster_address,
-        valid_until,
-        valid_after,
-        Some(&msg),
-    );
+            // Infinite valid until.
+            let hash = get_hash(
+                chain_id,
+                verifying_paymaster_address,
+                construct.clone(),
+                valid_until,
+                valid_after,
+            )
+            .await
+            .map_err(JsonRpcError::from)?;
 
-    Ok(paymater_and_data)
+            // Sign the message.
+            let msg = sign_message_fallback(hash).await.map_err(JsonRpcError::from)?;
+
+            // Construct the paymaster and data.
+            let paymater_and_data = construct_paymaster_and_data(
+                verifying_paymaster_address,
+                valid_until,
+                valid_after,
+                Some(&msg),
+            );
+
+            Ok(paymater_and_data)
+        }
+    }
 }
 
 /// Construct the paymaster and data.
@@ -262,24 +285,19 @@ pub async fn estimate_user_operation_gas(
 }
 
 /// Sign a message w/ the paymaster private key.
-pub async fn sign_message(hash: [u8; 32]) -> Result<Vec<u8>> {
-    // Connect to the KMS signer.
-    let signer = connect_to_kms().await;
-
-    // Fall back to the private key if the KMS signer is not available.
-    if signer.is_err() {
-        warn!("Falling back to the private key");
-        let private_key_str = std::env::var("PAYMASTER_PRIVATE_KEY").unwrap();
-        let wallet: Wallet<SigningKey> = private_key_str.parse().unwrap();
-        return Ok(wallet.sign_message(hash).await?.to_vec());
-    }
-
-    let wallet = signer.unwrap();
+pub async fn sign_message_kms(
+    chain_id: u64,
+    construct: UserOperationConstruct,
+    valid_until: u64,
+    valid_after: u64,
+) -> Result<(Vec<u8>, Address)> {
+    let signer = connect_to_kms().await?;
 
     // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
     // `ENVIROMENT` is `local`.
-    let address = wallet.address();
-    let verifying_paymaster_addresses: Vec<Address> = OFFCHAIN_VERIFIER_ADDRESSES.clone();
+    let address = signer.address();
+    let verifying_paymaster_addresses: Vec<Address> =
+        PAYMASTER_ADDRESSES_MAP.keys().cloned().collect();
 
     // If the address does not match the paymaster address, return an error.
     if !verifying_paymaster_addresses.contains(&address) {
@@ -290,11 +308,40 @@ pub async fn sign_message(hash: [u8; 32]) -> Result<Vec<u8>> {
         ));
     };
 
+    // Get the verifying paymaster contract address.
+    let verifying_paymaster_address = *PAYMASTER_ADDRESSES_MAP.get(&address).ok_or_else(|| {
+        eyre!(
+            "The address {:?} does not match one of the paymaster address {:?}",
+            address,
+            verifying_paymaster_addresses
+        )
+    })?;
+
+    // Infinite valid until.
+    let hash = get_hash(
+        chain_id,
+        verifying_paymaster_address,
+        construct.clone(),
+        valid_until,
+        valid_after,
+    )
+    .await?;
+
     // Convert to typed message
-    let msg = wallet.sign_message(hash).await?;
+    let msg = signer.sign_message(hash).await?;
     info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
-    Ok(msg.to_vec())
+    Ok((msg.to_vec(), verifying_paymaster_address))
+}
+
+/// Sign a message w/ the paymaster private key.
+pub async fn sign_message_fallback(hash: [u8; 32]) -> Result<Vec<u8>> {
+    // Fall back to the private key if the KMS signer is not available.
+    warn!("Falling back to the private key");
+    let private_key_str = std::env::var("PAYMASTER_PRIVATE_KEY").unwrap();
+    let wallet: Wallet<SigningKey> = private_key_str.parse().unwrap();
+
+    Ok(wallet.sign_message(hash).await?.to_vec())
 }
 
 /// Get the hash for the paymaster.
@@ -384,7 +431,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_sign_message() {
+    async fn test_sign_message_fallback() {
         // Specify a private key (This is a dummy key for the test)
         let private_key_str = "0000000000000000000000000000000000000000000000000000000000000001";
 
@@ -402,7 +449,7 @@ mod tests {
                 .unwrap();
 
         // Call our function
-        let result = sign_message(hash).await;
+        let result = sign_message_fallback(hash).await;
 
         // The expected signature
         let expected_signature: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
