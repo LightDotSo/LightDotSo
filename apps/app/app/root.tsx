@@ -22,19 +22,18 @@ import {
 } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 import { WalletSwitcher } from "@/components/wallet-switcher";
-import { Logo } from "@/components/light-logo";
 import { UserNav } from "@/components/user-nav";
 import { MainNav } from "@/components/main-nav";
 import { NotificationPopover } from "@/components/notification-popover";
 import { FeedbackPopover } from "@/components/feedback-popover";
 import { ConnectButton } from "@/components/connect-button";
 import { siweConfig } from "@/components/siwe-button";
-import Link from "next/link";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { VercelToolbar } from "@/components/vercel-toolbar";
 import { AuthState } from "@/components/auth-state";
+import { RootLogo } from "./root-logo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -62,23 +61,7 @@ export default function Root({
                   <div className="border-b lg:py-2">
                     <div className="flex h-16 items-center px-4 lg:px-12">
                       <div className="flex items-center">
-                        <Link
-                          href={
-                            type === "unauthenticated"
-                              ? "/"
-                              : type === "authenticated"
-                              ? "/wallets"
-                              : // Get the wallet address from the path
-                              // Address is the first part of the path
-                              // e.g. /0x1234
-                              typeof window !== "undefined"
-                              ? `/${window.location.pathname.split("/")[1]}`
-                              : "/wallets"
-                          }
-                          className="hover:rounded-md hover:bg-accent"
-                        >
-                          <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
-                        </Link>
+                        <RootLogo type={type} />
                         <span className="ml-2 mr-1 text-primary/60">/</span>
                         {(type === "authenticated" || type === "wallet") && (
                           <WalletSwitcher />
