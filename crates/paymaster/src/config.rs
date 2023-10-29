@@ -30,10 +30,19 @@ use crate::{paymaster::PaymasterApi, paymaster_api::PaymasterApiServer};
 pub struct PaymasterArgs {
     #[clap(long, env = "PAYMASTER_ADDRESS", hide = true,default_value = "", value_parser=parse_address)]
     pub paymaster: Address,
-
     /// The private key of the paymaster
     #[clap(long, env = "PAYMASTER_PRIVATE_KEY", hide = true)]
     pub paymaster_private_key: String,
+    /// The AWS access key id
+    #[clap(long, env = "AWS_ACCESS_KEY_ID", hide = true)]
+    pub aws_access_key_id: String,
+    /// The AWS secret access key
+    #[clap(long, env = "AWS_SECRET_ACCESS_KEY", hide = true)]
+    pub aws_secret_key_id: String,
+    /// The AWS KMS key ids
+    #[arg(long, short, num_args = 1.., value_delimiter = ',')]
+    #[clap(long, env = "AWS_KMS_KEY_IDS", hide = true)]
+    pub aws_kms_key_ids: Vec<String>,
 }
 
 impl PaymasterArgs {

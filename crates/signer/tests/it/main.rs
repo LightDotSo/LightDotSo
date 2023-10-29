@@ -13,15 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod check;
-pub(crate) mod configuration;
-pub(crate) mod feedback;
-pub(crate) mod health;
-pub(crate) mod metrics;
-pub(crate) mod notification;
-pub(crate) mod signature;
-pub(crate) mod support_request;
-pub(crate) mod transaction;
-pub(crate) mod user;
-pub(crate) mod user_operation;
-pub(crate) mod wallet;
+use ethers::signers::Signer;
+use lightdotso_signer::connect::connect_to_kms;
+
+#[ignore]
+#[tokio::test(flavor = "multi_thread")]
+async fn test_kms_connect() {
+    let _ = dotenvy::dotenv();
+
+    // From: https://github.com/alchemyplatform/rundler/blob/b337dcb090c2ec26418878b3a4d3eb82f452257f/crates/builder/src/task.rs#L241
+    // License: LGPL-3.0
+    let signer = connect_to_kms().await.unwrap();
+
+    // Print the address of the signer to stdout so that it can be used in the integration tests
+    println!("Signer address: {:?}", signer.address());
+}

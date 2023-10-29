@@ -16,6 +16,7 @@
 pub use redis;
 
 pub mod block;
+pub mod lock;
 mod namespace;
 pub mod wallet;
 

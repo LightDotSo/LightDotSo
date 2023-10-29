@@ -19,7 +19,13 @@ use lazy_static::lazy_static;
 // The paymaster addresses
 lazy_static! {
     #[derive(Debug)]
-    pub static ref OFFCHAIN_VERIFIER_ADDRESS: Address =
+    pub static ref OFFCHAIN_VERIFIER_ADDRESSES: Vec<Address> =
       // v1
-      "0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F".parse().unwrap();
+      [
+        "0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F",
+        "0xb806440350d9a8b657d6a2f9d9823e4dfb0c0372"
+      ]
+      .into_iter()
+      .map(|s| s.parse().unwrap())
+      .collect();
 }
