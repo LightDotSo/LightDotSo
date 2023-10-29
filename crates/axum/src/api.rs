@@ -18,7 +18,7 @@ use crate::{
     handle_error,
     routes::{
         check, configuration, feedback, health, notification, signature, support_request,
-        transaction, user_operation, wallet,
+        transaction, user, user_operation, wallet,
     },
     state::AppState,
 };
@@ -64,6 +64,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(support_request::SupportRequestError),
         schemas(transaction::Transaction),
         schemas(transaction::TransactionError),
+        schemas(user::User),
+        schemas(user::UserError),
         schemas(user_operation::UserOperation),
         schemas(user_operation::UserOperationCreate),
         schemas(user_operation::UserOperationError),
@@ -89,6 +91,7 @@ use utoipa_swagger_ui::SwaggerUi;
         support_request::v1_support_request_post_handler,
         transaction::v1_transaction_get_handler,
         transaction::v1_transaction_list_handler,
+        user::v1_user_get_handler,
         user_operation::v1_user_operation_get_handler,
         user_operation::v1_user_operation_list_handler,
         user_operation::v1_user_operation_post_handler,
@@ -103,11 +106,12 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "feedback", description = "Feedback API"),
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
-        (name = "wallet", description = "Wallet API"),
         (name = "signature", description = "Signature API"),
         (name = "support_request", description = "Support Request API"),
         (name = "transaction", description = "Transaction API"),
+        (name = "user", description = "User API"),
         (name = "user_operation", description = "User Operation API"),
+        (name = "wallet", description = "Wallet API"),
     )
 )]
 #[openapi(
@@ -161,13 +165,17 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the API
     let api = Router::new()
-        .merge(check::router())
-        .merge(health::router())
-        .merge(wallet::router())
         .merge(configuration::router())
+        .merge(check::router())
+        .merge(feedback::router())
+        .merge(health::router())
+        .merge(notification::router())
         .merge(signature::router())
+        .merge(support_request::router())
         .merge(transaction::router())
-        .merge(user_operation::router());
+        .merge(user::router())
+        .merge(user_operation::router())
+        .merge(wallet::router());
 
     // Create the app for the server
     let app = Router::new()

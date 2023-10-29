@@ -22,5 +22,6 @@ pub(crate) mod notification;
 pub(crate) mod signature;
 pub(crate) mod support_request;
 pub(crate) mod transaction;
+pub(crate) mod user;
 pub(crate) mod user_operation;
 pub(crate) mod wallet;
