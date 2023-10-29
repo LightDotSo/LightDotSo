@@ -36,7 +36,7 @@ export const useAuth = create(
       setWallet: (wallet: Address | undefined) => set({ wallet }),
       userId: undefined,
       setUserId: (userId: string | undefined) => set({ userId }),
-      removeAddress: () =>
+      logout: () =>
         set({ address: undefined, wallet: undefined, userId: undefined }),
     }),
     {
