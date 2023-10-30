@@ -53,7 +53,7 @@ impl SimulatorArgs {
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at [::]:3000");
+                info!("Started simulator JSON-RPC server at [::]:3000");
 
                 pending::<Result<()>>().await
             }

@@ -70,7 +70,7 @@ impl PaymasterArgs {
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started bundler JSON-RPC server at [::]:3000");
+                info!("Started paymaster JSON-RPC server at [::]:3000");
 
                 pending::<Result<()>>().await
             }
