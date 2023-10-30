@@ -31,7 +31,7 @@ export function Modal({ children }: ModalProps) {
 
   return (
     <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
-      <DialogContent className="w-full overflow-scroll sm:max-h-[75%] sm:max-w-3xl">
+      <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
         {children}
       </DialogContent>
     </Dialog>
