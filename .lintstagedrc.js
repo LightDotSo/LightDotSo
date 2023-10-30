@@ -5,7 +5,7 @@ module.exports = {
   "*.sol": [
     "pnpm run forge:fmt:cmd",
     "pnpm run forge:snapshot:cmd",
-    "pnpm run solhint:cmd --fix",
+    // "pnpm run solhint:cmd --fix",
   ],
   "*.toml": ["pnpm run taplo:cmd"],
   "package.json": [
