@@ -21,30 +21,54 @@ enum Category {
   Support = "Support",
 }
 
+enum SettingsSubCategory {
+  Account = "Account",
+  Billing = "Billing",
+}
+
+type SubCategory = string;
+
 type CategoryObject = {
   title: string;
   description: string;
+  subcategories: Record<SubCategory, CategoryObject>;
 };
 
 export const TITLES: Record<Category, CategoryObject> = {
   [Category.Transactions]: {
     title: "Transactions",
     description: "View your transactions history.",
+    subcategories: {},
   },
   [Category.Profile]: {
     title: "Profile",
     description: "View and edit your profile information.",
+    subcategories: {},
   },
   [Category.Settings]: {
     title: "Settings",
     description: "Manage your account settings.",
+    subcategories: {
+      [SettingsSubCategory.Account]: {
+        title: "Account",
+        description: "Manage your wallet account",
+        subcategories: {},
+      },
+      [SettingsSubCategory.Billing]: {
+        title: "Billing",
+        description: "Manage your billing information",
+        subcategories: {},
+      },
+    },
   },
   [Category.Members]: {
     title: "Members",
     description: "Manage and view your wallet members.",
+    subcategories: {},
   },
   [Category.Support]: {
     title: "Support",
     description: "Get help from our support team.",
+    subcategories: {},
   },
 };

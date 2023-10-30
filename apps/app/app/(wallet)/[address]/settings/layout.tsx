@@ -17,10 +17,11 @@ import type { Metadata } from "next";
 
 import { SidebarNav } from "@/components/sidebar-nav";
 import { BannerSection } from "@/components/banner-section";
+import { TITLES } from "@/const/titles";
 
 export const metadata: Metadata = {
-  title: "Forms",
-  description: "Advanced form example using react-hook-form and Zod.",
+  title: TITLES.Settings.title,
+  description: TITLES.Settings.description,
 };
 
 const sidebarNavItems = [
@@ -46,8 +47,8 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (
     <>
       <BannerSection
-        title="Settings"
-        description="Manage your account settings and set preferences."
+        title={TITLES.Settings.title}
+        description={TITLES.Settings.description}
       >
         <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-32 lg:space-y-0">
           <aside className="lg:w-1/5">
