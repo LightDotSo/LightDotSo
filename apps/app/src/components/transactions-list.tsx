@@ -46,8 +46,7 @@ export function TransactionsList({ address, status }: TransactionsListProps) {
           return data;
         },
         err => {
-          console.error(err);
-          return null;
+          throw err;
         },
       );
     },

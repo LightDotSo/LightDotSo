@@ -159,7 +159,7 @@
     "turbo": "^1.10.16",
     "typescript": "^5.2.2",
     "vercel": "^32.5.0",
-    "viem": "^1.18.0",
+    "viem": "^1.17.2",
     "vite": "^4.5.0",
     "vite-tsconfig-paths": "^4.2.1",
     "vitest": "^0.34.6",

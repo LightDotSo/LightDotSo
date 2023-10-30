@@ -103,8 +103,7 @@ export function WalletSwitcherButton({
           return data;
         },
         err => {
-          console.error(err);
-          return null;
+          throw err;
         },
       );
     },
