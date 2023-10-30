@@ -32,6 +32,10 @@ const ReactQueryDevtoolsProduction = dynamic(() =>
 
 function ReactQueryProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     const client = new QueryClient({
       defaultOptions: {
         queries: {
