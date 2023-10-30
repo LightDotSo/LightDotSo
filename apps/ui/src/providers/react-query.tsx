@@ -15,8 +15,8 @@
 
 "use client";
 
-import { QueryClient } from "@tanstack/react-query";
-import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 import dynamic from "next/dynamic";
@@ -31,32 +31,34 @@ const ReactQueryDevtoolsProduction = dynamic(() =>
 );
 
 function ReactQueryProvider(props: { children: React.ReactNode }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 5 * 1000,
-            gcTime: 1000 * 60 * 60 * 24, // 24 hours
-          },
+  const [queryClient] = useState(() => {
+    const client = new QueryClient({
+      defaultOptions: {
+        queries: {
+          staleTime: 5 * 1000,
+          gcTime: 1000 * 60 * 60 * 24, // 24 hours
         },
-      }),
-  );
+      },
+    });
+    const persister = createSyncStoragePersister({
+      storage: typeof window !== "undefined" ? window.localStorage : undefined,
+    });
 
-  const persister = createSyncStoragePersister({
-    storage: window.localStorage,
+    persistQueryClient({
+      queryClient: client,
+      persister,
+    });
+
+    return client;
   });
 
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{ persister }}
-    >
+    <QueryClientProvider client={queryClient}>
       <ReactQueryStreamedHydration transformer={superjson}>
         {props.children}
       </ReactQueryStreamedHydration>
       <ReactQueryDevtoolsProduction />
-    </PersistQueryClientProvider>
+    </QueryClientProvider>
   );
 }
 
