@@ -324,15 +324,17 @@ pub async fn sign_message_kms(
     info!("hash: 0x{}", hex::encode(hash));
 
     // Convert to typed message
-    let msg = signer.sign_message(hash).await?;
-    info!("msg: 0x{}", hex::encode(msg.to_vec()));
+    let initial_msg = signer.sign_message(hash).await?;
+    info!("initial_msg: 0x{}", hex::encode(initial_msg.to_vec()));
 
     // Parse the recovery id
-    let id = msg.recovery_id().unwrap();
+    let id = initial_msg.recovery_id().unwrap();
     info!("id: {:?}", id);
 
     // Overwrite the recovery id
-    let msg = Signature { r: msg.r, s: msg.s, v: id.to_byte().into() };
+    let msg = Signature { r: initial_msg.r, s: initial_msg.s, v: id.to_byte().into() };
+    info!("msg: 0x{}", hex::encode(msg.to_vec()));
+
     let recovered_address = msg.recover(hash_message(hash))?;
     info!("recovered_address: {:?}", recovered_address);
     info!("signer_address: {:?}", signer.address());
