@@ -313,6 +313,7 @@ async fn v1_user_operation_list_handler(
 ) -> AppJsonResult<Vec<UserOperation>> {
     // Get the pagination query.
     let Query(pagination) = pagination;
+    info!(?pagination);
 
     // If the address is provided, add it to the query.
     let query = match pagination.address {

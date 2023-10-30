@@ -340,18 +340,24 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
       "name": "admin/wallet/list",
-      "url": "http://localhost:3000/admin/v1/wallet/list",
+      "url": "http://localhost:3000/admin/v1/user_operation/list?address=0x6A10913f726978491ffd0e9e8A4a6f0FCeB1cD80",
       "method": "GET",
       "sortNum": 70000,
       "created": "2023-10-12T20:21:25.546Z",
-      "modified": "2023-10-12T20:33:31.974Z",
+      "modified": "2023-10-30T18:24:39.486Z",
       "headers": [
         {
           "name": "Authorization",
-          "value": "Bearer a"
+          "value": "Bearer dev"
         }
       ],
-      "params": [],
+      "params": [
+        {
+          "name": "address",
+          "value": "0x6A10913f726978491ffd0e9e8A4a6f0FCeB1cD80",
+          "isPath": false
+        }
+      ],
       "tests": []
     },
     {
