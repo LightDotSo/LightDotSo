@@ -115,6 +115,7 @@ pub async fn get_paymaster_and_data(
                 valid_after,
                 Some(&msg),
             );
+            info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
             Ok(paymater_and_data)
         }
@@ -136,11 +137,11 @@ pub async fn get_paymaster_and_data(
             )
             .await
             .map_err(JsonRpcError::from)?;
-
             info!("hash: 0x{}", hex::encode(hash));
 
             // Sign the message.
             let msg = sign_message_fallback(hash).await.map_err(JsonRpcError::from)?;
+            info!("msg: 0x{}", hex::encode(msg.clone()));
 
             // Construct the paymaster and data.
             let paymater_and_data = construct_paymaster_and_data(
@@ -149,6 +150,7 @@ pub async fn get_paymaster_and_data(
                 valid_after,
                 Some(&msg),
             );
+            info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
             Ok(paymater_and_data)
         }
@@ -309,6 +311,7 @@ pub async fn sign_message_kms(
             verifying_paymaster_addresses
         )
     })?;
+    info!("verifying_paymaster_address: {:?}", to_checksum(&verifying_paymaster_address, None));
 
     // Infinite valid until.
     let hash = get_hash(
@@ -319,6 +322,7 @@ pub async fn sign_message_kms(
         valid_after,
     )
     .await?;
+    info!("hash: 0x{}", hex::encode(hash));
 
     // Convert to typed message
     let msg = signer.sign_message(hash).await?;
