@@ -38,7 +38,7 @@ export default async function Page({
 
   const queryClient = getQueryClient();
 
-  const res = await getCachedUserOperations(params.address as Address);
+  const res = await getCachedUserOperations(params.address as Address, "all");
 
   // ---------------------------------------------------------------------------
   // Render
