@@ -293,7 +293,7 @@ pub async fn sign_message_kms(
     valid_until: u64,
     valid_after: u64,
 ) -> Result<(Vec<u8>, Address)> {
-    let signer = connect_to_kms().await?;
+    let signer = connect_to_kms().await?.with_chain_id(chain_id);
 
     // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
     // `ENVIROMENT` is `local`.
@@ -321,7 +321,7 @@ pub async fn sign_message_kms(
     .await?;
 
     // Convert to typed message
-    let msg = signer.sign_digest(hash).await?;
+    let msg = signer.sign_message(hash).await?;
     info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
     Ok((msg.to_vec(), verifying_paymaster_address))
