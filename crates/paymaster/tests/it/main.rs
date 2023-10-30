@@ -32,11 +32,11 @@ fn test_signer_recover() {
 #[test]
 fn test_signer_kms_recover() {
     let message = hash_message(
-        "0xa08638c5dd447706d53691fedc01fa86c34993863b5f0c10b21df0eb3e292fd1"
+        "0xac535f45fc7e30693c690e0afc584cc8db9a8bd72925e816b47aa560ee1f2919"
             .hex_to_bytes32()
             .unwrap(),
     );
-    let signature = Signature::from_str("0x56a0c73f95e1c4df8dbe29abeafcbbb697cf2c82fe517f2173e451a7893614cb3ea102b657be4719dc7535463f25cd45888302fad2226562c1e8927bb00dcc1438").unwrap();
+    let signature = Signature::from_str("0x12223eb2d9c0e26f3d61e756fd06b0e1ef090a91ed0cca931720ed7e137f08911b44013b7efa1ec9e9659a48a506adf4c8749491eeed4290a9200b6b48d04ca571").unwrap();
     let recovered_address = signature.recover(message).unwrap();
     assert_eq!(recovered_address, "0xeedeadba8cac470fdce318892a07abe26aa4ab17".parse().unwrap());
 }
