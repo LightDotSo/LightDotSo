@@ -1300,6 +1300,9 @@ importers:
       '@storybook/addon-styling':
         specifier: ^1.3.7
         version: 1.3.7(@types/react-dom@18.2.14)(@types/react@18.2.33)(less@4.2.0)(postcss@8.4.31)(react-dom@18.2.0)(react@18.2.0)(typescript@5.2.2)(webpack@5.88.2)
+      '@tanstack/query-sync-storage-persister':
+        specifier: ^5.4.3
+        version: 5.4.3
       '@tanstack/react-query':
         specifier: ^5.0.5
         version: 5.0.5(react-dom@18.2.0)(react@18.2.0)
@@ -1309,6 +1312,9 @@ importers:
       '@tanstack/react-query-next-experimental':
         specifier: ^5.0.5
         version: 5.0.5(@tanstack/react-query@5.0.5)(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
+      '@tanstack/react-query-persist-client':
+        specifier: ^5.4.3
+        version: 5.4.3(@tanstack/react-query@5.0.5)(react-dom@18.2.0)(react@18.2.0)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -11870,6 +11876,10 @@ packages:
     resolution: {integrity: sha512-MThCETMkHDHTnFZHp71L+SqTtD5d6XHftFCVR1xRJdWM3qGrlQ2VCXaj0SKVcyJej2e1Opa2c7iknu1llxCDNQ==}
     dev: false
 
+  /@tanstack/query-core@5.4.3:
+    resolution: {integrity: sha512-fnI9ORjcuLGm1sNrKatKIosRQUpuqcD4SV7RqRSVmj8JSicX2aoMyKryHEBpVQvf6N4PaBVgBxQomjsbsGPssQ==}
+    dev: false
+
   /@tanstack/query-devtools@5.4.2:
     resolution: {integrity: sha512-EXdaMXi8CxZuMp97J5mq6wy1RduOfoWFv5vtA1U+hyqb8Wst6M8kkkjDSdFvGZIRpYY4K8mKLlEFHNUZDG5dtw==}
     dev: false
@@ -11879,10 +11889,23 @@ packages:
     dependencies:
       '@tanstack/query-core': 4.32.6
 
+  /@tanstack/query-persist-client-core@5.4.3:
+    resolution: {integrity: sha512-0MZazQMVXmmVyf/ce2ug0CoSkT02VA4ZhkT3F1/tIINxGuH2KlhKWQc9puqJzTazUpXfRdBK9+lMPqpkA16FEQ==}
+    dependencies:
+      '@tanstack/query-core': 5.4.3
+    dev: false
+
   /@tanstack/query-sync-storage-persister@4.32.6:
     resolution: {integrity: sha512-hTwNo5O5EvydbfdVvwnwY0nIrNg1BxKEV4WAA8A+0NP9yc/9xoWy8RxbIkcz1p4JN2JhagaTKek8Fa5h5KitsA==}
     dependencies:
       '@tanstack/query-persist-client-core': 4.32.6
+
+  /@tanstack/query-sync-storage-persister@5.4.3:
+    resolution: {integrity: sha512-53e2O8lLaeBZ26myG6zQt5Ix16XmkcqJrsrSP2ZZzP5Ii6XwBq061djaEMTNbWYenYpmDqQIxAye/J6zQZ0QiA==}
+    dependencies:
+      '@tanstack/query-core': 5.4.3
+      '@tanstack/query-persist-client-core': 5.4.3
+    dev: false
 
   /@tanstack/react-query-devtools@5.4.2(@tanstack/react-query@5.0.5)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-bdJvnoKqHlh7sBTHC9O88WaqLu1D8wDrP0IstOhDODaPJfxW26yJOKK1/1uPQpZXFoOtFFYHpCqKoM58DBrWSQ==}
@@ -11918,6 +11941,19 @@ packages:
     dependencies:
       '@tanstack/query-persist-client-core': 4.32.6
       '@tanstack/react-query': 4.32.6(react-dom@18.2.0)(react@18.2.0)
+
+  /@tanstack/react-query-persist-client@5.4.3(@tanstack/react-query@5.0.5)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-gpusG6IG6rnmdRT3onSjmRVG60K3BlsdUQifBVeLdi4uen1rvRAiB5a7jr4hFVMItzS9C4jBxJMWt/DmZpy6Ow==}
+    peerDependencies:
+      '@tanstack/react-query': ^5.4.3
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      '@tanstack/query-persist-client-core': 5.4.3
+      '@tanstack/react-query': 5.0.5(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /@tanstack/react-query@4.32.6(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-AITu/IKJJJXsHHeXNBy5bclu12t08usMCY0vFC2dh9SP/w6JAk5U9GwfjOIPj3p+ATADZvxQPe8UiCtMLNeQbg==}
