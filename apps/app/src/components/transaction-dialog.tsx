@@ -23,9 +23,10 @@ import type { Address, Hex } from "viem";
 import { subdigestOf } from "@lightdotso/solutions";
 import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
-import { isAddressEqual, toBytes, hexToBytes, toHex } from "viem";
+import { isAddressEqual, toBytes, hexToBytes, toHex, fromHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 import { errToast } from "@/utils/toast";
+import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 type TransactionDialogProps = {
   address: Address;
@@ -56,6 +57,28 @@ export function TransactionDialog({
 
   const { data, signMessage } = useSignMessage({
     message: { raw: toBytes(subdigest) },
+  });
+
+  const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
+    address: userOperation.paymasterAndData.slice(0, 42) as Address,
+    chainId,
+    args: [
+      {
+        sender: userOperation.sender,
+        nonce: userOperation.nonce,
+        initCode: userOperation.initCode,
+        callData: userOperation.callData,
+        callGasLimit: userOperation.callGasLimit,
+        verificationGasLimit: userOperation.verificationGasLimit,
+        preVerificationGas: userOperation.preVerificationGas,
+        maxFeePerGas: userOperation.maxFeePerGas,
+        maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
+        paymasterAndData: userOperation.paymasterAndData,
+        signature: toHex(new Uint8Array([2])),
+      },
+      fromHex(`0x${userOperation.paymasterAndData.slice(154, 162)}`, "number"),
+      fromHex(`0x${userOperation.paymasterAndData.slice(162, 170)}`, "number"),
+    ],
   });
 
   const owner = useMemo(() => {
@@ -146,6 +169,11 @@ export function TransactionDialog({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
             userOpHash: {userOpHash}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">
+            paymasterHash: {paymasterHash}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

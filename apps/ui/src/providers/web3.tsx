@@ -15,37 +15,29 @@
 
 "use client";
 
-import type { WagmiConfigProps } from "wagmi";
-import { WagmiConfig, createConfig } from "wagmi";
-import type { SIWEConfig } from "connectkit";
-import { ConnectKitProvider, SIWEProvider, getDefaultConfig } from "connectkit";
-import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import { WagmiConfig, configureChains, createConfig } from "wagmi";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { mainnet, sepolia } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
 
-const config = createConfig(
-  getDefaultConfig({
+const { publicClient } = configureChains(
+  [mainnet, sepolia],
+  [publicProvider()],
+);
+
+const config = createConfig({
+  ...getDefaultConfig({
     appName: "Light",
     walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
     chains: [mainnet, sepolia],
   }),
-);
+  publicClient,
+});
 
-function Web3Provider({
-  children,
-  wagmiConfig = config,
-  siweConfig,
-}: {
-  children: React.ReactNode;
-  wagmiConfig?: WagmiConfigProps["config"];
-  siweConfig: SIWEConfig;
-}) {
+function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
-    <WagmiConfig config={wagmiConfig}>
-      <SIWEProvider {...siweConfig} signOutOnNetworkChange={false}>
-        <ConnectKitProvider>
-          <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
-        </ConnectKitProvider>
-      </SIWEProvider>
+    <WagmiConfig config={config}>
+      <ConnectKitProvider>{children}</ConnectKitProvider>
     </WagmiConfig>
   );
 }

@@ -13,27 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import type { Metadata } from "next";
 
-import { Dialog, DialogContent } from "@lightdotso/ui";
-import { useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { TITLES } from "@/const/titles";
 
-interface ModalProps {
-  children: React.ReactNode;
-}
+export const metadata: Metadata = {
+  title: TITLES.Settings.subcategories.Billing.title,
+  description: TITLES.Settings.subcategories.Billing.description,
+};
 
-export function Modal({ children }: ModalProps) {
-  const router = useRouter();
-  const onDismiss = useCallback(() => {
-    router.back();
-  }, [router]);
-
-  return (
-    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
-      <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-        {children}
-      </DialogContent>
-    </Dialog>
-  );
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
 }
