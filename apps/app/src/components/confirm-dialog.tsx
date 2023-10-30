@@ -17,7 +17,7 @@
 
 import { Button, toast } from "@lightdotso/ui";
 import { toHex, fromHex } from "viem";
-import type { Hex, type Address } from "viem";
+import type { Hex, Address } from "viem";
 import { useCallback } from "react";
 import {
   getSignatureUserOperation,
