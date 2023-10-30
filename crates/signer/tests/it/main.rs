@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::signers::Signer;
+use ethers::{signers::Signer, utils::hash_message};
 use lightdotso_signer::connect::connect_to_kms;
 
 #[ignore]
@@ -46,5 +46,20 @@ async fn test_eth_sign() {
 
     let address = signer.address();
     let recovered_address = signature.recover(message).unwrap();
+    assert_eq!(address, recovered_address);
+}
+
+#[ignore]
+#[tokio::test]
+async fn test_kms_eth_sign_recover() {
+    let _ = dotenvy::dotenv();
+
+    let signer = connect_to_kms().await.unwrap();
+
+    let message = "0x38ed45be3f57fcb4fe573f3692fec8de3587dbf8eb2114d8945efc819799f9cb";
+    let signature = signer.sign_message(message).await.unwrap();
+
+    let address = signer.address();
+    let recovered_address = signature.recover(hash_message(message)).unwrap();
     assert_eq!(address, recovered_address);
 }

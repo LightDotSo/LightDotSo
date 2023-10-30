@@ -17,7 +17,7 @@ use clap::Parser;
 use ethers::types::Address;
 use eyre::{eyre, Result};
 use lightdotso_jsonrpsee::rpc::{JsonRpcServer, JsonRpcServerType};
-use lightdotso_tracing::tracing::info;
+use lightdotso_tracing::tracing::{error, info};
 use lightdotso_utils::parse_address;
 use std::{
     future::pending,
@@ -69,8 +69,13 @@ impl PaymasterArgs {
                 server.add_methods(PaymasterApi {}.into_rpc(), JsonRpcServerType::Http).unwrap();
 
                 // Start the server
-                let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
-                info!("Started paymaster JSON-RPC server at [::]:3000");
+                let handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));
+
+                if handle.is_err() {
+                    error!("Error in handle: {:?}", handle);
+                } else {
+                    info!("Started paymaster JSON-RPC server at [::]:3000");
+                }
 
                 pending::<Result<()>>().await
             }

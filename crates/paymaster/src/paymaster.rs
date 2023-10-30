@@ -25,7 +25,7 @@ use ethers::{
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::{Address, Bytes},
-    utils::{hex, to_checksum},
+    utils::{hash_message, hex, to_checksum},
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
@@ -123,7 +123,7 @@ pub async fn get_paymaster_and_data(
             // Fallback to the environment fallback address
             let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
             info!(
-                "verifying_paymaster_address: {:?}",
+                "verifying_paymaster_address: {}",
                 to_checksum(&verifying_paymaster_address, None)
             );
 
@@ -141,7 +141,6 @@ pub async fn get_paymaster_and_data(
 
             // Sign the message.
             let msg = sign_message_fallback(hash).await.map_err(JsonRpcError::from)?;
-            info!("msg: 0x{}", hex::encode(msg.clone()));
 
             // Construct the paymaster and data.
             let paymater_and_data = construct_paymaster_and_data(
@@ -311,7 +310,7 @@ pub async fn sign_message_kms(
             verifying_paymaster_addresses
         )
     })?;
-    info!("verifying_paymaster_address: {:?}", to_checksum(&verifying_paymaster_address, None));
+    info!("verifying_paymaster_address: {}", to_checksum(&verifying_paymaster_address, None));
 
     // Infinite valid until.
     let hash = get_hash(
@@ -328,6 +327,10 @@ pub async fn sign_message_kms(
     let msg = signer.sign_message(hash).await?;
     info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
+    let recovered_address = msg.recover(hash_message(hash))?;
+    info!("recovered_address: {:?}", recovered_address);
+    info!("signer_address: {:?}", signer.address());
+
     Ok((msg.to_vec(), verifying_paymaster_address))
 }
 
@@ -338,7 +341,14 @@ pub async fn sign_message_fallback(hash: [u8; 32]) -> Result<Vec<u8>> {
     let private_key_str = std::env::var("PAYMASTER_PRIVATE_KEY").unwrap();
     let wallet: Wallet<SigningKey> = private_key_str.parse().unwrap();
 
-    Ok(wallet.sign_message(hash).await?.to_vec())
+    let msg = wallet.sign_message(hash).await?;
+    info!("msg: 0x{}", hex::encode(msg.to_vec()));
+
+    let recovered_address = msg.recover(hash_message(hash))?;
+    info!("recovered_address: {:?}", recovered_address);
+    info!("signer_address: {:?}", wallet.address());
+
+    Ok(msg.to_vec())
 }
 
 /// Get the hash for the paymaster.
@@ -485,3 +495,5 @@ mod tests {
 
 // 0x000000000054230ba02add2d96fa4362a8606f97000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000653ec76398b946c7c48c66b189884dbc30389f520a4bc99a80896806414974d2755618a84139eebdd66726d239e068e7f1c5a767d1df8c48c0d956bd911d62cbaf33c3b225
 // 0x000000000018d32df916ff115a25fbefc70baf8b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006531bd61a1f53204bf02359f43121efdb3ca4369f00a181d265eff50121a823510680b6929f1e732a5e229b78bb3df410ab48cc311dd88cbb8ee63fda8d990c1f1cd457b1b
+// 0x000000000003193facb32d1c120719892b7ae977000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000653fd7f856a0c73f95e1c4df8dbe29abeafcbbb697cf2c82fe517f2173e451a7893614cb3ea102b657be4719dc7535463f25cd45888302fad2226562c1e8927bb00dcc1438
+//                                                                                                                                                                           56a0c73f95e1c4df8dbe29abeafcbbb697cf2c82fe517f2173e451a7893614cb3ea102b657be4719dc7535463f25cd45888302fad2226562c1e8927bb00dcc1438
