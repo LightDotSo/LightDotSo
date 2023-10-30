@@ -16,12 +16,14 @@
 "use client";
 
 import { Button, toast } from "@lightdotso/ui";
-import { type Address, toHex } from "viem";
+import { toHex, fromHex } from "viem";
+import type { Hex, type Address } from "viem";
 import { useCallback } from "react";
 import {
   getSignatureUserOperation,
   sendUserOperation,
 } from "@lightdotso/client";
+import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 type ConfirmDialogProps = {
   address: Address;
@@ -76,6 +78,34 @@ export function ConfirmDialog({
           0)
       );
     }, 0) >= (config ? config.threshold : 0);
+
+  const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
+    address: userOperation.paymaster_and_data.slice(0, 42) as Address,
+    chainId,
+    args: [
+      {
+        sender: userOperation.sender as Address,
+        nonce: BigInt(userOperation.nonce),
+        initCode: userOperation.init_code as Hex,
+        callData: userOperation.call_data as Hex,
+        callGasLimit: BigInt(userOperation.call_gas_limit),
+        verificationGasLimit: BigInt(userOperation.verification_gas_limit),
+        preVerificationGas: BigInt(userOperation.pre_verification_gas),
+        maxFeePerGas: BigInt(userOperation.max_fee_per_gas),
+        maxPriorityFeePerGas: BigInt(userOperation.max_priority_fee_per_gas),
+        paymasterAndData: userOperation.paymaster_and_data as Hex,
+        signature: toHex(new Uint8Array([2])),
+      },
+      fromHex(
+        `0x${userOperation.paymaster_and_data.slice(154, 162)}`,
+        "number",
+      ),
+      fromHex(
+        `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
+        "number",
+      ),
+    ],
+  });
 
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(async () => {
@@ -142,6 +172,11 @@ export function ConfirmDialog({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">chainId: {chainId}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">
+            paymasterHash: {paymasterHash}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
