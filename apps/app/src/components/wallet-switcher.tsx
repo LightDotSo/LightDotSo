@@ -20,6 +20,7 @@ import {
   CaretSortIcon,
   CheckIcon,
   PlusCircledIcon,
+  StackIcon,
 } from "@radix-ui/react-icons";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -165,15 +166,31 @@ export function WalletSwitcherButton({
             aria-label="Select a wallet"
             className={cn("mx-2 justify-start", className)}
           >
-            <Avatar className="mr-3 h-7 w-7">
-              {/* <AvatarImage
-              src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
-              alt={selectedWallet.label}
-            /> */}
-              <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
-              {/* <AvatarFallback>SC</AvatarFallback> */}
-            </Avatar>
-            {selectedWallet?.name}
+            {selectedWallet && (
+              <>
+                <Avatar className="mr-3 h-7 w-7">
+                  {/* <AvatarImage
+                    src={`https://avatar.vercel.sh/${selectedWallet.value}.png`}
+                    alt={selectedWallet.label}
+                  /> */}
+                  <PlaceholderOrb address={selectedWallet?.address ?? "0x"} />
+                  {/* <AvatarFallback>SC</AvatarFallback> */}
+                </Avatar>
+                {selectedWallet?.name}
+              </>
+            )}
+            {!selectedWallet && data && data.length > 0 && (
+              <>
+                <StackIcon className="mr-2 h-5 w-5" />
+                Select a wallet
+              </>
+            )}
+            {selectedWallet && data && data.length === 0 && (
+              <>
+                <PlusCircledIcon className="mr-2 h-5 w-5" />
+                New Wallet
+              </>
+            )}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
