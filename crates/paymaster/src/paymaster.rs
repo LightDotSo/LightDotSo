@@ -321,7 +321,7 @@ pub async fn sign_message_kms(
     .await?;
 
     // Convert to typed message
-    let msg = signer.sign_message(hash).await?;
+    let msg = signer.sign_digest(hash).await?;
     info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
     Ok((msg.to_vec(), verifying_paymaster_address))

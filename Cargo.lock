@@ -6278,6 +6278,7 @@ dependencies = [
  "eyre",
  "jsonrpsee",
  "lazy_static",
+ "lightdotso-common",
  "lightdotso-contracts",
  "lightdotso-gas",
  "lightdotso-jsonrpsee",
