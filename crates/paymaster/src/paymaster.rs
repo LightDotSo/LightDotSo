@@ -24,7 +24,7 @@ use ethers::{
     abi::{encode, Token},
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
-    types::{Address, Bytes},
+    types::{Address, Bytes, Signature},
     utils::{hash_message, hex, to_checksum},
 };
 use eyre::{eyre, Result};
@@ -327,6 +327,12 @@ pub async fn sign_message_kms(
     let msg = signer.sign_message(hash).await?;
     info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
+    // Parse the recovery id
+    let id = msg.recovery_id().unwrap();
+    info!("id: {:?}", id);
+
+    // Overwrite the recovery id
+    let msg = Signature { r: msg.r, s: msg.s, v: id.to_byte().into() };
     let recovered_address = msg.recover(hash_message(hash))?;
     info!("recovered_address: {:?}", recovered_address);
     info!("signer_address: {:?}", signer.address());

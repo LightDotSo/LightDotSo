@@ -37,6 +37,13 @@ fn test_signer_kms_recover() {
             .unwrap(),
     );
     let signature = Signature::from_str("0x12223eb2d9c0e26f3d61e756fd06b0e1ef090a91ed0cca931720ed7e137f08911b44013b7efa1ec9e9659a48a506adf4c8749491eeed4290a9200b6b48d04ca571").unwrap();
+
+    let id = signature.recovery_id().unwrap();
+    println!("id: {:?}", id);
+
+    // Overwrite the recovery id
+    let signature = Signature { r: signature.r, s: signature.s, v: id.to_byte().into() };
+
     let recovered_address = signature.recover(message).unwrap();
     assert_eq!(recovered_address, "0xeedeadba8cac470fdce318892a07abe26aa4ab17".parse().unwrap());
 }
