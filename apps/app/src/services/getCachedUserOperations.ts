@@ -27,8 +27,18 @@ export const preload = (address: Address) => {
 export const getCachedUserOperations = cache(
   async (
     address: Address,
-    status?: "proposed" | "pending" | "executed" | "reverted",
+    status?: "proposed" | "pending" | "executed" | "reverted" | "all",
   ) => {
-    return getUserOperations({ params: { query: { address, status } } }, false);
+    return getUserOperations(
+      {
+        params: {
+          query: {
+            address,
+            status: status === "all" ? undefined : status,
+          },
+        },
+      },
+      false,
+    );
   },
 );
