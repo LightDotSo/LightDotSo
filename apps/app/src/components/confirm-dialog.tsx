@@ -16,9 +16,9 @@
 "use client";
 
 import { Button, toast } from "@lightdotso/ui";
-import { toHex, fromHex } from "viem";
+import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import {
   getSignatureUserOperation,
   sendUserOperation,
@@ -107,6 +107,19 @@ export function ConfirmDialog({
     ],
   });
 
+  const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
+    170,
+  )}` as Hex;
+
+  const recoveredAddress = useMemo(async () => {
+    if (paymasterHash) {
+      return await recoverMessageAddress({
+        message: { raw: paymasterHash },
+        signature: paymasterSignedMsg,
+      });
+    }
+  }, [paymasterHash, paymasterSignedMsg]);
+
   // A `useCallback` handler for confirming the operation
   const handleConfirm = useCallback(async () => {
     // Get the sig as bytes from caller
@@ -176,6 +189,16 @@ export function ConfirmDialog({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
             paymasterHash: {paymasterHash}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">
+            paymasterSignedMsg: {paymasterSignedMsg}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">
+            recoveredAddress: {recoveredAddress}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
