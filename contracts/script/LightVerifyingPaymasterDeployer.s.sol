@@ -44,6 +44,7 @@ contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
         console.logBytes32(keccak256(initCode));
 
         // The init code hash of the LightVerifyingPaymaster
+        // v1: bytes32 initCodeHash = 0xb5e9d23a8d8ca943a255b36822b7927b53c12abb407bbb13b4313f3f494500b8;
         // v2: bytes32 initCodeHash = 0x31a8cb463ff0f1b17f97a5b665b7b1e26f4965cad0b31d74928c4f199f94d9f7;
         // v3: bytes32 initCodeHash = 0x1a282ec216faac041ea20ee36c60483751e315a39e82c8e1f1b7a4499d0feef0;
         bytes32 initCodeHash = 0x31a8cb463ff0f1b17f97a5b665b7b1e26f4965cad0b31d74928c4f199f94d9f7;
@@ -52,6 +53,7 @@ contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
         assert(keccak256(initCode) == initCodeHash);
 
         // Salt for deterministic deployment
+        // v1: bytes32 salt = 0x000000000000000000000000000000000000000003cf3a59741da01f6ddc5ce6;
         // v2: bytes32 salt = 0x0000000000000000000000000000000000000000e518dc21f381b8e76fbe1a45;
         // v3: bytes32 salt = 0x00000000000000000000000000000000000000008ba535c09402160e9dccddef;
         bytes32 salt = 0x0000000000000000000000000000000000000000e518dc21f381b8e76fbe1a45;
