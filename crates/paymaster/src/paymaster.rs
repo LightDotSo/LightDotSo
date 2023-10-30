@@ -387,7 +387,7 @@ async fn get_hash(
             valid_after,
         )
         .await?;
-    info!("hash: 0x{}", hex::encode(hash));
+    info!("get_hash: 0x{}", hex::encode(hash));
 
     Ok(hash)
 }

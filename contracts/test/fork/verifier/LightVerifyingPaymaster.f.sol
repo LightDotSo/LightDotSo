@@ -83,4 +83,9 @@ contract LightVerifyingPaymasterForkTest is BaseForkTest {
         // solhint-disable-next-line no-console
         console.logBytes32(hash);
     }
+
+    /// Tests that the `verifyingSigner` is set correctly
+    function testFork_paymaster_verifyingSigner() public {
+        assertEq(paymaster.verifyingSigner(), OFFCHAIN_VERIFIER_ADDRESS);
+    }
 }
