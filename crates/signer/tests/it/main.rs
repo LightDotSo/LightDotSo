@@ -13,8 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::signers::Signer;
+use ethers::{
+    signers::Signer,
+    types::{RecoveryMessage, Signature},
+    utils::hash_message,
+};
+use lightdotso_common::traits::HexToBytes;
 use lightdotso_signer::connect::connect_to_kms;
+use std::str::FromStr;
 
 #[ignore]
 #[tokio::test]
@@ -47,4 +53,21 @@ async fn test_eth_sign() {
     let address = signer.address();
     let recovered_address = signature.recover(message).unwrap();
     assert_eq!(address, recovered_address);
+}
+
+#[ignore]
+#[tokio::test]
+async fn test_kms_eth_sign_recover() {
+    let _ = dotenvy::dotenv();
+
+    let signer = connect_to_kms().await.unwrap();
+
+    let msg_to_sign = "0x38ed45be3f57fcb4fe573f3692fec8de3587dbf8eb2114d8945efc819799f9cb";
+
+    let signature = signer.sign_message(msg_to_sign).await.unwrap();
+
+    let message = RecoveryMessage::Hash(hash_message(msg_to_sign.hex_to_bytes32().unwrap()));
+    let a = signature.recover(msg_to_sign).unwrap();
+    let address = signer.address();
+    assert_eq!(a, address);
 }

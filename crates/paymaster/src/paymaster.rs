@@ -25,7 +25,7 @@ use ethers::{
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::{Address, Bytes},
-    utils::{hex, to_checksum},
+    utils::{hash_message, hex, to_checksum},
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
@@ -123,7 +123,7 @@ pub async fn get_paymaster_and_data(
             // Fallback to the environment fallback address
             let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
             info!(
-                "verifying_paymaster_address: {:?}",
+                "verifying_paymaster_address: {}",
                 to_checksum(&verifying_paymaster_address, None)
             );
 
@@ -141,7 +141,6 @@ pub async fn get_paymaster_and_data(
 
             // Sign the message.
             let msg = sign_message_fallback(hash).await.map_err(JsonRpcError::from)?;
-            info!("msg: 0x{}", hex::encode(msg.clone()));
 
             // Construct the paymaster and data.
             let paymater_and_data = construct_paymaster_and_data(
@@ -311,7 +310,7 @@ pub async fn sign_message_kms(
             verifying_paymaster_addresses
         )
     })?;
-    info!("verifying_paymaster_address: {:?}", to_checksum(&verifying_paymaster_address, None));
+    info!("verifying_paymaster_address: {}", to_checksum(&verifying_paymaster_address, None));
 
     // Infinite valid until.
     let hash = get_hash(
@@ -328,6 +327,10 @@ pub async fn sign_message_kms(
     let msg = signer.sign_message(hash).await?;
     info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
+    let recovered_address = msg.recover(hash_message(hash))?;
+    info!("recovered_address: {:?}", recovered_address);
+    info!("signer_address: {:?}", signer.address());
+
     Ok((msg.to_vec(), verifying_paymaster_address))
 }
 
@@ -338,7 +341,14 @@ pub async fn sign_message_fallback(hash: [u8; 32]) -> Result<Vec<u8>> {
     let private_key_str = std::env::var("PAYMASTER_PRIVATE_KEY").unwrap();
     let wallet: Wallet<SigningKey> = private_key_str.parse().unwrap();
 
-    Ok(wallet.sign_message(hash).await?.to_vec())
+    let msg = wallet.sign_message(hash).await?;
+    info!("msg: 0x{}", hex::encode(msg.to_vec()));
+
+    let recovered_address = msg.recover(hash_message(hash))?;
+    info!("recovered_address: {:?}", recovered_address);
+    info!("signer_address: {:?}", wallet.address());
+
+    Ok(msg.to_vec())
 }
 
 /// Get the hash for the paymaster.
