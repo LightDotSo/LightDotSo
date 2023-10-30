@@ -115,6 +115,7 @@ pub async fn get_paymaster_and_data(
                 valid_after,
                 Some(&msg),
             );
+            info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
             Ok(paymater_and_data)
         }
@@ -149,6 +150,7 @@ pub async fn get_paymaster_and_data(
                 valid_after,
                 Some(&msg),
             );
+            info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
             Ok(paymater_and_data)
         }
