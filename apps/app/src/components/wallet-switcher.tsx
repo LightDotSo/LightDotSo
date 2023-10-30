@@ -222,7 +222,17 @@ export function WalletSwitcherButton({
                         onSelect={() => {
                           setSelectedWallet(wallet);
                           setOpen(false);
-                          router.push(`/${wallet.address}`);
+                          // Replace the current wallet address with the new one
+                          if (!pathname) return;
+                          if (pathname && pathname.split("/").length > 1) {
+                            router.push(
+                              `${pathname.replace(
+                                pathname.split("/")[1],
+                                wallet.address,
+                              )}
+                                `,
+                            );
+                          }
                         }}
                         className="text-sm"
                       >
