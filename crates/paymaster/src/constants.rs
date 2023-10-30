@@ -27,7 +27,7 @@ lazy_static! {
             // Fallback Verifier for `0x000000000018d32DF916ff115A25fbeFC70bAf8b`
             ("0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F", "0x000000000018d32DF916ff115A25fbeFC70bAf8b"),
             // v2 Production verifier
-            ("0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17", "0x000000000018d32DF916ff115A25fbeFC70bAf8b"),
+            ("0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17", "0x000000000003193FAcb32D1C120719892B7AE977"),
             // v3 Production verifier
             ("0x0618fe3a19a4980a0202adbdb5201e74cd9908ff", "0x000000000054230BA02ADD2d96fA4362A8606F97"),
         ];

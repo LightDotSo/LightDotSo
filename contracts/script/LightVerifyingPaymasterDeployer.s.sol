@@ -42,13 +42,19 @@ contract LightVerifyingPaymasterDeployer is BaseLightDeployer, Script {
         // Log the byte code hash
         // solhint-disable-next-line no-console
         console.logBytes32(keccak256(initCode));
+
         // The init code hash of the LightVerifyingPaymaster
-        bytes32 initCodeHash = 0x1a282ec216faac041ea20ee36c60483751e315a39e82c8e1f1b7a4499d0feef0;
+        // v2: bytes32 initCodeHash = 0x31a8cb463ff0f1b17f97a5b665b7b1e26f4965cad0b31d74928c4f199f94d9f7;
+        // v3: bytes32 initCodeHash = 0x1a282ec216faac041ea20ee36c60483751e315a39e82c8e1f1b7a4499d0feef0;
+        bytes32 initCodeHash = 0x31a8cb463ff0f1b17f97a5b665b7b1e26f4965cad0b31d74928c4f199f94d9f7;
+
         // Assert that the init code is the expected value
         assert(keccak256(initCode) == initCodeHash);
 
         // Salt for deterministic deployment
-        bytes32 salt = 0x00000000000000000000000000000000000000008ba535c09402160e9dccddef;
+        // v2: bytes32 salt = 0x0000000000000000000000000000000000000000e518dc21f381b8e76fbe1a45;
+        // v3: bytes32 salt = 0x00000000000000000000000000000000000000008ba535c09402160e9dccddef;
+        bytes32 salt = 0x0000000000000000000000000000000000000000e518dc21f381b8e76fbe1a45;
 
         // If testing on a local chain, use without a safe create2
         if (block.chainid == 0x7a69) {
