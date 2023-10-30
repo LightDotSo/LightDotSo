@@ -37,7 +37,7 @@ const nextConfig = {
     },
     serverComponentsExternalPackages: [],
   },
-  transpilePackages: ["@lightdotso/ui"],
+  transpilePackages: ["@lightdotso/ui", "@lightdotso/wagmi"],
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
 

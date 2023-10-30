@@ -25,3 +25,4 @@ ignores:
   - "@next/eslint-plugin-next"
   - eslint-plugin-turbo
   - immer
+  - "@lightdotso/wagmi"
