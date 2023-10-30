@@ -26,6 +26,7 @@ import { createUserOperation } from "@lightdotso/client";
 import { isAddressEqual, toBytes, hexToBytes, toHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 import { errToast } from "@/utils/toast";
+import { useLightVerifyingPaymasterGetHash } from "@lightdotso/wagmi";
 
 type TransactionDialogProps = {
   address: Address;
@@ -56,6 +57,11 @@ export function TransactionDialog({
 
   const { data, signMessage } = useSignMessage({
     message: { raw: toBytes(subdigest) },
+  });
+
+  const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
+    address: userOperation.paymasterAndData.slice(0, 22) as Address,
+    chainId,
   });
 
   const owner = useMemo(() => {
@@ -146,6 +152,11 @@ export function TransactionDialog({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-primary">
             userOpHash: {userOpHash}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-primary">
+            paymasterHash: {paymasterHash}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

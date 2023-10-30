@@ -347,6 +347,9 @@ importers:
       '@lightdotso/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      '@lightdotso/wagmi':
+        specifier: workspace:*
+        version: link:../../packages/wagmi
       '@next-auth/prisma-adapter':
         specifier: 0.4.4-canary.81
         version: 0.4.4-canary.81(@prisma/client@5.5.2)(next-auth@4.24.4)

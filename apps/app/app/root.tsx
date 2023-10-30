@@ -27,7 +27,6 @@ import { MainNav } from "@/components/main-nav";
 import { NotificationPopover } from "@/components/notification-popover";
 import { FeedbackPopover } from "@/components/feedback-popover";
 import { ConnectButton } from "@/components/connect-button";
-import { siweConfig } from "@/components/siwe-button";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
@@ -55,7 +54,7 @@ export default function Root({
       <body className="min-h-[100dvh] bg-white dark:bg-black">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
-            <Web3Provider siweConfig={siweConfig}>
+            <Web3Provider>
               <main>
                 <div className="flex flex-col">
                   <div className="border-b lg:py-2">
