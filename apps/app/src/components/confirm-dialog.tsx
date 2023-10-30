@@ -113,10 +113,14 @@ export function ConfirmDialog({
 
   const recoveredAddress = useMemo(async () => {
     if (paymasterHash) {
-      return await recoverMessageAddress({
-        message: { raw: paymasterHash },
-        signature: paymasterSignedMsg,
-      });
+      try {
+        return await recoverMessageAddress({
+          message: { raw: paymasterHash },
+          signature: paymasterSignedMsg,
+        });
+      } catch (e) {
+        console.error(e);
+      }
     }
   }, [paymasterHash, paymasterSignedMsg]);
 
