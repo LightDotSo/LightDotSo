@@ -13,33 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::{
-    types::{RecoveryMessage, Signature},
-    utils::hash_message,
-};
+use ethers::{types::Signature, utils::hash_message};
 use lightdotso_common::traits::HexToBytes;
 use std::str::FromStr;
 
 #[test]
 fn test_signer_recover() {
-    let message = RecoveryMessage::Hash(hash_message(
-        "0x46ef878aef00498043063eb5e8476ce803fd1e95681f1a446bf3b06b6b8a6083"
+    let message = hash_message(
+        "0xe346f761cfbe02196e8574dc3b84ba8790b3c2ed1797a9bd38f20d7241384043"
             .hex_to_bytes32()
             .unwrap(),
-    ));
-    let signature = Signature::from_str("0x53c0cf9a125aad3ab7c08d1b6b4a18867934e72b3800607fd9fd1755ab2c8f035345cb389cbdd64b3ffdc434d23b7a1ca02c69f6a89be68b016a1cef305a38041b").unwrap();
+    );
+    let signature = Signature::from_str("0x7aa4d7dde12ce361190637ce0f9b01a25c56e4534fcc109786711a4b4f31a25b2e466d22b611a03e4743acf3ad3fd671ab2316f8101c7923700b63e586fa954e1c").unwrap();
     let a = signature.recover(message).unwrap();
-    assert_eq!(a, "0x514a099c7eC404adF25e3b6b6A3523Ac3A4A778F".parse().unwrap());
+    assert_eq!(a, "0x7e5f4552091a69125d5dfcb7b8c2659029395bdf".parse().unwrap());
 }
 
 #[test]
 fn test_signer_kms_recover() {
-    let message = RecoveryMessage::Hash(hash_message(
-        "0xd6eda79437abd47e04f9c19917eced2069d46c6d37dc3a25f9f709fb8c427157"
+    let message = hash_message(
+        "0xa08638c5dd447706d53691fedc01fa86c34993863b5f0c10b21df0eb3e292fd1"
             .hex_to_bytes32()
             .unwrap(),
-    ));
-    let signature = Signature::from_str("0x6b9d2472bd00e3f33eedc88f411f1b774ebc78a487a55542f9e27d58cf0e4cca5105c7985e5eabaec1e3817f4f3e8bcfe51b20803cdae6eecd099f1ecbc31af837").unwrap();
-    let a = signature.recover(message).unwrap();
-    assert_eq!(a, "0xEEdeadba8cAC470fDCe318892a07aBE26Aa4ab17".parse().unwrap());
+    );
+    let signature = Signature::from_str("0x56a0c73f95e1c4df8dbe29abeafcbbb697cf2c82fe517f2173e451a7893614cb3ea102b657be4719dc7535463f25cd45888302fad2226562c1e8927bb00dcc1438").unwrap();
+    let recovered_address = signature.recover(message).unwrap();
+    assert_eq!(recovered_address, "0xeedeadba8cac470fdce318892a07abe26aa4ab17".parse().unwrap());
 }
