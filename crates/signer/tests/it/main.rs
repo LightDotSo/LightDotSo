@@ -17,7 +17,7 @@ use ethers::signers::Signer;
 use lightdotso_signer::connect::connect_to_kms;
 
 #[ignore]
-#[tokio::test(flavor = "multi_thread")]
+#[tokio::test]
 async fn test_kms_connect() {
     let _ = dotenvy::dotenv();
 
@@ -27,4 +27,24 @@ async fn test_kms_connect() {
 
     // Print the address of the signer to stdout so that it can be used in the integration tests
     println!("Signer address: {:?}", signer.address());
+}
+
+#[ignore]
+#[tokio::test]
+async fn test_eth_sign() {
+    let _ = dotenvy::dotenv();
+
+    // From: https://github.com/alchemyplatform/rundler/blob/b337dcb090c2ec26418878b3a4d3eb82f452257f/crates/builder/src/task.rs#L241
+    // License: LGPL-3.0
+    let signer = connect_to_kms().await.unwrap();
+
+    let message = "Hello, world!";
+    let signature = signer.sign_message(message).await.unwrap();
+
+    // The signature should be 65 bytes long
+    assert_eq!(signature.to_vec().len(), 65);
+
+    let address = signer.address();
+    let recovered_address = signature.recover(message).unwrap();
+    assert_eq!(address, recovered_address);
 }
