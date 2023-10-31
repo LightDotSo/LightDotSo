@@ -13,8 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::{types::Signature, utils::hash_message};
-use lightdotso_common::traits::HexToBytes;
+use ethers::{
+    types::{Address, Bytes, Signature, U256},
+    utils::hash_message,
+};
+use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
+use lightdotso_contracts::paymaster::{get_paymaster, UserOperation};
+use lightdotso_paymaster::{
+    paymaster::{construct_paymaster_and_data, get_hash},
+    types::UserOperationConstruct,
+};
 use std::str::FromStr;
 
 #[test]
@@ -46,4 +54,125 @@ fn test_signer_kms_recover() {
 
     let recovered_address = signature.recover(message).unwrap();
     assert_eq!(recovered_address, "0xeedeadba8cac470fdce318892a07abe26aa4ab17".parse().unwrap());
+}
+
+#[tokio::test]
+async fn test_get_hash_iteration() {
+    async fn test_get_compare_user_operation(
+        chain_id: u64,
+        verifying_paymaster_address: Address,
+        user_operation: UserOperationConstruct,
+    ) {
+        // Temporarily clone the user operation.
+        let user_operation_clone = user_operation.clone();
+        let valid_until = 0_u64;
+        let valid_after = 0_u64;
+
+        let result = get_hash(
+            chain_id,
+            verifying_paymaster_address,
+            user_operation,
+            valid_until,
+            valid_after,
+            0,
+        );
+
+        let contract = get_paymaster(chain_id, verifying_paymaster_address).await.unwrap();
+        let user_operation = user_operation_clone.clone();
+
+        // Get the hash.
+        let onchain_hash = contract
+            .get_hash(
+                UserOperation {
+                    sender: user_operation.sender,
+                    nonce: user_operation.nonce,
+                    init_code: user_operation.init_code,
+                    call_data: user_operation.call_data,
+                    call_gas_limit: user_operation.call_gas_limit,
+                    verification_gas_limit: user_operation.verification_gas_limit,
+                    pre_verification_gas: user_operation.pre_verification_gas,
+                    max_fee_per_gas: user_operation.max_fee_per_gas,
+                    max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
+                    paymaster_and_data: construct_paymaster_and_data(
+                        verifying_paymaster_address,
+                        valid_until,
+                        valid_after,
+                        None,
+                    ),
+                    signature: Bytes::default(),
+                },
+                valid_until,
+                valid_after,
+            )
+            .await
+            .unwrap();
+
+        let result = result.unwrap();
+
+        println!("result: {}", result.to_vec().to_hex_string());
+        println!("onchain_hash: {}", onchain_hash.to_vec().to_hex_string());
+
+        // Assert that the result matches the expected value
+        assert_eq!(result, onchain_hash);
+    }
+
+    // Arbitrary test inputs #1
+    let chain_id = 1;
+    let verifying_paymaster_address: Address =
+        "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap();
+    let user_operation = UserOperationConstruct {
+        sender: Address::zero(),
+        nonce: U256::from(0),
+        init_code: "0x".parse().unwrap(),
+        call_data: "0x".parse().unwrap(),
+        call_gas_limit: U256::from(0),
+        verification_gas_limit: U256::from(0),
+        pre_verification_gas: U256::from(0),
+        max_fee_per_gas: U256::from(0),
+        max_priority_fee_per_gas: U256::from(0),
+        signature: "0x".parse().unwrap(),
+    };
+
+    test_get_compare_user_operation(chain_id, verifying_paymaster_address, user_operation.clone())
+        .await;
+
+    // Arbitrary test inputs #2
+    let chain_id = 11155111;
+    let verifying_paymaster_address: Address =
+        "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap();
+    let user_operation = UserOperationConstruct {
+        sender: Address::zero(),
+        nonce: U256::from(0),
+        init_code: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
+        call_data: "0x".parse().unwrap(),
+        call_gas_limit: U256::from(4514240),
+        verification_gas_limit: U256::from(1854272),
+        pre_verification_gas: U256::from(1854272),
+        max_fee_per_gas: U256::from(56674171701_i64),
+        max_priority_fee_per_gas: U256::from(48087546673_i64),
+        signature: "0x".parse().unwrap(),
+    };
+
+    test_get_compare_user_operation(chain_id, verifying_paymaster_address, user_operation.clone())
+        .await;
+
+    // Arbitrary test inputs #3
+    let chain_id = 11155111;
+    let verifying_paymaster_address: Address =
+        "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap();
+    let user_operation = UserOperationConstruct {
+        sender: Address::zero(),
+        nonce: U256::from(0),
+        init_code: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a07580000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
+        call_data: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
+        call_gas_limit: U256::from(4514240),
+        verification_gas_limit: U256::from(1854272),
+        pre_verification_gas: U256::from(1854272),
+        max_fee_per_gas: U256::from(56674171701_i64),
+        max_priority_fee_per_gas: U256::from(48087546673_i64),
+        signature: "0x".parse().unwrap(),
+    };
+
+    test_get_compare_user_operation(chain_id, verifying_paymaster_address, user_operation.clone())
+        .await
 }

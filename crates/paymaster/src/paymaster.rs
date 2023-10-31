@@ -154,7 +154,7 @@ pub async fn get_paymaster_and_data(
 }
 
 /// Construct the paymaster and data.
-fn construct_paymaster_and_data(
+pub fn construct_paymaster_and_data(
     verifying_paymaster_address: Address,
     valid_until: u64,
     valid_after: u64,
@@ -361,7 +361,7 @@ pub async fn sign_message_fallback(hash: [u8; 32]) -> Result<Vec<u8>> {
 /// Get the hash for the paymaster.
 /// From: https://github.com/eth-infinitism/account-abstraction/blob/48854ef5ada1c966475b2074703ad983329faacf/contracts/samples/VerifyingPaymaster.sol#L35
 /// License: GPL-3.0
-fn get_hash(
+pub fn get_hash(
     chain_id: u64,
     verifying_paymaster_address: Address,
     user_operation: UserOperationConstruct,
@@ -379,7 +379,7 @@ fn get_hash(
     ])))
 }
 
-fn get_pack(user_operation: UserOperationConstruct) -> Token {
+pub fn get_pack(user_operation: UserOperationConstruct) -> Token {
     Token::Bytes(encode(&[
         Token::Address(user_operation.sender),
         Token::Uint(user_operation.nonce),
