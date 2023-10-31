@@ -34,6 +34,7 @@ pub struct GasAndPaymasterAndData {
     pub max_fee_per_gas: U256,
     pub max_priority_fee_per_gas: U256,
     pub paymaster_and_data: Bytes,
+    pub paymaster_nonce: U256,
 }
 
 /// User operation required for the request.

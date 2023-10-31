@@ -75,7 +75,7 @@ impl PaymasterApi {
         let valid_after = timestamp;
 
         // Get the paymaster and data.
-        let paymater_and_data =
+        let (paymater_and_data, paymaster_nonce) =
             get_paymaster_and_data(chain_id, construct.clone(), valid_until, valid_after).await?;
 
         Ok(GasAndPaymasterAndData {
@@ -85,6 +85,7 @@ impl PaymasterApi {
             max_fee_per_gas: construct.max_fee_per_gas,
             max_priority_fee_per_gas: construct.max_priority_fee_per_gas,
             paymaster_and_data: paymater_and_data,
+            paymaster_nonce: paymaster_nonce.into(),
         })
     }
 }
@@ -95,7 +96,7 @@ pub async fn get_paymaster_and_data(
     construct: UserOperationConstruct,
     valid_until: u64,
     valid_after: u64,
-) -> RpcResult<Bytes> {
+) -> RpcResult<(Bytes, u64)> {
     info!(chain_id, valid_until, valid_after);
 
     // Attempt to sign the message w/ the KMS.
@@ -104,7 +105,7 @@ pub async fn get_paymaster_and_data(
     // If the KMS signer is available, use it.
     // Otherwise, fall back to the private key.
     match kms_res {
-        Ok((msg, verifying_paymaster_address)) => {
+        Ok((msg, verifying_paymaster_address, paymaster_nonce)) => {
             // Construct the paymaster and data.
             let paymater_and_data = construct_paymaster_and_data(
                 verifying_paymaster_address,
@@ -114,7 +115,7 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
-            Ok(paymater_and_data)
+            Ok((paymater_and_data, paymaster_nonce))
         }
         Err(_) => {
             // Fallback to the environment fallback address
@@ -124,6 +125,8 @@ pub async fn get_paymaster_and_data(
                 to_checksum(&verifying_paymaster_address, None)
             );
 
+            let paymaster_nonce = 0;
+
             // Infinite valid until.
             let hash = get_hash(
                 chain_id,
@@ -131,7 +134,7 @@ pub async fn get_paymaster_and_data(
                 construct.clone(),
                 valid_until,
                 valid_after,
-                0,
+                paymaster_nonce,
             )
             .map_err(JsonRpcError::from)?;
             info!("hash: 0x{}", hex::encode(hash));
@@ -148,7 +151,7 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
-            Ok(paymater_and_data)
+            Ok((paymater_and_data, paymaster_nonce))
         }
     }
 }
@@ -310,7 +313,7 @@ pub async fn sign_message_kms(
     construct: UserOperationConstruct,
     valid_until: u64,
     valid_after: u64,
-) -> Result<(Vec<u8>, Address)> {
+) -> Result<(Vec<u8>, Address, u64)> {
     let signer = connect_to_kms().await?.with_chain_id(chain_id);
 
     // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
@@ -318,6 +321,8 @@ pub async fn sign_message_kms(
     let address = signer.address();
     let verifying_paymaster_addresses: Vec<Address> =
         PAYMASTER_ADDRESSES_MAP.keys().cloned().collect();
+
+    let paymaster_nonce = 0;
 
     // Get the verifying paymaster contract address.
     let verifying_paymaster_address = *PAYMASTER_ADDRESSES_MAP.get(&address).ok_or_else(|| {
@@ -336,7 +341,7 @@ pub async fn sign_message_kms(
         construct.clone(),
         valid_until,
         valid_after,
-        0,
+        paymaster_nonce,
     )?;
     info!("hash: 0x{}", hex::encode(hash));
 
@@ -358,7 +363,7 @@ pub async fn sign_message_kms(
     info!("recovered_address: {:?}", recovered_address);
     info!("signer_address: {:?}", signer.address());
 
-    Ok((msg.to_vec(), verifying_paymaster_address))
+    Ok((msg.to_vec(), verifying_paymaster_address, paymaster_nonce))
 }
 
 /// Sign a message w/ the paymaster private key.
