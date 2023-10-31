@@ -19,6 +19,7 @@ pub(crate) mod feedback;
 pub(crate) mod health;
 pub(crate) mod metrics;
 pub(crate) mod notification;
+pub(crate) mod paymaster;
 pub(crate) mod signature;
 pub(crate) mod support_request;
 pub(crate) mod transaction;
