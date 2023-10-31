@@ -57,7 +57,7 @@ fn test_signer_kms_recover() {
 }
 
 #[tokio::test]
-async fn test_get_hash_iteration() {
+async fn test_e2e_get_hash_iteration() {
     async fn test_get_compare_user_operation(
         chain_id: u64,
         verifying_paymaster_address: Address,
