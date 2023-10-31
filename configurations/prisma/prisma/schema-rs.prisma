@@ -398,6 +398,9 @@ model UserOperation {
   entryPoint String
   status     UserOperationStatus @default(PROPOSED)
 
+  paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
+  paymasterId String?
+
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?      @unique
 
@@ -414,7 +417,22 @@ model UserOperation {
   @@index([chainId, walletAddress])
   @@index([transactionHash])
   @@index([notificationId])
+  @@index([paymasterId])
   @@index([walletAddress])
+}
+
+model Paymaster {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  address     String
+  chainId     BigInt
+  sender      String
+  senderNonce BigInt
+  validUntil  DateTime
+  validAfter  DateTime
+
+  userOperation UserOperation[]
 }
 
 enum UserOperationStatus {
