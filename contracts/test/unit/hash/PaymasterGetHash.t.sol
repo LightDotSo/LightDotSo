@@ -62,6 +62,8 @@ contract PaymasterGetHash is BaseTest {
 
         LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
 
+        // Log the paymaster address
+        // solhint-disable-next-line no-console
         console.log(address(paymaster));
 
         bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
