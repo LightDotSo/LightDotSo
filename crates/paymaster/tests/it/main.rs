@@ -217,4 +217,25 @@ async fn test_get_hash_iteration() {
 
     test_get_compare_user_operation(chain_id, verifying_paymaster_address, user_operation.clone())
         .await;
+
+    // Arbitrary test inputs #6
+    let chain_id = 10;
+    let verifying_paymaster_address: Address =
+        "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap();
+    let user_operation = UserOperationConstruct {
+        // sender: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse().unwrap(),
+        sender: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A4000".parse().unwrap(),
+        nonce: U256::from(1),
+        init_code: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a07580000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
+        call_data: "0x".parse().unwrap(),
+        call_gas_limit: U256::from(4514240),
+        verification_gas_limit: U256::from(1854272),
+        pre_verification_gas: U256::from(3),
+        max_fee_per_gas: U256::from(0),
+        max_priority_fee_per_gas: U256::from(1),
+        signature: "0x".parse().unwrap(),
+    };
+
+    test_get_compare_user_operation(chain_id, verifying_paymaster_address, user_operation.clone())
+        .await;
 }
