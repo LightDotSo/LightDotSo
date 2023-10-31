@@ -410,7 +410,7 @@ export interface components {
       sender_nonce: number;
     };
     UserOperationPostRequestParams: {
-      paymaster: components["schemas"]["UserOperationPaymaster"];
+      paymaster?: components["schemas"]["UserOperationPaymaster"] | null;
       signature: components["schemas"]["UserOperationSignature"];
       user_operation: components["schemas"]["UserOperationCreate"];
     };

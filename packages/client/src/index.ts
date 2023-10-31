@@ -166,6 +166,11 @@ export const createUserOperation = async ({
     };
   };
   body: {
+    paymaster?: {
+      address: string;
+      sender: string;
+      sender_nonce: number;
+    };
     signature: {
       owner_id: string;
       signature: string;

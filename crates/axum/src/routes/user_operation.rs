@@ -118,7 +118,7 @@ pub struct UserOperationPostRequestParams {
     // The signature of the user operation.
     pub signature: UserOperationSignature,
     // The paymaster of the user operation.
-    pub paymaster: UserOperationPaymaster,
+    pub paymaster: Option<UserOperationPaymaster>,
 }
 
 /// Item to create.
@@ -521,19 +521,62 @@ async fn v1_user_operation_post_handler(
         return Err(AppError::BadRequest);
     }
 
-    // Parse the paymaster_and_data for the paymaster data.
-    let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
-    let (decded_paymaster_address, valid_until, valid_after, _msg) =
-        decode_paymaster_and_data(paymaster_data);
-    let paymaster_sender = user_operation.clone().sender;
+    // The optional params to connect paymaster to user_operation.
+    let mut params = vec![];
 
-    // Check that the paymaster address is the same as the decoded paymaster address.
-    if decded_paymaster_address != paymaster.address.parse()? {
-        error!(
-            "decded_paymaster_address: {}, paymaster.address: {}",
-            decded_paymaster_address, paymaster.address
-        );
-        return Err(AppError::BadRequest);
+    // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
+    if paymaster.is_some() {
+        // The paymaster_and_data cannot be empty.
+        if user_operation.paymaster_and_data.is_empty() {
+            error!("paymaster_and_data is empty");
+            return Err(AppError::BadRequest);
+        }
+
+        let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
+        let (decded_paymaster_address, valid_until, valid_after, _msg) =
+            decode_paymaster_and_data(paymaster_data);
+        let paymaster_sender = user_operation.clone().sender;
+
+        // Check that the paymaster address is the same as the decoded paymaster address.
+        if decded_paymaster_address != paymaster.clone().unwrap().address.parse()? {
+            error!(
+                "decded_paymaster_address: {}, paymaster.address: {}",
+                decded_paymaster_address,
+                paymaster.unwrap().address
+            );
+            return Err(AppError::BadRequest);
+        }
+
+        let paymaster = client
+            .clone()
+            .client
+            .unwrap()
+            .paymaster()
+            .create(
+                to_checksum(&decded_paymaster_address, None),
+                chain_id,
+                paymaster_sender,
+                0,
+                // Parse the u64 to chrono Datetime
+                DateTime::<Utc>::from_utc(
+                    NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                    Utc,
+                )
+                .into(),
+                DateTime::<Utc>::from_utc(
+                    NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                    Utc,
+                )
+                .into(),
+                vec![],
+            )
+            .exec()
+            .await?;
+        info!(?paymaster);
+
+        params = vec![user_operation::paymaster::connect(paymaster::UniqueWhereParam::IdEquals(
+            paymaster.id,
+        ))];
     }
 
     // Create the user operation in the database w/ the sig.
@@ -542,30 +585,6 @@ async fn v1_user_operation_post_handler(
         .unwrap()
         ._transaction()
         .run(|client| async move {
-            let paymaster = client
-                .paymaster()
-                .create(
-                    to_checksum(&decded_paymaster_address, None),
-                    chain_id,
-                    paymaster_sender,
-                    0,
-                    // Parse the u64 to chrono Datetime
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    vec![],
-                )
-                .exec()
-                .await?;
-            info!(?paymaster);
-
             let user_operation = client
                 .user_operation()
                 .create(
@@ -583,9 +602,7 @@ async fn v1_user_operation_post_handler(
                     chain_id,
                     "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
                     wallet::address::equals(wallet.address),
-                    vec![user_operation::paymaster::connect(
-                        paymaster::UniqueWhereParam::IdEquals(paymaster.id),
-                    )],
+                    params,
                 )
                 .exec()
                 .await?;
