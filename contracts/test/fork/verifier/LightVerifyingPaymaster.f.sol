@@ -45,18 +45,18 @@ contract LightVerifyingPaymasterForkTest is BaseForkTest {
 
     /// Tests that the factory can create a new account at the predicted address
     function testFork_paymaster_getHash() public {
-        address sender = address(0x0476DF9D2faa5C019d51E6684eFC37cB4f7b8b14);
+        address sender = address(0);
         uint256 nonce = 0;
         bytes memory initCode = "";
         bytes memory callData = "";
         uint256 callGasLimit;
-        uint256 verificationGasLimit = 150000;
-        uint256 preVerificationGas = 21000;
-        uint256 maxFeePerGas = 1091878423;
-        uint256 maxPriorityFeePerGas = 1000000000;
-        bytes memory paymasterAndData = "";
-        bytes memory signature =
-            hex"983f1a8c786be7a3661666abe8af0e687cd429ffc304c2593b52c4fd052b9f2734eddf9a64f718106fe7ad8975ea5291d5018a9adfb4172fef2321c948ba80c51c";
+        uint256 verificationGasLimit = 0;
+        uint256 preVerificationGas = 0;
+        uint256 maxFeePerGas = 0;
+        uint256 maxPriorityFeePerGas = 0;
+        bytes memory paymasterAndData =
+            hex"000000000018d32df916ff115a25fbefc70baf8b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+        bytes memory signature = hex"";
 
         UserOperation memory op = UserOperation(
             sender,
@@ -75,9 +75,9 @@ contract LightVerifyingPaymasterForkTest is BaseForkTest {
         bytes32 hash = paymaster.getHash(op, 0, 0);
 
         // Assert the hash is correct if chain ID is 1
-        // if (block.chainid == 1) {
-        //     assertEq(hash, 0x796fa7a0c3526e386b54073846b80f9957cebd52e070187e004aa9f9d52a3b0c);
-        // }
+        if (block.chainid == 1) {
+            assertEq(hash, 0xb2072a8f48b9b898d026920dc502740e4786e67eca4ab132ff4336a78f7e73f8);
+        }
 
         // Log the byte code hash
         // solhint-disable-next-line no-console

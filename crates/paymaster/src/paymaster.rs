@@ -419,18 +419,17 @@ mod tests {
     async fn test_get_hash() {
         // Arbitrary test inputs
         let chain_id = 1;
-        let verifying_paymaster_address =
-            "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap();
+        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
         let user_operation = UserOperationConstruct {
-            sender: "0x0476DF9D2faa5C019d51E6684eFC37cB4f7b8b14".parse().unwrap(),
+            sender: Address::zero(),
             nonce: U256::from(0),
             init_code: "0x".parse().unwrap(),
             call_data: "0x".parse().unwrap(),
             call_gas_limit: U256::from(0),
-            verification_gas_limit: U256::from(150000),
-            pre_verification_gas: U256::from(21000),
-            max_fee_per_gas: U256::from(1091878423),
-            max_priority_fee_per_gas: U256::from(1000000000),
+            verification_gas_limit: U256::from(0),
+            pre_verification_gas: U256::from(0),
+            max_fee_per_gas: U256::from(0),
+            max_priority_fee_per_gas: U256::from(0),
             signature: "0x".parse().unwrap(),
         };
         // Temporarily clone the user operation.
@@ -478,12 +477,24 @@ mod tests {
             .unwrap();
 
         let expected_bytes: [u8; 32] =
-            hex::decode("cfdc122c67cd593876ba7708e9da7636b655c566061e72d6f2a506db8181a950")
+            hex::decode("b2072a8f48b9b898d026920dc502740e4786e67eca4ab132ff4336a78f7e73f8")
                 .expect("Decoding failed")
                 .try_into()
                 .expect("Expected byte length does not match");
 
         let result = result.unwrap();
+
+        println!(
+            "paymaster_and_data: {}",
+            construct_paymaster_and_data(
+                verifying_paymaster_address,
+                valid_until,
+                valid_after,
+                None,
+            )
+            .to_vec()
+            .to_hex_string()
+        );
 
         // Print the result
         println!("result: {}", result.to_vec().to_hex_string());
