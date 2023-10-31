@@ -331,8 +331,10 @@ pub async fn sign_message_kms(
     let id = initial_msg.recovery_id().unwrap();
     info!("id: {:?}", id);
 
-    // Overwrite the recovery id
-    let msg = Signature { r: initial_msg.r, s: initial_msg.s, v: id.to_byte().into() };
+    // Overwrite the recovery id  - accepts only v instead 27/28
+    // From: https://github.com/OpenZeppelin/openzeppelin-contracts/blob/93993ceadef0ebe2d88b5620eaa889deb10fae84/contracts/cryptography/ECDSA.sol#L41
+    // License: MIT
+    let msg = Signature { r: initial_msg.r, s: initial_msg.s, v: (u8::from(id) + 27).into() };
     info!("msg: 0x{}", hex::encode(msg.to_vec()));
 
     let recovered_address = msg.recover(hash_message(hash))?;
