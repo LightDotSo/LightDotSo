@@ -51,13 +51,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Check Thunder Client
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 15
-          max_attempts: 3
-          retry_on: error
-          command: pnpm tc --col api.light.so,rpc.light.so
+      - name: Thunder Client Check
+        run: |
+          pnpm tc --col api.light.so,rpc.light.so
   api-check:
     if: always()
     needs:
