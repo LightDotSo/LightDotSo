@@ -23,13 +23,17 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use ethers_main::{types::H160, utils::hex};
+use ethers_main::{
+    types::H160,
+    utils::{hex, to_checksum},
+};
 use eyre::{Report, Result};
 use lightdotso_common::{
     traits::{HexToBytes, VecU8ToHex},
     utils::hex_to_bytes,
 };
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
+use lightdotso_paymaster::paymaster::decode_paymaster_and_data;
 use lightdotso_prisma::{
     configuration, owner, paymaster, signature, user_operation, wallet, UserOperationStatus,
 };
@@ -41,7 +45,10 @@ use lightdotso_solutions::{
     utils::render_subdigest,
 };
 use lightdotso_tracing::tracing::{error, info};
-use prisma_client_rust::Direction;
+use prisma_client_rust::{
+    chrono::{DateTime, NaiveDateTime, Utc},
+    Direction,
+};
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -409,6 +416,7 @@ async fn v1_user_operation_post_handler(
 
     let user_operation = params.user_operation.clone();
     let user_operation_hash = params.user_operation.clone().hash;
+    let paymaster = params.paymaster.clone();
     let sig = params.signature;
 
     let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
@@ -513,6 +521,21 @@ async fn v1_user_operation_post_handler(
         return Err(AppError::BadRequest);
     }
 
+    // Parse the paymaster_and_data for the paymaster data.
+    let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
+    let (decded_paymaster_address, valid_until, valid_after, _msg) =
+        decode_paymaster_and_data(paymaster_data);
+    let paymaster_sender = user_operation.clone().sender;
+
+    // Check that the paymaster address is the same as the decoded paymaster address.
+    if decded_paymaster_address != paymaster.address.parse()? {
+        error!(
+            "decded_paymaster_address: {}, paymaster.address: {}",
+            decded_paymaster_address, paymaster.address
+        );
+        return Err(AppError::BadRequest);
+    }
+
     // Create the user operation in the database w/ the sig.
     let user_operation: Result<lightdotso_prisma::user_operation::Data> = client
         .client
@@ -541,6 +564,30 @@ async fn v1_user_operation_post_handler(
                 .exec()
                 .await?;
             info!(?user_operation);
+
+            let paymaster = client
+                .paymaster()
+                .create(
+                    to_checksum(&decded_paymaster_address, None),
+                    chain_id,
+                    paymaster_sender,
+                    0,
+                    // Parse the u64 to chrono Datetime
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
+                    vec![],
+                )
+                .exec()
+                .await?;
+            info!(?paymaster);
 
             let signature = client
                 .signature()

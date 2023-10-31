@@ -5995,6 +5995,7 @@ dependencies = [
  "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-indexer",
+ "lightdotso-paymaster",
  "lightdotso-prisma",
  "lightdotso-prometheus",
  "lightdotso-redis",
