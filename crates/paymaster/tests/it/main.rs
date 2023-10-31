@@ -42,7 +42,7 @@ fn test_signer_kms_recover() {
     println!("id: {:?}", id);
 
     // Overwrite the recovery id
-    let signature = Signature { r: signature.r, s: signature.s, v: id.to_byte().into() };
+    let signature = Signature { r: signature.r, s: signature.s, v: (u8::from(id) + 27).into() };
 
     let recovered_address = signature.recover(message).unwrap();
     assert_eq!(recovered_address, "0xeedeadba8cac470fdce318892a07abe26aa4ab17".parse().unwrap());
