@@ -34,8 +34,7 @@ contract PaymasterGetHash is BaseTest {
     function test_getHash() public {
         address sender = address(1);
         uint256 nonce = 2;
-        bytes memory initCode =
-            hex"0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b8362fdd1";
+        bytes memory initCode = hex"";
         bytes memory callData = hex"";
         uint256 callGasLimit = 5;
         uint256 verificationGasLimit = 6;
@@ -60,6 +59,8 @@ contract PaymasterGetHash is BaseTest {
         );
 
         LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+
+        console.log(address(paymaster));
 
         bytes32 hash = paymaster.getHash(userOperation, uint48(1), uint48(2));
 
