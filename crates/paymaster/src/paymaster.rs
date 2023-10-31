@@ -547,16 +547,16 @@ mod tests {
     #[test]
     fn test_get_pack() {
         let user_operation = UserOperationConstruct {
-            sender: "0x0000000000000000000000000000000000000000".parse().unwrap(),
+            sender: "0xF46D20dC61A5f43773Ad172602647f194a69a16d".parse().unwrap(),
             nonce: U256::from(0),
-            init_code: "0x".parse().unwrap(),
+            init_code: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
             call_data: "0x".parse().unwrap(),
-            call_gas_limit: U256::from(0),
-            verification_gas_limit: U256::from(0),
-            pre_verification_gas: U256::from(0),
-            max_fee_per_gas: U256::from(0),
-            max_priority_fee_per_gas: U256::from(0),
-            signature: "0x".parse().unwrap(),
+            call_gas_limit: U256::from(4514240),
+            verification_gas_limit: U256::from(1854272),
+            pre_verification_gas: U256::from(1854272),
+            max_fee_per_gas: U256::from(56674171701_i64),
+            max_priority_fee_per_gas: U256::from(48087546673_i64),
+            signature: "0xf3d100a507a9cec065dd157ebe9f76f34722791066a9a4e5dd1c09666f180c8f44ac0f769495f53cf4fcbbcc94fa4520c02a0dd316642ea0972b5114309d7e031b02".parse().unwrap(),
         };
 
         // println!("{}", user_operation.init_code.len());
@@ -575,6 +575,8 @@ mod tests {
         // );
 
         let packed = get_pack(user_operation.clone()).into_bytes().unwrap();
+
+        println!("{}", packed.to_hex_string());
 
         let enco = encode(&[
             Token::Bytes(packed),
