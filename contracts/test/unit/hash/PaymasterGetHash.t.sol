@@ -32,17 +32,19 @@ contract PaymasterGetHash is BaseTest {
 
     /// Tests that the account complies w/ ERC-165
     function test_getHash() public {
-        address sender = address(1);
-        uint256 nonce = 2;
-        bytes memory initCode = hex"";
+        address sender = address(0xF46D20dC61A5f43773Ad172602647f194a69a16d);
+        uint256 nonce = 0;
+        bytes memory initCode =
+            hex"0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758";
         bytes memory callData = hex"";
-        uint256 callGasLimit = 5;
-        uint256 verificationGasLimit = 6;
-        uint256 preVerificationGas = 7;
-        uint256 maxFeePerGas = 8;
-        uint256 maxPriorityFeePerGas = 9;
-        bytes memory paymasterAndData = new bytes(1);
-        bytes memory signature = new bytes(1);
+        uint256 callGasLimit = 4514240;
+        uint256 verificationGasLimit = 1854272;
+        uint256 preVerificationGas = 1854272;
+        uint256 maxFeePerGas = 56674171701;
+        uint256 maxPriorityFeePerGas = 48087546673;
+        bytes memory paymasterAndData =
+            hex"0dcd1bf9a1b36ce34237eeafef220932846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c";
+        bytes memory signature = hex"";
 
         UserOperation memory userOperation = UserOperation(
             sender,
@@ -62,7 +64,7 @@ contract PaymasterGetHash is BaseTest {
 
         console.log(address(paymaster));
 
-        bytes32 hash = paymaster.getHash(userOperation, uint48(1), uint48(2));
+        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
 
         // Log the byte code hash
         // solhint-disable-next-line no-console

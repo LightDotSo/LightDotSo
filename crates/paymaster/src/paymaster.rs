@@ -397,8 +397,8 @@ fn get_pack(user_operation: UserOperationConstruct) -> Token {
             .into(),
         ),
         Token::Uint(
-            // 0x1c0 = 448
-            (448 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+            // 0x260 = 608
+            (608 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
                 32))
             .into(),
         ),
@@ -418,18 +418,19 @@ mod tests {
     #[tokio::test]
     async fn test_get_hash() {
         // Arbitrary test inputs
-        let chain_id = 11155111;
-        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+        let chain_id = 1;
+        let verifying_paymaster_address =
+            "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap();
         let user_operation = UserOperationConstruct {
-            sender: "0x0000000000000000000000000000000000000001".parse().unwrap(),
+            sender: "0x0476DF9D2faa5C019d51E6684eFC37cB4f7b8b14".parse().unwrap(),
             nonce: U256::from(0),
             init_code: "0x".parse().unwrap(),
             call_data: "0x".parse().unwrap(),
             call_gas_limit: U256::from(0),
-            verification_gas_limit: U256::from(0),
-            pre_verification_gas: U256::from(0),
-            max_fee_per_gas: U256::from(0),
-            max_priority_fee_per_gas: U256::from(0),
+            verification_gas_limit: U256::from(150000),
+            pre_verification_gas: U256::from(21000),
+            max_fee_per_gas: U256::from(1091878423),
+            max_priority_fee_per_gas: U256::from(1000000000),
             signature: "0x".parse().unwrap(),
         };
         // Temporarily clone the user operation.
@@ -477,12 +478,18 @@ mod tests {
             .unwrap();
 
         let expected_bytes: [u8; 32] =
-            hex::decode("2435cd47d8f5ea2c5d6755619d7a5b886502e8b41a4067aa5cfd3bbdbcb97128")
+            hex::decode("cfdc122c67cd593876ba7708e9da7636b655c566061e72d6f2a506db8181a950")
                 .expect("Decoding failed")
                 .try_into()
                 .expect("Expected byte length does not match");
 
         let result = result.unwrap();
+
+        // Print the result
+        println!("result: {}", result.to_vec().to_hex_string());
+        println!("onchain_hash: {}", onchain_hash.to_vec().to_hex_string());
+        println!("expected_bytes: {}", expected_bytes.to_vec().to_hex_string());
+
         // Assert that the result matches the expected value
         assert_eq!(expected_bytes, onchain_hash);
         assert_eq!(result, onchain_hash);
