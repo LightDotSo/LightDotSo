@@ -31,7 +31,7 @@ use lightdotso_common::{
 };
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_prisma::{
-    configuration, owner, signature, user_operation, wallet, UserOperationStatus,
+    configuration, owner, paymaster, signature, user_operation, wallet, UserOperationStatus,
 };
 use lightdotso_solutions::{
     builder::rooted_node_builder,
@@ -110,6 +110,8 @@ pub struct UserOperationPostRequestParams {
     pub user_operation: UserOperationCreate,
     // The signature of the user operation.
     pub signature: UserOperationSignature,
+    // The paymaster of the user operation.
+    pub paymaster: UserOperationPaymaster,
 }
 
 /// Item to create.
@@ -127,6 +129,17 @@ pub(crate) struct UserOperationCreate {
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
+}
+
+/// Paymaster
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationPaymaster {
+    /// The address of the paymaster.
+    address: String,
+    /// The address of the sender.
+    sender: String,
+    /// The nonce of the sender.
+    sender_nonce: i64,
 }
 
 /// Owner
@@ -178,6 +191,7 @@ pub(crate) struct UserOperation {
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
     status: String,
+    paymaster: Option<UserOperationPaymaster>,
     signatures: Vec<UserOperationSignature>,
 }
 
@@ -218,6 +232,9 @@ impl From<user_operation::Data> for UserOperation {
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
             paymaster_and_data: user_operation.paymaster_and_data.to_hex_string(),
             status: user_operation.status.to_string(),
+            paymaster: user_operation
+                .paymaster
+                .and_then(|paymaster| paymaster.map(|data| UserOperationPaymaster::from(*data))),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
                 signature.into_iter().map(UserOperationSignature::from).collect()
             }),
@@ -229,6 +246,17 @@ impl From<user_operation::Data> for UserOperation {
 impl From<owner::Data> for UserOperationOwner {
     fn from(owner: owner::Data) -> Self {
         Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
+    }
+}
+
+// Implement From<paymaster::Data> for Paymaster.
+impl From<paymaster::Data> for UserOperationPaymaster {
+    fn from(paymaster: paymaster::Data) -> Self {
+        Self {
+            address: paymaster.address,
+            sender: paymaster.sender,
+            sender_nonce: paymaster.sender_nonce,
+        }
     }
 }
 
