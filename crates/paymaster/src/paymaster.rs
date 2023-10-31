@@ -548,36 +548,36 @@ mod tests {
     }
 
     #[test]
-    fn test_pack() {
+    fn test_get_pack() {
         let user_operation = UserOperationConstruct {
-            sender: Address::zero(),
-            nonce: U256::from(0),
+            sender: "0x0000000000000000000000000000000000000001".parse().unwrap(),
+            nonce: U256::from(2),
             init_code: "0xff".parse().unwrap(),
             call_data: "0xaa".parse().unwrap(),
-            call_gas_limit: U256::from(0),
-            verification_gas_limit: U256::from(0),
-            pre_verification_gas: U256::from(0),
-            max_fee_per_gas: U256::from(0),
-            max_priority_fee_per_gas: U256::from(0),
+            call_gas_limit: U256::from(5),
+            verification_gas_limit: U256::from(6),
+            pre_verification_gas: U256::from(7),
+            max_fee_per_gas: U256::from(8),
+            max_priority_fee_per_gas: U256::from(9),
             signature: "0x".parse().unwrap(),
         };
 
-        println!("{}", user_operation.init_code.len());
-        println!("{}", user_operation.call_data.len());
+        // println!("{}", user_operation.init_code.len());
+        // println!("{}", user_operation.call_data.len());
 
-        println!(
-            "{}",
-            416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
-                48)
-        );
+        // println!(
+        //     "{}",
+        //     416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+        //         48)
+        // );
 
-        println!(
-            "{}",
-            480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
-                48)
-        );
+        // println!(
+        //     "{}",
+        //     480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+        //         48)
+        // );
 
-        let packed = encode(&[get_pack(user_operation.clone())]);
+        let packed = get_pack(user_operation.clone()).into_bytes().unwrap();
 
         println!("{}", packed.to_hex_string());
     }

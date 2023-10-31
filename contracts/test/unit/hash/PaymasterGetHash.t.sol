@@ -32,7 +32,7 @@ contract PaymasterGetHash is BaseTest {
 
     /// Tests that the account complies w/ ERC-165
     function test_getHash() public {
-        address sender = address(0x1);
+        address sender = address(1);
         uint256 nonce = 2;
         bytes memory initCode = hex"ff";
         bytes memory callData = hex"aa";
