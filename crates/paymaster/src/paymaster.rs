@@ -25,14 +25,11 @@ use ethers::{
     core::k256::ecdsa::SigningKey,
     signers::{Signer, Wallet},
     types::{Address, Bytes, Signature},
-    utils::{hash_message, hex, to_checksum},
+    utils::{hash_message, hex, keccak256, to_checksum},
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::{
-    constants::LIGHT_PAYMASTER_ADDRESS,
-    paymaster::{get_paymaster, UserOperation},
-};
+use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
@@ -134,6 +131,7 @@ pub async fn get_paymaster_and_data(
                 construct.clone(),
                 valid_until,
                 valid_after,
+                0,
             )
             .await
             .map_err(JsonRpcError::from)?;
@@ -319,6 +317,7 @@ pub async fn sign_message_kms(
         construct.clone(),
         valid_until,
         valid_after,
+        0,
     )
     .await?;
     info!("hash: 0x{}", hex::encode(hash));
@@ -362,51 +361,59 @@ pub async fn sign_message_fallback(hash: [u8; 32]) -> Result<Vec<u8>> {
 }
 
 /// Get the hash for the paymaster.
+/// From: https://github.com/eth-infinitism/account-abstraction/blob/48854ef5ada1c966475b2074703ad983329faacf/contracts/samples/VerifyingPaymaster.sol#L35
+/// License: GPL-3.0
 async fn get_hash(
     chain_id: u64,
     verifying_paymaster_address: Address,
     user_operation: UserOperationConstruct,
     valid_until: u64,
     valid_after: u64,
+    paymaster_nonce: u64,
 ) -> Result<[u8; 32]> {
-    // Get the contract.
-    let contract = get_paymaster(chain_id, verifying_paymaster_address).await?;
-
-    // Get the hash.
-    let hash = contract
-        .get_hash(
-            UserOperation {
-                sender: user_operation.sender,
-                nonce: user_operation.nonce,
-                init_code: user_operation.init_code,
-                call_data: user_operation.call_data,
-                call_gas_limit: user_operation.call_gas_limit,
-                verification_gas_limit: user_operation.verification_gas_limit,
-                pre_verification_gas: user_operation.pre_verification_gas,
-                max_fee_per_gas: user_operation.max_fee_per_gas,
-                max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
-                paymaster_and_data: construct_paymaster_and_data(
-                    verifying_paymaster_address,
-                    valid_until,
-                    valid_after,
-                    None,
-                ),
-                signature: Bytes::default(),
-            },
-            valid_until,
-            valid_after,
-        )
-        .await?;
-    info!("get_hash: 0x{}", hex::encode(hash));
-
-    Ok(hash)
+    Ok(keccak256(encode(&[
+        Token::Bytes(encode(&[
+            Token::Address(user_operation.sender),
+            Token::Uint(user_operation.nonce),
+            Token::Bytes(user_operation.init_code.to_vec()),
+            Token::Bytes(user_operation.call_data.to_vec()),
+            Token::Uint(user_operation.call_gas_limit),
+            Token::Uint(user_operation.verification_gas_limit),
+            Token::Uint(user_operation.pre_verification_gas),
+            Token::Uint(user_operation.max_fee_per_gas),
+            Token::Uint(user_operation.max_priority_fee_per_gas),
+            Token::Uint(
+                // 0x1a0 = 416
+                (416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
+                    32 *
+                    64))
+                .into(),
+            ),
+            Token::Uint(
+                // 0x1e0 = 480
+                (480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
+                    32 *
+                    64))
+                .into(),
+            ),
+        ])),
+        Token::Uint(chain_id.into()),
+        Token::Address(verifying_paymaster_address),
+        Token::Uint(paymaster_nonce.into()),
+        Token::Uint(valid_until.into()),
+        Token::Uint(valid_after.into()),
+    ])))
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use ethers::{types::U256, utils::hex};
-    use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
+    use lightdotso_common::traits::VecU8ToHex;
+    use lightdotso_contracts::{
+        constants::LIGHT_PAYMASTER_ADDRESS,
+        paymaster::{get_paymaster, UserOperation},
+    };
 
     #[tokio::test]
     async fn test_get_hash() {
@@ -425,6 +432,8 @@ mod tests {
             max_priority_fee_per_gas: U256::from(0),
             signature: "0x".parse().unwrap(),
         };
+        // Temporarily clone the user operation.
+        let user_operation_clone = user_operation.clone();
         let valid_until = 0_u64;
         let valid_after = 0_u64;
 
@@ -434,8 +443,39 @@ mod tests {
             user_operation,
             valid_until,
             valid_after,
+            0,
         )
         .await;
+
+        let contract = get_paymaster(chain_id, verifying_paymaster_address).await.unwrap();
+        let user_operation = user_operation_clone.clone();
+
+        // Get the hash.
+        let onchain_hash = contract
+            .get_hash(
+                UserOperation {
+                    sender: user_operation.sender,
+                    nonce: user_operation.nonce,
+                    init_code: user_operation.init_code,
+                    call_data: user_operation.call_data,
+                    call_gas_limit: user_operation.call_gas_limit,
+                    verification_gas_limit: user_operation.verification_gas_limit,
+                    pre_verification_gas: user_operation.pre_verification_gas,
+                    max_fee_per_gas: user_operation.max_fee_per_gas,
+                    max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
+                    paymaster_and_data: construct_paymaster_and_data(
+                        verifying_paymaster_address,
+                        valid_until,
+                        valid_after,
+                        None,
+                    ),
+                    signature: Bytes::default(),
+                },
+                valid_until,
+                valid_after,
+            )
+            .await
+            .unwrap();
 
         let expected_bytes: [u8; 32] =
             hex::decode("2435cd47d8f5ea2c5d6755619d7a5b886502e8b41a4067aa5cfd3bbdbcb97128")
@@ -443,8 +483,11 @@ mod tests {
                 .try_into()
                 .expect("Expected byte length does not match");
 
+        let result = result.unwrap();
         // Assert that the result matches the expected value
-        assert_eq!(result.unwrap(), expected_bytes);
+        assert_eq!(expected_bytes, onchain_hash);
+        assert_eq!(result, onchain_hash);
+        assert_eq!(result, expected_bytes);
     }
 
     #[tokio::test]
@@ -500,5 +543,64 @@ mod tests {
 
         // Validate the result.
         assert_eq!(result.len(), 20 + 64 + msg.len());
+    }
+
+    #[test]
+    fn test_pack() {
+        let user_operation = UserOperationConstruct {
+            sender: Address::zero(),
+            nonce: U256::from(0),
+            init_code: "0xff".parse().unwrap(),
+            call_data: "0xaa".parse().unwrap(),
+            call_gas_limit: U256::from(0),
+            verification_gas_limit: U256::from(0),
+            pre_verification_gas: U256::from(0),
+            max_fee_per_gas: U256::from(0),
+            max_priority_fee_per_gas: U256::from(0),
+            signature: "0x".parse().unwrap(),
+        };
+
+        println!("{}", user_operation.init_code.len());
+        println!("{}", user_operation.call_data.len());
+
+        println!(
+            "{}",
+            416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+                48)
+        );
+
+        println!(
+            "{}",
+            480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+                48)
+        );
+
+        let and = encode(&[
+            Token::Address(user_operation.sender),
+            Token::Uint(user_operation.nonce),
+            Token::Bytes(user_operation.init_code.to_vec()),
+            Token::Bytes(user_operation.call_data.to_vec()),
+            Token::Uint(user_operation.call_gas_limit),
+            Token::Uint(user_operation.verification_gas_limit),
+            Token::Uint(user_operation.pre_verification_gas),
+            Token::Uint(user_operation.max_fee_per_gas),
+            Token::Uint(user_operation.max_priority_fee_per_gas),
+            Token::Uint(
+                // 0x1a0 = 416
+                (416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
+                    32 *
+                    64))
+                .into(),
+            ),
+            Token::Uint(
+                // 0x1e0 = 480
+                (480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
+                    32 *
+                    64))
+                .into(),
+            ),
+        ]);
+
+        println!("{}", and.to_hex_string());
     }
 }

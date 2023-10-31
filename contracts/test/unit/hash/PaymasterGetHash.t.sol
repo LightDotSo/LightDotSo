@@ -33,16 +33,16 @@ contract PaymasterGetHash is BaseTest {
     /// Tests that the account complies w/ ERC-165
     function test_getHash() public {
         address sender = address(0x1);
-        uint256 nonce = 0;
-        bytes memory initCode = new bytes(0);
-        bytes memory callData = new bytes(1);
-        uint256 callGasLimit = 0;
-        uint256 verificationGasLimit = 0;
-        uint256 preVerificationGas = 0;
-        uint256 maxFeePerGas = 0;
-        uint256 maxPriorityFeePerGas = 0;
-        bytes memory paymasterAndData = new bytes(2);
-        bytes memory signature = new bytes(3);
+        uint256 nonce = 2;
+        bytes memory initCode = hex"ff";
+        bytes memory callData = hex"aa";
+        uint256 callGasLimit = 5;
+        uint256 verificationGasLimit = 6;
+        uint256 preVerificationGas = 7;
+        uint256 maxFeePerGas = 8;
+        uint256 maxPriorityFeePerGas = 9;
+        bytes memory paymasterAndData = new bytes(1);
+        bytes memory signature = new bytes(1);
 
         UserOperation memory userOperation = UserOperation(
             sender,
