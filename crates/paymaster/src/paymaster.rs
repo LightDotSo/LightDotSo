@@ -372,37 +372,39 @@ async fn get_hash(
     paymaster_nonce: u64,
 ) -> Result<[u8; 32]> {
     Ok(keccak256(encode(&[
-        Token::Bytes(encode(&[
-            Token::Address(user_operation.sender),
-            Token::Uint(user_operation.nonce),
-            Token::Bytes(user_operation.init_code.to_vec()),
-            Token::Bytes(user_operation.call_data.to_vec()),
-            Token::Uint(user_operation.call_gas_limit),
-            Token::Uint(user_operation.verification_gas_limit),
-            Token::Uint(user_operation.pre_verification_gas),
-            Token::Uint(user_operation.max_fee_per_gas),
-            Token::Uint(user_operation.max_priority_fee_per_gas),
-            Token::Uint(
-                // 0x1a0 = 416
-                (416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
-                    32 *
-                    64))
-                .into(),
-            ),
-            Token::Uint(
-                // 0x1e0 = 480
-                (480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
-                    32 *
-                    64))
-                .into(),
-            ),
-        ])),
+        get_pack(user_operation),
         Token::Uint(chain_id.into()),
         Token::Address(verifying_paymaster_address),
         Token::Uint(paymaster_nonce.into()),
         Token::Uint(valid_until.into()),
         Token::Uint(valid_after.into()),
     ])))
+}
+
+fn get_pack(user_operation: UserOperationConstruct) -> Token {
+    Token::Bytes(encode(&[
+        Token::Address(user_operation.sender),
+        Token::Uint(user_operation.nonce),
+        Token::Bytes(user_operation.init_code.to_vec()),
+        Token::Bytes(user_operation.call_data.to_vec()),
+        Token::Uint(user_operation.call_gas_limit),
+        Token::Uint(user_operation.verification_gas_limit),
+        Token::Uint(user_operation.pre_verification_gas),
+        Token::Uint(user_operation.max_fee_per_gas),
+        Token::Uint(user_operation.max_priority_fee_per_gas),
+        Token::Uint(
+            // 0x1a0 = 416
+            (416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+                64))
+            .into(),
+        ),
+        Token::Uint(
+            // 0x1e0 = 480
+            (480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+                64))
+            .into(),
+        ),
+    ]))
 }
 
 #[cfg(test)]
@@ -575,32 +577,8 @@ mod tests {
                 48)
         );
 
-        let and = encode(&[
-            Token::Address(user_operation.sender),
-            Token::Uint(user_operation.nonce),
-            Token::Bytes(user_operation.init_code.to_vec()),
-            Token::Bytes(user_operation.call_data.to_vec()),
-            Token::Uint(user_operation.call_gas_limit),
-            Token::Uint(user_operation.verification_gas_limit),
-            Token::Uint(user_operation.pre_verification_gas),
-            Token::Uint(user_operation.max_fee_per_gas),
-            Token::Uint(user_operation.max_priority_fee_per_gas),
-            Token::Uint(
-                // 0x1a0 = 416
-                (416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
-                    32 *
-                    64))
-                .into(),
-            ),
-            Token::Uint(
-                // 0x1e0 = 480
-                (480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) /
-                    32 *
-                    64))
-                .into(),
-            ),
-        ]);
+        let packed = encode(&[get_pack(user_operation.clone())]);
 
-        println!("{}", and.to_hex_string());
+        println!("{}", packed.to_hex_string());
     }
 }
