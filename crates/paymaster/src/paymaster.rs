@@ -395,13 +395,13 @@ fn get_pack(user_operation: UserOperationConstruct) -> Token {
         Token::Uint(
             // 0x1a0 = 416
             (416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
-                64))
+                32))
             .into(),
         ),
         Token::Uint(
             // 0x1e0 = 480
             (480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
-                64))
+                32))
             .into(),
         ),
     ]))
@@ -552,8 +552,8 @@ mod tests {
         let user_operation = UserOperationConstruct {
             sender: "0x0000000000000000000000000000000000000001".parse().unwrap(),
             nonce: U256::from(2),
-            init_code: "0xff".parse().unwrap(),
-            call_data: "0xaa".parse().unwrap(),
+            init_code: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b8362fdd1".parse().unwrap(),
+            call_data: "0x".parse().unwrap(),
             call_gas_limit: U256::from(5),
             verification_gas_limit: U256::from(6),
             pre_verification_gas: U256::from(7),
