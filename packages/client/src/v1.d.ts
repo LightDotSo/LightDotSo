@@ -66,6 +66,20 @@ export interface paths {
      */
     post: operations["v1_notification_read_handler"];
   };
+  "/paymaster/get": {
+    /**
+     * Get a paymaster
+     * @description Get a paymaster
+     */
+    get: operations["v1_paymaster_get_handler"];
+  };
+  "/paymaster/list": {
+    /**
+     * Returns a list of paymasters.
+     * @description Returns a list of paymasters.
+     */
+    get: operations["v1_paymaster_list_handler"];
+  };
   "/signature/create": {
     /**
      * Create a signature
@@ -107,6 +121,13 @@ export interface paths {
      * @description Returns a list of transactions.
      */
     get: operations["v1_transaction_list_handler"];
+  };
+  "/user/get": {
+    /**
+     * Get a user
+     * @description Get a user
+     */
+    get: operations["v1_user_get_handler"];
   };
   "/user_operation/create": {
     /**
@@ -255,6 +276,17 @@ export interface components {
       weight: number;
     };
     /** @description Item to do. */
+    Paymaster: {
+      address: string;
+    };
+    /** @description Paymaster operation errors */
+    PaymasterError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Paymaster not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to do. */
     Signature: {
       owner_id: string;
       signature: string;
@@ -301,6 +333,17 @@ export interface components {
       NotFound: string;
     }]>;
     /** @description Item to do. */
+    User: {
+      id: string;
+    };
+    /** @description User operation errors */
+    UserError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description User not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to do. */
     UserOperation: {
       call_data: string;
       /** Format: int64 */
@@ -315,6 +358,7 @@ export interface components {
       max_priority_fee_per_gas: number;
       /** Format: int64 */
       nonce: number;
+      paymaster?: components["schemas"]["UserOperationPaymaster"] | null;
       paymaster_and_data: string;
       /** Format: int64 */
       pre_verification_gas: number;
@@ -353,7 +397,20 @@ export interface components {
       /** @description User operation not found by id. */
       NotFound: string;
     }]>;
+    /** @description Paymaster */
+    UserOperationPaymaster: {
+      /** @description The address of the paymaster. */
+      address: string;
+      /** @description The address of the sender. */
+      sender: string;
+      /**
+       * Format: int64
+       * @description The nonce of the sender.
+       */
+      sender_nonce: number;
+    };
     UserOperationPostRequestParams: {
+      paymaster?: components["schemas"]["UserOperationPaymaster"] | null;
       signature: components["schemas"]["UserOperationSignature"];
       user_operation: components["schemas"]["UserOperationCreate"];
     };
@@ -612,6 +669,57 @@ export interface operations {
     };
   };
   /**
+   * Get a paymaster
+   * @description Get a paymaster
+   */
+  v1_paymaster_get_handler: {
+    parameters: {
+      query: {
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Paymaster returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Paymaster"];
+        };
+      };
+      /** @description Paymaster not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["PaymasterError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of paymasters.
+   * @description Returns a list of paymasters.
+   */
+  v1_paymaster_list_handler: {
+    parameters: {
+      query?: {
+        offset?: number | null;
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Paymasters returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Paymaster"][];
+        };
+      };
+      /** @description Paymaster bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["PaymasterError"];
+        };
+      };
+    };
+  };
+  /**
    * Create a signature
    * @description Create a signature
    */
@@ -782,6 +890,31 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["TransactionError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a user
+   * @description Get a user
+   */
+  v1_user_get_handler: {
+    parameters: {
+      query: {
+        address: string;
+      };
+    };
+    responses: {
+      /** @description User returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description User not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserError"];
         };
       };
     };

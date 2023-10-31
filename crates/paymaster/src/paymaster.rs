@@ -75,7 +75,7 @@ impl PaymasterApi {
         let valid_after = timestamp;
 
         // Get the paymaster and data.
-        let paymater_and_data =
+        let (paymater_and_data, paymaster_nonce) =
             get_paymaster_and_data(chain_id, construct.clone(), valid_until, valid_after).await?;
 
         Ok(GasAndPaymasterAndData {
@@ -85,6 +85,7 @@ impl PaymasterApi {
             max_fee_per_gas: construct.max_fee_per_gas,
             max_priority_fee_per_gas: construct.max_priority_fee_per_gas,
             paymaster_and_data: paymater_and_data,
+            paymaster_nonce: paymaster_nonce.into(),
         })
     }
 }
@@ -95,7 +96,7 @@ pub async fn get_paymaster_and_data(
     construct: UserOperationConstruct,
     valid_until: u64,
     valid_after: u64,
-) -> RpcResult<Bytes> {
+) -> RpcResult<(Bytes, u64)> {
     info!(chain_id, valid_until, valid_after);
 
     // Attempt to sign the message w/ the KMS.
@@ -104,7 +105,7 @@ pub async fn get_paymaster_and_data(
     // If the KMS signer is available, use it.
     // Otherwise, fall back to the private key.
     match kms_res {
-        Ok((msg, verifying_paymaster_address)) => {
+        Ok((msg, verifying_paymaster_address, paymaster_nonce)) => {
             // Construct the paymaster and data.
             let paymater_and_data = construct_paymaster_and_data(
                 verifying_paymaster_address,
@@ -114,7 +115,7 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
-            Ok(paymater_and_data)
+            Ok((paymater_and_data, paymaster_nonce))
         }
         Err(_) => {
             // Fallback to the environment fallback address
@@ -124,6 +125,8 @@ pub async fn get_paymaster_and_data(
                 to_checksum(&verifying_paymaster_address, None)
             );
 
+            let paymaster_nonce = 0;
+
             // Infinite valid until.
             let hash = get_hash(
                 chain_id,
@@ -131,7 +134,7 @@ pub async fn get_paymaster_and_data(
                 construct.clone(),
                 valid_until,
                 valid_after,
-                0,
+                paymaster_nonce,
             )
             .map_err(JsonRpcError::from)?;
             info!("hash: 0x{}", hex::encode(hash));
@@ -148,7 +151,7 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
-            Ok(paymater_and_data)
+            Ok((paymater_and_data, paymaster_nonce))
         }
     }
 }
@@ -168,6 +171,26 @@ pub fn construct_paymaster_and_data(
         [verifying_paymaster_address.as_bytes(), &encoded_tokens, (msg.unwrap_or(&[0u8; 65]))]
             .concat(),
     )
+}
+
+/// Construct the paymaster and data.
+pub fn decode_paymaster_and_data(msg: Vec<u8>) -> (Address, u64, u64, Vec<u8>) {
+    // Get the verifying paymaster address.
+    let verifying_paymaster_address = Address::from_slice(&msg[0..20]);
+    info!("verifying_paymaster_address: {}", to_checksum(&verifying_paymaster_address, None));
+
+    // Get the valid until.
+    let valid_until = u64::from_be_bytes(msg[44..52].try_into().unwrap());
+    info!("valid_until: {}", valid_until);
+
+    // Get the valid after.
+    let valid_after = u64::from_be_bytes(msg[76..84].try_into().unwrap());
+    info!("valid_after: {}", valid_after);
+
+    // Get the signature.
+    let signature = msg[84..].to_vec();
+
+    (verifying_paymaster_address, valid_until, valid_after, signature)
 }
 
 /// Construct the user operation w/ rpc.
@@ -290,7 +313,7 @@ pub async fn sign_message_kms(
     construct: UserOperationConstruct,
     valid_until: u64,
     valid_after: u64,
-) -> Result<(Vec<u8>, Address)> {
+) -> Result<(Vec<u8>, Address, u64)> {
     let signer = connect_to_kms().await?.with_chain_id(chain_id);
 
     // Check if the address matches the paymaster address w/ env `PAYMASTER_ADDRESS` if std env
@@ -298,6 +321,8 @@ pub async fn sign_message_kms(
     let address = signer.address();
     let verifying_paymaster_addresses: Vec<Address> =
         PAYMASTER_ADDRESSES_MAP.keys().cloned().collect();
+
+    let paymaster_nonce = 0;
 
     // Get the verifying paymaster contract address.
     let verifying_paymaster_address = *PAYMASTER_ADDRESSES_MAP.get(&address).ok_or_else(|| {
@@ -316,7 +341,7 @@ pub async fn sign_message_kms(
         construct.clone(),
         valid_until,
         valid_after,
-        0,
+        paymaster_nonce,
     )?;
     info!("hash: 0x{}", hex::encode(hash));
 
@@ -338,7 +363,7 @@ pub async fn sign_message_kms(
     info!("recovered_address: {:?}", recovered_address);
     info!("signer_address: {:?}", signer.address());
 
-    Ok((msg.to_vec(), verifying_paymaster_address))
+    Ok((msg.to_vec(), verifying_paymaster_address, paymaster_nonce))
 }
 
 /// Sign a message w/ the paymaster private key.
@@ -560,6 +585,29 @@ mod tests {
 
         // Validate the result.
         assert_eq!(result.len(), 20 + 64 + msg.len());
+    }
+
+    #[test]
+    fn test_decode_paymaster_and_data() {
+        // Get the expected msg.
+        let expected_msg: Vec<u8> = hex::decode("0dcd1bf9a1b36ce34237eeafef220932846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
+
+        // Decode the paymaster and data.
+        let (verifying_paymaster_address, valid_until, valid_after, signature) =
+            decode_paymaster_and_data(expected_msg);
+
+        // Expected result.
+        let expected_verifying_paymaster_address =
+            "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82".parse().unwrap();
+        let expected_valid_until = u64::from_str_radix("00000000deadbeef", 16).unwrap();
+        let expected_valid_after = u64::from_str_radix("0000000000001234", 16).unwrap();
+        let expected_signature: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
+
+        // Assert that the result matches the expected value
+        assert_eq!(verifying_paymaster_address, expected_verifying_paymaster_address);
+        assert_eq!(valid_until, expected_valid_until);
+        assert_eq!(valid_after, expected_valid_after);
+        assert_eq!(signature, expected_signature);
     }
 
     #[test]

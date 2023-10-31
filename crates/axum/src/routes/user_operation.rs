@@ -23,15 +23,19 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use ethers_main::{types::H160, utils::hex};
+use ethers_main::{
+    types::H160,
+    utils::{hex, to_checksum},
+};
 use eyre::{Report, Result};
 use lightdotso_common::{
     traits::{HexToBytes, VecU8ToHex},
     utils::hex_to_bytes,
 };
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
+use lightdotso_paymaster::paymaster::decode_paymaster_and_data;
 use lightdotso_prisma::{
-    configuration, owner, signature, user_operation, wallet, UserOperationStatus,
+    configuration, owner, paymaster, signature, user_operation, wallet, UserOperationStatus,
 };
 use lightdotso_solutions::{
     builder::rooted_node_builder,
@@ -41,7 +45,10 @@ use lightdotso_solutions::{
     utils::render_subdigest,
 };
 use lightdotso_tracing::tracing::{error, info};
-use prisma_client_rust::Direction;
+use prisma_client_rust::{
+    chrono::{DateTime, NaiveDateTime, Utc},
+    Direction,
+};
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -110,6 +117,8 @@ pub struct UserOperationPostRequestParams {
     pub user_operation: UserOperationCreate,
     // The signature of the user operation.
     pub signature: UserOperationSignature,
+    // The paymaster of the user operation.
+    pub paymaster: Option<UserOperationPaymaster>,
 }
 
 /// Item to create.
@@ -127,6 +136,17 @@ pub(crate) struct UserOperationCreate {
     max_fee_per_gas: i64,
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
+}
+
+/// Paymaster
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationPaymaster {
+    /// The address of the paymaster.
+    address: String,
+    /// The address of the sender.
+    sender: String,
+    /// The nonce of the sender.
+    sender_nonce: i64,
 }
 
 /// Owner
@@ -178,6 +198,7 @@ pub(crate) struct UserOperation {
     max_priority_fee_per_gas: i64,
     paymaster_and_data: String,
     status: String,
+    paymaster: Option<UserOperationPaymaster>,
     signatures: Vec<UserOperationSignature>,
 }
 
@@ -218,6 +239,9 @@ impl From<user_operation::Data> for UserOperation {
             max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
             paymaster_and_data: user_operation.paymaster_and_data.to_hex_string(),
             status: user_operation.status.to_string(),
+            paymaster: user_operation
+                .paymaster
+                .and_then(|paymaster| paymaster.map(|data| UserOperationPaymaster::from(*data))),
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
                 signature.into_iter().map(UserOperationSignature::from).collect()
             }),
@@ -229,6 +253,17 @@ impl From<user_operation::Data> for UserOperation {
 impl From<owner::Data> for UserOperationOwner {
     fn from(owner: owner::Data) -> Self {
         Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
+    }
+}
+
+// Implement From<paymaster::Data> for Paymaster.
+impl From<paymaster::Data> for UserOperationPaymaster {
+    fn from(paymaster: paymaster::Data) -> Self {
+        Self {
+            address: paymaster.address,
+            sender: paymaster.sender,
+            sender_nonce: paymaster.sender_nonce,
+        }
     }
 }
 
@@ -381,6 +416,7 @@ async fn v1_user_operation_post_handler(
 
     let user_operation = params.user_operation.clone();
     let user_operation_hash = params.user_operation.clone().hash;
+    let paymaster = params.paymaster.clone();
     let sig = params.signature;
 
     let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
@@ -485,6 +521,64 @@ async fn v1_user_operation_post_handler(
         return Err(AppError::BadRequest);
     }
 
+    // The optional params to connect paymaster to user_operation.
+    let mut params = vec![];
+
+    // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
+    if paymaster.is_some() {
+        // The paymaster_and_data cannot be empty.
+        if user_operation.paymaster_and_data.is_empty() {
+            error!("paymaster_and_data is empty");
+            return Err(AppError::BadRequest);
+        }
+
+        let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
+        let (decded_paymaster_address, valid_until, valid_after, _msg) =
+            decode_paymaster_and_data(paymaster_data);
+        let paymaster_sender = user_operation.clone().sender;
+
+        // Check that the paymaster address is the same as the decoded paymaster address.
+        if decded_paymaster_address != paymaster.clone().unwrap().address.parse()? {
+            error!(
+                "decded_paymaster_address: {}, paymaster.address: {}",
+                decded_paymaster_address,
+                paymaster.unwrap().address
+            );
+            return Err(AppError::BadRequest);
+        }
+
+        let paymaster = client
+            .clone()
+            .client
+            .unwrap()
+            .paymaster()
+            .create(
+                to_checksum(&decded_paymaster_address, None),
+                chain_id,
+                paymaster_sender,
+                0,
+                // Parse the u64 to chrono Datetime
+                DateTime::<Utc>::from_utc(
+                    NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                    Utc,
+                )
+                .into(),
+                DateTime::<Utc>::from_utc(
+                    NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                    Utc,
+                )
+                .into(),
+                vec![],
+            )
+            .exec()
+            .await?;
+        info!(?paymaster);
+
+        params = vec![user_operation::paymaster::connect(paymaster::UniqueWhereParam::IdEquals(
+            paymaster.id,
+        ))];
+    }
+
     // Create the user operation in the database w/ the sig.
     let user_operation: Result<lightdotso_prisma::user_operation::Data> = client
         .client
@@ -508,7 +602,7 @@ async fn v1_user_operation_post_handler(
                     chain_id,
                     "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse()?,
                     wallet::address::equals(wallet.address),
-                    vec![],
+                    params,
                 )
                 .exec()
                 .await?;
