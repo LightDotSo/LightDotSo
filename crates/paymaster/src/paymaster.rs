@@ -397,7 +397,7 @@ fn get_pack(user_operation: UserOperationConstruct) -> Token {
             .into(),
         ),
         Token::Uint(
-            // 0x1c0 = 432
+            // 0x1c0 = 448
             (448 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
                 32))
             .into(),
@@ -409,6 +409,7 @@ fn get_pack(user_operation: UserOperationConstruct) -> Token {
 mod tests {
     use super::*;
     use ethers::{types::U256, utils::hex};
+    use lightdotso_common::traits::VecU8ToHex;
     use lightdotso_contracts::{
         constants::LIGHT_PAYMASTER_ADDRESS,
         paymaster::{get_paymaster, UserOperation},
@@ -420,7 +421,7 @@ mod tests {
         let chain_id = 11155111;
         let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
         let user_operation = UserOperationConstruct {
-            sender: Address::zero(),
+            sender: "0x0000000000000000000000000000000000000001".parse().unwrap(),
             nonce: U256::from(0),
             init_code: "0x".parse().unwrap(),
             call_data: "0x".parse().unwrap(),
@@ -585,6 +586,8 @@ mod tests {
         ])
         .to_vec();
 
+        println!("{}", enco.to_hex_string());
+
         let has = get_hash(
             31337,
             "0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9".parse().unwrap(),
@@ -593,6 +596,8 @@ mod tests {
             0,
             0,
         );
+
+        println!("{}", has.unwrap().to_vec().to_hex_string());
     }
 }
 
