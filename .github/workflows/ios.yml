@@ -80,7 +80,6 @@ jobs:
       - name: Run Unit Tests
         run: |
           bundle exec fastlane test
-        continue-on-error: true
         env:
           APPLE_ISSUER_ID: ${{ secrets.APPLE_ISSUER_ID }}
           APPLE_KEY_ID: ${{ secrets.APPLE_KEY_ID }}
@@ -94,6 +93,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       - name: Upload Test Results
         uses: kishikawakatsumi/xcresulttool@v1
+        continue-on-error: true
         with:
           path: |
             fastlane/test_output/LightWalletTests.xcresult
