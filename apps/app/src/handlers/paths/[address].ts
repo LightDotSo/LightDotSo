@@ -15,20 +15,20 @@
 
 import { getCachedConfiguration, getCachedWallet } from "@/services";
 import { notFound } from "next/navigation";
-import { validateAddress } from "./validators/address";
+import { validateAddress } from "@/handlers/validators/address";
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 
 export const handler = async (params: { address: string }) => {
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Validators
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   validateAddress(params.address);
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Fetch
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const walletPromise = getCachedWallet(params.address as Address);
 
@@ -36,9 +36,9 @@ export const handler = async (params: { address: string }) => {
 
   const [wallet, config] = await Promise.all([walletPromise, configPromise]);
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Parse
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const res = Result.combineWithAllErrors([wallet, config]);
 

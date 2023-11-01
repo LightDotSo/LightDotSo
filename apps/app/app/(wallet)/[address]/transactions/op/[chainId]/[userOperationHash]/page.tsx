@@ -14,10 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ConfirmDialog } from "@/components/confirm-dialog";
-import { handler } from "@/handles/[address]";
-import { handler as userOpHandler } from "@/handles/transaction/[chainId]/[userOperationHash]";
+import { handler } from "@/handlers/paths/[address]";
+import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]";
 import type { Address } from "viem";
-import { parseNumber } from "@/handles/parsers";
+import { parseNumber } from "@/handlers/parsers";
 
 export default async function Page({
   params,

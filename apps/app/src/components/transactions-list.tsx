@@ -19,8 +19,8 @@ import { OpCard } from "@/app/(wallet)/[address]/transactions/op-card";
 import { getUserOperations } from "@lightdotso/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TransactionsEmpty } from "./transactions-empty";
-import { TransactionsWrapper } from "./transactions-wrapper";
+import { TransactionsEmpty } from "@/components/transactions-empty";
+import { TransactionsWrapper } from "@/components/transactions-wrapper";
 
 export type TransactionsListProps = {
   address: Address;

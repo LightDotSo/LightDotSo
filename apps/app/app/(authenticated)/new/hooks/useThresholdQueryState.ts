@@ -13,15 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
-import { NewWalletForm } from "@/app/(authenticated)/new/new-wallet-form";
+import { parseAsInteger, useQueryState } from "next-usequerystate";
 
-export default function Page() {
-  return (
-    <>
-      <NewRoot currentStepType={StepsEnum.New}>
-        <NewWalletForm />
-      </NewRoot>
-    </>
-  );
-}
+export const thresholdParser = parseAsInteger.withDefault(1);
+
+export const useThresholdQueryState = () => {
+  return useQueryState("threshold", thresholdParser);
+};

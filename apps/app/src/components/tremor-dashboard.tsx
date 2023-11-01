@@ -16,7 +16,6 @@
 "use client";
 
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
-
 import type { DeltaType, Color } from "@tremor/react";
 import {
   Card,

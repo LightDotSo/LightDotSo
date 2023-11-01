@@ -37,8 +37,8 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@lightdotso/ui";
-import { steps } from "./root";
-import { useRouter, useSearchParams } from "next/navigation";
+import { steps } from "@/app/(authenticated)/new/root";
+import { useRouter } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import {
   BanknotesIcon,
@@ -52,25 +52,24 @@ import { NotionLinks } from "@lightdotso/const";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema } from "@/schemas/newForm";
 import { successToast } from "@/utils/toast";
+import {
+  useNameQueryState,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks";
+import type { WalletType } from "@/app/(authenticated)/new/hooks";
 
 type NewFormValues = z.infer<typeof newFormSchema>;
 
 export function NewWalletForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { setFormValues } = useNewFormStore();
 
-  const nameParam = searchParams.get("name");
-  const typeParam = searchParams.get("type");
+  const [name, setName] = useNameQueryState();
+  const [type, setType] = useTypeQueryState();
 
-  // This can come from your database or API.
   const defaultValues: Partial<NewFormValues> = {
-    // Check if the type is valid
-    type:
-      typeParam && newFormSchema.shape.type.safeParse(typeParam).success
-        ? newFormSchema.shape.type.parse(typeParam)
-        : "multi",
-    name: nameParam ? nameParam : "",
+    name,
+    type,
   };
 
   const form = useForm<NewFormValues>({
@@ -79,25 +78,22 @@ export function NewWalletForm() {
   });
 
   useEffect(() => {
-    const url = new URL(window.location.href);
     const subscription = form.watch((value, { name }) => {
       setFormValues(value);
       if (name === "name") {
         if (value.name === undefined || value.name === "") {
-          url.searchParams.delete("name");
+          setName(null);
         } else {
-          url.searchParams.set("name", value.name);
+          setName(value.name);
         }
       }
       if (name === "type") {
-        if (value.type === "multi") {
-          url.searchParams.delete("type");
+        if (value.type === "multi" || value.type === undefined) {
+          setType(null);
         } else {
-          url.searchParams.set("type", value.type ?? "multi");
+          setType(value.type as WalletType);
         }
       }
-      router.replace(url.toString());
-      return;
     });
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,10 +108,11 @@ export function NewWalletForm() {
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[1].href, window.location.origin);
-    url.searchParams.set("name", nameParam || "");
+    url.searchParams.set("name", name);
+    url.searchParams.set("type", type);
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nameParam]);
+  }, [name, type]);
 
   function onSubmit(data: NewFormValues) {
     successToast(data);
@@ -154,7 +151,7 @@ export function NewWalletForm() {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="multi"
-                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                             >
                               <BuildingLibraryIcon className="mb-3 h-6 w-6"></BuildingLibraryIcon>
                               Multi-sig
@@ -178,7 +175,7 @@ export function NewWalletForm() {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="personal"
-                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                             >
                               <BanknotesIcon className="mb-3 h-6 w-6"></BanknotesIcon>
                               Personal Vault
@@ -203,7 +200,7 @@ export function NewWalletForm() {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="2fa"
-                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-8 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                              className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                             >
                               <ShieldExclamationIcon className="mb-3 h-6 w-6"></ShieldExclamationIcon>
                               2FA (Coming Soon)

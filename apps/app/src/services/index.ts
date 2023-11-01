@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { getCachedConfiguration } from "./getCachedConfiguration";
-export { getCachedLlama } from "./getCachedLlama";
-export { getCachedWallet } from "./getCachedWallet";
-export { getCachedUserOperation } from "./getCachedUserOperation";
-export { getCachedUserOperations } from "./getCachedUserOperations";
-export { getQueryClient } from "./getQueryClient";
+export { getCachedConfiguration } from "@/services/getCachedConfiguration";
+export { getCachedLlama } from "@/services/getCachedLlama";
+export { getCachedWallet } from "@/services/getCachedWallet";
+export { getCachedUserOperation } from "@/services/getCachedUserOperation";
+export { getCachedUserOperations } from "@/services/getCachedUserOperations";
+export { getQueryClient } from "@/services/getQueryClient";

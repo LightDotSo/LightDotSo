@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handler } from "@/handles/[address]";
+import { handler } from "@/handlers/paths/[address]";
 import { getCachedLlama, getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";

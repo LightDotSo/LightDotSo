@@ -15,14 +15,14 @@
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { notFound } from "next/navigation";
-import { validateAddress } from "../validators/address";
-import { handler as addressHandler } from "../[address]";
+import { validateAddress } from "@/handlers/validators/address";
+import { handler as addressHandler } from "@/handlers/paths/[address]";
 import type { Address, Hex } from "viem";
 import { toHex, fromHex } from "viem";
 import { getUserOperationHash, type UserOperation } from "permissionless";
-import { validateHex } from "../validators/hex";
-import { validateNumber } from "../validators/number";
-import { parseNumber } from "../parsers/number";
+import { validateHex } from "@/handlers/validators/hex";
+import { validateNumber } from "@/handlers/validators/number";
+import { parseNumber } from "@/handlers/parsers/number";
 
 export const handler = async (
   params: { address: string; chainId: string },
@@ -31,15 +31,15 @@ export const handler = async (
     callData?: string;
   },
 ): Promise<{ userOperation: UserOperation; hash: Hex }> => {
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Handlers
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   await addressHandler(params);
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Validators
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   validateAddress(params.address);
 
@@ -55,9 +55,9 @@ export const handler = async (
 
   const chainId = parseNumber(params.chainId);
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Defaults
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const op: UserOperation = {
     sender: params.address as Address,
@@ -73,9 +73,9 @@ export const handler = async (
     maxFeePerGas: fromHex("0xD320B3B35" as Hex, { to: "bigint" }),
     maxPriorityFeePerGas: fromHex("0xB323DBB31" as Hex, { to: "bigint" }),
   };
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Fetch
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const res = await getPaymasterGasAndPaymasterAndData(
     chainId,
@@ -101,9 +101,9 @@ export const handler = async (
     notFound();
   }
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Parse
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const parsedRes = res._unsafeUnwrap();
 

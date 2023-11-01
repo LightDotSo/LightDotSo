@@ -13,15 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
-import { NewWalletForm } from "@/app/(authenticated)/new/new-wallet-form";
+import { notFound } from "next/navigation";
+import { isHex } from "viem";
+import { hexBytes32Regex } from "@/handlers/regexs";
 
-export default function Page() {
-  return (
-    <>
-      <NewRoot currentStepType={StepsEnum.New}>
-        <NewWalletForm />
-      </NewRoot>
-    </>
-  );
-}
+export const validateUserOperationHash = (str: string) => {
+  if (!isHex(str)) {
+    notFound();
+  }
+
+  if (!hexBytes32Regex.test(str)) {
+    notFound();
+  }
+};

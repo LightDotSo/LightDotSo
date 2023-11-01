@@ -14,12 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { notFound } from "next/navigation";
-import { handler as addressHandler } from "@/handles/[address]";
+import { handler as addressHandler } from "@/handlers/paths/[address]";
 import {
   validateAddress,
   validateNumber,
   validateUserOperationHash,
-} from "@/handles/validators";
+} from "@/handlers/validators";
 import { getCachedUserOperation } from "@/services/getCachedUserOperation";
 import type { Hex } from "viem";
 
@@ -28,15 +28,15 @@ export const handler = async (params: {
   chainId: string;
   userOperationHash: string;
 }) => {
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Handlers
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   await addressHandler(params);
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Validators
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   validateAddress(params.address);
 
@@ -46,17 +46,17 @@ export const handler = async (params: {
 
   // const chainId = parseNumber(params.chainId);
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Fetch
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   const userOperation = await getCachedUserOperation(
     params.userOperationHash as Hex,
   );
 
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
   // Parse
-  // -------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
 
   return userOperation.match(
     userOperation => {

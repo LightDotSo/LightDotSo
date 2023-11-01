@@ -16,12 +16,20 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import type { Step } from "../root";
-import { steps, StepsEnum } from "../root";
-import { CheckIcon } from "@heroicons/react/24/solid";
+import type { Step } from "@/app/(authenticated)/new/root";
+import { steps, StepsEnum } from "@/app/(authenticated)/new/root";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
+import {
+  ownerParser,
+  useNameQueryState,
+  useOwnersQueryState,
+  useSaltQueryState,
+  useThresholdQueryState,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks";
 
 interface RootLinkProps {
   stepType: StepsEnum;
@@ -32,7 +40,11 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const name = searchParams.get("name");
+  const [name] = useNameQueryState();
+  const [type] = useTypeQueryState();
+  const [threshold] = useThresholdQueryState();
+  const [salt] = useSaltQueryState();
+  const [owners] = useOwnersQueryState();
 
   const linkSteps = steps.map(step => {
     // Update the status of the step based on the current step
@@ -75,11 +87,15 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
       // Forward the search params to the next step
-      url.search = searchParams.toString();
-
+      url.searchParams.set("name", name);
+      url.searchParams.set("type", type);
+      url.searchParams.set("threshold", threshold.toString());
+      url.searchParams.set("salt", salt ?? "");
+      url.searchParams.set("owners", ownerParser.serialize(owners));
       router.push(url.toString());
     },
-    [router, searchParams],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [name, type, threshold, salt, owners],
   );
 
   const validateParams = (
@@ -90,19 +106,20 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     let threshold = 0;
 
     // Iterate over each key-value pair
-    for (const [key, value] of params.entries()) {
-      // If the key matches the pattern "owners[i][weight]"
-      if (/^owners\[\d+\]\[weight\]$/.test(key)) {
-        // Add the parsed integer value to the total weight
-        totalWeight += parseInt(value, 10);
-      }
-      // If the key matches the "threshold"
-      if (key === "threshold") {
-        // Store the parsed integer value
-        threshold = parseInt(value, 10);
-      }
-    }
+    // for (const [key, value] of params.entries()) {
+    //   // If the key matches the pattern "owners[i][weight]"
+    //   if (/^owners\[\d+\]\[weight\]$/.test(key)) {
+    //     // Add the parsed integer value to the total weight
+    //     totalWeight += parseInt(value, 10);
+    //   }
+    //   // If the key matches the "threshold"
+    //   if (key === "threshold") {
+    //     // Store the parsed integer value
+    //     threshold = parseInt(value, 10);
+    //   }
+    // }
 
+    // Iterate over each required param
     for (let i = 0; i < requiredParams.length; i++) {
       if (!params.has(requiredParams[i]) || !params.get(requiredParams[i])) {
         return false;
@@ -115,13 +132,7 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     return true;
   };
 
-  let requiredParams = [
-    "name",
-    "owners[0][address]",
-    "owners[0][weight]",
-    "salt",
-    "threshold",
-  ];
+  let requiredParams = ["name", "owners", "salt", "threshold"];
 
   return (
     <button
@@ -149,8 +160,9 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
           step.status === "current"
-            ? "bg-primary w-1 md:h-1"
+            ? "bg-primary w-1 md:h-0.5"
             : "bg-border w-0 md:h-0",
+          "translate-y-1/2",
         )}
         aria-hidden="true"
       />
@@ -162,7 +174,10 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
           )}
         >
           {step.status === "complete" ? (
-            <CheckIcon className="h-4 w-4 text-border" aria-hidden="true" />
+            <CheckIcon
+              className="h-4 w-4 text-border [&>path]:stroke-[3]"
+              aria-hidden="true"
+            />
           ) : (
             <span
               className={cn(

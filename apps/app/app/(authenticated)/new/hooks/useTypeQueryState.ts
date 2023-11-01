@@ -13,7 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { validateAddress } from "./address";
-export { validateHex } from "./hex";
-export { validateNumber } from "./number";
-export { validateUserOperationHash } from "./userOperation";
+import { parseAsStringEnum, useQueryState } from "next-usequerystate";
+
+export enum WalletType {
+  "MULTI" = "multi",
+  "PERSONAL" = "personal",
+  "2FA" = "2fa",
+}
+
+export const typeParser = parseAsStringEnum<WalletType>(
+  Object.values(WalletType),
+).withDefault(WalletType.MULTI);
+
+export const useTypeQueryState = () => {
+  return useQueryState("type", typeParser);
+};

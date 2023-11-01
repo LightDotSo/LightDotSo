@@ -36,14 +36,14 @@ import {
   Separator,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "../root";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useCallback } from "react";
+import { steps } from "@/app/(authenticated)/new/root";
+import { useRouter } from "next/navigation";
+import { useEffect, useCallback, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-import { UserMinus2, UserPlus2 } from "lucide-react";
+import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { isAddress } from "viem";
 import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
@@ -51,6 +51,16 @@ import { normalize } from "viem/ens";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
 import * as z from "zod";
 import { successToast } from "@/utils/toast";
+import {
+  ownerParser,
+  useNameQueryState,
+  useOwnersQueryState,
+  useSaltQueryState,
+  useThresholdQueryState,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks";
+import type { Owner, Owners } from "@/app/(authenticated)/new/hooks";
+import { useAuth } from "@/stores/useAuth";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -64,85 +74,50 @@ function timestampToBytes32(timestamp: number): string {
 }
 
 export function ConfigurationForm() {
+  const { address: userAddress, ens: userEns } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { setFormValues, fetchToCreate } = useNewFormStore();
 
-  const nameParam = searchParams.get("name");
-  const typeParam = searchParams.get("type");
-  const thresholdParam = searchParams.get("threshold");
-  const saltParam = searchParams.get("salt");
+  const [name] = useNameQueryState();
+  const [type] = useTypeQueryState();
+  const [threshold, setThreshold] = useThresholdQueryState();
+  const [salt, setSalt] = useSaltQueryState();
+  const [owners, setOwners] = useOwnersQueryState();
 
   // create default owner object
-  const defaultOwner = {
-    addressOrEns: "",
-    weight: 1,
-  };
+  const defaultOwner: Owner = useMemo(() => {
+    return {
+      address: userAddress,
+      addressOrEns: userEns ?? userAddress,
+      weight: 1,
+    };
+  }, [userAddress, userEns]);
 
-  // create owners array
-  let owners: {
-    address?: string;
-    addressOrEns: string;
-    weight: number;
-  }[] = [];
-
-  let ownerIndex = 0;
-  // Loop through the owners in the URL
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const addressParam = searchParams.get(`owners[${ownerIndex}][address]`);
-    const weightParam = searchParams.get(`owners[${ownerIndex}][weight]`);
-
-    // if both parameters for this index do not exist, stop parsing
-    if ((!addressParam && !weightParam) || isNaN(parseInt(weightParam || ""))) {
-      break;
-    }
-
-    let owner = { ...defaultOwner };
-
-    // Parse and assign address
-    if (
-      addressParam &&
-      weightParam &&
-      newFormConfigurationSchema.shape.owners.element.safeParse({
-        addressOrEns: addressParam,
-        weight: parseInt(weightParam),
-      }).success
-    ) {
-      owner = newFormConfigurationSchema.shape.owners.element.parse({
-        addressOrEns: addressParam,
-        weight: parseInt(weightParam),
-      });
-    }
-
-    owners.push(owner);
-    ownerIndex++;
-  }
-
-  // // This can come from your database or API.
-  const defaultValues: Partial<NewFormValues> = {
+  // The default values for the form
+  const defaultValues: Partial<NewFormValues> = useMemo(() => {
     // Check if the type is valid
-    threshold:
-      thresholdParam &&
-      newFormConfigurationSchema.shape.threshold.safeParse(
-        parseInt(thresholdParam),
-      ).success
-        ? newFormConfigurationSchema.shape.threshold.parse(
-            parseInt(thresholdParam),
-          )
-        : 1,
-    salt:
-      saltParam &&
-      newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
-        ? newFormConfigurationSchema.shape.salt.parse(saltParam)
-        : timestampToBytes32(Math.floor(Date.now())),
-    // If typeParam is personal, add two owners
-    owners: owners.length
-      ? owners
-      : typeParam === "personal"
-      ? [defaultOwner, defaultOwner]
-      : [defaultOwner],
-  };
+    return {
+      threshold:
+        threshold &&
+        newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
+          ? newFormConfigurationSchema.shape.threshold.parse(threshold)
+          : 1,
+      salt:
+        salt && newFormConfigurationSchema.shape.salt.safeParse(salt).success
+          ? newFormConfigurationSchema.shape.salt.parse(salt)
+          : timestampToBytes32(Math.floor(Date.now())),
+      // If type is personal, add two owners
+      owners:
+        defaultOwner !== undefined && owners !== undefined && owners.length > 0
+          ? owners
+          : type === "personal"
+          ? [
+              { ...defaultOwner },
+              { address: undefined, addressOrEns: undefined, weight: 2 },
+            ]
+          : [defaultOwner],
+    };
+  }, [threshold, salt, owners, type, defaultOwner]);
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
@@ -209,81 +184,42 @@ export function ConfigurationForm() {
   });
 
   useEffect(() => {
-    const url = new URL(window.location.href);
     const subscription = form.watch((value, { name }) => {
       // @ts-expect-error
       setFormValues(value);
 
       // Set the salt from the default values to the url
       if (defaultValues.salt) {
-        url.searchParams.set("salt", defaultValues.salt);
+        // If the salt is valid, set the salt
+        setSalt(defaultValues.salt);
       }
       if (defaultValues.threshold) {
-        url.searchParams.set("threshold", defaultValues.threshold.toString());
+        setThreshold(defaultValues.threshold);
       }
 
       if (name === "threshold") {
         if (value.threshold === undefined) {
-          url.searchParams.delete("threshold");
+          setThreshold(null);
         } else {
           // Set the threshold if the value is valid integer
           if (newFormConfigurationSchema.shape.threshold.safeParse(value)) {
-            url.searchParams.set("threshold", value.threshold.toString());
+            setThreshold(value.threshold);
           }
         }
       }
 
       if (Array.isArray(value.owners)) {
-        value.owners.forEach((owner, index) => {
-          // Return if the owner is undefined
-          if (owner === undefined) {
-            url.searchParams.delete(`owners[${index}][address]`);
-          } else if (owner.addressOrEns) {
-            url.searchParams.set(
-              `owners[${index}][address]`,
-              owner.addressOrEns,
-            );
-          } else {
-            url.searchParams.delete(`owners[${index}][address]`);
-          }
-
-          if (owner === undefined) {
-            url.searchParams.delete(`owners[${index}][weight]`);
-          } else if (owner.weight) {
-            url.searchParams.set(
-              `owners[${index}][weight]`,
-              owner.weight.toString(),
-            );
-          } else {
-            url.searchParams.delete(`owners[${index}][weight]`);
-          }
-        });
-      }
-
-      // Delete all the owners that are not in the form
-      let ownerIndex = value && value.owners ? value.owners.length : 0;
-
-      // Loop through the owners in the URL
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const addressParam = url.searchParams.get(
-          `owners[${ownerIndex}][address]`,
-        );
-        const weightParam = url.searchParams.get(
-          `owners[${ownerIndex}][weight]`,
-        );
-
-        url.searchParams.delete(`owners[${ownerIndex}][address]`);
-        url.searchParams.delete(`owners[${ownerIndex}][weight]`);
-
-        // if either parameters for this index do not exist, stop parsing
-        if (!addressParam || !weightParam) {
-          break;
+        if (value.owners === undefined) {
+          setOwners(null);
+        } else {
+          // Iterate over each owner which has a weight
+          const owners = value.owners.filter(
+            owner => owner?.weight && owner?.address,
+          ) as Owners;
+          setOwners(owners);
         }
-        ownerIndex++;
       }
 
-      router.replace(url.toString());
       return;
     });
     return () => subscription.unsubscribe();
@@ -298,52 +234,33 @@ export function ConfigurationForm() {
     // Set the form values from the default values
     setFormValues({
       ...defaultValues,
-      name: nameParam ?? "",
+      name: name ?? "",
       type:
-        typeParam && newFormSchema.shape.type.safeParse(typeParam).success
-          ? newFormSchema.shape.type.parse(typeParam)
+        type && newFormSchema.shape.type.safeParse(type).success
+          ? newFormSchema.shape.type.parse(type)
           : "multi",
     });
 
     // Recursively iterate the owners and validate the addresses on mount
-    let ownerIndex = 0;
-    // Loop through the owners in the URL
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      const addressParam = searchParams.get(`owners[${ownerIndex}][address]`);
-      const weightParam = searchParams.get(`owners[${ownerIndex}][weight]`);
-
-      // Validate the address
-      if (addressParam) {
-        validateAddress(addressParam, ownerIndex);
+    owners.forEach((owner, index) => {
+      if (owner.address) {
+        validateAddress(owner.address, index);
       }
-
-      // if both parameters for this index do not exist, stop parsing
-      if (
-        (!addressParam && !weightParam) ||
-        isNaN(parseInt(weightParam || ""))
-      ) {
-        break;
-      }
-
-      ownerIndex++;
-    }
-
-    // Trigger the form validation
-    form.trigger();
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const navigateToStep = useCallback(() => {
-    // Validate the form
-    form.trigger();
-
     const url = new URL(steps[2].href, window.location.origin);
-    url.search = searchParams.toString();
+    url.searchParams.set("name", name);
+    url.searchParams.set("type", type);
+    url.searchParams.set("threshold", threshold.toString());
+    url.searchParams.set("salt", salt ?? "");
+    url.searchParams.set("owners", ownerParser.serialize(owners));
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, searchParams]);
+  }, [name, type, threshold, salt, owners]);
 
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
@@ -438,29 +355,29 @@ export function ConfigurationForm() {
                 {fields.map((field, index) => (
                   <>
                     {/* A hack to make a padding above the separator */}
-                    {typeParam === "personal" && index === 1 && (
+                    {type === "personal" && index === 1 && (
                       <div className="pt-4" />
                     )}
                     {/* If the type is personal, add a separator on index 1 */}
-                    {typeParam === "personal" && index === 1 && <Separator />}
+                    {type === "personal" && index === 1 && <Separator />}
                     {/* A hack to make a padding below the separator */}
-                    {typeParam === "personal" && index === 1 && (
+                    {type === "personal" && index === 1 && (
                       <div className="pb-6" />
                     )}
                     <FormLabel
                       className={cn(
-                        typeParam === "personal" && index > 1 && "sr-only",
-                        typeParam !== "personal" && index !== 0 && "sr-only",
+                        type === "personal" && index > 1 && "sr-only",
+                        type !== "personal" && index !== 0 && "sr-only",
                       )}
                     >
-                      {typeParam === "personal" && index === 0 && "Primary Key"}
-                      {typeParam === "personal" && index === 1 && "Backup Keys"}
-                      {typeParam !== "personal" && "Owners"}
+                      {type === "personal" && index === 0 && "Primary Key"}
+                      {type === "personal" && index === 1 && "Backup Keys"}
+                      {type !== "personal" && "Owners"}
                     </FormLabel>
                     <FormDescription
                       className={cn(
-                        typeParam === "personal" && index > 1 && "sr-only",
-                        typeParam !== "personal" && index !== 0 && "sr-only",
+                        type === "personal" && index > 1 && "sr-only",
+                        type !== "personal" && index !== 0 && "sr-only",
                       )}
                     >
                       Add the owner and their corresponding weight.
@@ -476,56 +393,60 @@ export function ConfigurationForm() {
                           <div className="col-span-6 space-y-2">
                             <Label htmlFor="address">Address or ENS</Label>
                             <div className="flex items-center space-x-3">
-                              <Avatar className="h-8 w-8">
-                                {/* If the address is valid, try resolving an ens Avatar */}
-                                <PlaceholderOrb
-                                  address={
-                                    // If the address is a valid address
-                                    isAddress(field?.value)
-                                      ? field?.value
-                                      : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
-                                  }
-                                  className={cn(
-                                    // If the field is not valid, add opacity
-                                    form.formState.errors.owners &&
-                                      form.formState.errors.owners[index] &&
-                                      form.formState.errors.owners[index]
-                                        ?.addressOrEns
-                                      ? "opacity-50"
-                                      : "opacity-100",
-                                  )}
-                                />
-                              </Avatar>
-                              <Input
-                                id="address"
-                                className=""
-                                {...field}
-                                placeholder="Your address or ENS name"
-                                onBlur={e => {
-                                  // Validate the address
-                                  if (!e.target.value) {
-                                    // Clear the value of key address
-                                    form.setValue(
-                                      `owners.${index}.address`,
-                                      "",
-                                    );
-                                  }
-                                  const address = e.target.value;
+                              <div className="relative inline-block w-full">
+                                <Input
+                                  id="address"
+                                  className="pl-12"
+                                  {...field}
+                                  placeholder="Your address or ENS name"
+                                  onBlur={e => {
+                                    // Validate the address
+                                    if (!e.target.value) {
+                                      // Clear the value of key address
+                                      form.setValue(
+                                        `owners.${index}.address`,
+                                        "",
+                                      );
+                                    }
+                                    const address = e.target.value;
 
-                                  validateAddress(address, index);
-                                }}
-                                onChange={e => {
-                                  // Update the field value
-                                  field.onChange(e.target.value || "");
-
-                                  // Validate the address
-                                  const address = e.target.value;
-
-                                  if (address) {
                                     validateAddress(address, index);
-                                  }
-                                }}
-                              />
+                                  }}
+                                  onChange={e => {
+                                    // Update the field value
+                                    field.onChange(e.target.value || "");
+
+                                    // Validate the address
+                                    const address = e.target.value;
+
+                                    if (address) {
+                                      validateAddress(address, index);
+                                    }
+                                  }}
+                                />
+                                <div className="absolute inset-y-0 left-3 flex items-center">
+                                  <Avatar className="h-6 w-6">
+                                    {/* If the address is valid, try resolving an ens Avatar */}
+                                    <PlaceholderOrb
+                                      address={
+                                        // If the address is a valid address
+                                        field?.value && isAddress(field.value)
+                                          ? field?.value
+                                          : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                      }
+                                      className={cn(
+                                        // If the field is not valid, add opacity
+                                        form.formState.errors.owners &&
+                                          form.formState.errors.owners[index] &&
+                                          form.formState.errors.owners[index]
+                                            ?.addressOrEns
+                                          ? "opacity-50"
+                                          : "opacity-100",
+                                      )}
+                                    />
+                                  </Avatar>
+                                </div>
+                              </div>
                             </div>
                             <FormMessage />
                           </div>
@@ -588,7 +509,7 @@ export function ConfigurationForm() {
                             form.trigger();
                           }}
                         >
-                          <UserMinus2 className="h-5 w-5" />
+                          <Trash2Icon className="h-5 w-5" />
                         </Button>
                       </div>
                     </FormItem>
@@ -608,8 +529,8 @@ export function ConfigurationForm() {
                 >
                   <UserPlus2 className="mr-2 h-5 w-5" />
 
-                  {typeParam === "personal" && "Add Backup Key"}
-                  {typeParam !== "personal" && "Add New Owner"}
+                  {type === "personal" && "Add Backup Key"}
+                  {type !== "personal" && "Add New Owner"}
                 </Button>
               </div>
               <FormField

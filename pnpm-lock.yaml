@@ -443,6 +443,9 @@ importers:
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.0.0)(react-dom@18.2.0)(react@18.2.0)
+      next-usequerystate:
+        specifier: ^1.9.1
+        version: 1.9.1(next@14.0.0)
       permissionless:
         specifier: ^0.0.9
         version: 0.0.9(viem@1.17.2)
@@ -25483,6 +25486,10 @@ packages:
       minipass: 3.3.6
       yallist: 4.0.0
 
+  /mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
+    dev: false
+
   /mixme@0.5.9:
     resolution: {integrity: sha512-VC5fg6ySUscaWUpI4gxCBTQMH2RdUpNrk+MsbpCYtIvf9SBJdiUey4qE7BXviJsJR4nDQxCZ+3yaYNW3guz/Pw==}
     engines: {node: '>= 8.0.0'}
@@ -25982,6 +25989,15 @@ packages:
       next: 14.0.0(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /next-usequerystate@1.9.1(next@14.0.0):
+    resolution: {integrity: sha512-6QrUBqj4hl68j0PHBkWPE3OZiWZyA28rMmLVkPxUIVR1Sac6VYp66+iyWsS/8roykNm8wHkAb16E1gshS9SMBA==}
+    peerDependencies:
+      next: 14.0.0
+    dependencies:
+      mitt: 3.0.1
+      next: 14.0.0(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
   /next@14.0.0(@babel/core@7.23.2)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0):

@@ -42,7 +42,7 @@ export const newFormConfigurationSchema = z.object({
         .string()
         .min(1, { message: "Please enter a valid address." })
         .optional(),
-      addressOrEns: z.string(),
+      addressOrEns: z.string().optional(),
       weight: z
         .number()
         .int()

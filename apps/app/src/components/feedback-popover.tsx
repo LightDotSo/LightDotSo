@@ -23,7 +23,7 @@ import {
 } from "@lightdotso/ui";
 import { useAuth } from "@/stores/useAuth";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { FeedbackForm } from "./feedback-form";
+import { FeedbackForm } from "@/components/feedback-form";
 
 export function FeedbackPopover() {
   const isMounted = useIsMounted();
