@@ -15,6 +15,7 @@
 
 "use client";
 
+import type { UIEvent } from "react";
 import { Suspense, useEffect, useState } from "react";
 import {
   CaretSortIcon,
