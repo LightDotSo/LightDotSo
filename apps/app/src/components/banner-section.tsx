@@ -31,9 +31,9 @@ export function BannerSection({
   return (
     <>
       <div className="flex-1">
-        <div className="mx-auto max-w-7xl flex-1 px-4 py-8 sm:py-12 lg:flex lg:items-center lg:justify-between">
+        <div className="mx-auto max-w-7xl flex-1 px-4 py-8 sm:py-12 lg:flex lg:items-center lg:justify-between lg:px-8">
           <div className="flex flex-col justify-between gap-4">
-            <h2 className="text-3xl font-bold tracking-tight lg:text-4xl">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
               {title}
             </h2>
             <p className="leading-8 text-muted-foreground">{description}</p>
@@ -44,7 +44,9 @@ export function BannerSection({
         </div>
         <Separator className="my-0" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-7xl flex-1 px-4">{children}</div>
+          <div className="mx-auto max-w-7xl flex-1 px-4 lg:px-8">
+            {children}
+          </div>
         </div>
       </div>
     </>

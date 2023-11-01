@@ -58,7 +58,7 @@ export default function Root({
               <main>
                 <div className="flex flex-col">
                   <div className="border-b lg:py-2">
-                    <div className="flex h-16 items-center px-4 lg:px-12">
+                    <div className="flex h-16 items-center px-4 lg:px-8">
                       <div className="flex items-center">
                         <RootLogo type={type} />
                         <span className="ml-2 mr-1 text-primary/60">/</span>
@@ -77,7 +77,7 @@ export default function Root({
                     {(type === "unauthenticated" || type === "wallet") && (
                       <MainNav
                         type={type}
-                        className="h-10 items-center px-4 lg:px-12"
+                        className="h-10 items-center px-4 lg:px-8"
                       />
                     )}
                   </div>
