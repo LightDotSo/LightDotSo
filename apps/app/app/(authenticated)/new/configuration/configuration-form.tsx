@@ -43,7 +43,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-import { UserMinus2, UserPlus2 } from "lucide-react";
+import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { isAddress } from "viem";
 import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
@@ -218,7 +218,7 @@ export function ConfigurationForm() {
       // Set the salt from the default values to the url
       if (defaultValues.salt) {
         // If the salt is valid, set the salt
-        setSalt(parseInt(defaultValues.salt, 16));
+        setSalt(defaultValues.salt);
       }
       if (defaultValues.threshold) {
         setThreshold(defaultValues.threshold);
@@ -590,7 +590,7 @@ export function ConfigurationForm() {
                             form.trigger();
                           }}
                         >
-                          <UserMinus2 className="h-5 w-5" />
+                          <Trash2Icon className="h-5 w-5" />
                         </Button>
                       </div>
                     </FormItem>
