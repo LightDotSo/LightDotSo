@@ -15,6 +15,7 @@
 
 "use client";
 
+import type { UIEvent } from "react";
 import { Suspense, useEffect, useState } from "react";
 import {
   CaretSortIcon,
@@ -82,6 +83,8 @@ export function WalletSwitcherButton({
   const pathname = usePathname();
   const { address } = useAuth();
 
+  const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
+
   const { data, isLoading } = useSuspenseQuery({
     queryKey: ["wallets", address],
     queryFn: async () => {
@@ -132,6 +135,19 @@ export function WalletSwitcherButton({
       setSelectedWallet(wallet);
     }
   }, [data, address, pathname]);
+
+  // From: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/pages/home/featured-works/works/colormap-registry.tsx#L64
+  // License: MIT
+  // Thank you @fiveoutofnine
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+    const scrollTop = target.scrollTop;
+    // const scrollHeight = target.scrollHeight;
+    // const clientHeight = target.clientHeight;
+
+    setScrollIsAtTop(scrollTop < 10);
+    // setScrollIsAtBottom(scrollHeight - scrollTop === clientHeight);
+  };
 
   // If the address is empty or is not mounted, don't render
   if (!isMounted || !address || isLoading) {
@@ -199,8 +215,17 @@ export function WalletSwitcherButton({
               <CommandInput placeholder="Search wallet..." />
               <CommandEmpty>No wallet found.</CommandEmpty>
             </CommandList>
-            <CommandList>
+            <CommandList onScroll={handleScroll}>
               <CommandGroup>
+                {/* Negative margins to widen out to full width */}
+                <div className="relative -ml-1 -mr-2">
+                  <div
+                    className={cn(
+                      "pointer-events-none absolute -mt-2 top-1 left-0 h-14 w-full bg-gradient-to-b from-muted to-transparent transition-opacity duration-500",
+                      scrollIsAtTop ? "opacity-0" : "opacity-100",
+                    )}
+                  />
+                </div>
                 {selectedWallet && (
                   <CommandItem className="text-sm">
                     <Avatar className="mr-2 h-5 w-5">

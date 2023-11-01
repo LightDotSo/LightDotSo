@@ -1418,6 +1418,9 @@ importers:
       '@storybook/addons':
         specifier: ^7.5.1
         version: 7.5.1(react-dom@18.2.0)(react@18.2.0)
+      '@storybook/blocks':
+        specifier: ^7.5.1
+        version: 7.5.1(@types/react-dom@18.2.14)(@types/react@18.2.33)(react-dom@18.2.0)(react@18.2.0)
       '@storybook/channel-postmessage':
         specifier: ^7.5.1
         version: 7.5.1
