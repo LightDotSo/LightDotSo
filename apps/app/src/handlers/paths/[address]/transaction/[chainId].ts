@@ -15,14 +15,14 @@
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { notFound } from "next/navigation";
-import { validateAddress } from "@/handles/validators/address";
-import { handler as addressHandler } from "@/handles/paths/[address]";
+import { validateAddress } from "@/handlers/validators/address";
+import { handler as addressHandler } from "@/handlers/paths/[address]";
 import type { Address, Hex } from "viem";
 import { toHex, fromHex } from "viem";
 import { getUserOperationHash, type UserOperation } from "permissionless";
-import { validateHex } from "@/handles/validators/hex";
-import { validateNumber } from "@/handles/validators/number";
-import { parseNumber } from "@/handles/parsers/number";
+import { validateHex } from "@/handlers/validators/hex";
+import { validateNumber } from "@/handlers/validators/number";
+import { parseNumber } from "@/handlers/parsers/number";
 
 export const handler = async (
   params: { address: string; chainId: string },

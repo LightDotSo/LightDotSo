@@ -14,12 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { notFound } from "next/navigation";
-import { handler as addressHandler } from "@/handles/paths/[address]";
+import { handler as addressHandler } from "@/handlers/paths/[address]";
 import {
   validateAddress,
   validateNumber,
   validateUserOperationHash,
-} from "@/handles/validators";
+} from "@/handlers/validators";
 import { getCachedUserOperation } from "@/services/getCachedUserOperation";
 import type { Hex } from "viem";
 

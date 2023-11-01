@@ -13,5 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { hexRegex } from "@/handles/regexs/hexNumber";
-export { hexBytes32Regex } from "@/handles/regexs/hexBytes32";
+import { notFound } from "next/navigation";
+import { hexRegex } from "@/handlers/regexs/hexNumber";
+
+export const validateNumber = (value: string): void => {
+  // Check if the value is a non-negative integer
+  if (/^\d+$/.test(value)) {
+    return;
+  }
+
+  // Check if the value is Hex
+  if (hexRegex.test(value)) {
+    return;
+  }
+
+  notFound();
+};

@@ -15,7 +15,7 @@
 
 import { notFound } from "next/navigation";
 import { isHex } from "viem";
-import { hexBytes32Regex } from "@/handles/regexs";
+import { hexBytes32Regex } from "@/handlers/regexs";
 
 export const validateUserOperationHash = (str: string) => {
   if (!isHex(str)) {

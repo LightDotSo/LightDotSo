@@ -13,4 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { parseNumber } from "@/handles/parsers/number";
+import { hexRegex } from "@/handlers/regexs/hexNumber";
+
+export const parseNumber = (value: string) => {
+  // Check if the value is a non-negative integer
+  if (/^\d+$/.test(value)) {
+    return parseInt(value, 10);
+  }
+
+  // Check if the value is Hex
+  if (hexRegex.test(value)) {
+    return parseInt(value, 16);
+  }
+
+  return parseInt(value);
+};
