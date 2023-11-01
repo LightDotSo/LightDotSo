@@ -16,7 +16,7 @@
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { notFound } from "next/navigation";
 import { validateAddress } from "@/handles/validators/address";
-import { handler as addressHandler } from "@/handles/[address]";
+import { handler as addressHandler } from "@/handles/paths/[address]";
 import type { Address, Hex } from "viem";
 import { toHex, fromHex } from "viem";
 import { getUserOperationHash, type UserOperation } from "permissionless";

@@ -15,7 +15,7 @@
 
 import { DeployButton } from "@/app/(wallet)/[address]/settings/deploy-button";
 import type { Address, Hex } from "viem";
-import { handler } from "@/handles/[address]";
+import { handler } from "@/handles/paths/[address]";
 
 const chains = [
   { name: "Sepolia", chainId: 11155111 },

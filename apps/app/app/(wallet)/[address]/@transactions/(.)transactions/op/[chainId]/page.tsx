@@ -15,8 +15,8 @@
 
 import { Modal } from "@/components/modal";
 import { TransactionDialog } from "@/components/transaction-dialog";
-import { handler } from "@/handles/[address]";
-import { handler as userOpHandler } from "@/handles/transaction/[chainId]";
+import { handler } from "@/handles/paths/[address]";
+import { handler as userOpHandler } from "@/handles/paths/[address]/transaction/[chainId]";
 import { parseNumber } from "@/handles/parsers";
 import type { Address } from "viem";
 
