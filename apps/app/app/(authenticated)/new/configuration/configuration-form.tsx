@@ -372,7 +372,7 @@ export function ConfigurationForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-4">
                 {fields.map((field, index) => (
-                  <>
+                  <span key={index}>
                     {/* A hack to make a padding above the separator */}
                     {type === "personal" && index === 1 && (
                       <div className="pt-4" />
@@ -541,7 +541,7 @@ export function ConfigurationForm() {
                         </Button>
                       </div>
                     </FormItem>
-                  </>
+                  </span>
                 ))}
               </div>
               <div>

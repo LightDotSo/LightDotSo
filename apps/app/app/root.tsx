@@ -55,7 +55,11 @@ export default function Root({
   type: RootType;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} font-sans`}>
+    <html
+      lang="en"
+      className={`${inter.variable} font-sans`}
+      suppressHydrationWarning
+    >
       <body className="min-h-[100dvh] bg-white dark:bg-black">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
