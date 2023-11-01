@@ -162,7 +162,10 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
           )}
         >
           {step.status === "complete" ? (
-            <CheckIcon className="h-4 w-4 text-border" aria-hidden="true" />
+            <CheckIcon
+              className="h-4 w-4 stroke-2 text-border"
+              aria-hidden="true"
+            />
           ) : (
             <span
               className={cn(
