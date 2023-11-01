@@ -18,7 +18,7 @@
 import { cn } from "@lightdotso/utils";
 import type { Step } from "@/app/(authenticated)/new/root";
 import { steps, StepsEnum } from "@/app/(authenticated)/new/root";
-import { CheckIcon } from "@heroicons/react/24/solid";
+import { CheckIcon } from "@heroicons/react/24/outline";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
@@ -151,6 +151,7 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
           step.status === "current"
             ? "bg-primary w-1 md:h-0.5"
             : "bg-border w-0 md:h-0",
+          "translate-y-1/2",
         )}
         aria-hidden="true"
       />
@@ -163,7 +164,7 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
         >
           {step.status === "complete" ? (
             <CheckIcon
-              className="h-4 w-4 stroke-2 text-border"
+              className="h-4 w-4 text-border [&>path]:stroke-[3]"
               aria-hidden="true"
             />
           ) : (

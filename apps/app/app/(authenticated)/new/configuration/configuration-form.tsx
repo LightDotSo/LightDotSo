@@ -51,6 +51,10 @@ import { normalize } from "viem/ens";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
 import * as z from "zod";
 import { successToast } from "@/utils/toast";
+import {
+  useNameQueryState,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -68,8 +72,8 @@ export function ConfigurationForm() {
   const searchParams = useSearchParams();
   const { setFormValues, fetchToCreate } = useNewFormStore();
 
-  const nameParam = searchParams.get("name");
-  const typeParam = searchParams.get("type");
+  const [name] = useNameQueryState();
+  const [type] = useTypeQueryState();
   const thresholdParam = searchParams.get("threshold");
   const saltParam = searchParams.get("salt");
 
@@ -136,10 +140,10 @@ export function ConfigurationForm() {
       newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
         ? newFormConfigurationSchema.shape.salt.parse(saltParam)
         : timestampToBytes32(Math.floor(Date.now())),
-    // If typeParam is personal, add two owners
+    // If type is personal, add two owners
     owners: owners.length
       ? owners
-      : typeParam === "personal"
+      : type === "personal"
       ? [defaultOwner, defaultOwner]
       : [defaultOwner],
   };
@@ -298,10 +302,10 @@ export function ConfigurationForm() {
     // Set the form values from the default values
     setFormValues({
       ...defaultValues,
-      name: nameParam ?? "",
+      name: name ?? "",
       type:
-        typeParam && newFormSchema.shape.type.safeParse(typeParam).success
-          ? newFormSchema.shape.type.parse(typeParam)
+        type && newFormSchema.shape.type.safeParse(type).success
+          ? newFormSchema.shape.type.parse(type)
           : "multi",
     });
 
@@ -438,29 +442,29 @@ export function ConfigurationForm() {
                 {fields.map((field, index) => (
                   <>
                     {/* A hack to make a padding above the separator */}
-                    {typeParam === "personal" && index === 1 && (
+                    {type === "personal" && index === 1 && (
                       <div className="pt-4" />
                     )}
                     {/* If the type is personal, add a separator on index 1 */}
-                    {typeParam === "personal" && index === 1 && <Separator />}
+                    {type === "personal" && index === 1 && <Separator />}
                     {/* A hack to make a padding below the separator */}
-                    {typeParam === "personal" && index === 1 && (
+                    {type === "personal" && index === 1 && (
                       <div className="pb-6" />
                     )}
                     <FormLabel
                       className={cn(
-                        typeParam === "personal" && index > 1 && "sr-only",
-                        typeParam !== "personal" && index !== 0 && "sr-only",
+                        type === "personal" && index > 1 && "sr-only",
+                        type !== "personal" && index !== 0 && "sr-only",
                       )}
                     >
-                      {typeParam === "personal" && index === 0 && "Primary Key"}
-                      {typeParam === "personal" && index === 1 && "Backup Keys"}
-                      {typeParam !== "personal" && "Owners"}
+                      {type === "personal" && index === 0 && "Primary Key"}
+                      {type === "personal" && index === 1 && "Backup Keys"}
+                      {type !== "personal" && "Owners"}
                     </FormLabel>
                     <FormDescription
                       className={cn(
-                        typeParam === "personal" && index > 1 && "sr-only",
-                        typeParam !== "personal" && index !== 0 && "sr-only",
+                        type === "personal" && index > 1 && "sr-only",
+                        type !== "personal" && index !== 0 && "sr-only",
                       )}
                     >
                       Add the owner and their corresponding weight.
@@ -608,8 +612,8 @@ export function ConfigurationForm() {
                 >
                   <UserPlus2 className="mr-2 h-5 w-5" />
 
-                  {typeParam === "personal" && "Add Backup Key"}
-                  {typeParam !== "personal" && "Add New Owner"}
+                  {type === "personal" && "Add Backup Key"}
+                  {type !== "personal" && "Add New Owner"}
                 </Button>
               </div>
               <FormField
