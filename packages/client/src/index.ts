@@ -282,6 +282,8 @@ export const getUserOperations = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -292,7 +294,10 @@ export const getUserOperations = async (
 
 export const getLlama = async (address: string) => {
   return ResultAsync.fromPromise(
-    zodFetch(`https://api.llamafolio.com/balances/${address}`, llamaSchema),
+    zodFetch(`https://api.llamafolio.com/balances/${address}`, llamaSchema, {
+      revalidate: 300,
+      tags: [address],
+    }),
     () => new Error("Database error"),
   );
 };
@@ -310,6 +315,9 @@ export const getChainId = async () => {
       "eth_chainId",
       [],
       EthChainIdResultSchema,
+      {
+        revalidate: 0,
+      },
     ),
     () => new Error("Database error"),
   );
@@ -354,6 +362,9 @@ export const sendUserOperation = async (
       "eth_sendUserOperation",
       params,
       SendUserOperationResponse,
+      {
+        revalidate: 0,
+      },
     ),
     () => new Error("Database error"),
   );
@@ -400,6 +411,9 @@ export const getPaymasterGasAndPaymasterAndData = async (
       "paymaster_requestGasAndPaymasterAndData",
       params,
       PaymasterGasAndPaymasterAndDataResponse,
+      {
+        revalidate: 0,
+      },
     ),
     () => new Error("Database error"),
   );

@@ -19,8 +19,14 @@ import type { z } from "zod";
 export const zodFetch = async <TResponseSchema extends z.Schema>(
   url: string,
   responseSchema: TResponseSchema,
+  next?: {
+    revalidate?: number;
+    tags?: string[];
+  },
 ): Promise<z.infer<TResponseSchema>> => {
   const response = await fetch(url, {
+    //@ts-expect-error
+    next: next,
     method: "GET",
     headers: {
       "content-type": "application/json",
@@ -45,9 +51,15 @@ export async function zodJsonRpcFetch<
   method: string,
   params: TParams,
   responseSchema: TResponseSchema,
-  id: string | number = Math.floor(Math.random() * 100),
+  next?: {
+    revalidate?: number;
+    tags?: string[];
+  },
 ): Promise<z.infer<TResponseSchema>> {
+  const id = Math.floor(Math.random() * 100);
   const response = await fetch(url, {
+    //@ts-expect-error
+    next: next,
     method: "POST",
     headers: {
       "content-type": "application/json",
