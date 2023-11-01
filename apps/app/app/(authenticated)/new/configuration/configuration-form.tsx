@@ -33,6 +33,11 @@ import {
   FormLabel,
   Input,
   Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Separator,
   TooltipProvider,
 } from "@lightdotso/ui";
@@ -461,26 +466,35 @@ export function ConfigurationForm() {
                             <FormControl>
                               <div className="col-span-1 space-y-2">
                                 <Label htmlFor="weight">Weight</Label>
-                                <Input
-                                  id="weight"
-                                  min="1"
-                                  type="number"
-                                  {...field}
-                                  onChange={e => {
-                                    field.onChange(
-                                      e.target.value
-                                        ? parseInt(e.target.value, 10)
-                                        : "",
-                                    );
+                                <Select
+                                  onValueChange={value => {
                                     form.trigger();
+                                    field.onChange(parseInt(value));
                                   }}
-                                  onBlur={() => {
+                                  defaultValue={field.value.toString()}
+                                  onOpenChange={() => {
                                     // First, trigger than simulate Form
                                     form.trigger().then(async () => {
                                       await fetchToCreate(false);
                                     });
                                   }}
-                                />
+                                >
+                                  <FormControl>
+                                    <SelectTrigger className="w-24">
+                                      <SelectValue placeholder="Select your wallet threshold" />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    {[...Array(18)].map((_, i) => (
+                                      <SelectItem
+                                        key={i}
+                                        value={(i + 1).toString()}
+                                      >
+                                        {i + 1}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
                                 <FormMessage />
                               </div>
                             </FormControl>
@@ -540,19 +554,27 @@ export function ConfigurationForm() {
                   <FormItem>
                     <FormLabel htmlFor="threshold">Threshold</FormLabel>
                     <div className="grid gap-3">
-                      <Input
-                        className="w-32"
-                        id="threshold"
-                        type="number"
-                        min="1"
-                        placeholder="Your Wallet threshold"
-                        {...field}
-                        onChange={e =>
-                          field.onChange(
-                            e.target.value ? parseInt(e.target.value, 10) : "",
-                          )
-                        }
-                      />
+                      <FormControl>
+                        <Select
+                          onValueChange={value =>
+                            field.onChange(parseInt(value))
+                          }
+                          defaultValue={field.value.toString()}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="w-24">
+                              <SelectValue placeholder="Select your wallet threshold" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {[...Array(18)].map((_, i) => (
+                              <SelectItem key={i} value={(i + 1).toString()}>
+                                {i + 1}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
                     </div>
                     <FormDescription>
                       Enter a threshold for your new wallet
