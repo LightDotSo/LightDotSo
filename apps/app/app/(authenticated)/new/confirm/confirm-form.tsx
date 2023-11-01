@@ -31,7 +31,7 @@ import {
   FormLabel,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,93 +48,43 @@ import type * as z from "zod";
 import { errToast, infoToast, successToast } from "@/utils/toast";
 import { getWallet } from "@lightdotso/client";
 import { backOff } from "exponential-backoff";
+import {
+  useNameQueryState,
+  useOwnersQueryState,
+  useSaltQueryState,
+  useThresholdQueryState,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks";
 
 type NewFormValues = z.infer<typeof newFormStoreSchema>;
 
 export function ConfirmForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { address, setFormValues, fetchToCreate } = useNewFormStore();
 
-  const nameParam = searchParams.get("name");
-  const typeParam = searchParams.get("type");
-  const thresholdParam = searchParams.get("threshold");
-  const saltParam = searchParams.get("salt");
-
-  // create owners array
-  let owners: {
-    address?: string;
-    addressOrEns: string;
-    weight: number;
-  }[] = [];
-
-  let owner: {
-    address?: string;
-    addressOrEns: string;
-    weight: number;
-  };
-
-  let ownerIndex = 0;
-
-  // Loop through the owners in the URL
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const addressParam = searchParams.get(`owners[${ownerIndex}][address]`);
-    const weightParam = searchParams.get(`owners[${ownerIndex}][weight]`);
-
-    // if both parameters for this index do not exist, stop parsing
-    if ((!addressParam && !weightParam) || isNaN(parseInt(weightParam || ""))) {
-      break;
-    }
-
-    // Parse and assign address
-    if (
-      addressParam &&
-      weightParam &&
-      newFormConfigurationSchema.shape.owners.element.safeParse({
-        addressOrEns: addressParam,
-        weight: parseInt(weightParam),
-      }).success
-    ) {
-      owner = newFormConfigurationSchema.shape.owners.element.parse({
-        addressOrEns: addressParam,
-        weight: parseInt(weightParam),
-      });
-    } else {
-      break;
-    }
-
-    if (isAddress(addressParam)) {
-      // If the address is valid, set the value of key address
-      owner.address = addressParam;
-    }
-
-    owners.push(owner);
-    ownerIndex++;
-  }
+  const [name] = useNameQueryState();
+  const [type] = useTypeQueryState();
+  const [threshold] = useThresholdQueryState();
+  const [salt] = useSaltQueryState();
+  const [owners] = useOwnersQueryState();
 
   const defaultValues: NewFormValues = {
     check: false,
-    name: nameParam ?? "",
+    name: name ?? "",
     type:
-      typeParam && newFormSchema.shape.type.safeParse(typeParam).success
-        ? newFormSchema.shape.type.parse(typeParam)
+      type && newFormSchema.shape.type.safeParse(type).success
+        ? newFormSchema.shape.type.parse(type)
         : "multi",
     threshold:
-      thresholdParam &&
-      newFormConfigurationSchema.shape.threshold.safeParse(
-        parseInt(thresholdParam),
-      ).success
-        ? newFormConfigurationSchema.shape.threshold.parse(
-            parseInt(thresholdParam),
-          )
+      threshold &&
+      newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
+        ? newFormConfigurationSchema.shape.threshold.parse(threshold)
         : 1,
     salt:
-      saltParam &&
-      newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
-        ? newFormConfigurationSchema.shape.salt.parse(saltParam)
+      salt && newFormConfigurationSchema.shape.salt.safeParse(salt).success
+        ? newFormConfigurationSchema.shape.salt.parse(salt)
         : "",
-    // If typeParam is personal, add two owners
+    // If type is personal, add two owners
     owners: owners,
   };
 
@@ -191,10 +141,13 @@ export function ConfirmForm() {
       // We will use newOwners array instead of mutating owners directly
       let newOwners = [...owners];
       for (let i = 0; i < newOwners.length; i++) {
-        if (!isAddress(newOwners[i].addressOrEns)) {
+        if (
+          newOwners[i].addressOrEns &&
+          !isAddress(newOwners[i].addressOrEns!)
+        ) {
           try {
             const ensNameAddress = await publicClient.getEnsAddress({
-              name: normalize(newOwners[i].addressOrEns),
+              name: normalize(newOwners[i].addressOrEns!),
             });
             if (ensNameAddress) {
               newOwners[i].address = ensNameAddress;
@@ -270,7 +223,7 @@ export function ConfirmForm() {
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>
+                      <FormLabel className="cursor-pointer">
                         Confirm that the above settings are correct and that the
                         action is irreversible.
                       </FormLabel>
