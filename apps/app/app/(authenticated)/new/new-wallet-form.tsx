@@ -53,31 +53,19 @@ import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema } from "@/schemas/newForm";
 import { successToast } from "@/utils/toast";
 import {
-  parseAsString,
-  parseAsStringEnum,
-  useQueryState,
-} from "next-usequerystate";
+  useNameQueryState,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks";
+import type { WalletType } from "@/app/(authenticated)/new/hooks";
 
 type NewFormValues = z.infer<typeof newFormSchema>;
-
-enum WalletType {
-  "MULTI" = "multi",
-  "PERSONAL" = "personal",
-  "2FA" = "2fa",
-}
-
-const stringParser = parseAsString.withDefault("");
 
 export function NewWalletForm() {
   const router = useRouter();
   const { setFormValues } = useNewFormStore();
 
-  const [name, setName] = useQueryState("name", stringParser);
-  const [type, setType] = useQueryState(
-    "type",
-    parseAsStringEnum<WalletType>(Object.values(WalletType)) // pass a list of allowed values
-      .withDefault(WalletType.MULTI),
-  );
+  const [name, setName] = useNameQueryState();
+  const [type, setType] = useTypeQueryState();
 
   const defaultValues: Partial<NewFormValues> = {
     name,
