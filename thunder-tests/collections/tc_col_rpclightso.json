@@ -247,7 +247,7 @@
       "method": "POST",
       "sortNum": 55000,
       "created": "2023-09-25T23:48:06.310Z",
-      "modified": "2023-09-26T04:06:06.067Z",
+      "modified": "2023-11-01T03:07:57.929Z",
       "headers": [
         {
           "name": "accept",
@@ -270,12 +270,6 @@
           "custom": "",
           "action": "equal",
           "value": "200"
-        },
-        {
-          "type": "res-body",
-          "custom": "",
-          "action": "contains",
-          "value": "userOperation"
         }
       ]
     },
