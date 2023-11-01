@@ -198,6 +198,8 @@ export function WalletSwitcherButton({
             <CommandList>
               <CommandInput placeholder="Search wallet..." />
               <CommandEmpty>No wallet found.</CommandEmpty>
+            </CommandList>
+            <CommandList>
               <CommandGroup>
                 {selectedWallet && (
                   <CommandItem className="text-sm">
