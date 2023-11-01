@@ -32,7 +32,7 @@ import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import { VercelToolbar } from "@/components/vercel-toolbar";
 import { AuthState } from "@/components/auth-state";
-import { RootLogo } from "./root-logo";
+import { RootLogo } from "@/app/root-logo";
 
 const inter = Inter({
   variable: "--font-inter",

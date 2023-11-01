@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { DeployButton } from "./deploy-button";
+import { DeployButton } from "@/app/(wallet)/[address]/settings/deploy-button";
 import type { Address, Hex } from "viem";
 import { handler } from "@/handles/[address]";
 

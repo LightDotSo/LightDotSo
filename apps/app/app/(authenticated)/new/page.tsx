@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
-import { NewWalletForm } from "./new-wallet-form";
+import { NewWalletForm } from "@/app/(authenticated)/new/new-wallet-form";
 
 export default async function Page() {
   return (

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
-import { ConfigurationForm } from "./configuration-form";
+import { ConfigurationForm } from "@/app/(authenticated)/new/configuration/configuration-form";
 
 export default async function Page() {
   return (

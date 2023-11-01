@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { hexRegex } from "../regexs/hexNumber";
+import { hexRegex } from "@/handles/regexs/hexNumber";
 
 export const parseNumber = (value: string) => {
   // Check if the value is a non-negative integer

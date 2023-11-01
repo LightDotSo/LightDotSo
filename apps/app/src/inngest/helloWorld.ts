@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { inngest } from "./client";
+import { inngest } from "@/inngest/client";
 
 export const helloWorld = inngest.createFunction(
   { id: "Hello World" },

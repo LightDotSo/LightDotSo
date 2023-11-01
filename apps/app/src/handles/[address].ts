@@ -15,7 +15,7 @@
 
 import { getCachedConfiguration, getCachedWallet } from "@/services";
 import { notFound } from "next/navigation";
-import { validateAddress } from "./validators/address";
+import { validateAddress } from "@/handles/validators/address";
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 

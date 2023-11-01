@@ -13,5 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { hexRegex } from "./hexNumber";
-export { hexBytes32Regex } from "./hexBytes32";
+export { hexRegex } from "@/handles/regexs/hexNumber";
+export { hexBytes32Regex } from "@/handles/regexs/hexBytes32";

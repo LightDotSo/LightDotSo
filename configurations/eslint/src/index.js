@@ -89,6 +89,17 @@ module.exports = {
         "import/no-unresolved": "off",
         "no-undef": "off",
         "no-unused-vars": "off",
+        "no-restricted-imports": [
+          "error",
+          {
+            patterns: [
+              {
+                group: ["**//**"],
+                message: "Import duplicates are not allowed.",
+              },
+            ],
+          },
+        ],
       },
     },
     {
@@ -101,6 +112,26 @@ module.exports = {
       files: ["**/subgraph/**/*.ts"],
       rules: {
         "@typescript-eslint/consistent-type-imports": "off",
+      },
+    },
+    {
+      files: ["**/apps/app/**/*.ts", "**/apps/app/**/*.tsx"],
+      rules: {
+        "no-restricted-imports": [
+          "error",
+          {
+            patterns: [
+              {
+                group: ["./*/", "**../"],
+                message: "Relative imports are not allowed.",
+              },
+              {
+                group: ["**//**"],
+                message: "Import duplicates are not allowed.",
+              },
+            ],
+          },
+        ],
       },
     },
     {

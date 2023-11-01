@@ -348,6 +348,7 @@ export const sendUserOperation = async (
 };
 
 const PaymasterGasAndPaymasterAndDataResponse = z.object({
+  paymasterNonce: HexStringSchema,
   paymasterAndData: HexStringSchema,
   callGasLimit: HexStringSchema,
   verificationGasLimit: HexStringSchema,

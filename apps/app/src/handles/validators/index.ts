@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { validateAddress } from "./address";
-export { validateHex } from "./hex";
-export { validateNumber } from "./number";
-export { validateUserOperationHash } from "./userOperation";
+export { validateAddress } from "@/handles/validators/address";
+export { validateHex } from "@/handles/validators/hex";
+export { validateNumber } from "@/handles/validators/number";
+export { validateUserOperationHash } from "@/handles/validators/userOperation";

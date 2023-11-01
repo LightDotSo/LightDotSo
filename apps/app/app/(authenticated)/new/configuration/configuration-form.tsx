@@ -36,7 +36,7 @@ import {
   Separator,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "../root";
+import { steps } from "@/app/(authenticated)/new/root";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
