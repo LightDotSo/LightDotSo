@@ -484,8 +484,8 @@ export function ConfigurationForm() {
                                       <SelectValue placeholder="Select your wallet threshold" />
                                     </SelectTrigger>
                                   </FormControl>
-                                  <SelectContent>
-                                    {[...Array(18)].map((_, i) => (
+                                  <SelectContent className="max-h-60">
+                                    {[...Array(8)].map((_, i) => (
                                       <SelectItem
                                         key={i}
                                         value={(i + 1).toString()}
