@@ -15,8 +15,8 @@
 
 import { parseAsString, useQueryState } from "next-usequerystate";
 
-const hexParser = parseAsString;
+export const saltParser = parseAsString;
 
 export const useSaltQueryState = () => {
-  return useQueryState("salt", hexParser);
+  return useQueryState("salt", saltParser);
 };

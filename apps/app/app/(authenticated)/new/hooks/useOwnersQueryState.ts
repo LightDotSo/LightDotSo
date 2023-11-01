@@ -22,7 +22,7 @@ export type Owner = {
 };
 export type Owners = Owner[];
 
-const parser = createParser({
+export const ownerParser = createParser({
   parse(val) {
     if (val === "") {
       return null;
@@ -58,5 +58,5 @@ const parser = createParser({
 });
 
 export const useOwnersQueryState = () => {
-  return useQueryState("owners", parser.withDefault([]));
+  return useQueryState("owners", ownerParser.withDefault([]));
 };

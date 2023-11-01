@@ -13,13 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { useNameQueryState } from "@/app/(authenticated)/new/hooks/useNameQueryState";
-export { useOwnersQueryState } from "@/app/(authenticated)/new/hooks/useOwnersQueryState";
+export {
+  nameParser,
+  useNameQueryState,
+} from "@/app/(authenticated)/new/hooks/useNameQueryState";
+export {
+  ownerParser,
+  useOwnersQueryState,
+} from "@/app/(authenticated)/new/hooks/useOwnersQueryState";
 export type {
   Owner,
   Owners,
 } from "@/app/(authenticated)/new/hooks/useOwnersQueryState";
-export { useSaltQueryState } from "@/app/(authenticated)/new/hooks/useSaltQueryState";
-export { useThresholdQueryState } from "@/app/(authenticated)/new/hooks/useThresholdQueryState";
-export { useTypeQueryState } from "@/app/(authenticated)/new/hooks/useTypeQueryState";
+export {
+  saltParser,
+  useSaltQueryState,
+} from "@/app/(authenticated)/new/hooks/useSaltQueryState";
+export {
+  thresholdParser,
+  useThresholdQueryState,
+} from "@/app/(authenticated)/new/hooks/useThresholdQueryState";
+export {
+  typeParser,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks/useTypeQueryState";
 export type { WalletType } from "@/app/(authenticated)/new/hooks/useTypeQueryState";

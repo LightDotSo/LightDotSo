@@ -22,6 +22,14 @@ import { CheckIcon } from "@heroicons/react/24/outline";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCallback } from "react";
+import {
+  ownerParser,
+  useNameQueryState,
+  useOwnersQueryState,
+  useSaltQueryState,
+  useThresholdQueryState,
+  useTypeQueryState,
+} from "@/app/(authenticated)/new/hooks";
 
 interface RootLinkProps {
   stepType: StepsEnum;
@@ -32,7 +40,11 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const name = searchParams.get("name");
+  const [name] = useNameQueryState();
+  const [type] = useTypeQueryState();
+  const [threshold] = useThresholdQueryState();
+  const [salt] = useSaltQueryState();
+  const [owners] = useOwnersQueryState();
 
   const linkSteps = steps.map(step => {
     // Update the status of the step based on the current step
@@ -75,11 +87,15 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
       // Forward the search params to the next step
-      url.search = searchParams.toString();
-
+      url.searchParams.set("name", name);
+      url.searchParams.set("type", type);
+      url.searchParams.set("threshold", threshold.toString());
+      url.searchParams.set("salt", salt ?? "");
+      url.searchParams.set("owners", ownerParser.serialize(owners));
       router.push(url.toString());
     },
-    [router, searchParams],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [name, type, threshold, salt, owners],
   );
 
   const validateParams = (

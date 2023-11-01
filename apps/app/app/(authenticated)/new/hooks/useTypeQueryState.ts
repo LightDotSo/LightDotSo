@@ -21,11 +21,10 @@ export enum WalletType {
   "2FA" = "2fa",
 }
 
+export const typeParser = parseAsStringEnum<WalletType>(
+  Object.values(WalletType),
+).withDefault(WalletType.MULTI);
+
 export const useTypeQueryState = () => {
-  return useQueryState(
-    "type",
-    parseAsStringEnum<WalletType>(Object.values(WalletType)).withDefault(
-      WalletType.MULTI,
-    ),
-  );
+  return useQueryState("type", typeParser);
 };

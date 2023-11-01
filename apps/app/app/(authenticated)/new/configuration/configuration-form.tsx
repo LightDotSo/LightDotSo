@@ -37,7 +37,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { steps } from "@/app/(authenticated)/new/root";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useCallback, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -52,6 +52,7 @@ import { PlaceholderOrb } from "@/components/placeholder-orb";
 import * as z from "zod";
 import { successToast } from "@/utils/toast";
 import {
+  ownerParser,
   useNameQueryState,
   useOwnersQueryState,
   useSaltQueryState,
@@ -75,7 +76,6 @@ function timestampToBytes32(timestamp: number): string {
 export function ConfigurationForm() {
   const { address: userAddress, ens: userEns } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { setFormValues, fetchToCreate } = useNewFormStore();
 
   const [name] = useNameQueryState();
@@ -252,14 +252,15 @@ export function ConfigurationForm() {
   }, []);
 
   const navigateToStep = useCallback(() => {
-    // Validate the form
-    form.trigger();
-
     const url = new URL(steps[2].href, window.location.origin);
-    url.search = searchParams.toString();
+    url.searchParams.set("name", name);
+    url.searchParams.set("type", type);
+    url.searchParams.set("threshold", threshold.toString());
+    url.searchParams.set("salt", salt ?? "");
+    url.searchParams.set("owners", ownerParser.serialize(owners));
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, searchParams]);
+  }, [name, type, threshold, salt, owners]);
 
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
