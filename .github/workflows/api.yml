@@ -54,7 +54,7 @@ jobs:
       - name: Thunder Client Check
         uses: nick-fields/retry@v2
         with:
-          timeout_seconds: 15
+          timeout_seconds: 300
           max_attempts: 3
           retry_on: error
           command: pnpm tc --col api.light.so,rpc.light.so

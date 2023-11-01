@@ -68,6 +68,8 @@ export const getConfiguration = async (
 
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -90,6 +92,8 @@ export const getWallet = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -118,6 +122,8 @@ export const getWallets = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -147,6 +153,8 @@ export const createWallet = async ({
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
+      // @ts-expect-error
+      next: { revalidate: 0 },
       params,
       body,
     }),
@@ -219,6 +227,8 @@ export const getUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -241,6 +251,8 @@ export const getSignatureUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/signature", {
+      // @ts-expect-error
+      next: { revalidate: 300 },
       params,
     }),
     () => new Error("Database error"),
