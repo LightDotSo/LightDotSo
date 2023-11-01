@@ -253,6 +253,20 @@ export function ConfigurationForm() {
       }
     });
 
+    if (defaultValues.threshold) {
+      setThreshold(defaultValues.threshold);
+    }
+    if (defaultValues.salt) {
+      setSalt(defaultValues.salt);
+    }
+    if (defaultValues.owners) {
+      // Iterate over each owner which has a weight
+      const owners = defaultValues.owners.filter(
+        owner => owner?.weight && owner?.address,
+      ) as Owners;
+      setOwners(owners);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

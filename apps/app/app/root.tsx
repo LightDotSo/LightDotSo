@@ -33,6 +33,11 @@ import { Suspense } from "react";
 import { VercelToolbar } from "@/components/vercel-toolbar";
 import { AuthState } from "@/components/auth-state";
 import { RootLogo } from "@/app/root-logo";
+import dynamic from "next/dynamic";
+
+const CommandK = dynamic(() => import("@/components/command-k"), {
+  ssr: false,
+});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -89,6 +94,7 @@ export default function Root({
             </Web3Provider>
           </ReactQueryProvider>
         </ThemeProvider>
+        <CommandK></CommandK>
         <TailwindIndicator />
         <Suspense>
           <VercelToolbar />
