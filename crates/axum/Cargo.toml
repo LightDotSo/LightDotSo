@@ -11,12 +11,12 @@
 [dependencies]
   autometrics = { workspace = true }
   axum = { workspace = true }
-  axum-tracing-opentelemetry = "0.13.1"
+  axum-tracing-opentelemetry = "0.14.1"
   clap = { workspace = true }
   const-hex = { workspace = true }
   ethers-main = { workspace = true }
   eyre = { workspace = true }
-  governor = "0.5.1"
+  governor = "0.6.0"
   http = { workspace = true }
   http-body = { workspace = true }
   hyper = { workspace = true }
