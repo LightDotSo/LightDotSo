@@ -32,7 +32,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
@@ -68,25 +68,27 @@ export function ConfirmForm() {
   const [salt] = useSaltQueryState();
   const [owners] = useOwnersQueryState();
 
-  const defaultValues: NewFormValues = {
-    check: false,
-    name: name ?? "",
-    type:
-      type && newFormSchema.shape.type.safeParse(type).success
-        ? newFormSchema.shape.type.parse(type)
-        : "multi",
-    threshold:
-      threshold &&
-      newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
-        ? newFormConfigurationSchema.shape.threshold.parse(threshold)
-        : 1,
-    salt:
-      salt && newFormConfigurationSchema.shape.salt.safeParse(salt).success
-        ? newFormConfigurationSchema.shape.salt.parse(salt)
-        : "",
-    // If type is personal, add two owners
-    owners: owners,
-  };
+  const defaultValues: NewFormValues = useMemo(() => {
+    return {
+      check: false,
+      name: name ?? "",
+      type:
+        type && newFormSchema.shape.type.safeParse(type).success
+          ? newFormSchema.shape.type.parse(type)
+          : "multi",
+      threshold:
+        threshold &&
+        newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
+          ? newFormConfigurationSchema.shape.threshold.parse(threshold)
+          : 1,
+      salt:
+        salt && newFormConfigurationSchema.shape.salt.safeParse(salt).success
+          ? newFormConfigurationSchema.shape.salt.parse(salt)
+          : "",
+      // If type is personal, add two owners
+      owners: owners,
+    };
+  }, [name, type, threshold, salt, owners]);
 
   const form = useForm<NewFormValues>({
     mode: "onChange",

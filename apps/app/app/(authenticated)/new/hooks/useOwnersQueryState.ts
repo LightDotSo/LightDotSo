@@ -23,10 +23,11 @@ export type Owner = {
 export type Owners = Owner[];
 
 const parser = createParser({
-  parse(value) {
-    if (value === "") {
+  parse(val) {
+    if (val === "") {
       return null;
     }
+    const value = decodeURIComponent(val);
     const keys = value.split(";");
     return keys.reduce<Owners>((acc, key) => {
       const [id, address, addressOrEns, weight] = key.split(":");
@@ -40,18 +41,19 @@ const parser = createParser({
     }, []);
   },
   serialize(value: Owners) {
-    return (
-      Object.entries(value)
-        // Filter out undefined values
-        .filter(([, owner]) => owner !== undefined)
-        .map(
-          ([id, owner]) =>
-            `${id}:${owner?.address ?? "_"}:${owner?.addressOrEns ?? "_"}:${
-              owner?.weight ?? 1
-            }`,
-        )
-        .join(";")
-    );
+    const entry = Object.entries(value)
+      // Filter out undefined values
+      .filter(([, owner]) => owner !== undefined)
+      .map(
+        ([id, owner]) =>
+          `${id}:${owner?.address ?? "_"}:${owner?.addressOrEns ?? "_"}:${
+            owner?.weight ?? 1
+          }`,
+      )
+      .join(";");
+
+    // Return the serialized value encoded as a URI component
+    return encodeURIComponent(entry);
   },
 });
 

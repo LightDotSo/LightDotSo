@@ -38,7 +38,7 @@ import {
 } from "@lightdotso/ui";
 import { steps } from "@/app/(authenticated)/new/root";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNewFormStore } from "@/stores/useNewForm";
@@ -85,32 +85,39 @@ export function ConfigurationForm() {
   const [owners, setOwners] = useOwnersQueryState();
 
   // create default owner object
-  const defaultOwner = {
-    address: userAddress,
-    addressOrEns: userEns,
-    weight: 1,
-  } as Owner;
+  const defaultOwner: Owner = useMemo(() => {
+    return {
+      address: userAddress,
+      addressOrEns: userEns ?? userAddress,
+      weight: 1,
+    };
+  }, [userAddress, userEns]);
 
   // The default values for the form
-  const defaultValues: Partial<NewFormValues> = {
+  const defaultValues: Partial<NewFormValues> = useMemo(() => {
     // Check if the type is valid
-    threshold:
-      threshold &&
-      newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
-        ? newFormConfigurationSchema.shape.threshold.parse(threshold)
-        : 1,
-    salt:
-      salt && newFormConfigurationSchema.shape.salt.safeParse(salt).success
-        ? newFormConfigurationSchema.shape.salt.parse(salt)
-        : timestampToBytes32(Math.floor(Date.now())),
-    // If type is personal, add two owners
-    owners:
-      defaultOwner !== undefined && owners !== undefined && owners.length > 0
-        ? owners
-        : type === "personal"
-        ? [{ ...defaultOwner }, { ...defaultOwner, weight: 2 }]
-        : [defaultOwner],
-  };
+    return {
+      threshold:
+        threshold &&
+        newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
+          ? newFormConfigurationSchema.shape.threshold.parse(threshold)
+          : 1,
+      salt:
+        salt && newFormConfigurationSchema.shape.salt.safeParse(salt).success
+          ? newFormConfigurationSchema.shape.salt.parse(salt)
+          : timestampToBytes32(Math.floor(Date.now())),
+      // If type is personal, add two owners
+      owners:
+        defaultOwner !== undefined && owners !== undefined && owners.length > 0
+          ? owners
+          : type === "personal"
+          ? [
+              { ...defaultOwner },
+              { address: undefined, addressOrEns: undefined, weight: 2 },
+            ]
+          : [defaultOwner],
+    };
+  }, [threshold, salt, owners, type, defaultOwner]);
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
