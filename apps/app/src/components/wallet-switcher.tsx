@@ -139,8 +139,8 @@ export function WalletSwitcherButton({
   // From: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/pages/home/featured-works/works/colormap-registry.tsx#L64
   // License: MIT
   // Thank you @fiveoutofnine
-  const handleScroll = (event: UIEvent<HTMLDataListElement>) => {
-    const target = event.target as HTMLDataListElement;
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
     const scrollTop = target.scrollTop;
     // const scrollHeight = target.scrollHeight;
     // const clientHeight = target.clientHeight;
