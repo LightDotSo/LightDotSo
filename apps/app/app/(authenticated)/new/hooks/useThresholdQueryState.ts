@@ -18,5 +18,5 @@ import { parseAsInteger, useQueryState } from "next-usequerystate";
 const integerParser = parseAsInteger.withDefault(1);
 
 export const useThresholdQueryState = () => {
-  return useQueryState("name", integerParser);
+  return useQueryState("threshold", integerParser);
 };

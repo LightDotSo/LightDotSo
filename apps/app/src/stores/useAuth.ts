@@ -20,6 +20,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface AuthState {
   address: Address | undefined;
   setAddress: (address: Address | undefined) => void;
+  ens: string | undefined;
+  setEns: (ens: string | undefined) => void;
   wallet: Address | undefined;
   userId: string | undefined;
   setUserId: (userId: string | undefined) => void;
@@ -32,6 +34,8 @@ export const useAuth = create(
     set => ({
       address: undefined,
       setAddress: (address: Address | undefined) => set({ address }),
+      ens: undefined,
+      setEns: (ens: string | undefined) => set({ ens }),
       wallet: undefined,
       setWallet: (wallet: Address | undefined) => set({ wallet }),
       userId: undefined,

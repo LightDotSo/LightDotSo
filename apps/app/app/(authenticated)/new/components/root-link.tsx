@@ -90,19 +90,20 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     let threshold = 0;
 
     // Iterate over each key-value pair
-    for (const [key, value] of params.entries()) {
-      // If the key matches the pattern "owners[i][weight]"
-      if (/^owners\[\d+\]\[weight\]$/.test(key)) {
-        // Add the parsed integer value to the total weight
-        totalWeight += parseInt(value, 10);
-      }
-      // If the key matches the "threshold"
-      if (key === "threshold") {
-        // Store the parsed integer value
-        threshold = parseInt(value, 10);
-      }
-    }
+    // for (const [key, value] of params.entries()) {
+    //   // If the key matches the pattern "owners[i][weight]"
+    //   if (/^owners\[\d+\]\[weight\]$/.test(key)) {
+    //     // Add the parsed integer value to the total weight
+    //     totalWeight += parseInt(value, 10);
+    //   }
+    //   // If the key matches the "threshold"
+    //   if (key === "threshold") {
+    //     // Store the parsed integer value
+    //     threshold = parseInt(value, 10);
+    //   }
+    // }
 
+    // Iterate over each required param
     for (let i = 0; i < requiredParams.length; i++) {
       if (!params.has(requiredParams[i]) || !params.get(requiredParams[i])) {
         return false;
@@ -115,13 +116,7 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
     return true;
   };
 
-  let requiredParams = [
-    "name",
-    "owners[0][address]",
-    "owners[0][weight]",
-    "salt",
-    "threshold",
-  ];
+  let requiredParams = ["name", "owners", "salt", "threshold"];
 
   return (
     <button

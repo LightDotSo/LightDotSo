@@ -53,10 +53,13 @@ import * as z from "zod";
 import { successToast } from "@/utils/toast";
 import {
   useNameQueryState,
+  useOwnersQueryState,
   useSaltQueryState,
   useThresholdQueryState,
   useTypeQueryState,
 } from "@/app/(authenticated)/new/hooks";
+import type { Owner, Owners } from "@/app/(authenticated)/new/hooks";
+import { useAuth } from "@/stores/useAuth";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
 
@@ -70,6 +73,7 @@ function timestampToBytes32(timestamp: number): string {
 }
 
 export function ConfigurationForm() {
+  const { address: userAddress, ens: userEns } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { setFormValues, fetchToCreate } = useNewFormStore();
@@ -78,54 +82,16 @@ export function ConfigurationForm() {
   const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
   const [salt, setSalt] = useSaltQueryState();
+  const [owners, setOwners] = useOwnersQueryState();
 
   // create default owner object
   const defaultOwner = {
-    addressOrEns: "",
+    address: userAddress,
+    addressOrEns: userEns,
     weight: 1,
-  };
+  } as Owner;
 
-  // create owners array
-  let owners: {
-    address?: string;
-    addressOrEns: string;
-    weight: number;
-  }[] = [];
-
-  let ownerIndex = 0;
-  // Loop through the owners in the URL
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    const addressParam = searchParams.get(`owners[${ownerIndex}][address]`);
-    const weightParam = searchParams.get(`owners[${ownerIndex}][weight]`);
-
-    // if both parameters for this index do not exist, stop parsing
-    if ((!addressParam && !weightParam) || isNaN(parseInt(weightParam || ""))) {
-      break;
-    }
-
-    let owner = { ...defaultOwner };
-
-    // Parse and assign address
-    if (
-      addressParam &&
-      weightParam &&
-      newFormConfigurationSchema.shape.owners.element.safeParse({
-        addressOrEns: addressParam,
-        weight: parseInt(weightParam),
-      }).success
-    ) {
-      owner = newFormConfigurationSchema.shape.owners.element.parse({
-        addressOrEns: addressParam,
-        weight: parseInt(weightParam),
-      });
-    }
-
-    owners.push(owner);
-    ownerIndex++;
-  }
-
-  // // This can come from your database or API.
+  // The default values for the form
   const defaultValues: Partial<NewFormValues> = {
     // Check if the type is valid
     threshold:
@@ -138,11 +104,12 @@ export function ConfigurationForm() {
         ? newFormConfigurationSchema.shape.salt.parse(salt)
         : timestampToBytes32(Math.floor(Date.now())),
     // If type is personal, add two owners
-    owners: owners.length
-      ? owners
-      : type === "personal"
-      ? [defaultOwner, defaultOwner]
-      : [defaultOwner],
+    owners:
+      defaultOwner !== undefined && owners !== undefined && owners.length > 0
+        ? owners
+        : type === "personal"
+        ? [{ ...defaultOwner }, { ...defaultOwner, weight: 2 }]
+        : [defaultOwner],
   };
 
   const form = useForm<NewFormValues>({
@@ -210,7 +177,6 @@ export function ConfigurationForm() {
   });
 
   useEffect(() => {
-    const url = new URL(window.location.href);
     const subscription = form.watch((value, { name }) => {
       // @ts-expect-error
       setFormValues(value);
@@ -236,56 +202,17 @@ export function ConfigurationForm() {
       }
 
       if (Array.isArray(value.owners)) {
-        value.owners.forEach((owner, index) => {
-          // Return if the owner is undefined
-          if (owner === undefined) {
-            url.searchParams.delete(`owners[${index}][address]`);
-          } else if (owner.addressOrEns) {
-            url.searchParams.set(
-              `owners[${index}][address]`,
-              owner.addressOrEns,
-            );
-          } else {
-            url.searchParams.delete(`owners[${index}][address]`);
-          }
-
-          if (owner === undefined) {
-            url.searchParams.delete(`owners[${index}][weight]`);
-          } else if (owner.weight) {
-            url.searchParams.set(
-              `owners[${index}][weight]`,
-              owner.weight.toString(),
-            );
-          } else {
-            url.searchParams.delete(`owners[${index}][weight]`);
-          }
-        });
-      }
-
-      // Delete all the owners that are not in the form
-      let ownerIndex = value && value.owners ? value.owners.length : 0;
-
-      // Loop through the owners in the URL
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const addressParam = url.searchParams.get(
-          `owners[${ownerIndex}][address]`,
-        );
-        const weightParam = url.searchParams.get(
-          `owners[${ownerIndex}][weight]`,
-        );
-
-        url.searchParams.delete(`owners[${ownerIndex}][address]`);
-        url.searchParams.delete(`owners[${ownerIndex}][weight]`);
-
-        // if either parameters for this index do not exist, stop parsing
-        if (!addressParam || !weightParam) {
-          break;
+        if (value.owners === undefined) {
+          setOwners(null);
+        } else {
+          // Iterate over each owner which has a weight
+          const owners = value.owners.filter(
+            owner => owner?.weight && owner?.address,
+          ) as Owners;
+          setOwners(owners);
         }
-        ownerIndex++;
       }
 
-      router.replace(url.toString());
       return;
     });
     return () => subscription.unsubscribe();
@@ -308,31 +235,11 @@ export function ConfigurationForm() {
     });
 
     // Recursively iterate the owners and validate the addresses on mount
-    let ownerIndex = 0;
-    // Loop through the owners in the URL
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      const addressParam = searchParams.get(`owners[${ownerIndex}][address]`);
-      const weightParam = searchParams.get(`owners[${ownerIndex}][weight]`);
-
-      // Validate the address
-      if (addressParam) {
-        validateAddress(addressParam, ownerIndex);
+    owners.forEach((owner, index) => {
+      if (owner.address) {
+        validateAddress(owner.address, index);
       }
-
-      // if both parameters for this index do not exist, stop parsing
-      if (
-        (!addressParam && !weightParam) ||
-        isNaN(parseInt(weightParam || ""))
-      ) {
-        break;
-      }
-
-      ownerIndex++;
-    }
-
-    // Trigger the form validation
-    form.trigger();
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -478,56 +385,60 @@ export function ConfigurationForm() {
                           <div className="col-span-6 space-y-2">
                             <Label htmlFor="address">Address or ENS</Label>
                             <div className="flex items-center space-x-3">
-                              <Avatar className="h-8 w-8">
-                                {/* If the address is valid, try resolving an ens Avatar */}
-                                <PlaceholderOrb
-                                  address={
-                                    // If the address is a valid address
-                                    isAddress(field?.value)
-                                      ? field?.value
-                                      : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
-                                  }
-                                  className={cn(
-                                    // If the field is not valid, add opacity
-                                    form.formState.errors.owners &&
-                                      form.formState.errors.owners[index] &&
-                                      form.formState.errors.owners[index]
-                                        ?.addressOrEns
-                                      ? "opacity-50"
-                                      : "opacity-100",
-                                  )}
-                                />
-                              </Avatar>
-                              <Input
-                                id="address"
-                                className=""
-                                {...field}
-                                placeholder="Your address or ENS name"
-                                onBlur={e => {
-                                  // Validate the address
-                                  if (!e.target.value) {
-                                    // Clear the value of key address
-                                    form.setValue(
-                                      `owners.${index}.address`,
-                                      "",
-                                    );
-                                  }
-                                  const address = e.target.value;
+                              <div className="relative inline-block w-full">
+                                <Input
+                                  id="address"
+                                  className="pl-12"
+                                  {...field}
+                                  placeholder="Your address or ENS name"
+                                  onBlur={e => {
+                                    // Validate the address
+                                    if (!e.target.value) {
+                                      // Clear the value of key address
+                                      form.setValue(
+                                        `owners.${index}.address`,
+                                        "",
+                                      );
+                                    }
+                                    const address = e.target.value;
 
-                                  validateAddress(address, index);
-                                }}
-                                onChange={e => {
-                                  // Update the field value
-                                  field.onChange(e.target.value || "");
-
-                                  // Validate the address
-                                  const address = e.target.value;
-
-                                  if (address) {
                                     validateAddress(address, index);
-                                  }
-                                }}
-                              />
+                                  }}
+                                  onChange={e => {
+                                    // Update the field value
+                                    field.onChange(e.target.value || "");
+
+                                    // Validate the address
+                                    const address = e.target.value;
+
+                                    if (address) {
+                                      validateAddress(address, index);
+                                    }
+                                  }}
+                                />
+                                <div className="absolute inset-y-0 left-3 flex items-center">
+                                  <Avatar className="h-6 w-6">
+                                    {/* If the address is valid, try resolving an ens Avatar */}
+                                    <PlaceholderOrb
+                                      address={
+                                        // If the address is a valid address
+                                        field?.value && isAddress(field.value)
+                                          ? field?.value
+                                          : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                      }
+                                      className={cn(
+                                        // If the field is not valid, add opacity
+                                        form.formState.errors.owners &&
+                                          form.formState.errors.owners[index] &&
+                                          form.formState.errors.owners[index]
+                                            ?.addressOrEns
+                                          ? "opacity-50"
+                                          : "opacity-100",
+                                      )}
+                                    />
+                                  </Avatar>
+                                </div>
+                              </div>
                             </div>
                             <FormMessage />
                           </div>
