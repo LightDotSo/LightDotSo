@@ -38,7 +38,7 @@ import {
   TooltipContent,
 } from "@lightdotso/ui";
 import { steps } from "@/app/(authenticated)/new/root";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import {
   BanknotesIcon,
@@ -52,25 +52,36 @@ import { NotionLinks } from "@lightdotso/const";
 import { useNewFormStore } from "@/stores/useNewForm";
 import { newFormSchema } from "@/schemas/newForm";
 import { successToast } from "@/utils/toast";
+import {
+  parseAsString,
+  parseAsStringEnum,
+  useQueryState,
+} from "next-usequerystate";
 
 type NewFormValues = z.infer<typeof newFormSchema>;
 
+enum WalletType {
+  "MULTI" = "multi",
+  "PERSONAL" = "personal",
+  "2FA" = "2fa",
+}
+
+const stringParser = parseAsString.withDefault("");
+
 export function NewWalletForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { setFormValues } = useNewFormStore();
 
-  const nameParam = searchParams.get("name");
-  const typeParam = searchParams.get("type");
+  const [name, setName] = useQueryState("name", stringParser);
+  const [type, setType] = useQueryState(
+    "type",
+    parseAsStringEnum<WalletType>(Object.values(WalletType)) // pass a list of allowed values
+      .withDefault(WalletType.MULTI),
+  );
 
-  // This can come from your database or API.
   const defaultValues: Partial<NewFormValues> = {
-    // Check if the type is valid
-    type:
-      typeParam && newFormSchema.shape.type.safeParse(typeParam).success
-        ? newFormSchema.shape.type.parse(typeParam)
-        : "multi",
-    name: nameParam ? nameParam : "",
+    name,
+    type,
   };
 
   const form = useForm<NewFormValues>({
@@ -79,25 +90,22 @@ export function NewWalletForm() {
   });
 
   useEffect(() => {
-    const url = new URL(window.location.href);
     const subscription = form.watch((value, { name }) => {
       setFormValues(value);
       if (name === "name") {
         if (value.name === undefined || value.name === "") {
-          url.searchParams.delete("name");
+          setName(null);
         } else {
-          url.searchParams.set("name", value.name);
+          setName(value.name);
         }
       }
       if (name === "type") {
-        if (value.type === "multi") {
-          url.searchParams.delete("type");
+        if (value.type === "multi" || value.type === undefined) {
+          setType(null);
         } else {
-          url.searchParams.set("type", value.type ?? "multi");
+          setType(value.type as WalletType);
         }
       }
-      router.replace(url.toString());
-      return;
     });
     return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,10 +120,11 @@ export function NewWalletForm() {
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[1].href, window.location.origin);
-    url.searchParams.set("name", nameParam || "");
+    url.searchParams.set("name", name);
+    url.searchParams.set("type", type);
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nameParam]);
+  }, [name, type]);
 
   function onSubmit(data: NewFormValues) {
     successToast(data);

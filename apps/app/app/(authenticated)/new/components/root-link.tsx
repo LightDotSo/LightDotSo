@@ -149,7 +149,7 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
           step.status === "current"
-            ? "bg-primary w-1 md:h-1"
+            ? "bg-primary w-1 md:h-0.5"
             : "bg-border w-0 md:h-0",
         )}
         aria-hidden="true"

@@ -16,11 +16,7 @@
 import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
 import { NewWalletForm } from "@/app/(authenticated)/new/new-wallet-form";
 
-export default function Page({
-  searchParams: _searchParams,
-}: {
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+export default function Page() {
   return (
     <>
       <NewRoot currentStepType={StepsEnum.New}>

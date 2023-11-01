@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { RootContext } from "@/app/(authenticated)/new/components/root-context";
-import { RootLink } from "@/components/root-link";
+import { RootLink } from "@/app/(authenticated)/new/components/root-link";
 
 export enum StepsEnum {
   // eslint-disable-next-line no-unused-vars
