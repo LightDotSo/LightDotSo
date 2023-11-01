@@ -53,6 +53,7 @@ import * as z from "zod";
 import { successToast } from "@/utils/toast";
 import {
   useNameQueryState,
+  useThresholdQueryState,
   useTypeQueryState,
 } from "@/app/(authenticated)/new/hooks";
 
@@ -74,7 +75,7 @@ export function ConfigurationForm() {
 
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
-  const thresholdParam = searchParams.get("threshold");
+  const [threshold, setThreshold] = useThresholdQueryState();
   const saltParam = searchParams.get("salt");
 
   // create default owner object
@@ -127,13 +128,9 @@ export function ConfigurationForm() {
   const defaultValues: Partial<NewFormValues> = {
     // Check if the type is valid
     threshold:
-      thresholdParam &&
-      newFormConfigurationSchema.shape.threshold.safeParse(
-        parseInt(thresholdParam),
-      ).success
-        ? newFormConfigurationSchema.shape.threshold.parse(
-            parseInt(thresholdParam),
-          )
+      threshold &&
+      newFormConfigurationSchema.shape.threshold.safeParse(threshold).success
+        ? newFormConfigurationSchema.shape.threshold.parse(threshold)
         : 1,
     salt:
       saltParam &&
@@ -223,16 +220,16 @@ export function ConfigurationForm() {
         url.searchParams.set("salt", defaultValues.salt);
       }
       if (defaultValues.threshold) {
-        url.searchParams.set("threshold", defaultValues.threshold.toString());
+        setThreshold(threshold);
       }
 
       if (name === "threshold") {
         if (value.threshold === undefined) {
-          url.searchParams.delete("threshold");
+          setThreshold(null);
         } else {
           // Set the threshold if the value is valid integer
           if (newFormConfigurationSchema.shape.threshold.safeParse(value)) {
-            url.searchParams.set("threshold", value.threshold.toString());
+            setThreshold(value.threshold);
           }
         }
       }
