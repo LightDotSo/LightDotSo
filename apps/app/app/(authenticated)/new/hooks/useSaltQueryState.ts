@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { useNameQueryState } from "@/app/(authenticated)/new/hooks/useNameQueryState";
-export { useSaltQueryState } from "@/app/(authenticated)/new/hooks/useSaltQueryState";
-export { useThresholdQueryState } from "@/app/(authenticated)/new/hooks/useThresholdQueryState";
-export { useTypeQueryState } from "@/app/(authenticated)/new/hooks/useTypeQueryState";
-export type { WalletType } from "@/app/(authenticated)/new/hooks/useTypeQueryState";
+import { parseAsHex, useQueryState } from "next-usequerystate";
+
+const hexParser = parseAsHex;
+
+export const useSaltQueryState = () => {
+  return useQueryState("salt", hexParser);
+};

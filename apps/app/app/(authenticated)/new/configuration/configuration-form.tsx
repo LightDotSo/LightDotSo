@@ -53,6 +53,7 @@ import * as z from "zod";
 import { successToast } from "@/utils/toast";
 import {
   useNameQueryState,
+  useSaltQueryState,
   useThresholdQueryState,
   useTypeQueryState,
 } from "@/app/(authenticated)/new/hooks";
@@ -76,7 +77,7 @@ export function ConfigurationForm() {
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
-  const saltParam = searchParams.get("salt");
+  const [salt, setSalt] = useSaltQueryState();
 
   // create default owner object
   const defaultOwner = {
@@ -133,9 +134,8 @@ export function ConfigurationForm() {
         ? newFormConfigurationSchema.shape.threshold.parse(threshold)
         : 1,
     salt:
-      saltParam &&
-      newFormConfigurationSchema.shape.salt.safeParse(saltParam).success
-        ? newFormConfigurationSchema.shape.salt.parse(saltParam)
+      salt && newFormConfigurationSchema.shape.salt.safeParse(salt).success
+        ? newFormConfigurationSchema.shape.salt.parse(salt)
         : timestampToBytes32(Math.floor(Date.now())),
     // If type is personal, add two owners
     owners: owners.length
@@ -217,10 +217,11 @@ export function ConfigurationForm() {
 
       // Set the salt from the default values to the url
       if (defaultValues.salt) {
-        url.searchParams.set("salt", defaultValues.salt);
+        // If the salt is valid, set the salt
+        setSalt(parseInt(defaultValues.salt, 16));
       }
       if (defaultValues.threshold) {
-        setThreshold(threshold);
+        setThreshold(defaultValues.threshold);
       }
 
       if (name === "threshold") {
