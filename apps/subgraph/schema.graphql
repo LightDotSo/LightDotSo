@@ -171,7 +171,7 @@ type Transaction @entity(immutable: true) {
   nonce: BigInt,
 
   receipt: Receipt,
-  userOperation: [UserOperation!]!
+  userOperations: [UserOperation!]
 }
 
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
@@ -197,7 +197,7 @@ type UserOperation @entity(immutable: true) {
 
   lightWallet: LightWallet! @derivedFrom(field: "userOperations")
   logs: [Log!] @derivedFrom(field: "userOperation")
-  transaction: Transaction! @derivedFrom(field: "userOperation")
+  transaction: Transaction! @derivedFrom(field: "userOperations")
   userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }

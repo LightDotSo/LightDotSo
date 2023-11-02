@@ -1906,17 +1906,21 @@ export class Transaction extends Entity {
     }
   }
 
-  get userOperation(): Array<Bytes> {
-    let value = this.get("userOperation");
+  get userOperations(): Array<Bytes> | null {
+    let value = this.get("userOperations");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBytesArray();
     }
   }
 
-  set userOperation(value: Array<Bytes>) {
-    this.set("userOperation", Value.fromBytesArray(value));
+  set userOperations(value: Array<Bytes> | null) {
+    if (!value) {
+      this.unset("userOperations");
+    } else {
+      this.set("userOperations", Value.fromBytesArray(<Array<Bytes>>value));
+    }
   }
 }
 
