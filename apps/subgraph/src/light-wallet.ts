@@ -64,7 +64,6 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
     lightWallet.blockTimestamp = event.block.timestamp;
     lightWallet.transactionHash = event.transaction.hash;
     lightWallet.userOperations = [];
-    lightWallet.userOperationIds = [];
 
     // Get the image hash of the LightWallet
     let wallet = LightWaletInterface.bind(event.params.sender);
@@ -135,28 +134,18 @@ export function handleLightWalletUserOperationEvent(
 
     let transaction = Transaction.load(event.transaction.hash);
     if (transaction != null) {
-      // Add the user operation to the Transaction
-      transaction.userOperationIds.push(event.params.userOpHash);
-
-      let userOperationIds = transaction.userOperationIds;
-      // If the user operation is not already in the transaction, add it
-      for (let i = 0; i < userOperationIds.length; i++) {
-        let userOperation = UserOperation.load(userOperationIds[i]);
-        transaction.userOperations.push(userOperation!.id);
-      }
+      transaction.userOperations = [
+        ...transaction.userOperations,
+        event.params.userOpHash,
+      ];
       transaction.save();
     }
 
     // Add the user operation to the LightWallet
-    lightWallet.userOperationIds.push(event.params.userOpHash);
-
-    let userOperationIds = lightWallet.userOperationIds;
-    // If the user operation is not already in the transaction, add it
-    for (let i = 0; i < userOperationIds.length; i++) {
-      let userOperation = UserOperation.load(userOperationIds[i]);
-      lightWallet.userOperations.push(userOperation!.id);
-    }
-
+    lightWallet.userOperations = [
+      ...lightWallet.userOperations,
+      event.params.userOpHash,
+    ];
     lightWallet.save();
 
     // -------------------------------------------------------------------------
@@ -246,28 +235,18 @@ export function handleLightWalletUserOperationRevertReason(
 
     let transaction = Transaction.load(event.transaction.hash);
     if (transaction != null) {
-      // Add the user operation to the Transaction
-      transaction.userOperationIds.push(event.params.userOpHash);
-
-      let userOperationIds = transaction.userOperationIds;
-      // If the user operation is not already in the transaction, add it
-      for (let i = 0; i < userOperationIds.length; i++) {
-        let userOperation = UserOperation.load(userOperationIds[i]);
-        transaction.userOperations.push(userOperation!.id);
-      }
+      transaction.userOperations = [
+        ...transaction.userOperations,
+        event.params.userOpHash,
+      ];
       transaction.save();
     }
 
     // Add the user operation to the LightWallet
-    lightWallet.userOperationIds.push(event.params.userOpHash);
-
-    let userOperationIds = lightWallet.userOperationIds;
-    // If the user operation is not already in the transaction, add it
-    for (let i = 0; i < userOperationIds.length; i++) {
-      let userOperation = UserOperation.load(userOperationIds[i]);
-      lightWallet.userOperations.push(userOperation!.id);
-    }
-
+    lightWallet.userOperations = [
+      ...lightWallet.userOperations,
+      event.params.userOpHash,
+    ];
     lightWallet.save();
 
     // -------------------------------------------------------------------------

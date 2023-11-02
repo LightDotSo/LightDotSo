@@ -1903,19 +1903,6 @@ export class Transaction extends Entity {
   set userOperations(value: Array<Bytes>) {
     this.set("userOperations", Value.fromBytesArray(value));
   }
-
-  get userOperationIds(): Array<Bytes> {
-    let value = this.get("userOperationIds");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set userOperationIds(value: Array<Bytes>) {
-    this.set("userOperationIds", Value.fromBytesArray(value));
-  }
 }
 
 export class UserOperation extends Entity {
@@ -2402,19 +2389,6 @@ export class LightWallet extends Entity {
 
   set userOperations(value: Array<Bytes>) {
     this.set("userOperations", Value.fromBytesArray(value));
-  }
-
-  get userOperationIds(): Array<Bytes> {
-    let value = this.get("userOperationIds");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set userOperationIds(value: Array<Bytes>) {
-    this.set("userOperationIds", Value.fromBytesArray(value));
   }
 }
 

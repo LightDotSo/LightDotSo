@@ -174,7 +174,6 @@ type Transaction @entity {
   receipt: Receipt,
 
   userOperations: [UserOperation!]!
-  userOperationIds: [Bytes!]!
 }
 
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
@@ -223,7 +222,6 @@ type LightWallet @entity {
   transactionHash: Bytes!
 
   userOperations: [UserOperation!]!
-  userOperationIds: [Bytes!]!
 }
 
 type Counter @entity {
