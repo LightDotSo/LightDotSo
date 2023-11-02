@@ -92,7 +92,7 @@ export function handleLightWalletUserOperationEvent(
     // -------------------------------------------------------------------------
 
     // Handle transaction for the user operation
-    let transaction = handleUserOperationTransaction(
+    handleUserOperationTransaction(
       event.params.userOpHash,
       event.transaction,
       event.receipt,
@@ -164,9 +164,6 @@ export function handleLightWalletUserOperationEvent(
     entity.userOperation = event.params.userOpHash;
 
     entity.save();
-
-    // Finally, save the transaction
-    transaction.save();
   }
 }
 
@@ -188,7 +185,7 @@ export function handleLightWalletUserOperationRevertReason(
     // -------------------------------------------------------------------------
 
     // Handle transaction for the user operation
-    let transaction = handleUserOperationTransaction(
+    handleUserOperationTransaction(
       event.params.userOpHash,
       event.transaction,
       event.receipt,
@@ -255,8 +252,5 @@ export function handleLightWalletUserOperationRevertReason(
     entity.userOperation = event.params.userOpHash;
 
     entity.save();
-
-    // Finally, save the transaction
-    transaction.save();
   }
 }
