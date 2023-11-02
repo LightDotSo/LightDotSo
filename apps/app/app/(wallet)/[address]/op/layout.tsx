@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-import { BannerSection } from "@/components/banner-section";
 import { TITLES } from "@/const/titles";
 
 export const metadata: Metadata = {
@@ -29,14 +28,5 @@ interface TransactionsLayoutProps {
 export default function TransactionsLayout({
   children,
 }: TransactionsLayoutProps) {
-  return (
-    <>
-      <BannerSection
-        title={TITLES.Transactions.title}
-        description={TITLES.Transactions.description}
-      >
-        {children}
-      </BannerSection>
-    </>
-  );
+  return <>{children}</>;
 }
