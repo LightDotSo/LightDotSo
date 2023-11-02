@@ -20,7 +20,7 @@ export function handleUserOperationTransaction(
   userOpHash: Bytes,
   eventTransaction: ethereum.Transaction,
   eventReceipt: ethereum.TransactionReceipt | null,
-): void {
+): Transaction {
   // Decode the user operation from the input
   log.info("userOpHash: {}", [userOpHash.toString()]);
 
@@ -102,6 +102,7 @@ export function handleUserOperationTransaction(
     transaction.userOperations!.push(userOpHash);
   }
 
-  // Save the transaction
-  transaction.save();
+  // Return the Transaction entity
+  // This will be saved by the caller upon storing the user operation
+  return transaction;
 }

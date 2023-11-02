@@ -86,8 +86,13 @@ export function handleLightWalletUserOperationEvent(
     incrementUserOpCount();
     // Increment the user operation revert count
     incrementUserOpSuccessCount();
+
+    // -------------------------------------------------------------------------
+    // START OF BOILERPLATE
+    // -------------------------------------------------------------------------
+
     // Handle transaction for the user operation
-    handleUserOperationTransaction(
+    let transaction = handleUserOperationTransaction(
       event.params.userOpHash,
       event.transaction,
       event.receipt,
@@ -98,10 +103,6 @@ export function handleLightWalletUserOperationEvent(
       event.transaction,
       event.receipt,
     );
-
-    // -------------------------------------------------------------------------
-    // BOILERPLATE
-    // -------------------------------------------------------------------------
 
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
@@ -138,7 +139,7 @@ export function handleLightWalletUserOperationEvent(
     lightWallet.save();
 
     // -------------------------------------------------------------------------
-    // BOILERPLATE
+    // END OF BOILERPLATE
     // -------------------------------------------------------------------------
 
     if (event.params.success) {
@@ -163,6 +164,9 @@ export function handleLightWalletUserOperationEvent(
     entity.userOperation = event.params.userOpHash;
 
     entity.save();
+
+    // Finally, save the transaction
+    transaction.save();
   }
 }
 
@@ -178,8 +182,13 @@ export function handleLightWalletUserOperationRevertReason(
     incrementUserOpCount();
     // Increment the user operation revert count
     incrementUserOpRevertCount();
+
+    // -------------------------------------------------------------------------
+    // START OF BOILERPLATE
+    // -------------------------------------------------------------------------
+
     // Handle transaction for the user operation
-    handleUserOperationTransaction(
+    let transaction = handleUserOperationTransaction(
       event.params.userOpHash,
       event.transaction,
       event.receipt,
@@ -190,10 +199,6 @@ export function handleLightWalletUserOperationRevertReason(
       event.transaction,
       event.receipt,
     );
-
-    // -------------------------------------------------------------------------
-    // BOILERPLATE
-    // -------------------------------------------------------------------------
 
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
@@ -230,7 +235,7 @@ export function handleLightWalletUserOperationRevertReason(
     lightWallet.save();
 
     // -------------------------------------------------------------------------
-    // BOILERPLATE
+    // END OF BOILERPLATE
     // -------------------------------------------------------------------------
 
     let entity = new UserOperationRevertReason(
@@ -250,5 +255,8 @@ export function handleLightWalletUserOperationRevertReason(
     entity.userOperation = event.params.userOpHash;
 
     entity.save();
+
+    // Finally, save the transaction
+    transaction.save();
   }
 }
