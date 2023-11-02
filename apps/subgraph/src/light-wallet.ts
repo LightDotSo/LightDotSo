@@ -87,7 +87,7 @@ export function handleLightWalletUserOperationEvent(
     // Increment the user operation revert count
     incrementUserOpSuccessCount();
     // Handle transaction for the user operation
-    let tx = handleUserOperationTransaction(
+    handleUserOperationTransaction(
       event.params.userOpHash,
       event.transaction,
       event.receipt,
@@ -163,9 +163,6 @@ export function handleLightWalletUserOperationEvent(
     entity.userOperation = event.params.userOpHash;
 
     entity.save();
-
-    // Finally, save the transaction
-    tx.save();
   }
 }
 
@@ -182,7 +179,7 @@ export function handleLightWalletUserOperationRevertReason(
     // Increment the user operation revert count
     incrementUserOpRevertCount();
     // Handle transaction for the user operation
-    let tx = handleUserOperationTransaction(
+    handleUserOperationTransaction(
       event.params.userOpHash,
       event.transaction,
       event.receipt,
@@ -253,8 +250,5 @@ export function handleLightWalletUserOperationRevertReason(
     entity.userOperation = event.params.userOpHash;
 
     entity.save();
-
-    // Finally, save the transaction
-    tx.save();
   }
 }
