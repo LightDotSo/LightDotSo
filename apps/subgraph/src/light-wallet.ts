@@ -87,9 +87,17 @@ export function handleLightWalletUserOperationEvent(
     // Increment the user operation revert count
     incrementUserOpSuccessCount();
     // Handle transaction for the user operation
-    let tx = handleUserOperationTransaction(event);
+    let tx = handleUserOperationTransaction(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
     // Get the logs from the user operation
-    handleUserOperationLogs(event);
+    handleUserOperationLogs(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
 
     // -------------------------------------------------------------------------
     // BOILERPLATE
@@ -174,9 +182,17 @@ export function handleLightWalletUserOperationRevertReason(
     // Increment the user operation revert count
     incrementUserOpRevertCount();
     // Handle transaction for the user operation
-    let tx = handleUserOperationTransaction(event);
+    let tx = handleUserOperationTransaction(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
     // Get the logs from the user operation
-    handleUserOperationLogs(event);
+    handleUserOperationLogs(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
 
     // -------------------------------------------------------------------------
     // BOILERPLATE

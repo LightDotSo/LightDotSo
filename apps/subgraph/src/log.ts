@@ -13,11 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ethereum } from "@graphprotocol/graph-ts";
-import {
-  UserOperationEvent as UserOperationEventEvent,
-  UserOperationRevertReason as UserOperationRevertReasonEvent,
-} from "../generated/EntryPointv0.6.0/EntryPoint";
+import { Bytes, ethereum } from "@graphprotocol/graph-ts";
 import { Log } from "../generated/schema";
 import {
   BEFORE_EXECUTION_EVENT_HASH,
@@ -25,13 +21,13 @@ import {
 } from "./const";
 
 export function handleUserOperationLogs(
-  event: UserOperationEventEvent | UserOperationRevertReasonEvent,
+  userOpHash: Bytes,
+  eventTransaction: ethereum.Transaction,
+  eventReceipt: ethereum.TransactionReceipt | null,
 ): Log[] {
   let logs = new Array<Log>();
 
-  if (event.receipt) {
-    let eventReceipt = event.receipt as ethereum.TransactionReceipt;
-
+  if (eventReceipt) {
     // Flag to store the log in relation to the user operation
     let flag = false;
 
@@ -40,7 +36,7 @@ export function handleUserOperationLogs(
     // Break until the `BeforeExecution` event is emitted
     for (let i = eventReceipt.logs.length - 1; i >= 0; i--) {
       // Load the Log entity
-      let log = Log.load(`${event.transaction.hash}-${i}`);
+      let log = Log.load(`${eventTransaction.hash}-${i}`);
 
       // If the Log entity doesn't exist, break;
       if (log == null) {
@@ -55,7 +51,7 @@ export function handleUserOperationLogs(
         // Get the log user operation hash from the log (the first topic is the event hash)
         let logUserOpHash = eventReceipt.logs[i].topics[1];
         // If the log user operation hash is equal to the event user operation hash, set the flag to true
-        if (logUserOpHash == event.params.userOpHash) {
+        if (logUserOpHash == userOpHash) {
           flag = true;
         } else {
           // If the log user operation hash is not equal to the event user operation hash, set the flag to false
@@ -71,7 +67,7 @@ export function handleUserOperationLogs(
 
       // If the flag is true, set the user operation hash to the log
       if (flag) {
-        log.userOperation = event.params.userOpHash;
+        log.userOperation = userOpHash;
         log.save();
       }
     }

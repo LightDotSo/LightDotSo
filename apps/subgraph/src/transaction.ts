@@ -13,45 +13,41 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { log, ethereum } from "@graphprotocol/graph-ts";
-import {
-  UserOperationEvent as UserOperationEventEvent,
-  UserOperationRevertReason as UserOperationRevertReasonEvent,
-} from "../generated/EntryPointv0.6.0/EntryPoint";
+import { Bytes, log, ethereum } from "@graphprotocol/graph-ts";
 import { Log, Receipt, Transaction } from "../generated/schema";
 
 export function handleUserOperationTransaction(
-  event: UserOperationEventEvent | UserOperationRevertReasonEvent,
+  userOpHash: Bytes,
+  eventTransaction: ethereum.Transaction,
+  eventReceipt: ethereum.TransactionReceipt | null,
 ): Transaction {
   // Decode the user operation from the input
-  log.info("userOpHash: {}", [event.params.userOpHash.toString()]);
+  log.info("userOpHash: {}", [userOpHash.toString()]);
 
   // Load the Transaction entity
-  let transaction = Transaction.load(event.transaction.hash);
+  let transaction = Transaction.load(eventTransaction.hash);
   if (transaction == null) {
     // Create a new Transaction entity if null
-    transaction = new Transaction(event.transaction.hash);
+    transaction = new Transaction(eventTransaction.hash);
     // Set the transaction fields
-    transaction.hash = event.transaction.hash;
-    transaction.index = event.transaction.index;
-    transaction.from = event.transaction.from;
-    transaction.to = event.transaction.to;
-    transaction.value = event.transaction.value;
-    transaction.gasLimit = event.transaction.gasLimit;
-    transaction.gasPrice = event.transaction.gasPrice;
-    transaction.input = event.transaction.input;
-    transaction.nonce = event.transaction.nonce;
+    transaction.hash = eventTransaction.hash;
+    transaction.index = eventTransaction.index;
+    transaction.from = eventTransaction.from;
+    transaction.to = eventTransaction.to;
+    transaction.value = eventTransaction.value;
+    transaction.gasLimit = eventTransaction.gasLimit;
+    transaction.gasPrice = eventTransaction.gasPrice;
+    transaction.input = eventTransaction.input;
+    transaction.nonce = eventTransaction.nonce;
   }
 
   // If event.receipt exists, create a new Receipt entity
-  if (event.receipt != null) {
-    let eventReceipt = event.receipt as ethereum.TransactionReceipt;
-
+  if (eventReceipt != null) {
     // Load the Receipt entity
-    let receipt = Receipt.load(event.transaction.hash);
+    let receipt = Receipt.load(eventTransaction.hash);
     if (receipt == null) {
       // Create a new Receipt entity if null
-      receipt = new Receipt(event.transaction.hash);
+      receipt = new Receipt(eventTransaction.hash);
       // Set the receipt fields
       receipt.transactionHash = eventReceipt.transactionHash;
       receipt.transactionIndex = eventReceipt.transactionIndex;
@@ -67,10 +63,10 @@ export function handleUserOperationTransaction(
 
     for (let i = 0; i < eventReceipt.logs.length; i++) {
       // Load the Log entity
-      let log = Log.load(`${event.transaction.hash}-${i}`);
+      let log = Log.load(`${eventTransaction.hash}-${i}`);
       if (log == null) {
         // Create a new Log entity if null
-        log = new Log(`${event.transaction.hash}-${i}`);
+        log = new Log(`${eventTransaction.hash}-${i}`);
         // Set the log fields
         log.address = eventReceipt.logs[i].address;
         log.topics = eventReceipt.logs[i].topics;
