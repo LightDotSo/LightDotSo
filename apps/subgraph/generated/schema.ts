@@ -1356,21 +1356,17 @@ export class Log extends Entity {
     this.set("address", Value.fromBytes(value));
   }
 
-  get topics(): Array<Bytes> | null {
+  get topics(): Array<Bytes> {
     let value = this.get("topics");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toBytesArray();
     }
   }
 
-  set topics(value: Array<Bytes> | null) {
-    if (!value) {
-      this.unset("topics");
-    } else {
-      this.set("topics", Value.fromBytesArray(<Array<Bytes>>value));
-    }
+  set topics(value: Array<Bytes>) {
+    this.set("topics", Value.fromBytesArray(value));
   }
 
   get data(): Bytes {
@@ -1906,21 +1902,17 @@ export class Transaction extends Entity {
     }
   }
 
-  get userOperations(): Array<Bytes> | null {
+  get userOperations(): Array<Bytes> {
     let value = this.get("userOperations");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toBytesArray();
     }
   }
 
-  set userOperations(value: Array<Bytes> | null) {
-    if (!value) {
-      this.unset("userOperations");
-    } else {
-      this.set("userOperations", Value.fromBytesArray(<Array<Bytes>>value));
-    }
+  set userOperations(value: Array<Bytes>) {
+    this.set("userOperations", Value.fromBytesArray(value));
   }
 }
 
