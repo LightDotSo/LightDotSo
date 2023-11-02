@@ -142,7 +142,7 @@ type Log @entity(immutable: true) {
 # Default Receipt type from graph-tooling
 # https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
 type Receipt @entity(immutable: true) {
-  id: ID!,
+  id: Bytes!,
   transactionHash: Bytes!,
   transactionIndex: BigInt!,
   blockHash: Bytes!,
@@ -170,6 +170,7 @@ type Transaction @entity(immutable: true) {
   input: Bytes,
   nonce: BigInt,
 
+  receipt: Receipt,
   userOperation: [UserOperation!]!
 }
 

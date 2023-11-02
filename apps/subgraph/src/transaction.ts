@@ -15,7 +15,7 @@
 
 import { log } from "@graphprotocol/graph-ts";
 import { UserOperationEvent as UserOperationEventEvent } from "../generated/EntryPointv0.6.0/EntryPoint";
-import { Transaction } from "../generated/schema";
+import { Receipt, Transaction } from "../generated/schema";
 
 export function handleUserOperationTransaction(
   event: UserOperationEventEvent,
@@ -35,6 +35,26 @@ export function handleUserOperationTransaction(
   transaction.gasPrice = event.transaction.gasPrice;
   transaction.input = event.transaction.input;
   transaction.nonce = event.transaction.nonce;
+
+  // If event.receipt exists, create a new Receipt entity
+  if (event.receipt != null) {
+    let receipt = new Receipt(event.transaction.hash);
+
+    receipt.transactionHash = event.receipt.transactionHash;
+    receipt.transactionIndex = event.receipt.transactionIndex;
+    receipt.blockHash = event.receipt.blockHash;
+    receipt.blockNumber = event.receipt.blockNumber;
+    receipt.cumulativeGasUsed = event.receipt.cumulativeGasUsed;
+    receipt.gasUsed = event.receipt.gasUsed;
+    receipt.contractAddress = event.receipt.contractAddress;
+    receipt.status = event.receipt.status;
+    receipt.root = event.receipt.root;
+    receipt.logsBloom = event.receipt.logsBloom;
+
+    receipt.save();
+
+    transaction.receipt = receipt.id;
+  }
 
   transaction.save();
 }
