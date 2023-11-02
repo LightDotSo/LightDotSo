@@ -198,12 +198,8 @@ type UserOperation @entity {
   entryPoint: Bytes! # address
 
   lightWallet: LightWallet! @derivedFrom(field: "userOperations")
-  # lightWalletId: Bytes!
-
-  transaction: Transaction! @derivedFrom(field: "userOperations")
-  # transactionHash: Bytes!
-
   logs: [Log!] @derivedFrom(field: "userOperation")
+  transaction: Transaction! @derivedFrom(field: "userOperations")
   userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }
