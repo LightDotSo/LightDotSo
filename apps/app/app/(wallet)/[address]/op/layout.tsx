@@ -28,5 +28,13 @@ interface TransactionsLayoutProps {
 export default function TransactionsLayout({
   children,
 }: TransactionsLayoutProps) {
-  return <>{children}</>;
+  return (
+    <>
+      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="mx-auto max-w-5xl flex-1 space-y-8 py-8 lg:py-14">
+          {children}
+        </div>
+      </div>
+    </>
+  );
 }
