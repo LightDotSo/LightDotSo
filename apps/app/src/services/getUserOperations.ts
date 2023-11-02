@@ -13,17 +13,29 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getConfiguration } from "@lightdotso/client";
-import { cache } from "react";
+import { getUserOperations as getClientUserOperations } from "@lightdotso/client";
 import "server-only";
 import type { Address } from "viem";
 
 export const revalidate = 300;
 
 export const preload = (address: Address) => {
-  void getCachedConfiguration(address);
+  void getUserOperations(address);
 };
 
-export const getCachedConfiguration = cache(async (address: Address) => {
-  return getConfiguration({ params: { query: { address: address } } }, false);
-});
+export const getUserOperations = async (
+  address: Address,
+  status?: "proposed" | "pending" | "executed" | "reverted" | "all",
+) => {
+  return getClientUserOperations(
+    {
+      params: {
+        query: {
+          address,
+          status: status === "all" ? undefined : status,
+        },
+      },
+    },
+    false,
+  );
+};

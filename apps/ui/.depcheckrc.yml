@@ -32,3 +32,4 @@ ignores:
   - autoprefixer
   - postcss
   - tailwindcss
+  - "@storybook/blocks"

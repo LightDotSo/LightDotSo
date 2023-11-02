@@ -13,22 +13,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getUserOperation } from "@lightdotso/client";
-import { cache } from "react";
+import { getUserOperation as getClientUserOperation } from "@lightdotso/client";
 import "server-only";
 import type { Hex } from "viem";
 
 export const revalidate = 300;
 
 export const preload = (user_operation_hash: Hex) => {
-  void getCachedUserOperation(user_operation_hash);
+  void getUserOperation(user_operation_hash);
 };
 
-export const getCachedUserOperation = cache(
-  async (user_operation_hash: Hex) => {
-    return getUserOperation(
-      { params: { query: { user_operation_hash: user_operation_hash } } },
-      false,
-    );
-  },
-);
+export const getUserOperation = async (user_operation_hash: Hex) => {
+  return getClientUserOperation(
+    { params: { query: { user_operation_hash: user_operation_hash } } },
+    false,
+  );
+};

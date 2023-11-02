@@ -15,7 +15,7 @@
 
 import { handler } from "@/handlers/paths/[address]";
 import type { Address } from "viem";
-import { getCachedUserOperations, getQueryClient } from "@/services";
+import { getUserOperations, getQueryClient } from "@/services";
 import { TransactionsList } from "@/components/transactions-list";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
@@ -38,10 +38,7 @@ export default async function Page({
 
   const queryClient = getQueryClient();
 
-  const res = await getCachedUserOperations(
-    params.address as Address,
-    "executed",
-  );
+  const res = await getUserOperations(params.address as Address, "executed");
 
   // ---------------------------------------------------------------------------
   // Render

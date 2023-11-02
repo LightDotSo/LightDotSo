@@ -33,8 +33,8 @@ export const ownerParser = createParser({
       const [id, address, addressOrEns, weight] = key.split(":");
       // Parse the id as a number (if possible)
       acc[parseInt(id)] = {
-        address: address === "" ? undefined : address,
-        addressOrEns,
+        address: address === "_" ? undefined : address,
+        addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
         weight: parseInt(weight),
       };
       return acc;
