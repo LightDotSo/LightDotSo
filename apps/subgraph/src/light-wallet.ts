@@ -39,6 +39,7 @@ import {
 } from "./counter";
 import { handleUserOperationTransaction } from "./transaction";
 import { handleUserOperationFromCalldata } from "./user-operation";
+import { handleUserOperationLogs } from "./log";
 
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
   // If the event is emitted by one of the factories, then we know that the account is a LightWallet
@@ -87,6 +88,8 @@ export function handleLightWalletUserOperationEvent(
     incrementUserOpSuccessCount();
     // Handle transaction for the user operation
     let tx = handleUserOperationTransaction(event);
+    // Get the logs from the user operation
+    handleUserOperationLogs(event);
 
     // -------------------------------------------------------------------------
     // BOILERPLATE
