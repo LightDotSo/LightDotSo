@@ -40,23 +40,19 @@ export function handleUserOperationTransaction(
 
   // If event.receipt exists, create a new Receipt entity
   if (eventReceipt != null) {
-    // Load the Receipt entity
-    let receipt = Receipt.load(eventTransaction.hash);
-    if (receipt == null) {
-      // Create a new Receipt entity if null
-      receipt = new Receipt(eventTransaction.hash);
-      // Set the receipt fields
-      receipt.transactionHash = eventReceipt.transactionHash;
-      receipt.transactionIndex = eventReceipt.transactionIndex;
-      receipt.blockHash = eventReceipt.blockHash;
-      receipt.blockNumber = eventReceipt.blockNumber;
-      receipt.cumulativeGasUsed = eventReceipt.cumulativeGasUsed;
-      receipt.gasUsed = eventReceipt.gasUsed;
-      receipt.contractAddress = eventReceipt.contractAddress;
-      receipt.status = eventReceipt.status;
-      receipt.root = eventReceipt.root;
-      receipt.logsBloom = eventReceipt.logsBloom;
-    }
+    // Create a new Receipt entity
+    let receipt = new Receipt(eventTransaction.hash);
+    // Set the receipt fields
+    receipt.transactionHash = eventReceipt.transactionHash;
+    receipt.transactionIndex = eventReceipt.transactionIndex;
+    receipt.blockHash = eventReceipt.blockHash;
+    receipt.blockNumber = eventReceipt.blockNumber;
+    receipt.cumulativeGasUsed = eventReceipt.cumulativeGasUsed;
+    receipt.gasUsed = eventReceipt.gasUsed;
+    receipt.contractAddress = eventReceipt.contractAddress;
+    receipt.status = eventReceipt.status;
+    receipt.root = eventReceipt.root;
+    receipt.logsBloom = eventReceipt.logsBloom;
 
     for (let i = 0; i < eventReceipt.logs.length; i++) {
       // Load the Log entity
