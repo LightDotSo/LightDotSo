@@ -15,7 +15,7 @@
 
 import { log } from "@graphprotocol/graph-ts";
 import { UserOperationEvent as UserOperationEventEvent } from "../generated/EntryPointv0.6.0/EntryPoint";
-import { Receipt, Transaction } from "../generated/schema";
+import { Log, Receipt, Transaction } from "../generated/schema";
 
 export function handleUserOperationTransaction(
   event: UserOperationEventEvent,
@@ -50,6 +50,26 @@ export function handleUserOperationTransaction(
     receipt.status = event.receipt.status;
     receipt.root = event.receipt.root;
     receipt.logsBloom = event.receipt.logsBloom;
+
+    for (let i = 0; i < event.receipt.logs.length; i++) {
+      let log = Log.load(`${event.transaction.hash}-${i}`);
+
+      if (log == null) {
+        log = new Log(`${event.transaction.hash}-${i}`);
+        log.address = event.receipt.logs[i].address;
+        log.topics = event.receipt.logs[i].topics;
+        log.data = event.receipt.logs[i].data;
+        log.blockHash = event.receipt.logs[i].blockHash;
+        log.blockNumber = event.receipt.logs[i].blockNumber;
+        log.transactionHash = event.receipt.logs[i].transactionHash;
+        log.transactionIndex = event.receipt.logs[i].transactionIndex;
+        log.logIndex = event.receipt.logs[i].logIndex;
+        log.transactionLogIndex = event.receipt.logs[i].transactionLogIndex;
+        log.logType = event.receipt.logs[i].logType;
+        // log.removed = event.receipt.logs[i].removed?.inner;
+        log.save();
+      }
+    }
 
     receipt.save();
 
