@@ -62,6 +62,7 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
     lightWallet.blockNumber = event.block.number;
     lightWallet.blockTimestamp = event.block.timestamp;
     lightWallet.transactionHash = event.transaction.hash;
+    lightWallet.userOperations = [];
 
     // Get the image hash of the LightWallet
     let wallet = LightWaletInterface.bind(event.params.sender);

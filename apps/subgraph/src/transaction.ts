@@ -39,6 +39,7 @@ export function handleUserOperationTransaction(
     transaction.gasPrice = eventTransaction.gasPrice;
     transaction.input = eventTransaction.input;
     transaction.nonce = eventTransaction.nonce;
+    transaction.userOperations = [];
   }
 
   // If event.receipt exists, create a new Receipt entity
