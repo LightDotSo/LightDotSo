@@ -96,10 +96,10 @@ export function handleUserOperationTransaction(
   }
 
   // Add the logs to the receipt
-  if (transaction.userOperations.length == 0) {
+  if (transaction.userOperations == null) {
     transaction.userOperations = [userOpHash];
   } else {
-    transaction.userOperations.push(userOpHash);
+    transaction.userOperations!.push(userOpHash);
   }
 
   // Return the Transaction entity

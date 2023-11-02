@@ -125,7 +125,7 @@ type Withdrawn @entity(immutable: true) {
 type Log @entity(immutable: true) {
   id: ID!, # transactionHash + logIndex
   address: Bytes!,
-  topics: [Bytes!]!,
+  topics: [Bytes!],
   data: Bytes!,
   blockHash: Bytes!,
   blockNumber: Bytes!,
@@ -172,7 +172,7 @@ type Transaction @entity {
   nonce: BigInt,
 
   receipt: Receipt,
-  userOperations: [UserOperation!]!
+  userOperations: [UserOperation!]
 }
 
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
