@@ -130,14 +130,12 @@ export function handleLightWalletUserOperationEvent(
 
     op.save();
 
-    // Add the logs to the receipt
+    // Add the user operation to the Transaction
     if (transaction.userOperations == null) {
       transaction.userOperations = [event.params.userOpHash];
     } else {
       transaction.userOperations!.push(event.params.userOpHash);
     }
-
-    // Return the Transaction entity
     transaction.save();
 
     // Add the user operation to the LightWallet
@@ -233,14 +231,12 @@ export function handleLightWalletUserOperationRevertReason(
 
     op.save();
 
-    // Add the logs to the receipt
+    // Add the user operation to the Transaction
     if (transaction.userOperations == null) {
       transaction.userOperations = [event.params.userOpHash];
     } else {
       transaction.userOperations!.push(event.params.userOpHash);
     }
-
-    // Return the Transaction entity
     transaction.save();
 
     // Add the user operation to the LightWallet
