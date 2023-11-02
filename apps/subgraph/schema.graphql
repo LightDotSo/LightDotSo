@@ -176,8 +176,8 @@ type Transaction @entity {
 }
 
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
-type UserOperation @entity(immutable: true) {
-  id: Bytes! # bytes32 (transactionHash)
+type UserOperation @entity {
+  id: Bytes! # bytes32 (userOpHash)
   index: BigInt!
   sender: Bytes! # address
   nonce: BigInt! # uint256
@@ -203,7 +203,7 @@ type UserOperation @entity(immutable: true) {
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }
 
-type LightWallet @entity(immutable: true) {
+type LightWallet @entity {
   id: Bytes! # address of the wallet
   index: BigInt!
   address: Bytes! # address
