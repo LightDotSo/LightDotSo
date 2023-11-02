@@ -98,6 +98,7 @@ use utoipa_swagger_ui::SwaggerUi;
         transaction::v1_transaction_list_handler,
         user::v1_user_get_handler,
         user_operation::v1_user_operation_get_handler,
+        user_operation::v1_user_operation_nonce_handler,
         user_operation::v1_user_operation_list_handler,
         user_operation::v1_user_operation_post_handler,
         user_operation::v1_user_operation_signature_handler,
