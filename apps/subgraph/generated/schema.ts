@@ -1891,21 +1891,17 @@ export class Transaction extends Entity {
     }
   }
 
-  get userOperations(): Array<Bytes> | null {
+  get userOperations(): Array<Bytes> {
     let value = this.get("userOperations");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toBytesArray();
     }
   }
 
-  set userOperations(value: Array<Bytes> | null) {
-    if (!value) {
-      this.unset("userOperations");
-    } else {
-      this.set("userOperations", Value.fromBytesArray(<Array<Bytes>>value));
-    }
+  set userOperations(value: Array<Bytes>) {
+    this.set("userOperations", Value.fromBytesArray(value));
   }
 }
 
@@ -2170,8 +2166,17 @@ export class UserOperation extends Entity {
     );
   }
 
-  get logs(): LogLoader {
-    return new LogLoader("UserOperation", this.get("id")!.toString(), "logs");
+  get lightWalletId(): Bytes {
+    let value = this.get("lightWalletId");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set lightWalletId(value: Bytes) {
+    this.set("lightWalletId", Value.fromBytes(value));
   }
 
   get transaction(): TransactionLoader {
@@ -2182,6 +2187,10 @@ export class UserOperation extends Entity {
         .toHexString(),
       "transaction"
     );
+  }
+
+  get logs(): LogLoader {
+    return new LogLoader("UserOperation", this.get("id")!.toString(), "logs");
   }
 
   get userOperationEvent(): UserOperationEventLoader {
@@ -2382,21 +2391,17 @@ export class LightWallet extends Entity {
     this.set("transactionHash", Value.fromBytes(value));
   }
 
-  get userOperations(): Array<Bytes> | null {
+  get userOperations(): Array<Bytes> {
     let value = this.get("userOperations");
     if (!value || value.kind == ValueKind.NULL) {
-      return null;
+      throw new Error("Cannot return null for a required field.");
     } else {
       return value.toBytesArray();
     }
   }
 
-  set userOperations(value: Array<Bytes> | null) {
-    if (!value) {
-      this.unset("userOperations");
-    } else {
-      this.set("userOperations", Value.fromBytesArray(<Array<Bytes>>value));
-    }
+  set userOperations(value: Array<Bytes>) {
+    this.set("userOperations", Value.fromBytesArray(value));
   }
 }
 
@@ -2510,24 +2515,6 @@ export class LightWalletLoader extends Entity {
   }
 }
 
-export class LogLoader extends Entity {
-  _entity: string;
-  _field: string;
-  _id: string;
-
-  constructor(entity: string, id: string, field: string) {
-    super();
-    this._entity = entity;
-    this._id = id;
-    this._field = field;
-  }
-
-  load(): Log[] {
-    let value = store.loadRelated(this._entity, this._id, this._field);
-    return changetype<Log[]>(value);
-  }
-}
-
 export class TransactionLoader extends Entity {
   _entity: string;
   _field: string;
@@ -2543,6 +2530,24 @@ export class TransactionLoader extends Entity {
   load(): Transaction[] {
     let value = store.loadRelated(this._entity, this._id, this._field);
     return changetype<Transaction[]>(value);
+  }
+}
+
+export class LogLoader extends Entity {
+  _entity: string;
+  _field: string;
+  _id: string;
+
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
+
+  load(): Log[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<Log[]>(value);
   }
 }
 

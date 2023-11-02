@@ -172,7 +172,7 @@ type Transaction @entity {
   nonce: BigInt,
 
   receipt: Receipt,
-  userOperations: [UserOperation!]
+  userOperations: [UserOperation!]!
 }
 
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
@@ -196,9 +196,13 @@ type UserOperation @entity {
 
   entryPoint: Bytes! # address
 
-  lightWallet: LightWallet @derivedFrom(field: "userOperations")
+  lightWallet: LightWallet! @derivedFrom(field: "userOperations")
+  # lightWalletId: Bytes!
+
+  transaction: Transaction! @derivedFrom(field: "userOperations")
+  # transactionHash: Bytes!
+
   logs: [Log!] @derivedFrom(field: "userOperation")
-  transaction: Transaction @derivedFrom(field: "userOperations")
   userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }
@@ -216,7 +220,7 @@ type LightWallet @entity {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 
-  userOperations: [UserOperation!]
+  userOperations: [UserOperation!]!
 }
 
 type Counter @entity {

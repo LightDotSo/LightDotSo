@@ -132,19 +132,11 @@ export function handleLightWalletUserOperationEvent(
     op.save();
 
     // Add the user operation to the Transaction
-    if (transaction.userOperations == null) {
-      transaction.userOperations = [event.params.userOpHash];
-    } else {
-      transaction.userOperations!.push(event.params.userOpHash);
-    }
+    transaction.userOperations.push(event.params.userOpHash);
     transaction.save();
 
     // Add the user operation to the LightWallet
-    if (lightWallet.userOperations == null) {
-      lightWallet.userOperations = [event.params.userOpHash];
-    } else {
-      lightWallet.userOperations!.push(event.params.userOpHash);
-    }
+    lightWallet.userOperations.push(event.params.userOpHash);
     lightWallet.save();
 
     // -------------------------------------------------------------------------
