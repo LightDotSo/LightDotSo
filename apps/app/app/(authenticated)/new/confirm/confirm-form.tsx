@@ -108,22 +108,28 @@ export function ConfirmForm() {
         .then(() => {
           successToast("You can now use your wallet.");
 
-          backOff(() => getWallet({ params: { query: { address: address! } } }))
+          backOff(() =>
+            getWallet({ params: { query: { address: address! } } }).then(res =>
+              res._unsafeUnwrap(),
+            ),
+          )
             .then(res => {
-              if (res.isOk()) {
-                router.push(`/wallet/${address}`);
+              if (res) {
+                router.push(`/${address}`);
               } else {
                 errToast("There was a problem with your request.");
                 router.push("/");
               }
             })
             .catch(() => {
-              errToast("There was a problem with your request.");
+              errToast("There was a problem with your request while creating.");
               router.push("/");
             });
         })
         .catch(() => {
-          errToast("There was a problem with your request.");
+          errToast(
+            "There was a problem with your request (invalid request likely).",
+          );
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

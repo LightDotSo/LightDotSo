@@ -20,13 +20,13 @@
   "dependencies": {
     "@lightdotso/prisma": "workspace:*",
     "@next-auth/prisma-adapter": "0.4.4-canary.81",
-    "next": "^14.0.0",
+    "next": "^14.0.1",
     "next-auth": "^4.24.4",
     "siwe": "^2.1.4"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.8.9",
+    "@types/node": "^20.8.10",
     "typescript": "^5.2.2"
   },
   "publishConfig": {
