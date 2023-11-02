@@ -24,23 +24,19 @@ export function handleUserOperationTransaction(
   // Decode the user operation from the input
   log.info("userOpHash: {}", [userOpHash.toString()]);
 
-  // Load the Transaction entity
-  let transaction = Transaction.load(eventTransaction.hash);
-  if (transaction == null) {
-    // Create a new Transaction entity if null
-    transaction = new Transaction(eventTransaction.hash);
-    // Set the transaction fields
-    transaction.hash = eventTransaction.hash;
-    transaction.index = eventTransaction.index;
-    transaction.from = eventTransaction.from;
-    transaction.to = eventTransaction.to;
-    transaction.value = eventTransaction.value;
-    transaction.gasLimit = eventTransaction.gasLimit;
-    transaction.gasPrice = eventTransaction.gasPrice;
-    transaction.input = eventTransaction.input;
-    transaction.nonce = eventTransaction.nonce;
-    transaction.userOperations = [];
-  }
+  // Create a new Transaction entity
+  let transaction = new Transaction(eventTransaction.hash);
+  // Set the transaction fields
+  transaction.hash = eventTransaction.hash;
+  transaction.index = eventTransaction.index;
+  transaction.from = eventTransaction.from;
+  transaction.to = eventTransaction.to;
+  transaction.value = eventTransaction.value;
+  transaction.gasLimit = eventTransaction.gasLimit;
+  transaction.gasPrice = eventTransaction.gasPrice;
+  transaction.input = eventTransaction.input;
+  transaction.nonce = eventTransaction.nonce;
+  transaction.userOperations = [];
 
   // If event.receipt exists, create a new Receipt entity
   if (eventReceipt != null) {
