@@ -69,6 +69,13 @@ export function handleUserOperationTransaction(
         // log.removed = event.receipt.logs[i].removed?.inner;
         log.save();
       }
+
+      // Add the logs to the receipt
+      if (receipt.logs == null) {
+        receipt.logs = [log.id];
+      } else {
+        receipt.logs!.push(log.id);
+      }
     }
 
     receipt.save();
