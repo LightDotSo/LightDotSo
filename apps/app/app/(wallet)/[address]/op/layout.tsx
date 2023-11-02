@@ -13,17 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
-import Root from "@/app/root";
+import type { Metadata } from "next";
+import { BannerSection } from "@/components/banner-section";
+import { TITLES } from "@/const/titles";
 
-export default function RootLayout(props: {
+export const metadata: Metadata = {
+  title: TITLES.Transactions.title,
+  description: TITLES.Transactions.description,
+};
+
+interface TransactionsLayoutProps {
   children: React.ReactNode;
-  op: React.ReactNode;
-}) {
+}
+
+export default function TransactionsLayout({
+  children,
+}: TransactionsLayoutProps) {
   return (
-    <Root type="wallet">
-      {props.children}
-      {props.op}
-    </Root>
+    <>
+      <BannerSection
+        title={TITLES.Transactions.title}
+        description={TITLES.Transactions.description}
+      >
+        {children}
+      </BannerSection>
+    </>
   );
 }
