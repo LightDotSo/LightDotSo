@@ -38,6 +38,7 @@
     "deploy:satsuma": "concurrently \"pnpm:deploy:satsuma:*\" --max-processes 1 --continue-on-error",
     "deploy:satsuma:arbitrum": "graph deploy --node https://app.satsuma.xyz/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz arbitrum-one --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network arbitrum-one",
     "deploy:satsuma:base": "graph deploy --node https://app.satsuma.xyz/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz base --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network base",
+    "deploy:satsuma:dev": "graph deploy --node https://app.satsuma.xyz/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz base --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network base",
     "deploy:satsuma:mainnet": "graph deploy --node https://app.satsuma.xyz/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz mainnet --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network mainnet",
     "deploy:satsuma:matic": "graph deploy --node https://app.satsuma.xyz/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz matic --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network matic",
     "deploy:satsuma:mumbai": "graph deploy --node https://app.satsuma.xyz/api/subgraphs/deploy --ipfs https://ipfs.satsuma.xyz mumbai --deploy-key ${SATSUMA_DEPLOY_KEY} --version-label v${npm_package_version} --network mumbai",

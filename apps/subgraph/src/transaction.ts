@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { log } from "@graphprotocol/graph-ts";
+import { log, ethereum } from "@graphprotocol/graph-ts";
 import { UserOperationEvent as UserOperationEventEvent } from "../generated/EntryPointv0.6.0/EntryPoint";
 import { Log, Receipt, Transaction } from "../generated/schema";
 
@@ -38,35 +38,37 @@ export function handleUserOperationTransaction(
 
   // If event.receipt exists, create a new Receipt entity
   if (event.receipt != null) {
+    let eventReceipt = event.receipt as ethereum.TransactionReceipt;
+
     let receipt = new Receipt(event.transaction.hash);
 
-    receipt.transactionHash = event.receipt.transactionHash;
-    receipt.transactionIndex = event.receipt.transactionIndex;
-    receipt.blockHash = event.receipt.blockHash;
-    receipt.blockNumber = event.receipt.blockNumber;
-    receipt.cumulativeGasUsed = event.receipt.cumulativeGasUsed;
-    receipt.gasUsed = event.receipt.gasUsed;
-    receipt.contractAddress = event.receipt.contractAddress;
-    receipt.status = event.receipt.status;
-    receipt.root = event.receipt.root;
-    receipt.logsBloom = event.receipt.logsBloom;
+    receipt.transactionHash = eventReceipt.transactionHash;
+    receipt.transactionIndex = eventReceipt.transactionIndex;
+    receipt.blockHash = eventReceipt.blockHash;
+    receipt.blockNumber = eventReceipt.blockNumber;
+    receipt.cumulativeGasUsed = eventReceipt.cumulativeGasUsed;
+    receipt.gasUsed = eventReceipt.gasUsed;
+    receipt.contractAddress = eventReceipt.contractAddress;
+    receipt.status = eventReceipt.status;
+    receipt.root = eventReceipt.root;
+    receipt.logsBloom = eventReceipt.logsBloom;
 
-    for (let i = 0; i < event.receipt.logs.length; i++) {
+    for (let i = 0; i < eventReceipt.logs.length; i++) {
       let log = Log.load(`${event.transaction.hash}-${i}`);
 
       if (log == null) {
         log = new Log(`${event.transaction.hash}-${i}`);
-        log.address = event.receipt.logs[i].address;
-        log.topics = event.receipt.logs[i].topics;
-        log.data = event.receipt.logs[i].data;
-        log.blockHash = event.receipt.logs[i].blockHash;
-        log.blockNumber = event.receipt.logs[i].blockNumber;
-        log.transactionHash = event.receipt.logs[i].transactionHash;
-        log.transactionIndex = event.receipt.logs[i].transactionIndex;
-        log.logIndex = event.receipt.logs[i].logIndex;
-        log.transactionLogIndex = event.receipt.logs[i].transactionLogIndex;
-        log.logType = event.receipt.logs[i].logType;
-        // log.removed = event.receipt.logs[i].removed?.inner;
+        log.address = eventReceipt.logs[i].address;
+        log.topics = eventReceipt.logs[i].topics;
+        log.data = eventReceipt.logs[i].data;
+        log.blockHash = eventReceipt.logs[i].blockHash;
+        log.blockNumber = eventReceipt.logs[i].blockNumber;
+        log.transactionHash = eventReceipt.logs[i].transactionHash;
+        log.transactionIndex = eventReceipt.logs[i].transactionIndex;
+        log.logIndex = eventReceipt.logs[i].logIndex;
+        log.transactionLogIndex = eventReceipt.logs[i].transactionLogIndex;
+        log.logType = eventReceipt.logs[i].logType;
+        // log.removed = eventReceipt.logs[i].removed?.inner;
         log.save();
       }
 
