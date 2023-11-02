@@ -173,6 +173,10 @@ export function handleLightWalletUserOperationRevertReason(
     incrementUserOpCount();
     // Increment the user operation revert count
     incrementUserOpRevertCount();
+    // Handle transaction for the user operation
+    let tx = handleUserOperationTransaction(event);
+    // Get the logs from the user operation
+    handleUserOperationLogs(event);
 
     // -------------------------------------------------------------------------
     // BOILERPLATE
@@ -233,5 +237,8 @@ export function handleLightWalletUserOperationRevertReason(
     entity.userOperation = event.params.userOpHash;
 
     entity.save();
+
+    // Finally, save the transaction
+    tx.save();
   }
 }

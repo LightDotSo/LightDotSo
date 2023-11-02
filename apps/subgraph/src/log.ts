@@ -14,14 +14,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ethereum } from "@graphprotocol/graph-ts";
-import { UserOperationEvent as UserOperationEventEvent } from "../generated/EntryPointv0.6.0/EntryPoint";
+import {
+  UserOperationEvent as UserOperationEventEvent,
+  UserOperationRevertReason as UserOperationRevertReasonEvent,
+} from "../generated/EntryPointv0.6.0/EntryPoint";
 import { Log } from "../generated/schema";
 import {
   BEFORE_EXECUTION_EVENT_HASH,
   USER_OPERATION_EVENT_HASH,
 } from "./const";
 
-export function handleUserOperationLogs(event: UserOperationEventEvent): Log[] {
+export function handleUserOperationLogs(
+  event: UserOperationEventEvent | UserOperationRevertReasonEvent,
+): Log[] {
   let logs = new Array<Log>();
 
   if (event.receipt) {
