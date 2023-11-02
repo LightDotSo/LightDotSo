@@ -16,6 +16,10 @@
 import { ethereum } from "@graphprotocol/graph-ts";
 import { UserOperationEvent as UserOperationEventEvent } from "../generated/EntryPointv0.6.0/EntryPoint";
 import { Log } from "../generated/schema";
+import {
+  BEFORE_EXECUTION_EVENT_HASH,
+  USER_OPERATION_EVENT_HASH,
+} from "./const";
 
 export function handleUserOperationLogs(event: UserOperationEventEvent): Log[] {
   let logs = new Array<Log>();
@@ -42,8 +46,8 @@ export function handleUserOperationLogs(event: UserOperationEventEvent): Log[] {
       let topic = eventReceipt.logs[i].topics[0];
 
       // If the topic is an `UserOperationEvent` topic, get the user operation hash
-      if (topic.toHexString() == "0x0000000") {
-        let logUserOpHash = eventReceipt.logs[i].data;
+      if (topic.toHexString() == USER_OPERATION_EVENT_HASH) {
+        let logUserOpHash = eventReceipt.logs[i].topics[1];
         // If the log user operation hash is equal to the event user operation hash, set the flag to true
         if (logUserOpHash == event.params.userOpHash) {
           flag = true;
@@ -55,7 +59,7 @@ export function handleUserOperationLogs(event: UserOperationEventEvent): Log[] {
       }
 
       // If the topic is an `BeforeExecution` topic, break
-      if (topic.toHexString() == "0x0000000") {
+      if (topic.toHexString() == BEFORE_EXECUTION_EVENT_HASH) {
         break;
       }
 
