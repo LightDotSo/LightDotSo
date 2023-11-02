@@ -134,18 +134,16 @@ export function handleLightWalletUserOperationEvent(
 
     let transaction = Transaction.load(event.transaction.hash);
     if (transaction != null) {
-      transaction.userOperations = [
-        ...transaction.userOperations,
+      transaction.userOperations = lightWallet.userOperations.concat([
         event.params.userOpHash,
-      ];
+      ]);
       transaction.save();
     }
 
     // Add the user operation to the LightWallet
-    lightWallet.userOperations = [
-      ...lightWallet.userOperations,
+    lightWallet.userOperations = lightWallet.userOperations.concat([
       event.params.userOpHash,
-    ];
+    ]);
     lightWallet.save();
 
     // -------------------------------------------------------------------------
@@ -235,18 +233,16 @@ export function handleLightWalletUserOperationRevertReason(
 
     let transaction = Transaction.load(event.transaction.hash);
     if (transaction != null) {
-      transaction.userOperations = [
-        ...transaction.userOperations,
+      transaction.userOperations = lightWallet.userOperations.concat([
         event.params.userOpHash,
-      ];
+      ]);
       transaction.save();
     }
 
     // Add the user operation to the LightWallet
-    lightWallet.userOperations = [
-      ...lightWallet.userOperations,
+    lightWallet.userOperations = lightWallet.userOperations.concat([
       event.params.userOpHash,
-    ];
+    ]);
     lightWallet.save();
 
     // -------------------------------------------------------------------------
