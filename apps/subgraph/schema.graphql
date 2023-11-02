@@ -120,7 +120,7 @@ type Withdrawn @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-# Default Receipt type from graph-tooling
+# Default Log type from graph-tooling
 # https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
 type Log @entity(immutable: true) {
   id: ID!,
@@ -156,9 +156,26 @@ type Receipt @entity(immutable: true) {
   logsBloom: Bytes!,
 }
 
+# Default Transaction type from graph-tooling
+# https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
+type Transaction @entity(immutable: true) {
+  id: Bytes!,  # bytes32 (transactionHash)
+  hash: Bytes,
+  index: BigInt,
+  from: Bytes!,
+  to: Bytes,
+  value: BigInt,
+  gasLimit: BigInt,
+  gasPrice: BigInt,
+  input: Bytes,
+  nonce: BigInt,
+
+  userOperation: [UserOperation!]!
+}
+
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
 type UserOperation @entity(immutable: true) {
-  id: Bytes! # bytes32 (hash)
+  id: Bytes! # bytes32 (transactionHash)
   index: BigInt!
   sender: Bytes! # address
   nonce: BigInt! # uint256
@@ -179,6 +196,7 @@ type UserOperation @entity(immutable: true) {
 
   lightWallet: LightWallet! @derivedFrom(field: "userOperations")
   logs: [Log!] @derivedFrom(field: "userOperation")
+  transaction: Transaction! @derivedFrom(field: "userOperation")
   userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }

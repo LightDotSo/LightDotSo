@@ -37,6 +37,7 @@ import {
   incrementUserOpSuccessCount,
   incrementWalletCount,
 } from "./counter";
+import { handleUserOperationTransaction } from "./transaction";
 import { handleUserOperationFromCalldata } from "./user-operation";
 
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
@@ -84,6 +85,8 @@ export function handleLightWalletUserOperationEvent(
     incrementUserOpCount();
     // Increment the user operation revert count
     incrementUserOpSuccessCount();
+    // Handle transaction for the user operation
+    handleUserOperationTransaction(event);
 
     // -------------------------------------------------------------------------
     // BOILERPLATE

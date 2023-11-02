@@ -1695,6 +1695,212 @@ export class Receipt extends Entity {
   }
 }
 
+export class Transaction extends Entity {
+  constructor(id: Bytes) {
+    super();
+    this.set("id", Value.fromBytes(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Transaction entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.BYTES,
+        `Entities of type Transaction must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Transaction", id.toBytes().toHexString(), this);
+    }
+  }
+
+  static loadInBlock(id: Bytes): Transaction | null {
+    return changetype<Transaction | null>(
+      store.get_in_block("Transaction", id.toHexString())
+    );
+  }
+
+  static load(id: Bytes): Transaction | null {
+    return changetype<Transaction | null>(
+      store.get("Transaction", id.toHexString())
+    );
+  }
+
+  get id(): Bytes {
+    let value = this.get("id");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
+  }
+
+  get hash(): Bytes | null {
+    let value = this.get("hash");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set hash(value: Bytes | null) {
+    if (!value) {
+      this.unset("hash");
+    } else {
+      this.set("hash", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get index(): BigInt | null {
+    let value = this.get("index");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set index(value: BigInt | null) {
+    if (!value) {
+      this.unset("index");
+    } else {
+      this.set("index", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get from(): Bytes {
+    let value = this.get("from");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set from(value: Bytes) {
+    this.set("from", Value.fromBytes(value));
+  }
+
+  get to(): Bytes | null {
+    let value = this.get("to");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set to(value: Bytes | null) {
+    if (!value) {
+      this.unset("to");
+    } else {
+      this.set("to", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get value(): BigInt | null {
+    let value = this.get("value");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set value(value: BigInt | null) {
+    if (!value) {
+      this.unset("value");
+    } else {
+      this.set("value", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get gasLimit(): BigInt | null {
+    let value = this.get("gasLimit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set gasLimit(value: BigInt | null) {
+    if (!value) {
+      this.unset("gasLimit");
+    } else {
+      this.set("gasLimit", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get gasPrice(): BigInt | null {
+    let value = this.get("gasPrice");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set gasPrice(value: BigInt | null) {
+    if (!value) {
+      this.unset("gasPrice");
+    } else {
+      this.set("gasPrice", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get input(): Bytes | null {
+    let value = this.get("input");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set input(value: Bytes | null) {
+    if (!value) {
+      this.unset("input");
+    } else {
+      this.set("input", Value.fromBytes(<Bytes>value));
+    }
+  }
+
+  get nonce(): BigInt | null {
+    let value = this.get("nonce");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set nonce(value: BigInt | null) {
+    if (!value) {
+      this.unset("nonce");
+    } else {
+      this.set("nonce", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get userOperation(): Array<Bytes> {
+    let value = this.get("userOperation");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytesArray();
+    }
+  }
+
+  set userOperation(value: Array<Bytes>) {
+    this.set("userOperation", Value.fromBytesArray(value));
+  }
+}
+
 export class UserOperation extends Entity {
   constructor(id: Bytes) {
     super();
@@ -1958,6 +2164,16 @@ export class UserOperation extends Entity {
 
   get logs(): LogLoader {
     return new LogLoader("UserOperation", this.get("id")!.toString(), "logs");
+  }
+
+  get transaction(): TransactionLoader {
+    return new TransactionLoader(
+      "UserOperation",
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
+      "transaction"
+    );
   }
 
   get userOperationEvent(): UserOperationEventLoader {
@@ -2301,6 +2517,24 @@ export class LogLoader extends Entity {
   load(): Log[] {
     let value = store.loadRelated(this._entity, this._id, this._field);
     return changetype<Log[]>(value);
+  }
+}
+
+export class TransactionLoader extends Entity {
+  _entity: string;
+  _field: string;
+  _id: string;
+
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
+
+  load(): Transaction[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<Transaction[]>(value);
   }
 }
 
