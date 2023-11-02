@@ -54,7 +54,7 @@ export function handleUserOperationLogs(event: UserOperationEventEvent): Log[] {
           flag = true;
         } else {
           // If the log user operation hash is not equal to the event user operation hash, set the flag to false
-          // Could be break, because we handle the logs for a `UserOperationEvent` event
+          // Could be break, since we handle the logs for a `UserOperationEvent` event
           flag = false;
         }
       }
