@@ -122,7 +122,7 @@ type Withdrawn @entity(immutable: true) {
 
 # Default Log type from graph-tooling
 # https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
-type Log @entity {
+type Log @entity(immutable: true) {
   id: ID!, # transactionHash + logIndex
   address: Bytes!,
   topics: [Bytes!],
@@ -141,7 +141,7 @@ type Log @entity {
 
 # Default Receipt type from graph-tooling
 # https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
-type Receipt @entity {
+type Receipt @entity(immutable: true) {
   id: Bytes!,
   transactionHash: Bytes!,
   transactionIndex: BigInt!,
