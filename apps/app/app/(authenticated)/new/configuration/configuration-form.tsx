@@ -122,7 +122,8 @@ export function ConfigurationForm() {
             ]
           : [defaultOwner],
     };
-  }, [threshold, salt, owners, type, defaultOwner]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [defaultOwner]);
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
@@ -233,9 +234,6 @@ export function ConfigurationForm() {
 
   // Set the form values from the URL on mount
   useEffect(() => {
-    // Validate the form on mount
-    form.trigger();
-
     // Set the form values from the default values
     setFormValues({
       ...defaultValues,
@@ -260,15 +258,11 @@ export function ConfigurationForm() {
       setSalt(defaultValues.salt);
     }
     if (defaultValues.owners) {
-      // Iterate over each owner which has a weight
-      const owners = defaultValues.owners.filter(
-        owner => owner?.weight && owner?.address,
-      ) as Owners;
-      setOwners(owners);
+      setOwners(defaultValues.owners);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [defaultValues]);
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[2].href, window.location.origin);
