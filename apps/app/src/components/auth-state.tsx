@@ -17,13 +17,14 @@
 
 import { useEffect } from "react";
 import { useAuth } from "@/stores/useAuth";
-import { useAccount } from "wagmi";
+import { useAccount, useEnsName } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import { isAddress } from "viem";
 
 export const AuthState = () => {
   const { address } = useAccount();
-  const { setAddress, setWallet, logout } = useAuth();
+  const { data: ens } = useEnsName({ address, chainId: 1 });
+  const { setAddress, setWallet, setEns, logout } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -32,6 +33,13 @@ export const AuthState = () => {
   useEffect(() => {
     useAuth.persist.rehydrate();
   }, []);
+
+  // Set the ens name in the auth state if it exists
+  useEffect(() => {
+    if (ens) {
+      setEns(ens);
+    }
+  }, [ens, setEns]);
 
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address

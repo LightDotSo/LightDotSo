@@ -29,6 +29,7 @@ export const newFormSchema = z.object({
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/;
 
 export const newFormConfigurationSchema = z.object({
+  check: z.boolean(),
   salt: z.string().refine(value => BYTES32_REGEX.test(value), {
     message: "Input should be a valid bytes32 value",
   }),

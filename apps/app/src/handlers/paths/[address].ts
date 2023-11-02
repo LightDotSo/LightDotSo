@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getCachedConfiguration, getCachedWallet } from "@/services";
+import { getConfiguration, getWallet } from "@/services";
 import { notFound } from "next/navigation";
 import { validateAddress } from "@/handlers/validators/address";
 import { Result } from "neverthrow";
@@ -30,9 +30,9 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getCachedWallet(params.address as Address);
+  const walletPromise = getWallet(params.address as Address);
 
-  const configPromise = getCachedConfiguration(params.address as Address);
+  const configPromise = getConfiguration(params.address as Address);
 
   const [wallet, config] = await Promise.all([walletPromise, configPromise]);
 

@@ -16,7 +16,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { handler } from "@/handlers/paths/[address]";
-import { getCachedLlama, getQueryClient } from "@/services";
+import { getLlama, getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { notFound } from "next/navigation";
@@ -38,7 +38,7 @@ export default async function Page({
 
   const queryClient = getQueryClient();
 
-  const res = await getCachedLlama(params.address as Address);
+  const res = await getLlama(params.address as Address);
 
   // ---------------------------------------------------------------------------
   // Render
