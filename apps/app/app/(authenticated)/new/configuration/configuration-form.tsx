@@ -24,6 +24,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Checkbox,
   Form,
   FormControl,
   FormField,
@@ -366,7 +367,7 @@ export function ConfigurationForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-4">
                 {fields.map((field, index) => (
-                  <span key={index}>
+                  <div key={index}>
                     {/* A hack to make a padding above the separator */}
                     {type === "personal" && index === 1 && (
                       <div className="pt-4" />
@@ -391,6 +392,7 @@ export function ConfigurationForm() {
                       className={cn(
                         type === "personal" && index > 1 && "sr-only",
                         type !== "personal" && index !== 0 && "sr-only",
+                        index === 0 && "mb-6",
                       )}
                     >
                       Add the owner and their corresponding weight.
@@ -535,7 +537,7 @@ export function ConfigurationForm() {
                         </Button>
                       </div>
                     </FormItem>
-                  </span>
+                  </div>
                 ))}
               </div>
               <div>
@@ -543,7 +545,7 @@ export function ConfigurationForm() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="mt-2"
+                  className="mt-6"
                   onClick={() => {
                     append({ addressOrEns: "", weight: 1 });
                     form.trigger();
@@ -603,6 +605,28 @@ export function ConfigurationForm() {
                     )}
                     {/* Show all errors for debugging */}
                     {/* <pre>{JSON.stringify(form.formState.errors, null, 2)}</pre> */}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="check"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        onBlur={() => {
+                          form.trigger();
+                        }}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel className="cursor-pointer">
+                        Save and continue
+                      </FormLabel>
+                    </div>
                   </FormItem>
                 )}
               />
