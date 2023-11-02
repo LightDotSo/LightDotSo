@@ -171,7 +171,7 @@ type Transaction @entity(immutable: true) {
   nonce: BigInt,
 
   receipt: Receipt,
-  userOperation: [UserOperation!]!
+  userOperation: [UserOperation!]
 }
 
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)

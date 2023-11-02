@@ -19,45 +19,56 @@ import { Log, Receipt, Transaction } from "../generated/schema";
 
 export function handleUserOperationTransaction(
   event: UserOperationEventEvent,
-): void {
+): Transaction {
   // Decode the user operation from the input
   log.info("userOpHash: {}", [event.params.userOpHash.toString()]);
 
-  // Create a new Transaction entity
-  let transaction = new Transaction(event.transaction.hash);
-
-  transaction.hash = event.transaction.hash;
-  transaction.index = event.transaction.index;
-  transaction.from = event.transaction.from;
-  transaction.to = event.transaction.to;
-  transaction.value = event.transaction.value;
-  transaction.gasLimit = event.transaction.gasLimit;
-  transaction.gasPrice = event.transaction.gasPrice;
-  transaction.input = event.transaction.input;
-  transaction.nonce = event.transaction.nonce;
+  // Load the Transaction entity
+  let transaction = Transaction.load(event.transaction.hash);
+  if (transaction == null) {
+    // Create a new Transaction entity if null
+    transaction = new Transaction(event.transaction.hash);
+    // Set the transaction fields
+    transaction.hash = event.transaction.hash;
+    transaction.index = event.transaction.index;
+    transaction.from = event.transaction.from;
+    transaction.to = event.transaction.to;
+    transaction.value = event.transaction.value;
+    transaction.gasLimit = event.transaction.gasLimit;
+    transaction.gasPrice = event.transaction.gasPrice;
+    transaction.input = event.transaction.input;
+    transaction.nonce = event.transaction.nonce;
+  }
 
   // If event.receipt exists, create a new Receipt entity
   if (event.receipt != null) {
     let eventReceipt = event.receipt as ethereum.TransactionReceipt;
 
-    let receipt = new Receipt(event.transaction.hash);
-
-    receipt.transactionHash = eventReceipt.transactionHash;
-    receipt.transactionIndex = eventReceipt.transactionIndex;
-    receipt.blockHash = eventReceipt.blockHash;
-    receipt.blockNumber = eventReceipt.blockNumber;
-    receipt.cumulativeGasUsed = eventReceipt.cumulativeGasUsed;
-    receipt.gasUsed = eventReceipt.gasUsed;
-    receipt.contractAddress = eventReceipt.contractAddress;
-    receipt.status = eventReceipt.status;
-    receipt.root = eventReceipt.root;
-    receipt.logsBloom = eventReceipt.logsBloom;
+    // Load the Receipt entity
+    let receipt = Receipt.load(event.transaction.hash);
+    if (receipt == null) {
+      // Create a new Receipt entity if null
+      receipt = new Receipt(event.transaction.hash);
+      // Set the receipt fields
+      receipt.transactionHash = eventReceipt.transactionHash;
+      receipt.transactionIndex = eventReceipt.transactionIndex;
+      receipt.blockHash = eventReceipt.blockHash;
+      receipt.blockNumber = eventReceipt.blockNumber;
+      receipt.cumulativeGasUsed = eventReceipt.cumulativeGasUsed;
+      receipt.gasUsed = eventReceipt.gasUsed;
+      receipt.contractAddress = eventReceipt.contractAddress;
+      receipt.status = eventReceipt.status;
+      receipt.root = eventReceipt.root;
+      receipt.logsBloom = eventReceipt.logsBloom;
+    }
 
     for (let i = 0; i < eventReceipt.logs.length; i++) {
+      // Load the Log entity
       let log = Log.load(`${event.transaction.hash}-${i}`);
-
       if (log == null) {
+        // Create a new Log entity if null
         log = new Log(`${event.transaction.hash}-${i}`);
+        // Set the log fields
         log.address = eventReceipt.logs[i].address;
         log.topics = eventReceipt.logs[i].topics;
         log.data = eventReceipt.logs[i].data;
@@ -85,5 +96,8 @@ export function handleUserOperationTransaction(
     transaction.receipt = receipt.id;
   }
 
-  transaction.save();
+  // Initialize the user operation array
+  transaction.userOperation = [];
+
+  return transaction;
 }
