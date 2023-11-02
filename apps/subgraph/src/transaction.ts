@@ -99,7 +99,7 @@ export function handleUserOperationTransaction(
   if (transaction.userOperation == null) {
     transaction.userOperation = [userOpHash];
   } else {
-    transaction.userOperation!.push(userOpHash);
+    transaction.userOperation.push(userOpHash);
   }
 
   // Save the transaction
