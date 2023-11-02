@@ -158,6 +158,7 @@ type Receipt @entity(immutable: true) {
 
 # Default Transaction type from graph-tooling
 # https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
+# Entity type not immutable because of the userOperations field that can be added later on events parsing
 type Transaction @entity {
   id: Bytes!,  # bytes32 (transactionHash)
   hash: Bytes,
