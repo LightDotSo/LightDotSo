@@ -63,11 +63,11 @@ export function handleUserOperationLogs(event: UserOperationEventEvent): Log[] {
         break;
       }
 
+      // If the flag is true, set the user operation hash to the log
       if (flag) {
         log.userOperation = event.params.userOpHash;
+        log.save();
       }
-
-      log.save();
     }
   }
 
