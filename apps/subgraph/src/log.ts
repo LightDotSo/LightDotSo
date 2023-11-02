@@ -47,6 +47,7 @@ export function handleUserOperationLogs(event: UserOperationEventEvent): Log[] {
 
       // If the topic is an `UserOperationEvent` topic, get the user operation hash
       if (topic.toHexString() == USER_OPERATION_EVENT_HASH) {
+        // Get the log user operation hash from the log (the first topic is the event hash)
         let logUserOpHash = eventReceipt.logs[i].topics[1];
         // If the log user operation hash is equal to the event user operation hash, set the flag to true
         if (logUserOpHash == event.params.userOpHash) {
