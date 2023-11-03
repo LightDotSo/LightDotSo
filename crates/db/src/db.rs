@@ -16,7 +16,11 @@
 use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
-use ethers::{types::H256, utils::to_checksum};
+use ethers::{
+    types::{H256, U256},
+    utils::to_checksum,
+};
+use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
 use lightdotso_prisma::{
     log, log_topic, receipt, transaction, transaction_category, user_operation, wallet,
     PrismaClient, UserOperationStatus,
@@ -109,12 +113,6 @@ pub async fn create_transaction_with_log_receipt(
                     format!("{:?}", transaction.hash),
                     transaction.nonce.as_u64() as i64,
                     to_checksum(&transaction.from, None),
-                    transaction.value.to_string(),
-                    transaction.gas.to_string(),
-                    transaction.input.to_vec(),
-                    transaction.v.to_string(),
-                    transaction.r.to_string(),
-                    transaction.s.to_string(),
                     chain_id,
                     DateTime::<FixedOffset>::from_utc(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
@@ -124,6 +122,7 @@ pub async fn create_transaction_with_log_receipt(
                         serde_json::to_value(t).unwrap_or_else(|_| serde_json::Value::Null)
                     }),
                     vec![
+                        transaction::input::set(Some(transaction.input.0.to_vec())),
                         transaction::block_hash::set(
                             transaction.block_hash.map(|bh| format!("{:?}", bh)),
                         ),
@@ -160,7 +159,6 @@ pub async fn create_transaction_with_log_receipt(
                     receipt.transaction_index.as_u32() as i32,
                     to_checksum(&receipt.from, None),
                     receipt.cumulative_gas_used.as_u64() as i64,
-                    receipt.logs_bloom.0.to_vec(),
                     vec![
                         receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
                         receipt::block_number::set(
@@ -277,24 +275,10 @@ pub async fn upsert_wallet_with_configuration(
     Ok(Json::from(wallet))
 }
 
-#[allow(clippy::too_many_arguments)]
 #[autometrics]
 pub async fn upsert_user_operation(
     db: Database,
-    hash: ethers::types::H256,
-    sender: ethers::types::H160,
-    nonce: i64,
-    init_code: ethers::types::Bytes,
-    call_data: ethers::types::Bytes,
-    call_gas_limit: i64,
-    verification_gas_limit: i64,
-    pre_verification_gas: i64,
-    max_fee_per_gas: i64,
-    max_priority_fee_per_gas: i64,
-    paymaster_and_data: ethers::types::Bytes,
-    signature: ethers::types::Bytes,
-    entry_point: ethers::types::H160,
-    status: UserOperationStatus,
+    uow: UserOperationWithTransactionAndReceiptLogs,
     chain_id: i64,
 ) -> AppJsonResult<user_operation::Data> {
     info!("Creating user operation");
@@ -302,26 +286,23 @@ pub async fn upsert_user_operation(
     let user_operation = db
         .user_operation()
         .upsert(
-            user_operation::hash::equals(format!("{:?}", hash)),
+            user_operation::hash::equals(format!("{:?}", uow.hash)),
             user_operation::create(
-                format!("{:?}", hash),
-                to_checksum(&sender, None),
-                nonce,
-                init_code.to_vec(),
-                call_data.to_vec(),
-                call_gas_limit,
-                verification_gas_limit,
-                pre_verification_gas,
-                max_fee_per_gas,
-                max_priority_fee_per_gas,
-                paymaster_and_data.to_vec(),
+                format!("{:?}", uow.hash),
+                to_checksum(&uow.sender, None),
+                uow.nonce.as_u64() as i64,
+                uow.init_code.to_vec(),
+                uow.call_data.to_vec(),
+                uow.call_gas_limit.as_u64() as i64,
+                uow.verification_gas_limit.as_u64() as i64,
+                uow.pre_verification_gas.as_u64() as i64,
+                uow.max_fee_per_gas.as_u64() as i64,
+                uow.max_priority_fee_per_gas.as_u64() as i64,
+                uow.paymaster_and_data.to_vec(),
                 chain_id,
-                to_checksum(&entry_point, None),
-                wallet::address::equals(to_checksum(&sender, None)),
-                vec![
-                    user_operation::signature::set(Some(signature.to_vec())),
-                    user_operation::status::set(status),
-                ],
+                to_checksum(&uow.entry_point, None),
+                wallet::address::equals(to_checksum(&uow.sender, None)),
+                vec![user_operation::signature::set(Some(uow.signature.to_vec()))],
             ),
             vec![user_operation::status::set(UserOperationStatus::Executed)],
         )
@@ -329,6 +310,53 @@ pub async fn upsert_user_operation(
         .await?;
 
     Ok(Json::from(user_operation))
+}
+
+#[autometrics]
+pub async fn upsert_user_operation_logs(
+    db: Database,
+    uow: UserOperationWithTransactionAndReceiptLogs,
+) -> AppJsonResult<()> {
+    info!("Creating user operation");
+
+    // Get the logs for the user operation
+    let logs = db
+        .log()
+        .find_many(vec![log::transaction_hash::equals(Some(format!("{:?}", uow.transaction.hash)))])
+        .exec()
+        .await?;
+
+    // Filter the logs by the user operation by the id in uow.logs
+    let logs = logs
+        .into_iter()
+        .filter(|log| {
+            uow.logs.iter().any(|l| {
+                l.log_index == log.log_index.map(U256::from) &&
+                    l.log_index.is_some() &&
+                    log.log_index.is_some()
+            })
+        })
+        .collect::<Vec<_>>();
+
+    // Iterate over the logs and connect them to the user operation logs
+    let _res = db
+        ._transaction()
+        .run(|client| async move {
+            let log_update_items = logs
+                .iter()
+                .map(|log| {
+                    client.user_operation().update(
+                        user_operation::hash::equals(format!("{:?}", uow.hash)),
+                        vec![user_operation::logs::connect(vec![log::id::equals(log.id.clone())])],
+                    )
+                })
+                .collect::<Vec<_>>();
+
+            client._batch(log_update_items).await
+        })
+        .await?;
+
+    Ok(Json::from(()))
 }
 
 // Tests

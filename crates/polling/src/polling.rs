@@ -19,28 +19,36 @@ use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use chrono::Timelike;
 use ethers::{
-    prelude::{Http, Provider},
+    prelude::{Http, Provider, ProviderError},
     providers::Middleware,
+    types::{Block, H256},
     utils::to_checksum,
 };
 use eyre::Result;
-use lightdotso_common::traits::HexToBytes;
-use lightdotso_contracts::provider::get_provider;
+use lightdotso_contracts::{
+    provider::get_provider, types::UserOperationWithTransactionAndReceiptLogs,
+};
 use lightdotso_db::{
-    db::{create_client, upsert_user_operation, upsert_wallet_with_configuration},
+    db::{
+        create_client, create_transaction_with_log_receipt, upsert_user_operation,
+        upsert_user_operation_logs, upsert_wallet_with_configuration,
+    },
     error::DbError,
 };
-use lightdotso_graphql::polling::{
-    min_block::run_min_block_query,
-    user_operations::{
-        run_user_operations_query, BigInt, GetUserOperationsQueryVariables, UserOperation,
+use lightdotso_graphql::{
+    polling::{
+        min_block::run_min_block_query,
+        user_operations::{
+            run_user_operations_query, BigInt, GetUserOperationsQueryVariables, UserOperation,
+        },
     },
+    traits::UserOperationConstruct,
 };
 use lightdotso_kafka::{
     get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
-use lightdotso_prisma::{PrismaClient, UserOperationStatus};
+use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{get_redis_client, redis::Client, wallet::add_to_wallets};
 use lightdotso_solutions::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
@@ -228,10 +236,22 @@ impl Polling {
                             error!("db_try_create_wallet error: {:?}", res);
                         }
 
+                        // Attempt to create the user operation in the db.
+                        let res = self.db_create_transaction_with_log_receipt(op.clone()).await;
+                        if res.is_err() {
+                            error!("db_create_transaction_with_log_receipt error: {:?}", res);
+                        }
+
                         // Create the user operation in the db.
-                        let res = self.db_upsert_user_operation(op).await;
+                        let res = self.db_upsert_user_operation(op.clone()).await;
                         if res.is_err() {
                             error!("db_upsert_user_operation error: {:?}", res);
+                        }
+
+                        // Upsert the user operation logs in the db.
+                        let res = self.db_upsert_user_operation_logs(op.clone()).await;
+                        if res.is_err() {
+                            error!("db_upsert_user_operation_logs error: {:?}", res);
                         }
 
                         // Send the tx queue on all modes.
@@ -261,30 +281,57 @@ impl Polling {
     #[autometrics]
     pub async fn db_upsert_user_operation(
         &self,
-        user_operation: &UserOperation,
+        op: UserOperation,
     ) -> Result<Json<lightdotso_prisma::user_operation::Data>, DbError> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
+        let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
+        let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
+
+        { || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
+            .retry(&ExponentialBuilder::default())
+            .await
+    }
+
+    /// Upserts user operation logs in db
+    #[autometrics]
+    pub async fn db_upsert_user_operation_logs(
+        &self,
+        op: UserOperation,
+    ) -> Result<Json<()>, DbError> {
+        let db_client = self.db_client.clone();
+        let chain_id = self.chain_id;
+        let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
+        let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
+
+        { || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
+            .retry(&ExponentialBuilder::default())
+            .await
+    }
+
+    /// Create a new transaction w/ the
+    #[autometrics]
+    pub async fn db_create_transaction_with_log_receipt(
+        &self,
+        op: UserOperation,
+    ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
+        let db_client = self.db_client.clone();
+        let chain_id = self.chain_id;
+        let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
+        let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
+
+        let block = self.get_block(uow.transaction.block_number.unwrap()).await.unwrap().unwrap();
 
         {
             || {
-                upsert_user_operation(
+                create_transaction_with_log_receipt(
                     db_client.clone(),
-                    user_operation.id.0.parse().unwrap(),
-                    user_operation.sender.0.parse().unwrap(),
-                    user_operation.nonce.0.parse().unwrap(),
-                    user_operation.init_code.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.call_data.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.call_gas_limit.0.parse().unwrap(),
-                    user_operation.verification_gas_limit.0.parse().unwrap(),
-                    user_operation.pre_verification_gas.0.parse().unwrap(),
-                    user_operation.max_fee_per_gas.0.parse().unwrap(),
-                    user_operation.max_priority_fee_per_gas.0.parse().unwrap(),
-                    user_operation.paymaster_and_data.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.signature.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.entry_point.0.parse().unwrap(),
-                    UserOperationStatus::Executed,
+                    uow.clone().transaction,
+                    uow.clone().transaction_logs,
+                    uow.clone().receipt,
                     chain_id as i64,
+                    block.timestamp,
+                    None,
                 )
             }
         }
@@ -336,6 +383,18 @@ impl Polling {
             error!("Redis connection error, {:?}", con.err());
             Ok(())
         }
+    }
+
+    /// Get the block logs for the given block number
+    #[autometrics]
+    pub async fn get_block(
+        &self,
+        block_number: ethers::types::U64,
+    ) -> Result<Option<Block<H256>>, ProviderError> {
+        let client = self.provider.clone().unwrap();
+
+        // Get the logs
+        { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Add a new tx in the queue

@@ -11,9 +11,13 @@
 [dependencies]
   cynic = { version = "3.2.2", features = ["http-reqwest-blocking"] }
   cynic-codegen = { version = "3.2.2" }
+  ethers = { workspace = true }
   eyre = { workspace = true }
   insta = "1.17"
   lazy_static = { workspace = true }
+  lightdotso-common = { workspace = true }
+  lightdotso-contracts = { workspace = true }
+  lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   reqwest = { version = "0.11", features = ["json", "blocking"] }
   tokio = { workspace = true }

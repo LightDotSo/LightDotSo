@@ -6086,7 +6086,9 @@ name = "lightdotso-common"
 version = "0.1.0"
 dependencies = [
  "const-hex",
+ "ethers 2.0.8",
  "eyre",
+ "serde",
 ]
 
 [[package]]
@@ -6135,6 +6137,8 @@ dependencies = [
  "axum 0.6.20",
  "ethers 2.0.8",
  "eyre",
+ "lightdotso-contracts",
+ "lightdotso-graphql",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "prisma-client-rust",
@@ -6174,9 +6178,13 @@ version = "0.1.0"
 dependencies = [
  "cynic",
  "cynic-codegen",
+ "ethers 2.0.8",
  "eyre",
  "insta",
  "lazy_static",
+ "lightdotso-common",
+ "lightdotso-contracts",
+ "lightdotso-prisma",
  "lightdotso-tracing",
  "reqwest",
  "tokio",
