@@ -51,6 +51,51 @@ query GetUserOperationsQuery($minBlock: BigInt!, $minIndex: BigInt!) {
       blockTimestamp
       transactionHash
     }
+    transaction {
+      id
+      hash
+      index
+      from
+      to
+      value
+      gasLimit
+      gasPrice
+      input
+      nonce
+      receipt {
+        id
+        transactionHash
+        transactionIndex
+        blockHash
+        blockNumber
+        cumulativeGasUsed
+        gasUsed
+        status
+        logsBloom
+        logs {
+          id
+          address
+          topics
+          data
+          blockHash
+          blockNumber
+          transactionHash
+          transactionIndex
+          logIndex
+        }
+      }
+    }
+    logs {
+      id
+      address
+      topics
+      data
+      blockHash
+      blockNumber
+      transactionHash
+      transactionIndex
+      logIndex
+    }
   }
   _meta {
     block {
