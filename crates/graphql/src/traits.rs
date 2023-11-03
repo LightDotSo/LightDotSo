@@ -94,17 +94,17 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 .unwrap()
                 .into(),
             signature: op.user_operation.signature.clone().0.hex_to_bytes().unwrap().into(),
-            logs: op.user_operation.logs.map_or(Vec::new(), |log| {
-                log.into_iter()
-                    .map(|g| Log {
-                        address: g.address.0.parse().unwrap(),
-                        topics: g
+            logs: op.user_operation.logs.map_or(Vec::new(), |logs| {
+                logs.into_iter()
+                    .map(|log| Log {
+                        address: log.address.0.parse().unwrap(),
+                        topics: log
                             .topics
                             .unwrap()
                             .into_iter()
                             .map(|t| t.0.parse().unwrap())
                             .collect(),
-                        data: g.data.0.hex_to_bytes().unwrap().into(),
+                        data: log.data.0.hex_to_bytes().unwrap().into(),
                         block_hash: None,
                         block_number: None,
                         transaction_hash: None,
@@ -163,17 +163,17 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
             },
             transaction_logs: op.user_operation.transaction.receipt.clone().unwrap().logs.map_or(
                 Vec::new(),
-                |log| {
-                    log.into_iter()
-                        .map(|g| Log {
-                            address: g.address.0.parse().unwrap(),
-                            topics: g
+                |logs| {
+                    logs.into_iter()
+                        .map(|log| Log {
+                            address: log.address.0.parse().unwrap(),
+                            topics: log
                                 .topics
                                 .unwrap()
                                 .into_iter()
                                 .map(|t| t.0.parse().unwrap())
                                 .collect(),
-                            data: g.data.0.hex_to_bytes().unwrap().into(),
+                            data: log.data.0.hex_to_bytes().unwrap().into(),
                             block_hash: None,
                             block_number: None,
                             transaction_hash: None,
