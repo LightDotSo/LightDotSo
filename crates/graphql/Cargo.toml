@@ -11,6 +11,7 @@
 [dependencies]
   cynic = { version = "3.2.2", features = ["http-reqwest-blocking"] }
   cynic-codegen = { version = "3.2.2" }
+  ethers = { workspace = true }
   eyre = { workspace = true }
   insta = "1.17"
   lazy_static = { workspace = true }

@@ -14,8 +14,53 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::polling::user_operations::UserOperation;
+use ethers::types::{
+    Address, Bloom, Bytes, Log, OtherFields, Transaction, TransactionReceipt, H256, U256,
+};
 use lightdotso_common::traits::HexToBytes;
-use lightdotso_prisma::{user_operation, UserOperationStatus};
+
+// From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/primitives/src/user_operation.rs#L32
+// License: MIT
+
+/// User operation receipt
+pub struct UserOperationWithTransactionAndReceiptLogs {
+    /// The chain id of the chain this operation was sent to
+    pub chain_id: i64,
+    /// The hash of the user operation
+    pub hash: H256,
+    /// The entry point address this operation was sent to
+    pub entry_point: Address,
+    /// Sender of the user operation
+    pub sender: Address,
+    /// Nonce (anti replay protection)
+    pub nonce: U256,
+    /// Init code for the account (needed if account not yet deployed and needs to be created)
+    pub init_code: Bytes,
+    /// The data that is passed to the sender during the main execution call
+    pub call_data: Bytes,
+    /// The amount of gas to allocate for the main execution call
+    pub call_gas_limit: U256,
+    /// The amount of gas to allocate for the verification step
+    pub verification_gas_limit: U256,
+    /// The amount of gas to pay bundler to compensate for the pre-verification execution and
+    /// calldata
+    pub pre_verification_gas: U256,
+    /// Maximum fee per gas (similar to EIP-1559)
+    pub max_fee_per_gas: U256,
+    /// Maximum priority fee per gas (similar to EIP-1559)
+    pub max_priority_fee_per_gas: U256,
+    /// Address of paymaster sponsoring the user operation, followed by extra data to send to the
+    /// paymaster (can be empty)
+    pub paymaster_and_data: Bytes,
+    /// Data passed to the account along with the nonce during the verification step
+    pub signature: Bytes,
+    /// Logs emitted by this operation
+    pub logs: Vec<Log>,
+    /// The transaction that included this operation
+    pub transaction: Transaction,
+    /// The receipt of the transaction that included this operation
+    pub receipt: TransactionReceipt,
+}
 
 pub struct UserOperationConstruct {
     pub user_operation: UserOperation,
@@ -23,15 +68,16 @@ pub struct UserOperationConstruct {
 }
 
 // Implement From<UserOperationConstruct> for User operation.
-impl From<UserOperationConstruct> for user_operation::Data {
+impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs {
     fn from(op: UserOperationConstruct) -> Self {
         Self {
             chain_id: op.chain_id,
             hash: op.user_operation.id.0.parse().unwrap(),
+            entry_point: op.user_operation.entry_point.0.parse().unwrap(),
             sender: op.user_operation.sender.0.parse().unwrap(),
             nonce: op.user_operation.nonce.0.parse().unwrap(),
-            init_code: op.user_operation.init_code.clone().0.hex_to_bytes().unwrap(),
-            call_data: op.user_operation.call_data.clone().0.hex_to_bytes().unwrap(),
+            init_code: op.user_operation.init_code.clone().0.hex_to_bytes().unwrap().into(),
+            call_data: op.user_operation.call_data.clone().0.hex_to_bytes().unwrap().into(),
             call_gas_limit: op.user_operation.call_gas_limit.0.parse().unwrap(),
             verification_gas_limit: op.user_operation.verification_gas_limit.0.parse().unwrap(),
             pre_verification_gas: op.user_operation.pre_verification_gas.0.parse().unwrap(),
@@ -43,21 +89,66 @@ impl From<UserOperationConstruct> for user_operation::Data {
                 .clone()
                 .0
                 .hex_to_bytes()
-                .unwrap(),
-            status: UserOperationStatus::Executed,
+                .unwrap()
+                .into(),
             signature: op.user_operation.signature.clone().0.hex_to_bytes().unwrap().into(),
-            entry_point: op.user_operation.entry_point.0.parse().unwrap(),
-            paymaster: None,
-            paymaster_id: None,
-            transaction: None,
-            transaction_hash: None,
-            wallet: None,
-            wallet_address: op.user_operation.light_wallet.id.0.parse().unwrap(),
-            notification: None,
-            notification_id: None,
-            history: None,
-            signatures: None,
-            user_operation_category: None,
+            logs: vec![],
+            transaction: Transaction {
+                hash: op.user_operation.transaction.hash.unwrap().0.parse().unwrap(),
+                nonce: 0.into(),
+                block_hash: None,
+                block_number: None,
+                transaction_index: None,
+                from: op.user_operation.transaction.from.0.parse().unwrap(),
+                to: Some(op.user_operation.transaction.to.unwrap().0.parse().unwrap()),
+                value: 0.into(),
+                gas_price: None,
+                gas: 0.into(),
+                input: op
+                    .user_operation
+                    .transaction
+                    .input
+                    .unwrap()
+                    .0
+                    .hex_to_bytes()
+                    .unwrap()
+                    .into(),
+                v: 0.into(),
+                r: 0.into(),
+                s: 0.into(),
+                transaction_type: None,
+                access_list: None,
+                max_priority_fee_per_gas: None,
+                max_fee_per_gas: None,
+                chain_id: None,
+                other: OtherFields::default(),
+            },
+            receipt: TransactionReceipt {
+                transaction_hash: op
+                    .user_operation
+                    .transaction
+                    .receipt
+                    .unwrap()
+                    .id
+                    .0
+                    .parse()
+                    .unwrap(),
+                transaction_index: op.user_operation.transaction.index.unwrap().0.parse().unwrap(),
+                block_hash: None,
+                block_number: None,
+                cumulative_gas_used: 0.into(),
+                gas_used: None,
+                contract_address: None,
+                logs: vec![],
+                status: None,
+                logs_bloom: Bloom::default(),
+                root: None,
+                from: op.user_operation.transaction.from.0.parse().unwrap(),
+                to: None,
+                transaction_type: None,
+                effective_gas_price: None,
+                other: OtherFields::default(),
+            },
         }
     }
 }

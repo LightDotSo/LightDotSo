@@ -260,7 +260,8 @@ model Receipt {
   root              String?
   /// Logs bloom
   /// pub logs_bloom: Bloom
-  logsBloom         Bytes
+  // WARNING: Converting this as optional due to the graph limitations
+  logsBloom         Bytes?
   /// Transaction type, Some(1) for AccessList transaction, None for Legacy
   /// pub transaction_type: Option<U64>
   transactionType   Int?

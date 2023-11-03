@@ -6135,6 +6135,7 @@ dependencies = [
  "axum 0.6.20",
  "ethers 2.0.8",
  "eyre",
+ "lightdotso-graphql",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "prisma-client-rust",
@@ -6174,6 +6175,7 @@ version = "0.1.0"
 dependencies = [
  "cynic",
  "cynic-codegen",
+ "ethers 2.0.8",
  "eyre",
  "insta",
  "lazy_static",
