@@ -32,14 +32,32 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
             hash: op.user_operation.id.0.parse().unwrap(),
             entry_point: op.user_operation.entry_point.0.parse().unwrap(),
             sender: op.user_operation.sender.0.parse().unwrap(),
-            nonce: op.user_operation.nonce.0.parse().unwrap(),
+            nonce: (op.user_operation.nonce.0.parse::<u64>().unwrap()).into(),
             init_code: op.user_operation.init_code.clone().0.hex_to_bytes().unwrap().into(),
             call_data: op.user_operation.call_data.clone().0.hex_to_bytes().unwrap().into(),
-            call_gas_limit: op.user_operation.call_gas_limit.0.parse().unwrap(),
-            verification_gas_limit: op.user_operation.verification_gas_limit.0.parse().unwrap(),
-            pre_verification_gas: op.user_operation.pre_verification_gas.0.parse().unwrap(),
-            max_fee_per_gas: op.user_operation.max_fee_per_gas.0.parse().unwrap(),
-            max_priority_fee_per_gas: op.user_operation.max_priority_fee_per_gas.0.parse().unwrap(),
+            call_gas_limit: (op.user_operation.call_gas_limit.0.parse::<u64>().unwrap()).into(),
+            verification_gas_limit: (op
+                .user_operation
+                .verification_gas_limit
+                .0
+                .parse::<u64>()
+                .unwrap())
+            .into(),
+            pre_verification_gas: (op
+                .user_operation
+                .pre_verification_gas
+                .0
+                .parse::<u64>()
+                .unwrap())
+            .into(),
+            max_fee_per_gas: (op.user_operation.max_fee_per_gas.0.parse::<u64>().unwrap()).into(),
+            max_priority_fee_per_gas: (op
+                .user_operation
+                .max_priority_fee_per_gas
+                .0
+                .parse::<u64>()
+                .unwrap())
+            .into(),
             paymaster_and_data: op
                 .user_operation
                 .paymaster_and_data
@@ -403,5 +421,13 @@ mod tests {
             super::UserOperationConstruct { user_operation, chain_id: 1 };
 
         println!("{:?}", user_operation_construct);
+
+        let user_operation_with_transaction_and_receipt_logs: super::UserOperationWithTransactionAndReceiptLogs =
+            user_operation_construct.into();
+
+        println!("{:?}", user_operation_with_transaction_and_receipt_logs);
+
+        assert_eq!(user_operation_with_transaction_and_receipt_logs.chain_id, 1);
+        assert_eq!(user_operation_with_transaction_and_receipt_logs.call_gas_limit, 5000000.into());
     }
 }
