@@ -14,55 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::polling::user_operations::UserOperation;
-use ethers::types::{
-    Address, Bloom, Bytes, Log, OtherFields, Transaction, TransactionReceipt, H256, U256,
-};
+use ethers::types::{Bloom, Log, OtherFields, Transaction, TransactionReceipt};
 use lightdotso_common::traits::HexToBytes;
-
-// From: https://github.com/shunkakinoki/silius/blob/6a92f9414263754a74a193ce79b489db58cbbc43/crates/primitives/src/user_operation.rs#L32
-// License: MIT
-
-/// User operation receipt
-pub struct UserOperationWithTransactionAndReceiptLogs {
-    /// The chain id of the chain this operation was sent to
-    pub chain_id: i64,
-    /// The hash of the user operation
-    pub hash: H256,
-    /// The entry point address this operation was sent to
-    pub entry_point: Address,
-    /// Sender of the user operation
-    pub sender: Address,
-    /// Nonce (anti replay protection)
-    pub nonce: U256,
-    /// Init code for the account (needed if account not yet deployed and needs to be created)
-    pub init_code: Bytes,
-    /// The data that is passed to the sender during the main execution call
-    pub call_data: Bytes,
-    /// The amount of gas to allocate for the main execution call
-    pub call_gas_limit: U256,
-    /// The amount of gas to allocate for the verification step
-    pub verification_gas_limit: U256,
-    /// The amount of gas to pay bundler to compensate for the pre-verification execution and
-    /// calldata
-    pub pre_verification_gas: U256,
-    /// Maximum fee per gas (similar to EIP-1559)
-    pub max_fee_per_gas: U256,
-    /// Maximum priority fee per gas (similar to EIP-1559)
-    pub max_priority_fee_per_gas: U256,
-    /// Address of paymaster sponsoring the user operation, followed by extra data to send to the
-    /// paymaster (can be empty)
-    pub paymaster_and_data: Bytes,
-    /// Data passed to the account along with the nonce during the verification step
-    pub signature: Bytes,
-    /// Logs emitted by this operation
-    pub logs: Vec<Log>,
-    /// The transaction that included this operation
-    pub transaction: Transaction,
-    /// Logs for the transaction that included this operation
-    pub transaction_logs: Vec<Log>,
-    /// The receipt of the transaction that included this operation
-    pub receipt: TransactionReceipt,
-}
+use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
 
 pub struct UserOperationConstruct {
     pub user_operation: UserOperation,

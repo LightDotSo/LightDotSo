@@ -24,23 +24,27 @@ use ethers::{
     utils::to_checksum,
 };
 use eyre::Result;
-use lightdotso_common::traits::HexToBytes;
-use lightdotso_contracts::provider::get_provider;
+use lightdotso_contracts::{
+    provider::get_provider, types::UserOperationWithTransactionAndReceiptLogs,
+};
 use lightdotso_db::{
     db::{create_client, upsert_user_operation, upsert_wallet_with_configuration},
     error::DbError,
 };
-use lightdotso_graphql::polling::{
-    min_block::run_min_block_query,
-    user_operations::{
-        run_user_operations_query, BigInt, GetUserOperationsQueryVariables, UserOperation,
+use lightdotso_graphql::{
+    polling::{
+        min_block::run_min_block_query,
+        user_operations::{
+            run_user_operations_query, BigInt, GetUserOperationsQueryVariables, UserOperation,
+        },
     },
+    traits::UserOperationConstruct,
 };
 use lightdotso_kafka::{
     get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
-use lightdotso_prisma::{PrismaClient, UserOperationStatus};
+use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{get_redis_client, redis::Client, wallet::add_to_wallets};
 use lightdotso_solutions::init::get_image_hash_salt_from_init_code;
 use lightdotso_tracing::tracing::{error, info, trace, warn};
@@ -229,7 +233,7 @@ impl Polling {
                         }
 
                         // Create the user operation in the db.
-                        let res = self.db_upsert_user_operation(op).await;
+                        let res = self.db_upsert_user_operation(op.clone()).await;
                         if res.is_err() {
                             error!("db_upsert_user_operation error: {:?}", res);
                         }
@@ -261,35 +265,16 @@ impl Polling {
     #[autometrics]
     pub async fn db_upsert_user_operation(
         &self,
-        user_operation: &UserOperation,
+        op: UserOperation,
     ) -> Result<Json<lightdotso_prisma::user_operation::Data>, DbError> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
+        let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
+        let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        {
-            || {
-                upsert_user_operation(
-                    db_client.clone(),
-                    user_operation.id.0.parse().unwrap(),
-                    user_operation.sender.0.parse().unwrap(),
-                    user_operation.nonce.0.parse().unwrap(),
-                    user_operation.init_code.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.call_data.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.call_gas_limit.0.parse().unwrap(),
-                    user_operation.verification_gas_limit.0.parse().unwrap(),
-                    user_operation.pre_verification_gas.0.parse().unwrap(),
-                    user_operation.max_fee_per_gas.0.parse().unwrap(),
-                    user_operation.max_priority_fee_per_gas.0.parse().unwrap(),
-                    user_operation.paymaster_and_data.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.signature.clone().0.hex_to_bytes().unwrap().into(),
-                    user_operation.entry_point.0.parse().unwrap(),
-                    UserOperationStatus::Executed,
-                    chain_id as i64,
-                )
-            }
-        }
-        .retry(&ExponentialBuilder::default())
-        .await
+        { || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
+            .retry(&ExponentialBuilder::default())
+            .await
     }
 
     /// Attempt to create a new operation in the db

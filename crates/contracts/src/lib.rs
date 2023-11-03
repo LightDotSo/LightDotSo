@@ -17,3 +17,4 @@ pub mod constants;
 pub mod erc1271;
 pub mod paymaster;
 pub mod provider;
+pub mod types;
