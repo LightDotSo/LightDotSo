@@ -94,7 +94,28 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 .unwrap()
                 .into(),
             signature: op.user_operation.signature.clone().0.hex_to_bytes().unwrap().into(),
-            logs: vec![],
+            logs: op.user_operation.logs.map_or(Vec::new(), |log| {
+                log.into_iter()
+                    .map(|g| Log {
+                        address: g.address.0.parse().unwrap(),
+                        topics: g
+                            .topics
+                            .unwrap()
+                            .into_iter()
+                            .map(|t| t.0.parse().unwrap())
+                            .collect(),
+                        data: g.data.0.hex_to_bytes().unwrap().into(),
+                        block_hash: None,
+                        block_number: None,
+                        transaction_hash: None,
+                        transaction_index: None,
+                        log_index: None,
+                        transaction_log_index: None,
+                        log_type: None,
+                        removed: None,
+                    })
+                    .collect()
+            }),
             transaction: Transaction {
                 hash: op.user_operation.transaction.hash.unwrap().0.parse().unwrap(),
                 // Determistic Option Zero
@@ -146,7 +167,12 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                     log.into_iter()
                         .map(|g| Log {
                             address: g.address.0.parse().unwrap(),
-                            topics: vec![],
+                            topics: g
+                                .topics
+                                .unwrap()
+                                .into_iter()
+                                .map(|t| t.0.parse().unwrap())
+                                .collect(),
                             data: g.data.0.hex_to_bytes().unwrap().into(),
                             block_hash: None,
                             block_number: None,
