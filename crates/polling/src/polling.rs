@@ -31,7 +31,7 @@ use lightdotso_contracts::{
 use lightdotso_db::{
     db::{
         create_client, create_transaction_with_log_receipt, upsert_user_operation,
-        upsert_wallet_with_configuration,
+        upsert_user_operation_logs, upsert_wallet_with_configuration,
     },
     error::DbError,
 };
@@ -248,6 +248,12 @@ impl Polling {
                             error!("db_upsert_user_operation error: {:?}", res);
                         }
 
+                        // Upsert the user operation logs in the db.
+                        let res = self.db_upsert_user_operation_logs(op.clone()).await;
+                        if res.is_err() {
+                            error!("db_upsert_user_operation_logs error: {:?}", res);
+                        }
+
                         // Send the tx queue on all modes.
                         if self.kafka_client.is_some() && self.provider.is_some() {
                             let _ = self.send_tx_queue(op.block_number.0.parse().unwrap()).await;
@@ -283,6 +289,22 @@ impl Polling {
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
         { || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
+            .retry(&ExponentialBuilder::default())
+            .await
+    }
+
+    /// Upserts user operation logs in db
+    #[autometrics]
+    pub async fn db_upsert_user_operation_logs(
+        &self,
+        op: UserOperation,
+    ) -> Result<Json<()>, DbError> {
+        let db_client = self.db_client.clone();
+        let chain_id = self.chain_id;
+        let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
+        let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
+
+        { || upsert_user_operation_logs(db_client.clone(), uow.clone()) }
             .retry(&ExponentialBuilder::default())
             .await
     }

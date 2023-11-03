@@ -16,7 +16,10 @@
 use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
-use ethers::{types::H256, utils::to_checksum};
+use ethers::{
+    types::{H256, U256},
+    utils::to_checksum,
+};
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
 use lightdotso_prisma::{
     log, log_topic, receipt, transaction, transaction_category, user_operation, wallet,
@@ -307,6 +310,53 @@ pub async fn upsert_user_operation(
         .await?;
 
     Ok(Json::from(user_operation))
+}
+
+#[autometrics]
+pub async fn upsert_user_operation_logs(
+    db: Database,
+    uow: UserOperationWithTransactionAndReceiptLogs,
+) -> AppJsonResult<()> {
+    info!("Creating user operation");
+
+    // Get the logs for the user operation
+    let logs = db
+        .log()
+        .find_many(vec![log::transaction_hash::equals(Some(format!("{:?}", uow.transaction.hash)))])
+        .exec()
+        .await?;
+
+    // Filter the logs by the user operation by the id in uow.logs
+    let logs = logs
+        .into_iter()
+        .filter(|log| {
+            uow.logs.iter().any(|l| {
+                l.log_index == log.log_index.map(U256::from) &&
+                    l.log_index.is_some() &&
+                    log.log_index.is_some()
+            })
+        })
+        .collect::<Vec<_>>();
+
+    // Iterate over the logs and connect them to the user operation logs
+    let _res = db
+        ._transaction()
+        .run(|client| async move {
+            let log_update_items = logs
+                .iter()
+                .map(|log| {
+                    client.user_operation().update(
+                        user_operation::hash::equals(format!("{:?}", uow.hash)),
+                        vec![user_operation::logs::connect(vec![log::id::equals(log.id.clone())])],
+                    )
+                })
+                .collect::<Vec<_>>();
+
+            client._batch(log_update_items).await
+        })
+        .await?;
+
+    Ok(Json::from(()))
 }
 
 // Tests
