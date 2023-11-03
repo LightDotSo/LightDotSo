@@ -260,7 +260,7 @@ model Receipt {
   root              String?
   /// Logs bloom
   /// pub logs_bloom: Bloom
-  // WARNING: Converting this as optional due to the graph limitations
+  /// WARNING: Converting this as optional due to the graph limitations
   logsBloom         Bytes?
   /// Transaction type, Some(1) for AccessList transaction, None for Legacy
   /// pub transaction_type: Option<U64>
@@ -306,25 +306,31 @@ model Transaction {
   to                   String?
   /// Transferred value
   /// pub value: U256
-  value                String
+  /// WARNING: Converting this as optional due to the graph limitations
+  value                String?
   /// Gas Price, null for Type 2 transactions
   /// pub gas_price: Option<U256>
   gas_price            BigInt?
   /// Gas amount
   /// pub gas: U256
-  gas                  String
+  /// WARNING: Converting this as optional due to the graph limitations
+  gas                  String?
   /// Input data
   /// pub input: Bytes
-  input                Bytes
+  /// WARNING: Converting this as optional due to the graph limitations
+  input                Bytes?
   /// ECDSA recovery id
   /// pub v: U64
-  v                    String
+  /// WARNING: Converting this as optional due to the graph limitations
+  v                    String?
   /// ECDSA signature r
   /// pub r: U256
-  r                    String
+  /// WARNING: Converting this as optional due to the graph limitations
+  r                    String?
   /// ECDSA signature s
   /// pub s: U256
-  s                    String
+  /// WARNING: Converting this as optional due to the graph limitations
+  s                    String?
   /// EIP2718
   /// Transaction type, Some(2) for EIP-1559 transaction,
   /// Some(1) for AccessList transaction, None for Legacy
