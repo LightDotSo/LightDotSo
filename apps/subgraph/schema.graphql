@@ -137,6 +137,7 @@ type Log @entity(immutable: true) {
   removed: Boolean,
 
   userOperation: UserOperation
+  receipt: Receipt!
 }
 
 # Default Receipt type from graph-tooling
@@ -150,10 +151,12 @@ type Receipt @entity(immutable: true) {
   cumulativeGasUsed: BigInt!,
   gasUsed: BigInt!,
   contractAddress: Bytes!,
-  logs: [Log!],
   status: BigInt!,
   root: Bytes!,
   logsBloom: Bytes!,
+
+  logs: [Log!]! @derivedFrom(field: "receipt"),
+  transaction: Transaction!
 }
 
 # Default Transaction type from graph-tooling
@@ -171,8 +174,7 @@ type Transaction @entity {
   input: Bytes,
   nonce: BigInt,
 
-  receipt: Receipt,
-
+  receipt: Receipt @derivedFrom(field: "transaction"),
   userOperations: [UserOperation!]!
 }
 
@@ -197,9 +199,9 @@ type UserOperation @entity {
 
   entryPoint: Bytes! # address
 
-  lightWallet: LightWallet! @derivedFrom(field: "userOperations")
+  lightWallet: LightWallet @derivedFrom(field: "userOperations")
   logs: [Log!] @derivedFrom(field: "userOperation")
-  transaction: Transaction! @derivedFrom(field: "userOperations")
+  transaction: Transaction @derivedFrom(field: "userOperations")
   userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }

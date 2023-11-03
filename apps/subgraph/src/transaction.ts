@@ -55,25 +55,21 @@ export function handleUserOperationTransaction(
     receipt.logsBloom = eventReceipt.logsBloom;
 
     for (let i = 0; i < eventReceipt.logs.length; i++) {
-      // Load the Log entity
-      let log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
-      if (log == null) {
-        // Create a new Log entity if null
-        log = new Log(`${eventTransaction.hash.toHexString()}-${i}`);
-        // Set the log fields
-        log.address = eventReceipt.logs[i].address;
-        log.topics = eventReceipt.logs[i].topics;
-        log.data = eventReceipt.logs[i].data;
-        log.blockHash = eventReceipt.logs[i].blockHash;
-        log.blockNumber = eventReceipt.logs[i].blockNumber;
-        log.transactionHash = eventReceipt.logs[i].transactionHash;
-        log.transactionIndex = eventReceipt.logs[i].transactionIndex;
-        log.logIndex = eventReceipt.logs[i].logIndex;
-        log.transactionLogIndex = eventReceipt.logs[i].transactionLogIndex;
-        log.logType = eventReceipt.logs[i].logType;
-        // log.removed = eventReceipt.logs[i].removed?.inner;
-        log.save();
-      }
+      // Create a new Log entity if null
+      let log = new Log(`${eventTransaction.hash.toHexString()}-${i}`);
+      // Set the log fields
+      log.address = eventReceipt.logs[i].address;
+      log.topics = eventReceipt.logs[i].topics;
+      log.data = eventReceipt.logs[i].data;
+      log.blockHash = eventReceipt.logs[i].blockHash;
+      log.blockNumber = eventReceipt.logs[i].blockNumber;
+      log.transactionHash = eventReceipt.logs[i].transactionHash;
+      log.transactionIndex = eventReceipt.logs[i].transactionIndex;
+      log.logIndex = eventReceipt.logs[i].logIndex;
+      log.transactionLogIndex = eventReceipt.logs[i].transactionLogIndex;
+      log.logType = eventReceipt.logs[i].logType;
+      // log.removed = eventReceipt.logs[i].removed?.inner;
+      log.save();
 
       // Add the logs to the receipt
       if (receipt.logs == null) {
