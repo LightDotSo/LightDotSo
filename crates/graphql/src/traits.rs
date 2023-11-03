@@ -58,6 +58,8 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     pub logs: Vec<Log>,
     /// The transaction that included this operation
     pub transaction: Transaction,
+    /// Logs for the transaction that included this operation
+    pub transaction_logs: Vec<Log>,
     /// The receipt of the transaction that included this operation
     pub receipt: TransactionReceipt,
 }
@@ -95,14 +97,21 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
             logs: vec![],
             transaction: Transaction {
                 hash: op.user_operation.transaction.hash.unwrap().0.parse().unwrap(),
+                // Determistic Option None
                 nonce: 0.into(),
+                // Determistic Option None
                 block_hash: None,
+                // Determistic Option None
                 block_number: None,
+                // Determistic Option None
                 transaction_index: None,
                 from: op.user_operation.transaction.from.0.parse().unwrap(),
                 to: Some(op.user_operation.transaction.to.unwrap().0.parse().unwrap()),
+                // Determistic Option None
                 value: 0.into(),
+                // Determistic Option None
                 gas_price: None,
+                // Determistic Option None
                 gas: 0.into(),
                 input: op
                     .user_operation
@@ -113,16 +122,25 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                     .hex_to_bytes()
                     .unwrap()
                     .into(),
+                // Determistic Option None
                 v: 0.into(),
+                // Determistic Option None
                 r: 0.into(),
+                // Determistic Option None
                 s: 0.into(),
+                // Determistic Option None
                 transaction_type: None,
+                // Determistic Option None
                 access_list: None,
+                // Determistic Option None
                 max_priority_fee_per_gas: None,
+                // Determistic Option None
                 max_fee_per_gas: None,
-                chain_id: None,
+                chain_id: Some(op.chain_id.into()),
+                // Determistic Option Default
                 other: OtherFields::default(),
             },
+            transaction_logs: vec![],
             receipt: TransactionReceipt {
                 transaction_hash: op
                     .user_operation
@@ -134,19 +152,31 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                     .parse()
                     .unwrap(),
                 transaction_index: op.user_operation.transaction.index.unwrap().0.parse().unwrap(),
+                // Determistic Option None
                 block_hash: None,
+                // Determistic Option None
                 block_number: None,
+                // Determistic Option None
                 cumulative_gas_used: 0.into(),
+                // Determistic Option None
                 gas_used: None,
+                // Determistic Option None
                 contract_address: None,
                 logs: vec![],
+                // Determistic Option None
                 status: None,
+                // Determistic Option Default
                 logs_bloom: Bloom::default(),
+                // Determistic Option None
                 root: None,
                 from: op.user_operation.transaction.from.0.parse().unwrap(),
+                // Determistic Option None
                 to: None,
+                // Determistic Option None
                 transaction_type: None,
+                // Determistic Option None
                 effective_gas_price: None,
+                // Determistic Option Default
                 other: OtherFields::default(),
             },
         }
