@@ -51,7 +51,7 @@ jobs:
           pnpm turbo run lint
       - if: failure()
         name: Commit and Push
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
   node-test:
     runs-on: ubuntu-latest
     timeout-minutes: 90

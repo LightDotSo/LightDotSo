@@ -41,9 +41,10 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
   useEffect(() => {
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
-
+    // Replace occurences of 'transaction' with 'transactions'
+    const replacedSlugs = slugs.map(slug => slug.replace("op", "transactions"));
     // Get the matching slug in tabIds array
-    const matchingId = tabIds.find(slug => slugs.includes(slug));
+    const matchingId = tabIds.find(slug => replacedSlugs.includes(slug));
 
     // Set the mount id
     const mountId = matchingId || "overview";

@@ -103,6 +103,8 @@ jobs:
         #   JITSU_JS_KEY: ${{ secrets.JITSU_JS_KEY }}
       - name: iOS Build
         if: github.event_name == 'push'
+        # TODO: Fix iOS certificate issue
+        continue-on-error: true
         run: |
           bundle exec fastlane ios build
         env:
@@ -118,6 +120,8 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       - name: iOS Production
         if: github.event_name == 'merge_group'
+        # TODO: Fix this merge queue duplicate build issue
+        continue-on-error: true
         run: |
           bundle exec fastlane ios production
         env:
@@ -133,6 +137,8 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       - name: iOS Dev
         if: github.event_name == 'pull_request'
+        # TODO: Fix iOS certificate issue
+        continue-on-error: true
         run: |
           bundle exec fastlane ios dev
         env:

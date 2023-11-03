@@ -68,6 +68,8 @@ export const getConfiguration = async (
 
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -90,6 +92,8 @@ export const getWallet = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -118,7 +122,38 @@ export const getWallets = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const createFeedback = async ({
+  params,
+  body,
+}: {
+  params: {
+    query: { user_id: string };
+  };
+  body: {
+    feedback: {
+      emoji: string;
+      text: string;
+    };
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/feedback/create", {
+      // @ts-expect-error
+      next: { revalidate: 0 },
+      params,
+      body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -147,6 +182,8 @@ export const createWallet = async ({
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
+      // @ts-expect-error
+      next: { revalidate: 0 },
       params,
       body,
     }),
@@ -205,6 +242,30 @@ export const createUserOperation = async ({
   });
 };
 
+export const getUser = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getUserOperation = async (
   {
     params,
@@ -219,6 +280,8 @@ export const getUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -241,6 +304,8 @@ export const getSignatureUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/signature", {
+      // @ts-expect-error
+      next: { revalidate: 300 },
       params,
     }),
     () => new Error("Database error"),
@@ -270,6 +335,8 @@ export const getUserOperations = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
@@ -280,7 +347,10 @@ export const getUserOperations = async (
 
 export const getLlama = async (address: string) => {
   return ResultAsync.fromPromise(
-    zodFetch(`https://api.llamafolio.com/balances/${address}`, llamaSchema),
+    zodFetch(`https://api.llamafolio.com/balances/${address}`, llamaSchema, {
+      revalidate: 300,
+      tags: [address],
+    }),
     () => new Error("Database error"),
   );
 };
@@ -298,6 +368,9 @@ export const getChainId = async () => {
       "eth_chainId",
       [],
       EthChainIdResultSchema,
+      {
+        revalidate: 0,
+      },
     ),
     () => new Error("Database error"),
   );
@@ -342,6 +415,9 @@ export const sendUserOperation = async (
       "eth_sendUserOperation",
       params,
       SendUserOperationResponse,
+      {
+        revalidate: 0,
+      },
     ),
     () => new Error("Database error"),
   );
@@ -388,6 +464,9 @@ export const getPaymasterGasAndPaymasterAndData = async (
       "paymaster_requestGasAndPaymasterAndData",
       params,
       PaymasterGasAndPaymasterAndDataResponse,
+      {
+        revalidate: 0,
+      },
     ),
     () => new Error("Database error"),
   );

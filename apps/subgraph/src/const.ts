@@ -13,17 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getLlama } from "@lightdotso/client";
-import { cache } from "react";
-import "server-only";
-import type { Address } from "viem";
+export const BEFORE_EXECUTION_EVENT_HASH =
+  "0xbb47ee3e183a558b1a2ff0874b079f3fc5478b7454eacf2bfc5af2ff5878f972";
 
-export const revalidate = 300;
-
-export const preload = (address: Address) => {
-  void getCachedLlama(address);
-};
-
-export const getCachedLlama = cache(async (address: Address) => {
-  return getLlama(address);
-});
+export const USER_OPERATION_EVENT_HASH =
+  "0x49628fd1471006c1482da88028e9ce4dbb080b815c9b0344d39e5a8e6ec1419f";
