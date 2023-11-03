@@ -110,12 +110,6 @@ pub async fn create_transaction_with_log_receipt(
                     format!("{:?}", transaction.hash),
                     transaction.nonce.as_u64() as i64,
                     to_checksum(&transaction.from, None),
-                    transaction.value.to_string(),
-                    transaction.gas.to_string(),
-                    transaction.input.to_vec(),
-                    transaction.v.to_string(),
-                    transaction.r.to_string(),
-                    transaction.s.to_string(),
                     chain_id,
                     DateTime::<FixedOffset>::from_utc(
                         NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
@@ -125,6 +119,7 @@ pub async fn create_transaction_with_log_receipt(
                         serde_json::to_value(t).unwrap_or_else(|_| serde_json::Value::Null)
                     }),
                     vec![
+                        transaction::input::set(Some(transaction.input.0.to_vec())),
                         transaction::block_hash::set(
                             transaction.block_hash.map(|bh| format!("{:?}", bh)),
                         ),
@@ -161,7 +156,6 @@ pub async fn create_transaction_with_log_receipt(
                     receipt.transaction_index.as_u32() as i32,
                     to_checksum(&receipt.from, None),
                     receipt.cumulative_gas_used.as_u64() as i64,
-                    receipt.logs_bloom.0.to_vec(),
                     vec![
                         receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
                         receipt::block_number::set(
