@@ -19,8 +19,9 @@ use axum::Json;
 use backon::{BlockingRetryable, ExponentialBuilder, Retryable};
 use chrono::Timelike;
 use ethers::{
-    prelude::{Http, Provider},
+    prelude::{Http, Provider, ProviderError},
     providers::Middleware,
+    types::{Block, H256},
     utils::to_checksum,
 };
 use eyre::Result;
@@ -28,7 +29,10 @@ use lightdotso_contracts::{
     provider::get_provider, types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_db::{
-    db::{create_client, upsert_user_operation, upsert_wallet_with_configuration},
+    db::{
+        create_client, create_transaction_with_log_receipt, upsert_user_operation,
+        upsert_wallet_with_configuration,
+    },
     error::DbError,
 };
 use lightdotso_graphql::{
@@ -232,6 +236,12 @@ impl Polling {
                             error!("db_try_create_wallet error: {:?}", res);
                         }
 
+                        // Attempt to create the user operation in the db.
+                        let res = self.db_create_transaction_with_log_receipt(op.clone()).await;
+                        if res.is_err() {
+                            error!("db_create_transaction_with_log_receipt error: {:?}", res);
+                        }
+
                         // Create the user operation in the db.
                         let res = self.db_upsert_user_operation(op.clone()).await;
                         if res.is_err() {
@@ -275,6 +285,36 @@ impl Polling {
         { || upsert_user_operation(db_client.clone(), uow.clone(), chain_id as i64) }
             .retry(&ExponentialBuilder::default())
             .await
+    }
+
+    /// Create a new transaction w/ the
+    #[autometrics]
+    pub async fn db_create_transaction_with_log_receipt(
+        &self,
+        op: UserOperation,
+    ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
+        let db_client = self.db_client.clone();
+        let chain_id = self.chain_id;
+        let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
+        let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
+
+        let block = self.get_block(uow.transaction.block_number.unwrap()).await.unwrap().unwrap();
+
+        {
+            || {
+                create_transaction_with_log_receipt(
+                    db_client.clone(),
+                    uow.clone().transaction,
+                    uow.clone().transaction_logs,
+                    uow.clone().receipt,
+                    chain_id as i64,
+                    block.timestamp,
+                    None,
+                )
+            }
+        }
+        .retry(&ExponentialBuilder::default())
+        .await
     }
 
     /// Attempt to create a new operation in the db
@@ -321,6 +361,18 @@ impl Polling {
             error!("Redis connection error, {:?}", con.err());
             Ok(())
         }
+    }
+
+    /// Get the block logs for the given block number
+    #[autometrics]
+    pub async fn get_block(
+        &self,
+        block_number: ethers::types::U64,
+    ) -> Result<Option<Block<H256>>, ProviderError> {
+        let client = self.provider.clone().unwrap();
+
+        // Get the logs
+        { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
     }
 
     /// Add a new tx in the queue
