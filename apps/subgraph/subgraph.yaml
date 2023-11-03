@@ -42,5 +42,4 @@ dataSources:
           receipt: true
         - event: UserOperationRevertReason(indexed bytes32,indexed address,uint256,bytes)
           handler: handleUserOperationRevertReason
-          receipt: true
       file: ./src/entry-point.ts

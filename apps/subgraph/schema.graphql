@@ -122,7 +122,7 @@ type Withdrawn @entity(immutable: true) {
 
 # Default Log type from graph-tooling
 # https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
-type Log @entity(immutable: true) {
+type Log @entity {
   id: ID!, # transactionHash + logIndex
   address: Bytes!,
   topics: [Bytes!],
@@ -137,12 +137,12 @@ type Log @entity(immutable: true) {
   removed: Boolean,
 
   userOperation: UserOperation
-  receipt: Receipt!
+  # receipt: Receipt!
 }
 
 # Default Receipt type from graph-tooling
 # https://github.com/graphprotocol/graph-tooling/blob/3860fb58190aad708a754a0338b1c37475943e25/packages/ts/chain/ethereum.ts#L569
-type Receipt @entity(immutable: true) {
+type Receipt @entity {
   id: Bytes!, # bytes32 (transactionHash)
   transactionHash: Bytes!,
   transactionIndex: BigInt!,
@@ -150,12 +150,13 @@ type Receipt @entity(immutable: true) {
   blockNumber: BigInt!,
   cumulativeGasUsed: BigInt!,
   gasUsed: BigInt!,
-  contractAddress: Bytes!,
   status: BigInt!,
-  root: Bytes!,
   logsBloom: Bytes!,
+  # FIXME: The below fields can be null even if a non-null value. https://github.com/graphprotocol/graph-node/issues/4239
+  # contractAddress: Bytes!,
+  # root: Bytes!,
 
-  logs: [Log!] @derivedFrom(field: "receipt"),
+  # logs: [Log!] @derivedFrom(field: "receipt"),
   transaction: Transaction!
 }
 
