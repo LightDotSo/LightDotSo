@@ -187,10 +187,13 @@ model Log {
   /// pub removed: Option<bool>
   removed             Boolean?
 
-  receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
+  receipt           Receipt?       @relation(fields: [transactionHash], references: [transactionHash])
+  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String?
 
   @@unique([transactionHash, logIndex])
   @@index([transactionHash])
+  @@index([userOperationHash])
 }
 
 model LogTopic {
@@ -405,6 +408,8 @@ model UserOperation {
   /// The address of the entry point contract
   entryPoint String
   status     UserOperationStatus @default(PROPOSED)
+
+  logs Log[]
 
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
