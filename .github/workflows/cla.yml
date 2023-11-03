@@ -26,7 +26,7 @@ jobs:
           path-to-signatures: "signatures/version1/cla.json"
           url-to-cladocument: "https://github.com/LightDotSo/CLA/blob/main/CLA.md" # e.g. a CLA or a DCO document
           branch: main
-          whitelist: LightDotSoBot,dependabot[bot]
+          whitelist: LightDotSoBot,@dependabot[bot]
           use-remote-repo: true
           remote-repo-name: LightDotSo/CLA
           remote-repo-pat: ${{ secrets.BOT_TOKEN }}

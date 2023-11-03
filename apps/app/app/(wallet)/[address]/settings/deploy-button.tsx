@@ -42,7 +42,7 @@ export function DeployButton({
 
   return (
     <Button asChild>
-      <Link href={`/${wallet}/transactions/op/${chainId}?initCode=${initCode}`}>
+      <Link href={`/${wallet}/op/${chainId}?initCode=${initCode}`}>
         {children}
       </Link>
     </Button>

@@ -132,6 +132,35 @@ export const getWallets = async (
   });
 };
 
+export const createFeedback = async ({
+  params,
+  body,
+}: {
+  params: {
+    query: { user_id: string };
+  };
+  body: {
+    feedback: {
+      emoji: string;
+      text: string;
+    };
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/feedback/create", {
+      // @ts-expect-error
+      next: { revalidate: 0 },
+      params,
+      body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const createWallet = async ({
   params,
   body,
@@ -206,6 +235,30 @@ export const createUserOperation = async ({
     client.POST("/user_operation/create", {
       params,
       body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const getUser = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

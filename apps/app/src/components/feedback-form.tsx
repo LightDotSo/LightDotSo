@@ -30,8 +30,9 @@ import {
   RadioGroupItem,
   Textarea,
 } from "@lightdotso/ui";
-import { successToast } from "@/utils/toast";
-import type { Address } from "viem";
+import { errToast, successToast } from "@/utils/toast";
+import { useAuth } from "@/stores/useAuth";
+import { createFeedback } from "@lightdotso/client";
 
 const feedbackFormSchema = z.object({
   text: z.string().min(1),
@@ -47,16 +48,38 @@ const feedbackFormSchema = z.object({
 type FeedbackFormValues = z.infer<typeof feedbackFormSchema>;
 
 type FeedbackFormProps = {
-  address: Address;
+  onClose: () => void;
 };
 
-export function FeedbackForm({ address }: FeedbackFormProps) {
+export function FeedbackForm({ onClose }: FeedbackFormProps) {
+  const { userId } = useAuth();
+
   const form = useForm<FeedbackFormValues>({
     resolver: zodResolver(feedbackFormSchema),
   });
 
   function onSubmit(data: FeedbackFormValues) {
-    successToast({ ...data, address });
+    if (!userId) {
+      return errToast("Sorry, something went wrong.");
+    }
+    createFeedback({
+      params: {
+        query: {
+          user_id: userId,
+        },
+      },
+      body: {
+        feedback: data,
+      },
+    }).then(res => {
+      if (res.isOk()) {
+        successToast("Thanks for your feedback!");
+        form.reset();
+      } else {
+        errToast("Sorry, something went wrong.");
+      }
+      onClose();
+    });
   }
 
   return (

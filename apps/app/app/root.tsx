@@ -93,7 +93,9 @@ export default function Root({
                   {children}
                 </div>
               </main>
-              <AuthState />
+              <Suspense fallback={null}>
+                <AuthState />
+              </Suspense>
               <Toaster />
             </Web3Provider>
           </ReactQueryProvider>

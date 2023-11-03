@@ -18,7 +18,7 @@
 import { Button, toast } from "@lightdotso/ui";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
-import { useCallback, useMemo } from "react";
+import { useCallback, useState, useEffect } from "react";
 import {
   getSignatureUserOperation,
   sendUserOperation,
@@ -64,9 +64,11 @@ type ConfirmDialogProps = {
 export function ConfirmDialog({
   // address,
   chainId,
-  userOperation,
   config,
+  userOperation,
 }: ConfirmDialogProps) {
+  const [recoveredAddress, setRecoveredAddress] = useState<Address>();
+
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
   const isValid =
     userOperation.signatures.reduce((acc, signature) => {
@@ -111,66 +113,81 @@ export function ConfirmDialog({
     170,
   )}` as Hex;
 
-  const recoveredAddress = useMemo(async () => {
-    if (paymasterHash) {
-      try {
-        return await recoverMessageAddress({
-          message: { raw: paymasterHash },
-          signature: paymasterSignedMsg,
-        });
-      } catch (e) {
-        console.error(e);
+  useEffect(() => {
+    const recoverAddress = async () => {
+      if (paymasterHash) {
+        try {
+          const address = await recoverMessageAddress({
+            message: { raw: paymasterHash },
+            signature: paymasterSignedMsg,
+          });
+          setRecoveredAddress(address);
+        } catch (e) {
+          console.error(e);
+        }
       }
-    }
+    };
+
+    recoverAddress();
   }, [paymasterHash, paymasterSignedMsg]);
 
   // A `useCallback` handler for confirming the operation
-  const handleConfirm = useCallback(async () => {
-    // Get the sig as bytes from caller
-    const sigRes = await getSignatureUserOperation({
-      params: { query: { user_operation_hash: userOperation.hash } },
-    });
+  const handleConfirm = useCallback(() => {
+    const processSignature = async () => {
+      // Get the sig as bytes from caller
+      const sigRes = await getSignatureUserOperation({
+        params: { query: { user_operation_hash: userOperation.hash } },
+      });
 
-    await sigRes.match(
-      async sig => {
-        // Sned the user operation
-        const res = await sendUserOperation(chainId, [
-          {
-            sender: userOperation.sender,
-            nonce: toHex(userOperation.nonce),
-            initCode: userOperation.init_code,
-            callData: userOperation.call_data,
-            paymasterAndData: userOperation.paymaster_and_data,
-            callGasLimit: toHex(userOperation.call_gas_limit),
-            verificationGasLimit: toHex(userOperation.verification_gas_limit),
-            preVerificationGas: toHex(userOperation.pre_verification_gas),
-            maxFeePerGas: toHex(userOperation.max_fee_per_gas),
-            maxPriorityFeePerGas: toHex(userOperation.max_priority_fee_per_gas),
-            signature: sig,
-          },
-          "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-        ]);
+      await sigRes.match(
+        async sig => {
+          // Sned the user operation
+          const res = await sendUserOperation(chainId, [
+            {
+              sender: userOperation.sender,
+              nonce: toHex(userOperation.nonce),
+              initCode: userOperation.init_code,
+              callData: userOperation.call_data,
+              paymasterAndData: userOperation.paymaster_and_data,
+              callGasLimit: toHex(userOperation.call_gas_limit),
+              verificationGasLimit: toHex(userOperation.verification_gas_limit),
+              preVerificationGas: toHex(userOperation.pre_verification_gas),
+              maxFeePerGas: toHex(userOperation.max_fee_per_gas),
+              maxPriorityFeePerGas: toHex(
+                userOperation.max_priority_fee_per_gas,
+              ),
+              signature: sig,
+            },
+            "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+          ]);
 
-        toast({
-          title: "You submitted the userOperation result",
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">{JSON.stringify(res, null, 2)}</code>
-            </pre>
-          ),
-        });
-      },
-      async err => {
-        toast({
-          title: "You submitted the userOperation result",
-          description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-              <code className="text-white">{JSON.stringify(err, null, 2)}</code>
-            </pre>
-          ),
-        });
-      },
-    );
+          toast({
+            title: "You submitted the userOperation result",
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                <code className="text-white">
+                  {JSON.stringify(res, null, 2)}
+                </code>
+              </pre>
+            ),
+          });
+        },
+        async err => {
+          toast({
+            title: "You submitted the userOperation result",
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                <code className="text-white">
+                  {JSON.stringify(err, null, 2)}
+                </code>
+              </pre>
+            ),
+          });
+        },
+      );
+    };
+
+    processSignature();
   }, [chainId, userOperation]);
 
   return (
