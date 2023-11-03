@@ -317,10 +317,16 @@ impl Polling {
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
+
+        info!("db_create_transaction_with_log_receipt, op: {:?}", op);
+
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
+        info!("db_create_transaction_with_log_receipt, uow: {:?}", uow);
+
         let block = self.get_block(uow.transaction.block_number.unwrap()).await.unwrap().unwrap();
+        info!("db_create_transaction_with_log_receipt, block: {:?}", block);
 
         {
             || {
@@ -392,6 +398,7 @@ impl Polling {
         block_number: ethers::types::U64,
     ) -> Result<Option<Block<H256>>, ProviderError> {
         let client = self.provider.clone().unwrap();
+        info!("get_block, chain_id: {} block_number: {}", self.chain_id, block_number);
 
         // Get the logs
         { || client.get_block(block_number) }.retry(&ExponentialBuilder::default()).await
