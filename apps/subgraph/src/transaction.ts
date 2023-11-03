@@ -77,9 +77,9 @@ export function handleUserOperationTransaction(
         log.data = eventReceipt.logs[i].data;
         log.blockHash = eventReceipt.logs[i].blockHash;
         log.blockNumber = eventReceipt.logs[i].blockNumber;
-        // log.transactionHash = eventReceipt.logs[i].transactionHash;
-        // log.transactionIndex = eventReceipt.logs[i].transactionIndex;
-        // log.logIndex = eventReceipt.logs[i].logIndex;
+        log.transactionHash = eventReceipt.logs[i].transactionHash;
+        log.transactionIndex = eventReceipt.logs[i].transactionIndex;
+        log.logIndex = eventReceipt.logs[i].logIndex;
         // log.transactionLogIndex = eventReceipt.logs[i].transactionLogIndex;
         // log.logType = eventReceipt.logs[i].logType;
         // log.removed = eventReceipt.logs[i].removed?.inner;
