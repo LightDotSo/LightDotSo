@@ -68,10 +68,10 @@ export function handleUserOperationTransaction(
     log.warning("logCount: {}", [eventReceipt.logs.length.toString()]);
     for (let i = 0; i < eventReceipt.logs.length; i++) {
       // Load the Log entity
-      let log = Log.load(`${eventTransaction.hash}-${i}`);
+      let log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
       if (log == null) {
         // Create a new Log entity if null
-        log = new Log(`${eventTransaction.hash}-${i}`);
+        log = new Log(`${eventTransaction.hash.toHexString()}-${i}`);
         // Set the log fields
         log.address = eventReceipt.logs[i].address;
         log.topics = eventReceipt.logs[i].topics;
