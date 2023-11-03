@@ -13,21 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { test, expect } from "vitest";
-import { getLlama } from "../src"; // Replace with your actual file path
+export const BEFORE_EXECUTION_EVENT_HASH =
+  "0xbb47ee3e183a558b1a2ff0874b079f3fc5478b7454eacf2bfc5af2ff5878f972";
 
-test("getLlama", async () => {
-  // Call your function with actual address
-  const actualAddress = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"; // replace with actual address
-  const result = await getLlama(actualAddress);
-
-  // Expect that status is either "success" or "stale"
-  // expect(result._unsafeUnwrap().status, "status").tobe([
-  //   "success",
-  //   "stale",
-  // ]);
-  // Check that the array length is greater than 0
-  expect(result._unsafeUnwrap().protocols.length, "protocols").toBeGreaterThan(
-    1,
-  );
-});
+export const USER_OPERATION_EVENT_HASH =
+  "0x49628fd1471006c1482da88028e9ce4dbb080b815c9b0344d39e5a8e6ec1419f";

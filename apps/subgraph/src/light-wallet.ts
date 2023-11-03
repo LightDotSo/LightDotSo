@@ -37,7 +37,9 @@ import {
   incrementUserOpSuccessCount,
   incrementWalletCount,
 } from "./counter";
+import { handleUserOperationTransaction } from "./transaction";
 import { handleUserOperationFromCalldata } from "./user-operation";
+import { handleUserOperationLogs } from "./log";
 
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
   // If the event is emitted by one of the factories, then we know that the account is a LightWallet
@@ -60,6 +62,7 @@ export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
     lightWallet.blockNumber = event.block.number;
     lightWallet.blockTimestamp = event.block.timestamp;
     lightWallet.transactionHash = event.transaction.hash;
+    lightWallet.userOperations = [];
 
     // Get the image hash of the LightWallet
     let wallet = LightWaletInterface.bind(event.params.sender);
@@ -86,8 +89,21 @@ export function handleLightWalletUserOperationEvent(
     incrementUserOpSuccessCount();
 
     // -------------------------------------------------------------------------
-    // BOILERPLATE
+    // START OF BOILERPLATE
     // -------------------------------------------------------------------------
+
+    // Handle transaction for the user operation
+    handleUserOperationTransaction(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
+    // Get the logs from the user operation
+    handleUserOperationLogs(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
 
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
@@ -113,18 +129,18 @@ export function handleLightWalletUserOperationEvent(
 
     op.entryPoint = event.address;
 
+    op.transaction = event.transaction.hash;
+
     op.save();
 
     // Add the user operation to the LightWallet
-    if (lightWallet.userOperations == null) {
-      lightWallet.userOperations = [event.params.userOpHash];
-    } else {
-      lightWallet.userOperations!.push(event.params.userOpHash);
-    }
+    lightWallet.userOperations = lightWallet.userOperations.concat([
+      event.params.userOpHash,
+    ]);
     lightWallet.save();
 
     // -------------------------------------------------------------------------
-    // BOILERPLATE
+    // END OF BOILERPLATE
     // -------------------------------------------------------------------------
 
     if (event.params.success) {
@@ -166,8 +182,21 @@ export function handleLightWalletUserOperationRevertReason(
     incrementUserOpRevertCount();
 
     // -------------------------------------------------------------------------
-    // BOILERPLATE
+    // START OF BOILERPLATE
     // -------------------------------------------------------------------------
+
+    // Handle transaction for the user operation
+    handleUserOperationTransaction(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
+    // Get the logs from the user operation
+    handleUserOperationLogs(
+      event.params.userOpHash,
+      event.transaction,
+      event.receipt,
+    );
 
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
@@ -193,18 +222,18 @@ export function handleLightWalletUserOperationRevertReason(
 
     op.entryPoint = event.address;
 
+    op.transaction = event.transaction.hash;
+
     op.save();
 
     // Add the user operation to the LightWallet
-    if (lightWallet.userOperations == null) {
-      lightWallet.userOperations = [event.params.userOpHash];
-    } else {
-      lightWallet.userOperations!.push(event.params.userOpHash);
-    }
+    lightWallet.userOperations = lightWallet.userOperations.concat([
+      event.params.userOpHash,
+    ]);
     lightWallet.save();
 
     // -------------------------------------------------------------------------
-    // BOILERPLATE
+    // END OF BOILERPLATE
     // -------------------------------------------------------------------------
 
     let entity = new UserOperationRevertReason(
