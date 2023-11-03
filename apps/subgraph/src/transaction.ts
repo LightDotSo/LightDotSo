@@ -43,6 +43,9 @@ export function handleUserOperationTransaction(
 
   // If event.receipt exists, create a new Receipt entity
   if (eventReceipt != null) {
+    // Log the receipt
+    log.info("eventReceipt: {}", [eventReceipt.transactionHash.toString()]);
+
     // Load the Receipt entity
     let receipt = Receipt.load(eventTransaction.hash);
     if (receipt == null) {
@@ -61,6 +64,8 @@ export function handleUserOperationTransaction(
       receipt.logsBloom = eventReceipt.logsBloom;
     }
 
+    // Log the log
+    log.info("logCount: {}", [eventReceipt.logs.length.toString()]);
     for (let i = 0; i < eventReceipt.logs.length; i++) {
       // Load the Log entity
       let log = Log.load(`${eventTransaction.hash}-${i}`);
