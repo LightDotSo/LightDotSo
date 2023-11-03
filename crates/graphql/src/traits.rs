@@ -97,7 +97,7 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
             logs: vec![],
             transaction: Transaction {
                 hash: op.user_operation.transaction.hash.unwrap().0.parse().unwrap(),
-                // Determistic Option None
+                // Determistic Option Zero
                 nonce: 0.into(),
                 // Determistic Option None
                 block_hash: None,
@@ -107,11 +107,11 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 transaction_index: None,
                 from: op.user_operation.transaction.from.0.parse().unwrap(),
                 to: Some(op.user_operation.transaction.to.unwrap().0.parse().unwrap()),
-                // Determistic Option None
+                // Determistic Option Zero
                 value: 0.into(),
                 // Determistic Option None
                 gas_price: None,
-                // Determistic Option None
+                // Determistic Option Zero
                 gas: 0.into(),
                 input: op
                     .user_operation
@@ -122,11 +122,11 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                     .hex_to_bytes()
                     .unwrap()
                     .into(),
-                // Determistic Option None
+                // Determistic Option Zero
                 v: 0.into(),
-                // Determistic Option None
+                // Determistic Option Zero
                 r: 0.into(),
-                // Determistic Option None
+                // Determistic Option Zero
                 s: 0.into(),
                 // Determistic Option None
                 transaction_type: None,
@@ -156,7 +156,7 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 block_hash: None,
                 // Determistic Option None
                 block_number: None,
-                // Determistic Option None
+                // Determistic Option Zero
                 cumulative_gas_used: 0.into(),
                 // Determistic Option None
                 gas_used: None,
