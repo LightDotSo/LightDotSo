@@ -189,6 +189,7 @@ model Log {
 
   receipt Receipt? @relation(fields: [transactionHash], references: [transactionHash])
 
+  @@unique([transactionHash, logIndex])
   @@index([transactionHash])
 }
 

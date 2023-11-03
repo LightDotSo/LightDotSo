@@ -18,12 +18,12 @@ import Root from "@/app/root";
 
 export default function RootLayout(props: {
   children: React.ReactNode;
-  transactions: React.ReactNode;
+  op: React.ReactNode;
 }) {
   return (
     <Root type="wallet">
       {props.children}
-      {props.transactions}
+      {props.op}
     </Root>
   );
 }

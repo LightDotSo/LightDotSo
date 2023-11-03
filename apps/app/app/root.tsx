@@ -33,6 +33,11 @@ import { Suspense } from "react";
 import { VercelToolbar } from "@/components/vercel-toolbar";
 import { AuthState } from "@/components/auth-state";
 import { RootLogo } from "@/app/root-logo";
+import dynamic from "next/dynamic";
+
+const CommandK = dynamic(() => import("@/components/command-k"), {
+  ssr: false,
+});
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,7 +55,11 @@ export default function Root({
   type: RootType;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} font-sans`}>
+    <html
+      lang="en"
+      className={`${inter.variable} font-sans`}
+      suppressHydrationWarning
+    >
       <body className="min-h-[100dvh] bg-white dark:bg-black">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
@@ -84,11 +93,14 @@ export default function Root({
                   {children}
                 </div>
               </main>
-              <AuthState />
+              <Suspense fallback={null}>
+                <AuthState />
+              </Suspense>
               <Toaster />
             </Web3Provider>
           </ReactQueryProvider>
         </ThemeProvider>
+        <CommandK></CommandK>
         <TailwindIndicator />
         <Suspense>
           <VercelToolbar />

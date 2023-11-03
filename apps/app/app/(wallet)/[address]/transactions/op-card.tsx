@@ -89,7 +89,7 @@ export function OpCard({ address, userOperation }: OpCardProps) {
           <div className="flex w-full justify-end">
             <Button asChild>
               <Link
-                href={`/${address}/transactions/op/${userOperation.chain_id}/${userOperation.hash}`}
+                href={`/${address}/op/${userOperation.chain_id}/${userOperation.hash}`}
               >
                 Confirm
               </Link>

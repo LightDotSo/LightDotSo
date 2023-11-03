@@ -13,32 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getUserOperations } from "@lightdotso/client";
-import { cache } from "react";
-import "server-only";
-import type { Address } from "viem";
+import { revalidateTag } from "next/cache";
+import type { NextRequest } from "next/server";
 
-export const revalidate = 300;
+export async function GET(request: NextRequest) {
+  const tag = request.nextUrl.searchParams.get("tag");
 
-export const preload = (address: Address) => {
-  void getCachedUserOperations(address);
-};
+  if (tag) {
+    revalidateTag(tag);
+    return Response.json({ revalidated: true, now: Date.now() });
+  }
 
-export const getCachedUserOperations = cache(
-  async (
-    address: Address,
-    status?: "proposed" | "pending" | "executed" | "reverted" | "all",
-  ) => {
-    return getUserOperations(
-      {
-        params: {
-          query: {
-            address,
-            status: status === "all" ? undefined : status,
-          },
-        },
-      },
-      false,
-    );
-  },
-);
+  return Response.json({
+    revalidated: false,
+    now: Date.now(),
+    message: "Missing tag to revalidate",
+  });
+}
