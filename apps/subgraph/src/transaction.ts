@@ -62,6 +62,8 @@ export function handleUserOperationTransaction(
       receipt.status = eventReceipt.status;
       receipt.root = eventReceipt.root;
       receipt.logsBloom = eventReceipt.logsBloom;
+
+      receipt.save();
     }
 
     // Log the log
@@ -85,11 +87,10 @@ export function handleUserOperationTransaction(
         log.logType = eventReceipt.logs[i].logType;
         log.receipt = receipt.id;
         // log.removed = eventReceipt.logs[i].removed?.inner;
+
         log.save();
       }
     }
-
-    receipt.save();
   }
 
   transaction.save();
