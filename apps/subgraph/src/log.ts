@@ -36,7 +36,7 @@ export function handleUserOperationLogs(
     // Break until the `BeforeExecution` event is emitted
     for (let i = eventReceipt.logs.length - 1; i >= 0; i--) {
       // Load the Log entity
-      let log = Log.load(`${eventTransaction.hash}-${i}`);
+      let log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
 
       // If the Log entity doesn't exist, break;
       if (log == null) {
