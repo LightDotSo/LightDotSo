@@ -6177,6 +6177,8 @@ dependencies = [
  "eyre",
  "insta",
  "lazy_static",
+ "lightdotso-common",
+ "lightdotso-prisma",
  "lightdotso-tracing",
  "reqwest",
  "tokio",

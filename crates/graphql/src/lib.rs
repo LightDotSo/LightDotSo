@@ -15,5 +15,6 @@
 
 pub mod constants;
 pub mod polling;
+pub mod traits;
 pub mod utils;
 pub mod wallets;
