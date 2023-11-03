@@ -140,12 +140,32 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 // Determistic Option Default
                 other: OtherFields::default(),
             },
-            transaction_logs: vec![],
+            transaction_logs: op.user_operation.transaction.receipt.clone().unwrap().logs.map_or(
+                Vec::new(),
+                |log| {
+                    log.into_iter()
+                        .map(|g| Log {
+                            address: g.address.0.parse().unwrap(),
+                            topics: vec![],
+                            data: g.data.0.hex_to_bytes().unwrap().into(),
+                            block_hash: None,
+                            block_number: None,
+                            transaction_hash: None,
+                            transaction_index: None,
+                            log_index: None,
+                            transaction_log_index: None,
+                            log_type: None,
+                            removed: None,
+                        })
+                        .collect()
+                },
+            ),
             receipt: TransactionReceipt {
                 transaction_hash: op
                     .user_operation
                     .transaction
                     .receipt
+                    .clone()
                     .unwrap()
                     .id
                     .0

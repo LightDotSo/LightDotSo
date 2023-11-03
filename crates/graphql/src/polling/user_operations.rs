@@ -24,7 +24,7 @@ pub struct GetUserOperationsQueryVariables {
     pub min_index: BigInt,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(graphql_type = "Query", variables = "GetUserOperationsQueryVariables")]
 pub struct GetUserOperationsQuery {
     #[arguments(first: 300, where: { blockNumber_gt: $min_block, index_gt: $min_index }, orderBy: "index")]
@@ -32,19 +32,19 @@ pub struct GetUserOperationsQuery {
     pub _meta: Option<Meta>,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(graphql_type = "_Meta_")]
 pub struct Meta {
     pub block: Block,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 #[cynic(graphql_type = "_Block_")]
 pub struct Block {
     pub number: i32,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 pub struct UserOperation {
     pub id: Bytes,
     pub index: BigInt,
@@ -70,7 +70,7 @@ pub struct UserOperation {
     pub logs: Option<Vec<Log>>,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 pub struct Transaction {
     pub id: Bytes,
     pub hash: Option<Bytes>,
@@ -85,7 +85,7 @@ pub struct Transaction {
     pub receipt: Option<Receipt>,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 pub struct Receipt {
     pub id: Bytes,
     pub transaction_hash: Bytes,
@@ -99,7 +99,7 @@ pub struct Receipt {
     pub logs: Option<Vec<Log>>,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 pub struct UserOperationRevertReason {
     pub id: Bytes,
     pub index: BigInt,
@@ -110,7 +110,7 @@ pub struct UserOperationRevertReason {
     pub transaction_hash: Bytes,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 pub struct UserOperationEvent {
     pub id: Bytes,
     pub index: BigInt,
@@ -120,7 +120,7 @@ pub struct UserOperationEvent {
     pub transaction_hash: Bytes,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 pub struct Log {
     pub id: cynic::Id,
     pub address: Bytes,
@@ -133,7 +133,7 @@ pub struct Log {
     pub log_index: BigInt,
 }
 
-#[derive(cynic::QueryFragment, Debug)]
+#[derive(cynic::QueryFragment, Clone, Debug)]
 pub struct LightWallet {
     pub id: Bytes,
     pub index: BigInt,
