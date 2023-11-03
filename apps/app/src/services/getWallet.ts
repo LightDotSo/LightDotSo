@@ -13,9 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { getConfiguration } from "@/services/getConfiguration";
-export { getLlama } from "@/services/getLlama";
-export { getWallet } from "@/services/getWallet";
-export { getUserOperation } from "@/services/getUserOperation";
-export { getUserOperations } from "@/services/getUserOperations";
-export { getQueryClient } from "@/services/getQueryClient";
+import { getWallet as getClientWallet } from "@lightdotso/client";
+import "server-only";
+import type { Address } from "viem";
+
+export const revalidate = 3600;
+
+export const preload = (address: Address) => {
+  void getWallet(address);
+};
+
+export const getWallet = async (address: Address) => {
+  return getClientWallet({ params: { query: { address: address } } }, false);
+};

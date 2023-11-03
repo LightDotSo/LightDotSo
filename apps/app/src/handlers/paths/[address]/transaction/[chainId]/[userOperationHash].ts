@@ -20,7 +20,7 @@ import {
   validateNumber,
   validateUserOperationHash,
 } from "@/handlers/validators";
-import { getCachedUserOperation } from "@/services/getCachedUserOperation";
+import { getUserOperation } from "@/services/getUserOperation";
 import type { Hex } from "viem";
 
 export const handler = async (params: {
@@ -50,9 +50,7 @@ export const handler = async (params: {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const userOperation = await getCachedUserOperation(
-    params.userOperationHash as Hex,
-  );
+  const userOperation = await getUserOperation(params.userOperationHash as Hex);
 
   // ---------------------------------------------------------------------------
   // Parse

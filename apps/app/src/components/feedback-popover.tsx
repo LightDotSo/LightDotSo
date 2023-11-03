@@ -24,10 +24,12 @@ import {
 import { useAuth } from "@/stores/useAuth";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { FeedbackForm } from "@/components/feedback-form";
+import { useState } from "react";
 
 export function FeedbackPopover() {
   const isMounted = useIsMounted();
   const { address } = useAuth();
+  const [open, setOpen] = useState(false);
 
   // If the address is empty, return null
   if (!isMounted || !address) {
@@ -35,7 +37,7 @@ export function FeedbackPopover() {
   }
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" className="hidden md:block">
           Feedback
@@ -43,7 +45,7 @@ export function FeedbackPopover() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
-        <FeedbackForm address={address} />
+        <FeedbackForm onClose={() => setOpen(false)} />
       </PopoverContent>
     </Popover>
   );

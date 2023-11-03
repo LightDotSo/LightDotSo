@@ -1,6 +1,11 @@
 name: GraphQL
 on:
   workflow_dispatch:
+    inputs:
+      url:
+        description: "Update GraphQL Schema"
+        required: true
+        default: "https://api.thegraph.com/subgraphs/name/lightdotso/mainnet"
   schedule:
     - cron: "0 0 * * *"
 concurrency:
@@ -17,10 +22,17 @@ jobs:
         uses: actions/checkout@v4
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Run Introspection
+      - if: github.event_name == 'workflow_dispatch'
+        name: Run Introspection Dispatch
         uses: obmarg/action-graphql-introspect@main
         with:
-          server-url: https://api.thegraph.com/subgraphs/name/lightdotso/mainnet
+          server-url: ${{ github.event.inputs.url }}
+          output-file: crates/graphql/schemas/graph.graphql
+      - if: github.event_name == 'schedule'
+        name: Run Introspection Schedule
+        uses: obmarg/action-graphql-introspect@main
+        with:
+          server-url: "https://api.thegraph.com/subgraphs/name/lightdotso/mainnet"
           output-file: crates/graphql/schemas/graph.graphql
       - name: Run Fix
         run: |

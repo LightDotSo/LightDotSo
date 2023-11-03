@@ -17,21 +17,65 @@
 
 import { useEffect } from "react";
 import { useAuth } from "@/stores/useAuth";
-import { useAccount } from "wagmi";
+import { useAccount, useEnsName } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import { isAddress } from "viem";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getUser } from "@lightdotso/client";
 
 export const AuthState = () => {
   const { address } = useAccount();
-  const { setAddress, setWallet, logout } = useAuth();
+  const { data: ens } = useEnsName({ address, chainId: 1 });
+  const { setAddress, setWallet, setEns, logout, setUserId } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+
+  const { data } = useSuspenseQuery({
+    queryKey: ["user", address],
+    queryFn: async () => {
+      if (!address) {
+        return;
+      }
+
+      const res = await getUser({
+        params: {
+          query: {
+            address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        err => {
+          throw err;
+        },
+      );
+    },
+  });
 
   // On component mount, rehydrate the auth state from local storage
   // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getoptions
   useEffect(() => {
     useAuth.persist.rehydrate();
   }, []);
+
+  // Set the ens name in the auth state if it exists
+  useEffect(() => {
+    if (ens) {
+      setEns(ens);
+    }
+  }, [ens, setEns]);
+
+  // Set the userId in the auth state if it exists
+  useEffect(() => {
+    if (data) {
+      setUserId(data.id);
+    }
+  }, [data, setUserId]);
 
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address

@@ -62,6 +62,15 @@ pub struct GetQuery {
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
+pub struct NonceQuery {
+    // The chain id to get the user operation nonce for.
+    pub chain_id: i64,
+    // The sender address to filter by.
+    pub address: String,
+}
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
 pub struct ListQuery {
     // The offset of the first user operation to return.
     pub offset: Option<i64>,
@@ -282,6 +291,7 @@ impl From<signature::Data> for UserOperationSignature {
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/user_operation/get", get(v1_user_operation_get_handler))
+        .route("/user_operation/nonce", get(v1_user_operation_nonce_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/create", post(v1_user_operation_post_handler))
         .route("/user_operation/signature", get(v1_user_operation_signature_handler))
@@ -327,6 +337,50 @@ async fn v1_user_operation_get_handler(
     let user_operation: UserOperation = user_operation.into();
 
     Ok(Json::from(user_operation))
+}
+
+/// Get a user operation nonce
+#[utoipa::path(
+        get,
+        path = "/user_operation/nonce",
+        params(
+            NonceQuery
+        ),
+        responses(
+            (status = 200, description = "User Operation nonce returned successfully", body = i64),
+            (status = 404, description = "User Operation nonce not found", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+async fn v1_user_operation_nonce_handler(
+    get: Query<NonceQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<i64> {
+    // Get the get query.
+    let Query(query) = get;
+    let chain_id = query.chain_id;
+    // Get the wallet address from the nonce query.
+    let address: H160 = query.address.parse()?;
+
+    // Get the user operations from the database.
+    let user_operation = client
+        .client
+        .unwrap()
+        .user_operation()
+        .find_first(vec![
+            user_operation::chain_id::equals(chain_id),
+            user_operation::sender::equals(address.to_string()),
+            user_operation::status::equals(UserOperationStatus::Executed),
+        ])
+        .order_by(user_operation::nonce::order(Direction::Desc))
+        .exec()
+        .await?;
+
+    // If the user operation is not found, return 0 as Ok.
+    match user_operation {
+        Some(user_operation) => Ok(Json::from(user_operation.nonce + 1)),
+        None => Ok(Json::from(0)),
+    }
 }
 
 /// Returns a list of user operations.
