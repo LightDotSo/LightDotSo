@@ -22,7 +22,7 @@ export function handleUserOperationTransaction(
   eventReceipt: ethereum.TransactionReceipt | null,
 ): void {
   // Decode the user operation from the input
-  log.info("userOpHash: {}", [userOpHash.toString()]);
+  log.warning("userOpHash: {}", [userOpHash.toString()]);
 
   // Load the Transaction entity
   let transaction = Transaction.load(eventTransaction.hash);
@@ -44,7 +44,7 @@ export function handleUserOperationTransaction(
   // If event.receipt exists, create a new Receipt entity
   if (eventReceipt != null) {
     // Log the receipt
-    log.info("eventReceipt: {}", [eventReceipt.transactionHash.toString()]);
+    log.warning("eventReceipt: {}", [eventReceipt.transactionHash.toString()]);
 
     // Load the Receipt entity
     let receipt = Receipt.load(eventTransaction.hash);
@@ -65,7 +65,7 @@ export function handleUserOperationTransaction(
     }
 
     // Log the log
-    log.info("logCount: {}", [eventReceipt.logs.length.toString()]);
+    log.warning("logCount: {}", [eventReceipt.logs.length.toString()]);
     for (let i = 0; i < eventReceipt.logs.length; i++) {
       // Load the Log entity
       let log = Log.load(`${eventTransaction.hash}-${i}`);
