@@ -175,7 +175,7 @@ type Transaction @entity {
   nonce: BigInt,
 
   receipt: Receipt @derivedFrom(field: "transaction"),
-  userOperations: [UserOperation!]!
+  userOperations: [UserOperation!]! @derivedFrom(field: "transaction")
 }
 
 # Function: handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[], address)
@@ -199,9 +199,9 @@ type UserOperation @entity {
 
   entryPoint: Bytes! # address
 
-  lightWallet: LightWallet @derivedFrom(field: "userOperations")
+  lightWallet: LightWallet! @derivedFrom(field: "userOperations")
   logs: [Log!] @derivedFrom(field: "userOperation")
-  transaction: Transaction @derivedFrom(field: "userOperations")
+  transaction: Transaction!
   userOperationEvent: UserOperationEvent @derivedFrom(field: "userOperation")
   userOperationRevertReason: UserOperationRevertReason @derivedFrom(field: "userOperation")
 }

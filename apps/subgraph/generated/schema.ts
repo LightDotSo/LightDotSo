@@ -1897,17 +1897,14 @@ export class Transaction extends Entity {
     );
   }
 
-  get userOperations(): Array<Bytes> {
-    let value = this.get("userOperations");
-    if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
-    } else {
-      return value.toBytesArray();
-    }
-  }
-
-  set userOperations(value: Array<Bytes>) {
-    this.set("userOperations", Value.fromBytesArray(value));
+  get userOperations(): UserOperationLoader {
+    return new UserOperationLoader(
+      "Transaction",
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
+      "userOperations"
+    );
   }
 }
 
@@ -2176,14 +2173,17 @@ export class UserOperation extends Entity {
     return new LogLoader("UserOperation", this.get("id")!.toString(), "logs");
   }
 
-  get transaction(): TransactionLoader {
-    return new TransactionLoader(
-      "UserOperation",
-      this.get("id")!
-        .toBytes()
-        .toHexString(),
-      "transaction"
-    );
+  get transaction(): Bytes {
+    let value = this.get("transaction");
+    if (!value || value.kind == ValueKind.NULL) {
+      throw new Error("Cannot return null for a required field.");
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set transaction(value: Bytes) {
+    this.set("transaction", Value.fromBytes(value));
   }
 
   get userOperationEvent(): UserOperationEventLoader {
@@ -2526,6 +2526,24 @@ export class ReceiptLoader extends Entity {
   }
 }
 
+export class UserOperationLoader extends Entity {
+  _entity: string;
+  _field: string;
+  _id: string;
+
+  constructor(entity: string, id: string, field: string) {
+    super();
+    this._entity = entity;
+    this._id = id;
+    this._field = field;
+  }
+
+  load(): UserOperation[] {
+    let value = store.loadRelated(this._entity, this._id, this._field);
+    return changetype<UserOperation[]>(value);
+  }
+}
+
 export class LightWalletLoader extends Entity {
   _entity: string;
   _field: string;
@@ -2541,24 +2559,6 @@ export class LightWalletLoader extends Entity {
   load(): LightWallet[] {
     let value = store.loadRelated(this._entity, this._id, this._field);
     return changetype<LightWallet[]>(value);
-  }
-}
-
-export class TransactionLoader extends Entity {
-  _entity: string;
-  _field: string;
-  _id: string;
-
-  constructor(entity: string, id: string, field: string) {
-    super();
-    this._entity = entity;
-    this._id = id;
-    this._field = field;
-  }
-
-  load(): Transaction[] {
-    let value = store.loadRelated(this._entity, this._id, this._field);
-    return changetype<Transaction[]>(value);
   }
 }
 

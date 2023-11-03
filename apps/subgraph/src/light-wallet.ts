@@ -22,7 +22,6 @@ import {
 import { LightWallet as LightWaletInterface } from "../generated/EntryPointv0.6.0/LightWallet";
 import {
   LightWallet,
-  Transaction,
   UserOperation,
   UserOperationEvent,
   UserOperationRevertReason,
@@ -130,15 +129,9 @@ export function handleLightWalletUserOperationEvent(
 
     op.entryPoint = event.address;
 
-    op.save();
+    op.transaction = event.transaction.hash;
 
-    let transaction = Transaction.load(event.transaction.hash);
-    if (transaction != null) {
-      transaction.userOperations = lightWallet.userOperations.concat([
-        event.params.userOpHash,
-      ]);
-      transaction.save();
-    }
+    op.save();
 
     // Add the user operation to the LightWallet
     lightWallet.userOperations = lightWallet.userOperations.concat([
@@ -229,15 +222,9 @@ export function handleLightWalletUserOperationRevertReason(
 
     op.entryPoint = event.address;
 
-    op.save();
+    op.transaction = event.transaction.hash;
 
-    let transaction = Transaction.load(event.transaction.hash);
-    if (transaction != null) {
-      transaction.userOperations = lightWallet.userOperations.concat([
-        event.params.userOpHash,
-      ]);
-      transaction.save();
-    }
+    op.save();
 
     // Add the user operation to the LightWallet
     lightWallet.userOperations = lightWallet.userOperations.concat([
