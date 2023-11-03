@@ -6086,7 +6086,9 @@ name = "lightdotso-common"
 version = "0.1.0"
 dependencies = [
  "const-hex",
+ "ethers 2.0.8",
  "eyre",
+ "serde",
 ]
 
 [[package]]

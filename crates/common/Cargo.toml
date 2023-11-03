@@ -10,4 +10,6 @@
 
 [dependencies]
   const-hex = { workspace = true }
+  ethers = { workspace = true }
   eyre = { workspace = true }
+  serde = { workspace = true }
