@@ -137,7 +137,7 @@ type Log @entity {
   removed: Boolean,
 
   userOperation: UserOperation
-  # receipt: Receipt!
+  receipt: Receipt!
 }
 
 # Default Receipt type from graph-tooling
@@ -156,7 +156,7 @@ type Receipt @entity {
   # contractAddress: Bytes!,
   # root: Bytes!,
 
-  # logs: [Log!] @derivedFrom(field: "receipt"),
+  logs: [Log!] @derivedFrom(field: "receipt"),
   transaction: Transaction!
 }
 

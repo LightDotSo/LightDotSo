@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Bytes, ethereum } from "@graphprotocol/graph-ts";
-import { Receipt, Transaction } from "../generated/schema";
+import { Log, Receipt, Transaction } from "../generated/schema";
 
 export function handleUserOperationTransaction(
   userOpHash: Bytes,
@@ -65,30 +65,29 @@ export function handleUserOperationTransaction(
     }
 
     // Log the log
-    // log.warning("logCount: {}", [eventReceipt.logs.length.toString()]);
-    // for (let i = 0; i < eventReceipt.logs.length; i++) {
-    //   // Load the Log entity
-    //   let log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
-    //   if (log == null) {
-    //     // Create a new Log entity if null
-    //     log = new Log(`${eventTransaction.hash.toHexString()}-${i}`);
-    //     // Set the log fields
-    //     log.address = eventReceipt.logs[i].address;
-    //     log.topics = eventReceipt.logs[i].topics;
-    //     log.data = eventReceipt.logs[i].data;
-    //     log.blockHash = eventReceipt.logs[i].blockHash;
-    //     log.blockNumber = eventReceipt.logs[i].blockNumber;
-    //     log.transactionHash = eventReceipt.logs[i].transactionHash;
-    //     log.transactionIndex = eventReceipt.logs[i].transactionIndex;
-    //     log.logIndex = eventReceipt.logs[i].logIndex;
-    //     log.transactionLogIndex = eventReceipt.logs[i].transactionLogIndex;
-    //     log.logType = eventReceipt.logs[i].logType;
-    //     // log.removed = eventReceipt.logs[i].removed?.inner;
+    for (let i = 0; i < eventReceipt.logs.length; i++) {
+      // Load the Log entity
+      let log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
+      if (log == null) {
+        // Create a new Log entity if null
+        log = new Log(`${eventTransaction.hash.toHexString()}-${i}`);
+        // Set the log fields
+        log.address = eventReceipt.logs[i].address;
+        log.topics = eventReceipt.logs[i].topics;
+        log.data = eventReceipt.logs[i].data;
+        log.blockHash = eventReceipt.logs[i].blockHash;
+        log.blockNumber = eventReceipt.logs[i].blockNumber;
+        log.transactionHash = eventReceipt.logs[i].transactionHash;
+        log.transactionIndex = eventReceipt.logs[i].transactionIndex;
+        log.logIndex = eventReceipt.logs[i].logIndex;
+        log.transactionLogIndex = eventReceipt.logs[i].transactionLogIndex;
+        log.logType = eventReceipt.logs[i].logType;
+        // log.removed = eventReceipt.logs[i].removed?.inner;
 
-    //     log.receipt = receipt.id;
+        log.receipt = eventTransaction.hash;
 
-    //     log.save();
-    //   }
-    // }
+        log.save();
+      }
+    }
   }
 }
