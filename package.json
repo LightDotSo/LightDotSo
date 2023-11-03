@@ -51,7 +51,7 @@
     "prisma": "make prisma",
     "prisma:turbo": "dotenv -- turbo run prisma",
     "release": "changeset publish",
-    "solhint:cmd": "solhint \"contracts/**/*.sol\"",
+    "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --fix",
     "solhint:lint": "solhint \"contracts/**/*.sol\"",
     "sort-package-json:fix": "sort-package-json \"{apps,configurations,contracts,crates,fastlane,ios,packages,pods}/**/package.json\"",
