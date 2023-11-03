@@ -37,11 +37,7 @@ export function handleUserOperationLogs(
     for (let i = eventReceipt.logs.length - 1; i >= 0; i--) {
       // Load the Log entity
       // Get the index from the log in reverse order
-      let log = Log.load(
-        `${eventTransaction.hash.toHexString()}-${
-          eventReceipt.logs.length - i
-        }`,
-      );
+      let log = Log.load(`${eventTransaction.hash.toHexString()}-${i}`);
 
       // If the Log entity doesn't exist, break;
       if (log == null) {
@@ -67,6 +63,7 @@ export function handleUserOperationLogs(
 
       // If the topic is an `BeforeExecution` topic, break
       if (topic.toHexString() == BEFORE_EXECUTION_EVENT_HASH) {
+        flag = false;
         break;
       }
 
