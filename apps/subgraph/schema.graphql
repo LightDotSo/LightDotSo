@@ -155,7 +155,7 @@ type Receipt @entity(immutable: true) {
   root: Bytes!,
   logsBloom: Bytes!,
 
-  logs: [Log!]! @derivedFrom(field: "receipt"),
+  logs: [Log!] @derivedFrom(field: "receipt"),
   transaction: Transaction!
 }
 

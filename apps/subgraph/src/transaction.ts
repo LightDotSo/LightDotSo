@@ -39,6 +39,8 @@ export function handleUserOperationTransaction(
     transaction.gasPrice = eventTransaction.gasPrice;
     transaction.input = eventTransaction.input;
     transaction.nonce = eventTransaction.nonce;
+
+    transaction.save();
   }
 
   // If event.receipt exists, create a new Receipt entity
@@ -63,6 +65,8 @@ export function handleUserOperationTransaction(
       receipt.root = eventReceipt.root;
       receipt.logsBloom = eventReceipt.logsBloom;
 
+      receipt.transaction = transaction.id;
+
       receipt.save();
     }
 
@@ -85,13 +89,12 @@ export function handleUserOperationTransaction(
         log.logIndex = eventReceipt.logs[i].logIndex;
         log.transactionLogIndex = eventReceipt.logs[i].transactionLogIndex;
         log.logType = eventReceipt.logs[i].logType;
-        log.receipt = receipt.id;
         // log.removed = eventReceipt.logs[i].removed?.inner;
+
+        log.receipt = receipt.id;
 
         log.save();
       }
     }
   }
-
-  transaction.save();
 }
