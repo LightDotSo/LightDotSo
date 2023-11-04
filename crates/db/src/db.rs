@@ -265,8 +265,11 @@ pub async fn upsert_transaction_with_log_receipt(
                 .map(|(log_topic, id)| {
                     client.log_topic().upsert(
                         log_topic::id::equals(format!("{:?}", log_topic)),
-                        log_topic::create(log::id::equals(id.to_string()), vec![]),
-                        vec![log_topic::log::connect(log::id::equals(id.to_string()))],
+                        log_topic::create(
+                            format!("{:?}", log_topic),
+                            vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
+                        ),
+                        vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
                     )
                 })
                 .collect::<Vec<_>>();
