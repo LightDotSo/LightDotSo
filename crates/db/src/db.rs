@@ -31,7 +31,8 @@ use lightdotso_tracing::{
 };
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
-    serde_json, NewClientError,
+    serde_json::{self, json},
+    NewClientError,
 };
 use std::sync::Arc;
 type Database = Arc<PrismaClient>;
@@ -119,7 +120,7 @@ pub async fn create_transaction_with_log_receipt(
                         FixedOffset::east_opt(0).unwrap(),
                     ),
                     trace.map_or(serde_json::Value::Null, |t| {
-                        serde_json::to_value(t).unwrap_or_else(|_| serde_json::Value::Null)
+                        serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
                     }),
                     vec![
                         transaction::input::set(Some(transaction.input.0.to_vec())),
