@@ -34,7 +34,7 @@ use prisma_client_rust::{
     serde_json::{self, json},
     NewClientError,
 };
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
@@ -186,41 +186,17 @@ pub async fn create_transaction_with_log_receipt(
         })
         .await?;
 
-    // FIXME: This is a workaround for the fact that the log batch creation cannot be batched w/
-    // transaction and receipt
-    let _ = db
+    let log_creations = db
         ._transaction()
         .run(|client| async move {
-            let _ = logs
-                .iter()
-                .map(|log| {
-                    client.log_topic().create_many(
-                        log.topics
-                            .iter()
-                            .map(|id| {
-                                lightdotso_prisma::log_topic::create_unchecked(
-                                    format!("{:?}", id),
-                                    vec![],
-                                )
-                            })
-                            .collect(),
-                    )
-                })
-                .collect::<Vec<_>>();
-
             let logs_create_items = logs
+                .clone()
                 .iter()
                 .map(|log| {
                     client.log().create(
                         to_checksum(&log.address, None),
                         log.data.to_vec(),
                         vec![
-                            log::topics::connect(
-                                log.topics
-                                    .iter()
-                                    .map(|id| log_topic::id::equals(format!("{:?}", id)))
-                                    .collect(),
-                            ),
                             log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
                             log::block_number::set(log.block_number.map(|bn| bn.as_u32() as i32)),
                             log::transaction_hash::set(
@@ -241,6 +217,34 @@ pub async fn create_transaction_with_log_receipt(
                 .collect::<Vec<_>>();
 
             client._batch(logs_create_items).await
+        })
+        .await?;
+
+    // Iterate through the logs and get the log_topics for each log
+    let mut log_topics: HashMap<_, _> = HashMap::new();
+
+    for (log_creation, log) in log_creations.iter().zip(logs.iter()) {
+        for topic in log.topics.iter() {
+            log_topics.insert(*topic, log_creation.id);
+        }
+    }
+
+    // Iterate through and upsert the log topics
+    let _ = db
+        ._transaction()
+        .run(|client| async move {
+            let log_topics_create_items = log_topics
+                .iter()
+                .map(|(log_topic, id)| {
+                    client.log_topic().upsert(
+                        log_topic::id::equals(format!("{:?}", log_topic)),
+                        log_topic::create(log::id::equals(id.to_string()), vec![]),
+                        vec![],
+                    )
+                })
+                .collect::<Vec<_>>();
+
+            client._batch(log_topics_create_items).await
         })
         .await?;
 
