@@ -35,7 +35,8 @@ use lightdotso_common::{
 use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_paymaster::paymaster::decode_paymaster_and_data;
 use lightdotso_prisma::{
-    configuration, owner, paymaster, signature, user_operation, wallet, UserOperationStatus,
+    configuration, owner, paymaster, signature, transaction, user_operation, wallet,
+    UserOperationStatus,
 };
 use lightdotso_solutions::{
     builder::rooted_node_builder,
@@ -180,6 +181,13 @@ pub(crate) struct UserOperationSignature {
     signature_type: i32,
 }
 
+/// Transaction
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationTransaction {
+    /// The hash of the transaction.
+    hash: String,
+}
+
 /// User operation operation errors
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(crate) enum UserOperationError {
@@ -209,6 +217,7 @@ pub(crate) struct UserOperation {
     status: String,
     paymaster: Option<UserOperationPaymaster>,
     signatures: Vec<UserOperationSignature>,
+    transaction: Option<UserOperationTransaction>,
 }
 
 impl TryFrom<UserOperationCreate> for RundlerUserOperation {
@@ -254,6 +263,9 @@ impl From<user_operation::Data> for UserOperation {
             signatures: user_operation.signatures.map_or(Vec::new(), |signature| {
                 signature.into_iter().map(UserOperationSignature::from).collect()
             }),
+            transaction: user_operation.transaction.and_then(|transaction| {
+                transaction.map(|data| UserOperationTransaction::from(*data))
+            }),
         }
     }
 }
@@ -284,6 +296,13 @@ impl From<signature::Data> for UserOperationSignature {
             signature: signature.signature.to_hex_string(),
             signature_type: signature.signature_type,
         }
+    }
+}
+
+// Implement From<transaction::Data> for Owner.
+impl From<transaction::Data> for UserOperationTransaction {
+    fn from(transaction: transaction::Data) -> Self {
+        Self { hash: transaction.hash }
     }
 }
 
@@ -429,6 +448,7 @@ async fn v1_user_operation_list_handler(
         .take(pagination.limit.unwrap_or(10))
         .order_by(user_operation::nonce::order(prisma_client_rust::Direction::Desc))
         .with(user_operation::signatures::fetch(vec![]))
+        .with(user_operation::transaction::fetch())
         .exec()
         .await?;
 
