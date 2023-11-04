@@ -340,7 +340,10 @@ pub async fn upsert_user_operation(
                 wallet::address::equals(to_checksum(&uow.sender, None)),
                 vec![user_operation::signature::set(Some(uow.signature.to_vec()))],
             ),
-            vec![user_operation::status::set(UserOperationStatus::Executed)],
+            vec![
+                user_operation::status::set(UserOperationStatus::Executed),
+                user_operation::transaction_hash::set(Some(format!("{:?}", uow.transaction.hash))),
+            ],
         )
         .exec()
         .await?;
