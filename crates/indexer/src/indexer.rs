@@ -35,7 +35,7 @@ use eyre::eyre;
 use lightdotso_constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
 use lightdotso_contracts::provider::get_provider;
 use lightdotso_db::{
-    db::{create_transaction_category, create_transaction_with_log_receipt},
+    db::{create_transaction_category, upsert_transaction_with_log_receipt},
     error::DbError,
 };
 use lightdotso_kafka::{
@@ -759,7 +759,7 @@ impl Indexer {
         // Create the transaction with log receipt if both are not empty
         if tx_receipt.is_ok() && tx.is_ok() {
             let res = self
-                .db_create_transaction_with_log_receipt(
+                .db_upsert_transaction_with_log_receipt(
                     db_client.clone(),
                     tx.unwrap(),
                     tx_receipt.unwrap(),
@@ -770,7 +770,7 @@ impl Indexer {
 
             // Log if error
             if res.is_err() {
-                error!("create_transaction_with_log_receipt error: {:?}", res);
+                error!("upsert_transaction_with_log_receipt error: {:?}", res);
             }
         }
     }
@@ -804,7 +804,7 @@ impl Indexer {
 
     /// Creates a new transaction with log receipt in the database
     #[autometrics]
-    pub async fn db_create_transaction_with_log_receipt(
+    pub async fn db_upsert_transaction_with_log_receipt(
         &self,
         db_client: Arc<PrismaClient>,
         tx: Option<Transaction>,
@@ -814,7 +814,7 @@ impl Indexer {
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         {
             || {
-                create_transaction_with_log_receipt(
+                upsert_transaction_with_log_receipt(
                     db_client.clone(),
                     tx.clone().unwrap(),
                     tx_receipt.clone().unwrap().logs,
