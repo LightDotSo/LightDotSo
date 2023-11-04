@@ -122,9 +122,9 @@ pub async fn upsert_transaction_with_log_receipt(
                     NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
                     FixedOffset::east_opt(0).unwrap(),
                 ),
-                trace.map_or(serde_json::Value::Null, |t| {
-                    serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
-                }),
+                trace
+                    .clone()
+                    .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),
                 vec![
                     transaction::input::set(Some(transaction.input.0.to_vec())),
                     transaction::block_hash::set(
@@ -149,7 +149,10 @@ pub async fn upsert_transaction_with_log_receipt(
                     ),
                 ],
             ),
-            vec![],
+            vec![transaction::trace::set(
+                trace
+                    .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),
+            )],
         )
         .exec()
         .instrument(info_span!("upsert_transaction"))
