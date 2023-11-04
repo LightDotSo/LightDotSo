@@ -260,18 +260,18 @@ pub async fn upsert_transaction_with_log_receipt(
     let _ = db
         ._transaction()
         .run(|client| async move {
-            let log_topics_create_items = log_topics
+            let log_topics_upsert_items = log_topics
                 .iter()
                 .map(|(log_topic, id)| {
                     client.log_topic().upsert(
                         log_topic::id::equals(format!("{:?}", log_topic)),
                         log_topic::create(log::id::equals(id.to_string()), vec![]),
-                        vec![],
+                        vec![log_topic::log::connect(log::id::equals(id.to_string()))],
                     )
                 })
                 .collect::<Vec<_>>();
 
-            client._batch(log_topics_create_items).await
+            client._batch(log_topics_upsert_items).await
         })
         .await?;
 
