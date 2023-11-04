@@ -150,6 +150,13 @@ export interface paths {
      */
     get: operations["v1_user_operation_list_handler"];
   };
+  "/user_operation/nonce": {
+    /**
+     * Get a user operation nonce
+     * @description Get a user operation nonce
+     */
+    get: operations["v1_user_operation_nonce_handler"];
+  };
   "/user_operation/signature": {
     /**
      * Check a user operation for its validity and return the computed signature if valid.
@@ -365,6 +372,7 @@ export interface components {
       sender: string;
       signatures: components["schemas"]["UserOperationSignature"][];
       status: string;
+      transaction?: components["schemas"]["UserOperationTransaction"] | null;
       /** Format: int64 */
       verification_gas_limit: number;
     };
@@ -425,6 +433,11 @@ export interface components {
        * @description The signature type
        */
       signature_type: number;
+    };
+    /** @description Transaction */
+    UserOperationTransaction: {
+      /** @description The hash of the transaction. */
+      hash: string;
     };
     /** @description Wallet to do. */
     Wallet: {
@@ -1008,6 +1021,32 @@ export interface operations {
       };
       /** @description User Operation bad request */
       500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a user operation nonce
+   * @description Get a user operation nonce
+   */
+  v1_user_operation_nonce_handler: {
+    parameters: {
+      query: {
+        chain_id: number;
+        address: string;
+      };
+    };
+    responses: {
+      /** @description User Operation nonce returned successfully */
+      200: {
+        content: {
+          "text/plain": number;
+        };
+      };
+      /** @description User Operation nonce not found */
+      404: {
         content: {
           "application/json": components["schemas"]["UserOperationError"];
         };

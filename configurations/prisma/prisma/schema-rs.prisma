@@ -197,6 +197,8 @@ model Log {
 }
 
 model LogTopic {
+  /// H256 + index of the topic (0-3)
+  /// The concatenated id is separated by a hyphen
   id String @id
 
   logs Log[]

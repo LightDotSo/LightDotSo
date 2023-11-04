@@ -126,7 +126,7 @@ pub async fn upsert_transaction_with_log_receipt(
                                 .unwrap(),
                             FixedOffset::east_opt(0).unwrap(),
                         ),
-                        trace.map_or(serde_json::Value::Null, |t| {
+                        trace.clone().map_or(json!({}), |t| {
                             serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
                         }),
                         vec![
@@ -157,7 +157,9 @@ pub async fn upsert_transaction_with_log_receipt(
                             ),
                         ],
                     ),
-                    vec![],
+                    vec![transaction::trace::set(trace.map_or(json!({}), |t| {
+                        serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
+                    }))],
                 )
                 .exec()
                 .instrument(info_span!("upsert_transaction"))
@@ -340,7 +342,10 @@ pub async fn upsert_user_operation(
                 wallet::address::equals(to_checksum(&uow.sender, None)),
                 vec![user_operation::signature::set(Some(uow.signature.to_vec()))],
             ),
-            vec![user_operation::status::set(UserOperationStatus::Executed)],
+            vec![
+                user_operation::status::set(UserOperationStatus::Executed),
+                user_operation::transaction_hash::set(Some(format!("{:?}", uow.transaction.hash))),
+            ],
         )
         .exec()
         .await?;
