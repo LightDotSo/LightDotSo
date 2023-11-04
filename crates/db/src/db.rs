@@ -126,7 +126,7 @@ pub async fn upsert_transaction_with_log_receipt(
                                 .unwrap(),
                             FixedOffset::east_opt(0).unwrap(),
                         ),
-                        trace.map_or(serde_json::Value::Null, |t| {
+                        trace.clone().map_or(json!({}), |t| {
                             serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
                         }),
                         vec![
@@ -157,7 +157,9 @@ pub async fn upsert_transaction_with_log_receipt(
                             ),
                         ],
                     ),
-                    vec![],
+                    vec![transaction::trace::set(trace.map_or(json!({}), |t| {
+                        serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
+                    }))],
                 )
                 .exec()
                 .instrument(info_span!("upsert_transaction"))
@@ -250,9 +252,10 @@ pub async fn upsert_transaction_with_log_receipt(
     let mut log_topics: HashMap<_, _> = HashMap::new();
 
     for (log_creation, log) in log_creations.iter().zip(logs_clone.iter()) {
-        for topic in log.topics.iter() {
-            info!(?topic, ?log_creation.id);
-            log_topics.insert(*topic, log_creation.id.clone());
+        for (i, topic) in log.topics.iter().enumerate() {
+            info!(?topic, ?log_creation.id, i);
+            // Insert the log topic w/ the index
+            log_topics.insert(format!("{:?}-{}", topic, i), log_creation.id.clone());
         }
     }
 
@@ -262,11 +265,11 @@ pub async fn upsert_transaction_with_log_receipt(
         .run(|client| async move {
             let log_topics_upsert_items = log_topics
                 .iter()
-                .map(|(log_topic, id)| {
+                .map(|(log_topic_index, id)| {
                     client.log_topic().upsert(
-                        log_topic::id::equals(format!("{:?}", log_topic)),
+                        log_topic::id::equals(log_topic_index.to_string()),
                         log_topic::create(
-                            format!("{:?}", log_topic),
+                            log_topic_index.to_string(),
                             vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
                         ),
                         vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
@@ -339,7 +342,10 @@ pub async fn upsert_user_operation(
                 wallet::address::equals(to_checksum(&uow.sender, None)),
                 vec![user_operation::signature::set(Some(uow.signature.to_vec()))],
             ),
-            vec![user_operation::status::set(UserOperationStatus::Executed)],
+            vec![
+                user_operation::status::set(UserOperationStatus::Executed),
+                user_operation::transaction_hash::set(Some(format!("{:?}", uow.transaction.hash))),
+            ],
         )
         .exec()
         .await?;
