@@ -105,6 +105,10 @@ pub async fn create_transaction_with_log_receipt(
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
+    // Arc the logs for later use
+    let logs: Arc<Vec<ethers::types::Log>> = Arc::new(logs);
+    let logs_clone = logs.clone();
+
     let (tx, _receipt) = db
         ._transaction()
         .run(|client| async move {
@@ -223,9 +227,9 @@ pub async fn create_transaction_with_log_receipt(
     // Iterate through the logs and get the log_topics for each log
     let mut log_topics: HashMap<_, _> = HashMap::new();
 
-    for (log_creation, log) in log_creations.iter().zip(logs.iter()) {
+    for (log_creation, log) in log_creations.iter().zip(logs_clone.iter()) {
         for topic in log.topics.iter() {
-            log_topics.insert(*topic, log_creation.id);
+            log_topics.insert(*topic, log_creation.id.clone());
         }
     }
 
