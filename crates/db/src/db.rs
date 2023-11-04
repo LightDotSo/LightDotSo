@@ -31,9 +31,10 @@ use lightdotso_tracing::{
 };
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime},
-    serde_json, NewClientError,
+    serde_json::{self, json},
+    NewClientError,
 };
-use std::sync::Arc;
+use std::{collections::HashMap, sync::Arc};
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
 type AppJsonResult<T> = AppResult<Json<T>>;
@@ -93,7 +94,7 @@ pub async fn create_transaction_category(
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
 #[autometrics]
-pub async fn create_transaction_with_log_receipt(
+pub async fn upsert_transaction_with_log_receipt(
     db: Database,
     transaction: ethers::types::Transaction,
     logs: Vec<ethers::types::Log>,
@@ -104,142 +105,176 @@ pub async fn create_transaction_with_log_receipt(
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
+    // Arc the logs for later use
+    let logs: Arc<Vec<ethers::types::Log>> = Arc::new(logs);
+    let logs_clone = logs.clone();
+
     let (tx, _receipt) = db
         ._transaction()
         .run(|client| async move {
             let tx_data = client
                 .transaction()
-                .create(
-                    format!("{:?}", transaction.hash),
-                    transaction.nonce.as_u64() as i64,
-                    to_checksum(&transaction.from, None),
-                    chain_id,
-                    DateTime::<FixedOffset>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0).unwrap(),
-                        FixedOffset::east_opt(0).unwrap(),
+                .upsert(
+                    transaction::hash::equals(format!("{:?}", transaction.hash)),
+                    transaction::create(
+                        format!("{:?}", transaction.hash),
+                        transaction.nonce.as_u64() as i64,
+                        to_checksum(&transaction.from, None),
+                        chain_id,
+                        DateTime::<FixedOffset>::from_utc(
+                            NaiveDateTime::from_timestamp_opt(timestamp.as_u64() as i64, 0)
+                                .unwrap(),
+                            FixedOffset::east_opt(0).unwrap(),
+                        ),
+                        trace.map_or(serde_json::Value::Null, |t| {
+                            serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
+                        }),
+                        vec![
+                            transaction::input::set(Some(transaction.input.0.to_vec())),
+                            transaction::block_hash::set(
+                                transaction.block_hash.map(|bh| format!("{:?}", bh)),
+                            ),
+                            transaction::block_number::set(
+                                transaction.block_number.map(|n| n.as_u32() as i32),
+                            ),
+                            transaction::transaction_index::set(
+                                transaction.transaction_index.map(|ti| ti.as_u32() as i32),
+                            ),
+                            transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
+                            transaction::gas_price::set(
+                                transaction.gas_price.map(|gp| gp.as_u64() as i64),
+                            ),
+                            transaction::transaction_type::set(
+                                transaction.transaction_type.map(|gu| gu.as_u32() as i32),
+                            ),
+                            transaction::max_priority_fee_per_gas::set(
+                                transaction
+                                    .max_priority_fee_per_gas
+                                    .map(|mpfpg| mpfpg.as_u64() as i64),
+                            ),
+                            transaction::max_fee_per_gas::set(
+                                transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
+                            ),
+                        ],
                     ),
-                    trace.map_or(serde_json::Value::Null, |t| {
-                        serde_json::to_value(t).unwrap_or_else(|_| serde_json::Value::Null)
-                    }),
-                    vec![
-                        transaction::input::set(Some(transaction.input.0.to_vec())),
-                        transaction::block_hash::set(
-                            transaction.block_hash.map(|bh| format!("{:?}", bh)),
-                        ),
-                        transaction::block_number::set(
-                            transaction.block_number.map(|n| n.as_u32() as i32),
-                        ),
-                        transaction::transaction_index::set(
-                            transaction.transaction_index.map(|ti| ti.as_u32() as i32),
-                        ),
-                        transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
-                        transaction::gas_price::set(
-                            transaction.gas_price.map(|gp| gp.as_u64() as i64),
-                        ),
-                        transaction::transaction_type::set(
-                            transaction.transaction_type.map(|gu| gu.as_u32() as i32),
-                        ),
-                        transaction::max_priority_fee_per_gas::set(
-                            transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.as_u64() as i64),
-                        ),
-                        transaction::max_fee_per_gas::set(
-                            transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
-                        ),
-                    ],
+                    vec![],
                 )
                 .exec()
-                .instrument(info_span!("create_transaction"))
+                .instrument(info_span!("upsert_transaction"))
                 .await?;
             trace!(?tx_data);
 
             client
                 .receipt()
-                .create(
-                    format!("{:?}", receipt.transaction_hash),
-                    receipt.transaction_index.as_u32() as i32,
-                    to_checksum(&receipt.from, None),
-                    receipt.cumulative_gas_used.as_u64() as i64,
-                    vec![
-                        receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
-                        receipt::block_number::set(
-                            receipt.block_number.map(|bn| bn.as_u32() as i32),
-                        ),
-                        receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
-                        receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
-                        receipt::contract_address::set(
-                            receipt.contract_address.map(|ca| to_checksum(&ca, None)),
-                        ),
-                        receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
-                        receipt::transaction_type::set(
-                            receipt.transaction_type.map(|tt| tt.as_u32() as i32),
-                        ),
-                        receipt::effective_gas_price::set(
-                            receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
-                        ),
-                    ],
+                .upsert(
+                    receipt::transaction_hash::equals(format!("{:?}", receipt.transaction_hash)),
+                    receipt::create(
+                        format!("{:?}", receipt.transaction_hash),
+                        receipt.transaction_index.as_u32() as i32,
+                        to_checksum(&receipt.from, None),
+                        receipt.cumulative_gas_used.as_u64() as i64,
+                        vec![
+                            receipt::block_hash::set(
+                                receipt.block_hash.map(|bh| format!("{:?}", bh)),
+                            ),
+                            receipt::block_number::set(
+                                receipt.block_number.map(|bn| bn.as_u32() as i32),
+                            ),
+                            receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
+                            receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
+                            receipt::contract_address::set(
+                                receipt.contract_address.map(|ca| to_checksum(&ca, None)),
+                            ),
+                            receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
+                            receipt::transaction_type::set(
+                                receipt.transaction_type.map(|tt| tt.as_u32() as i32),
+                            ),
+                            receipt::effective_gas_price::set(
+                                receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
+                            ),
+                        ],
+                    ),
+                    vec![],
                 )
                 .exec()
-                .instrument(info_span!("create_receipt"))
+                .instrument(info_span!("upsert_receipt"))
                 .await
                 .map(|op| (tx_data, op))
         })
         .await?;
 
-    // FIXME: This is a workaround for the fact that the log batch creation cannot be batched w/
-    // transaction and receipt
+    let log_creations = db
+        ._transaction()
+        .run(|client| async move {
+            let logs_upsert_items = logs
+                .clone()
+                .iter()
+                .map(|log| {
+                    client.log().upsert(
+                        log::UniqueWhereParam::TransactionHashLogIndexEquals(
+                            format!("{:?}", transaction.hash),
+                            log.log_index.unwrap().as_u64() as i64,
+                        ),
+                        log::create(
+                            to_checksum(&log.address, None),
+                            log.data.to_vec(),
+                            vec![
+                                log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
+                                log::block_number::set(
+                                    log.block_number.map(|bn| bn.as_u32() as i32),
+                                ),
+                                log::transaction_hash::set(
+                                    log.transaction_hash.map(|th| format!("{:?}", th)),
+                                ),
+                                log::transaction_index::set(
+                                    log.transaction_index.map(|ti| ti.as_u32() as i32),
+                                ),
+                                log::log_index::set(log.log_index.map(|li| li.as_u64() as i64)),
+                                log::transaction_log_index::set(
+                                    log.transaction_log_index.map(|lti| lti.as_u64() as i64),
+                                ),
+                                log::log_type::set(log.clone().log_type),
+                                log::removed::set(log.removed),
+                            ],
+                        ),
+                        vec![],
+                    )
+                })
+                .collect::<Vec<_>>();
+
+            client._batch(logs_upsert_items).await
+        })
+        .await?;
+
+    // Iterate through the logs and get the log_topics for each log
+    let mut log_topics: HashMap<_, _> = HashMap::new();
+
+    for (log_creation, log) in log_creations.iter().zip(logs_clone.iter()) {
+        for topic in log.topics.iter() {
+            info!(?topic, ?log_creation.id);
+            log_topics.insert(*topic, log_creation.id.clone());
+        }
+    }
+
+    // Iterate through and upsert the log topics
     let _ = db
         ._transaction()
         .run(|client| async move {
-            let _ = logs
+            let log_topics_upsert_items = log_topics
                 .iter()
-                .map(|log| {
-                    client.log_topic().create_many(
-                        log.topics
-                            .iter()
-                            .map(|id| {
-                                lightdotso_prisma::log_topic::create_unchecked(
-                                    format!("{:?}", id),
-                                    vec![],
-                                )
-                            })
-                            .collect(),
+                .map(|(log_topic, id)| {
+                    client.log_topic().upsert(
+                        log_topic::id::equals(format!("{:?}", log_topic)),
+                        log_topic::create(
+                            format!("{:?}", log_topic),
+                            vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
+                        ),
+                        vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
                     )
                 })
                 .collect::<Vec<_>>();
 
-            let logs_create_items = logs
-                .iter()
-                .map(|log| {
-                    client.log().create(
-                        to_checksum(&log.address, None),
-                        log.data.to_vec(),
-                        vec![
-                            log::topics::connect(
-                                log.topics
-                                    .iter()
-                                    .map(|id| log_topic::id::equals(format!("{:?}", id)))
-                                    .collect(),
-                            ),
-                            log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
-                            log::block_number::set(log.block_number.map(|bn| bn.as_u32() as i32)),
-                            log::transaction_hash::set(
-                                log.transaction_hash.map(|th| format!("{:?}", th)),
-                            ),
-                            log::transaction_index::set(
-                                log.transaction_index.map(|ti| ti.as_u32() as i32),
-                            ),
-                            log::log_index::set(log.log_index.map(|li| li.as_u64() as i64)),
-                            log::transaction_log_index::set(
-                                log.transaction_log_index.map(|lti| lti.as_u64() as i64),
-                            ),
-                            log::log_type::set(log.clone().log_type),
-                            log::removed::set(log.removed),
-                        ],
-                    )
-                })
-                .collect::<Vec<_>>();
-
-            client._batch(logs_create_items).await
+            client._batch(log_topics_upsert_items).await
         })
         .await?;
 

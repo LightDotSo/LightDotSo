@@ -216,9 +216,9 @@ model Log {
 }
 
 model LogTopic {
-  id String @unique
+  id String @id
 
-  log Log @relation(fields: [id], references: [id])
+  logs Log[]
 
   @@index([id])
 }

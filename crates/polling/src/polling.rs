@@ -30,7 +30,7 @@ use lightdotso_contracts::{
 };
 use lightdotso_db::{
     db::{
-        create_client, create_transaction_with_log_receipt, upsert_user_operation,
+        create_client, upsert_transaction_with_log_receipt, upsert_user_operation,
         upsert_user_operation_logs, upsert_wallet_with_configuration,
     },
     error::DbError,
@@ -237,9 +237,9 @@ impl Polling {
                         }
 
                         // Attempt to create the user operation in the db.
-                        let res = self.db_create_transaction_with_log_receipt(op.clone()).await;
+                        let res = self.db_upsert_transaction_with_log_receipt(op.clone()).await;
                         if res.is_err() {
-                            error!("db_create_transaction_with_log_receipt error: {:?}", res);
+                            error!("db_upsert_transaction_with_log_receipt error: {:?}", res);
                         }
 
                         // Create the user operation in the db.
@@ -311,26 +311,21 @@ impl Polling {
 
     /// Create a new transaction w/ the
     #[autometrics]
-    pub async fn db_create_transaction_with_log_receipt(
+    pub async fn db_upsert_transaction_with_log_receipt(
         &self,
         op: UserOperation,
     ) -> Result<Json<lightdotso_prisma::transaction::Data>, DbError> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
 
-        info!("db_create_transaction_with_log_receipt, op: {:?}", op);
-
         let uoc = UserOperationConstruct { chain_id: chain_id as i64, user_operation: op.clone() };
         let uow: UserOperationWithTransactionAndReceiptLogs = uoc.into();
 
-        info!("db_create_transaction_with_log_receipt, uow: {:?}", uow);
-
         let block = self.get_block(uow.transaction.block_number.unwrap()).await.unwrap().unwrap();
-        info!("db_create_transaction_with_log_receipt, block: {:?}", block);
 
         {
             || {
-                create_transaction_with_log_receipt(
+                upsert_transaction_with_log_receipt(
                     db_client.clone(),
                     uow.clone().transaction,
                     uow.clone().transaction_logs,

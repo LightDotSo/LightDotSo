@@ -80,9 +80,11 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                         data: log.data.0.hex_to_bytes().unwrap().into(),
                         block_hash: None,
                         block_number: None,
-                        transaction_hash: None,
-                        transaction_index: None,
-                        log_index: None,
+                        transaction_hash: Some(log.transaction_hash.0.parse().unwrap()),
+                        transaction_index: Some(
+                            (log.transaction_index.0.parse::<u64>().unwrap()).into(),
+                        ),
+                        log_index: Some((log.log_index.0.parse::<u64>().unwrap()).into()),
                         transaction_log_index: None,
                         log_type: None,
                         removed: None,
@@ -91,11 +93,12 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
             }),
             transaction: Transaction {
                 hash: op.user_operation.transaction.hash.unwrap().0.parse().unwrap(),
-                // Determistic Option Zero
-                nonce: 0.into(),
+                nonce: (op.user_operation.nonce.0.parse::<u64>().unwrap()).into(),
                 // Determistic Option None
                 block_hash: None,
-                block_number: Some(op.user_operation.block_number.0.parse().unwrap()),
+                block_number: Some(
+                    (op.user_operation.block_number.0.parse::<u64>().unwrap()).into(),
+                ),
                 // Determistic Option None
                 transaction_index: None,
                 from: op.user_operation.transaction.from.0.parse().unwrap(),
@@ -103,7 +106,10 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 // Determistic Option Zero
                 value: 0.into(),
                 // Determistic Option None
-                gas_price: None,
+                gas_price: Some(
+                    (op.user_operation.transaction.gas_price.unwrap().0.parse::<u64>().unwrap())
+                        .into(),
+                ),
                 // Determistic Option Zero
                 gas: 0.into(),
                 input: op
@@ -148,9 +154,11 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                             data: log.data.0.hex_to_bytes().unwrap().into(),
                             block_hash: None,
                             block_number: None,
-                            transaction_hash: None,
-                            transaction_index: None,
-                            log_index: None,
+                            transaction_hash: Some(log.transaction_hash.0.parse().unwrap()),
+                            transaction_index: Some(
+                                (log.transaction_index.0.parse::<u64>().unwrap()).into(),
+                            ),
+                            log_index: Some((log.log_index.0.parse::<u64>().unwrap()).into()),
                             transaction_log_index: None,
                             log_type: None,
                             removed: None,
@@ -172,8 +180,9 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 transaction_index: op.user_operation.transaction.index.unwrap().0.parse().unwrap(),
                 // Determistic Option None
                 block_hash: None,
-                // Determistic Option None
-                block_number: None,
+                block_number: Some(
+                    (op.user_operation.block_number.0.parse::<u64>().unwrap()).into(),
+                ),
                 // Determistic Option Zero
                 cumulative_gas_used: 0.into(),
                 // Determistic Option None
