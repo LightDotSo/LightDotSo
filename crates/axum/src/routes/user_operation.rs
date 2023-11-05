@@ -36,7 +36,7 @@ use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
 use lightdotso_paymaster::paymaster::decode_paymaster_and_data;
 use lightdotso_prisma::{
     configuration, owner, paymaster, signature, transaction, user_operation, wallet,
-    UserOperationStatus,
+    SignatureProcedure, UserOperationStatus,
 };
 use lightdotso_solutions::{
     builder::rooted_node_builder,
@@ -687,6 +687,7 @@ async fn v1_user_operation_post_handler(
                 .create(
                     sig.signature.hex_to_bytes()?,
                     sig.signature_type,
+                    SignatureProcedure::OnChain,
                     owner::id::equals(sig.owner_id),
                     user_operation::hash::equals(user_operation_hash),
                     vec![],
