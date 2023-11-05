@@ -486,11 +486,12 @@ model UserOperationCategory {
 }
 
 model Signature {
-  id            String   @id @default(cuid())
+  id            String             @id @default(cuid())
   signature     Bytes
   signatureType Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  procedure     SignatureProcedure @default(ON_CHAIN)
 
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
@@ -504,6 +505,12 @@ model Signature {
   @@index([ownerId])
   @@index([userOperationHash])
   @@index([notificationId])
+}
+
+enum SignatureProcedure {
+  OFF_CHAIN
+  ON_CHAIN
+  ERC_1271
 }
 
 model History {
