@@ -79,6 +79,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet::Wallet),
         schemas(wallet::WalletError),
         schemas(wallet::WalletPostRequestParams),
+        schemas(wallet::WalletTab),
     ),
     paths(
         check::handler,
@@ -106,6 +107,7 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_get_handler,
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
+        wallet::v1_wallet_tab_handler,
     ),
     tags(
         (name = "configuration", description = "Configuration API"),

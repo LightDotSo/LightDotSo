@@ -29,7 +29,7 @@ use ethers_main::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
-use lightdotso_prisma::{user, wallet};
+use lightdotso_prisma::{user, user_operation, wallet};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -124,6 +124,13 @@ pub(crate) struct Wallet {
     salt: String,
 }
 
+/// WalletTab to do.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct WalletTab {
+    pending_operation_count: i64,
+    owner_count: i64,
+}
+
 // Implement From<wallet::Data> for Wallet.
 impl From<wallet::Data> for Wallet {
     fn from(wallet: wallet::Data) -> Self {
@@ -136,10 +143,28 @@ impl From<wallet::Data> for Wallet {
     }
 }
 
+// Implement From<wallet::Data> for Wallet.
+impl From<wallet::Data> for WalletTab {
+    fn from(wallet: wallet::Data) -> Self {
+        let pending_operation_count = match &wallet.user_operations {
+            Some(user_operations) => user_operations.len() as i64,
+            None => 0,
+        };
+
+        let owner_count = match &wallet.users {
+            Some(users) => users.len() as i64,
+            None => 0,
+        };
+
+        Self { pending_operation_count, owner_count }
+    }
+}
+
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/wallet/get", get(v1_wallet_get_handler))
+        .route("/wallet/tab", get(v1_wallet_tab_handler))
         .route("/wallet/list", get(v1_wallet_list_handler))
         .route("/wallet/create", post(v1_wallet_post_handler))
 }
@@ -183,6 +208,55 @@ async fn v1_wallet_get_handler(
     let wallet: Wallet = wallet.into();
 
     Ok(Json::from(wallet))
+}
+
+/// Get a wallet tab
+#[utoipa::path(
+        get,
+        path = "/wallet/tab",
+        params(
+            GetQuery
+        ),
+        responses(
+            (status = 200, description = "Wallet tab returned successfully", body = Wallet),
+            (status = 404, description = "Wallet tab not found", body = WalletError),
+        )
+    )]
+#[autometrics]
+async fn v1_wallet_tab_handler(
+    get: Query<GetQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<WalletTab> {
+    // Get the get query.
+    let Query(query) = get;
+
+    let parsed_query_address: H160 = query.address.parse()?;
+    let checksum_address = to_checksum(&parsed_query_address, None);
+
+    info!(?checksum_address);
+
+    // Get the wallets from the database.
+    let wallet = client
+        .client
+        .unwrap()
+        .wallet()
+        .find_unique(wallet::address::equals(checksum_address))
+        .with(wallet::users::fetch(vec![]))
+        .with(wallet::user_operations::fetch(vec![user_operation::status::equals(
+            lightdotso_prisma::UserOperationStatus::Pending,
+        )]))
+        .exec()
+        .await?;
+
+    info!(?wallet);
+
+    // If the wallet is not found, return a 404.
+    let wallet = wallet.ok_or(AppError::NotFound)?;
+
+    // Get the number of owners of the wallet.
+    let tab: WalletTab = wallet.into();
+
+    Ok(Json::from(tab))
 }
 
 /// Returns a list of wallets.
