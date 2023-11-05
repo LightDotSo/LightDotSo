@@ -24,7 +24,7 @@ use axum::{
     Json, Router,
 };
 use lightdotso_common::traits::{HexToBytes, VecU8ToHex};
-use lightdotso_prisma::{owner, signature, user_operation};
+use lightdotso_prisma::{owner, signature, user_operation, SignatureProcedure};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
@@ -52,6 +52,16 @@ pub struct ListQuery {
 pub struct PostQuery {
     // The hash of the user operation.
     pub user_operation_hash: String,
+    // The procedure to create(default: OnChain)
+    #[param(inline)]
+    pub procedure: Option<PostQueryProcedure>,
+}
+
+#[derive(Debug, Deserialize, ToSchema)]
+pub enum PostQueryProcedure {
+    Offchain,
+    Onchain,
+    Erc1271,
 }
 
 /// Signature operation errors
@@ -213,6 +223,16 @@ async fn v1_signature_post_handler(
     // Get the post query.
     let Query(post) = post;
 
+    // Get the procedure from the post query.
+    let post_procedure = post.procedure.unwrap_or(PostQueryProcedure::Onchain);
+
+    // Match the procedure to the signature procedure.
+    let procedure = match post_procedure {
+        PostQueryProcedure::Offchain => SignatureProcedure::OffChain,
+        PostQueryProcedure::Onchain => SignatureProcedure::OnChain,
+        PostQueryProcedure::Erc1271 => SignatureProcedure::Erc1271,
+    };
+
     // Get the chain id from the post query.
     let user_operation_hash = post.user_operation_hash;
 
@@ -227,6 +247,7 @@ async fn v1_signature_post_handler(
         .create(
             sig.signature.hex_to_bytes()?,
             sig.signature_type,
+            procedure,
             owner::id::equals(sig.owner_id),
             user_operation::hash::equals(user_operation_hash),
             vec![],

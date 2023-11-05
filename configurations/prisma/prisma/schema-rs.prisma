@@ -472,7 +472,7 @@ model Signature {
   signatureType Int
   createdAt     DateTime           @default(now())
   updatedAt     DateTime           @updatedAt
-  procedure     SignatureProcedure @default(ON_CHAIN)
+  procedure     SignatureProcedure
 
   owner   Owner  @relation(fields: [ownerId], references: [id])
   ownerId String
