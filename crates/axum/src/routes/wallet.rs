@@ -127,7 +127,7 @@ pub(crate) struct Wallet {
 /// WalletTab to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct WalletTab {
-    pending_operation_count: i64,
+    transaction_count: i64,
     owner_count: i64,
 }
 
@@ -146,7 +146,7 @@ impl From<wallet::Data> for Wallet {
 // Implement From<wallet::Data> for Wallet.
 impl From<wallet::Data> for WalletTab {
     fn from(wallet: wallet::Data) -> Self {
-        let pending_operation_count = match &wallet.user_operations {
+        let transaction_count = match &wallet.user_operations {
             Some(user_operations) => user_operations.len() as i64,
             None => 0,
         };
@@ -156,7 +156,7 @@ impl From<wallet::Data> for WalletTab {
             None => 0,
         };
 
-        Self { pending_operation_count, owner_count }
+        Self { transaction_count, owner_count }
     }
 }
 
@@ -218,7 +218,7 @@ async fn v1_wallet_get_handler(
             GetQuery
         ),
         responses(
-            (status = 200, description = "Wallet tab returned successfully", body = Wallet),
+            (status = 200, description = "Wallet tab returned successfully", body = WalletTab),
             (status = 404, description = "Wallet tab not found", body = WalletError),
         )
     )]
@@ -243,7 +243,7 @@ async fn v1_wallet_tab_handler(
         .find_unique(wallet::address::equals(checksum_address))
         .with(wallet::users::fetch(vec![]))
         .with(wallet::user_operations::fetch(vec![user_operation::status::equals(
-            lightdotso_prisma::UserOperationStatus::Pending,
+            lightdotso_prisma::UserOperationStatus::Proposed,
         )]))
         .exec()
         .await?;

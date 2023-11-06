@@ -18,7 +18,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 
 import { Tabs } from "@/components/tabs-nav";
 import { cn } from "@lightdotso/utils";
@@ -38,7 +38,6 @@ const tabs = [
     label: "Overview",
     id: "overview",
     href: "/",
-    number: 0,
     icon: (
       props: React.JSX.IntrinsicAttributes &
         IconProps &
@@ -49,7 +48,6 @@ const tabs = [
     label: "Transactions",
     id: "transactions",
     href: "/transactions",
-    number: 10,
     icon: (
       props: React.JSX.IntrinsicAttributes &
         IconProps &
@@ -60,7 +58,6 @@ const tabs = [
     label: "Members",
     id: "members",
     href: "/members",
-    number: 3,
     icon: (
       props: React.JSX.IntrinsicAttributes &
         IconProps &
@@ -71,7 +68,6 @@ const tabs = [
     label: "Settings",
     id: "settings",
     href: "/settings",
-    number: 3,
     icon: (
       props: React.JSX.IntrinsicAttributes &
         IconProps &
@@ -82,7 +78,6 @@ const tabs = [
     label: "Support",
     id: "support",
     href: "/support",
-    number: 0,
     icon: (
       props: React.JSX.IntrinsicAttributes &
         IconProps &
@@ -113,7 +108,7 @@ export function MainNav({
       {...props}
     >
       {/* Render upon mount */}
-      {framer && <Tabs {...framer.tabProps} />}
+      <Suspense>{framer && <Tabs {...framer.tabProps} />}</Suspense>
     </div>
   );
 }
