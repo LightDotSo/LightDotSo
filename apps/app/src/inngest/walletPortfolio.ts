@@ -21,6 +21,10 @@ import { NonRetriableError } from "inngest";
 export const walletPortfolio = inngest.createFunction(
   {
     id: "wallet-portfolio",
+    debounce: {
+      key: "event.data.address",
+      period: "3m",
+    },
     rateLimit: {
       key: "event.data.address",
       limit: 1,
