@@ -31,9 +31,9 @@ export const walletPortfolioCron = inngest.createFunction(
 
     // For each user, send us an event.  Inngest supports batches of events
     // as long as the entire payload is less than 512KB.
-    const events = wallets.map<Events["wallet.portfolio"]>(wallet => {
+    const events = wallets.map<Events["wallet/portfolio.set"]>(wallet => {
       return {
-        name: "wallet/portfolio",
+        name: "wallet/portfolio.set",
         data: {
           ...wallet,
         },

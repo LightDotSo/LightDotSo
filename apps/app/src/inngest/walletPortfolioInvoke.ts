@@ -16,9 +16,9 @@
 import { inngest } from "@/inngest/client";
 import { NonRetriableError } from "inngest";
 
-export const walletPortfolioUpdate = inngest.createFunction(
+export const walletPortfolioInvoke = inngest.createFunction(
   {
-    id: "wallet-portfolio-invoke",
+    id: "wallet-portfolio-update",
     rateLimit: {
       key: "event.data.address",
       limit: 1,
@@ -47,12 +47,12 @@ export const walletPortfolioUpdate = inngest.createFunction(
       name: "wallet/portfolio.update",
       data: {
         address: wallet!.address,
-        service_id: event.ts,
+        service_id: event.ts!.toString(),
       },
     });
 
-    await step.sendEvent("Get and update the portfolio", {
-      name: "wallet/portfolio",
+    await step.sendEvent("Set and update the portfolio", {
+      name: "wallet/portfolio.set",
       data: {
         address: wallet!.address,
         service_id: event.name,
