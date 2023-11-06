@@ -243,7 +243,7 @@ async fn v1_wallet_tab_handler(
         .find_unique(wallet::address::equals(checksum_address))
         .with(wallet::users::fetch(vec![]))
         .with(wallet::user_operations::fetch(vec![user_operation::status::equals(
-            lightdotso_prisma::UserOperationStatus::Pending,
+            lightdotso_prisma::UserOperationStatus::Proposed,
         )]))
         .exec()
         .await?;
