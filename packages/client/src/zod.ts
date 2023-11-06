@@ -19,6 +19,7 @@ import type { z } from "zod";
 export const zodFetch = async <TResponseSchema extends z.Schema>(
   url: string,
   responseSchema: TResponseSchema,
+  method?: "GET" | "POST" | "PUT" | "DELETE",
   next?: {
     revalidate?: number;
     tags?: string[];
@@ -27,7 +28,7 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
   const response = await fetch(url, {
     //@ts-expect-error
     next: next,
-    method: "GET",
+    method: method ?? "GET",
     headers: {
       "content-type": "application/json",
     },
