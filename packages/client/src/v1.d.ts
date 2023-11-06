@@ -185,6 +185,13 @@ export interface paths {
      */
     get: operations["v1_wallet_list_handler"];
   };
+  "/wallet/tab": {
+    /**
+     * Get a wallet tab
+     * @description Get a wallet tab
+     */
+    get: operations["v1_wallet_tab_handler"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -494,6 +501,13 @@ export interface components {
        */
       threshold: number;
     };
+    /** @description WalletTab to do. */
+    WalletTab: {
+      /** Format: int64 */
+      owner_count: number;
+      /** Format: int64 */
+      pending_operation_count: number;
+    };
   };
   responses: never;
   parameters: never;
@@ -740,6 +754,7 @@ export interface operations {
     parameters: {
       query: {
         user_operation_hash: string;
+        procedure?: ("Offchain" | "Onchain" | "Erc1271") | null;
       };
     };
     requestBody: {
@@ -1174,6 +1189,34 @@ export interface operations {
       };
       /** @description Wallet bad request */
       500: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a wallet tab
+   * @description Get a wallet tab
+   */
+  v1_wallet_tab_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet. */
+        address: string;
+        /** @description The chain id of the wallet. */
+        chain_id?: number | null;
+      };
+    };
+    responses: {
+      /** @description Wallet tab returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Wallet"];
+        };
+      };
+      /** @description Wallet tab not found */
+      404: {
         content: {
           "application/json": components["schemas"]["WalletError"];
         };
