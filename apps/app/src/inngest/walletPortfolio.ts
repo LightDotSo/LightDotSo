@@ -15,6 +15,7 @@
 
 import { inngest } from "@/inngest/client";
 import { getLlama } from "@lightdotso/client";
+import { WalletBalanceCategory } from "@lightdotso/prisma";
 import { NonRetriableError } from "inngest";
 
 export const walletPortfolio = inngest.createFunction(
@@ -44,11 +45,29 @@ export const walletPortfolio = inngest.createFunction(
       return data;
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const _llama = await step.run("Find llama in db", async () => {
+    const llama = await step.run("Find llama in db", async () => {
       const res = await getLlama(wallet!.address);
 
       return res._unsafeUnwrap();
+    });
+
+    await step.run("Update the values of the wallet balance", async () => {
+      const totalNetBalance = llama.protocols.reduce(
+        (prev, curr) =>
+          prev + curr.balanceUSD - (curr.debtUSD || 0) + (curr.rewardUSD || 0),
+        0,
+      );
+
+      await prisma.walletBalance.createMany({
+        data: [
+          {
+            walletAddress: wallet!.address,
+            chainId: 0,
+            balance: totalNetBalance,
+            category: WalletBalanceCategory.BALANCE,
+          },
+        ],
+      });
     });
   },
 );
