@@ -20,6 +20,7 @@ import { getLlama, getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { notFound } from "next/navigation";
+import { inngest } from "@/inngest/client";
 
 export default async function Page({
   params,
@@ -39,6 +40,13 @@ export default async function Page({
   const queryClient = getQueryClient();
 
   const res = await getLlama(params.address as Address);
+
+  await inngest.send({
+    name: "wallet/portfolio",
+    data: {
+      address: params.address,
+    },
+  });
 
   // ---------------------------------------------------------------------------
   // Render
