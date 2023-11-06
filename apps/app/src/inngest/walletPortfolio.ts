@@ -45,6 +45,11 @@ export const walletPortfolio = inngest.createFunction(
       return data;
     });
 
+    await step.sendEvent("wallet-portfolio-invoke-event", {
+      name: "wallet/portfolio.update",
+      data: { address: wallet!.address },
+    });
+
     const llama = await step.run("Get llama", async () => {
       const res = await getLlama(wallet!.address);
 
