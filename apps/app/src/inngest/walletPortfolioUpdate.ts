@@ -14,20 +14,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { inngest } from "@/inngest/client";
-import { getLlama } from "@lightdotso/client";
-import { WalletBalanceCategory } from "@lightdotso/prisma";
+import { postLlama } from "@lightdotso/client";
 import { NonRetriableError } from "inngest";
 
-export const walletPortfolio = inngest.createFunction(
+export const walletPortfolioUpdate = inngest.createFunction(
   {
-    id: "wallet-portfolio",
+    id: "wallet-portfolio-update",
     rateLimit: {
       key: "event.data.address",
       limit: 1,
-      period: "1m",
+      period: "24h",
     },
   },
-  { event: "wallet/portfolio" },
+  { event: "wallet/portfolio.update" },
   async ({ event, step, prisma }) => {
     const wallet = await step.run("Find wallet in db", async () => {
       const data = prisma.wallet.findUnique({
@@ -45,41 +44,10 @@ export const walletPortfolio = inngest.createFunction(
       return data;
     });
 
-    const llama = await step.run("Get llama", async () => {
-      const res = await getLlama(wallet!.address);
+    await step.run("Invoke llama", async () => {
+      const res = await postLlama(wallet!.address);
 
       return res._unsafeUnwrap();
     });
-
-    const totalNetBalance = await step.run(
-      "Calculate total net balance",
-      async () => {
-        const total = llama.protocols.reduce(
-          (prev, curr) =>
-            prev +
-            curr.balanceUSD -
-            (curr.debtUSD || 0) +
-            (curr.rewardUSD || 0),
-          0,
-        );
-        return total;
-      },
-    );
-
-    await step.run(
-      "Update the values of the total wallet balance",
-      async () => {
-        return await prisma.walletBalance.createMany({
-          data: [
-            {
-              walletAddress: wallet!.address,
-              chainId: 0,
-              balance: totalNetBalance,
-              category: WalletBalanceCategory.BALANCE,
-            },
-          ],
-        });
-      },
-    );
   },
 );
