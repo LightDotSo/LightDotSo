@@ -34,7 +34,7 @@ export const AuthState = () => {
     queryKey: ["user", address],
     queryFn: async () => {
       if (!address) {
-        return;
+        return null;
       }
 
       const res = await getUser({
@@ -96,6 +96,7 @@ export const AuthState = () => {
       setAddress(address);
     } else {
       logout();
+      router.push("/");
     }
   }, [address, logout, router, setAddress]);
 

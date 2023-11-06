@@ -97,6 +97,10 @@ export function MainNav({
   });
   const framer = useTabs(hookProps);
 
+  if (type === "authenticated") {
+    return null;
+  }
+
   return (
     <div
       className={cn(

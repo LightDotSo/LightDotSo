@@ -25,8 +25,13 @@ export const usePathType = (): RootType => {
     "/new",
     "/wallet",
     "/settings",
+    "/settings",
     "/settings/account",
-    "/settings/profile",
+    "/settings/appearance",
+    "/settings/display",
+    "/settings/notifications",
+    "/support",
+    "/wallets",
   ];
 
   if (unauthenticatedPaths.includes(pathname)) {
