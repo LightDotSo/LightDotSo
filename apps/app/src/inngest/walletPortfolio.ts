@@ -45,7 +45,7 @@ export const walletPortfolio = inngest.createFunction(
       return data;
     });
 
-    const llama = await step.run("Find llama in db", async () => {
+    const llama = await step.run("Get llama", async () => {
       const res = await getLlama(wallet!.address);
 
       return res._unsafeUnwrap();
