@@ -21,7 +21,7 @@ export const walletPortfolioUpdate = inngest.createFunction(
   {
     id: "wallet-portfolio-update",
     rateLimit: {
-      key: "event.data.address",
+      key: `event.data.address + "-" + event.data.service_id`,
       limit: 1,
       period: "24h",
     },
