@@ -12,8 +12,8 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "index.ts",
+  "types": "index.d.ts",
   "files": [
     "src"
   ],
