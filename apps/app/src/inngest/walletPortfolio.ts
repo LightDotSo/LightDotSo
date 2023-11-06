@@ -51,23 +51,35 @@ export const walletPortfolio = inngest.createFunction(
       return res._unsafeUnwrap();
     });
 
-    await step.run("Update the values of the wallet balance", async () => {
-      const totalNetBalance = llama.protocols.reduce(
-        (prev, curr) =>
-          prev + curr.balanceUSD - (curr.debtUSD || 0) + (curr.rewardUSD || 0),
-        0,
-      );
+    const totalNetBalance = await step.run(
+      "Calculate total net balance",
+      async () => {
+        const total = llama.protocols.reduce(
+          (prev, curr) =>
+            prev +
+            curr.balanceUSD -
+            (curr.debtUSD || 0) +
+            (curr.rewardUSD || 0),
+          0,
+        );
+        return total;
+      },
+    );
 
-      await prisma.walletBalance.createMany({
-        data: [
-          {
-            walletAddress: wallet!.address,
-            chainId: 0,
-            balance: totalNetBalance,
-            category: WalletBalanceCategory.BALANCE,
-          },
-        ],
-      });
-    });
+    await step.run(
+      "Update the values of the total wallet balance",
+      async () => {
+        await prisma.walletBalance.createMany({
+          data: [
+            {
+              walletAddress: wallet!.address,
+              chainId: 0,
+              balance: totalNetBalance,
+              category: WalletBalanceCategory.BALANCE,
+            },
+          ],
+        });
+      },
+    );
   },
 );
