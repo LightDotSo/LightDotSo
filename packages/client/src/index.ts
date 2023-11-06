@@ -18,7 +18,7 @@ import createClient from "openapi-fetch";
 import type { paths, Without, XOR, OneOf } from "./v1";
 import { ResultAsync, err, ok } from "neverthrow";
 import { zodFetch, zodJsonRpcFetch } from "./zod";
-import { llamaSchema } from "@lightdotso/schemas";
+import { llamaGetSchema, llamaPostSchema } from "@lightdotso/schemas";
 import { z } from "zod";
 
 const devApiClient = createClient<paths>({
@@ -371,10 +371,26 @@ export const getUserOperations = async (
 
 export const getLlama = async (address: string) => {
   return ResultAsync.fromPromise(
-    zodFetch(`https://api.llamafolio.com/balances/${address}`, llamaSchema, {
-      revalidate: 300,
-      tags: [address],
-    }),
+    zodFetch(
+      `https://api.llamafolio.com/balances/${address}`,
+      llamaGetSchema,
+      "GET",
+      {
+        revalidate: 300,
+        tags: [address],
+      },
+    ),
+    () => new Error("Database error"),
+  );
+};
+
+export const postLlama = async (address: string) => {
+  return ResultAsync.fromPromise(
+    zodFetch(
+      `https://api.llamafolio.com/balances/${address}`,
+      llamaPostSchema,
+      "POST",
+    ),
     () => new Error("Database error"),
   );
 };
