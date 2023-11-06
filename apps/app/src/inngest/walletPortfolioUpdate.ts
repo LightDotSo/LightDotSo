@@ -44,7 +44,7 @@ export const walletPortfolioUpdate = inngest.createFunction(
       return data;
     });
 
-    await step.run("Invoke llama", async () => {
+    await step.run("Update llama", async () => {
       const res = await postLlama(wallet!.address);
 
       return res._unsafeUnwrap();

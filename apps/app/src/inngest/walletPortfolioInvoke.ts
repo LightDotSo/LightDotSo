@@ -43,12 +43,11 @@ export const walletPortfolioUpdate = inngest.createFunction(
       return data;
     });
 
-    await step.sendEvent("Update the portfolio invoke", {
+    await step.sendEvent("Update the portfolio ", {
       name: "wallet/portfolio.update",
       data: {
         address: wallet!.address,
-        // Hardcoded service id to respect the `wallet/portfolio.update` event rate limit
-        service_id: "invoker",
+        service_id: event.ts,
       },
     });
 
