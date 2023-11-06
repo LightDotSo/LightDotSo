@@ -15,7 +15,7 @@
 
 import { inngest } from "@/inngest/client";
 
-inngest.createFunction(
+export const userSignedUp = inngest.createFunction(
   { id: "Customer Onboarding" },
   { event: "test/user.signed.up" },
   async ({ step }) => {
