@@ -66,7 +66,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
     queryKey: ["walletTab", walletAddress],
     queryFn: async () => {
       if (!walletAddress) {
-        return;
+        return null;
       }
 
       const res = await getWalletTab({
@@ -95,9 +95,9 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
     return tabs.map(tab => {
       let number = 0;
-      if (tab.label === "owners") {
+      if (tab.id === "members") {
         number = data.owner_count;
-      } else if (tab.label === "transactions") {
+      } else if (tab.id === "transactions") {
         number = data.pending_operation_count;
       }
       return { ...tab, number };
