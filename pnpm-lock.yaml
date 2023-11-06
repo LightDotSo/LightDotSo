@@ -510,6 +510,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
+      inngest-cli:
+        specifier: ^0.20.0
+        version: 0.20.0
       postcss:
         specifier: ^8.4.31
         version: 8.4.31
@@ -21913,6 +21916,20 @@ packages:
 
   /inngest-cli@0.19.0:
     resolution: {integrity: sha512-3Hq0h1h+erHySsAixSUT4TT00p4i70OK+srFIRI4Hf+m+OxfX/hTClLtMnKFR+UtkW2gy1ifW1RcQqpB5u1u3Q==}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      adm-zip: 0.5.10
+      debug: 4.3.4(supports-color@8.1.1)
+      node-fetch: 2.6.7
+      tar: 6.1.11
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
+
+  /inngest-cli@0.20.0:
+    resolution: {integrity: sha512-zQsoiXIfxC9TVATn53pEjKDaITAI/3FzalN9Mx4kkJvGDaSbohxMFR285ZES34k8DcIM/1sRQAXzs2ugPElgaA==}
     hasBin: true
     requiresBuild: true
     dependencies:
