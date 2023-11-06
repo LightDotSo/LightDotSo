@@ -18,7 +18,7 @@
 
 "use client";
 
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useMemo, useState, useEffect } from "react";
 
 import { Tabs } from "@/components/tabs-nav";
 import { cn } from "@lightdotso/utils";
@@ -92,10 +92,25 @@ export function MainNav({
   ...props
 }: React.HTMLAttributes<HTMLElement> & {}) {
   const type = usePathType();
-  const [hookProps] = useState({
-    tabs: type === "wallet" ? tabs : tabs.slice(0, 3),
+
+  const typeTabs = useMemo(() => {
+    if (type === "unauthenticated") {
+      return tabs.filter(tab => {
+        // Don't return `settings` and `support` tabs
+        return tab.id !== "settings" && tab.id !== "support";
+      });
+    }
+    return tabs;
+  }, [type]);
+
+  const [hookProps, setHookProps] = useState({
+    tabs: typeTabs,
   });
   const framer = useTabs(hookProps);
+
+  useEffect(() => {
+    setHookProps({ tabs: typeTabs });
+  }, [typeTabs]);
 
   if (type === "authenticated") {
     return null;

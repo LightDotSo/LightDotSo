@@ -66,7 +66,7 @@ export const protocolSchema = z.object({
 
 export const llamaSchema = z.object({
   status: z.string(),
-  updatedAt: z.number(),
+  updatedAt: z.number().optional(),
   nextUpdateAt: z.number(),
   protocols: z.array(protocolSchema),
 });
