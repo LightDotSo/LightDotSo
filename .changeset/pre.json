@@ -37,7 +37,11 @@
     "@lightdotso/explorer": "0.0.0-pre.2",
     "@lightdotso/open": "0.0.0",
     "@lightdotso/playground": "0.0.0",
-    "@lightdotso/subgraph": "0.0.0"
+    "@lightdotso/subgraph": "0.0.0",
+    "@lightdotso/home": "1.0.0",
+    "@lightdotso/client": "1.0.0",
+    "@lightdotso/const": "1.0.0",
+    "@lightdotso/schemas": "0.0.0"
   },
   "changesets": [
     "calm-stingrays-bathe",
@@ -59,6 +63,7 @@
     "lazy-glasses-type",
     "lemon-kangaroos-cheer",
     "odd-nails-brake",
+    "poor-pillows-knock",
     "popular-deers-walk",
     "real-cougars-grin",
     "rotten-jeans-exist",
@@ -71,6 +76,7 @@
     "small-hats-lay",
     "strange-cherries-provide",
     "swift-dolls-think",
+    "tall-comics-give",
     "tender-doors-dance",
     "thick-beds-drive",
     "tidy-wolves-boil",
