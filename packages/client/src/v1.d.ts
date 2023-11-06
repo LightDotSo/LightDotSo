@@ -1212,7 +1212,7 @@ export interface operations {
       /** @description Wallet tab returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["Wallet"];
+          "application/json": components["schemas"]["WalletTab"];
         };
       };
       /** @description Wallet tab not found */

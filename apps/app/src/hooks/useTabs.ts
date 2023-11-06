@@ -17,8 +17,11 @@
 // License: MIT
 
 import type { ReactNode } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useAuth } from "@/stores/useAuth";
+import { getWalletTab } from "@lightdotso/client";
 
 export type Tab = {
   label: string;
@@ -28,8 +31,11 @@ export type Tab = {
   icon: (_props: { className?: string }) => ReactNode;
 };
 
-export function useTabs({ tabs }: { tabs: Tab[] }) {
+export type RawTab = Omit<Tab, "number">;
+
+export function useTabs({ tabs }: { tabs: RawTab[] }) {
   const pathname = usePathname();
+  const { wallet: walletAddress } = useAuth();
   const tabIds = tabs.map(tab => tab.id);
 
   // The index of the selected tab
@@ -56,9 +62,51 @@ export function useTabs({ tabs }: { tabs: Tab[] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const { data } = useSuspenseQuery({
+    queryKey: ["user", walletAddress],
+    queryFn: async () => {
+      if (!walletAddress) {
+        return;
+      }
+
+      const res = await getWalletTab({
+        params: {
+          query: {
+            address: walletAddress,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => null,
+      );
+    },
+  });
+
+  // Inside useTabs function
+  const transformedTabs: Tab[] = useMemo(() => {
+    if (!data) {
+      return tabs.map(tab => ({ ...tab, number: 0 }));
+    }
+
+    return tabs.map(tab => {
+      let number = 0;
+      if (tab.label === "owners") {
+        number = data.owner_count;
+      } else if (tab.label === "transactions") {
+        number = data.pending_operation_count;
+      }
+      return { ...tab, number };
+    });
+  }, [tabs, data]);
+
   return {
     tabProps: {
-      tabs,
+      tabs: transformedTabs,
       selectedTabIndex,
       setSelectedTabIndex,
     },

@@ -218,7 +218,7 @@ async fn v1_wallet_get_handler(
             GetQuery
         ),
         responses(
-            (status = 200, description = "Wallet tab returned successfully", body = Wallet),
+            (status = 200, description = "Wallet tab returned successfully", body = WalletTab),
             (status = 404, description = "Wallet tab not found", body = WalletError),
         )
     )]
