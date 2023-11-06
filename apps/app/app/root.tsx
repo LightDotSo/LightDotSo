@@ -45,15 +45,7 @@ const inter = Inter({
   display: "swap",
 });
 
-export type RootType = "authenticated" | "unauthenticated" | "wallet";
-
-export default function Root({
-  children,
-  type,
-}: {
-  children: React.ReactNode;
-  type: RootType;
-}) {
+export default function Root({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
@@ -69,11 +61,9 @@ export default function Root({
                   <div className="border-b lg:py-2">
                     <div className="flex h-16 items-center px-4 lg:px-8">
                       <div className="flex items-center">
-                        <RootLogo type={type} />
+                        <RootLogo />
                         <span className="ml-2 mr-1 text-primary/60">/</span>
-                        {(type === "authenticated" || type === "wallet") && (
-                          <WalletSwitcher />
-                        )}
+                        <WalletSwitcher />
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
@@ -83,12 +73,7 @@ export default function Root({
                         <ConnectButton />
                       </div>
                     </div>
-                    {(type === "unauthenticated" || type === "wallet") && (
-                      <MainNav
-                        type={type}
-                        className="h-10 items-center px-4 lg:px-8"
-                      />
-                    )}
+                    <MainNav className="h-10 items-center px-4 lg:px-8" />
                   </div>
                   {children}
                 </div>
