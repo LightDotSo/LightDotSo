@@ -21,6 +21,8 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { notFound } from "next/navigation";
 import { inngest } from "@/inngest/client";
+import { Button } from "@lightdotso/ui";
+import invokePortfolioAction from "@/actions/invokePortfolioAction";
 
 export default async function Page({
   params,
@@ -42,7 +44,7 @@ export default async function Page({
   const res = await getLlama(params.address as Address);
 
   await inngest.send({
-    name: "wallet/portfolio",
+    name: "wallet/portfolio.set",
     data: {
       address: params.address,
     },
@@ -62,6 +64,13 @@ export default async function Page({
             <pre>
               <code>{JSON.stringify(res, null, 2)}</code>
             </pre>
+            <Button
+              onClick={() => {
+                invokePortfolioAction(params.address as Address);
+              }}
+            >
+              Refresh
+            </Button>
           </div>
         </HydrationBoundary>
       );

@@ -18,7 +18,7 @@ import { NonRetriableError } from "inngest";
 
 export const walletPortfolioInvoke = inngest.createFunction(
   {
-    id: "wallet-portfolio-update",
+    id: "wallet-portfolio-invoke",
     rateLimit: {
       key: "event.data.address",
       limit: 1,

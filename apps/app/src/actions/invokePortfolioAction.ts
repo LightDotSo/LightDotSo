@@ -18,7 +18,7 @@
 import { inngest } from "@/inngest/client";
 import type { Address } from "viem";
 
-export default async function action({ address }: { address: Address }) {
+export default async function action(address: Address) {
   await inngest.send({
     name: "wallet/portfolio.invoke",
     data: {
