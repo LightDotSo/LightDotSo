@@ -13,12 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { inngest } from "@/inngest/client";
-import { NextResponse } from "next/server";
-
-const handler = async () => {
-  await inngest.send({ name: "test/hello.world", data: {} });
-  return NextResponse.json({ hello: "world" });
-};
-
-export const GET = handler;
+export { prismaMiddleware } from "./prisma";
+export { sentryMiddleware } from "./sentry";

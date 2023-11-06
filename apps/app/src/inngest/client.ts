@@ -14,6 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Inngest } from "inngest";
+import { prismaMiddleware, sentryMiddleware } from "./middlewares";
 
 // Create a client to send and receive events
-export const inngest = new Inngest({ id: "Light" });
+export const inngest = new Inngest({
+  id: "Light",
+  middleware: [prismaMiddleware, sentryMiddleware],
+});

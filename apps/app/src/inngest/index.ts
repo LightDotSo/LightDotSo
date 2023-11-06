@@ -13,12 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { inngest } from "@/inngest/client";
-import { NextResponse } from "next/server";
-
-const handler = async () => {
-  await inngest.send({ name: "test/user.signed.up", data: {} });
-  return NextResponse.json({ user: "signUp" });
-};
-
-export const GET = handler;
+export { helloWorld } from "./helloWorld";
+export { userSignedUp } from "./userSignedUp";
+export { walletPortfolio } from "./walletPortfolio";

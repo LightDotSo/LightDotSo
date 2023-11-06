@@ -13,16 +13,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { serve } from "inngest/next";
-import { inngest } from "@/inngest/client";
-import { helloWorld, userSignedUp } from "@/inngest";
+import { PrismaClient } from "@lightdotso/prisma";
+import { InngestMiddleware } from "inngest";
 
-// Create an API that serves zero functions
-export const { GET, POST, PUT } = serve({
-  client: inngest,
-  functions: [
-    /* your functions will be passed here later! */
-    helloWorld,
-    userSignedUp,
-  ],
+export const prismaMiddleware = new InngestMiddleware({
+  name: "Prisma Middleware",
+  init() {
+    const prisma = new PrismaClient();
+
+    return {
+      onFunctionRun(_ctx) {
+        return {
+          transformInput(_ctx) {
+            return {
+              // Anything passed via `ctx` will be merged with the function's arguments
+              ctx: {
+                prisma,
+              },
+            };
+          },
+        };
+      },
+    };
+  },
 });

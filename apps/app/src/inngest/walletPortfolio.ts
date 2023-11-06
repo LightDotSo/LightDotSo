@@ -13,16 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { serve } from "inngest/next";
 import { inngest } from "@/inngest/client";
-import { helloWorld, userSignedUp } from "@/inngest";
 
-// Create an API that serves zero functions
-export const { GET, POST, PUT } = serve({
-  client: inngest,
-  functions: [
-    /* your functions will be passed here later! */
-    helloWorld,
-    userSignedUp,
-  ],
-});
+export const walletPortfolio = inngest.createFunction(
+  { id: "wallet-portfolio" },
+  { event: "wallet/portfolio" },
+  async ({ event, step }) => {
+    await step.sleep({ id: "Hello World" }, "1s");
+    return { event, body: "Hello, World!" };
+  },
+);
