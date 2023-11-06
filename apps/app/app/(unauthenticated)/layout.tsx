@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import "@lightdotso/styles/global.css";
-import Root from "@/app/root";
 
 export default function RootLayout({
   children,
@@ -22,10 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <Root type="unauthenticated">
-      <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1">{children}</div>
-      </div>
-    </Root>
+    <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
+      <div className="mx-auto max-w-7xl flex-1">{children}</div>
+    </div>
   );
 }

@@ -13,32 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
 import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { Logo } from "@/components/light-logo";
-import { usePathType } from "@/hooks/usePathType";
 
-export const RootLogo = () => {
-  const type = usePathType();
+export type RootType = "authenticated" | "unauthenticated" | "wallet";
+
+export const usePathType = (): RootType => {
   const pathname = usePathname();
 
-  return (
-    <Link
-      href={
-        type === "unauthenticated"
-          ? "/"
-          : type === "authenticated"
-          ? "/wallets"
-          : // Get the wallet address from the path
-            // Address is the first part of the path
-            // e.g. /0x1234
-            `/${pathname.split("/")[1]}`
-      }
-      className="hover:rounded-md hover:bg-accent"
-    >
-      <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
-    </Link>
-  );
+  const unauthenticatedPaths = ["/", "/members", "/transactions"];
+  const authenticatedPaths = [
+    "/new",
+    "/wallet",
+    "/settings",
+    "/settings",
+    "/settings/account",
+    "/settings/appearance",
+    "/settings/display",
+    "/settings/notifications",
+    "/support",
+    "/wallets",
+  ];
+
+  if (unauthenticatedPaths.includes(pathname)) {
+    return "unauthenticated";
+  }
+
+  if (authenticatedPaths.includes(pathname)) {
+    return "authenticated";
+  }
+
+  return "wallet";
 };
