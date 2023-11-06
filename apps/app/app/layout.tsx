@@ -21,5 +21,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Root type="wallet">{children}</Root>;
+  return <Root>{children}</Root>;
 }
