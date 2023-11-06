@@ -16,39 +16,42 @@
 import { z } from "zod";
 
 export const underlyingSchema = z.object({
-  name: z.string().optional(),
   address: z.string(),
   symbol: z.string(),
   decimals: z.number(),
-  stable: z.boolean().optional(),
   price: z.number(),
   amount: z.string(),
   balanceUSD: z.number(),
+  name: z.string().optional(),
+  stable: z.boolean().optional(),
 });
 
 export const balanceSchema = z.object({
   address: z.string(),
   symbol: z.string(),
   decimals: z.number(),
-  category: z.string(),
-  stable: z.boolean(),
+  category: z.string().optional(),
+  stable: z.boolean().optional(),
+  price: z.number(),
   amount: z.string(),
   balanceUSD: z.number(),
-  collateralUSD: z.number().optional(),
+  rewardUSD: z.number().optional(),
+  debtUSD: z.number().optional(),
   apy: z.number().optional(),
   apyBase: z.number().optional(),
-  apyReward: z.any(),
   apyMean30d: z.number().optional(),
-  ilRisk: z.string().optional(),
-  underlyings: z.array(underlyingSchema).optional(),
+  ilRisk: z.boolean().optional(),
   name: z.string().optional(),
-  price: z.number().optional(),
+  collateralUSD: z.number().optional(),
+  underlyings: z.array(underlyingSchema).optional(),
 });
 
 export const groupSchema = z.object({
+  fromAddress: z.string().optional(),
   balanceUSD: z.number(),
-  debtUSD: z.number(),
-  rewardUSD: z.number(),
+  debtUSD: z.number().optional(),
+  rewardUSD: z.number().optional(),
+  healthFactor: z.number().optional(),
   balances: z.array(balanceSchema),
 });
 
