@@ -19,5 +19,8 @@ import { prismaMiddleware, sentryMiddleware } from "./middlewares";
 // Create a client to send and receive events
 export const inngest = new Inngest({
   id: "Light",
-  middleware: [prismaMiddleware, sentryMiddleware],
+  middleware: [
+    prismaMiddleware,
+    ...(process.env.NODE_ENV !== "development" ? [sentryMiddleware] : []),
+  ],
 });
