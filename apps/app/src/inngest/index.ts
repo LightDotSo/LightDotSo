@@ -16,3 +16,4 @@
 export { helloWorld } from "./helloWorld";
 export { userSignedUp } from "./userSignedUp";
 export { walletPortfolio } from "./walletPortfolio";
+export { walletPortfolioCron } from "./walletPortfolioCron";

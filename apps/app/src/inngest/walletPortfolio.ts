@@ -14,12 +14,41 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { inngest } from "@/inngest/client";
+import { getLlama } from "@lightdotso/client";
+import { NonRetriableError } from "inngest";
 
 export const walletPortfolio = inngest.createFunction(
-  { id: "wallet-portfolio" },
+  {
+    id: "wallet-portfolio",
+    rateLimit: {
+      key: "event.data.address",
+      limit: 1,
+      period: "1m",
+    },
+  },
   { event: "wallet/portfolio" },
-  async ({ event, step }) => {
-    await step.sleep({ id: "Hello World" }, "1s");
-    return { event, body: "Hello, World!" };
+  async ({ event, step, prisma }) => {
+    const wallet = await step.run("Find wallet in db", async () => {
+      const data = prisma.wallet.findUnique({
+        where: {
+          address: event.data.address,
+        },
+      });
+
+      if (!data) {
+        throw new NonRetriableError("Wallet not found", {
+          cause: new Error("no wallet exists"),
+        });
+      }
+
+      return data;
+    });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const _llama = await step.run("Find llama in db", async () => {
+      const res = await getLlama(wallet!.address);
+
+      return res._unsafeUnwrap();
+    });
   },
 );
