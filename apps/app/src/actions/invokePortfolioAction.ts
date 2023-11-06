@@ -13,13 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { inngest } from "@/inngest/client";
+"use server";
 
-export const helloWorld = inngest.createFunction(
-  { id: "Hello World" },
-  { event: "test/hello.world" },
-  async ({ event, step }) => {
-    await step.sleep({ id: "Hello World" }, "1s");
-    return { event, body: "Hello, World!" };
-  },
-);
+import { inngest } from "@/inngest/client";
+import type { Address } from "viem";
+
+export default async function action(address: Address) {
+  await inngest.send({
+    name: "wallet/portfolio.invoke",
+    data: {
+      address: address,
+    },
+  });
+}

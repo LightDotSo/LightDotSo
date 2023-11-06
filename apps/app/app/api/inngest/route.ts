@@ -16,10 +16,9 @@
 import { serve } from "inngest/next";
 import { inngest } from "@/inngest/client";
 import {
-  helloWorld,
-  userSignedUp,
-  walletPortfolio,
   walletPortfolioCron,
+  walletPortfolioInvoke,
+  walletPortfolioSet,
   walletPortfolioUpdate,
 } from "@/inngest";
 
@@ -27,11 +26,9 @@ import {
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
-    /* your functions will be passed here later! */
-    helloWorld,
-    userSignedUp,
-    walletPortfolio,
     walletPortfolioCron,
+    walletPortfolioInvoke,
+    walletPortfolioSet,
     walletPortfolioUpdate,
   ],
 });

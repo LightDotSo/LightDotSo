@@ -18,9 +18,9 @@ import { getLlama } from "@lightdotso/client";
 import { WalletBalanceCategory } from "@lightdotso/prisma";
 import { NonRetriableError } from "inngest";
 
-export const walletPortfolio = inngest.createFunction(
+export const walletPortfolioSet = inngest.createFunction(
   {
-    id: "wallet-portfolio",
+    id: "wallet-portfolio-set",
     debounce: {
       key: "event.data.address",
       period: "3m",
@@ -31,7 +31,7 @@ export const walletPortfolio = inngest.createFunction(
       period: "1m",
     },
   },
-  { event: "wallet/portfolio" },
+  { event: "wallet/portfolio.set" },
   async ({ event, step, prisma }) => {
     const wallet = await step.run("Find wallet in db", async () => {
       const data = prisma.wallet.findUnique({
@@ -47,6 +47,15 @@ export const walletPortfolio = inngest.createFunction(
       }
 
       return data;
+    });
+
+    await step.sendEvent("Update the portfolio invoke", {
+      name: "wallet/portfolio.update",
+      data: {
+        address: wallet!.address,
+        // Hardcoded service id to respect the `wallet/portfolio.update` event rate limit
+        service_id: "get",
+      },
     });
 
     const llama = await step.run("Get llama", async () => {

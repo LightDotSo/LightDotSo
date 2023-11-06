@@ -13,8 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Inngest } from "inngest";
+import { EventSchemas, Inngest } from "inngest";
 import { prismaMiddleware, sentryMiddleware } from "./middlewares";
+import { z } from "zod";
+
+const eventsMap = {
+  "wallet/portfolio.set": {
+    data: z.object({
+      address: z.string(),
+    }),
+  },
+  "wallet/portfolio.invoke": {
+    data: z.object({
+      address: z.string(),
+    }),
+  },
+  "wallet/portfolio.update": {
+    data: z.object({
+      address: z.string(),
+      service_id: z.string(),
+    }),
+  },
+};
 
 // Create a client to send and receive events
 export const inngest = new Inngest({
@@ -23,4 +43,5 @@ export const inngest = new Inngest({
     prismaMiddleware,
     ...(process.env.NODE_ENV !== "development" ? [sentryMiddleware] : []),
   ],
+  schemas: new EventSchemas().fromZod(eventsMap),
 });
