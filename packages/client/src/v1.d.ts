@@ -506,7 +506,7 @@ export interface components {
       /** Format: int64 */
       owner_count: number;
       /** Format: int64 */
-      pending_operation_count: number;
+      transaction_count: number;
     };
   };
   responses: never;

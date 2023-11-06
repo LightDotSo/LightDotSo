@@ -127,7 +127,7 @@ pub(crate) struct Wallet {
 /// WalletTab to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct WalletTab {
-    pending_operation_count: i64,
+    transaction_count: i64,
     owner_count: i64,
 }
 
@@ -146,7 +146,7 @@ impl From<wallet::Data> for Wallet {
 // Implement From<wallet::Data> for Wallet.
 impl From<wallet::Data> for WalletTab {
     fn from(wallet: wallet::Data) -> Self {
-        let pending_operation_count = match &wallet.user_operations {
+        let transaction_count = match &wallet.user_operations {
             Some(user_operations) => user_operations.len() as i64,
             None => 0,
         };
@@ -156,7 +156,7 @@ impl From<wallet::Data> for WalletTab {
             None => 0,
         };
 
-        Self { pending_operation_count, owner_count }
+        Self { transaction_count, owner_count }
     }
 }
 

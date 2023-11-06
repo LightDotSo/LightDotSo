@@ -98,7 +98,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       if (tab.id === "members") {
         number = data.owner_count;
       } else if (tab.id === "transactions") {
-        number = data.pending_operation_count;
+        number = data.transaction_count;
       }
       return { ...tab, number };
     });
