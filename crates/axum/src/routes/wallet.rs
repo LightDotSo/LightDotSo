@@ -280,7 +280,7 @@ async fn v1_wallet_list_handler(
     let Query(pagination) = pagination;
 
     let query = match pagination.owner {
-        Some(owner) => vec![wallet::users::some(vec![user::address::equals(Some(owner))])],
+        Some(owner) => vec![wallet::users::some(vec![user::address::equals(owner)])],
         None => vec![],
     };
 
@@ -430,12 +430,10 @@ async fn v1_wallet_post_handler(
             owners
                 .iter()
                 .map(|owner| {
-                    lightdotso_prisma::user::create_unchecked(vec![
-                        lightdotso_prisma::user::address::set(Some(to_checksum(
-                            &owner.address.parse::<H160>().unwrap(),
-                            None,
-                        ))),
-                    ])
+                    lightdotso_prisma::user::create_unchecked(
+                        to_checksum(&owner.address.parse::<H160>().unwrap(), None),
+                        vec![],
+                    )
                 })
                 .collect(),
         )
@@ -470,15 +468,16 @@ async fn v1_wallet_post_handler(
                     owners
                         .iter()
                         .map(|owner| {
-                            lightdotso_prisma::user::address::equals(Some(to_checksum(
+                            lightdotso_prisma::user::address::equals(to_checksum(
                                 &owner.address.parse::<H160>().unwrap(),
                                 None,
-                            )))
+                            ))
                         })
                         .collect(),
                 )
                 .exec()
                 .await?;
+            info!(?user_data);
 
             // Create the owners to the database.
             let owner_data = client
@@ -496,10 +495,10 @@ async fn v1_wallet_post_handler(
                                         .iter()
                                         .find(|user| {
                                             user.address ==
-                                                Some(to_checksum(
+                                                to_checksum(
                                                     &owner.address.parse::<H160>().unwrap(),
                                                     None,
-                                                ))
+                                                )
                                         })
                                         .unwrap()
                                         .id
