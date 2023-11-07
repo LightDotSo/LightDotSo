@@ -419,6 +419,37 @@ async fn v1_wallet_post_handler(
         }));
     }
 
+    // Get the users that don't exist in the database.
+    let users = client
+        .clone()
+        .client
+        .unwrap()
+        .user()
+        .find_many(
+            owners
+                .iter()
+                .map(|owner| {
+                    lightdotso_prisma::user::address::equals(Some(to_checksum(
+                        &owner.address.parse::<H160>().unwrap(),
+                        None,
+                    )))
+                })
+                .collect(),
+        )
+        .exec()
+        .await?;
+
+    // Parse the users into a vector of addresses.
+    let users: Vec<String> = users.iter().map(|user| user.address.clone().unwrap()).collect();
+
+    // Get the ownsers that don't exist in the vector of addresses.
+    let owners: Vec<&Owner> = owners
+        .iter()
+        .filter(|owner| {
+            !users.contains(&to_checksum(&owner.address.parse::<H160>().unwrap(), None))
+        })
+        .collect();
+
     // Attempt to create a user in case it does not exist.
     let res = client
         .clone()
