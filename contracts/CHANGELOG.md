@@ -1,5 +1,11 @@
 # @lightdotso/contracts
 
+## 0.1.0-pre.16
+
+### Patch Changes
+
+- [#582](https://github.com/LightDotSo/LightDotSo/pull/582) [`0a15e86`](https://github.com/LightDotSo/LightDotSo/commit/0a15e862b78fa871fe9cc09a239314b3be862430) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add simulation flow
+
 ## 0.1.0-pre.15
 
 ### Patch Changes

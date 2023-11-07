@@ -1,5 +1,14 @@
 # @lightdotso/app
 
+## 1.1.0-pre.6
+
+### Patch Changes
+
+- Updated dependencies [[`060f3b4`](https://github.com/LightDotSo/LightDotSo/commit/060f3b466d4427eea73117c202a0f4f3cd76544a)]:
+  - @lightdotso/const@2.0.0-pre.0
+  - @lightdotso/styles@1.1.0-pre.2
+  - @lightdotso/ui@1.1.0-pre.5
+
 ## 1.1.0-pre.5
 
 ### Minor Changes
