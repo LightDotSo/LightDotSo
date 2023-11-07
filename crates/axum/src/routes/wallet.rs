@@ -441,14 +441,16 @@ async fn v1_wallet_post_handler(
 
     // Parse the users into a vector of addresses.
     let users: Vec<String> = users.iter().map(|user| user.address.clone().unwrap()).collect();
+    info!(?users);
 
-    // Get the ownsers that don't exist in the vector of addresses.
+    // Get the owners that don't exist in the vector of addresses.
     let owners: Vec<&Owner> = owners
         .iter()
         .filter(|owner| {
             !users.contains(&to_checksum(&owner.address.parse::<H160>().unwrap(), None))
         })
         .collect();
+    info!("{}", owners.len());
 
     // Attempt to create a user in case it does not exist.
     let res = client
@@ -470,7 +472,7 @@ async fn v1_wallet_post_handler(
                 .collect(),
         )
         .exec()
-        .await;
+        .await?;
     info!(?res);
 
     let wallet: Result<lightdotso_prisma::wallet::Data> = client
