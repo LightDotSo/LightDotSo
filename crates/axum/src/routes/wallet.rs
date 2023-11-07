@@ -420,6 +420,7 @@ async fn v1_wallet_post_handler(
     }
 
     // Attempt to create a user in case it does not exist.
+    // If the user already exists, it will be skipped.
     let res = client
         .clone()
         .client
@@ -438,8 +439,9 @@ async fn v1_wallet_post_handler(
                 })
                 .collect(),
         )
+        .skip_duplicates()
         .exec()
-        .await;
+        .await?;
     info!(?res);
 
     let wallet: Result<lightdotso_prisma::wallet::Data> = client
