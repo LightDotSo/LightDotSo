@@ -37,7 +37,6 @@ use lightdotso_solutions::{
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
 use lightdotso_tracing::tracing::{error, info, trace};
-use prisma_client_rust::or;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -465,17 +464,9 @@ async fn v1_wallet_post_handler(
             // Get the users from the database.
             let user_data = client
                 .user()
-                .find_many(
-                    owners
-                        .iter()
-                        .map(|owner| {
-                            or![lightdotso_prisma::user::address::equals(to_checksum(
-                                &owner.address.parse::<H160>().unwrap(),
-                                None,
-                            ))]
-                        })
-                        .collect(),
-                )
+                .find_many(vec![lightdotso_prisma::user::address::contains(
+                    owners_addresses.iter().map(|addr| to_checksum(addr, None)).collect(),
+                )])
                 .exec()
                 .await?;
             info!(?user_data);
