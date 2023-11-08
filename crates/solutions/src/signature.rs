@@ -207,6 +207,7 @@ mod tests {
             .unwrap()
         );
 
+        // An example singnature for `eth_sign`
         let message = RecoveryMessage::Hash(hash_message_bytes32(&sub_digest).into());
         let signature = EthersSignature::from_str("0xc2db3b0d1586ddb52005c1b9dbeba001a8c5bd7a6d5d74e6dabf3f79f85c81f43ca3ef079afeec48b9de9e1308b97c7faaab0040cfc0d1594cbc4ca16a5505571b").unwrap();
         let a = signature.recover(message).unwrap();
