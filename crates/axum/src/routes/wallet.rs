@@ -37,6 +37,7 @@ use lightdotso_solutions::{
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
 use lightdotso_tracing::tracing::{error, info, trace};
+use prisma_client_rust::or;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -332,7 +333,7 @@ async fn v1_wallet_post_handler(
     let name = params.name;
 
     // Check if all of the owner address can be parsed to H160.
-    let _ = owners
+    let owners_addresses = owners
         .iter()
         .map(|owner| owner.address.parse::<H160>())
         .collect::<Result<Vec<H160>, _>>()?;
@@ -468,10 +469,10 @@ async fn v1_wallet_post_handler(
                     owners
                         .iter()
                         .map(|owner| {
-                            lightdotso_prisma::user::address::equals(to_checksum(
+                            or![lightdotso_prisma::user::address::equals(to_checksum(
                                 &owner.address.parse::<H160>().unwrap(),
                                 None,
-                            ))
+                            ))]
                         })
                         .collect(),
                 )
