@@ -464,7 +464,7 @@ async fn v1_wallet_post_handler(
             // Get the users from the database.
             let user_data = client
                 .user()
-                .find_many(vec![lightdotso_prisma::user::address::contains(
+                .find_many(vec![lightdotso_prisma::user::address::in_vec(
                     owners_addresses.iter().map(|addr| to_checksum(addr, None)).collect(),
                 )])
                 .exec()
