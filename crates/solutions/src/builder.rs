@@ -13,9 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Entire file's examples and configurations from: https://github.com/0xsequence/sequence.js/blob/e5659ab1a304ae48b28c843b0d99fb3b3f6bc0b1/packages/core/tests/v2/config.spec.ts#L4
+// License: Apache-2.0
+// Truly thank you for providing this out there as free and open source work.
+// We are forever grateful
+
 use crate::types::SignerNode;
 use eyre::{eyre, Result};
 
+// From: https://github.com/0xsequence/sequence.js/blob/e5659ab1a304ae48b28c843b0d99fb3b3f6bc0b1/packages/core/src/v2/config.ts#L317
+// License: Apache-2.0
+// Roots the nodes seuqentially in order.
 pub fn rooted_node_builder(members: Vec<SignerNode>) -> Result<SignerNode> {
     if members.is_empty() {
         return Err(eyre!("Empty members vector"));
