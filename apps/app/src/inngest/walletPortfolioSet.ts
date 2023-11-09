@@ -137,7 +137,7 @@ export const walletPortfolioSet = inngest.createFunction(
         });
 
         // Map the balances to the ERC20 tokens
-        balances = balances.map(balance => {
+        const token_balances = balances.map(balance => {
           const token = erc20Tokens.find(
             token => token.address === balance.address,
           );
@@ -155,7 +155,7 @@ export const walletPortfolioSet = inngest.createFunction(
               chainId: 0,
               balanceUSD: totalNetBalance,
             },
-            ...balances.map(balance => ({
+            ...token_balances.map(balance => ({
               walletAddress: wallet!.address,
               chainId: balance.chainId,
               balanceUSD: balance.balanceUSD,
