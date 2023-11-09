@@ -1,0 +1,97 @@
+{
+  "checkpoint": 10,
+  "threshold": 5,
+  "weight": 6,
+  "image_hash": "0x5b023ddb190c2fd05ef611d060675544b6aba989efb37355e9250840a42a6cb4",
+  "tree": {
+    "left": {
+      "left": {
+        "signer": {
+          "weight": 3,
+          "leaf": {
+            "type": "BranchSignature",
+            "content": {
+              "size": 90
+            }
+          }
+        },
+        "left": {
+          "left": {
+            "signer": {
+              "weight": 2,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xaa79283d0206aba8c14a2a30df589648c54490e7"
+                }
+              }
+            }
+          },
+          "right": {
+            "signer": {
+              "weight": 3,
+              "leaf": {
+                "type": "DynamicSignature",
+                "content": {
+                  "address": "0x14327739c49f93a04c38623b54a4a75b49e6f646",
+                  "signature_type": "DynamicSignatureTypeEIP1271",
+                  "signature": "0x020001000000000001fde94c874698620141d895ddd82dc36898bd03b2dd2dd6b970e25fbabc54fd6e65eaf44b207f28dd282e0e8661196d9d4c112c12f4798ac7ac46c8d814df79571b020101b1f69536d293ee3764ce9881894a68029666a851",
+                  "size": 98
+                }
+              }
+            }
+          }
+        },
+        "right": {
+          "left": {
+            "signer": {
+              "weight": 3,
+              "leaf": {
+                "type": "ECDSASignature",
+                "content": {
+                  "address": "0x9cd022f249f824d7ef7798c3f1c404824a2303e5",
+                  "signature_type": "ECDSASignatureTypeEthSign",
+                  "signature": "0x4d2c18410daf9379ce00b4ef13330a18b8677c1b95e814c8859ce1159668cf2a5180c7a5b809a746574ed14403dd5f78828c718a8aaac8924a7dfab22a5d85a11b"
+                }
+              }
+            }
+          },
+          "right": {
+            "signer": {
+              "weight": 2,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xcae521702a655832403bf3f751dce0be2fe8af2a"
+                }
+              }
+            }
+          }
+        }
+      },
+      "right": {
+        "signer": {
+          "leaf": {
+            "type": "NodeSignature",
+            "content": {
+              "hash": "0xe2496cd84fa4ff4c8516a508536c5a3a13cfccc3887d1bd321ed005989ce4213"
+            }
+          }
+        }
+      }
+    },
+    "right": {
+      "signer": {
+        "weight": 2,
+        "leaf": {
+          "type": "AddressSignature",
+          "content": {
+            "address": "0x080aa40b944885f166dedade5f4d5fa4a13cbfad"
+          }
+        }
+      }
+    }
+  },
+  "signature_type": 2,
+  "internal_root": "0xf815644dab61cb1dd67da2f00385686f3138daca89eb96e240b22c6ef07923ed"
+}

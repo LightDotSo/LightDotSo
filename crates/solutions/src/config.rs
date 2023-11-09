@@ -108,6 +108,12 @@ impl WalletConfig {
         ]
         .concat())
     }
+
+    /// Reduce the tree in place - changes the tree structure to reduce the number of nodes more
+    /// efficiently
+    pub fn reduce(&mut self) {
+        self.tree = self.tree.reduce_node();
+    }
 }
 
 #[cfg(test)]

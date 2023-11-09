@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    types::{SignatureLeaf, Signer, SignerNode},
+    types::{NodeLeaf, SignatureLeaf, Signer, SignerNode},
     utils::{hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u8_to_bytes32},
 };
 use ethers::{
@@ -201,13 +201,146 @@ impl SignerNode {
 
         Ok(encoded)
     }
+
+    pub fn reduce_node_leaf(&mut self) {
+        if self.left.is_some() &&
+            self.right.is_some() &&
+            self.left.as_ref().unwrap().signer.is_some() &&
+            self.right.as_ref().unwrap().signer.is_some()
+        {
+            // If left and right are both AddressSignature, then we can reduce them
+            if let SignatureLeaf::AddressSignature(left_leaf) =
+                &self.left.as_ref().unwrap().signer.as_ref().unwrap().leaf
+            {
+                if let SignatureLeaf::AddressSignature(right_leaf) =
+                    &self.right.as_ref().unwrap().signer.as_ref().unwrap().leaf
+                {
+                    // Hash the two addresses leafs
+                    let left_hash = leaf_for_address_and_weight(
+                        left_leaf.address,
+                        self.left.as_ref().unwrap().signer.as_ref().unwrap().weight.unwrap(),
+                    );
+                    let right_hash = leaf_for_address_and_weight(
+                        right_leaf.address,
+                        self.right.as_ref().unwrap().signer.as_ref().unwrap().weight.unwrap(),
+                    );
+                    let hash = hash_keccak_256(left_hash, right_hash);
+
+                    // Reduce the node
+                    self.signer = Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: hash.into() }),
+                    });
+                    self.left = None;
+                    self.right = None;
+                    return;
+                }
+            }
+
+            // If left and right are both NodeSignature, then we can reduce them
+            if let SignatureLeaf::NodeSignature(left_leaf) =
+                &self.left.as_ref().unwrap().signer.as_ref().unwrap().leaf
+            {
+                if let SignatureLeaf::NodeSignature(right_leaf) =
+                    &self.right.as_ref().unwrap().signer.as_ref().unwrap().leaf
+                {
+                    // Hash the two addresses leafs
+                    let left_hash = left_leaf.hash;
+                    let right_hash = right_leaf.hash;
+                    let hash = hash_keccak_256(left_hash.into(), right_hash.into());
+
+                    // Reduce the node
+                    self.signer = Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: hash.into() }),
+                    });
+                    self.left = None;
+                    self.right = None;
+                }
+            }
+        }
+
+        // Traverse the tree if not match
+        if self.left.is_some() {
+            self.left.as_mut().unwrap().reduce_node_leaf();
+        }
+        if self.right.is_some() {
+            self.right.as_mut().unwrap().reduce_node_leaf();
+        }
+    }
+
+    pub fn reduce_node(&mut self) -> SignerNode {
+        if self.signer.is_some() {
+            if let SignatureLeaf::BranchSignature(_) = &self.signer.as_ref().unwrap().leaf {
+                if self.signer.as_ref().unwrap().weight.unwrap() == 0 {
+                    self.reduce_node_leaf();
+                }
+            }
+        }
+
+        // Traverse the tree if not match
+        if self.left.is_some() {
+            self.left = Some(Box::new(self.left.as_mut().unwrap().reduce_node()));
+        }
+        if self.right.is_some() {
+            self.right = Some(Box::new(self.right.as_mut().unwrap().reduce_node()));
+        }
+
+        // Finally, reduce the root signer if it is a branch signature and the weight is 0
+        if self.signer.is_some() {
+            // If the weight is 0 and is a branch signature, then we can reduce it
+            if let SignatureLeaf::BranchSignature(_) = &self.signer.as_ref().unwrap().leaf {
+                if self.signer.as_ref().unwrap().weight.unwrap() == 0 {
+                    // Reduce the node
+                    self.signer = None;
+                }
+            }
+        }
+
+        self.clone()
+    }
+
+    pub fn replace_node(&mut self, nodes: Vec<SignerNode>) -> SignerNode {
+        if self.signer.is_some() {
+            if let SignatureLeaf::AddressSignature(leaf) = &self.signer.as_ref().unwrap().leaf {
+                // If the signer is an address, then we can replace it if it matches
+                if let Some(node) = nodes.iter().find(|node| {
+                    if let SignatureLeaf::ECDSASignature(node_leaf) =
+                        &node.signer.as_ref().unwrap().leaf
+                    {
+                        return node_leaf.address == leaf.address;
+                    }
+                    false
+                }) {
+                    // Replace the node
+                    self.signer = node.signer.clone();
+                    self.left = node.left.clone();
+                    self.right = node.right.clone();
+                    return self.clone();
+                }
+            }
+        }
+
+        // Traverse the tree if not match
+        if self.left.is_some() {
+            self.left = Some(Box::new(self.left.as_mut().unwrap().replace_node(nodes.clone())));
+        }
+        if self.right.is_some() {
+            self.right = Some(Box::new(self.right.as_mut().unwrap().replace_node(nodes.clone())));
+        }
+
+        self.clone()
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::{
-        types::{AddressSignatureLeaf, NestedLeaf, NodeLeaf, Signer, SubdigestLeaf},
+        types::{
+            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, NestedLeaf, NodeLeaf,
+            Signer, SubdigestLeaf,
+        },
         utils::parse_hex_to_bytes32,
     };
 
@@ -440,5 +573,45 @@ mod tests {
         assert!(signers.contains(&signer1));
         assert!(signers.contains(&signer2));
         assert!(signers.contains(&signer3));
+    }
+
+    #[test]
+    fn test_replace_node() {
+        let mut tree = SignerNode {
+            signer: Some(Signer {
+                weight: Some(1),
+                leaf: SignatureLeaf::NestedSignature(NestedLeaf {
+                    internal_root: [0; 32].into(),
+                    internal_threshold: 211,
+                    external_weight: 90,
+                    size: 3,
+                }),
+            }),
+            left: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: Some(2),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                    }),
+                }),
+            })),
+            right: None,
+        };
+
+        let signer = Signer {
+            weight: Some(3),
+            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+                address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
+                signature: [0u8; 65].into(),
+            }),
+        };
+        let signer_nodes: Vec<SignerNode> =
+            vec![SignerNode { left: None, right: None, signer: Some(signer.clone()) }];
+
+        tree.replace_node(signer_nodes);
+        assert_eq!(tree.left.unwrap().signer.unwrap(), signer)
     }
 }

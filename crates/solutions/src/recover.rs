@@ -61,7 +61,7 @@ pub async fn recover_signature(
 
     // No ChainId signature
     if signature_type == 0x02 {
-        let mut base_sig_module = SigModule::new(address, 0, digest, None);
+        let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
         base_sig_module.set_subdigest();
         base_sig_module.set_signature(sig.as_slice()[1..].to_vec().into());
         return base_sig_module.recover(2).await;

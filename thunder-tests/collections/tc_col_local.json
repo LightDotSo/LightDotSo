@@ -379,12 +379,17 @@
       "colId": "a73c26e2-ef46-4e67-9789-a8c630d3d989",
       "containerId": "22a50e81-1b69-4f0a-a9b6-6cff82c6a067",
       "name": "user_operation/signature",
-      "url": "http://localhost:3000/v1/user_operation/signature?user_operation_hash=0x281976129b40530f25e59a310a6cb8d58831dd9b9a5f1d583f5e330c8aa6b0e0",
+      "url": "http://localhost:3000/admin/v1/user_operation/signature?user_operation_hash=0x281976129b40530f25e59a310a6cb8d58831dd9b9a5f1d583f5e330c8aa6b0e0",
       "method": "GET",
       "sortNum": 67500,
       "created": "2023-11-08T23:51:58.495Z",
-      "modified": "2023-11-08T23:52:14.889Z",
-      "headers": [],
+      "modified": "2023-11-09T07:00:12.972Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer dev"
+        }
+      ],
       "params": [
         {
           "name": "user_operation_hash",

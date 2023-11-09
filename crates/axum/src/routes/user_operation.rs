@@ -42,7 +42,10 @@ use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
     signature::recover_ecdsa_signature,
-    types::{ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode, ECDSA_SIGNATURE_LENGTH},
+    types::{
+        AddressSignatureLeaf, ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode,
+        ECDSA_SIGNATURE_LENGTH,
+    },
     utils::render_subdigest,
 };
 use lightdotso_tracing::tracing::{error, info};
@@ -745,6 +748,7 @@ async fn v1_user_operation_signature_handler(
         )]))
         .exec()
         .await?;
+    info!(?user_operation);
 
     // If the user operation is not found, return a 404.
     let user_operation = user_operation.ok_or(AppError::NotFound)?;
@@ -753,6 +757,7 @@ async fn v1_user_operation_signature_handler(
     let signatures = user_operation.clone().signatures.map_or(Vec::new(), |signature| {
         signature.into_iter().map(UserOperationSignature::from).collect()
     });
+    info!("{}", signatures.len());
 
     // Get the wallet from the database.
     let wallet = client
@@ -790,8 +795,29 @@ async fn v1_user_operation_signature_handler(
     let owners: Vec<UserOperationOwner> =
         owners.into_iter().map(UserOperationOwner::from).collect();
 
+    // Convert the owners to SignerNode.
+    let owner_nodes: Result<Vec<SignerNode>> = owners
+        .iter()
+        .map(|owner| {
+            Ok(SignerNode {
+                signer: Some(Signer {
+                    weight: Some(owner.weight.try_into()?),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: owner.address.parse()?,
+                    }),
+                }),
+                left: None,
+                right: None,
+            })
+        })
+        .collect();
+
+    // Build the node tree.
+    let mut tree = rooted_node_builder(owner_nodes?)?;
+    info!(?tree);
+
     // Conver the signatures to SignerNode.
-    let owner_nodes: Result<Vec<SignerNode>> = signatures
+    let signer_nodes: Result<Vec<SignerNode>> = signatures
         .iter()
         .map(|sig| {
             // Filter the owner with the same id from `owners`
@@ -824,9 +850,8 @@ async fn v1_user_operation_signature_handler(
             })
         })
         .collect();
-
-    // Build the node tree.
-    let tree = rooted_node_builder(owner_nodes?)?;
+    tree.replace_node(signer_nodes?);
+    info!(?tree);
 
     let wallet_config = WalletConfig {
         checkpoint: configuration.checkpoint as u32,
