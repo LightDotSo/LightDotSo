@@ -92,6 +92,7 @@ export const walletPortfolioSet = inngest.createFunction(
           name?: string;
           address?: string;
           decimals?: number;
+          stable?: boolean;
         }[] = [];
 
         /// Flat out the llama into a list of balances
@@ -108,6 +109,7 @@ export const walletPortfolioSet = inngest.createFunction(
                 name: balance.name,
                 address: getAddress(balance.address),
                 decimals: balance.decimals,
+                stable: balance.stable,
               });
             });
           });
@@ -148,6 +150,7 @@ export const walletPortfolioSet = inngest.createFunction(
           };
         });
 
+        // Finally, create the wallet balances
         return await prisma.walletBalance.createMany({
           data: [
             {
@@ -162,6 +165,7 @@ export const walletPortfolioSet = inngest.createFunction(
               amount: balance.amount,
               price: balance.price,
               erc20Id: balance.erc20Id,
+              stable: balance.stable,
             })),
           ],
         });
