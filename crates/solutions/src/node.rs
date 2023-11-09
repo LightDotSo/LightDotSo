@@ -337,7 +337,10 @@ impl SignerNode {
 mod tests {
     use super::*;
     use crate::{
-        types::{AddressSignatureLeaf, NestedLeaf, NodeLeaf, Signer, SubdigestLeaf},
+        types::{
+            AddressSignatureLeaf, ECDSASignatureLeaf, ECDSASignatureType, NestedLeaf, NodeLeaf,
+            Signer, SubdigestLeaf,
+        },
         utils::parse_hex_to_bytes32,
     };
 
@@ -570,5 +573,45 @@ mod tests {
         assert!(signers.contains(&signer1));
         assert!(signers.contains(&signer2));
         assert!(signers.contains(&signer3));
+    }
+
+    #[test]
+    fn test_replace_node() {
+        let mut tree = SignerNode {
+            signer: Some(Signer {
+                weight: Some(1),
+                leaf: SignatureLeaf::NestedSignature(NestedLeaf {
+                    internal_root: [0; 32].into(),
+                    internal_threshold: 211,
+                    external_weight: 90,
+                    size: 3,
+                }),
+            }),
+            left: Some(Box::new(SignerNode {
+                left: None,
+                right: None,
+                signer: Some(Signer {
+                    weight: Some(2),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                    }),
+                }),
+            })),
+            right: None,
+        };
+
+        let signer = Signer {
+            weight: Some(3),
+            leaf: SignatureLeaf::ECDSASignature(ECDSASignatureLeaf {
+                address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
+                signature: [0u8; 65].into(),
+            }),
+        };
+        let signer_nodes: Vec<SignerNode> =
+            vec![SignerNode { left: None, right: None, signer: Some(signer.clone()) }];
+
+        tree.replace_node(signer_nodes);
+        assert_eq!(tree.left.unwrap().signer.unwrap(), signer)
     }
 }
