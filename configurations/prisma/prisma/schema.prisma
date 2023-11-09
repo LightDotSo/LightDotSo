@@ -573,11 +573,10 @@ model ERC20 {
 
 model WalletBalance {
   id         String   @id @default(cuid())
-  balance    Float
+  amount     BigInt
   chainId    BigInt
   stable     Boolean?
   price      Float
-  amount     BigInt
   balanceUSD Float
   // rewardUSD  Float?
   // debtUSD    Float?
