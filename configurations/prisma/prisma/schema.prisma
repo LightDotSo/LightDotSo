@@ -560,6 +560,9 @@ model ERC20 {
   @@unique([address, chainId])
 }
 
+// The wallet balances are from: https://github.com/llamafolio/llamafolio-api
+// License: GPL-3.0
+
 // model Protocol {
 //   id             String          @id @default(cuid())
 //   balanceUSD     Float
