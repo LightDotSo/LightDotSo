@@ -5,6 +5,15 @@
   "image_hash": "0x5b023ddb190c2fd05ef611d060675544b6aba989efb37355e9250840a42a6cb4",
   "tree": {
     "left": {
+      "signer": {
+        "weight": 0,
+        "leaf": {
+          "type": "BranchSignature",
+          "content": {
+            "size": 92
+          }
+        }
+      },
       "left": {
         "signer": {
           "weight": 3,
@@ -71,10 +80,59 @@
       },
       "right": {
         "signer": {
+          "weight": 0,
           "leaf": {
-            "type": "NodeSignature",
+            "type": "BranchSignature",
             "content": {
-              "hash": "0xe2496cd84fa4ff4c8516a508536c5a3a13cfccc3887d1bd321ed005989ce4213"
+              "size": 44
+            }
+          }
+        },
+        "left": {
+          "left": {
+            "signer": {
+              "weight": 2,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xb02b38d317751d4b7864097800a82b4f2090b2f7"
+                }
+              }
+            }
+          },
+          "right": {
+            "signer": {
+              "weight": 2,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xb53dafe1716b3a7c5ee2072c6881658447fe465a"
+                }
+              }
+            }
+          }
+        },
+        "right": {
+          "left": {
+            "signer": {
+              "weight": 2,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0x254f1e583509980fe791fb12a0471d7c59c06ad5"
+                }
+              }
+            }
+          },
+          "right": {
+            "signer": {
+              "weight": 2,
+              "leaf": {
+                "type": "AddressSignature",
+                "content": {
+                  "address": "0xef86b8b2e0cf2ff0660840031f45adc50abd734c"
+                }
+              }
             }
           }
         }
@@ -93,5 +151,5 @@
     }
   },
   "signature_type": 2,
-  "internal_root": "0x02f108949785b46fd679b22abe32543265e830505a14a9f460237a324333c6c0"
+  "internal_root": "0xf815644dab61cb1dd67da2f00385686f3138daca89eb96e240b22c6ef07923ed"
 }
