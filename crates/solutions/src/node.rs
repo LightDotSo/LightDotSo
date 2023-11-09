@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    types::{SignatureLeaf, Signer, SignerNode},
+    types::{NodeLeaf, SignatureLeaf, Signer, SignerNode},
     utils::{hash_keccak_256, left_pad_u16_to_bytes32, left_pad_u8_to_bytes32},
 };
 use ethers::{
@@ -200,6 +200,87 @@ impl SignerNode {
         }
 
         Ok(encoded)
+    }
+
+    pub fn reduct_node_leaf(&mut self) {
+        if self.left.is_some() && self.right.is_some() {
+            // If left and right are both AddressSignature, then we can reduce them
+            if let SignatureLeaf::AddressSignature(left_leaf) =
+                &self.left.as_ref().unwrap().signer.as_ref().unwrap().leaf
+            {
+                if let SignatureLeaf::AddressSignature(right_leaf) =
+                    &self.right.as_ref().unwrap().signer.as_ref().unwrap().leaf
+                {
+                    // Hash the two addresses leafs
+                    let left_hash = leaf_for_address_and_weight(
+                        left_leaf.address,
+                        self.left.as_ref().unwrap().signer.as_ref().unwrap().weight.unwrap(),
+                    );
+                    let right_hash = leaf_for_address_and_weight(
+                        right_leaf.address,
+                        self.right.as_ref().unwrap().signer.as_ref().unwrap().weight.unwrap(),
+                    );
+                    let hash = hash_keccak_256(left_hash, right_hash);
+
+                    // Reduce the node
+                    self.signer = Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: hash.into() }),
+                    });
+                    self.left = None;
+                    self.right = None;
+                }
+            }
+
+            // If left and right are both NodeSignature, then we can reduce them
+            if let SignatureLeaf::NodeSignature(left_leaf) =
+                &self.left.as_ref().unwrap().signer.as_ref().unwrap().leaf
+            {
+                if let SignatureLeaf::NodeSignature(right_leaf) =
+                    &self.right.as_ref().unwrap().signer.as_ref().unwrap().leaf
+                {
+                    // Hash the two addresses leafs
+                    let left_hash = left_leaf.hash;
+                    let right_hash = right_leaf.hash;
+                    let hash = hash_keccak_256(left_hash.into(), right_hash.into());
+
+                    // Reduce the node
+                    self.signer = Some(Signer {
+                        weight: None,
+                        leaf: SignatureLeaf::NodeSignature(NodeLeaf { hash: hash.into() }),
+                    });
+                    self.left = None;
+                    self.right = None;
+                }
+            }
+        }
+
+        // Traverse the tree if not match
+        if self.left.is_some() {
+            self.left.as_mut().unwrap().reduce_node();
+        }
+        if self.right.is_some() {
+            self.right.as_mut().unwrap().reduce_node();
+        }
+    }
+
+    pub fn reduce_node(&mut self) -> SignerNode {
+        match &self.signer {
+            Some(signer) => match &signer.leaf {
+                SignatureLeaf::BranchSignature(_) => {
+                    if signer.weight.unwrap() == 0 {
+                        self.reduct_node_leaf();
+                    }
+                }
+                SignatureLeaf::NodeSignature(_) => {
+                    self.reduct_node_leaf();
+                }
+                _ => {}
+            },
+            None => {}
+        };
+
+        self.clone()
     }
 }
 
