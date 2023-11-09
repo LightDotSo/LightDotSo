@@ -50,11 +50,34 @@ export default async function Page({
 
   const client = new PrismaClient();
 
-  const balances = await client.walletBalance.findMany({
+  // For each erc20Id, find the most recent WalletBalance
+  const balancesPromise = client.walletBalance.findMany({
     where: {
       walletAddress: getAddress(params.address),
+      chainId: {
+        not: 0,
+      },
+      isLatest: true,
+    },
+    include: {
+      erc20: true,
     },
   });
+
+  const portfolioPromise = client.$queryRaw`
+    SELECT DATE(timestamp) as date, AVG(balanceUSD) as average_balance
+    FROM WalletBalance
+    WHERE walletAddress = ${getAddress(params.address)} AND chainId = 0
+    GROUP BY DATE(timestamp)
+    ORDER BY DATE(timestamp) DESC
+  `;
+
+  const [balances, portfolio] = await Promise.all([
+    balancesPromise,
+    portfolioPromise,
+  ]);
+  console.info("balances", balances);
+  console.info("portfolio", portfolio);
 
   // ---------------------------------------------------------------------------
   // Render

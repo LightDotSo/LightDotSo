@@ -141,7 +141,9 @@ export const walletPortfolioSet = inngest.createFunction(
         // Map the balances to the ERC20 tokens
         const token_balances = balances.map(balance => {
           const token = erc20Tokens.find(
-            token => token.address === balance.address,
+            token =>
+              token.address === balance.address &&
+              token.chainId === BigInt(balance.chainId),
           );
 
           return {
@@ -150,25 +152,48 @@ export const walletPortfolioSet = inngest.createFunction(
           };
         });
 
-        // Finally, create the wallet balances
-        return await prisma.walletBalance.createMany({
-          data: [
-            {
+        // First, create the portfolio transaction
+        await prisma.$transaction([
+          prisma.walletBalance.updateMany({
+            where: { walletAddress: wallet!.address, chainId: 0 },
+            data: { isLatest: false },
+          }),
+          prisma.walletBalance.create({
+            data: {
               walletAddress: wallet!.address,
               chainId: 0,
               balanceUSD: totalNetBalance,
+              isLatest: true,
             },
-            ...token_balances.map(balance => ({
+          }),
+        ]);
+
+        // Finally, create the balances
+        await prisma.$transaction([
+          prisma.walletBalance.updateMany({
+            where: {
               walletAddress: wallet!.address,
-              chainId: balance.chainId,
-              balanceUSD: balance.balanceUSD,
-              amount: balance.amount,
-              price: balance.price,
-              erc20Id: balance.erc20Id,
-              stable: balance.stable,
-            })),
-          ],
-        });
+              chainId: {
+                not: 0,
+              },
+            },
+            data: { isLatest: false },
+          }),
+          prisma.walletBalance.createMany({
+            data: {
+              ...token_balances.map(balance => ({
+                walletAddress: wallet!.address,
+                chainId: balance.chainId,
+                balanceUSD: balance.balanceUSD,
+                amount: balance.amount,
+                price: balance.price,
+                erc20Id: balance.erc20Id,
+                stable: balance.stable,
+                isLatest: true,
+              })),
+            },
+          }),
+        ]);
       },
     );
   },

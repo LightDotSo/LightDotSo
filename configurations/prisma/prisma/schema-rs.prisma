@@ -568,6 +568,7 @@ model WalletBalance {
   stable     Boolean?
   price      Float?
   timestamp  DateTime @default(now())
+  isLatest   Boolean  @default(false)
 
   erc20   ERC20?  @relation(fields: [erc20Id], references: [id])
   erc20Id String?
