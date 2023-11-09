@@ -42,7 +42,10 @@ use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
     signature::recover_ecdsa_signature,
-    types::{ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode, ECDSA_SIGNATURE_LENGTH},
+    types::{
+        AddressSignatureLeaf, ECDSASignatureLeaf, SignatureLeaf, Signer, SignerNode,
+        ECDSA_SIGNATURE_LENGTH,
+    },
     utils::render_subdigest,
 };
 use lightdotso_tracing::tracing::{error, info};
@@ -792,8 +795,29 @@ async fn v1_user_operation_signature_handler(
     let owners: Vec<UserOperationOwner> =
         owners.into_iter().map(UserOperationOwner::from).collect();
 
+    // Convert the owners to SignerNode.
+    let owner_nodes: Result<Vec<SignerNode>> = owners
+        .iter()
+        .map(|owner| {
+            Ok(SignerNode {
+                signer: Some(Signer {
+                    weight: Some(owner.weight.try_into()?),
+                    leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
+                        address: owner.address.parse()?,
+                    }),
+                }),
+                left: None,
+                right: None,
+            })
+        })
+        .collect();
+
+    // Build the node tree.
+    let mut tree = rooted_node_builder(owner_nodes?)?;
+    info!(?tree);
+
     // Conver the signatures to SignerNode.
-    let owner_nodes: Result<Vec<SignerNode>> = signatures
+    let signer_nodes: Result<Vec<SignerNode>> = signatures
         .iter()
         .map(|sig| {
             // Filter the owner with the same id from `owners`
@@ -826,9 +850,7 @@ async fn v1_user_operation_signature_handler(
             })
         })
         .collect();
-
-    // Build the node tree.
-    let tree = rooted_node_builder(owner_nodes?)?;
+    tree.replace_node(signer_nodes?);
     info!(?tree);
 
     let wallet_config = WalletConfig {

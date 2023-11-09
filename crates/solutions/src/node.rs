@@ -299,6 +299,38 @@ impl SignerNode {
 
         self.clone()
     }
+
+    pub fn replace_node(&mut self, nodes: Vec<SignerNode>) -> SignerNode {
+        if self.signer.is_some() {
+            if let SignatureLeaf::AddressSignature(leaf) = &self.signer.as_ref().unwrap().leaf {
+                // If the signer is an address, then we can replace it if it matches
+                if let Some(node) = nodes.iter().find(|node| {
+                    if let SignatureLeaf::ECDSASignature(node_leaf) =
+                        &node.signer.as_ref().unwrap().leaf
+                    {
+                        return node_leaf.address == leaf.address;
+                    }
+                    false
+                }) {
+                    // Replace the node
+                    self.signer = node.signer.clone();
+                    self.left = node.left.clone();
+                    self.right = node.right.clone();
+                    return self.clone();
+                }
+            }
+        }
+
+        // Traverse the tree if not match
+        if self.left.is_some() {
+            self.left = Some(Box::new(self.left.as_mut().unwrap().replace_node(nodes.clone())));
+        }
+        if self.right.is_some() {
+            self.right = Some(Box::new(self.right.as_mut().unwrap().replace_node(nodes.clone())));
+        }
+
+        self.clone()
+    }
 }
 
 #[cfg(test)]
