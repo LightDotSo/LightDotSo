@@ -87,25 +87,6 @@ model Wallet {
   walletBalances  WalletBalance[]
 }
 
-model WalletBalance {
-  id            String   @id @default(cuid())
-  wallet        Wallet   @relation(fields: [walletAddress], references: [address])
-  walletAddress String
-  balance       Float
-  chainId       BigInt
-  timestamp     DateTime @default(now())
-
-  category WalletBalanceCategory
-
-  @@index([walletAddress])
-}
-
-enum WalletBalanceCategory {
-  BALANCE
-  DEBT
-  REWARD
-}
-
 model Configuration {
   id         String @id @default(cuid())
   address    String
@@ -545,5 +526,59 @@ model SupportRequest {
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
+  @@index([walletAddress])
+}
+
+model ERC20 {
+  id       String          @id @default(cuid())
+  symbol   String
+  name     String?
+  address  String
+  chainId  BigInt
+  decimals Int
+  balances WalletBalance[]
+
+  @@unique([address, chainId])
+  @@map("ERC20")
+}
+
+// The wallet balances are from: https://github.com/llamafolio/llamafolio-api
+// License: GPL-3.0
+
+// model Protocol {
+//   id             String          @id @default(cuid())
+//   balanceUSD     Float
+//   debtUSD        Float
+//   rewardUSD      Float
+//   walletBalances WalletBalance[]
+// }
+
+model WalletBalance {
+  id         String   @id @default(cuid())
+  balanceUSD Float
+  // rewardUSD  Float?
+  // debtUSD    Float?
+  // apy           Float?
+  // apyBase       Float?
+  // apyMean30d    Float?
+  // ilRisk        Boolean?
+  // collateralUSD Float?
+  chainId    BigInt
+  amount     BigInt?
+  stable     Boolean?
+  price      Float?
+  timestamp  DateTime @default(now())
+
+  erc20   ERC20?  @relation(fields: [erc20Id], references: [id])
+  erc20Id String?
+
+  // protocol   Protocol? @relation(fields: [protocolId], references: [id])
+  // protocolId String?
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  // @@index([protocolId])
+  @@index([erc20Id])
   @@index([walletAddress])
 }

@@ -15,8 +15,9 @@
 
 import { inngest } from "@/inngest/client";
 import { getLlama } from "@lightdotso/client";
-import { WalletBalanceCategory } from "@lightdotso/prisma";
 import { NonRetriableError } from "inngest";
+import { ChainIds } from "@lightdotso/const";
+import { getAddress } from "viem";
 
 export const walletPortfolioSet = inngest.createFunction(
   {
@@ -82,14 +83,90 @@ export const walletPortfolioSet = inngest.createFunction(
     await step.run(
       "Update the values of the total wallet balance",
       async () => {
+        let balances: {
+          balanceUSD: number;
+          chainId: number;
+          amount: bigint;
+          price: number;
+          symbol?: string;
+          name?: string;
+          address?: string;
+          decimals?: number;
+          stable?: boolean;
+        }[] = [];
+
+        /// Flat out the llama into a list of balances
+        llama.protocols.forEach(protocol => {
+          protocol.groups.forEach(group => {
+            group.balances.forEach(balance => {
+              // Here we add both the balance object and the protocol id to the balances array
+              balances.push({
+                balanceUSD: balance.balanceUSD,
+                chainId: ChainIds[protocol.chain as keyof typeof ChainIds] || 0,
+                amount: BigInt(balance.amount),
+                price: balance.price,
+                symbol: balance.symbol,
+                name: balance.name,
+                address: getAddress(balance.address),
+                decimals: balance.decimals,
+                stable: balance.stable,
+              });
+            });
+          });
+        });
+
+        // Create ERC20 tokens if they don't exist
+        await prisma.eRC20.createMany({
+          data: [
+            ...balances.map(balance => ({
+              address: balance.address!,
+              chainId: balance.chainId,
+              name: balance.name,
+              symbol: balance.symbol!,
+              decimals: balance.decimals!,
+            })),
+          ],
+          skipDuplicates: true,
+        });
+
+        // Get the corresponding ERC20 tokens
+        const erc20Tokens = await prisma.eRC20.findMany({
+          where: {
+            address: {
+              in: balances.map(balance => balance.address!),
+            },
+          },
+        });
+
+        // Map the balances to the ERC20 tokens
+        const token_balances = balances.map(balance => {
+          const token = erc20Tokens.find(
+            token => token.address === balance.address,
+          );
+
+          return {
+            ...balance,
+            erc20Id: token!.id,
+          };
+        });
+
+        // Finally, create the wallet balances
         return await prisma.walletBalance.createMany({
           data: [
             {
               walletAddress: wallet!.address,
               chainId: 0,
-              balance: totalNetBalance,
-              category: WalletBalanceCategory.BALANCE,
+              balanceUSD: totalNetBalance,
             },
+            ...token_balances.map(balance => ({
+              walletAddress: wallet!.address,
+              chainId: balance.chainId,
+              balanceUSD: balance.balanceUSD,
+              amount: balance.amount,
+              price: balance.price,
+              erc20Id: balance.erc20Id,
+              stable: balance.stable,
+            })),
           ],
         });
       },

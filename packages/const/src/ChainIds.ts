@@ -13,10 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { ChainIds } from "./ChainIds";
-export { ContractLinks } from "./ContractLinks";
-export { InternalLinks } from "./InternalLinks";
-export { RedirectPrefixes } from "./RedirectPrefixes";
-export { NavigationLinks } from "./NavigationLinks";
-export { NotionLinks } from "./NotionLinks";
-export { Social, SocialLinks } from "./SocialLinks";
+export enum Chain {
+  MAINNET = "ethereum",
+  OPTIMISM = "optimism",
+  CELO = "celo",
+  POLYGON = "polygon",
+  BASE = "base",
+  ARBITRUM = "arbitrum",
+  AVALANCHE = "avalanche",
+  GNOSIS = "gnosis",
+  SEPOLIA = "sepolia",
+}
+
+export const ChainIds: { readonly [key in Chain]: number } = {
+  [Chain.MAINNET]: 1,
+  [Chain.OPTIMISM]: 10,
+  [Chain.GNOSIS]: 100,
+  [Chain.POLYGON]: 137,
+  [Chain.BASE]: 8453,
+  [Chain.ARBITRUM]: 42161,
+  [Chain.AVALANCHE]: 43114,
+  [Chain.CELO]: 42220,
+  [Chain.SEPOLIA]: 11155111,
+};

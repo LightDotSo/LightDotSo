@@ -1,0 +1,607 @@
+{
+  "status": "stale",
+  "updatedAt": 1699300535,
+  "nextUpdateAt": 1699300835,
+  "protocols": [
+    {
+      "id": "rocket-pool",
+      "chain": "ethereum",
+      "balanceUSD": 19.51994346539589,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "fromAddress": "0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
+          "balanceUSD": 19.51994346539589,
+          "debtUSD": 0,
+          "rewardUSD": 0,
+          "healthFactor": 0,
+          "balances": [
+            {
+              "address": "0xae78736cd615f374d3085123a210448e74fc6393",
+              "symbol": "rETH",
+              "decimals": 18,
+              "category": "stake",
+              "stable": false,
+              "price": 2085.86,
+              "amount": "9358223210280598",
+              "balanceUSD": 19.51994346539589,
+              "rewardUSD": 0,
+              "debtUSD": 0,
+              "apy": 3.11521,
+              "apyBase": 3.11521,
+              "apyMean30d": 3.03526,
+              "ilRisk": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "ethereum",
+      "balanceUSD": 28.04869820806253,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 28.04869820806253,
+          "balances": [
+            {
+              "name": "Ether",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "ETH",
+              "decimals": 18,
+              "price": 1902.75,
+              "amount": "9744078417060849",
+              "balanceUSD": 18.54054520806253
+            },
+            {
+              "address": "0x30cf203b48edaa42c3b4918e955fed26cd012a3f",
+              "symbol": "SEED",
+              "decimals": 18,
+              "stable": false,
+              "price": 1.66,
+              "amount": "300000000000000000",
+              "balanceUSD": 0.498
+            },
+            {
+              "address": "0x7a58c0be72be218b41c608b7fe7c5bb630736c71",
+              "symbol": "PEOPLE",
+              "decimals": 18,
+              "stable": false,
+              "price": 0.01391254,
+              "amount": "300000000000000000000",
+              "balanceUSD": 4.173762
+            },
+            {
+              "address": "0x7e9d8f07a64e363e97a648904a89fb4cd5fb94cd",
+              "symbol": "FF",
+              "decimals": 18,
+              "stable": false,
+              "price": 0.04836391,
+              "amount": "100000000000000000000",
+              "balanceUSD": 4.836391
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aave-v3",
+      "chain": "optimism",
+      "balanceUSD": 0.600611359572954,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "fromAddress": "0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
+          "balanceUSD": 0.600611359572954,
+          "debtUSD": 0,
+          "rewardUSD": 0,
+          "healthFactor": 0,
+          "balances": [
+            {
+              "address": "0x82e64f49ed5ec1bc6e43dad4fc8af9bb3a2312ee",
+              "symbol": "aOptDAI",
+              "decimals": 18,
+              "category": "lend",
+              "stable": true,
+              "price": 0,
+              "amount": "600872138080881147",
+              "balanceUSD": 0.600611359572954,
+              "rewardUSD": 0,
+              "collateralUSD": 0.600611359572954,
+              "debtUSD": 0,
+              "apy": 3.0051,
+              "apyBase": 3.0051,
+              "apyMean30d": 3.91428,
+              "ilRisk": false,
+              "underlyings": [
+                {
+                  "name": "Dai",
+                  "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1",
+                  "symbol": "DAI",
+                  "decimals": 18,
+                  "stable": true,
+                  "price": 0.999566,
+                  "amount": "600872138080881147",
+                  "balanceUSD": 0.600611359572954
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "optimism",
+      "balanceUSD": 6.476505093077828,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 6.476505093077828,
+          "balances": [
+            {
+              "name": "Ether",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "ETH",
+              "decimals": 18,
+              "price": 1902.75,
+              "amount": "3274776591798977",
+              "balanceUSD": 6.231081160045504
+            },
+            {
+              "address": "0x3c8b650257cfb5f272f799f5e2b4e65093a11a05",
+              "symbol": "VELO",
+              "decimals": 18,
+              "stable": false,
+              "price": 0.0434243,
+              "amount": "5651764865117557302",
+              "balanceUSD": 0.24542393303232435
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "bsc",
+      "balanceUSD": 4.658483281502166,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 4.658483281502166,
+          "balances": [
+            {
+              "name": "Binance Coin",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "BNB",
+              "decimals": 18,
+              "price": 253.55,
+              "amount": "18373036014601323",
+              "balanceUSD": 4.658483281502166
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "gnosis",
+      "balanceUSD": 19.698108936132805,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 19.698108936132805,
+          "balances": [
+            {
+              "name": "xDai",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "xDAI",
+              "decimals": 18,
+              "price": 0.999566,
+              "amount": "15925966595339733495",
+              "balanceUSD": 15.919054725837356
+            },
+            {
+              "name": "Wrapped Ether on xDai",
+              "address": "0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1",
+              "symbol": "WETH",
+              "decimals": 18,
+              "stable": false,
+              "price": 1900.36,
+              "amount": "1988599112955150",
+              "balanceUSD": 3.7790542102954485
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aave-v2",
+      "chain": "polygon",
+      "balanceUSD": 0.48651603,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "fromAddress": "0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
+          "balanceUSD": 0.48651603,
+          "debtUSD": 0,
+          "rewardUSD": 0,
+          "healthFactor": 0,
+          "balances": [
+            {
+              "address": "0x1a13f4ca1d028320a707d99520abfefca3998b7f",
+              "symbol": "amUSDC",
+              "decimals": 6,
+              "category": "lend",
+              "stable": true,
+              "price": 0,
+              "amount": "486030",
+              "balanceUSD": 0.48651603,
+              "rewardUSD": 0,
+              "collateralUSD": 0.48651603,
+              "debtUSD": 0,
+              "apy": 1.46296,
+              "apyBase": 1.46296,
+              "apyMean30d": 1.98832,
+              "ilRisk": false,
+              "underlyings": [
+                {
+                  "name": "USD Coin",
+                  "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+                  "symbol": "USDC",
+                  "decimals": 6,
+                  "stable": true,
+                  "price": 1.001,
+                  "amount": "486030",
+                  "balanceUSD": 0.48651603
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quickswap-dex",
+      "chain": "polygon",
+      "balanceUSD": 2.5468317538860363,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "fromAddress": "0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
+          "balanceUSD": 2.5468317538860363,
+          "debtUSD": 0,
+          "rewardUSD": 0,
+          "healthFactor": 0,
+          "balances": [
+            {
+              "address": "0x853ee4b2a13f8a742d64c8f088be7ba2131f670d",
+              "symbol": "UNI-V2",
+              "decimals": 18,
+              "category": "lp",
+              "stable": false,
+              "price": 0,
+              "amount": "16741795459",
+              "balanceUSD": 2.5468317538860363,
+              "rewardUSD": 0,
+              "debtUSD": 0,
+              "apy": 11.20091,
+              "apyBase": 11.20091,
+              "apyMean30d": 4.90853,
+              "ilRisk": true,
+              "underlyings": [
+                {
+                  "address": "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
+                  "symbol": "USDC",
+                  "decimals": 6,
+                  "price": 1.001,
+                  "amount": "1272760",
+                  "balanceUSD": 1.27403276
+                },
+                {
+                  "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+                  "symbol": "WETH",
+                  "decimals": 18,
+                  "price": 1900.36,
+                  "amount": "669767304029782",
+                  "balanceUSD": 1.2727989938860365
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sushiswap",
+      "chain": "polygon",
+      "balanceUSD": 2.161609315295371,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "fromAddress": "0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
+          "balanceUSD": 2.161609315295371,
+          "debtUSD": 0,
+          "rewardUSD": 0,
+          "healthFactor": 0,
+          "balances": [
+            {
+              "address": "0x2bf9cdcfedd7f9f6450176bed4f63a2f87627091",
+              "symbol": "SLP",
+              "decimals": 18,
+              "category": "lp",
+              "stable": false,
+              "price": 0,
+              "amount": "2999999999999999999000",
+              "balanceUSD": 2.161609315295371,
+              "rewardUSD": 0,
+              "debtUSD": 0,
+              "underlyings": [
+                {
+                  "address": "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+                  "symbol": "WMATIC",
+                  "decimals": 18,
+                  "price": 0.720535,
+                  "amount": "3000005989015621522",
+                  "balanceUSD": 2.161609315295371
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "polygon",
+      "balanceUSD": 27.835472994589537,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 27.835472994589537,
+          "balances": [
+            {
+              "name": "Matic",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "MATIC",
+              "decimals": 18,
+              "price": 0.721478,
+              "amount": "1119268357992696171",
+              "balanceUSD": 0.8075274963878544
+            },
+            {
+              "address": "0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270",
+              "symbol": "WMATIC",
+              "decimals": 18,
+              "stable": false,
+              "price": 0.720535,
+              "amount": "10000000000000000000",
+              "balanceUSD": 7.20535
+            },
+            {
+              "address": "0x4e78011ce80ee02d2c3e649fb657e45898257815",
+              "symbol": "KLIMA",
+              "decimals": 9,
+              "stable": false,
+              "price": 0.664456,
+              "amount": "139591142",
+              "balanceUSD": 0.092752171848752
+            },
+            {
+              "address": "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619",
+              "symbol": "WETH",
+              "decimals": 18,
+              "stable": false,
+              "price": 1900.36,
+              "amount": "650272933554770",
+              "balanceUSD": 1.2357526720101426
+            },
+            {
+              "address": "0x9c2c5fd7b07e95ee044ddeba0e97a665f142394f",
+              "symbol": "1INCH",
+              "decimals": 18,
+              "stable": false,
+              "price": 0.353446,
+              "amount": "2862638732315793",
+              "balanceUSD": 0.0010117882093820876
+            },
+            {
+              "address": "0x9ca6a77c8b38159fd2da9bd25bc3e259c33f5e39",
+              "symbol": "SPORK",
+              "decimals": 18,
+              "stable": false,
+              "price": 0.00877283,
+              "amount": "1307142857142857142857",
+              "balanceUSD": 11.467342071428572
+            },
+            {
+              "address": "0xd6df932a45c0f255f85145f286ea0b292b21c90b",
+              "symbol": "WAAVE",
+              "decimals": 18,
+              "stable": false,
+              "price": 96.12,
+              "amount": "73093391538751915",
+              "balanceUSD": 7.025736794704835
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "base",
+      "balanceUSD": 7.462453264763779,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 7.462453264763779,
+          "balances": [
+            {
+              "name": "Ether",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "ETH",
+              "decimals": 18,
+              "price": 1902.75,
+              "amount": "3921930503094878",
+              "balanceUSD": 7.462453264763779
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hop-protocol",
+      "chain": "arbitrum",
+      "balanceUSD": 9.475570103999999,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "fromAddress": "0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed",
+          "balanceUSD": 9.475570103999999,
+          "debtUSD": 0,
+          "rewardUSD": 0,
+          "healthFactor": 0,
+          "balances": [
+            {
+              "address": "0xb67c014fa700e69681a673876eb8bafaa36bff71",
+              "symbol": "HOP-LP-USDC",
+              "decimals": 18,
+              "category": "lp",
+              "stable": false,
+              "price": 0,
+              "amount": "9085672461382520176",
+              "balanceUSD": 9.475570103999999,
+              "rewardUSD": 0,
+              "debtUSD": 0,
+              "underlyings": [
+                {
+                  "name": "USD Coin",
+                  "address": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+                  "symbol": "USDC",
+                  "decimals": 6,
+                  "stable": true,
+                  "price": 1.001,
+                  "amount": "4633024",
+                  "balanceUSD": 4.637657024
+                },
+                {
+                  "address": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8",
+                  "symbol": "hUSDC",
+                  "decimals": 6,
+                  "price": 1.001,
+                  "amount": "4833080",
+                  "balanceUSD": 4.83791308
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "arbitrum",
+      "balanceUSD": 5.229172901284215,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 5.229172901284215,
+          "balances": [
+            {
+              "name": "Ether",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "ETH",
+              "decimals": 18,
+              "price": 1902.75,
+              "amount": "2748218579048333",
+              "balanceUSD": 5.229172901284215
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "celo",
+      "balanceUSD": 2.837052654676163,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 2.837052654676163,
+          "balances": [
+            {
+              "name": "Celo",
+              "address": "0x471ece3750da237f93b8e339c536989b8978a438",
+              "symbol": "CELO",
+              "decimals": 18,
+              "price": 0.556034,
+              "amount": "5102300677073997165",
+              "balanceUSD": 2.837052654676163
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "avalanche",
+      "balanceUSD": 6.87869067321816,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 6.87869067321816,
+          "balances": [
+            {
+              "name": "Avalanche",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "AVAX",
+              "decimals": 18,
+              "price": 13.03,
+              "amount": "527911793800319296",
+              "balanceUSD": 6.87869067321816
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wallet",
+      "chain": "harmony",
+      "balanceUSD": 9.327242606582493,
+      "debtUSD": 0,
+      "rewardUSD": 0,
+      "groups": [
+        {
+          "balanceUSD": 9.327242606582493,
+          "balances": [
+            {
+              "name": "One",
+              "address": "0x0000000000000000000000000000000000000000",
+              "symbol": "ONE",
+              "decimals": 18,
+              "price": 0.01413247,
+              "amount": "659986726070000000000",
+              "balanceUSD": 9.327242606582493
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
