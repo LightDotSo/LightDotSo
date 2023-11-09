@@ -16,13 +16,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { handler } from "@/handlers/paths/[address]";
-import { getLlama, getQueryClient } from "@/services";
+import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import type { Address } from "viem";
-import { notFound } from "next/navigation";
 import { inngest } from "@/inngest/client";
-import { Button } from "@lightdotso/ui";
-import invokePortfolioAction from "@/actions/invokePortfolioAction";
+import { PrismaClient } from "@lightdotso/prisma";
+import { InvokePortfolioButton } from "@/app/(wallet)/[address]/(components)/InvokePortfolioButton";
+import { getAddress, type Address } from "viem";
+import { serializeWalletBalance } from "@/utils/walletBalance";
 
 export default async function Page({
   params,
@@ -41,8 +41,6 @@ export default async function Page({
 
   const queryClient = getQueryClient();
 
-  const res = await getLlama(params.address as Address);
-
   await inngest.send({
     name: "wallet/portfolio.set",
     data: {
@@ -50,31 +48,26 @@ export default async function Page({
     },
   });
 
+  const client = new PrismaClient();
+
+  const balances = await client.walletBalance.findMany({
+    where: {
+      walletAddress: getAddress(params.address),
+    },
+  });
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  res.match(
-    res => {
-      queryClient.setQueryData(["llama", params.address], res);
-
-      return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <div>
-            <pre>
-              <code>{JSON.stringify(res, null, 2)}</code>
-            </pre>
-            <Button
-              onClick={() => {
-                invokePortfolioAction(params.address as Address);
-              }}
-            >
-              Refresh
-            </Button>
-          </div>
-        </HydrationBoundary>
-      );
-    },
-    () => notFound(),
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div>
+        <pre>
+          <code>{serializeWalletBalance(balances)}</code>
+        </pre>
+        <InvokePortfolioButton address={params.address as Address} />
+      </div>
+    </HydrationBoundary>
   );
 }
