@@ -18,14 +18,12 @@
 import { Button } from "@lightdotso/ui";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
 import type { Address } from "viem";
-import { revalidateTag } from "next/cache";
 
 export function InvokePortfolioButton({ address }: { address: Address }) {
   return (
     <Button
       onClick={() => {
         invokePortfolioAction(address as Address);
-        revalidateTag(address);
       }}
     >
       Refresh

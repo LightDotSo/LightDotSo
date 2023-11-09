@@ -64,7 +64,15 @@ export default async function Page({
     },
   });
 
-  const portfolioPromise = client.$queryRaw`
+  const latestPortfolioPromise = client.$queryRaw`
+    SELECT balanceUSD as latest_balance, timestamp as latest_balance_timestamp
+    FROM WalletBalance
+    WHERE walletAddress = ${getAddress(params.address)} AND chainId = 0
+    ORDER BY timestamp DESC
+    LIMIT 1
+  `;
+
+  const pastPortfolioPromise = client.$queryRaw`
     SELECT DATE(timestamp) as date, AVG(balanceUSD) as average_balance
     FROM WalletBalance
     WHERE walletAddress = ${getAddress(params.address)} AND chainId = 0
@@ -72,12 +80,14 @@ export default async function Page({
     ORDER BY DATE(timestamp) DESC
   `;
 
-  const [balances, portfolio] = await Promise.all([
+  const [balances, latestPortfolio, pastPortfolio] = await Promise.all([
     balancesPromise,
-    portfolioPromise,
+    latestPortfolioPromise,
+    pastPortfolioPromise,
   ]);
   console.info("balances", balances);
-  console.info("portfolio", portfolio);
+  console.info("latestPortfolio", latestPortfolio);
+  console.info("pastPortfolio", pastPortfolio);
 
   // ---------------------------------------------------------------------------
   // Render
