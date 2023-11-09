@@ -558,6 +558,7 @@ model ERC20 {
   balances WalletBalance[]
 
   @@unique([address, chainId])
+  @@map("ERC20")
 }
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
