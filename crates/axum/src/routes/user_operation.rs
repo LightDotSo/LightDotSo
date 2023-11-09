@@ -745,6 +745,7 @@ async fn v1_user_operation_signature_handler(
         )]))
         .exec()
         .await?;
+    info!(?user_operation);
 
     // If the user operation is not found, return a 404.
     let user_operation = user_operation.ok_or(AppError::NotFound)?;
@@ -753,6 +754,7 @@ async fn v1_user_operation_signature_handler(
     let signatures = user_operation.clone().signatures.map_or(Vec::new(), |signature| {
         signature.into_iter().map(UserOperationSignature::from).collect()
     });
+    info!("{}", signatures.len());
 
     // Get the wallet from the database.
     let wallet = client
@@ -827,6 +829,7 @@ async fn v1_user_operation_signature_handler(
 
     // Build the node tree.
     let tree = rooted_node_builder(owner_nodes?)?;
+    info!(?tree);
 
     let wallet_config = WalletConfig {
         checkpoint: configuration.checkpoint as u32,
