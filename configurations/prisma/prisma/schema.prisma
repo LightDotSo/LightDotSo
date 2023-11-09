@@ -577,7 +577,7 @@ model WalletBalance {
   chainId    BigInt
   stable     Boolean?
   price      Float
-  amount     String
+  amount     BigInt
   balanceUSD Float
   // rewardUSD  Float?
   // debtUSD    Float?
