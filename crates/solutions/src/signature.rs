@@ -102,8 +102,6 @@ pub async fn recover_dynamic_signature(
         DynamicSignatureType::DynamicSignatureTypeEIP1271 => {
             // The length is the remaining length of the slice
             let signature = Signature(slice[..slice.len() - 1].to_vec());
-            println!("chain_id: {}", chain_id);
-            println!("address: {:?}", address);
             // Call the contract on-chain to verify the signature
             let wallet = get_erc_1271_wallet(chain_id, address).await?;
             let res = wallet
