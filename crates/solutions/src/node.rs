@@ -270,17 +270,13 @@ impl SignerNode {
     }
 
     pub fn reduce_node(&mut self) -> SignerNode {
-        match &self.signer {
-            Some(signer) => match &signer.leaf {
-                SignatureLeaf::BranchSignature(_) => {
-                    if signer.weight.unwrap() == 0 {
-                        self.reduce_node_leaf();
-                    }
+        if self.signer.is_some() {
+            if let SignatureLeaf::BranchSignature(_) = &self.signer.as_ref().unwrap().leaf {
+                if self.signer.as_ref().unwrap().weight.unwrap() == 0 {
+                    self.reduce_node_leaf();
                 }
-                _ => {}
-            },
-            None => {}
-        };
+            }
+        }
 
         // Traverse the tree if not match
         if self.left.is_some() {
@@ -290,6 +286,7 @@ impl SignerNode {
             self.right = Some(Box::new(self.right.as_mut().unwrap().reduce_node()));
         }
 
+        // Finally, reduce the root signer if it is a branch signature and the weight is 0
         if self.signer.is_some() {
             // If the weight is 0 and is a branch signature, then we can reduce it
             if let SignatureLeaf::BranchSignature(_) = &self.signer.as_ref().unwrap().leaf {
