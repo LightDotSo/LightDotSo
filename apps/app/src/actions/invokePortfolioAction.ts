@@ -16,6 +16,7 @@
 "use server";
 
 import { inngest } from "@/inngest/client";
+import { revalidateTag } from "next/cache";
 import type { Address } from "viem";
 
 export default async function action(address: Address) {
@@ -25,4 +26,5 @@ export default async function action(address: Address) {
       address: address,
     },
   });
+  revalidateTag(address);
 }
