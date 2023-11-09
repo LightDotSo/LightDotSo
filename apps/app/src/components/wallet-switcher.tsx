@@ -96,6 +96,7 @@ export function WalletSwitcherButton({
         params: {
           query: {
             owner: address,
+            limit: 300,
           },
         },
       });
