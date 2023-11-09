@@ -30,4 +30,13 @@ export default defineWorkspace([
       testTimeout: 100_000,
     },
   },
+  {
+    extends: "./vitest.config.ts",
+    test: {
+      include: ["packages/schemas/test/**/*.spec.ts"],
+      name: "schemas",
+      environment: "node",
+      testTimeout: 100_000,
+    },
+  },
 ]);

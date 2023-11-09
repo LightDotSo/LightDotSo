@@ -554,22 +554,22 @@ model ERC20 {
 
 model WalletBalance {
   id         String   @id @default(cuid())
-  amount     BigInt
-  chainId    BigInt
-  stable     Boolean?
-  price      Float
   balanceUSD Float
   // rewardUSD  Float?
   // debtUSD    Float?
-  timestamp  DateTime @default(now())
   // apy           Float?
   // apyBase       Float?
   // apyMean30d    Float?
   // ilRisk        Boolean?
   // collateralUSD Float?
+  chainId    BigInt
+  amount     BigInt?
+  stable     Boolean?
+  price      Float?
+  timestamp  DateTime @default(now())
 
-  erc20        ERC20?  @relation(fields: [erc20Address], references: [id])
-  erc20Address String?
+  erc20   ERC20?  @relation(fields: [erc20Id], references: [id])
+  erc20Id String?
 
   // protocol   Protocol? @relation(fields: [protocolId], references: [id])
   // protocolId String?
@@ -578,6 +578,6 @@ model WalletBalance {
   walletAddress String
 
   // @@index([protocolId])
-  @@index([erc20Address])
+  @@index([erc20Id])
   @@index([walletAddress])
 }
