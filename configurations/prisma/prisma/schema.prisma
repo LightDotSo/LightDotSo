@@ -106,25 +106,6 @@ model Wallet {
   walletBalances  WalletBalance[]
 }
 
-model WalletBalance {
-  id            String   @id @default(cuid())
-  wallet        Wallet   @relation(fields: [walletAddress], references: [address])
-  walletAddress String
-  balance       Float
-  chainId       BigInt
-  timestamp     DateTime @default(now())
-
-  category WalletBalanceCategory
-
-  @@index([walletAddress])
-}
-
-enum WalletBalanceCategory {
-  BALANCE
-  DEBT
-  REWARD
-}
-
 model Configuration {
   id         String @id @default(cuid())
   address    String
@@ -564,5 +545,56 @@ model SupportRequest {
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
+  @@index([walletAddress])
+}
+
+model ERC20 {
+  id       String          @id @default(cuid())
+  symbol   String
+  name     String?
+  address  String
+  chainId  BigInt
+  decimals Int
+  balances WalletBalance[]
+
+  @@unique([address, chainId])
+}
+
+// model Protocol {
+//   id             String          @id @default(cuid())
+//   balanceUSD     Float
+//   debtUSD        Float
+//   rewardUSD      Float
+//   walletBalances WalletBalance[]
+// }
+
+model WalletBalance {
+  id         String   @id @default(cuid())
+  balance    Float
+  chainId    BigInt
+  stable     Boolean?
+  price      Float
+  amount     String
+  balanceUSD Float
+  rewardUSD  Float?
+  debtUSD    Float?
+  timestamp  DateTime @default(now())
+  // apy           Float?
+  // apyBase       Float?
+  // apyMean30d    Float?
+  // ilRisk        Boolean?
+  // collateralUSD Float?
+
+  erc20        ERC20?  @relation(fields: [erc20Address], references: [id])
+  erc20Address String?
+
+  // protocol   Protocol? @relation(fields: [protocolId], references: [id])
+  // protocolId String?
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  // @@index([protocolId])
+  @@index([erc20Address])
   @@index([walletAddress])
 }
