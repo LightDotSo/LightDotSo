@@ -202,8 +202,12 @@ impl SignerNode {
         Ok(encoded)
     }
 
-    pub fn reduct_node_leaf(&mut self) {
-        if self.left.is_some() && self.right.is_some() {
+    pub fn reduce_node_leaf(&mut self) {
+        if self.left.is_some() &&
+            self.right.is_some() &&
+            self.left.as_ref().unwrap().signer.is_some() &&
+            self.right.as_ref().unwrap().signer.is_some()
+        {
             // If left and right are both AddressSignature, then we can reduce them
             if let SignatureLeaf::AddressSignature(left_leaf) =
                 &self.left.as_ref().unwrap().signer.as_ref().unwrap().leaf
@@ -229,6 +233,7 @@ impl SignerNode {
                     });
                     self.left = None;
                     self.right = None;
+                    return;
                 }
             }
 
@@ -257,10 +262,10 @@ impl SignerNode {
 
         // Traverse the tree if not match
         if self.left.is_some() {
-            self.left.as_mut().unwrap().reduce_node();
+            self.left.as_mut().unwrap().reduce_node_leaf();
         }
         if self.right.is_some() {
-            self.right.as_mut().unwrap().reduce_node();
+            self.right.as_mut().unwrap().reduce_node_leaf();
         }
     }
 
@@ -269,16 +274,31 @@ impl SignerNode {
             Some(signer) => match &signer.leaf {
                 SignatureLeaf::BranchSignature(_) => {
                     if signer.weight.unwrap() == 0 {
-                        self.reduct_node_leaf();
+                        self.reduce_node_leaf();
                     }
-                }
-                SignatureLeaf::NodeSignature(_) => {
-                    self.reduct_node_leaf();
                 }
                 _ => {}
             },
             None => {}
         };
+
+        // Traverse the tree if not match
+        if self.left.is_some() {
+            self.left = Some(Box::new(self.left.as_mut().unwrap().reduce_node()));
+        }
+        if self.right.is_some() {
+            self.right = Some(Box::new(self.right.as_mut().unwrap().reduce_node()));
+        }
+
+        if self.signer.is_some() {
+            // If the weight is 0 and is a branch signature, then we can reduce it
+            if let SignatureLeaf::BranchSignature(_) = &self.signer.as_ref().unwrap().leaf {
+                if self.signer.as_ref().unwrap().weight.unwrap() == 0 {
+                    // Reduce the node
+                    self.signer = None;
+                }
+            }
+        }
 
         self.clone()
     }
