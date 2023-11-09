@@ -579,8 +579,8 @@ model WalletBalance {
   price      Float
   amount     String
   balanceUSD Float
-  rewardUSD  Float?
-  debtUSD    Float?
+  // rewardUSD  Float?
+  // debtUSD    Float?
   timestamp  DateTime @default(now())
   // apy           Float?
   // apyBase       Float?
