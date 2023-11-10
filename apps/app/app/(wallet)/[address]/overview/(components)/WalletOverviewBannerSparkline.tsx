@@ -15,13 +15,18 @@
 
 "use client";
 
-import { getPortfolio } from "@lightdotso/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { AreaChart, Card, Title } from "@tremor/react";
 import type { Address } from "viem";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getPortfolio } from "@lightdotso/client";
+import { SparkAreaChart } from "@tremor/react";
+import { cn } from "@lightdotso/utils";
 
-export function PortfolioChart({ address }: { address: Address }) {
-  const { data } = useSuspenseQuery({
+export function WalletOverviewBannerSparkline({
+  address,
+}: {
+  address: Address;
+}) {
+  const { data: portfolio } = useSuspenseQuery({
     queryKey: ["portfolio", address],
     queryFn: async () => {
       if (!address) {
@@ -46,36 +51,34 @@ export function PortfolioChart({ address }: { address: Address }) {
     },
   });
 
-  if (!data) {
+  if (!portfolio) {
     return null;
   }
 
   return (
-    <div className="justify-between md:flex">
-      <div className="mt-8 hidden w-full sm:block">
-        <>
-          <Card>
-            <Title>Portfolio Value</Title>
-            <AreaChart
-              className="mt-4 h-72 w-full"
-              data={data.balances}
-              index="date"
-              categories={["balance"]}
-              showLegend={false}
-            />
-          </Card>
-        </>
+    <div className="flex flex-row items-center justify-start space-x-4">
+      <div className="flex items-center space-x-2.5">
+        <span className="text-2xl font-bold tracking-tighter text-primary sm:text-3xl">
+          ${portfolio.balances && portfolio.balances[0].balance.toFixed(2)}
+        </span>
+        <span
+          className={cn(
+            "px-2 py-1 text-xs font-medium rounded text-white",
+            portfolio.price_change_24h > 0 ? "bg-emerald-500" : "bg-red-500",
+          )}
+        >
+          {(portfolio.price_change_24h * 100).toFixed(2)}%
+        </span>
       </div>
-      <div className="mt-8 sm:hidden">
-        <AreaChart
-          categories={["balance"]}
-          data={data.balances}
-          index="date"
-          startEndOnly={true}
-          showGradient={false}
-          showYAxis={false}
-        />
-      </div>
+      <SparkAreaChart
+        data={portfolio?.balances}
+        categories={["balance"]}
+        index="date"
+        colors={[portfolio.price_change_24h > 0 ? "emerald" : "red"]}
+        className="h-8 w-14"
+        // @ts-expect-error
+        showAnimation
+      />
     </div>
   );
 }
