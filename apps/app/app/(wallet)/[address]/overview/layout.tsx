@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { LinkButtonGroup } from "@/components/link-button-group";
-import { WalletOverviewCard } from "@/app/(wallet)/[address]/overview/(components)/WalletOverviewCard";
+import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/WalletOverviewBanner";
 import type { Address } from "viem";
 
 const overviewNavItems = [
@@ -46,11 +46,13 @@ export default function OverviewLayout({
 }) {
   return (
     <>
+      <div className="flex w-full flex-col space-y-8 border-b border-input lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="mx-auto max-w-5xl flex-1 space-y-8 py-12 md:py-16">
+          <WalletOverviewBanner address={params.address as Address} />
+        </div>
+      </div>
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
         <div className="mx-auto max-w-5xl flex-1 space-y-8">
-          <div className="mt-8 w-full rounded-md border border-input bg-card">
-            <WalletOverviewCard address={params.address as Address} />
-          </div>
           <LinkButtonGroup items={overviewNavItems} />
           {children}
         </div>

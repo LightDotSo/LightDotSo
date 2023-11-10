@@ -20,23 +20,23 @@ import type { Address } from "viem";
 import { splitAddress } from "@lightdotso/utils";
 import { useCopy } from "@/hooks/useCopy";
 import {
+  ClipboardDocumentIcon,
   ClipboardDocumentCheckIcon,
-  InboxStackIcon,
 } from "@heroicons/react/24/outline";
 import { Send, Share } from "lucide-react";
 import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
 
-export function WalletOverviewCard({ address }: { address: Address }) {
+export function WalletOverviewBanner({ address }: { address: Address }) {
   const [isCopied, copy] = useCopy();
   const { data } = useEnsName({
     address: address,
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
+    <div className="lg:flex lg:items-center lg:justify-between">
       <div className="flex flex-row items-center space-x-5">
-        <Avatar className="h-24 w-24">
+        <Avatar className="h-20 w-20">
           <PlaceholderOrb address={address ?? "0x"} />
         </Avatar>
         <div className="space-y-4 sm:mt-6 md:mt-0 md:space-y-6 md:pl-4">
@@ -55,7 +55,7 @@ export function WalletOverviewCard({ address }: { address: Address }) {
                   }}
                 >
                   {!isCopied ? (
-                    <InboxStackIcon className="h-6 w-6 text-muted-foreground" />
+                    <ClipboardDocumentIcon className="h-6 w-6 text-muted-foreground" />
                   ) : (
                     <ClipboardDocumentCheckIcon className="h-6 w-6 text-muted-foreground" />
                   )}
@@ -69,17 +69,11 @@ export function WalletOverviewCard({ address }: { address: Address }) {
         </div>
       </div>
       <div className="mt-10 flex items-center gap-x-4 lg:mt-0 lg:shrink-0">
-        <Button
-          className="mt-6 hidden rounded-full p-3 md:block"
-          variant="outline"
-        >
+        <Button className="mt-6 rounded-full p-3" variant="outline">
           <Share className="h-4 w-4" />
           <span className="sr-only">Open share modal</span>
         </Button>
-        <Button
-          className="mt-6 hidden rounded-full p-3 md:block"
-          variant="outline"
-        >
+        <Button className="mt-6 rounded-full p-3" variant="outline">
           <Send className="h-4 w-4" />
           <span className="sr-only">Open send modal</span>
         </Button>
