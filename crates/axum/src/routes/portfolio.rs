@@ -50,6 +50,7 @@ pub(crate) enum PortfolioError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Portfolio {
+    balance: f64,
     balance_change_24h: f64,
     balance_change_24h_percentage: f64,
     balances: Vec<PortfolioBalanceDate>,
@@ -142,6 +143,9 @@ async fn v1_portfolio_get_handler(
         .await?;
     info!("past_portfolio: {:?}", past_portfolio);
 
+    // Get the balance from the result array.
+    let balance = if !latest_portfolio.is_empty() { latest_portfolio[0].balance } else { 0.0 };
+
     // Get the 24h price change from the result array.
     let balance_change_24h = if past_portfolio.len() > 1 {
         latest_portfolio[0].balance - past_portfolio[0].balance
@@ -164,8 +168,12 @@ async fn v1_portfolio_get_handler(
         portfolio_dates.push(past_portfolio[i].clone().into());
     });
 
-    let portfolio =
-        Portfolio { balance_change_24h, balance_change_24h_percentage, balances: portfolio_dates };
+    let portfolio = Portfolio {
+        balance,
+        balance_change_24h,
+        balance_change_24h_percentage,
+        balances: portfolio_dates,
+    };
 
     Ok(Json::from(portfolio))
 }
