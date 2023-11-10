@@ -121,7 +121,7 @@ export const walletPortfolioSet = inngest.createFunction(
             ...balances.map(balance => ({
               address: balance.address!,
               chainId: balance.chainId,
-              name: balance.name,
+              name: balance.name!,
               symbol: balance.symbol!,
               decimals: balance.decimals!,
             })),
