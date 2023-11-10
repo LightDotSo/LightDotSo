@@ -549,16 +549,30 @@ model SupportRequest {
 }
 
 model ERC20 {
-  id       String          @id @default(cuid())
+  id       String  @id @default(cuid())
   symbol   String
   name     String?
   address  String
   chainId  BigInt
   decimals Int
+
   balances WalletBalance[]
+  prices   ERC20Price[]
 
   @@unique([address, chainId])
   @@map("ERC20")
+}
+
+model ERC20Price {
+  id        String   @id @default(cuid())
+  price     Float
+  timestamp DateTime @default(now())
+
+  erc20   ERC20  @relation(fields: [erc20Id], references: [id])
+  erc20Id String
+
+  @@index([erc20Id])
+  @@map("ERC20Price")
 }
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
@@ -585,7 +599,6 @@ model WalletBalance {
   chainId    BigInt
   amount     BigInt?
   stable     Boolean?
-  price      Float?
   timestamp  DateTime @default(now())
   isLatest   Boolean  @default(false)
 
