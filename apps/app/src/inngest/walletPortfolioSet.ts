@@ -139,27 +139,37 @@ export const walletPortfolioSet = inngest.createFunction(
         });
 
         // Map the balances to the tokens
-        const token_balances = balances.map(balance => {
-          const token = tokens.find(
-            token =>
-              token.address === balance.address &&
-              token.chainId === BigInt(balance.chainId),
-          );
+        const token_balances = balances
+          .map(balance => {
+            const token = tokens.find(
+              token =>
+                token.address === balance.address &&
+                token.chainId === BigInt(balance.chainId),
+            );
 
-          return {
-            ...balance,
-            tokenId: token!.id,
-          };
-        });
+            // If the token is not found, return null
+            if (!token) {
+              return null;
+            }
+
+            return {
+              ...balance,
+              tokenId: token.id,
+            };
+          })
+          // Filter out null values
+          .filter(balance => balance !== null)
+          // Filter out ones that don't have `address`
+          .filter(balance => balance!.address !== undefined);
 
         // Create token prices
         await prisma.tokenPrice.createMany({
           data: [
             ...token_balances.map(balance => ({
-              tokenAddress: balance.address!,
-              chainId: balance.chainId,
-              price: balance.price,
-              tokenId: balance.tokenId,
+              tokenAddress: balance!.address,
+              chainId: balance!.chainId,
+              price: balance!.price,
+              tokenId: balance!.tokenId,
             })),
           ],
           skipDuplicates: true,
@@ -200,11 +210,11 @@ export const walletPortfolioSet = inngest.createFunction(
             data: {
               ...token_balances.map(balance => ({
                 walletAddress: wallet!.address,
-                chainId: balance.chainId,
-                balanceUSD: balance.balanceUSD,
-                amount: balance.amount,
-                tokenId: balance.tokenId,
-                stable: balance.stable,
+                chainId: balance!.chainId,
+                balanceUSD: balance!.balanceUSD,
+                amount: balance!.amount,
+                tokenId: balance!.tokenId,
+                stable: balance!.stable,
                 isLatest: true,
               })),
             },
