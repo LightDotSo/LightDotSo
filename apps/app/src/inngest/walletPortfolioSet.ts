@@ -24,7 +24,7 @@ export const walletPortfolioSet = inngest.createFunction(
     id: "wallet-portfolio-set",
     debounce: {
       key: "event.data.address",
-      period: "3m",
+      period: "30s",
     },
     rateLimit: {
       key: "event.data.address",
