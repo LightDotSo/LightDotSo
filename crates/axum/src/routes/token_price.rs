@@ -24,8 +24,9 @@ use axum::{
     Json, Router,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::{token, token_price};
+use lightdotso_prisma::token;
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::{raw, PrismaValue};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -62,24 +63,35 @@ pub(crate) enum TokenPriceError {
     NotFound(String),
 }
 
-/// Item to do.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct TokenPrice {
+#[derive(Clone, Debug, Deserialize)]
+struct TokenPriceQueryReturnType {
+    date: prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
     price: f64,
 }
 
-// Implement From<token_price::Data> for Token.
-impl From<token_price::Data> for TokenPrice {
-    fn from(token_price: token_price::Data) -> Self {
-        Self { price: token_price.price }
+/// Item to do.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct TokenPrice {
+    price_change_24h: f64,
+    prices: Vec<TokenPriceDate>,
+}
+
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct TokenPriceDate {
+    price: f64,
+    date: prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
+}
+
+// Implement FromTokenPriceQueryReturnType> for Token.
+impl From<TokenPriceQueryReturnType> for TokenPriceDate {
+    fn from(token_price_query: TokenPriceQueryReturnType) -> Self {
+        Self { price: token_price_query.price, date: token_price_query.date }
     }
 }
 
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/token_price/get", get(v1_token_price_get_handler))
-        .route("/token_price/list", get(v1_token_price_list_handler))
+    Router::new().route("/token_price/get", get(v1_token_price_get_handler))
 }
 
 /// Get a token_price
@@ -90,7 +102,7 @@ pub(crate) fn router() -> Router<AppState> {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Token returned successfully", body = Vec<TokenPrice>),
+            (status = 200, description = "Token returned successfully", body = TokenPrice),
             (status = 404, description = "Token not found", body = TokenError),
         )
     )]
@@ -98,7 +110,7 @@ pub(crate) fn router() -> Router<AppState> {
 async fn v1_token_price_get_handler(
     get: Query<GetQuery>,
     State(client): State<AppState>,
-) -> AppJsonResult<Vec<TokenPrice>> {
+) -> AppJsonResult<TokenPrice> {
     // Get the get query.
     let Query(query) = get;
 
@@ -119,68 +131,29 @@ async fn v1_token_price_get_handler(
     // If the token is not found, return a 404.
     let token = token.ok_or(AppError::NotFound)?;
 
-    // Get the token_price from the database.
-    let token_price = client
-        .client
-        .unwrap()
-        .token_price()
-        .find_many(vec![token_price::token_id::equals(token.id)])
-        .exec()
-        .await?;
-
-    // Map the token_price to a TokenPrice.
-    let token_price: Vec<TokenPrice> = token_price.into_iter().map(TokenPrice::from).collect();
-
-    Ok(Json::from(token_price))
-}
-
-/// Returns a list of tokens.
-#[utoipa::path(
-        get,
-        path = "/token_price/list",
-        params(
-            ListQuery
-        ),
-        responses(
-            (status = 200, description = "Tokens returned successfully", body = [Token]),
-            (status = 500, description = "Token bad request", body = TokenError),
-        )
-    )]
-#[autometrics]
-async fn v1_token_price_list_handler(
-    list: Query<ListQuery>,
-    State(client): State<AppState>,
-) -> AppJsonResult<Vec<TokenPrice>> {
-    // Get the pagination query.
-    let Query(pagination) = list;
-
-    let parsed_query_address: H160 = pagination.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
-
     // Get the tokens from the database.
-    let token = client
+    let result: Vec<TokenPriceQueryReturnType> = client
         .clone()
         .client
         .unwrap()
-        .token()
-        .find_unique(token::address_chain_id(checksum_address, pagination.chain_id))
+        ._query_raw(raw!(
+            "SELECT AVG(price) as price, DATE(timestamp) as date
+            FROM TokenPrice
+            WHERE tokenId = {}
+            GROUP BY DATE(timestamp)
+            ORDER BY DATE(timestamp) DESC",
+            PrismaValue::String(token.id)
+        ))
         .exec()
         .await?;
+    info!("result: {:?}", result);
 
-    // If the token is not found, return a 404.
-    let token = token.ok_or(AppError::NotFound)?;
+    // Get the 24h price change from the result array.
+    let price_change_24h = if result.len() > 1 { result[0].price - result[1].price } else { 0.0 };
 
-    // Get the token_price from the database.
-    let token_price = client
-        .client
-        .unwrap()
-        .token_price()
-        .find_many(vec![token_price::token_id::equals(token.id)])
-        .exec()
-        .await?;
-
-    // Map the token_price to a TokenPrice.
-    let token_price: Vec<TokenPrice> = token_price.into_iter().map(TokenPrice::from).collect();
+    // Construct the token_price.
+    let token_price =
+        TokenPrice { price_change_24h, prices: result.into_iter().map(|x| x.into()).collect() };
 
     Ok(Json::from(token_price))
 }
