@@ -22,15 +22,15 @@ import { getAddress } from "viem";
 export const walletPortfolioSet = inngest.createFunction(
   {
     id: "wallet-portfolio-set",
-    // debounce: {
-    //   key: "event.data.address",
-    //   period: "3m",
-    // },
-    // rateLimit: {
-    //   key: "event.data.address",
-    //   limit: 1,
-    //   period: "1m",
-    // },
+    debounce: {
+      key: "event.data.address",
+      period: "3m",
+    },
+    rateLimit: {
+      key: "event.data.address",
+      limit: 1,
+      period: "1m",
+    },
   },
   { event: "wallet/portfolio.set" },
   async ({ event, step, prisma }) => {
