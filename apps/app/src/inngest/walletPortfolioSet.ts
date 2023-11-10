@@ -202,7 +202,6 @@ export const walletPortfolioSet = inngest.createFunction(
               isLatest: false,
             },
           }),
-          // Create the token balances
           prisma.walletBalance.createMany({
             data: token_balances.map(balance => ({
               walletAddress: wallet!.address,
