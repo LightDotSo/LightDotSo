@@ -67,6 +67,8 @@ pub(crate) struct Token {
     name: Option<String>,
     symbol: String,
     decimals: i32,
+    amount: i64,
+    balance_usd: f64,
 }
 
 // Implement From<token::Data> for Token.
@@ -77,6 +79,22 @@ impl From<token::Data> for Token {
             name: token.name,
             symbol: token.symbol,
             decimals: token.decimals,
+            amount: 0,
+            balance_usd: 0.0,
+        }
+    }
+}
+
+// Implement From<wallet_balance:Data> for Token.
+impl From<wallet_balance::Data> for Token {
+    fn from(balance: wallet_balance::Data) -> Self {
+        Self {
+            address: balance.token.clone().unwrap().unwrap().address,
+            name: balance.token.clone().unwrap().unwrap().name,
+            symbol: balance.token.clone().unwrap().unwrap().symbol,
+            decimals: balance.token.clone().unwrap().unwrap().decimals,
+            amount: balance.amount.unwrap(),
+            balance_usd: balance.balance_usd,
         }
     }
 }
@@ -147,7 +165,10 @@ async fn v1_token_list_handler(
     list: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Token>> {
-    let parsed_query_address: H160 = list.address.parse()?;
+    // Get the pagination query.
+    let Query(pagination) = list;
+
+    let parsed_query_address: H160 = pagination.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the tokens from the database.
@@ -161,17 +182,13 @@ async fn v1_token_list_handler(
             wallet_balance::chain_id::not(0),
         ])
         .with(wallet_balance::token::fetch())
+        .skip(pagination.offset.unwrap_or(0))
+        .take(pagination.limit.unwrap_or(10))
         .exec()
         .await?;
 
     // Get all of the tokens in the balances array.
-    let tokens: Vec<Token> = balances
-        .into_iter()
-        .map(|balance| {
-            let token = *balance.token.unwrap().unwrap();
-            token.into()
-        })
-        .collect();
+    let tokens: Vec<Token> = balances.into_iter().map(|balance| balance.into()).collect();
 
     Ok(Json::from(tokens))
 }
