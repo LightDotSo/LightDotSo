@@ -552,7 +552,6 @@ export function ConfigurationForm() {
                   }}
                 >
                   <UserPlus2 className="mr-2 h-5 w-5" />
-
                   {type === "personal" && "Add Backup Key"}
                   {type !== "personal" && "Add New Owner"}
                 </Button>

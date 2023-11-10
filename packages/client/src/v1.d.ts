@@ -328,8 +328,16 @@ export interface components {
       /** @description Paymaster not found by id. */
       NotFound: string;
     }]>;
-    /** @description Portfolio to do. */
+    /** @description Item to do. */
     Portfolio: {
+      /** Format: double */
+      balance_change_24h: number;
+      /** Format: double */
+      balance_change_24h_percentage: number;
+      balances: components["schemas"]["PortfolioBalanceDate"][];
+    };
+    /** @description Portfolio to do. */
+    PortfolioBalanceDate: {
       /** Format: double */
       balance: number;
       date: string;
@@ -399,10 +407,12 @@ export interface components {
     TokenPrice: {
       /** Format: double */
       price_change_24h: number;
+      /** Format: double */
+      price_change_24h_percentage: number;
       prices: components["schemas"]["TokenPriceDate"][];
     };
     TokenPriceDate: {
-      date: components["schemas"]["prisma_client_rust.chrono.DateTime"];
+      date: string;
       /** Format: double */
       price: number;
     };
@@ -839,7 +849,7 @@ export interface operations {
       /** @description Portfolio returned successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["Portfolio"][];
+          "application/json": components["schemas"]["Portfolio"];
         };
       };
       /** @description Portfolio not found */

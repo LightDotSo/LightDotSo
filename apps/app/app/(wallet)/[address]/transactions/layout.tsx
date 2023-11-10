@@ -15,7 +15,7 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
-import { TransactionsButtonLayout } from "@/app/(wallet)/[address]/transactions/button-layout";
+import { LinkButtonGroup } from "@/components/link-button-group";
 import { TITLES } from "@/const/titles";
 
 export const metadata: Metadata = {
@@ -56,7 +56,7 @@ export default function TransactionsLayout({
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
           <div className="mx-auto max-w-5xl flex-1 space-y-8">
-            <TransactionsButtonLayout items={transactionsNavItems} />
+            <LinkButtonGroup items={transactionsNavItems} />
             {children}
           </div>
         </div>

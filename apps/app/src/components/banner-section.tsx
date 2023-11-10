@@ -44,7 +44,7 @@ export function BannerSection({
         </div>
         <Separator className="my-0" />
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-7xl flex-1 px-4 lg:px-8">
+          <div className="mx-auto max-w-7xl flex-1 px-2 md:px-4 lg:px-0">
             {children}
           </div>
         </div>

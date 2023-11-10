@@ -59,6 +59,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(paymaster::Paymaster),
         schemas(paymaster::PaymasterError),
         schemas(portfolio::Portfolio),
+        schemas(portfolio::PortfolioBalanceDate),
         schemas(portfolio::PortfolioError),
         schemas(signature::Signature),
         schemas(signature::SignatureError),

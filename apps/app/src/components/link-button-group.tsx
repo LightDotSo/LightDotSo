@@ -30,9 +30,7 @@ interface TransactionsButtonLayoutProps
   }[];
 }
 
-export function TransactionsButtonLayout({
-  items,
-}: TransactionsButtonLayoutProps) {
+export function LinkButtonGroup({ items }: TransactionsButtonLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -97,7 +95,6 @@ export function TransactionsButtonLayout({
                   item.id === id
                     ? "bg-accent text-primary font-semibold hover:bg-accent"
                     : "text-muted-foreground",
-                  // Add padding inside the button
                 )}
                 aria-current={item.id === id ? "page" : undefined}
               >

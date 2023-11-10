@@ -59,7 +59,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
               <main>
                 <div className="flex flex-col">
                   <div className="border-b lg:py-2">
-                    <div className="flex h-16 items-center px-4 lg:px-8">
+                    <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
                       <div className="flex items-center">
                         <RootLogo />
                         <span className="ml-2 mr-1 text-primary/60">/</span>
@@ -73,7 +73,7 @@ export default function Root({ children }: { children: React.ReactNode }) {
                         <ConnectButton />
                       </div>
                     </div>
-                    <MainNav className="h-10 items-center px-4 lg:px-8" />
+                    <MainNav className="h-10 items-center px-2 md:px-4 lg:px-8" />
                   </div>
                   {children}
                 </div>

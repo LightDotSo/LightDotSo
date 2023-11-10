@@ -58,7 +58,7 @@ export function PortfolioChart({ address }: { address: Address }) {
             <Title>Portfolio Value</Title>
             <AreaChart
               className="mt-4 h-72 w-full"
-              data={data}
+              data={data.balances}
               index="date"
               categories={["balance"]}
               showLegend={false}
@@ -69,7 +69,7 @@ export function PortfolioChart({ address }: { address: Address }) {
       <div className="mt-8 sm:hidden">
         <AreaChart
           categories={["balance"]}
-          data={data}
+          data={data.balances}
           index="date"
           startEndOnly={true}
           showGradient={false}
