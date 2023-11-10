@@ -50,7 +50,8 @@ pub(crate) enum PortfolioError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Portfolio {
-    price_change_24h: f64,
+    balance_change_24h: f64,
+    balance_change_24h_percentage: f64,
     balances: Vec<PortfolioBalanceDate>,
 }
 
@@ -148,6 +149,14 @@ async fn v1_portfolio_get_handler(
         0.0
     };
 
+    // Calculate 24h price change percentage
+    let balance_change_24h_percentage =
+        if past_portfolio.len() > 1 && past_portfolio[0].balance != 0.0 {
+            (balance_change_24h / past_portfolio[0].balance) * 100.0
+        } else {
+            0.0
+        };
+
     // Combine the latest portfolio(1) and past portfolio(n) into one vector.
     let mut portfolio_dates: Vec<PortfolioBalanceDate> = Vec::new();
     portfolio_dates.push(latest_portfolio[0].clone().into());
@@ -155,7 +164,8 @@ async fn v1_portfolio_get_handler(
         portfolio_dates.push(past_portfolio[i].clone().into());
     });
 
-    let portfolio = Portfolio { price_change_24h: balance_change_24h, balances: portfolio_dates };
+    let portfolio =
+        Portfolio { balance_change_24h, balance_change_24h_percentage, balances: portfolio_dates };
 
     Ok(Json::from(portfolio))
 }

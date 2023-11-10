@@ -330,9 +330,11 @@ export interface components {
     }]>;
     /** @description Item to do. */
     Portfolio: {
-      balances: components["schemas"]["PortfolioBalanceDate"][];
       /** Format: double */
-      price_change_24h: number;
+      balance_change_24h: number;
+      /** Format: double */
+      balance_change_24h_percentage: number;
+      balances: components["schemas"]["PortfolioBalanceDate"][];
     };
     /** @description Portfolio to do. */
     PortfolioBalanceDate: {
@@ -405,6 +407,8 @@ export interface components {
     TokenPrice: {
       /** Format: double */
       price_change_24h: number;
+      /** Format: double */
+      price_change_24h_percentage: number;
       prices: components["schemas"]["TokenPriceDate"][];
     };
     TokenPriceDate: {

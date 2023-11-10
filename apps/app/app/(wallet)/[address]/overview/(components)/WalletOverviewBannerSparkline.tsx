@@ -63,18 +63,21 @@ export function WalletOverviewBannerSparkline({
         </span>
         <span
           className={cn(
-            "px-2 py-1 text-xs font-medium rounded text-white",
-            portfolio.price_change_24h > 0 ? "bg-emerald-500" : "bg-red-500",
+            "px-2 py-1 text-sm font-medium rounded text-white",
+            portfolio.balance_change_24h > 0 ? "bg-emerald-500" : "bg-red-500",
           )}
         >
-          {(portfolio.price_change_24h * 100).toFixed(2)}%
+          {portfolio.balance_change_24h_percentage.toFixed(2)}%&nbsp;
+          <span className="text-xs">
+            (${portfolio.balance_change_24h.toFixed(3)})
+          </span>
         </span>
       </div>
       <SparkAreaChart
         data={portfolio?.balances}
         categories={["balance"]}
         index="date"
-        colors={[portfolio.price_change_24h > 0 ? "emerald" : "red"]}
+        colors={[portfolio.balance_change_24h > 0 ? "emerald" : "red"]}
         className="h-8 w-14"
         // @ts-expect-error
         showAnimation

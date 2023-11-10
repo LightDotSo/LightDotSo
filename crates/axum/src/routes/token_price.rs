@@ -73,6 +73,7 @@ struct TokenPriceQueryReturnType {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct TokenPrice {
     price_change_24h: f64,
+    price_change_24h_percentage: f64,
     prices: Vec<TokenPriceDate>,
 }
 
@@ -151,9 +152,19 @@ async fn v1_token_price_get_handler(
     // Get the 24h price change from the result array.
     let price_change_24h = if result.len() > 1 { result[0].price - result[1].price } else { 0.0 };
 
+    // Calculate 24h price change percentage
+    let price_change_24h_percentage = if result.len() > 1 && result[1].price != 0.0 {
+        (price_change_24h / result[1].price) * 100.0
+    } else {
+        0.0
+    };
+
     // Construct the token_price.
-    let token_price =
-        TokenPrice { price_change_24h, prices: result.into_iter().map(|x| x.into()).collect() };
+    let token_price = TokenPrice {
+        price_change_24h,
+        price_change_24h_percentage,
+        prices: result.into_iter().map(|x| x.into()).collect(),
+    };
 
     Ok(Json::from(token_price))
 }
