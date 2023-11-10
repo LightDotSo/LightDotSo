@@ -115,8 +115,8 @@ export const walletPortfolioSet = inngest.createFunction(
           });
         });
 
-        // Create ERC20 tokens if they don't exist
-        await prisma.eRC20.createMany({
+        // Create tokens if they don't exist
+        await prisma.token.createMany({
           data: [
             ...balances.map(balance => ({
               address: balance.address!,
@@ -129,8 +129,8 @@ export const walletPortfolioSet = inngest.createFunction(
           skipDuplicates: true,
         });
 
-        // Get the corresponding ERC20 tokens
-        const erc20Tokens = await prisma.eRC20.findMany({
+        // Get the corresponding TOKEN tokens
+        const tokens = await prisma.token.findMany({
           where: {
             address: {
               in: balances.map(balance => balance.address!),
@@ -138,9 +138,9 @@ export const walletPortfolioSet = inngest.createFunction(
           },
         });
 
-        // Map the balances to the ERC20 tokens
+        // Map the balances to the tokens
         const token_balances = balances.map(balance => {
-          const token = erc20Tokens.find(
+          const token = tokens.find(
             token =>
               token.address === balance.address &&
               token.chainId === BigInt(balance.chainId),
@@ -148,8 +148,20 @@ export const walletPortfolioSet = inngest.createFunction(
 
           return {
             ...balance,
-            erc20Id: token!.id,
+            tokenId: token!.id,
           };
+        });
+
+        await prisma.tokenPrice.createMany({
+          data: [
+            ...token_balances.map(balance => ({
+              tokenAddress: balance.address!,
+              chainId: balance.chainId,
+              price: balance.price,
+              tokenId: balance.tokenId,
+            })),
+          ],
+          skipDuplicates: true,
         });
 
         // First, create the portfolio transaction
@@ -190,7 +202,7 @@ export const walletPortfolioSet = inngest.createFunction(
                 chainId: balance.chainId,
                 balanceUSD: balance.balanceUSD,
                 amount: balance.amount,
-                erc20Id: balance.erc20Id,
+                tokenId: balance.tokenId,
                 stable: balance.stable,
                 isLatest: true,
               })),
