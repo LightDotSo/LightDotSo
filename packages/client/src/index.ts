@@ -266,6 +266,30 @@ export const createUserOperation = async ({
   });
 };
 
+export const getPortfolio = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/portfolio/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getUser = async (
   {
     params,
@@ -330,6 +354,82 @@ export const getSignatureUserOperation = async (
     client.GET("/user_operation/signature", {
       // @ts-expect-error
       next: { revalidate: 300 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const getToken = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string; chain_id: number };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/token/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const getTokens = async (
+  {
+    params,
+  }: {
+    params: {
+      query: {
+        offset?: number | null | undefined;
+        limit?: number | null | undefined;
+        address: string;
+      };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/token/list", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const getTokenPrice = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string; chain_id: number };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/token_price/get", {
+      // @ts-expect-error
+      next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),

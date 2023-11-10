@@ -16,14 +16,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { handler } from "@/handlers/paths/[address]";
+import { handler as pageHandler } from "@/handlers/paths/[address]/page";
 import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { inngest } from "@/inngest/client";
-import { PrismaClient } from "@lightdotso/prisma";
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/(components)/InvokePortfolioButton";
-import { getAddress, type Address } from "viem";
-import { serializeWalletBalance } from "@/utils/walletBalance";
+import { type Address } from "viem";
 import { PortfolioChart } from "@/app/(wallet)/[address]/(components)/PortfolioChart";
+import { Suspense } from "react";
 
 export default async function Page({
   params,
@@ -35,6 +35,8 @@ export default async function Page({
   // ---------------------------------------------------------------------------
 
   await handler(params);
+
+  const { tokens, portfolio } = await pageHandler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -49,82 +51,23 @@ export default async function Page({
     },
   });
 
-  const client = new PrismaClient();
-
-  // For each erc20Id, find the most recent WalletBalance
-  const balancesPromise = client.walletBalance.findMany({
-    where: {
-      walletAddress: getAddress(params.address),
-      chainId: {
-        not: 0,
-      },
-      isLatest: true,
-    },
-    include: {
-      token: true,
-    },
-  });
-
-  // Find the most recent WalletBalance
-  const latestPortfolioPromise = client.$queryRaw<
-    [
-      {
-        latest_balance: number;
-        latest_balance_timestamp: Date;
-      },
-    ]
-  >`
-    SELECT balanceUSD as latest_balance, timestamp as latest_balance_timestamp
-    FROM WalletBalance
-    WHERE walletAddress = ${getAddress(params.address)} AND chainId = 0
-    ORDER BY timestamp DESC
-    LIMIT 1
-  `;
-
-  // Find the average balance for each day
-  const pastPortfolioPromise = client.$queryRaw<
-    [
-      {
-        average_balance: number;
-        date: Date;
-      },
-    ]
-  >`
-    SELECT DATE(timestamp) as date, AVG(balanceUSD) as average_balance
-    FROM WalletBalance
-    WHERE walletAddress = ${getAddress(params.address)} AND chainId = 0
-    GROUP BY DATE(timestamp)
-    ORDER BY DATE(timestamp) DESC
-  `;
-
-  const [balances, latestPortfolio, pastPortfolio] = await Promise.all([
-    balancesPromise,
-    latestPortfolioPromise,
-    pastPortfolioPromise,
-  ]);
-
-  // Combine the latestPortfolio and pastPortfolio into a single array
-  const portfolio = pastPortfolio.map(item => ({
-    date: item.date,
-    balance: item.average_balance,
-  }));
-  portfolio.unshift({
-    date: latestPortfolio[0].latest_balance_timestamp,
-    balance: latestPortfolio[0].latest_balance,
-  });
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  queryClient.setQueryData(["portfolio", params.address], portfolio);
+  queryClient.setQueryData(["tokens", params.address], tokens);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
         <div className="mx-auto max-w-5xl flex-1 space-y-8">
-          <PortfolioChart data={JSON.stringify(portfolio)} />
+          <Suspense>
+            <PortfolioChart address={params.address as Address} />
+          </Suspense>
           <div>
             <pre>
-              <code>{serializeWalletBalance(balances)}</code>
+              <code>{JSON.stringify(tokens, null, 2)}</code>
             </pre>
             <InvokePortfolioButton address={params.address as Address} />
           </div>

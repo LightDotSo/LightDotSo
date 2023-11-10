@@ -15,10 +15,40 @@
 
 "use client";
 
+import { getPortfolio } from "@lightdotso/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { AreaChart, Card, Title } from "@tremor/react";
+import type { Address } from "viem";
 
-export function PortfolioChart({ data }: { data: string }) {
-  const portfolio: { balance: number; date: Date }[] = JSON.parse(data);
+export function PortfolioChart({ address }: { address: Address }) {
+  const { data } = useSuspenseQuery({
+    queryKey: ["portfolio", address],
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getPortfolio({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => null,
+      );
+    },
+  });
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <div className="justify-between md:flex">
@@ -28,7 +58,7 @@ export function PortfolioChart({ data }: { data: string }) {
             <Title>Portfolio Value</Title>
             <AreaChart
               className="mt-4 h-72 w-full"
-              data={portfolio}
+              data={data}
               index="date"
               categories={["balance"]}
               showLegend={false}
@@ -39,7 +69,7 @@ export function PortfolioChart({ data }: { data: string }) {
       <div className="mt-8 sm:hidden">
         <AreaChart
           categories={["balance"]}
-          data={portfolio}
+          data={data}
           index="date"
           startEndOnly={true}
           showGradient={false}
