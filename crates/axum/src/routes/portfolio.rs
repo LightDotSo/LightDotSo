@@ -55,9 +55,16 @@ pub(crate) struct Portfolio {
 }
 
 #[derive(Clone, Debug, Deserialize)]
-struct LatestPortfolioQueryReturnType {
+struct PortfolioQueryReturnType {
     balance: f64,
     date: prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
+}
+
+// Implement From<PortfolioQueryReturnType> for Portfolio.
+impl From<PortfolioQueryReturnType> for Portfolio {
+    fn from(port: PortfolioQueryReturnType) -> Self {
+        Self { balance: port.balance, date: port.date.to_rfc3339() }
+    }
 }
 
 #[autometrics]
@@ -88,7 +95,8 @@ async fn v1_portfolio_get_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
-    let latest_portfolio: Vec<LatestPortfolioQueryReturnType> = client
+    // Get the latest portfolio.
+    let latest_portfolio: Vec<PortfolioQueryReturnType> = client
         .clone()
         .client
         .unwrap()
@@ -98,7 +106,7 @@ async fn v1_portfolio_get_handler(
             WHERE walletAddress = {} AND chainId = 0
             ORDER BY timestamp DESC
             LIMIT 1",
-            PrismaValue::String(checksum_address)
+            PrismaValue::String(checksum_address.clone())
         ))
         .exec()
         .await?;
@@ -109,10 +117,29 @@ async fn v1_portfolio_get_handler(
         return Err(AppError::NotFound);
     }
 
-    let portfolio = Portfolio {
-        balance: latest_portfolio[0].balance,
-        date: latest_portfolio[0].date.to_rfc3339(),
-    };
+    // Get the past portfolio.
+    let past_portfolio: Vec<PortfolioQueryReturnType> = client
+        .clone()
+        .client
+        .unwrap()
+        ._query_raw(raw!(
+            "SELECT AVG(balanceUSD) as balance, DATE(timestamp) as date
+            FROM WalletBalance
+            WHERE walletAddress = {} AND chainId = 0
+            GROUP BY DATE(timestamp)
+            ORDER BY DATE(timestamp) DESC",
+            PrismaValue::String(checksum_address)
+        ))
+        .exec()
+        .await?;
+    info!("past_portfolio: {:?}", past_portfolio);
 
-    Ok(Json::from(vec![portfolio]))
+    // Combine the latest portfolio(1) and past portfolio(n) into one vector.
+    let mut portfolio: Vec<Portfolio> = Vec::new();
+    portfolio.push(latest_portfolio[0].clone().into());
+    (0..past_portfolio.len()).for_each(|i| {
+        portfolio.push(past_portfolio[i].clone().into());
+    });
+
+    Ok(Json::from(portfolio))
 }
