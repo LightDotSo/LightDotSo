@@ -80,6 +80,13 @@ export interface paths {
      */
     get: operations["v1_paymaster_list_handler"];
   };
+  "/portfolio/get": {
+    /**
+     * Get a portfolio
+     * @description Get a portfolio
+     */
+    get: operations["v1_portfolio_get_handler"];
+  };
   "/signature/create": {
     /**
      * Create a signature
@@ -107,6 +114,27 @@ export interface paths {
      * @description Create a support_request
      */
     post: operations["v1_support_request_post_handler"];
+  };
+  "/token/get": {
+    /**
+     * Get a token
+     * @description Get a token
+     */
+    get: operations["v1_token_get_handler"];
+  };
+  "/token/list": {
+    /**
+     * Returns a list of tokens.
+     * @description Returns a list of tokens.
+     */
+    get: operations["v1_token_list_handler"];
+  };
+  "/token_price/get": {
+    /**
+     * Get a token_price
+     * @description Get a token_price
+     */
+    get: operations["v1_token_price_get_handler"];
   };
   "/transaction/get": {
     /**
@@ -300,6 +328,19 @@ export interface components {
       /** @description Paymaster not found by id. */
       NotFound: string;
     }]>;
+    /** @description Portfolio to do. */
+    Portfolio: {
+      /** Format: double */
+      balance: number;
+      date: string;
+    };
+    /** @description Portfolio operation errors */
+    PortfolioError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Portfolio already exists conflict. */
+      Conflict: string;
+    }]>;
     /** @description Item to do. */
     Signature: {
       owner_id: string;
@@ -335,6 +376,43 @@ export interface components {
     SupportRequestPostRequestParams: {
       support_request: components["schemas"]["SupportRequest"];
     };
+    /** @description Item to do. */
+    Token: {
+      address: string;
+      /** Format: int64 */
+      amount: number;
+      /** Format: double */
+      balance_usd: number;
+      /** Format: int32 */
+      decimals: number;
+      name?: string | null;
+      symbol: string;
+    };
+    /** @description Token operation errors */
+    TokenError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Token not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to do. */
+    TokenPrice: {
+      /** Format: double */
+      price_change_24h: number;
+      prices: components["schemas"]["TokenPriceDate"][];
+    };
+    TokenPriceDate: {
+      date: components["schemas"]["prisma_client_rust.chrono.DateTime"];
+      /** Format: double */
+      price: number;
+    };
+    /** @description TokenPrice operation errors */
+    TokenPriceError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description TokenPrice not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Item to do. */
     Transaction: {
       hash: string;
@@ -747,6 +825,32 @@ export interface operations {
     };
   };
   /**
+   * Get a portfolio
+   * @description Get a portfolio
+   */
+  v1_portfolio_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the portfolio. */
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Portfolio returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Portfolio"][];
+        };
+      };
+      /** @description Portfolio not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["PortfolioError"];
+        };
+      };
+    };
+  };
+  /**
    * Create a signature
    * @description Create a signature
    */
@@ -867,6 +971,89 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a token
+   * @description Get a token
+   */
+  v1_token_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the token. */
+        address: string;
+        /** @description The chain id of the token. */
+        chain_id: number;
+      };
+    };
+    responses: {
+      /** @description Token returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Token"];
+        };
+      };
+      /** @description Token not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["TokenError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of tokens.
+   * @description Returns a list of tokens.
+   */
+  v1_token_list_handler: {
+    parameters: {
+      query: {
+        offset?: number | null;
+        limit?: number | null;
+        address: string;
+      };
+    };
+    responses: {
+      /** @description Tokens returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Token"][];
+        };
+      };
+      /** @description Token bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["TokenError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a token_price
+   * @description Get a token_price
+   */
+  v1_token_price_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the token_price. */
+        address: string;
+        /** @description The chain id of the token_price. */
+        chain_id: number;
+      };
+    };
+    responses: {
+      /** @description Token returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TokenPrice"];
+        };
+      };
+      /** @description Token not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["TokenError"];
         };
       };
     };
