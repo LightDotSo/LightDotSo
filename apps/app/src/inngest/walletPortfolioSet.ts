@@ -22,15 +22,15 @@ import { getAddress } from "viem";
 export const walletPortfolioSet = inngest.createFunction(
   {
     id: "wallet-portfolio-set",
-    debounce: {
-      key: "event.data.address",
-      period: "30s",
-    },
-    rateLimit: {
-      key: "event.data.address",
-      limit: 1,
-      period: "1m",
-    },
+    // debounce: {
+    //   key: "event.data.address",
+    //   period: "30s",
+    // },
+    // rateLimit: {
+    //   key: "event.data.address",
+    //   limit: 1,
+    //   period: "1m",
+    // },
   },
   { event: "wallet/portfolio.set" },
   async ({ event, step, prisma }) => {
@@ -117,15 +117,13 @@ export const walletPortfolioSet = inngest.createFunction(
 
         // Create tokens if they don't exist
         await prisma.token.createMany({
-          data: [
-            ...balances.map(balance => ({
-              address: balance.address!,
-              chainId: balance.chainId,
-              name: balance.name!,
-              symbol: balance.symbol!,
-              decimals: balance.decimals!,
-            })),
-          ],
+          data: balances.map(balance => ({
+            address: balance.address!,
+            chainId: balance.chainId,
+            name: balance.name!,
+            symbol: balance.symbol!,
+            decimals: balance.decimals!,
+          })),
           skipDuplicates: true,
         });
 
@@ -164,12 +162,10 @@ export const walletPortfolioSet = inngest.createFunction(
 
         // Create token prices
         await prisma.tokenPrice.createMany({
-          data: [
-            ...token_balances.map(balance => ({
-              price: balance!.price,
-              tokenId: balance!.tokenId,
-            })),
-          ],
+          data: token_balances.map(balance => ({
+            price: balance!.price,
+            tokenId: balance!.tokenId,
+          })),
           skipDuplicates: true,
         });
 
