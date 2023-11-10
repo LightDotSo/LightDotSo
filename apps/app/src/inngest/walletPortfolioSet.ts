@@ -189,7 +189,7 @@ export const walletPortfolioSet = inngest.createFunction(
           }),
         ]);
 
-        // Update the balances of the tokens
+        // Create the balances of the tokens
         await prisma.$transaction([
           prisma.walletBalance.updateMany({
             where: {
