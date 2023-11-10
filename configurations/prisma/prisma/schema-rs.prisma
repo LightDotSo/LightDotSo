@@ -552,7 +552,6 @@ model TokenPrice {
   tokenId String
 
   @@index([tokenId])
-  @@map("TokenPrice")
 }
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
@@ -594,4 +593,6 @@ model WalletBalance {
   // @@index([protocolId])
   @@index([tokenId])
   @@index([walletAddress])
+  @@index([timestamp])
+  @@index([chainId])
 }
