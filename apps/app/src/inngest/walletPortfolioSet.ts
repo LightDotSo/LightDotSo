@@ -137,7 +137,7 @@ export const walletPortfolioSet = inngest.createFunction(
         });
 
         // Map the balances to the tokens
-        const token_balances = balances
+        const tokenBalances = balances
           .map(balance => {
             const token = tokens.find(
               token =>
@@ -160,9 +160,32 @@ export const walletPortfolioSet = inngest.createFunction(
           // Filter out ones that don't have `address`
           .filter(balance => balance!.address !== undefined);
 
+        // Fetch the latest price for each token
+        const latestPrices = await prisma.tokenPrice.findMany({
+          where: {
+            tokenId: {
+              in: tokenBalances.map(balance => balance!.tokenId),
+            },
+          },
+          orderBy: {
+            timestamp: "desc",
+          },
+          take: 1,
+        });
+
+        // Filter balances to only those with a different price
+        const balancesToInsert = tokenBalances.filter(balance => {
+          const latestPrice = latestPrices.find(
+            price => price.tokenId === balance!.tokenId,
+          );
+
+          // If there's no latest price or the price is different, it will be inserted
+          return !latestPrice || latestPrice.price !== balance!.price;
+        });
+
         // Create token prices
         await prisma.tokenPrice.createMany({
-          data: token_balances.map(balance => ({
+          data: balancesToInsert.map(balance => ({
             price: balance!.price,
             tokenId: balance!.tokenId,
           })),
@@ -199,7 +222,7 @@ export const walletPortfolioSet = inngest.createFunction(
             },
           }),
           prisma.walletBalance.createMany({
-            data: token_balances.map(balance => ({
+            data: tokenBalances.map(balance => ({
               walletAddress: wallet!.address,
               chainId: balance!.chainId,
               balanceUSD: balance!.balanceUSD,
