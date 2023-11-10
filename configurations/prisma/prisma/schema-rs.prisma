@@ -529,7 +529,7 @@ model SupportRequest {
   @@index([walletAddress])
 }
 
-model ERC20 {
+model Token {
   id       String  @id @default(cuid())
   symbol   String
   name     String?
@@ -538,22 +538,21 @@ model ERC20 {
   decimals Int
 
   balances WalletBalance[]
-  prices   ERC20Price[]
+  prices   TokenPrice[]
 
   @@unique([address, chainId])
-  @@map("ERC20")
 }
 
-model ERC20Price {
+model TokenPrice {
   id        String   @id @default(cuid())
   price     Float
   timestamp DateTime @default(now())
 
-  erc20   ERC20  @relation(fields: [erc20Id], references: [id])
-  erc20Id String
+  token   Token  @relation(fields: [tokenId], references: [id])
+  tokenId String
 
-  @@index([erc20Id])
-  @@map("ERC20Price")
+  @@index([tokenId])
+  @@map("TokenPrice")
 }
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
@@ -583,8 +582,8 @@ model WalletBalance {
   timestamp  DateTime @default(now())
   isLatest   Boolean  @default(false)
 
-  erc20   ERC20?  @relation(fields: [erc20Id], references: [id])
-  erc20Id String?
+  token   Token?  @relation(fields: [tokenId], references: [id])
+  tokenId String?
 
   // protocol   Protocol? @relation(fields: [protocolId], references: [id])
   // protocolId String?
@@ -593,6 +592,6 @@ model WalletBalance {
   walletAddress String
 
   // @@index([protocolId])
-  @@index([erc20Id])
+  @@index([tokenId])
   @@index([walletAddress])
 }

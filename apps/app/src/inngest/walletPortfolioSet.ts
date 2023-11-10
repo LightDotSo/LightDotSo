@@ -190,7 +190,6 @@ export const walletPortfolioSet = inngest.createFunction(
                 chainId: balance.chainId,
                 balanceUSD: balance.balanceUSD,
                 amount: balance.amount,
-                price: balance.price,
                 erc20Id: balance.erc20Id,
                 stable: balance.stable,
                 isLatest: true,
