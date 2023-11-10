@@ -22,15 +22,15 @@ import { getAddress } from "viem";
 export const walletPortfolioSet = inngest.createFunction(
   {
     id: "wallet-portfolio-set",
-    debounce: {
-      key: "event.data.address",
-      period: "3m",
-    },
-    rateLimit: {
-      key: "event.data.address",
-      limit: 1,
-      period: "1m",
-    },
+    // debounce: {
+    //   key: "event.data.address",
+    //   period: "3m",
+    // },
+    // rateLimit: {
+    //   key: "event.data.address",
+    //   limit: 1,
+    //   period: "1m",
+    // },
   },
   { event: "wallet/portfolio.set" },
   async ({ event, step, prisma }) => {
@@ -166,8 +166,6 @@ export const walletPortfolioSet = inngest.createFunction(
         await prisma.tokenPrice.createMany({
           data: [
             ...token_balances.map(balance => ({
-              tokenAddress: balance!.address,
-              chainId: balance!.chainId,
               price: balance!.price,
               tokenId: balance!.tokenId,
             })),
@@ -191,7 +189,7 @@ export const walletPortfolioSet = inngest.createFunction(
           }),
         ]);
 
-        // Finally, create the balances
+        // Update the balances of the tokens
         await prisma.$transaction([
           prisma.walletBalance.updateMany({
             where: {
@@ -199,24 +197,22 @@ export const walletPortfolioSet = inngest.createFunction(
               chainId: {
                 not: 0,
               },
-              isLatest: true,
             },
             data: {
               isLatest: false,
             },
           }),
+          // Create the token balances
           prisma.walletBalance.createMany({
-            data: {
-              ...token_balances.map(balance => ({
-                walletAddress: wallet!.address,
-                chainId: balance!.chainId,
-                balanceUSD: balance!.balanceUSD,
-                amount: balance!.amount,
-                tokenId: balance!.tokenId,
-                stable: balance!.stable,
-                isLatest: true,
-              })),
-            },
+            data: token_balances.map(balance => ({
+              walletAddress: wallet!.address,
+              chainId: balance!.chainId,
+              balanceUSD: balance!.balanceUSD,
+              amount: balance!.amount,
+              tokenId: balance!.tokenId,
+              stable: balance!.stable,
+              isLatest: true,
+            })),
           }),
         ]);
       },
