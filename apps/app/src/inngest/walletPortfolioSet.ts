@@ -202,8 +202,6 @@ export const walletPortfolioSet = inngest.createFunction(
             },
             data: {
               isLatest: false,
-              balanceUSD: undefined,
-              chainId: undefined,
             },
           }),
           prisma.walletBalance.createMany({
