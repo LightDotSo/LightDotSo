@@ -117,15 +117,13 @@ export const walletPortfolioSet = inngest.createFunction(
 
         // Create tokens if they don't exist
         await prisma.token.createMany({
-          data: [
-            ...balances.map(balance => ({
-              address: balance.address!,
-              chainId: balance.chainId,
-              name: balance.name!,
-              symbol: balance.symbol!,
-              decimals: balance.decimals!,
-            })),
-          ],
+          data: balances.map(balance => ({
+            address: balance.address!,
+            chainId: balance.chainId,
+            name: balance.name!,
+            symbol: balance.symbol!,
+            decimals: balance.decimals!,
+          })),
           skipDuplicates: true,
         });
 
@@ -164,12 +162,10 @@ export const walletPortfolioSet = inngest.createFunction(
 
         // Create token prices
         await prisma.tokenPrice.createMany({
-          data: [
-            ...token_balances.map(balance => ({
-              price: balance!.price,
-              tokenId: balance!.tokenId,
-            })),
-          ],
+          data: token_balances.map(balance => ({
+            price: balance!.price,
+            tokenId: balance!.tokenId,
+          })),
           skipDuplicates: true,
         });
 
