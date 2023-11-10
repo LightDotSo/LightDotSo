@@ -410,6 +410,9 @@ importers:
       connectkit:
         specifier: ^1.5.3
         version: 1.5.3(@babel/core@7.23.3)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(viem@1.18.9)(wagmi@1.4.6)
+      copy-to-clipboard:
+        specifier: ^3.3.3
+        version: 3.3.3
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0
@@ -6766,7 +6769,7 @@ packages:
       lodash.clonedeep: 4.5.0
       semver: 6.3.1
       table: 6.8.1
-      undici: 5.26.3
+      undici: 5.27.2
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -14653,7 +14656,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
       es-array-method-boxes-properly: 1.0.0
       is-string: 1.0.7
@@ -26861,7 +26864,7 @@ packages:
     resolution: {integrity: sha512-exHJeq6kBKj58mqGyTQ9DFvrZC/eR6OwxzoM9YRoGBqrXYonaFyGiFMuc9VZrXf7DarreEwMpurG3dd+CNyW5w==}
     engines: {node: '>= 0.4'}
     dependencies:
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       function-bind: 1.1.2
       has-symbols: 1.0.3
       object-keys: 1.1.1
@@ -26906,9 +26909,9 @@ packages:
     dependencies:
       array.prototype.reduce: 1.0.5
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       es-abstract: 1.22.1
-      safe-array-concat: 1.0.0
+      safe-array-concat: 1.0.1
     dev: true
 
   /object.groupby@1.0.1:

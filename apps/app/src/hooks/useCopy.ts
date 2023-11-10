@@ -13,5 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { cn } from "./cn";
-export { splitAddress } from "./splitAddress";
+import copy from "copy-to-clipboard";
+import { useRef, useState } from "react";
+
+export const useCopy = (): [boolean, (text: string) => void] => {
+  const [showCopied, setShowCopied] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
+  const copyText = (text: string): void => {
+    copy(text);
+    setShowCopied(true);
+
+    if (timeoutRef.current != null) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    timeoutRef.current = window.setTimeout(() => {
+      setShowCopied(false);
+      timeoutRef.current = null;
+    }, 1500);
+  };
+
+  return [showCopied, copyText];
+};
