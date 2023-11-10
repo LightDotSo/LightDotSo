@@ -17,8 +17,8 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        check, configuration, feedback, health, notification, paymaster, signature,
-        support_request, transaction, user, user_operation, wallet,
+        check, configuration, feedback, health, notification, paymaster, portfolio, signature,
+        support_request, token, token_price, transaction, user, user_operation, wallet,
     },
     state::AppState,
 };
@@ -58,12 +58,18 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(notification::NotificationError),
         schemas(paymaster::Paymaster),
         schemas(paymaster::PaymasterError),
+        schemas(portfolio::Portfolio),
+        schemas(portfolio::PortfolioError),
         schemas(signature::Signature),
         schemas(signature::SignatureError),
         schemas(signature::SignaturePostRequestParams),
         schemas(support_request::SupportRequest),
         schemas(support_request::SupportRequestPostRequestParams),
         schemas(support_request::SupportRequestError),
+        schemas(token::Token),
+        schemas(token::TokenError),
+        schemas(token_price::TokenPrice),
+        schemas(token_price::TokenPriceError),
         schemas(transaction::Transaction),
         schemas(transaction::TransactionError),
         schemas(user::User),
@@ -92,10 +98,15 @@ use utoipa_swagger_ui::SwaggerUi;
         notification::v1_notification_read_handler,
         paymaster::v1_paymaster_get_handler,
         paymaster::v1_paymaster_list_handler,
+        portfolio::v1_portfolio_get_handler,
         signature::v1_signature_get_handler,
         signature::v1_signature_list_handler,
         signature::v1_signature_post_handler,
         support_request::v1_support_request_post_handler,
+        token::v1_token_get_handler,
+        token::v1_token_list_handler,
+        token_price::v1_token_price_get_handler,
+        token_price::v1_token_price_list_handler,
         transaction::v1_transaction_get_handler,
         transaction::v1_transaction_list_handler,
         user::v1_user_get_handler,
@@ -116,8 +127,11 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
         (name = "paymaster", description = "Paymaster API"),
+        (name = "portfolio", description = "Portfolio API"),
         (name = "signature", description = "Signature API"),
         (name = "support_request", description = "Support Request API"),
+        (name = "token", description = "Token API"),
+        (name = "token_price", description = "Token Price API"),
         (name = "transaction", description = "Transaction API"),
         (name = "user", description = "User API"),
         (name = "user_operation", description = "User Operation API"),
@@ -181,8 +195,11 @@ pub async fn start_api_server() -> Result<()> {
         .merge(health::router())
         .merge(notification::router())
         .merge(paymaster::router())
+        .merge(portfolio::router())
         .merge(signature::router())
         .merge(support_request::router())
+        .merge(token::router())
+        .merge(token_price::router())
         .merge(transaction::router())
         .merge(user::router())
         .merge(user_operation::router())

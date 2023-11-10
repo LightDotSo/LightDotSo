@@ -23,6 +23,7 @@ import { PrismaClient } from "@lightdotso/prisma";
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/(components)/InvokePortfolioButton";
 import { getAddress, type Address } from "viem";
 import { serializeWalletBalance } from "@/utils/walletBalance";
+import { PortfolioChart } from "@/app/(wallet)/[address]/(components)/PortfolioChart";
 
 export default async function Page({
   params,
@@ -64,7 +65,15 @@ export default async function Page({
     },
   });
 
-  const latestPortfolioPromise = client.$queryRaw`
+  // Find the most recent WalletBalance
+  const latestPortfolioPromise = client.$queryRaw<
+    [
+      {
+        latest_balance: number;
+        latest_balance_timestamp: Date;
+      },
+    ]
+  >`
     SELECT balanceUSD as latest_balance, timestamp as latest_balance_timestamp
     FROM WalletBalance
     WHERE walletAddress = ${getAddress(params.address)} AND chainId = 0
@@ -72,7 +81,15 @@ export default async function Page({
     LIMIT 1
   `;
 
-  const pastPortfolioPromise = client.$queryRaw`
+  // Find the average balance for each day
+  const pastPortfolioPromise = client.$queryRaw<
+    [
+      {
+        average_balance: number;
+        date: Date;
+      },
+    ]
+  >`
     SELECT DATE(timestamp) as date, AVG(balanceUSD) as average_balance
     FROM WalletBalance
     WHERE walletAddress = ${getAddress(params.address)} AND chainId = 0
@@ -85,9 +102,16 @@ export default async function Page({
     latestPortfolioPromise,
     pastPortfolioPromise,
   ]);
-  console.info("balances", balances);
-  console.info("latestPortfolio", latestPortfolio);
-  console.info("pastPortfolio", pastPortfolio);
+
+  // Combine the latestPortfolio and pastPortfolio into a single array
+  const portfolio = pastPortfolio.map(item => ({
+    date: item.date,
+    balance: item.average_balance,
+  }));
+  portfolio.unshift({
+    date: latestPortfolio[0].latest_balance_timestamp,
+    balance: latestPortfolio[0].latest_balance,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -95,11 +119,16 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div>
-        <pre>
-          <code>{serializeWalletBalance(balances)}</code>
-        </pre>
-        <InvokePortfolioButton address={params.address as Address} />
+      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="mx-auto max-w-5xl flex-1 space-y-8">
+          <PortfolioChart data={JSON.stringify(portfolio)} />
+          <div>
+            <pre>
+              <code>{serializeWalletBalance(balances)}</code>
+            </pre>
+            <InvokePortfolioButton address={params.address as Address} />
+          </div>
+        </div>
       </div>
     </HydrationBoundary>
   );
