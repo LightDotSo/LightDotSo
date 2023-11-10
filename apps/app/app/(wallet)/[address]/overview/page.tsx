@@ -16,9 +16,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { handler } from "@/handlers/paths/[address]";
-import { inngest } from "@/inngest/client";
-
-import { redirect } from "next/navigation";
+import { handler as pageHandler } from "@/handlers/paths/[address]/page";
+import { getQueryClient } from "@/services";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { InvokePortfolioButton } from "@/app/(wallet)/[address]/(components)/InvokePortfolioButton";
+import { type Address } from "viem";
+import { PortfolioChart } from "@/app/(wallet)/[address]/(components)/PortfolioChart";
+import { Suspense } from "react";
 
 export default async function Page({
   params,
@@ -31,20 +35,32 @@ export default async function Page({
 
   await handler(params);
 
+  const { tokens, portfolio } = await pageHandler(params);
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  await inngest.send({
-    name: "wallet/portfolio.set",
-    data: {
-      address: params.address,
-    },
-  });
+  const queryClient = getQueryClient();
 
   // ---------------------------------------------------------------------------
-  // Redirect
+  // Render
   // ---------------------------------------------------------------------------
 
-  redirect(`/${params.address}/overview`);
+  queryClient.setQueryData(["portfolio", params.address], portfolio);
+  queryClient.setQueryData(["tokens", params.address], tokens);
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense>
+        <PortfolioChart address={params.address as Address} />
+      </Suspense>
+      <div>
+        <pre>
+          <code>{JSON.stringify(tokens, null, 2)}</code>
+        </pre>
+        <InvokePortfolioButton address={params.address as Address} />
+      </div>
+    </HydrationBoundary>
+  );
 }
