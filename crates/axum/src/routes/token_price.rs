@@ -79,13 +79,13 @@ pub(crate) struct TokenPrice {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct TokenPriceDate {
     price: f64,
-    date: prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
+    date: String,
 }
 
 // Implement FromTokenPriceQueryReturnType> for Token.
 impl From<TokenPriceQueryReturnType> for TokenPriceDate {
     fn from(token_price_query: TokenPriceQueryReturnType) -> Self {
-        Self { price: token_price_query.price, date: token_price_query.date }
+        Self { price: token_price_query.price, date: token_price_query.date.to_rfc3339() }
     }
 }
 

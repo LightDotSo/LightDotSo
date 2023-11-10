@@ -47,9 +47,16 @@ pub(crate) enum PortfolioError {
     Conflict(String),
 }
 
-/// Portfolio to do.
+/// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Portfolio {
+    price_change_24h: f64,
+    balances: Vec<PortfolioBalanceDate>,
+}
+
+/// Portfolio to do.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct PortfolioBalanceDate {
     balance: f64,
     date: String,
 }
@@ -61,7 +68,7 @@ struct PortfolioQueryReturnType {
 }
 
 // Implement From<PortfolioQueryReturnType> for Portfolio.
-impl From<PortfolioQueryReturnType> for Portfolio {
+impl From<PortfolioQueryReturnType> for PortfolioBalanceDate {
     fn from(port: PortfolioQueryReturnType) -> Self {
         Self { balance: port.balance, date: port.date.to_rfc3339() }
     }
@@ -80,7 +87,7 @@ pub(crate) fn router() -> Router<AppState> {
             GetQuery
         ),
         responses(
-            (status = 200, description = "Portfolio returned successfully", body = Vec<Portfolio>),
+            (status = 200, description = "Portfolio returned successfully", body = Portfolio),
             (status = 404, description = "Portfolio not found", body = PortfolioError),
         )
     )]
@@ -88,7 +95,7 @@ pub(crate) fn router() -> Router<AppState> {
 async fn v1_portfolio_get_handler(
     get: Query<GetQuery>,
     State(client): State<AppState>,
-) -> AppJsonResult<Vec<Portfolio>> {
+) -> AppJsonResult<Portfolio> {
     // Get the get query.
     let Query(query) = get;
 
@@ -134,12 +141,21 @@ async fn v1_portfolio_get_handler(
         .await?;
     info!("past_portfolio: {:?}", past_portfolio);
 
+    // Get the 24h price change from the result array.
+    let balance_change_24h = if past_portfolio.len() > 1 {
+        latest_portfolio[0].balance - past_portfolio[0].balance
+    } else {
+        0.0
+    };
+
     // Combine the latest portfolio(1) and past portfolio(n) into one vector.
-    let mut portfolio: Vec<Portfolio> = Vec::new();
-    portfolio.push(latest_portfolio[0].clone().into());
+    let mut portfolio_dates: Vec<PortfolioBalanceDate> = Vec::new();
+    portfolio_dates.push(latest_portfolio[0].clone().into());
     (0..past_portfolio.len()).for_each(|i| {
-        portfolio.push(past_portfolio[i].clone().into());
+        portfolio_dates.push(past_portfolio[i].clone().into());
     });
+
+    let portfolio = Portfolio { price_change_24h: balance_change_24h, balances: portfolio_dates };
 
     Ok(Json::from(portfolio))
 }
