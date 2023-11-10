@@ -18,7 +18,7 @@ use crate::{
     handle_error,
     routes::{
         check, configuration, feedback, health, notification, paymaster, portfolio, signature,
-        support_request, token, transaction, user, user_operation, wallet,
+        support_request, token, token_price, transaction, user, user_operation, wallet,
     },
     state::AppState,
 };
@@ -68,6 +68,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(support_request::SupportRequestError),
         schemas(token::Token),
         schemas(token::TokenError),
+        schemas(token_price::TokenPrice),
+        schemas(token_price::TokenPriceError),
         schemas(transaction::Transaction),
         schemas(transaction::TransactionError),
         schemas(user::User),
@@ -103,6 +105,8 @@ use utoipa_swagger_ui::SwaggerUi;
         support_request::v1_support_request_post_handler,
         token::v1_token_get_handler,
         token::v1_token_list_handler,
+        token_price::v1_token_price_get_handler,
+        token_price::v1_token_price_list_handler,
         transaction::v1_transaction_get_handler,
         transaction::v1_transaction_list_handler,
         user::v1_user_get_handler,
@@ -127,6 +131,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "signature", description = "Signature API"),
         (name = "support_request", description = "Support Request API"),
         (name = "token", description = "Token API"),
+        (name = "token_price", description = "Token Price API"),
         (name = "transaction", description = "Transaction API"),
         (name = "user", description = "User API"),
         (name = "user_operation", description = "User Operation API"),
@@ -194,6 +199,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(signature::router())
         .merge(support_request::router())
         .merge(token::router())
+        .merge(token_price::router())
         .merge(transaction::router())
         .merge(user::router())
         .merge(user_operation::router())
