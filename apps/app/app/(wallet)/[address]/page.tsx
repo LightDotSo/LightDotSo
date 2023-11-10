@@ -23,6 +23,7 @@ import { PrismaClient } from "@lightdotso/prisma";
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/(components)/InvokePortfolioButton";
 import { getAddress, type Address } from "viem";
 import { serializeWalletBalance } from "@/utils/walletBalance";
+import { PortfolioChart } from "@/app/(wallet)/[address]/(components)/PortfolioChart";
 
 export default async function Page({
   params,
@@ -102,10 +103,6 @@ export default async function Page({
     pastPortfolioPromise,
   ]);
 
-  console.info("balances", balances);
-  console.info("latestPortfolio", latestPortfolio);
-  console.info("pastPortfolio", pastPortfolio);
-
   // Combine the latestPortfolio and pastPortfolio into a single array
   const portfolio = pastPortfolio.map(item => ({
     date: item.date,
@@ -122,14 +119,16 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div>
-        <pre>
-          <code>{serializeWalletBalance(balances)}</code>
-        </pre>
-        <pre>
-          <code>{JSON.stringify(portfolio, null, 2)}</code>
-        </pre>
-        <InvokePortfolioButton address={params.address as Address} />
+      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="mx-auto max-w-5xl flex-1 space-y-8">
+          <PortfolioChart data={JSON.stringify(portfolio)} />
+          <div>
+            <pre>
+              <code>{serializeWalletBalance(balances)}</code>
+            </pre>
+            <InvokePortfolioButton address={params.address as Address} />
+          </div>
+        </div>
       </div>
     </HydrationBoundary>
   );
