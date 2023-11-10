@@ -129,7 +129,7 @@ export const walletPortfolioSet = inngest.createFunction(
           skipDuplicates: true,
         });
 
-        // Get the corresponding TOKEN tokens
+        // Get the corresponding tokens
         const tokens = await prisma.token.findMany({
           where: {
             address: {
