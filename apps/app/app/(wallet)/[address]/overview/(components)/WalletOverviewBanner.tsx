@@ -86,28 +86,23 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
                 </h2>
                 <Tooltip>
                   <TooltipTrigger>
-                    <div className="flex flex-row space-x-3 sm:justify-start">
-                      <div className="flex rounded-md bg-muted px-3 py-1.5">
-                        <p className="mr-2 text-sm text-muted-foreground">
-                          {ens ?? splitAddress(address)}
-                        </p>
-                        <button
-                          onClick={() => {
-                            return copy(address);
-                          }}
-                        >
-                          {!isCopied ? (
-                            <ClipboardDocumentIcon className="h-4 w-4 text-muted-foreground" />
-                          ) : (
-                            <ClipboardDocumentCheckIcon className="h-4 w-4 text-muted-foreground" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                    <TooltipContent>
-                      <p className="text-sm text-muted-foreground">
-                        {isCopied ? "Copied!" : "Copy address"}
+                    <button
+                      className="flex items-center rounded-md bg-muted px-3 py-1.5"
+                      onClick={() => {
+                        return copy(address);
+                      }}
+                    >
+                      <p className="mr-2 text-sm text-muted-foreground">
+                        {ens ?? splitAddress(address)}
                       </p>
+                      {!isCopied ? (
+                        <ClipboardDocumentIcon className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <ClipboardDocumentCheckIcon className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </button>
+                    <TooltipContent>
+                      <p>Copy Wallet Address</p>
                     </TooltipContent>
                   </TooltipTrigger>
                 </Tooltip>
