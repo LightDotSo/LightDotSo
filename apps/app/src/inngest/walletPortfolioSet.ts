@@ -115,8 +115,8 @@ export const walletPortfolioSet = inngest.createFunction(
           });
         });
 
-        // Create ERC20 tokens if they don't exist
-        await prisma.eRC20.createMany({
+        // Create tokens if they don't exist
+        await prisma.token.createMany({
           data: [
             ...balances.map(balance => ({
               address: balance.address!,
@@ -129,8 +129,8 @@ export const walletPortfolioSet = inngest.createFunction(
           skipDuplicates: true,
         });
 
-        // Get the corresponding ERC20 tokens
-        const erc20Tokens = await prisma.eRC20.findMany({
+        // Get the corresponding tokens
+        const tokens = await prisma.token.findMany({
           where: {
             address: {
               in: balances.map(balance => balance.address!),
@@ -138,18 +138,41 @@ export const walletPortfolioSet = inngest.createFunction(
           },
         });
 
-        // Map the balances to the ERC20 tokens
-        const token_balances = balances.map(balance => {
-          const token = erc20Tokens.find(
-            token =>
-              token.address === balance.address &&
-              token.chainId === BigInt(balance.chainId),
-          );
+        // Map the balances to the tokens
+        const token_balances = balances
+          .map(balance => {
+            const token = tokens.find(
+              token =>
+                token.address === balance.address &&
+                token.chainId === BigInt(balance.chainId),
+            );
 
-          return {
-            ...balance,
-            erc20Id: token!.id,
-          };
+            // If the token is not found, return null
+            if (!token) {
+              return null;
+            }
+
+            return {
+              ...balance,
+              tokenId: token.id,
+            };
+          })
+          // Filter out null values
+          .filter(balance => balance !== null)
+          // Filter out ones that don't have `address`
+          .filter(balance => balance!.address !== undefined);
+
+        // Create token prices
+        await prisma.tokenPrice.createMany({
+          data: [
+            ...token_balances.map(balance => ({
+              tokenAddress: balance!.address,
+              chainId: balance!.chainId,
+              price: balance!.price,
+              tokenId: balance!.tokenId,
+            })),
+          ],
+          skipDuplicates: true,
         });
 
         // First, create the portfolio transaction
@@ -176,23 +199,21 @@ export const walletPortfolioSet = inngest.createFunction(
               chainId: {
                 not: 0,
               },
+              isLatest: true,
             },
             data: {
               isLatest: false,
-              balanceUSD: undefined,
-              chainId: undefined,
             },
           }),
           prisma.walletBalance.createMany({
             data: {
               ...token_balances.map(balance => ({
                 walletAddress: wallet!.address,
-                chainId: balance.chainId,
-                balanceUSD: balance.balanceUSD,
-                amount: balance.amount,
-                price: balance.price,
-                erc20Id: balance.erc20Id,
-                stable: balance.stable,
+                chainId: balance!.chainId,
+                balanceUSD: balance!.balanceUSD,
+                amount: balance!.amount,
+                tokenId: balance!.tokenId,
+                stable: balance!.stable,
                 isLatest: true,
               })),
             },
