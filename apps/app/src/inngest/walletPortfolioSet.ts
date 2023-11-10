@@ -152,6 +152,7 @@ export const walletPortfolioSet = inngest.createFunction(
           };
         });
 
+        // Create token prices
         await prisma.tokenPrice.createMany({
           data: [
             ...token_balances.map(balance => ({
