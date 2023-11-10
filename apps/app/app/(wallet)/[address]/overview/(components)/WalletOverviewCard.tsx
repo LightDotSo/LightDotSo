@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
+import { Avatar, Button } from "@lightdotso/ui";
 import type { Address } from "viem";
 import { splitAddress } from "@lightdotso/utils";
 import { useCopy } from "@/hooks/useCopy";
@@ -25,6 +25,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Send, Share } from "lucide-react";
 import { useEnsName } from "wagmi";
+import { PlaceholderOrb } from "@/components/placeholder-orb";
 
 export function WalletOverviewCard({ address }: { address: Address }) {
   const [isCopied, copy] = useCopy();
@@ -35,26 +36,34 @@ export function WalletOverviewCard({ address }: { address: Address }) {
   return (
     <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
       <div className="flex flex-row items-center space-x-5">
-        <div className="space-y-5 sm:mx-0 sm:max-w-xl sm:space-y-4">
-          <h2 className="flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight text-contrast-higher sm:text-3xl">
-            {data ?? (typeof address === "string" && splitAddress(address))}
-          </h2>
-          <div className="mx-auto flex flex-row justify-center space-x-3 sm:justify-start">
-            <div className="flex rounded-md bg-bg-dark px-3 py-1.5">
-              <p className="mr-2 text-base text-contrast-low">
-                {splitAddress(address)}
-              </p>
-              <button
-                onClick={() => {
-                  return copy(address);
-                }}
-              >
-                {!isCopied ? (
-                  <InboxStackIcon className="h-6 w-6 text-contrast-low hover:text-contrast-medium" />
-                ) : (
-                  <ClipboardDocumentCheckIcon className="h-6 w-6 text-contrast-low hover:text-contrast-medium" />
-                )}
-              </button>
+        <Avatar className="h-24 w-24">
+          <PlaceholderOrb address={address ?? "0x"} />
+        </Avatar>
+        <div className="space-y-4 sm:mt-6 md:mt-0 md:space-y-6 md:pl-4">
+          <div className="space-y-5 sm:mx-0 sm:max-w-xl sm:space-y-4">
+            <h2 className="flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">
+              {data ?? (typeof address === "string" && splitAddress(address))}
+            </h2>
+            <div className="mx-auto flex flex-row justify-center space-x-3 sm:justify-start">
+              <div className="flex rounded-md bg-muted px-3 py-1.5">
+                <p className="mr-2 text-base text-muted-foreground">
+                  {splitAddress(address)}
+                </p>
+                <button
+                  onClick={() => {
+                    return copy(address);
+                  }}
+                >
+                  {!isCopied ? (
+                    <InboxStackIcon className="h-6 w-6 text-muted-foreground" />
+                  ) : (
+                    <ClipboardDocumentCheckIcon className="h-6 w-6 text-muted-foreground" />
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-row items-center justify-start space-x-4">
+              $300
             </div>
           </div>
         </div>
