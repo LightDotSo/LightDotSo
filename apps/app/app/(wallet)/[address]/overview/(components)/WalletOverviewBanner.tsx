@@ -29,6 +29,7 @@ import { PlaceholderOrb } from "@/components/placeholder-orb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallet } from "@lightdotso/client";
 import { WalletOverviewBannerSparkline } from "./WalletOverviewBannerSparkline";
+import { Suspense } from "react";
 
 export function WalletOverviewBanner({ address }: { address: Address }) {
   const [isCopied, copy] = useCopy();
@@ -92,7 +93,9 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
               </div>
             </div>
             <div className="flex flex-row items-center justify-start space-x-4">
-              <WalletOverviewBannerSparkline address={address} />
+              <Suspense fallback={null}>
+                <WalletOverviewBannerSparkline address={address} />
+              </Suspense>
             </div>
           </div>
         </div>
