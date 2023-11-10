@@ -23,6 +23,7 @@ pub(crate) mod paymaster;
 pub(crate) mod portfolio;
 pub(crate) mod signature;
 pub(crate) mod support_request;
+pub(crate) mod token;
 pub(crate) mod transaction;
 pub(crate) mod user;
 pub(crate) mod user_operation;
