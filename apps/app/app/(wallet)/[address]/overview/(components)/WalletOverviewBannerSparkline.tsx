@@ -59,7 +59,10 @@ export function WalletOverviewBannerSparkline({
     <div className="flex flex-row items-center justify-start space-x-4">
       <div className="flex items-center space-x-2.5">
         <span className="text-2xl font-bold tracking-tighter text-primary sm:text-3xl">
-          ${portfolio.balances && portfolio.balances[0].balance.toFixed(2)}
+          $
+          {portfolio.balances && portfolio.balance !== 0
+            ? portfolio.balance.toFixed(2)
+            : 0}
         </span>
         <span
           className={cn(
@@ -67,9 +70,17 @@ export function WalletOverviewBannerSparkline({
             portfolio.balance_change_24h > 0 ? "bg-emerald-500" : "bg-red-500",
           )}
         >
-          {portfolio.balance_change_24h_percentage.toFixed(2)}%&nbsp;
+          {portfolio.balance_change_24h_percentage !== 0
+            ? portfolio.balance_change_24h_percentage.toFixed(2)
+            : 0}
+          %&nbsp;
           <span className="text-xs">
-            (${portfolio.balance_change_24h.toFixed(3)})
+            $
+            {portfolio.balance_change_24h
+              ? `${portfolio.balance_change_24h < 0 ? "-" : ""}$${Math.abs(
+                  portfolio.balance_change_24h,
+                ).toFixed(3)}`
+              : ""}
           </span>
         </span>
       </div>
