@@ -331,6 +331,8 @@ export interface components {
     /** @description Item to do. */
     Portfolio: {
       /** Format: double */
+      balance: number;
+      /** Format: double */
       balance_change_24h: number;
       /** Format: double */
       balance_change_24h_percentage: number;
@@ -405,6 +407,8 @@ export interface components {
     }]>;
     /** @description Item to do. */
     TokenPrice: {
+      /** Format: double */
+      price: number;
       /** Format: double */
       price_change_24h: number;
       /** Format: double */
