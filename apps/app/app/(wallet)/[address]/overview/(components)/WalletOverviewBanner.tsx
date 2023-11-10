@@ -31,7 +31,7 @@ import { getWallet } from "@lightdotso/client";
 
 export function WalletOverviewBanner({ address }: { address: Address }) {
   const [isCopied, copy] = useCopy();
-  const { data } = useEnsName({
+  const { data: ens } = useEnsName({
     address: address,
   });
   const { data: wallet } = useSuspenseQuery({
@@ -70,13 +70,12 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
             <h2 className="flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">
               {wallet
                 ? wallet.name
-                : data ??
-                  (typeof address === "string" && splitAddress(address))}
+                : ens ?? (typeof address === "string" && splitAddress(address))}
             </h2>
             <div className="mx-auto flex flex-row justify-center space-x-3 sm:justify-start">
               <div className="flex rounded-md bg-muted px-3 py-1.5">
-                <p className="mr-2 text-base text-muted-foreground">
-                  {splitAddress(address)}
+                <p className="mr-2 text-sm text-muted-foreground">
+                  {ens ?? splitAddress(address)}
                 </p>
                 <button
                   onClick={() => {
@@ -84,9 +83,9 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
                   }}
                 >
                   {!isCopied ? (
-                    <ClipboardDocumentIcon className="h-6 w-6 text-muted-foreground" />
+                    <ClipboardDocumentIcon className="h-4 w-4 text-muted-foreground" />
                   ) : (
-                    <ClipboardDocumentCheckIcon className="h-6 w-6 text-muted-foreground" />
+                    <ClipboardDocumentCheckIcon className="h-4 w-4 text-muted-foreground" />
                   )}
                 </button>
               </div>
