@@ -60,7 +60,7 @@ export default async function Page({
       isLatest: true,
     },
     include: {
-      erc20: true,
+      token: true,
     },
   });
 

@@ -199,6 +199,7 @@ export const walletPortfolioSet = inngest.createFunction(
               chainId: {
                 not: 0,
               },
+              isLatest: true,
             },
             data: {
               isLatest: false,
