@@ -58,7 +58,7 @@ export function PortfolioChart({ address }: { address: Address }) {
     });
     // Reverse the balances so that the chart starts from the beginning
     return [...portfolioBalances].reverse();
-  });
+  }, [portfolio]);
 
   if (!portfolio) {
     return null;
