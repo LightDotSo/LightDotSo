@@ -17,11 +17,13 @@
 
 import { getPortfolio } from "@lightdotso/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { AreaChart, Card, Title } from "@tremor/react";
+import { AreaChart } from "@tremor/react";
 import type { Address } from "viem";
+import { WalletOverviewBannerSparkline } from "./WalletOverviewBannerSparkline";
+import { useMemo } from "react";
 
 export function PortfolioChart({ address }: { address: Address }) {
-  const { data } = useSuspenseQuery({
+  const { data: portfolio } = useSuspenseQuery({
     queryKey: ["portfolio", address],
     queryFn: async () => {
       if (!address) {
@@ -46,30 +48,56 @@ export function PortfolioChart({ address }: { address: Address }) {
     },
   });
 
-  if (!data) {
+  const balances = useMemo(() => {
+    // Format the date into a human readable format for each date in balances
+    const portfolioBalances = portfolio.balances.map(balance => {
+      return {
+        ...balance,
+        date: new Date(balance.date).toLocaleDateString(),
+      };
+    });
+    // Reverse the balances so that the chart starts from the beginning
+    return [...portfolioBalances].reverse();
+  });
+
+  if (!portfolio) {
     return null;
   }
 
+  const valueFormatter = function (number) {
+    return "$ " + new Intl.NumberFormat("us").format(number).toString();
+  };
+
   return (
     <div className="justify-between md:flex">
-      <div className="mt-8 hidden w-full sm:block">
+      <div className="sm: mt-8 hidden w-full rounded-md border border-muted bg-card p-8 py-16 sm:block sm:px-12">
         <>
-          <Card>
-            <Title>Portfolio Value</Title>
-            <AreaChart
-              className="mt-4 h-72 w-full"
-              data={data.balances}
-              index="date"
-              categories={["balance"]}
-              showLegend={false}
-            />
-          </Card>
+          <WalletOverviewBannerSparkline address={address} />
+          <AreaChart
+            className="mt-4 h-72 w-full"
+            data={balances}
+            index="date"
+            categories={["balance"]}
+            colors={[
+              portfolio.balance_change_24h && portfolio.balance_change_24h > 0
+                ? "emerald"
+                : "red",
+            ]}
+            showLegend={false}
+            valueFormatter={valueFormatter}
+            showAnimation
+          />
         </>
       </div>
       <div className="mt-8 sm:hidden">
         <AreaChart
           categories={["balance"]}
-          data={data.balances}
+          data={balances}
+          colors={[
+            portfolio.balance_change_24h && portfolio.balance_change_24h > 0
+              ? "emerald"
+              : "red",
+          ]}
           index="date"
           startEndOnly={true}
           showGradient={false}

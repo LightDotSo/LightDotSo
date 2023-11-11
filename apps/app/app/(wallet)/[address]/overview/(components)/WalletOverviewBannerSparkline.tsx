@@ -87,7 +87,7 @@ export function WalletOverviewBannerSparkline({
         </span>
       </div>
       <SparkAreaChart
-        data={portfolio.balances}
+        data={[...portfolio.balances].reverse()}
         categories={["balance"]}
         index="date"
         colors={[

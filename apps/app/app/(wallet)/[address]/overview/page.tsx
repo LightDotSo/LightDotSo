@@ -19,9 +19,9 @@ import { handler } from "@/handlers/paths/[address]";
 import { handler as pageHandler } from "@/handlers/paths/[address]/page";
 import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { InvokePortfolioButton } from "@/app/(wallet)/[address]/(components)/InvokePortfolioButton";
+import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/InvokePortfolioButton";
 import { type Address } from "viem";
-import { PortfolioChart } from "@/app/(wallet)/[address]/(components)/PortfolioChart";
+import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/PortfolioChart";
 import { Suspense } from "react";
 
 export default async function Page({
