@@ -49,6 +49,10 @@ export function PortfolioChart({ address }: { address: Address }) {
   });
 
   const balances = useMemo(() => {
+    if (!portfolio || !portfolio.balances) {
+      return [];
+    }
+
     // Format the date into a human readable format for each date in balances
     const portfolioBalances = portfolio.balances.map(balance => {
       return {
