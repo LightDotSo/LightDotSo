@@ -19,7 +19,6 @@ import { handler } from "@/handlers/paths/[address]";
 import { handler as pageHandler } from "@/handlers/paths/[address]/page";
 import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/InvokePortfolioButton";
 import { type Address } from "viem";
 import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/PortfolioChart";
 import { Suspense } from "react";
@@ -59,7 +58,6 @@ export default async function Page({
         <pre>
           <code>{JSON.stringify(tokens, null, 2)}</code>
         </pre>
-        <InvokePortfolioButton address={params.address as Address} />
       </div>
     </HydrationBoundary>
   );

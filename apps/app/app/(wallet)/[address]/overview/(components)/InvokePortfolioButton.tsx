@@ -18,15 +18,20 @@
 import { Button } from "@lightdotso/ui";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
 import type { Address } from "viem";
+import { successToast } from "@/utils/toast";
+import { RefreshCcw } from "lucide-react";
 
 export function InvokePortfolioButton({ address }: { address: Address }) {
   return (
     <Button
+      variant="outline"
+      className="py-5"
       onClick={() => {
         invokePortfolioAction(address as Address);
+        successToast("Refreshed");
       }}
     >
-      Refresh
+      <RefreshCcw className="h-4 w-4 fill-muted" />
     </Button>
   );
 }

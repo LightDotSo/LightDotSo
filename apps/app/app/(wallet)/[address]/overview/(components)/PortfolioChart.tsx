@@ -69,12 +69,12 @@ export function PortfolioChart({ address }: { address: Address }) {
   };
 
   return (
-    <div className="justify-between md:flex">
-      <div className="sm: mt-8 hidden w-full rounded-md border border-muted bg-card p-8 py-16 sm:block sm:px-12">
+    <>
+      <div className="sm: mt-8 hidden w-full rounded-md border border-input bg-card p-8 py-16 sm:block sm:px-12">
         <>
           <WalletOverviewBannerSparkline address={address} />
           <AreaChart
-            className="mt-4 h-72 w-full"
+            className="mt-12 h-72 w-full"
             data={balances}
             index="date"
             categories={["balance"]}
@@ -104,6 +104,6 @@ export function PortfolioChart({ address }: { address: Address }) {
           showYAxis={false}
         />
       </div>
-    </div>
+    </>
   );
 }

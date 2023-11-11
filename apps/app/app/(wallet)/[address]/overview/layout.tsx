@@ -15,6 +15,7 @@
 
 import { LinkButtonGroup } from "@/components/link-button-group";
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/WalletOverviewBanner";
+import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/InvokePortfolioButton";
 import type { Address } from "viem";
 
 const overviewNavItems = [
@@ -53,7 +54,9 @@ export default function OverviewLayout({
       </div>
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
         <div className="mx-auto max-w-7xl flex-1 space-y-8">
-          <LinkButtonGroup items={overviewNavItems} />
+          <LinkButtonGroup items={overviewNavItems}>
+            <InvokePortfolioButton address={params.address as Address} />
+          </LinkButtonGroup>
           {children}
         </div>
       </div>
