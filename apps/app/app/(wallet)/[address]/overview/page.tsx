@@ -22,6 +22,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { type Address } from "viem";
 import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/PortfolioChart";
 import { Suspense } from "react";
+import { TokensList } from "@/components/tokens-list";
 
 export default async function Page({
   params,
@@ -54,11 +55,9 @@ export default async function Page({
       <Suspense>
         <PortfolioChart address={params.address as Address} />
       </Suspense>
-      <div>
-        <pre>
-          <code>{JSON.stringify(tokens, null, 2)}</code>
-        </pre>
-      </div>
+      <Suspense>
+        <TokensList address={params.address as Address} />
+      </Suspense>
     </HydrationBoundary>
   );
 }
