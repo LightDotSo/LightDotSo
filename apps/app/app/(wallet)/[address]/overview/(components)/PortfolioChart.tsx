@@ -68,7 +68,7 @@ export function PortfolioChart({ address }: { address: Address }) {
     return null;
   }
 
-  const valueFormatter = function (number) {
+  const valueFormatter = function (number: number) {
     return "$ " + new Intl.NumberFormat("us").format(number).toString();
   };
 
