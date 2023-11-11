@@ -78,11 +78,10 @@ export function WalletOverviewBannerSparkline({
             : 0}
           %&nbsp;
           <span className="text-xs">
-            $
             {portfolio.balance_change_24h && portfolio.balance_change_24h
-              ? `${portfolio.balance_change_24h < 0 ? "-" : ""}$${Math.abs(
+              ? `${portfolio.balance_change_24h < 0 ? "-" : ""}$(${Math.abs(
                   portfolio.balance_change_24h,
-                ).toFixed(3)}`
+                ).toFixed(3)})`
               : ""}
           </span>
         </span>
