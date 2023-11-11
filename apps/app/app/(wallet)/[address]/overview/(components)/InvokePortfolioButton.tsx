@@ -31,7 +31,7 @@ export function InvokePortfolioButton({ address }: { address: Address }) {
         successToast("Refreshed");
       }}
     >
-      <RefreshCcw className="h-4 w-4 fill-muted" />
+      <RefreshCcw className="h-4 w-4 text-muted-foreground" />
     </Button>
   );
 }
