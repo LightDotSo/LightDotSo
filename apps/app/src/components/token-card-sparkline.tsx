@@ -54,14 +54,14 @@ export function TokenCardSparkline({ address }: { address: Address }) {
   return (
     <SparkAreaChart
       data={[...token_price.prices].reverse()}
-      categories={["balance"]}
+      categories={["price"]}
       index="date"
       colors={[
         token_price.price_change_24h && token_price.price_change_24h > 0
           ? "emerald"
           : "red",
       ]}
-      className="h-8 w-24"
+      className="h-12 w-48"
       // @ts-expect-error
       showAnimation
     />

@@ -15,6 +15,7 @@
 
 import { TableCell, TableRow } from "@lightdotso/ui";
 import { TokenCardSparkline } from "./token-card-sparkline";
+import { TokenCardActions } from "./token-card-actions";
 import { Suspense } from "react";
 
 type TokenCardProps = {
@@ -56,7 +57,9 @@ export function TokenCard({
           <TokenCardSparkline address={address}></TokenCardSparkline>
         </Suspense>
       </TableCell>
-      <TableCell className="text-right">{balance_usd}</TableCell>
+      <TableCell className="text-right">
+        <TokenCardActions address={address}></TokenCardActions>
+      </TableCell>
     </TableRow>
   );
 }
