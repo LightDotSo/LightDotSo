@@ -64,6 +64,7 @@ pub(crate) enum TokenError {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Token {
     address: String,
+    chain_id: i64,
     name: Option<String>,
     symbol: String,
     decimals: i32,
@@ -76,6 +77,7 @@ impl From<token::Data> for Token {
     fn from(token: token::Data) -> Self {
         Self {
             address: token.address,
+            chain_id: token.chain_id,
             name: token.name,
             symbol: token.symbol,
             decimals: token.decimals,
@@ -90,6 +92,7 @@ impl From<wallet_balance::Data> for Token {
     fn from(balance: wallet_balance::Data) -> Self {
         Self {
             address: balance.token.clone().unwrap().unwrap().address,
+            chain_id: balance.chain_id,
             name: balance.token.clone().unwrap().unwrap().name,
             symbol: balance.token.clone().unwrap().unwrap().symbol,
             decimals: balance.token.clone().unwrap().unwrap().decimals,

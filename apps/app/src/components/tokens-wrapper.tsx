@@ -14,17 +14,31 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {
-  NewRoot,
-  StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root";
-import { ConfigurationForm } from "@/app/(authenticated)/new/configuration/configuration-form";
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@lightdotso/ui";
 
-export default async function Page() {
+type TokensWrapperProps = {
+  children: React.ReactNode;
+};
+
+export function TokensWrapper({ children }: TokensWrapperProps) {
   return (
-    <>
-      <NewRoot currentStepType={StepsEnum.Configuration}>
-        <ConfigurationForm />
-      </NewRoot>
-    </>
+    <div className="rounded-md border border-input bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Balance</TableHead>
+            <TableHead>Chart</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>{children}</TableBody>
+      </Table>
+    </div>
   );
 }

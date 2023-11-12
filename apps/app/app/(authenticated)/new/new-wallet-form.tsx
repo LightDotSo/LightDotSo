@@ -37,7 +37,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@lightdotso/ui";
-import { steps } from "@/app/(authenticated)/new/root";
+import { steps } from "@/app/(authenticated)/new/(components)/root";
 import { useRouter } from "next/navigation";
 import { useEffect, useCallback } from "react";
 import {
@@ -55,8 +55,8 @@ import { successToast } from "@/utils/toast";
 import {
   useNameQueryState,
   useTypeQueryState,
-} from "@/app/(authenticated)/new/hooks";
-import type { WalletType } from "@/app/(authenticated)/new/hooks";
+} from "@/app/(authenticated)/new/(hooks)";
+import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 
 type NewFormValues = z.infer<typeof newFormSchema>;
 

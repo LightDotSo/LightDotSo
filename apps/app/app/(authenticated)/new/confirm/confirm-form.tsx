@@ -54,7 +54,7 @@ import {
   useSaltQueryState,
   useThresholdQueryState,
   useTypeQueryState,
-} from "@/app/(authenticated)/new/hooks";
+} from "@/app/(authenticated)/new/(hooks)";
 
 type NewFormValues = z.infer<typeof newFormStoreSchema>;
 

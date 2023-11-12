@@ -28,9 +28,13 @@ interface TransactionsButtonLayoutProps
     href: string;
     title: string;
   }[];
+  children?: React.ReactNode;
 }
 
-export function LinkButtonGroup({ items }: TransactionsButtonLayoutProps) {
+export function LinkButtonGroup({
+  children,
+  items,
+}: TransactionsButtonLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -82,8 +86,9 @@ export function LinkButtonGroup({ items }: TransactionsButtonLayoutProps) {
             ))}
           </select>
         </div>
-        <div className="hidden rounded-md border border-input p-1 sm:block">
-          <nav className="flex" aria-label="Tabs">
+        <nav className="flex items-center space-x-4" aria-label="Tabs">
+          {children}
+          <div className="hidden rounded-md border border-input p-1 sm:block">
             {items.map(item => (
               <Link
                 key={item.id}
@@ -101,8 +106,8 @@ export function LinkButtonGroup({ items }: TransactionsButtonLayoutProps) {
                 {item.title}
               </Link>
             ))}
-          </nav>
-        </div>
+          </div>
+        </nav>
       </div>
     </div>
   );

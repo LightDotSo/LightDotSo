@@ -13,7 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NewRoot, StepsEnum } from "@/app/(authenticated)/new/root";
+import {
+  NewRoot,
+  StepsEnum,
+} from "@/app/(authenticated)/new/(components)/root";
 import { NewWalletForm } from "@/app/(authenticated)/new/new-wallet-form";
 
 export default function Page() {

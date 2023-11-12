@@ -15,18 +15,27 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
-import invokePortfolioAction from "@/actions/invokePortfolioAction";
 import type { Address } from "viem";
+import { Send, RefreshCcw } from "lucide-react";
+import { Button } from "@lightdotso/ui";
 
-export function InvokePortfolioButton({ address }: { address: Address }) {
+export function TokenCardActions({ address }: { address: Address }) {
   return (
-    <Button
-      onClick={() => {
-        invokePortfolioAction(address as Address);
-      }}
-    >
-      Refresh
-    </Button>
+    <div className="flex items-center justify-end gap-x-4">
+      <Button size="sm" className="rounded-full p-3">
+        <RefreshCcw className="h-3 w-3" />
+        <span className="sr-only">Open share modal</span>
+      </Button>
+      <Button
+        size="sm"
+        className="rounded-full p-3"
+        onClick={() => {
+          console.info(address);
+        }}
+      >
+        <Send className="h-3 w-3" />
+        <span className="sr-only">Open send modal</span>
+      </Button>
+    </div>
   );
 }

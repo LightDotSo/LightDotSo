@@ -15,23 +15,25 @@
 
 "use client";
 
-import { getPortfolio } from "@lightdotso/client";
+import { getTokens } from "@lightdotso/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { AreaChart, Card, Title } from "@tremor/react";
 import type { Address } from "viem";
+import { TokenCard } from "@/components/token-card";
+import { TokensEmpty } from "@/components/tokens-empty";
+import { TokensWrapper } from "@/components/tokens-wrapper";
 
-export function PortfolioChart({ address }: { address: Address }) {
+export type TokensListProps = {
+  address: Address;
+};
+
+export function TokensList({ address }: TokensListProps) {
   const { data } = useSuspenseQuery({
-    queryKey: ["portfolio", address],
+    queryKey: ["tokens", address],
     queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getPortfolio({
+      const res = await getTokens({
         params: {
           query: {
-            address: address,
+            address,
           },
         },
       });
@@ -41,41 +43,20 @@ export function PortfolioChart({ address }: { address: Address }) {
         data => {
           return data;
         },
-        _ => null,
+        err => {
+          throw err;
+        },
       );
     },
   });
 
-  if (!data) {
-    return null;
-  }
-
   return (
-    <div className="justify-between md:flex">
-      <div className="mt-8 hidden w-full sm:block">
-        <>
-          <Card>
-            <Title>Portfolio Value</Title>
-            <AreaChart
-              className="mt-4 h-72 w-full"
-              data={data.balances}
-              index="date"
-              categories={["balance"]}
-              showLegend={false}
-            />
-          </Card>
-        </>
-      </div>
-      <div className="mt-8 sm:hidden">
-        <AreaChart
-          categories={["balance"]}
-          data={data.balances}
-          index="date"
-          startEndOnly={true}
-          showGradient={false}
-          showYAxis={false}
-        />
-      </div>
-    </div>
+    <TokensWrapper>
+      {data && data.length === 0 && <TokensEmpty></TokensEmpty>}
+      {data &&
+        data.map(token => (
+          <TokenCard key={token.address} address={address} token={token} />
+        ))}
+    </TokensWrapper>
   );
 }

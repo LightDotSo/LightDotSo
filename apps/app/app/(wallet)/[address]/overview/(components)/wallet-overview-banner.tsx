@@ -35,8 +35,9 @@ import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallet } from "@lightdotso/client";
-import { WalletOverviewBannerSparkline } from "./WalletOverviewBannerSparkline";
+import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparkline";
 import { Suspense } from "react";
+import { NetworkStack } from "@/components/network-stack";
 
 export function WalletOverviewBanner({ address }: { address: Address }) {
   const [isCopied, copy] = useCopy();
@@ -87,7 +88,7 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
                 <Tooltip>
                   <TooltipTrigger>
                     <button
-                      className="flex items-center rounded-md bg-muted px-3 py-1.5"
+                      className="flex items-center rounded-md bg-muted px-3 py-2"
                       onClick={() => {
                         return copy(address);
                       }}
@@ -106,25 +107,37 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
                     </TooltipContent>
                   </TooltipTrigger>
                 </Tooltip>
-                <Suspense fallback={null}>
-                  <WalletOverviewBannerSparkline address={address} />
-                </Suspense>
+                <div className="flex justify-start">
+                  <NetworkStack address={address} />
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="mt-4 flex items-center gap-x-4 md:mt-10 lg:mt-0 lg:shrink-0">
-          <Button className="mt-6 rounded-full p-3" variant="outline">
-            <Share className="h-4 w-4" />
-            <span className="sr-only">Open share modal</span>
-          </Button>
-          <Button className="mt-6 rounded-full p-3" variant="outline">
-            <Send className="h-4 w-4" />
-            <span className="sr-only">Open send modal</span>
-          </Button>
-          <Button type="button" className="mt-6 w-full" onClick={() => {}}>
-            Deposit
-          </Button>
+        <div className="flex flex-col space-y-4">
+          <div className="mt-4 flex items-center justify-end gap-x-2 lg:mt-0">
+            <Button size="sm" className="rounded-full p-3" variant="outline">
+              <Share className="h-3 w-3" />
+              <span className="sr-only">Open share modal</span>
+            </Button>
+            <Button size="sm" className="rounded-full p-3" variant="outline">
+              <Send className="h-3 w-3" />
+              <span className="sr-only">Open send modal</span>
+            </Button>
+            <Button
+              size="sm"
+              type="button"
+              className="w-full md:w-24"
+              onClick={() => {}}
+            >
+              Deposit
+            </Button>
+          </div>
+          <div className="w-96 rounded-md border border-input bg-card px-6 py-4">
+            <Suspense fallback={null}>
+              <WalletOverviewBannerSparkline address={address} />
+            </Suspense>
+          </div>
         </div>
       </div>
     </TooltipProvider>

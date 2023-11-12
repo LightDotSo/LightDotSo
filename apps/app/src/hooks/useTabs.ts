@@ -63,7 +63,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
   }, []);
 
   const { data } = useSuspenseQuery({
-    queryKey: ["walletTab", walletAddress],
+    queryKey: ["wallet_tab", walletAddress],
     queryFn: async () => {
       if (!walletAddress) {
         return null;

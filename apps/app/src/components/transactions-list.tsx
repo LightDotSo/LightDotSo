@@ -15,7 +15,7 @@
 
 "use client";
 
-import { OpCard } from "@/app/(wallet)/[address]/transactions/op-card";
+import { OpCard } from "@/components/op-card";
 import { getUserOperations } from "@lightdotso/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Address } from "viem";

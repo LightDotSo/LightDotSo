@@ -13,18 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  NewRoot,
-  StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root";
-import { ConfigurationForm } from "@/app/(authenticated)/new/configuration/configuration-form";
+"use client";
 
-export default async function Page() {
+import { Button } from "@lightdotso/ui";
+import invokePortfolioAction from "@/actions/invokePortfolioAction";
+import type { Address } from "viem";
+import { successToast } from "@/utils/toast";
+import { RefreshCcw } from "lucide-react";
+
+export function InvokePortfolioButton({ address }: { address: Address }) {
   return (
-    <>
-      <NewRoot currentStepType={StepsEnum.Configuration}>
-        <ConfigurationForm />
-      </NewRoot>
-    </>
+    <Button
+      variant="outline"
+      className="py-5"
+      onClick={() => {
+        invokePortfolioAction(address as Address);
+        successToast("Refreshed");
+      }}
+    >
+      <RefreshCcw className="h-4 w-4 text-muted-foreground" />
+    </Button>
   );
 }

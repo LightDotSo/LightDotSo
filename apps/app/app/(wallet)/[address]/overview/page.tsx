@@ -19,10 +19,10 @@ import { handler } from "@/handlers/paths/[address]";
 import { handler as pageHandler } from "@/handlers/paths/[address]/page";
 import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { InvokePortfolioButton } from "@/app/(wallet)/[address]/(components)/InvokePortfolioButton";
 import { type Address } from "viem";
-import { PortfolioChart } from "@/app/(wallet)/[address]/(components)/PortfolioChart";
+// import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/portfolio-chart";
 import { Suspense } from "react";
+import { TokensList } from "@/components/tokens-list";
 
 export default async function Page({
   params,
@@ -52,15 +52,12 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense>
+      {/* <Suspense>
         <PortfolioChart address={params.address as Address} />
+      </Suspense> */}
+      <Suspense>
+        <TokensList address={params.address as Address} />
       </Suspense>
-      <div>
-        <pre>
-          <code>{JSON.stringify(tokens, null, 2)}</code>
-        </pre>
-        <InvokePortfolioButton address={params.address as Address} />
-      </div>
     </HydrationBoundary>
   );
 }
