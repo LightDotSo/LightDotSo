@@ -71,7 +71,7 @@ export const NetworkItem: FC<NetworkItemProps> = ({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt={networkId}
+          alt={networkId.toString()}
           src={`https://icons.llamao.fi/icons/chains/rsz_${
             name === "homestead"
               ? "ethereum"

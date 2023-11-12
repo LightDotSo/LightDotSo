@@ -23,6 +23,7 @@ type TokenCardProps = {
   address: string;
   token: {
     address: string;
+    chain_id: number;
     amount: number;
     balance_usd: number;
     decimals: number;

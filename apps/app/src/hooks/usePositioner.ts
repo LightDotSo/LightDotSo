@@ -13,12 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { MutableRefObject } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { Instance } from "@popperjs/core";
 import { createPopper } from "@popperjs/core";
-import { useRef, useEffect, useCallback, useState } from "react";
+
+interface PositionPopoverConfig {
+  popoverRef: MutableRefObject<HTMLElement | null>;
+  targetEl: HTMLElement;
+  placement?: string;
+  offset?: [number, number];
+  applyStyles?: (state: any) => void;
+  gpuAcceleration?: boolean;
+}
 
 export const usePositioner = () => {
-  const popperJSRef = useRef(null);
-  const [position, setPosition] = useState(null);
+  const popperJSRef: MutableRefObject<Instance | null> =
+    useRef<Instance | null>(null);
+  const [position, setPosition] = useState<string | null>(null);
 
   useEffect(() => {
     if (popperJSRef.current) {
@@ -27,7 +39,7 @@ export const usePositioner = () => {
     }
   }, []);
 
-  const updateTarget = useCallback(targetEl => {
+  const updateTarget = useCallback((targetEl: HTMLElement) => {
     if (popperJSRef.current) {
       popperJSRef.current.state.elements.reference = targetEl;
       popperJSRef.current.update();
@@ -42,7 +54,7 @@ export const usePositioner = () => {
       offset,
       applyStyles,
       gpuAcceleration = true,
-    }) => {
+    }: PositionPopoverConfig) => {
       if (popperJSRef.current) {
         popperJSRef.current.destroy();
         popperJSRef.current = null;
@@ -79,7 +91,7 @@ export const usePositioner = () => {
           name: "updateState",
           enabled: true,
           phase: "write",
-          fn: ({ state }) => {
+          fn: ({ state }: { state: any }) => {
             setPosition(state.placement);
           },
           requires: ["computeStyles"],
@@ -98,9 +110,14 @@ export const usePositioner = () => {
         });
       }
 
+      if (!popoverRef.current) {
+        return;
+      }
+
       popperJSRef.current = createPopper(targetEl, popoverRef.current, {
+        // @ts-ignore
         placement,
-        //@ts-ignore
+        // @ts-ignore
         modifiers,
       });
     },
