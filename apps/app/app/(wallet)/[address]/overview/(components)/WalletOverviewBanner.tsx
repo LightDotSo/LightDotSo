@@ -37,7 +37,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallet } from "@lightdotso/client";
 import { WalletOverviewBannerSparkline } from "./WalletOverviewBannerSparkline";
 import { Suspense } from "react";
-import { NetworkStack } from "@/components/networ-stack";
+import { NetworkStack } from "@/components/network-stack";
 
 export function WalletOverviewBanner({ address }: { address: Address }) {
   const [isCopied, copy] = useCopy();

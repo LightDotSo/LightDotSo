@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// From: OG Light https://github.com/LightDotSo/LightDotSo/blob/026cc175225642102c708bd7c7f5d76dc222d62c/apps/app/src/components/NetworkTooltip/NetworkTooltip.tsx
+
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import type { FC, ReactNode } from "react";
