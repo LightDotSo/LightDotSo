@@ -57,7 +57,7 @@ export function WalletOverviewBannerSparkline({
 
   return (
     <div className="flex flex-row items-center justify-between space-x-4">
-      <div className="flex flex-col justify-start space-y-1">
+      <div className="flex flex-col justify-start space-y-1.5">
         <span className="text-sm">Total Value</span>
         <span className="text-xl font-bold text-primary">
           $
@@ -73,6 +73,7 @@ export function WalletOverviewBannerSparkline({
               : "bg-red-500",
           )}
         >
+          {portfolio.balance_change_24h < 0 ? "-" : "+"}
           {portfolio.balance_change_24h_percentage &&
           portfolio.balance_change_24h_percentage !== 0
             ? portfolio.balance_change_24h_percentage.toFixed(2)
@@ -80,7 +81,7 @@ export function WalletOverviewBannerSparkline({
           %&nbsp;
           <span className="text-xs">
             {portfolio.balance_change_24h && portfolio.balance_change_24h
-              ? `${portfolio.balance_change_24h < 0 ? "-" : ""}$(${Math.abs(
+              ? `(${portfolio.balance_change_24h < 0 ? "-" : "+"}$${Math.abs(
                   portfolio.balance_change_24h,
                 ).toFixed(3)})`
               : ""}
