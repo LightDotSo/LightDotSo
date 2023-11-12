@@ -26,4 +26,3 @@ ignores:
   - eslint-plugin-turbo
   - immer
   - "@lightdotso/wagmi"
-  - "@covalenthq/client-sdk"
