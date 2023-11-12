@@ -20,7 +20,13 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { getTokenPrice } from "@lightdotso/client";
 import { SparkAreaChart } from "@tremor/react";
 
-export function TokenCardSparkline({ address }: { address: Address }) {
+export function TokenCardSparkline({
+  address,
+  chain_id,
+}: {
+  address: Address;
+  chain_id: number;
+}) {
   const { data: token_price } = useSuspenseQuery({
     queryKey: ["token_price", address],
     queryFn: async () => {
@@ -32,7 +38,7 @@ export function TokenCardSparkline({ address }: { address: Address }) {
         params: {
           query: {
             address: address,
-            chain_id: 137,
+            chain_id: chain_id,
           },
         },
       });

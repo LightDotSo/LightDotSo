@@ -17,6 +17,7 @@ import { TableCell, TableRow } from "@lightdotso/ui";
 import { TokenCardSparkline } from "./token-card-sparkline";
 import { TokenCardActions } from "./token-card-actions";
 import { Suspense } from "react";
+import type { Address } from "viem";
 
 type TokenCardProps = {
   address: string;
@@ -39,7 +40,7 @@ export const separateFloat = (x: number) => {
 };
 
 export function TokenCard({
-  token: { balance_usd, name, symbol, amount, decimals, address },
+  token: { balance_usd, name, symbol, amount, decimals, address, chain_id },
 }: TokenCardProps) {
   return (
     <TableRow key={name}>
@@ -54,11 +55,14 @@ export function TokenCard({
       <TableCell>${balance_usd.toFixed(2)}</TableCell>
       <TableCell>
         <Suspense fallback={null}>
-          <TokenCardSparkline address={address}></TokenCardSparkline>
+          <TokenCardSparkline
+            address={address as Address}
+            chain_id={chain_id}
+          ></TokenCardSparkline>
         </Suspense>
       </TableCell>
       <TableCell className="text-right">
-        <TokenCardActions address={address}></TokenCardActions>
+        <TokenCardActions address={address as Address}></TokenCardActions>
       </TableCell>
     </TableRow>
   );

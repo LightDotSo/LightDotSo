@@ -393,6 +393,8 @@ export interface components {
       amount: number;
       /** Format: double */
       balance_usd: number;
+      /** Format: int64 */
+      chain_id: number;
       /** Format: int32 */
       decimals: number;
       name?: string | null;
