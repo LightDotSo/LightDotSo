@@ -15,25 +15,24 @@
 
 "use client";
 
-import { getTokens } from "@lightdotso/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TokenCard } from "@/components/token-card";
-import { TokensEmpty } from "@/components/tokens-empty";
-import { TokensWrapper } from "@/components/tokens-wrapper";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getTokenPrice } from "@lightdotso/client";
+import { SparkAreaChart } from "@tremor/react";
 
-export type TokensListProps = {
-  address: Address;
-};
-
-export function TokensList({ address }: TokensListProps) {
-  const { data } = useSuspenseQuery({
-    queryKey: ["tokens", address],
+export function TokenCardSparkline({ address }: { address: Address }) {
+  const { data: token_price } = useSuspenseQuery({
+    queryKey: ["token_price", address],
     queryFn: async () => {
-      const res = await getTokens({
+      if (!address) {
+        return null;
+      }
+
+      const res = await getTokenPrice({
         params: {
           query: {
-            address,
+            address: address,
+            chain_id: 137,
           },
         },
       });
@@ -43,20 +42,28 @@ export function TokensList({ address }: TokensListProps) {
         data => {
           return data;
         },
-        err => {
-          throw err;
-        },
+        _ => null,
       );
     },
   });
 
+  if (!token_price) {
+    return null;
+  }
+
   return (
-    <TokensWrapper>
-      {data && data.length === 0 && <TokensEmpty></TokensEmpty>}
-      {data &&
-        data.map(token => (
-          <TokenCard key={token.address} address={address} token={token} />
-        ))}
-    </TokensWrapper>
+    <SparkAreaChart
+      data={[...token_price.prices].reverse()}
+      categories={["balance"]}
+      index="date"
+      colors={[
+        token_price.price_change_24h && token_price.price_change_24h > 0
+          ? "emerald"
+          : "red",
+      ]}
+      className="h-8 w-24"
+      // @ts-expect-error
+      showAnimation
+    />
   );
 }

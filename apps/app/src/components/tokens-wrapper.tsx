@@ -13,10 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@lightdotso/ui";
+
 type TokensWrapperProps = {
   children: React.ReactNode;
 };
 
 export function TokensWrapper({ children }: TokensWrapperProps) {
-  return <div className="flex w-full flex-col space-y-4">{children}</div>;
+  return (
+    <div className="rounded-md border border-input bg-card">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Balance</TableHead>
+            <TableHead>Chart</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>{children}</TableBody>
+      </Table>
+    </div>
+  );
 }

@@ -13,18 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  Avatar,
-  AvatarFallback,
-  Button,
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-  buttonVariants,
-} from "@lightdotso/ui";
-import Link from "next/link";
-import { cn } from "@lightdotso/utils";
+import { TableCell, TableRow } from "@lightdotso/ui";
+import { TokenCardSparkline } from "./token-card-sparkline";
+import { Suspense } from "react";
 
 type TokenCardProps = {
   address: string;
@@ -38,41 +29,34 @@ type TokenCardProps = {
   };
 };
 
-export function TokenCard({ address, token }: TokenCardProps) {
+export const shortenName = (name: string) => {
+  return name.match(/\b\w/g)?.join("").substring(0, 3);
+};
+
+export const separateFloat = (x: number) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export function TokenCard({
+  token: { balance_usd, name, symbol, amount, decimals, address },
+}: TokenCardProps) {
   return (
-    <Accordion key={token.address} type="single" collapsible>
-      <AccordionItem className="w-full border-none" value="item-1">
-        <div key={token.address} className="flex items-center p-4">
-          <Avatar className="h-9 w-9">
-            <AvatarFallback>{token.symbol}</AvatarFallback>
-          </Avatar>
-          <div className="ml-4 space-y-1">
-            <p className="text-sm font-medium leading-none">{token.name}</p>
-            <p className="text-sm text-muted-foreground">{token.symbol}</p>
-          </div>
-          <div className="ml-auto font-medium">
-            <AccordionTrigger>
-              <span
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "sm" }),
-                  "hover:bg-transparent",
-                )}
-              >
-                ${token.balance_usd}
-              </span>
-            </AccordionTrigger>
-          </div>
-        </div>
-        <AccordionContent className="bg-accent px-4 pt-4">
-          <div className="flex w-full justify-end">
-            <Button asChild>
-              <Link href={`/${address}/op/${token.symbol}/${token.symbol}`}>
-                Confirm
-              </Link>
-            </Button>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <TableRow key={name}>
+      <TableCell className="font-medium">
+        <span className="mr-1.5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-input bg-muted">
+          <span className="overflow-hidden text-ellipsis text-xs leading-none text-muted-foreground">
+            {shortenName(name ?? symbol)}
+          </span>
+        </span>{" "}
+        {(amount / 10 ** decimals).toFixed(3)} {symbol}
+      </TableCell>
+      <TableCell>${balance_usd.toFixed(2)}</TableCell>
+      <TableCell>
+        <Suspense fallback={null}>
+          <TokenCardSparkline address={address}></TokenCardSparkline>
+        </Suspense>
+      </TableCell>
+      <TableCell className="text-right">{balance_usd}</TableCell>
+    </TableRow>
   );
 }
