@@ -371,6 +371,9 @@ importers:
       '@opentelemetry/semantic-conventions':
         specifier: ^1.18.1
         version: 1.18.1
+      '@popperjs/core':
+        specifier: ^2.11.8
+        version: 2.11.8
       '@prisma/client':
         specifier: ^5.5.2
         version: 5.5.2(prisma@5.5.2)
