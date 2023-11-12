@@ -16,8 +16,8 @@
 "use client";
 
 import { cn } from "@lightdotso/utils";
-import type { Step } from "@/app/(authenticated)/new/root";
-import { steps, StepsEnum } from "@/app/(authenticated)/new/root";
+import type { Step } from "@/app/(authenticated)/new/(components)/root";
+import { steps, StepsEnum } from "@/app/(authenticated)/new/(components)/root";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -29,7 +29,7 @@ import {
   useSaltQueryState,
   useThresholdQueryState,
   useTypeQueryState,
-} from "@/app/(authenticated)/new/hooks";
+} from "@/app/(authenticated)/new/(hooks)";
 
 interface RootLinkProps {
   stepType: StepsEnum;

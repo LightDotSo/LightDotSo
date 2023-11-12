@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { LinkButtonGroup } from "@/components/link-button-group";
-import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/WalletOverviewBanner";
-import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/InvokePortfolioButton";
+import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner";
+import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/invoke-portfolio-button";
 import type { Address } from "viem";
 
 const overviewNavItems = [

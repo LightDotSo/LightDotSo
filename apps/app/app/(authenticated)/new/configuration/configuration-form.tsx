@@ -42,7 +42,7 @@ import {
   Separator,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "@/app/(authenticated)/new/root";
+import { steps } from "@/app/(authenticated)/new/(components)/root";
 import { useRouter } from "next/navigation";
 import { useEffect, useCallback, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -64,8 +64,8 @@ import {
   useSaltQueryState,
   useThresholdQueryState,
   useTypeQueryState,
-} from "@/app/(authenticated)/new/hooks";
-import type { Owner, Owners } from "@/app/(authenticated)/new/hooks";
+} from "@/app/(authenticated)/new/(hooks)";
+import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { useAuth } from "@/stores/useAuth";
 
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;

@@ -20,7 +20,7 @@ import { handler as pageHandler } from "@/handlers/paths/[address]/page";
 import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { type Address } from "viem";
-import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/PortfolioChart";
+import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/portfolio-chart";
 import { Suspense } from "react";
 import { TokensList } from "@/components/tokens-list";
 

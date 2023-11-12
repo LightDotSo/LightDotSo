@@ -35,7 +35,7 @@ import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallet } from "@lightdotso/client";
-import { WalletOverviewBannerSparkline } from "./WalletOverviewBannerSparkline";
+import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparkline";
 import { Suspense } from "react";
 import { NetworkStack } from "@/components/network-stack";
 
@@ -88,7 +88,7 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
                 <Tooltip>
                   <TooltipTrigger>
                     <button
-                      className="flex items-center rounded-md bg-muted px-3 py-1.5"
+                      className="flex items-center rounded-md bg-muted px-3 py-2"
                       onClick={() => {
                         return copy(address);
                       }}

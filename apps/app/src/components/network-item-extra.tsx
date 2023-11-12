@@ -48,12 +48,12 @@ export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
       onMouseEnter={onMouseEnter}
     >
       <button
-        className="mr-1.5 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border-2 border-bg-darker bg-bg-lighter text-base font-extrabold text-contrast-high hover:bg-bg-light hover:text-contrast-higher"
+        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-input bg-card text-base font-extrabold text-primary"
         onClick={e => {
           e.stopPropagation();
         }}
       >
-        <span>+{length - 6}</span>
+        <span>+{length}</span>
       </button>
     </m.li>
   );

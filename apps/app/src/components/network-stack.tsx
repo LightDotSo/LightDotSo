@@ -25,11 +25,12 @@ import { NetworkTooltip } from "./network-tooltip";
 import type { Address, Chain } from "viem";
 import {
   arbitrum,
-  arbitrumGoerli,
   polygon,
-  polygonMumbai,
   optimism,
-  optimismGoerli,
+  mainnet,
+  base,
+  avalanche,
+  gnosis,
 } from "wagmi/chains";
 
 const reducer = (state: any, action: any) => {
@@ -75,16 +76,16 @@ export const NetworkStack: FC<NetworkStackProps> = ({ address, id }) => {
   }, []);
 
   const networks: Chain[] = [
+    mainnet,
     arbitrum,
-    arbitrumGoerli,
     polygon,
-    polygonMumbai,
     optimism,
-    optimismGoerli,
+    base,
+    avalanche,
+    gnosis,
   ];
 
   const NETWORK_STACK_NUMBER = 6;
-  const MAXIMUM_NETWORK_STACK_NUMBER = 5;
 
   return (
     <div
@@ -108,6 +109,7 @@ export const NetworkStack: FC<NetworkStackProps> = ({ address, id }) => {
                 <NetworkItem
                   key={id}
                   id={id.toString()}
+                  address={address}
                   network={network}
                   onMouseEnter={select}
                 />
@@ -118,8 +120,8 @@ export const NetworkStack: FC<NetworkStackProps> = ({ address, id }) => {
               key={id}
               id={String(networks?.length)}
               length={
-                networks?.length > MAXIMUM_NETWORK_STACK_NUMBER
-                  ? MAXIMUM_NETWORK_STACK_NUMBER + NETWORK_STACK_NUMBER
+                networks?.length > NETWORK_STACK_NUMBER
+                  ? networks?.length - NETWORK_STACK_NUMBER
                   : networks?.length
               }
               onMouseEnter={select}

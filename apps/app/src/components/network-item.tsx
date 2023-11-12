@@ -15,12 +15,12 @@
 
 import clsx from "clsx";
 import { m } from "framer-motion";
-import Link from "next/link";
 import type { FC, MouseEventHandler } from "react";
 import s from "./network-item.module.css";
-import type { Chain } from "viem";
+import type { Address, Chain } from "viem";
 
 export type NetworkItemProps = {
+  address: Address;
   className?: string;
   id: string;
   onMouseEnter?: MouseEventHandler<HTMLLIElement>;
@@ -28,12 +28,13 @@ export type NetworkItemProps = {
 };
 
 export const NetworkItem: FC<NetworkItemProps> = ({
+  address,
   className,
   id,
   network,
   onMouseEnter,
 }) => {
-  const { id: networkId, name } = network;
+  const { id: networkId, network: name, blockExplorers } = network;
 
   const item = {
     visible: { opacity: 1, x: 0 },
@@ -56,21 +57,30 @@ export const NetworkItem: FC<NetworkItemProps> = ({
       }}
       onMouseEnter={onMouseEnter}
     >
-      <Link
-        passHref
-        href={`/${networkId}`}
+      <a
+        target="_blank"
+        rel="noreferrer"
+        href={`${blockExplorers?.default.url}/address/${address}`}
         className={clsx(
-          "flex h-12 w-12 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-bg-darker bg-bg-lighter text-3xl hover:bg-contrast-lower",
+          "flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-input bg-card hover:bg-muted",
           s.transitionfix,
         )}
         onClick={e => {
           return e.stopPropagation();
         }}
       >
-        <span className="text-sm font-semibold leading-none text-contrast-low">
-          {name}
-        </span>
-      </Link>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={networkId}
+          src={`https://icons.llamao.fi/icons/chains/rsz_${
+            name === "homestead"
+              ? "ethereum"
+              : name === "matic"
+              ? "polygon"
+              : name
+          }.jpg`}
+        ></img>
+      </a>
     </m.li>
   );
 };
