@@ -56,9 +56,10 @@ export function WalletOverviewBannerSparkline({
   }
 
   return (
-    <div className="flex flex-row items-center justify-start space-x-4">
-      <div className="flex items-center space-x-2.5">
-        <span className="text-2xl font-bold tracking-tighter text-primary sm:text-3xl">
+    <div className="flex flex-row items-center justify-between space-x-4">
+      <div className="flex flex-col justify-start space-y-1">
+        <span className="text-sm">Total Value</span>
+        <span className="text-xl font-bold text-primary">
           $
           {portfolio.balances && portfolio.balance && portfolio.balance !== 0
             ? portfolio.balance.toFixed(2)
@@ -66,7 +67,7 @@ export function WalletOverviewBannerSparkline({
         </span>
         <span
           className={cn(
-            "px-2 py-1 text-sm font-medium rounded text-white",
+            "px-1.5 text-xs font-medium rounded text-white",
             portfolio.balance_change_24h && portfolio.balance_change_24h > 0
               ? "bg-emerald-500"
               : "bg-red-500",
@@ -95,7 +96,7 @@ export function WalletOverviewBannerSparkline({
             ? "emerald"
             : "red",
         ]}
-        className="h-8 w-14"
+        className="h-8 w-full"
         // @ts-expect-error
         showAnimation
       />
