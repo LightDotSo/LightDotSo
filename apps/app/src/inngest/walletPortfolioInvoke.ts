@@ -15,6 +15,15 @@
 
 import { inngest } from "@/inngest/client";
 import { NonRetriableError } from "inngest";
+import type { Chain } from "@covalenthq/client-sdk";
+
+export const ChainIdMapping: Record<number, Chain> = {
+  1: "eth-mainnet",
+  10: "optimism-mainnet",
+  100: "gnosis-mainnet",
+  137: "matic-mainnet",
+  8453: "base-mainnet",
+};
 
 export const walletPortfolioInvoke = inngest.createFunction(
   {
@@ -41,6 +50,19 @@ export const walletPortfolioInvoke = inngest.createFunction(
       }
 
       return data;
+    });
+
+    // For each chainId in the `ChainIdMapping`, send an `wallet/portfolio.covalent.set` event.
+    // with the array of chainIds.
+    const chainIds = Object.keys(ChainIdMapping).map(chainId => {
+      return parseInt(chainId);
+    });
+    await step.sendEvent("Set the portfolio", {
+      name: "wallet/portfolio.covalent.set",
+      data: {
+        address: wallet!.address,
+        chainIds,
+      },
     });
 
     await step.sendEvent("Update the portfolio ", {

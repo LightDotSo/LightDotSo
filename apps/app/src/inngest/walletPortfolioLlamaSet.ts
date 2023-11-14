@@ -21,7 +21,7 @@ import { getAddress } from "viem";
 
 export const walletPortfolioLlamaSet = inngest.createFunction(
   {
-    id: "wallet-portfolio-set",
+    id: "wallet-portfolio-llama-set",
     debounce: {
       key: "event.data.address",
       period: "30s",
@@ -29,7 +29,7 @@ export const walletPortfolioLlamaSet = inngest.createFunction(
     rateLimit: {
       key: "event.data.address",
       limit: 1,
-      period: "1m",
+      period: "30m",
     },
   },
   { event: "wallet/portfolio.llama.set" },

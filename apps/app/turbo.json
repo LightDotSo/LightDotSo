@@ -5,6 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "env": [
+        "COVALENT_API_KEY",
         "DATABASE_URL",
         "LIGHT_ADMIN_TOKEN",
         "LIGHT_RPC_TOKEN",

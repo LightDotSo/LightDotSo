@@ -23,6 +23,12 @@ const eventsMap = {
       address: z.string(),
     }),
   },
+  "wallet/portfolio.covalent.set": {
+    data: z.object({
+      address: z.string(),
+      chainIds: z.array(z.number()),
+    }),
+  },
   "wallet/portfolio.llama.set": {
     data: z.object({
       address: z.string(),
