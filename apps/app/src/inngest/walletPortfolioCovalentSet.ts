@@ -18,6 +18,7 @@ import type { Chain } from "@covalenthq/client-sdk";
 import { CovalentClient } from "@covalenthq/client-sdk";
 import { ChainIdMapping } from "./walletPortfolioInvoke";
 import { NonRetriableError } from "inngest";
+import { getAddress } from "viem";
 
 export const walletPortfolioCovalentSet = inngest.createFunction(
   {
@@ -51,18 +52,24 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
             chain,
             event.data.address,
           );
+        const portfolioItems = portfolio.data.items.map(item => {
+          // Replace the addresses of `0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee` with `0x0000000000000000000000000000000000000000`
+          // This is because Covalent uses the former for ETH, but we use the latter.
+          if (
+            item.contract_address ===
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+          ) {
+            item.contract_address =
+              "0x0000000000000000000000000000000000000000";
+          }
+          return item;
+        });
         const chainId = portfolio.data.chain_id;
-
-        // For loop for each token
-        for (const token of portfolio.data.items) {
-          // Get the token balance
-          console.info(token);
-        }
 
         // Create tokens if they don't exist
         await prisma.token.createMany({
-          data: portfolio.data.items.map(balance => ({
-            address: balance.contract_address,
+          data: portfolioItems.map(balance => ({
+            address: getAddress(balance.contract_address),
             chainId: chainId,
             name: balance.contract_name,
             symbol: balance.contract_ticker_symbol,
@@ -72,27 +79,28 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
         });
 
         // Get the token ids
-        const tokenIds = await prisma.token.findMany({
+        const tokens = await prisma.token.findMany({
           where: {
-            address: {
-              in: portfolio.data.items.map(balance => balance.contract_address),
-            },
-          },
-          select: {
-            id: true,
-            address: true,
+            chainId: chainId,
           },
         });
 
-        // Map the token ids to the token balances
-        const tokenBalances = portfolio.data.items.map(balance => {
-          const tokenId = tokenIds.find(
-            token => token.address === balance.contract_address,
-          )?.id;
+        // First, filter out portfolio items that have associated tokens.
+        const validItems = portfolioItems.filter(balance =>
+          tokens.some(
+            token => token.address === getAddress(balance.contract_address),
+          ),
+        );
+
+        // Next, map over those valid items.
+        const tokenBalances = validItems.map(balance => {
+          const token = tokens.find(
+            token => token.address === getAddress(balance.contract_address),
+          );
 
           return {
             ...balance,
-            tokenId: tokenId!,
+            tokenId: token!.id, // This will not fail as we already filtered out items without tokens.
           };
         });
 
