@@ -19,7 +19,7 @@ import { NonRetriableError } from "inngest";
 import { ChainIds } from "@lightdotso/const";
 import { getAddress } from "viem";
 
-export const walletPortfolioSet = inngest.createFunction(
+export const walletPortfolioLlamaSet = inngest.createFunction(
   {
     id: "wallet-portfolio-set",
     debounce: {
@@ -32,7 +32,7 @@ export const walletPortfolioSet = inngest.createFunction(
       period: "1m",
     },
   },
-  { event: "wallet/portfolio.set" },
+  { event: "wallet/portfolio.llama.set" },
   async ({ event, step, prisma }) => {
     const wallet = await step.run("Find wallet in db", async () => {
       const data = prisma.wallet.findUnique({
@@ -51,7 +51,7 @@ export const walletPortfolioSet = inngest.createFunction(
     });
 
     await step.sendEvent("Update the portfolio invoke", {
-      name: "wallet/portfolio.update",
+      name: "wallet/portfolio.llama.update",
       data: {
         address: wallet!.address,
         // Hardcoded service id to respect the `wallet/portfolio.update` event rate limit

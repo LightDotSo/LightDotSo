@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { walletPortfolioSet } from "./walletPortfolioSet";
+export { walletPortfolioLlamaSet } from "./walletPortfolioLlamaSet";
 export { walletPortfolioInvoke } from "./walletPortfolioInvoke";
 export { walletPortfolioCron } from "./walletPortfolioCron";
-export { walletPortfolioUpdate } from "./walletPortfolioUpdate";
+export { walletPortfolioLlamaUpdate } from "./walletPortfolioLlamaUpdate";

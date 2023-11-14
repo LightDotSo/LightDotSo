@@ -44,7 +44,7 @@ export const walletPortfolioInvoke = inngest.createFunction(
     });
 
     await step.sendEvent("Update the portfolio ", {
-      name: "wallet/portfolio.update",
+      name: "wallet/portfolio.llama.update",
       data: {
         address: wallet!.address,
         service_id: event.ts!.toString(),
@@ -52,7 +52,7 @@ export const walletPortfolioInvoke = inngest.createFunction(
     });
 
     await step.sendEvent("Set and update the portfolio", {
-      name: "wallet/portfolio.set",
+      name: "wallet/portfolio.llama.set",
       data: {
         address: wallet!.address,
         service_id: event.name,
