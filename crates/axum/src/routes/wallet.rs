@@ -477,10 +477,12 @@ async fn v1_wallet_post_handler(
                 .create_many(
                     owners
                         .iter()
-                        .map(|owner| {
+                        .enumerate()
+                        .map(|(index, owner)| {
                             lightdotso_prisma::owner::create_unchecked(
                                 to_checksum(&owner.address.parse::<H160>().unwrap(), None),
                                 owner.weight.into(),
+                                index as i32,
                                 configuration_data.clone().id,
                                 vec![lightdotso_prisma::owner::user_id::set(Some(
                                     user_data

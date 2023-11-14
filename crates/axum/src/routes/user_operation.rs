@@ -769,7 +769,9 @@ async fn v1_user_operation_signature_handler(
             wallet::configurations::fetch(vec![configuration::address::equals(
                 user_operation.clone().sender,
             )])
-            .with(configuration::owners::fetch(vec![])),
+            .with(
+                configuration::owners::fetch(vec![]).order_by(owner::weight::order(Direction::Asc)),
+            ),
         )
         .exec()
         .await?;
@@ -789,7 +791,8 @@ async fn v1_user_operation_signature_handler(
         .ok_or(AppError::NotFound)?;
     info!(?configuration);
 
-    let owners = configuration.owners.ok_or(AppError::NotFound)?;
+    let mut owners = configuration.owners.ok_or(AppError::NotFound)?;
+    owners.sort_by(|a, b| a.index.cmp(&b.index));
     info!(?owners);
     // Map the signatures into type from the user_operation
     let owners: Vec<UserOperationOwner> =

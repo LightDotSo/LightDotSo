@@ -47,6 +47,8 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     // The address of the wallet.
     pub address: String,
+    /// The flag to indicate if the token is a spam.
+    pub is_spam: Option<bool>,
 }
 
 /// Token operation errors
@@ -183,6 +185,8 @@ async fn v1_token_list_handler(
             wallet_balance::wallet_address::equals(checksum_address),
             wallet_balance::is_latest::equals(true),
             wallet_balance::chain_id::not(0),
+            wallet_balance::balance_usd::not(0.0),
+            wallet_balance::is_spam::equals(pagination.is_spam.unwrap_or(false)),
         ])
         .with(wallet_balance::token::fetch())
         .skip(pagination.offset.unwrap_or(0))
