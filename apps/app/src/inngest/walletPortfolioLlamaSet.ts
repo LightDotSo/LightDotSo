@@ -29,7 +29,7 @@ export const walletPortfolioLlamaSet = inngest.createFunction(
     rateLimit: {
       key: "event.data.address",
       limit: 1,
-      period: "30m",
+      period: "24h",
     },
   },
   { event: "wallet/portfolio.llama.set" },

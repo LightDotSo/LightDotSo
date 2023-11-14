@@ -36,7 +36,7 @@ export default async function Page({
   // ---------------------------------------------------------------------------
 
   await inngest.send({
-    name: "wallet/portfolio.set",
+    name: "wallet/portfolio.invoke",
     data: {
       address: params.address,
     },

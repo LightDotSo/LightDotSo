@@ -65,6 +65,7 @@ export const walletPortfolioInvoke = inngest.createFunction(
       },
     });
 
+    // Update the llama portfolio
     await step.sendEvent("Update the portfolio ", {
       name: "wallet/portfolio.llama.update",
       data: {
@@ -73,7 +74,8 @@ export const walletPortfolioInvoke = inngest.createFunction(
       },
     });
 
-    await step.sendEvent("Set and update the portfolio", {
+    // Set the llama portfolio
+    await step.sendEvent("Set the portfolio", {
       name: "wallet/portfolio.llama.set",
       data: {
         address: wallet!.address,

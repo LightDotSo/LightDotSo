@@ -32,7 +32,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
     },
   },
   { event: "wallet/portfolio.covalent.set" },
-  async ({ event, step, _prisma }) => {
+  async ({ event, step }) => {
     await step.run("Get Covalent", async () => {
       // Parse the chain names from the array of chainIds (e.g. [1, 137] => ["eth-mainnet", "matic-mainnet"])
       const chains = event.data.chainIds.map(chainId => {
