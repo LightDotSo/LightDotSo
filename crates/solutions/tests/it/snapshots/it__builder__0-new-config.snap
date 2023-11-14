@@ -1,0 +1,45 @@
+---
+source: crates/solutions/tests/it/builder.rs
+expression: new_config_tree
+---
+SignerNode {
+    signer: None,
+    left: Some(
+        SignerNode {
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        1,
+                    ),
+                    leaf: AddressSignature(
+                        AddressSignatureLeaf {
+                            address: 0x4fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed,
+                        },
+                    ),
+                },
+            ),
+            left: None,
+            right: None,
+        },
+    ),
+    right: Some(
+        SignerNode {
+            signer: Some(
+                Signer {
+                    weight: Some(
+                        1,
+                    ),
+                    leaf: ECDSASignature(
+                        ECDSASignatureLeaf {
+                            address: 0xa8c6ab690495efaec617cb90fda26cafe6fc66e9,
+                            signature_type: ECDSASignatureTypeEthSign,
+                            signature: 0x2395bc3e577accfb42eaa452519853a168ca8bd8267063b73957a684c2583a0066a37fe568c1d5e918e98d2a99d6d6e0f0b8448ff704283c7757a82fd37b9dfa1b,
+                        },
+                    ),
+                },
+            ),
+            left: None,
+            right: None,
+        },
+    ),
+}
