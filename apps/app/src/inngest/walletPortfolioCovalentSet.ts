@@ -137,6 +137,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
               tokenId: balance.tokenId,
               stable: balance.type === "stablecoin",
               isLatest: true,
+              isSpam: balance.is_spam,
             })),
           }),
         ]);
