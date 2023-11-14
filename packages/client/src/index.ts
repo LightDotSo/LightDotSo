@@ -51,8 +51,8 @@ const getClient = (isPublic?: boolean) =>
   process.env.LOCAL_ENV === "dev" || process.env.NEXT_PUBLIC_LOCAL_ENV === "dev"
     ? devApiClient
     : isPublic === undefined || isPublic
-    ? publicApiClient
-    : adminApiClient;
+      ? publicApiClient
+      : adminApiClient;
 
 export const getConfiguration = async (
   {

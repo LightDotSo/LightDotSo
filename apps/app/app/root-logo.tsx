@@ -30,11 +30,11 @@ export const RootLogo = () => {
         type === "unauthenticated"
           ? "/"
           : type === "authenticated"
-          ? "/wallets"
-          : // Get the wallet address from the path
-            // Address is the first part of the path
-            // e.g. /0x1234
-            `/${pathname.split("/")[1]}`
+            ? "/wallets"
+            : // Get the wallet address from the path
+              // Address is the first part of the path
+              // e.g. /0x1234
+              `/${pathname.split("/")[1]}`
       }
       className="hover:rounded-md hover:bg-accent"
     >

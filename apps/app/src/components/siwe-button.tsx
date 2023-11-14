@@ -121,9 +121,9 @@ export const SIWEButton = () => {
           {isRejected // User Rejected
             ? "Try Again"
             : isLoading // Waiting for signing request
-            ? "Awaiting request..."
-            : // Waiting for interaction
-              "Sign In"}
+              ? "Awaiting request..."
+              : // Waiting for interaction
+                "Sign In"}
         </Button>
       </>
     );

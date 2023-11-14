@@ -76,8 +76,8 @@ export const NetworkItem: FC<NetworkItemProps> = ({
             name === "homestead"
               ? "ethereum"
               : name === "matic"
-              ? "polygon"
-              : name
+                ? "polygon"
+                : name
           }.jpg`}
         ></img>
       </a>
