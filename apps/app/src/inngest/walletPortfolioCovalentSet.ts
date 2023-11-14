@@ -23,6 +23,9 @@ import { getAddress } from "viem";
 export const walletPortfolioCovalentSet = inngest.createFunction(
   {
     id: "wallet-portfolio-covalent-set",
+    concurrency: {
+      limit: 4,
+    },
     debounce: {
       key: "event.data.address",
       period: "3s",
