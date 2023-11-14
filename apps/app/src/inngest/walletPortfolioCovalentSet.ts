@@ -57,7 +57,9 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
           // This is because Covalent uses the former for ETH, but we use the latter.
           if (
             item.contract_address ===
-            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+              "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" ||
+            item.contract_address ===
+              "0x0000000000000000000000000000000000001010"
           ) {
             item.contract_address =
               "0x0000000000000000000000000000000000000000";
