@@ -189,7 +189,6 @@ export const walletPortfolioLlamaSet = inngest.createFunction(
             price: balance!.price,
             tokenId: balance!.tokenId,
           })),
-          skipDuplicates: true,
         });
 
         // First, create the portfolio transaction

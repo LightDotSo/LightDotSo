@@ -17,6 +17,7 @@ import { inngest } from "@/inngest/client";
 import type { Chain } from "@covalenthq/client-sdk";
 import { CovalentClient } from "@covalenthq/client-sdk";
 import { ChainIdMapping } from "./walletPortfolioInvoke";
+import { NonRetriableError } from "inngest";
 
 export const walletPortfolioCovalentSet = inngest.createFunction(
   {
@@ -32,7 +33,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
     },
   },
   { event: "wallet/portfolio.covalent.set" },
-  async ({ event, step }) => {
+  async ({ event, step, prisma }) => {
     await step.run("Get Covalent", async () => {
       // Parse the chain names from the array of chainIds (e.g. [1, 137] => ["eth-mainnet", "matic-mainnet"])
       const chains = event.data.chainIds.map(chainId => {
@@ -50,10 +51,118 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
             chain,
             event.data.address,
           );
+        const chainId = portfolio.data.chain_id;
 
-        // Log the portfolio for now
-        console.info(portfolio);
+        // For loop for each token
+        for (const token of portfolio.data.items) {
+          // Get the token balance
+          console.info(token);
+        }
+
+        // Create tokens if they don't exist
+        await prisma.token.createMany({
+          data: portfolio.data.items.map(balance => ({
+            address: balance.contract_address,
+            chainId: chainId,
+            name: balance.contract_name,
+            symbol: balance.contract_ticker_symbol,
+            decimals: balance.contract_decimals,
+          })),
+          skipDuplicates: true,
+        });
+
+        // Get the token ids
+        const tokenIds = await prisma.token.findMany({
+          where: {
+            address: {
+              in: portfolio.data.items.map(balance => balance.contract_address),
+            },
+          },
+          select: {
+            id: true,
+            address: true,
+          },
+        });
+
+        // Map the token ids to the token balances
+        const tokenBalances = portfolio.data.items.map(balance => {
+          const tokenId = tokenIds.find(
+            token => token.address === balance.contract_address,
+          )?.id;
+
+          return {
+            ...balance,
+            tokenId: tokenId!,
+          };
+        });
+
+        // Create token prices
+        await prisma.tokenPrice.createMany({
+          data: tokenBalances.map(balance => ({
+            price: balance.quote_rate,
+            tokenId: balance.tokenId,
+          })),
+        });
+
+        // Finally, create the balances of the tokens
+        await prisma.$transaction([
+          prisma.walletBalance.updateMany({
+            where: {
+              walletAddress: event.data.address,
+              chainId: chainId,
+            },
+            data: {
+              isLatest: false,
+            },
+          }),
+          prisma.walletBalance.createMany({
+            data: tokenBalances.map(balance => ({
+              walletAddress: event.data.address,
+              chainId: chainId,
+              balanceUSD: balance.quote,
+              amount: balance.balance,
+              tokenId: balance.tokenId,
+              stable: balance.type === "stablecoin",
+              isLatest: true,
+            })),
+          }),
+        ]);
       }
+    });
+
+    await step.run("Calculate the total balance", async () => {
+      // Get the total balance from the `isLatest` balances
+      const totalNetBalance = await prisma.walletBalance.aggregate({
+        where: {
+          walletAddress: event.data.address,
+          isLatest: true,
+        },
+        _sum: {
+          balanceUSD: true,
+        },
+      });
+
+      if (!totalNetBalance._sum.balanceUSD) {
+        throw new NonRetriableError("Sum not found", {
+          cause: new Error("no sum computed"),
+        });
+      }
+
+      // First, create the portfolio transaction
+      await prisma.$transaction([
+        prisma.walletBalance.updateMany({
+          where: { walletAddress: event.data.address, chainId: 0 },
+          data: { isLatest: false },
+        }),
+        prisma.walletBalance.create({
+          data: {
+            walletAddress: event.data.address,
+            chainId: 0,
+            balanceUSD: totalNetBalance._sum.balanceUSD,
+            isLatest: true,
+          },
+        }),
+      ]);
     });
   },
 );
