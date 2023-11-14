@@ -123,6 +123,7 @@ model Owner {
   id        String   @id @default(cuid())
   address   String
   weight    BigInt
+  index     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

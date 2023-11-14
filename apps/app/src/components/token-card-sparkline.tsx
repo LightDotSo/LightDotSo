@@ -28,7 +28,7 @@ export function TokenCardSparkline({
   chain_id: number;
 }) {
   const { data: token_price } = useSuspenseQuery({
-    queryKey: ["token_price", address],
+    queryKey: ["token_price", address, chain_id],
     queryFn: async () => {
       if (!address) {
         return null;
