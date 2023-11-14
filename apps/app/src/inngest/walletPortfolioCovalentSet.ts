@@ -149,6 +149,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
         where: {
           walletAddress: event.data.address,
           isLatest: true,
+          // Get only the total balances (chainId = 0)
           chainId: {
             not: 0,
           },
