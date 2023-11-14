@@ -23,7 +23,7 @@
     "clean": "rimraf -rf dist"
   },
   "dependencies": {
-    "viem": "^1.18.9"
+    "viem": "^1.19.1"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
