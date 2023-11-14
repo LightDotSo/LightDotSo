@@ -149,6 +149,9 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
         where: {
           walletAddress: event.data.address,
           isLatest: true,
+          chainId: {
+            not: 0,
+          },
         },
         _sum: {
           balanceUSD: true,
