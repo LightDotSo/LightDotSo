@@ -18,17 +18,23 @@ import { prismaMiddleware, sentryMiddleware } from "./middlewares";
 import { z } from "zod";
 
 const eventsMap = {
-  "wallet/portfolio.set": {
-    data: z.object({
-      address: z.string(),
-    }),
-  },
   "wallet/portfolio.invoke": {
     data: z.object({
       address: z.string(),
     }),
   },
-  "wallet/portfolio.update": {
+  "wallet/portfolio.covalent.set": {
+    data: z.object({
+      address: z.string(),
+      chainIds: z.array(z.number()),
+    }),
+  },
+  "wallet/portfolio.llama.set": {
+    data: z.object({
+      address: z.string(),
+    }),
+  },
+  "wallet/portfolio.llama.update": {
     data: z.object({
       address: z.string(),
       service_id: z.string(),

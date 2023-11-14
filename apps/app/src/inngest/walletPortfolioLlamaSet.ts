@@ -19,9 +19,9 @@ import { NonRetriableError } from "inngest";
 import { ChainIds } from "@lightdotso/const";
 import { getAddress } from "viem";
 
-export const walletPortfolioSet = inngest.createFunction(
+export const walletPortfolioLlamaSet = inngest.createFunction(
   {
-    id: "wallet-portfolio-set",
+    id: "wallet-portfolio-llama-set",
     debounce: {
       key: "event.data.address",
       period: "30s",
@@ -29,10 +29,10 @@ export const walletPortfolioSet = inngest.createFunction(
     rateLimit: {
       key: "event.data.address",
       limit: 1,
-      period: "1m",
+      period: "3h",
     },
   },
-  { event: "wallet/portfolio.set" },
+  { event: "wallet/portfolio.llama.set" },
   async ({ event, step, prisma }) => {
     const wallet = await step.run("Find wallet in db", async () => {
       const data = prisma.wallet.findUnique({
@@ -51,7 +51,7 @@ export const walletPortfolioSet = inngest.createFunction(
     });
 
     await step.sendEvent("Update the portfolio invoke", {
-      name: "wallet/portfolio.update",
+      name: "wallet/portfolio.llama.update",
       data: {
         address: wallet!.address,
         // Hardcoded service id to respect the `wallet/portfolio.update` event rate limit
@@ -189,7 +189,6 @@ export const walletPortfolioSet = inngest.createFunction(
             price: balance!.price,
             tokenId: balance!.tokenId,
           })),
-          skipDuplicates: true,
         });
 
         // First, create the portfolio transaction

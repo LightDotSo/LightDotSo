@@ -17,9 +17,10 @@ import { serve } from "inngest/next";
 import { inngest } from "@/inngest/client";
 import {
   walletPortfolioCron,
+  walletPortfolioCovalentSet,
   walletPortfolioInvoke,
-  walletPortfolioSet,
-  walletPortfolioUpdate,
+  walletPortfolioLlamaSet,
+  walletPortfolioLlamaUpdate,
 } from "@/inngest";
 
 // Create an API that serves zero functions
@@ -27,8 +28,9 @@ export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
     walletPortfolioCron,
+    walletPortfolioCovalentSet,
     walletPortfolioInvoke,
-    walletPortfolioSet,
-    walletPortfolioUpdate,
+    walletPortfolioLlamaSet,
+    walletPortfolioLlamaUpdate,
   ],
 });

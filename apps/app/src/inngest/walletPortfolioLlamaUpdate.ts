@@ -17,16 +17,16 @@ import { inngest } from "@/inngest/client";
 import { postLlama } from "@lightdotso/client";
 import { NonRetriableError } from "inngest";
 
-export const walletPortfolioUpdate = inngest.createFunction(
+export const walletPortfolioLlamaUpdate = inngest.createFunction(
   {
-    id: "wallet-portfolio-update",
+    id: "wallet-portfolio-llama-update",
     rateLimit: {
       key: `event.data.address + "-" + event.data.service_id`,
       limit: 1,
       period: "24h",
     },
   },
-  { event: "wallet/portfolio.update" },
+  { event: "wallet/portfolio.llama.update" },
   async ({ event, step, prisma }) => {
     const wallet = await step.run("Find wallet in db", async () => {
       const data = prisma.wallet.findUnique({

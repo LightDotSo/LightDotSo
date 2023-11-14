@@ -117,11 +117,11 @@ export function ConfigurationForm() {
         defaultOwner !== undefined && owners !== undefined && owners.length > 0
           ? owners
           : type === "personal"
-          ? [
-              { ...defaultOwner },
-              { address: undefined, addressOrEns: undefined, weight: 2 },
-            ]
-          : [defaultOwner],
+            ? [
+                { ...defaultOwner },
+                { address: undefined, addressOrEns: undefined, weight: 2 },
+              ]
+            : [defaultOwner],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultOwner]);
