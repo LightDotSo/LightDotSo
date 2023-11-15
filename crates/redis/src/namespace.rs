@@ -17,10 +17,5 @@ use lazy_static::lazy_static;
 
 // The wallet namesapce
 lazy_static! {
-    pub static ref WALLET: String = "wallet".to_string();
-}
-
-// The wallet namesapce
-lazy_static! {
-    pub static ref INDEXED_BLOCKS: String = "indexed_blocks".to_string();
+    pub static ref WALLETS: String = "wallets".to_string();
 }

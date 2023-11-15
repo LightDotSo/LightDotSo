@@ -33,7 +33,7 @@ export const walletRedisCron = inngest.createFunction(
 
       // Add the commands to the pipeline
       for (let wallet of wallets) {
-        pipe.sadd("wallet", wallet.address);
+        pipe.sadd("wallets", wallet.address);
       }
 
       // Execute the pipeline
