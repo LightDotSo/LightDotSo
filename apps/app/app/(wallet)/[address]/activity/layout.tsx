@@ -18,20 +18,20 @@ import { BannerSection } from "@/components/banner-section";
 import { TITLES } from "@/const/titles";
 
 export const metadata: Metadata = {
-  title: TITLES.Members.title,
-  description: TITLES.Members.description,
+  title: TITLES.Activity.title,
+  description: TITLES.Activity.description,
 };
 
-interface MembersLayoutProps {
+interface ActivityLayoutProps {
   children: React.ReactNode;
 }
 
-export default function MembersLayout({ children }: MembersLayoutProps) {
+export default function ActivityLayout({ children }: ActivityLayoutProps) {
   return (
     <>
       <BannerSection
-        title={TITLES.Members.title}
-        description={TITLES.Members.description}
+        title={TITLES.Activity.title}
+        description={TITLES.Activity.description}
       >
         {children}
       </BannerSection>

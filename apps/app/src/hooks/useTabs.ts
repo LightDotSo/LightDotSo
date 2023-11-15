@@ -95,7 +95,7 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
     return tabs.map(tab => {
       let number = 0;
-      if (tab.id === "members") {
+      if (tab.id === "owners") {
         number = data.owner_count;
       } else if (tab.id === "transactions") {
         number = data.transaction_count;

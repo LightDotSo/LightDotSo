@@ -17,7 +17,8 @@ enum Category {
   Transactions = "Transactions",
   Profile = "Profile",
   Settings = "Settings",
-  Members = "Members",
+  Activity = "Activity",
+  Owners = "Owners",
   Support = "Support",
 }
 
@@ -61,9 +62,14 @@ export const TITLES: Record<Category, CategoryObject> = {
       },
     },
   },
-  [Category.Members]: {
-    title: "Members",
-    description: "Manage and view your wallet members.",
+  [Category.Activity]: {
+    title: "Activity",
+    description: "View your wallet activity.",
+    subcategories: {},
+  },
+  [Category.Owners]: {
+    title: "Owners",
+    description: "Manage and view your wallet owners.",
     subcategories: {},
   },
   [Category.Support]: {

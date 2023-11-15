@@ -29,11 +29,6 @@ const overviewNavItems = [
     href: "/overview/nft",
     id: "nft",
   },
-  {
-    title: "History",
-    href: "/overview/history",
-    id: "history",
-  },
 ];
 
 export default function OverviewLayout({

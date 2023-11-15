@@ -38,6 +38,20 @@
   "files.associations": {
     ".gas-snapshot": "julia"
   },
+  // Json schema settings
+  // From: https://github.com/typehero/typehero/blob/83577d389c287e8c37ac03a02cf3d9e6ac1e3c6e/.vscode/settings.json#L4
+  // License: AGPL-3.0
+  "json.schemas": [
+    {
+      "fileMatch": ["tsconfig.*.json"],
+      "url": "https://json.schemastore.org/tsconfig"
+    },
+    { "fileMatch": ["turbo.json"], "url": "https://turbo.build/schema.json" },
+    {
+      "fileMatch": ["vercel.json"],
+      "url": "https://openapi.vercel.sh/vercel.json"
+    }
+  ],
   // Npm settings
   "npm.exclude": "**/lib/**",
   // Rust settings

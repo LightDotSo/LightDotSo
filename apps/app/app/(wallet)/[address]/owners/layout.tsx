@@ -13,34 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { usePathname } from "next/navigation";
+import type { Metadata } from "next";
+import { BannerSection } from "@/components/banner-section";
+import { TITLES } from "@/const/titles";
 
-export type RootType = "authenticated" | "unauthenticated" | "wallet";
-
-export const usePathType = (): RootType => {
-  const pathname = usePathname();
-
-  const unauthenticatedPaths = ["/", "/activity", "/owners", "/transactions"];
-  const authenticatedPaths = [
-    "/new",
-    "/wallet",
-    "/settings",
-    "/settings",
-    "/settings/account",
-    "/settings/appearance",
-    "/settings/display",
-    "/settings/notifications",
-    "/support",
-    "/wallets",
-  ];
-
-  if (unauthenticatedPaths.includes(pathname)) {
-    return "unauthenticated";
-  }
-
-  if (authenticatedPaths.includes(pathname)) {
-    return "authenticated";
-  }
-
-  return "wallet";
+export const metadata: Metadata = {
+  title: TITLES.Owners.title,
+  description: TITLES.Owners.description,
 };
+
+interface OwnersLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function OwnersLayout({ children }: OwnersLayoutProps) {
+  return (
+    <>
+      <BannerSection
+        title={TITLES.Owners.title}
+        description={TITLES.Owners.description}
+      >
+        {children}
+      </BannerSection>
+    </>
+  );
+}
