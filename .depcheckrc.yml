@@ -43,7 +43,6 @@ ignores:
   - inngest-cli
   - jsonc-eslint-parser
   - lint-staged
-  - neonctl
   - npm-package-json-lint-config-default
   - postcss
   - react
