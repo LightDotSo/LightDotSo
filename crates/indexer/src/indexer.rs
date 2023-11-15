@@ -152,6 +152,24 @@ impl Indexer {
         }
     }
 
+    pub async fn get_block_with_internal(
+        &mut self,
+        block_number: u64,
+        chain_id: u64,
+    ) -> eyre::Result<Option<Block<H256>>, ProviderError> {
+        // Mutate the chain id
+        self.chain_id = chain_id;
+
+        // Get the http_client for the rpc
+        let http_client = get_provider(chain_id)
+            .await
+            .map_err(|_| ProviderError::CustomError("Failed to get provider".to_string()))?;
+        self.http_client = Some(Arc::new(http_client));
+
+        // Index the block
+        self.get_block(block_number.into()).await
+    }
+
     /// Index w/ specified chain id
     pub async fn index_with_internal(
         &mut self,

@@ -149,10 +149,31 @@ pub async fn upsert_transaction_with_log_receipt(
                     ),
                 ],
             ),
-            vec![transaction::trace::set(
-                trace
-                    .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),
-            )],
+            vec![
+                transaction::trace::set(trace.map_or(json!({}), |t| {
+                    serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
+                })),
+                transaction::r::set(Some(transaction.r.to_string())),
+                transaction::v::set(Some(transaction.v.to_string())),
+                transaction::s::set(Some(transaction.s.to_string())),
+                transaction::input::set(Some(transaction.input.0.to_vec())),
+                transaction::block_hash::set(transaction.block_hash.map(|bh| format!("{:?}", bh))),
+                transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
+                transaction::transaction_index::set(
+                    transaction.transaction_index.map(|ti| ti.as_u32() as i32),
+                ),
+                transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
+                transaction::gas_price::set(transaction.gas_price.map(|gp| gp.as_u64() as i64)),
+                transaction::transaction_type::set(
+                    transaction.transaction_type.map(|gu| gu.as_u32() as i32),
+                ),
+                transaction::max_priority_fee_per_gas::set(
+                    transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.as_u64() as i64),
+                ),
+                transaction::max_fee_per_gas::set(
+                    transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
+                ),
+            ],
         )
         .exec()
         .instrument(info_span!("upsert_transaction"))
@@ -185,7 +206,22 @@ pub async fn upsert_transaction_with_log_receipt(
                     ),
                 ],
             ),
-            vec![],
+            vec![
+                receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
+                receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32)),
+                receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
+                receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
+                receipt::contract_address::set(
+                    receipt.contract_address.map(|ca| to_checksum(&ca, None)),
+                ),
+                receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
+                receipt::transaction_type::set(
+                    receipt.transaction_type.map(|tt| tt.as_u32() as i32),
+                ),
+                receipt::effective_gas_price::set(
+                    receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
+                ),
+            ],
         )
         .exec()
         .instrument(info_span!("upsert_receipt"))
