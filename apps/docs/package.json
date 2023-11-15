@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.3",
-    "@sentry/integrations": "^7.80.0",
-    "@sentry/nextjs": "^7.80.0",
+    "@sentry/integrations": "^7.80.1",
+    "@sentry/nextjs": "^7.80.1",
     "next": "^14.0.2",
     "nextra": "^2.13.2",
     "nextra-theme-docs": "^2.13.2",

@@ -19,7 +19,7 @@
 import type { ReactNode } from "react";
 import { useState, useEffect, useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/stores/useAuth";
 import { getWalletTab } from "@lightdotso/client";
 
@@ -32,6 +32,11 @@ export type Tab = {
 };
 
 export type RawTab = Omit<Tab, "number">;
+
+type TabData = {
+  owner_count: number;
+  transaction_count: number;
+};
 
 export function useTabs({ tabs }: { tabs: RawTab[] }) {
   const pathname = usePathname();
@@ -62,7 +67,12 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { data } = useSuspenseQuery({
+  const currentData: TabData | undefined = useQueryClient().getQueryData([
+    "wallet_tab",
+    walletAddress,
+  ]);
+
+  const { data } = useSuspenseQuery<TabData | null>({
     queryKey: ["wallet_tab", walletAddress],
     queryFn: async () => {
       if (!walletAddress) {
@@ -82,8 +92,8 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
         data => {
           return data;
         },
-        err => {
-          throw err;
+        _ => {
+          return currentData ?? null;
         },
       );
     },
