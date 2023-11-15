@@ -23,20 +23,22 @@ import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparklin
 import { useMemo } from "react";
 
 type PortfolioData = {
+  balance: number;
   balance_change_24h: number;
+  balance_change_24h_percentage: number;
   balances: {
-    date: string;
     balance: number;
+    date: string;
   }[];
 };
 
 export function PortfolioChart({ address }: { address: Address }) {
-  const currentData: PortfolioData | null = useQueryClient().getQueryData([
+  const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
     "portfolio",
     address,
   ]);
 
-  const { data: portfolio } = useSuspenseQuery<PortfolioData>({
+  const { data: portfolio } = useSuspenseQuery<PortfolioData | null>({
     queryKey: ["portfolio", address],
     queryFn: async () => {
       if (!address) {
@@ -57,7 +59,7 @@ export function PortfolioChart({ address }: { address: Address }) {
           return data;
         },
         _ => {
-          return currentData;
+          return currentData ?? null;
         },
       );
     },

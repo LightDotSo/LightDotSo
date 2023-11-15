@@ -40,15 +40,10 @@ import { Suspense } from "react";
 import { NetworkStack } from "@/components/network-stack";
 
 type WalletData = {
-  name: string;
   address: string;
-  chain_id: number;
-  balance: number;
-  balance_change_24h: number;
-  balances: {
-    date: string;
-    balance: number;
-  }[];
+  factory_address: string;
+  name: string;
+  salt: string;
 };
 
 export function WalletOverviewBanner({ address }: { address: Address }) {
@@ -57,12 +52,12 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
     address: address,
   });
 
-  const currentData: WalletData | null = useQueryClient().getQueryData([
+  const currentData: WalletData | undefined = useQueryClient().getQueryData([
     "wallet",
     address,
   ]);
 
-  const { data: wallet } = useSuspenseQuery<WalletData>({
+  const { data: wallet } = useSuspenseQuery<WalletData | null>({
     queryKey: ["wallet", address],
     queryFn: async () => {
       if (!address) {
@@ -83,7 +78,7 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
           return data;
         },
         _ => {
-          return currentData;
+          return currentData ?? null;
         },
       );
     },

@@ -37,13 +37,11 @@ export function TokenCardSparkline({
   address: Address;
   chain_id: number;
 }) {
-  const currentData: TokenPriceData | null = useQueryClient().getQueryData([
-    "token_price",
-    address,
-    chain_id,
-  ]);
+  const currentData: TokenPriceData | undefined = useQueryClient().getQueryData(
+    ["token_price", address, chain_id],
+  );
 
-  const { data: token_price } = useSuspenseQuery<TokenPriceData>({
+  const { data: token_price } = useSuspenseQuery<TokenPriceData | null>({
     queryKey: ["token_price", address, chain_id],
     queryFn: async () => {
       if (!address) {
@@ -65,7 +63,7 @@ export function TokenCardSparkline({
           return data;
         },
         _ => {
-          return currentData;
+          return currentData ?? null;
         },
       );
     },
