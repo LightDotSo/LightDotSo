@@ -41,6 +41,17 @@ const eventsMap = {
       service_id: z.string(),
     }),
   },
+  "wallet/transaction.invoke": {
+    data: z.object({
+      address: z.string(),
+    }),
+  },
+  "wallet/transaction.covalent.set": {
+    data: z.object({
+      address: z.string(),
+      chainIds: z.array(z.number()),
+    }),
+  },
 };
 
 // Create a client to send and receive events

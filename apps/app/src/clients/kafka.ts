@@ -13,30 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { serve } from "inngest/next";
-import { inngest } from "@/inngest/client";
-import {
-  walletPortfolioCron,
-  walletPortfolioCovalentSet,
-  walletPortfolioInvoke,
-  walletPortfolioLlamaSet,
-  walletPortfolioLlamaUpdate,
-  walletRedisCron,
-  walletTransactionCovalentSet,
-  walletTransactionInvoke,
-} from "@/inngest";
+import { Kafka } from "@upstash/kafka";
 
-// Create an API that serves zero functions
-export const { GET, POST, PUT } = serve({
-  client: inngest,
-  functions: [
-    walletPortfolioCron,
-    walletPortfolioCovalentSet,
-    walletPortfolioInvoke,
-    walletPortfolioLlamaSet,
-    walletPortfolioLlamaUpdate,
-    walletRedisCron,
-    walletTransactionCovalentSet,
-    walletTransactionInvoke,
-  ],
+export const kafka = new Kafka({
+  url: `https://${process.env.KAFKA_BROKER!.split(":")[0]}`,
+  username: process.env.KAFKA_USERNAME!,
+  password: process.env.KAFKA_PASSWORD!,
 });
