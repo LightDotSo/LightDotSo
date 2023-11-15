@@ -107,7 +107,7 @@ export const AuthState = () => {
       address &&
       (pathname === "/" ||
         pathname === "/transactions" ||
-        pathname === "/members")
+        pathname === "/owners")
     ) {
       router.push("/wallets");
     }

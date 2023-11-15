@@ -24,6 +24,7 @@ import { Tabs } from "@/components/tabs-nav";
 import { cn } from "@lightdotso/utils";
 import { useTabs } from "@/hooks/useTabs";
 import {
+  ActivityLogIcon,
   DashboardIcon,
   WidthIcon,
   PersonIcon,
@@ -55,14 +56,24 @@ const tabs = [
     ) => <WidthIcon {...props} />,
   },
   {
-    label: "Members",
-    id: "members",
-    href: "/members",
+    label: "Owners",
+    id: "owners",
+    href: "/owners",
     icon: (
       props: React.JSX.IntrinsicAttributes &
         IconProps &
         React.RefAttributes<SVGSVGElement>,
     ) => <PersonIcon {...props} />,
+  },
+  {
+    label: "Activity",
+    id: "activity",
+    href: "/activity",
+    icon: (
+      props: React.JSX.IntrinsicAttributes &
+        IconProps &
+        React.RefAttributes<SVGSVGElement>,
+    ) => <ActivityLogIcon {...props} />,
   },
   {
     label: "Settings",
