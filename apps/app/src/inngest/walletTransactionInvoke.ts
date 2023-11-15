@@ -15,7 +15,7 @@
 
 import { inngest } from "@/inngest/client";
 import { NonRetriableError } from "inngest";
-import { ChainIdMapping } from "@/const/covalent";
+import { ChainIdMapping, ChainIdMainnetMapping } from "@/const/covalent";
 
 export const walletTransactionInvoke = inngest.createFunction(
   {
@@ -33,6 +33,9 @@ export const walletTransactionInvoke = inngest.createFunction(
         where: {
           address: event.data.address,
         },
+        include: {
+          walletSettings: true,
+        },
       });
 
       if (!data) {
@@ -46,9 +49,15 @@ export const walletTransactionInvoke = inngest.createFunction(
 
     // For each chainId in the `ChainIdMapping`, send an `wallet/transaction.covalent.set` event.
     // with the array of chainIds.
-    const chainIds = Object.keys(ChainIdMapping).map(chainId => {
+    // If the wallet settings has `isEnabledTestnet` set to true, then use the `ChainIdTestnetMapping` instead.
+    const chainIds = Object.keys(
+      wallet?.walletSettings?.isEnabledTestnet
+        ? ChainIdMapping
+        : ChainIdMainnetMapping,
+    ).map(chainId => {
       return parseInt(chainId);
     });
+
     await step.sendEvent("Set the portfolio", {
       name: "wallet/transaction.covalent.set",
       data: {
