@@ -33,18 +33,36 @@ import {
 import { Send, Share } from "lucide-react";
 import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getWallet } from "@lightdotso/client";
 import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparkline";
 import { Suspense } from "react";
 import { NetworkStack } from "@/components/network-stack";
+
+type WalletData = {
+  name: string;
+  address: string;
+  chain_id: number;
+  balance: number;
+  balance_change_24h: number;
+  balances: {
+    date: string;
+    balance: number;
+  }[];
+};
 
 export function WalletOverviewBanner({ address }: { address: Address }) {
   const [isCopied, copy] = useCopy();
   const { data: ens } = useEnsName({
     address: address,
   });
-  const { data: wallet } = useSuspenseQuery({
+
+  const currentData: WalletData | null = useQueryClient().getQueryData([
+    "wallet",
+    address,
+  ]);
+
+  const { data: wallet } = useSuspenseQuery<WalletData>({
     queryKey: ["wallet", address],
     queryFn: async () => {
       if (!address) {
@@ -64,7 +82,9 @@ export function WalletOverviewBanner({ address }: { address: Address }) {
         data => {
           return data;
         },
-        _ => null,
+        _ => {
+          return currentData;
+        },
       );
     },
   });

@@ -16,9 +16,19 @@
 "use client";
 
 import type { Address } from "viem";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getTokenPrice } from "@lightdotso/client";
 import { SparkAreaChart } from "@tremor/react";
+
+type TokenPriceData = {
+  price: number;
+  price_change_24h: number;
+  price_change_24h_percentage: number;
+  prices: {
+    date: string;
+    price: number;
+  }[];
+};
 
 export function TokenCardSparkline({
   address,
@@ -27,7 +37,13 @@ export function TokenCardSparkline({
   address: Address;
   chain_id: number;
 }) {
-  const { data: token_price } = useSuspenseQuery({
+  const currentData: TokenPriceData | null = useQueryClient().getQueryData([
+    "token_price",
+    address,
+    chain_id,
+  ]);
+
+  const { data: token_price } = useSuspenseQuery<TokenPriceData>({
     queryKey: ["token_price", address, chain_id],
     queryFn: async () => {
       if (!address) {
@@ -48,7 +64,9 @@ export function TokenCardSparkline({
         data => {
           return data;
         },
-        _ => null,
+        _ => {
+          return currentData;
+        },
       );
     },
   });
