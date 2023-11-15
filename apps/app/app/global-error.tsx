@@ -13,7 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// From: https://tanstack.com/query/latest/docs/react/guides/suspense
+// Handles errors globally
+
 "use client";
+
+import { Button } from "@lightdotso/ui";
+import { useQueryErrorResetBoundary } from "@tanstack/react-query";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function GlobalError({
   error,
@@ -22,11 +29,28 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { reset: resetQuery } = useQueryErrorResetBoundary();
+
   return (
     <html lang="en">
       <body>
         <h2>Something went wrong!</h2>
-        <button onClick={() => reset()}>Try again</button>
+        <ErrorBoundary
+          onReset={resetQuery}
+          fallbackRender={({ resetErrorBoundary }) => (
+            <div>
+              There was an error!
+              <Button
+                onClick={() => {
+                  reset();
+                  resetErrorBoundary();
+                }}
+              >
+                Try again
+              </Button>
+            </div>
+          )}
+        ></ErrorBoundary>
         <pre>
           <code>{error.message}</code>
         </pre>

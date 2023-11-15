@@ -16,14 +16,29 @@
 "use client";
 
 import { getPortfolio } from "@lightdotso/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { AreaChart } from "@tremor/react";
 import type { Address } from "viem";
 import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparkline";
 import { useMemo } from "react";
 
+type PortfolioData = {
+  balance: number;
+  balance_change_24h: number;
+  balance_change_24h_percentage: number;
+  balances: {
+    balance: number;
+    date: string;
+  }[];
+};
+
 export function PortfolioChart({ address }: { address: Address }) {
-  const { data: portfolio } = useSuspenseQuery({
+  const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
+    "portfolio",
+    address,
+  ]);
+
+  const { data: portfolio } = useSuspenseQuery<PortfolioData | null>({
     queryKey: ["portfolio", address],
     queryFn: async () => {
       if (!address) {
@@ -43,7 +58,9 @@ export function PortfolioChart({ address }: { address: Address }) {
         data => {
           return data;
         },
-        _ => null,
+        _ => {
+          return currentData ?? null;
+        },
       );
     },
   });

@@ -82,7 +82,9 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
         data => {
           return data;
         },
-        _ => null,
+        err => {
+          throw err;
+        },
       );
     },
   });
