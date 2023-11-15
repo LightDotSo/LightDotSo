@@ -85,6 +85,7 @@ model Wallet {
   notifications   Notification[]
   supportRequests SupportRequest[]
   walletBalances  WalletBalance[]
+  walletSettings  WalletSettings?
 }
 
 model Configuration {
@@ -386,6 +387,7 @@ model UserOperation {
   /// The address of the entry point contract
   entryPoint String
   status     UserOperationStatus @default(PROPOSED)
+  isTestnet  Boolean             @default(false)
 
   logs Log[]
 
@@ -597,4 +599,17 @@ model WalletBalance {
   @@index([walletAddress])
   @@index([timestamp])
   @@index([chainId])
+}
+
+model WalletSettings {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isEnabledTestnet Boolean @default(false)
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String @unique
+
+  @@index([walletAddress])
 }
