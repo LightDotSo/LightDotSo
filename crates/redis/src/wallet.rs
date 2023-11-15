@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::namespace::WALLET;
+use crate::namespace::WALLETS;
 use lightdotso_tracing::tracing::info;
 pub use redis;
 use redis::{Commands, Connection, RedisResult};
@@ -21,7 +21,7 @@ use redis::{Commands, Connection, RedisResult};
 /// Add a value to a set
 pub fn add_to_wallets(con: &mut Connection, value: &str) -> RedisResult<()> {
     // Add the value to the set
-    con.sadd(WALLET.as_str(), value)?;
+    con.sadd(WALLETS.as_str(), value)?;
 
     // Return Ok
     Ok(())
@@ -40,7 +40,7 @@ pub fn is_wallet_present(
 
     // Add the commands to the pipeline
     for member in members {
-        pipe.cmd("SISMEMBER").arg(WALLET.as_str()).arg(member);
+        pipe.cmd("SISMEMBER").arg(WALLETS.as_str()).arg(member);
     }
 
     // Execute the pipeline
