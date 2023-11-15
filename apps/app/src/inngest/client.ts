@@ -18,6 +18,7 @@ import { prismaMiddleware, sentryMiddleware } from "./middlewares";
 import { z } from "zod";
 
 const eventsMap = {
+  "prisma/schema.chore": {},
   "wallet/portfolio.invoke": {
     data: z.object({
       address: z.string(),
