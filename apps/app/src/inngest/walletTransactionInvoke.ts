@@ -15,26 +15,18 @@
 
 import { inngest } from "@/inngest/client";
 import { NonRetriableError } from "inngest";
-import type { Chain } from "@covalenthq/client-sdk";
-
-export const ChainIdMapping: Record<number, Chain> = {
-  1: "eth-mainnet",
-  10: "optimism-mainnet",
-  100: "gnosis-mainnet",
-  137: "matic-mainnet",
-  8453: "base-mainnet",
-};
+import { ChainIdMapping } from "@/const/covalent";
 
 export const walletTransactionInvoke = inngest.createFunction(
   {
-    id: "wallet-portfolio-invoke",
+    id: "wallet-transaction-invoke",
     rateLimit: {
       key: "event.data.address",
       limit: 1,
       period: "3h",
     },
   },
-  { event: "wallet/portfolio.invoke" },
+  { event: "wallet/transaction.invoke" },
   async ({ event, step, prisma }) => {
     const wallet = await step.run("Find wallet in db", async () => {
       const data = prisma.wallet.findUnique({

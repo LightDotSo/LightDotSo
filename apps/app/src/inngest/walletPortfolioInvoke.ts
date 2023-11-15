@@ -15,15 +15,7 @@
 
 import { inngest } from "@/inngest/client";
 import { NonRetriableError } from "inngest";
-import type { Chain } from "@covalenthq/client-sdk";
-
-export const ChainIdMapping: Record<number, Chain> = {
-  1: "eth-mainnet",
-  10: "optimism-mainnet",
-  100: "gnosis-mainnet",
-  137: "matic-mainnet",
-  8453: "base-mainnet",
-};
+import { ChainIdMapping } from "@/const/covalent";
 
 export const walletPortfolioInvoke = inngest.createFunction(
   {

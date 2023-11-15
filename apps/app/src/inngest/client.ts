@@ -41,6 +41,11 @@ const eventsMap = {
       service_id: z.string(),
     }),
   },
+  "wallet/transaction.invoke": {
+    data: z.object({
+      address: z.string(),
+    }),
+  },
   "wallet/transaction.covalent.set": {
     data: z.object({
       address: z.string(),

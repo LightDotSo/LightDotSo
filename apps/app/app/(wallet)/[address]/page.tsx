@@ -42,6 +42,13 @@ export default async function Page({
     },
   });
 
+  await inngest.send({
+    name: "wallet/transaction.invoke",
+    data: {
+      address: params.address,
+    },
+  });
+
   // ---------------------------------------------------------------------------
   // Redirect
   // ---------------------------------------------------------------------------
