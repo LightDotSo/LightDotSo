@@ -115,14 +115,14 @@ impl Consumer {
                                 // Try to deserialize the payload as (u64, u64)
                                 let (maybe_block_number, chain_id): (u64, u64) =
                                     match serde_json::from_slice(payload.as_bytes()) {
-                                        Ok(payload) => payload,
-                                        Err(e) => {
-                                            warn!(
-                                                "Error while deserializing message payload: {:?}",
-                                                e
+                                        Ok(payload) => {
+                                            info!(
+                                                "Successfully deserialized payload: {:?}",
+                                                payload
                                             );
-                                            (0, 0)
+                                            payload
                                         }
+                                        Err(_) => (0, 0),
                                     };
 
                                 // Get the block if number is not 0
@@ -147,15 +147,11 @@ impl Consumer {
                                             // Serialize the block and chain id
                                             serde_json::to_string(&(block, chain_id)).unwrap()
                                         } else {
-                                            // Return an error and continue to the next loop
                                             warn!("Block is None");
                                             continue;
                                         }
                                     }
-                                    Err(e) => {
-                                        warn!("Error while getting block: {:?}", e);
-                                        payload.to_string()
-                                    }
+                                    Err(_) => payload.to_string(),
                                 };
 
                                 // Deserialize the payload
