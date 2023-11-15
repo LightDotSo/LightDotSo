@@ -21,6 +21,7 @@ use lightdotso_solutions::{
     utils::{from_hex_string, parse_hex_to_bytes32},
 };
 
+// https://sepolia.etherscan.io/tx/0x4dcceb715de1825bee83424e2385a7ed2cc00af70d883ff25aaa29f2c6efbd68
 const SIGNATURES: &[&str] = &[
     "0x0100010000000001014fd9d0ee6d6564e80a9ee00c0163fc952d0a45ed00012395bc3e577accfb42eaa452519853a168ca8bd8267063b73957a684c2583a0066a37fe568c1d5e918e98d2a99d6d6e0f0b8448ff704283c7757a82fd37b9dfa1b02",
 ];
@@ -51,10 +52,10 @@ async fn test_integration_rooted_builder() {
         // Build the tree
         let new_config_tree = rooted_node_builder(signer_nodes).unwrap();
 
-        println!("new signer tree: {:?}", new_config_tree);
+        println!("new signer tree: {:?}", new_config_tree.clone());
         println!("signers tree: {:?}", config.tree);
 
         insta::assert_debug_snapshot!(format!("{}-config", i.to_string()), config.clone().tree);
-        insta::assert_debug_snapshot!(format!("{}-new-config", i.to_string()), new_config_tree);
+        insta::assert_debug_snapshot!(format!("{}-config", i.to_string()), new_config_tree.clone());
     }
 }
