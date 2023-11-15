@@ -30,9 +30,8 @@ use lightdotso_kafka::{
     produce_retry_transaction_1_message, produce_retry_transaction_2_message,
 };
 use lightdotso_notifier::config::NotifierArgs;
-use lightdotso_opentelemetry::{consumer::ConsumerMetrics, custom::COUNTER};
+use lightdotso_opentelemetry::consumer::ConsumerMetrics;
 use lightdotso_tracing::tracing::{error, info, warn};
-use opentelemetry::KeyValue;
 use rdkafka::{
     consumer::{stream_consumer::StreamConsumer, CommitMode, Consumer as KafkaConsumer},
     producer::FutureProducer,
@@ -113,9 +112,55 @@ impl Consumer {
 
                             // If the payload is valid
                             if let Some(Ok(payload)) = payload_opt {
+                                // Try to deserialize the payload as (u64, u64)
+                                let (maybe_block_number, chain_id): (u64, u64) =
+                                    match serde_json::from_slice(payload.as_bytes()) {
+                                        Ok(payload) => payload,
+                                        Err(e) => {
+                                            warn!(
+                                                "Error while deserializing message payload: {:?}",
+                                                e
+                                            );
+                                            (0, 0)
+                                        }
+                                    };
+
+                                // Get the block if number is not 0
+                                let maybe_block = if maybe_block_number != 0 {
+                                    indexer
+                                        .get_block_with_internal(maybe_block_number, chain_id)
+                                        .await
+                                } else {
+                                    // Return an error
+                                    Err(ethers::providers::ProviderError::CustomError(
+                                        "Block number is 0".to_string(),
+                                    ))
+                                };
+
+                                // If the block is valid, put as payload_block in bytes format w/
+                                // (Block<H256>, u64)
+                                let payload_block = match maybe_block {
+                                    Ok(block) => {
+                                        // If block is Some, get the chain id
+                                        // Get the chain id
+                                        if let Some(block) = block {
+                                            // Serialize the block and chain id
+                                            serde_json::to_string(&(block, chain_id)).unwrap()
+                                        } else {
+                                            // Return an error and continue to the next loop
+                                            warn!("Block is None");
+                                            continue;
+                                        }
+                                    }
+                                    Err(e) => {
+                                        warn!("Error while getting block: {:?}", e);
+                                        payload.to_string()
+                                    }
+                                };
+
                                 // Deserialize the payload
                                 match serde_json::from_slice::<(Block<H256>, u64)>(
-                                    payload.as_bytes(),
+                                    payload_block.as_bytes(),
                                 ) {
                                     Ok((block, chain_id)) => {
                                         // Get the block number
@@ -135,9 +180,6 @@ impl Consumer {
                                                 chain_id,
                                             )
                                             .await;
-
-                                        // Increment the custom counter
-                                        COUNTER.add(1, &[KeyValue::new("foo", "bar")]);
 
                                         // Write the metric to prometheus
                                         let value_to_add = if res.is_ok() { 1.0 } else { 0.0 };
