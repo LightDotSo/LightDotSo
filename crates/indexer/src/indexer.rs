@@ -43,7 +43,6 @@ use lightdotso_kafka::{
 };
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{
-    block::set_block_status,
     get_redis_client,
     redis::Client,
     wallet::{add_to_wallets, is_wallet_present},
@@ -549,12 +548,6 @@ impl Indexer {
             }
         }
 
-        // Set the flag for the block
-        if self.redis_client.is_some() {
-            self.set_block_flag_true(block.number.unwrap().as_u64())
-                .map_err(|e| eyre!("set_block_flag_true error: {:?}", e))?;
-        }
-
         // Return the result
         Ok(())
     }
@@ -688,24 +681,6 @@ impl Indexer {
         let con = client.get_connection();
         if let Ok(mut con) = con {
             { || add_to_wallets(&mut con, to_checksum(&address, None).as_str()) }
-                .retry(&ExponentialBuilder::default())
-                .call()
-        } else {
-            error!("Redis connection error, {:?}", con.err());
-            Ok(())
-        }
-    }
-
-    /// Set the block flag to true
-    #[autometrics]
-    pub fn set_block_flag_true(
-        &self,
-        block: u64,
-    ) -> Result<(), lightdotso_redis::redis::RedisError> {
-        let client = self.redis_client.clone().unwrap();
-        let con = client.get_connection();
-        if let Ok(mut con) = con {
-            { || set_block_status(&mut con, self.chain_id, block as i64, true) }
                 .retry(&ExponentialBuilder::default())
                 .call()
         } else {
