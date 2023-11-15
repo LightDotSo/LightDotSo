@@ -19,9 +19,8 @@
   ],
   "dependencies": {
     "@lightdotso/prisma": "workspace:*",
-    "@neondatabase/serverless": "^0.6.0",
     "kysely": "^0.26.3",
-    "kysely-postgres-js": "^2.0.0",
+    "kysely-planetscale": "^1.4.0",
     "postgres": "^3.4.3"
   },
   "devDependencies": {

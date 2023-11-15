@@ -66,7 +66,7 @@
 //     env::set_var("CHAIN_ID", "31337");
 //     env::set_var(
 //         "DATABASE_URL",
-//         "postgresql://postgres:password@localhost:6500/neon?schema=public",
+//         "mysql://dev:dev@localhost:3306/lightdotso?schema=public",
 //     );
 //     env::set_var("INDEXER_RPC_URL", http_url.clone());
 //     env::set_var("INDEXER_RPC_WS", ws_url.clone());

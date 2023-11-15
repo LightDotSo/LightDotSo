@@ -139,7 +139,6 @@
     "inngest-cli": "^0.21.0",
     "license-check-and-add": "^4.0.5",
     "lint-staged": "^15.1.0",
-    "neonctl": "^1.23.3",
     "npm-check-updates": "^16.14.6",
     "npm-package-json-lint": "^7.1.0",
     "npm-package-json-lint-config-default": "^6.0.0",

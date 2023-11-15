@@ -13,23 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Pool } from "@neondatabase/serverless";
-import { Kysely, PostgresDialect } from "kysely";
-import { PostgresJSDialect } from "kysely-postgres-js";
-import postgres from "postgres";
-
+import { Kysely } from "kysely";
+import { PlanetScaleDialect } from "kysely-planetscale";
 import type { DB } from "./src/db/types";
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+// Connect using a DATABASE_URL, provide a fetch implementation
 export const db = new Kysely<DB>({
-  dialect:
-    process.env.NODE_ENV === "development"
-      ? new PostgresJSDialect({
-          connectionString: process.env.DATABASE_URL,
-          options: {
-            max: 10,
-          },
-          postgres,
-        })
-      : new PostgresDialect({ pool }),
+  dialect: new PlanetScaleDialect({
+    url: process.env.DATABASE_URL,
+    fetch,
+  }),
 });

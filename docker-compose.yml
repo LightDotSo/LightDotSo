@@ -1,16 +1,20 @@
 version: "3"
 services:
-  postgres:
-    image: postgres:15.3
+  mysql:
+    image: bitnami/mysql:latest
     restart: always
     ports:
-      - "6500:5432"
+      - 3306:3306
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: neon
+      MYSQL_ROOT_USER: dev
+      MYSQL_ROOT_PASSWORD: dev
+      MYSQL_DATABASE: lightdotso
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     volumes:
-      - postgres-db:/var/lib/postgresql/data
+      - mysql-db:/var/lib/mysql/data
   redis:
     image: redis:latest
     container_name: redis
