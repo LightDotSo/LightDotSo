@@ -23,16 +23,16 @@ export const walletTransactionCovalentSet = inngest.createFunction(
   {
     id: "wallet-transaction-covalent-set",
     concurrency: {
-      limit: 4,
+      limit: 2,
     },
     debounce: {
       key: "event.data.address",
-      period: "3s",
+      period: "30s",
     },
     rateLimit: {
       key: "event.data.address",
       limit: 1,
-      period: "1m",
+      period: "24h",
     },
   },
   { event: "wallet/transaction.covalent.set" },
