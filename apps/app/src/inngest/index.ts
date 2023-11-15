@@ -20,3 +20,4 @@ export { walletPortfolioCovalentSet } from "./walletPortfolioCovalentSet";
 export { walletPortfolioCron } from "./walletPortfolioCron";
 export { walletPortfolioLlamaUpdate } from "./walletPortfolioLlamaUpdate";
 export { walletRedisCron } from "./walletRedisCron";
+export { walletTransactionCovalentSet } from "./walletTransactionCovalentSet";

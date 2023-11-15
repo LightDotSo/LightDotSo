@@ -22,6 +22,7 @@ import {
   walletPortfolioLlamaSet,
   walletPortfolioLlamaUpdate,
   walletRedisCron,
+  walletTransactionCovalentSet,
 } from "@/inngest";
 
 // Create an API that serves zero functions
@@ -34,5 +35,6 @@ export const { GET, POST, PUT } = serve({
     walletPortfolioLlamaSet,
     walletPortfolioLlamaUpdate,
     walletRedisCron,
+    walletTransactionCovalentSet,
   ],
 });
