@@ -62,6 +62,6 @@ services:
     ports:
       - "8081:8081"
 volumes:
-  postgres-db:
+  mysql-db:
   redis:
   prometheus-data:
