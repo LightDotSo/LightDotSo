@@ -52,49 +52,35 @@ export const walletTransactionCovalentSet = inngest.createFunction(
         // Initialize page number
         let pageNumber = 0;
 
-        // Initialize a flag to check if any data is available in the current page
-        let dataAvailableInCurrentPage = false;
-
         // eslint-disable-next-line no-constant-condition
         while (true) {
           // Start an infinite loop that we break when no more pages
           // Get the transfers for the given chain.
-          const transfers =
-            await client.BalanceService.getErc20TransfersForWalletAddress(
+          const transactions =
+            await client.TransactionService.getTransactionsForAddressV3(
               chain,
               event.data.address,
-              {
-                pageNumber: pageNumber, // Use current page number
-              },
+              pageNumber,
             );
 
-          // Get the chainId from the event.data.chainIds array.
-          const chainId = event.data.chainIds.find(chainId => {
-            return ChainIdMapping[chainId] === chain;
-          });
-
-          // Create a new array with tuple of (block_number, chain_id)
-          let blockNumbers: [number, number][] = [];
-
-          for await (const item of transfers) {
-            // Set flag to true if an item is available
-            dataAvailableInCurrentPage = true;
-
-            blockNumbers.push([item.block_height, chainId!]);
+          // If there are no more pages, break the loop.
+          if (transactions.data.items.length === 0) {
+            break;
           }
 
-          // If flag is still false, break the loop
-          if (!dataAvailableInCurrentPage) {
-            break;
+          // Get the chainId from the event.data.chainIds array.
+          const chainId = transactions.data.chain_id;
+
+          let blockNumbers: [number, number][] = [];
+
+          for await (const item of transactions.data.items) {
+            blockNumbers.push([item.block_height, chainId!]);
           }
 
           // Prepare the data for production
           const dataToProduce = blockNumbers.map(blockNumber => ({
             topic: "transaction",
-            value: JSON.stringify({
-              block_number: blockNumber[0],
-              chain_id: blockNumber[1],
-            }),
+            value: JSON.stringify(blockNumber),
           }));
 
           // Produce the data

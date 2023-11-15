@@ -16,7 +16,7 @@
 import { Kafka } from "@upstash/kafka";
 
 export const kafka = new Kafka({
-  url: process.env.KAFKA_BROKER!,
+  url: `https://${process.env.KAFKA_BROKER!.split(":")[0]}`,
   username: process.env.KAFKA_USERNAME!,
   password: process.env.KAFKA_PASSWORD!,
 });
