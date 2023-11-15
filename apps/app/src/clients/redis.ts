@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { walletPortfolioLlamaSet } from "./walletPortfolioLlamaSet";
-export { walletPortfolioInvoke } from "./walletPortfolioInvoke";
-export { walletPortfolioCovalentSet } from "./walletPortfolioCovalentSet";
-export { walletPortfolioCron } from "./walletPortfolioCron";
-export { walletPortfolioLlamaUpdate } from "./walletPortfolioLlamaUpdate";
-export { walletRedisCron } from "./walletRedisCron";
+import { Redis } from "@upstash/redis";
+
+export const redis = new Redis({
+  url: `https://${process.env.UPSTASH_REST_API_DOMAIN!}`,
+  token: process.env.UPSTASH_REST_API_TOKEN!,
+});

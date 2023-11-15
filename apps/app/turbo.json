@@ -21,6 +21,8 @@
         "NEXT_PUBLIC_VERCEL_URL",
         "NEXT_RUNTIME",
         "SENTRY_DSN",
+        "UPSTASH_REST_API_DOMAIN",
+        "UPSTASH_REST_API_TOKEN",
         "VERCEL_ENV"
       ],
       "inputs": ["app/**", "pages/**", "src/**", "next.config.js"],
