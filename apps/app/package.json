@@ -53,6 +53,7 @@
     "@tanstack/react-query-next-experimental": "^5.8.3",
     "@tremor/react": "^3.11.1",
     "@types/lodash": "^4.14.201",
+    "@upstash/redis": "^1.25.1",
     "@vercel/toolbar": "^0.1.5",
     "clsx": "^2.0.0",
     "connectkit": "^1.5.3",
