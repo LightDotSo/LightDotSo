@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::types::Address;
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     recover::recover_signature,
@@ -35,11 +34,18 @@ async fn test_integration_rooted_builder() {
         // Notice that the recovered addresses are hypothetical as we don't have the original
         // user_op_hash that was used for the subdigest.
         let user_op_hash = parse_hex_to_bytes32(
-            "0x0000000000000000000000000000000000000000000000000000000000000001",
+            "0x4fc471aea4f6850725688fbdba63383a7678b9dcba1b4ae9a837bf3d01a1833e",
         )
         .unwrap();
 
-        let config = recover_signature(Address::zero(), 1, user_op_hash, sig).await.unwrap();
+        let config = recover_signature(
+            "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse().unwrap(),
+            11155111,
+            user_op_hash,
+            sig,
+        )
+        .await
+        .unwrap();
 
         println!("signers: {:?}", config.tree.get_signers());
 
