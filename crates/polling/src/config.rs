@@ -34,6 +34,10 @@ pub struct PollingArgs {
     /// The infura API key
     #[clap(long, env = "SATSUMA_API_KEY")]
     pub satsuma_api_key: Option<String>,
+    /// The flag of whether polling is live.
+    #[arg(long, short, default_value_t = false)]
+    #[clap(long, env = "SATSUMA_ENABLED")]
+    pub satsuma_enabled: bool,
 }
 
 impl PollingArgs {
@@ -54,7 +58,8 @@ impl PollingArgs {
         }
 
         // Iterate and push from the `SATSUMA_LIVE_IDS` into the hash map
-        if self.satsuma_api_key.is_some() {
+        // If the satsuma_api_key is not None and satsuma_enabled is true
+        if self.satsuma_api_key.is_some() && self.satsuma_enabled {
             for (chain_id, id) in SATSUMA_LIVE_IDS.clone().into_iter() {
                 let url = format!(
                     "{}/{}/{}",
