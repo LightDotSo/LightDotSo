@@ -121,10 +121,10 @@ pub async fn upsert_transaction_with_log_receipt(
         transaction_params.push(transaction::r::set(Some(transaction.r.to_string())))
     };
     if transaction.s != 0.into() {
-        transaction_params.push(transaction::r::set(Some(transaction.s.to_string())))
+        transaction_params.push(transaction::s::set(Some(transaction.s.to_string())))
     };
     if transaction.v != 0.into() {
-        transaction_params.push(transaction::r::set(Some(transaction.v.to_string())))
+        transaction_params.push(transaction::v::set(Some(transaction.v.to_string())))
     };
     if transaction.block_hash.is_some() {
         transaction_params.push(transaction::block_hash::set(
