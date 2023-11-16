@@ -17,7 +17,7 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{H256, U256},
+    types::{Bloom, H256, U256},
     utils::to_checksum,
 };
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
@@ -189,17 +189,8 @@ pub async fn upsert_transaction_with_log_receipt(
 
     // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.
     // `crates/graphql/src/traits.rs`
-    let mut receipt_params = vec![
-        receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32)),
-        receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
-        receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
-        receipt::contract_address::set(receipt.contract_address.map(|ca| to_checksum(&ca, None))),
-        receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
-        receipt::transaction_type::set(receipt.transaction_type.map(|tt| tt.as_u32() as i32)),
-        receipt::effective_gas_price::set(
-            receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
-        ),
-    ];
+    let mut receipt_params =
+        vec![receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32))];
 
     if receipt.block_hash.is_some() {
         receipt_params
@@ -208,6 +199,36 @@ pub async fn upsert_transaction_with_log_receipt(
     if receipt.cumulative_gas_used != 0.into() {
         receipt_params
             .push(receipt::cumulative_gas_used::set(receipt.cumulative_gas_used.as_u64() as i64))
+    }
+    if receipt.gas_used.is_some() {
+        receipt_params.push(receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)))
+    }
+    if receipt.contract_address.is_some() {
+        receipt_params.push(receipt::contract_address::set(
+            receipt.contract_address.map(|ca| to_checksum(&ca, None)),
+        ))
+    }
+    if receipt.status.is_some() {
+        receipt_params.push(receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)))
+    }
+    if receipt.logs_bloom == Bloom::default() {
+        receipt_params.push(receipt::logs_bloom::set(Some(receipt.logs_bloom.0.into())))
+    }
+    if receipt.root.is_some() {
+        receipt_params.push(receipt::root::set(receipt.root.map(|r| format!("{:?}", r))))
+    }
+    if receipt.to.is_some() {
+        receipt_params.push(receipt::to::set(receipt.to.map(|to| format!("{:?}", to))))
+    }
+    if receipt.transaction_type.is_some() {
+        receipt_params.push(receipt::transaction_type::set(
+            receipt.transaction_type.map(|tt| tt.as_u32() as i32),
+        ))
+    }
+    if receipt.effective_gas_price.is_some() {
+        receipt_params.push(receipt::effective_gas_price::set(
+            receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
+        ))
     }
 
     let _receipt_data = db
