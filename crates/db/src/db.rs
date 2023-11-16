@@ -109,6 +109,59 @@ pub async fn upsert_transaction_with_log_receipt(
     let logs: Arc<Vec<ethers::types::Log>> = Arc::new(logs);
     let logs_clone = logs.clone();
 
+    let mut transaction_params = vec![
+        transaction::input::set(Some(transaction.input.0.to_vec())),
+        transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
+        transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
+    ];
+
+    // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.
+    // `crates/graphql/src/traits.rs`
+    if transaction.r != 0.into() {
+        transaction_params.push(transaction::r::set(Some(transaction.r.to_string())))
+    };
+    if transaction.s != 0.into() {
+        transaction_params.push(transaction::r::set(Some(transaction.s.to_string())))
+    };
+    if transaction.v != 0.into() {
+        transaction_params.push(transaction::r::set(Some(transaction.v.to_string())))
+    };
+    if transaction.block_hash.is_some() {
+        transaction_params.push(transaction::block_hash::set(
+            transaction.block_hash.map(|bh| format!("{:?}", bh)),
+        ))
+    }
+    if transaction.transaction_index.is_some() {
+        transaction_params.push(transaction::transaction_index::set(
+            transaction.transaction_index.map(|ti| ti.as_u32() as i32),
+        ))
+    }
+    if transaction.gas != 0.into() {
+        transaction_params.push(transaction::gas::set(Some(format!("0x{:x}", transaction.gas))))
+    }
+    if transaction.value != 0.into() {
+        transaction_params.push(transaction::value::set(Some(format!("0x{:x}", transaction.value))))
+    }
+    if transaction.gas_price.is_some() {
+        transaction_params
+            .push(transaction::gas_price::set(transaction.gas_price.map(|gp| gp.as_u64() as i64)))
+    }
+    if transaction.transaction_type.is_some() {
+        transaction_params.push(transaction::transaction_type::set(
+            transaction.transaction_type.map(|gu| gu.as_u32() as i32),
+        ))
+    }
+    if transaction.max_fee_per_gas.is_some() {
+        transaction_params.push(transaction::max_fee_per_gas::set(
+            transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
+        ))
+    }
+    if transaction.max_priority_fee_per_gas.is_some() {
+        transaction_params.push(transaction::max_priority_fee_per_gas::set(
+            transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.as_u64() as i64),
+        ))
+    }
+
     let tx_data = db
         .transaction()
         .upsert(
@@ -125,60 +178,37 @@ pub async fn upsert_transaction_with_log_receipt(
                 trace
                     .clone()
                     .map_or(json!({}), |t| serde_json::to_value(t).unwrap_or_else(|_| (json!({})))),
-                vec![
-                    transaction::input::set(Some(transaction.input.0.to_vec())),
-                    transaction::block_hash::set(
-                        transaction.block_hash.map(|bh| format!("{:?}", bh)),
-                    ),
-                    transaction::block_number::set(
-                        transaction.block_number.map(|n| n.as_u32() as i32),
-                    ),
-                    transaction::transaction_index::set(
-                        transaction.transaction_index.map(|ti| ti.as_u32() as i32),
-                    ),
-                    transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
-                    transaction::gas_price::set(transaction.gas_price.map(|gp| gp.as_u64() as i64)),
-                    transaction::transaction_type::set(
-                        transaction.transaction_type.map(|gu| gu.as_u32() as i32),
-                    ),
-                    transaction::max_priority_fee_per_gas::set(
-                        transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.as_u64() as i64),
-                    ),
-                    transaction::max_fee_per_gas::set(
-                        transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
-                    ),
-                ],
+                transaction_params.clone(),
             ),
-            vec![
-                transaction::trace::set(trace.map_or(json!({}), |t| {
-                    serde_json::to_value(t).unwrap_or_else(|_| (json!({})))
-                })),
-                transaction::r::set(Some(transaction.r.to_string())),
-                transaction::v::set(Some(transaction.v.to_string())),
-                transaction::s::set(Some(transaction.s.to_string())),
-                transaction::input::set(Some(transaction.input.0.to_vec())),
-                transaction::block_hash::set(transaction.block_hash.map(|bh| format!("{:?}", bh))),
-                transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
-                transaction::transaction_index::set(
-                    transaction.transaction_index.map(|ti| ti.as_u32() as i32),
-                ),
-                transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
-                transaction::gas_price::set(transaction.gas_price.map(|gp| gp.as_u64() as i64)),
-                transaction::transaction_type::set(
-                    transaction.transaction_type.map(|gu| gu.as_u32() as i32),
-                ),
-                transaction::max_priority_fee_per_gas::set(
-                    transaction.max_priority_fee_per_gas.map(|mpfpg| mpfpg.as_u64() as i64),
-                ),
-                transaction::max_fee_per_gas::set(
-                    transaction.max_fee_per_gas.map(|mfpg| mfpg.as_u64() as i64),
-                ),
-            ],
+            transaction_params.clone(),
         )
         .exec()
         .instrument(info_span!("upsert_transaction"))
         .await?;
     trace!(?tx_data);
+
+    // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.
+    // `crates/graphql/src/traits.rs`
+    let mut receipt_params = vec![
+        receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32)),
+        receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
+        receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
+        receipt::contract_address::set(receipt.contract_address.map(|ca| to_checksum(&ca, None))),
+        receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
+        receipt::transaction_type::set(receipt.transaction_type.map(|tt| tt.as_u32() as i32)),
+        receipt::effective_gas_price::set(
+            receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
+        ),
+    ];
+
+    if receipt.block_hash.is_some() {
+        receipt_params
+            .push(receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))))
+    }
+    if receipt.cumulative_gas_used != 0.into() {
+        receipt_params
+            .push(receipt::cumulative_gas_used::set(receipt.cumulative_gas_used.as_u64() as i64))
+    }
 
     let _receipt_data = db
         .receipt()
@@ -189,39 +219,9 @@ pub async fn upsert_transaction_with_log_receipt(
                 receipt.transaction_index.as_u32() as i32,
                 to_checksum(&receipt.from, None),
                 receipt.cumulative_gas_used.as_u64() as i64,
-                vec![
-                    receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
-                    receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32)),
-                    receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
-                    receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
-                    receipt::contract_address::set(
-                        receipt.contract_address.map(|ca| to_checksum(&ca, None)),
-                    ),
-                    receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
-                    receipt::transaction_type::set(
-                        receipt.transaction_type.map(|tt| tt.as_u32() as i32),
-                    ),
-                    receipt::effective_gas_price::set(
-                        receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
-                    ),
-                ],
+                receipt_params.clone(),
             ),
-            vec![
-                receipt::block_hash::set(receipt.block_hash.map(|bh| format!("{:?}", bh))),
-                receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32)),
-                receipt::to::set(receipt.to.map(|to| format!("{:?}", to))),
-                receipt::gas_used::set(receipt.gas_used.map(|gu| gu.as_u64() as i64)),
-                receipt::contract_address::set(
-                    receipt.contract_address.map(|ca| to_checksum(&ca, None)),
-                ),
-                receipt::status::set(receipt.status.map(|s| s.as_u32() as i32)),
-                receipt::transaction_type::set(
-                    receipt.transaction_type.map(|tt| tt.as_u32() as i32),
-                ),
-                receipt::effective_gas_price::set(
-                    receipt.effective_gas_price.map(|egp| egp.as_u64() as i64),
-                ),
-            ],
+            receipt_params.clone(),
         )
         .exec()
         .instrument(info_span!("upsert_receipt"))
