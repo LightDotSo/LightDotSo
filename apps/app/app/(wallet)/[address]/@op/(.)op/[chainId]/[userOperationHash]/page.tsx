@@ -20,11 +20,19 @@ import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction
 import type { Address } from "viem";
 import { parseNumber } from "@/handlers/parsers";
 
-export default async function Page({
-  params,
-}: {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
   params: { address: string; chainId: string; userOperationHash: string };
-}) {
+};
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ params }: PageProps) {
   const { config } = await handler(params);
   const { userOperation } = await userOpHandler(params);
   const chainId = parseNumber(params.chainId);

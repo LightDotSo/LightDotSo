@@ -30,9 +30,7 @@ interface ErrorProps {
 // Error
 // -----------------------------------------------------------------------------
 
-export default function Error(props: ErrorProps) {
-  const { error, reset } = props;
-
+export default function Error({ error, reset }: ErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
