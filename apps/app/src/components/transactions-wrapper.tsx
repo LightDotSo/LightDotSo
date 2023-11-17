@@ -12,11 +12,22 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 type TransactionsWrapperProps = {
   children: React.ReactNode;
 };
 
-export function TransactionsWrapper({ children }: TransactionsWrapperProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TransactionsWrapper: FC<TransactionsWrapperProps> = ({
+  children,
+}) => {
   return <div className="flex w-full flex-col space-y-4">{children}</div>;
-}
+};

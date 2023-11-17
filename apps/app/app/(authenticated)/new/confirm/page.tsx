@@ -19,6 +19,10 @@ import {
 } from "@/app/(authenticated)/new/(components)/root";
 import { ConfirmForm } from "@/app/(authenticated)/new/confirm/confirm-form";
 
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
 export default async function Page() {
   return (
     <>

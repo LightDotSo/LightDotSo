@@ -13,9 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Entire file from: https://github.com/shadcn/ui/blob/ece54dd362a458b056a1e86481518f0193967e82/apps/www/app/examples/dashboard/components/team-switcher.tsx
+// License: MIT
+
 "use client";
 
-import type { UIEvent } from "react";
+import type { UIEvent, FC } from "react";
 import { Suspense, useEffect, useState } from "react";
 import {
   CaretSortIcon,
@@ -47,30 +50,38 @@ import { getWallets } from "@lightdotso/client";
 import { useAuth } from "@/stores/useAuth";
 import { getAddress, isAddress } from "viem";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
-
 interface WalletSwitcherProps extends PopoverTriggerProps {}
 
-// Entire file from: https://github.com/shadcn/ui/blob/ece54dd362a458b056a1e86481518f0193967e82/apps/www/app/examples/dashboard/components/team-switcher.tsx
-// License: MIT
+// -----------------------------------------------------------------------------
+// Parent Component
+// -----------------------------------------------------------------------------
 
-export function WalletSwitcher({
+export const WalletSwitcher: FC<WalletSwitcherProps> = ({
   // eslint-disable-next-line react/prop-types
   className,
-}: WalletSwitcherProps) {
+}) => {
   return (
     <Suspense fallback={<Skeleton className="mx-2 h-8 w-32"></Skeleton>}>
       <WalletSwitcherButton className={className} />
     </Suspense>
   );
-}
+};
 
-export function WalletSwitcherButton({
+// -----------------------------------------------------------------------------
+// Child Component
+// -----------------------------------------------------------------------------
+
+export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // eslint-disable-next-line react/prop-types
   className,
-}: WalletSwitcherProps) {
+}) => {
   const isMounted = useIsMounted();
   const [open, setOpen] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<{
@@ -298,4 +309,4 @@ export function WalletSwitcherButton({
       </Popover>
     </>
   );
-}
+};

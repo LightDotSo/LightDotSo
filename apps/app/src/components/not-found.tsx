@@ -15,8 +15,13 @@
 
 import { Button } from "@lightdotso/ui";
 import Link from "next/link";
+import type { FC } from "react";
 
-export function NotFound() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NotFound: FC = () => {
   return (
     <main className="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">
@@ -43,4 +48,4 @@ export function NotFound() {
       </div>
     </main>
   );
-}
+};

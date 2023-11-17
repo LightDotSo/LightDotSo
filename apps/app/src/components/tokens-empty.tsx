@@ -13,7 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export function TokensEmpty() {
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TokensEmpty: FC = () => {
   return (
     <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
       <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
@@ -39,4 +45,4 @@ export function TokensEmpty() {
       </div>
     </div>
   );
-}
+};

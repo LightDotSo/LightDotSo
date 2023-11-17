@@ -16,6 +16,10 @@
 import * as Sentry from "@sentry/node";
 import { InngestMiddleware } from "inngest";
 
+// -----------------------------------------------------------------------------
+// Middleware
+// -----------------------------------------------------------------------------
+
 export const sentryMiddleware = new InngestMiddleware({
   name: "Sentry Middleware",
   init({ client }) {

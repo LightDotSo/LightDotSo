@@ -29,15 +29,24 @@ import { FeedbackPopover } from "@/components/feedback-popover";
 import { ConnectButton } from "@/components/connect-button";
 import Script from "next/script";
 import { Inter } from "next/font/google";
+import type { FC } from "react";
 import { Suspense } from "react";
 import { VercelToolbar } from "@/components/vercel-toolbar";
 import { AuthState } from "@/components/auth-state";
 import { RootLogo } from "@/app/root-logo";
 import dynamic from "next/dynamic";
 
+// -----------------------------------------------------------------------------
+// Dynamic
+// -----------------------------------------------------------------------------
+
 const CommandK = dynamic(() => import("@/components/command-k"), {
   ssr: false,
 });
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 const inter = Inter({
   variable: "--font-inter",
@@ -45,7 +54,19 @@ const inter = Inter({
   display: "swap",
 });
 
-export default function Root({ children }: { children: React.ReactNode }) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface RootProps {
+  children: React.ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const Root: FC<RootProps> = ({ children }) => {
   return (
     <html
       lang="en"
@@ -94,4 +115,4 @@ export default function Root({ children }: { children: React.ReactNode }) {
       <Script async src="https://data.light.so/p.js" />
     </html>
   );
-}
+};

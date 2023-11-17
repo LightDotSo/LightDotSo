@@ -22,13 +22,20 @@ import { Button } from "@lightdotso/ui";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
 import { ErrorBoundary } from "react-error-boundary";
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export interface GlobalErrorProps {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+}
+
+// -----------------------------------------------------------------------------
+// Error
+// -----------------------------------------------------------------------------
+
+export default function GlobalError({ error, reset }: GlobalErrorProps) {
   const { reset: resetQuery } = useQueryErrorResetBoundary();
 
   return (

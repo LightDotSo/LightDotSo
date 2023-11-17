@@ -15,12 +15,11 @@
 
 import clsx from "clsx";
 import type { FC, InsHTMLAttributes } from "react";
-
 import s from "@/components/placeholder-orb.module.css";
 
-export type PlaceholderOrbProps = {
-  address: string;
-} & InsHTMLAttributes<HTMLSpanElement>;
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const colors = [
   "gray",
@@ -37,6 +36,18 @@ const colors = [
   "pink",
   "rose",
 ];
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export type PlaceholderOrbProps = {
+  address: string;
+} & InsHTMLAttributes<HTMLSpanElement>;
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const PlaceholderOrb: FC<PlaceholderOrbProps> = ({
   address,

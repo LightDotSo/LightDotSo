@@ -16,14 +16,23 @@
 "use client";
 
 import { Dialog, DialogContent } from "@lightdotso/ui";
+import type { FC } from "react";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 interface ModalProps {
   children: React.ReactNode;
 }
 
-export function Modal({ children }: ModalProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const Modal: FC<ModalProps> = ({ children }) => {
   const router = useRouter();
   const onDismiss = useCallback(() => {
     router.back();
@@ -36,4 +45,4 @@ export function Modal({ children }: ModalProps) {
       </DialogContent>
     </Dialog>
   );
-}
+};

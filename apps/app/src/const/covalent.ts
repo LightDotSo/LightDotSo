@@ -15,6 +15,10 @@
 
 import type { Chain } from "@covalenthq/client-sdk";
 
+// -----------------------------------------------------------------------------
+// Mainnet
+// -----------------------------------------------------------------------------
+
 export const ChainIdMainnetMapping: Record<number, Chain> = {
   1: "eth-mainnet",
   10: "optimism-mainnet",
@@ -23,9 +27,17 @@ export const ChainIdMainnetMapping: Record<number, Chain> = {
   8453: "base-mainnet",
 };
 
+// -----------------------------------------------------------------------------
+// Testnet
+// -----------------------------------------------------------------------------
+
 export const ChainIdTestnetMapping: Record<number, Chain> = {
   11155111: "eth-sepolia",
 };
+
+// -----------------------------------------------------------------------------
+// All
+// -----------------------------------------------------------------------------
 
 export const ChainIdMapping = {
   ...ChainIdMainnetMapping,

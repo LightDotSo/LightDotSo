@@ -17,6 +17,10 @@ import { EventSchemas, Inngest } from "inngest";
 import { prismaMiddleware, sentryMiddleware } from "./middlewares";
 import { z } from "zod";
 
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
 const eventsMap = {
   "prisma/schema.chore": {},
   "wallet/portfolio.invoke": {
@@ -53,6 +57,10 @@ const eventsMap = {
     }),
   },
 };
+
+// -----------------------------------------------------------------------------
+// Client
+// -----------------------------------------------------------------------------
 
 // Create a client to send and receive events
 export const inngest = new Inngest({

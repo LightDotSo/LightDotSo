@@ -18,10 +18,9 @@ import type { Metadata } from "next";
 import { SidebarNav } from "@/components/sidebar-nav";
 import { BannerSection } from "@/components/banner-section";
 
-export const metadata: Metadata = {
-  title: "Forms",
-  description: "Advanced form example using react-hook-form and Zod.",
-};
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const sidebarNavItems = [
   {
@@ -46,9 +45,26 @@ const sidebarNavItems = [
   },
 ];
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: "Forms",
+  description: "Advanced form example using react-hook-form and Zod.",
+};
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface SettingsLayoutProps {
   children: React.ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (

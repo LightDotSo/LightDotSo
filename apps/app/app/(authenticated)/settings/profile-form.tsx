@@ -19,7 +19,6 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { cn } from "@lightdotso/utils";
 import {
   Button,
@@ -39,6 +38,11 @@ import {
   Textarea,
 } from "@lightdotso/ui";
 import { successToast } from "@/utils/toast";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
 
 const profileFormSchema = z.object({
   username: z
@@ -75,7 +79,11 @@ const defaultValues: Partial<ProfileFormValues> = {
   ],
 };
 
-export function ProfileForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const ProfileForm: FC = () => {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -194,4 +202,4 @@ export function ProfileForm() {
       </form>
     </Form>
   );
-}
+};

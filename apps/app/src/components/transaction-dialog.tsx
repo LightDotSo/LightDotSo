@@ -27,6 +27,11 @@ import { isAddressEqual, toBytes, hexToBytes, toHex, fromHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
 import { errToast } from "@/utils/toast";
 import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 type TransactionDialogProps = {
   address: Address;
@@ -40,13 +45,17 @@ type TransactionDialogProps = {
   userOpHash: Hex;
 };
 
-export function TransactionDialog({
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TransactionDialog: FC<TransactionDialogProps> = ({
   address,
   chainId,
   userOperation,
   userOpHash,
   owners,
-}: TransactionDialogProps) {
+}) => {
   const { address: userAddress } = useAuth();
 
   const subdigest = subdigestOf(
@@ -192,4 +201,4 @@ export function TransactionDialog({
       </div>
     </>
   );
-}
+};

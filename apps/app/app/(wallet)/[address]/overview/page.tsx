@@ -24,11 +24,19 @@ import { type Address } from "viem";
 import { Suspense } from "react";
 import { TokensList } from "@/components/tokens-list";
 
-export default async function Page({
-  params,
-}: {
-  params: { address: string };
-}) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface PageProps {
+  params: { address: Address };
+}
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------

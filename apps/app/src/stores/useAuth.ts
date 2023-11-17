@@ -17,6 +17,10 @@ import { create } from "zustand";
 import type { Address } from "viem";
 import { createJSONStorage, persist } from "zustand/middleware";
 
+// -----------------------------------------------------------------------------
+// State
+// -----------------------------------------------------------------------------
+
 interface AuthState {
   address: Address | undefined;
   setAddress: (address: Address | undefined) => void;
@@ -28,6 +32,10 @@ interface AuthState {
   setWallet: (wallet: Address | undefined) => void;
   logout: () => void;
 }
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useAuth = create(
   persist<AuthState>(

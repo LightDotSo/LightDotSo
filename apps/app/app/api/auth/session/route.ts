@@ -17,6 +17,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@lightdotso/next-auth";
 import { NextResponse } from "next/server";
 
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
+
 export async function GET() {
   const session = await getServerSession(authOptions);
 

@@ -16,6 +16,10 @@
 import { notFound } from "next/navigation";
 import { isHex } from "viem";
 
+// -----------------------------------------------------------------------------
+// Validator
+// -----------------------------------------------------------------------------
+
 export const validateHex = (str: string) => {
   if (!isHex(str)) {
     notFound();

@@ -25,8 +25,13 @@ import { useAuth } from "@/stores/useAuth";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { FeedbackForm } from "@/components/feedback-form";
 import { useState } from "react";
+import type { FC } from "react";
 
-export function FeedbackPopover() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const FeedbackPopover: FC = () => {
   const isMounted = useIsMounted();
   const { address } = useAuth();
   const [open, setOpen] = useState(false);
@@ -49,4 +54,4 @@ export function FeedbackPopover() {
       </PopoverContent>
     </Popover>
   );
-}
+};

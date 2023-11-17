@@ -17,11 +17,17 @@ import { getTokens as getClientTokens } from "@lightdotso/client";
 import "server-only";
 import type { Address } from "viem";
 
-export const revalidate = 300;
+// -----------------------------------------------------------------------------
+// Pre
+// -----------------------------------------------------------------------------
 
 export const preload = (address: Address) => {
   void getTokens(address);
 };
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 
 export const getTokens = async (address: Address) => {
   return getClientTokens({ params: { query: { address: address } } }, false);

@@ -20,6 +20,11 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getPortfolio } from "@lightdotso/client";
 import { SparkAreaChart } from "@tremor/react";
 import { cn } from "@lightdotso/utils";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
 
 type PortfolioData = {
   balance: number;
@@ -31,11 +36,21 @@ type PortfolioData = {
   }[];
 };
 
-export function WalletOverviewBannerSparkline({
-  address,
-}: {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface WalletOverviewBannerSparklineProps {
   address: Address;
-}) {
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const WalletOverviewBannerSparkline: FC<
+  WalletOverviewBannerSparklineProps
+> = ({ address }) => {
   const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
     "portfolio",
     address,
@@ -120,4 +135,4 @@ export function WalletOverviewBannerSparkline({
       />
     </div>
   );
-}
+};

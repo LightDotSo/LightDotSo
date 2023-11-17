@@ -16,4 +16,8 @@
 import { cache } from "react";
 import { QueryClient } from "@tanstack/react-query";
 
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
 export const getQueryClient = cache(() => new QueryClient());

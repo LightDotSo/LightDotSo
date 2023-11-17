@@ -15,12 +15,20 @@
 
 import { createParser, useQueryState } from "next-usequerystate";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export type Owner = {
   address?: string;
   addressOrEns?: string;
   weight: number;
 };
 export type Owners = Owner[];
+
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
 
 export const ownerParser = createParser({
   parse(val) {
@@ -56,6 +64,10 @@ export const ownerParser = createParser({
     return encodeURIComponent(entry);
   },
 });
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useOwnersQueryState = () => {
   return useQueryState("owners", ownerParser.withDefault([]));

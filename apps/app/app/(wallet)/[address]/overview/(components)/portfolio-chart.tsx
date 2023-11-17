@@ -20,7 +20,12 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { AreaChart } from "@tremor/react";
 import type { Address } from "viem";
 import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparkline";
+import type { FC } from "react";
 import { useMemo } from "react";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
 
 type PortfolioData = {
   balance: number;
@@ -32,7 +37,19 @@ type PortfolioData = {
   }[];
 };
 
-export function PortfolioChart({ address }: { address: Address }) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface PortfolioChartProps {
+  address: Address;
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
   const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
     "portfolio",
     address,
@@ -127,4 +144,4 @@ export function PortfolioChart({ address }: { address: Address }) {
       </div>
     </>
   );
-}
+};

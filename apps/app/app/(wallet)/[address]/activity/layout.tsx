@@ -17,14 +17,26 @@ import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
 import { TITLES } from "@/const/titles";
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
 export const metadata: Metadata = {
   title: TITLES.Activity.title,
   description: TITLES.Activity.description,
 };
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface ActivityLayoutProps {
   children: React.ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function ActivityLayout({ children }: ActivityLayoutProps) {
   return (

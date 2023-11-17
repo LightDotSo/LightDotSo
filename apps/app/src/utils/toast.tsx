@@ -15,6 +15,10 @@
 
 import { toast } from "@lightdotso/ui";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const errToast = (err: any) =>
   toast({
     title: "You have encountered an error:",

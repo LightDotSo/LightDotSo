@@ -15,15 +15,27 @@
 
 import { parseAsStringEnum, useQueryState } from "next-usequerystate";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export enum WalletType {
   "MULTI" = "multi",
   "PERSONAL" = "personal",
   "2FA" = "2fa",
 }
 
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
 export const typeParser = parseAsStringEnum<WalletType>(
   Object.values(WalletType),
 ).withDefault(WalletType.MULTI);
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useTypeQueryState = () => {
   return useQueryState("type", typeParser);

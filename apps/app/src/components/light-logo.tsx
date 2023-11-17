@@ -14,9 +14,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import clsx from "clsx";
+import type { FC, SVGProps } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type LogoProps = SVGProps<SVGSVGElement>;
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 // eslint-disable-next-line react/prop-types
-export const Logo = ({ className = "", ...props }) => {
+export const Logo: FC<LogoProps> = ({ className = "", ...props }) => {
   return (
     <svg
       width="171"

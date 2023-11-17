@@ -13,8 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NotFound } from "@/components/not-found";
+import { NotFound as NotFoundComponent } from "@/components/not-found";
 
-export default async function Page() {
-  return <NotFound />;
+// -----------------------------------------------------------------------------
+// NotFound
+// -----------------------------------------------------------------------------
+
+export default async function NotFound() {
+  return <NotFoundComponent />;
 }

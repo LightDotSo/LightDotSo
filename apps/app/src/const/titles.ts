@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// -----------------------------------------------------------------------------
+// Main
+// -----------------------------------------------------------------------------
+
 enum Category {
   Transactions = "Transactions",
   Profile = "Profile",
@@ -21,6 +25,10 @@ enum Category {
   Owners = "Owners",
   Support = "Support",
 }
+
+// -----------------------------------------------------------------------------
+// Sub
+// -----------------------------------------------------------------------------
 
 enum SettingsSubCategory {
   Account = "Account",
@@ -34,6 +42,10 @@ type CategoryObject = {
   description: string;
   subcategories: Record<SubCategory, CategoryObject>;
 };
+
+// -----------------------------------------------------------------------------
+// All
+// -----------------------------------------------------------------------------
 
 export const TITLES: Record<Category, CategoryObject> = {
   [Category.Transactions]: {

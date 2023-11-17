@@ -17,11 +17,17 @@ import { getUserOperations as getClientUserOperations } from "@lightdotso/client
 import "server-only";
 import type { Address } from "viem";
 
-export const revalidate = 300;
+// -----------------------------------------------------------------------------
+// Pre
+// -----------------------------------------------------------------------------
 
 export const preload = (address: Address) => {
   void getUserOperations(address);
 };
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 
 export const getUserOperations = async (
   address: Address,

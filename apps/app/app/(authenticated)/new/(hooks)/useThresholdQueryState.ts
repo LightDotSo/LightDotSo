@@ -15,7 +15,15 @@
 
 import { parseAsInteger, useQueryState } from "next-usequerystate";
 
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
 export const thresholdParser = parseAsInteger.withDefault(1);
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useThresholdQueryState = () => {
   return useQueryState("threshold", thresholdParser);

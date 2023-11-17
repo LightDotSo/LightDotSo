@@ -15,6 +15,10 @@
 
 import type { WalletBalance } from "@prisma/client";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const serializeWalletBalance = (bal: WalletBalance[]): string => {
   return JSON.stringify(
     bal,

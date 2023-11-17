@@ -15,6 +15,11 @@
 
 import { RootContext } from "@/app/(authenticated)/new/(components)/root-context";
 import { RootLink } from "@/app/(authenticated)/new/(components)/root-link";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 export enum StepsEnum {
   // eslint-disable-next-line no-unused-vars
@@ -32,10 +37,9 @@ export interface Step {
   href: string;
 }
 
-interface NewRootProps {
-  children: React.ReactNode;
-  currentStepType: StepsEnum;
-}
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 export const steps: Step[] = [
   {
@@ -58,7 +62,23 @@ export const steps: Step[] = [
   },
 ];
 
-export async function NewRoot({ currentStepType, children }: NewRootProps) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface NewRootProps {
+  children: React.ReactNode;
+  currentStepType: StepsEnum;
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NewRoot: FC<NewRootProps> = async ({
+  currentStepType,
+  children,
+}) => {
   return (
     <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-12 lg:space-y-0">
       <div className="w-full flex-1 space-y-6">
@@ -105,4 +125,4 @@ export async function NewRoot({ currentStepType, children }: NewRootProps) {
       </aside>
     </div>
   );
-}
+};

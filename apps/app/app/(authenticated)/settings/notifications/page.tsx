@@ -17,6 +17,10 @@ import { Separator } from "@lightdotso/ui";
 import { NotificationsForm } from "@/app/(authenticated)/settings/notifications/notifications-form";
 import { SettingsSection } from "@/components/settings-section";
 
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
 export default function SettingsProfilePage() {
   return (
     <SettingsSection

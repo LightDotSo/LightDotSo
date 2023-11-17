@@ -15,10 +15,18 @@
 
 import "@lightdotso/styles/global.css";
 
-export default function RootLayout({
-  children,
-}: {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface RootLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return <>{children}</>;
 }

@@ -33,6 +33,10 @@ import {
   gnosis,
 } from "wagmi/chains";
 
+// -----------------------------------------------------------------------------
+// Logic
+// -----------------------------------------------------------------------------
+
 const reducer = (state: any, action: any) => {
   switch (action.type) {
     case "show":
@@ -53,10 +57,18 @@ const reducer = (state: any, action: any) => {
 
 const defaultState = { activeId: null, target: null, text: "" };
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export type NetworkStackProps = Pick<NetworkToolTipComponentProps, "id"> & {
   address: Address;
   disableLoading?: boolean;
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const NetworkStack: FC<NetworkStackProps> = ({ address, id }) => {
   const [{ activeId, target }, dispatch] = useReducer(reducer, defaultState);

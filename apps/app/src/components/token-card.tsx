@@ -18,6 +18,23 @@ import { TokenCardSparkline } from "./token-card-sparkline";
 import { TokenCardActions } from "./token-card-actions";
 import { Suspense } from "react";
 import type { Address } from "viem";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+export const shortenName = (name: string) => {
+  return name.match(/\b\w/g)?.join("").substring(0, 3);
+};
+
+export const separateFloat = (x: number) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 type TokenCardProps = {
   address: string;
@@ -32,17 +49,13 @@ type TokenCardProps = {
   };
 };
 
-export const shortenName = (name: string) => {
-  return name.match(/\b\w/g)?.join("").substring(0, 3);
-};
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
-export const separateFloat = (x: number) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
-export function TokenCard({
+export const TokenCard: FC<TokenCardProps> = ({
   token: { balance_usd, name, symbol, amount, decimals, address, chain_id },
-}: TokenCardProps) {
+}) => {
   return (
     <TableRow key={name}>
       <TableCell className="font-medium">
@@ -67,4 +80,4 @@ export function TokenCard({
       </TableCell>
     </TableRow>
   );
-}
+};

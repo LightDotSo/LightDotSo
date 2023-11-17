@@ -20,8 +20,23 @@ import invokePortfolioAction from "@/actions/invokePortfolioAction";
 import type { Address } from "viem";
 import { successToast } from "@/utils/toast";
 import { RefreshCcw } from "lucide-react";
+import type { FC } from "react";
 
-export function InvokePortfolioButton({ address }: { address: Address }) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface InvokePortfolioButtonProps {
+  address: Address;
+}
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
+  address,
+}) => {
   return (
     <Button
       variant="outline"
@@ -34,4 +49,4 @@ export function InvokePortfolioButton({ address }: { address: Address }) {
       <RefreshCcw className="h-4 w-4 text-muted-foreground" />
     </Button>
   );
-}
+};

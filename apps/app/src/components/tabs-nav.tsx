@@ -24,6 +24,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { isAddress } from "viem";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const transition = {
   type: "tween",
@@ -31,17 +36,25 @@ const transition = {
   duration: 0.15,
 };
 
-type Props = {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type TabProps = {
   setSelectedTabIndex: (_index: number) => void;
   selectedTabIndex: number | undefined;
   tabs: Tab[];
 };
 
-export const Tabs = ({
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const Tabs: FC<TabProps> = ({
   tabs,
   selectedTabIndex,
   setSelectedTabIndex,
-}: Props): JSX.Element => {
+}) => {
   const [anchorRefs, setAnchorRefs] = useState<Array<HTMLAnchorElement | null>>(
     [],
   );

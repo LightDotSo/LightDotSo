@@ -18,14 +18,9 @@ import { BannerSection } from "@/components/banner-section";
 import { LinkButtonGroup } from "@/components/link-button-group";
 import { TITLES } from "@/const/titles";
 
-export const metadata: Metadata = {
-  title: TITLES.Transactions.title,
-  description: TITLES.Transactions.description,
-};
-
-interface TransactionsLayoutProps {
-  children: React.ReactNode;
-}
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const transactionsNavItems = [
   {
@@ -44,6 +39,27 @@ const transactionsNavItems = [
     id: "history",
   },
 ];
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Transactions.title,
+  description: TITLES.Transactions.description,
+};
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface TransactionsLayoutProps {
+  children: React.ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function TransactionsLayout({
   children,

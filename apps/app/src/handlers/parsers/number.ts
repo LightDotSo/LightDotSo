@@ -15,6 +15,10 @@
 
 import { hexRegex } from "@/handlers/regexs/hexNumber";
 
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
 export const parseNumber = (value: string) => {
   // Check if the value is a non-negative integer
   if (/^\d+$/.test(value)) {

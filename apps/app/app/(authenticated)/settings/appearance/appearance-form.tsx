@@ -35,6 +35,11 @@ import {
   RadioGroupItem,
 } from "@lightdotso/ui";
 import { successToast } from "@/utils/toast";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
 
 const appearanceFormSchema = z.object({
   theme: z.enum(["light", "dark"], {
@@ -53,7 +58,11 @@ const defaultValues: Partial<AppearanceFormValues> = {
   theme: "light",
 };
 
-export function AppearanceForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const AppearanceForm: FC = () => {
   const form = useForm<AppearanceFormValues>({
     resolver: zodResolver(appearanceFormSchema),
     defaultValues,
@@ -171,4 +180,4 @@ export function AppearanceForm() {
       </form>
     </Form>
   );
-}
+};

@@ -21,6 +21,7 @@ import { steps, StepsEnum } from "@/app/(authenticated)/new/(components)/root";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
+import type { FC } from "react";
 import { useCallback } from "react";
 import {
   ownerParser,
@@ -31,12 +32,20 @@ import {
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface RootLinkProps {
   stepType: StepsEnum;
   currentStepType: StepsEnum;
 }
 
-export function RootLink({ currentStepType, stepType }: RootLinkProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -199,4 +208,4 @@ export function RootLink({ currentStepType, stepType }: RootLinkProps) {
       </span>
     </button>
   );
-}
+};

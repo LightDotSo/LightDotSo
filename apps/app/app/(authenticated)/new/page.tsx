@@ -19,6 +19,10 @@ import {
 } from "@/app/(authenticated)/new/(components)/root";
 import { NewWalletForm } from "@/app/(authenticated)/new/new-wallet-form";
 
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
 export default function Page() {
   return (
     <>

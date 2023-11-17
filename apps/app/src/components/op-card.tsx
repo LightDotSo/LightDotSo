@@ -25,6 +25,11 @@ import {
 } from "@lightdotso/ui";
 import Link from "next/link";
 import { cn } from "@lightdotso/utils";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 type OpCardProps = {
   address: string;
@@ -50,7 +55,11 @@ type OpCardProps = {
   };
 };
 
-export function OpCard({ address, userOperation }: OpCardProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
   return (
     <Accordion
       key={userOperation.hash}
@@ -99,4 +108,4 @@ export function OpCard({ address, userOperation }: OpCardProps) {
       </AccordionItem>
     </Accordion>
   );
-}
+};

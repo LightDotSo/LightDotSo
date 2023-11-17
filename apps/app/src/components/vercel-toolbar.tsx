@@ -14,9 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { VercelToolbar as VercelNextToolbar } from "@vercel/toolbar/next";
+import type { FC } from "react";
 
-export function VercelToolbar() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const VercelToolbar: FC = () => {
   return process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ? (
     <VercelNextToolbar />
   ) : null;
-}
+};

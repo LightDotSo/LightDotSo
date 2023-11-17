@@ -18,6 +18,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Instance } from "@popperjs/core";
 import { createPopper } from "@popperjs/core";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 interface PositionPopoverConfig {
   popoverRef: MutableRefObject<HTMLElement | null>;
   targetEl: HTMLElement;
@@ -26,6 +30,10 @@ interface PositionPopoverConfig {
   applyStyles?: (state: any) => void;
   gpuAcceleration?: boolean;
 }
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const usePositioner = () => {
   const popperJSRef: MutableRefObject<Instance | null> =

@@ -18,8 +18,21 @@
 import type { Address } from "viem";
 import { Send, RefreshCcw } from "lucide-react";
 import { Button } from "@lightdotso/ui";
+import type { FC } from "react";
 
-export function TokenCardActions({ address }: { address: Address }) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type TokenCardActionsProps = {
+  address: Address;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TokenCardActions: FC<TokenCardActionsProps> = ({ address }) => {
   return (
     <div className="flex items-center justify-end gap-x-4">
       <Button size="sm" className="rounded-full p-3">
@@ -38,4 +51,4 @@ export function TokenCardActions({ address }: { address: Address }) {
       </Button>
     </div>
   );
-}
+};

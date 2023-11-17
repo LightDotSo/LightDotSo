@@ -32,6 +32,7 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
+import type { FC } from "react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,9 +57,17 @@ import {
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type NewFormValues = z.infer<typeof newFormStoreSchema>;
 
-export function ConfirmForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const ConfirmForm: FC = () => {
   const router = useRouter();
   const { address, setFormValues, fetchToCreate } = useNewFormStore();
 
@@ -265,4 +274,4 @@ export function ConfirmForm() {
       </CardContent>
     </Card>
   );
-}
+};

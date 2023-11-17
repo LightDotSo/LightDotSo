@@ -15,7 +15,15 @@
 
 import { parseAsString, useQueryState } from "next-usequerystate";
 
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
 export const saltParser = parseAsString;
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useSaltQueryState = () => {
   return useQueryState("salt", saltParser);

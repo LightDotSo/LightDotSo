@@ -19,7 +19,6 @@ import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import {
   Button,
   Checkbox,
@@ -35,6 +34,11 @@ import {
   Switch,
 } from "@lightdotso/ui";
 import { successToast } from "@/utils/toast";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
 
 const notificationsFormSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
@@ -57,7 +61,11 @@ const defaultValues: Partial<NotificationsFormValues> = {
   security_emails: true,
 };
 
-export function NotificationsForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NotificationsForm: FC = () => {
   const form = useForm<NotificationsFormValues>({
     resolver: zodResolver(notificationsFormSchema),
     defaultValues,
@@ -229,4 +237,4 @@ export function NotificationsForm() {
       </form>
     </Form>
   );
-}
+};

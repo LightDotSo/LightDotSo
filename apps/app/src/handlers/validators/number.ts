@@ -16,6 +16,10 @@
 import { notFound } from "next/navigation";
 import { hexRegex } from "@/handlers/regexs/hexNumber";
 
+// -----------------------------------------------------------------------------
+// Validator
+// -----------------------------------------------------------------------------
+
 export const validateNumber = (value: string): void => {
   // Check if the value is a non-negative integer
   if (/^\d+$/.test(value)) {

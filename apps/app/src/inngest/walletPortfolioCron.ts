@@ -14,9 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { GetEvents } from "inngest";
-
 import { inngest } from "./client";
 type Events = GetEvents<typeof inngest>;
+
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
 
 export const walletPortfolioCron = inngest.createFunction(
   { id: "daily-wallet-portfolio-cron" },

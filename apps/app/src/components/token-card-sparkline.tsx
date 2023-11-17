@@ -19,6 +19,20 @@ import type { Address } from "viem";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getTokenPrice } from "@lightdotso/client";
 import { SparkAreaChart } from "@tremor/react";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type TokenCardSparklineProps = {
+  address: Address;
+  chain_id: number;
+};
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
 
 type TokenPriceData = {
   price: number;
@@ -30,13 +44,14 @@ type TokenPriceData = {
   }[];
 };
 
-export function TokenCardSparkline({
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   address,
   chain_id,
-}: {
-  address: Address;
-  chain_id: number;
-}) {
+}) => {
   const currentData: TokenPriceData | undefined = useQueryClient().getQueryData(
     ["token_price", address, chain_id],
   );
@@ -88,4 +103,4 @@ export function TokenCardSparkline({
       showAnimation
     />
   );
-}
+};
