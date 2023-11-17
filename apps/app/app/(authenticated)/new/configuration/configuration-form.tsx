@@ -44,6 +44,7 @@ import {
 } from "@lightdotso/ui";
 import { steps } from "@/app/(authenticated)/new/(components)/root";
 import { useRouter } from "next/navigation";
+import type { FC } from "react";
 import { useEffect, useCallback, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -68,7 +69,15 @@ import {
 import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { useAuth } from "@/stores/useAuth";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type NewFormValues = z.infer<typeof newFormConfigurationSchema>;
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 function timestampToBytes32(timestamp: number): string {
   // Create a Buffer from the timestamp
@@ -79,7 +88,11 @@ function timestampToBytes32(timestamp: number): string {
   return "0x" + buffer.toString("hex");
 }
 
-export function ConfigurationForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const ConfigurationForm: FC = () => {
   const { address: userAddress, ens: userEns } = useAuth();
   const router = useRouter();
   const { setFormValues, fetchToCreate } = useNewFormStore();
@@ -653,4 +666,4 @@ export function ConfigurationForm() {
       </CardContent>
     </Card>
   );
-}
+};

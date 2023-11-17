@@ -15,7 +15,15 @@
 
 import { parseAsString, useQueryState } from "next-usequerystate";
 
+// -----------------------------------------------------------------------------
+// Parser
+// -----------------------------------------------------------------------------
+
 export const nameParser = parseAsString.withDefault("");
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useNameQueryState = () => {
   return useQueryState("name", nameParser);

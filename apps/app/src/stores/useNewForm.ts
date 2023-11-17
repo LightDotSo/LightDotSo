@@ -19,6 +19,10 @@ import { newFormStoreSchema } from "@/schemas/newForm";
 import { createWallet } from "@lightdotso/client";
 import { isEqual } from "lodash";
 
+// -----------------------------------------------------------------------------
+// State
+// -----------------------------------------------------------------------------
+
 type NewFormStoreValues = z.infer<typeof newFormStoreSchema>;
 
 interface FormStore {
@@ -32,6 +36,10 @@ interface FormStore {
   isLoading: boolean;
   errors: z.ZodError | null;
 }
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export const useNewFormStore = create<FormStore>((set, get) => ({
   address: null,

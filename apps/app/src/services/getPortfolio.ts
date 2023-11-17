@@ -17,11 +17,17 @@ import { getPortfolio as getClientPortfolio } from "@lightdotso/client";
 import "server-only";
 import type { Address } from "viem";
 
-export const revalidate = 300;
+// -----------------------------------------------------------------------------
+// Pre
+// -----------------------------------------------------------------------------
 
 export const preload = (address: Address) => {
   void getPortfolio(address);
 };
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 
 export const getPortfolio = async (address: Address) => {
   return getClientPortfolio({ params: { query: { address: address } } }, false);

@@ -39,6 +39,7 @@ import {
 } from "@lightdotso/ui";
 import { steps } from "@/app/(authenticated)/new/(components)/root";
 import { useRouter } from "next/navigation";
+import type { FC } from "react";
 import { useEffect, useCallback } from "react";
 import {
   BanknotesIcon,
@@ -58,9 +59,17 @@ import {
 } from "@/app/(authenticated)/new/(hooks)";
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 type NewFormValues = z.infer<typeof newFormSchema>;
 
-export function NewWalletForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NewWalletForm: FC = () => {
   const router = useRouter();
   const { setFormValues } = useNewFormStore();
 
@@ -267,4 +276,4 @@ export function NewWalletForm() {
       </CardContent>
     </Card>
   );
-}
+};

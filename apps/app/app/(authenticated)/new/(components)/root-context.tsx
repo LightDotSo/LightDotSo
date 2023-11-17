@@ -16,8 +16,9 @@
 "use client";
 
 import { useNewFormStore } from "@/stores/useNewForm";
+import type { FC } from "react";
 
-export function RootContext() {
+export const RootContext: FC = () => {
   const { address, errors, formValues, isValid, isLoading } = useNewFormStore();
 
   return (
@@ -37,4 +38,4 @@ export function RootContext() {
       </pre>
     </div>
   );
-}
+};

@@ -16,14 +16,26 @@
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
 export const metadata: Metadata = {
   title: "New Wallet",
   description: "Create a new wallet.",
 };
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface NewWalletLayoutProps {
   children: React.ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
 
 export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
   return (

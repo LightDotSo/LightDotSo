@@ -19,6 +19,10 @@ import {
 } from "@/app/(authenticated)/new/(components)/root";
 import { ConfigurationForm } from "@/app/(authenticated)/new/configuration/configuration-form";
 
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
 export default async function Page() {
   return (
     <>

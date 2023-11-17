@@ -17,11 +17,17 @@ import { getUserOperation as getClientUserOperation } from "@lightdotso/client";
 import "server-only";
 import type { Hex } from "viem";
 
-export const revalidate = 300;
+// -----------------------------------------------------------------------------
+// Pre
+// -----------------------------------------------------------------------------
 
 export const preload = (user_operation_hash: Hex) => {
   void getUserOperation(user_operation_hash);
 };
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 
 export const getUserOperation = async (user_operation_hash: Hex) => {
   return getClientUserOperation(

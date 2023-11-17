@@ -18,7 +18,7 @@ import type { Address } from "viem";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
-// Type
+// State
 // -----------------------------------------------------------------------------
 
 interface AuthState {

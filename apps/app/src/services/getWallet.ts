@@ -17,11 +17,17 @@ import { getWallet as getClientWallet } from "@lightdotso/client";
 import "server-only";
 import type { Address } from "viem";
 
-export const revalidate = 3600;
+// -----------------------------------------------------------------------------
+// Pre
+// -----------------------------------------------------------------------------
 
 export const preload = (address: Address) => {
   void getWallet(address);
 };
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
 
 export const getWallet = async (address: Address) => {
   return getClientWallet({ params: { query: { address: address } } }, false);

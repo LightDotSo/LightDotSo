@@ -15,6 +15,10 @@
 
 import { Redis } from "@upstash/redis";
 
+// -----------------------------------------------------------------------------
+// Client
+// -----------------------------------------------------------------------------
+
 export const redis = new Redis({
   url: `https://${process.env.UPSTASH_REST_API_DOMAIN!}`,
   token: process.env.UPSTASH_REST_API_TOKEN!,
