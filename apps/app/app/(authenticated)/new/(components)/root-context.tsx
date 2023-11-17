@@ -18,6 +18,10 @@
 import { useNewFormStore } from "@/stores/useNewForm";
 import type { FC } from "react";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export const RootContext: FC = () => {
   const { address, errors, formValues, isValid, isLoading } = useNewFormStore();
 

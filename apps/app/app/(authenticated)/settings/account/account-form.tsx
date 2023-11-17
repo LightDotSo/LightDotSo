@@ -20,7 +20,6 @@ import { CalendarIcon, CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { cn } from "@lightdotso/utils";
 import {
   Button,
@@ -43,6 +42,11 @@ import {
   PopoverTrigger,
 } from "@lightdotso/ui";
 import { successToast } from "@/utils/toast";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const languages = [
   { label: "English", value: "en" },
@@ -55,6 +59,10 @@ const languages = [
   { label: "Korean", value: "ko" },
   { label: "Chinese", value: "zh" },
 ] as const;
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
 
 const accountFormSchema = z.object({
   name: z
@@ -81,7 +89,11 @@ const defaultValues: Partial<AccountFormValues> = {
   // dob: new Date("2023-01-23"),
 };
 
-export function AccountForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const AccountForm: FC = () => {
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountFormSchema),
     defaultValues,
@@ -220,4 +232,4 @@ export function AccountForm() {
       </form>
     </Form>
   );
-}
+};

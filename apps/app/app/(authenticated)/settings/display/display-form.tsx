@@ -18,7 +18,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-
 import {
   Button,
   Checkbox,
@@ -31,6 +30,11 @@ import {
   FormMessage,
 } from "@lightdotso/ui";
 import { successToast } from "@/utils/toast";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const items = [
   {
@@ -59,6 +63,10 @@ const items = [
   },
 ] as const;
 
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
 const displayFormSchema = z.object({
   items: z.array(z.string()).refine(value => value.some(item => item), {
     message: "You have to select at least one item.",
@@ -72,7 +80,11 @@ const defaultValues: Partial<DisplayFormValues> = {
   items: ["recents", "home"],
 };
 
-export function DisplayForm() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const DisplayForm: FC = () => {
   const form = useForm<DisplayFormValues>({
     resolver: zodResolver(displayFormSchema),
     defaultValues,
@@ -137,4 +149,4 @@ export function DisplayForm() {
       </form>
     </Form>
   );
-}
+};
