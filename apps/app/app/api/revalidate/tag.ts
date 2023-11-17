@@ -16,6 +16,10 @@
 import { revalidateTag } from "next/cache";
 import type { NextRequest } from "next/server";
 
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
+
 export async function GET(request: NextRequest) {
   const tag = request.nextUrl.searchParams.get("tag");
 

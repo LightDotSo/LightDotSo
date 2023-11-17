@@ -19,8 +19,13 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Logo } from "@/components/light-logo";
 import { usePathType } from "@/hooks/usePathType";
+import type { FC } from "react";
 
-export const RootLogo = () => {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const RootLogo: FC = () => {
   const type = usePathType();
   const pathname = usePathname();
 

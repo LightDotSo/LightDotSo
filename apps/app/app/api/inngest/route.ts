@@ -26,6 +26,10 @@ import {
   walletTransactionInvoke,
 } from "@/inngest";
 
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
+
 // Create an API that serves zero functions
 export const { GET, POST, PUT } = serve({
   client: inngest,

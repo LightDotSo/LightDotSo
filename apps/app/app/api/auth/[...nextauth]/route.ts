@@ -19,5 +19,9 @@ import NextAuth from "next-auth";
 // Add back once NextAuth v5 is released
 // export const runtime = 'edge';
 
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
+
 const handlers = NextAuth(authOptions);
 export { handlers as GET, handlers as POST };
