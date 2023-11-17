@@ -31,6 +31,11 @@ import { BellIcon } from "@radix-ui/react-icons";
 import { BellRing, Check } from "lucide-react";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useAuth } from "@/stores/useAuth";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const notifications = [
   {
@@ -47,7 +52,11 @@ const notifications = [
   },
 ];
 
-export function NotificationPopover() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NotificationPopover: FC = () => {
   const isMounted = useIsMounted();
   const { address } = useAuth();
 
@@ -109,4 +118,4 @@ export function NotificationPopover() {
       </PopoverContent>
     </Popover>
   );
-}
+};

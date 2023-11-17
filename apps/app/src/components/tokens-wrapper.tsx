@@ -20,12 +20,21 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 type TokensWrapperProps = {
   children: React.ReactNode;
 };
 
-export function TokensWrapper({ children }: TokensWrapperProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TokensWrapper: FC<TokensWrapperProps> = ({ children }) => {
   return (
     <div className="rounded-md border border-input bg-card">
       <Table>
@@ -41,4 +50,4 @@ export function TokensWrapper({ children }: TokensWrapperProps) {
       </Table>
     </div>
   );
-}
+};

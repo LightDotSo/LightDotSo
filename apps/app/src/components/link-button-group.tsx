@@ -19,7 +19,12 @@ import { buttonVariants } from "@lightdotso/ui";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@lightdotso/utils";
+import type { FC } from "react";
 import { useEffect } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 interface TransactionsButtonLayoutProps
   extends React.HTMLAttributes<HTMLElement> {
@@ -31,10 +36,14 @@ interface TransactionsButtonLayoutProps
   children?: React.ReactNode;
 }
 
-export function LinkButtonGroup({
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   children,
   items,
-}: TransactionsButtonLayoutProps) {
+}) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -111,4 +120,4 @@ export function LinkButtonGroup({
       </div>
     </div>
   );
-}
+};

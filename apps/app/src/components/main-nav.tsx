@@ -18,8 +18,8 @@
 
 "use client";
 
+import type { FC, HTMLAttributes } from "react";
 import React, { Suspense, useMemo, useState, useEffect } from "react";
-
 import { Tabs } from "@/components/tabs-nav";
 import { cn } from "@lightdotso/utils";
 import { useTabs } from "@/hooks/useTabs";
@@ -33,6 +33,10 @@ import {
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
 import { usePathType } from "@/hooks/usePathType";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const tabs = [
   {
@@ -97,11 +101,17 @@ const tabs = [
   },
 ];
 
-export function MainNav({
-  // eslint-disable-next-line react/prop-types
-  className = "",
-  ...props
-}: React.HTMLAttributes<HTMLElement> & {}) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type MainNavProps = HTMLAttributes<HTMLElement>;
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   const type = usePathType();
 
   const typeTabs = useMemo(() => {
@@ -139,4 +149,4 @@ export function MainNav({
       <Suspense>{framer && <Tabs {...framer.tabProps} />}</Suspense>
     </div>
   );
-}
+};

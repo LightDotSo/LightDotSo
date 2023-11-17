@@ -16,7 +16,12 @@
 "use client";
 
 import { ConnectKitButton } from "connectkit";
+import type { FC } from "react";
 
-export function ConnectButton() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const ConnectButton: FC = () => {
   return <ConnectKitButton />;
-}
+};

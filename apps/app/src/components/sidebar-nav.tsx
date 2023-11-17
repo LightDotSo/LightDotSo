@@ -17,9 +17,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 import { cn } from "@lightdotso/utils";
 import { buttonVariants } from "@lightdotso/ui";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Type
+// -----------------------------------------------------------------------------
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -29,12 +33,16 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   baseRef?: boolean;
 }
 
-export function SidebarNav({
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const SidebarNav: FC<SidebarNavProps> = ({
   className,
   baseRef,
   items,
   ...props
-}: SidebarNavProps) {
+}) => {
   const pathname = usePathname();
 
   // Get the 1st part of the pathname, if baseRef is true
@@ -69,4 +77,4 @@ export function SidebarNav({
       ))}
     </nav>
   );
-}
+};

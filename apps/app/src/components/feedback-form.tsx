@@ -13,7 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+// This component is used only in the client, but we omit the "use client" since
+// the parent component already has it.
+// "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -33,6 +35,11 @@ import {
 import { errToast, successToast } from "@/utils/toast";
 import { useAuth } from "@/stores/useAuth";
 import { createFeedback } from "@lightdotso/client";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
 
 const feedbackFormSchema = z.object({
   text: z.string().min(1),
@@ -47,11 +54,19 @@ const feedbackFormSchema = z.object({
 
 type FeedbackFormValues = z.infer<typeof feedbackFormSchema>;
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 type FeedbackFormProps = {
   onClose: () => void;
 };
 
-export function FeedbackForm({ onClose }: FeedbackFormProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
   const { userId } = useAuth();
 
   const form = useForm<FeedbackFormValues>({
@@ -164,4 +179,4 @@ export function FeedbackForm({ onClose }: FeedbackFormProps) {
       </form>
     </Form>
   );
-}
+};

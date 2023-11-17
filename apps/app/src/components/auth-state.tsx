@@ -15,6 +15,7 @@
 
 "use client";
 
+import type { FC } from "react";
 import { useEffect } from "react";
 import { useAuth } from "@/stores/useAuth";
 import { useAccount, useEnsName } from "wagmi";
@@ -23,7 +24,11 @@ import { isAddress } from "viem";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getUser } from "@lightdotso/client";
 
-export const AuthState = () => {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const AuthState: FC = () => {
   const { address } = useAccount();
   const { data: ens } = useEnsName({ address, chainId: 1 });
   const { setAddress, setWallet, setEns, logout, setUserId } = useAuth();

@@ -33,8 +33,13 @@ import Link from "next/link";
 import { MixerVerticalIcon } from "@radix-ui/react-icons";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useAuth } from "@/stores/useAuth";
+import type { FC } from "react";
 
-export function UserNav() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const UserNav: FC = () => {
   const isMounted = useIsMounted();
   const { theme, setTheme } = useTheme();
   const { address } = useAuth();
@@ -76,4 +81,4 @@ export function UserNav() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};

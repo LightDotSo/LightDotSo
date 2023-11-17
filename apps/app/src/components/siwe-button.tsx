@@ -22,6 +22,11 @@ import { useState, useEffect } from "react";
 import { Button } from "@lightdotso/ui";
 import { SiweMessage } from "siwe";
 import { getCsrfToken, signIn, getSession, signOut } from "next-auth/react";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 export const siweConfig: SIWEConfig = {
   getSession: async () => {
@@ -71,7 +76,11 @@ export const siweConfig: SIWEConfig = {
     }).prepareMessage(),
 };
 
-export const SIWEButton = () => {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const SIWEButton: FC = () => {
   const { setOpen } = useModal();
   const { isConnected } = useAccount();
   const [mounted, setMounted] = useState(false);

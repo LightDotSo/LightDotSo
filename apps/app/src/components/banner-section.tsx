@@ -13,7 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { FC } from "react";
 import { Separator } from "@lightdotso/ui";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 interface BannerSectionProps {
   title: string;
@@ -22,12 +27,16 @@ interface BannerSectionProps {
   children: React.ReactNode;
 }
 
-export function BannerSection({
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const BannerSection: FC<BannerSectionProps> = ({
   title,
   description,
   cta,
   children,
-}: BannerSectionProps) {
+}) => {
   return (
     <>
       <div className="flex-1">
@@ -51,4 +60,4 @@ export function BannerSection({
       </div>
     </>
   );
-}
+};

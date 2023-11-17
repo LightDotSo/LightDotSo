@@ -19,6 +19,10 @@ import type { FC, MouseEventHandler } from "react";
 import s from "./network-item.module.css";
 import type { Address, Chain } from "viem";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export type NetworkItemProps = {
   address: Address;
   className?: string;
@@ -26,6 +30,10 @@ export type NetworkItemProps = {
   onMouseEnter?: MouseEventHandler<HTMLLIElement>;
   network: Chain;
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const NetworkItem: FC<NetworkItemProps> = ({
   address,

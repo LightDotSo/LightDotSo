@@ -19,11 +19,18 @@ import clsx from "clsx";
 import { motion } from "framer-motion";
 import type { FC, ReactNode } from "react";
 import { useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
-
 import { usePositioner } from "@/hooks/usePositioner";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const EASING = [0.4, 0, 0, 1];
 const DEFAULT_POSITIONS = { popper: null };
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 export type NetworkToolTipComponentProps = {
   id?: string;
@@ -31,6 +38,10 @@ export type NetworkToolTipComponentProps = {
   activeId: any;
   children: ReactNode;
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 const NetworkTooltipComponent: FC<NetworkToolTipComponentProps> = ({
   id = 0,

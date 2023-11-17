@@ -16,11 +16,19 @@
 import { m } from "framer-motion";
 import type { FC, MouseEventHandler } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 export type NetworkItemExtraProps = {
   id: string;
   length: number;
   onMouseEnter: MouseEventHandler<HTMLLIElement>;
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
   id,

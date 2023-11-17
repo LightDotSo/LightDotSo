@@ -21,13 +21,25 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TransactionsEmpty } from "@/components/transactions-empty";
 import { TransactionsWrapper } from "@/components/transactions-wrapper";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 export type TransactionsListProps = {
   address: Address;
   status: "all" | "proposed" | "executed";
 };
 
-export function TransactionsList({ address, status }: TransactionsListProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TransactionsList: FC<TransactionsListProps> = ({
+  address,
+  status,
+}) => {
   const { data } = useSuspenseQuery({
     queryKey: ["transactions", status, address],
     queryFn: async () => {
@@ -65,4 +77,4 @@ export function TransactionsList({ address, status }: TransactionsListProps) {
         ))}
     </TransactionsWrapper>
   );
-}
+};

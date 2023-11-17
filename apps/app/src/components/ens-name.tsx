@@ -13,9 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
 import { createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
+import type { FC } from "react";
 import { cache } from "react";
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
 
 export const publicClient = createPublicClient({
   chain: mainnet,
@@ -34,13 +40,21 @@ export const preload = (address: `0x${string}`) => {
   void getEnsName(address);
 };
 
-export async function EnsName({
-  params: { address },
-}: {
-  params: { address: `0x${string}` };
-}) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type EnsNameProps = {
+  address: Address;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const EnsName: FC<EnsNameProps> = async ({ address }) => {
   const name = await getEnsName(address);
   if (name) {
     return <p>{name}</p>;
   }
-}
+};

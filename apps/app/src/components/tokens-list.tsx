@@ -21,12 +21,21 @@ import type { Address } from "viem";
 import { TokenCard } from "@/components/token-card";
 import { TokensEmpty } from "@/components/tokens-empty";
 import { TokensWrapper } from "@/components/tokens-wrapper";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 export type TokensListProps = {
   address: Address;
 };
 
-export function TokensList({ address }: TokensListProps) {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const TokensList: FC<TokensListProps> = ({ address }) => {
   const { data } = useSuspenseQuery({
     queryKey: ["tokens", address],
     queryFn: async () => {
@@ -59,4 +68,4 @@ export function TokensList({ address }: TokensListProps) {
         ))}
     </TokensWrapper>
   );
-}
+};

@@ -24,6 +24,7 @@ import {
   User,
   DeleteIcon,
 } from "lucide-react";
+import type { FC } from "react";
 import { useState, useEffect, useCallback } from "react";
 import {
   CommandDialog,
@@ -37,7 +38,11 @@ import {
 } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 
-export default function CommandK() {
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const CommandK: FC = () => {
   const [open, setOpen] = useState(false);
 
   const router = useRouter();
@@ -117,4 +122,10 @@ export default function CommandK() {
       </CommandList>
     </CommandDialog>
   );
-}
+};
+
+// -----------------------------------------------------------------------------
+// Export
+// -----------------------------------------------------------------------------
+
+export default CommandK;
