@@ -17,6 +17,10 @@ import { inngest } from "@/inngest/client";
 import { postLlama } from "@lightdotso/client";
 import { NonRetriableError } from "inngest";
 
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
+
 export const walletPortfolioLlamaUpdate = inngest.createFunction(
   {
     id: "wallet-portfolio-llama-update",

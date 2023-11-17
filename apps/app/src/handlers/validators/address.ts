@@ -16,6 +16,10 @@
 import { notFound } from "next/navigation";
 import { isAddress } from "viem";
 
+// -----------------------------------------------------------------------------
+// Validator
+// -----------------------------------------------------------------------------
+
 export const validateAddress = (address: string) => {
   if (!isAddress(address)) {
     notFound();

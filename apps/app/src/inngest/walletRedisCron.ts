@@ -16,6 +16,10 @@
 import { redis } from "@/clients/redis";
 import { inngest } from "./client";
 
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
+
 export const walletRedisCron = inngest.createFunction(
   { id: "daily-wallet-redis-cron" },
   { cron: "0 0 * * *" },

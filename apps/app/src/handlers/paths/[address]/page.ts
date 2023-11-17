@@ -19,6 +19,10 @@ import { validateAddress } from "@/handlers/validators/address";
 import { Result } from "neverthrow";
 import type { Address } from "viem";
 
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
+
 export const handler = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
   // Validators

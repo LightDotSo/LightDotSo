@@ -16,6 +16,10 @@
 import * as z from "zod";
 import { isAddress } from "viem";
 
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
 export const newFormSchema = z.object({
   type: z.enum(["multi", "personal", "2fa"], {
     required_error: "Please select a type.",

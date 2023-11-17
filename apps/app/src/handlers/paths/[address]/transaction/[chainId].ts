@@ -24,6 +24,10 @@ import { validateHex } from "@/handlers/validators/hex";
 import { validateNumber } from "@/handlers/validators/number";
 import { parseNumber } from "@/handlers/parsers/number";
 
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
+
 export const handler = async (
   params: { address: string; chainId: string },
   searchParams: {

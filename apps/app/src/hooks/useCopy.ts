@@ -16,6 +16,10 @@
 import copy from "copy-to-clipboard";
 import { useRef, useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
 export const useCopy = (): [boolean, (text: string) => void] => {
   const [showCopied, setShowCopied] = useState(false);
   const timeoutRef = useRef<number | null>(null);

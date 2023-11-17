@@ -17,6 +17,10 @@ import { notFound } from "next/navigation";
 import { isHex } from "viem";
 import { hexBytes32Regex } from "@/handlers/regexs";
 
+// -----------------------------------------------------------------------------
+// Validator
+// -----------------------------------------------------------------------------
+
 export const validateUserOperationHash = (str: string) => {
   if (!isHex(str)) {
     notFound();

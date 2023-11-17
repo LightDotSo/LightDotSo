@@ -15,6 +15,10 @@
 
 import { inngest } from "@/inngest/client";
 
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
+
 export const prismaSchemaChore = inngest.createFunction(
   {
     id: "prisma-schema-chore",

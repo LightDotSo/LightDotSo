@@ -19,6 +19,10 @@ import { CovalentClient } from "@covalenthq/client-sdk";
 import { ChainIdMapping } from "@/const/covalent";
 import { kafka } from "@/clients/kafka";
 
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
+
 export const walletTransactionCovalentSet = inngest.createFunction(
   {
     id: "wallet-transaction-covalent-set",

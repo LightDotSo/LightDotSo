@@ -23,6 +23,10 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/stores/useAuth";
 import { getWalletTab } from "@lightdotso/client";
 
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
 export type Tab = {
   label: string;
   id: string;
@@ -33,10 +37,18 @@ export type Tab = {
 
 export type RawTab = Omit<Tab, "number">;
 
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
 type TabData = {
   owner_count: number;
   transaction_count: number;
 };
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
 
 export function useTabs({ tabs }: { tabs: RawTab[] }) {
   const pathname = usePathname();

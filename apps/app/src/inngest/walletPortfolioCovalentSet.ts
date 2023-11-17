@@ -20,6 +20,10 @@ import { ChainIdMapping } from "@/const/covalent";
 import { NonRetriableError } from "inngest";
 import { getAddress } from "viem";
 
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
+
 export const walletPortfolioCovalentSet = inngest.createFunction(
   {
     id: "wallet-portfolio-covalent-set",

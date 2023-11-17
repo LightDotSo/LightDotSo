@@ -23,6 +23,10 @@ import {
 import { getUserOperation } from "@/services/getUserOperation";
 import type { Hex } from "viem";
 
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
+
 export const handler = async (params: {
   address: string;
   chainId: string;

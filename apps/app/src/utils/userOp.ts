@@ -15,6 +15,10 @@
 
 import type { UserOperation } from "permissionless";
 
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
 export const serializeUserOperation = (userOp: UserOperation): string => {
   return JSON.stringify(
     userOp,

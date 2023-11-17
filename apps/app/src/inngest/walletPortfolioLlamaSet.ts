@@ -19,6 +19,10 @@ import { NonRetriableError } from "inngest";
 import { ChainIds } from "@lightdotso/const";
 import { getAddress } from "viem";
 
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
+
 export const walletPortfolioLlamaSet = inngest.createFunction(
   {
     id: "wallet-portfolio-llama-set",

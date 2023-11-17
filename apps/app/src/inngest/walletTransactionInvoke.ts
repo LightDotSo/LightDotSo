@@ -17,6 +17,10 @@ import { inngest } from "@/inngest/client";
 import { NonRetriableError } from "inngest";
 import { ChainIdMapping, ChainIdMainnetMapping } from "@/const/covalent";
 
+// -----------------------------------------------------------------------------
+// Inngest
+// -----------------------------------------------------------------------------
+
 export const walletTransactionInvoke = inngest.createFunction(
   {
     id: "wallet-transaction-invoke",

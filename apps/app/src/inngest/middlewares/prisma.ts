@@ -16,6 +16,10 @@
 import { PrismaClient } from "@lightdotso/prisma";
 import { InngestMiddleware } from "inngest";
 
+// -----------------------------------------------------------------------------
+// Middleware
+// -----------------------------------------------------------------------------
+
 export const prismaMiddleware = new InngestMiddleware({
   name: "Prisma Middleware",
   init() {
