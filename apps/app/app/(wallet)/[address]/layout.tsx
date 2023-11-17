@@ -15,10 +15,20 @@
 
 import "@lightdotso/styles/global.css";
 
-export default function RootLayout(props: {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type RootLayoutProps = {
   children: React.ReactNode;
   op: React.ReactNode;
-}) {
+};
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export default function RootLayout(props: RootLayoutProps) {
   return (
     <>
       {props.children}

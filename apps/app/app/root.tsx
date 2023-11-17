@@ -29,6 +29,7 @@ import { FeedbackPopover } from "@/components/feedback-popover";
 import { ConnectButton } from "@/components/connect-button";
 import Script from "next/script";
 import { Inter } from "next/font/google";
+import type { FC } from "react";
 import { Suspense } from "react";
 import { VercelToolbar } from "@/components/vercel-toolbar";
 import { AuthState } from "@/components/auth-state";
@@ -65,7 +66,7 @@ interface RootProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export default function Root({ children }: RootProps) {
+export const Root: FC<RootProps> = ({ children }) => {
   return (
     <html
       lang="en"
@@ -114,4 +115,4 @@ export default function Root({ children }: RootProps) {
       <Script async src="https://data.light.so/p.js" />
     </html>
   );
-}
+};
