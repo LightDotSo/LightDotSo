@@ -137,10 +137,10 @@ pub async fn upsert_transaction_with_log_receipt(
         ))
     }
     if transaction.gas != 0.into() {
-        transaction_params.push(transaction::gas::set(Some(format!("0x{:x}", transaction.gas))))
+        transaction_params.push(transaction::gas::set(Some(transaction.gas.to_string())))
     }
     if transaction.value != 0.into() {
-        transaction_params.push(transaction::value::set(Some(format!("0x{:x}", transaction.value))))
+        transaction_params.push(transaction::value::set(Some(transaction.value.to_string())))
     }
     if transaction.gas_price.is_some() {
         transaction_params
