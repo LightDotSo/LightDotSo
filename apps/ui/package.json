@@ -62,7 +62,7 @@
     "connectkit": "^1.5.3",
     "date-fns": "^2.30.0",
     "lucide-react": "^0.263.1",
-    "next": "^14.0.2",
+    "next": "^14.0.3",
     "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-day-picker": "^8.9.1",
@@ -70,7 +70,7 @@
     "react-hook-form": "^7.48.2",
     "superjson": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "vite": "^4.5.0",
+    "vite": "^5.0.0",
     "wagmi": "^1.4.7",
     "zod": "^3.22.4"
   },
@@ -100,7 +100,7 @@
     "@storybook/react": "^7.5.3",
     "@storybook/react-vite": "^7.5.3",
     "@storybook/testing-library": "0.2.2",
-    "@types/node": "^20.9.0",
+    "@types/node": "^20.9.1",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "autoprefixer": "^10.4.16",
@@ -111,7 +111,7 @@
     "typescript": "^5.2.2",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0",
-    "vite": "^4.5.0"
+    "vite": "^5.0.0"
   },
   "peerDependencies": {
     "esbuild": "^0.17.3"

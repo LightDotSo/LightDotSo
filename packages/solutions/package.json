@@ -23,11 +23,11 @@
     "clean": "rimraf -rf dist"
   },
   "dependencies": {
-    "viem": "^1.19.1"
+    "viem": "^1.19.3"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.9.0",
+    "@types/node": "^20.9.1",
     "typescript": "^5.2.2"
   },
   "publishConfig": {
