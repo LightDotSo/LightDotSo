@@ -17,14 +17,26 @@ import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
 import { TITLES } from "@/const/titles";
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
 export const metadata: Metadata = {
   title: TITLES.Support.title,
   description: TITLES.Support.description,
 };
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface SupportLayoutProps {
   children: React.ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function SupportLayout({ children }: SupportLayoutProps) {
   return (

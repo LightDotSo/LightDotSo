@@ -18,6 +18,10 @@ import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(compone
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/invoke-portfolio-button";
 import type { Address } from "viem";
 
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
 const overviewNavItems = [
   {
     title: "Token",
@@ -31,15 +35,25 @@ const overviewNavItems = [
   },
 ];
 
-export default function OverviewLayout({
-  children,
-  params,
-}: {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type OverviewLayoutProps = {
   children: React.ReactNode;
   params: {
     address: string;
   };
-}) {
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export default function OverviewLayout({
+  children,
+  params,
+}: OverviewLayoutProps) {
   return (
     <>
       <div className="flex w-full flex-col space-y-8 border-b border-input sm:flex-row sm:space-x-12 sm:space-y-0">

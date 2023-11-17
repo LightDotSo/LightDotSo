@@ -17,17 +17,31 @@ import { DeployButton } from "@/app/(wallet)/[address]/settings/deploy-button";
 import type { Address, Hex } from "viem";
 import { handler } from "@/handlers/paths/[address]";
 
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
 const chains = [
   { name: "Sepolia", chainId: 11155111 },
   { name: "Mainnet", chainId: 1 },
   { name: "Polygon", chainId: 137 },
 ];
 
-export default async function Page({
-  params,
-}: {
-  params: { address: string };
-}) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: {
+    address: string;
+  };
+};
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ params }: PageProps) {
   const { wallet, config } = await handler(params);
 
   return (

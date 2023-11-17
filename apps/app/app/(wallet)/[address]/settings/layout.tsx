@@ -19,10 +19,9 @@ import { SidebarNav } from "@/components/sidebar-nav";
 import { BannerSection } from "@/components/banner-section";
 import { TITLES } from "@/const/titles";
 
-export const metadata: Metadata = {
-  title: TITLES.Settings.title,
-  description: TITLES.Settings.description,
-};
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
 
 const sidebarNavItems = [
   {
@@ -39,9 +38,26 @@ const sidebarNavItems = [
   },
 ];
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Settings.title,
+  description: TITLES.Settings.description,
+};
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface SettingsLayoutProps {
   children: React.ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
   return (

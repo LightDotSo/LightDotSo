@@ -18,6 +18,11 @@ import type { Address, Hex } from "viem";
 import { ContractLinks } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
 import Link from "next/link";
+import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
 
 type DeployButtonProps = {
   chainId?: number;
@@ -27,13 +32,17 @@ type DeployButtonProps = {
   wallet: Address;
 };
 
-export function DeployButton({
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const DeployButton: FC<DeployButtonProps> = ({
   chainId = 11155111,
   image_hash,
   salt,
   children,
   wallet,
-}: DeployButtonProps) {
+}) => {
   let initCode = calculateInitCode(
     ContractLinks["Factory"] as Address,
     image_hash,
@@ -47,4 +56,4 @@ export function DeployButton({
       </Link>
     </Button>
   );
-}
+};

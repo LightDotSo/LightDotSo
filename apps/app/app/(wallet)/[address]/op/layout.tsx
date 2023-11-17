@@ -16,14 +16,26 @@
 import type { Metadata } from "next";
 import { TITLES } from "@/const/titles";
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
 export const metadata: Metadata = {
   title: TITLES.Transactions.title,
   description: TITLES.Transactions.description,
 };
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface TransactionsLayoutProps {
   children: React.ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function TransactionsLayout({
   children,

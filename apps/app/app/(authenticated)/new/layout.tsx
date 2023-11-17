@@ -34,7 +34,7 @@ interface NewWalletLayoutProps {
 }
 
 // -----------------------------------------------------------------------------
-// Page
+// Layout
 // -----------------------------------------------------------------------------
 
 export default function NewWalletLayout({ children }: NewWalletLayoutProps) {

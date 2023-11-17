@@ -14,14 +14,29 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-
 import { TITLES } from "@/const/titles";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
   title: TITLES.Settings.subcategories.Billing.title,
   description: TITLES.Settings.subcategories.Billing.description,
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+interface SettingsBillingLayoutProps {
+  children: React.ReactNode;
+}
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+
+export default function Layout({ children }: SettingsBillingLayoutProps) {
   return <>{children}</>;
 }

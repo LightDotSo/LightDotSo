@@ -17,14 +17,26 @@ import type { Metadata } from "next";
 import { BannerSection } from "@/components/banner-section";
 import { TITLES } from "@/const/titles";
 
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
 export const metadata: Metadata = {
   title: TITLES.Owners.title,
   description: TITLES.Owners.description,
 };
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface OwnersLayoutProps {
   children: React.ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
 
 export default function OwnersLayout({ children }: OwnersLayoutProps) {
   return (
