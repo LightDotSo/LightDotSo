@@ -102,7 +102,7 @@ export const Tabs: FC<TabProps> = ({
           <Link key={i} href={href} passHref legacyBehavior>
             <motion.a
               className={clsx(
-                "hover:text-accent-foreground relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors",
+                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
                 !isActive ? "text-text-weak" : "text-text",
               )}
               ref={el => (anchorRefs[i] = el)}

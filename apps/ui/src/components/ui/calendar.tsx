@@ -58,11 +58,11 @@ function Calendar({
         ),
         day_selected:
           "bg-background-primary text-text-weakest hover:bg-background-primary hover:text-text-weakest focus:bg-background-primary focus:text-text-weakest",
-        day_today: "bg-background-stronger text-accent-foreground",
+        day_today: "bg-background-stronger text-text-weak",
         day_outside: "text-text-weak opacity-50",
         day_disabled: "text-text-weak opacity-50",
         day_range_middle:
-          "aria-selected:bg-background-stronger aria-selected:text-accent-foreground",
+          "aria-selected:bg-background-stronger aria-selected:text-text-weak",
         day_hidden: "invisible",
         ...classNames,
       }}
