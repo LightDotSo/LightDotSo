@@ -224,7 +224,10 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         <PopoverContent className="ml-24 w-[300px] p-0">
           <Command>
             <CommandList>
-              <CommandInput placeholder="Search wallet..." />
+              <CommandInput
+                className="bg-transparent"
+                placeholder="Search wallet..."
+              />
               <CommandEmpty>No wallet found.</CommandEmpty>
             </CommandList>
             <CommandList onScroll={handleScroll}>
