@@ -160,7 +160,7 @@ export const NewWalletForm: FC = () => {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="multi"
-                              className="border-muted bg-popover hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex cursor-pointer flex-col items-center justify-between rounded-md border-2 p-4 hover:bg-background-stronger"
+                              className="bg-popover hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border p-4 hover:bg-background-stronger"
                             >
                               <BuildingLibraryIcon className="mb-3 h-6 w-6"></BuildingLibraryIcon>
                               Multi-sig
@@ -184,7 +184,7 @@ export const NewWalletForm: FC = () => {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="personal"
-                              className="border-muted bg-popover hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex cursor-pointer flex-col items-center justify-between rounded-md border-2 p-4 hover:bg-background-stronger"
+                              className="bg-popover hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border p-4 hover:bg-background-stronger"
                             >
                               <BanknotesIcon className="mb-3 h-6 w-6"></BanknotesIcon>
                               Personal Vault
@@ -209,7 +209,7 @@ export const NewWalletForm: FC = () => {
                           <TooltipTrigger asChild>
                             <Label
                               htmlFor="2fa"
-                              className="border-muted bg-popover hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex cursor-pointer flex-col items-center justify-between rounded-md border-2 p-4 hover:bg-background-stronger"
+                              className="bg-popover hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border p-4 hover:bg-background-stronger"
                             >
                               <ShieldExclamationIcon className="mb-3 h-6 w-6"></ShieldExclamationIcon>
                               2FA (Coming Soon)

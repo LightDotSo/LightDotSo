@@ -124,7 +124,7 @@ export const AppearanceForm: FC = () => {
                     <FormControl>
                       <RadioGroupItem value="light" className="sr-only" />
                     </FormControl>
-                    <div className="border-muted hover:border-accent items-center rounded-md border-2 p-1">
+                    <div className="hover:border-accent items-center rounded-md border-2 border-border p-1">
                       <div className="space-y-2 rounded-sm bg-[#ecedef] p-2">
                         <div className="space-y-2 rounded-md bg-white p-2 shadow-sm">
                           <div className="h-2 w-[80px] rounded-lg bg-[#ecedef]" />
@@ -150,7 +150,7 @@ export const AppearanceForm: FC = () => {
                     <FormControl>
                       <RadioGroupItem value="dark" className="sr-only" />
                     </FormControl>
-                    <div className="border-muted bg-popover hover:text-accent-foreground items-center rounded-md border-2 p-1 hover:bg-background-stronger">
+                    <div className="bg-popover hover:text-accent-foreground items-center rounded-md border-2 border-border p-1 hover:bg-background-stronger">
                       <div className="space-y-2 rounded-sm bg-slate-950 p-2">
                         <div className="space-y-2 rounded-md bg-slate-800 p-2 shadow-sm">
                           <div className="h-2 w-[80px] rounded-lg bg-slate-400" />
