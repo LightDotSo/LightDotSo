@@ -343,17 +343,17 @@ module.exports = {
       },
       boxShadow: {
         // light
-        "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05) / <alpha-value>)",
+        "tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         "tremor-card":
-          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) / <alpha-value>)",
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
         "tremor-dropdown":
-          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) / <alpha-value>)",
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
         // dark
-        "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05) / <alpha-value>)",
+        "dark-tremor-input": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
         "dark-tremor-card":
-          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1) / <alpha-value>)",
+          "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
         "dark-tremor-dropdown":
-          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) / <alpha-value>)",
+          "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
       },
       fontSize: {
         "2xs": ".6875rem",
@@ -382,10 +382,10 @@ module.exports = {
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
-          to: { height: "hsl(var(--radix-accordion-content-height)" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: { height: "hsl(var(--radix-accordion-content-height)" },
+          from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
       },
