@@ -33,3 +33,5 @@ ignores:
   - postcss
   - tailwindcss
   - "@storybook/blocks"
+  - "@storybook/theming"
+  - storybook-dark-mode
