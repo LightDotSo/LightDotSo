@@ -113,6 +113,213 @@ module.exports = {
         "emphasis-low": "var(--emphasis-low)",
         "emphasis-medium": "var(--emphasis-medium)",
         "emphasis-high": "var(--emphasis-high)",
+        // variables
+        "background-color-background": {
+          DEFAULT: "var(--background-color-background)",
+          body: "var(--background-color-background-body)",
+          overlay: "var(--background-color-background-overlay)",
+          strong: "var(--background-color-background-strong)",
+          stronger: "var(--background-color-background-stronger)",
+          strongest: "var(--background-color-background-strongest)",
+          weak: "var(--background-color-background-weak)",
+        },
+        "background-destructive-color-background-destructive": {
+          DEFAULT: "var(--background-destructive-color-background-destructive)",
+          strong:
+            "var(--background-destructive-color-background-destructive-strong)",
+          stronger:
+            "var(--background-destructive-color-background-destructive-stronger)",
+          strongest:
+            "var(--background-destructive-color-background-destructive-strongest)",
+          weak: "var(--background-destructive-color-background-destructive-weak)",
+          weaker:
+            "var(--background-destructive-color-background-destructive-weaker)",
+          weakest:
+            "var(--background-destructive-color-background-destructive-weakest)",
+        },
+        "background-error-color-background-error": {
+          DEFAULT: "var(--background-error-color-background-error)",
+          strong: "var(--background-error-color-background-error-strong)",
+          stronger: "var(--background-error-color-background-error-stronger)",
+          strongest: "var(--background-error-color-background-error-strongest)",
+          weakest: "var(--background-error-color-background-error-weakest)",
+        },
+        "background-info-color-background-info": {
+          DEFAULT: "var(--background-info-color-background-info)",
+          weakest: "var(--background-info-color-background-info-weakest)",
+        },
+        "background-inverse-color-background-body-inverse": {
+          DEFAULT: "var(--background-inverse-color-background-body-inverse)",
+        },
+        "background-inverse-color-background-inverse": {
+          DEFAULT: "var(--background-inverse-color-background-inverse)",
+          strong: "var(--background-inverse-color-background-inverse-strong)",
+          stronger:
+            "var(--background-inverse-color-background-inverse-stronger)",
+        },
+        "background-primary-color-background-primary": {
+          DEFAULT: "var(--background-primary-color-background-primary)",
+          strong: "var(--background-primary-color-background-primary-strong)",
+          stronger:
+            "var(--background-primary-color-background-primary-stronger)",
+          strongest:
+            "var(--background-primary-color-background-primary-strongest)",
+          weak: "var(--background-primary-color-background-primary-weak)",
+          weaker: "var(--background-primary-color-background-primary-weaker)",
+          weakest: "var(--background-primary-color-background-primary-weakest)",
+        },
+        "background-success-color-background-success": {
+          DEFAULT: "var(--background-success-color-background-success)",
+          weakest: "var(--background-success-color-background-success-weakest)",
+        },
+        "background-warning-color-background-warning": {
+          DEFAULT: "var(--background-warning-color-background-warning)",
+          weakest: "var(--background-warning-color-background-warning-weakest)",
+        },
+        "border-color-border": {
+          DEFAULT: "var(--border-color-border)",
+          strong: "var(--border-color-border-strong)",
+          weak: "var(--border-color-border-weak)",
+          weaker: "var(--border-color-border-weaker)",
+          weakest: "var(--border-color-border-weakest)",
+        },
+        "border-destructive-color-border-destructive": {
+          DEFAULT: "var(--border-destructive-color-border-destructive)",
+          strong: "var(--border-destructive-color-border-destructive-strong)",
+          stronger:
+            "var(--border-destructive-color-border-destructive-stronger)",
+          strongest:
+            "var(--border-destructive-color-border-destructive-strongest)",
+          weak: "var(--border-destructive-color-border-destructive-weak)",
+          weaker: "var(--border-destructive-color-border-destructive-weaker)",
+          weakest: "var(--border-destructive-color-border-destructive-weakest)",
+        },
+        "border-error-color-border-error": {
+          DEFAULT: "var(--border-error-color-border-error)",
+          strong: "var(--border-error-color-border-error-strong)",
+          stronger: "var(--border-error-color-border-error-stronger)",
+          strongest: "var(--border-error-color-border-error-strongest)",
+          weak: "var(--border-error-color-border-error-weak)",
+          weaker: "var(--border-error-color-border-error-weaker)",
+          weakest: "var(--border-error-color-border-error-weakest)",
+        },
+        "border-info-color-border-info": {
+          DEFAULT: "var(--border-info-color-border-info)",
+          weak: "var(--border-info-color-border-info-weak)",
+          weaker: "var(--border-info-color-border-info-weaker)",
+          weakest: "var(--border-info-color-border-info-weakest)",
+        },
+        "border-inverse-color-border-inverse": {
+          DEFAULT: "var(--border-inverse-color-border-inverse)",
+          strong: "var(--border-inverse-color-border-inverse-strong)",
+          stronger: "var(--border-inverse-color-border-inverse-stronger)",
+          strongest: "var(--border-inverse-color-border-inverse-strongest)",
+          weaker: "var(--border-inverse-color-border-inverse-weaker)",
+          weakest: "var(--border-inverse-color-border-inverse-weakest)",
+        },
+        "border-primary-color-border-primary": {
+          DEFAULT: "var(--border-primary-color-border-primary)",
+          strong: "var(--border-primary-color-border-primary-strong)",
+          stronger: "var(--border-primary-color-border-primary-stronger)",
+          strongest: "var(--border-primary-color-border-primary-strongest)",
+          weak: "var(--border-primary-color-border-primary-weak)",
+          weaker: "var(--border-primary-color-border-primary-weaker)",
+          weakest: "var(--border-primary-color-border-primary-weakest)",
+        },
+        "border-success-color-border-success": {
+          DEFAULT: "var(--border-success-color-border-success)",
+          weak: "var(--border-success-color-border-success-weak)",
+          weaker: "var(--border-success-color-border-success-weaker)",
+          weakest: "var(--border-success-color-border-success-weakest)",
+        },
+        "border-warning-color-border-warning": {
+          DEFAULT: "var(--border-warning-color-border-warning)",
+          weak: "var(--border-warning-color-border-warning-weak)",
+          weaker: "var(--border-warning-color-border-warning-weaker)",
+          weakest: "var(--border-warning-color-border-warning-weakest)",
+        },
+        "data-visualization-color-data-visualization": {
+          DEFAULT: "var(--data-visualization-color-data-visualization-1)",
+          2: "var(--data-visualization-color-data-visualization-2)",
+          3: "var(--data-visualization-color-data-visualization-3)",
+          4: "var(--data-visualization-color-data-visualization-4)",
+          5: "var(--data-visualization-color-data-visualization-5)",
+          6: "var(--data-visualization-color-data-visualization-6)",
+          7: "var(--data-visualization-color-data-visualization-7)",
+          8: "var(--data-visualization-color-data-visualization-8)",
+          9: "var(--data-visualization-color-data-visualization-9)",
+          10: "var(--data-visualization-color-data-visualization-10)",
+        },
+        "text-color-text": {
+          DEFAULT: "var(--text-color-text)",
+          weak: "var(--text-color-text-weak)",
+          weaker: "var(--text-color-text-weaker)",
+          weakest: "var(--text-color-text-weakest)",
+        },
+        "text-destructive-color-text-destructive": {
+          DEFAULT: "var(--text-destructive-color-text-destructive)",
+          strong: "var(--text-destructive-color-text-destructive-strong)",
+          stronger: "var(--text-destructive-color-text-destructive-stronger)",
+          strongest: "var(--text-destructive-color-text-destructive-strongest)",
+          weak: "var(--text-destructive-color-text-destructive-weak)",
+        },
+        "text-error-color-text-error": {
+          DEFAULT: "var(--text-error-color-text-error)",
+          strong: "var(--text-error-color-text-error-strong)",
+          stronger: "var(--text-error-color-text-error-stronger)",
+          strongest: "var(--text-error-color-text-error-strongest)",
+          weak: "var(--text-error-color-text-error-weak)",
+        },
+        "text-icon-color-text-icon": {
+          DEFAULT: "var(--text-icon-color-text-icon)",
+          error: "var(--text-icon-color-text-icon-error)",
+          info: "var(--text-icon-color-text-icon-info)",
+          inverse: "var(--text-icon-color-text-icon-inverse)",
+          success: "var(--text-icon-color-text-icon-success)",
+          warning: "var(--text-icon-color-text-icon-warning)",
+          weaker: "var(--text-icon-color-text-icon-weaker)",
+        },
+        "text-info-color-text-info": {
+          DEFAULT: "var(--text-info-color-text-info)",
+          strong: "var(--text-info-color-text-info-strong)",
+        },
+        "text-inverse-color-text-inverse": {
+          DEFAULT: "var(--text-inverse-color-text-inverse)",
+          weak: "var(--text-inverse-color-text-inverse-weak)",
+          weaker: "var(--text-inverse-color-text-inverse-weaker)",
+          weakest: "var(--text-inverse-color-text-inverse-weakest)",
+        },
+        "text-link-color-text-link": {
+          DEFAULT: "var(--text-link-color-text-link)",
+          strong: "var(--text-link-color-text-link-strong)",
+          stronger: "var(--text-link-color-text-link-stronger)",
+          strongest: "var(--text-link-color-text-link-strongest)",
+          weak: "var(--text-link-color-text-link-weak)",
+        },
+        "text-link-destructive-color-text-link-destructive": {
+          DEFAULT: "var(--text-link-destructive-color-text-link-destructive)",
+          strong:
+            "var(--text-link-destructive-color-text-link-destructive-strong)",
+          stronger:
+            "var(--text-link-destructive-color-text-link-destructive-stronger)",
+          strongest:
+            "var(--text-link-destructive-color-text-link-destructive-strongest)",
+          weak: "var(--text-link-destructive-color-text-link-destructive-weak)",
+        },
+        "text-primary-color-text-primary": {
+          DEFAULT: "var(--text-primary-color-text-primary)",
+          strong: "var(--text-primary-color-text-primary-strong)",
+          stronger: "var(--text-primary-color-text-primary-stronger)",
+          strongest: "var(--text-primary-color-text-primary-strongest)",
+          weak: "var(--text-primary-color-text-primary-weak)",
+        },
+        "text-success-color-text-success": {
+          DEFAULT: "var(--text-success-color-text-success)",
+        },
+        "text-warning-color-text-warning": {
+          DEFAULT: "var(--text-warning-color-text-warning)",
+          strong: "var(--text-warning-color-text-warning-strong)",
+        },
         // light mode
         tremor: {
           brand: {
