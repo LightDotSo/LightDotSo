@@ -67,7 +67,7 @@ export const SidebarNav: FC<SidebarNavProps> = ({
           className={cn(
             buttonVariants({ variant: "ghost" }),
             pathname === (baseHref ? "/" + baseHref + item.href : item.href)
-              ? "bg-muted hover:bg-muted"
+              ? "bg-background-stronger hover:bg-background-stronger"
               : "hover:bg-transparent hover:underline text-muted-foreground",
             "justify-start",
           )}

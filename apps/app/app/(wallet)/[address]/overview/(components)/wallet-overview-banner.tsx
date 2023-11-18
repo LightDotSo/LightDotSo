@@ -122,7 +122,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                 <Tooltip>
                   <TooltipTrigger>
                     <button
-                      className="bg-muted flex items-center rounded-md px-3 py-2"
+                      className="flex items-center rounded-md bg-background-stronger px-3 py-2"
                       onClick={() => {
                         return copy(address);
                       }}

@@ -38,7 +38,7 @@ export async function CodeBlock({
   return (
     <pre
       className={cn(
-        "bg-muted relative overflow-x-auto rounded p-4 px-[0.33rem] py-[0.33rem] font-mono text-sm font-semibold",
+        "bg-background-stronger relative overflow-x-auto rounded p-4 px-[0.33rem] py-[0.33rem] font-mono text-sm font-semibold",
         lang,
         className,
       )}
