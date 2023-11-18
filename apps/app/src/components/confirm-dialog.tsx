@@ -205,7 +205,7 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
         <header className="text-lg font-semibold leading-none tracking-tight">
           Confirm
         </header>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Are you sure you want to sign this confirm?
         </p>
       </div>
@@ -214,25 +214,25 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
           <code>userOperation: {JSON.stringify(userOperation, null, 2)}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">chainId: {chainId}</code>
+          <code className="break-all text-text">chainId: {chainId}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
+          <code className="break-all text-text">
             paymasterHash: {paymasterHash}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
+          <code className="break-all text-text">
             paymasterSignedMsg: {paymasterSignedMsg}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
+          <code className="break-all text-text">
             recoveredAddress: {recoveredAddress}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
+          <code className="break-all text-text">
             config: {JSON.stringify(config, null, 2)}
           </code>
         </pre>

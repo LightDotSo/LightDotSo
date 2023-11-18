@@ -248,7 +248,7 @@ export const NewWalletForm: FC = () => {
                 )}
               />
               <div>
-                <CardDescription className="text-primary text-base">
+                <CardDescription className="text-base text-text">
                   By creating a new wallet, you are accepting our{" "}
                   <a
                     className="underline"

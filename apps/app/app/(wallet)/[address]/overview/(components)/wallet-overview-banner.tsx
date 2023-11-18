@@ -113,7 +113,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
           <div className="space-y-4 sm:mt-6 md:mt-0 md:space-y-6 md:pl-4">
             <div className="flex w-full flex-row items-center justify-start space-x-4">
               <div className="flex flex-col space-y-5 sm:mx-0 sm:max-w-xl">
-                <h2 className="text-primary flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight sm:text-3xl">
+                <h2 className="flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight text-text sm:text-3xl">
                   {wallet
                     ? wallet.name
                     : ens ??

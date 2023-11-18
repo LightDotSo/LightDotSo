@@ -83,7 +83,7 @@ export const Root: FC<RootProps> = ({ children }) => {
                     <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
                       <div className="flex items-center">
                         <RootLogo />
-                        <span className="ml-2 mr-1 text-primary/60">/</span>
+                        <span className="ml-2 mr-1 text-text/60">/</span>
                         <WalletSwitcher />
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">

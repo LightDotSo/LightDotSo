@@ -190,7 +190,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
           ) : (
             <span
               className={cn(
-                step.status === "current" ? "text-primary" : "text-border",
+                step.status === "current" ? "text-text" : "text-border",
               )}
             >
               {step.id}
@@ -200,7 +200,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         <span
           className={cn(
             "ml-4 text-sm font-medium",
-            step.status === "current" ? "text-primary" : "text-border",
+            step.status === "current" ? "text-text" : "text-border",
           )}
         >
           {step.name}

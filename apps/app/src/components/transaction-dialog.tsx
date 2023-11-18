@@ -161,7 +161,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
         <header className="text-lg font-semibold leading-none tracking-tight">
           Transaction
         </header>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Are you sure you want to sign this transaction?
         </p>
       </div>
@@ -173,23 +173,21 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">chainId: {chainId}</code>
+          <code className="break-all text-text">chainId: {chainId}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
-            userOpHash: {userOpHash}
-          </code>
+          <code className="break-all text-text">userOpHash: {userOpHash}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
+          <code className="break-all text-text">
             paymasterHash: {paymasterHash}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">subdigest: {subdigest}</code>
+          <code className="break-all text-text">subdigest: {subdigest}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-primary">
+          <code className="break-all text-text">
             owners: {owners && JSON.stringify(owners, null, 2)}
           </code>
         </pre>
