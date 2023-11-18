@@ -155,7 +155,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         (stepType === StepsEnum.Confirm &&
           !validateParams(searchParams, requiredParams))
       }
-      className="group flex w-full items-center disabled:cursor-not-allowed"
+      className="group flex w-full items-center bg-background-weak disabled:cursor-not-allowed"
       onClick={() => navigateToStep(step)}
     >
       <span
