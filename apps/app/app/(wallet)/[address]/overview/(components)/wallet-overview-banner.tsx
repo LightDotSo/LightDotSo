@@ -113,7 +113,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
           <div className="space-y-4 sm:mt-6 md:mt-0 md:space-y-6 md:pl-4">
             <div className="flex w-full flex-row items-center justify-start space-x-4">
               <div className="flex flex-col space-y-5 sm:mx-0 sm:max-w-xl">
-                <h2 className="flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">
+                <h2 className="text-primary flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight sm:text-3xl">
                   {wallet
                     ? wallet.name
                     : ens ??
@@ -122,18 +122,18 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                 <Tooltip>
                   <TooltipTrigger>
                     <button
-                      className="flex items-center rounded-md bg-muted px-3 py-2"
+                      className="bg-muted flex items-center rounded-md px-3 py-2"
                       onClick={() => {
                         return copy(address);
                       }}
                     >
-                      <p className="mr-2 text-sm text-muted-foreground">
+                      <p className="text-muted-foreground mr-2 text-sm">
                         {ens ?? splitAddress(address)}
                       </p>
                       {!isCopied ? (
-                        <ClipboardDocumentIcon className="h-4 w-4 text-muted-foreground" />
+                        <ClipboardDocumentIcon className="text-muted-foreground h-4 w-4" />
                       ) : (
-                        <ClipboardDocumentCheckIcon className="h-4 w-4 text-muted-foreground" />
+                        <ClipboardDocumentCheckIcon className="text-muted-foreground h-4 w-4" />
                       )}
                     </button>
                     <TooltipContent>
@@ -167,7 +167,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
               Deposit
             </Button>
           </div>
-          <div className="w-96 rounded-md border border-input bg-card px-6 py-4">
+          <div className="bg-card w-96 rounded-md border border-border-primary-weak px-6 py-4">
             <Suspense fallback={null}>
               <WalletOverviewBannerSparkline address={address} />
             </Suspense>

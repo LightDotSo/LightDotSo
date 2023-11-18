@@ -70,7 +70,7 @@ export const NetworkItem: FC<NetworkItemProps> = ({
         rel="noreferrer"
         href={`${blockExplorers?.default.url}/address/${address}`}
         className={clsx(
-          "flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-input bg-card hover:bg-muted",
+          "bg-card hover:bg-muted flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-border-primary-weak",
           s.transitionfix,
         )}
         onClick={e => {

@@ -97,7 +97,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
         </div>
         <nav className="flex items-center space-x-4" aria-label="Tabs">
           {children}
-          <div className="border-input hidden rounded-md border p-1 sm:block">
+          <div className="hidden rounded-md border border-border-primary-weak p-1 sm:block">
             {items.map(item => (
               <Link
                 key={item.id}

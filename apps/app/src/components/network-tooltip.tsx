@@ -99,7 +99,7 @@ const NetworkTooltipComponent: FC<NetworkToolTipComponentProps> = ({
       >
         <motion.div
           ref={popoverRef}
-          className="absolute inline-block rounded-md border border-input bg-card px-3 py-1 text-left text-sm font-semibold text-primary"
+          className="bg-card text-primary absolute inline-block rounded-md border border-border-primary-weak px-3 py-1 text-left text-sm font-semibold"
           layoutId={`network-tooltip-${id}`}
           transition={!isMounted ? { duration: 0 } : { duration: 0.3 }}
           style={{

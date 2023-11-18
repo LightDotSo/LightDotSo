@@ -108,7 +108,7 @@ export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
 
   return (
     <>
-      <div className="sm: mt-8 hidden w-full rounded-md border border-input bg-card p-8 py-16 sm:block sm:px-12">
+      <div className="sm: bg-card mt-8 hidden w-full rounded-md border border-border-primary-weak p-8 py-16 sm:block sm:px-12">
         <>
           <WalletOverviewBannerSparkline address={address} />
           <AreaChart
