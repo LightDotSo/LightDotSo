@@ -65,7 +65,7 @@ export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
       key={userOperation.hash}
       type="single"
       collapsible
-      className="w-full rounded-md border border-input"
+      className="border-input w-full rounded-md border"
     >
       <AccordionItem className="w-full border-none" value="item-1">
         <div key={userOperation.hash} className="flex items-center p-4">
@@ -76,7 +76,7 @@ export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
             <p className="text-sm font-medium leading-none">
               {userOperation.sender}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               {userOperation.hash}
             </p>
           </div>
@@ -94,7 +94,7 @@ export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
             </AccordionTrigger>
           </div>
         </div>
-        <AccordionContent className="bg-accent px-4 pt-4">
+        <AccordionContent className="bg-background-stronger px-4 pt-4">
           <div className="flex w-full justify-end">
             <Button asChild>
               <Link

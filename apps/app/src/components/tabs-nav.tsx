@@ -120,7 +120,7 @@ export const Tabs: FC<TabProps> = ({
               {<item.icon className="mr-2 h-4 w-4" />}
               {item.label}
               {item.number > 0 && (
-                <span className="font-sm bg-accent ml-2 rounded-full px-2 py-0.5">
+                <span className="font-sm ml-2 rounded-full bg-background-stronger px-2 py-0.5">
                   {item.number}
                 </span>
               )}
@@ -133,7 +133,7 @@ export const Tabs: FC<TabProps> = ({
         {hoveredRect && navRect && (
           <motion.div
             key={"hover"}
-            className="bg-accent absolute left-0 top-0 z-10 mb-1 rounded-md"
+            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-background-stronger"
             initial={{
               x: hoveredRect.left - navRect.left,
               y: hoveredRect.top - navRect.top,

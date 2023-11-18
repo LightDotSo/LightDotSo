@@ -41,7 +41,7 @@ export const RootLogo: FC = () => {
               // e.g. /0x1234
               `/${pathname.split("/")[1]}`
       }
-      className="hover:rounded-md hover:bg-accent"
+      className="hover:rounded-md hover:bg-background-stronger"
     >
       <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
     </Link>
