@@ -32,6 +32,12 @@ export const Base: Story = {
   render: args => <Button {...args}>Button</Button>,
   args: {},
 };
+export const Destructive: Story = {
+  render: args => <Button {...args}>Button</Button>,
+  args: {
+    variant: "destructive",
+  },
+};
 export const Outline: Story = {
   render: args => <Button {...args}>Button</Button>,
   args: {
