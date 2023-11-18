@@ -127,13 +127,13 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                         return copy(address);
                       }}
                     >
-                      <p className="text-muted-foreground mr-2 text-sm">
+                      <p className="mr-2 text-sm text-text-weak">
                         {ens ?? splitAddress(address)}
                       </p>
                       {!isCopied ? (
-                        <ClipboardDocumentIcon className="text-muted-foreground h-4 w-4" />
+                        <ClipboardDocumentIcon className="h-4 w-4 text-text-weak" />
                       ) : (
-                        <ClipboardDocumentCheckIcon className="text-muted-foreground h-4 w-4" />
+                        <ClipboardDocumentCheckIcon className="h-4 w-4 text-text-weak" />
                       )}
                     </button>
                     <TooltipContent>

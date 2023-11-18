@@ -40,7 +40,7 @@ export const SettingsSection: FC<SettingsSectionProps> = ({
         <h3 className="text-xl font-medium tracking-tight md:text-2xl">
           {title}
         </h3>
-        <p className="md:text-md mt-4 text-sm leading-6 text-muted-foreground">
+        <p className="md:text-md mt-4 text-sm leading-6 text-text-weak">
           {description}
         </p>
       </div>

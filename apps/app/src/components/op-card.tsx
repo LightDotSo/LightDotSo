@@ -76,9 +76,7 @@ export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
             <p className="text-sm font-medium leading-none">
               {userOperation.sender}
             </p>
-            <p className="text-muted-foreground text-sm">
-              {userOperation.hash}
-            </p>
+            <p className="text-sm text-text-weak">{userOperation.hash}</p>
           </div>
           <div className="ml-auto font-medium">
             <AccordionTrigger>

@@ -205,7 +205,7 @@ export const ConfirmDialog: FC<ConfirmDialogProps> = ({
         <header className="text-lg font-semibold leading-none tracking-tight">
           Confirm
         </header>
-        <p className="text-muted-foreground text-sm">
+        <p className="text-sm text-text-weak">
           Are you sure you want to sign this confirm?
         </p>
       </div>

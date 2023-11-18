@@ -29,7 +29,7 @@ export const NotFound: FC = () => {
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-text sm:text-5xl">
           Page not found
         </h1>
-        <p className="text-muted-foreground mt-6 text-base leading-7">
+        <p className="mt-6 text-base leading-7 text-text-weak">
           Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">

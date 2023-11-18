@@ -108,7 +108,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
                   // If the item is the selected, add bg-selected
                   item.id === id
                     ? "bg-background-stronger text-text font-semibold hover:bg-background-stronger"
-                    : "text-muted-foreground",
+                    : "text-text-weak",
                 )}
                 aria-current={item.id === id ? "page" : undefined}
               >

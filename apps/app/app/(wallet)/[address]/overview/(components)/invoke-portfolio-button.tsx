@@ -46,7 +46,7 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
         successToast("Refreshed");
       }}
     >
-      <RefreshCcw className="h-4 w-4 text-muted-foreground" />
+      <RefreshCcw className="h-4 w-4 text-text-weak" />
     </Button>
   );
 };

@@ -45,7 +45,7 @@ export const BannerSection: FC<BannerSectionProps> = ({
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
               {title}
             </h2>
-            <p className="leading-8 text-muted-foreground">{description}</p>
+            <p className="leading-8 text-text-weak">{description}</p>
           </div>
           <div className="mt-4 flex items-center gap-x-6 lg:mt-0 lg:shrink-0">
             {cta}

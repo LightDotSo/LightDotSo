@@ -103,7 +103,7 @@ export const Tabs: FC<TabProps> = ({
             <motion.a
               className={clsx(
                 "hover:text-accent-foreground relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors",
-                !isActive ? "text-muted-foreground" : "text-text",
+                !isActive ? "text-text-weak" : "text-text",
               )}
               ref={el => (anchorRefs[i] = el)}
               onPointerEnter={() => {

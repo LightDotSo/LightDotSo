@@ -136,7 +136,7 @@ export const AccountForm: FC = () => {
                       variant={"outline"}
                       className={cn(
                         "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground",
+                        !field.value && "text-text-weak",
                       )}
                     >
                       {field.value ? (
@@ -181,7 +181,7 @@ export const AccountForm: FC = () => {
                       role="combobox"
                       className={cn(
                         "w-[200px] justify-between",
-                        !field.value && "text-muted-foreground",
+                        !field.value && "text-text-weak",
                       )}
                     >
                       {field.value

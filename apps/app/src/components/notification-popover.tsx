@@ -85,7 +85,7 @@ export const NotificationPopover: FC = () => {
               <p className="text-sm font-medium leading-none">
                 Push Notifications
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-text-weak">
                 Send notifications to device.
               </p>
             </div>
@@ -102,7 +102,7 @@ export const NotificationPopover: FC = () => {
                   <p className="text-sm font-medium leading-none">
                     {notification.title}
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-sm text-text-weak">
                     {notification.description}
                   </p>
                 </div>
