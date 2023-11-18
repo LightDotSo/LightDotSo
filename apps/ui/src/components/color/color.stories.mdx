@@ -13,82 +13,290 @@ Here's the list of variables available for customization:
 
 <ColorPalette>
   <ColorItem
-    title="background"
-    subtitle="Default background color of <body />...etc"
+    title="background-color-background"
     colors={{
-      background: "hsl(var(--background))",
-      oreground: "hsl(var(--foreground))",
+      DEFAULT: "var(--background-color-background)",
+      body: "var(--background-color-background-body)",
+      overlay: "var(--background-color-background-overlay)",
+      strong: "var(--background-color-background-strong)",
+      stronger: "var(--background-color-background-stronger)",
+      strongest: "var(--background-color-background-strongest)",
+      weak: "var(--background-color-background-weak)",
     }}
   />
   <ColorItem
-    title="muted"
-    subtitle="Muted backgrounds such as <TabsList />, <Skeleton /> and <Switch />"
+    title="background-destructive-color-background"
     colors={{
-      DEFAULT: "hsl(var(--muted))",
-      foreground: "hsl(var(--muted-foreground))",
+      DEFAULT: "var(--background-destructive-color-background-destructive)",
+      strong:
+        "var(--background-destructive-color-background-destructive-strong)",
+      stronger:
+        "var(--background-destructive-color-background-destructive-stronger)",
+      strongest:
+        "var(--background-destructive-color-background-destructive-strongest)",
+      weak: "var(--background-destructive-color-background-destructive-weak)",
+      weaker:
+        "var(--background-destructive-color-background-destructive-weaker)",
+      weakest:
+        "var(--background-destructive-color-background-destructive-weakest)",
     }}
   />
   <ColorItem
-    title="card"
-    subtitle="Background color for <Card />"
+    title="background-error-color-background"
     colors={{
-      DEFAULT: "hsl(var(--card))",
-      foreground: "hsl(var(--card-foreground))",
+      DEFAULT: "var(--background-error-color-background-error)",
+      strong: "var(--background-error-color-background-error-strong)",
+      stronger: "var(--background-error-color-background-error-stronger)",
+      strongest: "var(--background-error-color-background-error-strongest)",
+      weakest: "var(--background-error-color-background-error-weakest)",
     }}
   />
   <ColorItem
-    title="popover"
-    subtitle="Background color for popovers such as <DropdownMenu />, <HoverCard />, <Popover />"
+    title="background-info-color-background-info"
     colors={{
-      DEFAULT: "hsl(var(--popover))",
-      foreground: "hsl(var(--popover-foreground))",
+      DEFAULT: "var(--background-info-color-background-info)",
+      weakest: "var(--background-info-color-background-info-weakest)",
     }}
   />
   <ColorItem
-    title="border"
-    subtitle="Default border color"
-    colors={{ border: "hsl(var(--border))" }}
-  />
-  <ColorItem
-    title="input"
-    subtitle="Border color for inputs such as <Input />, <Select />, <Textarea />"
-    colors={{ input: "hsl(var(--input))" }}
-  />
-  <ColorItem
-    title="primary"
-    subtitle="Primary colors for <Button />"
+    title="background-inverse-color-background-body-inverse"
     colors={{
-      DEFAULT: "hsl(var(--primary))",
-      foreground: "hsl(var(--primary-foreground))",
+      DEFAULT: "var(--background-inverse-color-background-body-inverse)",
     }}
   />
   <ColorItem
-    title="secondary"
-    subtitle="Secondary colors for <Button />"
+    title="background-inverse-color-background-inverse"
     colors={{
-      DEFAULT: "hsl(var(--secondary))",
-      foreground: "hsl(var(--secondary-foreground))",
+      DEFAULT: "var(--background-inverse-color-background-inverse)",
+      strong: "var(--background-inverse-color-background-inverse-strong)",
+      stronger: "var(--background-inverse-color-background-inverse-stronger)",
     }}
   />
   <ColorItem
-    title="accent"
-    subtitle="Used for accents such as hover effects on <DropdownMenuItem>, <SelectItem>...etc"
+    title="background-primary-color-background-primary"
     colors={{
-      DEFAULT: "hsl(var(--accent))",
-      foreground: "hsl(var(--accent-foreground))",
+      DEFAULT: "var(--background-primary-color-background-primary)",
+      strong: "var(--background-primary-color-background-primary-strong)",
+      stronger: "var(--background-primary-color-background-primary-stronger)",
+      strongest: "var(--background-primary-color-background-primary-strongest)",
+      weak: "var(--background-primary-color-background-primary-weak)",
+      weaker: "var(--background-primary-color-background-primary-weaker)",
+      weakest: "var(--background-primary-color-background-primary-weakest)",
     }}
   />
   <ColorItem
-    title="destructive"
-    subtitle="Used for destructive actions such as <Button variant='destructive'>"
+    title="background-success-color-background-success"
     colors={{
-      DEFAULT: "hsl(var(--destructive))",
-      foreground: "hsl(var(--destructive-foreground))",
+      DEFAULT: "var(--background-success-color-background-success)",
+      weakest: "var(--background-success-color-background-success-weakest)",
     }}
   />
   <ColorItem
-    title="ring"
-    subtitle="Used for focus ring"
-    colors={{ ring: "hsl(var(--ring))" }}
+    title="background-warning-color-background-warning"
+    colors={{
+      DEFAULT: "var(--background-warning-color-background-warning)",
+      weakest: "var(--background-warning-color-background-warning-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-color-border"
+    colors={{
+      DEFAULT: "var(--border-color-border)",
+      strong: "var(--border-color-border-strong)",
+      weak: "var(--border-color-border-weak)",
+      weaker: "var(--border-color-border-weaker)",
+      weakest: "var(--border-color-border-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-destructive-color-border-destructive"
+    colors={{
+      DEFAULT: "var(--border-destructive-color-border-destructive)",
+      strong: "var(--border-destructive-color-border-destructive-strong)",
+      stronger: "var(--border-destructive-color-border-destructive-stronger)",
+      strongest: "var(--border-destructive-color-border-destructive-strongest)",
+      weak: "var(--border-destructive-color-border-destructive-weak)",
+      weaker: "var(--border-destructive-color-border-destructive-weaker)",
+      weakest: "var(--border-destructive-color-border-destructive-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-error-color-border-error"
+    colors={{
+      DEFAULT: "var(--border-error-color-border-error)",
+      strong: "var(--border-error-color-border-error-strong)",
+      stronger: "var(--border-error-color-border-error-stronger)",
+      strongest: "var(--border-error-color-border-error-strongest)",
+      weak: "var(--border-error-color-border-error-weak)",
+      weaker: "var(--border-error-color-border-error-weaker)",
+      weakest: "var(--border-error-color-border-error-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-info-color-border-info"
+    colors={{
+      DEFAULT: "var(--border-info-color-border-info)",
+      weak: "var(--border-info-color-border-info-weak)",
+      weaker: "var(--border-info-color-border-info-weaker)",
+      weakest: "var(--border-info-color-border-info-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-inverse-color-border-inverse"
+    colors={{
+      DEFAULT: "var(--border-inverse-color-border-inverse)",
+      strong: "var(--border-inverse-color-border-inverse-strong)",
+      stronger: "var(--border-inverse-color-border-inverse-stronger)",
+      strongest: "var(--border-inverse-color-border-inverse-strongest)",
+      weaker: "var(--border-inverse-color-border-inverse-weaker)",
+      weakest: "var(--border-inverse-color-border-inverse-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-primary-color-border-primary"
+    colors={{
+      DEFAULT: "var(--border-primary-color-border-primary)",
+      strong: "var(--border-primary-color-border-primary-strong)",
+      stronger: "var(--border-primary-color-border-primary-stronger)",
+      strongest: "var(--border-primary-color-border-primary-strongest)",
+      weak: "var(--border-primary-color-border-primary-weak)",
+      weaker: "var(--border-primary-color-border-primary-weaker)",
+      weakest: "var(--border-primary-color-border-primary-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-success-color-border-success"
+    colors={{
+      DEFAULT: "var(--border-success-color-border-success)",
+      weak: "var(--border-success-color-border-success-weak)",
+      weaker: "var(--border-success-color-border-success-weaker)",
+      weakest: "var(--border-success-color-border-success-weakest)",
+    }}
+  />
+  <ColorItem
+    title="border-warning-color-border-warning"
+    colors={{
+      DEFAULT: "var(--border-warning-color-border-warning)",
+      weak: "var(--border-warning-color-border-warning-weak)",
+      weaker: "var(--border-warning-color-border-warning-weaker)",
+      weakest: "var(--border-warning-color-border-warning-weakest)",
+    }}
+  />
+  <ColorItem
+    title="data-visualization-color-data-visualization"
+    colors={{
+      DEFAULT: "var(--data-visualization-color-data-visualization-1)",
+      2: "var(--data-visualization-color-data-visualization-2)",
+      3: "var(--data-visualization-color-data-visualization-3)",
+      4: "var(--data-visualization-color-data-visualization-4)",
+      5: "var(--data-visualization-color-data-visualization-5)",
+      6: "var(--data-visualization-color-data-visualization-6)",
+      7: "var(--data-visualization-color-data-visualization-7)",
+      8: "var(--data-visualization-color-data-visualization-8)",
+      9: "var(--data-visualization-color-data-visualization-9)",
+      10: "var(--data-visualization-color-data-visualization-10)",
+    }}
+  />
+  <ColorItem
+    title="text-color-text"
+    colors={{
+      DEFAULT: "var(--text-color-text)",
+      weak: "var(--text-color-text-weak)",
+      weaker: "var(--text-color-text-weaker)",
+      weakest: "var(--text-color-text-weakest)",
+    }}
+  />
+  <ColorItem
+    title="text-destructive-color-text-destructive"
+    colors={{
+      DEFAULT: "var(--text-destructive-color-text-destructive)",
+      strong: "var(--text-destructive-color-text-destructive-strong)",
+      stronger: "var(--text-destructive-color-text-destructive-stronger)",
+      strongest: "var(--text-destructive-color-text-destructive-strongest)",
+      weak: "var(--text-destructive-color-text-destructive-weak)",
+    }}
+  />
+  <ColorItem
+    title="text-error-color-text-error"
+    colors={{
+      DEFAULT: "var(--text-error-color-text-error)",
+      strong: "var(--text-error-color-text-error-strong)",
+      stronger: "var(--text-error-color-text-error-stronger)",
+      strongest: "var(--text-error-color-text-error-strongest)",
+      weak: "var(--text-error-color-text-error-weak)",
+    }}
+  />
+  <ColorItem
+    title="text-icon-color-text-icon"
+    colors={{
+      DEFAULT: "var(--text-icon-color-text-icon)",
+      error: "var(--text-icon-color-text-icon-error)",
+      info: "var(--text-icon-color-text-icon-info)",
+      inverse: "var(--text-icon-color-text-icon-inverse)",
+      success: "var(--text-icon-color-text-icon-success)",
+      warning: "var(--text-icon-color-text-icon-warning)",
+      weaker: "var(--text-icon-color-text-icon-weaker)",
+    }}
+  />
+  <ColorItem
+    title="text-info-color-text-info"
+    colors={{
+      DEFAULT: "var(--text-info-color-text-info)",
+      strong: "var(--text-info-color-text-info-strong)",
+    }}
+  />
+  <ColorItem
+    title="text-inverse-color-text-inverse"
+    colors={{
+      DEFAULT: "var(--text-inverse-color-text-inverse)",
+      weak: "var(--text-inverse-color-text-inverse-weak)",
+      weaker: "var(--text-inverse-color-text-inverse-weaker)",
+      weakest: "var(--text-inverse-color-text-inverse-weakest)",
+    }}
+  />
+  <ColorItem
+    title="text-link-color-text-link"
+    colors={{
+      DEFAULT: "var(--text-link-color-text-link)",
+      strong: "var(--text-link-color-text-link-strong)",
+      stronger: "var(--text-link-color-text-link-stronger)",
+      strongest: "var(--text-link-color-text-link-strongest)",
+      weak: "var(--text-link-color-text-link-weak)",
+    }}
+  />
+  <ColorItem
+    title="text-link-destructive-color-text-link-destructive"
+    colors={{
+      DEFAULT: "var(--text-link-destructive-color-text-link-destructive)",
+      strong: "var(--text-link-destructive-color-text-link-destructive-strong)",
+      stronger:
+        "var(--text-link-destructive-color-text-link-destructive-stronger)",
+      strongest:
+        "var(--text-link-destructive-color-text-link-destructive-strongest)",
+      weak: "var(--text-link-destructive-color-text-link-destructive-weak)",
+    }}
+  />
+  <ColorItem
+    title="text-primary-color-text-primary"
+    colors={{
+      DEFAULT: "var(--text-primary-color-text-primary)",
+      strong: "var(--text-primary-color-text-primary-strong)",
+      stronger: "var(--text-primary-color-text-primary-stronger)",
+      strongest: "var(--text-primary-color-text-primary-strongest)",
+      weak: "var(--text-primary-color-text-primary-weak)",
+    }}
+  />
+  <ColorItem
+    title="text-success-color-text-success"
+    colors={{
+      DEFAULT: "var(--text-success-color-text-success)",
+    }}
+  />
+  <ColorItem
+    title="text-warning-color-text-warning"
+    colors={{
+      DEFAULT: "var(--text-warning-color-text-warning)",
+      strong: "var(--text-warning-color-text-warning-strong)",
+    }}
   />
 </ColorPalette>
