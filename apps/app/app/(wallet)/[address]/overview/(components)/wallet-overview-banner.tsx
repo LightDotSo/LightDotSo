@@ -167,7 +167,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
               Deposit
             </Button>
           </div>
-          <div className="bg-card w-96 rounded-md border border-border-primary-weak px-6 py-4">
+          <div className="w-96 rounded-md border border-border-primary-weak bg-background-weak px-6 py-4">
             <Suspense fallback={null}>
               <WalletOverviewBannerSparkline address={address} />
             </Suspense>

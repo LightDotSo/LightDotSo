@@ -56,7 +56,7 @@ export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
       onMouseEnter={onMouseEnter}
     >
       <button
-        className="bg-card mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-border-primary-weak text-base font-extrabold text-text"
+        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-border-primary-weak bg-background-weak text-base font-extrabold text-text"
         onClick={e => {
           e.stopPropagation();
         }}

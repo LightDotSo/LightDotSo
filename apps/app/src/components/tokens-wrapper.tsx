@@ -36,7 +36,7 @@ type TokensWrapperProps = {
 
 export const TokensWrapper: FC<TokensWrapperProps> = ({ children }) => {
   return (
-    <div className="bg-card rounded-md border border-border-primary-weak">
+    <div className="rounded-md border border-border-primary-weak bg-background-weak">
       <Table>
         <TableHeader>
           <TableRow>

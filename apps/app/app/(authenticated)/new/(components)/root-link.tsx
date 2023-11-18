@@ -178,7 +178,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
       <span className="flex items-center px-6 py-4 text-sm font-medium">
         <span
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-card",
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
             step.status === "current" ? "border-primary" : "border-border",
           )}
         >
