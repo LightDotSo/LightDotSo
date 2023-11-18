@@ -61,7 +61,7 @@ const CommandInput = React.forwardRef<
     <CommandPrimitive.Input
       ref={ref}
       className={cn(
-        "flex h-10 w-full bg-background border-transparent focus:text-foreground focus:placeholder:font-medium focus:border-transparent focus:ring-0 rounded-md py-2.5 my-2 mx-1.5 text-sm placeholder:text-text-weak disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-10 w-full bg-background border-transparent focus:text-text focus:placeholder:font-medium focus:border-transparent focus:ring-0 rounded-md py-2.5 my-2 mx-1.5 text-sm placeholder:text-text-weak disabled:cursor-not-allowed disabled:opacity-50",
         className
       )}
       {...props}
@@ -104,7 +104,7 @@ const CommandGroup = React.forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-text-weak",
+      "overflow-hidden p-1 text-text [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-2.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-text-weak",
       className
     )}
     {...props}
