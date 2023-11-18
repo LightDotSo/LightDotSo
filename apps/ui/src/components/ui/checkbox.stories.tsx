@@ -38,7 +38,7 @@ export const Base: Story = {
         >
           Accept terms and conditions
         </label>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-text-primary">
           You agree to our Terms of Service and Privacy Policy.
         </p>
       </div>

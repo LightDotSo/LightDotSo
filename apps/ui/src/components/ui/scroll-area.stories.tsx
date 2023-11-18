@@ -31,7 +31,7 @@ type Story = StoryObj<typeof ScrollArea>;
 
 export const Base: Story = {
   render: args => (
-    <ScrollArea className="h-72 w-48 rounded-md border border-slate-100 dark:border-slate-700">
+    <ScrollArea className="h-72 w-48 rounded-md border border-border">
       <div className="p-4">
         <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
         {Array.from({ length: 50 })

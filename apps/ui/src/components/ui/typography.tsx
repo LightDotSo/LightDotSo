@@ -38,7 +38,7 @@ const H2 = React.forwardRef<
   <h2
     ref={ref}
     className={cn(
-      "mt-10 scroll-m-20 border-b border-b-slate-200 pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 dark:border-b-slate-700",
+      "mt-10 scroll-m-20 border-b border-b-border pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0",
       className
     )}
     {...props}
@@ -91,7 +91,7 @@ const BlockQuote = React.forwardRef<
   <blockquote
     ref={ref}
     className={cn(
-      "mt-6 border-l-2 border-slate-300 pl-6 italic text-slate-800 dark:border-slate-600 dark:text-slate-200",
+      "mt-6 border-l-2 border-border pl-6 italic text-text-primary",
       className
     )}
     {...props}
@@ -126,7 +126,7 @@ const TR = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "m-0 border-t border-slate-300 p-0 even:bg-slate-100 dark:border-slate-700 dark:even:bg-slate-800",
+      "m-0 border-t border-border p-0 even:bg-background-weaker",
       className
     )}
     {...props}
@@ -140,7 +140,7 @@ const TD = React.forwardRef<
   <td
     ref={ref}
     className={cn(
-      "border border-slate-200 px-4 py-2 text-left dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right",
+      "border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
       className
     )}
     {...props}
@@ -154,7 +154,7 @@ const TH = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "border border-slate-200 px-4 py-2 text-left font-bold dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right",
+      "border border-border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
       className
     )}
     {...props}
@@ -186,7 +186,7 @@ const InlineCode = React.forwardRef<
   <code
     ref={ref}
     className={cn(
-      "relative rounded bg-slate-100 py-[0.2rem] px-[0.3rem] font-mono text-sm font-semibold text-slate-900 dark:bg-slate-800 dark:text-slate-400",
+      "relative rounded bg-background py-[0.2rem] px-[0.3rem] font-mono text-sm font-semibold text-text-primary",
       className
     )}
     {...props}
@@ -199,7 +199,7 @@ const Lead = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-xl text-slate-700 dark:text-slate-400", className)}
+    className={cn("text-xl text-text-primary", className)}
     {...props}
   />
 ))
@@ -211,7 +211,7 @@ const Large = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "text-lg font-semibold text-slate-900 dark:text-slate-50",
+      "text-lg font-semibold text-text-primary",
       className
     )}
     {...props}
@@ -235,7 +235,7 @@ const Subtle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-slate-500 dark:text-slate-400", className)}
+    className={cn("text-sm text-text-weak", className)}
     {...props}
   />
 ))
