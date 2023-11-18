@@ -97,7 +97,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
         </div>
         <nav className="flex items-center space-x-4" aria-label="Tabs">
           {children}
-          <div className="hidden rounded-md border border-input p-1 sm:block">
+          <div className="hidden rounded-md border border-border-primary-weak p-1 sm:block">
             {items.map(item => (
               <Link
                 key={item.id}
@@ -107,8 +107,8 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
                   "text-secondary bg-transparent hover:bg-transparent border-none text-xs",
                   // If the item is the selected, add bg-selected
                   item.id === id
-                    ? "bg-accent text-primary font-semibold hover:bg-accent"
-                    : "text-muted-foreground",
+                    ? "bg-background-stronger text-text font-semibold hover:bg-background-stronger"
+                    : "text-text-weak",
                 )}
                 aria-current={item.id === id ? "page" : undefined}
               >

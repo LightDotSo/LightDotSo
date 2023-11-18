@@ -91,7 +91,7 @@ export const WalletOverviewBannerSparkline: FC<
     <div className="flex flex-row items-center justify-between space-x-4">
       <div className="flex flex-col justify-start space-y-1.5">
         <span className="text-sm">Total Value</span>
-        <span className="text-xl font-bold text-primary">
+        <span className="text-xl font-bold text-text">
           $
           {portfolio.balances && portfolio.balance && portfolio.balance !== 0
             ? portfolio.balance.toFixed(2)

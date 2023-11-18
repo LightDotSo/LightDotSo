@@ -19,13 +19,13 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@lightdotso/utils"
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border p-4 [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground",
+  "relative w-full rounded-lg border p-4 [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-text",
   {
     variants: {
       variant: {
-        default: "bg-background text-foreground",
+        default: "bg-background text-text",
         destructive:
-          "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive",
+          "border-destructive/50 text-text-destructive dark:border-destructive [&>svg]:text-text-destructive",
       },
     },
     defaultVariants: {

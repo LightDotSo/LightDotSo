@@ -90,37 +90,37 @@ export const TableStory: Story = {
     <div className="my-6 w-full overflow-y-auto">
       <Table className="w-full">
         <THead>
-          <TR className="m-0 border-t border-slate-300 p-0 even:bg-slate-100 dark:border-slate-700 dark:even:bg-slate-800">
-            <TH className="border border-slate-200 px-4 py-2 text-left font-bold dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+            <TH className="border border-border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
               King&apos;s Treasury
             </TH>
-            <TH className="border border-slate-200 px-4 py-2 text-left font-bold dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+            <TH className="border border-border px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right">
               People&apos;s happiness
             </TH>
           </TR>
         </THead>
         <TBody>
-          <TR className="m-0 border-t border-slate-200 p-0 even:bg-slate-100 dark:border-slate-700 dark:even:bg-slate-800">
-            <TD className="border border-slate-200 px-4 py-2 text-left dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+            <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Empty
             </TD>
-            <TD className="border border-slate-200 px-4 py-2 text-left dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+            <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Overflowing
             </TD>
           </TR>
-          <TR className="m-0 border-t border-slate-200 p-0 even:bg-slate-100 dark:border-slate-700 dark:even:bg-slate-800">
-            <TD className="border border-slate-200 px-4 py-2 text-left dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+            <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Modest
             </TD>
-            <TD className="border border-slate-200 px-4 py-2 text-left dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+            <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Satisfied
             </TD>
           </TR>
-          <TR className="m-0 border-t border-slate-200 p-0 even:bg-slate-100 dark:border-slate-600 dark:even:bg-slate-800">
-            <TD className="border border-slate-200 px-4 py-2 text-left dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+          <TR className="m-0 border-t border-border p-0 even:bg-background-primary-weakest">
+            <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Full
             </TD>
-            <TD className="border border-slate-200 px-4 py-2 text-left dark:border-slate-700 [&[align=center]]:text-center [&[align=right]]:text-right">
+            <TD className="border border-border px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right">
               Ecstatic
             </TD>
           </TR>

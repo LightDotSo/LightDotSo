@@ -73,17 +73,17 @@ export const Root: FC<RootProps> = ({ children }) => {
       className={`${inter.variable} font-sans`}
       suppressHydrationWarning
     >
-      <body className="min-h-[100dvh] bg-white dark:bg-black">
+      <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">
           <ReactQueryProvider>
             <Web3Provider>
               <main>
                 <div className="flex flex-col">
-                  <div className="border-b lg:py-2">
+                  <div className="border-b border-border lg:py-2">
                     <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
                       <div className="flex items-center">
                         <RootLogo />
-                        <span className="ml-2 mr-1 text-primary/60">/</span>
+                        <span className="ml-2 mr-1 text-text/60">/</span>
                         <WalletSwitcher />
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">

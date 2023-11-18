@@ -130,40 +130,40 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                 className="grid max-w-md grid-cols-5 gap-4 pt-2"
               >
                 <FormItem>
-                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-primary">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem
                         value="exploding-head"
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="flex items-center justify-center rounded-full border-2 border-muted p-1 text-2xl hover:border-accent">
+                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
                       🤯
                     </div>
                   </FormLabel>
                 </FormItem>
                 <FormItem>
-                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-primary">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem
                         value="slightly-smiling-face"
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="flex items-center justify-center rounded-full border-2 border-muted p-1 text-2xl hover:border-accent">
+                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
                       🙂
                     </div>
                   </FormLabel>
                 </FormItem>
                 <FormItem>
-                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-primary">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem
                         value="loudly-crying-face"
                         className="sr-only"
                       />
                     </FormControl>
-                    <div className="flex items-center justify-center rounded-full border-2 border-muted p-1 text-2xl hover:border-accent">
+                    <div className="hover:border-accent flex items-center justify-center rounded-full border-2 border-border p-1 text-2xl">
                       😭
                     </div>
                   </FormLabel>

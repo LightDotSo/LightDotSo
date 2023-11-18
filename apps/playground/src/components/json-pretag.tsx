@@ -16,7 +16,7 @@
 export function JsonPreTag(props: { object: unknown }) {
   return (
     // eslint-disable-next-line tailwindcss/enforces-shorthand
-    <pre className="relative overflow-x-auto rounded bg-muted p-4 px-[0.33rem] py-[0.33rem] font-mono text-sm font-semibold">
+    <pre className="relative overflow-x-auto rounded bg-background-stronger p-4 px-[0.33rem] py-[0.33rem] font-mono text-sm font-semibold">
       {JSON.stringify(props.object, null, 4)}
     </pre>
   );

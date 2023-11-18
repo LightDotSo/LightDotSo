@@ -603,7 +603,7 @@ export const ConfigurationForm: FC = () => {
                     </FormDescription>
                     <FormMessage />
                     {form.formState.errors && (
-                      <p className="text-sm font-medium text-destructive">
+                      <p className="text-sm font-medium text-text-destructive">
                         {/* Print any message one line at a time */}
                         {Object.entries(form.formState.errors)
                           .filter(

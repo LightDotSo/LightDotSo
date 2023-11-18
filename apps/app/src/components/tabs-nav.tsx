@@ -102,8 +102,8 @@ export const Tabs: FC<TabProps> = ({
           <Link key={i} href={href} passHref legacyBehavior>
             <motion.a
               className={clsx(
-                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-accent-foreground",
-                !isActive ? "text-muted-foreground" : "text-primary",
+                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
+                !isActive ? "text-text-weak" : "text-text",
               )}
               ref={el => (anchorRefs[i] = el)}
               onPointerEnter={() => {
@@ -120,7 +120,7 @@ export const Tabs: FC<TabProps> = ({
               {<item.icon className="mr-2 h-4 w-4" />}
               {item.label}
               {item.number > 0 && (
-                <span className="font-sm ml-2 rounded-full bg-accent px-2 py-0.5">
+                <span className="font-sm ml-2 rounded-full bg-background-stronger px-2 py-0.5">
                   {item.number}
                 </span>
               )}
@@ -133,7 +133,7 @@ export const Tabs: FC<TabProps> = ({
         {hoveredRect && navRect && (
           <motion.div
             key={"hover"}
-            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-accent"
+            className="absolute left-0 top-0 z-10 mb-1 rounded-md bg-background-stronger"
             initial={{
               x: hoveredRect.left - navRect.left,
               y: hoveredRect.top - navRect.top,
@@ -163,7 +163,7 @@ export const Tabs: FC<TabProps> = ({
       {selectedRect && navRect && (
         <motion.div
           className={
-            "absolute bottom-0 left-0.5 z-10 h-[3px] rounded-lg bg-primary"
+            "absolute bottom-0 left-0.5 z-10 h-[3px] rounded-lg bg-background-primary"
           }
           initial={false}
           animate={{

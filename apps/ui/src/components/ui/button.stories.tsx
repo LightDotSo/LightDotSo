@@ -32,6 +32,12 @@ export const Base: Story = {
   render: args => <Button {...args}>Button</Button>,
   args: {},
 };
+export const Destructive: Story = {
+  render: args => <Button {...args}>Button</Button>,
+  args: {
+    variant: "destructive",
+  },
+};
 export const Outline: Story = {
   render: args => <Button {...args}>Button</Button>,
   args: {
@@ -42,12 +48,6 @@ export const Ghost: Story = {
   render: args => <Button {...args}>Button</Button>,
   args: {
     variant: "ghost",
-  },
-};
-export const Secondary: Story = {
-  render: args => <Button {...args}>Button</Button>,
-  args: {
-    variant: "secondary",
   },
 };
 export const Link: Story = {
@@ -73,7 +73,4 @@ export const WithIcon: Story = {
       <Mail className="mr-2 h-4 w-4" /> Login with Email Button
     </Button>
   ),
-  args: {
-    variant: "secondary",
-  },
 };

@@ -30,7 +30,7 @@ export const TokensEmpty: FC = () => {
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="2"
-          className="h-10 w-10 text-muted-foreground"
+          className="h-10 w-10 text-text-weak"
           viewBox="0 0 24 24"
         >
           <circle cx="12" cy="11" r="1" />
@@ -39,7 +39,7 @@ export const TokensEmpty: FC = () => {
         </svg>
 
         <h3 className="mt-4 text-lg font-semibold">No transactions found</h3>
-        <p className="mb-4 mt-2 text-sm text-muted-foreground">
+        <p className="mb-4 mt-2 text-sm text-text-weak">
           You have not added any transactions. Add one below.
         </p>
       </div>

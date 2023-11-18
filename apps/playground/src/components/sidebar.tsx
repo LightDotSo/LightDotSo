@@ -65,7 +65,7 @@ export function SideNav(props: { children: React.ReactNode }) {
               <Link
                 href={item.href}
                 className={cn(
-                  page === item.href && "bg-muted text-foreground/80",
+                  page === item.href && "bg-background-stronger text-text/80",
                   // item.disabled && 'pointer-events-none opacity-50',
                 )}
               >

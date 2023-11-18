@@ -169,7 +169,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
           // If the step is the current step, then we want to show the primary color
           // If the step is not the current step, then we want to show the muted color
           step.status === "current"
-            ? "bg-primary w-1 md:h-0.5"
+            ? "bg-background-primary w-1 md:h-0.5"
             : "bg-border w-0 md:h-0",
           "translate-y-1/2",
         )}
@@ -178,8 +178,10 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
       <span className="flex items-center px-6 py-4 text-sm font-medium">
         <span
           className={cn(
-            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-card",
-            step.status === "current" ? "border-primary" : "border-border",
+            "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-background-weak",
+            step.status === "current"
+              ? "border-border-primary"
+              : "border-border",
           )}
         >
           {step.status === "complete" ? (
@@ -190,7 +192,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
           ) : (
             <span
               className={cn(
-                step.status === "current" ? "text-primary" : "text-border",
+                step.status === "current" ? "text-text" : "text-border",
               )}
             >
               {step.id}
@@ -200,7 +202,7 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
         <span
           className={cn(
             "ml-4 text-sm font-medium",
-            step.status === "current" ? "text-primary" : "text-border",
+            step.status === "current" ? "text-text" : "text-border",
           )}
         >
           {step.name}

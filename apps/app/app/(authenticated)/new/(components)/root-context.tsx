@@ -28,7 +28,7 @@ export const RootContext: FC = () => {
   return (
     <div>
       <pre className="mt-2 w-full overflow-auto rounded-md p-4">
-        <code className="break-all text-primary">
+        <code className="break-all text-text">
           {isLoading ? "IsLoading" : "Loaded"}
           <br></br>
           {isValid ? "Valid" : "Invalid"}

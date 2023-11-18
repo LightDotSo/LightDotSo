@@ -220,7 +220,7 @@ export const ConfirmForm: FC = () => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               {form.formState.errors && (
-                <pre className="text-sm font-medium text-destructive">
+                <pre className="text-sm font-medium text-text-destructive">
                   {/* Print any message one line at a time */}
                   {extractDeeperErrors(form.formState.errors).join("\n")}
                 </pre>

@@ -59,8 +59,8 @@ export const TokenCard: FC<TokenCardProps> = ({
   return (
     <TableRow key={name}>
       <TableCell className="font-medium">
-        <span className="mr-1.5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-input bg-muted">
-          <span className="overflow-hidden text-ellipsis text-xs leading-none text-muted-foreground">
+        <span className="mr-1.5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger">
+          <span className="overflow-hidden text-ellipsis text-xs leading-none text-text-weak">
             {shortenName(name ?? symbol)}
           </span>
         </span>{" "}
