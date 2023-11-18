@@ -90,7 +90,6 @@
     --border-warning-weaker: 26 100% 92%;
     --border-warning-weakest: 24 83% 98%;
     --data-visualization-1: 231 100% 27%;
-    --data-visualization-10: 0 79% 63%;
     --data-visualization-2: 144 80% 27%;
     --data-visualization-3: 144 63% 14%;
     --data-visualization-4: 207 100% 50%;
@@ -99,6 +98,7 @@
     --data-visualization-7: 263 64% 50%;
     --data-visualization-8: 224 17% 60%;
     --data-visualization-9: 0 81% 25%;
+    --data-visualization-10: 0 79% 63%;
     --text: 0 0% 9%;
     --text-weak: 0 0% 52%;
     --text-weaker: 0 0% 89%;
@@ -228,7 +228,6 @@
     --border-warning-weaker: 25 89% 14%;
     --border-warning-weakest: 28 100% 8%;
     --data-visualization-1: 214 98% 44%;
-    --data-visualization-10: 46 94% 47%;
     --data-visualization-2: 263 68% 81%;
     --data-visualization-3: 222 16% 45%;
     --data-visualization-4: 210 100% 70%;
@@ -237,6 +236,7 @@
     --data-visualization-7: 18 70% 45%;
     --data-visualization-8: 0 79% 83%;
     --data-visualization-9: 264 62% 60%;
+    --data-visualization-10: 46 94% 47%;
     --text: 0 0% 93%;
     --text-weak: 0 0% 49%;
     --text-weaker: 0 0% 20%;
