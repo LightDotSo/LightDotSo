@@ -61,7 +61,7 @@ export function CollapsiblePreview({
           )}
         >
           <CollapsibleTrigger asChild>
-            <Button variant="secondary" className="h-8 text-xs">
+            <Button className="h-8 text-xs">
               {isOpened ? "Collapse" : expandButtonTitle}
             </Button>
           </CollapsibleTrigger>
