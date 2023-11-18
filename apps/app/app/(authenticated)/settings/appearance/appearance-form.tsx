@@ -120,7 +120,7 @@ export const AppearanceForm: FC = () => {
                 className="grid max-w-md grid-cols-2 gap-8 pt-2"
               >
                 <FormItem>
-                  <FormLabel className="[&:has([data-state=checked])>div]:border-primary hover:cursor-pointer">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem value="light" className="sr-only" />
                     </FormControl>
@@ -146,7 +146,7 @@ export const AppearanceForm: FC = () => {
                   </FormLabel>
                 </FormItem>
                 <FormItem>
-                  <FormLabel className="[&:has([data-state=checked])>div]:border-primary hover:cursor-pointer">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem value="dark" className="sr-only" />
                     </FormControl>

@@ -130,7 +130,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                 className="grid max-w-md grid-cols-5 gap-4 pt-2"
               >
                 <FormItem>
-                  <FormLabel className="[&:has([data-state=checked])>div]:border-primary hover:cursor-pointer">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem
                         value="exploding-head"
@@ -143,7 +143,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                   </FormLabel>
                 </FormItem>
                 <FormItem>
-                  <FormLabel className="[&:has([data-state=checked])>div]:border-primary hover:cursor-pointer">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem
                         value="slightly-smiling-face"
@@ -156,7 +156,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
                   </FormLabel>
                 </FormItem>
                 <FormItem>
-                  <FormLabel className="[&:has([data-state=checked])>div]:border-primary hover:cursor-pointer">
+                  <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
                     <FormControl>
                       <RadioGroupItem
                         value="loudly-crying-face"
