@@ -12,15 +12,16 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
   "files": [
-    "dist/**"
+    "dist/**",
+    "src/**"
   ],
   "scripts": {
     "build": "tsup",
-    "clean": "rimraf -rf dist"
+    "clean": "rimraf -rf dist",
+    "prepack": "clean-package",
+    "postpack": "clean-package restore"
   },
   "dependencies": {
     "zod": "^3.22.4"
@@ -32,5 +33,6 @@
   },
   "publishConfig": {
     "access": "restricted"
-  }
+  },
+  "clean-package": "../../clean-package.config.json"
 }
