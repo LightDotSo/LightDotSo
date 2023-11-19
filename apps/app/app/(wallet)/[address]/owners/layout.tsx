@@ -46,7 +46,9 @@ export default function OwnersLayout({ children }: OwnersLayoutProps) {
         description={TITLES.Owners.description}
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-5xl flex-1 space-y-8">{children}</div>
+          <div className="mx-auto my-8 max-w-5xl flex-1 lg:my-16 xl:my-20">
+            {children}
+          </div>
         </div>
       </BannerSection>
     </>
