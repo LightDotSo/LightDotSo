@@ -68,6 +68,7 @@ export const getConfiguration = async (
 
   return ResultAsync.fromPromise(
     client.GET("/configuration/get", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -91,6 +92,7 @@ export const getWallet = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/get", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -114,6 +116,7 @@ export const getWalletTab = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/tab", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -143,6 +146,7 @@ export const getWallets = async (
 
   return ResultAsync.fromPromise(
     client.GET("/wallet/list", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -170,6 +174,7 @@ export const createFeedback = async ({
 
   return ResultAsync.fromPromise(
     client.POST("/feedback/create", {
+      // @ts-expect-error
       next: { revalidate: 0 },
       params,
       body,
@@ -201,6 +206,7 @@ export const createWallet = async ({
 
   return ResultAsync.fromPromise(
     client.POST("/wallet/create", {
+      // @ts-expect-error
       next: { revalidate: 0 },
       params,
       body,
@@ -274,6 +280,7 @@ export const getPortfolio = async (
 
   return ResultAsync.fromPromise(
     client.GET("/portfolio/get", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -297,6 +304,7 @@ export const getUser = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user/get", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -320,6 +328,7 @@ export const getUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/get", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -343,6 +352,7 @@ export const getSignatureUserOperation = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/signature", {
+      // @ts-expect-error
       next: { revalidate: 300 },
       params,
     }),
@@ -366,6 +376,7 @@ export const getToken = async (
 
   return ResultAsync.fromPromise(
     client.GET("/token/get", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -393,6 +404,7 @@ export const getTokens = async (
 
   return ResultAsync.fromPromise(
     client.GET("/token/list", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -416,6 +428,7 @@ export const getTokenPrice = async (
 
   return ResultAsync.fromPromise(
     client.GET("/token_price/get", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -445,6 +458,7 @@ export const getTransactions = async (
 
   return ResultAsync.fromPromise(
     client.GET("/transaction/list", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
@@ -475,6 +489,7 @@ export const getUserOperations = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list", {
+      // @ts-expect-error
       next: { revalidate: 300, tags: [params.query.address] },
       params,
     }),
