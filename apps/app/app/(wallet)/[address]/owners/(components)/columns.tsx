@@ -16,11 +16,12 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@lightdotso/ui";
+import { Avatar, Checkbox } from "@lightdotso/ui";
 import { z } from "zod";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { weights } from "./data";
+import { PlaceholderOrb } from "@/components/placeholder-orb";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -74,7 +75,14 @@ export const columns: ColumnDef<Owner>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Owner" />
     ),
-    cell: ({ row }) => <div>{row.getValue("address")}</div>,
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <Avatar className="mr-3 h-7 w-7">
+          <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
+        </Avatar>
+        {row.getValue("address")}
+      </div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
