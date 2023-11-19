@@ -327,6 +327,7 @@ impl Polling {
             || {
                 upsert_transaction_with_log_receipt(
                     db_client.clone(),
+                    uow.clone().sender,
                     uow.clone().transaction,
                     uow.clone().transaction_logs,
                     uow.clone().receipt,

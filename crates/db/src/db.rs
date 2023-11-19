@@ -94,8 +94,10 @@ pub async fn create_transaction_category(
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
 #[autometrics]
+#[allow(clippy::too_many_arguments)]
 pub async fn upsert_transaction_with_log_receipt(
     db: Database,
+    wallet_address: ethers::types::H160,
     transaction: ethers::types::Transaction,
     logs: Vec<ethers::types::Log>,
     receipt: ethers::types::TransactionReceipt,
@@ -113,6 +115,7 @@ pub async fn upsert_transaction_with_log_receipt(
         transaction::input::set(Some(transaction.input.0.to_vec())),
         transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
         transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
+        transaction::wallet_address::set(Some(to_checksum(&wallet_address, None))),
     ];
 
     // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.

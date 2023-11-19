@@ -41,6 +41,8 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     // The maximum number of transactions to return.
     pub limit: Option<i64>,
+    // The sender address to filter by.
+    pub address: Option<String>,
 }
 
 /// Transaction operation errors
@@ -133,13 +135,22 @@ async fn v1_transaction_list_handler(
 ) -> AppJsonResult<Vec<Transaction>> {
     // Get the pagination query.
     let Query(pagination) = pagination;
+    info!(?pagination);
+
+    // If the address is provided, add it to the query.
+    let query = match pagination.address {
+        Some(addr) => {
+            vec![transaction::wallet_address::equals(Some(addr.clone()))]
+        }
+        None => vec![],
+    };
 
     // Get the transactions from the database.
     let transactions = client
         .client
         .unwrap()
         .transaction()
-        .find_many(vec![])
+        .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
         .exec()
