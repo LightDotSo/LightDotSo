@@ -271,3 +271,7 @@ UserInterfaceState.xcuserstate
 # App specific .env
 # https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables
 !apps/*/.env
+
+# clean-package related
+# https://github.com/roydukkey/clean-package
+*.backup

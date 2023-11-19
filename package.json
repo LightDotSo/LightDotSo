@@ -111,6 +111,7 @@
     "autoprefixer": "^10.4.16",
     "chai": "^4.3.10",
     "checkly": "^4.4.0",
+    "clean-package": "^2.2.0",
     "commitlint": "^18.4.2",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
