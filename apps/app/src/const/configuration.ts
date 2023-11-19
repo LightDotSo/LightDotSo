@@ -13,30 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  ArrowDownIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
-} from "@radix-ui/react-icons";
-
 // -----------------------------------------------------------------------------
-// Column Data
+// Max
 // -----------------------------------------------------------------------------
 
-export const weights = [
-  {
-    label: "1",
-    value: "1",
-    icon: ArrowDownIcon,
-  },
-  {
-    label: "2",
-    value: "2",
-    icon: ArrowRightIcon,
-  },
-  {
-    label: "3",
-    value: "3",
-    icon: ArrowUpIcon,
-  },
-];
+export const MAX_WEIGHT = 8;
+export const MAX_THRESHOLD = 18;
