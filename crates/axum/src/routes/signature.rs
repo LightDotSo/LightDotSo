@@ -208,10 +208,10 @@ async fn v1_signature_list_handler(
         ),
         request_body = SignaturePostRequestParams,
         responses(
-            (status = 200, description = "Signature created successfully", body = UserOperation),
-            (status = 400, description = "Invalid Configuration", body = UserOperationError),
-            (status = 409, description = "Signature already exists", body = UserOperationError),
-            (status = 500, description = "Signature internal error", body = UserOperationError),
+            (status = 200, description = "Signature created successfully", body = Signature),
+            (status = 400, description = "Invalid Configuration", body = SignatureError),
+            (status = 409, description = "Signature already exists", body = SignatureError),
+            (status = 500, description = "Signature internal error", body = SignatureError),
         )
     )]
 #[autometrics]

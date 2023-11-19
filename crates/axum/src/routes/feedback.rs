@@ -79,8 +79,8 @@ pub(crate) fn router() -> Router<AppState> {
         ),
         request_body = FeedbackPostRequestParams,
         responses(
-            (status = 200, description = "Feedback created successfully", body = UserOperation),
-            (status = 500, description = "Feedback internal error", body = UserOperationError),
+            (status = 200, description = "Feedback created successfully", body = Feedback),
+            (status = 500, description = "Feedback internal error", body = FeedbackError),
         )
     )]
 #[autometrics]
