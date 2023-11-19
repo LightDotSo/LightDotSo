@@ -83,14 +83,14 @@ impl From<wallet_settings::Data> for WalletSettings {
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/wallet_settings/get", get(v1_wallet_settings_get_handler))
-        .route("/wallet_settings/create", post(v1_wallet_settings_post_handler))
+        .route("/wallet/settings/get", get(v1_wallet_settings_get_handler))
+        .route("/wallet/settings/update", post(v1_wallet_settings_post_handler))
 }
 
 /// Get a wallet_settings
 #[utoipa::path(
         get,
-        path = "/wallet_settings/get",
+        path = "/wallet/settings/get",
         params(
             GetQuery
         ),
@@ -133,7 +133,7 @@ async fn v1_wallet_settings_get_handler(
 /// Create a wallet_settings
 #[utoipa::path(
         post,
-        path = "/wallet_settings/update",
+        path = "/wallet/settings/update",
         params(
             PostQuery
         ),
