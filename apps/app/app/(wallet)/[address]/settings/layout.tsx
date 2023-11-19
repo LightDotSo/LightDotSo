@@ -25,15 +25,15 @@ import { TITLES } from "@/const/titles";
 
 const sidebarNavItems = [
   {
-    title: "Wallet Settings",
+    title: TITLES.Settings.subcategories["Wallet Settings"].title,
     href: "/settings",
   },
   {
-    title: "Account",
+    title: TITLES.Settings.subcategories["Account"].title,
     href: "/settings/account",
   },
   {
-    title: "Billing",
+    title: TITLES.Settings.subcategories["Billing"].title,
     href: "/settings/billing",
   },
 ];

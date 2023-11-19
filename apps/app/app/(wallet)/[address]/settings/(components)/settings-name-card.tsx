@@ -32,6 +32,7 @@ import {
 import { successToast } from "@/utils/toast";
 import type { FC } from "react";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
+import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -93,8 +94,14 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   return (
     <SettingsCard
       address={address}
-      title="Title"
-      subtitle="Subtitle"
+      title={
+        TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
+          .title
+      }
+      subtitle={
+        TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
+          .description
+      }
       footerContent={<WalletNameFormSubmitButton />}
     >
       <Form {...form}>
@@ -108,13 +115,20 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>
+                  {
+                    TITLES.Settings.subcategories["Wallet Settings"]
+                      .subcategories["Name"].title
+                  }
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="Your name" {...field} />
                 </FormControl>
                 <FormDescription>
-                  This is the name that will be displayed on your profile and in
-                  emails.
+                  {
+                    TITLES.Settings.subcategories["Wallet Settings"]
+                      .subcategories["Name"].note
+                  }
                 </FormDescription>
                 <FormMessage />
               </FormItem>
