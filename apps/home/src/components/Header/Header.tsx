@@ -113,7 +113,7 @@ export const Header: FC = () => {
             </Link>
           </div>
           <div className="-my-2 md:hidden">
-            <button className="inline-flex items-center justify-center rounded-md bg-bg p-2 text-contrast-medium hover:bg-contrast-low hover:text-contrast-higher focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary">
+            <button className="focus:ring-primary inline-flex items-center justify-center rounded-md bg-bg p-2 text-contrast-medium hover:bg-contrast-low hover:text-contrast-higher focus:outline-none focus:ring-2 focus:ring-inset">
               <span className="sr-only">Open menu</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
