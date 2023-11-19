@@ -22,3 +22,4 @@ export { getTransactions } from "@/services/getTransactions";
 export { getUserOperation } from "@/services/getUserOperation";
 export { getUserOperations } from "@/services/getUserOperations";
 export { getWallet } from "@/services/getWallet";
+export { getWalletSettings } from "@/services/getWalletSettings";

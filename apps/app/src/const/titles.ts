@@ -33,6 +33,7 @@ enum Category {
 enum SettingsSubCategory {
   Account = "Account",
   Billing = "Billing",
+  WalletSettings = "Wallet Settings",
 }
 
 type SubCategory = string;
@@ -40,6 +41,7 @@ type SubCategory = string;
 type CategoryObject = {
   title: string;
   description: string;
+  note?: string;
   subcategories: Record<SubCategory, CategoryObject>;
 };
 
@@ -62,6 +64,24 @@ export const TITLES: Record<Category, CategoryObject> = {
     title: "Settings",
     description: "Manage your account settings.",
     subcategories: {
+      [SettingsSubCategory.WalletSettings]: {
+        title: "Wallet Settings",
+        description: "Manage your wallet settings",
+        subcategories: {
+          ["Name"]: {
+            title: "Name",
+            description: "Manage your wallet name",
+            note: "This is the name that will be displayed to others.",
+            subcategories: {},
+          },
+          ["Testnet"]: {
+            title: "Testnet",
+            description: "Enable or disable testnet",
+            note: "This will enable or disable testnet for your wallet.",
+            subcategories: {},
+          },
+        },
+      },
       [SettingsSubCategory.Account]: {
         title: "Account",
         description: "Manage your wallet account",

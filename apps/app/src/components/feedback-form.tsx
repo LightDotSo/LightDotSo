@@ -32,7 +32,7 @@ import {
   RadioGroupItem,
   Textarea,
 } from "@lightdotso/ui";
-import { errToast, successToast } from "@/utils/toast";
+import { errorToast, successToast } from "@/utils/toast";
 import { useAuth } from "@/stores/useAuth";
 import { createFeedback } from "@lightdotso/client";
 import type { FC } from "react";
@@ -75,7 +75,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   function onSubmit(data: FeedbackFormValues) {
     if (!userId) {
-      return errToast("Sorry, something went wrong.");
+      return errorToast("Sorry, something went wrong.");
     }
     createFeedback({
       params: {
@@ -91,7 +91,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
         successToast("Thanks for your feedback!");
         form.reset();
       } else {
-        errToast("Sorry, something went wrong.");
+        errorToast("Sorry, something went wrong.");
       }
       onClose();
     });
