@@ -213,6 +213,20 @@ export interface paths {
      */
     get: operations["v1_wallet_list_handler"];
   };
+  "/wallet/settings/get": {
+    /**
+     * Get a wallet_settings
+     * @description Get a wallet_settings
+     */
+    get: operations["v1_wallet_settings_get_handler"];
+  };
+  "/wallet/settings/update": {
+    /**
+     * Create a wallet_settings
+     * @description Create a wallet_settings
+     */
+    post: operations["v1_wallet_settings_post_handler"];
+  };
   "/wallet/tab": {
     /**
      * Get a wallet tab
@@ -609,6 +623,24 @@ export interface components {
        */
       threshold: number;
     };
+    /** @description Item to do. */
+    WalletSettings: {
+      is_enabled_testnet: boolean;
+    };
+    /** @description WalletSettings operation errors */
+    WalletSettingsError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description WalletSettings not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Optional Item to do. */
+    WalletSettingsOptional: {
+      is_enabled_testnet?: boolean | null;
+    };
+    WalletSettingsPostRequestParams: {
+      wallet_settings: components["schemas"]["WalletSettingsOptional"];
+    };
     /** @description WalletTab to do. */
     WalletTab: {
       /**
@@ -727,13 +759,13 @@ export interface operations {
       /** @description Feedback created successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["UserOperation"];
+          "application/json": components["schemas"]["Feedback"];
         };
       };
       /** @description Feedback internal error */
       500: {
         content: {
-          "application/json": components["schemas"]["UserOperationError"];
+          "application/json": components["schemas"]["FeedbackError"];
         };
       };
     };
@@ -911,25 +943,25 @@ export interface operations {
       /** @description Signature created successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["UserOperation"];
+          "application/json": components["schemas"]["Signature"];
         };
       };
       /** @description Invalid Configuration */
       400: {
         content: {
-          "application/json": components["schemas"]["UserOperationError"];
+          "application/json": components["schemas"]["SignatureError"];
         };
       };
       /** @description Signature already exists */
       409: {
         content: {
-          "application/json": components["schemas"]["UserOperationError"];
+          "application/json": components["schemas"]["SignatureError"];
         };
       };
       /** @description Signature internal error */
       500: {
         content: {
-          "application/json": components["schemas"]["UserOperationError"];
+          "application/json": components["schemas"]["SignatureError"];
         };
       };
     };
@@ -1005,13 +1037,13 @@ export interface operations {
       /** @description SupportRequest created successfully */
       200: {
         content: {
-          "application/json": components["schemas"]["UserOperation"];
+          "application/json": components["schemas"]["SupportRequest"];
         };
       };
       /** @description SupportRequest internal error */
       500: {
         content: {
-          "application/json": components["schemas"]["UserOperationError"];
+          "application/json": components["schemas"]["SupportRequestError"];
         };
       };
     };
@@ -1422,6 +1454,73 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a wallet_settings
+   * @description Get a wallet_settings
+   */
+  v1_wallet_settings_get_handler: {
+    parameters: {
+      query: {
+        address: string;
+      };
+    };
+    responses: {
+      /** @description WalletSettings returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletSettings"];
+        };
+      };
+      /** @description WalletSettings not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["WalletSettingsError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a wallet_settings
+   * @description Create a wallet_settings
+   */
+  v1_wallet_settings_post_handler: {
+    parameters: {
+      query: {
+        address: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["WalletSettingsPostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description WalletSettings updated successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletSettings"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["WalletSettingsError"];
+        };
+      };
+      /** @description WalletSettings already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["WalletSettingsError"];
+        };
+      };
+      /** @description WalletSettings internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["WalletSettingsError"];
         };
       };
     };

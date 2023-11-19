@@ -13,28 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { DeployButton } from "@/app/(wallet)/[address]/settings/deploy-button";
-import type { Address, Hex } from "viem";
 import { handler } from "@/handlers/paths/[address]";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const chains = [
-  { name: "Sepolia", chainId: 11155111 },
-  { name: "Mainnet", chainId: 1 },
-  { name: "Polygon", chainId: 137 },
-];
+import type { Address } from "viem";
+import { getWalletSettings, getQueryClient } from "@/services";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
+import { Skeleton } from "@lightdotso/ui";
+import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type PageProps = {
-  params: {
-    address: string;
-  };
+  params: { address: string };
 };
 
 // -----------------------------------------------------------------------------
@@ -42,21 +34,38 @@ type PageProps = {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: PageProps) {
-  const { wallet, config } = await handler(params);
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
 
-  return (
-    <div className="space-x-4">
-      {chains.map(chain => (
-        <DeployButton
-          key={chain.name}
-          salt={wallet.salt as Hex}
-          image_hash={config.image_hash as Hex}
-          chainId={chain.chainId}
-          wallet={params.address as Address}
-        >
-          {`Deploy to ${chain.name}`}
-        </DeployButton>
-      ))}
-    </div>
+  await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  const res = await getWalletSettings(params.address as Address);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return res.match(
+    res => {
+      queryClient.setQueryData(["wallet_settings", params.address], res);
+
+      return (
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+            <SettingsCard address={params.address as Address} />
+          </Suspense>
+        </HydrationBoundary>
+      );
+    },
+    _ => {
+      return null;
+    },
   );
 }
