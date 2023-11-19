@@ -22,6 +22,10 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { weights } from "./data";
 
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
 export const ownerSchema = z.object({
   id: z.string(),
   address: z.string(),
@@ -29,6 +33,10 @@ export const ownerSchema = z.object({
 });
 
 export type Owner = z.infer<typeof ownerSchema>;
+
+// -----------------------------------------------------------------------------
+// Definitions
+// -----------------------------------------------------------------------------
 
 export const columns: ColumnDef<Owner>[] = [
   {
@@ -89,7 +97,7 @@ export const columns: ColumnDef<Owner>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes((row.getValue(id) as number).toString());
     },
   },
   {

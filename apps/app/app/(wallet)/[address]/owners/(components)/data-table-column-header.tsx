@@ -30,11 +30,19 @@ import {
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function DataTableColumnHeader<TData, TValue>({
   column,

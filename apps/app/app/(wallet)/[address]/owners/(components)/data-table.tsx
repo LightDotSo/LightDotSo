@@ -42,10 +42,18 @@ import {
 import { DataTableToolbar } from "./data-table-toolbar";
 import { useState } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function DataTable<TData, TValue>({
   columns,

@@ -22,9 +22,17 @@ import { DataTableViewOptions } from "./data-table-view-options";
 import { weights } from "./data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export function DataTableToolbar<TData>({
   table,
