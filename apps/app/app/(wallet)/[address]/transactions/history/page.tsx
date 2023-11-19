@@ -55,7 +55,7 @@ export default async function Page({ params }: PageProps) {
   return res.match(
     res => {
       queryClient.setQueryData(
-        ["transactions", "executed", params.address],
+        ["user_operations", "executed", params.address],
         res,
       );
 

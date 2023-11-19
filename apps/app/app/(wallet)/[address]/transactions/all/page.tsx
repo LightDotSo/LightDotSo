@@ -54,7 +54,7 @@ export default async function Page({ params }: PageProps) {
 
   return res.match(
     res => {
-      queryClient.setQueryData(["transactions", "all", params.address], res);
+      queryClient.setQueryData(["user_operations", "all", params.address], res);
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>

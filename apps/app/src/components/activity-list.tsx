@@ -15,39 +15,34 @@
 
 "use client";
 
-import { OpCard } from "@/components/op-card";
-import { getUserOperations } from "@lightdotso/client";
+import { getTransactions } from "@lightdotso/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TransactionsEmpty } from "@/components/transactions-empty";
-import { TransactionsWrapper } from "@/components/transactions-wrapper";
+import { ActivityCard } from "@/components/activity-card";
+import { ActivityEmpty } from "@/components/activity-empty";
+import { ActivityWrapper } from "@/components/activity-wrapper";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type TransactionsListProps = {
+export type ActivityListProps = {
   address: Address;
-  status: "all" | "proposed" | "executed";
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionsList: FC<TransactionsListProps> = ({
-  address,
-  status,
-}) => {
+export const ActivityList: FC<ActivityListProps> = ({ address }) => {
   const { data } = useSuspenseQuery({
-    queryKey: ["user_operations", status, address],
+    queryKey: ["transactions", address],
     queryFn: async () => {
-      const res = await getUserOperations({
+      const res = await getTransactions({
         params: {
           query: {
             address,
-            status: status === "all" ? undefined : status,
           },
         },
       });
@@ -65,16 +60,16 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   });
 
   return (
-    <TransactionsWrapper>
-      {data && data.length === 0 && <TransactionsEmpty></TransactionsEmpty>}
+    <ActivityWrapper>
+      {data && data.length === 0 && <ActivityEmpty></ActivityEmpty>}
       {data &&
-        data.map(userOperation => (
-          <OpCard
-            key={userOperation.hash}
+        data.map(transaction => (
+          <ActivityCard
+            key={transaction.hash}
             address={address}
-            userOperation={userOperation}
+            transaction={transaction}
           />
         ))}
-    </TransactionsWrapper>
+    </ActivityWrapper>
   );
 };

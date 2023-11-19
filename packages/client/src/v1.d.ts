@@ -436,7 +436,15 @@ export interface components {
     }]>;
     /** @description Item to do. */
     Transaction: {
+      /**
+       * Format: int64
+       * @description The chain id of the transaction.
+       */
+      chain_id: number;
+      /** @description The hash of the transaction. */
       hash: string;
+      /** @description The timestamp of the transaction. */
+      timestamp: string;
     };
     /** @description Transaction operation errors */
     TransactionError: OneOf<[{

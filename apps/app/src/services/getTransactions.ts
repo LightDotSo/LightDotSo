@@ -13,44 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import { BannerSection } from "@/components/banner-section";
-import { TITLES } from "@/const/titles";
+import { getTransactions as getClientTransactions } from "@lightdotso/client";
+import "server-only";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Pre
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.Activity.title,
-  description: TITLES.Activity.description,
+export const preload = (address: Address) => {
+  void getTransactions(address);
 };
 
 // -----------------------------------------------------------------------------
-// Props
+// Service
 // -----------------------------------------------------------------------------
 
-interface ActivityLayoutProps {
-  children: React.ReactNode;
-}
-
-// -----------------------------------------------------------------------------
-// Layout
-// -----------------------------------------------------------------------------
-
-export default function ActivityLayout({ children }: ActivityLayoutProps) {
-  return (
-    <>
-      <BannerSection
-        title={TITLES.Activity.title}
-        description={TITLES.Activity.description}
-      >
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto my-8 max-w-5xl flex-1 lg:my-16 xl:my-20">
-            {children}
-          </div>
-        </div>
-      </BannerSection>
-    </>
+export const getTransactions = async (address: Address) => {
+  return getClientTransactions(
+    {
+      params: {
+        query: {
+          address,
+        },
+      },
+    },
+    false,
   );
-}
+};
