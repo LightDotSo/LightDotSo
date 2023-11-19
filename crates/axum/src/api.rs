@@ -91,6 +91,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet::WalletTab),
         schemas(wallet_settings::WalletSettings),
         schemas(wallet_settings::WalletSettingsError),
+        schemas(wallet_settings::WalletSettingsOptional),
         schemas(wallet_settings::WalletSettingsPostRequestParams),
     ),
     paths(

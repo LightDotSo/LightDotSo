@@ -57,19 +57,26 @@ pub(crate) enum WalletSettingsError {
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct WalletSettings {
     // The wallet_settings of whether the testnet is enabled.
+    pub is_enabled_testnet: bool,
+}
+
+/// Optional Item to do.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct WalletSettingsOptional {
+    // The update query of wallet_settings of whether the testnet is enabled.
     pub is_enabled_testnet: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct WalletSettingsPostRequestParams {
     /// The result of the wallet_settings.
-    pub wallet_settings: WalletSettings,
+    pub wallet_settings: WalletSettingsOptional,
 }
 
 // Implement From<wallet_settings::Data> for WalletSettings.
 impl From<wallet_settings::Data> for WalletSettings {
     fn from(wallet_settings: wallet_settings::Data) -> Self {
-        Self { is_enabled_testnet: Some(wallet_settings.is_enabled_testnet) }
+        Self { is_enabled_testnet: wallet_settings.is_enabled_testnet }
     }
 }
 
