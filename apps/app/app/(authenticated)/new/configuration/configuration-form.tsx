@@ -68,6 +68,7 @@ import {
 } from "@/app/(authenticated)/new/(hooks)";
 import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
 import { useAuth } from "@/stores/useAuth";
+import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -508,7 +509,7 @@ export const ConfigurationForm: FC = () => {
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent className="max-h-60">
-                                    {[...Array(8)].map((_, i) => (
+                                    {[...Array(MAX_WEIGHT)].map((_, i) => (
                                       <SelectItem
                                         key={i}
                                         value={(i + 1).toString()}
@@ -589,7 +590,7 @@ export const ConfigurationForm: FC = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {[...Array(18)].map((_, i) => (
+                            {[...Array(MAX_THRESHOLD)].map((_, i) => (
                               <SelectItem key={i} value={(i + 1).toString()}>
                                 {i + 1}
                               </SelectItem>

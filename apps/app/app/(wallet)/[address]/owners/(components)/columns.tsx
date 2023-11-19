@@ -20,7 +20,6 @@ import { Avatar, Checkbox } from "@lightdotso/ui";
 import { z } from "zod";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { weights } from "./data";
 import { PlaceholderOrb } from "@/components/placeholder-orb";
 
 // -----------------------------------------------------------------------------
@@ -91,25 +90,11 @@ export const columns: ColumnDef<Owner>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Weight" />
     ),
-    cell: ({ row }) => {
-      const weight = weights.find(
-        weight =>
-          weight.value === (row.getValue("weight") as number).toString(),
-      );
-
-      if (!weight) {
-        return null;
-      }
-
-      return (
-        <div className="flex items-center">
-          {weight.icon && (
-            <weight.icon className="mr-2 h-4 w-4 text-text-weak" />
-          )}
-          <span>{weight.label}</span>
-        </div>
-      );
-    },
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <span>{row.getValue("weight")}</span>
+      </div>
+    ),
     filterFn: (row, id, value) => {
       return value.includes((row.getValue(id) as number).toString());
     },
