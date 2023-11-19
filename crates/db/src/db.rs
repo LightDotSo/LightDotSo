@@ -107,6 +107,18 @@ pub async fn upsert_transaction_with_log_receipt(
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
+    // Check if the wallet exists in the database
+    let wallet = db
+        .wallet()
+        .find_unique(wallet::address::equals(to_checksum(&wallet_address, None)))
+        .exec()
+        .await?;
+
+    // If wallet is none, throw an error
+    if wallet.is_none() {
+        return Err(DbError::NotFound);
+    }
+
     // Arc the logs for later use
     let logs: Arc<Vec<ethers::types::Log>> = Arc::new(logs);
     let logs_clone = logs.clone();

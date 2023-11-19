@@ -369,29 +369,29 @@ impl Indexer {
         }
 
         // Loop over the hashes
-        if !wallet_address_hashmap.is_empty() {
-            // Loop over the logs
-            for tx_hash in wallet_address_hashmap.keys() {
-                info!("wallet tx_hash: {:?}", tx_hash);
+        // if !wallet_address_hashmap.is_empty() {
+        //     // Loop over the logs
+        //     for tx_hash in wallet_address_hashmap.keys() {
+        //         info!("wallet tx_hash: {:?}", tx_hash);
 
-                // Get the trace
-                let trace = self.get_geth_trace(&block, tx_hash, &traced_block);
+        //         // Get the trace
+        //         let trace = self.get_geth_trace(&block, tx_hash, &traced_block);
 
-                // Create the transaction
-                let _ = self
-                    .db_create_transaction(db_client.clone(), *tx_hash, block.timestamp, trace)
-                    .await;
+        //         // Create the transaction
+        //         let _ = self
+        //             .db_create_transaction(db_client.clone(), *tx_hash, block.timestamp, trace)
+        //             .await;
 
-                // Create the transaction category
-                let _ = self
-                    .db_create_transaction_category(
-                        db_client.clone(),
-                        &LIGHT_WALLET_INITIALIZED.to_string(),
-                        *tx_hash,
-                    )
-                    .await;
-            }
-        }
+        //         // Create the transaction category
+        //         let _ = self
+        //             .db_create_transaction_category(
+        //                 db_client.clone(),
+        //                 &LIGHT_WALLET_INITIALIZED.to_string(),
+        //                 *tx_hash,
+        //             )
+        //             .await;
+        //     }
+        // }
 
         // Loop over the hashes
         if !tx_address_hashmap.is_empty() && self.redis_client.is_some() {
@@ -480,16 +480,6 @@ impl Indexer {
                         let trace =
                             self.get_geth_trace(&block, &unique_wallet_tx_hash, &traced_block);
 
-                        // Create the transaction for indexing if category exists
-                        let _ = self
-                            .db_create_transaction(
-                                db_client.clone(),
-                                unique_wallet_tx_hash,
-                                block.timestamp,
-                                trace,
-                            )
-                            .await;
-
                         if let Some(hashmap) = tx_adress_category {
                             for (addr, category) in hashmap {
                                 // If the category is a wallet initialized
@@ -547,6 +537,19 @@ impl Indexer {
                                     //         *factory_address,
                                     //     )
                                     //     .await;
+                                }
+
+                                // Create the transaction for indexing if wallet exists
+                                if unique_wallet_addreses.contains(addr) {
+                                    let _ = self
+                                        .db_create_transaction(
+                                            *addr,
+                                            db_client.clone(),
+                                            unique_wallet_tx_hash,
+                                            block.timestamp,
+                                            trace.clone(),
+                                        )
+                                        .await;
                                 }
 
                                 // Create the transaction category if wallet exists
@@ -736,6 +739,7 @@ impl Indexer {
     #[autometrics]
     pub async fn db_create_transaction(
         &self,
+        wallet_address: ethers::types::H160,
         db_client: Arc<PrismaClient>,
         hash: ethers::types::H256,
         timestamp: U256,
@@ -753,6 +757,7 @@ impl Indexer {
         if tx_receipt.is_ok() && tx.is_ok() {
             let res = self
                 .db_upsert_transaction_with_log_receipt(
+                    wallet_address,
                     db_client.clone(),
                     tx.unwrap(),
                     tx_receipt.unwrap(),
@@ -799,6 +804,7 @@ impl Indexer {
     #[autometrics]
     pub async fn db_upsert_transaction_with_log_receipt(
         &self,
+        wallet_address: ethers::types::H160,
         db_client: Arc<PrismaClient>,
         tx: Option<Transaction>,
         tx_receipt: Option<TransactionReceipt>,
@@ -809,6 +815,7 @@ impl Indexer {
             || {
                 upsert_transaction_with_log_receipt(
                     db_client.clone(),
+                    wallet_address,
                     tx.clone().unwrap(),
                     tx_receipt.clone().unwrap().logs,
                     tx_receipt.clone().unwrap(),
