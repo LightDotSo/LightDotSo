@@ -74,6 +74,12 @@ export const TITLES: Record<Category, CategoryObject> = {
             note: "This is the name that will be displayed to others.",
             subcategories: {},
           },
+          ["Testnet"]: {
+            title: "Testnet",
+            description: "Enable or disable testnet",
+            note: "This will enable or disable testnet for your wallet.",
+            subcategories: {},
+          },
         },
       },
       [SettingsSubCategory.Account]: {
