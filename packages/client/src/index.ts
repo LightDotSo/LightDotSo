@@ -549,6 +549,34 @@ export const postLlama = async (address: string) => {
   );
 };
 
+export const updateWalletSettings = async ({
+  params,
+  body,
+}: {
+  params: {
+    query: { address: string };
+  };
+  body: {
+    wallet_settings: {
+      is_enabled_testnet?: boolean | null | undefined;
+    };
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/wallet/settings/update", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+      body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 const EthChainIdResultSchema = z
   .string()
   .refine(value => /^0x[0-9a-fA-F]+$/.test(value), {

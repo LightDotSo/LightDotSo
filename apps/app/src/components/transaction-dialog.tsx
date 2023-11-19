@@ -25,7 +25,7 @@ import { useEffect, useMemo } from "react";
 import { createUserOperation } from "@lightdotso/client";
 import { isAddressEqual, toBytes, hexToBytes, toHex, fromHex } from "viem";
 import { useAuth } from "@/stores/useAuth";
-import { errToast } from "@/utils/toast";
+import { errorToast } from "@/utils/toast";
 import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 import type { FC } from "react";
 
@@ -147,7 +147,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
           });
         },
         err => {
-          errToast(err);
+          errorToast(err);
         },
       );
     };

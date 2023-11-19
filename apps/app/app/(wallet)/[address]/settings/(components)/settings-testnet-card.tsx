@@ -29,12 +29,16 @@ import {
   FormMessage,
   Switch,
 } from "@lightdotso/ui";
-import { getWalletSettings } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { successToast } from "@/utils/toast";
+import { getWalletSettings, updateWalletSettings } from "@lightdotso/client";
+import {
+  useSuspenseQuery,
+  useQueryClient,
+  useMutation,
+} from "@tanstack/react-query";
 import type { FC } from "react";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
+import { errorToast, successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -73,8 +77,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: WalletSettingsData | undefined =
-    useQueryClient().getQueryData(["wallet_settings", address]);
+  const queryClient = useQueryClient();
+
+  const currentData: WalletSettingsData | undefined = queryClient.getQueryData([
+    "wallet_settings",
+    address,
+  ]);
 
   const { data: wallet } = useSuspenseQuery<WalletSettingsData | null>({
     queryKey: ["wallet_settings", address],
@@ -104,6 +112,72 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   });
 
   // ---------------------------------------------------------------------------
+  // Mutate
+  // ---------------------------------------------------------------------------
+
+  const { mutate } = useMutation({
+    mutationFn: async (data: WalletSettingsData) => {
+      const res = await updateWalletSettings({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+        body: {
+          wallet_settings: {
+            is_enabled_testnet: data.is_enabled_testnet,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      res.match(
+        data => {
+          return successToast(data);
+        },
+        err => {
+          return errorToast(err);
+        },
+      );
+    },
+    // When mutate is called:
+    onMutate: async (walletSettings: WalletSettingsData) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({
+        queryKey: ["wallet_settings", address],
+      });
+
+      // Snapshot the previous value
+      const previousSettings: WalletSettingsData | undefined =
+        queryClient.getQueryData(["wallet_settings", address]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(
+        ["wallet_settings", address],
+        (old: WalletSettingsData) => {
+          return { ...old, walletSettings };
+        },
+      );
+
+      // Return a context object with the snapshotted value
+      return { previousSettings };
+    },
+    // If the mutation fails, use the context we returned above
+    onError: (err, _newWalletSettings, context) => {
+      queryClient.setQueryData(
+        ["wallet_settings", address],
+        context?.previousSettings,
+      );
+
+      errorToast(err);
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ["wallet_settings", address] }),
+    mutationKey: ["wallet_settings", address],
+  });
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -117,8 +191,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     defaultValues,
   });
 
-  function onSubmit(data: WalletTestnetFormValues) {
-    successToast(data);
+  async function onSubmit(data: WalletTestnetFormValues) {
+    mutate({ is_enabled_testnet: data.enabled });
   }
 
   // ---------------------------------------------------------------------------

@@ -46,7 +46,7 @@ import { publicClient } from "@/clients/public";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
-import { errToast, infoToast, successToast } from "@/utils/toast";
+import { errorToast, infoToast, successToast } from "@/utils/toast";
 import { getWallet } from "@lightdotso/client";
 import { backOff } from "exponential-backoff";
 import {
@@ -126,17 +126,19 @@ export const ConfirmForm: FC = () => {
               if (res) {
                 router.push(`/${address}`);
               } else {
-                errToast("There was a problem with your request.");
+                errorToast("There was a problem with your request.");
                 router.push("/");
               }
             })
             .catch(() => {
-              errToast("There was a problem with your request while creating.");
+              errorToast(
+                "There was a problem with your request while creating.",
+              );
               router.push("/");
             });
         })
         .catch(() => {
-          errToast(
+          errorToast(
             "There was a problem with your request (invalid request likely).",
           );
         });
