@@ -61,17 +61,23 @@ export const columns: ColumnDef<Owner>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "index",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Index" />
+    ),
+    cell: ({ row }) => <div className="w-4">{row.getValue("index")}</div>,
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     accessorKey: "address",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Owner" />
     ),
-    cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue("address")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("address")}</div>,
     enableSorting: false,
     enableHiding: false,
   },
-
   {
     accessorKey: "weight",
     header: ({ column }) => (
