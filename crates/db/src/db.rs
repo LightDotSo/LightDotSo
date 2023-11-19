@@ -124,6 +124,7 @@ pub async fn upsert_transaction_with_log_receipt(
     let logs_clone = logs.clone();
 
     let mut transaction_params = vec![
+        transaction::nonce::set(transaction.nonce.as_u64() as i64),
         transaction::input::set(Some(transaction.input.0.to_vec())),
         transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
         transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
@@ -204,8 +205,13 @@ pub async fn upsert_transaction_with_log_receipt(
 
     // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.
     // `crates/graphql/src/traits.rs`
-    let mut receipt_params =
-        vec![receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32))];
+    let mut receipt_params = vec![
+        receipt::block_number::set(receipt.block_number.map(|bn| bn.as_u32() as i32)),
+        receipt::transaction_hash::set(format!("{:?}", receipt.transaction_hash)),
+        receipt::transaction_index::set(receipt.transaction_index.as_u32() as i32),
+        receipt::from::set(to_checksum(&receipt.from, None)),
+        receipt::cumulative_gas_used::set(receipt.cumulative_gas_used.as_u64() as i64),
+    ];
 
     if receipt.block_hash.is_some() {
         receipt_params
