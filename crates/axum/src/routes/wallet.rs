@@ -29,7 +29,7 @@ use ethers_main::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
-use lightdotso_prisma::{user, user_operation, wallet};
+use lightdotso_prisma::{transaction, user, user_operation, wallet};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -37,6 +37,7 @@ use lightdotso_solutions::{
     types::{AddressSignatureLeaf, SignatureLeaf, Signer, SignerNode},
 };
 use lightdotso_tracing::tracing::{error, info, trace};
+use prisma_client_rust::or;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -99,7 +100,7 @@ pub(crate) struct Owner {
 /// Wallet operation errors
 #[derive(Serialize, Deserialize, ToSchema)]
 pub(crate) enum WalletError {
-    // Wallet query error.
+    /// Wallet query error.
     #[schema(example = "Bad request")]
     BadRequest(String),
     /// Wallet already exists conflict.
@@ -127,8 +128,12 @@ pub(crate) struct Wallet {
 /// WalletTab to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct WalletTab {
-    transaction_count: i64,
+    /// The pending number of user_operations of the wallet.
+    user_operation_count: i64,
+    /// The number of owners of the wallet.
     owner_count: i64,
+    /// The number of transactions of the wallet.
+    transaction_count: i64,
 }
 
 // Implement From<wallet::Data> for Wallet.
@@ -140,23 +145,6 @@ impl From<wallet::Data> for Wallet {
             name: wallet.name.to_string(),
             salt: wallet.salt.to_string(),
         }
-    }
-}
-
-// Implement From<wallet::Data> for Wallet.
-impl From<wallet::Data> for WalletTab {
-    fn from(wallet: wallet::Data) -> Self {
-        let transaction_count = match &wallet.user_operations {
-            Some(user_operations) => user_operations.len() as i64,
-            None => 0,
-        };
-
-        let owner_count = match &wallet.users {
-            Some(users) => users.len() as i64,
-            None => 0,
-        };
-
-        Self { transaction_count, owner_count }
     }
 }
 
@@ -237,24 +225,53 @@ async fn v1_wallet_tab_handler(
 
     // Get the wallets from the database.
     let wallet = client
+        .clone()
         .client
         .unwrap()
         .wallet()
-        .find_unique(wallet::address::equals(checksum_address))
+        .find_unique(wallet::address::equals(checksum_address.clone()))
         .with(wallet::users::fetch(vec![]))
         .with(wallet::user_operations::fetch(vec![user_operation::status::equals(
             lightdotso_prisma::UserOperationStatus::Proposed,
         )]))
         .exec()
         .await?;
-
     info!(?wallet);
+
+    // Get the transactions from the database.
+    let wallet_transactions = client
+        .clone()
+        .client
+        .unwrap()
+        .transaction()
+        .find_many(vec![or![
+            transaction::wallet_address::equals(Some(checksum_address.clone())),
+            transaction::from::equals(checksum_address.clone()),
+            transaction::to::equals(Some(checksum_address.clone()))
+        ]])
+        .exec()
+        .await?;
 
     // If the wallet is not found, return a 404.
     let wallet = wallet.ok_or(AppError::NotFound)?;
 
+    // Get the number of user_operation_counts of the wallet.
+    let user_operation_count = match &wallet.user_operations {
+        Some(user_operations) => user_operations.len() as i64,
+        None => 0,
+    };
+
     // Get the number of owners of the wallet.
-    let tab: WalletTab = wallet.into();
+    let owner_count = match &wallet.users {
+        Some(users) => users.len() as i64,
+        None => 0,
+    };
+
+    // Get the number of transactions of the wallet.
+    let transaction_count = wallet_transactions.len() as i64;
+
+    // Construct the wallet tab.
+    let tab: WalletTab = WalletTab { transaction_count, owner_count, user_operation_count };
 
     Ok(Json::from(tab))
 }

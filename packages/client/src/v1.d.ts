@@ -554,6 +554,7 @@ export interface components {
     };
     /** @description Wallet operation errors */
     WalletError: OneOf<[{
+      /** @description Wallet query error. */
       BadRequest: string;
     }, {
       /** @description Wallet already exists conflict. */
@@ -602,10 +603,21 @@ export interface components {
     };
     /** @description WalletTab to do. */
     WalletTab: {
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The number of owners of the wallet.
+       */
       owner_count: number;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The number of transactions of the wallet.
+       */
       transaction_count: number;
+      /**
+       * Format: int64
+       * @description The pending number of user_operations of the wallet.
+       */
+      user_operation_count: number;
     };
   };
   responses: never;

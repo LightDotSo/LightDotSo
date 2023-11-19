@@ -44,6 +44,7 @@ export type RawTab = Omit<Tab, "number">;
 type TabData = {
   owner_count: number;
   transaction_count: number;
+  user_operation_count: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -122,6 +123,8 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       if (tab.id === "owners") {
         number = data.owner_count;
       } else if (tab.id === "transactions") {
+        number = data.user_operation_count;
+      } else if (tab.id === "activity") {
         number = data.transaction_count;
       }
       return { ...tab, number };
