@@ -31,6 +31,8 @@ export const usePathType = (): RootType => {
   const unauthenticatedPaths = ["/", "/activity", "/owners", "/transactions"];
   const authenticatedPaths = [
     "/new",
+    "/new/configuration",
+    "/new/confirm",
     "/wallet",
     "/settings",
     "/settings",

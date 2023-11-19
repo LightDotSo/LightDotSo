@@ -24,7 +24,6 @@ import "@lightdotso/styles/global.css";
 import { WalletSwitcher } from "@/components/wallet-switcher";
 import { UserNav } from "@/components/user-nav";
 import { MainNav } from "@/components/main-nav";
-import { NotificationPopover } from "@/components/notification-popover";
 import { FeedbackPopover } from "@/components/feedback-popover";
 import { ConnectButton } from "@/components/connect-button";
 import Script from "next/script";
@@ -89,7 +88,6 @@ export const Root: FC<RootProps> = ({ children }) => {
                       <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
                         <FeedbackPopover />
-                        <NotificationPopover />
                         <UserNav />
                         <ConnectButton />
                       </div>
