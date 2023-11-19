@@ -29,10 +29,23 @@ import {
   FormMessage,
   Input,
 } from "@lightdotso/ui";
+import { getWallet } from "@lightdotso/client";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { successToast } from "@/utils/toast";
 import type { FC } from "react";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+type WalletData = {
+  address: string;
+  factory_address: string;
+  name: string;
+  salt: string;
+};
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -51,12 +64,6 @@ const walletNameFormSchema = z.object({
 
 type WalletNameFormValues = z.infer<typeof walletNameFormSchema>;
 
-// This can come from your database or API.
-const defaultValues: Partial<WalletNameFormValues> = {
-  // name: "Your name",
-  // dob: new Date("2023-01-23"),
-};
-
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
@@ -66,10 +73,55 @@ type SettingsNameCardProps = {
 };
 
 // -----------------------------------------------------------------------------
-// Form
+// Component
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const currentData: WalletData | undefined = useQueryClient().getQueryData([
+    "wallet",
+    address,
+  ]);
+
+  const { data: wallet } = useSuspenseQuery<WalletData | null>({
+    queryKey: ["wallet", address],
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getWallet({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return currentData ?? null;
+        },
+      );
+    },
+  });
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
+  // This can come from your database or API.
+  const defaultValues: Partial<WalletNameFormValues> = {
+    name: wallet?.name ?? "",
+  };
+
   const form = useForm<WalletNameFormValues>({
     resolver: zodResolver(walletNameFormSchema),
     defaultValues,
@@ -78,6 +130,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   function onSubmit(data: WalletNameFormValues) {
     successToast(data);
   }
+
+  // ---------------------------------------------------------------------------
+  // Button
+  // ---------------------------------------------------------------------------
 
   const WalletNameFormSubmitButton: FC = () => {
     return (
@@ -90,6 +146,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
       </Button>
     );
   };
+
+  // ---------------------------------------------------------------------------
+  // Card
+  // ---------------------------------------------------------------------------
 
   return (
     <SettingsCard
