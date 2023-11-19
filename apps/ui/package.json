@@ -13,7 +13,6 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "main": "./index.tsx",
-  "types": "./index.tsx",
   "scripts": {
     "add": "shadcn-ui add",
     "build": "storybook build -o dist",
