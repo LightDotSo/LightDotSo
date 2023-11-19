@@ -80,6 +80,8 @@ pub(crate) struct Configuration {
 pub(crate) struct ConfigurationOwner {
     /// The id of the owner.
     id: String,
+    /// The index of the owner.
+    index: i32,
     /// The address of the owner.
     address: String,
     /// The weight of the owner.
@@ -105,7 +107,12 @@ impl From<configuration::Data> for Configuration {
 // Implement From<owner::Data> for Owner.
 impl From<owner::Data> for ConfigurationOwner {
     fn from(owner: owner::Data) -> Self {
-        Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
+        Self {
+            id: owner.id.to_string(),
+            address: owner.address.to_string(),
+            index: owner.index,
+            weight: owner.weight,
+        }
     }
 }
 

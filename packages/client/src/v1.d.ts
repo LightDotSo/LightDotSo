@@ -262,6 +262,11 @@ export interface components {
       /** @description The id of the owner. */
       id: string;
       /**
+       * Format: int32
+       * @description The index of the owner.
+       */
+      index: number;
+      /**
        * Format: int64
        * @description The weight of the owner.
        */
@@ -1029,6 +1034,8 @@ export interface operations {
         offset?: number | null;
         limit?: number | null;
         address: string;
+        /** @description The flag to indicate if the token is a spam. */
+        is_spam?: boolean | null;
       };
     };
     responses: {
