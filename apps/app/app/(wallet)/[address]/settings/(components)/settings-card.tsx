@@ -20,6 +20,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Separator,
 } from "@lightdotso/ui";
 import type { FC } from "react";
 
@@ -29,24 +30,33 @@ import type { FC } from "react";
 
 type SettingsCardProps = {
   address: string;
+  title: string;
+  subtitle: string;
+  children: React.ReactNode;
+  footerContent?: React.ReactNode;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const SettingsCard: FC<SettingsCardProps> = ({ address: _address }) => {
+export const SettingsCard: FC<SettingsCardProps> = ({
+  address: _address,
+  title,
+  subtitle,
+  children,
+  footerContent,
+}) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Card Title</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{subtitle}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <p>Card Content</p>
-      </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
+      <CardContent>{children}</CardContent>
+      <Separator />
+      <CardFooter className="flex w-full items-center justify-end pt-6">
+        {footerContent}
       </CardFooter>
     </Card>
   );

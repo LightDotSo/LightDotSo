@@ -19,7 +19,7 @@ import { getWalletSettings, getQueryClient } from "@/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { Skeleton } from "@lightdotso/ui";
-import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
+import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -59,7 +59,9 @@ export default async function Page({ params }: PageProps) {
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
           <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
-            <SettingsCard address={params.address as Address} />
+            <SettingsNameCard
+              address={params.address as Address}
+            ></SettingsNameCard>
           </Suspense>
         </HydrationBoundary>
       );
