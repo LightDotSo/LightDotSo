@@ -23,9 +23,10 @@ import {
   AccordionContent,
   buttonVariants,
 } from "@lightdotso/ui";
-import Link from "next/link";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
+import { chains } from "@/const/chains";
+import { extractChain } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -45,9 +46,21 @@ type ActivityCardProps = {
 // -----------------------------------------------------------------------------
 
 export const ActivityCard: FC<ActivityCardProps> = ({
-  address,
+  address: _address,
   transaction,
 }) => {
+  // Try to extract chain from transaction
+  const chain = extractChain({
+    chains: Object.values(chains),
+    // @ts-ignore
+    id: Object.values(chains)
+      .map(chain => chain.id)
+      // @ts-ignore
+      .includes(transaction.chain_id)
+      ? transaction.chain_id
+      : 1,
+  });
+
   return (
     <Accordion
       key={transaction.hash}
@@ -82,11 +95,13 @@ export const ActivityCard: FC<ActivityCardProps> = ({
         <AccordionContent className="bg-background-stronger px-4 pt-4">
           <div className="flex w-full justify-end">
             <Button variant="link" asChild>
-              <Link
-                href={`/${address}/op/${transaction.chain_id}/${transaction.hash}`}
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href={`${chain?.blockExplorers?.default.url}/tx/${transaction.hash}`}
               >
                 Go to explorer
-              </Link>
+              </a>
             </Button>
           </div>
         </AccordionContent>
