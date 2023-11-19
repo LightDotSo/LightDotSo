@@ -19,8 +19,8 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { Button, Input } from "@lightdotso/ui";
 import { DataTableViewOptions } from "./data-table-view-options";
-import { weights } from "./data";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { MAX_WEIGHT } from "@/const/configuration";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -55,7 +55,10 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("weight")}
             title="Weight"
-            options={weights}
+            options={Array.from(Array(MAX_WEIGHT).keys()).map(i => ({
+              value: (i + 1).toString(),
+              label: (i + 1).toString(),
+            }))}
           />
         )}
         {isFiltered && (
