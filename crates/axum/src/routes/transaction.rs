@@ -25,7 +25,7 @@ use axum::{
 };
 use lightdotso_prisma::transaction;
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::or;
+use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -165,6 +165,7 @@ async fn v1_transaction_list_handler(
         .unwrap()
         .transaction()
         .find_many(query)
+        .order_by(transaction::timestamp::order(Direction::Desc))
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
         .exec()

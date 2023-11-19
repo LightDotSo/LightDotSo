@@ -449,7 +449,7 @@ async fn v1_user_operation_list_handler(
         .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
-        .order_by(user_operation::nonce::order(prisma_client_rust::Direction::Desc))
+        .order_by(user_operation::nonce::order(prisma_client_rust::Direction::Asc))
         .with(user_operation::signatures::fetch(vec![]))
         .with(user_operation::transaction::fetch())
         .exec()
