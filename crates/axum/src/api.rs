@@ -19,6 +19,7 @@ use crate::{
     routes::{
         check, configuration, feedback, health, notification, paymaster, portfolio, signature,
         support_request, token, token_price, transaction, user, user_operation, wallet,
+        wallet_settings,
     },
     state::AppState,
 };
@@ -88,6 +89,9 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet::WalletError),
         schemas(wallet::WalletPostRequestParams),
         schemas(wallet::WalletTab),
+        schemas(wallet_settings::WalletSettings),
+        schemas(wallet_settings::WalletSettingsError),
+        schemas(wallet_settings::WalletSettingsPostRequestParams),
     ),
     paths(
         check::handler,
@@ -120,6 +124,8 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
         wallet::v1_wallet_tab_handler,
+        wallet_settings::v1_wallet_settings_get_handler,
+        wallet_settings::v1_wallet_settings_post_handler,
     ),
     tags(
         (name = "configuration", description = "Configuration API"),
@@ -137,6 +143,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "user", description = "User API"),
         (name = "user_operation", description = "User Operation API"),
         (name = "wallet", description = "Wallet API"),
+        (name = "wallet_settings", description = "Wallet Settings API"),
     )
 )]
 #[openapi(
@@ -204,7 +211,8 @@ pub async fn start_api_server() -> Result<()> {
         .merge(transaction::router())
         .merge(user::router())
         .merge(user_operation::router())
-        .merge(wallet::router());
+        .merge(wallet::router())
+        .merge(wallet_settings::router());
 
     // Create the app for the server
     let app = Router::new()
