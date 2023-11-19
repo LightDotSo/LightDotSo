@@ -25,6 +25,7 @@ use axum::{
 };
 use lightdotso_prisma::transaction;
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::or;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -140,7 +141,11 @@ async fn v1_transaction_list_handler(
     // If the address is provided, add it to the query.
     let query = match pagination.address {
         Some(addr) => {
-            vec![transaction::wallet_address::equals(Some(addr.clone()))]
+            vec![or![
+                transaction::wallet_address::equals(Some(addr.clone())),
+                transaction::from::equals(addr.clone()),
+                transaction::to::equals(Some(addr.clone()))
+            ]]
         }
         None => vec![],
     };
