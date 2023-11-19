@@ -13,8 +13,62 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { handler } from "@/handlers/paths/[address]";
+import type { Address } from "viem";
+import { getConfiguration, getQueryClient } from "@/services";
+import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
+import { Skeleton } from "@lightdotso/ui";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: { address: string };
+};
+
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {}
+export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  const res = await getConfiguration(params.address as Address);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return res.match(
+    res => {
+      queryClient.setQueryData(
+        ["transactions", "proposed", params.address],
+        res,
+      );
+
+      return (
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+            <OwnersDataTable address={params.address as Address} />
+          </Suspense>
+        </HydrationBoundary>
+      );
+    },
+    _ => {
+      return null;
+    },
+  );
+}
