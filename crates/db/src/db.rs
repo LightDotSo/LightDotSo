@@ -94,8 +94,10 @@ pub async fn create_transaction_category(
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
 #[autometrics]
+#[allow(clippy::too_many_arguments)]
 pub async fn upsert_transaction_with_log_receipt(
     db: Database,
+    wallet_address: ethers::types::H160,
     transaction: ethers::types::Transaction,
     logs: Vec<ethers::types::Log>,
     receipt: ethers::types::TransactionReceipt,
@@ -105,6 +107,18 @@ pub async fn upsert_transaction_with_log_receipt(
 ) -> AppJsonResult<transaction::Data> {
     info!("Creating transaction with log and receipt");
 
+    // Check if the wallet exists in the database
+    let wallet = db
+        .wallet()
+        .find_unique(wallet::address::equals(to_checksum(&wallet_address, None)))
+        .exec()
+        .await?;
+
+    // If wallet is none, throw an error
+    if wallet.is_none() {
+        return Err(DbError::NotFound);
+    }
+
     // Arc the logs for later use
     let logs: Arc<Vec<ethers::types::Log>> = Arc::new(logs);
     let logs_clone = logs.clone();
@@ -113,6 +127,7 @@ pub async fn upsert_transaction_with_log_receipt(
         transaction::input::set(Some(transaction.input.0.to_vec())),
         transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
         transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
+        transaction::wallet_address::set(Some(to_checksum(&wallet_address, None))),
     ];
 
     // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.

@@ -1115,6 +1115,7 @@ export interface operations {
       query?: {
         offset?: number | null;
         limit?: number | null;
+        address?: string | null;
       };
     };
     responses: {
