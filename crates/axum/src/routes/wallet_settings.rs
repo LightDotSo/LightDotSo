@@ -24,7 +24,7 @@ use axum::{
     Json, Router,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::wallet_settings;
+use lightdotso_prisma::{wallet, wallet_settings};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -175,7 +175,14 @@ async fn v1_wallet_settings_post_handler(
         .client
         .unwrap()
         .wallet_settings()
-        .update(wallet_settings::wallet_address::equals(checksum_address), params)
+        .upsert(
+            wallet_settings::wallet_address::equals(checksum_address.clone()),
+            wallet_settings::create(
+                wallet::address::equals(checksum_address.clone()),
+                params.clone(),
+            ),
+            params.clone(),
+        )
         .exec()
         .await?;
     info!(?wallet_settings);
