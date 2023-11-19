@@ -12,13 +12,20 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import type { FC } from "react";
 
-export { getConfiguration } from "@/services/getConfiguration";
-export { getLlama } from "@/services/getLlama";
-export { getPortfolio } from "@/services/getPortfolio";
-export { getQueryClient } from "@/services/getQueryClient";
-export { getTokens } from "@/services/getTokens";
-export { getTransactions } from "@/services/getTransactions";
-export { getUserOperation } from "@/services/getUserOperation";
-export { getUserOperations } from "@/services/getUserOperations";
-export { getWallet } from "@/services/getWallet";
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type ActivityWrapperProps = {
+  children: React.ReactNode;
+};
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const ActivityWrapper: FC<ActivityWrapperProps> = ({ children }) => {
+  return <div className="flex w-full flex-col space-y-4">{children}</div>;
+};

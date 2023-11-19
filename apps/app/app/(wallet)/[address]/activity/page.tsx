@@ -13,8 +13,59 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { handler } from "@/handlers/paths/[address]";
+import type { Address } from "viem";
+import { getTransactions, getQueryClient } from "@/services";
+import { ActivityList } from "@/components/activity-list";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { Suspense } from "react";
+import { Skeleton } from "@lightdotso/ui";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  params: { address: string };
+};
+
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {}
+export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = getQueryClient();
+
+  const res = await getTransactions(params.address as Address);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return res.match(
+    res => {
+      queryClient.setQueryData(["transactions", params.address], res);
+
+      return (
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+            <ActivityList address={params.address as Address} />
+          </Suspense>
+        </HydrationBoundary>
+      );
+    },
+    _ => {
+      return null;
+    },
+  );
+}

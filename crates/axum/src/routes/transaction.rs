@@ -60,13 +60,22 @@ pub(crate) enum TransactionError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Transaction {
+    /// The chain id of the transaction.
+    chain_id: i64,
+    /// The hash of the transaction.
     hash: String,
+    /// The timestamp of the transaction.
+    timestamp: String,
 }
 
 // Implement From<transaction::Data> for Transaction.
 impl From<transaction::Data> for Transaction {
     fn from(transaction: transaction::Data) -> Self {
-        Self { hash: transaction.hash }
+        Self {
+            chain_id: transaction.chain_id,
+            hash: transaction.hash,
+            timestamp: transaction.timestamp.to_rfc3339(),
+        }
     }
 }
 
