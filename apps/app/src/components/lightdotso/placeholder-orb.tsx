@@ -15,7 +15,7 @@
 
 import clsx from "clsx";
 import type { FC, InsHTMLAttributes } from "react";
-import s from "@/components/placeholder-orb.module.css";
+import s from "@/components/lightdotso/placeholder-orb.module.css";
 
 // -----------------------------------------------------------------------------
 // Const
