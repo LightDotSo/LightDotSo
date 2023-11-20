@@ -584,6 +584,7 @@ model WalletBalance {
   timestamp  DateTime @default(now())
   isLatest   Boolean  @default(false)
   isSpam     Boolean  @default(false)
+  isTestnet  Boolean  @default(false)
 
   token   Token?  @relation(fields: [tokenId], references: [id])
   tokenId String?
