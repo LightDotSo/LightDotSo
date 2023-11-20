@@ -32,7 +32,7 @@ import type { FC } from "react";
 import { Suspense } from "react";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
 import { AuthState } from "@/components/auth/auth-state";
-import { RootLogo } from "@/app/root-logo";
+import { RootLogo } from "@/components/root/root-logo";
 import dynamic from "next/dynamic";
 
 // -----------------------------------------------------------------------------
