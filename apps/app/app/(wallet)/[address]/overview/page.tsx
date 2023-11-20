@@ -15,8 +15,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handler } from "@/handlers/paths/[address]";
-import { handler as pageHandler } from "@/handlers/paths/[address]/page";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler as pageHandler } from "@/handlers/paths/[address]/overview/handler";
+import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/preloader";
 import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { type Address } from "viem";
@@ -37,6 +39,13 @@ interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params);
+  pagePreloader(params);
+
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------

@@ -15,8 +15,10 @@
 
 import { Modal } from "@/components/modal";
 import { ConfirmDialog } from "@/components/confirm-dialog";
-import { handler } from "@/handlers/paths/[address]";
-import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/[userOperationHash]/preloader";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]/handler";
 import type { Address } from "viem";
 import { parseNumber } from "@/handlers/parsers";
 
@@ -33,9 +35,24 @@ type PageProps = {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params);
+  userOpPreloader(params);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
   const { config } = await handler(params);
   const { userOperation } = await userOpHandler(params);
   const chainId = parseNumber(params.chainId);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <Modal>

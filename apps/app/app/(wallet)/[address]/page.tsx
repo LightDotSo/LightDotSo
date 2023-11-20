@@ -15,7 +15,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handler } from "@/handlers/paths/[address]";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { inngest } from "@/inngest/client";
 
 import { redirect } from "next/navigation";
@@ -35,6 +36,12 @@ export interface PageProps {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params);
+
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
