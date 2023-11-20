@@ -13,28 +13,44 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
+import { Modal } from "@/components/modal";
+import { SendDialog } from "@/components/send-dialog";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/paths/[address]/handler";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type RootLayoutProps = {
-  children: React.ReactNode;
-  op: React.ReactNode;
-  send: React.ReactNode;
+type PageProps = {
+  params: { address: string };
 };
 
 // -----------------------------------------------------------------------------
-// Layout
+// Page
 // -----------------------------------------------------------------------------
 
-export default function RootLayout(props: RootLayoutProps) {
+export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <>
-      {props.children}
-      {props.op}
-      {props.send}
-    </>
+    <Modal>
+      <SendDialog address={params.address as Address}></SendDialog>
+    </Modal>
   );
 }

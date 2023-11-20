@@ -54,7 +54,16 @@ type TokenCardProps = {
 // -----------------------------------------------------------------------------
 
 export const TokenCard: FC<TokenCardProps> = ({
-  token: { balance_usd, name, symbol, amount, decimals, address, chain_id },
+  address,
+  token: {
+    balance_usd,
+    name,
+    symbol,
+    amount,
+    decimals,
+    address: _tokenAddress,
+    chain_id,
+  },
 }) => {
   return (
     <TableRow key={name}>
