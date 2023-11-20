@@ -14,6 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { TransactionDialog } from "@/components/transaction-dialog";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/preloader";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/handler";
 import { parseNumber } from "@/handlers/parsers";
@@ -36,9 +38,25 @@ type PageProps = {
 // -----------------------------------------------------------------------------
 
 export default async function Page({ params, searchParams }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params);
+  userOpPreloader(params, searchParams);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
   const { config } = await handler(params);
   const { userOperation, hash } = await userOpHandler(params, searchParams);
+
   const chainId = parseNumber(params.chainId);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <TransactionDialog
