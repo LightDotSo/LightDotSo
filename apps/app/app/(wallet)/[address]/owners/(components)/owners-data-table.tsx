@@ -22,23 +22,7 @@ import type { Address } from "viem";
 import { getConfiguration } from "@lightdotso/client";
 import { columns } from "./columns";
 import { queries } from "@/queries";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type ConfigurationData = {
-  address: string;
-  checkpoint: number;
-  id: string;
-  image_hash: string;
-  owners: {
-    address: string;
-    id: string;
-    weight: number;
-  }[];
-  threshold: number;
-};
+import type { ConfigurationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

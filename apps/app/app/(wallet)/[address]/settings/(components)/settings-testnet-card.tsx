@@ -41,14 +41,7 @@ import { TITLES } from "@/const/titles";
 import { errorToast, successToast } from "@/utils/toast";
 import { queries } from "@/queries";
 import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type WalletSettingsData = {
-  is_enabled_testnet: boolean;
-};
+import type { WalletSettingsData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Schema

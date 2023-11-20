@@ -37,17 +37,7 @@ import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/set
 import { TITLES } from "@/const/titles";
 import { queries } from "@/queries";
 import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type WalletData = {
-  address: string;
-  factory_address: string;
-  name: string;
-  salt: string;
-};
+import type { WalletData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Schema

@@ -23,16 +23,7 @@ import { ActivityEmpty } from "@/components/activity-empty";
 import { ActivityWrapper } from "@/components/activity-wrapper";
 import type { FC } from "react";
 import { queries } from "@/queries";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type TransactionData = {
-  chain_id: number;
-  hash: string;
-  timestamp: string;
-}[];
+import type { TransactionData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

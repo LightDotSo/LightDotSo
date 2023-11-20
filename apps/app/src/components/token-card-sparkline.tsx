@@ -21,6 +21,7 @@ import { getTokenPrice } from "@lightdotso/client";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import { queries } from "@/queries";
+import type { TokenPriceData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,20 +30,6 @@ import { queries } from "@/queries";
 type TokenCardSparklineProps = {
   address: Address;
   chain_id: number;
-};
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type TokenPriceData = {
-  price: number;
-  price_change_24h: number;
-  price_change_24h_percentage: number;
-  prices: {
-    date: string;
-    price: number;
-  }[];
 };
 
 // -----------------------------------------------------------------------------

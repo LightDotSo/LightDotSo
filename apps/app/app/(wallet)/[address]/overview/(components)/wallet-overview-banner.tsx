@@ -40,17 +40,7 @@ import type { FC } from "react";
 import { Suspense } from "react";
 import { NetworkStack } from "@/components/network-stack";
 import { queries } from "@/queries";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type WalletData = {
-  address: string;
-  factory_address: string;
-  name: string;
-  salt: string;
-};
+import type { WalletData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

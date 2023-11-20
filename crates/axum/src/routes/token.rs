@@ -26,6 +26,7 @@ use axum::{
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{token, wallet_balance};
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::Direction;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -197,6 +198,7 @@ async fn v1_token_list_handler(
         .unwrap()
         .wallet_balance()
         .find_many(params)
+        .order_by(wallet_balance::balance_usd::order(Direction::Desc))
         .with(wallet_balance::token::fetch())
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
