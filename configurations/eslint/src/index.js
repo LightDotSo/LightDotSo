@@ -114,10 +114,10 @@ module.exports = {
     },
     {
       files: [
-        "**/apps/app/app/**/*.ts",
-        "**/apps/app/app/**/*.tsx",
-        "**/apps/app/src/**/*.ts",
-        "**/apps/app/src/**/*.tsx",
+        "**/apps/app/**/*.ts",
+        "**/apps/app/**/*.tsx",
+        "!**/apps/app/**/index.ts",
+        "!**/apps/app/**/index.tsx",
       ],
       rules: {
         "no-restricted-imports": [
@@ -125,7 +125,7 @@ module.exports = {
           {
             patterns: [
               {
-                group: ["./*/", "**../"],
+                group: ["./*", "**../"],
                 message: "Relative imports are not allowed.",
               },
               {
