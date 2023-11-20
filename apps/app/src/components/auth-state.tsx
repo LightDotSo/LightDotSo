@@ -22,9 +22,17 @@ import { useAccount, useEnsName } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import type { Address } from "viem";
 import { isAddress } from "viem";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@lightdotso/client";
 import { queries } from "@/queries";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+type UserData = {
+  id: string;
+};
 
 // -----------------------------------------------------------------------------
 // Component
@@ -37,7 +45,15 @@ export const AuthState: FC = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { data } = useSuspenseQuery({
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const currentData: UserData | undefined = useQueryClient().getQueryData(
+    queries.user.get(address as Address).queryKey,
+  );
+
+  const { data } = useSuspenseQuery<UserData | null>({
     queryKey: queries.user.get(address as Address).queryKey,
     queryFn: async () => {
       if (!address) {
@@ -57,8 +73,8 @@ export const AuthState: FC = () => {
         data => {
           return data;
         },
-        err => {
-          throw err;
+        _ => {
+          return currentData ?? null;
         },
       );
     },
