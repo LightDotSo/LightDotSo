@@ -51,7 +51,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await handler(params);
+  const { walletSettings } = await handler(params);
 
   const { tokens, portfolio } = await pageHandler(params);
 
@@ -70,7 +70,10 @@ export default async function Page({ params }: PageProps) {
     portfolio,
   );
   queryClient.setQueryData(
-    queries.token.list(params.address as Address).queryKey,
+    queries.token.list({
+      address: params.address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
     tokens,
   );
 

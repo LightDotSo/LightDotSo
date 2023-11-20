@@ -29,6 +29,9 @@ export const preload = (address: Address) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTokens = async (address: Address) => {
-  return getClientTokens({ params: { query: { address: address } } }, false);
+export const getTokens = async (address: Address, is_testnet?: boolean) => {
+  return getClientTokens(
+    { params: { query: { address: address, is_testnet } } },
+    false,
+  );
 };
