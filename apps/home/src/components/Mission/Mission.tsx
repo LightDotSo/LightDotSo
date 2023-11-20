@@ -22,12 +22,12 @@ export const Mission: FC = () => {
         <div className="mb-2 uppercase text-contrast-high">Our Mission</div>
         <h2 className="mb-8 max-w-4xl text-4xl font-bold md:mb-16 xl:text-6xl">
           Onboard the{" "}
-          <span className="bg-gradient-to-r from-contrast-higher via-primary to-primary-dark bg-clip-text text-transparent">
+          <span className="via-primary bg-gradient-to-r from-contrast-higher to-primary-dark bg-clip-text text-transparent">
             next billion people
           </span>{" "}
           to web3
         </h2>
-        <div className="to-primary-dark/0 h-[2px] bg-gradient-to-r from-contrast-higher via-primary" />
+        <div className="to-primary-dark/0 via-primary h-[2px] bg-gradient-to-r from-contrast-higher" />
       </div>
     </div>
   );

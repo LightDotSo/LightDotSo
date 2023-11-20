@@ -29,7 +29,7 @@ const buttonVariants = cva(
           "bg-background-destructive text-text-inverse hover:bg-background-destructive/90",
         loading: "bg-background-primary-weak text-text-weakest",
         outline:
-          "text-text border border-border-primary-weak bg-background hover:bg-background-stronger hover:text-text-weak",
+          "border border-border-primary-weak bg-background text-text hover:bg-background-stronger hover:text-text-weak",
         ghost: "hover:bg-background-stronger hover:text-text-weak",
         link: "text-text underline-offset-4 hover:underline",
       },
