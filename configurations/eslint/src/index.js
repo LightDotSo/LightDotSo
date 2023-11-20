@@ -113,7 +113,12 @@ module.exports = {
       },
     },
     {
-      files: ["**/apps/app/**/**/*.ts", "**/apps/app/**/*.tsx"],
+      files: [
+        "**/apps/app/app/**/*.ts",
+        "**/apps/app/app/**/*.tsx",
+        "**/apps/app/src/**/*.ts",
+        "**/apps/app/src/**/*.tsx",
+      ],
       rules: {
         "no-restricted-imports": [
           "error",
