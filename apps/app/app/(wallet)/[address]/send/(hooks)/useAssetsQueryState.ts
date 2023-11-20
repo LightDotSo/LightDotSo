@@ -19,25 +19,25 @@ import { createParser, useQueryState } from "next-usequerystate";
 // Types
 // -----------------------------------------------------------------------------
 
-export type Owner = {
+export type Asset = {
   address?: string;
   addressOrEns?: string;
   weight: number;
 };
-export type Owners = Owner[];
+export type Assets = Asset[];
 
 // -----------------------------------------------------------------------------
 // Parser
 // -----------------------------------------------------------------------------
 
-export const ownerParser = createParser({
+export const assetParser = createParser({
   parse(val) {
     if (val === "") {
       return null;
     }
     const value = decodeURIComponent(val);
     const keys = value.split(";");
-    return keys.reduce<Owners>((acc, key) => {
+    return keys.reduce<Assets>((acc, key) => {
       const [id, address, addressOrEns, weight] = key.split(":");
       // Parse the id as a number (if possible)
       acc[parseInt(id)] = {
@@ -48,14 +48,14 @@ export const ownerParser = createParser({
       return acc;
     }, []);
   },
-  serialize(value: Owners) {
+  serialize(value: Assets) {
     const entry = Object.entries(value)
       // Filter out undefined values
-      .filter(([, owner]) => owner !== undefined)
+      .filter(([, asset]) => asset !== undefined)
       .map(
-        ([id, owner]) =>
-          `${id}:${owner?.address ?? "_"}:${owner?.addressOrEns ?? "_"}:${
-            owner?.weight ?? 1
+        ([id, asset]) =>
+          `${id}:${asset?.address ?? "_"}:${asset?.addressOrEns ?? "_"}:${
+            asset?.weight ?? 1
           }`,
       )
       .join(";");
@@ -69,6 +69,6 @@ export const ownerParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useOwnersQueryState = () => {
-  return useQueryState("owners", ownerParser.withDefault([]));
+export const useAssetsQueryState = () => {
+  return useQueryState("assets", assetParser.withDefault([]));
 };

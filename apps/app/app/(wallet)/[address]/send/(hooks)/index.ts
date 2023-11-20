@@ -13,7 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { ownerParser, useOwnersQueryState } from "./useOwnersQueryState";
-export type { Owner, Owners } from "./useOwnersQueryState";
-export { typeParser, useTypeQueryState } from "./useTypeQueryState";
-export type { WalletType } from "./useTypeQueryState";
+export { assetParser, useAssetsQueryState } from "./useAssetsQueryState";
+export type { Asset, Assets } from "./useAssetsQueryState";

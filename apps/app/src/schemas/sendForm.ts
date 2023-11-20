@@ -13,13 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { nameParser, useNameQueryState } from "./useNameQueryState";
-export { ownerParser, useOwnersQueryState } from "./useOwnersQueryState";
-export type { Owner, Owners } from "./useOwnersQueryState";
-export { saltParser, useSaltQueryState } from "./useSaltQueryState";
-export {
-  thresholdParser,
-  useThresholdQueryState,
-} from "./useThresholdQueryState";
-export { typeParser, useTypeQueryState } from "./useTypeQueryState";
-export type { WalletType } from "./useTypeQueryState";
+import * as z from "zod";
+
+// -----------------------------------------------------------------------------
+// Schema
+// -----------------------------------------------------------------------------
+
+export const sendFormConfigurationSchema = z.object({
+  assets: z.array(
+    z.object({
+      address: z
+        .string()
+        .min(1, { message: "Please enter a valid address." })
+        .optional(),
+      addressOrEns: z.string().optional(),
+      weight: z
+        .number()
+        .int()
+        .min(1, { message: "Weight must be at least 1." }),
+    }),
+  ),
+});
