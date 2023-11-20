@@ -83,6 +83,7 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
         params: {
           query: {
             address,
+            is_testnet: walletSettings?.is_enabled_testnet,
           },
         },
       });
