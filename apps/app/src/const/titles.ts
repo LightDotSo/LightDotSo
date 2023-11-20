@@ -96,7 +96,14 @@ export const TITLES: Record<Category, CategoryObject> = {
       [SettingsSubCategory.Deployment]: {
         title: "Deployment",
         description: "Manage your wallet deployments.",
-        subcategories: {},
+        subcategories: {
+          ["Chain"]: {
+            title: "Chain",
+            description: "Manage your chain deployment",
+            note: "Deploy to a new chain or update your existing chain.",
+            subcategories: {},
+          },
+        },
       },
     },
   },

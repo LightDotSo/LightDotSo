@@ -19,7 +19,7 @@ import { getUserOperations, getQueryClient } from "@/services";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { Skeleton } from "@lightdotso/ui";
-import { chains } from "@/const/chains";
+import { chains, mainnet_chains } from "@/const/chains";
 import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/(components)/settings-deployment-card";
 
 // -----------------------------------------------------------------------------
@@ -39,7 +39,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { wallet, config } = await handler(params);
+  const { wallet, config, walletSettings } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -58,6 +58,10 @@ export default async function Page({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
+  const wallet_chains = walletSettings?.is_enabled_testnet
+    ? chains
+    : mainnet_chains;
+
   return res.match(
     res => {
       queryClient.setQueryData(
@@ -73,19 +77,21 @@ export default async function Page({ params }: PageProps) {
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-          {chains.map(chain => (
-            <Suspense
-              key={chain.id}
-              fallback={<Skeleton className="h-8 w-32"></Skeleton>}
-            >
-              <SettingsDeploymentCard
-                chain={chain}
-                address={params.address}
-                image_hash={config.image_hash as Hex}
-                salt={wallet.salt as Hex}
-              ></SettingsDeploymentCard>
-            </Suspense>
-          ))}
+          <div className="space-y-8 lg:space-y-12">
+            {wallet_chains.map(chain => (
+              <Suspense
+                key={chain.id}
+                fallback={<Skeleton className="h-8 w-32"></Skeleton>}
+              >
+                <SettingsDeploymentCard
+                  chain={JSON.stringify(chain)}
+                  address={params.address}
+                  image_hash={config.image_hash as Hex}
+                  salt={wallet.salt as Hex}
+                ></SettingsDeploymentCard>
+              </Suspense>
+            ))}
+          </div>
         </HydrationBoundary>
       );
     },

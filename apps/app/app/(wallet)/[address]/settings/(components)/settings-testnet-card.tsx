@@ -172,8 +172,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
 
       errorToast(err);
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ["wallet_settings", address] }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["wallet_settings", address] });
+
+      // Invalidate the cache for the address
+      fetch(`/api/revalidate/tag?tag=${address}`);
+    },
     mutationKey: ["wallet_settings", address],
   });
 

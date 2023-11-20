@@ -48,8 +48,6 @@ export const handler = async (params: {
 
   validateUserOperationHash(params.userOperationHash);
 
-  // const chainId = parseNumber(params.chainId);
-
   // ---------------------------------------------------------------------------
   // Fetch
   // ---------------------------------------------------------------------------
