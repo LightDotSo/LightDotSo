@@ -16,8 +16,8 @@
 import {
   NewRoot,
   StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root";
-import { NewWalletForm } from "@/app/(authenticated)/new/new-wallet-form";
+} from "@/app/(authenticated)/new/(components)/root/root";
+import { NewWalletForm } from "@/app/(authenticated)/new/(components)/new-wallet-form";
 
 // -----------------------------------------------------------------------------
 // Page

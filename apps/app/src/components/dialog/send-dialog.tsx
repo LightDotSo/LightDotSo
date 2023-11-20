@@ -37,7 +37,7 @@ import {
   SelectValue,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "@/app/(authenticated)/new/(components)/root";
+import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useEffect, useCallback, useMemo } from "react";
