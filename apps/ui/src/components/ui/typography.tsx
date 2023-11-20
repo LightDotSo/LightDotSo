@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+/* eslint-disable jsx-a11y/heading-has-content */
+
 import * as React from "react"
 
 import { cn } from "@lightdotso/utils"
