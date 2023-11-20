@@ -60,31 +60,42 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    // The user operation hash to get.
+    /// The user operation hash to get.
     pub user_operation_hash: String,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct NonceQuery {
-    // The chain id to get the user operation nonce for.
+    /// The chain id to get the user operation nonce for.
     pub chain_id: i64,
-    // The sender address to filter by.
+    /// The sender address to filter by.
     pub address: String,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    // The offset of the first user operation to return.
+    /// The offset of the first user operation to return.
     pub offset: Option<i64>,
-    // The maximum number of user operations to return.
+    /// The maximum number of user operations to return.
     pub limit: Option<i64>,
-    // The sender address to filter by.
+    /// The sender address to filter by.
     pub address: Option<String>,
-    // The status to filter by.
+    /// The status to filter by.
     #[param(inline)]
     pub status: Option<ListQueryStatus>,
+    /// The direction to order by.
+    /// Default is `asc`.
+    #[param(inline)]
+    pub order: Option<ListQueryOrder>,
+}
+
+#[derive(Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum ListQueryOrder {
+    Asc,
+    Desc,
 }
 
 #[derive(Debug, Deserialize, ToSchema)]
@@ -441,6 +452,13 @@ async fn v1_user_operation_list_handler(
         None => query,
     };
 
+    // Parse the order from the pagination query.
+    let order = match pagination.order {
+        Some(ListQueryOrder::Asc) => Direction::Asc,
+        Some(ListQueryOrder::Desc) => Direction::Desc,
+        None => Direction::Asc,
+    };
+
     // Get the user operations from the database.
     let user_operations = client
         .client
@@ -449,7 +467,7 @@ async fn v1_user_operation_list_handler(
         .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))
-        .order_by(user_operation::nonce::order(prisma_client_rust::Direction::Asc))
+        .order_by(user_operation::nonce::order(order))
         .with(user_operation::signatures::fetch(vec![]))
         .with(user_operation::transaction::fetch())
         .exec()

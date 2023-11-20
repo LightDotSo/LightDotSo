@@ -51,6 +51,10 @@ interface WalletOverviewBannerSparklineProps {
 export const WalletOverviewBannerSparkline: FC<
   WalletOverviewBannerSparklineProps
 > = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
     "portfolio",
     address,

@@ -71,6 +71,10 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
     address: address,
   });
 
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const currentData: WalletData | undefined = useQueryClient().getQueryData([
     "wallet",
     address,

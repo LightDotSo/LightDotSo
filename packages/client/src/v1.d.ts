@@ -1259,6 +1259,7 @@ export interface operations {
   v1_user_operation_get_handler: {
     parameters: {
       query: {
+        /** @description The user operation hash to get. */
         user_operation_hash: string;
       };
     };
@@ -1284,10 +1285,19 @@ export interface operations {
   v1_user_operation_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first user operation to return. */
         offset?: number | null;
+        /** @description The maximum number of user operations to return. */
         limit?: number | null;
+        /** @description The sender address to filter by. */
         address?: string | null;
+        /** @description The status to filter by. */
         status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+        /**
+         * @description The direction to order by.
+         * Default is `asc`.
+         */
+        order?: ("asc" | "desc") | null;
       };
     };
     responses: {
@@ -1312,7 +1322,9 @@ export interface operations {
   v1_user_operation_nonce_handler: {
     parameters: {
       query: {
+        /** @description The chain id to get the user operation nonce for. */
         chain_id: number;
+        /** @description The sender address to filter by. */
         address: string;
       };
     };

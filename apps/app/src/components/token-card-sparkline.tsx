@@ -52,6 +52,10 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   address,
   chain_id,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const currentData: TokenPriceData | undefined = useQueryClient().getQueryData(
     ["token_price", address, chain_id],
   );
