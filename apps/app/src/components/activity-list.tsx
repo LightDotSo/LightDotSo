@@ -56,7 +56,7 @@ export const ActivityList: FC<ActivityListProps> = ({ address }) => {
       queries.transaction.list({ address }).queryKey,
     );
 
-  const { data } = useSuspenseQuery({
+  const { data } = useSuspenseQuery<TransactionData | null>({
     queryKey: queries.transaction.list({ address }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({

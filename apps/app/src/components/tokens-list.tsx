@@ -59,7 +59,7 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
     queries.token.list(address).queryKey,
   );
 
-  const { data } = useSuspenseQuery({
+  const { data } = useSuspenseQuery<TokenData | null>({
     queryKey: queries.token.list(address).queryKey,
     queryFn: async () => {
       const res = await getTokens({
