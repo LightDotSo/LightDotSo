@@ -66,8 +66,13 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
   useEffect(() => {
     // Split the path using '/' as delimiter and remove empty strings
     const slugs = pathname.split("/").filter(slug => slug);
-    // Replace occurences of 'transaction' with 'transactions'
-    const replacedSlugs = slugs.map(slug => slug.replace("op", "transactions"));
+    const replacedSlugs = slugs.map(slug =>
+      slug
+        // Replace occurences of 'op' with 'transactions'
+        .replace("op", "transactions")
+        // Replace occurences of 'send' with 'transactions'
+        .replace("send", "transactions"),
+    );
     // Get the matching slug in tabIds array
     const matchingId = tabIds.find(slug => replacedSlugs.includes(slug));
 
