@@ -178,18 +178,25 @@ async fn v1_token_list_handler(
     let parsed_query_address: H160 = pagination.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
+    let mut params = vec![
+        wallet_balance::wallet_address::equals(checksum_address),
+        wallet_balance::is_latest::equals(true),
+        wallet_balance::chain_id::not(0),
+        wallet_balance::is_spam::equals(pagination.is_spam.unwrap_or(false)),
+        wallet_balance::amount::not(Some(0)),
+    ];
+
+    // If is_testnet is not set or true, only return the tokens that are not testnet tokens.
+    if pagination.is_testnet != Some(true) {
+        params.push(wallet_balance::is_testnet::equals(false));
+    }
+
     // Get the tokens from the database.
     let balances = client
         .client
         .unwrap()
         .wallet_balance()
-        .find_many(vec![
-            wallet_balance::wallet_address::equals(checksum_address),
-            wallet_balance::is_latest::equals(true),
-            wallet_balance::chain_id::not(0),
-            wallet_balance::is_spam::equals(pagination.is_spam.unwrap_or(false)),
-            wallet_balance::is_testnet::equals(pagination.is_testnet.unwrap_or(false)),
-        ])
+        .find_many(params)
         .with(wallet_balance::token::fetch())
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))

@@ -52,7 +52,7 @@ import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
 import { queries } from "@/queries";
 
-// -----------------------------------------------------------------------------
+/// -----------------------------------------------------------------------------
 // Data
 // -----------------------------------------------------------------------------
 
@@ -114,7 +114,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // ---------------------------------------------------------------------------
 
   const currentData: WalletData | undefined = useQueryClient().getQueryData(
-    queries.user.get(address as Address).queryKey,
+    queries.wallet.list(address as Address).queryKey,
   );
 
   const { data, isLoading } = useSuspenseQuery<WalletData | null>({
