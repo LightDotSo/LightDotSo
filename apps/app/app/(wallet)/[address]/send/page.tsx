@@ -24,13 +24,20 @@ import type { Address } from "viem";
 
 type PageProps = {
   params: { address: string };
+  searchParams: {
+    chainId?: string;
+    tokenAddress?: string;
+  };
 };
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({
+  params,
+  searchParams: _searchParams,
+}: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------

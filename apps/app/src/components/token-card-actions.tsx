@@ -27,13 +27,19 @@ import Link from "next/link";
 
 type TokenCardActionsProps = {
   address: Address;
+  chainId: number;
+  tokenAddress: string;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardActions: FC<TokenCardActionsProps> = ({ address }) => {
+export const TokenCardActions: FC<TokenCardActionsProps> = ({
+  address,
+  chainId,
+  tokenAddress,
+}) => {
   return (
     <div className="flex items-center justify-end gap-x-4">
       <Button size="sm" className="rounded-full p-3">
@@ -41,7 +47,9 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({ address }) => {
         <span className="sr-only">Open share modal</span>
       </Button>
       <Button size="sm" className="rounded-full p-3" asChild>
-        <Link href={`/${address}/send`}>
+        <Link
+          href={`/${address}/send?token=${tokenAddress}&chainId=${chainId}`}
+        >
           <Send className="h-3 w-3" />
           <span className="sr-only">Open send modal</span>
         </Link>

@@ -61,7 +61,7 @@ export const TokenCard: FC<TokenCardProps> = ({
     symbol,
     amount,
     decimals,
-    address: _tokenAddress,
+    address: tokenAddress,
     chain_id,
   },
 }) => {
@@ -85,7 +85,11 @@ export const TokenCard: FC<TokenCardProps> = ({
         </Suspense>
       </TableCell>
       <TableCell className="text-right">
-        <TokenCardActions address={address as Address}></TokenCardActions>
+        <TokenCardActions
+          address={address as Address}
+          tokenAddress={tokenAddress}
+          chainId={chain_id}
+        ></TokenCardActions>
       </TableCell>
     </TableRow>
   );
