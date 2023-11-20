@@ -16,7 +16,7 @@
 import { inngest } from "@/inngest/client";
 import type { Chain } from "@covalenthq/client-sdk";
 import { CovalentClient } from "@covalenthq/client-sdk";
-import { ChainIdMapping } from "@/const/covalent";
+import { ChainIdMapping, ChainIdTestnetMapping } from "@/const/covalent";
 import { NonRetriableError } from "inngest";
 import { getAddress } from "viem";
 
@@ -116,7 +116,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
         // Create token prices
         await prisma.tokenPrice.createMany({
           data: tokenBalances.map(balance => ({
-            price: balance.quote_rate,
+            price: balance.quote_rate ?? 0,
             tokenId: balance.tokenId,
           })),
         });
@@ -136,12 +136,16 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
             data: tokenBalances.map(balance => ({
               walletAddress: event.data.address,
               chainId: chainId,
-              balanceUSD: balance.quote,
+              balanceUSD: balance.quote ?? 0,
               amount: balance.balance,
               tokenId: balance.tokenId,
               stable: balance.type === "stablecoin",
               isLatest: true,
               isSpam: balance.is_spam,
+              isTestnet: Object.prototype.hasOwnProperty.call(
+                ChainIdTestnetMapping,
+                chainId,
+              ),
             })),
           }),
         ]);
