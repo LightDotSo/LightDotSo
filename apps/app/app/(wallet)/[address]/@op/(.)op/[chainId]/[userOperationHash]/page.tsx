@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Modal } from "@/components/modal";
-import { ConfirmDialog } from "@/components/dialog/confirm-dialog";
+import { OpDialog } from "@/app/(wallet)/[address]/op/(components)/op-dialog";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/[userOperationHash]/preloader";
 import { handler } from "@/handlers/paths/[address]/handler";
@@ -56,12 +56,12 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <Modal>
-      <ConfirmDialog
+      <OpDialog
         config={config}
         address={params.address as Address}
         chainId={chainId}
         userOperation={userOperation}
-      ></ConfirmDialog>
+      ></OpDialog>
     </Modal>
   );
 }

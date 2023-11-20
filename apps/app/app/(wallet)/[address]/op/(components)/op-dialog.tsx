@@ -30,7 +30,7 @@ import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 // Props
 // -----------------------------------------------------------------------------
 
-type ConfirmDialogProps = {
+type OpDialogProps = {
   address: Address;
   chainId: number;
   config: {
@@ -70,7 +70,7 @@ type ConfirmDialogProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const ConfirmDialog: FC<ConfirmDialogProps> = ({
+export const OpDialog: FC<OpDialogProps> = ({
   // address,
   chainId,
   config,
