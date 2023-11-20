@@ -17,7 +17,7 @@ import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import type { Address } from "viem";
 import { getUserOperations, getQueryClient } from "@/services";
-import { TransactionsList } from "@/components/transactions-list";
+import { TransactionsList } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-list";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { Skeleton } from "@lightdotso/ui";

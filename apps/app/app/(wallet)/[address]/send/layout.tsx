@@ -13,67 +13,44 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import clsx from "clsx";
-import type { FC, InsHTMLAttributes } from "react";
-import s from "@/components/placeholder-orb.module.css";
+import type { Metadata } from "next";
+import { BannerSection } from "@/components/section/banner-section";
+import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
-// Const
+// Metadata
 // -----------------------------------------------------------------------------
 
-const colors = [
-  "gray",
-  "red",
-  "orange",
-  "yellow",
-  "green",
-  "teal",
-  "cyan",
-  "sky",
-  "blue",
-  "indigo",
-  "purple",
-  "pink",
-  "rose",
-];
+export const metadata: Metadata = {
+  title: TITLES.Send.title,
+  description: TITLES.Send.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type PlaceholderOrbProps = {
-  address: string;
-} & InsHTMLAttributes<HTMLSpanElement>;
+interface SendLayoutProps {
+  children: React.ReactNode;
+}
 
 // -----------------------------------------------------------------------------
-// Component
+// Layout
 // -----------------------------------------------------------------------------
 
-export const PlaceholderOrb: FC<PlaceholderOrbProps> = ({
-  address,
-  className,
-}) => {
-  const color = colors[address[41]?.charCodeAt(0) % colors.length];
-
+export default function SendLayout({ children }: SendLayoutProps) {
   return (
-    <span
-      className={clsx(
-        "aspect-square inline-block h-full w-full overflow-hidden rounded-full",
-        color === "gray" && s.gray,
-        color === "red" && s.red,
-        color === "orange" && s.orange,
-        color === "yellow" && s.yellow,
-        color === "green" && s.green,
-        color === "teal" && s.teal,
-        color === "cyan" && s.cyan,
-        color === "sky" && s.sky,
-        color === "blue" && s.blue,
-        color === "indigo" && s.indigo,
-        color === "purple" && s.purple,
-        color === "pink" && s.pink,
-        color === "rose" && s.rose,
-        className,
-      )}
-    />
+    <>
+      <BannerSection
+        title={TITLES.Send.title}
+        description={TITLES.Send.description}
+      >
+        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+          <div className="mx-auto my-8 max-w-5xl flex-1 lg:my-16 xl:my-20">
+            {children}
+          </div>
+        </div>
+      </BannerSection>
+    </>
   );
-};
+}

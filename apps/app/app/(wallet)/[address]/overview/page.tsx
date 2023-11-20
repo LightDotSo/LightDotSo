@@ -24,7 +24,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { type Address } from "viem";
 // import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/portfolio-chart";
 import { Suspense } from "react";
-import { TokensList } from "@/components/tokens-list";
+import { TokensList } from "@/components/token/tokens-list";
 import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------

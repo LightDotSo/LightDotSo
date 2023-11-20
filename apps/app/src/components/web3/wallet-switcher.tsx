@@ -43,7 +43,7 @@ import {
   Skeleton,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { PlaceholderOrb } from "./placeholder-orb";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";

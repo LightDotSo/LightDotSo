@@ -15,35 +15,43 @@
 
 "use client";
 
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { Logo } from "@/components/light-logo";
-import { usePathType } from "@/hooks/usePathType";
+import {
+  Popover,
+  PopoverTrigger,
+  Button,
+  PopoverContent,
+} from "@lightdotso/ui";
+import { useAuth } from "@/stores/useAuth";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import { FeedbackForm } from "@/components/feedback/feedback-form";
+import { useState } from "react";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const RootLogo: FC = () => {
-  const type = usePathType();
-  const pathname = usePathname();
+export const FeedbackPopover: FC = () => {
+  const isMounted = useIsMounted();
+  const { address } = useAuth();
+  const [open, setOpen] = useState(false);
+
+  // If the address is empty, return null
+  if (!isMounted || !address) {
+    return null;
+  }
 
   return (
-    <Link
-      href={
-        type === "unauthenticated"
-          ? "/"
-          : type === "authenticated"
-            ? "/wallets"
-            : // Get the wallet address from the path
-              // Address is the first part of the path
-              // e.g. /0x1234
-              `/${pathname.split("/")[1]}`
-      }
-      className="hover:rounded-md hover:bg-background-stronger"
-    >
-      <Logo className="m-2.5 h-8 w-8 fill-slate-600 dark:fill-slate-300" />
-    </Link>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="outline" className="hidden md:block">
+          Feedback
+          <span className="sr-only">Open popover</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80">
+        <FeedbackForm onClose={() => setOpen(false)} />
+      </PopoverContent>
+    </Popover>
   );
 };

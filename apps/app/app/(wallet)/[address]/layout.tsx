@@ -22,6 +22,7 @@ import "@lightdotso/styles/global.css";
 type RootLayoutProps = {
   children: React.ReactNode;
   op: React.ReactNode;
+  send: React.ReactNode;
 };
 
 // -----------------------------------------------------------------------------
@@ -33,6 +34,7 @@ export default function RootLayout(props: RootLayoutProps) {
     <>
       {props.children}
       {props.op}
+      {props.send}
     </>
   );
 }

@@ -54,7 +54,16 @@ type TokenCardProps = {
 // -----------------------------------------------------------------------------
 
 export const TokenCard: FC<TokenCardProps> = ({
-  token: { balance_usd, name, symbol, amount, decimals, address, chain_id },
+  address,
+  token: {
+    balance_usd,
+    name,
+    symbol,
+    amount,
+    decimals,
+    address: tokenAddress,
+    chain_id,
+  },
 }) => {
   return (
     <TableRow key={name}>
@@ -76,7 +85,11 @@ export const TokenCard: FC<TokenCardProps> = ({
         </Suspense>
       </TableCell>
       <TableCell className="text-right">
-        <TokenCardActions address={address as Address}></TokenCardActions>
+        <TokenCardActions
+          address={address as Address}
+          tokenAddress={tokenAddress}
+          chainId={chain_id}
+        ></TokenCardActions>
       </TableCell>
     </TableRow>
   );

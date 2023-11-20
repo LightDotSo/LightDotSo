@@ -15,50 +15,54 @@
 
 "use client";
 
-import { OpCard } from "@/components/op-card";
-import { getUserOperations } from "@lightdotso/client";
+import { getTokens } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TransactionsEmpty } from "@/components/transactions-empty";
-import { TransactionsWrapper } from "@/components/transactions-wrapper";
-import { queries } from "@/queries";
+import { TokenCard } from "@/components/token/token-card";
+import { TokensEmpty } from "@/components/token/tokens-empty";
+import { TokensWrapper } from "@/components/token/tokens-wrapper";
 import type { FC } from "react";
-import type { UserOperationData } from "@/data";
+import { queries } from "@/queries";
+import type { TokenData, WalletSettingsData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type TransactionsListProps = {
+export type TokensListProps = {
   address: Address;
-  status: "all" | "proposed" | "executed";
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionsList: FC<TransactionsListProps> = ({
-  address,
-  status,
-}) => {
+export const TokensList: FC<TokensListProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: UserOperationData | undefined =
-    useQueryClient().getQueryData(
-      queries.user_operation.list({ address, status }).queryKey,
-    );
+  const walletSettings: WalletSettingsData | undefined =
+    useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
 
-  const { data } = useSuspenseQuery<UserOperationData | null>({
-    queryKey: queries.user_operation.list({ address, status }).queryKey,
+  const currentData: TokenData | undefined = useQueryClient().getQueryData(
+    queries.token.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+  );
+
+  const { data } = useSuspenseQuery<TokenData | null>({
+    queryKey: queries.token.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
     queryFn: async () => {
-      const res = await getUserOperations({
+      const res = await getTokens({
         params: {
           query: {
             address,
-            status: status === "all" ? undefined : status,
+            is_testnet: walletSettings?.is_enabled_testnet,
           },
         },
       });
@@ -76,16 +80,12 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   });
 
   return (
-    <TransactionsWrapper>
-      {data && data.length === 0 && <TransactionsEmpty></TransactionsEmpty>}
+    <TokensWrapper>
+      {data && data.length === 0 && <TokensEmpty></TokensEmpty>}
       {data &&
-        data.map(userOperation => (
-          <OpCard
-            key={userOperation.hash}
-            address={address}
-            userOperation={userOperation}
-          />
+        data.map(token => (
+          <TokenCard key={token.address} address={address} token={token} />
         ))}
-    </TransactionsWrapper>
+    </TokensWrapper>
   );
 };

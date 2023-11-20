@@ -18,9 +18,9 @@
 import { getTransactions } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { ActivityCard } from "@/components/activity-card";
-import { ActivityEmpty } from "@/components/activity-empty";
-import { ActivityWrapper } from "@/components/activity-wrapper";
+import { ActivityCard } from "@/app/(wallet)/[address]/activity/(components)/activity-card";
+import { ActivityEmpty } from "@/app/(wallet)/[address]/activity/(components)/activity-empty";
+import { ActivityWrapper } from "@/app/(wallet)/[address]/activity/(components)/activity-wrapper";
 import type { FC } from "react";
 import { queries } from "@/queries";
 import type { TransactionData } from "@/data";

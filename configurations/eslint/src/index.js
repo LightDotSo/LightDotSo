@@ -35,8 +35,6 @@ module.exports = {
     "**/_next/**",
     "**/generated/**",
     "generated.ts",
-    "apps/ui/src/components/ui/**.tsx",
-    "!apps/ui/src/components/ui/**.stories.tsx",
     "apps/extension/*/**.js",
     "packages/client/src/**.d.ts",
     "ios/LightWalletSafariExtension/Resources/**",
@@ -115,7 +113,12 @@ module.exports = {
       },
     },
     {
-      files: ["**/apps/app/**/*.ts", "**/apps/app/**/*.tsx"],
+      files: [
+        "**/apps/app/app/**/*.ts",
+        "**/apps/app/app/**/*.tsx",
+        "**/apps/app/src/**/*.ts",
+        "**/apps/app/src/**/*.tsx",
+      ],
       rules: {
         "no-restricted-imports": [
           "error",
@@ -132,6 +135,13 @@ module.exports = {
             ],
           },
         ],
+      },
+    },
+    {
+      files: ["**/apps/ui/src/components/ui/**.tsx"],
+      rules: {
+        "react/display-name": "off",
+        "react/prop-types": "off",
       },
     },
     {

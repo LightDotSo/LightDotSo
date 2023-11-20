@@ -19,6 +19,7 @@ import type { Address } from "viem";
 import { Send, RefreshCcw } from "lucide-react";
 import { Button } from "@lightdotso/ui";
 import type { FC } from "react";
+import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -26,28 +27,32 @@ import type { FC } from "react";
 
 type TokenCardActionsProps = {
   address: Address;
+  chainId: number;
+  tokenAddress: string;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardActions: FC<TokenCardActionsProps> = ({ address }) => {
+export const TokenCardActions: FC<TokenCardActionsProps> = ({
+  address,
+  chainId,
+  tokenAddress,
+}) => {
   return (
     <div className="flex items-center justify-end gap-x-4">
       <Button size="sm" className="rounded-full p-3">
         <RefreshCcw className="h-3 w-3" />
         <span className="sr-only">Open share modal</span>
       </Button>
-      <Button
-        size="sm"
-        className="rounded-full p-3"
-        onClick={() => {
-          console.info(address);
-        }}
-      >
-        <Send className="h-3 w-3" />
-        <span className="sr-only">Open send modal</span>
+      <Button size="sm" className="rounded-full p-3" asChild>
+        <Link
+          href={`/${address}/send/overlay?token=${tokenAddress}&chainId=${chainId}`}
+        >
+          <Send className="h-3 w-3" />
+          <span className="sr-only">Open send modal</span>
+        </Link>
       </Button>
     </div>
   );

@@ -110,7 +110,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (data: WalletSettingsData) => {
       const res = await updateWalletSettings({
         params: {
@@ -205,6 +205,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
       <Button
         type="submit"
         form="walletTestnetForm"
+        variant={isPending ? "loading" : "default"}
         disabled={typeof form.getFieldState("enabled").error !== "undefined"}
       >
         Update

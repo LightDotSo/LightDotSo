@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import "@lightdotso/styles/global.css";
-import { Root } from "@/app/root";
+import { Root } from "@/components/root/root";
 
 // -----------------------------------------------------------------------------
 // Props
