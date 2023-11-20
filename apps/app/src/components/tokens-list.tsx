@@ -28,6 +28,14 @@ import { queries } from "@/queries";
 // Data
 // -----------------------------------------------------------------------------
 
+type WalletSettingsData = {
+  is_enabled_testnet: boolean;
+};
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
 type TokenData = {
   address: string;
   amount: number;
@@ -55,17 +63,27 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
+  const walletSettings: WalletSettingsData | undefined =
+    useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
+
   const currentData: TokenData | undefined = useQueryClient().getQueryData(
-    queries.token.list(address).queryKey,
+    queries.token.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
   );
 
   const { data } = useSuspenseQuery<TokenData | null>({
-    queryKey: queries.token.list(address).queryKey,
+    queryKey: queries.token.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
     queryFn: async () => {
       const res = await getTokens({
         params: {
           query: {
             address,
+            is_testnet: walletSettings?.is_enabled_testnet,
           },
         },
       });

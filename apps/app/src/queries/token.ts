@@ -18,12 +18,21 @@ import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
+// Type
+// -----------------------------------------------------------------------------
+
+type TokenFilter = {
+  address: Address;
+  is_testnet?: boolean;
+};
+
+// -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const token = createQueryKeys("token", {
-  list: (address: Address) => ({
-    queryKey: [address],
+  list: (filter: TokenFilter) => ({
+    queryKey: [{ filter }],
   }),
 });
 

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getPortfolio, getTokens } from "@/services";
+import { getPortfolio, getTokens, getWalletSettings } from "@/services";
 import { notFound } from "next/navigation";
 import { validateAddress } from "@/handlers/validators/address";
 import { Result } from "neverthrow";
@@ -34,7 +34,12 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const tokensPromise = getTokens(params.address as Address);
+  const walletSettings = await getWalletSettings(params.address as Address);
+
+  const tokensPromise = getTokens(
+    params.address as Address,
+    walletSettings?.unwrapOr({ is_enabled_testnet: false }).is_enabled_testnet,
+  );
 
   const portfolioPromise = getPortfolio(params.address as Address);
 
