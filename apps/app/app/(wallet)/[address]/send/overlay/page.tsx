@@ -13,47 +13,46 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
+import { SendDialog } from "@/components/send-dialog";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/paths/[address]/handler";
 import type { Address } from "viem";
-import { Send, RefreshCcw } from "lucide-react";
-import { Button } from "@lightdotso/ui";
-import type { FC } from "react";
-import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardActionsProps = {
-  address: Address;
-  chainId: number;
-  tokenAddress: string;
+type PageProps = {
+  params: { address: string };
+  searchParams: {
+    chainId?: string;
+    tokenAddress?: string;
+  };
 };
 
 // -----------------------------------------------------------------------------
-// Component
+// Page
 // -----------------------------------------------------------------------------
 
-export const TokenCardActions: FC<TokenCardActionsProps> = ({
-  address,
-  chainId,
-  tokenAddress,
-}) => {
-  return (
-    <div className="flex items-center justify-end gap-x-4">
-      <Button size="sm" className="rounded-full p-3">
-        <RefreshCcw className="h-3 w-3" />
-        <span className="sr-only">Open share modal</span>
-      </Button>
-      <Button size="sm" className="rounded-full p-3" asChild>
-        <Link
-          href={`/${address}/send/overlay?token=${tokenAddress}&chainId=${chainId}`}
-        >
-          <Send className="h-3 w-3" />
-          <span className="sr-only">Open send modal</span>
-        </Link>
-      </Button>
-    </div>
-  );
-};
+export default async function Page({
+  params,
+  searchParams: _searchParams,
+}: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params);
+
+  // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  await handler(params);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return <SendDialog address={params.address as Address}></SendDialog>;
+}

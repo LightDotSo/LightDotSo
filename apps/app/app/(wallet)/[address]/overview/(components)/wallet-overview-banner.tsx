@@ -41,6 +41,7 @@ import { Suspense } from "react";
 import { NetworkStack } from "@/components/network-stack";
 import { queries } from "@/queries";
 import type { WalletData } from "@/data";
+import Link from "next/link";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -148,9 +149,16 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
               <Share className="h-3 w-3" />
               <span className="sr-only">Open share modal</span>
             </Button>
-            <Button size="sm" className="rounded-full p-3" variant="outline">
-              <Send className="h-3 w-3" />
-              <span className="sr-only">Open send modal</span>
+            <Button
+              asChild
+              size="sm"
+              className="rounded-full p-3"
+              variant="outline"
+            >
+              <Link href={`/${address}/send`}>
+                <Send className="h-3 w-3" />
+                <span className="sr-only">Open send</span>
+              </Link>
             </Button>
             <Button
               size="sm"

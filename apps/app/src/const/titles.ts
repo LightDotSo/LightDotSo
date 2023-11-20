@@ -23,6 +23,7 @@ enum Category {
   Settings = "Settings",
   Activity = "Activity",
   Owners = "Owners",
+  Send = "Send",
   Support = "Support",
 }
 
@@ -53,7 +54,7 @@ type CategoryObject = {
 export const TITLES: Record<Category, CategoryObject> = {
   [Category.Transactions]: {
     title: "Transactions",
-    description: "View your transactions history.",
+    description: "Conduct and execute transactions.",
     subcategories: {},
   },
   [Category.Profile]: {
@@ -115,6 +116,11 @@ export const TITLES: Record<Category, CategoryObject> = {
   [Category.Owners]: {
     title: "Owners",
     description: "Manage and view your wallet owners.",
+    subcategories: {},
+  },
+  [Category.Send]: {
+    title: "Send",
+    description: "Send assets to another wallet.",
     subcategories: {},
   },
   [Category.Support]: {
