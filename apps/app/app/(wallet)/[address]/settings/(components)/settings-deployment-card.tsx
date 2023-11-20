@@ -65,7 +65,7 @@ type UserOperationData = {
 
 type SettingsDeploymentCardProps = {
   address: string;
-  chain: Chain;
+  chain: string;
   image_hash: Hex;
   salt: Hex;
 };
@@ -76,10 +76,12 @@ type SettingsDeploymentCardProps = {
 
 export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   address,
-  chain,
+  chain: chain_JSON,
   image_hash,
   salt,
 }) => {
+  const chain = JSON.parse(chain_JSON) as Chain;
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -150,7 +152,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         disabled={typeof deployed_op !== "undefined"}
       >
         <Link href={`/${address}/op/${chain.id}?initCode=${initCode}`}>
-          Deploy
+          {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
         </Link>
       </Button>
     );
@@ -163,18 +165,15 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   return (
     <SettingsCard
       address={address}
-      title={
-        TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
-          .title
-      }
+      title={chain.name}
       subtitle={
-        TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
+        TITLES.Settings.subcategories["Deployment"].subcategories["Chain"]
           .description
       }
       footerContent={<WalletNameFormSubmitButton />}
     >
       {deployed_op && (
-        <Button asChild>
+        <Button variant="link" asChild>
           <a
             target="_blank"
             rel="noreferrer"
@@ -183,6 +182,11 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
             {deployed_op.transaction?.hash}
           </a>
         </Button>
+      )}
+      {!deployed_op && (
+        <p className="text-sm text-text-weak">
+          No deployment found. <br />
+        </p>
       )}
     </SettingsCard>
   );

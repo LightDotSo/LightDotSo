@@ -73,19 +73,21 @@ export default async function Page({ params }: PageProps) {
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-          {chains.map(chain => (
-            <Suspense
-              key={chain.id}
-              fallback={<Skeleton className="h-8 w-32"></Skeleton>}
-            >
-              <SettingsDeploymentCard
-                chain={chain}
-                address={params.address}
-                image_hash={config.image_hash as Hex}
-                salt={wallet.salt as Hex}
-              ></SettingsDeploymentCard>
-            </Suspense>
-          ))}
+          <div className="space-y-8 lg:space-y-12">
+            {chains.map(chain => (
+              <Suspense
+                key={chain.id}
+                fallback={<Skeleton className="h-8 w-32"></Skeleton>}
+              >
+                <SettingsDeploymentCard
+                  chain={JSON.stringify(chain)}
+                  address={params.address}
+                  image_hash={config.image_hash as Hex}
+                  salt={wallet.salt as Hex}
+                ></SettingsDeploymentCard>
+              </Suspense>
+            ))}
+          </div>
         </HydrationBoundary>
       );
     },
