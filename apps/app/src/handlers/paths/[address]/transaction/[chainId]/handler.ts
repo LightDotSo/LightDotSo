@@ -16,7 +16,7 @@
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { notFound } from "next/navigation";
 import { validateAddress } from "@/handlers/validators/address";
-import { handler as addressHandler } from "@/handlers/paths/[address]";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import type { Address, Hex } from "viem";
 import { toHex, fromHex } from "viem";
 import { getUserOperationHash, type UserOperation } from "permissionless";
@@ -77,6 +77,7 @@ export const handler = async (
     maxFeePerGas: fromHex("0xD320B3B35" as Hex, { to: "bigint" }),
     maxPriorityFeePerGas: fromHex("0xB323DBB31" as Hex, { to: "bigint" }),
   };
+
   // ---------------------------------------------------------------------------
   // Fetch
   // ---------------------------------------------------------------------------

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { notFound } from "next/navigation";
-import { handler as addressHandler } from "@/handlers/paths/[address]";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import {
   validateAddress,
   validateNumber,

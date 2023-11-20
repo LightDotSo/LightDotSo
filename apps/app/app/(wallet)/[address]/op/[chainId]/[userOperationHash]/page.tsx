@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { ConfirmDialog } from "@/components/confirm-dialog";
-import { handler } from "@/handlers/paths/[address]";
-import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]/handler";
 import type { Address } from "viem";
 import { parseNumber } from "@/handlers/parsers";
 
