@@ -53,29 +53,25 @@ export default async function Page({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  return res.match(
-    res => {
-      queryClient.setQueryData(["wallet_settings", params.address], res);
+  queryClient.setQueryData(
+    ["wallet_settings", params.address],
+    res.unwrapOr(null),
+  );
 
-      return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <div className="space-y-8 lg:space-y-12">
-            <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
-              <SettingsNameCard
-                address={params.address as Address}
-              ></SettingsNameCard>
-            </Suspense>
-            <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
-              <SettingsTestnetCard
-                address={params.address as Address}
-              ></SettingsTestnetCard>
-            </Suspense>
-          </div>
-        </HydrationBoundary>
-      );
-    },
-    _ => {
-      return null;
-    },
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="space-y-8 lg:space-y-12">
+        <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+          <SettingsNameCard
+            address={params.address as Address}
+          ></SettingsNameCard>
+        </Suspense>
+        <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+          <SettingsTestnetCard
+            address={params.address as Address}
+          ></SettingsTestnetCard>
+        </Suspense>
+      </div>
+    </HydrationBoundary>
   );
 }
