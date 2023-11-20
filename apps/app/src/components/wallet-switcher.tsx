@@ -48,7 +48,9 @@ import { useIsMounted } from "@/hooks/useIsMounted";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";
 import { useAuth } from "@/stores/useAuth";
+import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -97,7 +99,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
 
   const { data, isLoading } = useSuspenseQuery({
-    queryKey: ["wallets", address],
+    queryKey: queries.wallet.list(address as Address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

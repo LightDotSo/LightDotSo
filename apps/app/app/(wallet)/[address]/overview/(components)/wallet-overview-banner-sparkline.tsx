@@ -21,6 +21,7 @@ import { getPortfolio } from "@lightdotso/client";
 import { SparkAreaChart } from "@tremor/react";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -55,13 +56,12 @@ export const WalletOverviewBannerSparkline: FC<
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
-    "portfolio",
-    address,
-  ]);
+  const currentData: PortfolioData | undefined = useQueryClient().getQueryData(
+    queries.portfolio.get(address).queryKey,
+  );
 
   const { data: portfolio } = useSuspenseQuery<PortfolioData | null>({
-    queryKey: ["portfolio", address],
+    queryKey: queries.portfolio.get(address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

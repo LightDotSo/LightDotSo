@@ -21,6 +21,7 @@ import { TransactionsList } from "@/components/transactions-list";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { Skeleton } from "@lightdotso/ui";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -62,7 +63,10 @@ export default async function Page({ params }: PageProps) {
   return res.match(
     res => {
       queryClient.setQueryData(
-        ["user_operations", "executed", params.address],
+        queries.user_operation.list({
+          address: params.address as Address,
+          status: "executed",
+        }).queryKey,
         res,
       );
 

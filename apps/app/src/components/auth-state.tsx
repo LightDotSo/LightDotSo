@@ -20,9 +20,11 @@ import { useEffect } from "react";
 import { useAuth } from "@/stores/useAuth";
 import { useAccount, useEnsName } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
+import type { Address } from "viem";
 import { isAddress } from "viem";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getUser } from "@lightdotso/client";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -36,7 +38,7 @@ export const AuthState: FC = () => {
   const router = useRouter();
 
   const { data } = useSuspenseQuery({
-    queryKey: ["user", address],
+    queryKey: queries.user.get(address as Address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
