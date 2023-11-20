@@ -17,11 +17,44 @@
 
 import { OpCard } from "@/components/op-card";
 import { getUserOperations } from "@lightdotso/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TransactionsEmpty } from "@/components/transactions-empty";
 import { TransactionsWrapper } from "@/components/transactions-wrapper";
 import type { FC } from "react";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+type UserOperationData = {
+  call_data: string;
+  call_gas_limit: number;
+  chain_id: number;
+  hash: string;
+  init_code: string;
+  max_fee_per_gas: number;
+  max_priority_fee_per_gas: number;
+  nonce: number;
+  paymaster?: {
+    address: string;
+    sender: string;
+    sender_nonce: number;
+  } | null;
+  paymaster_and_data: string;
+  pre_verification_gas: number;
+  sender: string;
+  signatures: {
+    owner_id: string;
+    signature: string;
+    signature_type: number;
+  }[];
+  status: string;
+  transaction?: {
+    hash: string;
+  } | null;
+  verification_gas_limit: number;
+}[];
 
 // -----------------------------------------------------------------------------
 // Props
@@ -40,7 +73,14 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   address,
   status,
 }) => {
-  const { data } = useSuspenseQuery({
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const currentData: UserOperationData | undefined =
+    useQueryClient().getQueryData(["user_operations", status, address]);
+
+  const { data } = useSuspenseQuery<UserOperationData | null>({
     queryKey: ["user_operations", status, address],
     queryFn: async () => {
       const res = await getUserOperations({
@@ -57,8 +97,8 @@ export const TransactionsList: FC<TransactionsListProps> = ({
         data => {
           return data;
         },
-        err => {
-          throw err;
+        _ => {
+          return currentData ?? null;
         },
       );
     },

@@ -32,6 +32,8 @@ export const preload = (address: Address) => {
 export const getUserOperations = async (
   address: Address,
   status?: "proposed" | "pending" | "executed" | "reverted" | "all",
+  direction?: "asc" | "desc",
+  limit?: number,
 ) => {
   return getClientUserOperations(
     {
@@ -39,6 +41,8 @@ export const getUserOperations = async (
         query: {
           address,
           status: status === "all" ? undefined : status,
+          direction: direction ?? undefined,
+          limit: limit ?? undefined,
         },
       },
     },

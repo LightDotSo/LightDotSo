@@ -52,6 +52,10 @@ interface OwnersDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const currentData: ConfigurationData | undefined =
     useQueryClient().getQueryData(["configuration", address]);
 

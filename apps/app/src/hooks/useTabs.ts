@@ -80,6 +80,10 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const currentData: TabData | undefined = useQueryClient().getQueryData([
     "wallet_tab",
     walletAddress,

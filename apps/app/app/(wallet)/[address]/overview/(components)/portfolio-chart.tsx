@@ -50,6 +50,10 @@ interface PortfolioChartProps {
 // -----------------------------------------------------------------------------
 
 export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
   const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
     "portfolio",
     address,

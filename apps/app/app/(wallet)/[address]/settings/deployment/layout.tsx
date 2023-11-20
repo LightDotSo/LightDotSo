@@ -13,47 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Button } from "@lightdotso/ui";
-import type { Address, Hex } from "viem";
-import { ContractLinks } from "@lightdotso/const";
-import { calculateInitCode } from "@lightdotso/solutions";
-import Link from "next/link";
-import type { FC } from "react";
+import type { Metadata } from "next";
+import { TITLES } from "@/const/titles";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Settings.subcategories.Deployment.title,
+  description: TITLES.Settings.subcategories.Deployment.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type DeployButtonProps = {
-  chainId?: number;
-  image_hash: Hex;
-  salt: Hex;
+interface SettingsDeploymentLayoutProps {
   children: React.ReactNode;
-  wallet: Address;
-};
+}
 
 // -----------------------------------------------------------------------------
-// Component
+// Layout
 // -----------------------------------------------------------------------------
 
-export const DeployButton: FC<DeployButtonProps> = ({
-  chainId = 11155111,
-  image_hash,
-  salt,
-  children,
-  wallet,
-}) => {
-  let initCode = calculateInitCode(
-    ContractLinks["Factory"] as Address,
-    image_hash,
-    salt,
-  );
-
-  return (
-    <Button asChild>
-      <Link href={`/${wallet}/op/${chainId}?initCode=${initCode}`}>
-        {children}
-      </Link>
-    </Button>
-  );
-};
+export default function Layout({ children }: SettingsDeploymentLayoutProps) {
+  return <>{children}</>;
+}
