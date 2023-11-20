@@ -419,6 +419,7 @@ export const getTokens = async (
         offset?: number | null | undefined;
         limit?: number | null | undefined;
         address: string;
+        is_testnet?: boolean | null | undefined;
       };
     };
   },

@@ -21,6 +21,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TransactionsEmpty } from "@/components/transactions-empty";
 import { TransactionsWrapper } from "@/components/transactions-wrapper";
+import { queries } from "@/queries";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -78,10 +79,12 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   // ---------------------------------------------------------------------------
 
   const currentData: UserOperationData | undefined =
-    useQueryClient().getQueryData(["user_operations", status, address]);
+    useQueryClient().getQueryData(
+      queries.user_operation.list({ address, status }).queryKey,
+    );
 
   const { data } = useSuspenseQuery<UserOperationData | null>({
-    queryKey: ["user_operations", status, address],
+    queryKey: queries.user_operation.list({ address, status }).queryKey,
     queryFn: async () => {
       const res = await getUserOperations({
         params: {

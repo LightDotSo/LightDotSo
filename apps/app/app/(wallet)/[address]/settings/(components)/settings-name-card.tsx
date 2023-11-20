@@ -35,6 +35,8 @@ import { successToast } from "@/utils/toast";
 import type { FC } from "react";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
+import { queries } from "@/queries";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -69,7 +71,7 @@ type WalletNameFormValues = z.infer<typeof walletNameFormSchema>;
 // -----------------------------------------------------------------------------
 
 type SettingsNameCardProps = {
-  address: string;
+  address: Address;
 };
 
 // -----------------------------------------------------------------------------
@@ -81,13 +83,12 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: WalletData | undefined = useQueryClient().getQueryData([
-    "wallet",
-    address,
-  ]);
+  const currentData: WalletData | undefined = useQueryClient().getQueryData(
+    queries.wallet.get(address).queryKey,
+  );
 
   const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: ["wallet", address],
+    queryKey: queries.wallet.get(address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

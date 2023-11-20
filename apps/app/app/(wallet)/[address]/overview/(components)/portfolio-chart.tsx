@@ -22,6 +22,7 @@ import type { Address } from "viem";
 import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparkline";
 import type { FC } from "react";
 import { useMemo } from "react";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -54,13 +55,12 @@ export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: PortfolioData | undefined = useQueryClient().getQueryData([
-    "portfolio",
-    address,
-  ]);
+  const currentData: PortfolioData | undefined = useQueryClient().getQueryData(
+    queries.portfolio.get(address).queryKey,
+  );
 
   const { data: portfolio } = useSuspenseQuery<PortfolioData | null>({
-    queryKey: ["portfolio", address],
+    queryKey: queries.portfolio.get(address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

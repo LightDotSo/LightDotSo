@@ -21,6 +21,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { getConfiguration } from "@lightdotso/client";
 import { columns } from "./columns";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -57,10 +58,10 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const currentData: ConfigurationData | undefined =
-    useQueryClient().getQueryData(["configuration", address]);
+    useQueryClient().getQueryData(queries.configuration.get(address).queryKey);
 
   const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
-    queryKey: ["configuration", address],
+    queryKey: queries.configuration.get(address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

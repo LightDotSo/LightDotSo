@@ -1088,6 +1088,8 @@ export interface operations {
         address: string;
         /** @description The flag to indicate if the token is a spam. */
         is_spam?: boolean | null;
+        /** @description The flag to indicate if the token is a testnet token. */
+        is_testnet?: boolean | null;
       };
     };
     responses: {

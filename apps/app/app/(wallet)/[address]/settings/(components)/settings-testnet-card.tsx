@@ -39,6 +39,8 @@ import type { FC } from "react";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
 import { errorToast, successToast } from "@/utils/toast";
+import { queries } from "@/queries";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -63,7 +65,7 @@ type WalletTestnetFormValues = z.infer<typeof walletTestnetFormSchema>;
 // -----------------------------------------------------------------------------
 
 type SettingsTestnetCardProps = {
-  address: string;
+  address: Address;
 };
 
 // -----------------------------------------------------------------------------
@@ -85,7 +87,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   ]);
 
   const { data: wallet } = useSuspenseQuery<WalletSettingsData | null>({
-    queryKey: ["wallet_settings", address],
+    queryKey: queries.wallet.settings(address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -145,16 +147,16 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
       await queryClient.cancelQueries({
-        queryKey: ["wallet_settings", address],
+        queryKey: queries.wallet.settings(address).queryKey,
       });
 
       // Snapshot the previous value
       const previousSettings: WalletSettingsData | undefined =
-        queryClient.getQueryData(["wallet_settings", address]);
+        queryClient.getQueryData(queries.wallet.settings(address).queryKey);
 
       // Optimistically update to the new value
       queryClient.setQueryData(
-        ["wallet_settings", address],
+        queries.wallet.settings(address).queryKey,
         (old: WalletSettingsData) => {
           return { ...old, walletSettings };
         },
@@ -166,19 +168,21 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     // If the mutation fails, use the context we returned above
     onError: (err, _newWalletSettings, context) => {
       queryClient.setQueryData(
-        ["wallet_settings", address],
+        queries.wallet.settings(address).queryKey,
         context?.previousSettings,
       );
 
       errorToast(err);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["wallet_settings", address] });
+      queryClient.invalidateQueries({
+        queryKey: queries.wallet.settings(address).queryKey,
+      });
 
       // Invalidate the cache for the address
       fetch(`/api/revalidate/tag?tag=${address}`);
     },
-    mutationKey: ["wallet_settings", address],
+    mutationKey: queries.wallet.settings(address).queryKey,
   });
 
   // ---------------------------------------------------------------------------

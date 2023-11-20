@@ -16,12 +16,23 @@
 "use client";
 
 import { getTransactions } from "@lightdotso/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { ActivityCard } from "@/components/activity-card";
 import { ActivityEmpty } from "@/components/activity-empty";
 import { ActivityWrapper } from "@/components/activity-wrapper";
 import type { FC } from "react";
+import { queries } from "@/queries";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+type TransactionData = {
+  chain_id: number;
+  hash: string;
+  timestamp: string;
+}[];
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,8 +47,17 @@ export type ActivityListProps = {
 // -----------------------------------------------------------------------------
 
 export const ActivityList: FC<ActivityListProps> = ({ address }) => {
-  const { data } = useSuspenseQuery({
-    queryKey: ["transactions", address],
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const currentData: TransactionData | undefined =
+    useQueryClient().getQueryData(
+      queries.transaction.list({ address }).queryKey,
+    );
+
+  const { data } = useSuspenseQuery<TransactionData | null>({
+    queryKey: queries.transaction.list({ address }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({
         params: {
@@ -52,8 +72,8 @@ export const ActivityList: FC<ActivityListProps> = ({ address }) => {
         data => {
           return data;
         },
-        err => {
-          throw err;
+        _ => {
+          return currentData ?? null;
         },
       );
     },

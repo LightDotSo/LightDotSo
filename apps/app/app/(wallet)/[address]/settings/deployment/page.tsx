@@ -22,6 +22,7 @@ import { Suspense } from "react";
 import { Skeleton } from "@lightdotso/ui";
 import { chains, mainnet_chains } from "@/const/chains";
 import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/(components)/settings-deployment-card";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -72,13 +73,12 @@ export default async function Page({ params }: PageProps) {
   return res.match(
     res => {
       queryClient.setQueryData(
-        [
-          "user_operations",
-          "executed",
-          "asc",
-          Number.MAX_SAFE_INTEGER,
-          params.address,
-        ],
+        queries.user_operation.list({
+          address: params.address as Address,
+          status: "executed",
+          order: "asc",
+          limit: Number.MAX_SAFE_INTEGER,
+        }).queryKey,
         res,
       );
 
@@ -92,7 +92,7 @@ export default async function Page({ params }: PageProps) {
               >
                 <SettingsDeploymentCard
                   chain={JSON.stringify(chain)}
-                  address={params.address}
+                  address={params.address as Address}
                   image_hash={config.image_hash as Hex}
                   salt={wallet.salt as Hex}
                 ></SettingsDeploymentCard>
