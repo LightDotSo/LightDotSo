@@ -15,7 +15,7 @@
 
 import { Separator } from "@lightdotso/ui";
 import { AppearanceForm } from "@/app/(authenticated)/settings/appearance/appearance-form";
-import { SettingsSection } from "@/components/settings-section";
+import { SettingsSection } from "@/components/section/settings-section";
 
 // -----------------------------------------------------------------------------
 // Page

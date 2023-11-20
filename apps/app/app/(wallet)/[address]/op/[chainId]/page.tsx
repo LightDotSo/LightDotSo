@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TransactionDialog } from "@/components/transaction-dialog";
+import { TransactionDialog } from "@/components/transaction/transaction-dialog";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/preloader";
 import { handler } from "@/handlers/paths/[address]/handler";

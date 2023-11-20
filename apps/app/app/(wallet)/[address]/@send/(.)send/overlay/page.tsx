@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Modal } from "@/components/modal";
-import { SendDialog } from "@/components/send-dialog";
+import { SendDialog } from "@/components/dialog/send-dialog";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { handler } from "@/handlers/paths/[address]/handler";
 import type { Address } from "viem";

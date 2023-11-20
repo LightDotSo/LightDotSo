@@ -15,50 +15,45 @@
 
 "use client";
 
-import { OpCard } from "@/components/op-card";
-import { getUserOperations } from "@lightdotso/client";
+import { getTransactions } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TransactionsEmpty } from "@/components/transactions-empty";
-import { TransactionsWrapper } from "@/components/transactions-wrapper";
-import { queries } from "@/queries";
+import { ActivityCard } from "@/components/activity/activity-card";
+import { ActivityEmpty } from "@/components/activity/activity-empty";
+import { ActivityWrapper } from "@/components/activity/activity-wrapper";
 import type { FC } from "react";
-import type { UserOperationData } from "@/data";
+import { queries } from "@/queries";
+import type { TransactionData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type TransactionsListProps = {
+export type ActivityListProps = {
   address: Address;
-  status: "all" | "proposed" | "executed";
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionsList: FC<TransactionsListProps> = ({
-  address,
-  status,
-}) => {
+export const ActivityList: FC<ActivityListProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: UserOperationData | undefined =
+  const currentData: TransactionData | undefined =
     useQueryClient().getQueryData(
-      queries.user_operation.list({ address, status }).queryKey,
+      queries.transaction.list({ address }).queryKey,
     );
 
-  const { data } = useSuspenseQuery<UserOperationData | null>({
-    queryKey: queries.user_operation.list({ address, status }).queryKey,
+  const { data } = useSuspenseQuery<TransactionData | null>({
+    queryKey: queries.transaction.list({ address }).queryKey,
     queryFn: async () => {
-      const res = await getUserOperations({
+      const res = await getTransactions({
         params: {
           query: {
             address,
-            status: status === "all" ? undefined : status,
           },
         },
       });
@@ -76,16 +71,16 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   });
 
   return (
-    <TransactionsWrapper>
-      {data && data.length === 0 && <TransactionsEmpty></TransactionsEmpty>}
+    <ActivityWrapper>
+      {data && data.length === 0 && <ActivityEmpty></ActivityEmpty>}
       {data &&
-        data.map(userOperation => (
-          <OpCard
-            key={userOperation.hash}
+        data.map(transaction => (
+          <ActivityCard
+            key={transaction.hash}
             address={address}
-            userOperation={userOperation}
+            transaction={transaction}
           />
         ))}
-    </TransactionsWrapper>
+    </ActivityWrapper>
   );
 };

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-import { BannerSection } from "@/components/banner-section";
+import { BannerSection } from "@/components/section/banner-section";
 
 // -----------------------------------------------------------------------------
 // Metadata

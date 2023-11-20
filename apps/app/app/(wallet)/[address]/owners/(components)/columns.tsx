@@ -20,7 +20,7 @@ import { Avatar, Checkbox } from "@lightdotso/ui";
 import { z } from "zod";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { PlaceholderOrb } from "@/components/placeholder-orb";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 
 // -----------------------------------------------------------------------------
 // Schema

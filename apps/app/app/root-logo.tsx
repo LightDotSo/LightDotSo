@@ -17,7 +17,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Logo } from "@/components/light-logo";
+import { Logo } from "@/components/lightdotso/light-logo";
 import { usePathType } from "@/hooks/usePathType";
 import type { FC } from "react";
 

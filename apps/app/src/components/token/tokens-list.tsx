@@ -15,21 +15,21 @@
 
 "use client";
 
-import { getTransactions } from "@lightdotso/client";
+import { getTokens } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { ActivityCard } from "@/components/activity-card";
-import { ActivityEmpty } from "@/components/activity-empty";
-import { ActivityWrapper } from "@/components/activity-wrapper";
+import { TokenCard } from "@/components/token/token-card";
+import { TokensEmpty } from "@/components/token/tokens-empty";
+import { TokensWrapper } from "@/components/token/tokens-wrapper";
 import type { FC } from "react";
 import { queries } from "@/queries";
-import type { TransactionData } from "@/data";
+import type { TokenData, WalletSettingsData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type ActivityListProps = {
+export type TokensListProps = {
   address: Address;
 };
 
@@ -37,23 +37,32 @@ export type ActivityListProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const ActivityList: FC<ActivityListProps> = ({ address }) => {
+export const TokensList: FC<TokensListProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: TransactionData | undefined =
-    useQueryClient().getQueryData(
-      queries.transaction.list({ address }).queryKey,
-    );
+  const walletSettings: WalletSettingsData | undefined =
+    useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
 
-  const { data } = useSuspenseQuery<TransactionData | null>({
-    queryKey: queries.transaction.list({ address }).queryKey,
+  const currentData: TokenData | undefined = useQueryClient().getQueryData(
+    queries.token.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+  );
+
+  const { data } = useSuspenseQuery<TokenData | null>({
+    queryKey: queries.token.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
     queryFn: async () => {
-      const res = await getTransactions({
+      const res = await getTokens({
         params: {
           query: {
             address,
+            is_testnet: walletSettings?.is_enabled_testnet,
           },
         },
       });
@@ -71,16 +80,12 @@ export const ActivityList: FC<ActivityListProps> = ({ address }) => {
   });
 
   return (
-    <ActivityWrapper>
-      {data && data.length === 0 && <ActivityEmpty></ActivityEmpty>}
+    <TokensWrapper>
+      {data && data.length === 0 && <TokensEmpty></TokensEmpty>}
       {data &&
-        data.map(transaction => (
-          <ActivityCard
-            key={transaction.hash}
-            address={address}
-            transaction={transaction}
-          />
+        data.map(token => (
+          <TokenCard key={token.address} address={address} token={token} />
         ))}
-    </ActivityWrapper>
+    </TokensWrapper>
   );
 };

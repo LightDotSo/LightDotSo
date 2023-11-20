@@ -55,7 +55,7 @@ import { isAddress } from "viem";
 import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
 import { normalize } from "viem/ens";
-import { PlaceholderOrb } from "@/components/placeholder-orb";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import * as z from "zod";
 import { successToast } from "@/utils/toast";
 import {

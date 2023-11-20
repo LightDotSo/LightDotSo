@@ -15,8 +15,8 @@
 
 import type { Metadata } from "next";
 
-import { SidebarNav } from "@/components/sidebar-nav";
-import { BannerSection } from "@/components/banner-section";
+import { SidebarNav } from "@/components/nav/sidebar-nav";
+import { BannerSection } from "@/components/section/banner-section";
 
 // -----------------------------------------------------------------------------
 // Const

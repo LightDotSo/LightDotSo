@@ -21,17 +21,17 @@ import {
   Toaster,
 } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
-import { WalletSwitcher } from "@/components/wallet-switcher";
-import { UserNav } from "@/components/user-nav";
-import { MainNav } from "@/components/main-nav";
-import { FeedbackPopover } from "@/components/feedback-popover";
-import { ConnectButton } from "@/components/connect-button";
+import { WalletSwitcher } from "@/components/web3/wallet-switcher";
+import { UserNav } from "@/components/nav/user-nav";
+import { MainNav } from "@/components/nav/main-nav";
+import { FeedbackPopover } from "@/components/feedback/feedback-popover";
+import { ConnectButton } from "@/components/web3/connect-button";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import type { FC } from "react";
 import { Suspense } from "react";
-import { VercelToolbar } from "@/components/vercel-toolbar";
-import { AuthState } from "@/components/auth-state";
+import { VercelToolbar } from "@/components/dev/vercel-toolbar";
+import { AuthState } from "@/components/auth/auth-state";
 import { RootLogo } from "@/app/root-logo";
 import dynamic from "next/dynamic";
 

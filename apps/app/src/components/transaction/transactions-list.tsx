@@ -15,54 +15,50 @@
 
 "use client";
 
-import { getTokens } from "@lightdotso/client";
+import { OpCard } from "@/components/transaction/op-card";
+import { getUserOperations } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { TokenCard } from "@/components/token-card";
-import { TokensEmpty } from "@/components/tokens-empty";
-import { TokensWrapper } from "@/components/tokens-wrapper";
-import type { FC } from "react";
+import { TransactionsEmpty } from "@/components/transaction/transactions-empty";
+import { TransactionsWrapper } from "@/components/transaction/transactions-wrapper";
 import { queries } from "@/queries";
-import type { TokenData, WalletSettingsData } from "@/data";
+import type { FC } from "react";
+import type { UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type TokensListProps = {
+export type TransactionsListProps = {
   address: Address;
+  status: "all" | "proposed" | "executed";
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokensList: FC<TokensListProps> = ({ address }) => {
+export const TransactionsList: FC<TransactionsListProps> = ({
+  address,
+  status,
+}) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const walletSettings: WalletSettingsData | undefined =
-    useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
+  const currentData: UserOperationData | undefined =
+    useQueryClient().getQueryData(
+      queries.user_operation.list({ address, status }).queryKey,
+    );
 
-  const currentData: TokenData | undefined = useQueryClient().getQueryData(
-    queries.token.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet,
-    }).queryKey,
-  );
-
-  const { data } = useSuspenseQuery<TokenData | null>({
-    queryKey: queries.token.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet,
-    }).queryKey,
+  const { data } = useSuspenseQuery<UserOperationData | null>({
+    queryKey: queries.user_operation.list({ address, status }).queryKey,
     queryFn: async () => {
-      const res = await getTokens({
+      const res = await getUserOperations({
         params: {
           query: {
             address,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            status: status === "all" ? undefined : status,
           },
         },
       });
@@ -80,12 +76,16 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
   });
 
   return (
-    <TokensWrapper>
-      {data && data.length === 0 && <TokensEmpty></TokensEmpty>}
+    <TransactionsWrapper>
+      {data && data.length === 0 && <TransactionsEmpty></TransactionsEmpty>}
       {data &&
-        data.map(token => (
-          <TokenCard key={token.address} address={address} token={token} />
+        data.map(userOperation => (
+          <OpCard
+            key={userOperation.hash}
+            address={address}
+            userOperation={userOperation}
+          />
         ))}
-    </TokensWrapper>
+    </TransactionsWrapper>
   );
 };

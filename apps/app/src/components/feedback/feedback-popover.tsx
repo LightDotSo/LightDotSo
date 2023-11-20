@@ -23,7 +23,7 @@ import {
 } from "@lightdotso/ui";
 import { useAuth } from "@/stores/useAuth";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { FeedbackForm } from "@/components/feedback-form";
+import { FeedbackForm } from "@/components/feedback/feedback-form";
 import { useState } from "react";
 import type { FC } from "react";
 
