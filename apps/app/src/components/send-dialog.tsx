@@ -207,7 +207,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   });
 
   useEffect(() => {
-    const subscription = form.watch((value, { _name }) => {
+    const subscription = form.watch((value, { name: _name }) => {
       if (Array.isArray(value.owners)) {
         if (value.owners === undefined) {
           setOwners(null);
