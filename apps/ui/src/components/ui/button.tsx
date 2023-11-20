@@ -27,6 +27,7 @@ const buttonVariants = cva(
         default: "bg-background-primary text-text-weakest hover:bg-background-primary/90",
         destructive:
           "bg-background-destructive text-text-inverse hover:bg-background-destructive/90",
+        loading: "bg-background-primary-weak text-text-weakest",
         outline:
           "text-text border border-border-primary-weak bg-background hover:bg-background-stronger hover:text-text-weak",
         ghost: "hover:bg-background-stronger hover:text-text-weak",
