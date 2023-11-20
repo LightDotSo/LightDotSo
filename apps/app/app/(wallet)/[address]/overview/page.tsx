@@ -25,6 +25,7 @@ import { type Address } from "viem";
 // import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/portfolio-chart";
 import { Suspense } from "react";
 import { TokensList } from "@/components/tokens-list";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -64,8 +65,14 @@ export default async function Page({ params }: PageProps) {
   // Render
   // ---------------------------------------------------------------------------
 
-  queryClient.setQueryData(["portfolio", params.address], portfolio);
-  queryClient.setQueryData(["tokens", params.address], tokens);
+  queryClient.setQueryData(
+    queries.portfolio.get(params.address as Address).queryKey,
+    portfolio,
+  );
+  queryClient.setQueryData(
+    queries.token.list(params.address as Address).queryKey,
+    tokens,
+  );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

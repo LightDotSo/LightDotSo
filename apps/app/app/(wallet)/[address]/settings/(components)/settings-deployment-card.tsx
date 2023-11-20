@@ -25,6 +25,7 @@ import type { Address, Chain, Hex } from "viem";
 import { ContractLinks } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
 import Link from "next/link";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -64,7 +65,7 @@ type UserOperationData = {
 // -----------------------------------------------------------------------------
 
 type SettingsDeploymentCardProps = {
-  address: string;
+  address: Address;
   chain: string;
   image_hash: Hex;
   salt: Hex;
@@ -87,22 +88,22 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   const currentData: UserOperationData | undefined =
-    useQueryClient().getQueryData([
-      "user_operations",
-      "executed",
-      "asc",
-      Number.MAX_SAFE_INTEGER,
-      address,
-    ]);
+    useQueryClient().getQueryData(
+      queries.user_operation.list({
+        address,
+        status: "executed",
+        order: "asc",
+        limit: Number.MAX_SAFE_INTEGER,
+      }).queryKey,
+    );
 
   const { data: ops } = useSuspenseQuery<UserOperationData | null>({
-    queryKey: [
-      "user_operations",
-      "executed",
-      "asc",
-      Number.MAX_SAFE_INTEGER,
+    queryKey: queries.user_operation.list({
       address,
-    ],
+      status: "executed",
+      order: "asc",
+      limit: Number.MAX_SAFE_INTEGER,
+    }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

@@ -16,12 +16,27 @@
 "use client";
 
 import { getTokens } from "@lightdotso/client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TokenCard } from "@/components/token-card";
 import { TokensEmpty } from "@/components/tokens-empty";
 import { TokensWrapper } from "@/components/tokens-wrapper";
 import type { FC } from "react";
+import { queries } from "@/queries";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+type TokenData = {
+  address: string;
+  amount: number;
+  balance_usd: number;
+  chain_id: number;
+  decimals: number;
+  name?: string | null;
+  symbol: string;
+}[];
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,8 +51,16 @@ export type TokensListProps = {
 // -----------------------------------------------------------------------------
 
 export const TokensList: FC<TokensListProps> = ({ address }) => {
-  const { data } = useSuspenseQuery({
-    queryKey: ["tokens", address],
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const currentData: TokenData | undefined = useQueryClient().getQueryData(
+    queries.token.list(address).queryKey,
+  );
+
+  const { data } = useSuspenseQuery<TokenData | null>({
+    queryKey: queries.token.list(address).queryKey,
     queryFn: async () => {
       const res = await getTokens({
         params: {
@@ -52,8 +75,8 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
         data => {
           return data;
         },
-        err => {
-          throw err;
+        _ => {
+          return currentData ?? null;
         },
       );
     },

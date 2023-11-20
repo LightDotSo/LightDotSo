@@ -45,10 +45,23 @@ import {
 import { cn } from "@lightdotso/utils";
 import { PlaceholderOrb } from "./placeholder-orb";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getWallets } from "@lightdotso/client";
 import { useAuth } from "@/stores/useAuth";
+import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
+import { queries } from "@/queries";
+
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+type WalletData = {
+  address: string;
+  factory_address: string;
+  name: string;
+  salt: string;
+}[];
 
 // -----------------------------------------------------------------------------
 // Props
@@ -96,8 +109,16 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
 
   const [scrollIsAtTop, setScrollIsAtTop] = useState<boolean>(true);
 
-  const { data, isLoading } = useSuspenseQuery({
-    queryKey: ["wallets", address],
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const currentData: WalletData | undefined = useQueryClient().getQueryData(
+    queries.user.get(address as Address).queryKey,
+  );
+
+  const { data, isLoading } = useSuspenseQuery<WalletData | null>({
+    queryKey: queries.wallet.list(address as Address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -117,8 +138,8 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         data => {
           return data;
         },
-        err => {
-          throw err;
+        _ => {
+          return currentData ?? null;
         },
       );
     },

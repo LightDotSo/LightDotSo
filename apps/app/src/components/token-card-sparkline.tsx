@@ -20,6 +20,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getTokenPrice } from "@lightdotso/client";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -57,11 +58,11 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   // ---------------------------------------------------------------------------
 
   const currentData: TokenPriceData | undefined = useQueryClient().getQueryData(
-    ["token_price", address, chain_id],
+    queries.token_price.get(address, chain_id).queryKey,
   );
 
   const { data: token_price } = useSuspenseQuery<TokenPriceData | null>({
-    queryKey: ["token_price", address, chain_id],
+    queryKey: queries.token_price.get(address, chain_id).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

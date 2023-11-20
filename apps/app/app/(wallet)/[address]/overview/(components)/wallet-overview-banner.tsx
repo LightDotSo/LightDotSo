@@ -39,6 +39,7 @@ import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparklin
 import type { FC } from "react";
 import { Suspense } from "react";
 import { NetworkStack } from "@/components/network-stack";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Data
@@ -75,13 +76,12 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: WalletData | undefined = useQueryClient().getQueryData([
-    "wallet",
-    address,
-  ]);
+  const currentData: WalletData | undefined = useQueryClient().getQueryData(
+    queries.wallet.get(address).queryKey,
+  );
 
   const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: ["wallet", address],
+    queryKey: queries.wallet.get(address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

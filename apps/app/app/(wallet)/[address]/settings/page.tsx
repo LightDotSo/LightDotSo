@@ -22,6 +22,7 @@ import { Suspense } from "react";
 import { Skeleton } from "@lightdotso/ui";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -61,7 +62,7 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   queryClient.setQueryData(
-    ["wallet_settings", params.address],
+    queries.wallet.settings(params.address as Address).queryKey,
     res.unwrapOr(null),
   );
 

@@ -21,6 +21,7 @@ import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/ow
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import { Skeleton } from "@lightdotso/ui";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -61,7 +62,10 @@ export default async function Page({ params }: PageProps) {
 
   return res.match(
     res => {
-      queryClient.setQueryData(["configuration", params.address], res);
+      queryClient.setQueryData(
+        queries.configuration.get(params.address as Address).queryKey,
+        res,
+      );
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>

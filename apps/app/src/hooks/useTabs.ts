@@ -22,6 +22,7 @@ import { usePathname } from "next/navigation";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/stores/useAuth";
 import { getWalletTab } from "@lightdotso/client";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -84,13 +85,12 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: TabData | undefined = useQueryClient().getQueryData([
-    "wallet_tab",
-    walletAddress,
-  ]);
+  const currentData: TabData | undefined = useQueryClient().getQueryData(
+    queries.wallet.tab({ address: walletAddress }).queryKey,
+  );
 
   const { data } = useSuspenseQuery<TabData | null>({
-    queryKey: ["wallet_tab", walletAddress],
+    queryKey: queries.wallet.tab({ address: walletAddress }).queryKey,
     queryFn: async () => {
       if (!walletAddress) {
         return null;
