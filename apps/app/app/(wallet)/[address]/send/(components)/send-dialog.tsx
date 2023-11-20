@@ -37,7 +37,6 @@ import {
   SelectValue,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useEffect, useCallback, useMemo } from "react";
@@ -57,8 +56,8 @@ import {
   ownerParser,
   useOwnersQueryState,
   useTypeQueryState,
-} from "@/app/(authenticated)/new/(hooks)";
-import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
+} from "@/app/(wallet)/[address]/send/(hooks)";
+import type { Owner, Owners } from "@/app/(wallet)/[address]/send/(hooks)";
 import { useAuth } from "@/stores/useAuth";
 import { getTokens } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
@@ -243,7 +242,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   }, [defaultValues]);
 
   const navigateToStep = useCallback(() => {
-    const url = new URL(steps[2].href, window.location.origin);
+    const url = new URL(window.location.origin);
     url.searchParams.set("type", type);
     url.searchParams.set("owners", ownerParser.serialize(owners));
     router.push(url.toString());
