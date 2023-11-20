@@ -51,17 +51,7 @@ import { useAuth } from "@/stores/useAuth";
 import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
 import { queries } from "@/queries";
-
-/// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type WalletData = {
-  address: string;
-  factory_address: string;
-  name: string;
-  salt: string;
-}[];
+import type { WalletData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -113,11 +103,11 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: WalletData | undefined = useQueryClient().getQueryData(
+  const currentData: WalletData[] | undefined = useQueryClient().getQueryData(
     queries.wallet.list(address as Address).queryKey,
   );
 
-  const { data, isLoading } = useSuspenseQuery<WalletData | null>({
+  const { data, isLoading } = useSuspenseQuery<WalletData[] | null>({
     queryKey: queries.wallet.list(address as Address).queryKey,
     queryFn: async () => {
       if (!address) {

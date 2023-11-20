@@ -22,20 +22,7 @@ import { SparkAreaChart } from "@tremor/react";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 import { queries } from "@/queries";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type PortfolioData = {
-  balance: number;
-  balance_change_24h: number;
-  balance_change_24h_percentage: number;
-  balances: {
-    balance: number;
-    date: string;
-  }[];
-};
+import type { PortfolioData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

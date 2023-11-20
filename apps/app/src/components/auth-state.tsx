@@ -25,14 +25,7 @@ import { isAddress } from "viem";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getUser } from "@lightdotso/client";
 import { queries } from "@/queries";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type UserData = {
-  id: string;
-};
+import type { UserData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Component

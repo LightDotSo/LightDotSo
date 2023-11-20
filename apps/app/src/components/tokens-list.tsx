@@ -23,28 +23,7 @@ import { TokensEmpty } from "@/components/tokens-empty";
 import { TokensWrapper } from "@/components/tokens-wrapper";
 import type { FC } from "react";
 import { queries } from "@/queries";
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type WalletSettingsData = {
-  is_enabled_testnet: boolean;
-};
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type TokenData = {
-  address: string;
-  amount: number;
-  balance_usd: number;
-  chain_id: number;
-  decimals: number;
-  name?: string | null;
-  symbol: string;
-}[];
+import type { TokenData, WalletSettingsData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
