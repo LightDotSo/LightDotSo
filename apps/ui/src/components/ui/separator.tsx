@@ -17,10 +17,9 @@
 
 import { cn } from "@lightdotso/utils"
 import * as SeparatorPrimitive from "@radix-ui/react-separator"
+import { forwardRef } from "react";
 
-
-
-const Separator = React.forwardRef<
+const Separator = forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
 >(

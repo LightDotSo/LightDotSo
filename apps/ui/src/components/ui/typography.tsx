@@ -16,10 +16,9 @@
 /* eslint-disable jsx-a11y/heading-has-content */
 
 import { cn } from "@lightdotso/utils"
+import { forwardRef } from "react";
 
-
-
-const H1 = React.forwardRef<
+const H1 = forwardRef<
   HTMLHeadingElement,
   React.ComponentPropsWithoutRef<"h1">
 >(({ className, ...props }, ref) => (
@@ -33,7 +32,7 @@ const H1 = React.forwardRef<
   />
 ))
 
-const H2 = React.forwardRef<
+const H2 = forwardRef<
   HTMLHeadingElement,
   React.ComponentPropsWithoutRef<"h2">
 >(({ className, ...props }, ref) => (
@@ -47,7 +46,7 @@ const H2 = React.forwardRef<
   />
 ))
 
-const H3 = React.forwardRef<
+const H3 = forwardRef<
   HTMLHeadingElement,
   React.ComponentPropsWithoutRef<"h3">
 >(({ className, ...props }, ref) => (
@@ -61,7 +60,7 @@ const H3 = React.forwardRef<
   />
 ))
 
-const H4 = React.forwardRef<
+const H4 = forwardRef<
   HTMLHeadingElement,
   React.ComponentPropsWithoutRef<"h4">
 >(({ className, ...props }, ref) => (
@@ -75,7 +74,7 @@ const H4 = React.forwardRef<
   />
 ))
 
-const P = React.forwardRef<
+const P = forwardRef<
   HTMLParagraphElement,
   React.ComponentPropsWithoutRef<"p">
 >(({ className, ...props }, ref) => (
@@ -86,7 +85,7 @@ const P = React.forwardRef<
   />
 ))
 
-const BlockQuote = React.forwardRef<
+const BlockQuote = forwardRef<
   HTMLQuoteElement,
   React.ComponentPropsWithoutRef<"blockquote">
 >(({ className, ...props }, ref) => (
@@ -100,28 +99,28 @@ const BlockQuote = React.forwardRef<
   />
 ))
 
-const Table = React.forwardRef<
+const Table = forwardRef<
   HTMLTableElement,
   React.ComponentPropsWithoutRef<"table">
 >(({ className, ...props }, ref) => (
   <table ref={ref} className={cn("w-full", className)} {...props} />
 ))
 
-const THead = React.forwardRef<
+const THead = forwardRef<
   HTMLTableSectionElement,
   React.ComponentPropsWithoutRef<"thead">
 >(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("", className)} {...props} />
 ))
 
-const TBody = React.forwardRef<
+const TBody = forwardRef<
   HTMLTableSectionElement,
   React.ComponentPropsWithoutRef<"tbody">
 >(({ className, ...props }, ref) => (
   <tbody ref={ref} className={cn("", className)} {...props} />
 ))
 
-const TR = React.forwardRef<
+const TR = forwardRef<
   HTMLTableRowElement,
   React.ComponentPropsWithoutRef<"tr">
 >(({ className, ...props }, ref) => (
@@ -135,7 +134,7 @@ const TR = React.forwardRef<
   />
 ))
 
-const TD = React.forwardRef<
+const TD = forwardRef<
   HTMLTableCellElement,
   React.ComponentPropsWithoutRef<"td">
 >(({ className, ...props }, ref) => (
@@ -149,7 +148,7 @@ const TD = React.forwardRef<
   />
 ))
 
-const TH = React.forwardRef<
+const TH = forwardRef<
   HTMLTableCellElement,
   React.ComponentPropsWithoutRef<"th">
 >(({ className, ...props }, ref) => (
@@ -163,7 +162,7 @@ const TH = React.forwardRef<
   />
 ))
 
-const UL = React.forwardRef<
+const UL = forwardRef<
   HTMLUListElement,
   React.ComponentPropsWithoutRef<"ul">
 >(({ className, ...props }, ref) => (
@@ -174,14 +173,14 @@ const UL = React.forwardRef<
   />
 ))
 
-const LI = React.forwardRef<
+const LI = forwardRef<
   HTMLLIElement,
   React.ComponentPropsWithoutRef<"li">
 >(({ className, ...props }, ref) => (
   <li ref={ref} className={cn("", className)} {...props} />
 ))
 
-const InlineCode = React.forwardRef<
+const InlineCode = forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"code">
 >(({ className, ...props }, ref) => (
@@ -195,7 +194,7 @@ const InlineCode = React.forwardRef<
   />
 ))
 
-const Lead = React.forwardRef<
+const Lead = forwardRef<
   HTMLParagraphElement,
   React.ComponentPropsWithoutRef<"p">
 >(({ className, ...props }, ref) => (
@@ -206,7 +205,7 @@ const Lead = React.forwardRef<
   />
 ))
 
-const Large = React.forwardRef<
+const Large = forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<"div">
 >(({ className, ...props }, ref) => (
@@ -220,7 +219,7 @@ const Large = React.forwardRef<
   />
 ))
 
-const Small = React.forwardRef<
+const Small = forwardRef<
   HTMLElement,
   React.ComponentPropsWithoutRef<"small">
 >(({ className, ...props }, ref) => (
@@ -231,7 +230,7 @@ const Small = React.forwardRef<
   />
 ))
 
-const Subtle = React.forwardRef<
+const Subtle = forwardRef<
   HTMLParagraphElement,
   React.ComponentPropsWithoutRef<"p">
 >(({ className, ...props }, ref) => (
