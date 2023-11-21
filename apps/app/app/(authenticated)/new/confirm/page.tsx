@@ -16,8 +16,8 @@
 import {
   NewRoot,
   StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root";
-import { ConfirmForm } from "@/app/(authenticated)/new/confirm/confirm-form";
+} from "@/app/(authenticated)/new/(components)/root/root";
+import { ConfirmForm } from "@/app/(authenticated)/new/confirm/(components)/confirm-form";
 
 // -----------------------------------------------------------------------------
 // Page

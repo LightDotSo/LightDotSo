@@ -13,22 +13,5 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  NewRoot,
-  StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root/root";
-import { NewWalletForm } from "@/app/(authenticated)/new/(components)/new-wallet-form";
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default function Page() {
-  return (
-    <>
-      <NewRoot currentStepType={StepsEnum.New}>
-        <NewWalletForm />
-      </NewRoot>
-    </>
-  );
-}
+export { assetParser, useAssetsQueryState } from "./useAssetsQueryState";
+export type { Asset, Assets } from "./useAssetsQueryState";

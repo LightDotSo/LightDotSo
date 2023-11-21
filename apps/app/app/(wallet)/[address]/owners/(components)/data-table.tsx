@@ -15,6 +15,14 @@
 
 "use client";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@lightdotso/ui";
 import type {
   ColumnDef,
   ColumnFiltersState,
@@ -31,16 +39,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
-import { DataTableToolbar } from "./data-table-toolbar";
+
 import { useState } from "react";
+
+import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { GetEvents } from "inngest";
-import { inngest } from "./client";
+import { inngest } from "@/inngest/client";
 type Events = GetEvents<typeof inngest>;
 
 // -----------------------------------------------------------------------------

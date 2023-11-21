@@ -18,8 +18,8 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { Button, Input } from "@lightdotso/ui";
-import { DataTableViewOptions } from "./data-table-view-options";
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableViewOptions } from "@/app/(wallet)/[address]/owners/(components)/data-table-view-options";
+import { DataTableFacetedFilter } from "@/app/(wallet)/[address]/owners/(components)/data-table-faceted-filter";
 import { MAX_WEIGHT } from "@/const/configuration";
 
 // -----------------------------------------------------------------------------

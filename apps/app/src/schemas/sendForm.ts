@@ -13,22 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  NewRoot,
-  StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root/root";
-import { NewWalletForm } from "@/app/(authenticated)/new/(components)/new-wallet-form";
+import * as z from "zod";
 
 // -----------------------------------------------------------------------------
-// Page
+// Schema
 // -----------------------------------------------------------------------------
 
-export default function Page() {
-  return (
-    <>
-      <NewRoot currentStepType={StepsEnum.New}>
-        <NewWalletForm />
-      </NewRoot>
-    </>
-  );
-}
+export const sendFormConfigurationSchema = z.object({
+  assets: z.array(
+    z.object({
+      address: z
+        .string()
+        .min(1, { message: "Please enter a valid address." })
+        .optional(),
+      addressOrEns: z.string().optional(),
+      weight: z
+        .number()
+        .int()
+        .min(1, { message: "Weight must be at least 1." }),
+    }),
+  ),
+});

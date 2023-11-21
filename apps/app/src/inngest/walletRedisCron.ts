@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { redis } from "@/clients/redis";
-import { inngest } from "./client";
+import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
 // Inngest

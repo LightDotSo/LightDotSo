@@ -16,8 +16,8 @@
 import {
   NewRoot,
   StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root";
-import { ConfigurationForm } from "@/app/(authenticated)/new/configuration/configuration-form";
+} from "@/app/(authenticated)/new/(components)/root/root";
+import { ConfigurationForm } from "@/app/(authenticated)/new/configuration/(components)/configuration-form";
 
 // -----------------------------------------------------------------------------
 // Page

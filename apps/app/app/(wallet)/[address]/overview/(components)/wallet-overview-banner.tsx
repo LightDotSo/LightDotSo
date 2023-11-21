@@ -35,7 +35,7 @@ import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getWallet } from "@lightdotso/client";
-import { WalletOverviewBannerSparkline } from "./wallet-overview-banner-sparkline";
+import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
 import type { FC } from "react";
 import { Suspense } from "react";
 import { NetworkStack } from "@/components/network/network-stack";
