@@ -18,8 +18,8 @@
 // License: Apache 2.0
 
 import { bytesToString, bytesToHex } from "viem";
-import type { RecoveryNode, RecoveryTopology } from "../typings";
 import { SignaturePartType } from "../typings";
+import type { RecoveryNode, RecoveryTopology } from "../typings";
 
 export const SignaturePartTypeLength = 66;
 

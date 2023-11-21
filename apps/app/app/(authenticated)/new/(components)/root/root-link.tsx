@@ -17,10 +17,10 @@
 
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { cn } from "@lightdotso/utils";
-import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
-import type { FC } from "react";
+import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useCallback } from "react";
+import type { FC } from "react";
 import {
   steps,
   StepsEnum,

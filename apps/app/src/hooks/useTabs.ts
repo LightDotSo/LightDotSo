@@ -19,8 +19,8 @@
 import { getWalletTab } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
 import { useState, useEffect, useMemo } from "react";
+import type { ReactNode } from "react";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
 

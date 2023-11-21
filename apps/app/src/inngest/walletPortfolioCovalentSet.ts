@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Chain } from "@covalenthq/client-sdk";
 import { CovalentClient } from "@covalenthq/client-sdk";
+import type { Chain } from "@covalenthq/client-sdk";
 import { NonRetriableError } from "inngest";
 import { getAddress } from "viem";
 import { ChainIdMapping, ChainIdTestnetMapping } from "@/const/covalent";

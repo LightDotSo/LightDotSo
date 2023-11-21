@@ -17,8 +17,8 @@
 
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import type { FC, ReactNode } from "react";
 import { useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
+import type { FC, ReactNode } from "react";
 import { usePositioner } from "@/hooks/usePositioner";
 
 // -----------------------------------------------------------------------------

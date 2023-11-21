@@ -23,12 +23,6 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
 import {
   flexRender,
   getCoreRowModel,
@@ -38,6 +32,12 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+} from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
 } from "@tanstack/react-table";
 import { useState } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table-toolbar";

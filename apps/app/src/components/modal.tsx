@@ -17,8 +17,8 @@
 
 import { Dialog, DialogContent } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
-import type { FC } from "react";
 import { useCallback } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

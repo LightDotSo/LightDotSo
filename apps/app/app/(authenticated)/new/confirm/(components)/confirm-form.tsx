@@ -35,8 +35,8 @@ import {
 } from "@lightdotso/ui";
 import { backOff } from "exponential-backoff";
 import { useRouter } from "next/navigation";
-import type { FC } from "react";
 import { useCallback, useEffect, useMemo } from "react";
+import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";

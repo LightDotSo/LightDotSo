@@ -19,8 +19,8 @@ import { buttonVariants } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import type { FC } from "react";
 import { useEffect } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

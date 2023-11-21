@@ -16,8 +16,8 @@
 "use client";
 
 import { Button } from "@lightdotso/ui";
-import type { SIWEConfig, SIWESession } from "connectkit";
 import { useSIWE, useModal } from "connectkit";
+import type { SIWEConfig, SIWESession } from "connectkit";
 import { getCsrfToken, signIn, getSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import type { FC } from "react";

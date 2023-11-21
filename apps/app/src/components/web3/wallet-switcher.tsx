@@ -43,10 +43,10 @@ import {
 } from "@radix-ui/react-icons";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
-import type { UIEvent, FC } from "react";
 import { Suspense, useEffect, useState } from "react";
-import type { Address } from "viem";
+import type { UIEvent, FC } from "react";
 import { getAddress, isAddress } from "viem";
+import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";

@@ -26,8 +26,8 @@ import {
 import { SocialLinks } from "@lightdotso/const";
 import clsx from "clsx";
 import Link from "next/link";
-import type { FC } from "react";
 import { useState } from "react";
+import type { FC } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
 import { SiReadthedocs } from "react-icons/si";
 import { usePopper } from "react-popper";

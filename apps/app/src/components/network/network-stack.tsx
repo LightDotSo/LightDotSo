@@ -15,8 +15,8 @@
 
 import clsx from "clsx";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import type { FC } from "react";
 import { useReducer, useCallback } from "react";
+import type { FC } from "react";
 import type { Address, Chain } from "viem";
 import {
   arbitrum,

@@ -28,8 +28,8 @@ import {
   ChatBubbleIcon,
 } from "@radix-ui/react-icons";
 import type { IconProps } from "@radix-ui/react-icons/dist/types";
-import type { FC, HTMLAttributes } from "react";
 import React, { Suspense, useMemo, useState, useEffect } from "react";
+import type { FC, HTMLAttributes } from "react";
 import { Tabs } from "@/components/nav/tabs-nav";
 import { usePathType } from "@/hooks/usePathType";
 import { useTabs } from "@/hooks/useTabs";

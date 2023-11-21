@@ -18,10 +18,10 @@
 import { getUser } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
-import type { FC } from "react";
 import { useEffect } from "react";
-import type { Address } from "viem";
+import type { FC } from "react";
 import { isAddress } from "viem";
+import type { Address } from "viem";
 import { useAccount, useEnsName } from "wagmi";
 import type { UserData } from "@/data";
 import { queries } from "@/queries";

@@ -15,8 +15,8 @@
 
 // From: https://github.com/0xsequence/wallet-contracts/blob/e0c5382636a88b4db4bcf0a70623355d7cd30fb4/test/utils/sequence.ts#L369
 
-import type { Address } from "viem";
 import { encodePacked, keccak256, fromBytes } from "viem";
+import type { Address } from "viem";
 
 export const subdigestOf = (
   address: Address,

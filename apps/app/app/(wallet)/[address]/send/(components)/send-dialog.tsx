@@ -43,11 +43,11 @@ import { cn } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import type { FC } from "react";
 import { useEffect, useCallback, useMemo } from "react";
+import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import type { Address } from "viem";
 import { isAddress } from "viem";
+import type { Address } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import {

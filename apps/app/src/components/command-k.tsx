@@ -35,8 +35,8 @@ import {
   DeleteIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import type { FC } from "react";
 import { useState, useEffect, useCallback } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
