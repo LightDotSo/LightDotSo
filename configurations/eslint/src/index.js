@@ -80,6 +80,7 @@ module.exports = {
       },
     ],
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
+    "no-multiple-empty-lines": "error",
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/jsx-closing-bracket-location": ["error", "line-aligned"],
     "@next/next/no-html-link-for-pages": "off",
