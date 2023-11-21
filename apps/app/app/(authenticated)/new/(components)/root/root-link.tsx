@@ -15,12 +15,12 @@
 
 "use client";
 
+import { cn } from "@lightdotso/utils";
 import { CheckIcon } from "@heroicons/react/24/outline";
 import { useSearchParams, useRouter } from "next/navigation";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import type { FC } from "react";
-import { cn } from "@lightdotso/utils";
 import {
   steps,
   StepsEnum,

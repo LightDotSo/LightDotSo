@@ -15,17 +15,6 @@
 
 "use client";
 
-import {
-  BanknotesIcon,
-  BuildingLibraryIcon,
-  ShieldExclamationIcon,
-} from "@heroicons/react/24/solid";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useEffect, useCallback } from "react";
-import type { FC } from "react";
-import { useForm } from "react-hook-form";
-import type * as z from "zod";
 import { NotionLinks } from "@lightdotso/const";
 import {
   Button,
@@ -49,6 +38,17 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@lightdotso/ui";
+import {
+  BanknotesIcon,
+  BuildingLibraryIcon,
+  ShieldExclamationIcon,
+} from "@heroicons/react/24/solid";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect, useCallback } from "react";
+import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import type * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   useNameQueryState,

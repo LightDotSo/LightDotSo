@@ -16,6 +16,7 @@
 "use client";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { SocialLinks } from "@lightdotso/const";
 import { Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -29,7 +30,6 @@ import type { FC } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
 import { SiReadthedocs } from "react-icons/si";
 import { usePopper } from "react-popper";
-import { SocialLinks } from "@lightdotso/const";
 import { Logo } from "@/components/Logo";
 
 export const Header: FC = () => {

@@ -15,6 +15,16 @@
 
 "use client";
 
+import { getWallet } from "@lightdotso/client";
+import {
+  Avatar,
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@lightdotso/ui";
+import { splitAddress } from "@lightdotso/utils";
 import {
   ClipboardDocumentIcon,
   ClipboardDocumentCheckIcon,
@@ -26,16 +36,6 @@ import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
-import { getWallet } from "@lightdotso/client";
-import {
-  Avatar,
-  Button,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@lightdotso/ui";
-import { splitAddress } from "@lightdotso/utils";
 import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { NetworkStack } from "@/components/network/network-stack";

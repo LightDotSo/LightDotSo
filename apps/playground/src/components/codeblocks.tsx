@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { cn } from "@lightdotso/utils";
 import { highlight as lighterHighlight } from "@code-hike/lighter";
 import type { Theme } from "@code-hike/lighter";
 import { cache, Fragment } from "react";
-import { cn } from "@lightdotso/utils";
 
 const highlight = cache(lighterHighlight);
 
