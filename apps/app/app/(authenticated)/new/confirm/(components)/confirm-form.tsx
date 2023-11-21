@@ -16,6 +16,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { backOff } from "exponential-backoff";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo } from "react";
+import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import { isAddress } from "viem";
+import { normalize } from "viem/ens";
+import type * as z from "zod";
 import { getWallet } from "@lightdotso/client";
 import {
   Button,
@@ -33,14 +41,6 @@ import {
   FormLabel,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { backOff } from "exponential-backoff";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo } from "react";
-import type { FC } from "react";
-import { useForm } from "react-hook-form";
-import { isAddress } from "viem";
-import { normalize } from "viem/ens";
-import type * as z from "zod";
 import {
   useNameQueryState,
   useOwnersQueryState,

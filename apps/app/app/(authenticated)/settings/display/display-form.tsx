@@ -16,6 +16,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   Button,
   Checkbox,
@@ -27,9 +30,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@lightdotso/ui";
-import type { FC } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------

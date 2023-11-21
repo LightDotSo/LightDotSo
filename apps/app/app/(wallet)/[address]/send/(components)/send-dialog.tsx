@@ -16,6 +16,16 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { Trash2Icon, UserPlus2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useCallback, useMemo } from "react";
+import type { FC } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { isAddress } from "viem";
+import type { Address } from "viem";
+import { normalize } from "viem/ens";
+import * as z from "zod";
 import { getTokens } from "@lightdotso/client";
 import {
   Accordion,
@@ -40,16 +50,6 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
-import type { FC } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress } from "viem";
-import type { Address } from "viem";
-import { normalize } from "viem/ens";
-import * as z from "zod";
 import {
   assetParser,
   useAssetsQueryState,

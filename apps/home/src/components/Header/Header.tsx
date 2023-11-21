@@ -16,14 +16,12 @@
 "use client";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Logo } from "@/components/Logo";
 import { Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   GlobeAltIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
-import { SocialLinks } from "@lightdotso/const";
 import clsx from "clsx";
 import Link from "next/link";
 import { useState } from "react";
@@ -31,6 +29,8 @@ import type { FC } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
 import { SiReadthedocs } from "react-icons/si";
 import { usePopper } from "react-popper";
+import { SocialLinks } from "@lightdotso/const";
+import { Logo } from "@/components/Logo";
 
 export const Header: FC = () => {
   let [communityElement, setCommunityElement] =

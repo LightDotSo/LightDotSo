@@ -15,8 +15,8 @@
 
 import { highlight as lighterHighlight } from "@code-hike/lighter";
 import type { Theme } from "@code-hike/lighter";
-import { cn } from "@lightdotso/utils";
 import { cache, Fragment } from "react";
+import { cn } from "@lightdotso/utils";
 
 const highlight = cache(lighterHighlight);
 

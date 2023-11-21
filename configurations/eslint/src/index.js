@@ -66,12 +66,13 @@ module.exports = {
         "newlines-between": "never",
         pathGroups: [
           {
-            group: "builtin",
             pattern: "@lightdotso/**",
+            group: "external",
+            position: "after",
           },
           {
-            group: "internal",
             pattern: "@/**",
+            group: "internal",
           },
         ],
         pathGroupsExcludedImportTypes: ["builtin"],

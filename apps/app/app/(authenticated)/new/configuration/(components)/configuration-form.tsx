@@ -16,6 +16,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash2Icon, UserPlus2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useCallback, useMemo } from "react";
+import type { FC } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { isAddress } from "viem";
+import { normalize } from "viem/ens";
+import * as z from "zod";
 import {
   Avatar,
   Button,
@@ -44,14 +52,6 @@ import {
   TooltipProvider,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
-import type { FC } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress } from "viem";
-import { normalize } from "viem/ens";
-import * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   ownerParser,
