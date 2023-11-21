@@ -73,6 +73,7 @@ module.exports = {
           {
             pattern: "@/**",
             group: "internal",
+            position: "after",
           },
         ],
         pathGroupsExcludedImportTypes: ["builtin"],
