@@ -68,7 +68,7 @@ module.exports = {
           {
             pattern: "@lightdotso/**",
             group: "external",
-            position: "after",
+            position: "before",
           },
           {
             pattern: "@/**",
