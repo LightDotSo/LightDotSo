@@ -16,6 +16,7 @@
 "use client";
 
 import { Button } from "@lightdotso/ui";
+import { useState } from "react";
 import { cn } from "./cn";
 import {
   Collapsible,
@@ -35,7 +36,7 @@ export function CollapsiblePreview({
   defaultExpanded,
   ...props
 }: CodeBlockProps) {
-  const [isOpened, setIsOpened] = React.useState(defaultExpanded ?? false);
+  const [isOpened, setIsOpened] = useState(defaultExpanded ?? false);
 
   return (
     <Collapsible open={isOpened} onOpenChange={setIsOpened}>

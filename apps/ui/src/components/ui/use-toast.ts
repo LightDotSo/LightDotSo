@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Inspired by react-hot-toast library
+import { useState } from "react";
 import type { ToastActionElement, ToastProps } from "./toast";
 
 const TOAST_LIMIT = 1;
@@ -180,7 +181,7 @@ function toast({ ...props }: Toast) {
 }
 
 function useToast() {
-  const [state, setState] = React.useState<State>(memoryState);
+  const [state, setState] = useState<State>(memoryState);
 
   React.useEffect(() => {
     listeners.push(setState);
