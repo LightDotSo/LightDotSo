@@ -64,14 +64,6 @@ module.exports = {
           order: "asc",
         },
         "newlines-between": "never",
-        groups: [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index",
-        ],
         pathGroups: [
           {
             group: "builtin",
@@ -82,6 +74,7 @@ module.exports = {
             pattern: "@/**",
           },
         ],
+        pathGroupsExcludedImportTypes: ["builtin"],
       },
     ],
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
