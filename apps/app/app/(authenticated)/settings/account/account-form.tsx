@@ -105,7 +105,7 @@ export const AccountForm: FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="name"
@@ -150,13 +150,13 @@ export const AccountForm: FC = () => {
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
+                    initialFocus
                     mode="single"
                     selected={field.value}
-                    onSelect={field.onChange}
                     disabled={date =>
                       date > new Date() || date < new Date("1900-01-01")
                     }
-                    initialFocus
+                    onSelect={field.onChange}
                   />
                 </PopoverContent>
               </Popover>
@@ -200,8 +200,8 @@ export const AccountForm: FC = () => {
                     <CommandGroup>
                       {languages.map(language => (
                         <CommandItem
-                          value={language.value}
                           key={language.value}
+                          value={language.value}
                           onSelect={value => {
                             form.setValue("language", value);
                           }}

@@ -137,7 +137,7 @@ export const NewWalletForm: FC = () => {
       <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
                 name="type"
@@ -145,10 +145,10 @@ export const NewWalletForm: FC = () => {
                   <div className="grid gap-3">
                     <FormLabel htmlFor="type">Type</FormLabel>
                     <RadioGroup
-                      onValueChange={field.onChange}
                       defaultValue={field.value}
                       id="type"
                       className="grid grid-cols-3 gap-4"
+                      onValueChange={field.onChange}
                     >
                       <div>
                         <Tooltip>
@@ -201,9 +201,9 @@ export const NewWalletForm: FC = () => {
                       <div>
                         <Tooltip>
                           <RadioGroupItem
+                            disabled
                             value="2fa"
                             id="2fa"
-                            disabled
                             className="peer sr-only"
                           />
                           <TooltipTrigger asChild>
@@ -264,8 +264,8 @@ export const NewWalletForm: FC = () => {
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}
-                  onClick={() => navigateToStep()}
                   type="submit"
+                  onClick={() => navigateToStep()}
                 >
                   Continue
                 </Button>

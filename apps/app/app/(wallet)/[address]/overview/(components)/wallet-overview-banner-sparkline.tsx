@@ -112,6 +112,8 @@ export const WalletOverviewBannerSparkline: FC<
         </span>
       </div>
       <SparkAreaChart
+        // @ts-expect-error
+        showAnimation
         data={[...portfolio.balances].reverse()}
         categories={["balance"]}
         index="date"
@@ -121,8 +123,6 @@ export const WalletOverviewBannerSparkline: FC<
             : "red",
         ]}
         className="h-8 w-full"
-        // @ts-expect-error
-        showAnimation
       />
     </div>
   );

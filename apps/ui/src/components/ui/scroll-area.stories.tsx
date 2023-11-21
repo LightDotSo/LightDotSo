@@ -37,7 +37,7 @@ export const Base: Story = {
           .map((_, i, a) => `v1.2.0-beta.${a.length - i}`)
           .map(tag => (
             <React.Fragment key={tag}>
-              <div className="text-sm" key={tag}>
+              <div key={tag} className="text-sm">
                 {tag}
               </div>
               <Separator className="my-2" />

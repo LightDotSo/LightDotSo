@@ -68,7 +68,7 @@ export const Protocol: FC = () => {
         </h2>
         <div className="mt-10 flex justify-center">
           <div className="inline-flex">
-            <Link passHref href="/explore" legacyBehavior>
+            <Link passHref legacyBehavior href="/explore">
               <button className="inline-flex items-center justify-center rounded-full bg-bg-darker px-5 py-3 text-base font-medium text-contrast-higher hover:bg-bg-light">
                 <GlobeAltIcon
                   className="-ml-0.5 mr-2 h-4 w-4"

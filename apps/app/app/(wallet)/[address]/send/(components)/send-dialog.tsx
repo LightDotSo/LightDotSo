@@ -322,14 +322,14 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
                   key={index}
+                  collapsible
                   className="rounded-md border border-border bg-background-weak p-6"
                   type="single"
-                  collapsible
                 >
                   <AccordionItem className="border-0" value="item-1">
                     <AccordionTrigger>Recepient</AccordionTrigger>
@@ -432,8 +432,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                           </Button>
                         </div>
                         <FormField
-                          control={form.control}
                           key={field.id}
+                          control={form.control}
                           name={`assets.${index}.weight`}
                           render={({ field }) => (
                             <>
@@ -441,11 +441,11 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                 <div className="">
                                   <Label htmlFor="weight">Asset</Label>
                                   <Select
+                                    defaultValue={field.value.toString()}
                                     onValueChange={value => {
                                       form.trigger();
                                       field.onChange(parseInt(value));
                                     }}
-                                    defaultValue={field.value.toString()}
                                     onOpenChange={() => {}}
                                   >
                                     <FormControl>
@@ -503,8 +503,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
               <Button
                 disabled={!form.formState.isValid}
                 variant={form.formState.isValid ? "default" : "outline"}
-                onClick={() => navigateToStep()}
                 type="submit"
+                onClick={() => navigateToStep()}
               >
                 Continue
               </Button>

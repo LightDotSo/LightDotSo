@@ -77,7 +77,7 @@ export const Hero: FC = () => {
             Light enables users to discover connections that was not possible
             before.
           </p>
-          <Link passHref href="/explore" legacyBehavior>
+          <Link passHref legacyBehavior href="/explore">
             <button className="inline-flex items-center rounded-full bg-bg-darker px-6 py-3 text-base font-medium text-contrast-higher shadow-sm hover:bg-bg-light">
               <GlobeAltIcon
                 className="-ml-0.5 mr-2 h-4 w-4"

@@ -103,6 +103,7 @@ export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
         <>
           <WalletOverviewBannerSparkline address={address} />
           <AreaChart
+            showAnimation
             className="mt-12 h-72 w-full"
             data={balances}
             index="date"
@@ -114,7 +115,6 @@ export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
             ]}
             showLegend={false}
             valueFormatter={valueFormatter}
-            showAnimation
           />
         </>
       </div>

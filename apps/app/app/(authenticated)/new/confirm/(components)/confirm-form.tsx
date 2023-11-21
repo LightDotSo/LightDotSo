@@ -220,7 +220,7 @@ export const ConfirmForm: FC = () => {
       <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
               {form.formState.errors && (
                 <pre className="text-sm font-medium text-text-destructive">
                   {/* Print any message one line at a time */}

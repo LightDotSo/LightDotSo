@@ -68,9 +68,9 @@ interface RootProps {
 export const Root: FC<RootProps> = ({ children }) => {
   return (
     <html
+      suppressHydrationWarning
       lang="en"
       className={`${inter.variable} font-sans`}
-      suppressHydrationWarning
     >
       <body className="min-h-[100dvh] bg-background-body">
         <ThemeProvider attribute="class">

@@ -73,7 +73,7 @@ export const AppearanceForm: FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="font"
@@ -114,9 +114,9 @@ export const AppearanceForm: FC = () => {
               </FormDescription>
               <FormMessage />
               <RadioGroup
-                onValueChange={field.onChange}
                 defaultValue={field.value}
                 className="grid max-w-md grid-cols-2 gap-8 pt-2"
+                onValueChange={field.onChange}
               >
                 <FormItem>
                   <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">

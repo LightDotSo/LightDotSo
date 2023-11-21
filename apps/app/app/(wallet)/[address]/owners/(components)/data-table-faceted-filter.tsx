@@ -86,8 +86,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                     .filter(option => selectedValues.has(option.value))
                     .map(option => (
                       <Badge
-                        variant="secondary"
                         key={option.value}
+                        variant="secondary"
                         className="rounded-sm px-1 font-normal"
                       >
                         {option.label}
@@ -150,8 +150,8 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => column?.setFilterValue(undefined)}
                     className="justify-center text-center"
+                    onSelect={() => column?.setFilterValue(undefined)}
                   >
                     Clear filters
                   </CommandItem>

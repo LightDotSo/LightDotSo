@@ -86,17 +86,17 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/react-in-jsx-scope": "off",
-    // "react/jsx-sort-props": [
-    //   "error",
-    //   {
-    //     callbacksLast: true,
-    //     ignoreCase: true,
-    //     noSortAlphabetically: true,
-    //     reservedFirst: true,
-    //     shorthandFirst: true,
-    //     shorthandLast: true,
-    //   },
-    // ],
+    "react/jsx-sort-props": [
+      "error",
+      {
+        callbacksLast: true,
+        ignoreCase: true,
+        noSortAlphabetically: true,
+        reservedFirst: true,
+        shorthandFirst: true,
+        shorthandLast: true,
+      },
+    ],
     "react/self-closing-comp": "error",
     "tailwindcss/no-custom-classname": [
       0,

@@ -98,13 +98,13 @@ export const Tabs: FC<TabProps> = ({
         const href = firstSlug + item.href;
 
         return (
-          <Link key={i} href={href} passHref legacyBehavior>
+          <Link key={i} passHref legacyBehavior href={href}>
             <motion.a
+              ref={el => (anchorRefs[i] = el)}
               className={clsx(
                 "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
                 !isActive ? "text-text-weak" : "text-text",
               )}
-              ref={el => (anchorRefs[i] = el)}
               onPointerEnter={() => {
                 setHoveredTabIndex(i);
                 router.prefetch(href);

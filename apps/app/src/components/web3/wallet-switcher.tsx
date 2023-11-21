@@ -271,6 +271,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                     .map(wallet => (
                       <CommandItem
                         key={wallet.address}
+                        className="text-sm"
                         onSelect={() => {
                           setSelectedWallet(wallet);
                           setOpen(false);
@@ -286,7 +287,6 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                             );
                           }
                         }}
-                        className="text-sm"
                       >
                         <Avatar className="mr-2 h-5 w-5">
                           {/* <AvatarImage

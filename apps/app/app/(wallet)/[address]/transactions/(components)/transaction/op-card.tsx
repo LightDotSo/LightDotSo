@@ -63,8 +63,8 @@ export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
   return (
     <Accordion
       key={userOperation.hash}
-      type="single"
       collapsible
+      type="single"
       className="w-full rounded-md border border-border-primary-weak"
     >
       <AccordionItem className="w-full border-none" value="item-1">

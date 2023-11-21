@@ -157,9 +157,9 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
           id="walletNameForm"
           className="space-y-8"
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
             control={form.control}

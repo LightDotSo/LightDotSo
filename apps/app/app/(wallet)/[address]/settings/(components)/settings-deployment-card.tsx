@@ -142,7 +142,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       footerContent={<WalletNameFormSubmitButton />}
     >
       {deployed_op && (
-        <Button variant="link" asChild>
+        <Button asChild variant="link">
           <a
             target="_blank"
             rel="noreferrer"

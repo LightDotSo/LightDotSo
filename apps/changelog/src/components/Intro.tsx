@@ -91,7 +91,7 @@ export function IntroFooter() {
   return (
     <p className="flex items-baseline gap-x-2 text-[0.8125rem]/6 text-gray-500">
       Brought to you by{" "}
-      <IconLink href="#" icon={TwitterIcon} compact large>
+      <IconLink compact large href="#" icon={TwitterIcon}>
         Joe Davola
       </IconLink>
     </p>

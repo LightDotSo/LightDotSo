@@ -99,7 +99,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="text"
@@ -125,9 +125,9 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           render={({ field }) => (
             <FormItem className="space-y-1">
               <RadioGroup
-                onValueChange={field.onChange}
                 defaultValue={field.value}
                 className="grid max-w-md grid-cols-5 gap-4 pt-2"
+                onValueChange={field.onChange}
               >
                 <FormItem>
                   <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">

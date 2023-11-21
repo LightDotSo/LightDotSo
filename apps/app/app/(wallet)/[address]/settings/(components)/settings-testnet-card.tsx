@@ -234,9 +234,9 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     >
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
           id="walletTestnetForm"
           className="space-y-8"
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
             control={form.control}

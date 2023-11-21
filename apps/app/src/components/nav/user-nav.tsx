@@ -57,7 +57,7 @@ export const UserNav: FC = () => {
           <span className="sr-only">Open user settings</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent forceMount className="w-56" align="end">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Change Theme</DropdownMenuLabel>
           <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>

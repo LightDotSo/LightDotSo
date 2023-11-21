@@ -82,6 +82,8 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
 
   return (
     <SparkAreaChart
+      // @ts-expect-error
+      showAnimation
       data={[...token_price.prices].reverse()}
       categories={["price"]}
       index="date"
@@ -91,8 +93,6 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
           : "red",
       ]}
       className="h-12 w-48"
-      // @ts-expect-error
-      showAnimation
     />
   );
 };

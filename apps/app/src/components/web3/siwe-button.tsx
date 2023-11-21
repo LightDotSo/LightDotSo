@@ -126,7 +126,7 @@ export const SIWEButton: FC = () => {
   if (isConnected) {
     return (
       <>
-        <Button onClick={handleSignIn} disabled={isLoading}>
+        <Button disabled={isLoading} onClick={handleSignIn}>
           {isRejected // User Rejected
             ? "Try Again"
             : isLoading // Waiting for signing request

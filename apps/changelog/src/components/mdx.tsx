@@ -124,7 +124,7 @@ export const article = function Article({
     >
       <div ref={heightRef}>
         <ArticleHeader id={id} date={date} />
-        <ContentWrapper className="typography" data-mdx-content>
+        <ContentWrapper data-mdx-content className="typography">
           {children}
         </ContentWrapper>
       </div>
