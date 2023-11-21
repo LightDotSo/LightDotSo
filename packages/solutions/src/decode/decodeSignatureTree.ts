@@ -17,9 +17,9 @@
 // From: https://github.com/0xsequence/sequence.js/blob/3fa8067a5df6332784501794a90af583254e5b88/packages/core/src/v2/signature.ts#L67-L195
 // License: Apache 2.0
 
+import { bytesToString, bytesToHex } from "viem";
 import type { RecoveryNode, RecoveryTopology } from "../typings";
 import { SignaturePartType } from "../typings";
-import { bytesToString, bytesToHex } from "viem";
 
 export const SignaturePartTypeLength = 66;
 

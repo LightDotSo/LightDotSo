@@ -14,15 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // eslint-disable-next-line import/no-named-as-default
-import CredentialsProvider from "next-auth/providers/credentials";
-import { getCsrfToken } from "next-auth/react";
-import { SiweMessage } from "siwe";
 import { prisma } from "@lightdotso/prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { getServerSession } from "next-auth";
 import type { AuthOptions } from "next-auth";
-import { getAddress } from "viem";
+import CredentialsProvider from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
+import { getCsrfToken } from "next-auth/react";
+import { SiweMessage } from "siwe";
+import { getAddress } from "viem";
 
 // Check if we are using https, only use secure cookies in deployment
 const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith("https://");

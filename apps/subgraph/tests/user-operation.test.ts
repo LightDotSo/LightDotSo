@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { test, assert } from "matchstick-as/assembly/index";
-import { handleUserOperationFromCalldata } from "../src/user-operation";
 import { BigInt } from "@graphprotocol/graph-ts";
+import { test, assert } from "matchstick-as/assembly/index";
 import { log } from "matchstick-as/assembly/log";
+import { handleUserOperationFromCalldata } from "../src/user-operation";
 // import { EntryPoint__getUserOpHashInputUserOpStruct as UserOperationStructTuple } from "../generated/EntryPointv0.6.0/EntryPoint";
 
 // From: https://thegraph.com/docs/en/developing/unit-testing-framework

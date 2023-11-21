@@ -15,8 +15,8 @@
 
 "use client";
 
-import type { ColumnDef } from "@tanstack/react-table";
 import { Avatar, Checkbox } from "@lightdotso/ui";
+import type { ColumnDef } from "@tanstack/react-table";
 import { z } from "zod";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/owners/(components)/data-table-column-header";
 import { DataTableRowActions } from "@/app/(wallet)/[address]/owners/(components)/data-table-row-actions";

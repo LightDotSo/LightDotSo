@@ -14,11 +14,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { TableCell, TableRow } from "@lightdotso/ui";
-import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
-import { TokenCardActions } from "@/components/token/token-card-actions";
 import { Suspense } from "react";
-import type { Address } from "viem";
 import type { FC } from "react";
+import type { Address } from "viem";
+import { TokenCardActions } from "@/components/token/token-card-actions";
+import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -81,7 +81,7 @@ export const TokenCard: FC<TokenCardProps> = ({
           <TokenCardSparkline
             address={address as Address}
             chain_id={chain_id}
-          ></TokenCardSparkline>
+          />
         </Suspense>
       </TableCell>
       <TableCell className="text-right">
@@ -89,7 +89,7 @@ export const TokenCard: FC<TokenCardProps> = ({
           address={address as Address}
           tokenAddress={tokenAddress}
           chainId={chain_id}
-        ></TokenCardActions>
+        />
       </TableCell>
     </TableRow>
   );

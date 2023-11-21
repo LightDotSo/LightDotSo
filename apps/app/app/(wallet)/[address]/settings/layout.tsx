@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-
 import { SidebarNav } from "@/components/nav/sidebar-nav";
 import { BannerSection } from "@/components/section/banner-section";
 import { TITLES } from "@/const/titles";

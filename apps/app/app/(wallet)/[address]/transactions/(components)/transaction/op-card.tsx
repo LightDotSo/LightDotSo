@@ -23,8 +23,8 @@ import {
   AccordionContent,
   buttonVariants,
 } from "@lightdotso/ui";
-import Link from "next/link";
 import { cn } from "@lightdotso/utils";
+import Link from "next/link";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

@@ -13,15 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handler } from "@/handlers/paths/[address]/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
-import type { Address } from "viem";
-import { getUserOperations, getQueryClient } from "@/services";
-import { TransactionsList } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-list";
+import { Skeleton } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
-import { Skeleton } from "@lightdotso/ui";
+import type { Address } from "viem";
+import { TransactionsList } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-list";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
+import { getUserOperations, getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -72,7 +72,7 @@ export default async function Page({ params }: PageProps) {
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
+          <Suspense fallback={<Skeleton className="h-8 w-32" />}>
             <TransactionsList
               address={params.address as Address}
               status="all"

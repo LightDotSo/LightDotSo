@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { setBalance } from "viem/test";
 import { expect, test } from "vitest";
 import { publicClient, testClient } from "@/contracts/test/spec/utils";
 import { accounts } from "@/contracts/test/spec/utils/constants";
-import { setBalance } from "viem/test";
 
 const targetAccount = accounts[0];
 

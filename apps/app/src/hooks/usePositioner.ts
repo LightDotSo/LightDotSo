@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { MutableRefObject } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
 import type { Instance } from "@popperjs/core";
 import { createPopper } from "@popperjs/core";
+import type { MutableRefObject } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // -----------------------------------------------------------------------------
 // Types

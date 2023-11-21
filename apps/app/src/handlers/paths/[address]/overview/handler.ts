@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getPortfolio, getTokens, getWalletSettings } from "@/services";
-import { notFound } from "next/navigation";
-import { validateAddress } from "@/handlers/validators/address";
 import { Result } from "neverthrow";
+import { notFound } from "next/navigation";
 import type { Address } from "viem";
+import { validateAddress } from "@/handlers/validators/address";
+import { getPortfolio, getTokens, getWalletSettings } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler

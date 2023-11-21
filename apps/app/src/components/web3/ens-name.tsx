@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { FC } from "react";
+import { cache } from "react";
 import type { Address } from "viem";
 import { createPublicClient, http } from "viem";
 import { mainnet } from "viem/chains";
-import type { FC } from "react";
-import { cache } from "react";
 
 // -----------------------------------------------------------------------------
 // Utils

@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import Link from "next/link";
-
 import { IconLink } from "@/components/IconLink";
 import { Logo } from "@/components/Logo";
 import { SignUpForm } from "@/components/SignUpForm";

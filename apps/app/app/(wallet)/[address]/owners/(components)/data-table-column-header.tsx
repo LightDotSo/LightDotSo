@@ -14,14 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CaretSortIcon,
-  EyeNoneIcon,
-} from "@radix-ui/react-icons";
-import type { Column } from "@tanstack/react-table";
-import { cn } from "@lightdotso/utils";
-import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +21,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  CaretSortIcon,
+  EyeNoneIcon,
+} from "@radix-ui/react-icons";
+import type { Column } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -13,9 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-
+import React from "react";
 import { ScrollArea } from "./scroll-area";
 import { Separator } from "./separator";
 

@@ -13,14 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Modal } from "@/components/modal";
+import type { Address } from "viem";
 import { OpDialog } from "@/app/(wallet)/[address]/op/(components)/op-dialog";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/[userOperationHash]/preloader";
+import { Modal } from "@/components/modal";
+import { parseNumber } from "@/handlers/parsers";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]/handler";
-import type { Address } from "viem";
-import { parseNumber } from "@/handlers/parsers";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -61,7 +61,7 @@ export default async function Page({ params }: PageProps) {
         address={params.address as Address}
         chainId={chainId}
         userOperation={userOperation}
-      ></OpDialog>
+      />
     </Modal>
   );
 }

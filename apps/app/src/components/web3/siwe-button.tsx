@@ -15,14 +15,14 @@
 
 "use client";
 
+import { Button } from "@lightdotso/ui";
 import type { SIWEConfig, SIWESession } from "connectkit";
 import { useSIWE, useModal } from "connectkit";
-import { useAccount } from "wagmi";
-import { useState, useEffect } from "react";
-import { Button } from "@lightdotso/ui";
-import { SiweMessage } from "siwe";
 import { getCsrfToken, signIn, getSession, signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
 import type { FC } from "react";
+import { SiweMessage } from "siwe";
+import { useAccount } from "wagmi";
 
 // -----------------------------------------------------------------------------
 // Const

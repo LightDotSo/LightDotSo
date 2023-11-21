@@ -15,6 +15,8 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { getTokens } from "@lightdotso/client";
 import {
   Accordion,
   AccordionContent,
@@ -37,31 +39,29 @@ import {
   SelectValue,
   TooltipProvider,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useEffect, useCallback, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { sendFormConfigurationSchema } from "@/schemas/sendForm";
-import { Trash2Icon, UserPlus2 } from "lucide-react";
 import type { Address } from "viem";
 import { isAddress } from "viem";
-import { publicClient } from "@/clients/public";
-import { cn } from "@lightdotso/utils";
 import { normalize } from "viem/ens";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import * as z from "zod";
-import { successToast } from "@/utils/toast";
 import {
   assetParser,
   useAssetsQueryState,
 } from "@/app/(wallet)/[address]/send/(hooks)";
 import type { Asset, Assets } from "@/app/(wallet)/[address]/send/(hooks)";
-import { useAuth } from "@/stores/useAuth";
-import { getTokens } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { queries } from "@/queries";
+import { publicClient } from "@/clients/public";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
+import { queries } from "@/queries";
+import { sendFormConfigurationSchema } from "@/schemas/sendForm";
+import { useAuth } from "@/stores/useAuth";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Types

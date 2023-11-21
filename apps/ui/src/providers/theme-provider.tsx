@@ -15,8 +15,8 @@
 
 "use client";
 
-import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+
 type ThemeProviderProps = Parameters<typeof NextThemesProvider>[0];
 
 /// From: https://github.com/pacocoursey/next-themes/blob/cd67bfa20ef6ea78a814d65625c530baae4075ef/examples/with-app-dir/src/components/ThemeProvider.tsx

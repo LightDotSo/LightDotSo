@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import * as React from "react"
+import { cn } from "@lightdotso/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 
-import { cn } from "@lightdotso/utils"
+
 
 const alertVariants = cva(
   "relative w-full rounded-lg border p-4 [&:has(svg)]:pl-11 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-text",

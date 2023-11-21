@@ -15,6 +15,7 @@
 
 import type { GetEvents } from "inngest";
 import { inngest } from "@/inngest/client";
+
 type Events = GetEvents<typeof inngest>;
 
 // -----------------------------------------------------------------------------

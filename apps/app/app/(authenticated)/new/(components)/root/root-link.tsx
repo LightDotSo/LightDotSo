@@ -15,17 +15,17 @@
 
 "use client";
 
-import { cn } from "@lightdotso/utils";
-import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
-import {
-  steps,
-  StepsEnum,
-} from "@/app/(authenticated)/new/(components)/root/root";
 import { CheckIcon } from "@heroicons/react/24/outline";
+import { cn } from "@lightdotso/utils";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams, useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useCallback } from "react";
+import {
+  steps,
+  StepsEnum,
+} from "@/app/(authenticated)/new/(components)/root/root";
+import type { Step } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   ownerParser,
   useNameQueryState,

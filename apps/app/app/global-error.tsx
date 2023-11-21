@@ -57,7 +57,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               </Button>
             </div>
           )}
-        ></ErrorBoundary>
+        />
         <pre>
           <code>{error.message}</code>
         </pre>

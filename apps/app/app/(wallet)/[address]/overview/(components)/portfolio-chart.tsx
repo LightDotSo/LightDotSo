@@ -18,12 +18,12 @@
 import { getPortfolio } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { AreaChart } from "@tremor/react";
-import type { Address } from "viem";
-import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
 import type { FC } from "react";
 import { useMemo } from "react";
-import { queries } from "@/queries";
+import type { Address } from "viem";
+import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
 import type { PortfolioData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props

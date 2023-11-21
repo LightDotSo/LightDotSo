@@ -39,9 +39,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
 import { useState } from "react";
-
 import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table-toolbar";
 
 // -----------------------------------------------------------------------------

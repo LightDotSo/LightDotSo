@@ -15,10 +15,10 @@
 
 "use client"
 
-import * as React from "react"
+import { cn } from "@lightdotso/utils"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
-import { cn } from "@lightdotso/utils"
+
 
 const TooltipProvider = TooltipPrimitive.Provider
 

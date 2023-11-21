@@ -16,13 +16,13 @@
 "use client";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
+import { Logo } from "@/components/Logo";
 import { Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   GlobeAltIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/outline";
-import { Logo } from "@/components/Logo";
 import { SocialLinks } from "@lightdotso/const";
 import clsx from "clsx";
 import Link from "next/link";

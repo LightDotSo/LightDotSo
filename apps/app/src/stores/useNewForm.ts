@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { create } from "zustand";
-import type * as z from "zod";
-import { newFormStoreSchema } from "@/schemas/newForm";
 import { createWallet } from "@lightdotso/client";
 import { isEqual } from "lodash";
+import type * as z from "zod";
+import { create } from "zustand";
+import { newFormStoreSchema } from "@/schemas/newForm";
 
 // -----------------------------------------------------------------------------
 // State

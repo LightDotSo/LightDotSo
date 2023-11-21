@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-
 import { Button } from "./button";
 import { Label } from "./label";
 import { Textarea } from "./textarea";

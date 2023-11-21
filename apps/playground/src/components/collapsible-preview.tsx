@@ -16,13 +16,12 @@
 "use client";
 
 import { Button } from "@lightdotso/ui";
+import { cn } from "./cn";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/collapsible";
-import * as React from "react";
-import { cn } from "./cn";
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   expandButtonTitle?: string;

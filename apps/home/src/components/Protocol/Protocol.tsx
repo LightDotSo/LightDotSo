@@ -14,11 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
-
 import Image from "next/legacy/image";
 import Link from "next/link";
 import type { FC } from "react";
-
 import IcomImage from "@/public/icon.png";
 
 export const Protocol: FC = () => {

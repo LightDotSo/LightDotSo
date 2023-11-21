@@ -15,13 +15,13 @@
 
 "use client";
 
-import type { Address } from "viem";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getTokenPrice } from "@lightdotso/client";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
-import { queries } from "@/queries";
+import type { Address } from "viem";
 import type { TokenPriceData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props

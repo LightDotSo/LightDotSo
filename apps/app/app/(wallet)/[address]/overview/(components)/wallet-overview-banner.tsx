@@ -16,6 +16,11 @@
 "use client";
 
 import {
+  ClipboardDocumentIcon,
+  ClipboardDocumentCheckIcon,
+} from "@heroicons/react/24/outline";
+import { getWallet } from "@lightdotso/client";
+import {
   Avatar,
   Button,
   Tooltip,
@@ -23,25 +28,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@lightdotso/ui";
-import type { Address } from "viem";
 import { splitAddress } from "@lightdotso/utils";
-import { useCopy } from "@/hooks/useCopy";
-import {
-  ClipboardDocumentIcon,
-  ClipboardDocumentCheckIcon,
-} from "@heroicons/react/24/outline";
-import { Send, Share } from "lucide-react";
-import { useEnsName } from "wagmi";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { getWallet } from "@lightdotso/client";
-import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
+import { Send, Share } from "lucide-react";
+import Link from "next/link";
 import type { FC } from "react";
 import { Suspense } from "react";
+import type { Address } from "viem";
+import { useEnsName } from "wagmi";
+import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { NetworkStack } from "@/components/network/network-stack";
-import { queries } from "@/queries";
 import type { WalletData } from "@/data";
-import Link from "next/link";
+import { useCopy } from "@/hooks/useCopy";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props

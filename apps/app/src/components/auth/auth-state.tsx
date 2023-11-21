@@ -15,17 +15,17 @@
 
 "use client";
 
+import { getUser } from "@lightdotso/client";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { usePathname, useRouter } from "next/navigation";
 import type { FC } from "react";
 import { useEffect } from "react";
-import { useAuth } from "@/stores/useAuth";
-import { useAccount, useEnsName } from "wagmi";
-import { usePathname, useRouter } from "next/navigation";
 import type { Address } from "viem";
 import { isAddress } from "viem";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser } from "@lightdotso/client";
-import { queries } from "@/queries";
+import { useAccount, useEnsName } from "wagmi";
 import type { UserData } from "@/data";
+import { queries } from "@/queries";
+import { useAuth } from "@/stores/useAuth";
 
 // -----------------------------------------------------------------------------
 // Component

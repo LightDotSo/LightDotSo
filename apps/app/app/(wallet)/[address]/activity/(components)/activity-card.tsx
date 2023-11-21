@@ -25,8 +25,8 @@ import {
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
-import { chains } from "@/const/chains";
 import { extractChain } from "viem";
+import { chains } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
 // Props

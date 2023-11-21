@@ -53,7 +53,31 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "neverthrow"],
   rules: {
+    "import/newline-after-import": "error",
+    "import/no-anonymous-default-export": "off",
     "import/no-named-as-default": "off",
+    "import/order": [
+      "error",
+      {
+        alphabetize: {
+          caseInsensitive: false,
+          order: "asc",
+        },
+        "newlines-between": "never",
+        pathGroups: [
+          {
+            group: "internal",
+            pattern: "@lightdotso/**",
+            position: "before",
+          },
+          {
+            group: "internal",
+            pattern: "@/**",
+            position: "after",
+          },
+        ],
+      },
+    ],
     "no-console": ["error", { allow: ["warn", "error", "info"] }],
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/jsx-closing-bracket-location": ["error", "line-aligned"],
@@ -61,6 +85,18 @@ module.exports = {
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "react/react-in-jsx-scope": "off",
+    // "react/jsx-sort-props": [
+    //   "error",
+    //   {
+    //     callbacksLast: true,
+    //     ignoreCase: true,
+    //     noSortAlphabetically: true,
+    //     reservedFirst: true,
+    //     shorthandFirst: true,
+    //     shorthandLast: true,
+    //   },
+    // ],
+    "react/self-closing-comp": "error",
     "tailwindcss/no-custom-classname": [
       0,
       {
@@ -143,6 +179,12 @@ module.exports = {
       rules: {
         "react/display-name": "off",
         "react/prop-types": "off",
+      },
+    },
+    {
+      files: ["*.config.js"],
+      rules: {
+        "import/order": "off",
       },
     },
     {

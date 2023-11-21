@@ -16,17 +16,6 @@
 "use client";
 
 import {
-  Calculator,
-  Calendar,
-  CreditCard,
-  Settings,
-  Smile,
-  User,
-  DeleteIcon,
-} from "lucide-react";
-import type { FC } from "react";
-import { useState, useEffect, useCallback } from "react";
-import {
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -36,7 +25,18 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@lightdotso/ui";
+import {
+  Calculator,
+  Calendar,
+  CreditCard,
+  Settings,
+  Smile,
+  User,
+  DeleteIcon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import type { FC } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // -----------------------------------------------------------------------------
 // Component

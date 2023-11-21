@@ -16,6 +16,13 @@
 "use client";
 
 import {
+  BanknotesIcon,
+  BuildingLibraryIcon,
+  ShieldExclamationIcon,
+} from "@heroicons/react/24/solid";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { NotionLinks } from "@lightdotso/const";
+import {
   Button,
   Card,
   CardContent,
@@ -37,27 +44,20 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@lightdotso/ui";
-import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import { useRouter } from "next/navigation";
-import type { FC } from "react";
 import { useEffect, useCallback } from "react";
-import {
-  BanknotesIcon,
-  BuildingLibraryIcon,
-  ShieldExclamationIcon,
-} from "@heroicons/react/24/solid";
+import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { NotionLinks } from "@lightdotso/const";
-import { useNewFormStore } from "@/stores/useNewForm";
-import { newFormSchema } from "@/schemas/newForm";
-import { successToast } from "@/utils/toast";
+import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   useNameQueryState,
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
+import { newFormSchema } from "@/schemas/newForm";
+import { useNewFormStore } from "@/stores/useNewForm";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -162,7 +162,7 @@ export const NewWalletForm: FC = () => {
                               htmlFor="multi"
                               className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
-                              <BuildingLibraryIcon className="mb-3 h-6 w-6"></BuildingLibraryIcon>
+                              <BuildingLibraryIcon className="mb-3 h-6 w-6" />
                               Multi-sig
                             </Label>
                           </TooltipTrigger>
@@ -186,7 +186,7 @@ export const NewWalletForm: FC = () => {
                               htmlFor="personal"
                               className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
-                              <BanknotesIcon className="mb-3 h-6 w-6"></BanknotesIcon>
+                              <BanknotesIcon className="mb-3 h-6 w-6" />
                               Personal Vault
                             </Label>
                           </TooltipTrigger>
@@ -211,7 +211,7 @@ export const NewWalletForm: FC = () => {
                               htmlFor="2fa"
                               className="flex cursor-pointer flex-col items-center justify-between rounded-md border-2 border-border bg-background-body p-4 hover:bg-background-stronger hover:text-text-weak peer-data-[state=checked]:border-border-primary [&:has([data-state=checked])]:border-border-primary"
                             >
-                              <ShieldExclamationIcon className="mb-3 h-6 w-6"></ShieldExclamationIcon>
+                              <ShieldExclamationIcon className="mb-3 h-6 w-6" />
                               2FA (Coming Soon)
                             </Label>
                           </TooltipTrigger>

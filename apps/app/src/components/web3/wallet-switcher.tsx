@@ -18,15 +18,7 @@
 
 "use client";
 
-import type { UIEvent, FC } from "react";
-import { Suspense, useEffect, useState } from "react";
-import {
-  CaretSortIcon,
-  CheckIcon,
-  PlusCircledIcon,
-  StackIcon,
-} from "@radix-ui/react-icons";
-import { usePathname, useRouter } from "next/navigation";
+import { getWallets } from "@lightdotso/client";
 import {
   Avatar,
   Button,
@@ -43,15 +35,23 @@ import {
   Skeleton,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import { useIsMounted } from "@/hooks/useIsMounted";
+import {
+  CaretSortIcon,
+  CheckIcon,
+  PlusCircledIcon,
+  StackIcon,
+} from "@radix-ui/react-icons";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { getWallets } from "@lightdotso/client";
-import { useAuth } from "@/stores/useAuth";
+import { usePathname, useRouter } from "next/navigation";
+import type { UIEvent, FC } from "react";
+import { Suspense, useEffect, useState } from "react";
 import type { Address } from "viem";
 import { getAddress, isAddress } from "viem";
-import { queries } from "@/queries";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
+import { useIsMounted } from "@/hooks/useIsMounted";
+import { queries } from "@/queries";
+import { useAuth } from "@/stores/useAuth";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -71,7 +71,7 @@ export const WalletSwitcher: FC<WalletSwitcherProps> = ({
   className,
 }) => {
   return (
-    <Suspense fallback={<Skeleton className="mx-2 h-8 w-32"></Skeleton>}>
+    <Suspense fallback={<Skeleton className="mx-2 h-8 w-32" />}>
       <WalletSwitcherButton className={className} />
     </Suspense>
   );

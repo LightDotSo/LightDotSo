@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { toBytes } from "viem";
 import { expect, test } from "vitest";
 import { decodeSignature } from ".";
-import { toBytes } from "viem";
 
 test("decode", () => {
   const sampleSignature1 =

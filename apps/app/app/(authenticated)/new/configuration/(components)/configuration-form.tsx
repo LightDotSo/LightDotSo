@@ -15,6 +15,7 @@
 
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Avatar,
   Button,
@@ -42,22 +43,16 @@ import {
   Separator,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import { useRouter } from "next/navigation";
-import type { FC } from "react";
-import { useEffect, useCallback, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNewFormStore } from "@/stores/useNewForm";
-import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { isAddress } from "viem";
-import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
+import { Trash2Icon, UserPlus2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useCallback, useMemo } from "react";
+import type { FC } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { isAddress } from "viem";
 import { normalize } from "viem/ens";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import * as z from "zod";
-import { successToast } from "@/utils/toast";
+import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   ownerParser,
   useNameQueryState,
@@ -67,8 +62,13 @@ import {
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
 import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
-import { useAuth } from "@/stores/useAuth";
+import { publicClient } from "@/clients/public";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
+import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
+import { useAuth } from "@/stores/useAuth";
+import { useNewFormStore } from "@/stores/useNewForm";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Types

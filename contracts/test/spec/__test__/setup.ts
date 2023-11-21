@@ -14,9 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { fetchLogs } from "@viem/anvil";
-import { testClient } from "@/contracts/test/spec/utils";
-import { afterAll, afterEach, vi } from "vitest";
 import { setAutomine, setIntervalMining } from "viem/test";
+import { afterAll, afterEach, vi } from "vitest";
+import { testClient } from "@/contracts/test/spec/utils";
 
 afterAll(async () => {
   vi.restoreAllMocks();

@@ -15,11 +15,11 @@
 
 "use client";
 
-import type { Address } from "viem";
-import { Send, RefreshCcw } from "lucide-react";
 import { Button } from "@lightdotso/ui";
-import type { FC } from "react";
+import { Send, RefreshCcw } from "lucide-react";
 import Link from "next/link";
+import type { FC } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -13,13 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { llamaGetSchema, llamaPostSchema } from "@lightdotso/schemas";
+import { ResultAsync, err, ok } from "neverthrow";
 import createClient from "openapi-fetch";
+import { z } from "zod";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { paths, Without, XOR, OneOf } from "./v1";
-import { ResultAsync, err, ok } from "neverthrow";
 import { zodFetch, zodJsonRpcFetch } from "./zod";
-import { llamaGetSchema, llamaPostSchema } from "@lightdotso/schemas";
-import { z } from "zod";
 
 const devApiClient = createClient<paths>({
   baseUrl: "http://localhost:3000/admin/v1",

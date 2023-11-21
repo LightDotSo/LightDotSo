@@ -15,11 +15,7 @@
 
 "use client";
 
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
-import * as z from "zod";
-import { cn } from "@lightdotso/utils";
 import {
   Button,
   Form,
@@ -37,8 +33,12 @@ import {
   SelectValue,
   Textarea,
 } from "@lightdotso/ui";
-import { successToast } from "@/utils/toast";
+import { cn } from "@lightdotso/utils";
+import Link from "next/link";
 import type { FC } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import * as z from "zod";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Schema

@@ -14,12 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use client";
 
-import * as React from "react"
+import { cn } from "@lightdotso/utils"
 import * as ToastPrimitives from "@radix-ui/react-toast"
 import { cva, type VariantProps } from "class-variance-authority"
 import { X } from "lucide-react"
 
-import { cn } from "@lightdotso/utils"
+
 
 const ToastProvider = ToastPrimitives.Provider
 

@@ -15,10 +15,10 @@
 
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import superjson from "superjson";

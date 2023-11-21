@@ -15,17 +15,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handler } from "@/handlers/paths/[address]/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { handler as pageHandler } from "@/handlers/paths/[address]/overview/handler";
-import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/preloader";
-import { getQueryClient } from "@/services";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Suspense } from "react";
 import { type Address } from "viem";
 // import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/portfolio-chart";
-import { Suspense } from "react";
 import { TokensList } from "@/components/token/tokens-list";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { handler as pageHandler } from "@/handlers/paths/[address]/overview/handler";
+import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/preloader";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props

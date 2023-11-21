@@ -15,14 +15,13 @@
 
 import type { inferQueryKeyStore } from "@lukemorales/query-key-factory";
 import { mergeQueryKeys } from "@lukemorales/query-key-factory";
-
 import { configuration } from "./configuration";
 import { portfolio } from "./portfolio";
-import { transaction } from "./transaction";
-import { user_operation } from "./user_operation";
-import { user } from "./user";
 import { token } from "./token";
 import { token_price } from "./token_price";
+import { transaction } from "./transaction";
+import { user } from "./user";
+import { user_operation } from "./user_operation";
 import { wallet } from "./wallet";
 
 export const queries = mergeQueryKeys(

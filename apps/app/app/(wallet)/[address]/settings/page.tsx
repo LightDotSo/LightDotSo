@@ -13,16 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handler } from "@/handlers/paths/[address]/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
-import type { Address } from "viem";
-import { getWalletSettings, getQueryClient } from "@/services";
+import { Skeleton } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
-import { Skeleton } from "@lightdotso/ui";
+import type { Address } from "viem";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
+import { getWalletSettings, getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -69,15 +69,11 @@ export default async function Page({ params }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="space-y-8 lg:space-y-12">
-        <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
-          <SettingsNameCard
-            address={params.address as Address}
-          ></SettingsNameCard>
+        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+          <SettingsNameCard address={params.address as Address} />
         </Suspense>
-        <Suspense fallback={<Skeleton className="h-8 w-32"></Skeleton>}>
-          <SettingsTestnetCard
-            address={params.address as Address}
-          ></SettingsTestnetCard>
+        <Suspense fallback={<Skeleton className="h-8 w-32" />}>
+          <SettingsTestnetCard address={params.address as Address} />
         </Suspense>
       </div>
     </HydrationBoundary>

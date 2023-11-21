@@ -16,11 +16,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-import { cn } from "@lightdotso/utils";
 import {
   Button,
   buttonVariants,
@@ -34,8 +29,12 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@lightdotso/ui";
-import { successToast } from "@/utils/toast";
+import { cn } from "@lightdotso/utils";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Schema

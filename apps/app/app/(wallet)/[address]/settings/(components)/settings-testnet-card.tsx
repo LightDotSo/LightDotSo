@@ -16,8 +16,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { getWalletSettings, updateWalletSettings } from "@lightdotso/client";
 import {
   Button,
   Form,
@@ -29,19 +28,20 @@ import {
   FormMessage,
   Switch,
 } from "@lightdotso/ui";
-import { getWalletSettings, updateWalletSettings } from "@lightdotso/client";
 import {
   useSuspenseQuery,
   useQueryClient,
   useMutation,
 } from "@tanstack/react-query";
 import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import type { Address } from "viem";
+import * as z from "zod";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
-import { errorToast, successToast } from "@/utils/toast";
-import { queries } from "@/queries";
-import type { Address } from "viem";
 import type { WalletSettingsData } from "@/data";
+import { queries } from "@/queries";
+import { errorToast, successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Schema

@@ -13,9 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import type { Column } from "@tanstack/react-table";
-import { cn } from "@lightdotso/utils";
 import {
   Badge,
   Button,
@@ -31,6 +28,9 @@ import {
   PopoverTrigger,
   Separator,
 } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
+import type { Column } from "@tanstack/react-table";
 
 // -----------------------------------------------------------------------------
 // Props

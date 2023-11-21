@@ -21,19 +21,19 @@ import {
   Toaster,
 } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
-import { WalletSwitcher } from "@/components/web3/wallet-switcher";
-import { UserNav } from "@/components/nav/user-nav";
-import { MainNav } from "@/components/nav/main-nav";
-import { FeedbackPopover } from "@/components/feedback/feedback-popover";
-import { ConnectButton } from "@/components/web3/connect-button";
-import Script from "next/script";
+import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import type { FC } from "react";
 import { Suspense } from "react";
-import { VercelToolbar } from "@/components/dev/vercel-toolbar";
 import { AuthState } from "@/components/auth/auth-state";
+import { VercelToolbar } from "@/components/dev/vercel-toolbar";
+import { FeedbackPopover } from "@/components/feedback/feedback-popover";
+import { MainNav } from "@/components/nav/main-nav";
+import { UserNav } from "@/components/nav/user-nav";
 import { RootLogo } from "@/components/root/root-logo";
-import dynamic from "next/dynamic";
+import { ConnectButton } from "@/components/web3/connect-button";
+import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 
 // -----------------------------------------------------------------------------
 // Dynamic
@@ -104,7 +104,7 @@ export const Root: FC<RootProps> = ({ children }) => {
             </Web3Provider>
           </ReactQueryProvider>
         </ThemeProvider>
-        <CommandK></CommandK>
+        <CommandK />
         <TailwindIndicator />
         <Suspense>
           <VercelToolbar />

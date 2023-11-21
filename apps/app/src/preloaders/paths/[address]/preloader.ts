@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
 import { preload as preloadGetConfiguration } from "@/services/getConfiguration";
 import { preload as preloadGetWallet } from "@/services/getWallet";
 import { preload as preloadGetWalletSettings } from "@/services/getWalletSettings";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Preloader
