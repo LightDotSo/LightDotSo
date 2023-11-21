@@ -64,17 +64,22 @@ module.exports = {
           order: "asc",
         },
         "newlines-between": "never",
-        groups: ["builtin", "external", "parent", "sibling", "index"],
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+        ],
         pathGroups: [
           {
             group: "builtin",
-            pattern: "@lightdotso/*",
-            position: "before",
+            pattern: "@lightdotso/**",
           },
           {
-            group: "external",
+            group: "internal",
             pattern: "@/**",
-            position: "after",
           },
         ],
       },
