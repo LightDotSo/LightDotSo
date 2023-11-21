@@ -16,11 +16,11 @@
 "use client";
 
 import type { FC } from "react";
-import { DataTable } from "./data-table";
+import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { getConfiguration } from "@lightdotso/client";
-import { columns } from "./columns";
+import { columns } from "@/app/(wallet)/[address]/owners/(components)/columns";
 import { queries } from "@/queries";
 import type { ConfigurationData } from "@/data";
 

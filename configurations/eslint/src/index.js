@@ -133,6 +133,12 @@ module.exports = {
       },
     },
     {
+      files: ["**/apps/app/**/index.ts", "**/apps/app/**/index.tsx"],
+      rules: {
+        "no-restricted-imports": "off",
+      },
+    },
+    {
       files: ["**/apps/ui/src/components/ui/**.tsx"],
       rules: {
         "react/display-name": "off",

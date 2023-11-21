@@ -18,8 +18,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { Avatar, Checkbox } from "@lightdotso/ui";
 import { z } from "zod";
-import { DataTableColumnHeader } from "./data-table-column-header";
-import { DataTableRowActions } from "./data-table-row-actions";
+import { DataTableColumnHeader } from "@/app/(wallet)/[address]/owners/(components)/data-table-column-header";
+import { DataTableRowActions } from "@/app/(wallet)/[address]/owners/(components)/data-table-row-actions";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 
 // -----------------------------------------------------------------------------

@@ -18,10 +18,10 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import type { FC } from "react";
 import { useReducer, useCallback } from "react";
 
-import { NetworkItem } from "./network-item";
-import { NetworkItemExtra } from "./network-item-extra";
-import type { NetworkToolTipComponentProps } from "./network-tooltip";
-import { NetworkTooltip } from "./network-tooltip";
+import { NetworkItem } from "@/components/network/network-item";
+import { NetworkItemExtra } from "@/components/network/network-item-extra";
+import type { NetworkToolTipComponentProps } from "@/components/network/network-tooltip";
+import { NetworkTooltip } from "@/components/network/network-tooltip";
 import type { Address, Chain } from "viem";
 import {
   arbitrum,

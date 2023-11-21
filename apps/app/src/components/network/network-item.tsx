@@ -16,7 +16,7 @@
 import clsx from "clsx";
 import { m } from "framer-motion";
 import type { FC, MouseEventHandler } from "react";
-import s from "./network-item.module.css";
+import s from "@/components/network/network-item.module.css";
 import type { Address, Chain } from "viem";
 
 // -----------------------------------------------------------------------------
