@@ -15,9 +15,9 @@
 
 "use server";
 
-import { inngest } from "@/inngest/client";
 import { revalidateTag } from "next/cache";
 import type { Address } from "viem";
+import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
 // Action

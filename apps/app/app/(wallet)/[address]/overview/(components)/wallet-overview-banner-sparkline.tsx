@@ -15,14 +15,14 @@
 
 "use client";
 
-import type { Address } from "viem";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { getPortfolio } from "@lightdotso/client";
-import { SparkAreaChart } from "@tremor/react";
 import { cn } from "@lightdotso/utils";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
-import { queries } from "@/queries";
+import type { Address } from "viem";
 import type { PortfolioData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -112,6 +112,8 @@ export const WalletOverviewBannerSparkline: FC<
         </span>
       </div>
       <SparkAreaChart
+        // @ts-expect-error
+        showAnimation
         data={[...portfolio.balances].reverse()}
         categories={["balance"]}
         index="date"
@@ -121,8 +123,6 @@ export const WalletOverviewBannerSparkline: FC<
             : "red",
         ]}
         className="h-8 w-full"
-        // @ts-expect-error
-        showAnimation
       />
     </div>
   );

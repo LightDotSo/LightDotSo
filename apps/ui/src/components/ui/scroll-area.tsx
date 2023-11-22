@@ -15,12 +15,11 @@
 
 "use client"
 
-import * as React from "react"
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
-
 import { cn } from "@lightdotso/utils"
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+import { forwardRef } from "react";
 
-const ScrollArea = React.forwardRef<
+const ScrollArea = forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
 >(({ className, children, ...props }, ref) => (
@@ -38,7 +37,7 @@ const ScrollArea = React.forwardRef<
 ))
 ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
 
-const ScrollBar = React.forwardRef<
+const ScrollBar = forwardRef<
   React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
   React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
 >(({ className, orientation = "vertical", ...props }, ref) => (

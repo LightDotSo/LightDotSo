@@ -17,9 +17,7 @@
 // the parent component already has it.
 // "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { createFeedback } from "@lightdotso/client";
 import {
   Button,
   Form,
@@ -32,10 +30,12 @@ import {
   RadioGroupItem,
   Textarea,
 } from "@lightdotso/ui";
-import { errorToast, successToast } from "@/utils/toast";
-import { useAuth } from "@/stores/useAuth";
-import { createFeedback } from "@lightdotso/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { useAuth } from "@/stores/useAuth";
+import { errorToast, successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -99,7 +99,7 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="text"
@@ -125,9 +125,9 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
           render={({ field }) => (
             <FormItem className="space-y-1">
               <RadioGroup
-                onValueChange={field.onChange}
                 defaultValue={field.value}
                 className="grid max-w-md grid-cols-5 gap-4 pt-2"
+                onValueChange={field.onChange}
               >
                 <FormItem>
                   <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">

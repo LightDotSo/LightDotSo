@@ -23,8 +23,8 @@ import {
   AccordionContent,
   buttonVariants,
 } from "@lightdotso/ui";
-import Link from "next/link";
 import { cn } from "@lightdotso/utils";
+import Link from "next/link";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -63,8 +63,8 @@ export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
   return (
     <Accordion
       key={userOperation.hash}
-      type="single"
       collapsible
+      type="single"
       className="w-full rounded-md border border-border-primary-weak"
     >
       <AccordionItem className="w-full border-none" value="item-1">

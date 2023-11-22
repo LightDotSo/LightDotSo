@@ -25,8 +25,8 @@ import {
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
-import { chains } from "@/const/chains";
 import { extractChain } from "viem";
+import { chains } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -64,8 +64,8 @@ export const ActivityCard: FC<ActivityCardProps> = ({
   return (
     <Accordion
       key={transaction.hash}
-      type="single"
       collapsible
+      type="single"
       className="w-full rounded-md border border-border-primary-weak"
     >
       <AccordionItem className="w-full border-none" value="item-1">
@@ -94,7 +94,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({
         </div>
         <AccordionContent className="bg-background-stronger px-4 pt-4">
           <div className="flex w-full justify-end">
-            <Button variant="link" asChild>
+            <Button asChild variant="link">
               <a
                 target="_blank"
                 rel="noreferrer"

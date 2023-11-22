@@ -15,9 +15,6 @@
 
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 import {
   Button,
   Checkbox,
@@ -29,8 +26,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@lightdotso/ui";
-import { successToast } from "@/utils/toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -96,7 +96,7 @@ export const DisplayForm: FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="items"

@@ -43,7 +43,6 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
       <body>
         <h2>Something went wrong!</h2>
         <ErrorBoundary
-          onReset={resetQuery}
           fallbackRender={({ resetErrorBoundary }) => (
             <div>
               There was an error!
@@ -57,7 +56,8 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               </Button>
             </div>
           )}
-        ></ErrorBoundary>
+          onReset={resetQuery}
+        />
         <pre>
           <code>{error.message}</code>
         </pre>

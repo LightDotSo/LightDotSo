@@ -15,11 +15,6 @@
 
 "use client";
 
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
-import * as z from "zod";
-import { cn } from "@lightdotso/utils";
 import {
   Button,
   Form,
@@ -37,8 +32,13 @@ import {
   SelectValue,
   Textarea,
 } from "@lightdotso/ui";
-import { successToast } from "@/utils/toast";
+import { cn } from "@lightdotso/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import type { FC } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import * as z from "zod";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -101,7 +101,7 @@ export const ProfileForm: FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="username"
@@ -125,7 +125,7 @@ export const ProfileForm: FC = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select defaultValue={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select a verified email to display" />
@@ -169,8 +169,8 @@ export const ProfileForm: FC = () => {
         <div>
           {fields.map((field, index) => (
             <FormField
-              control={form.control}
               key={field.id}
+              control={form.control}
               name={`urls.${index}.value`}
               render={({ field }) => (
                 <FormItem>

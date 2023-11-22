@@ -37,9 +37,9 @@ import {
   incrementUserOpSuccessCount,
   incrementWalletCount,
 } from "./counter";
+import { handleUserOperationLogs } from "./log";
 import { handleUserOperationTransaction } from "./transaction";
 import { handleUserOperationFromCalldata } from "./user-operation";
-import { handleUserOperationLogs } from "./log";
 
 export function handleLightWalletDeployed(event: AccountDeployedEvent): void {
   // If the event is emitted by one of the factories, then we know that the account is a LightWallet

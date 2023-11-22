@@ -16,15 +16,14 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/components/tabs.tsx
 // License: MIT
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
-
-import type { Tab } from "@/hooks/useTabs";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { isAddress } from "viem";
+import { useRouter, usePathname } from "next/navigation";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { FC } from "react";
+import { isAddress } from "viem";
+import type { Tab } from "@/hooks/useTabs";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -99,13 +98,13 @@ export const Tabs: FC<TabProps> = ({
         const href = firstSlug + item.href;
 
         return (
-          <Link key={i} href={href} passHref legacyBehavior>
+          <Link key={i} passHref legacyBehavior href={href}>
             <motion.a
+              ref={el => (anchorRefs[i] = el)}
               className={clsx(
                 "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
                 !isActive ? "text-text-weak" : "text-text",
               )}
-              ref={el => (anchorRefs[i] = el)}
               onPointerEnter={() => {
                 setHoveredTabIndex(i);
                 router.prefetch(href);

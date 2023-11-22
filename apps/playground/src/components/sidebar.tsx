@@ -56,11 +56,11 @@ export function SideNav(props: { children: React.ReactNode }) {
         <div className="flex flex-row justify-between gap-x-4 gap-y-2 p-4 sm:flex-col sm:p-6">
           {sideNav.map(item => (
             <Button
+              key={item.href}
               asChild
+              className="justify-start gap-2"
               // disabled={item.disabled}
               variant="ghost"
-              className="justify-start gap-2"
-              key={item.href}
             >
               <Link
                 href={item.href}

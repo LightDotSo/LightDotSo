@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-
 import {
   Select,
   SelectContent,
@@ -56,7 +55,7 @@ export const Base: Story = {
           <SelectLabel>Vegetables</SelectLabel>
           <SelectItem value="aubergine">Aubergine</SelectItem>
           <SelectItem value="broccoli">Broccoli</SelectItem>
-          <SelectItem value="carrot" disabled>
+          <SelectItem disabled value="carrot">
             Carrot
           </SelectItem>
           <SelectItem value="courgette">Courgette</SelectItem>

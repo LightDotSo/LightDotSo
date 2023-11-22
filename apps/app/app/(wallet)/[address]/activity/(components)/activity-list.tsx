@@ -17,13 +17,13 @@
 
 import { getTransactions } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import type { FC } from "react";
 import type { Address } from "viem";
 import { ActivityCard } from "@/app/(wallet)/[address]/activity/(components)/activity-card";
 import { ActivityEmpty } from "@/app/(wallet)/[address]/activity/(components)/activity-empty";
 import { ActivityWrapper } from "@/app/(wallet)/[address]/activity/(components)/activity-wrapper";
-import type { FC } from "react";
-import { queries } from "@/queries";
 import type { TransactionData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -72,7 +72,7 @@ export const ActivityList: FC<ActivityListProps> = ({ address }) => {
 
   return (
     <ActivityWrapper>
-      {data && data.length === 0 && <ActivityEmpty></ActivityEmpty>}
+      {data && data.length === 0 && <ActivityEmpty />}
       {data &&
         data.map(transaction => (
           <ActivityCard

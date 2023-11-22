@@ -15,14 +15,14 @@
 
 "use client";
 
-import type { SIWEConfig, SIWESession } from "connectkit";
-import { useSIWE, useModal } from "connectkit";
-import { useAccount } from "wagmi";
-import { useState, useEffect } from "react";
 import { Button } from "@lightdotso/ui";
-import { SiweMessage } from "siwe";
+import { useSIWE, useModal } from "connectkit";
+import type { SIWEConfig, SIWESession } from "connectkit";
 import { getCsrfToken, signIn, getSession, signOut } from "next-auth/react";
+import { useState, useEffect } from "react";
 import type { FC } from "react";
+import { SiweMessage } from "siwe";
+import { useAccount } from "wagmi";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -126,7 +126,7 @@ export const SIWEButton: FC = () => {
   if (isConnected) {
     return (
       <>
-        <Button onClick={handleSignIn} disabled={isLoading}>
+        <Button disabled={isLoading} onClick={handleSignIn}>
           {isRejected // User Rejected
             ? "Try Again"
             : isLoading // Waiting for signing request

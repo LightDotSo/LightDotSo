@@ -28,12 +28,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@lightdotso/ui";
-import { useTheme } from "next-themes";
-import Link from "next/link";
 import { MixerVerticalIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { useTheme } from "next-themes";
+import type { FC } from "react";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { useAuth } from "@/stores/useAuth";
-import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -57,7 +57,7 @@ export const UserNav: FC = () => {
           <span className="sr-only">Open user settings</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent forceMount className="w-56" align="end">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Change Theme</DropdownMenuLabel>
           <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>

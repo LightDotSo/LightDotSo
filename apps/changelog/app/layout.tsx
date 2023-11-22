@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import clsx from "clsx";
 import { type Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
-import clsx from "clsx";
-
 import { Providers } from "@/app/providers";
 
 import "@/styles/tailwind.css";
@@ -53,9 +52,9 @@ export default function RootLayout({
 }) {
   return (
     <html
+      suppressHydrationWarning
       lang="en"
       className={clsx("h-full antialiased", inter.variable, monaSans.variable)}
-      suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col bg-white dark:bg-gray-950">
         <Providers>{children}</Providers>

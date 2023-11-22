@@ -16,9 +16,9 @@
 "use client";
 
 import { Dialog, DialogContent } from "@lightdotso/ui";
-import type { FC } from "react";
-import { useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useCallback } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Modal } from "@/components/modal";
-import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { handler } from "@/handlers/paths/[address]/handler";
 import type { Address } from "viem";
+import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
+import { Modal } from "@/components/modal";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -57,7 +57,7 @@ export default async function Page({
 
   return (
     <Modal>
-      <SendDialog address={params.address as Address}></SendDialog>
+      <SendDialog address={params.address as Address} />
     </Modal>
   );
 }

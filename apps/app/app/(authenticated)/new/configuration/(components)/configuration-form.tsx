@@ -42,22 +42,17 @@ import {
   Separator,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { steps } from "@/app/(authenticated)/new/(components)/root/root";
-import { useRouter } from "next/navigation";
-import type { FC } from "react";
-import { useEffect, useCallback, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNewFormStore } from "@/stores/useNewForm";
-import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-import { Trash2Icon, UserPlus2 } from "lucide-react";
-import { isAddress } from "viem";
-import { publicClient } from "@/clients/public";
 import { cn } from "@lightdotso/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Trash2Icon, UserPlus2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useCallback, useMemo } from "react";
+import type { FC } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { isAddress } from "viem";
 import { normalize } from "viem/ens";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import * as z from "zod";
-import { successToast } from "@/utils/toast";
+import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   ownerParser,
   useNameQueryState,
@@ -67,8 +62,13 @@ import {
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
 import type { Owner, Owners } from "@/app/(authenticated)/new/(hooks)";
-import { useAuth } from "@/stores/useAuth";
+import { publicClient } from "@/clients/public";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
+import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
+import { useAuth } from "@/stores/useAuth";
+import { useNewFormStore } from "@/stores/useNewForm";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -378,7 +378,7 @@ export const ConfigurationForm: FC = () => {
       <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
               <div className="space-y-4">
                 {fields.map((field, index) => (
                   <div key={index}>
@@ -482,8 +482,8 @@ export const ConfigurationForm: FC = () => {
                         )}
                       />
                       <FormField
-                        control={form.control}
                         key={field.id}
+                        control={form.control}
                         name={`owners.${index}.weight`}
                         render={({ field }) => (
                           <>
@@ -491,11 +491,11 @@ export const ConfigurationForm: FC = () => {
                               <div className="col-span-1 space-y-2">
                                 <Label htmlFor="weight">Weight</Label>
                                 <Select
+                                  defaultValue={field.value.toString()}
                                   onValueChange={value => {
                                     form.trigger();
                                     field.onChange(parseInt(value));
                                   }}
-                                  defaultValue={field.value.toString()}
                                   onOpenChange={() => {
                                     // First, trigger than simulate Form
                                     form.trigger().then(async () => {
@@ -579,10 +579,10 @@ export const ConfigurationForm: FC = () => {
                     <div className="grid gap-3">
                       <FormControl>
                         <Select
+                          defaultValue={field.value.toString()}
                           onValueChange={value =>
                             field.onChange(parseInt(value))
                           }
-                          defaultValue={field.value.toString()}
                         >
                           <FormControl>
                             <SelectTrigger className="w-24">
@@ -655,8 +655,8 @@ export const ConfigurationForm: FC = () => {
                 <Button
                   disabled={!form.formState.isValid}
                   variant={form.formState.isValid ? "default" : "outline"}
-                  onClick={() => navigateToStep()}
                   type="submit"
+                  onClick={() => navigateToStep()}
                 >
                   Continue
                 </Button>

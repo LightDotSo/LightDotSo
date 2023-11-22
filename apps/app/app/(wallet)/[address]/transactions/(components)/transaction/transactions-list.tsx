@@ -15,15 +15,15 @@
 
 "use client";
 
-import { OpCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/op-card";
 import { getUserOperations } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import type { FC } from "react";
 import type { Address } from "viem";
+import { OpCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/op-card";
 import { TransactionsEmpty } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-empty";
 import { TransactionsWrapper } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-wrapper";
-import { queries } from "@/queries";
-import type { FC } from "react";
 import type { UserOperationData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -77,7 +77,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
 
   return (
     <TransactionsWrapper>
-      {data && data.length === 0 && <TransactionsEmpty></TransactionsEmpty>}
+      {data && data.length === 0 && <TransactionsEmpty />}
       {data &&
         data.map(userOperation => (
           <OpCard

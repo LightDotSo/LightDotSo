@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { EventSchemas, Inngest } from "inngest";
-import { prismaMiddleware, sentryMiddleware } from "@/inngest/middlewares";
 import { z } from "zod";
+import { prismaMiddleware, sentryMiddleware } from "@/inngest/middlewares";
 
 // -----------------------------------------------------------------------------
 // Const

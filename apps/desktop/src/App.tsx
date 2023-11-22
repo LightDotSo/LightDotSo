@@ -15,9 +15,9 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import { invoke } from "@tauri-apps/api/tauri";
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
 
 function App() {
@@ -56,8 +56,8 @@ function App() {
       >
         <input
           id="greet-input"
-          onChange={e => setName(e.currentTarget.value)}
           placeholder="Enter a name..."
+          onChange={e => setName(e.currentTarget.value)}
         />
         <button type="submit">Greet</button>
       </form>

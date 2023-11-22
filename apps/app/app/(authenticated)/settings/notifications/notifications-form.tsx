@@ -15,10 +15,6 @@
 
 "use client";
 
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 import {
   Button,
   Checkbox,
@@ -33,8 +29,12 @@ import {
   RadioGroupItem,
   Switch,
 } from "@lightdotso/ui";
-import { successToast } from "@/utils/toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import type { FC } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -77,7 +77,7 @@ export const NotificationsForm: FC = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="type"
@@ -86,9 +86,9 @@ export const NotificationsForm: FC = () => {
               <FormLabel>Notify me about...</FormLabel>
               <FormControl>
                 <RadioGroup
-                  onValueChange={field.onChange}
                   defaultValue={field.value}
                   className="flex flex-col space-y-1"
+                  onValueChange={field.onChange}
                 >
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
@@ -198,10 +198,10 @@ export const NotificationsForm: FC = () => {
                   </div>
                   <FormControl>
                     <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
                       disabled
                       aria-readonly
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
                     />
                   </FormControl>
                 </FormItem>

@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { serve } from "inngest/next";
-import { inngest } from "@/inngest/client";
 import {
   walletPortfolioCron,
   walletPortfolioCovalentSet,
@@ -25,6 +24,7 @@ import {
   walletTransactionCovalentSet,
   walletTransactionInvoke,
 } from "@/inngest";
+import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
 // Route

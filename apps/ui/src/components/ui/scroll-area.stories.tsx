@@ -13,9 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-
+import React from "react";
 import { ScrollArea } from "./scroll-area";
 import { Separator } from "./separator";
 
@@ -38,7 +37,7 @@ export const Base: Story = {
           .map((_, i, a) => `v1.2.0-beta.${a.length - i}`)
           .map(tag => (
             <React.Fragment key={tag}>
-              <div className="text-sm" key={tag}>
+              <div key={tag} className="text-sm">
                 {tag}
               </div>
               <Separator className="my-2" />

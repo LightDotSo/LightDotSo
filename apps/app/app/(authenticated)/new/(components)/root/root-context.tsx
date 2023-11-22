@@ -15,8 +15,8 @@
 
 "use client";
 
-import { useNewFormStore } from "@/stores/useNewForm";
 import type { FC } from "react";
+import { useNewFormStore } from "@/stores/useNewForm";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -30,13 +30,13 @@ export const RootContext: FC = () => {
       <pre className="mt-2 w-full overflow-auto rounded-md p-4">
         <code className="break-all text-text">
           {isLoading ? "IsLoading" : "Loaded"}
-          <br></br>
+          <br />
           {isValid ? "Valid" : "Invalid"}
-          <br></br>
+          <br />
           {JSON.stringify(address, null, 2)}
-          <br></br>
+          <br />
           {JSON.stringify(errors, null, 2)}
-          <br></br>
+          <br />
           {JSON.stringify(formValues, null, 2)}
         </code>
       </pre>

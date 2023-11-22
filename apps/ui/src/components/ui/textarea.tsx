@@ -13,22 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import * as React from "react"
-
 import { cn } from "@lightdotso/utils"
+import { forwardRef } from "react";
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => {
     return (
       <textarea
+        ref={ref}
         className={cn(
           "flex min-h-[80px] w-full rounded-md border border-border-primary-weak bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-text-weak focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
-        ref={ref}
         {...props}
       />
     )

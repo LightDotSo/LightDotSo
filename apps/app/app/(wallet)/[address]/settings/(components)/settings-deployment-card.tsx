@@ -15,18 +15,18 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
 import { getUserOperations } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import type { FC } from "react";
-import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
-import { TITLES } from "@/const/titles";
-import type { Address, Chain, Hex } from "viem";
 import { ContractLinks } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
+import { Button } from "@lightdotso/ui";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { queries } from "@/queries";
+import type { FC } from "react";
+import type { Address, Chain, Hex } from "viem";
+import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
+import { TITLES } from "@/const/titles";
 import type { UserOperationData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -142,7 +142,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       footerContent={<WalletNameFormSubmitButton />}
     >
       {deployed_op && (
-        <Button variant="link" asChild>
+        <Button asChild variant="link">
           <a
             target="_blank"
             rel="noreferrer"

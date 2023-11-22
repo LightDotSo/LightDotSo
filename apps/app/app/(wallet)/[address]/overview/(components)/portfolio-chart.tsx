@@ -18,12 +18,12 @@
 import { getPortfolio } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { AreaChart } from "@tremor/react";
+import { useMemo } from "react";
+import type { FC } from "react";
 import type { Address } from "viem";
 import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
-import type { FC } from "react";
-import { useMemo } from "react";
-import { queries } from "@/queries";
 import type { PortfolioData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -103,6 +103,7 @@ export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
         <>
           <WalletOverviewBannerSparkline address={address} />
           <AreaChart
+            showAnimation
             className="mt-12 h-72 w-full"
             data={balances}
             index="date"
@@ -114,7 +115,6 @@ export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
             ]}
             showLegend={false}
             valueFormatter={valueFormatter}
-            showAnimation
           />
         </>
       </div>

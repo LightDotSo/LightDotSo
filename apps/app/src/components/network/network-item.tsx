@@ -16,8 +16,8 @@
 import clsx from "clsx";
 import { m } from "framer-motion";
 import type { FC, MouseEventHandler } from "react";
-import s from "@/components/network/network-item.module.css";
 import type { Address, Chain } from "viem";
+import s from "@/components/network/network-item.module.css";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -87,7 +87,7 @@ export const NetworkItem: FC<NetworkItemProps> = ({
                 ? "polygon"
                 : name
           }.jpg`}
-        ></img>
+        />
       </a>
     </m.li>
   );

@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handler } from "@/handlers/paths/[address]/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { inngest } from "@/inngest/client";
-
 import { redirect } from "next/navigation";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { inngest } from "@/inngest/client";
+import { preloader } from "@/preloaders/paths/[address]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

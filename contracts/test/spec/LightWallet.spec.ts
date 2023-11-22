@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { subdigestOf } from "@lightdotso/solutions";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import { describe, it, expect, test } from "vitest";
-import { subdigestOf } from "@lightdotso/solutions";
 // import { publicClient, walletClient } from "@/contracts/test/spec/utils";
 // import { accounts } from "@/contracts/test/spec/utils/constants";
 //@ts-expect-error

@@ -15,10 +15,10 @@
 
 "use client";
 
+import { buttonVariants } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@lightdotso/utils";
-import { buttonVariants } from "@lightdotso/ui";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------

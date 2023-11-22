@@ -17,13 +17,13 @@
 
 import { getTokens } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import type { FC } from "react";
 import type { Address } from "viem";
 import { TokenCard } from "@/components/token/token-card";
 import { TokensEmpty } from "@/components/token/tokens-empty";
 import { TokensWrapper } from "@/components/token/tokens-wrapper";
-import type { FC } from "react";
-import { queries } from "@/queries";
 import type { TokenData, WalletSettingsData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -81,7 +81,7 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
 
   return (
     <TokensWrapper>
-      {data && data.length === 0 && <TokensEmpty></TokensEmpty>}
+      {data && data.length === 0 && <TokensEmpty />}
       {data &&
         data.map(token => (
           <TokenCard key={token.address} address={address} token={token} />

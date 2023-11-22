@@ -14,11 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { GlobeAltIcon } from "@heroicons/react/24/outline";
-
 import Image from "next/legacy/image";
 import Link from "next/link";
 import type { FC } from "react";
-
 import IcomImage from "@/public/icon.png";
 
 export const Protocol: FC = () => {
@@ -70,7 +68,7 @@ export const Protocol: FC = () => {
         </h2>
         <div className="mt-10 flex justify-center">
           <div className="inline-flex">
-            <Link passHref href="/explore" legacyBehavior>
+            <Link passHref legacyBehavior href="/explore">
               <button className="inline-flex items-center justify-center rounded-full bg-bg-darker px-5 py-3 text-base font-medium text-contrast-higher hover:bg-bg-light">
                 <GlobeAltIcon
                   className="-ml-0.5 mr-2 h-4 w-4"

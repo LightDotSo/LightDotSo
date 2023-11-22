@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { FC } from "react";
 import { RootContext } from "@/app/(authenticated)/new/(components)/root/root-context";
 import { RootLink } from "@/app/(authenticated)/new/(components)/root/root-link";
-import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -89,7 +89,7 @@ export const NewRoot: FC<NewRootProps> = async ({
                 <RootLink
                   currentStepType={currentStepType}
                   stepType={step.enum}
-                ></RootLink>
+                />
                 {stepIdx !== steps.length - 1 ? (
                   <>
                     <div
@@ -120,7 +120,7 @@ export const NewRoot: FC<NewRootProps> = async ({
       </div>
       <aside className="lg:w-1/4">
         <div className="h-full rounded-md border border-border bg-background-weak">
-          <RootContext></RootContext>
+          <RootContext />
         </div>
       </aside>
     </div>

@@ -15,11 +15,11 @@
 
 "use client";
 
-import type { Address } from "viem";
-import { Send, RefreshCcw } from "lucide-react";
 import { Button } from "@lightdotso/ui";
-import type { FC } from "react";
+import { Send, RefreshCcw } from "lucide-react";
 import Link from "next/link";
+import type { FC } from "react";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,7 +46,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
         <RefreshCcw className="h-3 w-3" />
         <span className="sr-only">Open share modal</span>
       </Button>
-      <Button size="sm" className="rounded-full p-3" asChild>
+      <Button asChild size="sm" className="rounded-full p-3">
         <Link
           href={`/${address}/send/overlay?token=${tokenAddress}&chainId=${chainId}`}
         >

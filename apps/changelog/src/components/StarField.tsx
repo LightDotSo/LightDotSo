@@ -15,9 +15,9 @@
 
 "use client";
 
-import { useEffect, useId, useRef } from "react";
 import clsx from "clsx";
 import { type TimelineSegment, animate, timeline } from "motion";
+import { useEffect, useId, useRef } from "react";
 
 type StarType = [x: number, y: number, dim?: boolean, blur?: boolean];
 

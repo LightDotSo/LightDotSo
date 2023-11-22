@@ -15,11 +15,11 @@
 
 "use client";
 
+import { Button, Input } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
-import { Button, Input } from "@lightdotso/ui";
-import { DataTableViewOptions } from "@/app/(wallet)/[address]/owners/(components)/data-table-view-options";
 import { DataTableFacetedFilter } from "@/app/(wallet)/[address]/owners/(components)/data-table-faceted-filter";
+import { DataTableViewOptions } from "@/app/(wallet)/[address]/owners/(components)/data-table-view-options";
 import { MAX_WEIGHT } from "@/const/configuration";
 
 // -----------------------------------------------------------------------------
@@ -45,10 +45,10 @@ export function DataTableToolbar<TData>({
         <Input
           placeholder="Filter owners..."
           value={(table.getColumn("address")?.getFilterValue() as string) ?? ""}
+          className="h-8 w-[150px] lg:w-[250px]"
           onChange={event =>
             table.getColumn("address")?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[250px]"
         />
 
         {table.getColumn("weight") && (
@@ -64,8 +64,8 @@ export function DataTableToolbar<TData>({
         {isFiltered && (
           <Button
             variant="ghost"
-            onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
+            onClick={() => table.resetColumnFilters()}
           >
             Reset
             <Cross2Icon className="ml-2 h-4 w-4" />

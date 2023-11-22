@@ -16,11 +16,11 @@
 "use client";
 
 import { buttonVariants } from "@lightdotso/ui";
-import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
 import { cn } from "@lightdotso/utils";
-import type { FC } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -15,6 +15,7 @@
 
 "use client";
 
+import { getWallet } from "@lightdotso/client";
 import {
   Button,
   Card,
@@ -31,24 +32,15 @@ import {
   FormLabel,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { useRouter } from "next/navigation";
-import type { FC } from "react";
-import { useCallback, useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNewFormStore } from "@/stores/useNewForm";
-import {
-  newFormSchema,
-  newFormConfigurationSchema,
-  newFormStoreSchema,
-} from "@/schemas/newForm";
-import { publicClient } from "@/clients/public";
+import { backOff } from "exponential-backoff";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo } from "react";
+import type { FC } from "react";
+import { useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import { normalize } from "viem/ens";
 import type * as z from "zod";
-import { errorToast, infoToast, successToast } from "@/utils/toast";
-import { getWallet } from "@lightdotso/client";
-import { backOff } from "exponential-backoff";
 import {
   useNameQueryState,
   useOwnersQueryState,
@@ -56,6 +48,14 @@ import {
   useThresholdQueryState,
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
+import { publicClient } from "@/clients/public";
+import {
+  newFormSchema,
+  newFormConfigurationSchema,
+  newFormStoreSchema,
+} from "@/schemas/newForm";
+import { useNewFormStore } from "@/stores/useNewForm";
+import { errorToast, infoToast, successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -220,7 +220,7 @@ export const ConfirmForm: FC = () => {
       <CardContent className="grid gap-10">
         <TooltipProvider delayDuration={300}>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
               {form.formState.errors && (
                 <pre className="text-sm font-medium text-text-destructive">
                   {/* Print any message one line at a time */}

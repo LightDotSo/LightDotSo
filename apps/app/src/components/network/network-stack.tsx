@@ -15,13 +15,8 @@
 
 import clsx from "clsx";
 import { LazyMotion, domAnimation, m } from "framer-motion";
-import type { FC } from "react";
 import { useReducer, useCallback } from "react";
-
-import { NetworkItem } from "@/components/network/network-item";
-import { NetworkItemExtra } from "@/components/network/network-item-extra";
-import type { NetworkToolTipComponentProps } from "@/components/network/network-tooltip";
-import { NetworkTooltip } from "@/components/network/network-tooltip";
+import type { FC } from "react";
 import type { Address, Chain } from "viem";
 import {
   arbitrum,
@@ -32,6 +27,10 @@ import {
   avalanche,
   gnosis,
 } from "wagmi/chains";
+import { NetworkItem } from "@/components/network/network-item";
+import { NetworkItemExtra } from "@/components/network/network-item-extra";
+import type { NetworkToolTipComponentProps } from "@/components/network/network-tooltip";
+import { NetworkTooltip } from "@/components/network/network-tooltip";
 
 // -----------------------------------------------------------------------------
 // Logic

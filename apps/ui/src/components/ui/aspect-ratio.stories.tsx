@@ -13,9 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import Image from "next/image";
 import type { Meta, StoryObj } from "@storybook/react";
-
+import Image from "next/image";
 import { AspectRatio } from "./aspect-ratio";
 
 const meta: Meta<typeof AspectRatio> = {
@@ -33,9 +32,9 @@ export const Base: Story = {
   render: () => (
     <AspectRatio ratio={16 / 9} className="bg-background">
       <Image
+        fill
         src="https://images.unsplash.com/photo-1576075796033-848c2a5f3696?w=800&dpr=2&q=80"
         alt="Photo by Alvaro Pinot"
-        fill
         className="rounded-md object-cover"
       />
     </AspectRatio>

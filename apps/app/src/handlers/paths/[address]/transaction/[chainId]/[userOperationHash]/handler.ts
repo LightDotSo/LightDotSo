@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { notFound } from "next/navigation";
+import type { Hex } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import {
   validateAddress,
@@ -21,7 +22,6 @@ import {
   validateUserOperationHash,
 } from "@/handlers/validators";
 import { getUserOperation } from "@/services/getUserOperation";
-import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Handler

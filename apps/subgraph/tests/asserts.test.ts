@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { describe, test, assert } from "matchstick-as/assembly/index";
 import { Address, BigInt, Bytes, ethereum } from "@graphprotocol/graph-ts";
+import { describe, test, assert } from "matchstick-as/assembly/index";
 
 // From: https://github.com/LimeChain/demo-subgraph/blob/f43cb41a6bae431ac7f014eab8dbad1a4f13f041/tests/asserts.test.ts
 // License: MIT

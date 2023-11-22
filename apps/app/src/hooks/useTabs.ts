@@ -16,13 +16,13 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/hooks/use-tabs.tsx
 // License: MIT
 
-import type { ReactNode } from "react";
-import { useState, useEffect, useMemo } from "react";
-import { usePathname } from "next/navigation";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/stores/useAuth";
 import { getWalletTab } from "@lightdotso/client";
+import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { usePathname } from "next/navigation";
+import { useState, useEffect, useMemo } from "react";
+import type { ReactNode } from "react";
 import { queries } from "@/queries";
+import { useAuth } from "@/stores/useAuth";
 
 // -----------------------------------------------------------------------------
 // Types
