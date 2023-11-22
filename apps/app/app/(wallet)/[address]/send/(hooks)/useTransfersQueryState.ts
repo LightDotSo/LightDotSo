@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { createParser, useQueryState } from "next-usequerystate";
+import { isAddress } from "viem";
 import type { Transfers } from "@/schemas";
 
 // -----------------------------------------------------------------------------
@@ -46,6 +47,7 @@ export const transferParser = createParser({
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&
+          isAddress(parsedAddress) &&
           parsedName &&
           !isNaN(parsedDecimals) &&
           !isNaN(parsedQuantity)
@@ -80,6 +82,7 @@ export const transferParser = createParser({
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&
+          isAddress(parsedAddress) &&
           parsedName &&
           !isNaN(parsedTokenId) &&
           !isNaN(parsedQuantity)
@@ -115,7 +118,9 @@ export const transferParser = createParser({
           .map(quantity => parseInt(quantity));
         // Add the asset to the transfer if all parts are valid
         if (
-          name &&
+          parsedAddress &&
+          isAddress(parsedAddress) &&
+          parsedName &&
           parsedTokenIds.every(id => !isNaN(id)) &&
           parsedQuantities.every(quantity => !isNaN(quantity))
         ) {
