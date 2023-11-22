@@ -209,6 +209,9 @@ export const ConfigurationForm: FC = () => {
       // @ts-expect-error
       setFormValues(value);
 
+      // Fetch the configuration to create the wallet (simulation)
+      fetchToCreate(false);
+
       // Set the salt from the default values to the url
       if (defaultValues.salt) {
         // If the salt is valid, set the salt
@@ -497,10 +500,7 @@ export const ConfigurationForm: FC = () => {
                                     field.onChange(parseInt(value));
                                   }}
                                   onOpenChange={() => {
-                                    // First, trigger than simulate Form
-                                    form.trigger().then(async () => {
-                                      await fetchToCreate(false);
-                                    });
+                                    form.trigger();
                                   }}
                                 >
                                   <FormControl>
