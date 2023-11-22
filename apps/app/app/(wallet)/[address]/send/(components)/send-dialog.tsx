@@ -51,16 +51,15 @@ import type { Address } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import {
-  assetParser,
-  useAssetsQueryState,
+  transferParser,
+  useTransfersQueryState,
 } from "@/app/(wallet)/[address]/send/(hooks)";
-import type { Asset, Assets } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
+import type { Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
-import { useAuth } from "@/stores/useAuth";
 import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
@@ -82,7 +81,6 @@ type SendDialogProps = {
 // -----------------------------------------------------------------------------
 
 export const SendDialog: FC<SendDialogProps> = ({ address }) => {
-  const { address: userAddress, ens: userEns } = useAuth();
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
@@ -99,7 +97,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<TokenData | null>({
+  const { data: tokens } = useSuspenseQuery<TokenData | null>({
     queryKey: queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -126,63 +124,63 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     },
   });
 
-  const [assets, setAssets] = useAssetsQueryState();
+  const [transfers, setTransfers] = useTransfersQueryState();
 
-  // create default asset object
-  const defaultAsset: Asset = useMemo(() => {
-    return {
-      address: userAddress,
-      addressOrEns: userEns ?? userAddress,
-      weight: 1,
-    };
-  }, [userAddress, userEns]);
+  // create default transfer object
+  const defaultTransfer: Transfers = useMemo(() => {
+    // For each token, create a transfer object
+    const transfers: Transfers =
+      tokens && tokens?.length > 0
+        ? [
+            {
+              address: undefined,
+              addressOrEns: undefined,
+              asset: {
+                address: tokens[0].address,
+                decimals: tokens[0].decimals,
+                quantity: 0,
+              },
+            },
+          ]
+        : [];
+
+    return transfers;
+    // Only set on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // The default values for the form
   const defaultValues: Partial<NewFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
-      assets:
-        defaultAsset !== undefined && assets !== undefined && assets.length > 0
-          ? assets
-          : [defaultAsset],
+      transfers:
+        transfers !== undefined && transfers.length > 0
+          ? transfers
+          : defaultTransfer,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultAsset]);
+  }, [defaultTransfer]);
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
     resolver: zodResolver(
       sendFormConfigurationSchema.superRefine((value, ctx) => {
-        // Check if no two assets have the same address
-        const addresses = value.assets
-          .map(asset => asset?.address)
-          .filter(address => address && address.trim() !== "");
-        const uniqueAddresses = new Set(addresses);
-        if (uniqueAddresses.size !== addresses.length) {
-          // Add an error to the duplicate address
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Duplicate address",
-            path: ["duplicate"],
-          });
-        }
-
-        // Also expect that all assets w/ key address are valid addresses and are not empty
-        value.assets.forEach((asset, index) => {
+        // Also expect that all transfers w/ key address are valid addresses and are not empty
+        value.transfers.forEach((transfer, index) => {
           // Check if the address is not empty
-          if (!asset.address) {
+          if (!transfer.address) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message: "Address is required",
-              path: ["assets", index, "address"],
+              path: ["transfers", index, "address"],
             });
           }
 
-          if (asset.address && !isAddress(asset.address)) {
+          if (transfer.address && !isAddress(transfer.address)) {
             ctx.addIssue({
               code: z.ZodIssueCode.invalid_type,
               message: "Invalid address",
-              path: ["assets", index, "address"],
+              path: ["transfers", index, "address"],
               expected: "string",
               received: "string",
             });
@@ -194,21 +192,18 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   });
 
   const { fields, append, remove } = useFieldArray({
-    name: "assets",
+    name: "transfers",
     control: form.control,
   });
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
-      if (Array.isArray(value.assets)) {
-        if (value.assets === undefined) {
-          setAssets(null);
+      if (Array.isArray(value.transfers)) {
+        if (value.transfers === undefined) {
+          setTransfers(null);
         } else {
-          // Iterate over each asset which has a weight
-          const assets = value.assets.filter(
-            asset => asset?.weight && asset?.address,
-          ) as Assets;
-          setAssets(assets);
+          // @ts-expect-error
+          setTransfers(value.transfers);
         }
       }
 
@@ -220,15 +215,15 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
 
   // Set the form values from the URL on mount
   useEffect(() => {
-    // Recursively iterate the assets and validate the addresses on mount
-    assets.forEach((asset, index) => {
-      if (asset.address) {
-        validateAddress(asset.address, index);
+    // Recursively iterate the transfers and validate the addresses on mount
+    transfers.forEach((transfer, index) => {
+      if (transfer.address) {
+        validateAddress(transfer.address, index);
       }
     });
 
-    if (defaultValues.assets) {
-      setAssets(defaultValues.assets);
+    if (defaultValues.transfers) {
+      setTransfers(defaultValues.transfers);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -236,10 +231,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
 
   const navigateToStep = useCallback(() => {
     const url = new URL(window.location.origin);
-    url.searchParams.set("assets", assetParser.serialize(assets));
+    url.searchParams.set("transfers", transferParser.serialize(transfers));
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assets]);
+  }, [transfers]);
 
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
@@ -248,8 +243,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // Try to parse the address
     if (isAddress(address)) {
       // If the address is valid, set the value of key address
-      form.setValue(`assets.${index}.address`, address);
-      form.clearErrors(`assets.${index}.addressOrEns`);
+      form.setValue(`transfers.${index}.address`, address);
+      form.clearErrors(`transfers.${index}.addressOrEns`);
     } else if (
       address &&
       address.length > 3 &&
@@ -265,16 +260,16 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
           .then(ensNameAddress => {
             if (ensNameAddress) {
               // If the ENS name resolves, set the value of key address
-              form.setValue(`assets.${index}.address`, ensNameAddress);
+              form.setValue(`transfers.${index}.address`, ensNameAddress);
             } else {
               // Show an error on the message
-              form.setError(`assets.${index}.addressOrEns`, {
+              form.setError(`transfers.${index}.addressOrEns`, {
                 type: "manual",
                 message:
                   "The ENS name did not resolve. Please enter a valid address or ENS name",
               });
               // Clear the value of key address
-              form.setValue(`assets.${index}.address`, "");
+              form.setValue(`transfers.${index}.address`, "");
             }
 
             // Trigger the form validation
@@ -282,34 +277,72 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
           })
           .catch(() => {
             // Show an error on the message
-            form.setError(`assets.${index}.addressOrEns`, {
+            form.setError(`transfers.${index}.addressOrEns`, {
               type: "manual",
               message: "Please enter a valid address or ENS name",
             });
             // Clear the value of key address
-            form.setValue(`assets.${index}.address`, "");
+            form.setValue(`transfers.${index}.address`, "");
 
             // Trigger the form validation
             form.trigger();
           });
       } catch {
         // Show an error on the message
-        form.setError(`assets.${index}.addressOrEns`, {
+        form.setError(`transfers.${index}.addressOrEns`, {
           type: "manual",
           message: "Please enter a valid address or ENS name",
         });
         // Clear the value of key address
-        form.setValue(`assets.${index}.address`, "");
+        form.setValue(`transfers.${index}.address`, "");
       } finally {
         // Trigger the form validation
         form.trigger();
       }
     } else {
       // Clear the value of key address
-      form.setValue(`assets.${index}.address`, "");
+      form.setValue(`transfers.${index}.address`, "");
 
       // Trigger the form validation
       form.trigger();
+    }
+  }
+
+  async function validateQuantity(quantity: number, index: number) {
+    // If the quantity is empty, return
+    if (!quantity) return;
+
+    // Check if the quantity is a number and more than the token balance
+    if (quantity && quantity > 0) {
+      // If the quantity is valid, get the token balance
+      const token =
+        tokens &&
+        transfers?.length > 0 &&
+        transfers[index]?.asset?.address &&
+        tokens?.find(
+          token => token.address === (transfers?.[index]?.asset?.address || ""),
+        );
+      // If the token is not found or undefined, set an error
+      if (!token) {
+        // Show an error on the message
+        form.setError(`transfers.${index}.asset.quantity`, {
+          type: "manual",
+          message: "Please select a valid token",
+        });
+        // Clear the value of key address
+        form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else if (quantity > token?.amount * Math.pow(10, token?.decimals)) {
+        // Show an error on the message
+        form.setError(`transfers.${index}.asset.quantity`, {
+          type: "manual",
+          message: "Insufficient balance",
+        });
+        // Clear the value of key address
+        // form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else {
+        // If the quantity is valid, set the value of key quantity
+        form.setValue(`transfers.${index}.asset.quantity`, quantity);
+      }
     }
   }
 
@@ -331,8 +364,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                   className="rounded-md border border-border bg-background-weak p-6"
                   type="single"
                 >
-                  <AccordionItem className="border-0" value="item-1">
-                    <AccordionTrigger>Recepient</AccordionTrigger>
+                  <AccordionItem className="border-0" value={`value-${index}`}>
+                    <AccordionTrigger>Transfer #{index}</AccordionTrigger>
                     <AccordionContent className="p-2">
                       <FormItem
                         key={field.id}
@@ -340,23 +373,25 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                       >
                         <FormField
                           control={form.control}
-                          name={`assets.${index}.addressOrEns`}
+                          name={`transfers.${index}.addressOrEns`}
                           render={({ field }) => (
                             <div className="col-span-7 space-y-2">
-                              <Label htmlFor="address">Address or ENS</Label>
+                              <Label htmlFor="address">
+                                Recepient Address or ENS
+                              </Label>
                               <div className="flex items-center space-x-3">
                                 <div className="relative inline-block w-full">
                                   <Input
                                     id="address"
                                     className="pl-12"
                                     {...field}
-                                    placeholder="Your address or ENS name"
+                                    placeholder="Recepient's Address or ENS name"
                                     onBlur={e => {
                                       // Validate the address
                                       if (!e.target.value) {
                                         // Clear the value of key address
                                         form.setValue(
-                                          `assets.${index}.address`,
+                                          `transfers.${index}.address`,
                                           "",
                                         );
                                       }
@@ -388,12 +423,13 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                         }
                                         className={cn(
                                           // If the field is not valid, add opacity
-                                          form.formState.errors.assets &&
-                                            form.formState.errors.assets[
+                                          form.formState.errors.transfers &&
+                                            form.formState.errors.transfers[
                                               index
                                             ] &&
-                                            form.formState.errors.assets[index]
-                                              ?.addressOrEns
+                                            form.formState.errors.transfers[
+                                              index
+                                            ]?.addressOrEns
                                             ? "opacity-50"
                                             : "opacity-100",
                                         )}
@@ -410,9 +446,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                           className={cn(
                             "flex h-full flex-col col-span-1",
                             // If there is error, justify center, else end
-                            form.formState.errors.assets &&
-                              form.formState.errors.assets[index] &&
-                              form.formState.errors.assets[index]?.addressOrEns
+                            form.formState.errors.transfers &&
+                              form.formState.errors.transfers[index] &&
+                              form.formState.errors.transfers[index]
+                                ?.addressOrEns
                               ? "justify-center"
                               : "justify-end",
                           )}
@@ -431,45 +468,222 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                             <Trash2Icon className="h-5 w-5" />
                           </Button>
                         </div>
-                        <FormField
-                          key={field.id}
-                          control={form.control}
-                          name={`assets.${index}.weight`}
-                          render={({ field }) => (
-                            <>
-                              <FormControl>
-                                <div className="">
-                                  <Label htmlFor="weight">Asset</Label>
-                                  <Select
-                                    defaultValue={field.value.toString()}
-                                    onValueChange={value => {
-                                      form.trigger();
-                                      field.onChange(parseInt(value));
-                                    }}
-                                    onOpenChange={() => {}}
-                                  >
-                                    <FormControl>
-                                      <SelectTrigger className="w-24">
-                                        <SelectValue placeholder="Select your wallet threshold" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent className="max-h-60">
-                                      {[...Array(data?.length)].map((_, i) => (
-                                        <SelectItem
-                                          key={i}
-                                          value={(i + 1).toString()}
+                        <div className="col-span-7 flex space-x-3">
+                          <div className="relative col-span-4 inline-block w-full">
+                            <FormField
+                              control={form.control}
+                              name={`transfers.${index}.asset.quantity`}
+                              render={({ field }) => (
+                                <div className="space-y-2">
+                                  <Label htmlFor="address">Quantity</Label>
+                                  <div className="flex items-center space-x-3">
+                                    <div className="relative inline-block w-full">
+                                      <Input
+                                        id="address"
+                                        className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                        type="number"
+                                        {...field}
+                                        placeholder="Quantity of tokens to transfer"
+                                        onBlur={e => {
+                                          // Validate the address
+                                          if (!e.target.value) {
+                                            // Clear the value of key address
+                                            form.setValue(
+                                              `transfers.${index}.asset.quantity`,
+                                              0,
+                                            );
+                                          }
+
+                                          const quantity = parseFloat(
+                                            e.target.value,
+                                          );
+
+                                          validateQuantity(quantity, index);
+                                        }}
+                                        onChange={e => {
+                                          // Update the field value
+                                          field.onChange(
+                                            parseFloat(e.target.value) || 0,
+                                          );
+
+                                          // Validate the address
+                                          const quantity = parseFloat(
+                                            e.target.value,
+                                          );
+
+                                          if (quantity) {
+                                            validateQuantity(quantity, index);
+                                          }
+                                        }}
+                                      />
+                                      <div className="absolute inset-y-0 right-3 flex items-center">
+                                        <Button
+                                          size="unsized"
+                                          variant="outline"
+                                          type="button"
+                                          className="px-1 py-0.5 text-xs"
+                                          onClick={() => {
+                                            // Set the value of key quantity to the token balance
+                                            const token =
+                                              tokens &&
+                                              transfers?.length > 0 &&
+                                              transfers[index]?.asset
+                                                ?.address &&
+                                              tokens?.find(
+                                                token =>
+                                                  token.address ===
+                                                  (transfers?.[index]?.asset
+                                                    ?.address || ""),
+                                              );
+                                            if (token) {
+                                              form.setValue(
+                                                `transfers.${index}.asset.quantity`,
+                                                token?.amount /
+                                                  Math.pow(10, token?.decimals),
+                                              );
+                                            }
+                                          }}
                                         >
-                                          {i + 1}
-                                        </SelectItem>
-                                      ))}
-                                    </SelectContent>
-                                  </Select>
+                                          Max
+                                        </Button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center justify-between text-xs text-text-weak">
+                                    <div>
+                                      {/* Get the current balance in USD */}
+                                      {tokens &&
+                                        tokens?.length > 0 &&
+                                        (() => {
+                                          const token = tokens.find(
+                                            token =>
+                                              token.address ===
+                                              (transfers?.[index]?.asset
+                                                ?.address || ""),
+                                          );
+                                          return token
+                                            ? "~ $" +
+                                                // Get the current selected token balance in USD
+                                                (
+                                                  (token?.balance_usd /
+                                                    (token.amount /
+                                                      Math.pow(
+                                                        10,
+                                                        token?.decimals,
+                                                      ))) *
+                                                  // Get the form value
+                                                  (field.value ?? 0)
+                                                ).toFixed(2)
+                                            : "";
+                                        })()}
+                                    </div>
+                                    <div>
+                                      {tokens &&
+                                        tokens?.length > 0 &&
+                                        (() => {
+                                          const token = tokens.find(
+                                            token =>
+                                              token.address ===
+                                              (transfers?.[index]?.asset
+                                                ?.address || ""),
+                                          );
+                                          return token
+                                            ? (
+                                                token?.amount /
+                                                Math.pow(10, token?.decimals)
+                                              ).toString() +
+                                                ` ${token.symbol} available`
+                                            : "";
+                                        })()}
+                                    </div>
+                                  </div>
                                   <FormMessage />
                                 </div>
-                              </FormControl>
-                            </>
-                          )}
-                        />
+                              )}
+                            />
+                          </div>
+                          <div className="relative col-span-3 inline-block w-full">
+                            <FormField
+                              key={field.id}
+                              control={form.control}
+                              name={`transfers.${index}.asset.address`}
+                              render={({ field: _field }) => (
+                                <FormControl>
+                                  <div className="w-full space-y-2">
+                                    <Label htmlFor="weight">Transfer</Label>
+                                    <Select
+                                      defaultValue={
+                                        // Get the token with matching index
+                                        tokens && tokens?.length > 0
+                                          ? (() => {
+                                              const token = tokens?.find(
+                                                token =>
+                                                  token.address ===
+                                                  (transfers?.[index]?.asset
+                                                    ?.address || ""),
+                                              );
+                                              return token
+                                                ? token?.address +
+                                                    "-" +
+                                                    token?.chain_id
+                                                : undefined;
+                                            })()
+                                          : undefined
+                                      }
+                                      onValueChange={value => {
+                                        // Get the token of address and chainId
+                                        const [address, chainId] =
+                                          value?.split("-") || [];
+
+                                        // Set the chainId of the token
+                                        const token =
+                                          tokens &&
+                                          tokens?.length > 0 &&
+                                          tokens?.find(
+                                            token => token.address === address,
+                                          );
+
+                                        if (token) {
+                                          form.setValue(
+                                            `transfers.${index}.asset.address`,
+                                            address,
+                                          );
+                                          form.setValue(
+                                            `transfers.${index}.chainId`,
+                                            parseInt(chainId),
+                                          );
+                                          form.setValue(
+                                            `transfers.${index}.assetType`,
+                                            "erc20",
+                                          );
+                                        }
+
+                                        form.trigger();
+                                      }}
+                                    >
+                                      <FormControl>
+                                        <SelectTrigger className="w-full">
+                                          <SelectValue placeholder="Select a token" />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        {tokens?.map(token => (
+                                          <SelectItem
+                                            key={`${token.address}-${token.chain_id}`}
+                                            value={`${token.address}-${token.chain_id}`}
+                                          >
+                                            {token.symbol}
+                                          </SelectItem>
+                                        ))}
+                                      </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                  </div>
+                                </FormControl>
+                              )}
+                            />
+                          </div>
+                        </div>
                       </FormItem>
                     </AccordionContent>
                   </AccordionItem>
@@ -483,7 +697,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                 size="sm"
                 className="mt-6"
                 onClick={() => {
-                  append({ addressOrEns: "", weight: 1 });
+                  append({ address: "", addressOrEns: "" });
                   form.trigger();
                 }}
               >

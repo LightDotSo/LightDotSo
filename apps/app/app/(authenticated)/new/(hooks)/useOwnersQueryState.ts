@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { createParser, useQueryState } from "next-usequerystate";
+import { isAddress } from "viem";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -31,20 +32,29 @@ export type Owners = Owner[];
 // -----------------------------------------------------------------------------
 
 export const ownerParser = createParser({
-  parse(val) {
-    if (val === "") {
-      return null;
-    }
-    const value = decodeURIComponent(val);
+  parse(value) {
     const keys = value.split(";");
     return keys.reduce<Owners>((acc, key) => {
       const [id, address, addressOrEns, weight] = key.split(":");
-      // Parse the id as a number (if possible)
-      acc[parseInt(id)] = {
-        address: address === "_" ? undefined : address,
-        addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-        weight: parseInt(weight),
-      };
+      // Parse the address as a string (if possible)
+      const parsedAddress = address === "_" ? undefined : address;
+      // Parse the addressOrEns as a string (if possible)
+      const parsedAddressOrEns =
+        addressOrEns === "_" ? undefined : addressOrEns;
+      // Parse the weight as a number (if possible)
+      const parsedWeight = parseInt(weight);
+      if (
+        parsedAddress &&
+        isAddress(parsedAddress) &&
+        parsedAddressOrEns &&
+        !isNaN(parsedWeight)
+      ) {
+        acc[parseInt(id)] = {
+          address: address === "_" ? undefined : address,
+          addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
+          weight: parseInt(weight),
+        };
+      }
       return acc;
     }, []);
   },
@@ -60,8 +70,7 @@ export const ownerParser = createParser({
       )
       .join(";");
 
-    // Return the serialized value encoded as a URI component
-    return encodeURIComponent(entry);
+    return entry;
   },
 });
 

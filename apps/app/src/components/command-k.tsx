@@ -33,10 +33,13 @@ import {
   Smile,
   User,
   DeleteIcon,
+  CopyIcon,
+  CopySlashIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { FC } from "react";
+import { useCopy } from "@/hooks/useCopy";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -44,6 +47,7 @@ import type { FC } from "react";
 
 export const CommandK: FC = () => {
   const [open, setOpen] = useState(false);
+  const [, copy] = useCopy();
 
   const router = useRouter();
 
@@ -53,6 +57,20 @@ export const CommandK: FC = () => {
     url.search = "";
     router.replace(url.toString());
   }, [router]);
+
+  const copyURIParams = useCallback(() => {
+    // Copy search params
+    const url = new URL(window.location.href);
+    copy(url.search);
+    console.info(url.search);
+  }, [router, copy]);
+
+  const copyDecodedURIParams = useCallback(() => {
+    // Copy search params
+    const url = new URL(window.location.href);
+    copy(decodeURIComponent(url.search));
+    console.info(decodeURIComponent(url.search));
+  }, [router, copy]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -64,11 +82,19 @@ export const CommandK: FC = () => {
         e.preventDefault();
         setOpen(open => !open);
       }
+      if (e.key === "c" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        copyURIParams();
+      }
+      if (e.key === "v" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        copyDecodedURIParams();
+      }
     };
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [onClearSearch]);
+  }, [onClearSearch, copyURIParams, copyDecodedURIParams]);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -117,6 +143,26 @@ export const CommandK: FC = () => {
             <DeleteIcon className="mr-2 h-4 w-4" />
             <span>Clear Search Params</span>
             <CommandShortcut>⌘D</CommandShortcut>
+          </CommandItem>
+          <CommandItem
+            onSelect={() => {
+              copyURIParams();
+              setOpen(false);
+            }}
+          >
+            <CopyIcon className="mr-2 h-4 w-4" />
+            <span>Copy Search Params</span>
+            <CommandShortcut>⌘C</CommandShortcut>
+          </CommandItem>
+          <CommandItem
+            onSelect={() => {
+              copyDecodedURIParams();
+              setOpen(false);
+            }}
+          >
+            <CopySlashIcon className="mr-2 h-4 w-4" />
+            <span>Copy Decoded Search Params</span>
+            <CommandShortcut>⌘V</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>
