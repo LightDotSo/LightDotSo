@@ -18,7 +18,7 @@
 import { cn } from "@lightdotso/utils"
 import type * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
-import { createContext, forwardRef, useContext } from "react";
+import { createContext, forwardRef, useContext, useId } from "react";
 import type {
   ControllerProps,
   FieldPath,
@@ -91,7 +91,7 @@ const FormItem = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
-  const id = React.useId()
+  const id = useId()
 
   return (
     <FormItemContext.Provider value={{ id }}>
