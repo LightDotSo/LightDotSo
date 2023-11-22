@@ -54,16 +54,12 @@ import {
   transferParser,
   useTransfersQueryState,
 } from "@/app/(wallet)/[address]/send/(hooks)";
-import type {
-  Transfer,
-  Transfers,
-} from "@/app/(wallet)/[address]/send/(hooks)";
+import type { Transfers } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
-import { useAuth } from "@/stores/useAuth";
 import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
@@ -85,7 +81,6 @@ type SendDialogProps = {
 // -----------------------------------------------------------------------------
 
 export const SendDialog: FC<SendDialogProps> = ({ address }) => {
-  const { address: userAddress, ens: userEns } = useAuth();
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
@@ -102,7 +97,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<TokenData | null>({
+  const { data: tokens } = useSuspenseQuery<TokenData | null>({
     queryKey: queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -132,13 +127,26 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   const [transfers, setTransfers] = useTransfersQueryState();
 
   // create default transfer object
-  const defaultTransfer: Transfer = useMemo(() => {
-    return {
-      address: userAddress,
-      addressOrEns: userEns ?? userAddress,
-      weight: 1,
-    };
-  }, [userAddress, userEns]);
+  const defaultTransfer: Transfers = useMemo(() => {
+    // For each token, create a transfer object
+    const transfers: Transfers =
+      tokens && tokens?.length > 0
+        ? tokens?.map(token => ({
+            address: "",
+            addressOrEns: "",
+            asset: {
+              address: token.address,
+              name: token.name ?? "",
+              decimals: token.decimals,
+              quantity: 0,
+            },
+          }))
+        : [];
+
+    return transfers;
+    // Only set on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // The default values for the form
   const defaultValues: Partial<NewFormValues> = useMemo(() => {
@@ -149,7 +157,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         transfers !== undefined &&
         transfers.length > 0
           ? transfers
-          : [defaultTransfer],
+          : defaultTransfer,
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultTransfer]);

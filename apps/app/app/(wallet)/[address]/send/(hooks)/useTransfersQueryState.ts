@@ -14,17 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { createParser, useQueryState } from "next-usequerystate";
-
-// -----------------------------------------------------------------------------
-// Types
-// -----------------------------------------------------------------------------
-
-export type Transfer = {
-  address?: string;
-  addressOrEns?: string;
-  weight: number;
-};
-export type Transfers = Transfer[];
+import type { Transfers } from "@/schemas";
 
 // -----------------------------------------------------------------------------
 // Parser
@@ -38,13 +28,37 @@ export const transferParser = createParser({
     const value = decodeURIComponent(val);
     const keys = value.split(";");
     return keys.reduce<Transfers>((acc, key) => {
-      const [id, address, addressOrEns, weight] = key.split(":");
-      // Parse the id as a number (if possible)
-      acc[parseInt(id)] = {
-        address: address === "_" ? undefined : address,
-        addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-        weight: parseInt(weight),
-      };
+      const [id, address, addressOrEns, chainId, assetType, asset] =
+        key.split(":");
+      const transferAddress = address;
+
+      // Parse the asset (if possible)
+      if (assetType === "erc20") {
+        // Get the parts of the asset
+        const [address, name, decimals, quantity] = asset.split(",");
+        // Parse the address as a string (if possible)
+        const parsedAddress = address === "_" ? undefined : address;
+        // Parse the decimals as a number (if possible)
+        const parsedDecimals = parseInt(decimals);
+        // Parse the quantity as a number (if possible)
+        const parsedQuantity = parseInt(quantity);
+        // Add the asset to the transfer if all parts are valid
+        if (name && parsedDecimals && parsedQuantity) {
+          acc[parseInt(id)] = {
+            address: transferAddress === "_" ? undefined : transferAddress,
+            addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
+            chainId: parseInt(chainId),
+            asset: {
+              address: parsedAddress,
+              name,
+              decimals: parsedDecimals,
+              quantity: parsedQuantity,
+            },
+            assetType,
+          };
+        }
+      }
+
       return acc;
     }, []);
   },
@@ -55,8 +69,10 @@ export const transferParser = createParser({
       .map(
         ([id, transfer]) =>
           `${id}:${transfer?.address ?? "_"}:${transfer?.addressOrEns ?? "_"}:${
-            transfer?.weight ?? 1
-          }`,
+            transfer?.chainId ?? 0
+          }:${transfer?.assetType ?? "_"}:${transfer?.asset?.address ?? "_"},${
+            transfer?.asset?.name ?? "_"
+          },`,
       )
       .join(";");
 

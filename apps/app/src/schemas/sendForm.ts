@@ -19,18 +19,50 @@ import * as z from "zod";
 // Schema
 // -----------------------------------------------------------------------------
 
-export const sendFormConfigurationSchema = z.object({
-  transfers: z.array(
-    z.object({
-      address: z
-        .string()
-        .min(1, { message: "Please enter a valid address." })
-        .optional(),
-      addressOrEns: z.string().optional(),
-      weight: z
-        .number()
-        .int()
-        .min(1, { message: "Weight must be at least 1." }),
-    }),
-  ),
+const erc20 = z.object({
+  address: z.string().optional(),
+  name: z.string().optional(),
+  decimals: z.number().optional(),
+  quantity: z.number().optional(),
 });
+
+const erc721 = z.object({
+  address: z.string().optional(),
+  name: z.string().optional(),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
+});
+
+const erc1155 = z.object({
+  address: z.string().optional(),
+  name: z.string().optional(),
+  tokenIds: z.array(z.number()),
+  quantities: z.array(z.number()),
+});
+
+const asset = z.union([erc20, erc721, erc1155]);
+
+const transfer = z.object({
+  address: z.string().optional(),
+  addressOrEns: z.string().optional(),
+  chainId: z.number().optional(),
+  asset: asset.optional(),
+  assetType: z
+    .union([z.literal("erc20"), z.literal("erc721"), z.literal("erc1155")])
+    .optional(),
+});
+
+const transfers = z.array(transfer);
+
+export const sendFormConfigurationSchema = z.object({
+  transfers: transfers,
+});
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type Asset = z.infer<typeof asset>;
+export type Transfer = z.infer<typeof transfer>;
+export type Transfers = z.infer<typeof transfers>;
+export type SendFormConfiguration = z.infer<typeof sendFormConfigurationSchema>;
