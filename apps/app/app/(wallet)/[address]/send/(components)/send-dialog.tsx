@@ -199,7 +199,11 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
       if (Array.isArray(value.transfers)) {
-        setTransfers(value.transfers);
+        if (value.transfers === undefined) {
+          setTransfers(null);
+        } else {
+          setTransfers(value.transfers);
+        }
       }
 
       return;
