@@ -68,6 +68,7 @@ import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 import { useAuth } from "@/stores/useAuth";
 import { useNewFormStore } from "@/stores/useNewForm";
+import { debounce } from "@/utils/debounce";
 import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
@@ -98,11 +99,19 @@ export const ConfigurationForm: FC = () => {
   const router = useRouter();
   const { setFormValues, fetchToCreate } = useNewFormStore();
 
+  // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
+
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
   const [salt, setSalt] = useSaltQueryState();
   const [owners, setOwners] = useOwnersQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Default State
+  // ---------------------------------------------------------------------------
 
   // create default owner object
   const defaultOwner: Owner = useMemo(() => {
@@ -139,6 +148,10 @@ export const ConfigurationForm: FC = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultOwner]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
@@ -203,6 +216,10 @@ export const ConfigurationForm: FC = () => {
     name: "owners",
     control: form.control,
   });
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
@@ -293,6 +310,10 @@ export const ConfigurationForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, type, threshold, salt, owners]);
 
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
     if (!address || address.length <= 3) return;
@@ -364,6 +385,12 @@ export const ConfigurationForm: FC = () => {
       form.trigger();
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Debounced
+  // ---------------------------------------------------------------------------
+
+  const debouncedValidateAddress = debounce(validateAddress, 300);
 
   function onSubmit(data: NewFormValues) {
     successToast(data);
@@ -452,7 +479,7 @@ export const ConfigurationForm: FC = () => {
                                     const address = e.target.value;
 
                                     if (address) {
-                                      validateAddress(address, index);
+                                      debouncedValidateAddress(address, index);
                                     }
                                   }}
                                 />

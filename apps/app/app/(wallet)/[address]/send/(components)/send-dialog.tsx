@@ -125,7 +125,15 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
+
   const [transfers, setTransfers] = useTransfersQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Default State
+  // ---------------------------------------------------------------------------
 
   // create default transfer object
   const defaultTransfer: Transfers = useMemo(() => {
@@ -162,6 +170,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultTransfer]);
 
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<NewFormValues>({
     mode: "onChange",
     resolver: zodResolver(
@@ -196,6 +208,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     name: "transfers",
     control: form.control,
   });
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
@@ -237,12 +253,13 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transfers]);
 
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
     if (!address || address.length <= 3) return;
-
-    // Log the fetching of the ENS name
-    console.info("Fetching ENS name...");
 
     // Try to parse the address
     if (isAddress(address)) {
@@ -312,8 +329,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     }
   }
 
-  const debouncedValidateAddress = debounce(validateAddress, 300);
-
   async function validateQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
     if (!quantity) return;
@@ -351,6 +366,12 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
       }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Debounced
+  // ---------------------------------------------------------------------------
+
+  const debouncedValidateAddress = debounce(validateAddress, 300);
 
   function onSubmit(data: NewFormValues) {
     successToast(data);
