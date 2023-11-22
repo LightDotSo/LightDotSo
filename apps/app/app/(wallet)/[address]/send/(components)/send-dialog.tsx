@@ -150,8 +150,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
 
   // The default values for the form
   const defaultValues: Partial<NewFormValues> = useMemo(() => {
-    console.info(transfers);
-
     // Check if the type is valid
     return {
       transfers:
@@ -207,7 +205,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
           const transfers = value.transfers.filter(
             transfer => transfer?.address,
           ) as Transfers;
-          console.info(transfers);
           setTransfers(transfers);
         }
       }
@@ -331,8 +328,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                   className="rounded-md border border-border bg-background-weak p-6"
                   type="single"
                 >
-                  <AccordionItem className="border-0" value="item-1">
-                    <AccordionTrigger>Recepient</AccordionTrigger>
+                  <AccordionItem className="border-0" value={`value-${index}`}>
+                    <AccordionTrigger>Transfer #{index}</AccordionTrigger>
                     <AccordionContent className="p-2">
                       <FormItem
                         key={field.id}
@@ -433,50 +430,128 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                             <Trash2Icon className="h-5 w-5" />
                           </Button>
                         </div>
-                        <FormField
-                          key={field.id}
-                          control={form.control}
-                          name={`transfers.${index}.assetType`}
-                          render={({ field }) => (
-                            <>
-                              <FormControl>
-                                <div className="">
-                                  <Label htmlFor="weight">Transfer</Label>
-                                  <Select
-                                    defaultValue={
-                                      field.value
-                                        ? field.value.toString()
-                                        : "erc20"
-                                    }
-                                    onValueChange={value => {
-                                      form.trigger();
-                                      field.onChange(value);
-                                    }}
-                                    onOpenChange={() => {}}
-                                  >
-                                    <FormControl>
-                                      <SelectTrigger className="w-24">
-                                        <SelectValue placeholder="Select your wallet threshold" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent className="max-h-60">
-                                      <SelectItem value={"erc20"}>
-                                        Token
-                                      </SelectItem>
-                                      <SelectItem value={"erc721"}>
-                                        NFT
-                                      </SelectItem>
-                                      <SelectItem value={"erc1155"}>
-                                        NFT
-                                      </SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                        <div className="col-span-7 flex items-center space-x-3">
+                          <div className="relative inline-block w-full">
+                            <FormField
+                              key={field.id}
+                              control={form.control}
+                              name={`transfers.${index}.assetType`}
+                              render={({ field }) => (
+                                <>
+                                  <FormControl>
+                                    <div className="">
+                                      <Label htmlFor="weight">Transfer</Label>
+                                      <Select
+                                        defaultValue={
+                                          field.value
+                                            ? field.value.toString()
+                                            : "erc20"
+                                        }
+                                        onValueChange={value => {
+                                          form.trigger();
+                                          field.onChange(value);
+                                        }}
+                                        onOpenChange={() => {}}
+                                      >
+                                        <FormControl>
+                                          <SelectTrigger className="w-24">
+                                            <SelectValue placeholder="Select your wallet threshold" />
+                                          </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent className="max-h-60">
+                                          <SelectItem value={"erc20"}>
+                                            Token
+                                          </SelectItem>
+                                          <SelectItem value={"erc721"}>
+                                            NFT
+                                          </SelectItem>
+                                          <SelectItem value={"erc1155"}>
+                                            NFT
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                      <FormMessage />
+                                    </div>
+                                  </FormControl>
+                                </>
+                              )}
+                            />
+                          </div>
+                          <div className="relative inline-block w-full">
+                            <FormField
+                              control={form.control}
+                              name={`transfers.${index}.asset.address`}
+                              render={({ field }) => (
+                                <>
+                                  <Label htmlFor="address">
+                                    Address or ENS
+                                  </Label>
+                                  <div className="flex items-center space-x-3">
+                                    <div className="relative inline-block w-full">
+                                      <Input
+                                        id="address"
+                                        className="pl-12"
+                                        {...field}
+                                        placeholder="Your address or ENS name"
+                                        onBlur={e => {
+                                          // Validate the address
+                                          if (!e.target.value) {
+                                            // Clear the value of key address
+                                            form.setValue(
+                                              `transfers.${index}.asset.address`,
+                                              "",
+                                            );
+                                          }
+                                          const address = e.target.value;
+
+                                          validateAddress(address, index);
+                                        }}
+                                        onChange={e => {
+                                          // Update the field value
+                                          field.onChange(e.target.value || "");
+
+                                          // Validate the address
+                                          const address = e.target.value;
+
+                                          if (address) {
+                                            validateAddress(address, index);
+                                          }
+                                        }}
+                                      />
+                                      <div className="absolute inset-y-0 left-3 flex items-center">
+                                        <Avatar className="h-6 w-6">
+                                          {/* If the address is valid, try resolving an ens Avatar */}
+                                          <PlaceholderOrb
+                                            address={
+                                              // If the address is a valid address
+                                              field?.value &&
+                                              isAddress(field.value)
+                                                ? field?.value
+                                                : "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"
+                                            }
+                                            className={cn(
+                                              // If the field is not valid, add opacity
+                                              form.formState.errors.transfers &&
+                                                form.formState.errors.transfers[
+                                                  index
+                                                ] &&
+                                                form.formState.errors.transfers[
+                                                  index
+                                                ]?.addressOrEns
+                                                ? "opacity-50"
+                                                : "opacity-100",
+                                            )}
+                                          />
+                                        </Avatar>
+                                      </div>
+                                    </div>
+                                  </div>
                                   <FormMessage />
-                                </div>
-                              </FormControl>
-                            </>
-                          )}
-                        />
+                                </>
+                              )}
+                            />
+                          </div>
+                        </div>
                       </FormItem>
                     </AccordionContent>
                   </AccordionItem>

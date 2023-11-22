@@ -48,7 +48,6 @@ export const transferParser = createParser({
         if (
           parsedAddress &&
           isAddress(parsedAddress) &&
-          parsedName &&
           !isNaN(parsedDecimals) &&
           !isNaN(parsedQuantity)
         ) {
@@ -83,7 +82,6 @@ export const transferParser = createParser({
         if (
           parsedAddress &&
           isAddress(parsedAddress) &&
-          parsedName &&
           !isNaN(parsedTokenId) &&
           !isNaN(parsedQuantity)
         ) {
@@ -120,7 +118,6 @@ export const transferParser = createParser({
         if (
           parsedAddress &&
           isAddress(parsedAddress) &&
-          parsedName &&
           parsedTokenIds.every(id => !isNaN(id)) &&
           parsedQuantities.every(quantity => !isNaN(quantity))
         ) {
