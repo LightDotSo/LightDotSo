@@ -62,12 +62,14 @@ export const CommandK: FC = () => {
     // Copy search params
     const url = new URL(window.location.href);
     copy(url.search);
+    console.info(url.search);
   }, [router, copy]);
 
   const copyDecodedURIParams = useCallback(() => {
     // Copy search params
     const url = new URL(window.location.href);
     copy(decodeURIComponent(url.search));
+    console.info(decodeURIComponent(url.search));
   }, [router, copy]);
 
   useEffect(() => {
