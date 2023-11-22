@@ -54,11 +54,11 @@ import {
   transferParser,
   useTransfersQueryState,
 } from "@/app/(wallet)/[address]/send/(hooks)";
-import type { Transfers } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
+import type { Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { successToast } from "@/utils/toast";
 
@@ -150,12 +150,12 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
 
   // The default values for the form
   const defaultValues: Partial<NewFormValues> = useMemo(() => {
+    console.info(transfers);
+
     // Check if the type is valid
     return {
       transfers:
-        defaultTransfer !== undefined &&
-        transfers !== undefined &&
-        transfers.length > 0
+        transfers !== undefined && transfers.length > 0
           ? transfers
           : defaultTransfer,
     };
@@ -166,20 +166,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     mode: "onChange",
     resolver: zodResolver(
       sendFormConfigurationSchema.superRefine((value, ctx) => {
-        // Check if no two transfers have the same address
-        const addresses = value.transfers
-          .map(transfer => transfer?.address)
-          .filter(address => address && address.trim() !== "");
-        const uniqueAddresses = new Set(addresses);
-        if (uniqueAddresses.size !== addresses.length) {
-          // Add an error to the duplicate address
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            message: "Duplicate address",
-            path: ["duplicate"],
-          });
-        }
-
         // Also expect that all transfers w/ key address are valid addresses and are not empty
         value.transfers.forEach((transfer, index) => {
           // Check if the address is not empty
@@ -219,8 +205,9 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         } else {
           // Iterate over each transfer which has a weight
           const transfers = value.transfers.filter(
-            transfer => transfer?.weight && transfer?.address,
+            transfer => transfer?.address,
           ) as Transfers;
+          console.info(transfers);
           setTransfers(transfers);
         }
       }
@@ -449,17 +436,21 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                         <FormField
                           key={field.id}
                           control={form.control}
-                          name={`transfers.${index}.weight`}
+                          name={`transfers.${index}.assetType`}
                           render={({ field }) => (
                             <>
                               <FormControl>
                                 <div className="">
                                   <Label htmlFor="weight">Transfer</Label>
                                   <Select
-                                    defaultValue={field.value.toString()}
+                                    defaultValue={
+                                      field.value
+                                        ? field.value.toString()
+                                        : "erc20"
+                                    }
                                     onValueChange={value => {
                                       form.trigger();
-                                      field.onChange(parseInt(value));
+                                      field.onChange(value);
                                     }}
                                     onOpenChange={() => {}}
                                   >
@@ -469,14 +460,15 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent className="max-h-60">
-                                      {[...Array(data?.length)].map((_, i) => (
-                                        <SelectItem
-                                          key={i}
-                                          value={(i + 1).toString()}
-                                        >
-                                          {i + 1}
-                                        </SelectItem>
-                                      ))}
+                                      <SelectItem value={"erc20"}>
+                                        Token
+                                      </SelectItem>
+                                      <SelectItem value={"erc721"}>
+                                        NFT
+                                      </SelectItem>
+                                      <SelectItem value={"erc1155"}>
+                                        NFT
+                                      </SelectItem>
                                     </SelectContent>
                                   </Select>
                                   <FormMessage />
@@ -498,7 +490,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                 size="sm"
                 className="mt-6"
                 onClick={() => {
-                  append({ addressOrEns: "", weight: 1 });
+                  append({ address: "", addressOrEns: "" });
                   form.trigger();
                 }}
               >

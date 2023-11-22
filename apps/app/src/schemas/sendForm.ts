@@ -45,11 +45,9 @@ const asset = z.union([erc20, erc721, erc1155]);
 const transfer = z.object({
   address: z.string().optional(),
   addressOrEns: z.string().optional(),
-  chainId: z.number().optional(),
   asset: asset.optional(),
-  assetType: z
-    .union([z.literal("erc20"), z.literal("erc721"), z.literal("erc1155")])
-    .optional(),
+  assetType: z.string().optional(),
+  chainId: z.number().optional(),
 });
 
 const transfers = z.array(transfer);
