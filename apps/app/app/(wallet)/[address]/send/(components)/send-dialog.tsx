@@ -525,6 +525,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                           size="unsized"
                                           variant="outline"
                                           type="button"
+                                          className="px-1 py-0.5 text-xs"
                                           onClick={() => {
                                             // Set the value of key quantity to the token balance
                                             const token =
@@ -552,12 +553,35 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                       </div>
                                     </div>
                                   </div>
-                                  <FormMessage />
-                                  {/* If the field is valid, show the token balance */}
-                                  {typeof form.formState.errors.transfers?.[
-                                    index
-                                  ]?.asset === "undefined" && (
-                                    <div className="text-xs text-text-weak">
+                                  <div className="flex items-center justify-between text-xs text-text-weak">
+                                    <div>
+                                      {/* Get the current balance in USD */}
+                                      {tokens &&
+                                        tokens?.length > 0 &&
+                                        (() => {
+                                          const token = tokens.find(
+                                            token =>
+                                              token.address ===
+                                              (transfers?.[index]?.asset
+                                                ?.address || ""),
+                                          );
+                                          return token
+                                            ? "~ $" +
+                                                // Get the current selected token balance in USD
+                                                (
+                                                  (token?.balance_usd /
+                                                    (token.amount /
+                                                      Math.pow(
+                                                        10,
+                                                        token?.decimals,
+                                                      ))) *
+                                                  // Get the form value
+                                                  (field.value ?? 0)
+                                                ).toFixed(2)
+                                            : "";
+                                        })()}
+                                    </div>
+                                    <div>
                                       {tokens &&
                                         tokens?.length > 0 &&
                                         (() => {
@@ -576,7 +600,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                             : "";
                                         })()}
                                     </div>
-                                  )}
+                                  </div>
+                                  <FormMessage />
                                 </div>
                               )}
                             />
