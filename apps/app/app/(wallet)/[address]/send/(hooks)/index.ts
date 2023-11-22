@@ -17,4 +17,3 @@ export {
   transferParser,
   useTransfersQueryState,
 } from "./useTransfersQueryState";
-export type { Transfer, Transfers } from "./useTransfersQueryState";
