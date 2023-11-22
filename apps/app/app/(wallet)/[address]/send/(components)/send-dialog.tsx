@@ -614,21 +614,21 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                     <Select
                                       defaultValue={
                                         // Get the token with matching index
-                                        tokens &&
-                                        tokens?.length > 0 &&
-                                        (() => {
-                                          const token = tokens?.find(
-                                            token =>
-                                              token.address ===
-                                              (transfers?.[index]?.asset
-                                                ?.address || ""),
-                                          );
-                                          return token
-                                            ? token?.address +
-                                                "-" +
-                                                token?.chain_id
-                                            : "";
-                                        })()
+                                        tokens && tokens?.length > 0
+                                          ? (() => {
+                                              const token = tokens?.find(
+                                                token =>
+                                                  token.address ===
+                                                  (transfers?.[index]?.asset
+                                                    ?.address || ""),
+                                              );
+                                              return token
+                                                ? token?.address +
+                                                    "-" +
+                                                    token?.chain_id
+                                                : undefined;
+                                            })()
+                                          : undefined
                                       }
                                       onValueChange={value => {
                                         // Get the token of address and chainId
@@ -650,7 +650,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                           );
                                           form.setValue(
                                             `transfers.${index}.chainId`,
-                                            chainId,
+                                            parseInt(chainId),
                                           );
                                           form.setValue(
                                             `transfers.${index}.assetType`,
