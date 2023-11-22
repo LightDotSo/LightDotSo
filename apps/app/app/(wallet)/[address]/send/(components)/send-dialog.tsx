@@ -312,6 +312,44 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     }
   }
 
+  async function validateQuantity(quantity: number, index: number) {
+    // If the quantity is empty, return
+    if (!quantity) return;
+
+    // Check if the quantity is a number and more than the token balance
+    if (quantity && quantity > 0) {
+      // If the quantity is valid, get the token balance
+      const token =
+        tokens &&
+        transfers?.length > 0 &&
+        transfers[index]?.asset?.address &&
+        tokens?.find(
+          token => token.address === (transfers?.[index]?.asset?.address || ""),
+        );
+      // If the token is not found or undefined, set an error
+      if (!token) {
+        // Show an error on the message
+        form.setError(`transfers.${index}.asset.quantity`, {
+          type: "manual",
+          message: "Please select a valid token",
+        });
+        // Clear the value of key address
+        form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else if (quantity > token?.amount * Math.pow(10, token?.decimals)) {
+        // Show an error on the message
+        form.setError(`transfers.${index}.asset.quantity`, {
+          type: "manual",
+          message: "Insufficient balance",
+        });
+        // Clear the value of key address
+        // form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else {
+        // If the quantity is valid, set the value of key quantity
+        form.setValue(`transfers.${index}.asset.quantity`, quantity);
+      }
+    }
+  }
+
   function onSubmit(data: NewFormValues) {
     successToast(data);
     navigateToStep();
@@ -446,6 +484,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                     <div className="relative inline-block w-full">
                                       <Input
                                         id="address"
+                                        className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                                         type="number"
                                         {...field}
                                         placeholder="Quantity of tokens to transfer"
@@ -458,28 +497,86 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                               0,
                                             );
                                           }
-                                          const address = e.target.value;
 
-                                          validateAddress(address, index);
+                                          const quantity = parseFloat(
+                                            e.target.value,
+                                          );
+
+                                          validateQuantity(quantity, index);
                                         }}
                                         onChange={e => {
                                           // Update the field value
-                                          field.onChange(e.target.value || 0);
+                                          field.onChange(
+                                            parseFloat(e.target.value) || 0,
+                                          );
 
                                           // Validate the address
-                                          const address = e.target.value;
+                                          const quantity = parseFloat(
+                                            e.target.value,
+                                          );
 
-                                          if (address) {
-                                            validateAddress(address, index);
+                                          if (quantity) {
+                                            validateQuantity(quantity, index);
                                           }
                                         }}
                                       />
-                                      <div className="absolute inset-y-0 right-8 flex items-center">
-                                        Hello
+                                      <div className="absolute inset-y-0 right-3 flex items-center">
+                                        <Button
+                                          size="unsized"
+                                          variant="outline"
+                                          type="button"
+                                          onClick={() => {
+                                            // Set the value of key quantity to the token balance
+                                            const token =
+                                              tokens &&
+                                              transfers?.length > 0 &&
+                                              transfers[index]?.asset
+                                                ?.address &&
+                                              tokens?.find(
+                                                token =>
+                                                  token.address ===
+                                                  (transfers?.[index]?.asset
+                                                    ?.address || ""),
+                                              );
+                                            if (token) {
+                                              form.setValue(
+                                                `transfers.${index}.asset.quantity`,
+                                                token?.amount /
+                                                  Math.pow(10, token?.decimals),
+                                              );
+                                            }
+                                          }}
+                                        >
+                                          Max
+                                        </Button>
                                       </div>
                                     </div>
                                   </div>
                                   <FormMessage />
+                                  {/* If the field is valid, show the token balance */}
+                                  {typeof form.formState.errors.transfers?.[
+                                    index
+                                  ] === "undefined" && (
+                                    <div className="text-xs text-text-weak">
+                                      {tokens &&
+                                        tokens?.length > 0 &&
+                                        (() => {
+                                          const token = tokens.find(
+                                            token =>
+                                              token.address ===
+                                              (transfers?.[index]?.asset
+                                                ?.address || ""),
+                                          );
+                                          return token
+                                            ? (
+                                                token?.amount /
+                                                Math.pow(10, token?.decimals)
+                                              ).toString() +
+                                                ` ${token.symbol} available`
+                                            : "";
+                                        })()}
+                                    </div>
+                                  )}
                                 </div>
                               )}
                             />
@@ -507,7 +604,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                     >
                                       <FormControl>
                                         <SelectTrigger className="w-full">
-                                          <SelectValue placeholder="Select your wallet threshold" />
+                                          <SelectValue placeholder="Select a token" />
                                         </SelectTrigger>
                                       </FormControl>
                                       <SelectContent>
