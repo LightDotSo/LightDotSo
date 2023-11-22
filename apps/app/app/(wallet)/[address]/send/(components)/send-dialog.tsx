@@ -202,6 +202,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         if (value.transfers === undefined) {
           setTransfers(null);
         } else {
+          // @ts-expect-error
           setTransfers(value.transfers);
         }
       }
