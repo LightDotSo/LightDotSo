@@ -591,16 +591,11 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                   <div className="w-full space-y-2">
                                     <Label htmlFor="weight">Transfer</Label>
                                     <Select
-                                      defaultValue={
-                                        field.value
-                                          ? field.value.toString()
-                                          : "erc20"
-                                      }
                                       onValueChange={value => {
                                         form.trigger();
+                                        // Update the field value
                                         field.onChange(value);
                                       }}
-                                      onOpenChange={() => {}}
                                     >
                                       <FormControl>
                                         <SelectTrigger className="w-full">
@@ -613,7 +608,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                             key={token.address}
                                             value={token.address}
                                           >
-                                            {token.name ?? token.symbol}
+                                            {token.symbol}
                                           </SelectItem>
                                         ))}
                                       </SelectContent>
