@@ -137,7 +137,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
               addressOrEns: undefined,
               asset: {
                 address: tokens[0].address,
-                name: tokens[0].name ?? undefined,
                 decimals: tokens[0].decimals,
                 quantity: 0,
               },
