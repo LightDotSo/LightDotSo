@@ -21,21 +21,18 @@ import * as z from "zod";
 
 const erc20 = z.object({
   address: z.string().optional(),
-  name: z.string().optional(),
   decimals: z.number().optional(),
   quantity: z.number().optional(),
 });
 
 const erc721 = z.object({
   address: z.string().optional(),
-  name: z.string().optional(),
   tokenId: z.number().optional(),
   quantity: z.number().optional(),
 });
 
 const erc1155 = z.object({
   address: z.string().optional(),
-  name: z.string().optional(),
   tokenIds: z.array(z.number()),
   quantities: z.array(z.number()),
 });

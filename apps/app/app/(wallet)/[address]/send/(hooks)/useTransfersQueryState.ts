@@ -35,11 +35,9 @@ export const transferParser = createParser({
       // Parse the asset (if possible)
       if (assetType === "erc20") {
         // Get the parts of the asset
-        const [address, name, decimals, quantity] = asset.split("|");
+        const [address, decimals, quantity] = asset.split("|");
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
-        // Parse the name as a string (if possible)
-        const parsedName = name === "_" ? undefined : name;
         // Parse the decimals as a number (if possible)
         const parsedDecimals = parseInt(decimals);
         // Parse the quantity as a number (if possible)
@@ -57,7 +55,6 @@ export const transferParser = createParser({
             chainId: parseInt(chainId),
             asset: {
               address: parsedAddress,
-              name: parsedName,
               decimals: parsedDecimals,
               quantity: parsedQuantity,
             },
@@ -69,11 +66,9 @@ export const transferParser = createParser({
       // Parse the asset (if possible)
       if (assetType === "erc721") {
         // Get the parts of the asset
-        const [address, name, tokenId, quantity] = asset.split("|");
+        const [address, tokenId, quantity] = asset.split("|");
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
-        // Parse the name as a string (if possible)
-        const parsedName = name === "_" ? undefined : name;
         // Parse the tokenId as a number (if possible)
         const parsedTokenId = parseInt(tokenId);
         // Parse the quantity as a number (if possible)
@@ -91,7 +86,6 @@ export const transferParser = createParser({
             chainId: parseInt(chainId),
             asset: {
               address: parsedAddress,
-              name: parsedName,
               tokenId: parsedTokenId,
               quantity: parsedQuantity,
             },
@@ -103,11 +97,9 @@ export const transferParser = createParser({
       // Parse the asset (if possible)
       if (assetType === "erc1155") {
         // Get the parts of the asset
-        const [address, name, tokenIds, quantities] = asset.split("|");
+        const [address, tokenIds, quantities] = asset.split("|");
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
-        // Parse the name as a string (if possible)
-        const parsedName = name === "_" ? undefined : name;
         // Parse the tokenIds as an array of numbers (if possible)
         const parsedTokenIds = tokenIds.split(";").map(id => parseInt(id));
         // Parse the quantities as an array of numbers (if possible)
@@ -127,7 +119,6 @@ export const transferParser = createParser({
             chainId: parseInt(chainId),
             asset: {
               address: parsedAddress,
-              name: parsedName,
               tokenIds: parsedTokenIds,
               quantities: parsedQuantities,
             },
