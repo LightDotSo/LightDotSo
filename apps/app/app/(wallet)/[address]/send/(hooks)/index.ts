@@ -13,5 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { assetParser, useAssetsQueryState } from "./useAssetsQueryState";
-export type { Asset, Assets } from "./useAssetsQueryState";
+export {
+  transferParser,
+  useTransfersQueryState,
+} from "./useTransfersQueryState";
+export type { Transfer, Transfers } from "./useTransfersQueryState";

@@ -20,7 +20,7 @@ import * as z from "zod";
 // -----------------------------------------------------------------------------
 
 export const sendFormConfigurationSchema = z.object({
-  assets: z.array(
+  transfers: z.array(
     z.object({
       address: z
         .string()

@@ -51,10 +51,13 @@ import type { Address } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import {
-  assetParser,
-  useAssetsQueryState,
+  transferParser,
+  useTransfersQueryState,
 } from "@/app/(wallet)/[address]/send/(hooks)";
-import type { Asset, Assets } from "@/app/(wallet)/[address]/send/(hooks)";
+import type {
+  Transfer,
+  Transfers,
+} from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
@@ -126,10 +129,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     },
   });
 
-  const [assets, setAssets] = useAssetsQueryState();
+  const [transfers, setTransfers] = useTransfersQueryState();
 
-  // create default asset object
-  const defaultAsset: Asset = useMemo(() => {
+  // create default transfer object
+  const defaultTransfer: Transfer = useMemo(() => {
     return {
       address: userAddress,
       addressOrEns: userEns ?? userAddress,
@@ -141,21 +144,23 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   const defaultValues: Partial<NewFormValues> = useMemo(() => {
     // Check if the type is valid
     return {
-      assets:
-        defaultAsset !== undefined && assets !== undefined && assets.length > 0
-          ? assets
-          : [defaultAsset],
+      transfers:
+        defaultTransfer !== undefined &&
+        transfers !== undefined &&
+        transfers.length > 0
+          ? transfers
+          : [defaultTransfer],
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [defaultAsset]);
+  }, [defaultTransfer]);
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
     resolver: zodResolver(
       sendFormConfigurationSchema.superRefine((value, ctx) => {
-        // Check if no two assets have the same address
-        const addresses = value.assets
-          .map(asset => asset?.address)
+        // Check if no two transfers have the same address
+        const addresses = value.transfers
+          .map(transfer => transfer?.address)
           .filter(address => address && address.trim() !== "");
         const uniqueAddresses = new Set(addresses);
         if (uniqueAddresses.size !== addresses.length) {
@@ -167,22 +172,22 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
           });
         }
 
-        // Also expect that all assets w/ key address are valid addresses and are not empty
-        value.assets.forEach((asset, index) => {
+        // Also expect that all transfers w/ key address are valid addresses and are not empty
+        value.transfers.forEach((transfer, index) => {
           // Check if the address is not empty
-          if (!asset.address) {
+          if (!transfer.address) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message: "Address is required",
-              path: ["assets", index, "address"],
+              path: ["transfers", index, "address"],
             });
           }
 
-          if (asset.address && !isAddress(asset.address)) {
+          if (transfer.address && !isAddress(transfer.address)) {
             ctx.addIssue({
               code: z.ZodIssueCode.invalid_type,
               message: "Invalid address",
-              path: ["assets", index, "address"],
+              path: ["transfers", index, "address"],
               expected: "string",
               received: "string",
             });
@@ -194,21 +199,21 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   });
 
   const { fields, append, remove } = useFieldArray({
-    name: "assets",
+    name: "transfers",
     control: form.control,
   });
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
-      if (Array.isArray(value.assets)) {
-        if (value.assets === undefined) {
-          setAssets(null);
+      if (Array.isArray(value.transfers)) {
+        if (value.transfers === undefined) {
+          setTransfers(null);
         } else {
-          // Iterate over each asset which has a weight
-          const assets = value.assets.filter(
-            asset => asset?.weight && asset?.address,
-          ) as Assets;
-          setAssets(assets);
+          // Iterate over each transfer which has a weight
+          const transfers = value.transfers.filter(
+            transfer => transfer?.weight && transfer?.address,
+          ) as Transfers;
+          setTransfers(transfers);
         }
       }
 
@@ -220,15 +225,15 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
 
   // Set the form values from the URL on mount
   useEffect(() => {
-    // Recursively iterate the assets and validate the addresses on mount
-    assets.forEach((asset, index) => {
-      if (asset.address) {
-        validateAddress(asset.address, index);
+    // Recursively iterate the transfers and validate the addresses on mount
+    transfers.forEach((transfer, index) => {
+      if (transfer.address) {
+        validateAddress(transfer.address, index);
       }
     });
 
-    if (defaultValues.assets) {
-      setAssets(defaultValues.assets);
+    if (defaultValues.transfers) {
+      setTransfers(defaultValues.transfers);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -236,10 +241,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
 
   const navigateToStep = useCallback(() => {
     const url = new URL(window.location.origin);
-    url.searchParams.set("assets", assetParser.serialize(assets));
+    url.searchParams.set("transfers", transferParser.serialize(transfers));
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assets]);
+  }, [transfers]);
 
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
@@ -248,8 +253,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // Try to parse the address
     if (isAddress(address)) {
       // If the address is valid, set the value of key address
-      form.setValue(`assets.${index}.address`, address);
-      form.clearErrors(`assets.${index}.addressOrEns`);
+      form.setValue(`transfers.${index}.address`, address);
+      form.clearErrors(`transfers.${index}.addressOrEns`);
     } else if (
       address &&
       address.length > 3 &&
@@ -265,16 +270,16 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
           .then(ensNameAddress => {
             if (ensNameAddress) {
               // If the ENS name resolves, set the value of key address
-              form.setValue(`assets.${index}.address`, ensNameAddress);
+              form.setValue(`transfers.${index}.address`, ensNameAddress);
             } else {
               // Show an error on the message
-              form.setError(`assets.${index}.addressOrEns`, {
+              form.setError(`transfers.${index}.addressOrEns`, {
                 type: "manual",
                 message:
                   "The ENS name did not resolve. Please enter a valid address or ENS name",
               });
               // Clear the value of key address
-              form.setValue(`assets.${index}.address`, "");
+              form.setValue(`transfers.${index}.address`, "");
             }
 
             // Trigger the form validation
@@ -282,31 +287,31 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
           })
           .catch(() => {
             // Show an error on the message
-            form.setError(`assets.${index}.addressOrEns`, {
+            form.setError(`transfers.${index}.addressOrEns`, {
               type: "manual",
               message: "Please enter a valid address or ENS name",
             });
             // Clear the value of key address
-            form.setValue(`assets.${index}.address`, "");
+            form.setValue(`transfers.${index}.address`, "");
 
             // Trigger the form validation
             form.trigger();
           });
       } catch {
         // Show an error on the message
-        form.setError(`assets.${index}.addressOrEns`, {
+        form.setError(`transfers.${index}.addressOrEns`, {
           type: "manual",
           message: "Please enter a valid address or ENS name",
         });
         // Clear the value of key address
-        form.setValue(`assets.${index}.address`, "");
+        form.setValue(`transfers.${index}.address`, "");
       } finally {
         // Trigger the form validation
         form.trigger();
       }
     } else {
       // Clear the value of key address
-      form.setValue(`assets.${index}.address`, "");
+      form.setValue(`transfers.${index}.address`, "");
 
       // Trigger the form validation
       form.trigger();
@@ -340,7 +345,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                       >
                         <FormField
                           control={form.control}
-                          name={`assets.${index}.addressOrEns`}
+                          name={`transfers.${index}.addressOrEns`}
                           render={({ field }) => (
                             <div className="col-span-7 space-y-2">
                               <Label htmlFor="address">Address or ENS</Label>
@@ -356,7 +361,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                       if (!e.target.value) {
                                         // Clear the value of key address
                                         form.setValue(
-                                          `assets.${index}.address`,
+                                          `transfers.${index}.address`,
                                           "",
                                         );
                                       }
@@ -388,12 +393,13 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                         }
                                         className={cn(
                                           // If the field is not valid, add opacity
-                                          form.formState.errors.assets &&
-                                            form.formState.errors.assets[
+                                          form.formState.errors.transfers &&
+                                            form.formState.errors.transfers[
                                               index
                                             ] &&
-                                            form.formState.errors.assets[index]
-                                              ?.addressOrEns
+                                            form.formState.errors.transfers[
+                                              index
+                                            ]?.addressOrEns
                                             ? "opacity-50"
                                             : "opacity-100",
                                         )}
@@ -410,9 +416,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                           className={cn(
                             "flex h-full flex-col col-span-1",
                             // If there is error, justify center, else end
-                            form.formState.errors.assets &&
-                              form.formState.errors.assets[index] &&
-                              form.formState.errors.assets[index]?.addressOrEns
+                            form.formState.errors.transfers &&
+                              form.formState.errors.transfers[index] &&
+                              form.formState.errors.transfers[index]
+                                ?.addressOrEns
                               ? "justify-center"
                               : "justify-end",
                           )}
@@ -434,12 +441,12 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                         <FormField
                           key={field.id}
                           control={form.control}
-                          name={`assets.${index}.weight`}
+                          name={`transfers.${index}.weight`}
                           render={({ field }) => (
                             <>
                               <FormControl>
                                 <div className="">
-                                  <Label htmlFor="weight">Asset</Label>
+                                  <Label htmlFor="weight">Transfer</Label>
                                   <Select
                                     defaultValue={field.value.toString()}
                                     onValueChange={value => {

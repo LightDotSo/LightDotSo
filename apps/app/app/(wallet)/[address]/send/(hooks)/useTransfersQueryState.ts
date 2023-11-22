@@ -19,25 +19,25 @@ import { createParser, useQueryState } from "next-usequerystate";
 // Types
 // -----------------------------------------------------------------------------
 
-export type Asset = {
+export type Transfer = {
   address?: string;
   addressOrEns?: string;
   weight: number;
 };
-export type Assets = Asset[];
+export type Transfers = Transfer[];
 
 // -----------------------------------------------------------------------------
 // Parser
 // -----------------------------------------------------------------------------
 
-export const assetParser = createParser({
+export const transferParser = createParser({
   parse(val) {
     if (val === "") {
       return null;
     }
     const value = decodeURIComponent(val);
     const keys = value.split(";");
-    return keys.reduce<Assets>((acc, key) => {
+    return keys.reduce<Transfers>((acc, key) => {
       const [id, address, addressOrEns, weight] = key.split(":");
       // Parse the id as a number (if possible)
       acc[parseInt(id)] = {
@@ -48,14 +48,14 @@ export const assetParser = createParser({
       return acc;
     }, []);
   },
-  serialize(value: Assets) {
+  serialize(value: Transfers) {
     const entry = Object.entries(value)
       // Filter out undefined values
-      .filter(([, asset]) => asset !== undefined)
+      .filter(([, transfer]) => transfer !== undefined)
       .map(
-        ([id, asset]) =>
-          `${id}:${asset?.address ?? "_"}:${asset?.addressOrEns ?? "_"}:${
-            asset?.weight ?? 1
+        ([id, transfer]) =>
+          `${id}:${transfer?.address ?? "_"}:${transfer?.addressOrEns ?? "_"}:${
+            transfer?.weight ?? 1
           }`,
       )
       .join(";");
@@ -69,6 +69,6 @@ export const assetParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useAssetsQueryState = () => {
-  return useQueryState("assets", assetParser.withDefault([]));
+export const useTransfersQueryState = () => {
+  return useQueryState("transfers", transferParser.withDefault([]));
 };
