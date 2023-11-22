@@ -200,15 +200,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
       if (Array.isArray(value.transfers)) {
-        if (value.transfers === undefined) {
-          setTransfers(null);
-        } else {
-          // Iterate over each transfer which has a weight
-          const transfers = value.transfers.filter(
-            transfer => transfer?.address,
-          ) as Transfers;
-          setTransfers(transfers);
-        }
+        setTransfers(value.transfers);
       }
 
       return;
