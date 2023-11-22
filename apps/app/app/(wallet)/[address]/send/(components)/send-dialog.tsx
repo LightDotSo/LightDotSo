@@ -60,6 +60,7 @@ import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import type { Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
+import { debounce } from "@/utils/debounce";
 import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
@@ -240,6 +241,9 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // If the address is empty, return
     if (!address || address.length <= 3) return;
 
+    // Log the fetching of the ENS name
+    console.info("Fetching ENS name...");
+
     // Try to parse the address
     if (isAddress(address)) {
       // If the address is valid, set the value of key address
@@ -307,6 +311,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
       form.trigger();
     }
   }
+
+  const debouncedValidateAddress = debounce(validateAddress, 300);
 
   async function validateQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
@@ -382,7 +388,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                               <div className="flex items-center space-x-3">
                                 <div className="relative inline-block w-full">
                                   <Input
-                                    id="address"
                                     className="pl-12"
                                     {...field}
                                     placeholder="Recepient's Address or ENS name"
@@ -407,7 +412,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                       const address = e.target.value;
 
                                       if (address) {
-                                        validateAddress(address, index);
+                                        debouncedValidateAddress(
+                                          address,
+                                          index,
+                                        );
                                       }
                                     }}
                                   />
