@@ -102,7 +102,7 @@ export const transferParser = createParser({
         const parsedTokenIds = tokenIds.split(";").map(id => parseInt(id));
         // Parse the quantities as an array of numbers (if possible)
         const parsedQuantities = quantities
-          .split("~")
+          .split("&")
           .map(quantity => parseInt(quantity));
         // Add the asset to the transfer if all parts are valid
         if (
@@ -165,12 +165,12 @@ export const transferParser = createParser({
           const tokenIds =
             (transfer?.asset &&
               "tokenIds" in transfer.asset &&
-              transfer.asset?.tokenIds?.join("~")) ??
+              transfer.asset?.tokenIds?.join("&")) ??
             "_";
           const quantities =
             (transfer?.asset &&
               "tokenIds" in transfer.asset &&
-              transfer.asset?.tokenIds?.join("~")) ??
+              transfer.asset?.tokenIds?.join("&")) ??
             "_";
           assetString =
             `${asset?.address ?? "_"},${asset?.name ?? "_"},` +
