@@ -603,15 +603,58 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                               key={field.id}
                               control={form.control}
                               name={`transfers.${index}.asset.address`}
-                              render={({ field }) => (
+                              render={({ field: _field }) => (
                                 <FormControl>
                                   <div className="w-full space-y-2">
                                     <Label htmlFor="weight">Transfer</Label>
                                     <Select
+                                      defaultValue={
+                                        // Get the token with matching index
+                                        tokens &&
+                                        tokens?.length > 0 &&
+                                        (() => {
+                                          const token = tokens?.find(
+                                            token =>
+                                              token.address ===
+                                              (transfers?.[index]?.asset
+                                                ?.address || ""),
+                                          );
+                                          return token
+                                            ? token?.address +
+                                                "-" +
+                                                token?.chain_id
+                                            : "";
+                                        })()
+                                      }
                                       onValueChange={value => {
+                                        // Get the token of address and chainId
+                                        const [address, chainId] =
+                                          value?.split("-") || [];
+
+                                        // Set the chainId of the token
+                                        const token =
+                                          tokens &&
+                                          tokens?.length > 0 &&
+                                          tokens?.find(
+                                            token => token.address === address,
+                                          );
+
+                                        if (token) {
+                                          form.setValue(
+                                            `transfers.${index}.asset.address`,
+                                            address,
+                                          );
+                                          form.setValue(
+                                            `transfers.${index}.chainId`,
+                                            chainId,
+                                          );
+                                          form.setValue(
+                                            `transfers.${index}.assetType`,
+                                            "erc20",
+                                          );
+                                        }
+
                                         form.trigger();
-                                        // Update the field value
-                                        field.onChange(value);
                                       }}
                                     >
                                       <FormControl>
@@ -622,8 +665,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                       <SelectContent>
                                         {tokens?.map(token => (
                                           <SelectItem
-                                            key={token.address}
-                                            value={token.address}
+                                            key={`${token.address}-${token.chain_id}`}
+                                            value={`${token.address}-${token.chain_id}`}
                                           >
                                             {token.symbol}
                                           </SelectItem>
