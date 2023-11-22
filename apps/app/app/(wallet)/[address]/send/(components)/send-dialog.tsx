@@ -253,6 +253,14 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transfers]);
 
+  const onSubmit = useCallback(
+    (data: NewFormValues) => {
+      successToast(data);
+      navigateToStep();
+    },
+    [successToast, navigateToStep],
+  );
+
   // ---------------------------------------------------------------------------
   // Validation
   // ---------------------------------------------------------------------------
@@ -372,11 +380,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const debouncedValidateAddress = debounce(validateAddress, 300);
-
-  function onSubmit(data: NewFormValues) {
-    successToast(data);
-    navigateToStep();
-  }
 
   return (
     <div className="grid gap-10">

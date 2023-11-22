@@ -310,6 +310,14 @@ export const ConfigurationForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, type, threshold, salt, owners]);
 
+  const onSubmit = useCallback(
+    (data: NewFormValues) => {
+      successToast(data);
+      navigateToStep();
+    },
+    [successToast, navigateToStep],
+  );
+
   // ---------------------------------------------------------------------------
   // Validation
   // ---------------------------------------------------------------------------
@@ -391,11 +399,6 @@ export const ConfigurationForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const debouncedValidateAddress = debounce(validateAddress, 300);
-
-  function onSubmit(data: NewFormValues) {
-    successToast(data);
-    navigateToStep();
-  }
 
   return (
     <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
