@@ -138,30 +138,26 @@ export const transferParser = createParser({
 
         if (transfer?.assetType === "erc20") {
           const asset = transfer.asset;
-          assetString =
-            `${asset?.address ?? "_"}|${asset?.name ?? "_"}` +
-            `|${
-              transfer?.asset && "decimals" in transfer.asset
-                ? transfer.asset.decimals
-                : 0
-            }|${
-              transfer?.asset && "quantity" in transfer.asset
-                ? transfer.asset.quantity
-                : 0
-            }`;
+          assetString = `${asset?.address ?? "_"}|${
+            transfer?.asset && "decimals" in transfer.asset
+              ? transfer.asset.decimals
+              : 0
+          }|${
+            transfer?.asset && "quantity" in transfer.asset
+              ? transfer.asset.quantity
+              : 0
+          }`;
         } else if (transfer?.assetType === "erc721") {
           const asset = transfer.asset;
-          assetString =
-            `${asset?.address ?? "_"}|${asset?.name ?? "_"}` +
-            `|${
-              transfer?.asset && "tokenId" in transfer.asset
-                ? transfer.asset.tokenId
-                : 0
-            }|${
-              transfer?.asset && "quantity" in transfer.asset
-                ? transfer.asset.quantity
-                : 0
-            }`;
+          assetString = `${asset?.address ?? "_"}|${
+            transfer?.asset && "tokenId" in transfer.asset
+              ? transfer.asset.tokenId
+              : 0
+          }|${
+            transfer?.asset && "quantity" in transfer.asset
+              ? transfer.asset.quantity
+              : 0
+          }`;
         } else if (transfer?.assetType === "erc1155") {
           const asset = transfer.asset;
           const tokenIds =
@@ -174,9 +170,7 @@ export const transferParser = createParser({
               "tokenIds" in transfer.asset &&
               transfer.asset?.tokenIds?.join("&")) ??
             "_";
-          assetString =
-            `${asset?.address ?? "_"}|${asset?.name ?? "_"}|` +
-            `${tokenIds}|${quantities}`;
+          assetString = `${asset?.address ?? "_"}|${tokenIds}|${quantities}`;
         }
 
         return (
