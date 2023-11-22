@@ -132,11 +132,11 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     const transfers: Transfers =
       tokens && tokens?.length > 0
         ? tokens?.map(token => ({
-            address: "",
-            addressOrEns: "",
+            address: undefined,
+            addressOrEns: undefined,
             asset: {
               address: token.address,
-              name: token.name ?? "",
+              name: token.name ?? undefined,
               decimals: token.decimals,
               quantity: 0,
             },

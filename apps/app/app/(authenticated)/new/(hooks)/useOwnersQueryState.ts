@@ -31,11 +31,7 @@ export type Owners = Owner[];
 // -----------------------------------------------------------------------------
 
 export const ownerParser = createParser({
-  parse(val) {
-    if (val === "") {
-      return null;
-    }
-    const value = decodeURIComponent(val);
+  parse(value) {
     const keys = value.split(";");
     return keys.reduce<Owners>((acc, key) => {
       const [id, address, addressOrEns, weight] = key.split(":");
@@ -60,8 +56,7 @@ export const ownerParser = createParser({
       )
       .join(";");
 
-    // Return the serialized value encoded as a URI component
-    return encodeURIComponent(entry);
+    return entry;
   },
 });
 

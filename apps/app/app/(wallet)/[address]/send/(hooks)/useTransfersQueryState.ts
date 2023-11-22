@@ -21,21 +21,20 @@ import type { Transfers } from "@/schemas";
 // -----------------------------------------------------------------------------
 
 export const transferParser = createParser({
-  parse(val) {
-    if (val === "") {
+  parse(value) {
+    if (value === "") {
       return null;
     }
-    const value = decodeURIComponent(val);
     const keys = value.split(";");
     return keys.reduce<Transfers>((acc, key) => {
       const [id, address, addressOrEns, chainId, assetType, asset] =
         key.split(":");
-      const transferAddress = address === "_" ? undefined : address;
+      const transferAddress = address;
 
       // Parse the asset (if possible)
       if (assetType === "erc20") {
         // Get the parts of the asset
-        const [address, name, decimals, quantity] = asset.split(",");
+        const [address, name, decimals, quantity] = asset.split("|");
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
         // Parse the name as a string (if possible)
@@ -45,7 +44,12 @@ export const transferParser = createParser({
         // Parse the quantity as a number (if possible)
         const parsedQuantity = parseInt(quantity);
         // Add the asset to the transfer if all parts are valid
-        if (name && parsedDecimals && parsedQuantity) {
+        if (
+          parsedAddress &&
+          parsedName &&
+          !isNaN(parsedDecimals) &&
+          !isNaN(parsedQuantity)
+        ) {
           acc[parseInt(id)] = {
             address: transferAddress === "_" ? undefined : transferAddress,
             addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
@@ -64,7 +68,7 @@ export const transferParser = createParser({
       // Parse the asset (if possible)
       if (assetType === "erc721") {
         // Get the parts of the asset
-        const [address, name, tokenId, quantity] = asset.split(",");
+        const [address, name, tokenId, quantity] = asset.split("|");
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
         // Parse the name as a string (if possible)
@@ -74,7 +78,12 @@ export const transferParser = createParser({
         // Parse the quantity as a number (if possible)
         const parsedQuantity = parseInt(quantity);
         // Add the asset to the transfer if all parts are valid
-        if (name && parsedTokenId) {
+        if (
+          parsedAddress &&
+          parsedName &&
+          !isNaN(parsedTokenId) &&
+          !isNaN(parsedQuantity)
+        ) {
           acc[parseInt(id)] = {
             address: transferAddress === "_" ? undefined : transferAddress,
             addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
@@ -93,7 +102,7 @@ export const transferParser = createParser({
       // Parse the asset (if possible)
       if (assetType === "erc1155") {
         // Get the parts of the asset
-        const [address, name, tokenIds, quantities] = asset.split(",");
+        const [address, name, tokenIds, quantities] = asset.split("|");
         // Parse the address as a string (if possible)
         const parsedAddress = address === "_" ? undefined : address;
         // Parse the name as a string (if possible)
@@ -137,12 +146,12 @@ export const transferParser = createParser({
         if (transfer?.assetType === "erc20") {
           const asset = transfer.asset;
           assetString =
-            `${asset?.address ?? "_"},${asset?.name ?? "_"}` +
-            `,${
+            `${asset?.address ?? "_"}|${asset?.name ?? "_"}` +
+            `|${
               transfer?.asset && "decimals" in transfer.asset
                 ? transfer.asset.decimals
                 : 0
-            },${
+            }|${
               transfer?.asset && "quantity" in transfer.asset
                 ? transfer.asset.quantity
                 : 0
@@ -150,12 +159,12 @@ export const transferParser = createParser({
         } else if (transfer?.assetType === "erc721") {
           const asset = transfer.asset;
           assetString =
-            `${asset?.address ?? "_"},${asset?.name ?? "_"}` +
-            `,${
+            `${asset?.address ?? "_"}|${asset?.name ?? "_"}` +
+            `|${
               transfer?.asset && "tokenId" in transfer.asset
                 ? transfer.asset.tokenId
                 : 0
-            },${
+            }|${
               transfer?.asset && "quantity" in transfer.asset
                 ? transfer.asset.quantity
                 : 0
@@ -173,8 +182,8 @@ export const transferParser = createParser({
               transfer.asset?.tokenIds?.join("&")) ??
             "_";
           assetString =
-            `${asset?.address ?? "_"},${asset?.name ?? "_"},` +
-            `${tokenIds},${quantities}`;
+            `${asset?.address ?? "_"}|${asset?.name ?? "_"}|` +
+            `${tokenIds}|${quantities}`;
         }
 
         return (
@@ -188,7 +197,7 @@ export const transferParser = createParser({
       .join(";");
 
     // Return the serialized value encoded as a URI component
-    return encodeURIComponent(entry);
+    return entry;
   },
 });
 
