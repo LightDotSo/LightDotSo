@@ -556,7 +556,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                   {/* If the field is valid, show the token balance */}
                                   {typeof form.formState.errors.transfers?.[
                                     index
-                                  ] === "undefined" && (
+                                  ]?.asset === "undefined" && (
                                     <div className="text-xs text-text-weak">
                                       {tokens &&
                                         tokens?.length > 0 &&
