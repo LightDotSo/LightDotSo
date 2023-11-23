@@ -15,6 +15,7 @@
 
 import type { Address } from "viem";
 import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
+import { transferParser } from "@/app/(wallet)/[address]/send/(hooks)";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 
@@ -25,8 +26,7 @@ import { preloader } from "@/preloaders/paths/[address]/preloader";
 type PageProps = {
   params: { address: string };
   searchParams: {
-    chainId?: string;
-    tokenAddress?: string;
+    transfers?: string;
   };
 };
 
@@ -34,15 +34,18 @@ type PageProps = {
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({
-  params,
-  searchParams: _searchParams,
-}: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
 
   preloader(params);
+
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const transfers = transferParser.parseServerSide(searchParams.transfers);
 
   // ---------------------------------------------------------------------------
   // Handlers
@@ -54,5 +57,10 @@ export default async function Page({
   // Render
   // ---------------------------------------------------------------------------
 
-  return <SendDialog address={params.address as Address} />;
+  return (
+    <SendDialog
+      address={params.address as Address}
+      initialTransfers={transfers ?? []}
+    />
+  );
 }

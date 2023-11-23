@@ -71,13 +71,17 @@ type NewFormValues = z.infer<typeof sendFormConfigurationSchema>;
 
 type SendDialogProps = {
   address: Address;
+  initialTransfers?: Transfers;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const SendDialog: FC<SendDialogProps> = ({ address }) => {
+export const SendDialog: FC<SendDialogProps> = ({
+  address,
+  initialTransfers,
+}) => {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
@@ -125,7 +129,9 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   // Query State
   // ---------------------------------------------------------------------------
 
-  const [transfers, setTransfers] = useTransfersQueryState();
+  const [transfers, setTransfers] = useTransfersQueryState(
+    initialTransfers ?? [],
+  );
 
   // ---------------------------------------------------------------------------
   // Default State
@@ -159,7 +165,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // Check if the type is valid
     return {
       transfers:
-        transfers !== undefined && transfers.length > 0
+        transfers && transfers !== undefined && transfers.length > 0
           ? transfers
           : defaultTransfer,
     };
@@ -219,6 +225,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
               // If the quantity is valid, get the token balance
               const token =
                 tokens &&
+                transfers &&
                 transfers?.length > 0 &&
                 transfers[index]?.asset?.address &&
                 tokens?.find(
@@ -331,11 +338,12 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   // Set the form values from the URL on mount
   useEffect(() => {
     // Recursively iterate the transfers and validate the addresses on mount
-    transfers.forEach((transfer, index) => {
-      if (transfer.address) {
-        validateAddress(transfer.address, index);
-      }
-    });
+    transfers &&
+      transfers.forEach((transfer, index) => {
+        if (transfer.address) {
+          validateAddress(transfer.address, index);
+        }
+      });
 
     if (defaultValues.transfers) {
       setTransfers(defaultValues.transfers);
@@ -429,6 +437,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
       // If the quantity is valid, get the token balance
       const token =
         tokens &&
+        transfers &&
         transfers?.length > 0 &&
         transfers[index]?.asset?.address &&
         tokens?.find(
@@ -643,6 +652,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                             // Set the value of key quantity to the token balance
                                             const token =
                                               tokens &&
+                                              transfers &&
                                               transfers?.length > 0 &&
                                               transfers[index]?.asset
                                                 ?.address &&
@@ -732,6 +742,14 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                   <div className="w-full space-y-2">
                                     <Label htmlFor="weight">Transfer</Label>
                                     <Select
+                                      defaultValue={
+                                        transfers &&
+                                        transfers?.length > 0 &&
+                                        transfers[index]?.asset?.address &&
+                                        transfers[index]?.chainId
+                                          ? `${transfers[index]?.asset?.address}-${transfers[index]?.chainId}`
+                                          : undefined
+                                      }
                                       onValueChange={value => {
                                         // Get the token of address and chainId
                                         const [address, chainId] =

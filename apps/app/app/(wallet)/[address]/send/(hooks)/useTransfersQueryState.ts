@@ -23,6 +23,7 @@ import type { Transfers } from "@/schemas";
 
 export const transferParser = createParser({
   parse(value) {
+    console.info(value);
     if (value === "") {
       return null;
     }
@@ -192,6 +193,9 @@ export const transferParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useTransfersQueryState = () => {
-  return useQueryState("transfers", transferParser.withDefault([]));
+export const useTransfersQueryState = (initialTransfers: Transfers) => {
+  return useQueryState(
+    "transfers",
+    transferParser.withDefault(initialTransfers),
+  );
 };
