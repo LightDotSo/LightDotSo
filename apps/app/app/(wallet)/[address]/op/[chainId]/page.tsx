@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { TransactionDialog } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-dialog";
+import { TransactionDialog } from "@/app/(wallet)/[address]/send/(components)/transaction-dialog";
 import { parseNumber } from "@/handlers/parsers";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/handler";
