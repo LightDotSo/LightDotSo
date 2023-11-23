@@ -315,7 +315,7 @@ export const ConfigurationForm: FC = () => {
       successToast(data);
       navigateToStep();
     },
-    [successToast, navigateToStep],
+    [navigateToStep],
   );
 
   // ---------------------------------------------------------------------------
