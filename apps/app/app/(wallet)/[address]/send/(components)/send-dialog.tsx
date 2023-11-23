@@ -186,18 +186,29 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
             ),
         );
         if (duplicateTransfers.length > 0) {
+          // Note: This is a hacky way to get the last duplicate index
+          const transfersAsStrings = value.transfers.map(transfer =>
+            JSON.stringify(transfer),
+          );
+          const duplicateTransferString = JSON.stringify(duplicateTransfers[0]);
+          const lastDuplicateIndex = transfersAsStrings.lastIndexOf(
+            duplicateTransferString,
+          );
+
+          // Show an error on the message
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            message: "Duplicate transfers",
-            path: ["transfers"],
+            message: "Duplicate transfer",
+            path: ["transfers", lastDuplicateIndex, "addressOrEns"],
           });
         }
 
-        // Check that no sum of transfer quantity is greater than the token balance
-        // Also expect that all transfers w/ key quantity are valid numbers and are not empty
+        // Create a map to calculate the total quantity by token address
+        const totalByTokenAddress = new Map();
+
         value.transfers.forEach((transfer, index) => {
+          // Check if asset and the quantity is not empty
           if (transfer && transfer.asset && "quantity" in transfer.asset) {
-            // Check if asset and the quantity is not empty
             if (!transfer.asset.quantity) {
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
@@ -224,16 +235,42 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                   message: "Please select a valid token",
                   path: ["transfers", index, "asset", "address"],
                 });
-              } else if (
-                transfer.asset.quantity * Math.pow(10, token?.decimals) >
-                token?.amount
-              ) {
-                // Show an error on the message
-                ctx.addIssue({
-                  code: z.ZodIssueCode.custom,
-                  message: "Insufficient balance",
-                  path: ["transfers", index, "asset", "quantity"],
-                });
+              } else {
+                // Add quantity to total by token address
+                const totalQuantity =
+                  totalByTokenAddress.get(token.address) || 0;
+                totalByTokenAddress.set(
+                  token.address,
+                  totalQuantity + transfer.asset.quantity,
+                );
+
+                // Check if the sum quantity is greater than the token balance
+                if (
+                  totalByTokenAddress.get(token.address) *
+                    Math.pow(10, token?.decimals) >
+                  token?.amount
+                ) {
+                  // Show an error on the message
+                  ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Insufficient balance",
+                    path: ["transfers", index, "asset", "quantity"],
+                  });
+
+                  // Show the balance in all fields w/ same token address and chainId
+                  value.transfers.forEach((transfer, _index) => {
+                    if (
+                      transfer?.asset?.address === token?.address &&
+                      transfer?.chainId === token?.chain_id
+                    ) {
+                      ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Insufficient balance",
+                        path: ["transfers", _index, "asset", "quantity"],
+                      });
+                    }
+                  });
+                }
               }
             }
           }
