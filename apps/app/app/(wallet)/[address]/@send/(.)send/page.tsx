@@ -26,8 +26,7 @@ import { preloader } from "@/preloaders/paths/[address]/preloader";
 type PageProps = {
   params: { address: string };
   searchParams: {
-    chainId?: string;
-    tokenAddress?: string;
+    transfers?: string;
   };
 };
 
