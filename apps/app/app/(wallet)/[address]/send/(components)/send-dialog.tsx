@@ -42,6 +42,7 @@ import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
@@ -351,6 +352,20 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
+
+  const callData = useMemo(() => {
+    // Get the call data of the first transfer
+    return transfers && transfers?.length > 0 ? "0x" : "0x";
+  }, [transfers]);
+
+  const chainId = useMemo(() => {
+    // Get the chainId of the first transfer
+    return transfers &&
+      transfers?.length > 0 &&
+      transfers[0]?.chainId !== undefined
+      ? transfers[0]?.chainId
+      : null;
+  }, [transfers]);
 
   // ---------------------------------------------------------------------------
   // Validation
@@ -835,11 +850,14 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Cancel
               </Button>
               <Button
-                disabled={!form.formState.isValid}
+                asChild
+                disabled={!form.formState.isValid && chainId !== null}
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
               >
-                Continue
+                <Link href={`/${address}/op/${chainId}?callData=${callData}`}>
+                  Continue
+                </Link>
               </Button>
             </CardFooter>
           </form>
