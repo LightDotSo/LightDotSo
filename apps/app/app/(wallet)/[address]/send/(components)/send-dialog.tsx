@@ -174,6 +174,71 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     mode: "onChange",
     resolver: zodResolver(
       sendFormConfigurationSchema.superRefine((value, ctx) => {
+        // Check if no two transfers have the same address and asset address + chainId
+        const duplicateTransfers = value.transfers.filter(
+          (transfer, index, self) =>
+            index !==
+            self.findIndex(
+              t =>
+                t.address === transfer.address &&
+                t?.asset?.address === transfer?.asset?.address &&
+                t?.chainId === transfer?.chainId,
+            ),
+        );
+        if (duplicateTransfers.length > 0) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Duplicate transfers",
+            path: ["transfers"],
+          });
+        }
+
+        // Check that no sum of transfer quantity is greater than the token balance
+        // Also expect that all transfers w/ key quantity are valid numbers and are not empty
+        value.transfers.forEach((transfer, index) => {
+          if (transfer && transfer.asset && "quantity" in transfer.asset) {
+            // Check if asset and the quantity is not empty
+            if (!transfer.asset.quantity) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Quantity is required",
+                path: ["transfers", index, "asset", "quantity"],
+              });
+            } else if (transfer.asset.quantity > 0) {
+              // If the quantity is valid, get the token balance
+              const token =
+                tokens &&
+                transfers?.length > 0 &&
+                transfers[index]?.asset?.address &&
+                tokens?.find(
+                  token =>
+                    token.address ===
+                    (transfers?.[index]?.asset?.address || ""),
+                );
+
+              // If the token is not found or undefined, set an error
+              if (!token) {
+                // Show an error on the message
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: "Please select a valid token",
+                  path: ["transfers", index, "asset", "address"],
+                });
+              } else if (
+                transfer.asset.quantity * Math.pow(10, token?.decimals) >
+                token?.amount
+              ) {
+                // Show an error on the message
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: "Insufficient balance",
+                  path: ["transfers", index, "asset", "quantity"],
+                });
+              }
+            }
+          }
+        });
+
         // Also expect that all transfers w/ key address are valid addresses and are not empty
         value.transfers.forEach((transfer, index) => {
           // Check if the address is not empty
@@ -332,7 +397,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         tokens?.find(
           token => token.address === (transfers?.[index]?.asset?.address || ""),
         );
-      form.clearErrors(`transfers.${index}.asset.quantity`);
 
       // If the token is not found or undefined, set an error
       if (!token) {
@@ -354,6 +418,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
       } else {
         // If the quantity is valid, set the value of key quantity
         form.setValue(`transfers.${index}.asset.quantity`, quantity);
+        form.clearErrors(`transfers.${index}.asset.quantity`);
       }
     }
   }
@@ -557,6 +622,9 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                                   Math.pow(10, token?.decimals),
                                               );
                                             }
+
+                                            // Validate the form
+                                            form.trigger();
                                           }}
                                         >
                                           Max
@@ -627,24 +695,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                   <div className="w-full space-y-2">
                                     <Label htmlFor="weight">Transfer</Label>
                                     <Select
-                                      defaultValue={
-                                        // Get the token with matching index
-                                        tokens && tokens?.length > 0
-                                          ? (() => {
-                                              const token = tokens?.find(
-                                                token =>
-                                                  token.address ===
-                                                  (transfers?.[index]?.asset
-                                                    ?.address || ""),
-                                              );
-                                              return token
-                                                ? token?.address +
-                                                    "-" +
-                                                    token?.chain_id
-                                                : undefined;
-                                            })()
-                                          : undefined
-                                      }
                                       onValueChange={value => {
                                         // Get the token of address and chainId
                                         const [address, chainId] =

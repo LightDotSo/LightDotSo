@@ -74,13 +74,13 @@ export const CommandK: FC = () => {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen(open => !open);
+      }
       if (e.key === "d" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         onClearSearch();
-      }
-      if (e.key === "k" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setOpen(open => !open);
       }
       if (e.key === "c" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
