@@ -23,6 +23,7 @@ import type { Transfers } from "@/schemas";
 
 export const transferParser = createParser({
   parse(value) {
+    console.info(value);
     if (value === "") {
       return null;
     }
