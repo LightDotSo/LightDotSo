@@ -84,7 +84,11 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
       {data && data.length === 0 && <TokensEmpty />}
       {data &&
         data.map(token => (
-          <TokenCard key={token.address} address={address} token={token} />
+          <TokenCard
+            key={`${token.address}-${token.chain_id}`}
+            address={address}
+            token={token}
+          />
         ))}
     </TokensWrapper>
   );

@@ -66,7 +66,7 @@ export const TokenCard: FC<TokenCardProps> = ({
   },
 }) => {
   return (
-    <TableRow key={name}>
+    <TableRow key={`${tokenAddress}-${chain_id}`}>
       <TableCell className="font-medium">
         <span className="mr-1.5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger">
           <span className="overflow-hidden text-ellipsis text-xs leading-none text-text-weak">
@@ -79,7 +79,7 @@ export const TokenCard: FC<TokenCardProps> = ({
       <TableCell>
         <Suspense fallback={null}>
           <TokenCardSparkline
-            address={address as Address}
+            address={tokenAddress as Address}
             chain_id={chain_id}
           />
         </Suspense>
