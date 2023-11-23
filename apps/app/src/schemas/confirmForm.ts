@@ -13,16 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import * as z from "zod";
+
 // -----------------------------------------------------------------------------
-// Preloader
+// Schema
 // -----------------------------------------------------------------------------
 
-export const preloader = (
-  _params: { address: string },
-  _searchParams: {
-    initCode?: string;
-    callData?: string;
-  },
-) => {
-  void {};
-};
+const userOperation = z.object({
+  chainId: z.number().optional(),
+  callData: z.string().optional(),
+  initCode: z.string().optional(),
+});
+
+const userOperations = z.array(userOperation);
+
+export const confirmFormConfigurationSchema = z.object({
+  transfers: userOperations,
+});
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type UserOperation = z.infer<typeof userOperation>;
+export type UserOperations = z.infer<typeof userOperations>;
+export type ConfirmFormConfiguration = z.infer<
+  typeof confirmFormConfigurationSchema
+>;

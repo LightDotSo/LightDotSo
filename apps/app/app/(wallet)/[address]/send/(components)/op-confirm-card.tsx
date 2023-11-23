@@ -33,7 +33,7 @@ import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionDialogProps = {
+type OpConfirmProps = {
   address: Address;
   chainId: number;
   owners: {
@@ -49,7 +49,7 @@ type TransactionDialogProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionDialog: FC<TransactionDialogProps> = ({
+export const OpConfirm: FC<OpConfirmProps> = ({
   address,
   chainId,
   userOperation,
@@ -157,14 +157,6 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
 
   return (
     <>
-      <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
-        <header className="text-lg font-semibold leading-none tracking-tight">
-          Transaction
-        </header>
-        <p className="text-sm text-text-weak">
-          Are you sure you want to sign this transaction?
-        </p>
-      </div>
       <div className="grid gap-4 py-4">
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code>

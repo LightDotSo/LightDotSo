@@ -17,3 +17,7 @@ export {
   transferParser,
   useTransfersQueryState,
 } from "./useTransfersQueryState";
+export {
+  userOperationsParser,
+  useUserOperationsQueryState,
+} from "./useUserOperationsQueryState";
