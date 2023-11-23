@@ -18,9 +18,9 @@ import { OpDialog } from "@/app/(wallet)/[address]/op/(components)/op-dialog";
 import { Modal } from "@/components/modal";
 import { parseNumber } from "@/handlers/parsers";
 import { handler } from "@/handlers/paths/[address]/handler";
-import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]/handler";
+import { handler as userOpHandler } from "@/handlers/paths/[address]/op/[chainId]/[userOperationHash]/handler";
+import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/op/[chainId]/[userOperationHash]/preloader";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

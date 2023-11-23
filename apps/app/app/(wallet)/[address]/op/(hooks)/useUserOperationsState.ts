@@ -40,10 +40,7 @@ export const userOperationsParser = createParser({
         };
       })
       .filter(
-        operation =>
-          operation.chainId !== undefined ||
-          operation.initCode !== undefined ||
-          operation.callData !== undefined,
+        operation => operation.chainId !== undefined && operation !== undefined,
       );
   },
   serialize(value: UserOperations) {
@@ -62,7 +59,7 @@ export const userOperationsParser = createParser({
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useUserOperationsQueryState = (
+export const useUserOperationsState = (
   initialUserOperations: UserOperations,
 ) => {
   return useQueryState(

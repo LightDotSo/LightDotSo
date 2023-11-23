@@ -15,14 +15,13 @@
 
 "use client";
 
+import type { UserOperation } from "permissionless";
 import { useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
-import type { Address } from "viem";
-import type { UserOperations } from "@/schemas";
+import type { Address, Hex } from "viem";
+import { OpConfirmCard } from "@/app/(wallet)/[address]/op/(components)/op-confirm-card";
 import { useAuth } from "@/stores/useAuth";
-// import { user } from "@/queries/user";
-// import { OpConfirm } from "./op-confirm-card";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -30,7 +29,9 @@ import { useAuth } from "@/stores/useAuth";
 
 type OpConfirmDialogProps = {
   address: Address;
-  userOperations: UserOperations;
+  userOperations: UserOperation[];
+  userOperationHashes: Hex[];
+  userOperationChainIds: number[];
   owners: {
     id: string;
     address: string;
@@ -43,8 +44,10 @@ type OpConfirmDialogProps = {
 // -----------------------------------------------------------------------------
 
 export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
-  // address,
+  address,
   userOperations,
+  userOperationHashes,
+  userOperationChainIds,
   owners,
 }) => {
   const { address: userAddress } = useAuth();
@@ -68,7 +71,14 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
           Are you sure you want to sign this transaction?
         </p>
         {userOperations?.map((userOperation, index) => (
-          <div key={index} aria-label={userOperation.callData} />
+          <OpConfirmCard
+            key={index}
+            address={address}
+            owners={owners}
+            userOperation={userOperation}
+            chainId={userOperationChainIds[index]}
+            userOpHash={userOperationHashes[index]}
+          />
         ))}
       </div>
     </>

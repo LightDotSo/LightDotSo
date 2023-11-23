@@ -13,13 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// import type { Address } from "viem";
-// import { TransactionDialog } from "@/app/(wallet)/[address]/send/(components)/op-confirm-dialog";
-// import { parseNumber } from "@/handlers/parsers";
-// import { handler } from "@/handlers/paths/[address]/handler";
-// import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/handler";
+import type { Address } from "viem";
+import { OpConfirmDialog } from "@/app/(wallet)/[address]/op/(components)/op-confirm-dialog";
+import { handler } from "@/handlers/paths/[address]/handler";
+import { handler as userOperationsHandler } from "@/handlers/paths/[address]/op/handler";
+import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/op/[chainId]/preloader";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -28,8 +27,7 @@ import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/trans
 type PageProps = {
   params: { address: string };
   searchParams: {
-    initCode?: string;
-    callData?: string;
+    userOperations?: string;
   };
 };
 
@@ -49,20 +47,23 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  // const { config } = await handler(params);
-  // const { userOperation, hash } = await userOpHandler(params, searchParams);
+  const { config } = await handler(params);
+  const { userOperations, hashes, chainIds } = await userOperationsHandler(
+    params,
+    searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  // return (
-  // <TransactionDialog
-  //   owners={config.owners}
-  //   address={params.address as Address}
-  //   chainId={chainId}
-  //   userOpHash={hash}
-  //   userOperation={userOperation}
-  // />
-  // );
+  return (
+    <OpConfirmDialog
+      owners={config.owners}
+      address={params.address as Address}
+      userOperations={userOperations}
+      userOperationHashes={hashes}
+      userOperationChainIds={chainIds}
+    />
+  );
 }

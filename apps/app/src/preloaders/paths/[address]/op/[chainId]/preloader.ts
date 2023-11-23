@@ -20,8 +20,7 @@
 export const preloader = (
   _params: { address: string },
   _searchParams: {
-    initCode?: string;
-    callData?: string;
+    userOperations?: string;
   },
 ) => {
   void {};

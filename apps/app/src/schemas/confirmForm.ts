@@ -21,8 +21,17 @@ import * as z from "zod";
 
 const userOperation = z.object({
   chainId: z.number().optional(),
-  callData: z.string().optional(),
+  hash: z.string().optional(),
+  nonce: z.number().optional(),
   initCode: z.string().optional(),
+  sender: z.string().optional(),
+  callData: z.string().optional(),
+  callGasLimit: z.number().optional(),
+  verificationGasLimit: z.number().optional(),
+  preVerificationGas: z.number().optional(),
+  maxFeePerGas: z.number().optional(),
+  maxPriorityFeePerGas: z.number().optional(),
+  paymaster_and_data: z.string().optional(),
 });
 
 const userOperations = z.array(userOperation);

@@ -19,8 +19,8 @@ import { Modal } from "@/components/modal";
 // import { parseNumber } from "@/handlers/parsers";
 // import { handler } from "@/handlers/paths/[address]/handler";
 // import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/handler";
+import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/op/[chainId]/preloader";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,8 +29,7 @@ import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/trans
 type PageProps = {
   params: { address: string };
   searchParams: {
-    initCode?: string;
-    callData?: string;
+    userOperations?: string;
   };
 };
 

@@ -49,7 +49,7 @@ type OpConfirmProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpConfirm: FC<OpConfirmProps> = ({
+export const OpConfirmCard: FC<OpConfirmProps> = ({
   address,
   chainId,
   userOperation,
