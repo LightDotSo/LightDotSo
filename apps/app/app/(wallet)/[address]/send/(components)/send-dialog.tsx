@@ -129,7 +129,9 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Query State
   // ---------------------------------------------------------------------------
 
-  const [transfers, setTransfers] = useTransfersQueryState();
+  const [transfers, setTransfers] = useTransfersQueryState(
+    initialTransfers ?? [],
+  );
 
   // ---------------------------------------------------------------------------
   // Default State
@@ -315,12 +317,6 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    if (initialTransfers) {
-      setTransfers(initialTransfers);
-    }
-  }, []);
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
