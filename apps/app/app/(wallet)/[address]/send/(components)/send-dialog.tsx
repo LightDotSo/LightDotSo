@@ -732,6 +732,14 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                   <div className="w-full space-y-2">
                                     <Label htmlFor="weight">Transfer</Label>
                                     <Select
+                                      defaultValue={
+                                        transfers &&
+                                        transfers?.length > 0 &&
+                                        transfers[index]?.asset?.address &&
+                                        transfers[index]?.chainId
+                                          ? `${transfers[index]?.asset?.address}-${transfers[index]?.chainId}`
+                                          : undefined
+                                      }
                                       onValueChange={value => {
                                         // Get the token of address and chainId
                                         const [address, chainId] =

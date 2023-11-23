@@ -29,6 +29,7 @@ type TokenCardActionsProps = {
   address: Address;
   chainId: number;
   tokenAddress: string;
+  tokenDecimals: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -39,6 +40,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
   address,
   chainId,
   tokenAddress,
+  tokenDecimals,
 }) => {
   return (
     <div className="flex items-center justify-end gap-x-4">
@@ -48,7 +50,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
       </Button>
       <Button asChild size="sm" className="rounded-full p-3">
         <Link
-          href={`/${address}/send/overlay?token=${tokenAddress}&chainId=${chainId}`}
+          href={`/${address}/send?transfers=0:_:_:${chainId}:erc20:${tokenAddress}|${tokenDecimals}|0`}
         >
           <Send className="h-3 w-3" />
           <span className="sr-only">Open send modal</span>

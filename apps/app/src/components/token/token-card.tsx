@@ -88,6 +88,7 @@ export const TokenCard: FC<TokenCardProps> = ({
         <TokenCardActions
           address={address as Address}
           tokenAddress={tokenAddress}
+          tokenDecimals={decimals}
           chainId={chain_id}
         />
       </TableCell>
