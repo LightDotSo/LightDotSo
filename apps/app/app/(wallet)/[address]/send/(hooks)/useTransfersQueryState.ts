@@ -197,7 +197,7 @@ export const useTransfersQueryState = () => {
     "transfers",
     transferParser.withOptions({
       shallow: false,
-      throttleMs: 1000,
+      throttleMs: 1500,
     }),
   );
 };
