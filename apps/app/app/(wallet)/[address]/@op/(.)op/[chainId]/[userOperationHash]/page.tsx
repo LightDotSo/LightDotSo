@@ -43,12 +43,17 @@ export default async function Page({ params }: PageProps) {
   userOpPreloader(params);
 
   // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const chainId = parseNumber(params.chainId);
+
+  // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { config } = await handler(params);
   const { userOperation } = await userOpHandler(params);
-  const chainId = parseNumber(params.chainId);
 
   // ---------------------------------------------------------------------------
   // Render

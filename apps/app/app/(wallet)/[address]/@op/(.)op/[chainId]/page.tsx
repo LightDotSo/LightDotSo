@@ -47,12 +47,17 @@ export default async function Page({ params, searchParams }: PageProps) {
   userOpPreloader(params, searchParams);
 
   // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const chainId = parseNumber(params.chainId);
+
+  // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { config } = await handler(params);
   const { userOperation, hash } = await userOpHandler(params, searchParams);
-  const chainId = parseNumber(params.chainId);
 
   // ---------------------------------------------------------------------------
   // Render
