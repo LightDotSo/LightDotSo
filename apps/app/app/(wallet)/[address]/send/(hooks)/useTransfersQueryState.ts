@@ -194,11 +194,5 @@ export const transferParser = createParser({
 // -----------------------------------------------------------------------------
 
 export const useTransfersQueryState = () => {
-  return useQueryState(
-    "transfers",
-    transferParser.withOptions({
-      shallow: false,
-      throttleMs: 1500,
-    }),
-  );
+  return useQueryState("transfers", transferParser);
 };
