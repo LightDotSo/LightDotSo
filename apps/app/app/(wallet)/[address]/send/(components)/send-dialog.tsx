@@ -71,13 +71,17 @@ type NewFormValues = z.infer<typeof sendFormConfigurationSchema>;
 
 type SendDialogProps = {
   address: Address;
+  initialTransfers?: Transfers;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const SendDialog: FC<SendDialogProps> = ({ address }) => {
+export const SendDialog: FC<SendDialogProps> = ({
+  address,
+  initialTransfers,
+}) => {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
@@ -311,6 +315,12 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Hooks
   // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    if (initialTransfers) {
+      setTransfers(initialTransfers);
+    }
+  }, []);
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
