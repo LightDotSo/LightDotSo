@@ -332,6 +332,8 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         tokens?.find(
           token => token.address === (transfers?.[index]?.asset?.address || ""),
         );
+      form.clearErrors(`transfers.${index}.asset.quantity`);
+
       // If the token is not found or undefined, set an error
       if (!token) {
         // Show an error on the message
@@ -341,7 +343,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         });
         // Clear the value of key address
         form.setValue(`transfers.${index}.asset.quantity`, 0);
-      } else if (quantity > token?.amount * Math.pow(10, token?.decimals)) {
+      } else if (quantity * Math.pow(10, token?.decimals) > token?.amount) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
           type: "manual",
