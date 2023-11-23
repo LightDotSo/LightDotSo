@@ -47,6 +47,10 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   await handler(params);
 
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
   const transfers = transferParser.parseServerSide(searchParams.transfers);
 
   // ---------------------------------------------------------------------------
