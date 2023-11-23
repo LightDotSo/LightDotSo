@@ -43,17 +43,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import type { Address } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
-import {
-  transferParser,
-  useTransfersQueryState,
-} from "@/app/(wallet)/[address]/send/(hooks)";
+import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
@@ -61,7 +58,6 @@ import { queries } from "@/queries";
 import type { Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils/debounce";
-import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -246,21 +242,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
-  const navigateToStep = useCallback(() => {
-    const url = new URL(window.location.origin);
-    url.searchParams.set("transfers", transferParser.serialize(transfers));
-    router.push(url.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transfers]);
-
-  const onSubmit = useCallback(
-    (data: NewFormValues) => {
-      successToast(data);
-      navigateToStep();
-    },
-    [successToast, navigateToStep],
-  );
-
   // ---------------------------------------------------------------------------
   // Validation
   // ---------------------------------------------------------------------------
@@ -385,7 +366,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="space-y-4">
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
@@ -750,7 +731,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                 disabled={!form.formState.isValid}
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
-                onClick={() => navigateToStep()}
               >
                 Continue
               </Button>
