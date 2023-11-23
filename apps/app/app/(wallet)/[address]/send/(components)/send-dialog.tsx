@@ -43,24 +43,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { isAddress } from "viem";
 import type { Address } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
-import {
-  transferParser,
-  useTransfersQueryState,
-} from "@/app/(wallet)/[address]/send/(hooks)";
+import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import type { Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
-import { successToast } from "@/utils/toast";
+import { debounce } from "@/utils/debounce";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -124,7 +121,15 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     },
   });
 
+  // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
+
   const [transfers, setTransfers] = useTransfersQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Default State
+  // ---------------------------------------------------------------------------
 
   // create default transfer object
   const defaultTransfer: Transfers = useMemo(() => {
@@ -161,10 +166,116 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultTransfer]);
 
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
+
   const form = useForm<NewFormValues>({
     mode: "onChange",
     resolver: zodResolver(
       sendFormConfigurationSchema.superRefine((value, ctx) => {
+        // Check if no two transfers have the same address and asset address + chainId
+        const duplicateTransfers = value.transfers.filter(
+          (transfer, index, self) =>
+            index !==
+            self.findIndex(
+              t =>
+                t.address === transfer.address &&
+                t?.asset?.address === transfer?.asset?.address &&
+                t?.chainId === transfer?.chainId,
+            ),
+        );
+        if (duplicateTransfers.length > 0) {
+          // Note: This is a hacky way to get the last duplicate index
+          const transfersAsStrings = value.transfers.map(transfer =>
+            JSON.stringify(transfer),
+          );
+          const duplicateTransferString = JSON.stringify(duplicateTransfers[0]);
+          const lastDuplicateIndex = transfersAsStrings.lastIndexOf(
+            duplicateTransferString,
+          );
+
+          // Show an error on the message
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Duplicate transfer",
+            path: ["transfers", lastDuplicateIndex, "addressOrEns"],
+          });
+        }
+
+        // Create a map to calculate the total quantity by token address
+        const totalByTokenAddress = new Map();
+
+        value.transfers.forEach((transfer, index) => {
+          // Check if asset and the quantity is not empty
+          if (transfer && transfer.asset && "quantity" in transfer.asset) {
+            if (!transfer.asset.quantity) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Quantity is required",
+                path: ["transfers", index, "asset", "quantity"],
+              });
+            } else if (transfer.asset.quantity > 0) {
+              // If the quantity is valid, get the token balance
+              const token =
+                tokens &&
+                transfers?.length > 0 &&
+                transfers[index]?.asset?.address &&
+                tokens?.find(
+                  token =>
+                    token.address ===
+                    (transfers?.[index]?.asset?.address || ""),
+                );
+
+              // If the token is not found or undefined, set an error
+              if (!token) {
+                // Show an error on the message
+                ctx.addIssue({
+                  code: z.ZodIssueCode.custom,
+                  message: "Please select a valid token",
+                  path: ["transfers", index, "asset", "address"],
+                });
+              } else {
+                // Add quantity to total by token address
+                const totalQuantity =
+                  totalByTokenAddress.get(token.address) || 0;
+                totalByTokenAddress.set(
+                  token.address,
+                  totalQuantity + transfer.asset.quantity,
+                );
+
+                // Check if the sum quantity is greater than the token balance
+                if (
+                  totalByTokenAddress.get(token.address) *
+                    Math.pow(10, token?.decimals) >
+                  token?.amount
+                ) {
+                  // Show an error on the message
+                  ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: "Insufficient balance",
+                    path: ["transfers", index, "asset", "quantity"],
+                  });
+
+                  // Show the balance in all fields w/ same token address and chainId
+                  value.transfers.forEach((transfer, _index) => {
+                    if (
+                      transfer?.asset?.address === token?.address &&
+                      transfer?.chainId === token?.chain_id
+                    ) {
+                      ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Insufficient balance",
+                        path: ["transfers", _index, "asset", "quantity"],
+                      });
+                    }
+                  });
+                }
+              }
+            }
+          }
+        });
+
         // Also expect that all transfers w/ key address are valid addresses and are not empty
         value.transfers.forEach((transfer, index) => {
           // Check if the address is not empty
@@ -195,6 +306,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     name: "transfers",
     control: form.control,
   });
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
 
   useEffect(() => {
     const subscription = form.watch((value, { name: _name }) => {
@@ -229,12 +344,9 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
-  const navigateToStep = useCallback(() => {
-    const url = new URL(window.location.origin);
-    url.searchParams.set("transfers", transferParser.serialize(transfers));
-    router.push(url.toString());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transfers]);
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
 
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
@@ -322,6 +434,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         tokens?.find(
           token => token.address === (transfers?.[index]?.asset?.address || ""),
         );
+
       // If the token is not found or undefined, set an error
       if (!token) {
         // Show an error on the message
@@ -331,7 +444,7 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
         });
         // Clear the value of key address
         form.setValue(`transfers.${index}.asset.quantity`, 0);
-      } else if (quantity > token?.amount * Math.pow(10, token?.decimals)) {
+      } else if (quantity * Math.pow(10, token?.decimals) > token?.amount) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
           type: "manual",
@@ -342,20 +455,22 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
       } else {
         // If the quantity is valid, set the value of key quantity
         form.setValue(`transfers.${index}.asset.quantity`, quantity);
+        form.clearErrors(`transfers.${index}.asset.quantity`);
       }
     }
   }
 
-  function onSubmit(data: NewFormValues) {
-    successToast(data);
-    navigateToStep();
-  }
+  // ---------------------------------------------------------------------------
+  // Debounced
+  // ---------------------------------------------------------------------------
+
+  const debouncedValidateAddress = debounce(validateAddress, 300);
 
   return (
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>
         <Form {...form}>
-          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="space-y-4">
             <div className="space-y-4">
               {fields.map((field, index) => (
                 <Accordion
@@ -382,7 +497,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                               <div className="flex items-center space-x-3">
                                 <div className="relative inline-block w-full">
                                   <Input
-                                    id="address"
                                     className="pl-12"
                                     {...field}
                                     placeholder="Recepient's Address or ENS name"
@@ -407,7 +521,10 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                       const address = e.target.value;
 
                                       if (address) {
-                                        validateAddress(address, index);
+                                        debouncedValidateAddress(
+                                          address,
+                                          index,
+                                        );
                                       }
                                     }}
                                   />
@@ -542,6 +659,9 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                                   Math.pow(10, token?.decimals),
                                               );
                                             }
+
+                                            // Validate the form
+                                            form.trigger();
                                           }}
                                         >
                                           Max
@@ -612,24 +732,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                                   <div className="w-full space-y-2">
                                     <Label htmlFor="weight">Transfer</Label>
                                     <Select
-                                      defaultValue={
-                                        // Get the token with matching index
-                                        tokens && tokens?.length > 0
-                                          ? (() => {
-                                              const token = tokens?.find(
-                                                token =>
-                                                  token.address ===
-                                                  (transfers?.[index]?.asset
-                                                    ?.address || ""),
-                                              );
-                                              return token
-                                                ? token?.address +
-                                                    "-" +
-                                                    token?.chain_id
-                                                : undefined;
-                                            })()
-                                          : undefined
-                                      }
                                       onValueChange={value => {
                                         // Get the token of address and chainId
                                         const [address, chainId] =
@@ -718,7 +820,6 @@ export const SendDialog: FC<SendDialogProps> = ({ address }) => {
                 disabled={!form.formState.isValid}
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
-                onClick={() => navigateToStep()}
               >
                 Continue
               </Button>

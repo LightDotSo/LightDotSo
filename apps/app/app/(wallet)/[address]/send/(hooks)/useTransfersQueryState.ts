@@ -41,7 +41,7 @@ export const transferParser = createParser({
         // Parse the decimals as a number (if possible)
         const parsedDecimals = parseInt(decimals);
         // Parse the quantity as a number (if possible)
-        const parsedQuantity = parseInt(quantity);
+        const parsedQuantity = parseFloat(quantity);
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&
@@ -72,7 +72,7 @@ export const transferParser = createParser({
         // Parse the tokenId as a number (if possible)
         const parsedTokenId = parseInt(tokenId);
         // Parse the quantity as a number (if possible)
-        const parsedQuantity = parseInt(quantity);
+        const parsedQuantity = parseFloat(quantity);
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&
@@ -105,7 +105,7 @@ export const transferParser = createParser({
         // Parse the quantities as an array of numbers (if possible)
         const parsedQuantities = quantities
           .split("&")
-          .map(quantity => parseInt(quantity));
+          .map(quantity => parseFloat(quantity));
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&

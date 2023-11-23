@@ -123,10 +123,13 @@ export const NewWalletForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, type]);
 
-  function onSubmit(data: NewFormValues) {
-    successToast(data);
-    navigateToStep();
-  }
+  const onSubmit = useCallback(
+    (data: NewFormValues) => {
+      successToast(data);
+      navigateToStep();
+    },
+    [navigateToStep],
+  );
 
   return (
     <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">

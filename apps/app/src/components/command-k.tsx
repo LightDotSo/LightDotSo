@@ -63,30 +63,30 @@ export const CommandK: FC = () => {
     const url = new URL(window.location.href);
     copy(url.search);
     console.info(url.search);
-  }, [router, copy]);
+  }, [copy]);
 
   const copyDecodedURIParams = useCallback(() => {
     // Copy search params
     const url = new URL(window.location.href);
     copy(decodeURIComponent(url.search));
     console.info(decodeURIComponent(url.search));
-  }, [router, copy]);
+  }, [copy]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "d" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        onClearSearch();
-      }
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
       }
-      if (e.key === "c" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "d" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        onClearSearch();
+      }
+      if (e.key === "c" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         copyURIParams();
       }
-      if (e.key === "v" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "v" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         copyDecodedURIParams();
       }
@@ -120,17 +120,17 @@ export const CommandK: FC = () => {
           <CommandItem>
             <User className="mr-2 h-4 w-4" />
             <span>Profile</span>
-            <CommandShortcut>⌘P</CommandShortcut>
+            <CommandShortcut>⌘⇧P</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <CreditCard className="mr-2 h-4 w-4" />
             <span>Billing</span>
-            <CommandShortcut>⌘B</CommandShortcut>
+            <CommandShortcut>⌘⇧B</CommandShortcut>
           </CommandItem>
           <CommandItem>
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
-            <CommandShortcut>⌘S</CommandShortcut>
+            <CommandShortcut>⌘⇧S</CommandShortcut>
           </CommandItem>
         </CommandGroup>
         <CommandGroup heading="Dev">
@@ -142,7 +142,7 @@ export const CommandK: FC = () => {
           >
             <DeleteIcon className="mr-2 h-4 w-4" />
             <span>Clear Search Params</span>
-            <CommandShortcut>⌘D</CommandShortcut>
+            <CommandShortcut>⌘⇧D</CommandShortcut>
           </CommandItem>
           <CommandItem
             onSelect={() => {
@@ -152,7 +152,7 @@ export const CommandK: FC = () => {
           >
             <CopyIcon className="mr-2 h-4 w-4" />
             <span>Copy Search Params</span>
-            <CommandShortcut>⌘C</CommandShortcut>
+            <CommandShortcut>⌘⇧C</CommandShortcut>
           </CommandItem>
           <CommandItem
             onSelect={() => {
@@ -162,7 +162,7 @@ export const CommandK: FC = () => {
           >
             <CopySlashIcon className="mr-2 h-4 w-4" />
             <span>Copy Decoded Search Params</span>
-            <CommandShortcut>⌘V</CommandShortcut>
+            <CommandShortcut>⌘⇧V</CommandShortcut>
           </CommandItem>
         </CommandGroup>
       </CommandList>

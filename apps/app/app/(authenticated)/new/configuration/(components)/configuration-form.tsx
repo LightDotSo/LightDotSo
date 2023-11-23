@@ -68,6 +68,7 @@ import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 import { useAuth } from "@/stores/useAuth";
 import { useNewFormStore } from "@/stores/useNewForm";
+import { debounce } from "@/utils/debounce";
 import { successToast } from "@/utils/toast";
 
 // -----------------------------------------------------------------------------
@@ -98,11 +99,19 @@ export const ConfigurationForm: FC = () => {
   const router = useRouter();
   const { setFormValues, fetchToCreate } = useNewFormStore();
 
+  // ---------------------------------------------------------------------------
+  // Query State
+  // ---------------------------------------------------------------------------
+
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
   const [salt, setSalt] = useSaltQueryState();
   const [owners, setOwners] = useOwnersQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Default State
+  // ---------------------------------------------------------------------------
 
   // create default owner object
   const defaultOwner: Owner = useMemo(() => {
@@ -139,6 +148,10 @@ export const ConfigurationForm: FC = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultOwner]);
+
+  // ---------------------------------------------------------------------------
+  // Form
+  // ---------------------------------------------------------------------------
 
   const form = useForm<NewFormValues>({
     mode: "onChange",
@@ -204,10 +217,17 @@ export const ConfigurationForm: FC = () => {
     control: form.control,
   });
 
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     const subscription = form.watch((value, { name }) => {
       // @ts-expect-error
       setFormValues(value);
+
+      // Fetch the configuration to create the wallet (simulation)
+      fetchToCreate(false);
 
       // Set the salt from the default values to the url
       if (defaultValues.salt) {
@@ -290,6 +310,18 @@ export const ConfigurationForm: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, type, threshold, salt, owners]);
 
+  const onSubmit = useCallback(
+    (data: NewFormValues) => {
+      successToast(data);
+      navigateToStep();
+    },
+    [navigateToStep],
+  );
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
+
   async function validateAddress(address: string, index: number) {
     // If the address is empty, return
     if (!address || address.length <= 3) return;
@@ -362,10 +394,11 @@ export const ConfigurationForm: FC = () => {
     }
   }
 
-  function onSubmit(data: NewFormValues) {
-    successToast(data);
-    navigateToStep();
-  }
+  // ---------------------------------------------------------------------------
+  // Debounced
+  // ---------------------------------------------------------------------------
+
+  const debouncedValidateAddress = debounce(validateAddress, 300);
 
   return (
     <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">
@@ -449,7 +482,7 @@ export const ConfigurationForm: FC = () => {
                                     const address = e.target.value;
 
                                     if (address) {
-                                      validateAddress(address, index);
+                                      debouncedValidateAddress(address, index);
                                     }
                                   }}
                                 />
@@ -497,10 +530,7 @@ export const ConfigurationForm: FC = () => {
                                     field.onChange(parseInt(value));
                                   }}
                                   onOpenChange={() => {
-                                    // First, trigger than simulate Form
-                                    form.trigger().then(async () => {
-                                      await fetchToCreate(false);
-                                    });
+                                    form.trigger();
                                   }}
                                 >
                                   <FormControl>
