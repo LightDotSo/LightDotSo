@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.9.1",
-    "typescript": "^5.2.2"
+    "@types/node": "^20.9.4",
+    "typescript": "^5.3.2"
   },
   "publishConfig": {
     "access": "restricted"

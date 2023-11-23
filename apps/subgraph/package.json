@@ -55,10 +55,10 @@
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.9.1",
+    "@types/node": "^20.9.4",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.2",
     "wabt": "^1.0.32"
   },
   "publishConfig": {
