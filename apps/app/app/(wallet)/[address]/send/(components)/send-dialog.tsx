@@ -47,7 +47,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress, encodeAbiParameters } from "viem";
+import { isAddress, encodeFunctionData } from "viem";
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
@@ -382,25 +382,71 @@ export const SendDialog: FC<SendDialogProps> = ({
     }
 
     if (transfers?.length === 1 && transfers[0].address && transfers[0].asset) {
-      return `${transfers[0].chainId}:_:${encodeAbiParameters(
-        [
+      return `${transfers[0].chainId}:_:${encodeFunctionData({
+        abi: [
           { name: "dest", internalType: "address", type: "address" },
           { name: "value", internalType: "uint256", type: "uint256" },
           { name: "func", internalType: "bytes", type: "bytes" },
         ],
-        encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-      )}`;
+        functionName: "execute",
+        args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
+      })}}`;
     }
 
     if (transfers?.length > 1) {
-      return encodeAbiParameters(
-        [
-          { name: "dest", internalType: "address[]", type: "address[]" },
-          { name: "value", internalType: "uint256[]", type: "uint256[]" },
-          { name: "func", internalType: "bytes[]", type: "bytes[]" },
-        ],
-        [["0x"], [0n], ["0x"]],
-      );
+      // Create a map w/ transfer grouped by chainId
+      const transfersByChainId: Map<number, Transfer[]> = new Map();
+      transfers.forEach(transfer => {
+        if (!transfer.chainId) {
+          return;
+        }
+        const transfers = transfersByChainId.get(transfer.chainId) || [];
+        transfersByChainId.set(transfer.chainId, [...transfers, transfer]);
+      });
+
+      // Create the user operations params for each chainId
+      const userOperationsParams = [];
+      // If the transfer count is one, encode as `execute`
+      for (const [chainId, transfers] of transfersByChainId.entries()) {
+        if (transfers.length === 1) {
+          userOperationsParams.push(
+            `${chainId}:_:${encodeFunctionData({
+              abi: [
+                { name: "dest", internalType: "address", type: "address" },
+                { name: "value", internalType: "uint256", type: "uint256" },
+                { name: "func", internalType: "bytes", type: "bytes" },
+              ],
+              functionName: "execute",
+              args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
+            })}}`,
+          );
+        } else {
+          // Encode the transfers for each item
+          const encodedTransfers = transfers.map(transfer =>
+            encodeTransfer(transfer),
+          );
+          // If the transfer count is more than one, encode as `executeBatch`
+          userOperationsParams.push(
+            `${chainId}:_:${encodeFunctionData({
+              abi: [
+                { name: "dest", internalType: "address[]", type: "address[]" },
+                {
+                  name: "value",
+                  internalType: "uint256[]",
+                  type: "uint256[]",
+                },
+                { name: "func", internalType: "bytes[]", type: "bytes[]" },
+              ],
+              functionName: "executeBatch",
+              args: [
+                encodedTransfers.map(transfer => transfer[0]),
+                encodedTransfers.map(transfer => transfer[1]),
+                encodedTransfers.map(transfer => transfer[2]),
+              ] as [Address[], bigint[], Hex[]],
+            })}}`,
+          );
+        }
+      }
     }
   }, [transfers]);
 

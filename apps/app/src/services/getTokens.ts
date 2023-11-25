@@ -31,7 +31,7 @@ export const preload = (address: Address) => {
 
 export const getTokens = async (address: Address, is_testnet?: boolean) => {
   return getClientTokens(
-    { params: { query: { address: address, is_testnet } } },
+    { params: { query: { address: address, is_testnet: is_testnet } } },
     false,
   );
 };
