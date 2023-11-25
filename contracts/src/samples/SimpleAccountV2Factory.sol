@@ -53,9 +53,8 @@ contract SimpleAccountV2Factory {
         // Initializes the account
         ret = SimpleAccountV2(
             payable(
-                new ERC1967Proxy{salt : bytes32(salt)}(
-                  address(accountImplementation),
-                  abi.encodeCall(SimpleAccountV2.initialize, (owner))
+                new ERC1967Proxy{salt: bytes32(salt)}(
+                    address(accountImplementation), abi.encodeCall(SimpleAccountV2.initialize, (owner))
                 )
             )
         );
