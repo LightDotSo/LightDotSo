@@ -146,11 +146,11 @@ export const SendDialog: FC<SendDialogProps> = ({
         transfer.asset &&
         transfer.assetType === "erc20" &&
         "quantity" in transfer.asset &&
-        transfer.asset.address
+        transfer.asset.address === "0x0000000000000000000000000000000000000000"
       ) {
         return [
-          transfer.asset?.address as Address,
-          BigInt(transfer.asset?.quantity!),
+          transfer.asset.address as Address,
+          BigInt(transfer.asset.quantity!),
           "0x" as Hex,
         ];
       }
