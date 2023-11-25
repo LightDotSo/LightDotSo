@@ -364,6 +364,19 @@ export const SendDialog: FC<SendDialogProps> = ({
         "quantity" in transfer.asset &&
         "decimals" in transfer.asset
       ) {
+        // Get the matching token
+        const token =
+          tokens &&
+          tokens?.length > 0 &&
+          transfer &&
+          transfer.asset &&
+          "address" in transfer.asset &&
+          tokens?.find(
+            token =>
+              token.address === transfer.asset?.address! &&
+              token.chain_id === transfer.chainId,
+          );
+
         // Encode the native eth `transfer`
         if (
           transfer.asset.address ===
@@ -377,6 +390,10 @@ export const SendDialog: FC<SendDialogProps> = ({
             ),
             "0x" as Hex,
           ];
+        }
+
+        if (!token) {
+          return [transfer.address as Address, 0n, "0x" as Hex];
         }
 
         // Encode the erc20 `transfer`
@@ -396,10 +413,7 @@ export const SendDialog: FC<SendDialogProps> = ({
             ],
             [
               transfer.address as Address,
-              BigInt(
-                transfer.asset?.quantity! *
-                  Math.pow(10, transfer.asset?.decimals!),
-              ),
+              BigInt(transfer.asset?.quantity! * Math.pow(10, token.decimals!)),
             ],
           ),
         ];
@@ -447,7 +461,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               abi: lightWalletABI,
               functionName: "execute",
               args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-            })}}`,
+            })}`,
           );
         } else {
           // Encode the transfers for each item
@@ -464,13 +478,16 @@ export const SendDialog: FC<SendDialogProps> = ({
                 encodedTransfers.map(transfer => transfer[1]),
                 encodedTransfers.map(transfer => transfer[2]),
               ] as [Address[], bigint[], Hex[]],
-            })}}`,
+            })}`,
           );
         }
+
+        // Return the user operations params
+        return userOperationsParams.join(";");
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [transfers, form.formState]);
+  }, [transfers, tokens, form.formState]);
 
   // ---------------------------------------------------------------------------
   // Validation
