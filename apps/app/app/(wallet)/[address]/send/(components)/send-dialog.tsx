@@ -47,8 +47,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress } from "viem";
-import type { Address } from "viem";
+import { isAddress, encodeAbiParameters } from "viem";
+import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
@@ -56,9 +56,10 @@ import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import type { Transfers } from "@/schemas";
+import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";
+import { lightWalletABI } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -137,6 +138,48 @@ export const SendDialog: FC<SendDialogProps> = ({
   // ---------------------------------------------------------------------------
   // Default State
   // ---------------------------------------------------------------------------
+
+  const callData = useMemo(() => {
+    const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
+      if (
+        transfer &&
+        transfer.asset &&
+        transfer.assetType === "erc20" &&
+        "quantity" in transfer.asset &&
+        transfer.asset.address
+      ) {
+        return [
+          transfer.asset?.address as Address,
+          BigInt(transfer.asset?.quantity!),
+          "0x" as Hex,
+        ];
+      }
+
+      return ["0x" as Address, 0n, "0x" as Hex];
+    };
+
+    // Get the call data of the first transfer
+    if (!transfers || transfers?.length === 0) {
+      return "0x";
+    }
+
+    if (transfers?.length === 1) {
+      return encodeAbiParameters(
+        lightWalletABI[24].inputs,
+        encodeTransfer(transfers[0]),
+      );
+    }
+
+    if (transfers?.length > 1) {
+      return encodeAbiParameters(lightWalletABI[25].inputs, [
+        ["0x"],
+        [0n],
+        ["0x"],
+      ]);
+    }
+
+    return "0x";
+  }, [transfers]);
 
   // create default transfer object
   const defaultTransfer: Transfers = useMemo(() => {
@@ -352,11 +395,6 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
-
-  const callData = useMemo(() => {
-    // Get the call data of the first transfer
-    return transfers && transfers?.length > 0 ? "0x" : "0x";
-  }, [transfers]);
 
   const chainId = useMemo(() => {
     // Get the chainId of the first transfer
