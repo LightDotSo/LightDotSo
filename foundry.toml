@@ -72,6 +72,9 @@
       "contracts/src/LightWallet.sol" = ["LightWallet"]
       "contracts/src/LightWalletFactory.sol" = ["LightWalletFactory"]
 
+[fmt]
+  ignore = ["src/LightWallet.sol", "src/LightWalletFactory.sol"]
+
 [doc]
   ignore = ["**/*.t.sol"]
   out = "docs"
