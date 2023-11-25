@@ -855,7 +855,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
               >
-                <Link href={`/${address}/op/${chainId}?callData=${callData}`}>
+                <Link
+                  href={`/${address}/op?userOperations=${chainId}:_:${callData}`}
+                >
                   Continue
                 </Link>
               </Button>
