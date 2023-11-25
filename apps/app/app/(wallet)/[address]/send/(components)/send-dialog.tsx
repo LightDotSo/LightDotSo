@@ -59,6 +59,7 @@ import { queries } from "@/queries";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";
+import { lightWalletABI } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -383,11 +384,7 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     if (transfers?.length === 1 && transfers[0].address && transfers[0].asset) {
       return `${transfers[0].chainId}:_:${encodeFunctionData({
-        abi: [
-          { name: "dest", internalType: "address", type: "address" },
-          { name: "value", internalType: "uint256", type: "uint256" },
-          { name: "func", internalType: "bytes", type: "bytes" },
-        ],
+        abi: lightWalletABI,
         functionName: "execute",
         args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
       })}}`;
@@ -411,11 +408,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         if (transfers.length === 1) {
           userOperationsParams.push(
             `${chainId}:_:${encodeFunctionData({
-              abi: [
-                { name: "dest", internalType: "address", type: "address" },
-                { name: "value", internalType: "uint256", type: "uint256" },
-                { name: "func", internalType: "bytes", type: "bytes" },
-              ],
+              abi: lightWalletABI,
               functionName: "execute",
               args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
             })}}`,
@@ -428,15 +421,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           // If the transfer count is more than one, encode as `executeBatch`
           userOperationsParams.push(
             `${chainId}:_:${encodeFunctionData({
-              abi: [
-                { name: "dest", internalType: "address[]", type: "address[]" },
-                {
-                  name: "value",
-                  internalType: "uint256[]",
-                  type: "uint256[]",
-                },
-                { name: "func", internalType: "bytes[]", type: "bytes[]" },
-              ],
+              abi: lightWalletABI,
               functionName: "executeBatch",
               args: [
                 encodedTransfers.map(transfer => transfer[0]),
@@ -448,7 +433,8 @@ export const SendDialog: FC<SendDialogProps> = ({
         }
       }
     }
-  }, [transfers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transfers, form.formState]);
 
   // ---------------------------------------------------------------------------
   // Validation
