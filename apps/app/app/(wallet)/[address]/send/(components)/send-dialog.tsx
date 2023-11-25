@@ -233,7 +233,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                 tokens?.find(
                   token =>
                     token.address ===
-                    (transfers?.[index]?.asset?.address || ""),
+                      (transfers?.[index]?.asset?.address || "") &&
+                    token.chain_id === transfers?.[index]?.chainId,
                 );
 
               // If the token is not found or undefined, set an error
@@ -246,16 +247,16 @@ export const SendDialog: FC<SendDialogProps> = ({
                 });
               } else {
                 // Add quantity to total by token address
-                const totalQuantity =
-                  totalByTokenAddress.get(token.address) || 0;
+                const tokenIndex = `${token.chain_id}:${token.address}`;
+                const totalQuantity = totalByTokenAddress.get(tokenIndex) || 0;
                 totalByTokenAddress.set(
-                  token.address,
+                  tokenIndex,
                   totalQuantity + transfer.asset.quantity,
                 );
 
                 // Check if the sum quantity is greater than the token balance
                 if (
-                  totalByTokenAddress.get(token.address) *
+                  totalByTokenAddress.get(tokenIndex) *
                     Math.pow(10, token?.decimals) >
                   token?.amount
                 ) {
@@ -378,7 +379,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           );
 
         if (!token) {
-          return [transfer.address as Address, 0n, "0x" as Hex];
+          throw new Error("No matching token found");
         }
 
         // Encode the native eth `transfer`
@@ -416,7 +417,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         ];
       }
 
-      return [transfer.address as Address, 0n, "0x" as Hex];
+      throw new Error("Invalid transfer");
     };
 
     // Get the call data of the first transfer
@@ -478,10 +479,10 @@ export const SendDialog: FC<SendDialogProps> = ({
             })}`,
           );
         }
-
-        // Return the user operations params
-        return userOperationsParams.join(";");
       }
+
+      // Return the user operations params
+      return userOperationsParams.join(";");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transfers, tokens, form.formState]);
@@ -793,8 +794,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               tokens?.find(
                                                 token =>
                                                   token.address ===
-                                                  (transfers?.[index]?.asset
-                                                    ?.address || ""),
+                                                    (transfers?.[index]?.asset
+                                                      ?.address || "") &&
+                                                  token.chain_id ===
+                                                    transfers?.[index]?.chainId,
                                               );
                                             if (token) {
                                               form.setValue(
@@ -822,8 +825,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           const token = tokens.find(
                                             token =>
                                               token.address ===
-                                              (transfers?.[index]?.asset
-                                                ?.address || ""),
+                                                (transfers?.[index]?.asset
+                                                  ?.address || "") &&
+                                              token.chain_id ===
+                                                transfers?.[index]?.chainId,
                                           );
                                           return token
                                             ? "~ $" +
