@@ -32,6 +32,7 @@ export const userOperation = z.object({
   maxFeePerGas: z.bigint(),
   maxPriorityFeePerGas: z.bigint(),
   paymasterAndData: z.string(),
+  signature: z.string(),
 });
 
 // -----------------------------------------------------------------------------

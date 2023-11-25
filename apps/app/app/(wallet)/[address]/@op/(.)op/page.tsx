@@ -49,10 +49,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
 
   const { config } = await handler(params);
-  const { userOperations, hashes, chainIds } = await userOperationsHandler(
-    params,
-    searchParams,
-  );
+  const { userOperations } = await userOperationsHandler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -64,8 +61,6 @@ export default async function Page({ params, searchParams }: PageProps) {
         owners={config.owners}
         address={params.address as Address}
         userOperations={userOperations}
-        userOperationHashes={hashes}
-        userOperationChainIds={chainIds}
       />
     </Modal>
   );

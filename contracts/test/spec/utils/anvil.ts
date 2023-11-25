@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { type Chain } from "viem";
+import type { Chain } from "viem";
 import { foundry } from "viem/chains";
 
 // From: https://github.com/wagmi-dev/anvil.js/blob/fba736f8a3d1ff2cb6252ae6e6f868dcea05c9dc/examples/example-vitest/tests/utils.ts#L16

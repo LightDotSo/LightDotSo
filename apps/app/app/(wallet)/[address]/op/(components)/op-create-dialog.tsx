@@ -18,7 +18,7 @@
 import { useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
-import type { Address, Hex } from "viem";
+import type { Address } from "viem";
 import { OpConfirmCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
@@ -30,8 +30,6 @@ import type { UserOperation } from "@/types";
 type OpCreateDialogProps = {
   address: Address;
   userOperations: UserOperation[];
-  userOperationHashes: Hex[];
-  userOperationChainIds: number[];
   owners: {
     id: string;
     address: string;
@@ -46,8 +44,6 @@ type OpCreateDialogProps = {
 export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   address,
   userOperations,
-  userOperationHashes,
-  userOperationChainIds,
   owners,
 }) => {
   const { address: userAddress } = useAuth();
@@ -76,8 +72,6 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
             address={address}
             owners={owners}
             userOperation={userOperation}
-            chainId={userOperationChainIds[index]}
-            userOpHash={userOperationHashes[index]}
           />
         ))}
       </div>

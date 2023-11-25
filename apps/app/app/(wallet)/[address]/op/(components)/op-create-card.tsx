@@ -35,14 +35,12 @@ import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 type OpConfirmProps = {
   address: Address;
-  chainId: number;
   owners: {
     id: string;
     address: string;
     weight: number;
   }[];
   userOperation: UserOperation;
-  userOpHash: Hex;
 };
 
 // -----------------------------------------------------------------------------
@@ -51,17 +49,15 @@ type OpConfirmProps = {
 
 export const OpConfirmCard: FC<OpConfirmProps> = ({
   address,
-  chainId,
   userOperation,
-  userOpHash,
   owners,
 }) => {
   const { address: userAddress } = useAuth();
 
   const subdigest = subdigestOf(
     address,
-    hexToBytes(userOpHash),
-    BigInt(chainId),
+    hexToBytes(userOperation.hash as Hex),
+    userOperation.chainId,
   );
 
   const { data, signMessage } = useSignMessage({
@@ -70,7 +66,7 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
 
   const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
     address: userOperation.paymasterAndData.slice(0, 42) as Address,
-    chainId,
+    chainId: Number(userOperation.chainId),
     args: [
       {
         sender: userOperation.sender as Address,
@@ -105,7 +101,7 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
       const res = await createUserOperation({
         params: {
           query: {
-            chain_id: chainId,
+            chain_id: Number(userOperation.chainId),
           },
         },
         body: {
@@ -115,8 +111,8 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
             signature_type: 1,
           },
           user_operation: {
-            chain_id: Number(chainId),
-            hash: userOpHash,
+            chain_id: Number(userOperation.chainId),
+            hash: userOperation.hash,
             nonce: Number(userOperation.nonce),
             init_code: userOperation.initCode,
             sender: userOperation.sender,
@@ -153,7 +149,7 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
     };
 
     fetchUserOp();
-  }, [data, owner, chainId, userOperation, userOpHash, subdigest]);
+  }, [data, owner, userOperation, subdigest]);
 
   return (
     <>
@@ -165,10 +161,14 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">chainId: {chainId}</code>
+          <code className="break-all text-text">
+            chainId: {Number(userOperation.chainId)}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">userOpHash: {userOpHash}</code>
+          <code className="break-all text-text">
+            userOpHash: {userOperation.hash}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">

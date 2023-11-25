@@ -16,12 +16,13 @@
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { notFound } from "next/navigation";
 import { getUserOperationHash } from "permissionless";
+import type { UserOperation as PermissionlessUserOperation } from "permissionless";
 import { toHex, fromHex } from "viem";
 import type { Address, Hex } from "viem";
 import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { type UserOperation } from "@/types";
+import type { UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -34,8 +35,6 @@ export const handler = async (
   },
 ): Promise<{
   userOperations: UserOperation[];
-  hashes: Hex[];
-  chainIds: number[];
 }> => {
   // ---------------------------------------------------------------------------
   // Handlers
@@ -65,10 +64,11 @@ export const handler = async (
   // Defaults
   // ---------------------------------------------------------------------------
 
-  let ops: UserOperation[] =
+  let ops: Omit<UserOperation, "hash">[] =
     userOperationsQuery &&
     userOperationsQuery.map(operation => {
       return {
+        chainId: operation.chainId as bigint,
         sender: params.address as Address,
         paymasterAndData: "0x",
         nonce: 0n,
@@ -89,7 +89,7 @@ export const handler = async (
 
   const resPromises = ops.map((op, index) => {
     return getPaymasterGasAndPaymasterAndData(
-      userOperationsQuery[index].chainId as number,
+      Number(userOperationsQuery[index].chainId) as number,
       [
         {
           sender: params.address,
@@ -117,7 +117,7 @@ export const handler = async (
     notFound();
   }
 
-  const userOperations = ops.map((op, index) => {
+  const parsedUserOperations = ops.map((op, index) => {
     // Parse
     const parsedRes = res[index]._unsafeUnwrap();
 
@@ -140,21 +140,17 @@ export const handler = async (
   });
 
   // Generate user hashes
-  const hashes = userOperations.map((userOperation, index) =>
-    getUserOperationHash({
-      userOperation,
+  const userOperations = parsedUserOperations.map((userOperation, index) => ({
+    ...userOperation,
+    hash: getUserOperationHash({
+      userOperation: userOperation as PermissionlessUserOperation,
       entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      chainId: userOperationsQuery[index].chainId as number,
+      chainId: Number(userOperationsQuery[index].chainId) as number,
     }),
-  );
-
-  // Get the chainIds from the userOperationsQuery
-  const chainIds = userOperationsQuery.map(op => op.chainId as number);
+  }));
 
   // Return an object containing an array of userOperations and an array of hashes
   return {
     userOperations: userOperations,
-    hashes: hashes,
-    chainIds: chainIds,
   };
 };
