@@ -533,6 +533,14 @@ export interface components {
       /** @description User operation not found by id. */
       NotFound: string;
     }]>;
+    /** @description Nonce */
+    UserOperationNonce: {
+      /**
+       * Format: int64
+       * @description The hash of the transaction.
+       */
+      nonce: number;
+    };
     /** @description Paymaster */
     UserOperationPaymaster: {
       /** @description The address of the paymaster. */
@@ -1334,7 +1342,7 @@ export interface operations {
       /** @description User Operation nonce returned successfully */
       200: {
         content: {
-          "text/plain": number;
+          "application/json": components["schemas"]["UserOperationNonce"];
         };
       };
       /** @description User Operation nonce not found */

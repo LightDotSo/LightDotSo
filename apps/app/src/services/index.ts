@@ -20,6 +20,7 @@ export { getQueryClient } from "@/services/getQueryClient";
 export { getTokens } from "@/services/getTokens";
 export { getTransactions } from "@/services/getTransactions";
 export { getUserOperation } from "@/services/getUserOperation";
+export { getUserOperationNonce } from "@/services/getUserOperationNonce";
 export { getUserOperations } from "@/services/getUserOperations";
 export { getWallet } from "@/services/getWallet";
 export { getWalletSettings } from "@/services/getWalletSettings";
