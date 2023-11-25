@@ -15,13 +15,13 @@
 
 "use client";
 
-import type { UserOperation } from "permissionless";
 import { useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address, Hex } from "viem";
 import { OpConfirmCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
 import { useAuth } from "@/stores/useAuth";
+import type { UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------
 // Props

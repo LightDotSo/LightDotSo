@@ -18,13 +18,13 @@
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { Button, toast } from "@lightdotso/ui";
-import type { UserOperation } from "permissionless";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual, toBytes, hexToBytes, toHex, fromHex } from "viem";
 import type { Address, Hex } from "viem";
 import { useSignMessage } from "wagmi";
 import { useAuth } from "@/stores/useAuth";
+import type { UserOperation } from "@/types";
 import { errorToast } from "@/utils/toast";
 import { serializeUserOperation } from "@/utils/userOp";
 import { useLightVerifyingPaymasterGetHash } from "@/wagmi";

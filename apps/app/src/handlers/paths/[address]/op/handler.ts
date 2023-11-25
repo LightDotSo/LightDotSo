@@ -15,12 +15,13 @@
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
 import { notFound } from "next/navigation";
-import { getUserOperationHash, type UserOperation } from "permissionless";
+import { getUserOperationHash } from "permissionless";
 import { toHex, fromHex } from "viem";
 import type { Address, Hex } from "viem";
 import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
+import { type UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------
 // Handler
