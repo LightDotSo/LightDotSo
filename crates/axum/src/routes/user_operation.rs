@@ -195,6 +195,13 @@ pub(crate) struct UserOperationSignature {
     signature_type: i32,
 }
 
+/// Nonce
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationNonce {
+    /// The hash of the transaction.
+    nonce: i64,
+}
+
 /// Transaction
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperationTransaction {
@@ -380,7 +387,7 @@ async fn v1_user_operation_get_handler(
             NonceQuery
         ),
         responses(
-            (status = 200, description = "User Operation nonce returned successfully", body = i64),
+            (status = 200, description = "User Operation nonce returned successfully", body = UserOperationNonce),
             (status = 404, description = "User Operation nonce not found", body = UserOperationError),
         )
     )]
@@ -388,7 +395,7 @@ async fn v1_user_operation_get_handler(
 async fn v1_user_operation_nonce_handler(
     get: Query<NonceQuery>,
     State(client): State<AppState>,
-) -> AppJsonResult<i64> {
+) -> AppJsonResult<UserOperationNonce> {
     // Get the get query.
     let Query(query) = get;
     let chain_id = query.chain_id;
@@ -402,17 +409,20 @@ async fn v1_user_operation_nonce_handler(
         .user_operation()
         .find_first(vec![
             user_operation::chain_id::equals(chain_id),
-            user_operation::sender::equals(address.to_string()),
+            user_operation::sender::equals(to_checksum(&address, None)),
             user_operation::status::equals(UserOperationStatus::Executed),
         ])
         .order_by(user_operation::nonce::order(Direction::Desc))
         .exec()
         .await?;
+    info!(?user_operation);
 
     // If the user operation is not found, return 0 as Ok.
     match user_operation {
-        Some(user_operation) => Ok(Json::from(user_operation.nonce + 1)),
-        None => Ok(Json::from(0)),
+        Some(user_operation) => {
+            Ok(Json::from(UserOperationNonce { nonce: user_operation.nonce + 1 }))
+        }
+        None => Ok(Json::from(UserOperationNonce { nonce: 0 })),
     }
 }
 

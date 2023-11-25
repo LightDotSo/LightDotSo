@@ -362,6 +362,30 @@ export const getUserOperation = async (
   });
 };
 
+export const getUserOperationNonce = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string; chain_id: number };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user_operation/nonce", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getSignatureUserOperation = async (
   {
     params,

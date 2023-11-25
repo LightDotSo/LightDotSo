@@ -22,6 +22,7 @@ import type { Address, Hex } from "viem";
 import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
+import { getUserOperationNonce } from "@/services";
 import type { UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------
@@ -61,6 +62,25 @@ export const handler = async (
   }
 
   // ---------------------------------------------------------------------------
+  // Fetch
+  // ---------------------------------------------------------------------------
+
+  const noncePromises = userOperationsQuery.map(operation => {
+    return getUserOperationNonce(
+      params.address as Address,
+      Number(operation.chainId) as number,
+    );
+  });
+
+  // Resolve all promises
+  const nonces = await Promise.all(noncePromises);
+
+  // If there are any errors among responses
+  if (nonces.some(n => n.isErr())) {
+    notFound();
+  }
+
+  // ---------------------------------------------------------------------------
   // Defaults
   // ---------------------------------------------------------------------------
 
@@ -71,7 +91,9 @@ export const handler = async (
         chainId: operation.chainId as bigint,
         sender: params.address as Address,
         paymasterAndData: "0x",
-        nonce: 0n,
+        nonce: BigInt(
+          nonces[userOperationsQuery.indexOf(operation)]._unsafeUnwrap().nonce,
+        ),
         initCode: (operation.initCode as Hex) ?? "0x",
         callData: (operation.callData as Hex) ?? "0x",
         signature:
@@ -83,6 +105,7 @@ export const handler = async (
         maxPriorityFeePerGas: fromHex("0xB323DBB31" as Hex, { to: "bigint" }),
       };
     });
+
   // ---------------------------------------------------------------------------
   // Fetch
   // ---------------------------------------------------------------------------
@@ -94,7 +117,7 @@ export const handler = async (
         {
           sender: params.address,
           paymasterAndData: "0x",
-          nonce: toHex(0),
+          nonce: toHex(op.nonce),
           initCode: op.initCode,
           callData: op.callData,
           signature: "0x",
