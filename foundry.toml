@@ -56,7 +56,6 @@
   test = "contracts/script/test"
   fs_permissions = [{ access = "read-write", path = "./tmp.json" }]
 
-
   [profile.script.optimizer_details]
     constantOptimizer = false
     yul = false

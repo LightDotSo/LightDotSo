@@ -26,7 +26,8 @@
     "generate:local-api": "npx openapi-typescript http://localhost:3000/api-docs/openapi.json -o ./src/v1.d.ts",
     "generate:prepare": "./prepend.sh",
     "prepack": "clean-package",
-    "postpack": "clean-package restore"
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@lightdotso/schemas": "workspace:*",

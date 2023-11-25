@@ -72,6 +72,9 @@
     },
     "test": {
       "dependsOn": ["^test"]
+    },
+    "tsc": {
+      "dependsOn": ["^tsc"]
     }
   },
   "remoteCache": { "signature": true }

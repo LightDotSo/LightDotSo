@@ -19,7 +19,8 @@
     "cp:ios:index": "cp \"../../ios/LightWalletSafariExtension/Resources/popup/index.html\" \"../../ios/LightWalletSafariExtension/Resources/popup.html\"",
     "cp:ios:popup": "cp -r \"out\" \"../../ios/LightWalletSafariExtension/Resources/popup\"",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@babel/core": "^7.23.3",
