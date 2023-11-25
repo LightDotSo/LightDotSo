@@ -100,6 +100,23 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
     );
   }, [owners, userAddress]);
 
+  const decodedCallData = useMemo(() => {
+    // Check the function signature is `execute`
+    const args =
+      userOperation.callData.slice(0, 10) === "0xb61d27f6"
+        ? decodeFunctionData({
+            abi: lightWalletABI,
+            data: userOperation.callData as Hex,
+          }).args
+        : decodeFunctionData({
+            abi: lightWalletABI,
+            data: userOperation.callData as Hex,
+          }).args;
+
+    // Parse the callData of tha args depending on the args type
+    return args;
+  }, [userOperation.callData]);
+
   useEffect(() => {
     const fetchUserOp = async () => {
       if (!data || !owner) return;
@@ -172,22 +189,8 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
-            callData:{" "}
-            {userOperation.callData &&
-            // Check the function signature is `execute`
-            userOperation.callData.slice(0, 10) === "0xb61d27f6"
-              ? serializeBigInt(
-                  decodeFunctionData({
-                    abi: lightWalletABI,
-                    data: userOperation.callData as Hex,
-                  }).args,
-                )
-              : serializeBigInt(
-                  decodeFunctionData({
-                    abi: lightWalletABI,
-                    data: userOperation.callData as Hex,
-                  }).args,
-                )}
+            decodedCallData:{" "}
+            {decodedCallData && serializeBigInt(decodedCallData)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

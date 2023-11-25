@@ -47,7 +47,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress, encodeFunctionData } from "viem";
+import { isAddress, encodeFunctionData, encodeAbiParameters } from "viem";
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
@@ -362,15 +362,46 @@ export const SendDialog: FC<SendDialogProps> = ({
         transfer.asset &&
         transfer.assetType === "erc20" &&
         "quantity" in transfer.asset &&
-        "decimals" in transfer.asset &&
-        transfer.asset.address === "0x0000000000000000000000000000000000000000"
+        "decimals" in transfer.asset
       ) {
+        // Encode the native eth `transfer`
+        if (
+          transfer.asset.address ===
+          "0x0000000000000000000000000000000000000000"
+        ) {
+          return [
+            transfer.address as Address,
+            BigInt(
+              transfer.asset.quantity! *
+                Math.pow(10, transfer.asset?.decimals!),
+            ),
+            "0x" as Hex,
+          ];
+        }
+
+        // Encode the erc20 `transfer`
         return [
-          transfer.address as Address,
-          BigInt(
-            transfer.asset.quantity! * Math.pow(10, transfer.asset?.decimals!),
+          transfer.asset.address as Address,
+          0n,
+          encodeAbiParameters(
+            [
+              {
+                name: "recipient",
+                type: "address",
+              },
+              {
+                name: "amount",
+                type: "uint256",
+              },
+            ],
+            [
+              transfer.address as Address,
+              BigInt(
+                transfer.asset?.quantity! *
+                  Math.pow(10, transfer.asset?.decimals!),
+              ),
+            ],
           ),
-          "0x" as Hex,
         ];
       }
 
