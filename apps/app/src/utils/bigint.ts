@@ -13,25 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getTokens as getClientTokens } from "@lightdotso/client";
-import "server-only";
-import type { Address } from "viem";
-
 // -----------------------------------------------------------------------------
-// Pre
+// Utils
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getTokens(address);
-};
-
-// -----------------------------------------------------------------------------
-// Service
-// -----------------------------------------------------------------------------
-
-export const getTokens = async (address: Address, is_testnet?: boolean) => {
-  return getClientTokens(
-    { params: { query: { address: address, is_testnet: is_testnet } } },
-    false,
+export const serializeBigInt = (val: any): string => {
+  return JSON.stringify(
+    val,
+    (_, value) => (typeof value === "bigint" ? value.toString() : value),
+    2,
   );
 };

@@ -31,7 +31,7 @@ import type { FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type OpCardProps = {
+type UserOperationCardProps = {
   address: string;
   userOperation: {
     call_data: string;
@@ -59,7 +59,10 @@ type OpCardProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpCard: FC<OpCardProps> = ({ address, userOperation }) => {
+export const UserOperationCard: FC<UserOperationCardProps> = ({
+  address,
+  userOperation,
+}) => {
   return (
     <Accordion
       key={userOperation.hash}

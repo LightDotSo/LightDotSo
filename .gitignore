@@ -217,7 +217,7 @@ dist
 .pnp.*
 
 # Typings
-types
+# types
 
 ## User settings
 xcuserdata/

@@ -42,12 +42,13 @@ import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Trash2Icon, UserPlus2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress } from "viem";
-import type { Address } from "viem";
+import { isAddress, encodeFunctionData, encodeAbiParameters } from "viem";
+import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
 import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
@@ -55,9 +56,10 @@ import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import type { Transfers } from "@/schemas";
+import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
-import { debounce } from "@/utils/debounce";
+import { debounce } from "@/utils";
+import { lightWalletABI } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -91,14 +93,14 @@ export const SendDialog: FC<SendDialogProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentData: TokenData | undefined = useQueryClient().getQueryData(
+  const currentData: TokenData[] | undefined = useQueryClient().getQueryData(
     queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
-  const { data: tokens } = useSuspenseQuery<TokenData | null>({
+  const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
     queryKey: queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
@@ -231,7 +233,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                 tokens?.find(
                   token =>
                     token.address ===
-                    (transfers?.[index]?.asset?.address || ""),
+                      (transfers?.[index]?.asset?.address || "") &&
+                    token.chain_id === transfers?.[index]?.chainId,
                 );
 
               // If the token is not found or undefined, set an error
@@ -244,16 +247,16 @@ export const SendDialog: FC<SendDialogProps> = ({
                 });
               } else {
                 // Add quantity to total by token address
-                const totalQuantity =
-                  totalByTokenAddress.get(token.address) || 0;
+                const tokenIndex = `${token.chain_id}:${token.address}`;
+                const totalQuantity = totalByTokenAddress.get(tokenIndex) || 0;
                 totalByTokenAddress.set(
-                  token.address,
+                  tokenIndex,
                   totalQuantity + transfer.asset.quantity,
                 );
 
                 // Check if the sum quantity is greater than the token balance
                 if (
-                  totalByTokenAddress.get(token.address) *
+                  totalByTokenAddress.get(tokenIndex) *
                     Math.pow(10, token?.decimals) >
                   token?.amount
                 ) {
@@ -351,6 +354,137 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
+
+  const userOperationsParams = useMemo(() => {
+    const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
+      if (
+        transfer &&
+        transfer.address &&
+        transfer.asset &&
+        transfer.assetType === "erc20" &&
+        "quantity" in transfer.asset
+      ) {
+        // Get the matching token
+        const token =
+          tokens &&
+          tokens?.length > 0 &&
+          transfer &&
+          transfer.asset &&
+          "address" in transfer.asset &&
+          tokens?.find(
+            token =>
+              token.address === transfer.asset?.address! &&
+              token.chain_id === transfer.chainId,
+          );
+
+        if (!token) {
+          throw new Error("No matching token found");
+        }
+
+        // Encode the native eth `transfer`
+        if (
+          transfer.asset.address ===
+          "0x0000000000000000000000000000000000000000"
+        ) {
+          return [
+            transfer.address as Address,
+            BigInt(transfer.asset.quantity! * Math.pow(10, token.decimals!)),
+            "0x" as Hex,
+          ];
+        }
+
+        // Encode the erc20 `transfer`
+        return [
+          transfer.asset.address as Address,
+          0n,
+          encodeAbiParameters(
+            [
+              {
+                name: "recipient",
+                type: "address",
+              },
+              {
+                name: "amount",
+                type: "uint256",
+              },
+            ],
+            [
+              transfer.address as Address,
+              BigInt(transfer.asset?.quantity! * Math.pow(10, token.decimals!)),
+            ],
+          ),
+        ];
+      }
+
+      throw new Error("Invalid transfer");
+    };
+
+    // Get the call data of the first transfer
+    if (!transfers || transfers?.length === 0 || !form.formState.isValid) {
+      return "0x";
+    }
+
+    if (
+      transfers?.length === 1 &&
+      transfers[0].address &&
+      isAddress(transfers[0].address) &&
+      transfers[0].asset
+    ) {
+      return `${transfers[0].chainId}:_:${encodeFunctionData({
+        abi: lightWalletABI,
+        functionName: "execute",
+        args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
+      })}`;
+    }
+
+    if (transfers?.length > 1) {
+      // Create a map w/ transfer grouped by chainId
+      const transfersByChainId: Map<number, Transfer[]> = new Map();
+      transfers.forEach(transfer => {
+        if (!transfer.chainId) {
+          return;
+        }
+        const transfers = transfersByChainId.get(transfer.chainId) || [];
+        transfersByChainId.set(transfer.chainId, [...transfers, transfer]);
+      });
+
+      // Create the user operations params for each chainId
+      const userOperationsParams = [];
+      // If the transfer count is one, encode as `execute`
+      for (const [chainId, transfers] of transfersByChainId.entries()) {
+        if (transfers.length === 1) {
+          userOperationsParams.push(
+            `${chainId}:_:${encodeFunctionData({
+              abi: lightWalletABI,
+              functionName: "execute",
+              args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
+            })}`,
+          );
+        } else {
+          // Encode the transfers for each item
+          const encodedTransfers = transfers.map(transfer =>
+            encodeTransfer(transfer),
+          );
+          // If the transfer count is more than one, encode as `executeBatch`
+          userOperationsParams.push(
+            `${chainId}:_:${encodeFunctionData({
+              abi: lightWalletABI,
+              functionName: "executeBatch",
+              args: [
+                encodedTransfers.map(transfer => transfer[0]),
+                encodedTransfers.map(transfer => transfer[1]),
+                encodedTransfers.map(transfer => transfer[2]),
+              ] as [Address[], bigint[], Hex[]],
+            })}`,
+          );
+        }
+      }
+
+      // Return the user operations params
+      return userOperationsParams.join(";");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transfers, tokens, form.formState]);
 
   // ---------------------------------------------------------------------------
   // Validation
@@ -659,8 +793,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               tokens?.find(
                                                 token =>
                                                   token.address ===
-                                                  (transfers?.[index]?.asset
-                                                    ?.address || ""),
+                                                    (transfers?.[index]?.asset
+                                                      ?.address || "") &&
+                                                  token.chain_id ===
+                                                    transfers?.[index]?.chainId,
                                               );
                                             if (token) {
                                               form.setValue(
@@ -688,8 +824,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           const token = tokens.find(
                                             token =>
                                               token.address ===
-                                              (transfers?.[index]?.asset
-                                                ?.address || ""),
+                                                (transfers?.[index]?.asset
+                                                  ?.address || "") &&
+                                              token.chain_id ===
+                                                transfers?.[index]?.chainId,
                                           );
                                           return token
                                             ? "~ $" +
@@ -714,8 +852,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           const token = tokens.find(
                                             token =>
                                               token.address ===
-                                              (transfers?.[index]?.asset
-                                                ?.address || ""),
+                                                (transfers?.[index]?.asset
+                                                  ?.address || "") &&
+                                              token.chain_id ===
+                                                transfers?.[index]?.chainId,
                                           );
                                           return token
                                             ? (
@@ -835,11 +975,19 @@ export const SendDialog: FC<SendDialogProps> = ({
                 Cancel
               </Button>
               <Button
-                disabled={!form.formState.isValid}
+                asChild
+                disabled={
+                  !form.formState.isValid &&
+                  typeof userOperationsParams !== "undefined"
+                }
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
               >
-                Continue
+                <Link
+                  href={`/${address}/op?userOperations=${userOperationsParams!}`}
+                >
+                  Continue
+                </Link>
               </Button>
             </CardFooter>
           </form>

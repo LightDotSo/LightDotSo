@@ -25,4 +25,4 @@ export type TokenData = {
   decimals: number;
   name?: string | null;
   symbol: string;
-}[];
+};

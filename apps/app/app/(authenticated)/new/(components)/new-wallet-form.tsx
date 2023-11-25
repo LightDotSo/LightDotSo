@@ -57,7 +57,7 @@ import {
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 import { newFormSchema } from "@/schemas/newForm";
 import { useNewFormStore } from "@/stores/useNewForm";
-import { successToast } from "@/utils/toast";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types

@@ -68,8 +68,7 @@ import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
 import { useAuth } from "@/stores/useAuth";
 import { useNewFormStore } from "@/stores/useNewForm";
-import { debounce } from "@/utils/debounce";
-import { successToast } from "@/utils/toast";
+import { debounce, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types

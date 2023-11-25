@@ -13,16 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { UserOperation } from "permissionless";
-
 // -----------------------------------------------------------------------------
-// Utils
+// Preloader
 // -----------------------------------------------------------------------------
 
-export const serializeUserOperation = (userOp: UserOperation): string => {
-  return JSON.stringify(
-    userOp,
-    (_, value) => (typeof value === "bigint" ? value.toString() : value), // convert bigint to string
-    2,
-  );
+export const preloader = (
+  _params: { address: string },
+  _searchParams: {
+    userOperations?: string;
+  },
+) => {
+  void {};
 };

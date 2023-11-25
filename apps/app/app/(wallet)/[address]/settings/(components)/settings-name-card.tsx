@@ -37,7 +37,7 @@ import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/set
 import { TITLES } from "@/const/titles";
 import type { WalletData } from "@/data";
 import { queries } from "@/queries";
-import { successToast } from "@/utils/toast";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Schema

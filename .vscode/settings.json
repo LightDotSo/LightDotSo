@@ -32,6 +32,7 @@
     "jsonc",
     "json5"
   ],
+  "eslint.workingDirectories": [{ "pattern": "./app/*/" }],
   // Toml settings
   "evenBetterToml.taplo.configFile.path": ".taplo.toml",
   // Files linting

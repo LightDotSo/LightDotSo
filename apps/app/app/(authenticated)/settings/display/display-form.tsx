@@ -30,7 +30,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { successToast } from "@/utils/toast";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Const

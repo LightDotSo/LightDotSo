@@ -13,16 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { WalletBalance } from "@prisma/client";
+import * as z from "zod";
 
 // -----------------------------------------------------------------------------
-// Utils
+// Schema
 // -----------------------------------------------------------------------------
 
-export const serializeWalletBalance = (bal: WalletBalance[]): string => {
-  return JSON.stringify(
-    bal,
-    (_, value) => (typeof value === "bigint" ? value.toString() : value),
-    2,
-  );
-};
+export const userOperation = z.object({
+  chainId: z.bigint(),
+  hash: z.string(),
+  nonce: z.bigint(),
+  initCode: z.string(),
+  sender: z.string(),
+  callData: z.string(),
+  callGasLimit: z.bigint(),
+  verificationGasLimit: z.bigint(),
+  preVerificationGas: z.bigint(),
+  maxFeePerGas: z.bigint(),
+  maxPriorityFeePerGas: z.bigint(),
+  paymasterAndData: z.string(),
+  signature: z.string(),
+});
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+export type UserOperation = z.infer<typeof userOperation>;

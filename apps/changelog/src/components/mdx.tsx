@@ -16,7 +16,8 @@
 "use client";
 
 import clsx from "clsx";
-import Image, { type ImageProps } from "next/image";
+import type { ImageProps } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FormattedDate } from "@/components/FormattedDate";

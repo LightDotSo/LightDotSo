@@ -17,7 +17,7 @@ import { Skeleton } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
-import { TransactionsList } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-list";
+import { UserOperationsList } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operations-list";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
@@ -73,7 +73,7 @@ export default async function Page({ params }: PageProps) {
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
           <Suspense fallback={<Skeleton className="h-8 w-32" />}>
-            <TransactionsList
+            <UserOperationsList
               address={params.address as Address}
               status="proposed"
             />

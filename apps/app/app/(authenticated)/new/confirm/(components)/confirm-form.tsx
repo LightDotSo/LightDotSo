@@ -55,7 +55,7 @@ import {
   newFormStoreSchema,
 } from "@/schemas/newForm";
 import { useNewFormStore } from "@/stores/useNewForm";
-import { errorToast, infoToast, successToast } from "@/utils/toast";
+import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types

@@ -42,12 +42,12 @@ export const ActivityList: FC<ActivityListProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: TransactionData | undefined =
+  const currentData: TransactionData[] | undefined =
     useQueryClient().getQueryData(
       queries.transaction.list({ address }).queryKey,
     );
 
-  const { data } = useSuspenseQuery<TransactionData | null>({
+  const { data } = useSuspenseQuery<TransactionData[] | null>({
     queryKey: queries.transaction.list({ address }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({

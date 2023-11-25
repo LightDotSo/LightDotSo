@@ -21,7 +21,8 @@
     "build": "tsup",
     "clean": "rimraf -rf dist",
     "prepack": "clean-package",
-    "postpack": "clean-package restore"
+    "postpack": "clean-package restore",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "viem": "^1.19.7"

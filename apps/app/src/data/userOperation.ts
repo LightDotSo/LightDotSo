@@ -44,4 +44,4 @@ export type UserOperationData = {
     hash: string;
   } | null;
   verification_gas_limit: number;
-}[];
+};

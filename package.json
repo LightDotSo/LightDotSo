@@ -63,7 +63,9 @@
     "test:coverage": "vitest --coverage --single-thread",
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
-    "tsc:lint": "tsc --noEmit",
+    "tsc": "tsc --noEmit",
+    "tsc:lint": "pnpm run tsc:turbo",
+    "tsc:turbo": "turbo run tsc",
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {

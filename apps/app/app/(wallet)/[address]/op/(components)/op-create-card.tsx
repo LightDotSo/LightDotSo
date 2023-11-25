@@ -18,50 +18,52 @@
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { Button, toast } from "@lightdotso/ui";
-import type { UserOperation } from "permissionless";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
-import { isAddressEqual, toBytes, hexToBytes, toHex, fromHex } from "viem";
 import type { Address, Hex } from "viem";
+import {
+  isAddressEqual,
+  toBytes,
+  hexToBytes,
+  toHex,
+  fromHex,
+  decodeFunctionData,
+} from "viem";
 import { useSignMessage } from "wagmi";
 import { useAuth } from "@/stores/useAuth";
-import { errorToast } from "@/utils/toast";
-import { serializeUserOperation } from "@/utils/userOp";
-import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
+import type { UserOperation } from "@/types";
+import { errorToast, serializeBigInt } from "@/utils";
+import { lightWalletABI, useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionDialogProps = {
+type OpConfirmProps = {
   address: Address;
-  chainId: number;
   owners: {
     id: string;
     address: string;
     weight: number;
   }[];
   userOperation: UserOperation;
-  userOpHash: Hex;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionDialog: FC<TransactionDialogProps> = ({
+export const OpConfirmCard: FC<OpConfirmProps> = ({
   address,
-  chainId,
   userOperation,
-  userOpHash,
   owners,
 }) => {
   const { address: userAddress } = useAuth();
 
   const subdigest = subdigestOf(
     address,
-    hexToBytes(userOpHash),
-    BigInt(chainId),
+    hexToBytes(userOperation.hash as Hex),
+    userOperation.chainId,
   );
 
   const { data, signMessage } = useSignMessage({
@@ -70,19 +72,19 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
 
   const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
     address: userOperation.paymasterAndData.slice(0, 42) as Address,
-    chainId,
+    chainId: Number(userOperation.chainId),
     args: [
       {
-        sender: userOperation.sender,
+        sender: userOperation.sender as Address,
         nonce: userOperation.nonce,
-        initCode: userOperation.initCode,
-        callData: userOperation.callData,
+        initCode: userOperation.initCode as Hex,
+        callData: userOperation.callData as Hex,
         callGasLimit: userOperation.callGasLimit,
         verificationGasLimit: userOperation.verificationGasLimit,
         preVerificationGas: userOperation.preVerificationGas,
         maxFeePerGas: userOperation.maxFeePerGas,
         maxPriorityFeePerGas: userOperation.maxPriorityFeePerGas,
-        paymasterAndData: userOperation.paymasterAndData,
+        paymasterAndData: userOperation.paymasterAndData as Hex,
         signature: toHex(new Uint8Array([2])),
       },
       fromHex(`0x${userOperation.paymasterAndData.slice(154, 162)}`, "number"),
@@ -98,6 +100,23 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
     );
   }, [owners, userAddress]);
 
+  const decodedCallData = useMemo(() => {
+    // Check the function signature is `execute`
+    const args =
+      userOperation.callData.slice(0, 10) === "0xb61d27f6"
+        ? decodeFunctionData({
+            abi: lightWalletABI,
+            data: userOperation.callData as Hex,
+          }).args
+        : decodeFunctionData({
+            abi: lightWalletABI,
+            data: userOperation.callData as Hex,
+          }).args;
+
+    // Parse the callData of tha args depending on the args type
+    return args;
+  }, [userOperation.callData]);
+
   useEffect(() => {
     const fetchUserOp = async () => {
       if (!data || !owner) return;
@@ -105,7 +124,7 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
       const res = await createUserOperation({
         params: {
           query: {
-            chain_id: chainId,
+            chain_id: Number(userOperation.chainId),
           },
         },
         body: {
@@ -115,8 +134,8 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
             signature_type: 1,
           },
           user_operation: {
-            chain_id: Number(chainId),
-            hash: userOpHash,
+            chain_id: Number(userOperation.chainId),
+            hash: userOperation.hash,
             nonce: Number(userOperation.nonce),
             init_code: userOperation.initCode,
             sender: userOperation.sender,
@@ -153,30 +172,31 @@ export const TransactionDialog: FC<TransactionDialogProps> = ({
     };
 
     fetchUserOp();
-  }, [data, owner, chainId, userOperation, userOpHash, subdigest]);
+  }, [data, owner, userOperation, subdigest]);
 
   return (
     <>
-      <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
-        <header className="text-lg font-semibold leading-none tracking-tight">
-          Transaction
-        </header>
-        <p className="text-sm text-text-weak">
-          Are you sure you want to sign this transaction?
-        </p>
-      </div>
       <div className="grid gap-4 py-4">
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code>
-            userOperation:{" "}
-            {userOperation && serializeUserOperation(userOperation)}
+            userOperation: {userOperation && serializeBigInt(userOperation)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">chainId: {chainId}</code>
+          <code className="break-all text-text">
+            chainId: {Number(userOperation.chainId)}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">userOpHash: {userOpHash}</code>
+          <code className="break-all text-text">
+            decodedCallData:{" "}
+            {decodedCallData && serializeBigInt(decodedCallData)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            userOpHash: {userOperation.hash}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">

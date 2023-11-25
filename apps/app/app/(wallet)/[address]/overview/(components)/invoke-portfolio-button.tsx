@@ -20,7 +20,7 @@ import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { successToast } from "@/utils/toast";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props

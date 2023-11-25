@@ -14,13 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { OpDialog } from "@/app/(wallet)/[address]/op/(components)/op-dialog";
+import { OpConfirmDialog } from "@/app/(wallet)/[address]/op/(components)/op-confirm-dialog";
 import { Modal } from "@/components/modal";
 import { parseNumber } from "@/handlers/parsers";
 import { handler } from "@/handlers/paths/[address]/handler";
-import { handler as userOpHandler } from "@/handlers/paths/[address]/transaction/[chainId]/[userOperationHash]/handler";
+import { handler as userOpHandler } from "@/handlers/paths/[address]/op/[chainId]/[userOperationHash]/handler";
+import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/op/[chainId]/[userOperationHash]/preloader";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
-import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/transaction/[chainId]/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,12 +43,17 @@ export default async function Page({ params }: PageProps) {
   userOpPreloader(params);
 
   // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const chainId = parseNumber(params.chainId);
+
+  // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const { config } = await handler(params);
   const { userOperation } = await userOpHandler(params);
-  const chainId = parseNumber(params.chainId);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -56,7 +61,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <Modal>
-      <OpDialog
+      <OpConfirmDialog
         config={config}
         address={params.address as Address}
         chainId={chainId}

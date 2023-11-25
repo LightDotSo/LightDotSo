@@ -12,26 +12,22 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-import { getTokens as getClientTokens } from "@lightdotso/client";
-import "server-only";
-import type { Address } from "viem";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Props
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getTokens(address);
+type UserOperationsWrapperProps = {
+  children: React.ReactNode;
 };
 
 // -----------------------------------------------------------------------------
-// Service
+// Component
 // -----------------------------------------------------------------------------
 
-export const getTokens = async (address: Address, is_testnet?: boolean) => {
-  return getClientTokens(
-    { params: { query: { address: address, is_testnet: is_testnet } } },
-    false,
-  );
+export const UserOperationsWrapper: FC<UserOperationsWrapperProps> = ({
+  children,
+}) => {
+  return <div className="flex w-full flex-col space-y-4">{children}</div>;
 };

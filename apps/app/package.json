@@ -18,7 +18,8 @@
     "dev:inngest": "inngest dev -u http://localhost:3001/api/inngest",
     "dev:next": "next dev -p 3001",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@babel/core": "^7.23.3",

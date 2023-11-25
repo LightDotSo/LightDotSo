@@ -56,7 +56,6 @@
   test = "contracts/script/test"
   fs_permissions = [{ access = "read-write", path = "./tmp.json" }]
 
-
   [profile.script.optimizer_details]
     constantOptimizer = false
     yul = false
@@ -71,6 +70,12 @@
     [profile.smt.model_checker.contracts]
       "contracts/src/LightWallet.sol" = ["LightWallet"]
       "contracts/src/LightWalletFactory.sol" = ["LightWalletFactory"]
+
+[fmt]
+  ignore = [
+    "contracts/src/LightWallet.sol",
+    "contracts/src/LightWalletFactory.sol",
+  ]
 
 [doc]
   ignore = ["**/*.t.sol"]

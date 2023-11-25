@@ -57,10 +57,7 @@ export const Tabs: FC<TabProps> = ({
   const [anchorRefs, setAnchorRefs] = useState<Array<HTMLAnchorElement | null>>(
     [],
   );
-
-  useEffect(() => {
-    setAnchorRefs(prev => prev.slice(0, tabs.length));
-  }, [tabs.length]);
+  const [isAnimated, setIsAnimated] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -84,6 +81,23 @@ export const Tabs: FC<TabProps> = ({
   const [hoveredTabIndex, setHoveredTabIndex] = useState<number | null>(null);
   const hoveredRect =
     anchorRefs[hoveredTabIndex ?? -1]?.getBoundingClientRect();
+
+  // Set the anchor refs array length to the tabs length
+  useEffect(() => {
+    setAnchorRefs(prev => prev.slice(0, tabs.length));
+  }, [tabs.length]);
+
+  // Animate the indicator on first render
+  useEffect(() => {
+    if (
+      selectedTabIndex !== undefined &&
+      !isAnimated &&
+      selectedRect &&
+      navRect
+    ) {
+      setIsAnimated(true);
+    }
+  }, [selectedRect, navRect, selectedTabIndex, isAnimated]);
 
   return (
     <nav
@@ -159,7 +173,7 @@ export const Tabs: FC<TabProps> = ({
         )}
       </AnimatePresence>
 
-      {selectedRect && navRect && (
+      {selectedRect && navRect && isAnimated && (
         <motion.div
           className={
             "absolute bottom-0 left-0.5 z-10 h-[3px] rounded-lg bg-background-primary"
