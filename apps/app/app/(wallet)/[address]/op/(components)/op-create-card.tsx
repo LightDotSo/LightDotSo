@@ -20,12 +20,19 @@ import { subdigestOf } from "@lightdotso/solutions";
 import { Button, toast } from "@lightdotso/ui";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
-import { isAddressEqual, toBytes, hexToBytes, toHex, fromHex } from "viem";
 import type { Address, Hex } from "viem";
+import {
+  isAddressEqual,
+  toBytes,
+  hexToBytes,
+  toHex,
+  fromHex,
+  decodeAbiParameters,
+} from "viem";
 import { useSignMessage } from "wagmi";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
-import { errorToast, serializeUserOperation } from "@/utils";
+import { errorToast, serializeBigInt, serializeUserOperation } from "@/utils";
 import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
@@ -162,6 +169,21 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
             chainId: {Number(userOperation.chainId)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            callData:{" "}
+            {serializeBigInt(
+              decodeAbiParameters(
+                [
+                  { name: "dest", internalType: "address", type: "address" },
+                  { name: "value", internalType: "uint256", type: "uint256" },
+                  { name: "func", internalType: "bytes", type: "bytes" },
+                ],
+                userOperation.callData as Hex,
+              ),
+            )}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

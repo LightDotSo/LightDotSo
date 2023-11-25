@@ -13,15 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { WalletBalance } from "@prisma/client";
-
 // -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
 
-export const serializeWalletBalance = (bal: WalletBalance[]): string => {
+export const serializeBigInt = (val: any): string => {
   return JSON.stringify(
-    bal,
+    val,
     (_, value) => (typeof value === "bigint" ? value.toString() : value),
     2,
   );

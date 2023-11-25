@@ -357,6 +357,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
       if (
         transfer &&
+        transfer.address &&
         transfer.asset &&
         transfer.assetType === "erc20" &&
         "quantity" in transfer.asset &&
@@ -380,7 +381,7 @@ export const SendDialog: FC<SendDialogProps> = ({
       return "0x";
     }
 
-    if (transfers?.length === 1) {
+    if (transfers?.length === 1 && transfers[0].address && transfers[0].asset) {
       return `${transfers[0].chainId}:_:${encodeAbiParameters(
         [
           { name: "dest", internalType: "address", type: "address" },
