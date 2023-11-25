@@ -377,6 +377,10 @@ export const SendDialog: FC<SendDialogProps> = ({
               token.chain_id === transfer.chainId,
           );
 
+        if (!token) {
+          return [transfer.address as Address, 0n, "0x" as Hex];
+        }
+
         // Encode the native eth `transfer`
         if (
           transfer.asset.address ===
@@ -384,16 +388,9 @@ export const SendDialog: FC<SendDialogProps> = ({
         ) {
           return [
             transfer.address as Address,
-            BigInt(
-              transfer.asset.quantity! *
-                Math.pow(10, transfer.asset?.decimals!),
-            ),
+            BigInt(transfer.asset.quantity! * Math.pow(10, token.decimals!)),
             "0x" as Hex,
           ];
-        }
-
-        if (!token) {
-          return [transfer.address as Address, 0n, "0x" as Hex];
         }
 
         // Encode the erc20 `transfer`
