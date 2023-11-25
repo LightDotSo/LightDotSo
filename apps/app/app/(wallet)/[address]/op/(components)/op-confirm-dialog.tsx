@@ -15,13 +15,16 @@
 
 "use client";
 
-import type { UserOperation } from "permissionless";
-import { useMemo } from "react";
+import {
+  getSignatureUserOperation,
+  sendUserOperation,
+} from "@lightdotso/client";
+import { Button, toast } from "@lightdotso/ui";
+import { useCallback, useState, useEffect } from "react";
 import type { FC } from "react";
-import { isAddressEqual } from "viem";
-import type { Address, Hex } from "viem";
-import { OpConfirmCard } from "@/app/(wallet)/[address]/op/(components)/op-confirm-card";
-import { useAuth } from "@/stores/useAuth";
+import { toHex, fromHex, recoverMessageAddress } from "viem";
+import type { Hex, Address } from "viem";
+import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -29,14 +32,38 @@ import { useAuth } from "@/stores/useAuth";
 
 type OpConfirmDialogProps = {
   address: Address;
-  userOperations: UserOperation[];
-  userOperationHashes: Hex[];
-  userOperationChainIds: number[];
-  owners: {
-    id: string;
+  chainId: number;
+  config: {
     address: string;
-    weight: number;
-  }[];
+    checkpoint: number;
+    id: string;
+    image_hash: string;
+    owners: {
+      address: string;
+      id: string;
+      weight: number;
+    }[];
+    threshold: number;
+  };
+  userOperation: {
+    chain_id: number;
+    call_data: string;
+    call_gas_limit: number;
+    hash: string;
+    init_code: string;
+    max_fee_per_gas: number;
+    max_priority_fee_per_gas: number;
+    nonce: number;
+    paymaster_and_data: string;
+    pre_verification_gas: number;
+    sender: string;
+    verification_gas_limit: number;
+    signatures: {
+      owner_id: string;
+      signature: string;
+      signature_type: number;
+    }[];
+  };
 };
 
 // -----------------------------------------------------------------------------
@@ -44,42 +71,176 @@ type OpConfirmDialogProps = {
 // -----------------------------------------------------------------------------
 
 export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
-  address,
-  userOperations,
-  userOperationHashes,
-  userOperationChainIds,
-  owners,
+  // address,
+  chainId,
+  config,
+  userOperation,
 }) => {
-  const { address: userAddress } = useAuth();
+  const [recoveredAddress, setRecoveredAddress] = useState<Address>();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const owner = useMemo(() => {
-    if (!userAddress) return;
+  // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
+  const isValid =
+    userOperation.signatures.reduce((acc, signature) => {
+      return (
+        acc +
+        ((config &&
+          config.owners.find(owner => owner.id === signature?.owner_id)
+            ?.weight) ||
+          0)
+      );
+    }, 0) >= (config ? config.threshold : 0);
 
-    return owners?.find(owner =>
-      isAddressEqual(owner.address as Address, userAddress),
-    );
-  }, [owners, userAddress]);
+  const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
+    address: userOperation.paymaster_and_data.slice(0, 42) as Address,
+    chainId,
+    args: [
+      {
+        sender: userOperation.sender as Address,
+        nonce: BigInt(userOperation.nonce),
+        initCode: userOperation.init_code as Hex,
+        callData: userOperation.call_data as Hex,
+        callGasLimit: BigInt(userOperation.call_gas_limit),
+        verificationGasLimit: BigInt(userOperation.verification_gas_limit),
+        preVerificationGas: BigInt(userOperation.pre_verification_gas),
+        maxFeePerGas: BigInt(userOperation.max_fee_per_gas),
+        maxPriorityFeePerGas: BigInt(userOperation.max_priority_fee_per_gas),
+        paymasterAndData: userOperation.paymaster_and_data as Hex,
+        signature: toHex(new Uint8Array([2])),
+      },
+      fromHex(
+        `0x${userOperation.paymaster_and_data.slice(154, 162)}`,
+        "number",
+      ),
+      fromHex(
+        `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
+        "number",
+      ),
+    ],
+  });
+
+  const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
+    170,
+  )}` as Hex;
+
+  useEffect(() => {
+    const recoverAddress = async () => {
+      if (paymasterHash) {
+        try {
+          const address = await recoverMessageAddress({
+            message: { raw: paymasterHash },
+            signature: paymasterSignedMsg,
+          });
+          setRecoveredAddress(address);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    };
+
+    recoverAddress();
+  }, [paymasterHash, paymasterSignedMsg]);
+
+  // A `useCallback` handler for confirming the operation
+  const handleConfirm = useCallback(() => {
+    const processSignature = async () => {
+      // Get the sig as bytes from caller
+      const sigRes = await getSignatureUserOperation({
+        params: { query: { user_operation_hash: userOperation.hash } },
+      });
+
+      await sigRes.match(
+        async sig => {
+          // Sned the user operation
+          const res = await sendUserOperation(chainId, [
+            {
+              sender: userOperation.sender,
+              nonce: toHex(userOperation.nonce),
+              initCode: userOperation.init_code,
+              callData: userOperation.call_data,
+              paymasterAndData: userOperation.paymaster_and_data,
+              callGasLimit: toHex(userOperation.call_gas_limit),
+              verificationGasLimit: toHex(userOperation.verification_gas_limit),
+              preVerificationGas: toHex(userOperation.pre_verification_gas),
+              maxFeePerGas: toHex(userOperation.max_fee_per_gas),
+              maxPriorityFeePerGas: toHex(
+                userOperation.max_priority_fee_per_gas,
+              ),
+              signature: sig,
+            },
+            "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+          ]);
+
+          toast({
+            title: "You submitted the userOperation result",
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                <code className="text-white">
+                  {JSON.stringify(res, null, 2)}
+                </code>
+              </pre>
+            ),
+          });
+        },
+        async err => {
+          toast({
+            title: "You submitted the userOperation result",
+            description: (
+              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                <code className="text-white">
+                  {JSON.stringify(err, null, 2)}
+                </code>
+              </pre>
+            ),
+          });
+        },
+      );
+    };
+
+    processSignature();
+  }, [chainId, userOperation]);
 
   return (
     <>
       <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">
         <header className="text-lg font-semibold leading-none tracking-tight">
-          Transaction
+          Confirm
         </header>
         <p className="text-sm text-text-weak">
-          Are you sure you want to sign this transaction?
+          Are you sure you want to sign this confirm?
         </p>
-        {userOperations?.map((userOperation, index) => (
-          <OpConfirmCard
-            key={index}
-            address={address}
-            owners={owners}
-            userOperation={userOperation}
-            chainId={userOperationChainIds[index]}
-            userOpHash={userOperationHashes[index]}
-          />
-        ))}
+      </div>
+      <div className="grid gap-4 py-4">
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code>userOperation: {JSON.stringify(userOperation, null, 2)}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">chainId: {chainId}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterHash: {paymasterHash}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterSignedMsg: {paymasterSignedMsg}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            recoveredAddress: {recoveredAddress}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            config: {JSON.stringify(config, null, 2)}
+          </code>
+        </pre>
+      </div>
+      <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
+        <Button disabled={!isValid} onClick={() => handleConfirm()}>
+          Confirm
+        </Button>
       </div>
     </>
   );

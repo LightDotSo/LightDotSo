@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { OpDialog } from "@/app/(wallet)/[address]/op/(components)/op-dialog";
+import { OpConfirmDialog } from "@/app/(wallet)/[address]/op/(components)/op-confirm-dialog";
 import { parseNumber } from "@/handlers/parsers";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { handler as userOpHandler } from "@/handlers/paths/[address]/op/[chainId]/[userOperationHash]/handler";
@@ -59,7 +59,7 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <OpDialog
+    <OpConfirmDialog
       config={config}
       address={params.address as Address}
       chainId={chainId}
