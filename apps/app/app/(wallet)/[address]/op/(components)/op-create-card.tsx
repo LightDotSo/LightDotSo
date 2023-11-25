@@ -33,7 +33,11 @@ import { useSignMessage } from "wagmi";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
 import { errorToast, serializeBigInt } from "@/utils";
-import { lightWalletABI, useLightVerifyingPaymasterGetHash } from "@/wagmi";
+import {
+  lightWalletABI,
+  lightWalletFactoryABI,
+  useLightVerifyingPaymasterGetHash,
+} from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -100,21 +104,32 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
     );
   }, [owners, userAddress]);
 
-  const decodedCallData = useMemo(() => {
-    // Check the function signature is `execute`
-    const args =
-      userOperation.callData.slice(0, 10) === "0xb61d27f6"
-        ? decodeFunctionData({
-            abi: lightWalletABI,
-            data: userOperation.callData as Hex,
-          }).args
-        : decodeFunctionData({
-            abi: lightWalletABI,
-            data: userOperation.callData as Hex,
-          }).args;
+  const decodedInitCode = useMemo(() => {
+    // If the initCode is `0x`, return
+    if (userOperation.initCode === "0x") {
+      return;
+    }
 
+    // Parse the initCode of the userOperation
+    return decodeFunctionData({
+      abi: lightWalletFactoryABI,
+      data: `0x${userOperation.initCode.slice(42)}` as Hex,
+    }).args;
+  }, [userOperation.initCode]);
+
+  const decodedCallData = useMemo(() => {
     // Parse the callData of tha args depending on the args type
-    return args;
+    switch (userOperation.callData.slice(0, 10)) {
+      // If the function selector is `execute` or `executeBatch`
+      case "0xb61d27f6":
+      case "0x47e1da2a":
+        return decodeFunctionData({
+          abi: lightWalletABI,
+          data: userOperation.callData as Hex,
+        }).args;
+      default:
+        return userOperation.callData;
+    }
   }, [userOperation.callData]);
 
   useEffect(() => {
@@ -185,6 +200,12 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
             chainId: {Number(userOperation.chainId)}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            decodedInitCode:{" "}
+            {decodedInitCode && serializeBigInt(decodedInitCode)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
