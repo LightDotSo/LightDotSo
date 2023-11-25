@@ -120,7 +120,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         form="walletNameForm"
         disabled={typeof deployed_op !== "undefined"}
       >
-        <Link href={`/${address}/op?userOperations=${chain.id}:_:${initCode}`}>
+        <Link href={`/${address}/op?userOperations=${chain.id}:${initCode}:_`}>
           {typeof deployed_op !== "undefined" ? "Already Deployed" : "Deploy"}
         </Link>
       </Button>
