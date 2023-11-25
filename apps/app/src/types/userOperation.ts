@@ -20,18 +20,18 @@ import * as z from "zod";
 // -----------------------------------------------------------------------------
 
 export const userOperation = z.object({
-  chainId: z.bigint().optional(),
-  hash: z.string().optional(),
-  nonce: z.bigint().optional(),
-  initCode: z.string().optional(),
-  sender: z.string().optional(),
-  callData: z.string().optional(),
-  callGasLimit: z.bigint().optional(),
-  verificationGasLimit: z.bigint().optional(),
-  preVerificationGas: z.bigint().optional(),
-  maxFeePerGas: z.bigint().optional(),
-  maxPriorityFeePerGas: z.bigint().optional(),
-  paymaster_and_data: z.string().optional(),
+  chainId: z.bigint(),
+  hash: z.string(),
+  nonce: z.bigint(),
+  initCode: z.string(),
+  sender: z.string(),
+  callData: z.string(),
+  callGasLimit: z.bigint(),
+  verificationGasLimit: z.bigint(),
+  preVerificationGas: z.bigint(),
+  maxFeePerGas: z.bigint(),
+  maxPriorityFeePerGas: z.bigint(),
+  paymasterAndData: z.string(),
 });
 
 // -----------------------------------------------------------------------------
