@@ -139,48 +139,6 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Default State
   // ---------------------------------------------------------------------------
 
-  const callData = useMemo(() => {
-    const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
-      if (
-        transfer &&
-        transfer.asset &&
-        transfer.assetType === "erc20" &&
-        "quantity" in transfer.asset &&
-        transfer.asset.address === "0x0000000000000000000000000000000000000000"
-      ) {
-        return [
-          transfer.asset.address as Address,
-          BigInt(transfer.asset.quantity!),
-          "0x" as Hex,
-        ];
-      }
-
-      return ["0x" as Address, 0n, "0x" as Hex];
-    };
-
-    // Get the call data of the first transfer
-    if (!transfers || transfers?.length === 0) {
-      return "0x";
-    }
-
-    if (transfers?.length === 1) {
-      return encodeAbiParameters(
-        lightWalletABI[24].inputs,
-        encodeTransfer(transfers[0]),
-      );
-    }
-
-    if (transfers?.length > 1) {
-      return encodeAbiParameters(lightWalletABI[25].inputs, [
-        ["0x"],
-        [0n],
-        ["0x"],
-      ]);
-    }
-
-    return "0x";
-  }, [transfers]);
-
   // create default transfer object
   const defaultTransfer: Transfers = useMemo(() => {
     // For each token, create a transfer object
@@ -396,13 +354,47 @@ export const SendDialog: FC<SendDialogProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
-  const chainId = useMemo(() => {
-    // Get the chainId of the first transfer
-    return transfers &&
-      transfers?.length > 0 &&
-      transfers[0]?.chainId !== undefined
-      ? transfers[0]?.chainId
-      : null;
+  const userOperationsParams = useMemo(() => {
+    const encodeTransfer = (transfer: Transfer): [Address, bigint, Hex] => {
+      if (
+        transfer &&
+        transfer.asset &&
+        transfer.assetType === "erc20" &&
+        "quantity" in transfer.asset &&
+        "decimals" in transfer.asset &&
+        transfer.asset.address === "0x0000000000000000000000000000000000000000"
+      ) {
+        return [
+          transfer.address as Address,
+          BigInt(
+            transfer.asset.quantity! * Math.pow(10, transfer.asset?.decimals!),
+          ),
+          "0x" as Hex,
+        ];
+      }
+
+      return ["0x" as Address, 0n, "0x" as Hex];
+    };
+
+    // Get the call data of the first transfer
+    if (!transfers || transfers?.length === 0) {
+      return "0x";
+    }
+
+    if (transfers?.length === 1) {
+      return `${transfers[0].chainId}:_:${encodeAbiParameters(
+        ["address", "uint256", "bytes"],
+        encodeTransfer(transfers[0]),
+      )}`;
+    }
+
+    if (transfers?.length > 1) {
+      return encodeAbiParameters(lightWalletABI[25].inputs, [
+        ["0x"],
+        [0n],
+        ["0x"],
+      ]);
+    }
   }, [transfers]);
 
   // ---------------------------------------------------------------------------
@@ -767,8 +759,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           const token = tokens.find(
                                             token =>
                                               token.address ===
-                                              (transfers?.[index]?.asset
-                                                ?.address || ""),
+                                                (transfers?.[index]?.asset
+                                                  ?.address || "") &&
+                                              token.chain_id ===
+                                                transfers?.[index]?.chainId,
                                           );
                                           return token
                                             ? (
@@ -889,12 +883,15 @@ export const SendDialog: FC<SendDialogProps> = ({
               </Button>
               <Button
                 asChild
-                disabled={!form.formState.isValid && chainId !== null}
+                disabled={
+                  !form.formState.isValid &&
+                  typeof userOperationsParams !== "undefined"
+                }
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
               >
                 <Link
-                  href={`/${address}/op?userOperations=${chainId}:_:${callData}`}
+                  href={`/${address}/op?userOperations=${userOperationsParams!}`}
                 >
                   Continue
                 </Link>
