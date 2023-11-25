@@ -20,18 +20,20 @@ import { userOperation } from "@/types";
 // Schema
 // -----------------------------------------------------------------------------
 
-const userOperations = z.array(userOperation);
+const partialUserOperation = userOperation.partial();
+
+const partialUserOperations = z.array(partialUserOperation);
 
 export const confirmFormConfigurationSchema = z.object({
-  transfers: userOperations,
+  transfers: partialUserOperations,
 });
 
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
 
-export type UserOperation = z.infer<typeof userOperation>;
-export type UserOperations = z.infer<typeof userOperations>;
+export type PartialUserOperation = z.infer<typeof partialUserOperation>;
+export type PartialUserOperations = z.infer<typeof partialUserOperations>;
 export type ConfirmFormConfiguration = z.infer<
   typeof confirmFormConfigurationSchema
 >;

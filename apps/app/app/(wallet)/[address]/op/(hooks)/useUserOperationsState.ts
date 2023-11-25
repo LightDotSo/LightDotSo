@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { createParser, useQueryState } from "next-usequerystate";
-import type { UserOperations } from "@/schemas";
+import type { PartialUserOperations } from "@/schemas";
 
 // -----------------------------------------------------------------------------
 // Parser
@@ -34,7 +34,7 @@ export const userOperationsParser = createParser({
         const parsedCallData = callData === "_" ? undefined : callData;
 
         return {
-          chainId: !isNaN(parsedChainId) ? parsedChainId : undefined,
+          chainId: !isNaN(parsedChainId) ? BigInt(parsedChainId) : undefined,
           initCode: parsedInitCode,
           callData: parsedCallData,
         };
@@ -43,7 +43,7 @@ export const userOperationsParser = createParser({
         operation => operation.chainId !== undefined && operation !== undefined,
       );
   },
-  serialize(value: UserOperations) {
+  serialize(value: PartialUserOperations) {
     return value
       .map(
         operation =>
@@ -60,7 +60,7 @@ export const userOperationsParser = createParser({
 // -----------------------------------------------------------------------------
 
 export const useUserOperationsState = (
-  initialUserOperations: UserOperations,
+  initialUserOperations: PartialUserOperations,
 ) => {
   return useQueryState(
     "userOperations",
