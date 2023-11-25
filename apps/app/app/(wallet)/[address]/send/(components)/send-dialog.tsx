@@ -362,8 +362,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         transfer.address &&
         transfer.asset &&
         transfer.assetType === "erc20" &&
-        "quantity" in transfer.asset &&
-        "decimals" in transfer.asset
+        "quantity" in transfer.asset
       ) {
         // Get the matching token
         const token =
