@@ -55,7 +55,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: UserOperationData | undefined =
+  const currentData: UserOperationData[] | undefined =
     useQueryClient().getQueryData(
       queries.user_operation.list({
         address,
@@ -65,7 +65,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
       }).queryKey,
     );
 
-  const { data: ops } = useSuspenseQuery<UserOperationData | null>({
+  const { data: ops } = useSuspenseQuery<UserOperationData[] | null>({
     queryKey: queries.user_operation.list({
       address,
       status: "executed",

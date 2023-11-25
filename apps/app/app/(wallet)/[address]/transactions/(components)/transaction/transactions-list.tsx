@@ -46,12 +46,12 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: UserOperationData | undefined =
+  const currentData: UserOperationData[] | undefined =
     useQueryClient().getQueryData(
       queries.user_operation.list({ address, status }).queryKey,
     );
 
-  const { data } = useSuspenseQuery<UserOperationData | null>({
+  const { data } = useSuspenseQuery<UserOperationData[] | null>({
     queryKey: queries.user_operation.list({ address, status }).queryKey,
     queryFn: async () => {
       const res = await getUserOperations({

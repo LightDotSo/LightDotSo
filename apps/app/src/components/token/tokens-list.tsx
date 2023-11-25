@@ -45,14 +45,14 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
   const walletSettings: WalletSettingsData | undefined =
     useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentData: TokenData | undefined = useQueryClient().getQueryData(
+  const currentData: TokenData[] | undefined = useQueryClient().getQueryData(
     queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<TokenData | null>({
+  const { data } = useSuspenseQuery<TokenData[] | null>({
     queryKey: queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,

@@ -92,14 +92,14 @@ export const SendDialog: FC<SendDialogProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentData: TokenData | undefined = useQueryClient().getQueryData(
+  const currentData: TokenData[] | undefined = useQueryClient().getQueryData(
     queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
-  const { data: tokens } = useSuspenseQuery<TokenData | null>({
+  const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
     queryKey: queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
