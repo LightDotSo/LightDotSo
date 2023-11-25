@@ -32,7 +32,7 @@ import {
 import { useSignMessage } from "wagmi";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
-import { errorToast, serializeBigInt, serializeUserOperation } from "@/utils";
+import { errorToast, serializeBigInt } from "@/utils";
 import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
@@ -162,8 +162,7 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
       <div className="grid gap-4 py-4">
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code>
-            userOperation:{" "}
-            {userOperation && serializeUserOperation(userOperation)}
+            userOperation: {userOperation && serializeBigInt(userOperation)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">

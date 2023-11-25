@@ -62,9 +62,3 @@ export default async function Page({ params, searchParams }: PageProps) {
     />
   );
 }
-
-// -----------------------------------------------------------------------------
-// Runtime
-// -----------------------------------------------------------------------------
-
-export const runtime = "edge";
