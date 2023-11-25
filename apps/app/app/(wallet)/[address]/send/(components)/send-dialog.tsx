@@ -59,7 +59,6 @@ import { queries } from "@/queries";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";
-import { lightWalletABI } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -383,17 +382,24 @@ export const SendDialog: FC<SendDialogProps> = ({
 
     if (transfers?.length === 1) {
       return `${transfers[0].chainId}:_:${encodeAbiParameters(
-        ["address", "uint256", "bytes"],
-        encodeTransfer(transfers[0]),
+        [
+          { name: "dest", internalType: "address", type: "address" },
+          { name: "value", internalType: "uint256", type: "uint256" },
+          { name: "func", internalType: "bytes", type: "bytes" },
+        ],
+        encodeTransfer(transfers[0]) as [Address, bigint, Hex],
       )}`;
     }
 
     if (transfers?.length > 1) {
-      return encodeAbiParameters(lightWalletABI[25].inputs, [
-        ["0x"],
-        [0n],
-        ["0x"],
-      ]);
+      return encodeAbiParameters(
+        [
+          { name: "dest", internalType: "address[]", type: "address[]" },
+          { name: "value", internalType: "uint256[]", type: "uint256[]" },
+          { name: "func", internalType: "bytes[]", type: "bytes[]" },
+        ],
+        [["0x"], [0n], ["0x"]],
+      );
     }
   }, [transfers]);
 
