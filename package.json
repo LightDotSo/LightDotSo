@@ -64,7 +64,8 @@
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
     "tsc": "tsc --noEmit",
-    "tsc:turbo": "turbo tsc",
+    "tsc:lint": "pnpm run tsc:turbo",
+    "tsc:turbo": "turbo run tsc",
     "wagmi:generate": "wagmi generate"
   },
   "dependencies": {

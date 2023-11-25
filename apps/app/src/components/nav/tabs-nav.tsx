@@ -97,7 +97,7 @@ export const Tabs: FC<TabProps> = ({
     ) {
       setIsAnimated(true);
     }
-  }, [selectedRect, navRect, selectedTabIndex]);
+  }, [selectedRect, navRect, selectedTabIndex, isAnimated]);
 
   return (
     <nav
