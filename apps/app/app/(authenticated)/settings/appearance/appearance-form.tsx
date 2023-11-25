@@ -34,7 +34,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { successToast } from "@/utils/toast";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Schema

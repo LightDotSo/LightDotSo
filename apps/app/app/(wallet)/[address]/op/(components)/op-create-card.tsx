@@ -25,8 +25,7 @@ import type { Address, Hex } from "viem";
 import { useSignMessage } from "wagmi";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
-import { errorToast } from "@/utils/toast";
-import { serializeUserOperation } from "@/utils/userOp";
+import { errorToast, serializeUserOperation } from "@/utils";
 import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 // -----------------------------------------------------------------------------

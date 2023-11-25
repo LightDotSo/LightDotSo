@@ -58,7 +58,7 @@ import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import type { Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
-import { debounce } from "@/utils/debounce";
+import { debounce } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types
