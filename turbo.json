@@ -74,7 +74,7 @@
       "dependsOn": ["^test"]
     },
     "tsc": {
-      "dependsOn": ["^tsc"]
+      "dependsOn": ["^build", "^tsc"]
     }
   },
   "remoteCache": { "signature": true }
