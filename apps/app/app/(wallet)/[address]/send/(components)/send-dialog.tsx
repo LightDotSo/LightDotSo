@@ -374,20 +374,25 @@ export const SendDialog: FC<SendDialogProps> = ({
         ];
       }
 
-      return ["0x" as Address, 0n, "0x" as Hex];
+      return [transfer.address as Address, 0n, "0x" as Hex];
     };
 
     // Get the call data of the first transfer
-    if (!transfers || transfers?.length === 0) {
+    if (!transfers || transfers?.length === 0 || !form.formState.isValid) {
       return "0x";
     }
 
-    if (transfers?.length === 1 && transfers[0].address && transfers[0].asset) {
+    if (
+      transfers?.length === 1 &&
+      transfers[0].address &&
+      isAddress(transfers[0].address) &&
+      transfers[0].asset
+    ) {
       return `${transfers[0].chainId}:_:${encodeFunctionData({
         abi: lightWalletABI,
         functionName: "execute",
         args: encodeTransfer(transfers[0]) as [Address, bigint, Hex],
-      })}}`;
+      })}`;
     }
 
     if (transfers?.length > 1) {

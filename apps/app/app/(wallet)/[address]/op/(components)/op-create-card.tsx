@@ -27,13 +27,13 @@ import {
   hexToBytes,
   toHex,
   fromHex,
-  decodeAbiParameters,
+  decodeFunctionData,
 } from "viem";
 import { useSignMessage } from "wagmi";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
 import { errorToast, serializeBigInt } from "@/utils";
-import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
+import { lightWalletABI, useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -173,16 +173,21 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
             callData:{" "}
-            {serializeBigInt(
-              decodeAbiParameters(
-                [
-                  { name: "dest", internalType: "address", type: "address" },
-                  { name: "value", internalType: "uint256", type: "uint256" },
-                  { name: "func", internalType: "bytes", type: "bytes" },
-                ],
-                userOperation.callData as Hex,
-              ),
-            )}
+            {userOperation.callData &&
+            // Check the function signature is `execute`
+            userOperation.callData.slice(0, 10) === "0xb61d27f6"
+              ? serializeBigInt(
+                  decodeFunctionData({
+                    abi: lightWalletABI,
+                    data: userOperation.callData as Hex,
+                  }).args,
+                )
+              : serializeBigInt(
+                  decodeFunctionData({
+                    abi: lightWalletABI,
+                    data: userOperation.callData as Hex,
+                  }).args,
+                )}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
