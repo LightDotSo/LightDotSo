@@ -19,9 +19,9 @@ import { getUserOperations } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { OpCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/op-card";
-import { TransactionsEmpty } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-empty";
-import { TransactionsWrapper } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transactions-wrapper";
+import { UserOperationCard } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operation-card";
+import { UserOperationsEmpty } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operations-empty";
+import { UserOperationsWrapper } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operations-wrapper";
 import type { UserOperationData } from "@/data";
 import { queries } from "@/queries";
 
@@ -29,7 +29,7 @@ import { queries } from "@/queries";
 // Props
 // -----------------------------------------------------------------------------
 
-export type TransactionsListProps = {
+export type UserOperationsListProps = {
   address: Address;
   status: "all" | "proposed" | "executed";
 };
@@ -38,7 +38,7 @@ export type TransactionsListProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionsList: FC<TransactionsListProps> = ({
+export const UserOperationsList: FC<UserOperationsListProps> = ({
   address,
   status,
 }) => {
@@ -76,16 +76,16 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   });
 
   return (
-    <TransactionsWrapper>
-      {data && data.length === 0 && <TransactionsEmpty />}
+    <UserOperationsWrapper>
+      {data && data.length === 0 && <UserOperationsEmpty />}
       {data &&
         data.map(userOperation => (
-          <OpCard
+          <UserOperationCard
             key={userOperation.hash}
             address={address}
             userOperation={userOperation}
           />
         ))}
-    </TransactionsWrapper>
+    </UserOperationsWrapper>
   );
 };

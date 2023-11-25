@@ -18,7 +18,7 @@ import type { FC } from "react";
 // Props
 // -----------------------------------------------------------------------------
 
-type TransactionsWrapperProps = {
+type UserOperationsWrapperProps = {
   children: React.ReactNode;
 };
 
@@ -26,7 +26,7 @@ type TransactionsWrapperProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionsWrapper: FC<TransactionsWrapperProps> = ({
+export const UserOperationsWrapper: FC<UserOperationsWrapperProps> = ({
   children,
 }) => {
   return <div className="flex w-full flex-col space-y-4">{children}</div>;
