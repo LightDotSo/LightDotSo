@@ -195,23 +195,7 @@ export const walletPortfolioLlamaSet = inngest.createFunction(
           })),
         });
 
-        // First, create the portfolio transaction
-        await prisma.$transaction([
-          prisma.walletBalance.updateMany({
-            where: { walletAddress: wallet!.address, chainId: 0 },
-            data: { isLatest: false },
-          }),
-          prisma.walletBalance.create({
-            data: {
-              walletAddress: wallet!.address,
-              chainId: 0,
-              balanceUSD: totalNetBalance,
-              isLatest: true,
-            },
-          }),
-        ]);
-
-        // Finally, create the balances of the tokens
+        // First, create the balances of the tokens
         await prisma.$transaction([
           prisma.walletBalance.updateMany({
             where: {
@@ -222,6 +206,7 @@ export const walletPortfolioLlamaSet = inngest.createFunction(
             },
             data: {
               isLatest: false,
+              isTestnet: false,
             },
           }),
           prisma.walletBalance.createMany({
@@ -233,7 +218,24 @@ export const walletPortfolioLlamaSet = inngest.createFunction(
               tokenId: balance!.tokenId,
               stable: balance!.stable,
               isLatest: true,
+              isTestnet: false,
             })),
+          }),
+        ]);
+
+        // Finally, create the portfolio transaction
+        await prisma.$transaction([
+          prisma.walletBalance.updateMany({
+            where: { walletAddress: wallet!.address, chainId: 0 },
+            data: { isLatest: false, isTestnet: false },
+          }),
+          prisma.walletBalance.create({
+            data: {
+              walletAddress: wallet!.address,
+              chainId: 0,
+              balanceUSD: totalNetBalance,
+              isLatest: true,
+            },
           }),
         ]);
       },

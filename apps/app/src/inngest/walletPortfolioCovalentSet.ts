@@ -178,7 +178,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
       await prisma.$transaction([
         prisma.walletBalance.updateMany({
           where: { walletAddress: event.data.address, chainId: 0 },
-          data: { isLatest: false },
+          data: { isLatest: false, isTestnet: false },
         }),
         prisma.walletBalance.create({
           data: {
