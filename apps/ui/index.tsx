@@ -221,4 +221,3 @@ export {
 export { useToast, toast } from "./src/components/ui/use-toast";
 export { ThemeProvider } from "./src/providers/theme-provider";
 export { ReactQueryProvider } from "./src/providers/react-query";
-export { Web3Provider } from "./src/providers/web3";

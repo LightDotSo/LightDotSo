@@ -17,19 +17,15 @@
 
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
+import { chains } from "@/const/chains";
 
-const { publicClient } = configureChains(
-  [mainnet, sepolia],
-  [publicProvider()],
-);
+const { publicClient } = configureChains(chains, [publicProvider()]);
 
 const config = createConfig({
   ...getDefaultConfig({
     appName: "Light",
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-    chains: [mainnet, sepolia],
+    chains: chains,
   }),
   publicClient,
 });
