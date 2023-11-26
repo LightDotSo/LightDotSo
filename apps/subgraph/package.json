@@ -50,12 +50,12 @@
     "test": "./test.sh"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "^0.61.0",
+    "@graphprotocol/graph-cli": "^0.62.0",
     "@graphprotocol/graph-ts": "^0.31.0"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
-    "@types/node": "^20.9.4",
+    "@types/node": "^20.10.0",
     "assemblyscript": "^0.19.20",
     "matchstick-as": "^0.6.0",
     "typescript": "^5.3.2",
