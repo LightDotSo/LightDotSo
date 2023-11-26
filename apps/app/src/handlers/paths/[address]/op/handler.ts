@@ -14,6 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
+import { ContractLinks } from "@lightdotso/const";
+import { calculateInitCode } from "@lightdotso/solutions";
+import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import { getUserOperationHash } from "permissionless";
 import type { UserOperation as PermissionlessUserOperation } from "permissionless";
@@ -22,7 +25,7 @@ import type { Address, Hex } from "viem";
 import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getUserOperationNonce } from "@/services";
+import { getConfiguration, getUserOperationNonce, getWallet } from "@/services";
 import type { UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------
@@ -62,7 +65,7 @@ export const handler = async (
   }
 
   // ---------------------------------------------------------------------------
-  // Fetch
+  // Fetch Nonce
   // ---------------------------------------------------------------------------
 
   const noncePromises = userOperationsQuery.map(operation => {
@@ -81,20 +84,57 @@ export const handler = async (
   }
 
   // ---------------------------------------------------------------------------
+  // Fetch Wallet and Configuration
+  // ---------------------------------------------------------------------------
+
+  const walletPromise = getWallet(params.address as Address);
+
+  const configPromise = getConfiguration(params.address as Address);
+
+  const [walletRes, configRes] = await Promise.all([
+    walletPromise,
+    configPromise,
+  ]);
+
+  const walletAndConfigRes = Result.combineWithAllErrors([
+    walletRes,
+    configRes,
+  ]);
+
+  const { wallet, config } = walletAndConfigRes.match(
+    ([wallet, config]) => {
+      return {
+        wallet: wallet,
+        config: config,
+      };
+    },
+    () => {
+      return notFound();
+    },
+  );
+
+  // ---------------------------------------------------------------------------
   // Defaults
   // ---------------------------------------------------------------------------
 
   let ops: Omit<UserOperation, "hash">[] =
     userOperationsQuery &&
     userOperationsQuery.map(operation => {
+      const nonce =
+        nonces[userOperationsQuery.indexOf(operation)]._unsafeUnwrap().nonce;
       return {
         chainId: operation.chainId as bigint,
         sender: params.address as Address,
         paymasterAndData: "0x",
-        nonce: BigInt(
-          nonces[userOperationsQuery.indexOf(operation)]._unsafeUnwrap().nonce,
-        ),
-        initCode: (operation.initCode as Hex) ?? "0x",
+        nonce: BigInt(nonce),
+        initCode:
+          nonce === 0
+            ? calculateInitCode(
+                ContractLinks["Factory"] as Address,
+                config.image_hash as Hex,
+                wallet.salt as Hex,
+              )
+            : "0x",
         callData: (operation.callData as Hex) ?? "0x",
         signature:
           "0xfffffffffffffffffffffffffffffff0000000000000000000000000000000007aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1c",
