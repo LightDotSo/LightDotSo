@@ -181,7 +181,9 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
           });
         },
         err => {
-          errorToast(err);
+          if (err instanceof Error) {
+            errorToast(err.message);
+          }
         },
       );
     };

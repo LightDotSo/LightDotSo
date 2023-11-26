@@ -76,7 +76,7 @@ export async function zodJsonRpcFetch<
   const data = (await response.json()) as JsonResponseSchema;
 
   if (data?.error) {
-    throw new Error(`JSON-RPC Error: ${data.error.message}`);
+    throw new Error(data.error.message);
   }
 
   /* Parse and validate response using schema */

@@ -20,7 +20,7 @@ import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { successToast } from "@/utils";
+import { infoToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,7 +43,7 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
       className="py-5"
       onClick={() => {
         invokePortfolioAction(address as Address);
-        successToast("Refreshed");
+        infoToast("Refreshed");
       }}
     >
       <RefreshCcw className="h-4 w-4 text-text-weak" />

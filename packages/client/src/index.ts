@@ -620,7 +620,7 @@ export const getChainId = async () => {
         revalidate: 0,
       },
     ),
-    () => new Error("Database error"),
+    e => e,
   );
 };
 
@@ -667,7 +667,7 @@ export const sendUserOperation = async (
         revalidate: 0,
       },
     ),
-    () => new Error("Database error"),
+    e => e,
   );
 };
 
@@ -716,6 +716,6 @@ export const getPaymasterGasAndPaymasterAndData = async (
         revalidate: 0,
       },
     ),
-    () => new Error("Database error"),
+    e => e,
   );
 };

@@ -44,7 +44,10 @@ const toastVariants = cva(
       variant: {
         default: "border bg-background",
         destructive:
-          "destructive border-destructive group bg-background-destructive text-text-inverse",
+          "destructive group border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse",
+        success:
+          "success group border-4 border-border-success-weaker bg-background-success text-text-inverse",
+        info: "info group border-4 border-border-info-weaker bg-background-info text-text-inverse",
       },
     },
     defaultVariants: {
@@ -90,7 +93,7 @@ const ToastClose = forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "absolute right-2 top-2 rounded-md p-1 text-text/50 opacity-0 transition-opacity hover:text-text focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
+      "absolute right-2 top-2 rounded-md p-1 text-text/50 opacity-0 transition-opacity focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-text-inverse group-[.destructive]:hover:text-text-inverse-weak group-[.success]:text-text-inverse group-[.success]:hover:text-text-inverse-weak group-[.info]:text-text-inverse group-[.info]:hover:text-text-inverse-weak",
       className
     )}
     toast-close=""
@@ -107,7 +110,7 @@ const ToastTitle = forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
-    className={cn("text-sm font-semibold", className)}
+    className={cn("text-sm font-semibold text-ellipsis overflow-hidden", className)}
     {...props}
   />
 ))
@@ -119,7 +122,7 @@ const ToastDescription = forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
-    className={cn("text-sm opacity-90", className)}
+    className={cn("text-sm opacity-90 text-ellipsis overflow-hidden", className)}
     {...props}
   />
 ))

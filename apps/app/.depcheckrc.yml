@@ -26,3 +26,4 @@ ignores:
   - eslint-plugin-turbo
   - immer
   - "@lightdotso/wagmi"
+  - "@wagmi/core"

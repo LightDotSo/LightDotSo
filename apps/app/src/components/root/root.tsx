@@ -17,7 +17,6 @@ import {
   TailwindIndicator,
   ThemeProvider,
   ReactQueryProvider,
-  Web3Provider,
   Toaster,
 } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
@@ -34,6 +33,7 @@ import { UserNav } from "@/components/nav/user-nav";
 import { RootLogo } from "@/components/root/root-logo";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
+import { Web3Provider } from "@/components/web3/web3-provider";
 
 // -----------------------------------------------------------------------------
 // Dynamic

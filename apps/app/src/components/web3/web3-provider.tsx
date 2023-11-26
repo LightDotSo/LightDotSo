@@ -15,23 +15,31 @@
 
 "use client";
 
-import { ConnectKitProvider, getDefaultConfig } from "connectkit";
-import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { mainnet, sepolia } from "wagmi/chains";
+import { ConnectKitProvider } from "connectkit";
+import { WagmiConfig, createConfig, configureChains } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
 import { publicProvider } from "wagmi/providers/public";
+import { chains as configuredChains } from "@/const/chains";
 
-const { publicClient } = configureChains(
-  [mainnet, sepolia],
+const { chains, publicClient, webSocketPublicClient } = configureChains(
+  configuredChains,
   [publicProvider()],
 );
 
+// Set up wagmi config
 const config = createConfig({
-  ...getDefaultConfig({
-    appName: "Light",
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
-    chains: [mainnet, sepolia],
-  }),
+  autoConnect: true,
+  connectors: [
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Injected",
+        shimDisconnect: true,
+      },
+    }),
+  ],
   publicClient,
+  webSocketPublicClient,
 });
 
 function Web3Provider({ children }: { children: React.ReactNode }) {
