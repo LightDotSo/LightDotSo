@@ -355,7 +355,7 @@ importers:
         version: link:../../packages/wagmi
       '@lukemorales/query-key-factory':
         specifier: ^1.3.2
-        version: 1.3.2(@tanstack/query-core@5.8.3)(@tanstack/react-query@5.8.7)
+        version: 1.3.2(@tanstack/query-core@5.8.7)(@tanstack/react-query@5.8.7)
       '@next-auth/prisma-adapter':
         specifier: 0.4.4-canary.81
         version: 0.4.4-canary.81(@prisma/client@5.6.0)(next-auth@4.24.5)
@@ -425,6 +425,9 @@ importers:
       '@vercel/toolbar':
         specifier: ^0.1.5
         version: 0.1.5(next@14.0.3)
+      '@wagmi/core':
+        specifier: ^1.4.7
+        version: 1.4.7(patch_hash=axuvworghutwtzzlkqpkjr5tae)(@types/react@18.2.38)(immer@10.0.3)(react@18.2.0)(typescript@5.3.2)(viem@1.19.9)(zod@3.22.4)
       clsx:
         specifier: ^2.0.0
         version: 2.0.0
@@ -5985,14 +5988,14 @@ packages:
       call-bind: 1.0.2
     dev: true
 
-  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.8.3)(@tanstack/react-query@5.8.7):
+  /@lukemorales/query-key-factory@1.3.2(@tanstack/query-core@5.8.7)(@tanstack/react-query@5.8.7):
     resolution: {integrity: sha512-SFOWcB5ec+RhlKjLjZxTAbOPF2uXNED6lqXiMu3TUt2twKzxE/QLhnYkdbxOBMK5Wwc2Ia+WP3yqCPRKWywnwQ==}
     engines: {node: '>=14'}
     peerDependencies:
       '@tanstack/query-core': '>= 4.0.0'
       '@tanstack/react-query': '>= 4.0.0'
     dependencies:
-      '@tanstack/query-core': 5.8.3
+      '@tanstack/query-core': 5.8.7
       '@tanstack/react-query': 5.8.7(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
@@ -11856,10 +11859,6 @@ packages:
 
   /@tanstack/query-core@4.32.6:
     resolution: {integrity: sha512-YVB+mVWENQwPyv+40qO7flMgKZ0uI41Ph7qXC2Zf1ft5AIGfnXnMZyifB2ghhZ27u+5wm5mlzO4Y6lwwadzxCA==}
-
-  /@tanstack/query-core@5.8.3:
-    resolution: {integrity: sha512-SWFMFtcHfttLYif6pevnnMYnBvxKf3C+MHMH7bevyYfpXpTMsLB9O6nNGBdWSoPwnZRXFNyNeVZOw25Wmdasow==}
-    dev: false
 
   /@tanstack/query-core@5.8.7:
     resolution: {integrity: sha512-58xOSkxxZK4SGQ/uzX8MDZHLGZCkxlgkPxnfhxUOL2uchnNHyay2UVcR3mQNMgaMwH1e2l+0n+zfS7+UJ/MAJw==}
