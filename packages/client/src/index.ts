@@ -667,7 +667,7 @@ export const sendUserOperation = async (
         revalidate: 0,
       },
     ),
-    () => new Error("Database error"),
+    e => e,
   );
 };
 

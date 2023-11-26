@@ -13,20 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { toast } from "@lightdotso/ui";
+import { ToastAction, toast } from "@lightdotso/ui";
 
 // -----------------------------------------------------------------------------
 // Utils
 // -----------------------------------------------------------------------------
 
-export const errorToast = (err: any) =>
+export const errorToast = (err: string) =>
   toast({
-    title: "You have encountered an error:",
-    description: (
-      <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        <code className="text-red-300">{JSON.stringify(err, null, 2)}</code>
-      </pre>
-    ),
+    variant: "destructive",
+    title: "Uh oh! Something went wrong.",
+    description: err,
+    action: <ToastAction altText="Try again">Try again</ToastAction>,
   });
 
 export const successToast = (data: any) =>

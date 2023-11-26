@@ -128,10 +128,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
       // Return if the response is 200
       res.match(
         data => {
-          return successToast(data);
+          successToast(data);
         },
         err => {
-          return errorToast(err);
+          if (err instanceof Error) {
+            errorToast(err.message);
+          }
         },
       );
     },

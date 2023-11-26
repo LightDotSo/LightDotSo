@@ -24,6 +24,7 @@ import { useCallback, useState, useEffect } from "react";
 import type { FC } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
+import { errorToast } from "@/utils";
 import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
@@ -170,28 +171,28 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
             "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
           ]);
 
-          toast({
-            title: "You submitted the userOperation result",
-            description: (
-              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                <code className="text-white">
-                  {JSON.stringify(res, null, 2)}
-                </code>
-              </pre>
-            ),
-          });
+          res.match(
+            ok => {
+              toast({
+                title: "You submitted the userOperation result",
+                description: (
+                  <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                    <code className="text-white">
+                      {JSON.stringify(ok, null, 2)}
+                    </code>
+                  </pre>
+                ),
+              });
+            },
+            err => {
+              if (err instanceof Error) {
+                errorToast(err.message);
+              }
+            },
+          );
         },
         async err => {
-          toast({
-            title: "You submitted the userOperation result",
-            description: (
-              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                <code className="text-white">
-                  {JSON.stringify(err, null, 2)}
-                </code>
-              </pre>
-            ),
-          });
+          errorToast(JSON.stringify(err, null, 2));
         },
       );
     };
