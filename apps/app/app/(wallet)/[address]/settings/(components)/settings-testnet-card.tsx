@@ -167,7 +167,9 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
         context?.previousSettings,
       );
 
-      errorToast(err);
+      if (err instanceof Error) {
+        errorToast(err.message);
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries({
