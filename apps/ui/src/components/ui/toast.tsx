@@ -44,10 +44,10 @@ const toastVariants = cva(
       variant: {
         default: "border bg-background",
         destructive:
-          "destructive group border-border-destructive bg-background-destructive text-text-inverse",
+          "destructive group border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse",
         success:
-          "success group border-border-success bg-background-success text-text-inverse",
-        info: "info group border-border-info bg-background-info text-text-inverse",
+          "success group border-4 border-border-success-weaker bg-background-success text-text-inverse",
+        info: "info group border-4 border-border-info-weaker bg-background-info text-text-inverse",
       },
     },
     defaultVariants: {

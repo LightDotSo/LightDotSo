@@ -31,10 +31,10 @@ export const successToast = (data: any) =>
   toast({
     variant: "success",
     description: JSON.stringify(data, null, 2),
-    action: <ToastAction altText="Try again">Try again</ToastAction>,
   });
 
 export const infoToast = (title: string) =>
   toast({
+    variant: "info",
     title,
   });
