@@ -79,3 +79,19 @@ export const Destructive: Story = {
     action: <ToastAction altText="Try again">Try again</ToastAction>,
   },
 };
+
+export const Success: Story = {
+  args: {
+    variant: "success",
+    title: "Success!",
+    description: "Your message has been sent.",
+  },
+};
+
+export const Info: Story = {
+  args: {
+    variant: "info",
+    title: "Info",
+    description: "Your message has been sent.",
+  },
+};
