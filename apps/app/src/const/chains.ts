@@ -13,7 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { mainnet, base, polygon, optimism, sepolia } from "viem/chains";
+import {
+  mainnet,
+  base,
+  polygon,
+  optimism,
+  sepolia,
+  polygonMumbai,
+} from "viem/chains";
 
 // -----------------------------------------------------------------------------
 // Mainnet
@@ -25,7 +32,7 @@ export const mainnet_chains = [mainnet, base, polygon, optimism];
 // Testnet
 // -----------------------------------------------------------------------------
 
-export const testnet_chains = [sepolia];
+export const testnet_chains = [sepolia, polygonMumbai];
 
 // -----------------------------------------------------------------------------
 // All

@@ -58,7 +58,6 @@
     "@tanstack/react-query-persist-client": "^5.8.7",
     "class-variance-authority": "^0.7.0",
     "cmdk": "^0.2.0",
-    "connectkit": "^1.5.3",
     "date-fns": "^2.30.0",
     "lucide-react": "^0.263.1",
     "next": "^14.0.3",
@@ -70,7 +69,6 @@
     "superjson": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vite": "^5.0.2",
-    "wagmi": "^1.4.7",
     "zod": "^3.22.4"
   },
   "devDependencies": {

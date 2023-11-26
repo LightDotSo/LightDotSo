@@ -128,7 +128,7 @@ export const handler = async (
         paymasterAndData: "0x",
         nonce: BigInt(nonce),
         initCode:
-          nonce === 0
+          operation.initCode ?? nonce === 0
             ? calculateInitCode(
                 ContractLinks["Factory"] as Address,
                 config.image_hash as Hex,
