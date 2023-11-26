@@ -1,6 +1,6 @@
 [profile.default]
   leak-timeout = "3000ms"
-  retries = { backoff = "exponential", count = 3, delay = "10s" }
+  retries = { backoff = "exponential", count = 3, delay = "30s" }
   slow-timeout = "3m"
 
   [[profile.default.overrides]]

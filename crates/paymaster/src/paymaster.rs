@@ -417,13 +417,13 @@ pub fn get_pack(user_operation: UserOperationConstruct) -> Token {
         Token::Uint(user_operation.max_priority_fee_per_gas),
         Token::Uint(
             // 0x1a0 = 416
-            (416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+            (416 + (((user_operation.init_code.len() + user_operation.call_data.len()) + 31) / 32 *
                 32))
             .into(),
         ),
         Token::Uint(
             // 0x260 = 608
-            (608 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+            (608 + (((user_operation.init_code.len() + user_operation.call_data.len()) + 31) / 32 *
                 32))
             .into(),
         ),
@@ -616,6 +616,64 @@ mod tests {
             sender: "0xF46D20dC61A5f43773Ad172602647f194a69a16d".parse().unwrap(),
             nonce: U256::from(0),
             init_code: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
+            call_data: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
+            call_gas_limit: U256::from(4514240),
+            verification_gas_limit: U256::from(1854272),
+            pre_verification_gas: U256::from(1854272),
+            max_fee_per_gas: U256::from(56674171701_i64),
+            max_priority_fee_per_gas: U256::from(48087546673_i64),
+            signature: "0xf3d100a507a9cec065dd157ebe9f76f34722791066a9a4e5dd1c09666f180c8f44ac0f769495f53cf4fcbbcc94fa4520c02a0dd316642ea0972b5114309d7e031b02".parse().unwrap(),
+        };
+
+        // println!("{}", user_operation.init_code.len());
+        // println!("{}", user_operation.call_data.len());
+
+        // println!(
+        //     "{}",
+        //     416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+        //         48)
+        // );
+
+        // println!(
+        //     "{}",
+        //     480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+        //         48)
+        // );
+
+        let packed = get_pack(user_operation.clone()).into_bytes().unwrap();
+
+        println!("{}", packed.to_hex_string());
+
+        let enco = encode(&[
+            Token::Bytes(packed),
+            Token::Uint(31337.into()),
+            Token::Address("0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9".parse().unwrap()),
+            Token::Uint(0.into()),
+            Token::Uint(0.into()),
+            Token::Uint(0.into()),
+        ])
+        .to_vec();
+
+        println!("{}", enco.to_hex_string());
+
+        let has = get_hash(
+            31337,
+            "0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9".parse().unwrap(),
+            user_operation,
+            0,
+            0,
+            0,
+        );
+
+        println!("{}", has.unwrap().to_vec().to_hex_string());
+    }
+
+    #[test]
+    fn test_get_pack_init_code() {
+        let user_operation = UserOperationConstruct {
+            sender: "0xF46D20dC61A5f43773Ad172602647f194a69a16d".parse().unwrap(),
+            nonce: U256::from(0),
+            init_code: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
             call_data: "0x".parse().unwrap(),
             call_gas_limit: U256::from(4514240),
             verification_gas_limit: U256::from(1854272),
@@ -667,4 +725,65 @@ mod tests {
 
         println!("{}", has.unwrap().to_vec().to_hex_string());
     }
+
+    #[test]
+    fn test_get_pack_call_data() {
+        let user_operation = UserOperationConstruct {
+            sender: "0xF46D20dC61A5f43773Ad172602647f194a69a16d".parse().unwrap(),
+            nonce: U256::from(0),
+            init_code: "0x".parse().unwrap(),
+            call_data: "0x0000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758".parse().unwrap(),
+            call_gas_limit: U256::from(4514240),
+            verification_gas_limit: U256::from(1854272),
+            pre_verification_gas: U256::from(1854272),
+            max_fee_per_gas: U256::from(56674171701_i64),
+            max_priority_fee_per_gas: U256::from(48087546673_i64),
+            signature: "0xf3d100a507a9cec065dd157ebe9f76f34722791066a9a4e5dd1c09666f180c8f44ac0f769495f53cf4fcbbcc94fa4520c02a0dd316642ea0972b5114309d7e031b02".parse().unwrap(),
+        };
+
+        // println!("{}", user_operation.init_code.len());
+        // println!("{}", user_operation.call_data.len());
+
+        // println!(
+        //     "{}",
+        //     416 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+        //         48)
+        // );
+
+        // println!(
+        //     "{}",
+        //     480 + ((user_operation.init_code.len() + user_operation.call_data.len() + 31) / 32 *
+        //         48)
+        // );
+
+        let packed = get_pack(user_operation.clone()).into_bytes().unwrap();
+
+        println!("{}", packed.to_hex_string());
+
+        let enco = encode(&[
+            Token::Bytes(packed),
+            Token::Uint(31337.into()),
+            Token::Address("0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9".parse().unwrap()),
+            Token::Uint(0.into()),
+            Token::Uint(0.into()),
+            Token::Uint(0.into()),
+        ])
+        .to_vec();
+
+        println!("{}", enco.to_hex_string());
+
+        let has = get_hash(
+            31337,
+            "0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9".parse().unwrap(),
+            user_operation,
+            0,
+            0,
+            0,
+        );
+
+        println!("{}", has.unwrap().to_vec().to_hex_string());
+    }
 }
+
+// 0x000000000000000000000000f46d20dc61a5f43773ad172602647f194a69a16d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000001e0000000000000000000000000000000000000000000000000000000000044e1c000000000000000000000000000000000000000000000000000000000001c4b4000000000000000000000000000000000000000000000000000000000001c4b400000000000000000000000000000000000000000000000000000000d320b3b350000000000000000000000000000000000000000000000000000000b323dbb310000000000000000000000000000000000000000000000000000000000000260000000000000000000000000000000000000000000000000000000000000032000000000000000000000000000000000000000000000000000000000000000580000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a0758000000000000000000000000000000000000000000000000000000000000000000000000000000580000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a07580000000000000000
+// 0x000000000000000000000000f46d20dc61a5f43773ad172602647f194a69a16d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000001e0000000000000000000000000000000000000000000000000000000000044e1c000000000000000000000000000000000000000000000000000000000001c4b4000000000000000000000000000000000000000000000000000000000001c4b400000000000000000000000000000000000000000000000000000000d320b3b350000000000000000000000000000000000000000000000000000000b323dbb31000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002c000000000000000000000000000000000000000000000000000000000000000580000000000756d3e6464f5efe7e413a0af1c7474183815c83c01efabf2ce62868626005b468fcc0cd03c644030e51dad0d5df74b0fbd4e950000000000000000000000000000000000000000000000000000018b838a075800000000000000000000000000000000000000000000000000000000000000000000000000000000
