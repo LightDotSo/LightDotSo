@@ -17,7 +17,7 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{Address, Bloom, H256, U256},
+    types::{Bloom, H256, U256},
     utils::to_checksum,
 };
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;

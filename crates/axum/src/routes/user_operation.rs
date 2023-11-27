@@ -49,10 +49,7 @@ use lightdotso_solutions::{
     utils::render_subdigest,
 };
 use lightdotso_tracing::tracing::{error, info};
-use prisma_client_rust::{
-    chrono::{DateTime, NaiveDateTime, Utc},
-    Direction,
-};
+use prisma_client_rust::Direction;
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -407,8 +404,11 @@ async fn v1_user_operation_nonce_handler(
         .await?;
     info!(?paymaster);
 
-    // If the paymaster is not found, return a 404.
-    let paymaster = paymaster.ok_or(AppError::NotFound)?;
+    // If the paymaster is not found, return a 0 nonce.
+    if paymaster.is_none() {
+        return Ok(Json::from(UserOperationNonce { nonce: 0 }));
+    }
+    let paymaster = paymaster.unwrap();
 
     // Get the user operations from the database.
     let user_operation = client
