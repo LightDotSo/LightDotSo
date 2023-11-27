@@ -17,12 +17,13 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{Bloom, H256, U256},
+    types::{Address, Bloom, H256, U256},
     utils::to_checksum,
 };
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
+use lightdotso_paymaster::paymaster::decode_paymaster_and_data;
 use lightdotso_prisma::{
-    log, log_topic, receipt, transaction, transaction_category, user_operation, wallet,
+    log, log_topic, paymaster, receipt, transaction, transaction_category, user_operation, wallet,
     PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
@@ -413,6 +414,28 @@ pub async fn upsert_user_operation(
         )
         .exec()
         .await?;
+
+    // Get the first 20 bytes and parse it as an address
+    let (paymaster_address, _, _, _) = decode_paymaster_and_data(uow.paymaster_and_data.to_vec());
+
+    // Upsert the paymaster
+    let _ =
+        db.paymaster()
+            .upsert(
+                paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
+                paymaster::create(
+                    to_checksum(&paymaster_address, None),
+                    chain_id,
+                    vec![paymaster::user_operation::connect(vec![user_operation::hash::equals(
+                        format!("{:?}", uow.hash),
+                    )])],
+                ),
+                vec![paymaster::user_operation::connect(vec![user_operation::hash::equals(
+                    format!("{:?}", uow.hash),
+                )])],
+            )
+            .exec()
+            .await?;
 
     Ok(Json::from(user_operation))
 }

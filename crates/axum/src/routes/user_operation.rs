@@ -303,11 +303,7 @@ impl From<owner::Data> for UserOperationOwner {
 // Implement From<paymaster::Data> for Paymaster.
 impl From<paymaster::Data> for UserOperationPaymaster {
     fn from(paymaster: paymaster::Data) -> Self {
-        Self {
-            address: paymaster.address,
-            sender: paymaster.sender,
-            sender_nonce: paymaster.sender_nonce,
-        }
+        Self { address: paymaster.address }
     }
 }
 
