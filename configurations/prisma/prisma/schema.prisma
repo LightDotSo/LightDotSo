@@ -445,6 +445,8 @@ model Paymaster {
   validAfter  DateTime
 
   userOperation UserOperation[]
+
+  @@unique([address, chainId])
 }
 
 enum UserOperationStatus {

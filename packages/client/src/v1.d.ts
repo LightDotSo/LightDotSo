@@ -1336,6 +1336,8 @@ export interface operations {
         chain_id: number;
         /** @description The sender address to filter by. */
         address: string;
+        /** @description The paymaster address to filter by. */
+        paymaster: string;
       };
     };
     responses: {
