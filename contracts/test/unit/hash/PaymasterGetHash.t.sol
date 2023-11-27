@@ -159,4 +159,46 @@ contract PaymasterGetHash is BaseTest {
         // solhint-disable-next-line no-console
         console.logBytes32(hash);
     }
+
+    /// Tests that the account complies w/ ERC-165
+    function test_getHash_raw() public {
+        address sender = address(0xF46D20dC61A5f43773Ad172602647f194a69a16d);
+        uint256 nonce = 0;
+        bytes memory initCode = hex"";
+        bytes memory callData = hex"";
+        uint256 callGasLimit = 4514240;
+        uint256 verificationGasLimit = 1854272;
+        uint256 preVerificationGas = 1854272;
+        uint256 maxFeePerGas = 56674171701;
+        uint256 maxPriorityFeePerGas = 48087546673;
+        bytes memory paymasterAndData =
+            hex"0dcd1bf9a1b36ce34237eeafef220932846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c";
+        bytes memory signature = hex"";
+
+        UserOperation memory userOperation = UserOperation(
+            sender,
+            nonce,
+            initCode,
+            callData,
+            callGasLimit,
+            verificationGasLimit,
+            preVerificationGas,
+            maxFeePerGas,
+            maxPriorityFeePerGas,
+            paymasterAndData,
+            signature
+        );
+
+        LightVerifyingPaymaster paymaster = new LightVerifyingPaymaster(IEntryPoint(address(0)), address(1));
+
+        // Log the paymaster address
+        // solhint-disable-next-line no-console
+        console.log(address(paymaster));
+
+        bytes32 hash = paymaster.getHash(userOperation, uint48(0), uint48(0));
+
+        // Log the byte code hash
+        // solhint-disable-next-line no-console
+        console.logBytes32(hash);
+    }
 }
