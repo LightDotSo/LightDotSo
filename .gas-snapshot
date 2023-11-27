@@ -37,7 +37,7 @@ LightWalletFactoryIntegrationTest:test_revertWhenIncorrectSignature_simulateVali
 LightWalletFactoryIntegrationTest:test_simulateValidation_revertWithValidationResult() (gas: 400528)
 LightWalletProxyIntegrationTest:test_proxy_initialize() (gas: 2582358)
 LightWalletProxyIntegrationTest:test_revertWhenAlreadyInitialized_proxy() (gas: 16198)
-PaymasterGetHash:test_getHash() (gas: 1248420)
+PaymasterGetHash:test_getHash() (gas: 1249281)
 PaymasterGetHash:test_getHash_callData() (gas: 1247070)
 PaymasterGetHash:test_getHash_initCode() (gas: 1247106)
 ReceiveEthIntegrationTest:test_receiveEth_call() (gas: 16634)
