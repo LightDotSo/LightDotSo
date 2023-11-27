@@ -40,6 +40,7 @@ LightWalletProxyIntegrationTest:test_revertWhenAlreadyInitialized_proxy() (gas: 
 PaymasterGetHash:test_getHash() (gas: 1249303)
 PaymasterGetHash:test_getHash_callData() (gas: 1247070)
 PaymasterGetHash:test_getHash_initCode() (gas: 1247128)
+PaymasterGetHash:test_getHash_long() (gas: 1249669)
 PaymasterGetHash:test_getHash_raw() (gas: 1245793)
 ReceiveEthIntegrationTest:test_receiveEth_call() (gas: 16634)
 ReceiveEthIntegrationTest:test_revertWhenReceiveEth_send() (gas: 17097)
