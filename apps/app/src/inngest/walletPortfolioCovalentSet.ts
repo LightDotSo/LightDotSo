@@ -15,7 +15,6 @@
 
 import { CovalentClient } from "@covalenthq/client-sdk";
 import type { Chain } from "@covalenthq/client-sdk";
-import { NonRetriableError } from "inngest";
 import { getAddress } from "viem";
 import { ChainIdMapping, ChainIdTestnetMapping } from "@/const/covalent";
 import { inngest } from "@/inngest/client";
@@ -158,6 +157,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
         where: {
           walletAddress: event.data.address,
           isLatest: true,
+          isTestnet: false,
           // Get only the total balances (chainId = 0)
           chainId: {
             not: 0,
@@ -167,12 +167,6 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
           balanceUSD: true,
         },
       });
-
-      if (!totalNetBalance._sum.balanceUSD) {
-        throw new NonRetriableError("Sum not found", {
-          cause: new Error("no sum computed"),
-        });
-      }
 
       // First, create the portfolio transaction
       await prisma.$transaction([
@@ -184,7 +178,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
           data: {
             walletAddress: event.data.address,
             chainId: 0,
-            balanceUSD: totalNetBalance._sum.balanceUSD,
+            balanceUSD: totalNetBalance._sum.balanceUSD ?? 0,
             isLatest: true,
           },
         }),
