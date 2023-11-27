@@ -405,13 +405,6 @@ pub fn get_hash(
 }
 
 pub fn get_pack(user_operation: UserOperationConstruct) -> Token {
-    println!("init_code: {}", user_operation.init_code.len());
-    println!("call_data: {}", user_operation.call_data.len());
-    println!(
-        "init_code + calldata {}",
-        user_operation.init_code.len() + user_operation.call_data.len()
-    );
-
     // Get the base for `init_code` and `call_data`.
     let init_code_base = if user_operation.init_code.is_empty() {
         0
@@ -424,9 +417,6 @@ pub fn get_pack(user_operation: UserOperationConstruct) -> Token {
         (user_operation.call_data.len() + 31) / 32
     };
 
-    println!("init_code_base: {}", init_code_base);
-    println!("call_data_base: {}", call_data_base);
-
     // https://github.com/LightDotSo/LightDotSo/blob/abff2aca61a8f0934e533d0d352978055fddbd96/contracts/samples/VerifyingPaymaster.sol#L44
     // Get the offset.
     // 0x1a0 = 416
@@ -436,9 +426,6 @@ pub fn get_pack(user_operation: UserOperationConstruct) -> Token {
     // Get the length.
     // 0x260 = 608
     let length = 608 + (init_code_base + call_data_base) * 32;
-
-    println!("offset: {}", offset);
-    println!("length: {}", length);
 
     Token::Bytes(encode(&[
         Token::Address(user_operation.sender),
