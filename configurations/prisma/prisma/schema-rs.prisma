@@ -415,15 +415,11 @@ model UserOperation {
 }
 
 model Paymaster {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  address     String
-  chainId     BigInt
-  sender      String
-  senderNonce BigInt
-  validUntil  DateTime
-  validAfter  DateTime
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  address   String
+  chainId   BigInt
 
   userOperation UserOperation[]
 

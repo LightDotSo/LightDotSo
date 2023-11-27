@@ -143,8 +143,6 @@ pub struct UserOperationPostRequestParams {
     pub user_operation: UserOperationCreate,
     // The signature of the user operation.
     pub signature: UserOperationSignature,
-    // The paymaster of the user operation.
-    pub paymaster: Option<UserOperationPaymaster>,
 }
 
 /// Item to create.
@@ -169,10 +167,6 @@ pub(crate) struct UserOperationCreate {
 pub(crate) struct UserOperationPaymaster {
     /// The address of the paymaster.
     address: String,
-    /// The address of the sender.
-    sender: String,
-    /// The nonce of the sender.
-    sender_nonce: i64,
 }
 
 /// Owner
@@ -303,11 +297,7 @@ impl From<owner::Data> for UserOperationOwner {
 // Implement From<paymaster::Data> for Paymaster.
 impl From<paymaster::Data> for UserOperationPaymaster {
     fn from(paymaster: paymaster::Data) -> Self {
-        Self {
-            address: paymaster.address,
-            sender: paymaster.sender,
-            sender_nonce: paymaster.sender_nonce,
-        }
+        Self { address: paymaster.address }
     }
 }
 
@@ -540,7 +530,6 @@ async fn v1_user_operation_post_handler(
 
     let user_operation = params.user_operation.clone();
     let user_operation_hash = params.user_operation.clone().hash;
-    let paymaster = params.paymaster.clone();
     let sig = params.signature;
 
     let rundler_user_operation = RundlerUserOperation::try_from(user_operation.clone())?;
@@ -649,51 +638,17 @@ async fn v1_user_operation_post_handler(
     let mut params = vec![];
 
     // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
-    if paymaster.is_some() {
-        // The paymaster_and_data cannot be empty.
-        if user_operation.paymaster_and_data.is_empty() {
-            error!("paymaster_and_data is empty");
-            return Err(AppError::BadRequest);
-        }
-
+    if user_operation.paymaster_and_data.len() > 2 {
         let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
-        let (decded_paymaster_address, valid_until, valid_after, _msg) =
+        let (decded_paymaster_address, _valid_until, _valid_after, _msg) =
             decode_paymaster_and_data(paymaster_data);
-        let paymaster_sender = user_operation.clone().sender;
-
-        // Check that the paymaster address is the same as the decoded paymaster address.
-        if decded_paymaster_address != paymaster.clone().unwrap().address.parse()? {
-            error!(
-                "decded_paymaster_address: {}, paymaster.address: {}",
-                decded_paymaster_address,
-                paymaster.unwrap().address
-            );
-            return Err(AppError::BadRequest);
-        }
 
         let paymaster = client
             .clone()
             .client
             .unwrap()
             .paymaster()
-            .create(
-                to_checksum(&decded_paymaster_address, None),
-                chain_id,
-                paymaster_sender,
-                0,
-                // Parse the u64 to chrono Datetime
-                DateTime::<Utc>::from_utc(
-                    NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                    Utc,
-                )
-                .into(),
-                DateTime::<Utc>::from_utc(
-                    NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                    Utc,
-                )
-                .into(),
-                vec![],
-            )
+            .create(to_checksum(&decded_paymaster_address, None), chain_id, vec![])
             .exec()
             .await?;
         info!(?paymaster);

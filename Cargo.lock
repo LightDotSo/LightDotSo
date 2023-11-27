@@ -6139,6 +6139,7 @@ dependencies = [
  "eyre",
  "lightdotso-contracts",
  "lightdotso-graphql",
+ "lightdotso-paymaster",
  "lightdotso-prisma",
  "lightdotso-tracing",
  "prisma-client-rust",
