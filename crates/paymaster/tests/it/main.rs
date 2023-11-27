@@ -56,66 +56,66 @@ fn test_signer_kms_recover() {
     assert_eq!(recovered_address, "0xeedeadba8cac470fdce318892a07abe26aa4ab17".parse().unwrap());
 }
 
-#[tokio::test]
-async fn test_e2e_get_hash_iteration() {
-    async fn test_get_compare_user_operation(
-        chain_id: u64,
-        verifying_paymaster_address: Address,
-        user_operation: UserOperationConstruct,
-    ) {
-        // Temporarily clone the user operation.
-        let user_operation_clone = user_operation.clone();
-        let valid_until = 0_u64;
-        let valid_after = 0_u64;
+async fn test_get_compare_user_operation(
+    chain_id: u64,
+    verifying_paymaster_address: Address,
+    user_operation: UserOperationConstruct,
+) {
+    // Temporarily clone the user operation.
+    let user_operation_clone = user_operation.clone();
+    let valid_until = 0_u64;
+    let valid_after = 0_u64;
 
-        let result = get_hash(
-            chain_id,
-            verifying_paymaster_address,
-            user_operation,
+    let result = get_hash(
+        chain_id,
+        verifying_paymaster_address,
+        user_operation,
+        valid_until,
+        valid_after,
+        0,
+    );
+
+    let contract = get_paymaster(chain_id, verifying_paymaster_address).await.unwrap();
+    let user_operation = user_operation_clone.clone();
+
+    // Get the hash.
+    let onchain_hash = contract
+        .get_hash(
+            UserOperation {
+                sender: user_operation.sender,
+                nonce: user_operation.nonce,
+                init_code: user_operation.init_code,
+                call_data: user_operation.call_data,
+                call_gas_limit: user_operation.call_gas_limit,
+                verification_gas_limit: user_operation.verification_gas_limit,
+                pre_verification_gas: user_operation.pre_verification_gas,
+                max_fee_per_gas: user_operation.max_fee_per_gas,
+                max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
+                paymaster_and_data: construct_paymaster_and_data(
+                    verifying_paymaster_address,
+                    valid_until,
+                    valid_after,
+                    None,
+                ),
+                signature: Bytes::default(),
+            },
             valid_until,
             valid_after,
-            0,
-        );
+        )
+        .await
+        .unwrap();
 
-        let contract = get_paymaster(chain_id, verifying_paymaster_address).await.unwrap();
-        let user_operation = user_operation_clone.clone();
+    let result = result.unwrap();
 
-        // Get the hash.
-        let onchain_hash = contract
-            .get_hash(
-                UserOperation {
-                    sender: user_operation.sender,
-                    nonce: user_operation.nonce,
-                    init_code: user_operation.init_code,
-                    call_data: user_operation.call_data,
-                    call_gas_limit: user_operation.call_gas_limit,
-                    verification_gas_limit: user_operation.verification_gas_limit,
-                    pre_verification_gas: user_operation.pre_verification_gas,
-                    max_fee_per_gas: user_operation.max_fee_per_gas,
-                    max_priority_fee_per_gas: user_operation.max_priority_fee_per_gas,
-                    paymaster_and_data: construct_paymaster_and_data(
-                        verifying_paymaster_address,
-                        valid_until,
-                        valid_after,
-                        None,
-                    ),
-                    signature: Bytes::default(),
-                },
-                valid_until,
-                valid_after,
-            )
-            .await
-            .unwrap();
+    println!("result: {}", result.to_vec().to_hex_string());
+    println!("onchain_hash: {}", onchain_hash.to_vec().to_hex_string());
 
-        let result = result.unwrap();
+    // Assert that the result matches the expected value
+    assert_eq!(result, onchain_hash);
+}
 
-        println!("result: {}", result.to_vec().to_hex_string());
-        println!("onchain_hash: {}", onchain_hash.to_vec().to_hex_string());
-
-        // Assert that the result matches the expected value
-        assert_eq!(result, onchain_hash);
-    }
-
+#[tokio::test]
+async fn test_e2e_get_hash_iteration() {
     // Arbitrary test inputs #1
     let chain_id = 1;
     let verifying_paymaster_address: Address =
@@ -238,7 +238,10 @@ async fn test_e2e_get_hash_iteration() {
 
     test_get_compare_user_operation(chain_id, verifying_paymaster_address, user_operation.clone())
         .await;
+}
 
+#[tokio::test]
+async fn test_e2e_get_hash_iteration_calldata() {
     // Arbitrary test inputs #7
     let chain_id = 11155111;
     let verifying_paymaster_address: Address =
