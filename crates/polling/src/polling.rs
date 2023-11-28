@@ -327,7 +327,7 @@ impl Polling {
             || {
                 upsert_transaction_with_log_receipt(
                     db_client.clone(),
-                    uow.clone().sender,
+                    uow.clone().light_wallet,
                     uow.clone().transaction,
                     uow.clone().transaction_logs,
                     uow.clone().receipt,
@@ -349,23 +349,28 @@ impl Polling {
     ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
         let db_client = self.db_client.clone();
         let chain_id = self.chain_id;
-        let (_, salt) =
-            get_image_hash_salt_from_init_code(user_operation.init_code.clone().0.into_bytes())
-                .unwrap();
 
-        {
-            || {
-                upsert_wallet_with_configuration(
-                    db_client.clone(),
-                    user_operation.sender.0.parse().unwrap(),
-                    chain_id as i64,
-                    salt.into(),
-                    user_operation.light_wallet.factory.0.parse().unwrap(),
-                )
+        if let Some(init_code) = &user_operation.init_code {
+            let (_, salt) =
+                get_image_hash_salt_from_init_code(init_code.clone().0.into_bytes()).unwrap();
+
+            return {
+                || {
+                    upsert_wallet_with_configuration(
+                        db_client.clone(),
+                        user_operation.light_wallet.address.0.parse().unwrap(),
+                        chain_id as i64,
+                        salt.into(),
+                        user_operation.light_wallet.factory.0.parse().unwrap(),
+                    )
+                }
             }
+            .retry(&ExponentialBuilder::default())
+            .await;
         }
-        .retry(&ExponentialBuilder::default())
-        .await
+
+        // Return not found if the init code is not found.
+        Err(DbError::NotFound)
     }
 
     /// Add a new wallet in the cache
@@ -374,7 +379,7 @@ impl Polling {
         &self,
         user_operation: &UserOperation,
     ) -> Result<(), lightdotso_redis::redis::RedisError> {
-        let address = user_operation.sender.0.parse().unwrap();
+        let address = user_operation.light_wallet.address.0.parse().unwrap();
         let client = self.redis_client.clone().unwrap();
         let con = client.get_connection();
         if let Ok(mut con) = con {
