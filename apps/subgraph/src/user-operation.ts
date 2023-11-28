@@ -61,7 +61,6 @@ export function handleUserOperationFromCalldata(
   for (let i = 0; i < userOpStructTupletArray.length; i++) {
     if (userOpStructTupletArray[i].nonce == nonce) {
       userOperationStructTuple = userOpStructTupletArray[i];
-      break;
     }
   }
 
