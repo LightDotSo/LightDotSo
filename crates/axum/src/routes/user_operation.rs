@@ -627,6 +627,7 @@ async fn v1_user_operation_post_handler(
 
     // If the owners are not found, return a 404.
     let owners = configuration.owners.ok_or(AppError::NotFound)?;
+    info!(?owners);
 
     // Check that the signature sender is one of the owners.
     if !owners.iter().any(|owner| owner.id == sig.owner_id) {
@@ -648,14 +649,16 @@ async fn v1_user_operation_post_handler(
             .client
             .unwrap()
             .paymaster()
-            .create(to_checksum(&decded_paymaster_address, None), chain_id, vec![])
+            .upsert(
+                paymaster::address_chain_id(to_checksum(&decded_paymaster_address, None), chain_id),
+                paymaster::create(to_checksum(&decded_paymaster_address, None), chain_id, vec![]),
+                vec![],
+            )
             .exec()
             .await?;
         info!(?paymaster);
 
-        params = vec![user_operation::paymaster::connect(paymaster::UniqueWhereParam::IdEquals(
-            paymaster.id,
-        ))];
+        params = vec![user_operation::paymaster::connect(paymaster::id::equals(paymaster.id))];
     }
 
     // Create the user operation in the database w/ the sig.
