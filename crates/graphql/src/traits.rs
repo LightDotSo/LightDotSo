@@ -262,6 +262,7 @@ mod tests {
           block_timestamp: BigInt("1696054440".to_string()),
           transaction_hash: Bytes("0x87efb66c2b17af424b7fd2584d268eb1c301b9337eaad3137be5c4c7bbd574bf".to_string()),
           entry_point: Bytes("0x5ff137d4b0fdcd49dca30c7cf57e578a026d2789".to_string()),
+          paymaster: Some(Bytes("0x0000000000000000000000000000000000000000".to_string())),
           user_operation_event: Some(
             UserOperationEvent {
               id: Bytes("0x1a8d7c5989225f7ef86fd7844c64b74e04d361734664fa6d2bf307414327875a".to_string()),
