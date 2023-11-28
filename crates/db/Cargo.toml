@@ -15,7 +15,6 @@
   eyre = { workspace = true }
   lightdotso-contracts = { workspace = true }
   lightdotso-graphql = { workspace = true }
-  lightdotso-paymaster = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   prisma-client-rust = { workspace = true }

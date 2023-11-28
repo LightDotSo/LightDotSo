@@ -21,6 +21,7 @@ query GetUserOperationsQuery($minBlock: BigInt!, $minIndex: BigInt!) {
     blockTimestamp
     transactionHash
     entryPoint
+    paymaster
     userOperationEvent {
       id
       index
