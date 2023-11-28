@@ -394,6 +394,9 @@ model UserOperation {
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
 
+  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
+  paymasterOperationId String?
+
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?      @unique
 
@@ -411,6 +414,7 @@ model UserOperation {
   @@index([transactionHash])
   @@index([notificationId])
   @@index([paymasterId])
+  @@index([paymasterOperationId])
   @@index([walletAddress])
 }
 
@@ -421,9 +425,23 @@ model Paymaster {
   address   String
   chainId   BigInt
 
-  userOperation UserOperation[]
+  userOperations      UserOperation[]
+  paymasterOperations PaymasterOperation[]
 
   @@unique([address, chainId])
+}
+
+model PaymasterOperation {
+  id          String   @id @default(cuid())
+  sender      String
+  senderNonce BigInt
+  validUntil  DateTime
+  validAfter  DateTime
+
+  paymaster      Paymaster       @relation(fields: [id], references: [id])
+  userOperations UserOperation[]
+
+  @@index([id])
 }
 
 enum UserOperationStatus {
