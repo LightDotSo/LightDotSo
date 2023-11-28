@@ -17,11 +17,14 @@
   lazy_static = { workspace = true }
   lightdotso-common = { workspace = true }
   lightdotso-contracts = { workspace = true }
+  lightdotso-db = { workspace = true }
   lightdotso-gas = { workspace = true }
   lightdotso-jsonrpsee = { workspace = true }
+  lightdotso-prisma = { workspace = true }
   lightdotso-signer = { workspace = true }
   lightdotso-tracing = { workspace = true }
   lightdotso-utils = { workspace = true }
+  prisma-client-rust = { workspace = true }
   reqwest = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }

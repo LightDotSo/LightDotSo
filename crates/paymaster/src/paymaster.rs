@@ -30,14 +30,17 @@ use ethers::{
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
+use lightdotso_db::db::create_client;
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
     handle_response,
     types::{Request, Response},
 };
+use lightdotso_prisma::{paymaster, user_operation, UserOperationStatus};
 use lightdotso_signer::connect::connect_to_kms;
 use lightdotso_tracing::tracing::{info, warn};
+use prisma_client_rust::Direction;
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -125,7 +128,8 @@ pub async fn get_paymaster_and_data(
                 to_checksum(&verifying_paymaster_address, None)
             );
 
-            let paymaster_nonce = 0;
+            let paymaster_nonce =
+                get_paymaster_nonce(chain_id as i64, verifying_paymaster_address).await.unwrap();
 
             // Infinite valid until.
             let hash = get_hash(
@@ -153,6 +157,51 @@ pub async fn get_paymaster_and_data(
 
             Ok((paymater_and_data, paymaster_nonce))
         }
+    }
+}
+
+pub async fn get_paymaster_nonce(
+    chain_id: i64,
+    verifying_paymaster_address: Address,
+) -> Result<u64> {
+    // Create the client.
+    let client = create_client().await.unwrap();
+
+    // Get the paymaster from the database.
+    let paymaster = client
+        .paymaster()
+        .find_unique(paymaster::address_chain_id(
+            to_checksum(&verifying_paymaster_address, None),
+            chain_id,
+        ))
+        .exec()
+        .await?;
+    info!(?paymaster);
+
+    // If the paymaster is not found, return a 0 nonce.
+    if paymaster.is_none() {
+        return Ok(0);
+    }
+    let paymaster = paymaster.unwrap();
+
+    // Get the user operations from the database.
+    let user_operation = client
+        .user_operation()
+        .find_first(vec![
+            user_operation::chain_id::equals(chain_id),
+            user_operation::sender::equals(to_checksum(&verifying_paymaster_address, None)),
+            user_operation::status::equals(UserOperationStatus::Executed),
+            user_operation::paymaster_id::equals(Some(paymaster.id)),
+        ])
+        .order_by(user_operation::nonce::order(Direction::Desc))
+        .exec()
+        .await?;
+    info!(?user_operation);
+
+    // If the user operation is not found, return 0 as Ok.
+    match user_operation {
+        Some(user_operation) => Ok((user_operation.nonce as u64) + 1),
+        None => Ok(0),
     }
 }
 
@@ -322,8 +371,6 @@ pub async fn sign_message_kms(
     let verifying_paymaster_addresses: Vec<Address> =
         PAYMASTER_ADDRESSES_MAP.keys().cloned().collect();
 
-    let paymaster_nonce = 0;
-
     // Get the verifying paymaster contract address.
     let verifying_paymaster_address = *PAYMASTER_ADDRESSES_MAP.get(&address).ok_or_else(|| {
         eyre!(
@@ -333,6 +380,9 @@ pub async fn sign_message_kms(
         )
     })?;
     info!("verifying_paymaster_address: {}", to_checksum(&verifying_paymaster_address, None));
+
+    // Get the paymaster nonce.
+    let paymaster_nonce = get_paymaster_nonce(chain_id as i64, verifying_paymaster_address).await?;
 
     // Infinite valid until.
     let hash = get_hash(

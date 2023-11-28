@@ -68,8 +68,6 @@ pub struct NonceQuery {
     pub chain_id: i64,
     /// The sender address to filter by.
     pub address: String,
-    /// The paymaster address to filter by.
-    pub paymaster: String,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -390,25 +388,6 @@ async fn v1_user_operation_nonce_handler(
     let chain_id = query.chain_id;
     // Get the wallet address from the nonce query.
     let address: H160 = query.address.parse()?;
-    // Get the paymaster address from the nonce query.
-    let paymaster: H160 = query.paymaster.parse()?;
-
-    // Get the paymaster from the database.
-    let paymaster = client
-        .clone()
-        .client
-        .unwrap()
-        .paymaster()
-        .find_unique(paymaster::address_chain_id(to_checksum(&paymaster, None), chain_id))
-        .exec()
-        .await?;
-    info!(?paymaster);
-
-    // If the paymaster is not found, return a 0 nonce.
-    if paymaster.is_none() {
-        return Ok(Json::from(UserOperationNonce { nonce: 0 }));
-    }
-    let paymaster = paymaster.unwrap();
 
     // Get the user operations from the database.
     let user_operation = client
@@ -419,7 +398,6 @@ async fn v1_user_operation_nonce_handler(
             user_operation::chain_id::equals(chain_id),
             user_operation::sender::equals(to_checksum(&address, None)),
             user_operation::status::equals(UserOperationStatus::Executed),
-            user_operation::paymaster_id::equals(Some(paymaster.id)),
         ])
         .order_by(user_operation::nonce::order(Direction::Desc))
         .exec()
