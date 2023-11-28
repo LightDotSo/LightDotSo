@@ -186,6 +186,8 @@ pub enum UserOperationOrderBy {
     TransactionHash,
     #[cynic(rename = "entryPoint")]
     EntryPoint,
+    #[cynic(rename = "paymaster")]
+    Paymaster,
     #[cynic(rename = "lightWallet")]
     LightWallet,
     #[cynic(rename = "lightWallet__id")]
