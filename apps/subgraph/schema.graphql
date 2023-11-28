@@ -199,6 +199,7 @@ type UserOperation @entity {
   transactionHash: Bytes!
 
   entryPoint: Bytes! # address
+  paymaster: Bytes # address
 
   lightWallet: LightWallet! @derivedFrom(field: "userOperations")
   logs: [Log!] @derivedFrom(field: "userOperation")
