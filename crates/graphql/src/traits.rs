@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::polling::user_operations::UserOperation;
-use ethers::types::{Bloom, Log, OtherFields, Transaction, TransactionReceipt};
+use ethers::types::{Bloom, Log, OtherFields, Transaction, TransactionReceipt, H160};
 use lightdotso_common::traits::HexToBytes;
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
 
@@ -31,42 +31,61 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
             chain_id: op.chain_id,
             hash: op.user_operation.id.0.parse().unwrap(),
             entry_point: op.user_operation.entry_point.0.parse().unwrap(),
-            sender: op.user_operation.sender.0.parse().unwrap(),
-            nonce: (op.user_operation.nonce.0.parse::<u64>().unwrap()).into(),
-            init_code: op.user_operation.init_code.clone().0.hex_to_bytes().unwrap().into(),
-            call_data: op.user_operation.call_data.clone().0.hex_to_bytes().unwrap().into(),
-            call_gas_limit: (op.user_operation.call_gas_limit.0.parse::<u64>().unwrap()).into(),
-            verification_gas_limit: (op
+            sender: op
+                .user_operation
+                .sender
+                .as_ref()
+                .and_then(|v| v.0.parse::<H160>().ok().map(Into::into)),
+            nonce: op
+                .user_operation
+                .nonce
+                .as_ref()
+                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+            init_code: op
+                .user_operation
+                .init_code
+                .as_ref()
+                .and_then(|v| v.0.hex_to_bytes().ok().map(Into::into)),
+            call_data: op
+                .user_operation
+                .call_data
+                .as_ref()
+                .and_then(|v| v.0.hex_to_bytes().ok().map(Into::into)),
+            call_gas_limit: op
+                .user_operation
+                .call_gas_limit
+                .as_ref()
+                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+            verification_gas_limit: op
                 .user_operation
                 .verification_gas_limit
-                .0
-                .parse::<u64>()
-                .unwrap())
-            .into(),
-            pre_verification_gas: (op
+                .as_ref()
+                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+            pre_verification_gas: op
                 .user_operation
                 .pre_verification_gas
-                .0
-                .parse::<u64>()
-                .unwrap())
-            .into(),
-            max_fee_per_gas: (op.user_operation.max_fee_per_gas.0.parse::<u64>().unwrap()).into(),
-            max_priority_fee_per_gas: (op
+                .as_ref()
+                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+            max_fee_per_gas: op
+                .user_operation
+                .max_fee_per_gas
+                .as_ref()
+                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
+            max_priority_fee_per_gas: op
                 .user_operation
                 .max_priority_fee_per_gas
-                .0
-                .parse::<u64>()
-                .unwrap())
-            .into(),
+                .as_ref()
+                .and_then(|v| v.0.parse::<u64>().ok().map(Into::into)),
             paymaster_and_data: op
                 .user_operation
                 .paymaster_and_data
-                .clone()
-                .0
-                .hex_to_bytes()
-                .unwrap()
-                .into(),
-            signature: op.user_operation.signature.clone().0.hex_to_bytes().unwrap().into(),
+                .as_ref()
+                .and_then(|v| v.0.hex_to_bytes().ok().map(Into::into)),
+            signature: op
+                .user_operation
+                .signature
+                .as_ref()
+                .and_then(|v| v.0.hex_to_bytes().ok().map(Into::into)),
             logs: op.user_operation.logs.map_or(Vec::new(), |logs| {
                 logs.into_iter()
                     .map(|log| Log {
@@ -93,7 +112,8 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
             }),
             transaction: Transaction {
                 hash: op.user_operation.transaction.hash.unwrap().0.parse().unwrap(),
-                nonce: (op.user_operation.nonce.0.parse::<u64>().unwrap()).into(),
+                nonce: (op.user_operation.transaction.nonce.unwrap().0.parse::<u64>().unwrap())
+                    .into(),
                 // Determistic Option None
                 block_hash: None,
                 block_number: Some(
@@ -206,6 +226,7 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 // Determistic Option Default
                 other: OtherFields::default(),
             },
+            light_wallet: op.user_operation.light_wallet.address.0.parse().unwrap(),
         }
     }
 }
@@ -221,17 +242,17 @@ mod tests {
         let user_operation = UserOperation {
           id: Bytes("0x1a8d7c5989225f7ef86fd7844c64b74e04d361734664fa6d2bf307414327875a".to_string()),
           index: BigInt("1".to_string()),
-          sender: Bytes("0x10dbbe70128929723c1b982e53c51653232e4ff2".to_string()),
-          nonce: BigInt("0".to_string()),
-          init_code: Bytes("0x0000000000756d3e6464f5efe7e413a0af1c7474183815c8b7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed60000000000000000000000000000000000000000000000000000000000000001".to_string()),
-          call_data: Bytes("0x".to_string()),
-          call_gas_limit: BigInt("5000000".to_string()),
-          verification_gas_limit: BigInt("5000000".to_string()),
-          pre_verification_gas: BigInt("50000".to_string()),
-          max_fee_per_gas: BigInt("287500010".to_string()),
-          max_priority_fee_per_gas: BigInt("287500010".to_string()),
-          paymaster_and_data: Bytes("0x000000000018d32df916ff115a25fbefc70baf8b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006517bc953e0624bf37d995fbcab5ccab2dc2589bcfc6bac1581d161a135ce749e1099fe032c83e21360fa516bdd13cb080e4090b924ce7a06459d837ee3556037ea21e381c".to_string()),
-          signature: Bytes("0x0001000000010001783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b01".to_string()),
+          sender: Some(Bytes("0x10dbbe70128929723c1b982e53c51653232e4ff2".to_string())),
+          nonce: Some(BigInt("0".to_string())),
+          init_code: Some(Bytes("0x0000000000756d3e6464f5efe7e413a0af1c7474183815c8b7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed60000000000000000000000000000000000000000000000000000000000000001".to_string())),
+          call_data: Some(Bytes("0x".to_string())),
+          call_gas_limit: Some(BigInt("5000000".to_string())),
+          verification_gas_limit: Some(BigInt("5000000".to_string())),
+          pre_verification_gas: Some(BigInt("50000".to_string())),
+          max_fee_per_gas: Some(BigInt("287500010".to_string())),
+          max_priority_fee_per_gas: Some(BigInt("287500010".to_string())),
+          paymaster_and_data: Some(Bytes("0x000000000018d32df916ff115a25fbefc70baf8b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006517bc953e0624bf37d995fbcab5ccab2dc2589bcfc6bac1581d161a135ce749e1099fe032c83e21360fa516bdd13cb080e4090b924ce7a06459d837ee3556037ea21e381c".to_string())),
+          signature: Some(Bytes("0x0001000000010001783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b01".to_string())),
           block_number: BigInt("4393588".to_string()),
           block_timestamp: BigInt("1696054440".to_string()),
           transaction_hash: Bytes("0x87efb66c2b17af424b7fd2584d268eb1c301b9337eaad3137be5c4c7bbd574bf".to_string()),
@@ -437,6 +458,9 @@ mod tests {
         println!("{:?}", user_operation_with_transaction_and_receipt_logs);
 
         assert_eq!(user_operation_with_transaction_and_receipt_logs.chain_id, 1);
-        assert_eq!(user_operation_with_transaction_and_receipt_logs.call_gas_limit, 5000000.into());
+        assert_eq!(
+            user_operation_with_transaction_and_receipt_logs.call_gas_limit,
+            Some(5000000.into())
+        );
     }
 }

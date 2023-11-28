@@ -17,7 +17,7 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{Bloom, H256, U256},
+    types::{Address, Bloom, H256, U256},
     utils::to_checksum,
 };
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
@@ -392,20 +392,22 @@ pub async fn upsert_user_operation(
             user_operation::hash::equals(format!("{:?}", uow.hash)),
             user_operation::create(
                 format!("{:?}", uow.hash),
-                to_checksum(&uow.sender, None),
-                uow.nonce.as_u64() as i64,
-                uow.init_code.to_vec(),
-                uow.call_data.to_vec(),
-                uow.call_gas_limit.as_u64() as i64,
-                uow.verification_gas_limit.as_u64() as i64,
-                uow.pre_verification_gas.as_u64() as i64,
-                uow.max_fee_per_gas.as_u64() as i64,
-                uow.max_priority_fee_per_gas.as_u64() as i64,
-                uow.paymaster_and_data.to_vec(),
+                to_checksum(&uow.light_wallet, None),
+                uow.nonce.unwrap_or(0.into()).as_u64() as i64,
+                uow.init_code.clone().unwrap_or_else(|| vec![].into()).to_vec(),
+                uow.call_data.clone().unwrap_or_else(|| vec![].into()).to_vec(),
+                uow.call_gas_limit.unwrap_or(0.into()).as_u64() as i64,
+                uow.verification_gas_limit.unwrap_or(0.into()).as_u64() as i64,
+                uow.pre_verification_gas.unwrap_or(0.into()).as_u64() as i64,
+                uow.max_fee_per_gas.unwrap_or(0.into()).as_u64() as i64,
+                uow.max_priority_fee_per_gas.unwrap_or(0.into()).as_u64() as i64,
+                uow.paymaster_and_data.clone().unwrap_or_else(|| vec![].into()).to_vec(),
                 chain_id,
                 to_checksum(&uow.entry_point, None),
-                wallet::address::equals(to_checksum(&uow.sender, None)),
-                vec![user_operation::signature::set(Some(uow.signature.to_vec()))],
+                wallet::address::equals(to_checksum(&uow.light_wallet, None)),
+                vec![user_operation::signature::set(Some(
+                    uow.signature.clone().unwrap_or_else(|| vec![].into()).to_vec(),
+                ))],
             ),
             vec![
                 user_operation::status::set(UserOperationStatus::Executed),
@@ -416,7 +418,10 @@ pub async fn upsert_user_operation(
         .await?;
 
     // Get the first 20 bytes and parse it as an address
-    let (paymaster_address, _, _, _) = decode_paymaster_and_data(uow.paymaster_and_data.to_vec());
+    let (paymaster_address, _, _, _) = match &uow.paymaster_and_data {
+        Some(data) => decode_paymaster_and_data(data.clone().to_vec()),
+        None => (Address::zero(), 0, 0, vec![]),
+    };
 
     // Upsert the paymaster
     let _ =
