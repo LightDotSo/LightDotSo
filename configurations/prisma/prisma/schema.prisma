@@ -464,6 +464,7 @@ model PaymasterOperation {
 
   @@unique([sender, senderNonce, paymasterId])
   @@index([paymasterId])
+  @@index([sender, senderNonce])
 }
 
 enum UserOperationStatus {

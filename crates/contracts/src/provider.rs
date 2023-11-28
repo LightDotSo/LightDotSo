@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use ethers::{
-    providers::{Http, Middleware, Provider},
-    types::Address,
-};
+use ethers::providers::{Http, Middleware, Provider};
 use eyre::{eyre, Result};
 
 /// Returns a provider for the given chain ID w/ fallbacks
