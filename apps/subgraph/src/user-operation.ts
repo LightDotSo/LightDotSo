@@ -42,7 +42,6 @@ export function handleUserOperationFromCalldata(
     "(address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[]",
     decodedFunctionParameters,
   );
-  log.info("decoded: {}", [decoded?.toString() || ""]);
 
   // Create a new user operation struct tuple
   let userOperationStructTuple = new UserOperationStructTuple();
