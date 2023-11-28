@@ -45,22 +45,6 @@ export function handleUserOperationFromCalldata(
 
   let userOperationStructTuple = new UserOperationStructTuple();
 
-  // If failed to decode, return null
-  if (decoded == null) {
-    return userOperationStructTuple;
-  }
-
-  // Parse the decoded user operation params
-  const userOpStructTupletArray =
-    decoded.toTupleArray<UserOperationStructTuple>();
-
-  // Return the decoded user operation params w/ the matching nonce
-  for (let i = 0; i < userOpStructTupletArray.length; i++) {
-    if (userOpStructTupletArray[i].nonce == nonce) {
-      userOperationStructTuple = userOpStructTupletArray[i];
-    }
-  }
-
   log.info(
     "userOperationStructTuple: sender: {} nonce: {} initCode: {} callData: {} callGasLimit: {} verificationGasLimit: {} preVerificationGas: {} maxFeePerGas: {} maxPriorityFeePerGas: {} paymasterAndData: {} signature: {}",
     [
@@ -77,6 +61,22 @@ export function handleUserOperationFromCalldata(
       userOperationStructTuple.signature.toHexString(),
     ],
   );
+
+  // If failed to decode, return null
+  if (decoded == null) {
+    return userOperationStructTuple;
+  }
+
+  // Parse the decoded user operation params
+  const userOpStructTupletArray =
+    decoded.toTupleArray<UserOperationStructTuple>();
+
+  // Return the decoded user operation params w/ the matching nonce
+  for (let i = 0; i < userOpStructTupletArray.length; i++) {
+    if (userOpStructTupletArray[i].nonce == nonce) {
+      userOperationStructTuple = userOpStructTupletArray[i];
+    }
+  }
 
   return userOperationStructTuple;
 }
