@@ -698,6 +698,7 @@ enum Log_orderBy {
   userOperation__blockTimestamp
   userOperation__transactionHash
   userOperation__entryPoint
+  userOperation__paymaster
   receipt
   receipt__id
   receipt__transactionHash
@@ -2400,6 +2401,7 @@ enum UserOperationEvent_orderBy {
   userOperation__blockTimestamp
   userOperation__transactionHash
   userOperation__entryPoint
+  userOperation__paymaster
 }
 
 type UserOperationRevertReason {
@@ -2555,6 +2557,7 @@ enum UserOperationRevertReason_orderBy {
   userOperation__blockTimestamp
   userOperation__transactionHash
   userOperation__entryPoint
+  userOperation__paymaster
 }
 
 input UserOperation_filter {
@@ -2710,6 +2713,16 @@ input UserOperation_filter {
   entryPoint_not_in: [Bytes!]
   entryPoint_contains: Bytes
   entryPoint_not_contains: Bytes
+  paymaster: Bytes
+  paymaster_not: Bytes
+  paymaster_gt: Bytes
+  paymaster_lt: Bytes
+  paymaster_gte: Bytes
+  paymaster_lte: Bytes
+  paymaster_in: [Bytes!]
+  paymaster_not_in: [Bytes!]
+  paymaster_contains: Bytes
+  paymaster_not_contains: Bytes
   lightWallet_: LightWallet_filter
   logs_: Log_filter
   transaction: String
@@ -2761,6 +2774,7 @@ enum UserOperation_orderBy {
   blockTimestamp
   transactionHash
   entryPoint
+  paymaster
   lightWallet
   lightWallet__id
   lightWallet__index
