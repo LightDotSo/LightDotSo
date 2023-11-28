@@ -63,6 +63,7 @@ pub struct UserOperation {
     pub block_timestamp: BigInt,
     pub transaction_hash: Bytes,
     pub entry_point: Bytes,
+    pub paymaster: Option<Bytes>,
     pub user_operation_event: Option<UserOperationEvent>,
     pub user_operation_revert_reason: Option<UserOperationRevertReason>,
     pub light_wallet: LightWallet,

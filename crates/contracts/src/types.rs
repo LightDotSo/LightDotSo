@@ -61,4 +61,6 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     pub receipt: TransactionReceipt,
     /// The wallet address of the sender
     pub light_wallet: Address,
+    /// The address of the paymaster sponsoring this operation
+    pub paymaster: Option<Address>,
 }

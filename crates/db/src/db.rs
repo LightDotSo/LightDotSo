@@ -417,15 +417,10 @@ pub async fn upsert_user_operation(
         .exec()
         .await?;
 
-    // Get the first 20 bytes and parse it as an address
-    let (paymaster_address, _, _, _) = match &uow.paymaster_and_data {
-        Some(data) => decode_paymaster_and_data(data.clone().to_vec()),
-        None => (Address::zero(), 0, 0, vec![]),
-    };
-
-    // Upsert the paymaster
-    let _ =
-        db.paymaster()
+    // Upsert the paymaster if it exists
+    if let Some(paymaster_address) = uow.paymaster {
+        let _ = db
+            .paymaster()
             .upsert(
                 paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
                 paymaster::create(
@@ -441,6 +436,7 @@ pub async fn upsert_user_operation(
             )
             .exec()
             .await?;
+    }
 
     Ok(Json::from(user_operation))
 }

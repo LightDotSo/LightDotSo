@@ -227,6 +227,11 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 other: OtherFields::default(),
             },
             light_wallet: op.user_operation.light_wallet.address.0.parse().unwrap(),
+            paymaster: op
+                .user_operation
+                .paymaster
+                .as_ref()
+                .and_then(|v| v.0.parse::<H160>().ok().map(Into::into)),
         }
     }
 }
