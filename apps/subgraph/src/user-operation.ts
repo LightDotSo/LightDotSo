@@ -43,16 +43,19 @@ export function handleUserOperationFromCalldata(
     decodedFunctionParameters,
   );
 
+  // Create a new user operation struct tuple
   let userOperationStructTuple = new UserOperationStructTuple();
 
   // If failed to decode, return null
   if (decoded == null) {
+    log.info("Failed to decode user operation params", []);
     return userOperationStructTuple;
   }
 
   // Parse the decoded user operation params
   const userOpStructTupletArray =
     decoded.toTupleArray<UserOperationStructTuple>();
+  log.info("userOpStructTupletArray: {}", [userOpStructTupletArray.toString()]);
 
   // Return the decoded user operation params w/ the matching nonce
   for (let i = 0; i < userOpStructTupletArray.length; i++) {

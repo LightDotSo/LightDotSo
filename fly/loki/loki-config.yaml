@@ -476,3 +476,14 @@ limits_config:
 # Allow user to send structured metadata (non-indexed labels) in push payload.
 # CLI flag: -validation.allow-structured-metadata
 # [allow_structured_metadata: <boolean> | default = false]
+
+# Provision DynamoDB tables for index and chunk metadata.
+# https://grafana.com/docs/loki/latest/operations/storage/table-manager/#dynamodb-provisioning
+
+table_manager:
+  index_tables_provisioning:
+    provisioned_write_throughput: 10
+    provisioned_read_throughput: 10
+  chunk_tables_provisioning:
+    provisioned_write_throughput: 10
+    provisioned_read_throughput: 10
