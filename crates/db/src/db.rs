@@ -21,7 +21,6 @@ use ethers::{
     utils::to_checksum,
 };
 use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
-use lightdotso_paymaster::paymaster::decode_paymaster_and_data;
 use lightdotso_prisma::{
     log, log_topic, paymaster, receipt, transaction, transaction_category, user_operation, wallet,
     PrismaClient, UserOperationStatus,
@@ -419,6 +418,11 @@ pub async fn upsert_user_operation(
 
     // Upsert the paymaster if it exists
     if let Some(paymaster_address) = uow.paymaster {
+        // Continue if the paymaster address is zero
+        if paymaster_address == Address::zero() {
+            return Ok(Json::from(user_operation));
+        }
+
         let _ = db
             .paymaster()
             .upsert(
