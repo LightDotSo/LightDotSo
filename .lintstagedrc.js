@@ -1,7 +1,7 @@
 module.exports = {
   "*": ["pnpm run license:cmd add"],
   "*.{js,ts,tsx}": ["pnpm run eslint:cmd --fix"],
-  "*.{ts,tsx}": ["sh -c 'pnpm run tsc:turbo || echo \"\"'"],
+  "*.{ts,tsx}": ["sh -c 'pnpm run tsc:turbo && echo \"\"'"],
   "*.{md,json,yml}": ["pnpm run prettier:cmd --write"],
   "*.sol": [
     "pnpm run forge:fmt:cmd",
