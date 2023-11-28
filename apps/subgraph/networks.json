@@ -50,7 +50,7 @@
   "matic": {
     "EntryPointv0.6.0": {
       "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      "startBlock": 48173548
+      "startBlock": 3257815
     }
   },
   "polygon-zkevm": {
