@@ -81,11 +81,8 @@ export function handleLightWalletUserOperationEvent(
   // Get the LightWallet entity
   let lightWallet = LightWallet.load(event.params.sender);
 
-  // Handle if the account exists and if the function is `handleOps`
-  if (
-    lightWallet != null &&
-    event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
-  ) {
+  // Handle if the account exists
+  if (lightWallet != null) {
     // Increment the user operation count
     incrementUserOpCount();
     // Increment the user operation revert count
@@ -111,21 +108,28 @@ export function handleLightWalletUserOperationEvent(
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
     op.index = getUserOpCount();
-    let struct = handleUserOperationFromCalldata(
-      event.transaction.input.toHexString(),
-      event.params.nonce,
-    );
-    op.sender = struct.sender;
-    op.nonce = struct.nonce;
-    op.initCode = struct.initCode;
-    op.callData = struct.callData;
-    op.callGasLimit = struct.callGasLimit;
-    op.verificationGasLimit = struct.verificationGasLimit;
-    op.preVerificationGas = struct.preVerificationGas;
-    op.maxFeePerGas = struct.maxFeePerGas;
-    op.maxPriorityFeePerGas = struct.maxPriorityFeePerGas;
-    op.paymasterAndData = struct.paymasterAndData;
-    op.signature = struct.signature;
+
+    // If the function is `handleOps`, deconstruct the calldata
+    if (
+      event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
+    ) {
+      let struct = handleUserOperationFromCalldata(
+        event.transaction.input.toHexString(),
+        event.params.nonce,
+      );
+      op.sender = struct.sender;
+      op.nonce = struct.nonce;
+      op.initCode = struct.initCode;
+      op.callData = struct.callData;
+      op.callGasLimit = struct.callGasLimit;
+      op.verificationGasLimit = struct.verificationGasLimit;
+      op.preVerificationGas = struct.preVerificationGas;
+      op.maxFeePerGas = struct.maxFeePerGas;
+      op.maxPriorityFeePerGas = struct.maxPriorityFeePerGas;
+      op.paymasterAndData = struct.paymasterAndData;
+      op.signature = struct.signature;
+    }
+
     op.blockNumber = event.block.number;
     op.blockTimestamp = event.block.timestamp;
     op.transactionHash = event.transaction.hash;
@@ -177,11 +181,8 @@ export function handleLightWalletUserOperationRevertReason(
   // Get the LightWallet entity
   let lightWallet = LightWallet.load(event.params.sender);
 
-  // Handle if the account exists and if the function is `handleOps`
-  if (
-    lightWallet != null &&
-    event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
-  ) {
+  // Handle if the account exists
+  if (lightWallet != null) {
     // Increment the user operation count
     incrementUserOpCount();
     // Increment the user operation revert count
@@ -207,21 +208,28 @@ export function handleLightWalletUserOperationRevertReason(
     // Create a new UserOperation entity
     let op = new UserOperation(event.params.userOpHash);
     op.index = getUserOpCount();
-    let struct = handleUserOperationFromCalldata(
-      event.transaction.input.toHexString(),
-      event.params.nonce,
-    );
-    op.sender = struct.sender;
-    op.nonce = struct.nonce;
-    op.initCode = struct.initCode;
-    op.callData = struct.callData;
-    op.callGasLimit = struct.callGasLimit;
-    op.verificationGasLimit = struct.verificationGasLimit;
-    op.preVerificationGas = struct.preVerificationGas;
-    op.maxFeePerGas = struct.maxFeePerGas;
-    op.maxPriorityFeePerGas = struct.maxPriorityFeePerGas;
-    op.paymasterAndData = struct.paymasterAndData;
-    op.signature = struct.signature;
+
+    // If the function is `handleOps`, deconstruct the calldata
+    if (
+      event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
+    ) {
+      let struct = handleUserOperationFromCalldata(
+        event.transaction.input.toHexString(),
+        event.params.nonce,
+      );
+      op.sender = struct.sender;
+      op.nonce = struct.nonce;
+      op.initCode = struct.initCode;
+      op.callData = struct.callData;
+      op.callGasLimit = struct.callGasLimit;
+      op.verificationGasLimit = struct.verificationGasLimit;
+      op.preVerificationGas = struct.preVerificationGas;
+      op.maxFeePerGas = struct.maxFeePerGas;
+      op.maxPriorityFeePerGas = struct.maxPriorityFeePerGas;
+      op.paymasterAndData = struct.paymasterAndData;
+      op.signature = struct.signature;
+    }
+
     op.blockNumber = event.block.number;
     op.blockTimestamp = event.block.timestamp;
     op.transactionHash = event.transaction.hash;

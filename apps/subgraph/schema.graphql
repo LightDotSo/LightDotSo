@@ -183,17 +183,17 @@ type Transaction @entity {
 type UserOperation @entity {
   id: Bytes! # bytes32 (userOpHash)
   index: BigInt!
-  sender: Bytes! # address
-  nonce: BigInt! # uint256
-  initCode: Bytes! #bytes
-  callData: Bytes! #bytes
-  callGasLimit: BigInt! #uint256
-  verificationGasLimit: BigInt! #uint256
-  preVerificationGas: BigInt! #uint256
-  maxFeePerGas: BigInt! #uint256
-  maxPriorityFeePerGas: BigInt! #uint256
-  paymasterAndData: Bytes! #bytes
-  signature: Bytes! #bytes
+  sender: Bytes # address
+  nonce: BigInt # uint256
+  initCode: Bytes #bytes
+  callData: Bytes #bytes
+  callGasLimit: BigInt #uint256
+  verificationGasLimit: BigInt #uint256
+  preVerificationGas: BigInt #uint256
+  maxFeePerGas: BigInt #uint256
+  maxPriorityFeePerGas: BigInt #uint256
+  paymasterAndData: Bytes #bytes
+  signature: Bytes #bytes
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
