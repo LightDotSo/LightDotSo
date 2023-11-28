@@ -44,7 +44,6 @@ export function handleUserOperationFromCalldata(
   );
 
   let userOperationStructTuple = new UserOperationStructTuple();
-
   log.info(
     "userOperationStructTuple: sender: {} nonce: {} initCode: {} callData: {} callGasLimit: {} verificationGasLimit: {} preVerificationGas: {} maxFeePerGas: {} maxPriorityFeePerGas: {} paymasterAndData: {} signature: {}",
     [
@@ -70,6 +69,7 @@ export function handleUserOperationFromCalldata(
   // Parse the decoded user operation params
   const userOpStructTupletArray =
     decoded.toTupleArray<UserOperationStructTuple>();
+  log.info("userOpStructTupletArray: {}", [userOpStructTupletArray.toString()]);
 
   // Return the decoded user operation params w/ the matching nonce
   for (let i = 0; i < userOpStructTupletArray.length; i++) {
