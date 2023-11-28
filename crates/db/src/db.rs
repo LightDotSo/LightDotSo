@@ -17,20 +17,22 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{Address, Bloom, H256, U256},
+    types::{Bloom, H256, U256},
     utils::to_checksum,
 };
-use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
+use lightdotso_contracts::{
+    paymaster::decode_paymaster_and_data, types::UserOperationWithTransactionAndReceiptLogs,
+};
 use lightdotso_prisma::{
-    log, log_topic, paymaster, receipt, transaction, transaction_category, user_operation, wallet,
-    PrismaClient, UserOperationStatus,
+    log, log_topic, paymaster, paymaster_operation, receipt, transaction, transaction_category,
+    user_operation, wallet, PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
 };
 use prisma_client_rust::{
-    chrono::{DateTime, FixedOffset, NaiveDateTime},
+    chrono::{DateTime, FixedOffset, NaiveDateTime, Utc},
     serde_json::{self, json},
     NewClientError,
 };
@@ -417,26 +419,56 @@ pub async fn upsert_user_operation(
         .await?;
 
     // Upsert the paymaster if it exists
-    if let Some(paymaster_address) = uow.paymaster {
-        // Continue if the paymaster address is zero
-        if paymaster_address == Address::zero() {
-            return Ok(Json::from(user_operation));
-        }
+    if let Some(paymaster_and_data) = uow.paymaster_and_data {
+        // Parse the paymaster and data
+        let (paymaster_address, valid_until, valid_after, _) =
+            decode_paymaster_and_data(paymaster_and_data.to_vec());
 
-        let _ = db
+        let pm = db
             .paymaster()
             .upsert(
                 paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
                 paymaster::create(
                     to_checksum(&paymaster_address, None),
                     chain_id,
-                    vec![paymaster::user_operation::connect(vec![user_operation::hash::equals(
+                    vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
                         format!("{:?}", uow.hash),
                     )])],
                 ),
-                vec![paymaster::user_operation::connect(vec![user_operation::hash::equals(
+                vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
                     format!("{:?}", uow.hash),
                 )])],
+            )
+            .exec()
+            .await?;
+
+        let _ = db
+            .paymaster_operation()
+            .upsert(
+                paymaster_operation::sender_sender_nonce_paymaster_id(
+                    to_checksum(&uow.light_wallet, None),
+                    0,
+                    pm.clone().id,
+                ),
+                paymaster_operation::create(
+                    to_checksum(&uow.light_wallet, None),
+                    0,
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
+                    paymaster::id::equals(pm.clone().id.clone()),
+                    vec![paymaster_operation::user_operations::connect(vec![
+                        user_operation::hash::equals(format!("{:?}", uow.hash)),
+                    ])],
+                ),
+                vec![],
             )
             .exec()
             .await?;

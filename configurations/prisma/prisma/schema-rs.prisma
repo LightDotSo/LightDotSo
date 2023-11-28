@@ -438,10 +438,13 @@ model PaymasterOperation {
   validUntil  DateTime
   validAfter  DateTime
 
-  paymaster      Paymaster       @relation(fields: [id], references: [id])
+  paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
+  paymasterId String
+
   userOperations UserOperation[]
 
-  @@index([id])
+  @@unique([sender, senderNonce, paymasterId])
+  @@index([paymasterId])
 }
 
 enum UserOperationStatus {
