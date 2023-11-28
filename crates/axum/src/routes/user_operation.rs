@@ -646,7 +646,7 @@ async fn v1_user_operation_post_handler(
             .unwrap()
             .paymaster_operation()
             .create(
-                to_checksum(&decded_paymaster_address, None),
+                wallet.clone().address,
                 0,
                 DateTime::<Utc>::from_utc(
                     NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),

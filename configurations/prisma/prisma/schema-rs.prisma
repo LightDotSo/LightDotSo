@@ -78,14 +78,15 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  configurations  Configuration[]
-  transactions    Transaction[]
-  userOperations  UserOperation[]
-  users           User[]
-  notifications   Notification[]
-  supportRequests SupportRequest[]
-  walletBalances  WalletBalance[]
-  walletSettings  WalletSettings?
+  configurations     Configuration[]
+  notifications      Notification[]
+  paymasterOperation PaymasterOperation[]
+  supportRequests    SupportRequest[]
+  transactions       Transaction[]
+  userOperations     UserOperation[]
+  users              User[]
+  walletBalances     WalletBalance[]
+  walletSettings     WalletSettings?
 }
 
 model Configuration {
@@ -440,6 +441,9 @@ model PaymasterOperation {
 
   paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
   paymasterId String
+
+  wallet        Wallet @relation(fields: [sender], references: [address])
+  walletAddress String
 
   userOperations UserOperation[]
 
