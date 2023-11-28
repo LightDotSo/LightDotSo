@@ -367,7 +367,7 @@ export const getUserOperationNonce = async (
     params,
   }: {
     params: {
-      query: { address: string; chain_id: number; paymaster: string };
+      query: { address: string; chain_id: number };
     };
   },
   isPublic?: boolean,
