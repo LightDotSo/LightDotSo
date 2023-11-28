@@ -2198,17 +2198,17 @@ enum Transaction_orderBy {
 type UserOperation {
   id: Bytes!
   index: BigInt!
-  sender: Bytes!
-  nonce: BigInt!
-  initCode: Bytes!
-  callData: Bytes!
-  callGasLimit: BigInt!
-  verificationGasLimit: BigInt!
-  preVerificationGas: BigInt!
-  maxFeePerGas: BigInt!
-  maxPriorityFeePerGas: BigInt!
-  paymasterAndData: Bytes!
-  signature: Bytes!
+  sender: Bytes
+  nonce: BigInt
+  initCode: Bytes
+  callData: Bytes
+  callGasLimit: BigInt
+  verificationGasLimit: BigInt
+  preVerificationGas: BigInt
+  maxFeePerGas: BigInt
+  maxPriorityFeePerGas: BigInt
+  paymasterAndData: Bytes
+  signature: Bytes
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
