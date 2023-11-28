@@ -34,17 +34,6 @@ const eventsMap = {
       chainIds: z.array(z.number()),
     }),
   },
-  "wallet/portfolio.llama.set": {
-    data: z.object({
-      address: z.string(),
-    }),
-  },
-  "wallet/portfolio.llama.update": {
-    data: z.object({
-      address: z.string(),
-      service_id: z.string(),
-    }),
-  },
   "wallet/transaction.invoke": {
     data: z.object({
       address: z.string(),
