@@ -545,16 +545,8 @@ export interface components {
     UserOperationPaymaster: {
       /** @description The address of the paymaster. */
       address: string;
-      /** @description The address of the sender. */
-      sender: string;
-      /**
-       * Format: int64
-       * @description The nonce of the sender.
-       */
-      sender_nonce: number;
     };
     UserOperationPostRequestParams: {
-      paymaster?: components["schemas"]["UserOperationPaymaster"] | null;
       signature: components["schemas"]["UserOperationSignature"];
       user_operation: components["schemas"]["UserOperationCreate"];
     };
@@ -1336,8 +1328,6 @@ export interface operations {
         chain_id: number;
         /** @description The sender address to filter by. */
         address: string;
-        /** @description The paymaster address to filter by. */
-        paymaster: string;
       };
     };
     responses: {

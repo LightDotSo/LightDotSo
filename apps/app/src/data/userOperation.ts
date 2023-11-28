@@ -26,11 +26,6 @@ export type UserOperationData = {
   max_fee_per_gas: number;
   max_priority_fee_per_gas: number;
   nonce: number;
-  paymaster?: {
-    address: string;
-    sender: string;
-    sender_nonce: number;
-  } | null;
   paymaster_and_data: string;
   pre_verification_gas: number;
   sender: string;
