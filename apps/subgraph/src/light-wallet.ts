@@ -81,8 +81,11 @@ export function handleLightWalletUserOperationEvent(
   // Get the LightWallet entity
   let lightWallet = LightWallet.load(event.params.sender);
 
-  // Handle if the account exists
-  if (lightWallet != null) {
+  // Handle if the account exists and if the function is `handleOps`
+  if (
+    lightWallet != null &&
+    event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
+  ) {
     // Increment the user operation count
     incrementUserOpCount();
     // Increment the user operation revert count
@@ -174,8 +177,11 @@ export function handleLightWalletUserOperationRevertReason(
   // Get the LightWallet entity
   let lightWallet = LightWallet.load(event.params.sender);
 
-  // Handle if the account exists
-  if (lightWallet != null) {
+  // Handle if the account exists and if the function is `handleOps`
+  if (
+    lightWallet != null &&
+    event.transaction.input.toHexString().substring(0, 10) == "0x1fad948c"
+  ) {
     // Increment the user operation count
     incrementUserOpCount();
     // Increment the user operation revert count
