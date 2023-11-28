@@ -1613,7 +1613,13 @@ export class Receipt extends Entity {
   }
 
   get logs(): LogLoader {
-    return new LogLoader("Receipt", this.get("id")!.toString(), "logs");
+    return new LogLoader(
+      "Receipt",
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
+      "logs"
+    );
   }
 
   get transaction(): Bytes {
@@ -1899,147 +1905,191 @@ export class UserOperation extends Entity {
     this.set("index", Value.fromBigInt(value));
   }
 
-  get sender(): Bytes {
+  get sender(): Bytes | null {
     let value = this.get("sender");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBytes();
     }
   }
 
-  set sender(value: Bytes) {
-    this.set("sender", Value.fromBytes(value));
+  set sender(value: Bytes | null) {
+    if (!value) {
+      this.unset("sender");
+    } else {
+      this.set("sender", Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get nonce(): BigInt {
+  get nonce(): BigInt | null {
     let value = this.get("nonce");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBigInt();
     }
   }
 
-  set nonce(value: BigInt) {
-    this.set("nonce", Value.fromBigInt(value));
+  set nonce(value: BigInt | null) {
+    if (!value) {
+      this.unset("nonce");
+    } else {
+      this.set("nonce", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get initCode(): Bytes {
+  get initCode(): Bytes | null {
     let value = this.get("initCode");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBytes();
     }
   }
 
-  set initCode(value: Bytes) {
-    this.set("initCode", Value.fromBytes(value));
+  set initCode(value: Bytes | null) {
+    if (!value) {
+      this.unset("initCode");
+    } else {
+      this.set("initCode", Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get callData(): Bytes {
+  get callData(): Bytes | null {
     let value = this.get("callData");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBytes();
     }
   }
 
-  set callData(value: Bytes) {
-    this.set("callData", Value.fromBytes(value));
+  set callData(value: Bytes | null) {
+    if (!value) {
+      this.unset("callData");
+    } else {
+      this.set("callData", Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get callGasLimit(): BigInt {
+  get callGasLimit(): BigInt | null {
     let value = this.get("callGasLimit");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBigInt();
     }
   }
 
-  set callGasLimit(value: BigInt) {
-    this.set("callGasLimit", Value.fromBigInt(value));
+  set callGasLimit(value: BigInt | null) {
+    if (!value) {
+      this.unset("callGasLimit");
+    } else {
+      this.set("callGasLimit", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get verificationGasLimit(): BigInt {
+  get verificationGasLimit(): BigInt | null {
     let value = this.get("verificationGasLimit");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBigInt();
     }
   }
 
-  set verificationGasLimit(value: BigInt) {
-    this.set("verificationGasLimit", Value.fromBigInt(value));
+  set verificationGasLimit(value: BigInt | null) {
+    if (!value) {
+      this.unset("verificationGasLimit");
+    } else {
+      this.set("verificationGasLimit", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get preVerificationGas(): BigInt {
+  get preVerificationGas(): BigInt | null {
     let value = this.get("preVerificationGas");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBigInt();
     }
   }
 
-  set preVerificationGas(value: BigInt) {
-    this.set("preVerificationGas", Value.fromBigInt(value));
+  set preVerificationGas(value: BigInt | null) {
+    if (!value) {
+      this.unset("preVerificationGas");
+    } else {
+      this.set("preVerificationGas", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get maxFeePerGas(): BigInt {
+  get maxFeePerGas(): BigInt | null {
     let value = this.get("maxFeePerGas");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBigInt();
     }
   }
 
-  set maxFeePerGas(value: BigInt) {
-    this.set("maxFeePerGas", Value.fromBigInt(value));
+  set maxFeePerGas(value: BigInt | null) {
+    if (!value) {
+      this.unset("maxFeePerGas");
+    } else {
+      this.set("maxFeePerGas", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get maxPriorityFeePerGas(): BigInt {
+  get maxPriorityFeePerGas(): BigInt | null {
     let value = this.get("maxPriorityFeePerGas");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBigInt();
     }
   }
 
-  set maxPriorityFeePerGas(value: BigInt) {
-    this.set("maxPriorityFeePerGas", Value.fromBigInt(value));
+  set maxPriorityFeePerGas(value: BigInt | null) {
+    if (!value) {
+      this.unset("maxPriorityFeePerGas");
+    } else {
+      this.set("maxPriorityFeePerGas", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get paymasterAndData(): Bytes {
+  get paymasterAndData(): Bytes | null {
     let value = this.get("paymasterAndData");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBytes();
     }
   }
 
-  set paymasterAndData(value: Bytes) {
-    this.set("paymasterAndData", Value.fromBytes(value));
+  set paymasterAndData(value: Bytes | null) {
+    if (!value) {
+      this.unset("paymasterAndData");
+    } else {
+      this.set("paymasterAndData", Value.fromBytes(<Bytes>value));
+    }
   }
 
-  get signature(): Bytes {
+  get signature(): Bytes | null {
     let value = this.get("signature");
     if (!value || value.kind == ValueKind.NULL) {
-      throw new Error("Cannot return null for a required field.");
+      return null;
     } else {
       return value.toBytes();
     }
   }
 
-  set signature(value: Bytes) {
-    this.set("signature", Value.fromBytes(value));
+  set signature(value: Bytes | null) {
+    if (!value) {
+      this.unset("signature");
+    } else {
+      this.set("signature", Value.fromBytes(<Bytes>value));
+    }
   }
 
   get blockNumber(): BigInt {
@@ -2094,6 +2144,23 @@ export class UserOperation extends Entity {
     this.set("entryPoint", Value.fromBytes(value));
   }
 
+  get paymaster(): Bytes | null {
+    let value = this.get("paymaster");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
+  }
+
+  set paymaster(value: Bytes | null) {
+    if (!value) {
+      this.unset("paymaster");
+    } else {
+      this.set("paymaster", Value.fromBytes(<Bytes>value));
+    }
+  }
+
   get lightWallet(): LightWalletLoader {
     return new LightWalletLoader(
       "UserOperation",
@@ -2105,7 +2172,13 @@ export class UserOperation extends Entity {
   }
 
   get logs(): LogLoader {
-    return new LogLoader("UserOperation", this.get("id")!.toString(), "logs");
+    return new LogLoader(
+      "UserOperation",
+      this.get("id")!
+        .toBytes()
+        .toHexString(),
+      "logs"
+    );
   }
 
   get transaction(): Bytes {

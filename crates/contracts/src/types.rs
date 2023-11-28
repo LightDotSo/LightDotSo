@@ -28,29 +28,29 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     /// The entry point address this operation was sent to
     pub entry_point: Address,
     /// Sender of the user operation
-    pub sender: Address,
+    pub sender: Option<Address>,
     /// Nonce (anti replay protection)
-    pub nonce: U256,
+    pub nonce: Option<U256>,
     /// Init code for the account (needed if account not yet deployed and needs to be created)
-    pub init_code: Bytes,
+    pub init_code: Option<Bytes>,
     /// The data that is passed to the sender during the main execution call
-    pub call_data: Bytes,
+    pub call_data: Option<Bytes>,
     /// The amount of gas to allocate for the main execution call
-    pub call_gas_limit: U256,
+    pub call_gas_limit: Option<U256>,
     /// The amount of gas to allocate for the verification step
-    pub verification_gas_limit: U256,
+    pub verification_gas_limit: Option<U256>,
     /// The amount of gas to pay bundler to compensate for the pre-verification execution and
     /// calldata
-    pub pre_verification_gas: U256,
+    pub pre_verification_gas: Option<U256>,
     /// Maximum fee per gas (similar to EIP-1559)
-    pub max_fee_per_gas: U256,
+    pub max_fee_per_gas: Option<U256>,
     /// Maximum priority fee per gas (similar to EIP-1559)
-    pub max_priority_fee_per_gas: U256,
+    pub max_priority_fee_per_gas: Option<U256>,
     /// Address of paymaster sponsoring the user operation, followed by extra data to send to the
     /// paymaster (can be empty)
-    pub paymaster_and_data: Bytes,
+    pub paymaster_and_data: Option<Bytes>,
     /// Data passed to the account along with the nonce during the verification step
-    pub signature: Bytes,
+    pub signature: Option<Bytes>,
     /// Logs emitted by this operation
     pub logs: Vec<Log>,
     /// The transaction that included this operation
@@ -59,4 +59,8 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     pub transaction_logs: Vec<Log>,
     /// The receipt of the transaction that included this operation
     pub receipt: TransactionReceipt,
+    /// The wallet address of the sender
+    pub light_wallet: Address,
+    /// The address of the paymaster sponsoring this operation
+    pub paymaster: Option<Address>,
 }

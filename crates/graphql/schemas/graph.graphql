@@ -2213,6 +2213,7 @@ type UserOperation {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
   entryPoint: Bytes!
+  paymaster: Bytes
   lightWallet: LightWallet!
   logs(skip: Int = 0, first: Int = 100, orderBy: Log_orderBy, orderDirection: OrderDirection, where: Log_filter): [Log!]
   transaction: Transaction!

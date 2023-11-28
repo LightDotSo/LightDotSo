@@ -135,6 +135,7 @@ export function handleLightWalletUserOperationEvent(
     op.transactionHash = event.transaction.hash;
 
     op.entryPoint = event.address;
+    op.paymaster = event.params.paymaster;
 
     op.transaction = event.transaction.hash;
 
@@ -235,6 +236,7 @@ export function handleLightWalletUserOperationRevertReason(
     op.transactionHash = event.transaction.hash;
 
     op.entryPoint = event.address;
+    // op.paymaster = event.params.paymaster;
 
     op.transaction = event.transaction.hash;
 
