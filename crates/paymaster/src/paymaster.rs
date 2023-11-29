@@ -29,7 +29,7 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
-use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
+use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESSES;
 use lightdotso_db::db::{
     create_client, create_paymaster_operation, get_most_recent_paymaster_operation_with_sender,
 };
@@ -134,7 +134,7 @@ pub async fn get_paymaster_and_data(
         }
         Err(_) => {
             // Fallback to the environment fallback address
-            let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+            let verifying_paymaster_address = LIGHT_PAYMASTER_ADDRESSES[0];
             info!(
                 "verifying_paymaster_address: {}",
                 to_checksum(&verifying_paymaster_address, None)
@@ -514,7 +514,7 @@ mod tests {
     use ethers::{types::U256, utils::hex};
     use lightdotso_common::traits::VecU8ToHex;
     use lightdotso_contracts::{
-        constants::LIGHT_PAYMASTER_ADDRESS,
+        constants::LIGHT_PAYMASTER_ADDRESSES,
         paymaster::{get_paymaster, UserOperation},
     };
 
@@ -522,7 +522,7 @@ mod tests {
     async fn test_get_hash() {
         // Arbitrary test inputs
         let chain_id = 1;
-        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+        let verifying_paymaster_address = LIGHT_PAYMASTER_ADDRESSES[0];
         let user_operation = UserOperationConstruct {
             sender: Address::zero(),
             nonce: U256::from(0),
