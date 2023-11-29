@@ -446,7 +446,6 @@ model PaymasterOperation {
 
   wallet Wallet @relation(fields: [sender], references: [address])
 
-  @@unique([sender, senderNonce, paymasterId])
   @@unique([validAfter, paymasterId])
   @@index([paymasterId])
   @@index([sender, senderNonce])
