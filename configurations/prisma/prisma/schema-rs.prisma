@@ -442,8 +442,7 @@ model PaymasterOperation {
   paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
   paymasterId String
 
-  wallet        Wallet @relation(fields: [sender], references: [address])
-  walletAddress String
+  wallet Wallet @relation(fields: [sender], references: [address])
 
   userOperations UserOperation[]
 

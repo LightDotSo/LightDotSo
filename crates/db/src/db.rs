@@ -451,7 +451,6 @@ pub async fn upsert_user_operation(
                     pm.clone().id,
                 ),
                 paymaster_operation::create(
-                    to_checksum(&uow.light_wallet, None),
                     0,
                     DateTime::<Utc>::from_utc(
                         NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
@@ -464,6 +463,7 @@ pub async fn upsert_user_operation(
                     )
                     .into(),
                     paymaster::id::equals(pm.clone().id.clone()),
+                    wallet::address::equals(to_checksum(&uow.light_wallet, None)),
                     vec![paymaster_operation::user_operations::connect(vec![
                         user_operation::hash::equals(format!("{:?}", uow.hash)),
                     ])],
