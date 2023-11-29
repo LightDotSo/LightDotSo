@@ -399,6 +399,7 @@ pub async fn sign_message_kms(
     let paymaster_nonce =
         db_get_paymaster_nonce(chain_id as i64, verifying_paymaster_address, construct.sender)
             .await?;
+    info!("paymaster_nonce: {}", paymaster_nonce);
 
     // Infinite valid until.
     let hash = get_hash(

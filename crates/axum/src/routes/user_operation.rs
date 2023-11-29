@@ -222,6 +222,14 @@ pub(crate) enum UserOperationError {
     NotFound(String),
 }
 
+/// User operation operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum UserOperationSuccess {
+    /// User operation updated successfully.
+    #[schema(example = "Update Success")]
+    Updated(String),
+}
+
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperation {
@@ -380,13 +388,13 @@ async fn v1_user_operation_get_handler(
 
 /// Get a user operation
 #[utoipa::path(
-        get,
+        post,
         path = "/user_operation/update",
         params(
             UpdateQuery
         ),
         responses(
-            (status = 200, description = "User Operation updated successfully", body = ()),
+            (status = 200, description = "User Operation updated successfully", body = UserOperationSuccess),
             (status = 404, description = "User Operation not found", body = UserOperationError),
         )
     )]
@@ -394,7 +402,7 @@ async fn v1_user_operation_get_handler(
 async fn v1_user_operation_update_handler(
     post: Query<UpdateQuery>,
     State(client): State<AppState>,
-) -> AppJsonResult<()> {
+) -> AppJsonResult<UserOperationSuccess> {
     // Get the get query.
     let Query(query) = post;
     // Get the wallet address from the nonce query.
@@ -440,7 +448,7 @@ async fn v1_user_operation_update_handler(
             .await?;
     }
 
-    Ok(Json::from(()))
+    Ok(Json::from(UserOperationSuccess::Updated("Success".to_string())))
 }
 
 /// Get a user operation nonce
