@@ -466,6 +466,7 @@ model PaymasterOperation {
   userOperations UserOperation[]
 
   @@unique([sender, senderNonce, paymasterId])
+  @@unique([validAfter, paymasterId])
   @@index([paymasterId])
   @@index([sender, senderNonce])
 }
