@@ -56,7 +56,7 @@ pub fn decode_paymaster_and_data(msg: Vec<u8>) -> (Address, u64, u64, Vec<u8>) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::constants::LIGHT_PAYMASTER_ADDRESS;
+    use crate::constants::LIGHT_PAYMASTER_ADDRESSES;
     use ethers::utils::hex;
 
     #[ignore]
@@ -64,7 +64,7 @@ mod tests {
     async fn test_get_paymaster() {
         let chain_id = 1;
         // Get the address
-        let verifying_paymaster_address = *LIGHT_PAYMASTER_ADDRESS;
+        let verifying_paymaster_address = LIGHT_PAYMASTER_ADDRESSES[0];
 
         let res = get_paymaster(chain_id, verifying_paymaster_address).await;
         assert!(res.is_ok());

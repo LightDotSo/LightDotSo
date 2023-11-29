@@ -22,7 +22,8 @@ use ethers::{
 };
 use eyre::Result;
 use lightdotso_contracts::{
-    paymaster::decode_paymaster_and_data, types::UserOperationWithTransactionAndReceiptLogs,
+    constants::LIGHT_PAYMASTER_ADDRESSES, paymaster::decode_paymaster_and_data,
+    types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_prisma::{
     log, log_topic, paymaster, paymaster_operation, receipt, transaction, transaction_category,
@@ -422,44 +423,48 @@ pub async fn upsert_user_operation(
     // Upsert the paymaster if it exists
     if let Some(paymaster_and_data) = uow.paymaster_and_data {
         // Parse the paymaster and data
-        let (paymaster_address, valid_until, valid_after, _) =
+        let (paymaster_address, _valid_until, valid_after, _sig) =
             decode_paymaster_and_data(paymaster_and_data.to_vec());
 
-        let pm = db
-            .paymaster()
-            .upsert(
-                paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
-                paymaster::create(
-                    to_checksum(&paymaster_address, None),
-                    chain_id,
+        // Upsert the paymaster if matches one of ours
+        if LIGHT_PAYMASTER_ADDRESSES.contains(&paymaster_address) {
+            let pm = db
+                .paymaster()
+                .upsert(
+                    paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
+                    paymaster::create(
+                        to_checksum(&paymaster_address, None),
+                        chain_id,
+                        vec![paymaster::user_operations::connect(vec![
+                            user_operation::hash::equals(format!("{:?}", uow.hash)),
+                        ])],
+                    ),
                     vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
                         format!("{:?}", uow.hash),
                     )])],
-                ),
-                vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
-                    format!("{:?}", uow.hash),
-                )])],
-            )
-            .exec()
-            .await?;
+                )
+                .exec()
+                .await?;
 
-        let _ = db
-            .paymaster_operation()
-            .update(
-                paymaster_operation::valid_after_paymaster_id(
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
-                    pm.clone().id.clone(),
-                ),
-                vec![paymaster_operation::user_operations::connect(vec![
-                    user_operation::hash::equals(format!("{:?}", uow.hash)),
-                ])],
-            )
-            .exec()
-            .await?;
+            // Upsert the paymaster operation
+            let _ = db
+                .paymaster_operation()
+                .update(
+                    paymaster_operation::valid_after_paymaster_id(
+                        DateTime::<Utc>::from_utc(
+                            NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                            Utc,
+                        )
+                        .into(),
+                        pm.clone().id.clone(),
+                    ),
+                    vec![paymaster_operation::user_operations::connect(vec![
+                        user_operation::hash::equals(format!("{:?}", uow.hash)),
+                    ])],
+                )
+                .exec()
+                .await?;
+        }
     }
 
     Ok(Json::from(user_operation))
