@@ -237,7 +237,7 @@ impl Polling {
                             error!("db_try_create_wallet error: {:?}", res);
                         }
 
-                        // // Attempt to create the user operation in the db.
+                        // Attempt to create the user operation in the db.
                         info!("db_upsert_transaction_with_log_receipt");
                         let res = self.db_upsert_transaction_with_log_receipt(op.clone()).await;
                         if res.is_err() {
