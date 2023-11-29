@@ -245,7 +245,7 @@ pub async fn db_get_paymaster_nonce(
                 let nonce: ethers::types::U256 =
                     paymaster.sender_nonce(sender_address).call().await?;
 
-                return Ok(nonce.as_u64() + 1);
+                return Ok(nonce.as_u64());
             }
 
             Ok((op.sender_nonce as u64) + 1)
