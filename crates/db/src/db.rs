@@ -17,22 +17,25 @@ use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
 use ethers::{
-    types::{Address, Bloom, H256, U256},
+    types::{Bloom, H256, U256},
     utils::to_checksum,
 };
-use lightdotso_contracts::types::UserOperationWithTransactionAndReceiptLogs;
+use eyre::Result;
+use lightdotso_contracts::{
+    paymaster::decode_paymaster_and_data, types::UserOperationWithTransactionAndReceiptLogs,
+};
 use lightdotso_prisma::{
-    log, log_topic, paymaster, receipt, transaction, transaction_category, user_operation, wallet,
-    PrismaClient, UserOperationStatus,
+    log, log_topic, paymaster, paymaster_operation, receipt, transaction, transaction_category,
+    user_operation, wallet, PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
     tracing_futures::Instrument,
 };
 use prisma_client_rust::{
-    chrono::{DateTime, FixedOffset, NaiveDateTime},
+    chrono::{DateTime, FixedOffset, NaiveDateTime, Utc},
     serde_json::{self, json},
-    NewClientError,
+    Direction, NewClientError,
 };
 use std::{collections::HashMap, sync::Arc};
 type Database = Arc<PrismaClient>;
@@ -417,26 +420,43 @@ pub async fn upsert_user_operation(
         .await?;
 
     // Upsert the paymaster if it exists
-    if let Some(paymaster_address) = uow.paymaster {
-        // Continue if the paymaster address is zero
-        if paymaster_address == Address::zero() {
-            return Ok(Json::from(user_operation));
-        }
+    if let Some(paymaster_and_data) = uow.paymaster_and_data {
+        // Parse the paymaster and data
+        let (paymaster_address, valid_until, valid_after, _) =
+            decode_paymaster_and_data(paymaster_and_data.to_vec());
 
-        let _ = db
+        let pm = db
             .paymaster()
             .upsert(
                 paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
                 paymaster::create(
                     to_checksum(&paymaster_address, None),
                     chain_id,
-                    vec![paymaster::user_operation::connect(vec![user_operation::hash::equals(
+                    vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
                         format!("{:?}", uow.hash),
                     )])],
                 ),
-                vec![paymaster::user_operation::connect(vec![user_operation::hash::equals(
+                vec![paymaster::user_operations::connect(vec![user_operation::hash::equals(
                     format!("{:?}", uow.hash),
                 )])],
+            )
+            .exec()
+            .await?;
+
+        let _ = db
+            .paymaster_operation()
+            .update(
+                paymaster_operation::valid_after_paymaster_id(
+                    DateTime::<Utc>::from_utc(
+                        NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                        Utc,
+                    )
+                    .into(),
+                    pm.clone().id.clone(),
+                ),
+                vec![paymaster_operation::user_operations::connect(vec![
+                    user_operation::hash::equals(format!("{:?}", uow.hash)),
+                ])],
             )
             .exec()
             .await?;
@@ -490,6 +510,95 @@ pub async fn upsert_user_operation_logs(
         .await?;
 
     Ok(Json::from(()))
+}
+
+#[autometrics]
+pub async fn create_paymaster_operation(
+    db: Database,
+    chain_id: i64,
+    paymaster_address: ethers::types::H160,
+    sender_address: ethers::types::H160,
+    sender_nonce: i64,
+    valid_until: i64,
+    valid_after: i64,
+) -> Result<paymaster_operation::Data, eyre::Report> {
+    info!("Creating new paymaster operation");
+
+    let paymaster = db
+        .paymaster()
+        .upsert(
+            paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
+            paymaster::create(to_checksum(&paymaster_address, None), chain_id, vec![]),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?paymaster);
+
+    let paymaster_operation = db
+        .paymaster_operation()
+        .create(
+            sender_nonce,
+            DateTime::<Utc>::from_utc(
+                NaiveDateTime::from_timestamp_opt(valid_until, 0).unwrap(),
+                Utc,
+            )
+            .into(),
+            DateTime::<Utc>::from_utc(
+                NaiveDateTime::from_timestamp_opt(valid_after, 0).unwrap(),
+                Utc,
+            )
+            .into(),
+            paymaster::id::equals(paymaster.clone().id.clone()),
+            wallet::address::equals(to_checksum(&sender_address, None)),
+            vec![],
+        )
+        .exec()
+        .await?;
+
+    Ok(paymaster_operation)
+}
+
+#[autometrics]
+pub async fn get_most_recent_paymaster_operation_with_sender(
+    db: Database,
+    chain_id: i64,
+    paymaster_address: ethers::types::H160,
+    sender_address: ethers::types::H160,
+) -> Result<Option<paymaster_operation::Data>> {
+    info!("Getting paymaster sender nonce");
+
+    // Find the paymaster
+    let paymaster = db
+        .paymaster()
+        .find_unique(paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id))
+        .exec()
+        .await?;
+
+    if let Some(paymaster) = paymaster {
+        // Get the most recent paymaster operation
+        let user_operation = db
+            .user_operation()
+            .find_first(vec![
+                user_operation::chain_id::equals(chain_id),
+                user_operation::sender::equals(to_checksum(&sender_address, None)),
+                user_operation::status::equals(UserOperationStatus::Executed),
+                user_operation::paymaster_id::equals(Some(paymaster.id)),
+            ])
+            .order_by(user_operation::nonce::order(Direction::Desc))
+            .with(user_operation::paymaster_operation::fetch())
+            .exec()
+            .await?;
+        info!(?user_operation);
+
+        if let Some(user_operation) = user_operation {
+            if let Some(Some(op)) = user_operation.paymaster_operation {
+                return Ok(Some(*op));
+            }
+        }
+    }
+
+    Ok(None)
 }
 
 // Tests

@@ -32,11 +32,12 @@ use lightdotso_common::{
     traits::{HexToBytes, VecU8ToHex},
     utils::hex_to_bytes,
 };
-use lightdotso_contracts::constants::ENTRYPOINT_V060_ADDRESS;
-use lightdotso_paymaster::paymaster::decode_paymaster_and_data;
+use lightdotso_contracts::{
+    constants::ENTRYPOINT_V060_ADDRESS, paymaster::decode_paymaster_and_data,
+};
 use lightdotso_prisma::{
-    configuration, owner, paymaster, signature, transaction, user_operation, wallet,
-    SignatureProcedure, UserOperationStatus,
+    configuration, owner, paymaster, paymaster_operation, signature, transaction, user_operation,
+    wallet, SignatureProcedure, UserOperationStatus,
 };
 use lightdotso_solutions::{
     builder::rooted_node_builder,
@@ -49,7 +50,10 @@ use lightdotso_solutions::{
     utils::render_subdigest,
 };
 use lightdotso_tracing::tracing::{error, info};
-use prisma_client_rust::Direction;
+use prisma_client_rust::{
+    chrono::{DateTime, NaiveDateTime, Utc},
+    Direction,
+};
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -619,7 +623,7 @@ async fn v1_user_operation_post_handler(
     // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
     if user_operation.paymaster_and_data.len() > 2 {
         let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
-        let (decded_paymaster_address, _valid_until, _valid_after, _msg) =
+        let (decded_paymaster_address, _, valid_after, _msg) =
             decode_paymaster_and_data(paymaster_data);
 
         let paymaster = client
@@ -636,7 +640,34 @@ async fn v1_user_operation_post_handler(
             .await?;
         info!(?paymaster);
 
-        params = vec![user_operation::paymaster::connect(paymaster::id::equals(paymaster.id))];
+        // Add the paymaster to the params.
+        params
+            .push(user_operation::paymaster::connect(paymaster::id::equals(paymaster.clone().id)));
+
+        // This could potentially not found (not our paymaster), so we should handle it.
+        let paymaster_operation = client
+            .clone()
+            .client
+            .unwrap()
+            .paymaster_operation()
+            .find_unique(paymaster_operation::valid_after_paymaster_id(
+                DateTime::<Utc>::from_utc(
+                    NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                    Utc,
+                )
+                .into(),
+                paymaster.clone().id.clone(),
+            ))
+            .exec()
+            .await;
+        info!(?paymaster_operation);
+
+        // Add the paymaster operation to the params.
+        if let Ok(Some(op)) = paymaster_operation {
+            params.push(user_operation::paymaster_operation::connect(
+                paymaster_operation::id::equals(op.id),
+            ));
+        }
     }
 
     // Create the user operation in the database w/ the sig.

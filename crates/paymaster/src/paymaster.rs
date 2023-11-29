@@ -30,17 +30,17 @@ use ethers::{
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
-use lightdotso_db::db::create_client;
+use lightdotso_db::db::{
+    create_client, create_paymaster_operation, get_most_recent_paymaster_operation_with_sender,
+};
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
     handle_response,
     types::{Request, Response},
 };
-use lightdotso_prisma::{paymaster, user_operation, UserOperationStatus};
 use lightdotso_signer::connect::connect_to_kms;
 use lightdotso_tracing::tracing::{info, warn};
-use prisma_client_rust::Direction;
 use serde_json::json;
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -118,6 +118,18 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
+            // Finally, create the paymaster operation.
+            db_create_paymaster_operation(
+                chain_id,
+                verifying_paymaster_address,
+                construct.sender,
+                paymaster_nonce,
+                valid_until,
+                valid_after,
+            )
+            .await
+            .map_err(JsonRpcError::from)?;
+
             Ok((paymater_and_data, paymaster_nonce))
         }
         Err(_) => {
@@ -128,8 +140,13 @@ pub async fn get_paymaster_and_data(
                 to_checksum(&verifying_paymaster_address, None)
             );
 
-            let paymaster_nonce =
-                get_paymaster_nonce(chain_id as i64, verifying_paymaster_address).await.unwrap();
+            let paymaster_nonce = db_get_paymaster_nonce(
+                chain_id as i64,
+                verifying_paymaster_address,
+                construct.sender,
+            )
+            .await
+            .map_err(JsonRpcError::from)?;
 
             // Infinite valid until.
             let hash = get_hash(
@@ -155,52 +172,69 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
+            // Finally, create the paymaster operation.
+            db_create_paymaster_operation(
+                chain_id,
+                verifying_paymaster_address,
+                construct.sender,
+                paymaster_nonce,
+                valid_until,
+                valid_after,
+            )
+            .await
+            .map_err(JsonRpcError::from)?;
+
             Ok((paymater_and_data, paymaster_nonce))
         }
     }
 }
 
-pub async fn get_paymaster_nonce(
+pub async fn db_create_paymaster_operation(
+    chain_id: u64,
+    paymaster_address: Address,
+    sender_address: Address,
+    sender_nonce: u64,
+    valid_until: u64,
+    valid_after: u64,
+) -> Result<()> {
+    // Create the client.
+    let client = create_client().await.unwrap();
+
+    // Create the paymaster operation.
+    create_paymaster_operation(
+        client.into(),
+        chain_id as i64,
+        paymaster_address,
+        sender_address,
+        sender_nonce as i64,
+        valid_until as i64,
+        valid_after as i64,
+    )
+    .await?;
+
+    Ok(())
+}
+
+pub async fn db_get_paymaster_nonce(
     chain_id: i64,
     verifying_paymaster_address: Address,
+    sender_address: Address,
 ) -> Result<u64> {
     // Create the client.
     let client = create_client().await.unwrap();
 
     // Get the paymaster from the database.
-    let paymaster = client
-        .paymaster()
-        .find_unique(paymaster::address_chain_id(
-            to_checksum(&verifying_paymaster_address, None),
-            chain_id,
-        ))
-        .exec()
-        .await?;
-    info!(?paymaster);
-
-    // If the paymaster is not found, return a 0 nonce.
-    if paymaster.is_none() {
-        return Ok(0);
-    }
-    let paymaster = paymaster.unwrap();
-
-    // Get the user operations from the database.
-    let user_operation = client
-        .user_operation()
-        .find_first(vec![
-            user_operation::chain_id::equals(chain_id),
-            user_operation::sender::equals(to_checksum(&verifying_paymaster_address, None)),
-            user_operation::status::equals(UserOperationStatus::Executed),
-            user_operation::paymaster_id::equals(Some(paymaster.id)),
-        ])
-        .order_by(user_operation::nonce::order(Direction::Desc))
-        .exec()
-        .await?;
-    info!(?user_operation);
+    let paymaster_op = get_most_recent_paymaster_operation_with_sender(
+        client.into(),
+        chain_id,
+        verifying_paymaster_address,
+        sender_address,
+    )
+    .await?;
 
     // If the user operation is not found, return 0 as Ok.
-    match user_operation {
-        Some(user_operation) => Ok((user_operation.nonce as u64) + 1),
+    match paymaster_op {
+        Some(op) => Ok((op.sender_nonce as u64) + 1),
         None => Ok(0),
     }
 }
@@ -220,26 +254,6 @@ pub fn construct_paymaster_and_data(
         [verifying_paymaster_address.as_bytes(), &encoded_tokens, (msg.unwrap_or(&[0u8; 65]))]
             .concat(),
     )
-}
-
-/// Construct the paymaster and data.
-pub fn decode_paymaster_and_data(msg: Vec<u8>) -> (Address, u64, u64, Vec<u8>) {
-    // Get the verifying paymaster address.
-    let verifying_paymaster_address = Address::from_slice(&msg[0..20]);
-    info!("verifying_paymaster_address: {}", to_checksum(&verifying_paymaster_address, None));
-
-    // Get the valid until.
-    let valid_until = u64::from_be_bytes(msg[44..52].try_into().unwrap());
-    info!("valid_until: {}", valid_until);
-
-    // Get the valid after.
-    let valid_after = u64::from_be_bytes(msg[76..84].try_into().unwrap());
-    info!("valid_after: {}", valid_after);
-
-    // Get the signature.
-    let signature = msg[84..].to_vec();
-
-    (verifying_paymaster_address, valid_until, valid_after, signature)
 }
 
 /// Construct the user operation w/ rpc.
@@ -382,7 +396,9 @@ pub async fn sign_message_kms(
     info!("verifying_paymaster_address: {}", to_checksum(&verifying_paymaster_address, None));
 
     // Get the paymaster nonce.
-    let paymaster_nonce = get_paymaster_nonce(chain_id as i64, verifying_paymaster_address).await?;
+    let paymaster_nonce =
+        db_get_paymaster_nonce(chain_id as i64, verifying_paymaster_address, construct.sender)
+            .await?;
 
     // Infinite valid until.
     let hash = get_hash(
@@ -647,29 +663,6 @@ mod tests {
 
         // Validate the result.
         assert_eq!(result.len(), 20 + 64 + msg.len());
-    }
-
-    #[test]
-    fn test_decode_paymaster_and_data() {
-        // Get the expected msg.
-        let expected_msg: Vec<u8> = hex::decode("0dcd1bf9a1b36ce34237eeafef220931846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
-
-        // Decode the paymaster and data.
-        let (verifying_paymaster_address, valid_until, valid_after, signature) =
-            decode_paymaster_and_data(expected_msg);
-
-        // Expected result.
-        let expected_verifying_paymaster_address =
-            "0x0DCd1Bf9A1b36cE34237eEaFef220931846BCD82".parse().unwrap();
-        let expected_valid_until = u64::from_str_radix("00000000deadbeef", 16).unwrap();
-        let expected_valid_after = u64::from_str_radix("0000000000001234", 16).unwrap();
-        let expected_signature: Vec<u8> = hex::decode("dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
-
-        // Assert that the result matches the expected value
-        assert_eq!(verifying_paymaster_address, expected_verifying_paymaster_address);
-        assert_eq!(valid_until, expected_valid_until);
-        assert_eq!(valid_after, expected_valid_after);
-        assert_eq!(signature, expected_signature);
     }
 
     #[test]

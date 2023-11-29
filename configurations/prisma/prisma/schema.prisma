@@ -97,14 +97,15 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  configurations  Configuration[]
-  transactions    Transaction[]
-  userOperations  UserOperation[]
-  users           User[]
-  notifications   Notification[]
-  supportRequests SupportRequest[]
-  walletBalances  WalletBalance[]
-  walletSettings  WalletSettings?
+  configurations     Configuration[]
+  notifications      Notification[]
+  paymasterOperation PaymasterOperation[]
+  supportRequests    SupportRequest[]
+  transactions       Transaction[]
+  userOperations     UserOperation[]
+  users              User[]
+  walletBalances     WalletBalance[]
+  walletSettings     WalletSettings?
 }
 
 model Configuration {
@@ -413,6 +414,9 @@ model UserOperation {
   paymaster   Paymaster? @relation(fields: [paymasterId], references: [id])
   paymasterId String?
 
+  paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
+  paymasterOperationId String?
+
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?      @unique
 
@@ -430,6 +434,7 @@ model UserOperation {
   @@index([transactionHash])
   @@index([notificationId])
   @@index([paymasterId])
+  @@index([paymasterOperationId])
   @@index([walletAddress])
 }
 
@@ -440,9 +445,30 @@ model Paymaster {
   address   String
   chainId   BigInt
 
-  userOperation UserOperation[]
+  userOperations      UserOperation[]
+  paymasterOperations PaymasterOperation[]
 
   @@unique([address, chainId])
+}
+
+model PaymasterOperation {
+  id          String   @id @default(cuid())
+  sender      String
+  senderNonce BigInt
+  validUntil  DateTime
+  validAfter  DateTime
+
+  paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
+  paymasterId String
+
+  wallet Wallet @relation(fields: [sender], references: [address])
+
+  userOperations UserOperation[]
+
+  @@unique([sender, senderNonce, paymasterId])
+  @@unique([validAfter, paymasterId])
+  @@index([paymasterId])
+  @@index([sender, senderNonce])
 }
 
 enum UserOperationStatus {
