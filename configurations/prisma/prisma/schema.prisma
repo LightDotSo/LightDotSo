@@ -475,6 +475,7 @@ enum UserOperationStatus {
   PENDING
   EXECUTED
   REVERTED
+  INVALID
 }
 
 model UserOperationCategory {
