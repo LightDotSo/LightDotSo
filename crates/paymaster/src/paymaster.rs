@@ -30,7 +30,9 @@ use ethers::{
 use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESS;
-use lightdotso_db::db::{create_client, get_most_recent_paymaster_operation_with_sender};
+use lightdotso_db::db::{
+    create_client, create_paymaster_operation, get_most_recent_paymaster_operation_with_sender,
+};
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{
     error::JsonRpcError,
@@ -116,6 +118,17 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
+            // Finally, create the paymaster operation.
+            db_create_paymaster_operation(
+                chain_id as i64,
+                verifying_paymaster_address,
+                construct.sender,
+                valid_until,
+                valid_after,
+            )
+            .await
+            .map_err(JsonRpcError::from)?;
+
             Ok((paymater_and_data, paymaster_nonce))
         }
         Err(_) => {
@@ -126,10 +139,13 @@ pub async fn get_paymaster_and_data(
                 to_checksum(&verifying_paymaster_address, None)
             );
 
-            let paymaster_nonce =
-                get_paymaster_nonce(chain_id as i64, verifying_paymaster_address, construct.sender)
-                    .await
-                    .unwrap();
+            let paymaster_nonce = db_get_paymaster_nonce(
+                chain_id as i64,
+                verifying_paymaster_address,
+                construct.sender,
+            )
+            .await
+            .map_err(JsonRpcError::from)?;
 
             // Infinite valid until.
             let hash = get_hash(
@@ -155,12 +171,47 @@ pub async fn get_paymaster_and_data(
             );
             info!("paymater_and_data: 0x{}", hex::encode(paymater_and_data.clone()));
 
+            // Finally, create the paymaster operation.
+            db_create_paymaster_operation(
+                chain_id as i64,
+                verifying_paymaster_address,
+                construct.sender,
+                valid_until,
+                valid_after,
+            )
+            .await
+            .map_err(JsonRpcError::from)?;
+
             Ok((paymater_and_data, paymaster_nonce))
         }
     }
 }
 
-pub async fn get_paymaster_nonce(
+pub async fn db_create_paymaster_operation(
+    chain_id: i64,
+    paymaster_address: Address,
+    sender_address: Address,
+    valid_until: u64,
+    valid_after: u64,
+) -> Result<()> {
+    // Create the client.
+    let client = create_client().await.unwrap();
+
+    // Create the paymaster operation.
+    create_paymaster_operation(
+        client.into(),
+        chain_id,
+        paymaster_address,
+        sender_address,
+        valid_until,
+        valid_after,
+    )
+    .await?;
+
+    Ok(())
+}
+
+pub async fn db_get_paymaster_nonce(
     chain_id: i64,
     verifying_paymaster_address: Address,
     sender_address: Address,
@@ -342,7 +393,8 @@ pub async fn sign_message_kms(
 
     // Get the paymaster nonce.
     let paymaster_nonce =
-        get_paymaster_nonce(chain_id as i64, verifying_paymaster_address, construct.sender).await?;
+        db_get_paymaster_nonce(chain_id as i64, verifying_paymaster_address, construct.sender)
+            .await?;
 
     // Infinite valid until.
     let hash = get_hash(

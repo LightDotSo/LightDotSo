@@ -445,31 +445,18 @@ pub async fn upsert_user_operation(
 
         let _ = db
             .paymaster_operation()
-            .upsert(
-                paymaster_operation::sender_sender_nonce_paymaster_id(
-                    to_checksum(&uow.light_wallet, None),
-                    0,
-                    pm.clone().id,
-                ),
-                paymaster_operation::create(
-                    0,
-                    DateTime::<Utc>::from_utc(
-                        NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                        Utc,
-                    )
-                    .into(),
+            .update(
+                paymaster_operation::valid_after_paymaster_id(
                     DateTime::<Utc>::from_utc(
                         NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
                         Utc,
                     )
                     .into(),
-                    paymaster::id::equals(pm.clone().id.clone()),
-                    wallet::address::equals(to_checksum(&uow.light_wallet, None)),
-                    vec![paymaster_operation::user_operations::connect(vec![
-                        user_operation::hash::equals(format!("{:?}", uow.hash)),
-                    ])],
+                    pm.clone().id.clone(),
                 ),
-                vec![],
+                vec![paymaster_operation::user_operations::connect(vec![
+                    user_operation::hash::equals(format!("{:?}", uow.hash)),
+                ])],
             )
             .exec()
             .await?;
@@ -525,7 +512,52 @@ pub async fn upsert_user_operation_logs(
     Ok(Json::from(()))
 }
 
-#[allow(clippy::collapsible_match)]
+#[autometrics]
+pub async fn create_paymaster_operation(
+    db: Database,
+    chain_id: i64,
+    paymaster_address: ethers::types::H160,
+    sender_address: ethers::types::H160,
+    valid_until: u64,
+    valid_after: u64,
+) -> Result<paymaster_operation::Data, eyre::Report> {
+    info!("Creating new paymaster operation");
+
+    let paymaster = db
+        .paymaster()
+        .upsert(
+            paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id),
+            paymaster::create(to_checksum(&paymaster_address, None), chain_id, vec![]),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?paymaster);
+
+    let paymaster_operation = db
+        .paymaster_operation()
+        .create(
+            0,
+            DateTime::<Utc>::from_utc(
+                NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                Utc,
+            )
+            .into(),
+            DateTime::<Utc>::from_utc(
+                NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                Utc,
+            )
+            .into(),
+            paymaster::id::equals(paymaster.clone().id.clone()),
+            wallet::address::equals(to_checksum(&sender_address, None)),
+            vec![],
+        )
+        .exec()
+        .await?;
+
+    Ok(paymaster_operation)
+}
+
 #[autometrics]
 pub async fn get_most_recent_paymaster_operation_with_sender(
     db: Database,
@@ -559,10 +591,8 @@ pub async fn get_most_recent_paymaster_operation_with_sender(
         info!(?user_operation);
 
         if let Some(user_operation) = user_operation {
-            if let Some(paymaster_operation) = user_operation.paymaster_operation {
-                if let Some(op) = paymaster_operation {
-                    return Ok(Some(*op));
-                }
+            if let Some(Some(op)) = user_operation.paymaster_operation {
+                return Ok(Some(*op));
             }
         }
     }
