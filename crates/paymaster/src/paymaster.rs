@@ -39,7 +39,6 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
-use lightdotso_prisma::paymaster_operation::sender_nonce;
 use lightdotso_signer::connect::connect_to_kms;
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::json;
