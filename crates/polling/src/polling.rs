@@ -220,8 +220,8 @@ impl Polling {
                     if let Some(user_operation_event) = &op.user_operation_event {
                         // Log the operation along with the chain id.
                         info!(
-                            "User Operation found, chain_id: {} user_operation_event: {:?}",
-                            self.chain_id, user_operation_event
+                            "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
+                            self.chain_id, op.index.0, user_operation_event,
                         );
 
                         // Add the wallet to the cache.
