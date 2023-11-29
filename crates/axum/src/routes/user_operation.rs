@@ -67,6 +67,13 @@ pub struct GetQuery {
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
+pub struct UpdateQuery {
+    /// The sender address to filter by.
+    pub address: String,
+}
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
 pub struct NonceQuery {
     /// The chain id to get the user operation nonce for.
     pub chain_id: i64,
@@ -322,6 +329,7 @@ impl From<transaction::Data> for UserOperationTransaction {
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/user_operation/get", get(v1_user_operation_get_handler))
+        .route("/user_operation/update", post(v1_user_operation_update_handler))
         .route("/user_operation/nonce", get(v1_user_operation_nonce_handler))
         .route("/user_operation/list", get(v1_user_operation_list_handler))
         .route("/user_operation/create", post(v1_user_operation_post_handler))
@@ -368,6 +376,71 @@ async fn v1_user_operation_get_handler(
     let user_operation: UserOperation = user_operation.into();
 
     Ok(Json::from(user_operation))
+}
+
+/// Get a user operation
+#[utoipa::path(
+        get,
+        path = "/user_operation/update",
+        params(
+            UpdateQuery
+        ),
+        responses(
+            (status = 200, description = "User Operation updated successfully", body = ()),
+            (status = 404, description = "User Operation not found", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+async fn v1_user_operation_update_handler(
+    post: Query<UpdateQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<()> {
+    // Get the get query.
+    let Query(query) = post;
+    // Get the wallet address from the nonce query.
+    let address: H160 = query.address.parse()?;
+
+    // Get the user operations from the database.
+    let user_operation = client
+        .clone()
+        .client
+        .unwrap()
+        .user_operation()
+        .find_many(vec![
+            user_operation::sender::equals(to_checksum(&address, None)),
+            user_operation::status::equals(UserOperationStatus::Executed),
+        ])
+        .order_by(user_operation::nonce::order(Direction::Desc))
+        .exec()
+        .await?;
+    info!(?user_operation);
+
+    // Filter the user operations by same chainId
+    let mut unique_chain_ids = std::collections::HashSet::new();
+    let unique_user_operations: Vec<_> =
+        user_operation.into_iter().filter(|op| unique_chain_ids.insert(op.chain_id)).collect();
+
+    // For each user operation w/ update many the matching chainId where nonce is equal to or lower
+    // than change the status to Invalid.
+    for op in unique_user_operations {
+        let _ = client
+            .clone()
+            .client
+            .unwrap()
+            .user_operation()
+            .update_many(
+                vec![
+                    user_operation::chain_id::equals(op.chain_id),
+                    user_operation::nonce::lte(op.nonce),
+                    user_operation::hash::not(op.hash),
+                ],
+                vec![user_operation::status::set(UserOperationStatus::Invalid)],
+            )
+            .exec()
+            .await?;
+    }
+
+    Ok(Json::from(()))
 }
 
 /// Get a user operation nonce
