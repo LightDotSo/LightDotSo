@@ -489,22 +489,15 @@ pub async fn upsert_user_operation_logs(
         .collect::<Vec<_>>();
 
     // Iterate over the logs and connect them to the user operation logs
-    let _res = db
-        ._transaction()
-        .run(|client| async move {
-            let log_update_items = logs
-                .iter()
-                .map(|log| {
-                    client.user_operation().update(
-                        user_operation::hash::equals(format!("{:?}", uow.hash)),
-                        vec![user_operation::logs::connect(vec![log::id::equals(log.id.clone())])],
-                    )
-                })
-                .collect::<Vec<_>>();
-
-            client._batch(log_update_items).await
-        })
-        .await?;
+    for log in logs.iter() {
+        db.user_operation()
+            .update(
+                user_operation::hash::equals(format!("{:?}", uow.hash)),
+                vec![user_operation::logs::connect(vec![log::id::equals(log.id.clone())])],
+            )
+            .exec()
+            .await?;
+    }
 
     Ok(Json::from(()))
 }
