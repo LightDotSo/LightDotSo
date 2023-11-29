@@ -19,9 +19,14 @@ use lazy_static::lazy_static;
 // The paymaster addresses
 lazy_static! {
     #[derive(Debug)]
-    pub static ref LIGHT_PAYMASTER_ADDRESS: Address =
+    pub static ref LIGHT_PAYMASTER_ADDRESSES: [Address; 3] = [
       // v1 (Fallback)
-      "0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap();
+      "0x000000000018d32DF916ff115A25fbeFC70bAf8b".parse().unwrap(),
+      // v2
+      "0x000000000003193FAcb32D1C120719892B7AE977".parse().unwrap(),
+      // v3
+      "0x000000000054230BA02ADD2d96fA4362A8606F97".parse().unwrap(),
+    ];
 }
 
 // The factory addresses
@@ -63,7 +68,7 @@ mod tests {
     #[test]
     fn test_light_paymaster_address() {
         assert_eq!(
-            format!("{:?}", *LIGHT_PAYMASTER_ADDRESS),
+            format!("{:?}", LIGHT_PAYMASTER_ADDRESSES[0]),
             "0x000000000018d32df916ff115a25fbefc70baf8b".to_string(),
             "The expected and actual paymaster addresses should match"
         );
