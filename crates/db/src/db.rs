@@ -25,10 +25,8 @@ use lightdotso_contracts::{
     paymaster::decode_paymaster_and_data, types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_prisma::{
-    log, log_topic, paymaster,
-    paymaster_operation::{self, sender_nonce},
-    receipt, transaction, transaction_category, user_operation, wallet, PrismaClient,
-    UserOperationStatus,
+    log, log_topic, paymaster, paymaster_operation, receipt, transaction, transaction_category,
+    user_operation, wallet, PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
