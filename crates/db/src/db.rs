@@ -425,7 +425,7 @@ pub async fn upsert_user_operation(
         info!("Upserting paymaster operation");
 
         // Parse the paymaster and data
-        let (paymaster_address, valid_until, valid_after, _sig) =
+        let (paymaster_address, _valid_until, valid_after, _sig) =
             decode_paymaster_and_data(paymaster_and_data.to_vec());
 
         // Upsert the paymaster if matches one of ours
@@ -451,26 +451,9 @@ pub async fn upsert_user_operation(
                 .await?;
 
             // Update the paymaster operation
-            // let _ = db
-            //     .paymaster_operation()
-            //     .update(
-            //         paymaster_operation::valid_after_paymaster_id(
-            //             DateTime::<Utc>::from_utc(
-            //                 NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-            //                 Utc,
-            //             )
-            //             .into(),
-            //             pm.clone().id.clone(),
-            //         ),
-            //         vec![paymaster_operation::user_operations::connect(vec![
-            //             user_operation::hash::equals(format!("{:?}", uow.hash)),
-            //         ])],
-            //     )
-            //     .exec()
-            //     .await?;
             let _ = db
                 .paymaster_operation()
-                .upsert(
+                .update(
                     paymaster_operation::valid_after_paymaster_id(
                         DateTime::<Utc>::from_utc(
                             NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
@@ -479,27 +462,9 @@ pub async fn upsert_user_operation(
                         .into(),
                         pm.clone().id.clone(),
                     ),
-                    paymaster_operation::create(
-                        0,
-                        DateTime::<Utc>::from_utc(
-                            NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
-                            Utc,
-                        )
-                        .into(),
-                        DateTime::<Utc>::from_utc(
-                            NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
-                            Utc,
-                        )
-                        .into(),
-                        paymaster::id::equals(pm.clone().id.clone()),
-                        wallet::address::equals(to_checksum(&uow.light_wallet, None)),
-                        vec![paymaster_operation::user_operations::connect(vec![
-                            user_operation::hash::equals(format!("{:?}", uow.hash)),
-                        ])],
-                    ),
-                    vec![paymaster_operation::user_operations::connect(vec![
+                    vec![paymaster_operation::user_operation::connect(
                         user_operation::hash::equals(format!("{:?}", uow.hash)),
-                    ])],
+                    )],
                 )
                 .exec()
                 .await?;

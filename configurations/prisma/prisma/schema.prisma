@@ -415,7 +415,7 @@ model UserOperation {
   paymasterId String?
 
   paymasterOperation   PaymasterOperation? @relation(fields: [paymasterOperationId], references: [id])
-  paymasterOperationId String?
+  paymasterOperationId String?             @unique
 
   transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
   transactionHash String?      @unique
@@ -461,9 +461,9 @@ model PaymasterOperation {
   paymaster   Paymaster @relation(fields: [paymasterId], references: [id])
   paymasterId String
 
-  wallet Wallet @relation(fields: [sender], references: [address])
+  userOperation UserOperation?
 
-  userOperations UserOperation[]
+  wallet Wallet @relation(fields: [sender], references: [address])
 
   @@unique([sender, senderNonce, paymasterId])
   @@unique([validAfter, paymasterId])
