@@ -569,6 +569,11 @@ export interface components {
        */
       signature_type: number;
     };
+    /** @description User operation operation errors */
+    UserOperationSuccess: {
+      /** @description User operation updated successfully. */
+      Updated: string;
+    };
     /** @description Transaction */
     UserOperationTransaction: {
       /** @description The hash of the transaction. */
@@ -1393,7 +1398,7 @@ export interface operations {
       /** @description User Operation updated successfully */
       200: {
         content: {
-          "application/json": Record<string, unknown> | null;
+          "application/json": components["schemas"]["UserOperationSuccess"];
         };
       };
       /** @description User Operation not found */

@@ -20,7 +20,7 @@ import { Button } from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { errorToast, infoToast } from "@/utils";
+import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -41,20 +41,22 @@ export const InvokeUserOperationButton: FC<InvokeUserOperationProps> = ({
     <Button
       variant="outline"
       className="py-5"
-      onClick={async () => {
-        const res = await updateUserOperation({
+      onClick={() => {
+        updateUserOperation({
           params: { query: { address: address } },
+        }).then(res => {
+          infoToast("Updating operation...");
+          res.match(
+            _success => {
+              successToast("Operation updated");
+            },
+            err => {
+              if (err instanceof Error) {
+                errorToast(err.message);
+              }
+            },
+          );
         });
-        res.match(
-          _success => {
-            infoToast("Operation updated");
-          },
-          err => {
-            if (err instanceof Error) {
-              errorToast(err.message);
-            }
-          },
-        );
       }}
     >
       <RefreshCcw className="h-4 w-4 text-text-weak" />

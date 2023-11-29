@@ -83,6 +83,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(user_operation::UserOperationNonce),
         schemas(user_operation::UserOperationPaymaster),
         schemas(user_operation::UserOperationPostRequestParams),
+        schemas(user_operation::UserOperationSuccess),
         schemas(user_operation::UserOperationSignature),
         schemas(user_operation::UserOperationTransaction),
         schemas(wallet::Owner),
