@@ -231,11 +231,11 @@ impl Polling {
 
                         // Attempt to create the wallet in the db.
                         // (Fail if the wallet already exists)
-                        // info!("db_try_create_wallet");
-                        // let res = self.db_try_create_wallet(op).await;
-                        // if res.is_err() {
-                        //     error!("db_try_create_wallet error: {:?}", res);
-                        // }
+                        info!("db_try_create_wallet");
+                        let res = self.db_try_create_wallet(op).await;
+                        if res.is_err() {
+                            error!("db_try_create_wallet error: {:?}", res);
+                        }
 
                         // Attempt to create the user operation in the db.
                         info!("db_upsert_transaction_with_log_receipt");
@@ -346,35 +346,38 @@ impl Polling {
     }
 
     /// Attempt to create a new operation in the db
-    // #[autometrics]
-    // pub async fn db_try_create_wallet(
-    //     &self,
-    //     user_operation: &UserOperation,
-    // ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> { let db_client =
-    //   self.db_client.clone(); let chain_id = self.chain_id;
+    #[autometrics]
+    pub async fn db_try_create_wallet(
+        &self,
+        user_operation: &UserOperation,
+    ) -> Result<Json<lightdotso_prisma::wallet::Data>, DbError> {
+        let db_client = self.db_client.clone();
+        let chain_id = self.chain_id;
 
-    //     if let Some(init_code) = &user_operation.init_code {
-    //         let (_, salt) =
-    //             get_image_hash_salt_from_init_code(init_code.clone().0.into_bytes()).unwrap();
+        if let Some(init_code) = &user_operation.init_code {
+            if init_code.0.len() > 2 {
+                let (_, salt) =
+                    get_image_hash_salt_from_init_code(init_code.clone().0.into_bytes()).unwrap();
 
-    //         return {
-    //             || {
-    //                 upsert_wallet_with_configuration(
-    //                     db_client.clone(),
-    //                     user_operation.light_wallet.address.0.parse().unwrap(),
-    //                     chain_id as i64,
-    //                     salt.into(),
-    //                     user_operation.light_wallet.factory.0.parse().unwrap(),
-    //                 )
-    //             }
-    //         }
-    //         .retry(&ExponentialBuilder::default())
-    //         .await;
-    //     }
+                return {
+                    || {
+                        upsert_wallet_with_configuration(
+                            db_client.clone(),
+                            user_operation.light_wallet.address.0.parse().unwrap(),
+                            chain_id as i64,
+                            salt.into(),
+                            user_operation.light_wallet.factory.0.parse().unwrap(),
+                        )
+                    }
+                }
+                .retry(&ExponentialBuilder::default())
+                .await;
+            }
+        }
 
-    //     // Return not found if the init code is not found.
-    //     Err(DbError::NotFound)
-    // }
+        // Return not found if the init code is not found.
+        Err(DbError::NotFound)
+    }
 
     /// Add a new wallet in the cache
     #[autometrics]

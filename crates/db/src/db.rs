@@ -273,81 +273,69 @@ pub async fn upsert_transaction_with_log_receipt(
         .instrument(info_span!("upsert_receipt"))
         .await?;
 
-    // let log_creations = db
-    //     ._transaction()
-    //     .run(|client| async move {
-    //         let logs_upsert_items = logs
-    //             .clone()
-    //             .iter()
-    //             .map(|log| {
-    //                 client.log().upsert(
-    //                     log::UniqueWhereParam::TransactionHashLogIndexEquals(
-    //                         format!("{:?}", transaction.hash),
-    //                         log.log_index.unwrap().as_u64() as i64,
-    //                     ),
-    //                     log::create(
-    //                         to_checksum(&log.address, None),
-    //                         log.data.to_vec(),
-    //                         vec![
-    //                             log::block_hash::set(log.block_hash.map(|bh| format!("{:?}",
-    // bh))),                             log::block_number::set(
-    //                                 log.block_number.map(|bn| bn.as_u32() as i32),
-    //                             ),
-    //                             log::transaction_hash::set(
-    //                                 log.transaction_hash.map(|th| format!("{:?}", th)),
-    //                             ),
-    //                             log::transaction_index::set(
-    //                                 log.transaction_index.map(|ti| ti.as_u32() as i32),
-    //                             ),
-    //                             log::log_index::set(log.log_index.map(|li| li.as_u64() as i64)),
-    //                             log::transaction_log_index::set(
-    //                                 log.transaction_log_index.map(|lti| lti.as_u64() as i64),
-    //                             ),
-    //                             log::log_type::set(log.clone().log_type),
-    //                             log::removed::set(log.removed),
-    //                         ],
-    //                     ),
-    //                     vec![],
-    //                 )
-    //             })
-    //             .collect::<Vec<_>>();
+    let mut logs_upsert_items = Vec::new();
 
-    //         client._batch(logs_upsert_items).await
-    //     })
-    //     .await?;
+    for log in logs.iter() {
+        let item = db
+            .log()
+            .upsert(
+                log::UniqueWhereParam::TransactionHashLogIndexEquals(
+                    format!("{:?}", transaction.hash),
+                    log.log_index.unwrap().as_u64() as i64,
+                ),
+                log::create(
+                    to_checksum(&log.address, None),
+                    log.data.to_vec(),
+                    vec![
+                        log::block_hash::set(log.block_hash.map(|bh| format!("{:?}", bh))),
+                        log::block_number::set(log.block_number.map(|bn| bn.as_u32() as i32)),
+                        log::transaction_hash::set(
+                            log.transaction_hash.map(|th| format!("{:?}", th)),
+                        ),
+                        log::transaction_index::set(
+                            log.transaction_index.map(|ti| ti.as_u32() as i32),
+                        ),
+                        log::log_index::set(log.log_index.map(|li| li.as_u64() as i64)),
+                        log::transaction_log_index::set(
+                            log.transaction_log_index.map(|lti| lti.as_u64() as i64),
+                        ),
+                        log::log_type::set(log.clone().log_type),
+                        log::removed::set(log.removed),
+                    ],
+                ),
+                vec![],
+            )
+            .exec()
+            .await?;
 
-    // // Iterate through the logs and get the log_topics for each log
-    // let mut log_topics: HashMap<_, _> = HashMap::new();
+        logs_upsert_items.push(item);
+    }
 
-    // for (log_creation, log) in log_creations.iter().zip(logs_clone.iter()) {
-    //     for (i, topic) in log.topics.iter().enumerate() {
-    //         info!(?topic, ?log_creation.id, i);
-    //         // Insert the log topic w/ the index
-    //         log_topics.insert(format!("{:?}-{}", topic, i), log_creation.id.clone());
-    //     }
-    // }
+    //  Iterate through the logs and get the log_topics for each log
+    let mut log_topics: HashMap<_, _> = HashMap::new();
+
+    for (log_creation, log) in logs_upsert_items.iter().zip(logs_clone.iter()) {
+        for (i, topic) in log.topics.iter().enumerate() {
+            info!(?topic, ?log_creation.id, i);
+            // Insert the log topic w/ the index
+            log_topics.insert(format!("{:?}-{}", topic, i), log_creation.id.clone());
+        }
+    }
 
     // // Iterate through and upsert the log topics
-    // let _ = db
-    //     ._transaction()
-    //     .run(|client| async move {
-    //         let log_topics_upsert_items = log_topics
-    //             .iter()
-    //             .map(|(log_topic_index, id)| {
-    //                 client.log_topic().upsert(
-    //                     log_topic::id::equals(log_topic_index.to_string()),
-    //                     log_topic::create(
-    //                         log_topic_index.to_string(),
-    //                         
-    // vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],                   
-    // ),                     
-    // vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],                 )
-    //             })
-    //             .collect::<Vec<_>>();
-
-    //         client._batch(log_topics_upsert_items).await
-    //     })
-    //     .await?;
+    for (log_topic_index, id) in log_topics.iter() {
+        db.log_topic()
+            .upsert(
+                log_topic::id::equals(log_topic_index.to_string()),
+                log_topic::create(
+                    log_topic_index.to_string(),
+                    vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
+                ),
+                vec![log_topic::logs::connect(vec![log::id::equals(id.to_string())])],
+            )
+            .exec()
+            .await?;
+    }
 
     Ok(Json::from(tx_data))
 }
