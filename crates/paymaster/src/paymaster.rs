@@ -121,7 +121,7 @@ pub async fn get_paymaster_and_data(
 
             // Finally, create the paymaster operation.
             db_create_paymaster_operation(
-                chain_id as i64,
+                chain_id,
                 verifying_paymaster_address,
                 construct.sender,
                 paymaster_nonce,
@@ -175,7 +175,7 @@ pub async fn get_paymaster_and_data(
 
             // Finally, create the paymaster operation.
             db_create_paymaster_operation(
-                chain_id as i64,
+                chain_id,
                 verifying_paymaster_address,
                 construct.sender,
                 paymaster_nonce,
@@ -191,7 +191,7 @@ pub async fn get_paymaster_and_data(
 }
 
 pub async fn db_create_paymaster_operation(
-    chain_id: i64,
+    chain_id: u64,
     paymaster_address: Address,
     sender_address: Address,
     sender_nonce: u64,
@@ -204,12 +204,12 @@ pub async fn db_create_paymaster_operation(
     // Create the paymaster operation.
     create_paymaster_operation(
         client.into(),
-        chain_id,
+        chain_id as i64,
         paymaster_address,
         sender_address,
-        sender_nonce,
-        valid_until,
-        valid_after,
+        sender_nonce as i64,
+        valid_until as i64,
+        valid_after as i64,
     )
     .await?;
 
