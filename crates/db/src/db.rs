@@ -20,6 +20,7 @@ use ethers::{
     types::{Bloom, H256, U256},
     utils::to_checksum,
 };
+use eyre::Result;
 use lightdotso_contracts::{
     paymaster::decode_paymaster_and_data, types::UserOperationWithTransactionAndReceiptLogs,
 };
@@ -34,7 +35,7 @@ use lightdotso_tracing::{
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime, Utc},
     serde_json::{self, json},
-    NewClientError,
+    Direction, NewClientError,
 };
 use std::{collections::HashMap, sync::Arc};
 type Database = Arc<PrismaClient>;
@@ -522,6 +523,51 @@ pub async fn upsert_user_operation_logs(
         .await?;
 
     Ok(Json::from(()))
+}
+
+#[allow(clippy::collapsible_match)]
+#[autometrics]
+pub async fn get_most_recent_paymaster_operation_with_sender(
+    db: Database,
+    chain_id: i64,
+    paymaster_address: ethers::types::H160,
+    sender_address: ethers::types::H160,
+) -> Result<Option<paymaster_operation::Data>> {
+    info!("Getting paymaster sender nonce");
+
+    // Find the paymaster
+    let paymaster = db
+        .paymaster()
+        .find_unique(paymaster::address_chain_id(to_checksum(&paymaster_address, None), chain_id))
+        .exec()
+        .await?;
+
+    if let Some(paymaster) = paymaster {
+        // Get the most recent paymaster operation
+        let user_operation = db
+            .user_operation()
+            .find_first(vec![
+                user_operation::chain_id::equals(chain_id),
+                user_operation::sender::equals(to_checksum(&sender_address, None)),
+                user_operation::status::equals(UserOperationStatus::Executed),
+                user_operation::paymaster_id::equals(Some(paymaster.id)),
+            ])
+            .order_by(user_operation::nonce::order(Direction::Desc))
+            .with(user_operation::paymaster_operation::fetch())
+            .exec()
+            .await?;
+        info!(?user_operation);
+
+        if let Some(user_operation) = user_operation {
+            if let Some(paymaster_operation) = user_operation.paymaster_operation {
+                if let Some(op) = paymaster_operation {
+                    return Ok(Some(*op));
+                }
+            }
+        }
+    }
+
+    Ok(None)
 }
 
 // Tests
