@@ -220,8 +220,8 @@ impl Polling {
                     if let Some(user_operation_event) = &op.user_operation_event {
                         // Log the operation along with the chain id.
                         info!(
-                            "User Operation found, chain_id: {} user_operation_event: {:?}",
-                            self.chain_id, user_operation_event
+                            "User Operation found, chain_id: {} index: {} user_operation_event: {:?} ",
+                            self.chain_id, op.index.0, user_operation_event,
                         );
 
                         // Add the wallet to the cache.
@@ -237,7 +237,7 @@ impl Polling {
                             error!("db_try_create_wallet error: {:?}", res);
                         }
 
-                        // Attempt to create the user operation in the db.
+                        // // Attempt to create the user operation in the db.
                         info!("db_upsert_transaction_with_log_receipt");
                         let res = self.db_upsert_transaction_with_log_receipt(op.clone()).await;
                         if res.is_err() {
