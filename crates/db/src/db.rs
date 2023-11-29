@@ -25,8 +25,10 @@ use lightdotso_contracts::{
     paymaster::decode_paymaster_and_data, types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_prisma::{
-    log, log_topic, paymaster, paymaster_operation, receipt, transaction, transaction_category,
-    user_operation, wallet, PrismaClient, UserOperationStatus,
+    log, log_topic, paymaster,
+    paymaster_operation::{self, sender_nonce},
+    receipt, transaction, transaction_category, user_operation, wallet, PrismaClient,
+    UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -518,8 +520,9 @@ pub async fn create_paymaster_operation(
     chain_id: i64,
     paymaster_address: ethers::types::H160,
     sender_address: ethers::types::H160,
-    valid_until: u64,
-    valid_after: u64,
+    sender_nonce: i64,
+    valid_until: i64,
+    valid_after: i64,
 ) -> Result<paymaster_operation::Data, eyre::Report> {
     info!("Creating new paymaster operation");
 
@@ -537,14 +540,14 @@ pub async fn create_paymaster_operation(
     let paymaster_operation = db
         .paymaster_operation()
         .create(
-            0,
+            sender_nonce,
             DateTime::<Utc>::from_utc(
-                NaiveDateTime::from_timestamp_opt(valid_until as i64, 0).unwrap(),
+                NaiveDateTime::from_timestamp_opt(valid_until, 0).unwrap(),
                 Utc,
             )
             .into(),
             DateTime::<Utc>::from_utc(
-                NaiveDateTime::from_timestamp_opt(valid_after as i64, 0).unwrap(),
+                NaiveDateTime::from_timestamp_opt(valid_after, 0).unwrap(),
                 Utc,
             )
             .into(),

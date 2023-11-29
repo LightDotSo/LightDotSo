@@ -39,6 +39,7 @@ use lightdotso_jsonrpsee::{
     handle_response,
     types::{Request, Response},
 };
+use lightdotso_prisma::paymaster_operation::sender_nonce;
 use lightdotso_signer::connect::connect_to_kms;
 use lightdotso_tracing::tracing::{info, warn};
 use serde_json::json;
@@ -123,6 +124,7 @@ pub async fn get_paymaster_and_data(
                 chain_id as i64,
                 verifying_paymaster_address,
                 construct.sender,
+                paymaster_nonce,
                 valid_until,
                 valid_after,
             )
@@ -176,6 +178,7 @@ pub async fn get_paymaster_and_data(
                 chain_id as i64,
                 verifying_paymaster_address,
                 construct.sender,
+                paymaster_nonce,
                 valid_until,
                 valid_after,
             )
@@ -191,6 +194,7 @@ pub async fn db_create_paymaster_operation(
     chain_id: i64,
     paymaster_address: Address,
     sender_address: Address,
+    sender_nonce: u64,
     valid_until: u64,
     valid_after: u64,
 ) -> Result<()> {
@@ -203,6 +207,7 @@ pub async fn db_create_paymaster_operation(
         chain_id,
         paymaster_address,
         sender_address,
+        sender_nonce,
         valid_until,
         valid_after,
     )
