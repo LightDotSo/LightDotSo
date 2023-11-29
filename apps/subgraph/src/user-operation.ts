@@ -55,7 +55,6 @@ export function handleUserOperationFromCalldata(
   // Parse the decoded user operation params
   const userOpStructTupletArray =
     decoded.toTupleArray<UserOperationStructTuple>();
-  log.info("userOpStructTupletArray: {}", [userOpStructTupletArray.toString()]);
 
   // Return the decoded user operation params w/ the matching nonce
   for (let i = 0; i < userOpStructTupletArray.length; i++) {
