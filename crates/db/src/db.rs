@@ -422,12 +422,16 @@ pub async fn upsert_user_operation(
 
     // Upsert the paymaster if it exists
     if let Some(paymaster_and_data) = uow.paymaster_and_data {
+        info!("Upserting paymaster operation");
+
         // Parse the paymaster and data
         let (paymaster_address, valid_until, valid_after, _sig) =
             decode_paymaster_and_data(paymaster_and_data.to_vec());
 
         // Upsert the paymaster if matches one of ours
         if LIGHT_PAYMASTER_ADDRESSES.contains(&paymaster_address) {
+            info!("Upserting paymaster {:?}", paymaster_address);
+
             let pm = db
                 .paymaster()
                 .upsert(

@@ -231,24 +231,28 @@ impl Polling {
 
                         // Attempt to create the wallet in the db.
                         // (Fail if the wallet already exists)
+                        info!("db_try_create_wallet");
                         let res = self.db_try_create_wallet(op).await;
                         if res.is_err() {
                             error!("db_try_create_wallet error: {:?}", res);
                         }
 
                         // Attempt to create the user operation in the db.
+                        info!("db_upsert_transaction_with_log_receipt");
                         let res = self.db_upsert_transaction_with_log_receipt(op.clone()).await;
                         if res.is_err() {
                             error!("db_upsert_transaction_with_log_receipt error: {:?}", res);
                         }
 
                         // Create the user operation in the db.
+                        info!("db_upsert_user_operation");
                         let res = self.db_upsert_user_operation(op.clone()).await;
                         if res.is_err() {
                             error!("db_upsert_user_operation error: {:?}", res);
                         }
 
                         // Upsert the user operation logs in the db.
+                        info!("db_upsert_user_operation_logs");
                         let res = self.db_upsert_user_operation_logs(op.clone()).await;
                         if res.is_err() {
                             error!("db_upsert_user_operation_logs error: {:?}", res);
