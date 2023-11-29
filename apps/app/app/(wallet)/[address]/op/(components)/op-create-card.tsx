@@ -37,6 +37,7 @@ import {
   lightWalletABI,
   lightWalletFactoryABI,
   useLightVerifyingPaymasterGetHash,
+  useLightVerifyingPaymasterSenderNonce,
 } from "@/wagmi";
 
 // -----------------------------------------------------------------------------
@@ -72,6 +73,12 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
 
   const { data, signMessage } = useSignMessage({
     message: { raw: toBytes(subdigest) },
+  });
+
+  const { data: paymasterNonce } = useLightVerifyingPaymasterSenderNonce({
+    address: userOperation.paymasterAndData.slice(0, 42) as Address,
+    chainId: Number(userOperation.chainId),
+    args: [userOperation.sender as Address],
   });
 
   const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
@@ -219,6 +226,11 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
             userOpHash: {userOperation.hash}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterNonce: {serializeBigInt(paymasterNonce)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
