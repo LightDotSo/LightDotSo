@@ -14,6 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import type { Address } from "viem";
+import { InvokeUserOperationButton } from "@/app/(wallet)/[address]/transactions/(components)/invoke-user-operation-button";
 import { BannerSection } from "@/components/section/banner-section";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const/titles";
@@ -55,6 +57,9 @@ export const metadata: Metadata = {
 
 interface TransactionsLayoutProps {
   children: React.ReactNode;
+  params: {
+    address: string;
+  };
 }
 
 // -----------------------------------------------------------------------------
@@ -63,6 +68,7 @@ interface TransactionsLayoutProps {
 
 export default function TransactionsLayout({
   children,
+  params,
 }: TransactionsLayoutProps) {
   return (
     <>
@@ -72,7 +78,9 @@ export default function TransactionsLayout({
       >
         <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
           <div className="mx-auto max-w-5xl flex-1 space-y-8">
-            <LinkButtonGroup items={transactionsNavItems} />
+            <LinkButtonGroup items={transactionsNavItems}>
+              <InvokeUserOperationButton address={params.address as Address} />
+            </LinkButtonGroup>
             {children}
           </div>
         </div>

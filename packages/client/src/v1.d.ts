@@ -192,6 +192,13 @@ export interface paths {
      */
     get: operations["v1_user_operation_signature_handler"];
   };
+  "/user_operation/update": {
+    /**
+     * Get a user operation
+     * @description Get a user operation
+     */
+    post: operations["v1_user_operation_update_handler"];
+  };
   "/wallet/create": {
     /**
      * Create a wallet
@@ -1361,6 +1368,32 @@ export interface operations {
       200: {
         content: {
           "text/plain": string;
+        };
+      };
+      /** @description User Operation not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a user operation
+   * @description Get a user operation
+   */
+  v1_user_operation_update_handler: {
+    parameters: {
+      query: {
+        /** @description The sender address to filter by. */
+        address: string;
+      };
+    };
+    responses: {
+      /** @description User Operation updated successfully */
+      200: {
+        content: {
+          "application/json": Record<string, unknown> | null;
         };
       };
       /** @description User Operation not found */

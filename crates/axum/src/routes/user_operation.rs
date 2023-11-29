@@ -380,7 +380,7 @@ async fn v1_user_operation_get_handler(
 
 /// Get a user operation
 #[utoipa::path(
-        get,
+        post,
         path = "/user_operation/update",
         params(
             UpdateQuery

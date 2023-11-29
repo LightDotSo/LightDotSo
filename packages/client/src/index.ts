@@ -362,6 +362,27 @@ export const getUserOperation = async (
   });
 };
 
+export const updateUserOperation = async ({
+  params,
+}: {
+  params: {
+    query: { address: string };
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/user_operation/update", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getUserOperationNonce = async (
   {
     params,

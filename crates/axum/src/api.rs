@@ -122,6 +122,7 @@ use utoipa_swagger_ui::SwaggerUi;
         user_operation::v1_user_operation_list_handler,
         user_operation::v1_user_operation_post_handler,
         user_operation::v1_user_operation_signature_handler,
+        user_operation::v1_user_operation_update_handler,
         wallet::v1_wallet_get_handler,
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
