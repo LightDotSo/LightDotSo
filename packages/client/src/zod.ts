@@ -36,7 +36,9 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
     },
   });
 
-  return responseSchema.parse(await response.json());
+  const data = (await response.json()) as JsonResponseSchema;
+
+  return responseSchema.parse(data);
 };
 
 interface JsonResponseSchema {

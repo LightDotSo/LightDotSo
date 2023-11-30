@@ -626,7 +626,7 @@ export const getNftsByOwner = async (address: string) => {
     ),
     err => {
       if (err instanceof Error) {
-        throw err;
+        return err;
       }
     },
   );
@@ -649,7 +649,7 @@ export const getLlama = async (address: string) => {
     ),
     err => {
       if (err instanceof Error) {
-        throw err;
+        return err;
       }
     },
   );
@@ -664,7 +664,7 @@ export const postLlama = async (address: string) => {
     ),
     err => {
       if (err instanceof Error) {
-        throw err;
+        return err;
       }
     },
   );
