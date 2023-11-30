@@ -177,13 +177,6 @@ module.exports = {
       },
     },
     {
-      files: ["**/apps/ui/src/components/ui/**.tsx"],
-      rules: {
-        "react/display-name": "off",
-        "react/prop-types": "off",
-      },
-    },
-    {
       files: ["*.config.js"],
       rules: {
         "import/order": "off",
