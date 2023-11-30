@@ -40,6 +40,7 @@ function Toaster() {
                 initial={{ y: 300 }}
                 animate={{ y: 0 }}
                 exit={{
+                  y: -150,
                   opacity: 0,
                 }}
                 transition={{
