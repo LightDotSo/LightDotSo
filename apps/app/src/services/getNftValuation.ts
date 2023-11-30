@@ -21,17 +21,14 @@ import type { Address } from "viem";
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address, isTestnet?: boolean) => {
-  void getClientNftValuation(address, isTestnet);
+export const preload = (address: Address) => {
+  void getClientNftValuation(address);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getNftValuation = async (
-  address: Address,
-  isTestnet?: boolean,
-) => {
-  return getClientNftValuation(address, isTestnet);
+export const getNftValuation = async (address: Address) => {
+  return getClientNftValuation(address);
 };

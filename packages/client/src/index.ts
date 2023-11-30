@@ -20,6 +20,7 @@ import {
   llamaPostSchema,
   nftsByOwnerSchema,
   nftWalletValuationsSchema,
+  mainnetChainSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync, err, ok } from "neverthrow";
 import createClient from "openapi-fetch";
@@ -639,10 +640,8 @@ export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
   );
 };
 
-export const getNftValuation = async (address: string, isTestnet?: boolean) => {
-  const chains = isTestnet
-    ? testnetChainSchema.options.join(",")
-    : chainSchema.options.join(",");
+export const getNftValuation = async (address: string) => {
+  const chains = mainnetChainSchema.options.join(",");
 
   return ResultAsync.fromPromise(
     zodFetch(
