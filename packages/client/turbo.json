@@ -10,7 +10,8 @@
         "LIGHT_RPC_TOKEN",
         "LOCAL_ENV",
         "NEXT_PUBLIC_LIGHT_ADMIN_TOKEN",
-        "NEXT_PUBLIC_LOCAL_ENV"
+        "NEXT_PUBLIC_LOCAL_ENV",
+        "SIMPLEHASH_API_KEY"
       ],
       "inputs": ["src/**"],
       "outputs": ["dist/**"]

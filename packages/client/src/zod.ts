@@ -24,6 +24,7 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
     revalidate?: number;
     tags?: string[];
   },
+  headers?: Record<string, string>,
 ): Promise<z.infer<TResponseSchema>> => {
   const response = await fetch(url, {
     // @ts-ignore
@@ -31,6 +32,7 @@ export const zodFetch = async <TResponseSchema extends z.Schema>(
     method: method ?? "GET",
     headers: {
       "content-type": "application/json",
+      ...headers,
     },
   });
 
