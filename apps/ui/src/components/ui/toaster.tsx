@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client"
+"use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Toast,
   ToastClose,
@@ -22,31 +23,40 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from "./toast"
-import { useToast } from "./use-toast"
+} from "./toast";
+import { useToast } from "./use-toast";
 
 function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
-        return (
-          <Toast key={id} {...props}>
-            <div className="grid shrink gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
-                <ToastDescription>{description}</ToastDescription>
-              )}
-            </div>
-            {action}
-            <ToastClose />
-          </Toast>
-        )
-      })}
+      <AnimatePresence mode="popLayout">
+        {toasts.map(function ({ id, title, description, action, ...props }) {
+          return (
+            <Toast key={id} {...props}>
+              <motion.li
+                layout
+                transition={{
+                  type: "spring",
+                }}
+              >
+                <div className="grid shrink gap-1">
+                  {title && <ToastTitle>{title}</ToastTitle>}
+                  {description && (
+                    <ToastDescription>{description}</ToastDescription>
+                  )}
+                </div>
+                {action}
+                <ToastClose />
+              </motion.li>
+            </Toast>
+          );
+        })}
+      </AnimatePresence>
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }
 
-export { Toaster }
+export { Toaster };

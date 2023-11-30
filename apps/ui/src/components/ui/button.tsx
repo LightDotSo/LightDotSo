@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cn } from "@lightdotso/utils"
-import { Slot } from "@radix-ui/react-slot"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@lightdotso/utils";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
 import { forwardRef } from "react";
 
 const buttonVariants = cva(
@@ -23,7 +23,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-background-primary text-text-weakest hover:bg-background-primary/90",
+        default:
+          "bg-background-primary text-text-weakest hover:bg-background-primary/90",
         destructive:
           "bg-background-destructive text-text-inverse hover:bg-background-destructive/90",
         loading: "bg-background-primary-weak text-text-weakest",
@@ -44,27 +45,27 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
-)
+  },
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button"
+    const Comp = asChild ? Slot : "button";
     return (
       <Comp
         ref={ref}
         className={cn(buttonVariants({ variant, size, className }))}
         {...props}
       />
-    )
-  }
-)
-Button.displayName = "Button"
+    );
+  },
+);
+Button.displayName = "Button";
 
-export { Button, buttonVariants }
+export { Button, buttonVariants };

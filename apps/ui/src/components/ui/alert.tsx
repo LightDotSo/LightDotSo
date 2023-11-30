@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cn } from "@lightdotso/utils"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@lightdotso/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 import { forwardRef } from "react";
 
 const alertVariants = cva(
@@ -30,8 +30,8 @@ const alertVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
-)
+  },
+);
 
 const Alert = forwardRef<
   HTMLDivElement,
@@ -43,8 +43,8 @@ const Alert = forwardRef<
     className={cn(alertVariants({ variant }), className)}
     {...props}
   />
-))
-Alert.displayName = "Alert"
+));
+Alert.displayName = "Alert";
 
 const AlertTitle = forwardRef<
   HTMLParagraphElement,
@@ -56,8 +56,8 @@ const AlertTitle = forwardRef<
     className={cn("mb-1 font-medium leading-none tracking-tight", className)}
     {...props}
   />
-))
-AlertTitle.displayName = "AlertTitle"
+));
+AlertTitle.displayName = "AlertTitle";
 
 const AlertDescription = forwardRef<
   HTMLParagraphElement,
@@ -68,7 +68,7 @@ const AlertDescription = forwardRef<
     className={cn("text-sm [&_p]:leading-relaxed", className)}
     {...props}
   />
-))
-AlertDescription.displayName = "AlertDescription"
+));
+AlertDescription.displayName = "AlertDescription";
 
-export { Alert, AlertTitle, AlertDescription }
+export { Alert, AlertTitle, AlertDescription };

@@ -15,9 +15,8 @@
 
 import type { StoryObj, Meta } from "@storybook/react";
 import { Button } from "./button";
-import { Toast, ToastAction } from "./toast";
-import { useToast, type Toast as ToastProps  } from "./use-toast";
-
+import { ToastAction } from "./toast";
+import { useToast, type Toast as ToastProps } from "./use-toast";
 
 const ToastDemo = (props: ToastProps) => {
   const { toast } = useToast();
@@ -34,7 +33,6 @@ const ToastDemo = (props: ToastProps) => {
       >
         Show Toast
       </Button>
-      <Toast />
     </>
   );
 };
@@ -46,7 +44,6 @@ const meta: Meta<typeof ToastDemo> = {
   argTypes: {},
 };
 export default meta;
-
 
 type Story = StoryObj<typeof ToastDemo>;
 

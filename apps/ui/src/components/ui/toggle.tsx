@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client"
+"use client";
 
-import { cn } from "@lightdotso/utils"
-import * as TogglePrimitive from "@radix-ui/react-toggle"
-import { cva, type VariantProps } from "class-variance-authority"
+import { cn } from "@lightdotso/utils";
+import * as TogglePrimitive from "@radix-ui/react-toggle";
+import { cva, type VariantProps } from "class-variance-authority";
 import { forwardRef } from "react";
 
 const toggleVariants = cva(
@@ -39,8 +39,8 @@ const toggleVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
-)
+  },
+);
 
 const Toggle = forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
@@ -52,8 +52,8 @@ const Toggle = forwardRef<
     className={cn(toggleVariants({ variant, size, className }))}
     {...props}
   />
-))
+));
 
-Toggle.displayName = TogglePrimitive.Root.displayName
+Toggle.displayName = TogglePrimitive.Root.displayName;
 
-export { Toggle, toggleVariants }
+export { Toggle, toggleVariants };

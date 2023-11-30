@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cn } from "@lightdotso/utils"
+import { cn } from "@lightdotso/utils";
 import { forwardRef } from "react";
 
 const Table = forwardRef<
@@ -27,16 +27,20 @@ const Table = forwardRef<
       {...props}
     />
   </div>
-))
-Table.displayName = "Table"
+));
+Table.displayName = "Table";
 
 const TableHeader = forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("border-border [&_tr]:border-b", className)} {...props} />
-))
-TableHeader.displayName = "TableHeader"
+  <thead
+    ref={ref}
+    className={cn("border-border [&_tr]:border-b", className)}
+    {...props}
+  />
+));
+TableHeader.displayName = "TableHeader";
 
 const TableBody = forwardRef<
   HTMLTableSectionElement,
@@ -47,8 +51,8 @@ const TableBody = forwardRef<
     className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
-))
-TableBody.displayName = "TableBody"
+));
+TableBody.displayName = "TableBody";
 
 const TableFooter = forwardRef<
   HTMLTableSectionElement,
@@ -56,11 +60,14 @@ const TableFooter = forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={cn("bg-background-primary font-medium text-text-weakest", className)}
+    className={cn(
+      "bg-background-primary font-medium text-text-weakest",
+      className,
+    )}
     {...props}
   />
-))
-TableFooter.displayName = "TableFooter"
+));
+TableFooter.displayName = "TableFooter";
 
 const TableRow = forwardRef<
   HTMLTableRowElement,
@@ -70,12 +77,12 @@ const TableRow = forwardRef<
     ref={ref}
     className={cn(
       "border-border border-b transition-colors hover:bg-background-stronger/50 data-[state=selected]:bg-background-stronger",
-      className
+      className,
     )}
     {...props}
   />
-))
-TableRow.displayName = "TableRow"
+));
+TableRow.displayName = "TableRow";
 
 const TableHead = forwardRef<
   HTMLTableCellElement,
@@ -85,12 +92,12 @@ const TableHead = forwardRef<
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-text-weak [&:has([role=checkbox])]:pr-0",
-      className
+      className,
     )}
     {...props}
   />
-))
-TableHead.displayName = "TableHead"
+));
+TableHead.displayName = "TableHead";
 
 const TableCell = forwardRef<
   HTMLTableCellElement,
@@ -101,8 +108,8 @@ const TableCell = forwardRef<
     className={cn("p-6 align-middle [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
-))
-TableCell.displayName = "TableCell"
+));
+TableCell.displayName = "TableCell";
 
 const TableCaption = forwardRef<
   HTMLTableCaptionElement,
@@ -113,8 +120,8 @@ const TableCaption = forwardRef<
     className={cn("mt-4 text-sm text-text-weak", className)}
     {...props}
   />
-))
-TableCaption.displayName = "TableCaption"
+));
+TableCaption.displayName = "TableCaption";
 
 export {
   Table,
@@ -125,4 +132,4 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-}
+};
