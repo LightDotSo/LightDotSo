@@ -13,13 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { llamaGetSchema, llamaPostSchema } from "@lightdotso/schemas";
+import {
+  chainSchema,
+  testnetChainSchema,
+  llamaGetSchema,
+  llamaPostSchema,
+  nftsByOwnerSchema,
+  nftWalletValuationsSchema,
+  mainnetChainSchema,
+} from "@lightdotso/schemas";
 import { ResultAsync, err, ok } from "neverthrow";
 import createClient from "openapi-fetch";
 import { z } from "zod";
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 import type { paths, Without, XOR, OneOf } from "./v1";
 import { zodFetch, zodJsonRpcFetch } from "./zod";
+
+// -----------------------------------------------------------------------------
+// Light
+// -----------------------------------------------------------------------------
 
 const devApiClient = createClient<paths>({
   baseUrl: "http://localhost:3000/admin/v1",
@@ -570,32 +582,6 @@ export const getUserOperations = async (
   });
 };
 
-export const getLlama = async (address: string) => {
-  return ResultAsync.fromPromise(
-    zodFetch(
-      `https://api.llamafolio.com/balances/${address}`,
-      llamaGetSchema,
-      "GET",
-      {
-        revalidate: 300,
-        tags: [address],
-      },
-    ),
-    () => new Error("Database error"),
-  );
-};
-
-export const postLlama = async (address: string) => {
-  return ResultAsync.fromPromise(
-    zodFetch(
-      `https://api.llamafolio.com/balances/${address}`,
-      llamaPostSchema,
-      "POST",
-    ),
-    () => new Error("Database error"),
-  );
-};
-
 export const updateWalletSettings = async ({
   params,
   body,
@@ -623,6 +609,102 @@ export const updateWalletSettings = async ({
     return response.status === 200 && data ? ok(data) : err(error);
   });
 };
+
+// -----------------------------------------------------------------------------
+// Simplehash
+// -----------------------------------------------------------------------------
+
+export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
+  const chains = isTestnet
+    ? testnetChainSchema.options.join(",")
+    : chainSchema.options.join(",");
+
+  return ResultAsync.fromPromise(
+    zodFetch(
+      `https://api.simplehash.com/api/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=50`,
+      nftsByOwnerSchema,
+      "GET",
+      {
+        revalidate: 300,
+        tags: [address],
+      },
+      {
+        "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
+      },
+    ),
+    err => {
+      if (err instanceof Error) {
+        return err;
+      }
+    },
+  );
+};
+
+export const getNftValuation = async (address: string) => {
+  const chains = mainnetChainSchema.options.join(",");
+
+  return ResultAsync.fromPromise(
+    zodFetch(
+      `https://api.simplehash.com/api/v0/nfts/owners/value?chains=${chains}&wallet_addresses=${address}`,
+      nftWalletValuationsSchema,
+      "GET",
+      {
+        revalidate: 300,
+        tags: [address],
+      },
+      {
+        "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
+      },
+    ),
+    err => {
+      if (err instanceof Error) {
+        return err;
+      }
+    },
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Llama
+// -----------------------------------------------------------------------------
+
+export const getLlama = async (address: string) => {
+  return ResultAsync.fromPromise(
+    zodFetch(
+      `https://api.llamafolio.com/balances/${address}`,
+      llamaGetSchema,
+      "GET",
+      {
+        revalidate: 300,
+        tags: [address],
+      },
+    ),
+    err => {
+      if (err instanceof Error) {
+        return err;
+      }
+    },
+  );
+};
+
+export const postLlama = async (address: string) => {
+  return ResultAsync.fromPromise(
+    zodFetch(
+      `https://api.llamafolio.com/balances/${address}`,
+      llamaPostSchema,
+      "POST",
+    ),
+    err => {
+      if (err instanceof Error) {
+        return err;
+      }
+    },
+  );
+};
+
+// -----------------------------------------------------------------------------
+// Rpc
+// -----------------------------------------------------------------------------
 
 const EthChainIdResultSchema = z
   .string()
