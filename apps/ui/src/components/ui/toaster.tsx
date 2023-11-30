@@ -37,8 +37,15 @@ function Toaster() {
             <Toast key={id} {...props}>
               <motion.li
                 layout
+                initial={{ y: 300 }}
+                animate={{ y: 0 }}
+                exit={{
+                  opacity: 0,
+                }}
                 transition={{
                   type: "spring",
+                  damping: 30,
+                  stiffness: 300,
                 }}
               >
                 <div className="grid shrink gap-1">
