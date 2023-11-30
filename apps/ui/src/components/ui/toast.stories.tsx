@@ -15,7 +15,7 @@
 
 import type { StoryObj, Meta } from "@storybook/react";
 import { Button } from "./button";
-import { Toast, ToastAction } from "./toast";
+import { ToastAction } from "./toast";
 import { useToast, type Toast as ToastProps } from "./use-toast";
 
 const ToastDemo = (props: ToastProps) => {
@@ -33,7 +33,6 @@ const ToastDemo = (props: ToastProps) => {
       >
         Show Toast
       </Button>
-      <Toast />
     </>
   );
 };

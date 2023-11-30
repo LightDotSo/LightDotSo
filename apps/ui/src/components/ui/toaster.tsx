@@ -15,6 +15,7 @@
 
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Toast,
   ToastClose,
@@ -30,20 +31,30 @@ function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }) {
-        return (
-          <Toast key={id} {...props}>
-            <div className="grid shrink gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
-                <ToastDescription>{description}</ToastDescription>
-              )}
-            </div>
-            {action}
-            <ToastClose />
-          </Toast>
-        );
-      })}
+      <AnimatePresence mode="popLayout">
+        {toasts.map(function ({ id, title, description, action, ...props }) {
+          return (
+            <Toast {...props}>
+              <motion.li
+                key={id}
+                layout
+                transition={{
+                  type: "spring",
+                }}
+              >
+                <div className="grid shrink gap-1">
+                  {title && <ToastTitle>{title}</ToastTitle>}
+                  {description && (
+                    <ToastDescription>{description}</ToastDescription>
+                  )}
+                </div>
+                {action}
+                <ToastClose />
+              </motion.li>
+            </Toast>
+          );
+        })}
+      </AnimatePresence>
       <ToastViewport />
     </ToastProvider>
   );
