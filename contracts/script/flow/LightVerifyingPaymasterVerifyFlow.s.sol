@@ -71,7 +71,7 @@ contract LightVerifyingPaymasterVerifyFlowScript is BaseLightDeployerFlow {
 
         // Deploy a new LightWallet
         // UserOperation to create the account
-        op = constructUserOperation(expectedAddress, 0, initCode, callData);
+        op = constructUserOperation(expectedAddress, 0, initCode, callData, false);
 
         // solhint-disable-next-line no-console
         console.logBytes(op.paymasterAndData);
