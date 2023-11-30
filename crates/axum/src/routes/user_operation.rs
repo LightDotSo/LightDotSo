@@ -53,7 +53,7 @@ use lightdotso_solutions::{
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::{
     chrono::{DateTime, NaiveDateTime, Utc},
-    Direction,
+    or, Direction,
 };
 use rundler_types::UserOperation as RundlerUserOperation;
 use serde::{Deserialize, Serialize};
@@ -417,7 +417,10 @@ async fn v1_user_operation_update_handler(
         .user_operation()
         .find_many(vec![
             user_operation::sender::equals(to_checksum(&address, None)),
-            user_operation::status::equals(UserOperationStatus::Executed),
+            or![
+                user_operation::status::equals(UserOperationStatus::Executed),
+                user_operation::status::equals(UserOperationStatus::Reverted)
+            ],
         ])
         .order_by(user_operation::nonce::order(Direction::Desc))
         .exec()
@@ -484,7 +487,10 @@ async fn v1_user_operation_nonce_handler(
         .find_first(vec![
             user_operation::chain_id::equals(chain_id),
             user_operation::sender::equals(to_checksum(&address, None)),
-            user_operation::status::equals(UserOperationStatus::Executed),
+            or![
+                user_operation::status::equals(UserOperationStatus::Executed),
+                user_operation::status::equals(UserOperationStatus::Reverted)
+            ],
         ])
         .order_by(user_operation::nonce::order(Direction::Desc))
         .exec()

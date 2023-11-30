@@ -35,6 +35,7 @@ use lightdotso_tracing::{
 };
 use prisma_client_rust::{
     chrono::{DateTime, FixedOffset, NaiveDateTime, Utc},
+    or,
     serde_json::{self, json},
     Direction, NewClientError,
 };
@@ -572,8 +573,11 @@ pub async fn get_most_recent_paymaster_operation_with_sender(
             .find_first(vec![
                 user_operation::chain_id::equals(chain_id),
                 user_operation::sender::equals(to_checksum(&sender_address, None)),
-                user_operation::status::equals(UserOperationStatus::Executed),
                 user_operation::paymaster_id::equals(Some(paymaster.id)),
+                or![
+                    user_operation::status::equals(UserOperationStatus::Executed),
+                    user_operation::status::equals(UserOperationStatus::Reverted)
+                ],
             ])
             .order_by(user_operation::nonce::order(Direction::Desc))
             .with(user_operation::paymaster_operation::fetch())
