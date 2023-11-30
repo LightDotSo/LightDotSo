@@ -34,7 +34,7 @@ import { useAuth } from "@/stores/useAuth";
 export const AuthState: FC = () => {
   const { address } = useAccount();
   const { data: ens } = useEnsName({ address, chainId: 1 });
-  const { setAddress, setWallet, setEns, logout, setUserId } = useAuth();
+  const { setWallet, setEns, setUserId } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -104,17 +104,6 @@ export const AuthState: FC = () => {
       }
     }
   }, [pathname, address, setWallet]);
-
-  // On component mount, or when the address from useAccount changes,
-  // update the auth state's address
-  useEffect(() => {
-    if (address) {
-      setAddress(address);
-    } else {
-      logout();
-      router.push("/");
-    }
-  }, [address, logout, router, setAddress]);
 
   useEffect(() => {
     // If on the home page and selected paths, and the user is logged in, redirect to `/wallets`
