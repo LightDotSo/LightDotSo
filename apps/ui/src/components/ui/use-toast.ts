@@ -16,7 +16,7 @@
 "use client";
 
 // Inspired by react-hot-toast library
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ToastActionElement, ToastProps } from "./toast";
 
 const TOAST_LIMIT = 3;
@@ -195,8 +195,13 @@ function useToast() {
     };
   }, [state]);
 
+  const toasts = useMemo(() => {
+    // Order toasts reverse
+    return state.toasts.slice().reverse();
+  }, [state.toasts]);
+
   return {
-    ...state,
+    toasts,
     toast,
     dismiss: (toastId?: string) => dispatch({ type: "DISMISS_TOAST", toastId }),
   };
