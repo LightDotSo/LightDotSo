@@ -59,6 +59,7 @@
     "class-variance-authority": "^0.7.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "framer-motion": "^10.6.8",
     "lucide-react": "^0.263.1",
     "next": "^14.0.3",
     "next-themes": "^0.2.1",
