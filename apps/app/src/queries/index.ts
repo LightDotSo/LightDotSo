@@ -16,6 +16,7 @@
 import { mergeQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeyStore } from "@lukemorales/query-key-factory";
 import { configuration } from "./configuration";
+import { nft } from "./nft";
 import { portfolio } from "./portfolio";
 import { token } from "./token";
 import { token_price } from "./token_price";
@@ -26,6 +27,7 @@ import { wallet } from "./wallet";
 
 export const queries = mergeQueryKeys(
   configuration,
+  nft,
   portfolio,
   transaction,
   user_operation,

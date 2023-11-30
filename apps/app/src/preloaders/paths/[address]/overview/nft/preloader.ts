@@ -13,10 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export {
-  mainnetChainSchema,
-  testnetChainSchema,
-  chainSchema,
-  nftsByOwnerSchema,
-} from "./simplehash";
-export { llamaGetSchema, llamaPostSchema } from "./llama";
+import type { Address } from "viem";
+import { preload as preloadGetNfts } from "@/services/getNfts";
+import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
+
+// -----------------------------------------------------------------------------
+// Preloader
+// -----------------------------------------------------------------------------
+
+export const preloader = async (params: { address: string }) => {
+  preloadGetNfts(params.address as Address);
+  preloadGetPortfolio(params.address as Address);
+};

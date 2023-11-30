@@ -14,8 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {
+  chainSchema,
   llamaGetSchema,
   llamaPostSchema,
+  mainnetChainSchema,
   nftsByOwnerSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync, err, ok } from "neverthrow";
@@ -610,10 +612,15 @@ export const updateWalletSettings = async ({
 // Simplehash
 // -----------------------------------------------------------------------------
 
-export const getNftsByOwner = async (address: string) => {
+export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
+  const chains =
+    typeof isTestnet === "undefined" || isTestnet
+      ? chainSchema.options.join(",")
+      : mainnetChainSchema.options.join(",");
+
   return ResultAsync.fromPromise(
     zodFetch(
-      `https://api.simplehash.com/api/v0/nfts/owners?chains=polygon,ethereum&wallet_addresses=${address}&limit=50`,
+      `https://api.simplehash.com/api/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=50`,
       nftsByOwnerSchema,
       "GET",
       {
