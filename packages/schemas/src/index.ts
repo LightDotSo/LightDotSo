@@ -18,5 +18,6 @@ export {
   testnetChainSchema,
   chainSchema,
   nftsByOwnerSchema,
+  nftWalletValuationsSchema,
 } from "./simplehash";
 export { llamaGetSchema, llamaPostSchema } from "./llama";

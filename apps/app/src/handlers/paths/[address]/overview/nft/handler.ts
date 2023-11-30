@@ -17,7 +17,7 @@ import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { validateAddress } from "@/handlers/validators/address";
-import { getPortfolio, getNfts, getWalletSettings } from "@/services";
+import { getNftValuation, getNfts, getWalletSettings } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -41,21 +41,24 @@ export const handler = async (params: { address: string }) => {
     walletSettings?.unwrapOr({ is_enabled_testnet: false }).is_enabled_testnet,
   );
 
-  const portfolioPromise = getPortfolio(params.address as Address);
+  const nftValuationPromise = getNftValuation(params.address as Address);
 
-  const [nfts, portfolio] = await Promise.all([nftsPromise, portfolioPromise]);
+  const [nfts, nftValuation] = await Promise.all([
+    nftsPromise,
+    nftValuationPromise,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([nfts, portfolio]);
+  const res = Result.combineWithAllErrors([nfts, nftValuation]);
 
   return res.match(
-    ([nfts, portfolio]) => {
+    ([nfts, nftValuation]) => {
       return {
         nfts: nfts,
-        portfolio: portfolio,
+        nftValuation: nftValuation,
       };
     },
     () => {

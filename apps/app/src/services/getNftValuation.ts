@@ -13,15 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { getNftValuation as getClientNftValuation } from "@lightdotso/client";
+import "server-only";
 import type { Address } from "viem";
-import { preload as preloadGetNftValuation } from "@/services/getNftValuation";
-import { preload as preloadGetNfts } from "@/services/getNfts";
 
 // -----------------------------------------------------------------------------
-// Preloader
+// Pre
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
-  preloadGetNfts(params.address as Address);
-  preloadGetNftValuation(params.address as Address);
+export const preload = (address: Address, isTestnet?: boolean) => {
+  void getClientNftValuation(address, isTestnet);
+};
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getNftValuation = async (
+  address: Address,
+  isTestnet?: boolean,
+) => {
+  return getClientNftValuation(address, isTestnet);
 };

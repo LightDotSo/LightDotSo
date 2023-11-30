@@ -18,6 +18,7 @@ export { getLlama } from "@/services/getLlama";
 export { getPortfolio } from "@/services/getPortfolio";
 export { getQueryClient } from "@/services/getQueryClient";
 export { getNfts } from "@/services/getNfts";
+export { getNftValuation } from "@/services/getNftValuation";
 export { getTokens } from "@/services/getTokens";
 export { getTransactions } from "@/services/getTransactions";
 export { getUserOperation } from "@/services/getUserOperation";

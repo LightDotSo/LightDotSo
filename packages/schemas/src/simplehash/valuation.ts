@@ -13,6 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { mainnetChainSchema, testnetChainSchema, chainSchema } from "./chains";
-export { nftsByOwnerSchema } from "./nfts";
-export { nftWalletValuationsSchema } from "./valuation";
+import { z } from "zod";
+
+export const valuationSchema = z.object({
+  address: z.string(),
+  usd_value: z.number(),
+});
+
+export const nftWalletValuationsSchema = z.object({
+  wallets: z.array(valuationSchema),
+});

@@ -19,6 +19,7 @@ import {
   llamaGetSchema,
   llamaPostSchema,
   nftsByOwnerSchema,
+  nftWalletValuationsSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync, err, ok } from "neverthrow";
 import createClient from "openapi-fetch";
@@ -638,6 +639,32 @@ export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
   );
 };
 
+export const getNftValuation = async (address: string, isTestnet?: boolean) => {
+  const chains = isTestnet
+    ? testnetChainSchema.options.join(",")
+    : chainSchema.options.join(",");
+
+  return ResultAsync.fromPromise(
+    zodFetch(
+      `https://api.simplehash.com/api/v0/nfts/owners/value?chains=${chains}&wallet_addresses=${address}`,
+      nftWalletValuationsSchema,
+      "GET",
+      {
+        revalidate: 300,
+        tags: [address],
+      },
+      {
+        "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
+      },
+    ),
+    err => {
+      if (err instanceof Error) {
+        return err;
+      }
+    },
+  );
+};
+
 // -----------------------------------------------------------------------------
 // Llama
 // -----------------------------------------------------------------------------
@@ -675,6 +702,10 @@ export const postLlama = async (address: string) => {
     },
   );
 };
+
+// -----------------------------------------------------------------------------
+// Rpc
+// -----------------------------------------------------------------------------
 
 const EthChainIdResultSchema = z
   .string()

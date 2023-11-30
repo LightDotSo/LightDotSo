@@ -52,7 +52,7 @@ export default async function Page({ params }: PageProps) {
 
   const { walletSettings } = await handler(params);
 
-  const { nfts, portfolio } = await pageHandler(params);
+  const { nfts, nftValuation } = await pageHandler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -65,8 +65,8 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   queryClient.setQueryData(
-    queries.portfolio.get(params.address as Address).queryKey,
-    portfolio,
+    queries.nft_valuation.get(params.address as Address).queryKey,
+    nftValuation,
   );
   queryClient.setQueryData(
     queries.nft.list({

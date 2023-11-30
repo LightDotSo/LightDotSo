@@ -16,7 +16,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { test, expect } from "vitest";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getNftsByOwner } from "../src"; // Replace with your actual file path
+import { getNftsByOwner, getNftValuation } from "../src"; // Replace with your actual file path
 // Load dotenv
 import "dotenv/config";
 
@@ -33,6 +33,24 @@ test("getNftsByOwner", async () => {
   // ]);
   // Check that the array length is greater than 0
   expect(result._unsafeUnwrap().nfts.length).toBeGreaterThan(0);
+
+  // Log the result
+  // console.log(result._unsafeUnwrap());
+});
+
+test("getNftValuation", async () => {
+  // Call your function with actual address
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const actualAddress = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"; // replace with actual address
+  const result = await getNftValuation(actualAddress);
+
+  // Expect that status is either "success" or "stale"
+  // expect(result._unsafeUnwrap().status, "status").tobe([
+  //   "success",
+  //   "stale",
+  // ]);
+  // Check that the array length is greater than 0
+  expect(result._unsafeUnwrap().wallets.length).toBeGreaterThan(0);
 
   // Log the result
   // console.log(result._unsafeUnwrap());

@@ -13,15 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 import type { Address } from "viem";
-import { preload as preloadGetNftValuation } from "@/services/getNftValuation";
-import { preload as preloadGetNfts } from "@/services/getNfts";
 
 // -----------------------------------------------------------------------------
-// Preloader
+// Keys
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
-  preloadGetNfts(params.address as Address);
-  preloadGetNftValuation(params.address as Address);
-};
+export const nft_valuation = createQueryKeys("nft_valuation", {
+  get: (address: Address) => ({
+    queryKey: [address],
+  }),
+});
+
+// -----------------------------------------------------------------------------
+// Infer
+// -----------------------------------------------------------------------------
+
+export type NftValuationKeys = inferQueryKeys<typeof nft_valuation>;
