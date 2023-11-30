@@ -35,3 +35,4 @@ ignores:
   - "@storybook/blocks"
   - "@storybook/theming"
   - storybook-dark-mode
+  - framer-motion
