@@ -33,11 +33,12 @@ use lightdotso_common::{
     utils::hex_to_bytes,
 };
 use lightdotso_contracts::{
-    constants::ENTRYPOINT_V060_ADDRESS, paymaster::decode_paymaster_and_data,
+    constants::{ENTRYPOINT_V060_ADDRESS, LIGHT_PAYMASTER_ADDRESSES},
+    paymaster::decode_paymaster_and_data,
 };
 use lightdotso_prisma::{
-    configuration, owner, paymaster, paymaster_operation, signature, transaction, user_operation,
-    wallet, SignatureProcedure, UserOperationStatus,
+    configuration, log, owner, paymaster, paymaster_operation, receipt, signature, transaction,
+    user_operation, wallet, SignatureProcedure, UserOperationStatus,
 };
 use lightdotso_solutions::{
     builder::rooted_node_builder,
@@ -476,6 +477,7 @@ async fn v1_user_operation_nonce_handler(
 
     // Get the user operations from the database.
     let user_operation = client
+        .clone()
         .client
         .unwrap()
         .user_operation()
@@ -492,6 +494,49 @@ async fn v1_user_operation_nonce_handler(
     // If the user operation is not found, return 0 as Ok.
     match user_operation {
         Some(user_operation) => {
+            // If the user operation is of nonce 0, query if there is an additional user operation
+            // of AccountDeploy
+            if user_operation.nonce == 0 {
+                info!("Found user operation of nonce 0");
+
+                if let Some(hash) = user_operation.transaction_hash {
+                    // Fetch the receipt and logs
+                    let receipt = client
+                        .client
+                        .unwrap()
+                        .receipt()
+                        .find_unique(receipt::transaction_hash::equals(hash))
+                        .with(receipt::logs::fetch(vec![]).with(log::topics::fetch(vec![])))
+                        .exec()
+                        .await?;
+                    info!(?receipt);
+
+                    if let Some(receipt) = receipt {
+                        info!(?receipt);
+
+                        // Iterate through the logs and check if the first log is an `Account
+                        // Deployed` event
+                        // Unwrap is safe because `with::Fetch`` has been called
+                        for log in receipt.logs.unwrap() {
+                            for topic in log.topics.unwrap() {
+                                // If the data is equal to the hash of the `AccountDeployed` event
+                                if topic.id == *"0xd51a9c61267aa6196961883ecf5ff2da6619c37dac0fa92122513fb32c032d2d-0" && log.data.len() == 64 {
+                                  // Parse the topic data as hex string
+                                  // Get the first 64 characters
+                                  let address = H160::from_slice(&log.data[44..64]);
+                                  info!("address: {}", to_checksum(&address, None));
+
+                                  // Check if the data in the paymaster is one of ours
+                                  if LIGHT_PAYMASTER_ADDRESSES.contains(&address) {
+                                    return Ok(Json::from(UserOperationNonce { nonce: 2 }));
+                                  }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             Ok(Json::from(UserOperationNonce { nonce: user_operation.nonce + 1 }))
         }
         None => Ok(Json::from(UserOperationNonce { nonce: 0 })),
