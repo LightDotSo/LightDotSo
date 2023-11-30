@@ -63,4 +63,6 @@ pub struct UserOperationWithTransactionAndReceiptLogs {
     pub light_wallet: Address,
     /// The address of the paymaster sponsoring this operation
     pub paymaster: Option<Address>,
+    /// Flag to indicate whether it's reverted
+    pub is_reverted: bool,
 }

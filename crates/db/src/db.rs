@@ -402,7 +402,11 @@ pub async fn upsert_user_operation(
                 ))],
             ),
             vec![
-                user_operation::status::set(UserOperationStatus::Executed),
+                user_operation::status::set(if uow.is_reverted {
+                    UserOperationStatus::Reverted
+                } else {
+                    UserOperationStatus::Executed
+                }),
                 user_operation::transaction_hash::set(Some(format!("{:?}", uow.transaction.hash))),
             ],
         )
