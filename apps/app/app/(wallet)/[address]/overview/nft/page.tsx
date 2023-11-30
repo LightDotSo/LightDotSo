@@ -18,7 +18,7 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
-// import { NftsList } from "@/components/nft/nft-list";
+import { NftsList } from "@/components/nft/nfts-list";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { handler as pageHandler } from "@/handlers/paths/[address]/overview/nft/handler";
 import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/nft/preloader";
@@ -82,8 +82,9 @@ export default async function Page({ params }: PageProps) {
         <PortfolioChart address={params.address as Address} />
       </Suspense> */}
       <Suspense>
-        {/* <NftsList address={params.address as Address} /> */}
+        <NftsList address={params.address as Address} />
         {JSON.stringify(nfts)}
+        {JSON.stringify(nftValuation)}
       </Suspense>
     </HydrationBoundary>
   );
