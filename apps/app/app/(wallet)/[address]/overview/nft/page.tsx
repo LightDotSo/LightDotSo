@@ -78,13 +78,8 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      {/* <Suspense>
-        <PortfolioChart address={params.address as Address} />
-      </Suspense> */}
       <Suspense>
         <NftsList address={params.address as Address} />
-        {JSON.stringify(nfts)}
-        {JSON.stringify(nftValuation)}
       </Suspense>
     </HydrationBoundary>
   );

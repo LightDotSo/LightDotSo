@@ -141,10 +141,9 @@ type NftCardProps = {
 // -----------------------------------------------------------------------------
 
 export const NftCard: FC<NftCardProps> = ({
-  address,
+  address: _address,
   nft: {
     contract_address,
-    chain,
     image_url,
     collection: { description },
     previews: { image_large_url },
@@ -153,8 +152,6 @@ export const NftCard: FC<NftCardProps> = ({
 }) => {
   return (
     <li className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow">
-      {address}
-      {chain}
       <img
         src={
           image_url ?? image_large_url ?? extra_metadata?.image_original_url!
