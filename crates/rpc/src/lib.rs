@@ -18,8 +18,8 @@ mod constants;
 
 use crate::constants::{
     ALCHEMY_RPC_URLS, ANKR_RPC_URLS, BLASTAPI_RPC_URLS, BUNDLER_RPC_URL, CHAINNODES_RPC_URLS,
-    GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, PAYMASTER_RPC_URL,
-    PIMLICO_RPC_URLS, PUBLIC_RPC_URLS, SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
+    GAS_RPC_URL, INFURA_RPC_URLS, LLAMANODES_RPC_URLS, NODEREAL_RPC_URLS, OFFICIAL_PUBLIC_RPC_URLS,
+    PAYMASTER_RPC_URL, PIMLICO_RPC_URLS, SIMULATOR_RPC_URL, THIRDWEB_RPC_URLS,
 };
 use axum::{
     body::Body,
@@ -525,7 +525,7 @@ pub async fn rpc_proxy_handler(
 
     // Get the public rpc url from the constants
     let result = try_rpc_with_url(
-        &PUBLIC_RPC_URLS,
+        &OFFICIAL_PUBLIC_RPC_URLS,
         None,
         &chain_id,
         &client,

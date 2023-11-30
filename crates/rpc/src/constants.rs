@@ -131,9 +131,32 @@ lazy_static! {
     };
 }
 
-// The public rpc urls
+// The public node rpc urls
 lazy_static! {
-    pub static ref PUBLIC_RPC_URLS: HashMap<u64, String> = {
+    pub static ref PUBLIC_NODE_RPC_URLS: HashMap<u64, String> = {
+        let mut m = HashMap::new();
+
+        // Mainnet
+        m.insert(1, "https://ethereum.publicnode.com".to_string());
+        m.insert(10, "https://optimism.publicnode.com".to_string());
+        m.insert(56, "https://bsc.publicnode.com".to_string());
+        m.insert(100, "https://gnosis.publicnode.com".to_string());
+        m.insert(137, "https://polygon-bor.publicnode.com".to_string());
+        m.insert(8453, "https://base.publicnode.com".to_string());
+        m.insert(42161, "https://arbitrum-one.publicnode.com".to_string());
+        m.insert(43114, "https://avalanche-c-chain.publicnode.com".to_string());
+
+        // Testnet
+        m.insert(80001, "https://polygon-mumbai-bor.publicnode.com".to_string());
+        m.insert(11155111, "https://gnosis.publicnode.com".to_string());
+
+        m
+    };
+}
+
+// The official public rpc urls
+lazy_static! {
+    pub static ref OFFICIAL_PUBLIC_RPC_URLS: HashMap<u64, String> = {
         let mut m = HashMap::new();
 
         // Mainnet
@@ -173,6 +196,7 @@ lazy_static! {
         m.insert(1666600000, "https://rpc.ankr.com/harmony".to_string());
 
         // Testnet
+        m.insert(80001, "https://rpc.ankr.com/polygon_mumbai".to_string());
         m.insert(11155111, "https://rpc.ankr.com/eth_sepolia".to_string());
 
         m
@@ -200,6 +224,7 @@ lazy_static! {
         m.insert(1666600000, "https://harmony-shard-0.rpc.thirdweb.com".to_string());
 
         // Testnet
+        m.insert(80001, "https://mumbai.rpc.thirdweb.com".to_string());
         m.insert(11155111, "https://sepolia.rpc.thirdweb.com".to_string());
 
         m
