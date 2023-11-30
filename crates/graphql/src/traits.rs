@@ -226,12 +226,16 @@ impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs
                 // Determistic Option Default
                 other: OtherFields::default(),
             },
+            // The address of the Light Wallet
             light_wallet: op.user_operation.light_wallet.address.0.parse().unwrap(),
+            // The address of the paymaster
             paymaster: op
                 .user_operation
                 .paymaster
                 .as_ref()
                 .and_then(|v| v.0.parse::<H160>().ok().map(Into::into)),
+            // Custom flag to indicate whether user operation is reverted or not
+            is_reverted: op.user_operation.user_operation_revert_reason.is_some(),
         }
     }
 }
