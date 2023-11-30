@@ -18,6 +18,7 @@
 import { Button } from "@lightdotso/ui";
 import Link from "next/link";
 import type { FC } from "react";
+import { Blurhash } from "react-blurhash";
 import { chainIdMapping } from "@/const/simplehash";
 
 // -----------------------------------------------------------------------------
@@ -147,15 +148,26 @@ export const NftCard: FC<NftCardProps> = ({
   address,
   nft: {
     contract_address,
+    token_id,
     chain,
     image_url,
     collection: { description },
-    previews: { image_large_url },
+    previews: { blurhash, image_large_url },
     extra_metadata,
   },
 }) => {
   return (
     <li className="group relative col-span-1 flex flex-col divide-y divide-border rounded-lg text-center shadow">
+      {blurhash && (
+        <Blurhash
+          hash={blurhash}
+          width={400}
+          height={300}
+          resolutionX={32}
+          resolutionY={32}
+          punch={1}
+        />
+      )}
       <img
         src={
           image_url ?? image_large_url ?? extra_metadata?.image_original_url!
@@ -167,7 +179,7 @@ export const NftCard: FC<NftCardProps> = ({
           <Link
             href={`/${address}/send?transfers=0:_:_:${
               chainIdMapping[chain! as keyof typeof chainIdMapping]
-            }:erc721:${contract_address}|1`}
+            }:erc721:${contract_address}|${token_id}1`}
           >
             Send
           </Link>
