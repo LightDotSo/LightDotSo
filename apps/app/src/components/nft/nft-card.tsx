@@ -15,7 +15,10 @@
 
 /* eslint-disable @next/next/no-img-element */
 
+import { Button } from "@lightdotso/ui";
+import Link from "next/link";
 import type { FC } from "react";
+import { chainIdMapping } from "@/const/simplehash";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -141,9 +144,10 @@ type NftCardProps = {
 // -----------------------------------------------------------------------------
 
 export const NftCard: FC<NftCardProps> = ({
-  address: _address,
+  address,
   nft: {
     contract_address,
+    chain,
     image_url,
     collection: { description },
     previews: { image_large_url },
@@ -151,13 +155,24 @@ export const NftCard: FC<NftCardProps> = ({
   },
 }) => {
   return (
-    <li className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow">
+    <li className="group relative col-span-1 flex flex-col divide-y divide-border rounded-lg text-center shadow">
       <img
         src={
           image_url ?? image_large_url ?? extra_metadata?.image_original_url!
         }
         alt={description ?? contract_address!}
       />
+      <div className="absolute inset-x-0 bottom-0 bg-background opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <Button asChild className="w-full py-2">
+          <Link
+            href={`/${address}/send?transfers=0:_:_:${
+              chainIdMapping[chain! as keyof typeof chainIdMapping]
+            }:erc721:${contract_address}|1`}
+          >
+            Send
+          </Link>
+        </Button>
+      </div>
     </li>
   );
 };

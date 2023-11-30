@@ -68,3 +68,6 @@ export const chainSchema = z.enum([
   ...mainnetChainSchema.options,
   ...testnetChainSchema.options,
 ]);
+
+export type MainnetChain = z.infer<typeof mainnetChainSchema>;
+export type TestnetChain = z.infer<typeof testnetChainSchema>;
