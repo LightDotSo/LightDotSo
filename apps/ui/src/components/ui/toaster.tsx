@@ -34,9 +34,8 @@ function Toaster() {
       <AnimatePresence mode="popLayout">
         {toasts.map(function ({ id, title, description, action, ...props }) {
           return (
-            <Toast {...props}>
+            <Toast key={id} {...props}>
               <motion.li
-                key={id}
                 layout
                 transition={{
                   type: "spring",
