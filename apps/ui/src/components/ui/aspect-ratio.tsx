@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client"
+"use client";
 
-import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio"
+import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio";
 
-const AspectRatio = AspectRatioPrimitive.Root
+const AspectRatio = AspectRatioPrimitive.Root;
 
-export { AspectRatio }
+export { AspectRatio };

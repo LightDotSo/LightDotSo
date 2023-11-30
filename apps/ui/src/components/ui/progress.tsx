@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client"
+"use client";
 
-import { cn } from "@lightdotso/utils"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
+import { cn } from "@lightdotso/utils";
+import * as ProgressPrimitive from "@radix-ui/react-progress";
 import { forwardRef } from "react";
 
 const Progress = forwardRef<
@@ -27,7 +27,7 @@ const Progress = forwardRef<
     ref={ref}
     className={cn(
       "relative h-4 w-full overflow-hidden rounded-full bg-background-strong",
-      className
+      className,
     )}
     {...props}
   >
@@ -36,7 +36,7 @@ const Progress = forwardRef<
       style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
     />
   </ProgressPrimitive.Root>
-))
-Progress.displayName = ProgressPrimitive.Root.displayName
+));
+Progress.displayName = ProgressPrimitive.Root.displayName;
 
-export { Progress }
+export { Progress };
