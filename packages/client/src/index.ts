@@ -15,9 +15,9 @@
 
 import {
   chainSchema,
+  testnetChainSchema,
   llamaGetSchema,
   llamaPostSchema,
-  mainnetChainSchema,
   nftsByOwnerSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync, err, ok } from "neverthrow";
@@ -613,10 +613,9 @@ export const updateWalletSettings = async ({
 // -----------------------------------------------------------------------------
 
 export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
-  const chains =
-    typeof isTestnet === "undefined" || isTestnet
-      ? chainSchema.options.join(",")
-      : mainnetChainSchema.options.join(",");
+  const chains = isTestnet
+    ? testnetChainSchema.options.join(",")
+    : chainSchema.options.join(",");
 
   return ResultAsync.fromPromise(
     zodFetch(
