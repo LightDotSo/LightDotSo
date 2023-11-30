@@ -13,13 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -36,18 +29,8 @@ type NftsWrapperProps = {
 
 export const NftsWrapper: FC<NftsWrapperProps> = ({ children }) => {
   return (
-    <div className="rounded-md border border-border-primary-weak bg-background-weak">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Balance</TableHead>
-            <TableHead>Chart</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>{children}</TableBody>
-      </Table>
-    </div>
+    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {children}
+    </ul>
   );
 };

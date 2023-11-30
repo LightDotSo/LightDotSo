@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+/* eslint-disable @next/next/no-img-element */
+
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
@@ -138,11 +140,27 @@ type NftCardProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const NftCard: FC<NftCardProps> = ({ address, nft: { chain } }) => {
+export const NftCard: FC<NftCardProps> = ({
+  address,
+  nft: {
+    contract_address,
+    chain,
+    image_url,
+    collection: { description },
+    previews: { image_large_url },
+    extra_metadata,
+  },
+}) => {
   return (
-    <div>
+    <li className="col-span-1 flex flex-col divide-y divide-gray-200 rounded-lg bg-white text-center shadow">
       {address}
       {chain}
-    </div>
+      <img
+        src={
+          image_url ?? image_large_url ?? extra_metadata?.image_original_url!
+        }
+        alt={description ?? contract_address!}
+      />
+    </li>
   );
 };
