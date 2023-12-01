@@ -201,48 +201,48 @@ jobs:
         working-directory: ./fly/indexer-arbitrum
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  fly-deploy-indexer-base:
-    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v4
-      - name: Fly Install
-        uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Fly Deploy
-        run: flyctl deploy --remote-only
-        working-directory: ./fly/indexer-base
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  fly-deploy-indexer-bsc:
-    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v4
-      - name: Fly Install
-        uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Fly Deploy
-        run: flyctl deploy --remote-only
-        working-directory: ./fly/indexer-bsc
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-  fly-deploy-indexer-gnosis:
-    if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v4
-      - name: Fly Install
-        uses: superfly/flyctl-actions/setup-flyctl@master
-      - name: Fly Deploy
-        run: flyctl deploy --remote-only
-        working-directory: ./fly/indexer-gnosis
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  # fly-deploy-indexer-base:
+  #   if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 30
+  #   steps:
+  #     - name: Fetch Head
+  #       uses: actions/checkout@v4
+  #     - name: Fly Install
+  #       uses: superfly/flyctl-actions/setup-flyctl@master
+  #     - name: Fly Deploy
+  #       run: flyctl deploy --remote-only
+  #       working-directory: ./fly/indexer-base
+  #       env:
+  #         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  # fly-deploy-indexer-bsc:
+  #   if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 30
+  #   steps:
+  #     - name: Fetch Head
+  #       uses: actions/checkout@v4
+  #     - name: Fly Install
+  #       uses: superfly/flyctl-actions/setup-flyctl@master
+  #     - name: Fly Deploy
+  #       run: flyctl deploy --remote-only
+  #       working-directory: ./fly/indexer-bsc
+  #       env:
+  #         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+  # fly-deploy-indexer-gnosis:
+  #   if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 30
+  #   steps:
+  #     - name: Fetch Head
+  #       uses: actions/checkout@v4
+  #     - name: Fly Install
+  #       uses: superfly/flyctl-actions/setup-flyctl@master
+  #     - name: Fly Deploy
+  #       run: flyctl deploy --remote-only
+  #       working-directory: ./fly/indexer-gnosis
+  #       env:
+  #         FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
   fly-deploy-indexer-mainnet:
     if: github.event_name == 'workflow_dispatch' && inputs.group == 'indexer'
     runs-on: ubuntu-latest
@@ -461,9 +461,9 @@ jobs:
       - fly-deploy-grafana
       - fly-deploy-indexer
       - fly-deploy-indexer-arbitrum
-      - fly-deploy-indexer-base
-      - fly-deploy-indexer-bsc
-      - fly-deploy-indexer-gnosis
+      # - fly-deploy-indexer-base
+      # - fly-deploy-indexer-bsc
+      # - fly-deploy-indexer-gnosis
       - fly-deploy-indexer-mainnet
       - fly-deploy-indexer-optimism
       - fly-deploy-indexer-polygon
@@ -484,5 +484,6 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-bundler,fly-deploy-consumer,fly-deploy-consumer-error,fly-deploy-consumer-nfn,fly-deploy-consumer-retry,fly-deploy-consumer-tx,fly-deploy-gas,fly-deploy-grafana,fly-deploy-indexer,fly-deploy-indexer-arbitrum,fly-deploy-indexer-base,fly-deploy-indexer-bsc,fly-deploy-indexer-gnosis,fly-deploy-indexer-mainnet,fly-deploy-indexer-optimism,fly-deploy-indexer-polygon,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-polling,fly-deploy-polling-live,fly-deploy-polling-past,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-simulator
+          allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-bundler,fly-deploy-consumer,fly-deploy-consumer-error,fly-deploy-consumer-nfn,fly-deploy-consumer-retry,fly-deploy-consumer-tx,fly-deploy-gas,fly-deploy-grafana,fly-deploy-indexer,fly-deploy-indexer-arbitrum,fly-deploy-indexer-mainnet,fly-deploy-indexer-optimism,fly-deploy-indexer-polygon,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-polling,fly-deploy-polling-live,fly-deploy-polling-past,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-simulator
+          # allowed-skips: fly-wait-docker,fly-deploy-api,fly-deploy-bundler,fly-deploy-consumer,fly-deploy-consumer-error,fly-deploy-consumer-nfn,fly-deploy-consumer-retry,fly-deploy-consumer-tx,fly-deploy-gas,fly-deploy-grafana,fly-deploy-indexer,fly-deploy-indexer-arbitrum,fly-deploy-indexer-base,fly-deploy-indexer-bsc,fly-deploy-indexer-gnosis,fly-deploy-indexer-mainnet,fly-deploy-indexer-optimism,fly-deploy-indexer-polygon,fly-deploy-indexer-sepolia,fly-deploy-log-shipper,fly-deploy-otel-collector,fly-deploy-paymaster,fly-deploy-polling,fly-deploy-polling-live,fly-deploy-polling-past,fly-deploy-prometheus,fly-deploy-rpc,fly-deploy-rpc-internal,fly-deploy-simulator
           jobs: ${{ toJSON(needs) }}
