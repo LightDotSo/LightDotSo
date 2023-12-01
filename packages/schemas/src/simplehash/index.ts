@@ -13,7 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { mainnetChainSchema, testnetChainSchema, chainSchema } from "./chains";
-export type { MainnetChain, TestnetChain } from "./chains";
+export {
+  simplehashMainnetChainSchema,
+  simplehashTestnetChainSchema,
+  simplehashChainSchema,
+} from "./chains";
+export type { SimplehashMainnetChain, SimplehashTestnetChain } from "./chains";
 export { nftsByOwnerSchema } from "./nfts";
 export { nftWalletValuationsSchema } from "./valuation";

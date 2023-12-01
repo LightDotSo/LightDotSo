@@ -19,7 +19,7 @@ import type { Chain } from "@covalenthq/client-sdk";
 // Mainnet
 // -----------------------------------------------------------------------------
 
-export const ChainIdMainnetMapping: Record<number, Chain> = {
+export const COVALENT_MAINNET_CHAIN_ID_MAPPING: Record<number, Chain> = {
   1: "eth-mainnet",
   10: "optimism-mainnet",
   100: "gnosis-mainnet",
@@ -31,7 +31,7 @@ export const ChainIdMainnetMapping: Record<number, Chain> = {
 // Testnet
 // -----------------------------------------------------------------------------
 
-export const ChainIdTestnetMapping: Record<number, Chain> = {
+export const COVALENT_TESTNET_CHAIN_ID_MAPPING: Record<number, Chain> = {
   11155111: "eth-sepolia",
 };
 
@@ -39,7 +39,7 @@ export const ChainIdTestnetMapping: Record<number, Chain> = {
 // All
 // -----------------------------------------------------------------------------
 
-export const ChainIdMapping = {
-  ...ChainIdMainnetMapping,
-  ...ChainIdTestnetMapping,
+export const COVALENT_CHAIN_ID_MAPPING = {
+  ...COVALENT_MAINNET_CHAIN_ID_MAPPING,
+  ...COVALENT_TESTNET_CHAIN_ID_MAPPING,
 };

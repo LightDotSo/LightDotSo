@@ -16,7 +16,10 @@
 import { CovalentClient } from "@covalenthq/client-sdk";
 import type { Chain } from "@covalenthq/client-sdk";
 import { getAddress } from "viem";
-import { ChainIdMapping, ChainIdTestnetMapping } from "@/const/covalent";
+import {
+  COVALENT_CHAIN_ID_MAPPING,
+  COVALENT_TESTNET_CHAIN_ID_MAPPING,
+} from "@/const/covalent";
 import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
@@ -44,7 +47,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
     await step.run("Get Covalent", async () => {
       // Parse the chain names from the array of chainIds (e.g. [1, 137] => ["eth-mainnet", "matic-mainnet"])
       const chains = event.data.chainIds.map(chainId => {
-        return ChainIdMapping[chainId] as Chain;
+        return COVALENT_CHAIN_ID_MAPPING[chainId] as Chain;
       });
 
       // Get the Covalent client for the given chain.
@@ -142,7 +145,7 @@ export const walletPortfolioCovalentSet = inngest.createFunction(
               isLatest: true,
               isSpam: balance.is_spam,
               isTestnet: Object.prototype.hasOwnProperty.call(
-                ChainIdTestnetMapping,
+                COVALENT_TESTNET_CHAIN_ID_MAPPING,
                 chainId,
               ),
             })),

@@ -14,7 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { NonRetriableError } from "inngest";
-import { ChainIdMapping, ChainIdMainnetMapping } from "@/const/covalent";
+import {
+  COVALENT_CHAIN_ID_MAPPING,
+  COVALENT_MAINNET_CHAIN_ID_MAPPING,
+} from "@/const/covalent";
 import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
@@ -56,8 +59,8 @@ export const walletPortfolioInvoke = inngest.createFunction(
     // If the wallet settings has `isEnabledTestnet` set to true, then use the `ChainIdTestnetMapping` instead.
     const chainIds = Object.keys(
       wallet?.walletSettings?.isEnabledTestnet
-        ? ChainIdMapping
-        : ChainIdMainnetMapping,
+        ? COVALENT_CHAIN_ID_MAPPING
+        : COVALENT_MAINNET_CHAIN_ID_MAPPING,
     ).map(chainId => {
       return parseInt(chainId);
     });

@@ -26,7 +26,7 @@ import {
 import { cn } from "@lightdotso/utils";
 import type { FC } from "react";
 import { extractChain } from "viem";
-import { chains } from "@/const/chains";
+import { CHAINS } from "@/const/chains";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -51,9 +51,9 @@ export const ActivityCard: FC<ActivityCardProps> = ({
 }) => {
   // Try to extract chain from transaction
   const chain = extractChain({
-    chains: Object.values(chains),
+    chains: Object.values(CHAINS),
     // @ts-ignore
-    id: Object.values(chains)
+    id: Object.values(CHAINS)
       .map(chain => chain.id)
       // @ts-ignore
       .includes(transaction.chain_id)
