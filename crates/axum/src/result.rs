@@ -13,6 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use crate::{
+    error::RouteError,
+    routes::{configuration::ConfigurationError, paymaster_operation::PaymasterOperationError},
+};
 use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
@@ -32,13 +36,14 @@ pub type AppResult<T> = Result<T, AppError>;
 pub type AppJsonResult<T> = AppResult<Json<T>>;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L118
-pub enum AppError {
+pub(crate) enum AppError {
     EyreError(eyre::Error),
     PrismaError(QueryError),
     RedisError(RedisError),
     SerdeJsonError(serde_json::Error),
     FromHexError(FromHexError),
     RustHexError(RustHexError),
+    RouteError(RouteError),
     BadRequest,
     NotFound,
     InternalError,
@@ -85,23 +90,50 @@ impl From<RedisError> for AppError {
     }
 }
 
+impl From<RouteError> for AppError {
+    fn from(error: RouteError) -> Self {
+        AppError::RouteError(error)
+    }
+}
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L133
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let status = match self {
+            AppError::RouteError(err) => match err {
+                RouteError::ConfigurationError(ConfigurationError::BadRequest(err_msg)) => {
+                    (StatusCode::BAD_REQUEST, err_msg)
+                }
+                RouteError::ConfigurationError(ConfigurationError::NotFound(err_msg)) => {
+                    (StatusCode::NOT_FOUND, err_msg)
+                }
+                RouteError::PaymasterOperationError(PaymasterOperationError::BadRequest(
+                    err_msg,
+                )) => (StatusCode::BAD_REQUEST, err_msg),
+                RouteError::PaymasterOperationError(PaymasterOperationError::NotFound(err_msg)) => {
+                    (StatusCode::NOT_FOUND, err_msg)
+                }
+            },
             AppError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
-                StatusCode::CONFLICT
+                (StatusCode::BAD_REQUEST, "Prisma error: Unique key violation".to_string())
             }
-            AppError::EyreError(_) => StatusCode::BAD_REQUEST,
-            AppError::PrismaError(_) => StatusCode::INTERNAL_SERVER_ERROR,
-            AppError::RedisError(_) => StatusCode::INTERNAL_SERVER_ERROR,
-            AppError::SerdeJsonError(_) => StatusCode::BAD_REQUEST,
-            AppError::FromHexError(_) => StatusCode::BAD_REQUEST,
-            AppError::RustHexError(_) => StatusCode::BAD_REQUEST,
-            AppError::Conflict => StatusCode::CONFLICT,
-            AppError::BadRequest => StatusCode::BAD_REQUEST,
-            AppError::NotFound => StatusCode::NOT_FOUND,
-            AppError::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
+            AppError::EyreError(eyre_msg) => (StatusCode::BAD_REQUEST, eyre_msg.to_string()),
+            AppError::PrismaError(_) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, "Prisma error".to_string())
+            }
+            AppError::RedisError(_) => {
+                (StatusCode::INTERNAL_SERVER_ERROR, "Redis error".to_string())
+            }
+            AppError::SerdeJsonError(_) => {
+                (StatusCode::BAD_REQUEST, "Serde JSON error".to_string())
+            }
+            AppError::FromHexError(_) => (StatusCode::BAD_REQUEST, "Bad hex".to_string()),
+            AppError::RustHexError(_) => (StatusCode::BAD_REQUEST, "Bad rust hex".to_string()),
+            AppError::Conflict => (StatusCode::CONFLICT, "Conflict".to_string()),
+            AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad request".to_string()),
+            AppError::NotFound => (StatusCode::NOT_FOUND, "Not Found".to_string()),
+            AppError::InternalError => {
+                (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error".to_string())
+            }
         };
 
         status.into_response()

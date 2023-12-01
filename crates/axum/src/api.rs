@@ -17,9 +17,9 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        check, configuration, feedback, health, notification, paymaster, portfolio, signature,
-        support_request, token, token_price, transaction, user, user_operation, wallet,
-        wallet_settings,
+        check, configuration, feedback, health, notification, paymaster, paymaster_operation,
+        portfolio, signature, support_request, token, token_price, transaction, user,
+        user_operation, wallet, wallet_settings,
     },
     state::AppState,
 };
@@ -59,6 +59,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(notification::NotificationError),
         schemas(paymaster::Paymaster),
         schemas(paymaster::PaymasterError),
+        schemas(paymaster_operation::PaymasterOperation),
+        schemas(paymaster_operation::PaymasterOperationError),
         schemas(portfolio::Portfolio),
         schemas(portfolio::PortfolioBalanceDate),
         schemas(portfolio::PortfolioError),
@@ -138,6 +140,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
         (name = "paymaster", description = "Paymaster API"),
+        (name = "paymaster_operation", description = "Paymaster Operation API"),
         (name = "portfolio", description = "Portfolio API"),
         (name = "signature", description = "Signature API"),
         (name = "support_request", description = "Support Request API"),
@@ -207,6 +210,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(health::router())
         .merge(notification::router())
         .merge(paymaster::router())
+        .merge(paymaster_operation::router())
         .merge(portfolio::router())
         .merge(signature::router())
         .merge(support_request::router())

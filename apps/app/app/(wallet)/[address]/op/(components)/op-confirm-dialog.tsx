@@ -24,8 +24,11 @@ import { useCallback, useState, useEffect } from "react";
 import type { FC } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
-import { errorToast } from "@/utils";
-import { useLightVerifyingPaymasterGetHash } from "@/wagmi";
+import { errorToast, serializeBigInt } from "@/utils";
+import {
+  useLightVerifyingPaymasterGetHash,
+  useLightVerifyingPaymasterSenderNonce,
+} from "@/wagmi";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -117,6 +120,12 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
         "number",
       ),
     ],
+  });
+
+  const { data: paymasterNonce } = useLightVerifyingPaymasterSenderNonce({
+    address: userOperation.paymaster_and_data.slice(0, 42) as Address,
+    chainId: Number(chainId),
+    args: [userOperation.sender as Address],
   });
 
   const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
@@ -216,6 +225,11 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">chainId: {chainId}</code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterNonce: {serializeBigInt(paymasterNonce)}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">

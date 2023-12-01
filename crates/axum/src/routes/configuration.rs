@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    result::{AppError, AppJsonResult},
-    state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -176,7 +173,9 @@ async fn v1_configuration_get_handler(
     };
 
     // If the configuration is not found, return a 404.
-    let configuration = configuration.ok_or(AppError::NotFound)?;
+    let configuration = configuration.ok_or(RouteError::ConfigurationError(
+        ConfigurationError::NotFound("Configuration not found".to_string()),
+    ))?;
 
     // Change the configuration to the format that the API expects.
     let configuration: Configuration = configuration.into();
