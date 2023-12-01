@@ -460,7 +460,7 @@ export const SendDialog: FC<SendDialogProps> = ({
         }
 
         // Encode the erc1155 `transferBatch`
-        if (nft.token_count) {
+        if (nft.contract.type === "erc1155") {
           return [
             transfer.asset.address as Address,
             0n,
@@ -726,15 +726,22 @@ export const SendDialog: FC<SendDialogProps> = ({
         });
         // Clear the value of key address
         form.setValue(`transfers.${index}.asset.quantity`, 0);
-        // If the token is not found or undefined it is an erc721 token meaning the quantity must be 1
-      } else if (!nft.token_count && quantity > 1) {
+        // If the token is an erc721 token meaning the quantity must be 1
+      } else if (
+        nft.contract.type?.toLowerCase() === "erc721" &&
+        quantity > 1
+      ) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
           type: "manual",
           message: "Insufficient balance",
         });
-        // If the token count is not null, it is an erc1155 token meaning the quantity must be less than or equal to the token count
-      } else if (nft.token_count && nft.token_count > quantity) {
+        // If the token is an erc1155 token meaning the quantity must be less than or equal to the token count
+      } else if (
+        nft.contract.type?.toLowerCase() === "erc1155" &&
+        nft.token_count &&
+        nft.token_count > quantity
+      ) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
           type: "manual",
@@ -876,7 +883,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                         <Tabs
                           className="col-span-7"
                           defaultValue={
-                            transfers[index].assetType === "erc20"
+                            transfers[index]?.assetType === "erc20"
                               ? "token"
                               : "nft"
                           }
@@ -1181,30 +1188,35 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               className="px-1 py-0.5 text-xs"
                                               onClick={() => {
                                                 // Set the value of key quantity to the token balance
-                                                const token =
-                                                  tokens &&
+                                                const nft =
+                                                  currentNftData &&
                                                   transfers &&
                                                   transfers?.length > 0 &&
+                                                  transfers[index].asset &&
                                                   transfers[index]?.asset
                                                     ?.address &&
-                                                  tokens?.find(
-                                                    token =>
-                                                      token.address ===
+                                                  "tokenId" in
+                                                    // eslint-disable-next-line no-unsafe-optional-chaining
+                                                    transfers[index]?.asset! &&
+                                                  currentNftData.nfts?.find(
+                                                    nft =>
+                                                      nft.contract_address ===
                                                         (transfers?.[index]
                                                           ?.asset?.address ||
                                                           "") &&
-                                                      token.chain_id ===
-                                                        transfers?.[index]
-                                                          ?.chainId,
+                                                      nft.token_id ===
+                                                        // prettier-ignore
+                                                        // @ts-expect-error
+                                                        transfers?.[index]?.asset!.tokenId,
                                                   );
-                                                if (token) {
+
+                                                if (nft) {
                                                   form.setValue(
                                                     `transfers.${index}.asset.quantity`,
-                                                    token?.amount /
-                                                      Math.pow(
-                                                        10,
-                                                        token?.decimals,
-                                                      ),
+                                                    nft.contract.type?.toLowerCase() ===
+                                                      "erc721"
+                                                      ? 1
+                                                      : nft.token_count ?? 1,
                                                   );
                                                 }
 
@@ -1235,14 +1247,19 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           defaultValue={
                                             transfers &&
                                             transfers?.length > 0 &&
+                                            transfers[index]?.asset &&
                                             transfers[index]?.asset?.address &&
+                                            "tokenId" in
+                                              // eslint-disable-next-line no-unsafe-optional-chaining
+                                              transfers[index]?.asset! &&
                                             transfers[index]?.chainId
-                                              ? `${transfers[index]?.asset?.address}-${transfers[index]?.chainId}`
+                                              ? // @ts-expect-error
+                                                `${transfers[index]?.asset?.address}-${transfers[index]?.asset?.tokenId}-${transfers[index]?.chainId}`
                                               : undefined
                                           }
                                           onValueChange={value => {
                                             // Get the token of address and chainId
-                                            const [address, chainId] =
+                                            const [address, tokenId, chainId] =
                                               value?.split("-") || [];
 
                                             // Set the chainId of the token
@@ -1252,7 +1269,8 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               currentNftData.nfts?.find(
                                                 nft =>
                                                   nft.contract_address ===
-                                                  address,
+                                                    address &&
+                                                  nft.token_id === tokenId,
                                               );
 
                                             if (nft) {
@@ -1265,8 +1283,13 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 parseInt(chainId),
                                               );
                                               form.setValue(
+                                                `transfers.${index}.asset.tokenId`,
+                                                parseInt(tokenId),
+                                              );
+                                              form.setValue(
                                                 `transfers.${index}.assetType`,
-                                                nft.token_count
+                                                nft.contract.type?.toLowerCase() ===
+                                                  "erc721"
                                                   ? "erc721"
                                                   : "erc1155",
                                               );
@@ -1286,7 +1309,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 <SelectItem
                                                   key={`${
                                                     nft.contract_address
-                                                  }-${
+                                                  }-${nft.token_id}-${
                                                     chainIdMapping[
                                                       nft.chain! as
                                                         | MainnetChain
@@ -1295,7 +1318,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   }`}
                                                   value={`${
                                                     nft.contract_address
-                                                  }-${
+                                                  }-${nft.token_id}-${
                                                     chainIdMapping[
                                                       nft.chain! as
                                                         | MainnetChain

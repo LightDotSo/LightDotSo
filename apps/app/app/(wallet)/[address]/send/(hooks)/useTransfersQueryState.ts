@@ -64,7 +64,7 @@ export const transferParser = createParser({
       }
 
       // Parse the asset (if possible)
-      if (assetType === "erc721") {
+      if (assetType === "erc721" || assetType === "erc1155") {
         // Get the parts of the asset
         const [address, tokenId, quantity] = asset.split("|");
         // Parse the address as a string (if possible)
@@ -94,39 +94,6 @@ export const transferParser = createParser({
         }
       }
 
-      // Parse the asset (if possible)
-      if (assetType === "erc1155") {
-        // Get the parts of the asset
-        const [address, tokenIds, quantities] = asset.split("|");
-        // Parse the address as a string (if possible)
-        const parsedAddress = address === "_" ? undefined : address;
-        // Parse the tokenIds as an array of numbers (if possible)
-        const parsedTokenIds = tokenIds.split(";").map(id => parseInt(id));
-        // Parse the quantities as an array of numbers (if possible)
-        const parsedQuantities = quantities
-          .split("&")
-          .map(quantity => parseFloat(quantity));
-        // Add the asset to the transfer if all parts are valid
-        if (
-          parsedAddress &&
-          isAddress(parsedAddress) &&
-          parsedTokenIds.every(id => !isNaN(id)) &&
-          parsedQuantities.every(quantity => !isNaN(quantity))
-        ) {
-          acc[parseInt(id)] = {
-            address: transferAddress === "_" ? undefined : transferAddress,
-            addressOrEns: addressOrEns === "_" ? undefined : addressOrEns,
-            chainId: parseInt(chainId),
-            asset: {
-              address: parsedAddress,
-              tokenIds: parsedTokenIds,
-              quantities: parsedQuantities,
-            },
-            assetType,
-          };
-        }
-      }
-
       return acc;
     }, []);
   },
@@ -147,7 +114,10 @@ export const transferParser = createParser({
               ? transfer.asset.quantity
               : 0
           }`;
-        } else if (transfer?.assetType === "erc721") {
+        } else if (
+          transfer?.assetType === "erc721" ||
+          transfer?.assetType === "erc1155"
+        ) {
           const asset = transfer.asset;
           assetString = `${asset?.address ?? "_"}|${
             transfer?.asset && "tokenId" in transfer.asset
@@ -158,19 +128,6 @@ export const transferParser = createParser({
               ? transfer.asset.quantity
               : 0
           }`;
-        } else if (transfer?.assetType === "erc1155") {
-          const asset = transfer.asset;
-          const tokenIds =
-            (transfer?.asset &&
-              "tokenIds" in transfer.asset &&
-              transfer.asset?.tokenIds?.join("&")) ??
-            "_";
-          const quantities =
-            (transfer?.asset &&
-              "tokenIds" in transfer.asset &&
-              transfer.asset?.tokenIds?.join("&")) ??
-            "_";
-          assetString = `${asset?.address ?? "_"}|${tokenIds}|${quantities}`;
         }
 
         return (

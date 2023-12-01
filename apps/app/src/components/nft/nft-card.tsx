@@ -151,6 +151,7 @@ export const NftCard: FC<NftCardProps> = ({
     contract_address,
     token_id,
     chain,
+    contract,
     image_url,
     collection: { description },
     previews: { blurhash, image_large_url },
@@ -191,7 +192,7 @@ export const NftCard: FC<NftCardProps> = ({
           <Link
             href={`/${address}/send?transfers=0:_:_:${
               chainIdMapping[chain! as keyof typeof chainIdMapping]
-            }:erc721:${contract_address}|${token_id}|1`}
+            }:${contract.type?.toLowerCase()}:${contract_address}|${token_id}|${0}`}
           >
             Send
           </Link>
