@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    error::RouteError,
     result::{AppError, AppJsonResult},
     state::AppState,
 };
@@ -379,7 +380,9 @@ async fn v1_user_operation_get_handler(
         .await?;
 
     // If the user operation is not found, return a 404.
-    let user_operation = user_operation.ok_or(AppError::NotFound)?;
+    let user_operation = user_operation.ok_or(RouteError::UserOperationError(
+        UserOperationError::NotFound("User operation not found".to_string()),
+    ))?;
 
     // Change the user operation to the format that the API expects.
     let user_operation: UserOperation = user_operation.into();

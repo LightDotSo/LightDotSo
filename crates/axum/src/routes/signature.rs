@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    result::{AppError, AppJsonResult},
-    state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -146,7 +143,9 @@ async fn v1_signature_get_handler(
         .await?;
 
     // If the signature is not found, return a 404.
-    let signature = signature.ok_or(AppError::NotFound)?;
+    let signature = signature.ok_or(RouteError::SignatureError(SignatureError::NotFound(
+        "Signature not found".to_string(),
+    )))?;
 
     // Change the signature to the format that the API expects.
     let signature: Signature = signature.into();

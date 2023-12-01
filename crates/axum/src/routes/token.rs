@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    result::{AppError, AppJsonResult},
-    state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -148,7 +145,8 @@ async fn v1_token_get_handler(
         .await?;
 
     // If the token is not found, return a 404.
-    let token = token.ok_or(AppError::NotFound)?;
+    let token =
+        token.ok_or(RouteError::TokenError(TokenError::NotFound("Token not found".to_string())))?;
 
     // Change the token to the format that the API expects.
     let token: Token = token.into();

@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    result::{AppError, AppJsonResult},
-    state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -119,7 +116,9 @@ async fn v1_notification_get_handler(
         .await?;
 
     // If the notification is not found, return a 404.
-    let notification = notification.ok_or(AppError::NotFound)?;
+    let notification = notification.ok_or(RouteError::NotificationError(
+        NotificationError::NotFound("Notification not found".to_string()),
+    ))?;
 
     // Change the notification to the format that the API expects.
     let notification: Notification = notification.into();

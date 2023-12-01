@@ -15,7 +15,7 @@
 
 use crate::{
     result::{AppError, AppJsonResult},
-    state::AppState,
+    state::AppState, error::RouteError,
 };
 use autometrics::autometrics;
 use axum::{
@@ -190,7 +190,8 @@ async fn v1_wallet_get_handler(
         .await?;
 
     // If the wallet is not found, return a 404.
-    let wallet = wallet.ok_or(AppError::NotFound)?;
+    let wallet = wallet
+        .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
 
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();
@@ -253,7 +254,8 @@ async fn v1_wallet_tab_handler(
         .await?;
 
     // If the wallet is not found, return a 404.
-    let wallet = wallet.ok_or(AppError::NotFound)?;
+    let wallet = wallet
+        .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
 
     // Get the number of user_operation_counts of the wallet.
     let user_operation_count = match &wallet.user_operations {
