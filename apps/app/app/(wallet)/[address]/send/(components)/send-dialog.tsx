@@ -16,6 +16,7 @@
 "use client";
 
 import { getTokens } from "@lightdotso/client";
+import type { MainnetChain, TestnetChain } from "@lightdotso/schemas";
 import {
   Accordion,
   AccordionContent,
@@ -58,13 +59,13 @@ import * as z from "zod";
 import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import type { TokenData, WalletSettingsData } from "@/data";
+import { chainIdMapping } from "@/const/simplehash";
+import type { NftData, TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";
 import { lightWalletABI } from "@/wagmi";
-
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
@@ -97,8 +98,16 @@ export const SendDialog: FC<SendDialogProps> = ({
   const walletSettings: WalletSettingsData | undefined =
     useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentData: TokenData[] | undefined = useQueryClient().getQueryData(
-    queries.token.list({
+  const currentTokenData: TokenData[] | undefined =
+    useQueryClient().getQueryData(
+      queries.token.list({
+        address,
+        is_testnet: walletSettings?.is_enabled_testnet,
+      }).queryKey,
+    );
+
+  const currentNftData: NftData | undefined = useQueryClient().getQueryData(
+    queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
@@ -125,7 +134,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           return data;
         },
         _ => {
-          return currentData ?? null;
+          return currentTokenData ?? null;
         },
       );
     },
@@ -157,6 +166,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                 decimals: tokens[0].decimals,
                 quantity: 0,
               },
+              assetType: "erc20",
             },
           ]
         : [];
@@ -908,7 +918,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   render={({ field: _field }) => (
                                     <FormControl>
                                       <div className="w-full space-y-2">
-                                        <Label htmlFor="weight">Transfer</Label>
+                                        <Label htmlFor="weight">Token</Label>
                                         <Select
                                           defaultValue={
                                             transfers &&
@@ -1070,61 +1080,6 @@ export const SendDialog: FC<SendDialogProps> = ({
                                           </div>
                                         </div>
                                       </div>
-                                      <div className="flex items-center justify-between text-xs text-text-weak">
-                                        <div>
-                                          {/* Get the current balance in USD */}
-                                          {tokens &&
-                                            tokens?.length > 0 &&
-                                            (() => {
-                                              const token = tokens.find(
-                                                token =>
-                                                  token.address ===
-                                                    (transfers?.[index]?.asset
-                                                      ?.address || "") &&
-                                                  token.chain_id ===
-                                                    transfers?.[index]?.chainId,
-                                              );
-                                              return token
-                                                ? "~ $" +
-                                                    // Get the current selected token balance in USD
-                                                    (
-                                                      (token?.balance_usd /
-                                                        (token.amount /
-                                                          Math.pow(
-                                                            10,
-                                                            token?.decimals,
-                                                          ))) *
-                                                      // Get the form value
-                                                      (field.value ?? 0)
-                                                    ).toFixed(2)
-                                                : "";
-                                            })()}
-                                        </div>
-                                        <div>
-                                          {tokens &&
-                                            tokens?.length > 0 &&
-                                            (() => {
-                                              const token = tokens.find(
-                                                token =>
-                                                  token.address ===
-                                                    (transfers?.[index]?.asset
-                                                      ?.address || "") &&
-                                                  token.chain_id ===
-                                                    transfers?.[index]?.chainId,
-                                              );
-                                              return token
-                                                ? (
-                                                    token?.amount /
-                                                    Math.pow(
-                                                      10,
-                                                      token?.decimals,
-                                                    )
-                                                  ).toString() +
-                                                    ` ${token.symbol} available`
-                                                : "";
-                                            })()}
-                                        </div>
-                                      </div>
                                       <FormMessage />
                                     </div>
                                   )}
@@ -1138,7 +1093,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                   render={({ field: _field }) => (
                                     <FormControl>
                                       <div className="w-full space-y-2">
-                                        <Label htmlFor="weight">Transfer</Label>
+                                        <Label htmlFor="weight">NFT</Label>
                                         <Select
                                           defaultValue={
                                             transfers &&
@@ -1154,15 +1109,16 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               value?.split("-") || [];
 
                                             // Set the chainId of the token
-                                            const token =
-                                              tokens &&
-                                              tokens?.length > 0 &&
-                                              tokens?.find(
-                                                token =>
-                                                  token.address === address,
+                                            const nft =
+                                              currentNftData &&
+                                              currentNftData.nfts?.length > 0 &&
+                                              currentNftData.nfts?.find(
+                                                nft =>
+                                                  nft.contract_address ===
+                                                  address,
                                               );
 
-                                            if (token) {
+                                            if (nft) {
                                               form.setValue(
                                                 `transfers.${index}.asset.address`,
                                                 address,
@@ -1173,7 +1129,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               );
                                               form.setValue(
                                                 `transfers.${index}.assetType`,
-                                                "erc20",
+                                                "erc721",
                                               );
                                             }
 
@@ -1186,14 +1142,31 @@ export const SendDialog: FC<SendDialogProps> = ({
                                             </SelectTrigger>
                                           </FormControl>
                                           <SelectContent>
-                                            {tokens?.map(token => (
-                                              <SelectItem
-                                                key={`${token.address}-${token.chain_id}`}
-                                                value={`${token.address}-${token.chain_id}`}
-                                              >
-                                                {token.symbol}
-                                              </SelectItem>
-                                            ))}
+                                            {currentNftData &&
+                                              currentNftData.nfts?.map(nft => (
+                                                <SelectItem
+                                                  key={`${
+                                                    nft.contract_address
+                                                  }-${
+                                                    chainIdMapping[
+                                                      nft.chain! as
+                                                        | MainnetChain
+                                                        | TestnetChain
+                                                    ]
+                                                  }`}
+                                                  value={`${
+                                                    nft.contract_address
+                                                  }-${
+                                                    chainIdMapping[
+                                                      nft.chain! as
+                                                        | MainnetChain
+                                                        | TestnetChain
+                                                    ]
+                                                  }`}
+                                                >
+                                                  {nft.name ?? nft.token_id}
+                                                </SelectItem>
+                                              ))}
                                           </SelectContent>
                                         </Select>
                                         <FormMessage />
