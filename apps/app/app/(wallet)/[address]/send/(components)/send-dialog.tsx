@@ -36,6 +36,10 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
@@ -728,69 +732,121 @@ export const SendDialog: FC<SendDialogProps> = ({
                             <Trash2Icon className="h-5 w-5" />
                           </Button>
                         </div>
-                        <div className="col-span-7 flex space-x-3">
-                          <div className="relative col-span-4 inline-block w-full">
-                            <FormField
-                              control={form.control}
-                              name={`transfers.${index}.asset.quantity`}
-                              render={({ field }) => (
-                                <div className="space-y-2">
-                                  <Label htmlFor="address">Quantity</Label>
-                                  <div className="flex items-center space-x-3">
-                                    <div className="relative inline-block w-full">
-                                      <Input
-                                        id="address"
-                                        className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                                        type="number"
-                                        {...field}
-                                        placeholder="Quantity of tokens to transfer"
-                                        onBlur={e => {
-                                          // Validate the address
-                                          if (!e.target.value) {
-                                            // Clear the value of key address
-                                            form.setValue(
-                                              `transfers.${index}.asset.quantity`,
-                                              0,
-                                            );
-                                          }
+                        <Tabs
+                          className="col-span-8"
+                          defaultValue={
+                            transfers[index].assetType === "erc20"
+                              ? "token"
+                              : "nft"
+                          }
+                        >
+                          <TabsList>
+                            <TabsTrigger value="token">Token</TabsTrigger>
+                            <TabsTrigger value="nft">NFT</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="token">
+                            <div className="col-span-7 flex space-x-3">
+                              <div className="relative col-span-4 inline-block w-full">
+                                <FormField
+                                  control={form.control}
+                                  name={`transfers.${index}.asset.quantity`}
+                                  render={({ field }) => (
+                                    <div className="space-y-2">
+                                      <Label htmlFor="address">Quantity</Label>
+                                      <div className="flex items-center space-x-3">
+                                        <div className="relative inline-block w-full">
+                                          <Input
+                                            id="address"
+                                            className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                            type="number"
+                                            {...field}
+                                            placeholder="Quantity of tokens to transfer"
+                                            onBlur={e => {
+                                              // Validate the address
+                                              if (!e.target.value) {
+                                                // Clear the value of key address
+                                                form.setValue(
+                                                  `transfers.${index}.asset.quantity`,
+                                                  0,
+                                                );
+                                              }
 
-                                          const quantity = parseFloat(
-                                            e.target.value,
-                                          );
+                                              const quantity = parseFloat(
+                                                e.target.value,
+                                              );
 
-                                          validateQuantity(quantity, index);
-                                        }}
-                                        onChange={e => {
-                                          // Update the field value
-                                          field.onChange(
-                                            parseFloat(e.target.value) || 0,
-                                          );
+                                              validateQuantity(quantity, index);
+                                            }}
+                                            onChange={e => {
+                                              // Update the field value
+                                              field.onChange(
+                                                parseFloat(e.target.value) || 0,
+                                              );
 
-                                          // Validate the address
-                                          const quantity = parseFloat(
-                                            e.target.value,
-                                          );
+                                              // Validate the address
+                                              const quantity = parseFloat(
+                                                e.target.value,
+                                              );
 
-                                          if (quantity) {
-                                            validateQuantity(quantity, index);
-                                          }
-                                        }}
-                                      />
-                                      <div className="absolute inset-y-0 right-3 flex items-center">
-                                        <Button
-                                          size="unsized"
-                                          variant="outline"
-                                          type="button"
-                                          className="px-1 py-0.5 text-xs"
-                                          onClick={() => {
-                                            // Set the value of key quantity to the token balance
-                                            const token =
-                                              tokens &&
-                                              transfers &&
-                                              transfers?.length > 0 &&
-                                              transfers[index]?.asset
-                                                ?.address &&
-                                              tokens?.find(
+                                              if (quantity) {
+                                                validateQuantity(
+                                                  quantity,
+                                                  index,
+                                                );
+                                              }
+                                            }}
+                                          />
+                                          <div className="absolute inset-y-0 right-3 flex items-center">
+                                            <Button
+                                              size="unsized"
+                                              variant="outline"
+                                              type="button"
+                                              className="px-1 py-0.5 text-xs"
+                                              onClick={() => {
+                                                // Set the value of key quantity to the token balance
+                                                const token =
+                                                  tokens &&
+                                                  transfers &&
+                                                  transfers?.length > 0 &&
+                                                  transfers[index]?.asset
+                                                    ?.address &&
+                                                  tokens?.find(
+                                                    token =>
+                                                      token.address ===
+                                                        (transfers?.[index]
+                                                          ?.asset?.address ||
+                                                          "") &&
+                                                      token.chain_id ===
+                                                        transfers?.[index]
+                                                          ?.chainId,
+                                                  );
+                                                if (token) {
+                                                  form.setValue(
+                                                    `transfers.${index}.asset.quantity`,
+                                                    token?.amount /
+                                                      Math.pow(
+                                                        10,
+                                                        token?.decimals,
+                                                      ),
+                                                  );
+                                                }
+
+                                                // Validate the form
+                                                form.trigger();
+                                              }}
+                                            >
+                                              Max
+                                            </Button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="flex items-center justify-between text-xs text-text-weak">
+                                        <div>
+                                          {/* Get the current balance in USD */}
+                                          {tokens &&
+                                            tokens?.length > 0 &&
+                                            (() => {
+                                              const token = tokens.find(
                                                 token =>
                                                   token.address ===
                                                     (transfers?.[index]?.asset
@@ -798,152 +854,127 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   token.chain_id ===
                                                     transfers?.[index]?.chainId,
                                               );
+                                              return token
+                                                ? "~ $" +
+                                                    // Get the current selected token balance in USD
+                                                    (
+                                                      (token?.balance_usd /
+                                                        (token.amount /
+                                                          Math.pow(
+                                                            10,
+                                                            token?.decimals,
+                                                          ))) *
+                                                      // Get the form value
+                                                      (field.value ?? 0)
+                                                    ).toFixed(2)
+                                                : "";
+                                            })()}
+                                        </div>
+                                        <div>
+                                          {tokens &&
+                                            tokens?.length > 0 &&
+                                            (() => {
+                                              const token = tokens.find(
+                                                token =>
+                                                  token.address ===
+                                                    (transfers?.[index]?.asset
+                                                      ?.address || "") &&
+                                                  token.chain_id ===
+                                                    transfers?.[index]?.chainId,
+                                              );
+                                              return token
+                                                ? (
+                                                    token?.amount /
+                                                    Math.pow(
+                                                      10,
+                                                      token?.decimals,
+                                                    )
+                                                  ).toString() +
+                                                    ` ${token.symbol} available`
+                                                : "";
+                                            })()}
+                                        </div>
+                                      </div>
+                                      <FormMessage />
+                                    </div>
+                                  )}
+                                />
+                              </div>
+                              <div className="relative col-span-3 inline-block w-full">
+                                <FormField
+                                  key={field.id}
+                                  control={form.control}
+                                  name={`transfers.${index}.asset.address`}
+                                  render={({ field: _field }) => (
+                                    <FormControl>
+                                      <div className="w-full space-y-2">
+                                        <Label htmlFor="weight">Transfer</Label>
+                                        <Select
+                                          defaultValue={
+                                            transfers &&
+                                            transfers?.length > 0 &&
+                                            transfers[index]?.asset?.address &&
+                                            transfers[index]?.chainId
+                                              ? `${transfers[index]?.asset?.address}-${transfers[index]?.chainId}`
+                                              : undefined
+                                          }
+                                          onValueChange={value => {
+                                            // Get the token of address and chainId
+                                            const [address, chainId] =
+                                              value?.split("-") || [];
+
+                                            // Set the chainId of the token
+                                            const token =
+                                              tokens &&
+                                              tokens?.length > 0 &&
+                                              tokens?.find(
+                                                token =>
+                                                  token.address === address,
+                                              );
+
                                             if (token) {
                                               form.setValue(
-                                                `transfers.${index}.asset.quantity`,
-                                                token?.amount /
-                                                  Math.pow(10, token?.decimals),
+                                                `transfers.${index}.asset.address`,
+                                                address,
+                                              );
+                                              form.setValue(
+                                                `transfers.${index}.chainId`,
+                                                parseInt(chainId),
+                                              );
+                                              form.setValue(
+                                                `transfers.${index}.assetType`,
+                                                "erc20",
                                               );
                                             }
 
-                                            // Validate the form
                                             form.trigger();
                                           }}
                                         >
-                                          Max
-                                        </Button>
+                                          <FormControl>
+                                            <SelectTrigger className="w-full">
+                                              <SelectValue placeholder="Select a token" />
+                                            </SelectTrigger>
+                                          </FormControl>
+                                          <SelectContent>
+                                            {tokens?.map(token => (
+                                              <SelectItem
+                                                key={`${token.address}-${token.chain_id}`}
+                                                value={`${token.address}-${token.chain_id}`}
+                                              >
+                                                {token.symbol}
+                                              </SelectItem>
+                                            ))}
+                                          </SelectContent>
+                                        </Select>
+                                        <FormMessage />
                                       </div>
-                                    </div>
-                                  </div>
-                                  <div className="flex items-center justify-between text-xs text-text-weak">
-                                    <div>
-                                      {/* Get the current balance in USD */}
-                                      {tokens &&
-                                        tokens?.length > 0 &&
-                                        (() => {
-                                          const token = tokens.find(
-                                            token =>
-                                              token.address ===
-                                                (transfers?.[index]?.asset
-                                                  ?.address || "") &&
-                                              token.chain_id ===
-                                                transfers?.[index]?.chainId,
-                                          );
-                                          return token
-                                            ? "~ $" +
-                                                // Get the current selected token balance in USD
-                                                (
-                                                  (token?.balance_usd /
-                                                    (token.amount /
-                                                      Math.pow(
-                                                        10,
-                                                        token?.decimals,
-                                                      ))) *
-                                                  // Get the form value
-                                                  (field.value ?? 0)
-                                                ).toFixed(2)
-                                            : "";
-                                        })()}
-                                    </div>
-                                    <div>
-                                      {tokens &&
-                                        tokens?.length > 0 &&
-                                        (() => {
-                                          const token = tokens.find(
-                                            token =>
-                                              token.address ===
-                                                (transfers?.[index]?.asset
-                                                  ?.address || "") &&
-                                              token.chain_id ===
-                                                transfers?.[index]?.chainId,
-                                          );
-                                          return token
-                                            ? (
-                                                token?.amount /
-                                                Math.pow(10, token?.decimals)
-                                              ).toString() +
-                                                ` ${token.symbol} available`
-                                            : "";
-                                        })()}
-                                    </div>
-                                  </div>
-                                  <FormMessage />
-                                </div>
-                              )}
-                            />
-                          </div>
-                          <div className="relative col-span-3 inline-block w-full">
-                            <FormField
-                              key={field.id}
-                              control={form.control}
-                              name={`transfers.${index}.asset.address`}
-                              render={({ field: _field }) => (
-                                <FormControl>
-                                  <div className="w-full space-y-2">
-                                    <Label htmlFor="weight">Transfer</Label>
-                                    <Select
-                                      defaultValue={
-                                        transfers &&
-                                        transfers?.length > 0 &&
-                                        transfers[index]?.asset?.address &&
-                                        transfers[index]?.chainId
-                                          ? `${transfers[index]?.asset?.address}-${transfers[index]?.chainId}`
-                                          : undefined
-                                      }
-                                      onValueChange={value => {
-                                        // Get the token of address and chainId
-                                        const [address, chainId] =
-                                          value?.split("-") || [];
-
-                                        // Set the chainId of the token
-                                        const token =
-                                          tokens &&
-                                          tokens?.length > 0 &&
-                                          tokens?.find(
-                                            token => token.address === address,
-                                          );
-
-                                        if (token) {
-                                          form.setValue(
-                                            `transfers.${index}.asset.address`,
-                                            address,
-                                          );
-                                          form.setValue(
-                                            `transfers.${index}.chainId`,
-                                            parseInt(chainId),
-                                          );
-                                          form.setValue(
-                                            `transfers.${index}.assetType`,
-                                            "erc20",
-                                          );
-                                        }
-
-                                        form.trigger();
-                                      }}
-                                    >
-                                      <FormControl>
-                                        <SelectTrigger className="w-full">
-                                          <SelectValue placeholder="Select a token" />
-                                        </SelectTrigger>
-                                      </FormControl>
-                                      <SelectContent>
-                                        {tokens?.map(token => (
-                                          <SelectItem
-                                            key={`${token.address}-${token.chain_id}`}
-                                            value={`${token.address}-${token.chain_id}`}
-                                          >
-                                            {token.symbol}
-                                          </SelectItem>
-                                        ))}
-                                      </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                  </div>
-                                </FormControl>
-                              )}
-                            />
-                          </div>
-                        </div>
+                                    </FormControl>
+                                  )}
+                                />
+                              </div>
+                            </div>
+                          </TabsContent>
+                        </Tabs>
                       </FormItem>
                     </AccordionContent>
                   </AccordionItem>
