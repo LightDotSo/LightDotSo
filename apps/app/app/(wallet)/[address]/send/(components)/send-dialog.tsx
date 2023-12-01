@@ -238,62 +238,65 @@ export const SendDialog: FC<SendDialogProps> = ({
                 path: ["transfers", index, "asset", "quantity"],
               });
             } else if (transfer.asset.quantity > 0) {
-              // If the quantity is valid, get the token balance
-              const token =
-                tokens &&
-                transfers &&
-                transfers?.length > 0 &&
-                transfers[index]?.asset?.address &&
-                tokens?.find(
-                  token =>
-                    token.address ===
-                      (transfers?.[index]?.asset?.address || "") &&
-                    token.chain_id === transfers?.[index]?.chainId,
-                );
+              if (transfer.assetType === "erc20") {
+                // If the quantity is valid, get the token balance
+                const token =
+                  tokens &&
+                  transfers &&
+                  transfers?.length > 0 &&
+                  transfers[index]?.asset?.address &&
+                  tokens?.find(
+                    token =>
+                      token.address ===
+                        (transfers?.[index]?.asset?.address || "") &&
+                      token.chain_id === transfers?.[index]?.chainId,
+                  );
 
-              // If the token is not found or undefined, set an error
-              if (!token) {
-                // Show an error on the message
-                ctx.addIssue({
-                  code: z.ZodIssueCode.custom,
-                  message: "Please select a valid token",
-                  path: ["transfers", index, "asset", "address"],
-                });
-              } else {
-                // Add quantity to total by token address
-                const tokenIndex = `${token.chain_id}:${token.address}`;
-                const totalQuantity = totalByTokenAddress.get(tokenIndex) || 0;
-                totalByTokenAddress.set(
-                  tokenIndex,
-                  totalQuantity + transfer.asset.quantity,
-                );
-
-                // Check if the sum quantity is greater than the token balance
-                if (
-                  totalByTokenAddress.get(tokenIndex) *
-                    Math.pow(10, token?.decimals) >
-                  token?.amount
-                ) {
+                // If the token is not found or undefined, set an error
+                if (!token) {
                   // Show an error on the message
                   ctx.addIssue({
                     code: z.ZodIssueCode.custom,
-                    message: "Insufficient balance",
-                    path: ["transfers", index, "asset", "quantity"],
+                    message: "Please select a valid token",
+                    path: ["transfers", index, "asset", "address"],
                   });
+                } else {
+                  // Add quantity to total by token address
+                  const tokenIndex = `${token.chain_id}:${token.address}`;
+                  const totalQuantity =
+                    totalByTokenAddress.get(tokenIndex) || 0;
+                  totalByTokenAddress.set(
+                    tokenIndex,
+                    totalQuantity + transfer.asset.quantity,
+                  );
 
-                  // Show the balance in all fields w/ same token address and chainId
-                  value.transfers.forEach((transfer, _index) => {
-                    if (
-                      transfer?.asset?.address === token?.address &&
-                      transfer?.chainId === token?.chain_id
-                    ) {
-                      ctx.addIssue({
-                        code: z.ZodIssueCode.custom,
-                        message: "Insufficient balance",
-                        path: ["transfers", _index, "asset", "quantity"],
-                      });
-                    }
-                  });
+                  // Check if the sum quantity is greater than the token balance
+                  if (
+                    totalByTokenAddress.get(tokenIndex) *
+                      Math.pow(10, token?.decimals) >
+                    token?.amount
+                  ) {
+                    // Show an error on the message
+                    ctx.addIssue({
+                      code: z.ZodIssueCode.custom,
+                      message: "Insufficient balance",
+                      path: ["transfers", index, "asset", "quantity"],
+                    });
+
+                    // Show the balance in all fields w/ same token address and chainId
+                    value.transfers.forEach((transfer, _index) => {
+                      if (
+                        transfer?.asset?.address === token?.address &&
+                        transfer?.chainId === token?.chain_id
+                      ) {
+                        ctx.addIssue({
+                          code: z.ZodIssueCode.custom,
+                          message: "Insufficient balance",
+                          path: ["transfers", _index, "asset", "quantity"],
+                        });
+                      }
+                    });
+                  }
                 }
               }
             }
@@ -426,6 +429,85 @@ export const SendDialog: FC<SendDialogProps> = ({
               transfer.address as Address,
               BigInt(transfer.asset?.quantity! * Math.pow(10, token.decimals!)),
             ],
+          ),
+        ];
+      }
+
+      if (
+        transfer &&
+        transfer.address &&
+        transfer.asset &&
+        (transfer.assetType === "erc721" || transfer.assetType === "erc1155") &&
+        "quantity" in transfer.asset &&
+        "tokenId" in transfer.asset
+      ) {
+        // Get the matching nft
+        const nft =
+          currentNftData &&
+          currentNftData.nfts?.length > 0 &&
+          transfer &&
+          transfer.asset &&
+          "address" in transfer.asset &&
+          currentNftData.nfts?.find(
+            nft =>
+              nft.contract_address === transfer.asset?.address! &&
+              chainIdMapping[nft.chain! as MainnetChain | TestnetChain] ===
+                transfer.chainId,
+          );
+
+        if (!nft) {
+          throw new Error("No matching token found");
+        }
+
+        // Encode the erc1155 `transferBatch`
+        if (nft.token_count) {
+          return [
+            transfer.asset.address as Address,
+            0n,
+            encodeAbiParameters(
+              [
+                {
+                  name: "recipients",
+                  type: "address[]",
+                },
+                {
+                  name: "tokenIds",
+                  type: "uint256[]",
+                },
+                {
+                  name: "amounts",
+                  type: "uint256[]",
+                },
+              ],
+              [
+                Array(transfer.asset.quantity!).fill(
+                  transfer.address as Address,
+                ),
+                Array(transfer.asset.quantity!).fill(
+                  BigInt(transfer.asset?.tokenId!),
+                ),
+                Array(transfer.asset.quantity!).fill(1n),
+              ],
+            ),
+          ];
+        }
+
+        // Encode the erc721 `transfer`
+        return [
+          transfer.asset.address as Address,
+          0n,
+          encodeAbiParameters(
+            [
+              {
+                name: "recipient",
+                type: "address",
+              },
+              {
+                name: "tokenId",
+                type: "uint256",
+              },
+            ],
+            [transfer.address as Address, BigInt(transfer.asset?.tokenId!)],
           ),
         ];
       }
@@ -576,7 +658,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     }
   }
 
-  async function validateQuantity(quantity: number, index: number) {
+  async function validateTokenQuantity(quantity: number, index: number) {
     // If the quantity is empty, return
     if (!quantity) return;
 
@@ -609,6 +691,55 @@ export const SendDialog: FC<SendDialogProps> = ({
         });
         // Clear the value of key address
         // form.setValue(`transfers.${index}.asset.quantity`, 0);
+      } else {
+        // If the quantity is valid, set the value of key quantity
+        form.setValue(`transfers.${index}.asset.quantity`, quantity);
+        form.clearErrors(`transfers.${index}.asset.quantity`);
+      }
+    }
+  }
+
+  async function validateNftQuantity(quantity: number, index: number) {
+    // If the quantity is empty, return
+    if (!quantity) return;
+
+    // Check if the quantity is a number and more than the token balance
+    if (quantity && quantity > 0) {
+      // If the quantity is valid, get the token balance
+      const nft =
+        tokens &&
+        transfers &&
+        transfers?.length > 0 &&
+        transfers[index]?.asset?.address &&
+        currentNftData &&
+        currentNftData?.nfts?.find(
+          nft =>
+            nft.contract_address === (transfers?.[index]?.asset?.address || ""),
+        );
+
+      // If the nft is not found or undefined, set an error
+      if (!nft) {
+        // Show an error on the message
+        form.setError(`transfers.${index}.asset.quantity`, {
+          type: "manual",
+          message: "Please select a valid NFT",
+        });
+        // Clear the value of key address
+        form.setValue(`transfers.${index}.asset.quantity`, 0);
+        // If the token is not found or undefined it is an erc721 token meaning the quantity must be 1
+      } else if (!nft.token_count && quantity > 1) {
+        // Show an error on the message
+        form.setError(`transfers.${index}.asset.quantity`, {
+          type: "manual",
+          message: "Insufficient balance",
+        });
+        // If the token count is not null, it is an erc1155 token meaning the quantity must be less than or equal to the token count
+      } else if (nft.token_count && nft.token_count > quantity) {
+        // Show an error on the message
+        form.setError(`transfers.${index}.asset.quantity`, {
+          type: "manual",
+          message: "Insufficient balance",
+        });
       } else {
         // If the quantity is valid, set the value of key quantity
         form.setValue(`transfers.${index}.asset.quantity`, quantity);
@@ -785,7 +916,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 e.target.value,
                                               );
 
-                                              validateQuantity(quantity, index);
+                                              validateTokenQuantity(
+                                                quantity,
+                                                index,
+                                              );
                                             }}
                                             onChange={e => {
                                               // Update the field value
@@ -799,7 +933,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               );
 
                                               if (quantity) {
-                                                validateQuantity(
+                                                validateTokenQuantity(
                                                   quantity,
                                                   index,
                                                 );
@@ -1015,7 +1149,10 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                 e.target.value,
                                               );
 
-                                              validateQuantity(quantity, index);
+                                              validateNftQuantity(
+                                                quantity,
+                                                index,
+                                              );
                                             }}
                                             onChange={e => {
                                               // Update the field value
@@ -1029,7 +1166,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               );
 
                                               if (quantity) {
-                                                validateQuantity(
+                                                validateNftQuantity(
                                                   quantity,
                                                   index,
                                                 );
@@ -1129,7 +1266,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               );
                                               form.setValue(
                                                 `transfers.${index}.assetType`,
-                                                "erc721",
+                                                nft.token_count
+                                                  ? "erc721"
+                                                  : "erc1155",
                                               );
                                             }
 
@@ -1138,7 +1277,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                                         >
                                           <FormControl>
                                             <SelectTrigger className="w-full">
-                                              <SelectValue placeholder="Select a token" />
+                                              <SelectValue placeholder="Select a NFT" />
                                             </SelectTrigger>
                                           </FormControl>
                                           <SelectContent>
