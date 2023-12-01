@@ -114,25 +114,25 @@ impl IntoResponse for AppError {
                 }
             },
             AppError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
-                (StatusCode::BAD_REQUEST, "Prisma error: Unique key violation".to_string())
+                (StatusCode::BAD_REQUEST, "Prisma Error: Unique key violation".to_string())
             }
             AppError::EyreError(eyre_msg) => (StatusCode::BAD_REQUEST, eyre_msg.to_string()),
             AppError::PrismaError(_) => {
-                (StatusCode::INTERNAL_SERVER_ERROR, "Prisma error".to_string())
+                (StatusCode::INTERNAL_SERVER_ERROR, "Prisma Error".to_string())
             }
             AppError::RedisError(_) => {
-                (StatusCode::INTERNAL_SERVER_ERROR, "Redis error".to_string())
+                (StatusCode::INTERNAL_SERVER_ERROR, "Redis Error".to_string())
             }
             AppError::SerdeJsonError(_) => {
-                (StatusCode::BAD_REQUEST, "Serde JSON error".to_string())
+                (StatusCode::BAD_REQUEST, "Serde JSON Error".to_string())
             }
-            AppError::FromHexError(_) => (StatusCode::BAD_REQUEST, "Bad hex".to_string()),
-            AppError::RustHexError(_) => (StatusCode::BAD_REQUEST, "Bad rust hex".to_string()),
+            AppError::FromHexError(_) => (StatusCode::BAD_REQUEST, "Bad Hex".to_string()),
+            AppError::RustHexError(_) => (StatusCode::BAD_REQUEST, "Bad Rust Hex".to_string()),
             AppError::Conflict => (StatusCode::CONFLICT, "Conflict".to_string()),
-            AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad request".to_string()),
+            AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad Request".to_string()),
             AppError::NotFound => (StatusCode::NOT_FOUND, "Not Found".to_string()),
             AppError::InternalError => {
-                (StatusCode::INTERNAL_SERVER_ERROR, "Internal server error".to_string())
+                (StatusCode::INTERNAL_SERVER_ERROR, "Internal Server Error".to_string())
             }
         };
 
