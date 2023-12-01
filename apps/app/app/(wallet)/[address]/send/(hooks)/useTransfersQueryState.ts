@@ -72,7 +72,7 @@ export const transferParser = createParser({
         // Parse the tokenId as a number (if possible)
         const parsedTokenId = parseInt(tokenId);
         // Parse the quantity as a number (if possible)
-        const parsedQuantity = parseFloat(quantity);
+        const parsedQuantity = parseInt(quantity);
         // Add the asset to the transfer if all parts are valid
         if (
           parsedAddress &&
