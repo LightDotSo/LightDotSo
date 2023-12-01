@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Separator } from "@lightdotso/ui";
-import { ProfileForm } from "@/app/(authenticated)/settings/profile-form";
+import { ProfileForm } from "@/app/(authenticated)/settings/(components)/profile-form";
 import { SettingsSection } from "@/components/section/settings-section";
 
 // -----------------------------------------------------------------------------
