@@ -15,31 +15,24 @@
 
 import { z } from "zod";
 
-export const mainnetChainSchema = z.enum([
+export const simplehashMainnetChainSchema = z.enum([
   "ethereum",
   "polygon",
-  // "solana",
   "optimism",
   "arbitrum",
-  // "bitcoin",
   "arbitrum-nova",
   "avalanche",
   "base",
   "bsc",
   "celo",
-  // "flow",
   "gnosis",
-  // "godwoken",
   "linea",
-  // "loot",
-  // "palm",
   "polygon-zkevm",
   "scroll",
-  "zksync-era",
   "zora",
 ]);
 
-export const testnetChainSchema = z.enum([
+export const simplehashTestnetChainSchema = z.enum([
   // "ethereum-goerli",
   // "ethereum-rinkeby",
   "ethereum-sepolia",
@@ -54,20 +47,24 @@ export const testnetChainSchema = z.enum([
   // "godwoken-testnet",
   "linea-testnet",
   // "manta-testnet",
-  "optimism-goerli",
+  // "optimism-goerli",
   // "palm-testnet",
   // "palm-testnet-edge",
   "polygon-zkevm-testnet",
-  "scroll-testnet",
+  // "scroll-testnet",
   "scroll-sepolia",
   // "zksync-era-testnet",
   "zora-testnet",
 ]);
 
-export const chainSchema = z.enum([
-  ...mainnetChainSchema.options,
-  ...testnetChainSchema.options,
+export const simplehashChainSchema = z.enum([
+  ...simplehashMainnetChainSchema.options,
+  ...simplehashTestnetChainSchema.options,
 ]);
 
-export type MainnetChain = z.infer<typeof mainnetChainSchema>;
-export type TestnetChain = z.infer<typeof testnetChainSchema>;
+export type SimplehashMainnetChain = z.infer<
+  typeof simplehashMainnetChainSchema
+>;
+export type SimplehashTestnetChain = z.infer<
+  typeof simplehashTestnetChainSchema
+>;

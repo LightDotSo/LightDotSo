@@ -16,7 +16,10 @@
 "use client";
 
 import { getTokens } from "@lightdotso/client";
-import type { MainnetChain, TestnetChain } from "@lightdotso/schemas";
+import type {
+  SimplehashMainnetChain,
+  SimplehashTestnetChain,
+} from "@lightdotso/schemas";
 import {
   Accordion,
   AccordionContent,
@@ -59,7 +62,7 @@ import * as z from "zod";
 import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import { chainIdMapping } from "@/const/simplehash";
+import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
 import type { NftData, TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import type { Transfer, Transfers } from "@/schemas";
@@ -451,8 +454,9 @@ export const SendDialog: FC<SendDialogProps> = ({
           currentNftData.nfts?.find(
             nft =>
               nft.contract_address === transfer.asset?.address! &&
-              chainIdMapping[nft.chain! as MainnetChain | TestnetChain] ===
-                transfer.chainId,
+              SIMPLEHASH_CHAIN_ID_MAPPING[
+                nft.chain! as SimplehashMainnetChain | SimplehashTestnetChain
+              ] === transfer.chainId,
           );
 
         if (!nft) {
@@ -1310,19 +1314,19 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                   key={`${
                                                     nft.contract_address
                                                   }-${nft.token_id}-${
-                                                    chainIdMapping[
+                                                    SIMPLEHASH_CHAIN_ID_MAPPING[
                                                       nft.chain! as
-                                                        | MainnetChain
-                                                        | TestnetChain
+                                                        | SimplehashMainnetChain
+                                                        | SimplehashTestnetChain
                                                     ]
                                                   }`}
                                                   value={`${
                                                     nft.contract_address
                                                   }-${nft.token_id}-${
-                                                    chainIdMapping[
+                                                    SIMPLEHASH_CHAIN_ID_MAPPING[
                                                       nft.chain! as
-                                                        | MainnetChain
-                                                        | TestnetChain
+                                                        | SimplehashMainnetChain
+                                                        | SimplehashTestnetChain
                                                     ]
                                                   }`}
                                                 >

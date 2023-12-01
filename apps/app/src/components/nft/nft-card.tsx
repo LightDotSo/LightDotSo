@@ -20,7 +20,7 @@ import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { useState, type FC } from "react";
 import { Blurhash } from "react-blurhash";
-import { chainIdMapping } from "@/const/simplehash";
+import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -191,7 +191,9 @@ export const NftCard: FC<NftCardProps> = ({
         <Button asChild className="w-full py-2">
           <Link
             href={`/${address}/send?transfers=0:_:_:${
-              chainIdMapping[chain! as keyof typeof chainIdMapping]
+              SIMPLEHASH_CHAIN_ID_MAPPING[
+                chain! as keyof typeof SIMPLEHASH_CHAIN_ID_MAPPING
+              ]
             }:${contract.type?.toLowerCase()}:${contract_address}|${token_id}|${0}`}
           >
             Send
