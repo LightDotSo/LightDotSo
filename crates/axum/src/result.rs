@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    error::RouteError,
-    routes::{configuration::ConfigurationError, paymaster_operation::PaymasterOperationError},
-};
+use crate::error::{RouteError, RouteErrorStatusCodeAndMsg};
 use axum::{
     http::StatusCode,
     response::{IntoResponse, Response},
@@ -32,8 +29,8 @@ use rustc_hex::FromHexError as RustHexError;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L18
 // type Database = Extension<Arc<PrismaClient>>;
-pub type AppResult<T> = Result<T, AppError>;
-pub type AppJsonResult<T> = AppResult<Json<T>>;
+pub(crate) type AppResult<T> = Result<T, AppError>;
+pub(crate) type AppJsonResult<T> = AppResult<Json<T>>;
 
 /// From: https://github.com/Brendonovich/prisma-client-rust/blob/e520c5f6e30c0839d9dbccaa228f3eedbf188b6c/examples/axum-rest/src/routes.rs#L118
 pub(crate) enum AppError {
@@ -99,20 +96,7 @@ impl From<RouteError> for AppError {
 impl IntoResponse for AppError {
     fn into_response(self) -> Response {
         let status = match self {
-            AppError::RouteError(err) => match err {
-                RouteError::ConfigurationError(ConfigurationError::BadRequest(err_msg)) => {
-                    (StatusCode::BAD_REQUEST, err_msg)
-                }
-                RouteError::ConfigurationError(ConfigurationError::NotFound(err_msg)) => {
-                    (StatusCode::NOT_FOUND, err_msg)
-                }
-                RouteError::PaymasterOperationError(PaymasterOperationError::BadRequest(
-                    err_msg,
-                )) => (StatusCode::BAD_REQUEST, err_msg),
-                RouteError::PaymasterOperationError(PaymasterOperationError::NotFound(err_msg)) => {
-                    (StatusCode::NOT_FOUND, err_msg)
-                }
-            },
+            AppError::RouteError(err) => err.error_status_code_and_msg(),
             AppError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
                 (StatusCode::BAD_REQUEST, "Prisma Error: Unique key violation".to_string())
             }
