@@ -194,7 +194,9 @@ export const NftCard: FC<NftCardProps> = ({
               SIMPLEHASH_CHAIN_ID_MAPPING[
                 chain! as keyof typeof SIMPLEHASH_CHAIN_ID_MAPPING
               ]
-            }:${contract.type?.toLowerCase()}:${contract_address}|${token_id}|${0}`}
+            }:${contract.type?.toLowerCase()}:${contract_address}|${token_id}|${
+              contract.type?.toLowerCase() === "erc721" ? 1 : 0
+            }`}
           >
             Send
           </Link>
