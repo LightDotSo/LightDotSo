@@ -5,7 +5,7 @@ buildscript {
     dependencies {
         classpath "org.mozilla.rust-android-gradle:plugin:0.9.3"
         // uniffi wants some build-time specific info from JNA
-        classpath 'net.java.dev.jna:jna:5.12.1'
+        classpath 'net.java.dev.jna:jna:5.13.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -13,5 +13,5 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.4.0' apply false
     id 'com.android.library' version '7.4.0' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.21' apply false
 }
