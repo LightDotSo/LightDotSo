@@ -733,23 +733,25 @@ export const SendDialog: FC<SendDialogProps> = ({
         // If the token is an erc721 token meaning the quantity must be 1
       } else if (
         nft.contract.type?.toLowerCase() === "erc721" &&
-        quantity > 1
+        quantity !== 1
       ) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
           type: "manual",
-          message: "Insufficient balance",
+          message: "NFT quantity must be 1",
         });
         // If the token is an erc1155 token meaning the quantity must be less than or equal to the token count
       } else if (
-        nft.contract.type?.toLowerCase() === "erc1155" &&
-        nft.token_count &&
-        nft.token_count > quantity
+        (nft.contract.type?.toLowerCase() === "erc1155" &&
+          // Get the owner quantity from the owners array
+          nft.owners?.find(owner => owner.owner_address === address)
+            ?.quantity) ??
+        1 < quantity
       ) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
           type: "manual",
-          message: "Insufficient balance",
+          message: "Insufficient ERC1155 balance",
         });
       } else {
         // If the quantity is valid, set the value of key quantity
@@ -1190,6 +1192,13 @@ export const SendDialog: FC<SendDialogProps> = ({
                                               variant="outline"
                                               type="button"
                                               className="px-1 py-0.5 text-xs"
+                                              disabled={
+                                                transfers &&
+                                                transfers?.length > 0 &&
+                                                transfers[index]?.asset &&
+                                                transfers[index]?.assetType ===
+                                                  "erc721"
+                                              }
                                               onClick={() => {
                                                 // Set the value of key quantity to the token balance
                                                 const nft =
@@ -1208,19 +1217,30 @@ export const SendDialog: FC<SendDialogProps> = ({
                                                         (transfers?.[index]
                                                           ?.asset?.address ||
                                                           "") &&
-                                                      nft.token_id ===
+                                                      parseInt(
+                                                        nft.token_id!,
+                                                      ) ===
                                                         // prettier-ignore
                                                         // @ts-expect-error
                                                         transfers?.[index]?.asset!.tokenId,
                                                   );
 
                                                 if (nft) {
+                                                  // Get the token quantity of the owner
+                                                  const nftQuantity =
+                                                    nft.contract.type?.toLowerCase() ===
+                                                    "erc1155"
+                                                      ? // Get the quantity from the owner array
+                                                        nft.owners?.find(
+                                                          owner =>
+                                                            owner.owner_address ===
+                                                            address,
+                                                        )?.quantity ?? 1
+                                                      : 1;
+
                                                   form.setValue(
                                                     `transfers.${index}.asset.quantity`,
-                                                    nft.contract.type?.toLowerCase() ===
-                                                      "erc721"
-                                                      ? 1
-                                                      : nft.token_count ?? 1,
+                                                    nftQuantity,
                                                   );
                                                 }
 
