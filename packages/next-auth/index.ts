@@ -16,6 +16,7 @@
 // eslint-disable-next-line import/no-named-as-default
 import { prisma } from "@lightdotso/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { cookies } from "next/headers";
 import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
@@ -124,6 +125,11 @@ export const config: NextAuthConfig = {
         console.info("authorize", { credentials, req });
 
         try {
+          const csrf = cookies()
+            .get("next-auth.csrf-token")
+            ?.value.split("|")[0];
+          console.info("CSRF", csrf);
+
           // Convert the message to a siwe message
           const siwe = new SiweMessage(credentials?.message || "{}");
 
@@ -155,6 +161,7 @@ export const config: NextAuthConfig = {
           // Check if siwe is valid
           const result = await siwe.verify({
             signature: credentials.signature as string,
+            // nonce: csrf,
           });
 
           // FIXME: Check if the host matches
