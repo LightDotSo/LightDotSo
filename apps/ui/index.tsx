@@ -220,4 +220,5 @@ export {
 } from "./src/components/ui/tooltip";
 export { useToast, toast } from "./src/components/ui/use-toast";
 export { ThemeProvider } from "./src/providers/theme-provider";
+export { NextAuthProvider } from "./src/providers/next-auth";
 export { ReactQueryProvider } from "./src/providers/react-query";

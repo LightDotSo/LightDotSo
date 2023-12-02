@@ -1387,6 +1387,9 @@ importers:
       next:
         specifier: 14.0.3
         version: 14.0.3(@babel/core@7.23.3)(@opentelemetry/api@1.4.1)(react-dom@18.2.0)(react@18.2.0)
+      next-auth:
+        specifier: ^4.24.5
+        version: 4.24.5(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.0.3)(react-dom@18.2.0)(react@18.2.0)

@@ -25,7 +25,7 @@ import { SiweMessage } from "siwe";
 import { getAddress } from "viem";
 
 // Check if we are using https, only use secure cookies in deployment
-const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith("https://");
+const useSecureCookies = process.env.NEXTAUTH_URL!?.startsWith("https://");
 const hostName = new URL(process.env.NEXTAUTH_URL!).hostname;
 
 export const authOptions: AuthOptions = {
@@ -51,6 +51,7 @@ export const authOptions: AuthOptions = {
     },
     async session({ session, token }: { session: any; token: any }) {
       console.warn("session", { session, token });
+      session.domain = hostName ?? undefined;
       session.token = token;
       session.token.expires = session.expires;
       session.id = token.sub;
@@ -61,9 +62,32 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
+
+  // Option to specify a cross-domain cookie
+  // https://github.com/nextauthjs/next-auth/discussions/1299#discussioncomment-362054
   cookies: {
     sessionToken: {
-      name: `${useSecureCookies ? "__Secure-" : ""}next-auth.session-token`,
+      name: "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: hostName == "localhost" ? hostName : "." + hostName,
+        secure: useSecureCookies,
+      },
+    },
+    callbackUrl: {
+      name: "next-auth.callback-url",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        domain: hostName == "localhost" ? hostName : "." + hostName,
+        secure: useSecureCookies,
+      },
+    },
+    csrfToken: {
+      name: "next-auth.csrf-token",
       options: {
         httpOnly: true,
         sameSite: "lax",
