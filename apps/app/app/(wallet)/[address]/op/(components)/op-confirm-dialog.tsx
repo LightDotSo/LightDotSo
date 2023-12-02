@@ -140,7 +140,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
       address: userOperation.paymaster_and_data.slice(0, 42) as Address,
       chainId: chainId,
       valid_after: fromHex(
-        userOperation.paymaster_and_data.slice(154, 162) as Hex,
+        `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
         "number",
       ),
     }).queryKey,
@@ -151,7 +151,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
             address: userOperation.paymaster_and_data.slice(0, 42) as Address,
             chain_id: chainId,
             valid_after: fromHex(
-              userOperation.paymaster_and_data.slice(154, 162) as Hex,
+              `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
               "number",
             ),
           },
