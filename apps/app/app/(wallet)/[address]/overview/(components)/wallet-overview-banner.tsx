@@ -42,6 +42,7 @@ import { NetworkStack } from "@/components/network/network-stack";
 import type { WalletData } from "@/data";
 import { useCopy } from "@/hooks/useCopy";
 import { queries } from "@/queries";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -119,7 +120,8 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                     <button
                       className="flex items-center rounded-md bg-background-stronger px-3 py-2"
                       onClick={() => {
-                        return copy(address);
+                        copy(address);
+                        successToast("Copied wallet address");
                       }}
                     >
                       <p className="mr-2 text-sm text-text-weak">
