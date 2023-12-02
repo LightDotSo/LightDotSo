@@ -298,7 +298,7 @@ lazy_static! {
         let mut m = HashMap::new();
 
         // Mainnet
-        m.insert(137, "https://polygon.voltaire.candidewallet.com/rpc".to_string());
+        // m.insert(137, "https://polygon.voltaire.candidewallet.com/rpc".to_string());
 
          // Testnet
         m.insert(44787, "https://celo-alfajores.voltaire.candidewallet.com/rpc".to_string());
