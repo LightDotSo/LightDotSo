@@ -15,6 +15,7 @@
 
 use ethers::types::Address;
 use lazy_static::lazy_static;
+use std::collections::HashMap;
 
 // The paymaster addresses
 lazy_static! {
@@ -59,6 +60,30 @@ lazy_static! {
     pub static ref ENTRYPOINT_V060_ADDRESS: Address =
       // v0.6.0
       "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789".parse().unwrap();
+}
+
+// The mainnet chain ids
+lazy_static! {
+    pub static ref MAINNET_CHAIN_IDS: HashMap<u64, &'static str> = {
+        let mut m = HashMap::new();
+
+        m.insert(1, "Ethereum Mainnet");
+        m.insert(10, "Optimism Mainnet");
+        m.insert(56, "Binance Smart Chain Mainnet");
+        m.insert(100, "Gnosis Mainnet");
+        m.insert(137, "Polygon Mainnet");
+        m.insert(1101, "Polygon zkEVM Mainnet");
+        m.insert(8453, "Base Mainnet");
+        m.insert(42161, "Arbitrum One Mainnet");
+        m.insert(42170, "Arbitrum Nova Mainnet");
+        m.insert(42220, "Celo Mainnet");
+        m.insert(43114, "Avalanche Mainnet");
+        m.insert(59144, "Linea Mainnet");
+        m.insert(534352, "Scroll Mainnet");
+        m.insert(7777777, "Zora Mainnet");
+
+        m
+    };
 }
 
 #[cfg(test)]
