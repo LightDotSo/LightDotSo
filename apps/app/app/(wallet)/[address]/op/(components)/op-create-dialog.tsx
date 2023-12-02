@@ -19,7 +19,8 @@ import { useMemo } from "react";
 import type { FC } from "react";
 import { isAddressEqual } from "viem";
 import type { Address } from "viem";
-import { OpConfirmCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
+import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
+import type { ConfigurationData } from "@/data";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
 
@@ -29,12 +30,8 @@ import type { UserOperation } from "@/types";
 
 type OpCreateDialogProps = {
   address: Address;
+  config: ConfigurationData;
   userOperations: UserOperation[];
-  owners: {
-    id: string;
-    address: string;
-    weight: number;
-  }[];
 };
 
 // -----------------------------------------------------------------------------
@@ -43,8 +40,8 @@ type OpCreateDialogProps = {
 
 export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   address,
+  config,
   userOperations,
-  owners,
 }) => {
   const { address: userAddress } = useAuth();
 
@@ -52,10 +49,10 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
   const owner = useMemo(() => {
     if (!userAddress) return;
 
-    return owners?.find(owner =>
+    return config.owners?.find(owner =>
       isAddressEqual(owner.address as Address, userAddress),
     );
-  }, [owners, userAddress]);
+  }, [config.owners, userAddress]);
 
   return (
     <>
@@ -67,10 +64,10 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
           Are you sure you want to sign this transaction?
         </p>
         {userOperations?.map((userOperation, index) => (
-          <OpConfirmCard
+          <OpCreateCard
             key={index}
             address={address}
-            owners={owners}
+            config={config}
             userOperation={userOperation}
           />
         ))}
