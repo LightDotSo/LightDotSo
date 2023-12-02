@@ -21,8 +21,7 @@ import { SessionProvider } from "next-auth/react";
 function NextAuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider
-      basePath={"/api/auth"}
-      // basePath={`${process.env.NEXT_PUBLIC_AUTH_BASE_PATH}/api/auth`}
+      basePath={`${process.env.NEXT_PUBLIC_AUTH_BASE_PATH}/api/auth`}
       // Re-fetch session every 5 minutes
       refetchInterval={5 * 60}
       // Re-fetches session when window is focused
