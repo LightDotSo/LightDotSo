@@ -72,7 +72,7 @@ export const siweConfig: SIWEConfig = {
       message: JSON.stringify(message),
       redirect: false,
       signature,
-      // callbackUrl: "/",
+      callbackUrl: "/",
     });
     console.info("response: ", response);
     if (response?.error) {
