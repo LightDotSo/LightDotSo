@@ -204,7 +204,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     };
 
     fetchUserOp();
-  }, [data, owner, userOperation, subdigest]);
+  }, [data, owner, userOperation, subdigest, threshold, router, address]);
 
   return (
     <>
