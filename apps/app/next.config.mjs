@@ -37,6 +37,15 @@ const nextConfig = {
     },
     serverComponentsExternalPackages: [],
   },
+  async redirects() {
+    return [
+      {
+        source: "/api/auth/:slug*",
+        destination: "https://auth.light.so/api/auth/:slug*",
+        permanent: true,
+      },
+    ];
+  },
   transpilePackages: ["@lightdotso/ui", "@lightdotso/wagmi"],
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
