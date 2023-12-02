@@ -144,7 +144,9 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
 
   useEffect(() => {
     const fetchUserOp = async () => {
-      if (!data || !owner) return;
+      if (!data || !owner || !userOperation) {
+        return;
+      }
 
       const res = await createUserOperation({
         params: {
@@ -204,7 +206,8 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     };
 
     fetchUserOp();
-  }, [data, owner, userOperation, subdigest, threshold, router, address]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, owner, userOperation, subdigest, threshold, address]);
 
   return (
     <>
