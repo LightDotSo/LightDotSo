@@ -3,7 +3,6 @@ ignores:
   - "@lightdotso/kysely"
   - "@lightdotso/prisma"
   - "@lightdotso/styles"
-  - "@next-auth/prisma-adapter"
   - "@prisma/client"
   - "@radix-ui/react-accordion"
   - "@radix-ui/react-icons"
@@ -31,3 +30,4 @@ ignores:
   - next-auth
   - react-hook-form
   - zod
+  - "@auth/prisma-adapter"
