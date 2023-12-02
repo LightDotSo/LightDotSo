@@ -14,12 +14,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* eslint-disable no-unused-vars */
-export enum Contract {
-  V1_FACTORY = "Factory",
+export enum Internal {
+  CHANGELOG = "Changelog",
+  DOCS = "Docs",
+  HOME = "Home",
+  MEMBER = "Membership",
 }
 
-export const ContractLinks: {
-  readonly [key in Contract]: string;
+export const INTERNAL_LINKS: {
+  readonly [key in Internal]: string;
 } = {
-  [Contract.V1_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+  [Internal.CHANGELOG]: "/changelog",
+  [Internal.DOCS]: "/docs",
+  [Internal.HOME]: "/home",
+  [Internal.MEMBER]: "/membership",
 };

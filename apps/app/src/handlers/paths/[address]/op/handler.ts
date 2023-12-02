@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getPaymasterGasAndPaymasterAndData } from "@lightdotso/client";
-import { ContractLinks } from "@lightdotso/const";
+import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Result } from "neverthrow";
 import { notFound } from "next/navigation";
@@ -130,7 +130,7 @@ export const handler = async (
         initCode:
           operation.initCode ?? nonce === 0
             ? calculateInitCode(
-                ContractLinks["Factory"] as Address,
+                CONTRACT_ADDRESSES["Factory"] as Address,
                 config.image_hash as Hex,
                 wallet.salt as Hex,
               )

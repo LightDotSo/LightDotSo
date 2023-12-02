@@ -26,7 +26,7 @@ export enum NotionPages {
   TEAM = "Team",
 }
 
-export const NotionLinks: {
+export const NOTION_LINKS: {
   readonly [key in NotionPages]: string;
 } = {
   [NotionPages.CAREERS]:

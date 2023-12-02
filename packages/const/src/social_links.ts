@@ -25,7 +25,7 @@ export enum Social {
   WEBSITE = "Website",
 }
 
-export const SocialLinks: {
+export const SOCIAL_LINKS: {
   readonly [key in Social]: string;
 } = {
   [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",

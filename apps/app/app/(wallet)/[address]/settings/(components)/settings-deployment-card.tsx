@@ -16,7 +16,7 @@
 "use client";
 
 import { getUserOperations } from "@lightdotso/client";
-import { ContractLinks } from "@lightdotso/const";
+import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import { calculateInitCode } from "@lightdotso/solutions";
 import { Button } from "@lightdotso/ui";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
@@ -108,7 +108,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // ---------------------------------------------------------------------------
 
   let initCode = calculateInitCode(
-    ContractLinks["Factory"] as Address,
+    CONTRACT_ADDRESSES["Factory"] as Address,
     image_hash,
     salt,
   );
