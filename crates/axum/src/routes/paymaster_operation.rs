@@ -23,6 +23,7 @@ use axum::{
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{paymaster, paymaster_operation};
 use lightdotso_tracing::tracing::info;
+use prisma_client_rust::chrono::{NaiveDateTime, Utc};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -33,8 +34,8 @@ pub struct GetQuery {
     pub address: String,
     /// The chain id of the paymaster.
     pub chain_id: i64,
-    /// The timestamp of the paymaster. (valid after) in RFC3339 format.
-    pub valid_after: String,
+    /// The timestamp of the paymaster.
+    pub valid_after: i64,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -96,8 +97,14 @@ async fn v1_paymaster_operation_get_handler(
 ) -> AppJsonResult<PaymasterOperation> {
     // Get the get query.
     let Query(query) = get;
-    let valid_after =
-        prisma_client_rust::chrono::DateTime::parse_from_rfc3339(&query.valid_after.to_string())?;
+    let timestamp = NaiveDateTime::from_timestamp_opt(query.valid_after, 0);
+
+    // If the timestamp is not valid, return a 500.
+    let timestamp = timestamp.ok_or(RouteError::PaymasterOperationError(
+        PaymasterOperationError::BadRequest("Invalid timestamp".to_string()),
+    ))?;
+
+    let valid_after = prisma_client_rust::chrono::DateTime::<Utc>::from_utc(timestamp, Utc);
     let parsed_query_address: H160 = query.address.parse()?;
 
     info!("Get paymaster for address: {:?}", query);
@@ -125,7 +132,10 @@ async fn v1_paymaster_operation_get_handler(
         .client
         .unwrap()
         .paymaster_operation()
-        .find_unique(paymaster_operation::valid_after_paymaster_id(valid_after, paymaster.id))
+        .find_unique(paymaster_operation::valid_after_paymaster_id(
+            valid_after.into(),
+            paymaster.id,
+        ))
         .exec()
         .await?;
 
