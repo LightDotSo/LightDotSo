@@ -31,9 +31,6 @@ export const config: NextAuthConfig = {
   session: {
     strategy: "jwt",
   },
-  theme: {
-    logo: "https://next-auth.js.org/img/logo/logo-sm.png",
-  },
   secret: process.env.AUTH_SECRET!,
   callbacks: {
     authorized({ request, auth }) {
