@@ -945,8 +945,8 @@ export interface operations {
         address: string;
         /** @description The chain id of the paymaster. */
         chain_id: number;
-        /** @description The timestamp of the paymaster. (valid after) in RFC3339 format. */
-        valid_after: string;
+        /** @description The timestamp of the paymaster. */
+        valid_after: number;
       };
     };
     responses: {

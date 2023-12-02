@@ -302,6 +302,30 @@ export const createUserOperation = async ({
   });
 };
 
+export const getPaymasterOperation = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string; chain_id: number; valid_after: number };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/paymaster_operation/get", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getPortfolio = async (
   {
     params,

@@ -16,14 +16,17 @@
 "use client";
 
 import {
+  getPaymasterOperation,
   getSignatureUserOperation,
   sendUserOperation,
 } from "@lightdotso/client";
 import { Button, toast } from "@lightdotso/ui";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback, useState, useEffect } from "react";
 import type { FC } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
+import { queries } from "@/queries";
 import { errorToast, serializeBigInt } from "@/utils";
 import {
   useLightVerifyingPaymasterGetHash,
@@ -126,6 +129,45 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
     chainId: Number(chainId),
     args: [userOperation.sender as Address],
+  });
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const { data: paymasterOperation } = useSuspenseQuery({
+    queryKey: queries.paymaster_operation.get({
+      address: userOperation.paymaster_and_data.slice(0, 42) as Address,
+      chainId: chainId,
+      valid_after: fromHex(
+        userOperation.paymaster_and_data.slice(154, 162) as Hex,
+        "number",
+      ),
+    }).queryKey,
+    queryFn: async () => {
+      const res = await getPaymasterOperation({
+        params: {
+          query: {
+            address: userOperation.paymaster_and_data.slice(0, 42) as Address,
+            chain_id: chainId,
+            valid_after: fromHex(
+              userOperation.paymaster_and_data.slice(154, 162) as Hex,
+              "number",
+            ),
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return null;
+        },
+      );
+    },
   });
 
   const paymasterSignedMsg = `0x${userOperation.paymaster_and_data.slice(
@@ -239,6 +281,11 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">
             paymasterSignedMsg: {paymasterSignedMsg}
+          </code>
+        </pre>
+        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+          <code className="break-all text-text">
+            paymasterOperation: {JSON.stringify(paymasterOperation, null, 2)}
           </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
