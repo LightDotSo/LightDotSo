@@ -293,16 +293,18 @@ lazy_static! {
 }
 
 // The candide rpc urls
+#[allow(clippy::let_and_return)]
 lazy_static! {
     pub static ref CANDIDE_RPC_URLS: HashMap<u64, String> = {
-        let mut m = HashMap::new();
+        let m = HashMap::new();
+        // let mut m = HashMap::new();
 
         // Mainnet
         // m.insert(137, "https://polygon.voltaire.candidewallet.com/rpc".to_string());
 
          // Testnet
         // m.insert(44787, "https://celo-alfajores.voltaire.candidewallet.com/rpc".to_string());
-        m.insert(80001, "https://mumbai.voltaire.candidewallet.com/rpc".to_string());
+        // m.insert(80001, "https://mumbai.voltaire.candidewallet.com/rpc".to_string());
         // m.insert(11155111, "https://sepolia.voltaire.candidewallet.com/rpc".to_string());
 
         m
