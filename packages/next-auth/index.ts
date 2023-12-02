@@ -52,6 +52,9 @@ export const config: NextAuthConfig = {
     },
     async jwt({ token, user, account, profile }) {
       console.warn("jwt", { token, user, account, profile });
+      if (user) {
+        token = user as unknown as { [key: string]: any };
+      }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
@@ -60,9 +63,6 @@ export const config: NextAuthConfig = {
       session.token = token;
       session.token.expires = session.expires;
       session.id = token.sub;
-      session.user.address = session.user.name;
-      session.user.image = "/";
-      session.address = session.user.name || "";
       session.chainId = 1;
       return session;
     },
@@ -219,6 +219,7 @@ export const config: NextAuthConfig = {
             },
             select: {
               id: true,
+              address: true,
               name: true,
             },
           });
