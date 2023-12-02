@@ -34,9 +34,7 @@ export const config: NextAuthConfig = {
   theme: {
     logo: "https://next-auth.js.org/img/logo/logo-sm.png",
   },
-  // eslint-disable-next-line turbo/no-undeclared-env-vars
-  // secret: process.env.AUTH_SECRET ?? process.env.NEXT_PUBLIC_SECRET,
-  secret: "secret",
+  secret: process.env.AUTH_SECRET!,
   callbacks: {
     authorized({ request, auth }) {
       const { pathname } = request.nextUrl;
