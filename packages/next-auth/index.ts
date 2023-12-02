@@ -23,7 +23,8 @@ import { SiweMessage } from "siwe";
 import { getAddress } from "viem";
 
 // Check if we are using https, only use secure cookies in deployment
-const useSecureCookies = process.env.NEXTAUTH_URL!?.startsWith("https://");
+const useSecureCookies = false;
+// const useSecureCookies = process.env.NEXTAUTH_URL!?.startsWith("https://");
 const hostName = new URL(process.env.NEXTAUTH_URL!).hostname;
 
 export const config: NextAuthConfig = {
