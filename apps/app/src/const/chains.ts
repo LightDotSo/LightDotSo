@@ -26,16 +26,16 @@ import {
 // Mainnet
 // -----------------------------------------------------------------------------
 
-export const mainnet_chains = [mainnet, base, polygon, optimism];
+export const MAINNET_CHAINS = [mainnet, base, polygon, optimism];
 
 // -----------------------------------------------------------------------------
 // Testnet
 // -----------------------------------------------------------------------------
 
-export const testnet_chains = [sepolia, polygonMumbai];
+export const TESTNET_CHAINS = [sepolia, polygonMumbai];
 
 // -----------------------------------------------------------------------------
 // All
 // -----------------------------------------------------------------------------
 
-export const chains = [...mainnet_chains, ...testnet_chains];
+export const CHAINS = [...MAINNET_CHAINS, ...TESTNET_CHAINS];

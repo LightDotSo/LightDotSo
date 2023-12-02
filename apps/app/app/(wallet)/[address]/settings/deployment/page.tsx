@@ -18,7 +18,7 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address, Hex } from "viem";
 import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/(components)/settings-deployment-card";
-import { chains, mainnet_chains } from "@/const/chains";
+import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
@@ -67,8 +67,8 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   const wallet_chains = walletSettings?.is_enabled_testnet
-    ? chains
-    : mainnet_chains;
+    ? CHAINS
+    : MAINNET_CHAINS;
 
   return res.match(
     res => {

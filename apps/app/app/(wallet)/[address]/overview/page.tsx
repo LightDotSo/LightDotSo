@@ -66,6 +66,10 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   queryClient.setQueryData(
+    queries.wallet.settings(params.address as Address).queryKey,
+    walletSettings,
+  );
+  queryClient.setQueryData(
     queries.portfolio.get(params.address as Address).queryKey,
     portfolio,
   );

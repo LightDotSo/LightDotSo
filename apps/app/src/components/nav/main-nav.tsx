@@ -42,7 +42,7 @@ const tabs = [
   {
     label: "Overview",
     id: "overview",
-    href: "/",
+    href: "/overview",
     icon: (
       props: React.JSX.IntrinsicAttributes &
         IconProps &

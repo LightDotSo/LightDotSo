@@ -18,6 +18,7 @@ use std::borrow::Cow;
 
 pub mod admin;
 pub mod api;
+pub mod error;
 pub mod internal;
 pub mod prometheus;
 pub mod result;

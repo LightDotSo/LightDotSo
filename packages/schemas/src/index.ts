@@ -14,10 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export {
-  mainnetChainSchema,
-  testnetChainSchema,
-  chainSchema,
+  simplehashMainnetChainSchema,
+  simplehashTestnetChainSchema,
+  simplehashChainSchema,
   nftsByOwnerSchema,
   nftWalletValuationsSchema,
+} from "./simplehash";
+export type {
+  SimplehashMainnetChain,
+  SimplehashTestnetChain,
 } from "./simplehash";
 export { llamaGetSchema, llamaPostSchema } from "./llama";

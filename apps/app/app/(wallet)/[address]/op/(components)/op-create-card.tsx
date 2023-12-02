@@ -18,6 +18,7 @@
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { Button, toast } from "@lightdotso/ui";
+import { useRouter } from "next/router";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
@@ -30,6 +31,7 @@ import {
   decodeFunctionData,
 } from "viem";
 import { useSignMessage } from "wagmi";
+import type { ConfigurationData } from "@/data";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
 import { errorToast, serializeBigInt } from "@/utils";
@@ -44,13 +46,9 @@ import {
 // Props
 // -----------------------------------------------------------------------------
 
-type OpConfirmProps = {
+type OpCreateCardProps = {
   address: Address;
-  owners: {
-    id: string;
-    address: string;
-    weight: number;
-  }[];
+  config: ConfigurationData;
   userOperation: UserOperation;
 };
 
@@ -58,18 +56,23 @@ type OpConfirmProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpConfirmCard: FC<OpConfirmProps> = ({
+export const OpCreateCard: FC<OpCreateCardProps> = ({
   address,
+  config: { owners, threshold },
   userOperation,
-  owners,
 }) => {
   const { address: userAddress } = useAuth();
+  const router = useRouter();
 
   const subdigest = subdigestOf(
     address,
     hexToBytes(userOperation.hash as Hex),
     userOperation.chainId,
   );
+
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
 
   const { data, signMessage } = useSignMessage({
     message: { raw: toBytes(subdigest) },
@@ -186,6 +189,11 @@ export const OpConfirmCard: FC<OpConfirmProps> = ({
               </pre>
             ),
           });
+          if (threshold >= owner.weight) {
+            router.push(
+              `/${address}/op/${userOperation.chainId}/${userOperation.hash}`,
+            );
+          }
         },
         err => {
           if (err instanceof Error) {

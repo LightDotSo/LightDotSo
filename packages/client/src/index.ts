@@ -14,13 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import {
-  chainSchema,
-  testnetChainSchema,
   llamaGetSchema,
   llamaPostSchema,
   nftsByOwnerSchema,
   nftWalletValuationsSchema,
-  mainnetChainSchema,
+  simplehashChainSchema,
+  simplehashTestnetChainSchema,
+  simplehashMainnetChainSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync, err, ok } from "neverthrow";
 import createClient from "openapi-fetch";
@@ -295,6 +295,30 @@ export const createUserOperation = async ({
     client.POST("/user_operation/create", {
       params,
       body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const getPaymasterOperation = async (
+  {
+    params,
+  }: {
+    params: {
+      query: { address: string; chain_id: number; valid_after: number };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/paymaster_operation/get", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {
@@ -616,8 +640,8 @@ export const updateWalletSettings = async ({
 
 export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
   const chains = isTestnet
-    ? testnetChainSchema.options.join(",")
-    : chainSchema.options.join(",");
+    ? simplehashTestnetChainSchema.options.join(",")
+    : simplehashChainSchema.options.join(",");
 
   return ResultAsync.fromPromise(
     zodFetch(
@@ -641,7 +665,7 @@ export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
 };
 
 export const getNftValuation = async (address: string) => {
-  const chains = mainnetChainSchema.options.join(",");
+  const chains = simplehashMainnetChainSchema.options.join(",");
 
   return ResultAsync.fromPromise(
     zodFetch(

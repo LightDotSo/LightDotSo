@@ -13,24 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { FC } from "react";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Props
+// Type
 // -----------------------------------------------------------------------------
 
-type NftsWrapperProps = {
-  children: React.ReactNode;
+type PaymasterOperationFilter = {
+  address: Address;
+  chainId: number;
+  valid_after: number;
 };
 
 // -----------------------------------------------------------------------------
-// Component
+// Keys
 // -----------------------------------------------------------------------------
 
-export const NftsWrapper: FC<NftsWrapperProps> = ({ children }) => {
-  return (
-    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-      {children}
-    </ul>
-  );
-};
+export const paymaster_operation = createQueryKeys("paymaster_operation", {
+  get: (filter: PaymasterOperationFilter) => ({
+    queryKey: [{ filter }],
+  }),
+});
+
+// -----------------------------------------------------------------------------
+// Infer
+// -----------------------------------------------------------------------------
+
+export type PaymasterOperationKeys = inferQueryKeys<typeof paymaster_operation>;

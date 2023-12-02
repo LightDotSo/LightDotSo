@@ -27,3 +27,4 @@ ignores:
   - immer
   - "@lightdotso/wagmi"
   - "@wagmi/core"
+  - blurhash

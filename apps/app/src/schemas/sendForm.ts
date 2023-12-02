@@ -33,8 +33,8 @@ const erc721 = z.object({
 
 const erc1155 = z.object({
   address: z.string().optional(),
-  tokenIds: z.array(z.number()),
-  quantities: z.array(z.number()),
+  tokenId: z.number().optional(),
+  quantity: z.number().optional(),
 });
 
 const asset = z.union([erc20, erc721, erc1155]);

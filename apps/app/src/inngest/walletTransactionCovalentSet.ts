@@ -16,7 +16,7 @@
 import { CovalentClient } from "@covalenthq/client-sdk";
 import type { Chain } from "@covalenthq/client-sdk";
 import { kafka } from "@/clients/kafka";
-import { ChainIdMapping } from "@/const/covalent";
+import { COVALENT_CHAIN_ID_MAPPING } from "@/const/covalent";
 import { inngest } from "@/inngest/client";
 
 // -----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ export const walletTransactionCovalentSet = inngest.createFunction(
     await step.run("Get Covalent", async () => {
       // Parse the chain names from the array of chainIds (e.g. [1, 137] => ["eth-mainnet", "matic-mainnet"])
       const chains = event.data.chainIds.map(chainId => {
-        return ChainIdMapping[chainId] as Chain;
+        return COVALENT_CHAIN_ID_MAPPING[chainId] as Chain;
       });
 
       // Get the Covalent client for the given chain.
