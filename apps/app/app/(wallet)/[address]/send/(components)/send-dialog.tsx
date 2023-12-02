@@ -55,7 +55,15 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress, encodeFunctionData, encodeAbiParameters } from "viem";
+import {
+  isAddress,
+  encodeFunctionData,
+  encodeAbiParameters,
+  concat,
+  getFunctionSelector,
+  toHex,
+  fromHex,
+} from "viem";
 import type { Address, Hex } from "viem";
 import { normalize } from "viem/ens";
 import * as z from "zod";
@@ -69,6 +77,7 @@ import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
 import { debounce } from "@/utils";
 import { lightWalletABI } from "@/wagmi";
+
 // -----------------------------------------------------------------------------
 // Types
 // -----------------------------------------------------------------------------
@@ -417,21 +426,34 @@ export const SendDialog: FC<SendDialogProps> = ({
         return [
           transfer.asset.address as Address,
           0n,
-          encodeAbiParameters(
-            [
-              {
-                name: "recipient",
-                type: "address",
-              },
-              {
-                name: "amount",
-                type: "uint256",
-              },
-            ],
-            [
-              transfer.address as Address,
-              BigInt(transfer.asset?.quantity! * Math.pow(10, token.decimals!)),
-            ],
+          toHex(
+            concat([
+              fromHex(
+                getFunctionSelector("transfer(address,uint256)"),
+                "bytes",
+              ),
+              fromHex(
+                encodeAbiParameters(
+                  [
+                    {
+                      name: "recipient",
+                      type: "address",
+                    },
+                    {
+                      name: "amount",
+                      type: "uint256",
+                    },
+                  ],
+                  [
+                    transfer.address as Address,
+                    BigInt(
+                      transfer.asset?.quantity! * Math.pow(10, token.decimals!),
+                    ),
+                  ],
+                ),
+                "bytes",
+              ),
+            ]),
           ),
         ];
       }
@@ -468,30 +490,43 @@ export const SendDialog: FC<SendDialogProps> = ({
           return [
             transfer.asset.address as Address,
             0n,
-            encodeAbiParameters(
-              [
-                {
-                  name: "recipients",
-                  type: "address[]",
-                },
-                {
-                  name: "tokenIds",
-                  type: "uint256[]",
-                },
-                {
-                  name: "amounts",
-                  type: "uint256[]",
-                },
-              ],
-              [
-                Array(transfer.asset.quantity!).fill(
-                  transfer.address as Address,
+            toHex(
+              concat([
+                fromHex(
+                  getFunctionSelector(
+                    "transferBatch(address[],uint256[],uint256[])",
+                  ),
+                  "bytes",
                 ),
-                Array(transfer.asset.quantity!).fill(
-                  BigInt(transfer.asset?.tokenId!),
+                fromHex(
+                  encodeAbiParameters(
+                    [
+                      {
+                        name: "recipients",
+                        type: "address[]",
+                      },
+                      {
+                        name: "tokenIds",
+                        type: "uint256[]",
+                      },
+                      {
+                        name: "amounts",
+                        type: "uint256[]",
+                      },
+                    ],
+                    [
+                      Array(transfer.asset.quantity!).fill(
+                        transfer.address as Address,
+                      ),
+                      Array(transfer.asset.quantity!).fill(
+                        BigInt(transfer.asset?.tokenId!),
+                      ),
+                      Array(transfer.asset.quantity!).fill(1n),
+                    ],
+                  ),
+                  "bytes",
                 ),
-                Array(transfer.asset.quantity!).fill(1n),
-              ],
+              ]),
             ),
           ];
         }
@@ -500,18 +535,32 @@ export const SendDialog: FC<SendDialogProps> = ({
         return [
           transfer.asset.address as Address,
           0n,
-          encodeAbiParameters(
-            [
-              {
-                name: "recipient",
-                type: "address",
-              },
-              {
-                name: "tokenId",
-                type: "uint256",
-              },
-            ],
-            [transfer.address as Address, BigInt(transfer.asset?.tokenId!)],
+          toHex(
+            concat([
+              fromHex(
+                getFunctionSelector("transfer(address,uint256)"),
+                "bytes",
+              ),
+              fromHex(
+                encodeAbiParameters(
+                  [
+                    {
+                      name: "recipient",
+                      type: "address",
+                    },
+                    {
+                      name: "tokenId",
+                      type: "uint256",
+                    },
+                  ],
+                  [
+                    transfer.address as Address,
+                    BigInt(transfer.asset?.tokenId!),
+                  ],
+                ),
+                "bytes",
+              ),
+            ]),
           ),
         ];
       }

@@ -65,6 +65,10 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   queryClient.setQueryData(
+    queries.wallet.settings(params.address as Address).queryKey,
+    walletSettings,
+  );
+  queryClient.setQueryData(
     queries.nft_valuation.get(params.address as Address).queryKey,
     nftValuation,
   );

@@ -13,10 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{
-    result::{AppError, AppJsonResult},
-    state::AppState,
-};
+use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
@@ -122,7 +119,9 @@ async fn v1_wallet_settings_get_handler(
         .await?;
 
     // If the wallet_settings is not found, return a 404.
-    let wallet_settings = wallet_settings.ok_or(AppError::NotFound)?;
+    let wallet_settings = wallet_settings.ok_or(RouteError::WalletSettingsError(
+        WalletSettingsError::NotFound("Wallet settings not found".to_string()),
+    ))?;
 
     // Change the wallet_settings to the format that the API expects.
     let wallet_settings: WalletSettings = wallet_settings.into();
