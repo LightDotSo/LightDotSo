@@ -22,7 +22,8 @@ use ethers::{
 };
 use eyre::Result;
 use lightdotso_contracts::{
-    constants::LIGHT_PAYMASTER_ADDRESSES, paymaster::decode_paymaster_and_data,
+    constants::{LIGHT_PAYMASTER_ADDRESSES, MAINNET_CHAIN_IDS},
+    paymaster::decode_paymaster_and_data,
     types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_prisma::{
@@ -498,7 +499,12 @@ pub async fn upsert_user_operation_logs(
         db.user_operation()
             .update(
                 user_operation::hash::equals(format!("{:?}", uow.hash)),
-                vec![user_operation::logs::connect(vec![log::id::equals(log.id.clone())])],
+                vec![
+                    user_operation::logs::connect(vec![log::id::equals(log.id.clone())]),
+                    user_operation::is_testnet::set(
+                        !MAINNET_CHAIN_IDS.contains_key(&(uow.chain_id as u64)),
+                    ),
+                ],
             )
             .exec()
             .await?;

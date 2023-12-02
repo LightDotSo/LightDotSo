@@ -34,7 +34,7 @@ use lightdotso_common::{
     utils::hex_to_bytes,
 };
 use lightdotso_contracts::{
-    constants::ENTRYPOINT_V060_ADDRESS,
+    constants::{ENTRYPOINT_V060_ADDRESS, MAINNET_CHAIN_IDS},
     // constants::{ENTRYPOINT_V060_ADDRESS, LIGHT_PAYMASTER_ADDRESSES},
     paymaster::decode_paymaster_and_data,
 };
@@ -766,7 +766,8 @@ async fn v1_user_operation_post_handler(
     }
 
     // The optional params to connect paymaster to user_operation.
-    let mut params = vec![];
+    let mut params =
+        vec![user_operation::is_testnet::set(!MAINNET_CHAIN_IDS.contains_key(&(chain_id as u64)))];
 
     // Parse the paymaster_and_data for the paymaster data if the paymaster is provided.
     if user_operation.paymaster_and_data.len() > 2 {
