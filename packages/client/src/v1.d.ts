@@ -80,6 +80,20 @@ export interface paths {
      */
     get: operations["v1_paymaster_list_handler"];
   };
+  "/paymaster_operation/get": {
+    /**
+     * Get a paymaster
+     * @description Get a paymaster
+     */
+    get: operations["v1_paymaster_operation_get_handler"];
+  };
+  "/paymaster_operation/list": {
+    /**
+     * Returns a list of paymasters.
+     * @description Returns a list of paymasters.
+     */
+    get: operations["v1_paymaster_operation_list_handler"];
+  };
   "/portfolio/get": {
     /**
      * Get a portfolio
@@ -352,6 +366,17 @@ export interface components {
       BadRequest: string;
     }, {
       /** @description Paymaster not found by id. */
+      NotFound: string;
+    }]>;
+    /** @description Item to do. */
+    PaymasterOperation: {
+      id: string;
+    };
+    /** @description PaymasterOperation operation errors */
+    PaymasterOperationError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description PaymasterOperation not found by id. */
       NotFound: string;
     }]>;
     /** @description Item to do. */
@@ -905,6 +930,62 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["PaymasterError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a paymaster
+   * @description Get a paymaster
+   */
+  v1_paymaster_operation_get_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the paymaster. */
+        address: string;
+        /** @description The chain id of the paymaster. */
+        chain_id: number;
+        /** @description The timestamp of the paymaster. (valid after) in RFC3339 format. */
+        valid_after: string;
+      };
+    };
+    responses: {
+      /** @description Paymaster Operation returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["PaymasterOperation"];
+        };
+      };
+      /** @description Paymaster Operation not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["PaymasterOperationError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of paymasters.
+   * @description Returns a list of paymasters.
+   */
+  v1_paymaster_operation_list_handler: {
+    parameters: {
+      query?: {
+        offset?: number | null;
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Paymaster Operations returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["PaymasterOperation"][];
+        };
+      };
+      /** @description Paymaster Operation bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["PaymasterOperationError"];
         };
       };
     };

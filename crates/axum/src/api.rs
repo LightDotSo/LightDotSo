@@ -109,6 +109,8 @@ use utoipa_swagger_ui::SwaggerUi;
         notification::v1_notification_read_handler,
         paymaster::v1_paymaster_get_handler,
         paymaster::v1_paymaster_list_handler,
+        paymaster_operation::v1_paymaster_operation_get_handler,
+        paymaster_operation::v1_paymaster_operation_list_handler,
         portfolio::v1_portfolio_get_handler,
         signature::v1_signature_get_handler,
         signature::v1_signature_list_handler,

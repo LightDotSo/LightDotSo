@@ -20,7 +20,8 @@ use axum::{
     routing::get,
     Json, Router,
 };
-use lightdotso_prisma::paymaster;
+use ethers_main::{types::H160, utils::to_checksum};
+use lightdotso_prisma::{paymaster, paymaster_operation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
@@ -28,7 +29,12 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    pub id: String,
+    /// The address of the paymaster.
+    pub address: String,
+    /// The chain id of the paymaster.
+    pub chain_id: i64,
+    /// The timestamp of the paymaster. (valid after) in RFC3339 format.
+    pub valid_after: String,
 }
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -54,13 +60,13 @@ pub(crate) enum PaymasterOperationError {
 /// Item to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct PaymasterOperation {
-    address: String,
+    id: String,
 }
 
-// Implement From<paymaster::Data> for PaymasterOperation.
-impl From<paymaster::Data> for PaymasterOperation {
-    fn from(paymaster: paymaster::Data) -> Self {
-        Self { address: paymaster.address }
+// Implement From<paymaster_operation::Data> for PaymasterOperation.
+impl From<paymaster_operation::Data> for PaymasterOperation {
+    fn from(paymaster_operation: paymaster_operation::Data) -> Self {
+        Self { id: paymaster_operation.id }
     }
 }
 
@@ -90,15 +96,36 @@ async fn v1_paymaster_operation_get_handler(
 ) -> AppJsonResult<PaymasterOperation> {
     // Get the get query.
     let Query(query) = get;
+    let valid_after =
+        prisma_client_rust::chrono::DateTime::parse_from_rfc3339(&query.valid_after.to_string())?;
+    let parsed_query_address: H160 = query.address.parse()?;
 
     info!("Get paymaster for address: {:?}", query);
+
+    // First get the paymaster from the database.
+    let paymaster = client
+        .clone()
+        .client
+        .unwrap()
+        .paymaster()
+        .find_unique(paymaster::address_chain_id(
+            to_checksum(&parsed_query_address, None),
+            query.chain_id,
+        ))
+        .exec()
+        .await?;
+
+    // If the paymaster is not found, return a 404.
+    let paymaster = paymaster.ok_or(RouteError::PaymasterOperationError(
+        PaymasterOperationError::NotFound("Paymaster not found".to_string()),
+    ))?;
 
     // Get the paymasters from the database.
     let paymaster_operation = client
         .client
         .unwrap()
-        .paymaster()
-        .find_unique(paymaster::id::equals(query.id))
+        .paymaster_operation()
+        .find_unique(paymaster_operation::valid_after_paymaster_id(valid_after, paymaster.id))
         .exec()
         .await?;
 
@@ -137,7 +164,7 @@ async fn v1_paymaster_operation_list_handler(
     let paymasters = client
         .client
         .unwrap()
-        .paymaster()
+        .paymaster_operation()
         .find_many(vec![])
         .skip(pagination.offset.unwrap_or(0))
         .take(pagination.limit.unwrap_or(10))

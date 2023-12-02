@@ -22,6 +22,7 @@ use axum::{
 use const_hex::FromHexError;
 use lightdotso_redis::redis::RedisError;
 use prisma_client_rust::{
+    chrono::ParseError,
     prisma_errors::query_engine::{RecordNotFound, UniqueKeyViolation},
     QueryError,
 };
@@ -50,6 +51,12 @@ pub(crate) enum AppError {
 impl From<eyre::Error> for AppError {
     fn from(error: eyre::Error) -> Self {
         AppError::EyreError(error)
+    }
+}
+
+impl From<ParseError> for AppError {
+    fn from(error: ParseError) -> Self {
+        AppError::EyreError(error.into())
     }
 }
 
