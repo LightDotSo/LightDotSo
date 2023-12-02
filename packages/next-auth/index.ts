@@ -110,8 +110,6 @@ export const config: NextAuthConfig = {
       clientSecret: process.env.GITHUB_SECRET!,
     }),
     CredentialsProvider({
-      id: "eth",
-      name: "Ethereum",
       credentials: {
         message: {
           label: "Message",
@@ -129,9 +127,7 @@ export const config: NextAuthConfig = {
 
         try {
           // Convert the message to a siwe message
-          const siwe = new SiweMessage(
-            JSON.stringify(credentials?.message) || "{}",
-          );
+          const siwe = new SiweMessage(credentials?.message || "{}");
 
           // FIXME: Check if the host matches
           // // Get the next auth url
