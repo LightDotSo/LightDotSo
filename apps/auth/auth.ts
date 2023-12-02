@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { handlers } from "@/auth";
+import { config } from "@lightdotso/next-auth";
+import NextAuth from "next-auth";
 
-export const { GET, POST } = handlers;
+export const { handlers, auth, signIn, signOut } = NextAuth(config);

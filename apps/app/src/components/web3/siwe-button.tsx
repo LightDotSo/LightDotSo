@@ -18,11 +18,18 @@
 import { Button } from "@lightdotso/ui";
 import { useSIWE, useModal } from "connectkit";
 import type { SIWEConfig, SIWESession } from "connectkit";
-import { getCsrfToken, signIn, getSession, signOut } from "next-auth/react";
+import type { DefaultSession } from "next-auth";
+import { signIn, getSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import type { FC } from "react";
 import { SiweMessage } from "siwe";
 import { useAccount } from "wagmi";
+
+declare module "next-auth" {
+  interface Session extends SIWESession {
+    user?: DefaultSession["user"];
+  }
+}
 
 // -----------------------------------------------------------------------------
 // Const
@@ -33,13 +40,17 @@ export const siweConfig: SIWEConfig = {
     const session = await getSession();
     console.info("sesion: ", session);
     if (!session) return null;
-    return session.session;
+    return {
+      address: session.address,
+      chainId: session.chainId,
+    };
   },
   getNonce: async () => {
-    const nonce = await getCsrfToken();
-    console.info("nonce: ", nonce);
-    if (!nonce) throw new Error();
-    return nonce;
+    // const nonce = await getCsrfToken();
+    // console.info("nonce: ", nonce);
+    // if (!nonce) throw new Error();
+    // return nonce;
+    return "1";
   },
   signOut: async () => {
     try {

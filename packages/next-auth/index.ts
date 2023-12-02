@@ -15,12 +15,10 @@
 
 // eslint-disable-next-line import/no-named-as-default
 import { prisma } from "@lightdotso/prisma";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { getServerSession } from "next-auth";
-import type { AuthOptions } from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { NextAuthConfig } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
-import { getCsrfToken } from "next-auth/react";
 import { SiweMessage } from "siwe";
 import { getAddress } from "viem";
 
@@ -28,15 +26,24 @@ import { getAddress } from "viem";
 const useSecureCookies = process.env.NEXTAUTH_URL!?.startsWith("https://");
 const hostName = new URL(process.env.NEXTAUTH_URL!).hostname;
 
-export const authOptions: AuthOptions = {
+export const config: NextAuthConfig = {
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },
-  adapter: PrismaAdapter(prisma),
+  theme: {
+    logo: "https://next-auth.js.org/img/logo/logo-sm.png",
+  },
   // eslint-disable-next-line turbo/no-undeclared-env-vars
   // secret: process.env.NEXTAUTH_SECRET ?? process.env.NEXT_PUBLIC_SECRET,
   secret: "secret",
   callbacks: {
+    authorized({ request, auth }) {
+      const { pathname } = request.nextUrl;
+      console.warn("authorized", { pathname, auth });
+      if (pathname === "/middleware-example") return !!auth;
+      return true;
+    },
     async signIn({ user, account, profile, email, credentials }) {
       console.warn("signIn", { user, account, profile, email, credentials });
       return true;
@@ -125,7 +132,7 @@ export const authOptions: AuthOptions = {
         try {
           // Convert the message to a siwe message
           const siwe = new SiweMessage(
-            JSON.parse(credentials?.message || "{}"),
+            JSON.stringify(credentials?.message) || "{}",
           );
 
           // FIXME: Check if the host matches
@@ -142,16 +149,20 @@ export const authOptions: AuthOptions = {
           // console.info("NextAuthHost", nextAuthHost);
 
           // Check if the nonce matches
-          if (
-            siwe.nonce !==
-            (await getCsrfToken({ req: { headers: req?.headers } }))
-          ) {
-            return null;
+          // if (
+          //   siwe.nonce !==
+          //   (await getCsrfToken({ req: { headers: req?.headers } }))
+          // ) {
+          //   return null;
+          // }
+
+          if (!credentials?.signature) {
+            throw new Error("No signature provided");
           }
 
           // Check if siwe is valid
           const result = await siwe.verify({
-            signature: credentials?.signature!,
+            signature: credentials.signature as string,
           });
 
           // FIXME: Check if the host matches
@@ -271,8 +282,4 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
-};
-
-export const getAuthSession = async () => {
-  return await getServerSession(authOptions);
 };

@@ -13,12 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { authOptions } from "@lightdotso/next-auth";
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
+import { auth } from "@/auth";
+
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   return NextResponse.json({
     authenticated: !!session,
