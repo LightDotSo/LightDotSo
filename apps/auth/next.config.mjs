@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { withSentryConfig } from "@sentry/nextjs";
 import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const sentryWebpackPluginOptions = {
   silent: false,
@@ -22,6 +22,7 @@ const sentryWebpackPluginOptions = {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: "/auth",
   reactStrictMode: true,
   experimental: {
     // From: https://github.com/vercel/next.js/issues/42641

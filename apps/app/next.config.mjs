@@ -38,6 +38,20 @@ const nextConfig = {
     serverComponentsExternalPackages: [],
   },
   transpilePackages: ["@lightdotso/ui", "@lightdotso/wagmi"],
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: `${process.env.NEXT_PUBLIC_AUTH_BASE_PATH}/:path*`,
+          destination: `https://auth.light.so${process.env.NEXT_PUBLIC_AUTH_BASE_PATH}/:path*`,
+        },
+        {
+          source: `/api/auth/:path*`,
+          destination: `https://auth.light.so${process.env.NEXT_PUBLIC_AUTH_BASE_PATH}/api/auth/:path*`,
+        },
+      ],
+    };
+  },
   webpack: (config, { isServer }) => {
     config.resolve.fallback = { fs: false };
 
