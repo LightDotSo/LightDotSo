@@ -183,12 +183,42 @@ export const authOptions: AuthOptions = {
             };
           }
 
+          // Check if the user already exists
+          const existingUser = await prisma.user.findFirst({
+            where: {
+              address: address,
+            },
+            select: {
+              id: true,
+              name: true,
+            },
+          });
+
+          if (existingUser) {
+            // Create new account
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const account = await prisma.account.create({
+              data: {
+                userId: existingUser.id,
+                providerType: "credentials",
+                providerId: "eth",
+                providerAccountId: address,
+              },
+            });
+
+            return {
+              id: existingUser.id,
+              name: existingUser.name,
+            };
+          }
+
           // Create new user and account sequentially
           const { user } = await prisma.$transaction(
             async (tx: { user: any; account: any }) => {
               const user = await tx.user.create({
                 data: {
-                  name: address,
+                  name: "",
+                  address: address,
                 },
               });
               const account = await tx.account.create({
