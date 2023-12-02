@@ -13,24 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+import { NextResponse } from "next/server";
+import { generateNonce } from "siwe";
+import { auth } from "@/auth";
 
-import { SessionProvider } from "next-auth/react";
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
 
-/// From: https://next-auth.js.org/getting-started/client#custom-base-path
-function NextAuthProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <SessionProvider
-      basePath={"/api/auth"}
-      // basePath={`${process.env.NEXT_PUBLIC_AUTH_BASE_PATH}/api/auth`}
-      // Re-fetch session every 5 minutes
-      refetchInterval={5 * 60}
-      // Re-fetches session when window is focused
-      refetchOnWindowFocus={true}
-    >
-      {children}
-    </SessionProvider>
-  );
+export async function GET() {
+  let session = await auth();
+
+  const nonce = generateNonce();
+
+  if (session) {
+    session = {
+      ...session,
+      // @ts-ignore
+      nonce,
+    };
+  }
+
+  return new NextResponse(nonce);
 }
-
-export { NextAuthProvider };

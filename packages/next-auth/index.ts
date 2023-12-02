@@ -23,16 +23,14 @@ import { SiweMessage } from "siwe";
 import { getAddress } from "viem";
 
 // Check if we are using https, only use secure cookies in deployment
-const useSecureCookies = process.env.NEXTAUTH_URL!?.startsWith("https://");
+const useSecureCookies = false;
+// const useSecureCookies = process.env.NEXTAUTH_URL!?.startsWith("https://");
 const hostName = new URL(process.env.NEXTAUTH_URL!).hostname;
 
 export const config: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
-  },
-  theme: {
-    logo: "https://next-auth.js.org/img/logo/logo-sm.png",
   },
   secret: process.env.AUTH_SECRET!,
   callbacks: {
@@ -52,6 +50,9 @@ export const config: NextAuthConfig = {
     },
     async jwt({ token, user, account, profile }) {
       console.warn("jwt", { token, user, account, profile });
+      if (user) {
+        token = user as unknown as { [key: string]: any };
+      }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
@@ -60,9 +61,6 @@ export const config: NextAuthConfig = {
       session.token = token;
       session.token.expires = session.expires;
       session.id = token.sub;
-      session.user.address = session.user.name;
-      session.user.image = "/";
-      session.address = session.user.name || "";
       session.chainId = 1;
       return session;
     },
@@ -219,6 +217,7 @@ export const config: NextAuthConfig = {
             },
             select: {
               id: true,
+              address: true,
               name: true,
             },
           });

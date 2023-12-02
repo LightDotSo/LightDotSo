@@ -32,8 +32,8 @@ export const useSignIn = () => {
 
     const message = new SiweMessage({
       version: "1",
-      uri: window.location.origin,
-      domain: window.location.host,
+      uri: "https://light.so",
+      domain: "light.so",
       address: address,
       chainId: chain.id,
       nonce: nonce,
@@ -46,7 +46,6 @@ export const useSignIn = () => {
 
     await authSignIn("credentials", {
       message: message,
-      redirect: false,
       signature: signature,
       // callbackUrl: "/",
     });
