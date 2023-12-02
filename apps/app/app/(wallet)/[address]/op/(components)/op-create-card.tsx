@@ -18,7 +18,7 @@
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { Button, toast } from "@lightdotso/ui";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
