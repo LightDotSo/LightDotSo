@@ -207,7 +207,7 @@ export const handler = async (
     ...userOperation,
     hash: getUserOperationHash({
       userOperation: userOperation as PermissionlessUserOperation,
-      entryPoint: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      entryPoint: CONTRACT_ADDRESSES["Entrypoint"],
       chainId: Number(userOperationsQuery[index].chainId) as number,
     }),
   }));

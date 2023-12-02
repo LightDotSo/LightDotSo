@@ -13,13 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
+
 /* eslint-disable no-unused-vars */
 export enum Contract {
-  V1_FACTORY = "Factory",
+  V010_FACTORY = "Factory",
+  V060_ENTRYPOINT = "Entrypoint",
 }
 
 export const CONTRACT_ADDRESSES: {
-  readonly [key in Contract]: string;
+  readonly [key in Contract]: Address;
 } = {
-  [Contract.V1_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+  [Contract.V010_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+  [Contract.V060_ENTRYPOINT]: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
 };
