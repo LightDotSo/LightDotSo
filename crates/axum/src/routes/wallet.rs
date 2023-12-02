@@ -14,8 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    error::RouteError,
     result::{AppError, AppJsonResult},
-    state::AppState, error::RouteError,
+    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
