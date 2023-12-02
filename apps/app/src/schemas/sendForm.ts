@@ -37,7 +37,13 @@ const erc1155 = z.object({
   quantity: z.number().optional(),
 });
 
-const asset = z.union([erc20, erc721, erc1155]);
+const erc1155Batch = z.object({
+  address: z.string().optional(),
+  tokenIds: z.array(z.number()),
+  quantities: z.array(z.number()),
+});
+
+const asset = z.union([erc20, erc721, erc1155, erc1155Batch]);
 
 const transfer = z.object({
   address: z.string().optional(),
