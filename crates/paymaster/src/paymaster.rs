@@ -235,18 +235,19 @@ pub async fn db_get_paymaster_nonce(
     // If the user operation is not found, return 0 as Ok.
     match paymaster_op {
         Some(op) => {
-            if op.sender_nonce == 0 {
-                info!("Calling the contract to get the sender nonce since sender_nonce 0...");
+            // if op.sender_nonce == 0 {
+            //     info!("Calling the contract to get the sender nonce since sender_nonce 0...");
 
-                // Get the paymaster nonce from the chain
-                let paymaster = get_paymaster(chain_id as u64, verifying_paymaster_address).await?;
+            //     // Get the paymaster nonce from the chain
+            //     let paymaster = get_paymaster(chain_id as u64,
+            // verifying_paymaster_address).await?;
 
-                // Get the nonce of the sender
-                let nonce: ethers::types::U256 =
-                    paymaster.sender_nonce(sender_address).call().await?;
+            //     // Get the nonce of the sender
+            //     let nonce: ethers::types::U256 =
+            //         paymaster.sender_nonce(sender_address).call().await?;
 
-                return Ok(nonce.as_u64());
-            }
+            //     return Ok(nonce.as_u64());
+            // }
 
             Ok((op.sender_nonce as u64) + 1)
         }
