@@ -5,6 +5,7 @@ import {
   CaptureConsole as CaptureConsoleIntegration,
 } from "@sentry/integrations";
 import * as Sentry from "@sentry/nextjs";
+import { Feedback } from "@sentry-internal/feedback";
 
 const version = require("./package.json").version;
 
@@ -23,5 +24,8 @@ Sentry.init({
     new DebugIntegration(),
     new ExtraErrorDataIntegration(),
     new ReportingObserverIntegration(),
+    new Feedback({
+      autoInject: false,
+    }),
   ],
 });

@@ -4,7 +4,11 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "env": ["NODE_ENV", "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID"],
+      "env": [
+        "NODE_ENV",
+        "NEXT_PUBLIC_AUTH_BASE_PATH",
+        "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID"
+      ],
       "inputs": ["src/**"],
       "outputs": ["dist/**"]
     },

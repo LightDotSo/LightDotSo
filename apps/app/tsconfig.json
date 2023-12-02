@@ -5,6 +5,7 @@
     "strict": true,
     "paths": {
       "@/app/*": ["./app/*"],
+      "@/auth": ["./auth"],
       "@/*": ["./src/*"]
     },
     "target": "es2020"

@@ -41,6 +41,7 @@ import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { NetworkStack } from "@/components/network/network-stack";
 import type { WalletData } from "@/data";
 import { useCopy } from "@/hooks/useCopy";
+import { useSignIn } from "@/hooks/useSignIn";
 import { queries } from "@/queries";
 import { successToast } from "@/utils";
 
@@ -63,6 +64,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   const { data: ens } = useEnsName({
     address: address,
   });
+  const signIn = useSignIn();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -147,7 +149,14 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         </div>
         <div className="flex flex-col space-y-4">
           <div className="mt-4 flex items-center justify-end gap-x-2 lg:mt-0">
-            <Button size="sm" className="rounded-full p-3" variant="outline">
+            <Button
+              size="sm"
+              className="rounded-full p-3"
+              variant="outline"
+              onClick={() => {
+                signIn();
+              }}
+            >
               <Share className="h-3 w-3" />
               <span className="sr-only">Open share modal</span>
             </Button>

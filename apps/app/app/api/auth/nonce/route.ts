@@ -13,26 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { DefaultSession } from "next-auth";
+import { NextResponse } from "next/server";
+import { generateNonce } from "siwe";
+import { auth } from "@/auth";
 
-declare module "next-auth" {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-  interface Session {
-    session: {
-      address: string;
-      user: {
-        /** The user's postal address. */
-        address: string;
-      } & DefaultSession["user"];
-      chainId: number;
+// -----------------------------------------------------------------------------
+// Route
+// -----------------------------------------------------------------------------
+
+export async function GET() {
+  let session = await auth();
+
+  const nonce = generateNonce();
+
+  if (session) {
+    session = {
+      ...session,
+      // @ts-ignore
+      nonce,
     };
   }
-}
 
-// declare module "next-auth" {
-//   interface Session extends SIWESession {
-//     user?: DefaultSession["user"];
-//   }
-// }
+  return new NextResponse(nonce);
+}

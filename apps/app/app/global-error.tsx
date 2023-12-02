@@ -19,7 +19,11 @@
 "use client";
 
 import { Button } from "@lightdotso/ui";
+import type { BrowserClient } from "@sentry/react";
+import { getCurrentHub } from "@sentry/react";
+import { Feedback } from "@sentry-internal/feedback";
 import { useQueryErrorResetBoundary } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 // -----------------------------------------------------------------------------
@@ -37,6 +41,14 @@ export interface GlobalErrorProps {
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   const { reset: resetQuery } = useQueryErrorResetBoundary();
+
+  useEffect(() => {
+    const client = getCurrentHub().getClient<BrowserClient>();
+    const feedback = client?.getIntegration(Feedback);
+    if (feedback) {
+      feedback.openDialog();
+    }
+  }, []);
 
   return (
     <html lang="en">

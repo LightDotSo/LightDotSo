@@ -2,7 +2,6 @@ ignores:
   - "@babel/core"
   - "@lightdotso/kysely"
   - "@lightdotso/prisma"
-  - "@next-auth/prisma-adapter"
   - "@prisma/client"
   - "@tanstack/react-query-devtools"
   - "@tanstack/react-query-next-experimental"
@@ -28,3 +27,4 @@ ignores:
   - "@lightdotso/wagmi"
   - "@wagmi/core"
   - blurhash
+  - "@auth/prisma-adapter"
