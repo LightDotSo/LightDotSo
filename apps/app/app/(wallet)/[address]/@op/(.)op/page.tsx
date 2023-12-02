@@ -58,7 +58,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <Modal>
       <OpCreateDialog
-        owners={config.owners}
+        config={config}
         address={params.address as Address}
         userOperations={userOperations}
       />

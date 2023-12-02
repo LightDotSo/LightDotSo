@@ -97,6 +97,10 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
       );
     }, 0) >= (config ? config.threshold : 0);
 
+  // ---------------------------------------------------------------------------
+  // Wagmi
+  // ---------------------------------------------------------------------------
+
   const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
     chainId,

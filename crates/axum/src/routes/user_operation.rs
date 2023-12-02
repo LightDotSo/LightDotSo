@@ -53,6 +53,7 @@ use lightdotso_solutions::{
 };
 use lightdotso_tracing::tracing::{error, info};
 use prisma_client_rust::{
+    and,
     chrono::{DateTime, NaiveDateTime, Utc},
     or, Direction,
 };
@@ -444,11 +445,11 @@ async fn v1_user_operation_update_handler(
             .unwrap()
             .user_operation()
             .update_many(
-                vec![
+                vec![and![
                     user_operation::chain_id::equals(op.chain_id),
                     user_operation::nonce::lte(op.nonce),
                     user_operation::hash::not(op.hash),
-                ],
+                ]],
                 vec![user_operation::status::set(UserOperationStatus::Invalid)],
             )
             .exec()
