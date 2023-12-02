@@ -24,6 +24,8 @@ Sentry.init({
     new DebugIntegration(),
     new ExtraErrorDataIntegration(),
     new ReportingObserverIntegration(),
-    new Feedback(),
+    new Feedback({
+      autoInject: false,
+    }),
   ],
 });
