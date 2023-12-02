@@ -25,7 +25,7 @@ export enum Chain {
   SEPOLIA = "sepolia",
 }
 
-export const ChainIds: { readonly [key in Chain]: number } = {
+export const CHAIN_IDS: { readonly [key in Chain]: number } = {
   [Chain.MAINNET]: 1,
   [Chain.OPTIMISM]: 10,
   [Chain.GNOSIS]: 100,

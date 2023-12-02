@@ -13,27 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
+
 /* eslint-disable no-unused-vars */
-export enum Social {
-  DISCORD = "Discord",
-  OPENSEA = "Opensea",
-  GITHUB = "Github",
-  MIRROR = "Mirror",
-  NOTION = "Notion",
-  PLAUSIBLE = "Plausible",
-  TWITTER = "Twitter",
-  WEBSITE = "Website",
+export enum Contract {
+  V010_FACTORY = "Factory",
+  V060_ENTRYPOINT = "Entrypoint",
 }
 
-export const SocialLinks: {
-  readonly [key in Social]: string;
+export const CONTRACT_ADDRESSES: {
+  readonly [key in Contract]: Address;
 } = {
-  [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",
-  [Social.GITHUB]: "https://github.com/LightDotSo",
-  [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
-  [Social.NOTION]: "https://lightdotso.notion.site",
-  [Social.OPENSEA]: "https://opensea.io",
-  [Social.PLAUSIBLE]: "https://plausible.io/light.so",
-  [Social.TWITTER]: "https://twitter.com/LightDotSo",
-  [Social.WEBSITE]: "https://light.so",
+  [Contract.V010_FACTORY]: "0x0000000000756D3E6464f5efe7e413a0Af1C7474",
+  [Contract.V060_ENTRYPOINT]: "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
 };

@@ -13,33 +13,33 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { InternalLinks } from "./InternalLinks";
-import { NotionLinks } from "./NotionLinks";
-import { SocialLinks } from "./SocialLinks";
+import { INTERNAL_LINKS } from "./internal_links";
+import { NOTION_LINKS } from "./notion_links";
+import { SOCIAL_LINKS } from "./social_links";
 
-export const NavigationLinks = {
+export const NAVIGATION_LINKS = {
   resources: [
-    { name: "Changelog", href: InternalLinks.Changelog, external: false },
-    { name: "Docs", href: InternalLinks.Docs, external: false },
-    { name: "FAQ", href: NotionLinks.Faq, external: true },
-    { name: "Membership", href: InternalLinks.Membership, external: false },
-    { name: "Support", href: SocialLinks.Discord, external: true },
+    { name: "Changelog", href: INTERNAL_LINKS.Changelog, external: false },
+    { name: "Docs", href: INTERNAL_LINKS.Docs, external: false },
+    { name: "FAQ", href: NOTION_LINKS.Faq, external: true },
+    { name: "Membership", href: INTERNAL_LINKS.Membership, external: false },
+    { name: "Support", href: SOCIAL_LINKS.Discord, external: true },
   ],
   company: [
-    { name: "Careers", href: NotionLinks.Careers, external: true },
-    { name: "Home", href: InternalLinks.Home, external: false },
-    { name: "Open", href: SocialLinks.Plausible, external: false },
-    { name: "Notion", href: SocialLinks.Notion, external: true },
+    { name: "Careers", href: NOTION_LINKS.Careers, external: true },
+    { name: "Home", href: INTERNAL_LINKS.Home, external: false },
+    { name: "Open", href: SOCIAL_LINKS.Plausible, external: false },
+    { name: "Notion", href: SOCIAL_LINKS.Notion, external: true },
   ],
   legal: [
     {
       name: "Privacy Policy",
-      href: NotionLinks["Privacy Policy"],
+      href: NOTION_LINKS["Privacy Policy"],
       external: true,
     },
     {
       name: "Terms of Service",
-      href: NotionLinks["Terms of Service"],
+      href: NOTION_LINKS["Terms of Service"],
       external: true,
     },
   ],

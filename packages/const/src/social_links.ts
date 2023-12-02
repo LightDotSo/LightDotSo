@@ -14,18 +14,26 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* eslint-disable no-unused-vars */
-export enum Internal {
-  CHANGELOG = "Changelog",
-  DOCS = "Docs",
-  HOME = "Home",
-  MEMBER = "Membership",
+export enum Social {
+  DISCORD = "Discord",
+  OPENSEA = "Opensea",
+  GITHUB = "Github",
+  MIRROR = "Mirror",
+  NOTION = "Notion",
+  PLAUSIBLE = "Plausible",
+  TWITTER = "Twitter",
+  WEBSITE = "Website",
 }
 
-export const InternalLinks: {
-  readonly [key in Internal]: string;
+export const SOCIAL_LINKS: {
+  readonly [key in Social]: string;
 } = {
-  [Internal.CHANGELOG]: "/changelog",
-  [Internal.DOCS]: "/docs",
-  [Internal.HOME]: "/home",
-  [Internal.MEMBER]: "/membership",
+  [Social.DISCORD]: "https://discord.gg/Vgfxg2Rcy8",
+  [Social.GITHUB]: "https://github.com/LightDotSo",
+  [Social.MIRROR]: "https://mirror.xyz/lightdotso.eth",
+  [Social.NOTION]: "https://lightdotso.notion.site",
+  [Social.OPENSEA]: "https://opensea.io",
+  [Social.PLAUSIBLE]: "https://plausible.io/light.so",
+  [Social.TWITTER]: "https://twitter.com/LightDotSo",
+  [Social.WEBSITE]: "https://light.so",
 };
