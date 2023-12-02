@@ -485,7 +485,7 @@ export const SendDialog: FC<SendDialogProps> = ({
           throw new Error("No matching token found");
         }
 
-        // Encode the erc1155 `transferBatch`
+        // Encode the erc1155 `safeTransferFrom`
         if (nft.contract.type === "erc1155") {
           return [
             transfer.asset.address as Address,
@@ -494,7 +494,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               concat([
                 fromHex(
                   getFunctionSelector(
-                    "transferBatch(address[],uint256[],uint256[])",
+                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
                   ),
                   "bytes",
                 ),
@@ -502,26 +502,32 @@ export const SendDialog: FC<SendDialogProps> = ({
                   encodeAbiParameters(
                     [
                       {
-                        name: "recipients",
-                        type: "address[]",
+                        name: "from",
+                        type: "address",
                       },
                       {
-                        name: "tokenIds",
-                        type: "uint256[]",
+                        name: "to",
+                        type: "address",
                       },
                       {
-                        name: "amounts",
-                        type: "uint256[]",
+                        name: "tokenId",
+                        type: "uint256",
+                      },
+                      {
+                        name: "value",
+                        type: "uint256",
+                      },
+                      {
+                        name: "data",
+                        type: "bytes",
                       },
                     ],
                     [
-                      Array(transfer.asset.quantity!).fill(
-                        transfer.address as Address,
-                      ),
-                      Array(transfer.asset.quantity!).fill(
-                        BigInt(transfer.asset?.tokenId!),
-                      ),
-                      Array(transfer.asset.quantity!).fill(1n),
+                      address,
+                      transfer.address as Address,
+                      BigInt(transfer.asset?.tokenId!),
+                      BigInt(transfer.asset.quantity!),
+                      "0x",
                     ],
                   ),
                   "bytes",
@@ -538,14 +544,18 @@ export const SendDialog: FC<SendDialogProps> = ({
           toHex(
             concat([
               fromHex(
-                getFunctionSelector("transfer(address,uint256)"),
+                getFunctionSelector("transferFrom(address,address,uint256)"),
                 "bytes",
               ),
               fromHex(
                 encodeAbiParameters(
                   [
                     {
-                      name: "recipient",
+                      name: "from",
+                      type: "address",
+                    },
+                    {
+                      name: "to",
                       type: "address",
                     },
                     {
@@ -554,6 +564,7 @@ export const SendDialog: FC<SendDialogProps> = ({
                     },
                   ],
                   [
+                    address,
                     transfer.address as Address,
                     BigInt(transfer.asset?.tokenId!),
                   ],
