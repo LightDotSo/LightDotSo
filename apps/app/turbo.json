@@ -5,7 +5,6 @@
     "build": {
       "dependsOn": ["^build"],
       "env": [
-        "AUTH_SECRET",
         "COVALENT_API_KEY",
         "DATABASE_URL",
         "LIGHT_ADMIN_TOKEN",
@@ -14,7 +13,6 @@
         "KAFKA_BROKER",
         "KAFKA_PASSWORD",
         "KAFKA_USERNAME",
-        "NEXTAUTH_URL",
         "NEXT_PUBLIC_LIGHT_ADMIN_TOKEN",
         "NEXT_PUBLIC_LOCAL_ENV",
         "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID",

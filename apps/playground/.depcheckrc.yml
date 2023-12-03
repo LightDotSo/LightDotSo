@@ -27,6 +27,5 @@ ignores:
   - autoprefixer
   - postcss
   - tailwindcss
-  - next-auth
   - react-hook-form
   - zod

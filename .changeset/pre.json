@@ -33,7 +33,6 @@
     "@lightdotso/auth": "1.0.0",
     "@lightdotso/assets": "0.0.0",
     "@lightdotso/kysely": "0.0.0",
-    "@lightdotso/next-auth": "0.0.0",
     "@lightdotso/explorer": "0.0.0-pre.2",
     "@lightdotso/open": "0.0.0",
     "@lightdotso/playground": "0.0.0",
