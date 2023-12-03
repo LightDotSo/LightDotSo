@@ -39,7 +39,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "server-only": "^0.0.1",
-    "siwe": "^2.1.4",
     "superjson": "^2.2.1",
     "viem": "^1.19.9",
     "wagmi": "^1.4.7"
