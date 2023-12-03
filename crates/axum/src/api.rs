@@ -24,6 +24,7 @@ use crate::{
     state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
+use axum_sessions::{async_session::MemoryStore, SessionLayer};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
@@ -49,6 +50,7 @@ use utoipa_swagger_ui::SwaggerUi;
     components(
         schemas(auth::AuthError),
         schemas(auth::AuthNonce),
+        schemas(auth::AuthVerifyPostRequestParams),
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
         schemas(configuration::ConfigurationOwner),
@@ -102,6 +104,7 @@ use utoipa_swagger_ui::SwaggerUi;
     ),
     paths(
         auth::v1_auth_nonce_handler,
+        auth::v1_auth_verify_handler,
         check::handler,
         health::handler,
         configuration::v1_configuration_get_handler,
@@ -245,6 +248,11 @@ pub async fn start_api_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
+                .layer(SessionLayer::new(
+                    MemoryStore::new(),
+                    b"please do not hardcode your secret; instead use a
+    cryptographically secure value",
+                ))
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(OtelInResponseLayer)
