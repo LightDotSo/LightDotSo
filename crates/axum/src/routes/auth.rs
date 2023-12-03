@@ -54,7 +54,7 @@ pub(crate) fn router() -> Router<AppState> {
         get,
         path = "/auth/nonce",
         responses(
-            (status = 200, description = "Auth nonce returned successfully", body = Auth),
+            (status = 200, description = "Auth nonce returned successfully"),
             (status = 404, description = "Auth nonce not found", body = AuthError),
         )
     )]
