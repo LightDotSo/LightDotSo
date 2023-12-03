@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+/* eslint-disable @next/next/no-img-element */
 // Copyright (C) 2023 Light, Inc.
 //
 // This program is free software: you can redistribute it and/or modify
@@ -13,23 +15,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
 
-import { SessionProvider } from "next-auth/react";
-
-/// From: https://next-auth.js.org/getting-started/client#custom-base-path
-function NextAuthProvider({ children }: { children: React.ReactNode }) {
-  return (
-    <SessionProvider
-      // basePath="/auth/api/auth"
-      // Re-fetch session every 5 minutes
-      refetchInterval={5 * 60}
-      // Re-fetches session when window is focused
-      refetchOnWindowFocus={true}
-    >
-      {children}
-    </SessionProvider>
-  );
-}
-
-export { NextAuthProvider };
+export default async function Page() {}
