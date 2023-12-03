@@ -31,7 +31,6 @@
     "@babel/core": "^7.23.3",
     "@code-hike/lighter": "^0.9.0",
     "@lightdotso/kysely": "workspace:*",
-    "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/ui": "workspace:*",

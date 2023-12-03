@@ -22,7 +22,6 @@
   "dependencies": {
     "@babel/core": "^7.23.3",
     "@lightdotso/kysely": "workspace:*",
-    "@lightdotso/next-auth": "workspace:*",
     "@lightdotso/prisma": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/ui": "workspace:*",

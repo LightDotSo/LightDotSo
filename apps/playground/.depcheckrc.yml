@@ -30,4 +30,3 @@ ignores:
   - next-auth
   - react-hook-form
   - zod
-  - "@auth/prisma-adapter"
