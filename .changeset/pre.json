@@ -35,7 +35,6 @@
     "@lightdotso/kysely": "0.0.0",
     "@lightdotso/explorer": "0.0.0-pre.2",
     "@lightdotso/open": "0.0.0",
-    "@lightdotso/playground": "0.0.0",
     "@lightdotso/subgraph": "0.0.0",
     "@lightdotso/home": "1.0.0",
     "@lightdotso/client": "1.0.0",
