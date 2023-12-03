@@ -35,8 +35,6 @@ jobs:
               - 'apps/auth/**'
             app:
               - 'apps/app/**'
-            playground:
-              - 'apps/playground/**'
   e2e-auth:
     if: needs.e2e-filter.outputs.auth == 'true'
     needs:
@@ -87,43 +85,17 @@ jobs:
       - name: Run E2E App
         run: |
           pnpm run e2e:app:dev
-  e2e-playground:
-    if: needs.e2e-filter.outputs.playground == 'true'
-    needs:
-      - e2e-filter
-    runs-on: ubuntu-latest
-    timeout-minutes: 90
-    permissions:
-      contents: read
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v4
-      - name: Node Install
-        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Playwright Install
-        run: |
-          npx playwright install
-      - name: Node Build
-        run: |
-          pnpm run build:turbo
-      - name: Docker Compose Up
-        run: |
-          docker-compose up -d --build
-      - name: Run E2E App
-        run: |
-          pnpm run e2e:playground:dev
   e2e-check:
     if: always()
     needs:
       - e2e-filter
       - e2e-auth
       - e2e-app
-      - e2e-playground
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: e2e-auth,e2e-app,e2e-playground
+          allowed-skips: e2e-auth,e2e-app
           jobs: ${{ toJSON(needs) }}

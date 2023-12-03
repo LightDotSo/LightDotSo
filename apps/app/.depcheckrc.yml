@@ -27,4 +27,3 @@ ignores:
   - "@lightdotso/wagmi"
   - "@wagmi/core"
   - blurhash
-  - "@auth/prisma-adapter"
