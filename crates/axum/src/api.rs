@@ -17,7 +17,7 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        check, configuration, feedback, health, notification, paymaster, paymaster_operation,
+        auth, check, configuration, feedback, health, notification, paymaster, paymaster_operation,
         portfolio, signature, support_request, token, token_price, transaction, user,
         user_operation, wallet, wallet_settings,
     },
@@ -47,6 +47,8 @@ use utoipa_swagger_ui::SwaggerUi;
 ))]
 #[openapi(
     components(
+        schemas(auth::AuthError),
+        schemas(auth::AuthNonce),
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
         schemas(configuration::ConfigurationOwner),
@@ -99,6 +101,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet_settings::WalletSettingsPostRequestParams),
     ),
     paths(
+        auth::v1_auth_nonce_handler,
         check::handler,
         health::handler,
         configuration::v1_configuration_get_handler,
@@ -136,6 +139,7 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet_settings::v1_wallet_settings_post_handler,
     ),
     tags(
+        (name = "auth", description = "Auth API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "feedback", description = "Feedback API"),
@@ -206,6 +210,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the API
     let api = Router::new()
+        .merge(auth::router())
         .merge(configuration::router())
         .merge(check::router())
         .merge(feedback::router())

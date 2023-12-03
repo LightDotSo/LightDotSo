@@ -37,6 +37,7 @@
   rustc-hex = { workspace = true }
   serde = { workspace = true, features = ["derive"] }
   serde_json = { workspace = true }
+  siwe = { version = "0.6.0", features = ["serde"] }
   tokio = { workspace = true }
   tower = { workspace = true, features = [
     "full",
@@ -46,6 +47,7 @@
     "limit",
   ] }
   tower-http = { workspace = true, features = ["cors"] }
+  tower-sessions = { workspace = true }
   tower_governor = { workspace = true }
   utoipa = { version = "4.0.0", features = ["axum_extras"] }
   utoipa-rapidoc = { version = "1.0.0", features = ["axum"] }
