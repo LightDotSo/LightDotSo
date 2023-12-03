@@ -22,7 +22,7 @@ const sentryWebpackPluginOptions = {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/auth",
+  // basePath: "/auth",
   reactStrictMode: true,
   experimental: {
     // From: https://github.com/vercel/next.js/issues/42641
