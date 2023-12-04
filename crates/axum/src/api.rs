@@ -21,7 +21,7 @@ use crate::{
         portfolio, signature, support_request, token, token_price, transaction, user,
         user_operation, wallet, wallet_settings,
     },
-    sessions::RedisStore,
+    sessions::{authenticated, RedisStore},
     state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
@@ -144,6 +144,7 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
         wallet::v1_wallet_tab_handler,
+        wallet::v1_wallet_update_handler,
         wallet_settings::v1_wallet_settings_get_handler,
         wallet_settings::v1_wallet_settings_post_handler,
     ),
@@ -171,11 +172,8 @@ use utoipa_swagger_ui::SwaggerUi;
 #[openapi(
     servers(
         (url = "https://api.light.so/v1", description = "Official API"),
-        (url = "https://api.light.so/admin/v1", description = "Internal Admin API",
-            variables(
-                ("username" = (default = "demo", description = "Default username for API")),
-            )
-        ),
+        (url = "https://api.light.so/authenticated/v1", description = "Authenticated API"),
+        (url = "https://api.light.so/admin/v1", description = "Internal Admin API"),
         (url = "http://localhost:3000/v1", description = "Local server"),
     )
 )]
@@ -218,6 +216,17 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
+    // Rate limit based on IP address but only for authenticated users
+    let authenticated_governor_conf = Box::new(
+        GovernorConfigBuilder::default()
+            .per_second(30)
+            .burst_size(300)
+            .use_headers()
+            .key_extractor(SmartIpKeyExtractor)
+            .finish()
+            .unwrap(),
+    );
+
     // Create the API
     let api = Router::new()
         .merge(auth::router())
@@ -239,6 +248,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_settings::router());
 
+    // Create the session store
     let session_store = RedisStore::new(redis);
 
     // Create the app for the server
@@ -259,7 +269,7 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(HandleErrorLayer::new(handle_error))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(
-                    SessionManagerLayer::new(session_store)
+                    SessionManagerLayer::new(session_store.clone())
                         .with_secure(false)
                         .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
                 )
@@ -268,6 +278,24 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(OtelAxumLayer::default())
                 .layer(cors.clone())
                 .into_inner(),
+        )
+        .nest(
+            "/authenticated/v1",
+            api.clone().layer(
+                ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
+                    .layer(
+                        SessionManagerLayer::new(session_store)
+                            .with_secure(false)
+                            .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
+                    )
+                    .layer(middleware::from_fn(authenticated))
+                    .layer(OtelInResponseLayer)
+                    .layer(OtelAxumLayer::default())
+                    .layer(cors.clone())
+                    .into_inner(),
+            ),
         )
         .nest(
             "/admin/v1",

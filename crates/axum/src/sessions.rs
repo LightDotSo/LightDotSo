@@ -13,17 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::{
-    sync::Arc,
-    time::{SystemTime, UNIX_EPOCH},
-};
-
 use crate::{
     constants::{EXPIRATION_TIME_KEY, NONCE_KEY},
     result::AppError,
 };
 use async_trait::async_trait;
+use axum::{
+    http::{Request, StatusCode},
+    middleware::Next,
+    response::Response,
+};
 use lightdotso_redis::redis::{Client, Commands};
+use std::{
+    sync::Arc,
+    time::{SystemTime, UNIX_EPOCH},
+};
 use time::OffsetDateTime;
 use tower_sessions_core::{session::Id, Session, SessionStore};
 
@@ -138,4 +142,23 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
     }
 
     Ok(())
+}
+
+pub async fn authenticated<B>(
+    session: Session,
+    // you can also add more extractors here but the last
+    // extractor must implement `FromRequest` which
+    // `Request` does
+    request: Request<B>,
+    next: Next<B>,
+) -> Result<Response, StatusCode> {
+    let authenticated = verify_session(&session);
+
+    match authenticated {
+        Ok(_) => {
+            let response = next.run(request).await;
+            Ok(response)
+        }
+        Err(_) => Err(StatusCode::UNAUTHORIZED),
+    }
 }

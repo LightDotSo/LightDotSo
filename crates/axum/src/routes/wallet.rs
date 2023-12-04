@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    constants::USER_ID_KEY,
     error::RouteError,
     result::{AppError, AppJsonResult},
     sessions::verify_session,
@@ -626,8 +627,30 @@ async fn v1_wallet_update_handler(
         .await?;
 
     // If the wallet is not found, return a 404.
-    let _ = wallet
+    let wallet = wallet
+        .clone()
         .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
+
+    // Check to see if the user is one of the owners of the wallet configurations.
+    let _ = wallet
+        .configurations
+        .unwrap()
+        .iter()
+        .find(|configuration| {
+            configuration
+                .owners
+                .as_ref()
+                .unwrap()
+                .iter()
+                .find(|owner| {
+                    owner.clone().user_id.as_ref().unwrap() ==
+                        &session.get::<String>(&USER_ID_KEY).unwrap().unwrap().to_lowercase()
+                })
+                .is_some()
+        })
+        .ok_or(RouteError::WalletError(WalletError::BadRequest(
+            "User is not an owner of the wallet".to_string(),
+        )))?;
 
     // Update the wallet name.
     let wallet = client
