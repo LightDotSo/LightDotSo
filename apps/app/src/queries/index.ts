@@ -15,10 +15,10 @@
 
 import { mergeQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeyStore } from "@lukemorales/query-key-factory";
+import { auth } from "./auth";
 import { configuration } from "./configuration";
 import { nft } from "./nft";
 import { nft_valuation } from "./nft_valation";
-import { nonce } from "./nonce";
 import { paymaster_operation } from "./paymaster_operation";
 import { portfolio } from "./portfolio";
 import { token } from "./token";
@@ -29,10 +29,10 @@ import { user_operation } from "./user_operation";
 import { wallet } from "./wallet";
 
 export const queries = mergeQueryKeys(
+  auth,
   configuration,
   nft,
   nft_valuation,
-  nonce,
   paymaster_operation,
   portfolio,
   transaction,

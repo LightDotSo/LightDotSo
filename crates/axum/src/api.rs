@@ -37,7 +37,6 @@ use tower_governor::{
 };
 use tower_http::cors::{Any, CorsLayer};
 use tower_sessions::SessionManagerLayer;
-use tower_sessions_core::cookie::SameSite;
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
@@ -251,11 +250,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the session store
     let session_store = RedisStore::new(redis);
-    let session_manager_layer = SessionManagerLayer::new(session_store.clone())
-        .with_domain("light.so".to_string())
-        .with_http_only(true)
-        .with_same_site(SameSite::Lax)
-        .with_name("lightdotso.sid");
+    let session_manager_layer = SessionManagerLayer::new(session_store.clone());
 
     // Create the app for the server
     let app = Router::new()
