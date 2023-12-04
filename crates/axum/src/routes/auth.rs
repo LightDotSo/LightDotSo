@@ -17,7 +17,7 @@ use crate::{
     constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
-    sessions::unix_timestamp,
+    sessions::{unix_timestamp, update_session_expiry},
     state::AppState,
 };
 use autometrics::autometrics;
@@ -124,27 +124,8 @@ async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
             ))));
         }
     }
-    // Make sure we don't inherit a dirty session expiry
-    let ts = match unix_timestamp() {
-        Ok(ts) => ts,
-        Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to get unix timestamp.".to_string(),
-            ))));
-        }
-    };
-    match session.insert(&EXPIRATION_TIME_KEY, ts) {
-        Ok(_) => {}
-        Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to set expiration.".to_string(),
-            ))));
-        }
-    }
 
-    // // Update the session expiry
-    // let expiry = Expiry::AtDateTime(OffsetDateTime::from_unix_timestamp(ts as i64).unwrap());
-    // session.set_expiry(Some(expiry));
+    update_session_expiry(&session)?;
 
     let auth_nonce: AuthNonce = nonce.into();
     Ok(Json::from(auth_nonce))
@@ -171,6 +152,8 @@ async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession>
             ))))
         }
     };
+
+    update_session_expiry(&session)?;
 
     Ok(Json::from(AuthSession {
         id: session.id().to_string(),
