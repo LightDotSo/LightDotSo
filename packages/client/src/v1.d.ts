@@ -312,7 +312,10 @@ export interface components {
     };
     /** @description The session. */
     AuthSession: {
+      /** @description The session expiration. */
       expiration: string;
+      /** @description The session id. */
+      id: string;
     };
     AuthVerifyPostRequestParams: {
       message: string;
