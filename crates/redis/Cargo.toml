@@ -14,5 +14,4 @@
   lightdotso-tracing = { workspace = true }
   rand = { workspace = true }
   redis = { version = "0.23.2", features = ["tls-native-tls"] }
-  redis_pool = { version = "0.2.1" }
   tokio = { workspace = true }
