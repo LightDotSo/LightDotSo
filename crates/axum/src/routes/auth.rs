@@ -66,6 +66,9 @@ pub(crate) struct AuthNonce {
 /// The session.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct AuthSession {
+    /// The session id.
+    id: String,
+    /// The session expiration.
     expiration: String,
 }
 
@@ -107,6 +110,8 @@ pub(crate) fn router() -> Router<AppState> {
     )]
 #[autometrics]
 async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
+    info!(?session);
+
     let nonce = generate_nonce();
 
     match &session.insert(&NONCE_KEY, &nonce) {
@@ -167,7 +172,10 @@ async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession>
         }
     };
 
-    Ok(Json::from(AuthSession { expiration: session_expiry.to_string() }))
+    Ok(Json::from(AuthSession {
+        id: session.id().to_string(),
+        expiration: session_expiry.to_string(),
+    }))
 }
 
 /// Logout a session
