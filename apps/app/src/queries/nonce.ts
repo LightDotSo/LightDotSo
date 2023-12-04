@@ -13,44 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogPortal,
-  DialogOverlay,
-} from "@lightdotso/ui";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
-import type { FC } from "react";
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Props
+// Keys
 // -----------------------------------------------------------------------------
 
-interface ModalProps {
-  children: React.ReactNode;
-}
+export const nonce = createQueryKeys("nonce", {
+  get: (address?: Address) => ({
+    queryKey: [address ? { address } : {}],
+  }),
+});
 
 // -----------------------------------------------------------------------------
-// Component
+// Infer
 // -----------------------------------------------------------------------------
 
-export const Modal: FC<ModalProps> = ({ children }) => {
-  const router = useRouter();
-  const onDismiss = useCallback(() => {
-    router.back();
-  }, [router]);
-
-  return (
-    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
-      <DialogPortal>
-        <DialogOverlay />
-        <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-          {children}
-        </DialogContent>
-      </DialogPortal>
-    </Dialog>
-  );
-};
+export type NonceKeys = inferQueryKeys<typeof nonce>;

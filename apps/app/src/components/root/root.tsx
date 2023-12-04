@@ -43,6 +43,10 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
   ssr: false,
 });
 
+const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
+  ssr: false,
+});
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -97,14 +101,17 @@ export const Root: FC<RootProps> = ({ children }) => {
                   {children}
                 </div>
               </main>
-              <Suspense fallback={null}>
+              <Suspense>
                 <AuthState />
               </Suspense>
               <Toaster />
+              <Suspense>
+                <AuthModal />
+              </Suspense>
+              <CommandK />
             </Web3Provider>
           </ReactQueryProvider>
         </ThemeProvider>
-        <CommandK />
         <TailwindIndicator />
         <Suspense>
           <VercelToolbar />

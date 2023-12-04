@@ -13,14 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export type { ConfigurationData } from "./configuration";
-export type { NonceData } from "./nonce";
-export type { NftData } from "./nft";
-export type { PortfolioData } from "./portfolio";
-export type { TokenData } from "./token";
-export type { TokenPriceData } from "./tokenPrice";
-export type { TransactionData } from "./transaction";
-export type { UserData } from "./user";
-export type { UserOperationData } from "./userOperation";
-export type { WalletSettingsData } from "./walletSettings";
-export type { WalletData } from "./wallet";
+// -----------------------------------------------------------------------------
+// Data
+// -----------------------------------------------------------------------------
+
+export type NonceData = {
+  nonce: string;
+};

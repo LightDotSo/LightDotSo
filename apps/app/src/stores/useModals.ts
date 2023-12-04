@@ -13,44 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"use client";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogPortal,
-  DialogOverlay,
-} from "@lightdotso/ui";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
-import type { FC } from "react";
+import { create } from "zustand";
 
 // -----------------------------------------------------------------------------
-// Props
+// State
 // -----------------------------------------------------------------------------
 
-interface ModalProps {
-  children: React.ReactNode;
-}
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const Modal: FC<ModalProps> = ({ children }) => {
-  const router = useRouter();
-  const onDismiss = useCallback(() => {
-    router.back();
-  }, [router]);
-
-  return (
-    <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
-      <DialogPortal>
-        <DialogOverlay />
-        <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-          {children}
-        </DialogContent>
-      </DialogPortal>
-    </Dialog>
-  );
+type ModalsStore = {
+  isAuthModalVisible: boolean;
+  isDepositModalVisible: boolean;
+  showAuthModal: () => void;
+  hideAuthModal: () => void;
+  showDepositModal: () => void;
+  hideDepositModal: () => void;
 };
+
+// -----------------------------------------------------------------------------
+// Hook
+// -----------------------------------------------------------------------------
+
+export const useModals = create<ModalsStore>(set => ({
+  isAuthModalVisible: false,
+  isDepositModalVisible: false,
+  showAuthModal: () => set({ isAuthModalVisible: true }),
+  hideAuthModal: () => set({ isAuthModalVisible: false }),
+  showDepositModal: () => set({ isDepositModalVisible: true }),
+  hideDepositModal: () => set({ isDepositModalVisible: false }),
+}));

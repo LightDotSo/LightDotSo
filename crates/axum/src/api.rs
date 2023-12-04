@@ -37,6 +37,7 @@ use tower_governor::{
 };
 use tower_http::cors::{Any, CorsLayer};
 use tower_sessions::{Expiry, SessionManagerLayer};
+use tower_sessions_core::cookie::SameSite;
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
@@ -250,6 +251,13 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the session store
     let session_store = RedisStore::new(redis);
+    let session_manager_layer = SessionManagerLayer::new(session_store.clone())
+        .with_secure(false)
+        .with_domain("light.so".to_string())
+        .with_http_only(true)
+        .with_same_site(SameSite::Lax)
+        .with_name("lightdotso.sid")
+        .with_expiry(Expiry::OnInactivity(time::Duration::days(1)));
 
     // Create the app for the server
     let app = Router::new()
@@ -268,11 +276,7 @@ pub async fn start_api_server() -> Result<()> {
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
-                .layer(
-                    SessionManagerLayer::new(session_store.clone())
-                        .with_secure(false)
-                        .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
-                )
+                .layer(session_manager_layer.clone())
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
@@ -285,11 +289,7 @@ pub async fn start_api_server() -> Result<()> {
                 ServiceBuilder::new()
                     .layer(HandleErrorLayer::new(handle_error))
                     .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
-                    .layer(
-                        SessionManagerLayer::new(session_store)
-                            .with_secure(false)
-                            .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
-                    )
+                    .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(authenticated))
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
@@ -301,6 +301,8 @@ pub async fn start_api_server() -> Result<()> {
             "/admin/v1",
             api.clone().layer(
                 ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(admin))
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
