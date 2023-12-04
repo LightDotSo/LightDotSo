@@ -17,16 +17,18 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        check, configuration, feedback, health, notification, paymaster, paymaster_operation,
+        auth, check, configuration, feedback, health, notification, paymaster, paymaster_operation,
         portfolio, signature, support_request, token, token_price, transaction, user,
         user_operation, wallet, wallet_settings,
     },
+    sessions::RedisStore,
     state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
+use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
@@ -34,6 +36,7 @@ use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
 use tower_http::cors::{Any, CorsLayer};
+use tower_sessions::{Expiry, SessionManagerLayer};
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
@@ -47,6 +50,10 @@ use utoipa_swagger_ui::SwaggerUi;
 ))]
 #[openapi(
     components(
+        schemas(auth::AuthError),
+        schemas(auth::AuthNonce),
+        schemas(auth::AuthSession),
+        schemas(auth::AuthVerifyPostRequestParams),
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
         schemas(configuration::ConfigurationOwner),
@@ -99,6 +106,9 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet_settings::WalletSettingsPostRequestParams),
     ),
     paths(
+        auth::v1_auth_nonce_handler,
+        auth::v1_auth_session_handler,
+        auth::v1_auth_verify_handler,
         check::handler,
         health::handler,
         configuration::v1_configuration_get_handler,
@@ -136,6 +146,7 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet_settings::v1_wallet_settings_post_handler,
     ),
     tags(
+        (name = "auth", description = "Auth API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "feedback", description = "Feedback API"),
@@ -173,6 +184,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create a shared client
     let db = Arc::new(create_client().await.unwrap());
+    let redis = get_redis_client().unwrap();
     let state = AppState { client: Some(db) };
 
     // Allow CORS
@@ -206,6 +218,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the API
     let api = Router::new()
+        .merge(auth::router())
         .merge(configuration::router())
         .merge(check::router())
         .merge(feedback::router())
@@ -224,6 +237,8 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_settings::router());
 
+    let session_store = RedisStore::new(redis);
+
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
@@ -240,8 +255,13 @@ pub async fn start_api_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
-                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
+                .layer(
+                    SessionManagerLayer::new(session_store)
+                        .with_secure(false)
+                        .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
+                )
+                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
                 .layer(cors.clone())

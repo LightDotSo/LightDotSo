@@ -24,6 +24,7 @@ pub mod prometheus;
 pub mod result;
 pub mod routes;
 pub mod rpc;
+pub mod sessions;
 pub mod state;
 
 // Handle errors
