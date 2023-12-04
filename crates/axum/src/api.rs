@@ -282,8 +282,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the session store
     let session_store = RedisStore::new(redis);
-    let session_manager_layer =
-        SessionManagerLayer::new(session_store.clone()).with_domain("light.so".to_string());
+    let session_manager_layer = SessionManagerLayer::new(session_store.clone());
 
     // Create the api doc
     let mut open_api = ApiDoc::openapi();
