@@ -34,7 +34,7 @@ export const useAuthModal = () => {
     } else if (!isSessionValid) {
       showAuthModal();
     }
-  }, [isSessionValid, showAuthModal]);
+  }, [address, isSessionValid, openProfile, showAuthModal]);
 
   const isAuthValid = useMemo(() => {
     return isSessionValid() && !!address;
