@@ -34,7 +34,7 @@ import { Copy } from "lucide-react";
 import { useCallback, useEffect } from "react";
 import { SiweMessage } from "siwe";
 import { useSignMessage, useNetwork } from "wagmi";
-import type { NonceData } from "@/data";
+import type { AuthNonceData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
 import { useModals } from "@/stores/useModals";
@@ -54,8 +54,8 @@ export function AuthModal() {
   // Query
   // ---------------------------------------------------------------------------
 
-  const { data: nonceData, refetch } = useSuspenseQuery<NonceData | null>({
-    queryKey: queries.nonce.get(address).queryKey,
+  const { data: nonceData, refetch } = useSuspenseQuery<AuthNonceData | null>({
+    queryKey: queries.auth.nonce(address).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

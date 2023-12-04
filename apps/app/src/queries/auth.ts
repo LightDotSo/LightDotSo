@@ -13,10 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { createQueryKeys } from "@lukemorales/query-key-factory";
+import type { inferQueryKeys } from "@lukemorales/query-key-factory";
+import type { Address } from "viem";
+
 // -----------------------------------------------------------------------------
-// Data
+// Keys
 // -----------------------------------------------------------------------------
 
-export type NonceData = {
-  nonce: string;
-};
+export const auth = createQueryKeys("auth", {
+  nonce: (address?: Address) => ({
+    queryKey: [address ? { address } : {}],
+  }),
+  session: (address: Address) => ({
+    queryKey: [address],
+  }),
+});
+
+// -----------------------------------------------------------------------------
+// Infer
+// -----------------------------------------------------------------------------
+
+export type AuthKeys = inferQueryKeys<typeof auth>;

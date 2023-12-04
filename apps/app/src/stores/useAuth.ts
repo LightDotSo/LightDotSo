@@ -26,9 +26,11 @@ interface AuthState {
   setAddress: (address: Address | undefined) => void;
   ens: string | undefined;
   setEns: (ens: string | undefined) => void;
-  wallet: Address | undefined;
   userId: string | undefined;
   setUserId: (userId: string | undefined) => void;
+  sessionId: string | undefined;
+  setSessionId: (session: string | undefined) => void;
+  wallet: Address | undefined;
   setWallet: (wallet: Address | undefined) => void;
   logout: () => void;
 }
@@ -44,10 +46,12 @@ export const useAuth = create(
       setAddress: (address: Address | undefined) => set({ address }),
       ens: undefined,
       setEns: (ens: string | undefined) => set({ ens }),
-      wallet: undefined,
-      setWallet: (wallet: Address | undefined) => set({ wallet }),
       userId: undefined,
       setUserId: (userId: string | undefined) => set({ userId }),
+      sessionId: undefined,
+      setSessionId: (sessionId: string | undefined) => set({ sessionId }),
+      wallet: undefined,
+      setWallet: (wallet: Address | undefined) => set({ wallet }),
       logout: () =>
         set({ address: undefined, wallet: undefined, userId: undefined }),
     }),

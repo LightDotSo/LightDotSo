@@ -15,7 +15,7 @@
 
 "use client";
 
-import { getUser } from "@lightdotso/client";
+import { getAuthSession, getUser } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -23,7 +23,7 @@ import type { FC } from "react";
 import { isAddress } from "viem";
 import type { Address } from "viem";
 import { useAccount, useEnsName } from "wagmi";
-import type { UserData } from "@/data";
+import type { AuthSessionData, UserData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
 
@@ -34,7 +34,7 @@ import { useAuth } from "@/stores/useAuth";
 export const AuthState: FC = () => {
   const { address } = useAccount();
   const { data: ens } = useEnsName({ address, chainId: 1 });
-  const { setAddress, setWallet, setEns, setUserId } = useAuth();
+  const { setAddress, setWallet, setEns, setUserId, setSessionId } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
 
@@ -73,6 +73,34 @@ export const AuthState: FC = () => {
     },
   });
 
+  const { data: sessionData } = useSuspenseQuery<AuthSessionData | null>({
+    queryKey: queries.auth.session(address as Address).queryKey,
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getAuthSession({
+        params: {
+          query: {
+            address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return null;
+        },
+      );
+    },
+    staleTime: 300,
+  });
+
   // On component mount, rehydrate the auth state from local storage
   // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getoptions
   useEffect(() => {
@@ -92,6 +120,13 @@ export const AuthState: FC = () => {
       setUserId(data.id);
     }
   }, [data, setUserId]);
+
+  // Set the session in the auth state if it exists
+  useEffect(() => {
+    if (sessionData) {
+      setSessionId(sessionData.id);
+    }
+  }, [sessionData, setSessionId]);
 
   // Check if the first segment of the pathname is a valid address w/ isAddress
   // If it is, set the auth state's wallet to that address
