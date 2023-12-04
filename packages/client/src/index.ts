@@ -66,6 +66,33 @@ const getClient = (isPublic?: boolean) =>
       ? publicApiClient
       : adminApiClient;
 
+export const postAuthVerify = async ({
+  params,
+  body,
+}: {
+  params: {
+    query: { user_address: string };
+  };
+  body: {
+    message: string;
+    signature: string;
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/auth/verify", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+      body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getConfiguration = async (
   {
     params,

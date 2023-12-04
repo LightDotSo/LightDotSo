@@ -15,7 +15,7 @@
 
 "use client";
 
-import { getNonce } from "@lightdotso/client";
+import { getNonce, postAuthVerify } from "@lightdotso/client";
 import {
   Button,
   Dialog,
@@ -38,7 +38,7 @@ import type { NonceData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
 import { useModals } from "@/stores/useModals";
-import { successToast } from "@/utils";
+import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -53,7 +53,7 @@ export function AuthModal() {
   const handleSignIn = useCallback(async () => {
     successToast(nonceData);
 
-    if (!nonceData || !chain) {
+    if (!address || !nonceData || !chain) {
       return;
     }
 
@@ -71,8 +71,19 @@ export function AuthModal() {
       message: message.prepareMessage(),
     });
 
-    successToast(signature);
-    successToast(messageToSign);
+    postAuthVerify({
+      params: { query: { user_address: address } },
+      body: { message: messageToSign, signature },
+    }).then(res => {
+      res.match(
+        _ => {
+          successToast("Successfully signed in!");
+        },
+        _ => {
+          errorToast("Failed to sign in!");
+        },
+      );
+    });
   }, []);
 
   // ---------------------------------------------------------------------------
