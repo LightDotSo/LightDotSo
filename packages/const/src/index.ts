@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { ChainIds } from "./ChainIds";
-export { ContractLinks } from "./ContractLinks";
-export { InternalLinks } from "./InternalLinks";
-export { RedirectPrefixes } from "./RedirectPrefixes";
-export { NavigationLinks } from "./NavigationLinks";
-export { NotionLinks } from "./NotionLinks";
-export { Social, SocialLinks } from "./SocialLinks";
+export { CHAIN_IDS } from "./chain_ids";
+export { CONTRACT_ADDRESSES } from "./contract_addresses";
+export { INTERNAL_LINKS } from "./internal_links";
+export { REDIRECT_PREFIXES } from "./redirect_prefixes";
+export { NAVIGATION_LINKS } from "./navigation_links";
+export { NOTION_LINKS } from "./notion_links";
+export { Social, SOCIAL_LINKS } from "./social_links";

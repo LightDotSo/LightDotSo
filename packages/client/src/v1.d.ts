@@ -10,6 +10,34 @@ export type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<
 export type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
 
 export interface paths {
+  "/auth/logout": {
+    /**
+     * Logout a session
+     * @description Logout a session
+     */
+    post: operations["v1_auth_logout_handler"];
+  };
+  "/auth/nonce": {
+    /**
+     * Get a auth nonce
+     * @description Get a auth nonce
+     */
+    get: operations["v1_auth_nonce_handler"];
+  };
+  "/auth/session": {
+    /**
+     * Get a session
+     * @description Get a session
+     */
+    get: operations["v1_auth_session_handler"];
+  };
+  "/auth/verify": {
+    /**
+     * Verify a auth
+     * @description Verify a auth
+     */
+    post: operations["v1_auth_verify_handler"];
+  };
   "/check": {
     /**
      * Check if the server is running.
@@ -255,12 +283,41 @@ export interface paths {
      */
     get: operations["v1_wallet_tab_handler"];
   };
+  "/wallet/update": {
+    /**
+     * Update a wallet
+     * @description Update a wallet
+     */
+    put: operations["v1_wallet_update_handler"];
+  };
 }
 
 export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    /** @description Auth operation errors */
+    AuthError: OneOf<[{
+      BadRequest: string;
+    }, {
+      /** @description Auth not found by id. */
+      NotFound: string;
+    }, {
+      /** @description Internal error. */
+      InternalError: string;
+    }]>;
+    /** @description Item to do. */
+    AuthNonce: {
+      nonce: string;
+    };
+    /** @description The session. */
+    AuthSession: {
+      expiration: string;
+    };
+    AuthVerifyPostRequestParams: {
+      message: string;
+      signature: string;
+    };
     /** @description Item to do. */
     Configuration: {
       /** @description The address of the configuration. */
@@ -660,6 +717,14 @@ export interface components {
        */
       threshold: number;
     };
+    WalletPutRequestParams: {
+      /**
+       * @description The name of the wallet.
+       * @default My Wallet
+       * @example My Wallet
+       */
+      name?: string | null;
+    };
     /** @description Item to do. */
     WalletSettings: {
       is_enabled_testnet: boolean;
@@ -710,6 +775,108 @@ export type external = Record<string, never>;
 
 export interface operations {
 
+  /**
+   * Logout a session
+   * @description Logout a session
+   */
+  v1_auth_logout_handler: {
+    responses: {
+      /** @description Auth logout returned successfully */
+      200: {
+        content: {
+          "application/json": Record<string, unknown> | null;
+        };
+      };
+      /** @description Auth logout not succeeded */
+      404: {
+        content: {
+          "application/json": components["schemas"]["AuthError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a auth nonce
+   * @description Get a auth nonce
+   */
+  v1_auth_nonce_handler: {
+    responses: {
+      /** @description Auth nonce returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AuthNonce"];
+        };
+      };
+      /** @description Auth nonce not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["AuthError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a session
+   * @description Get a session
+   */
+  v1_auth_session_handler: {
+    responses: {
+      /** @description Auth session returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AuthSession"];
+        };
+      };
+      /** @description Auth session not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["AuthError"];
+        };
+      };
+    };
+  };
+  /**
+   * Verify a auth
+   * @description Verify a auth
+   */
+  v1_auth_verify_handler: {
+    parameters: {
+      query: {
+        user_address: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AuthVerifyPostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Auth verified successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["AuthNonce"];
+        };
+      };
+      /** @description Invalid Configuration */
+      400: {
+        content: {
+          "application/json": components["schemas"]["AuthError"];
+        };
+      };
+      /** @description Auth already exists */
+      409: {
+        content: {
+          "application/json": components["schemas"]["AuthError"];
+        };
+      };
+      /** @description Auth internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["AuthError"];
+        };
+      };
+    };
+  };
   /**
    * Check the health of the server.
    * @description Check the health of the server.
@@ -1680,6 +1847,39 @@ export interface operations {
       };
       /** @description Wallet tab not found */
       404: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
+   * Update a wallet
+   * @description Update a wallet
+   */
+  v1_wallet_update_handler: {
+    parameters: {
+      query: {
+        /** @description The address of the wallet. */
+        address: string;
+        /** @description The chain id of the wallet. */
+        chain_id?: number | null;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["WalletPutRequestParams"];
+      };
+    };
+    responses: {
+      /** @description Wallet returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Wallet"];
+        };
+      };
+      /** @description Wallet bad request */
+      500: {
         content: {
           "application/json": components["schemas"]["WalletError"];
         };

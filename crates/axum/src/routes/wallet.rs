@@ -14,13 +14,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    constants::USER_ID_KEY,
+    error::RouteError,
     result::{AppError, AppJsonResult},
-    state::AppState, error::RouteError,
+    sessions::verify_session,
+    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::{get, post},
+    routing::{get, post, put},
     Json, Router,
 };
 use ethers_main::{
@@ -29,7 +32,7 @@ use ethers_main::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
-use lightdotso_prisma::{transaction, user, user_operation, wallet};
+use lightdotso_prisma::{configuration, transaction, user, user_operation, wallet};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -39,11 +42,21 @@ use lightdotso_solutions::{
 use lightdotso_tracing::tracing::{error, info, trace};
 use prisma_client_rust::or;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
+    /// The address of the wallet.
+    pub address: String,
+    /// The chain id of the wallet.
+    pub chain_id: Option<i64>,
+}
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct UpdateQuery {
     /// The address of the wallet.
     pub address: String,
     /// The chain id of the wallet.
@@ -85,6 +98,13 @@ pub struct WalletPostRequestParams {
     /// The threshold of the wallet.
     #[schema(example = 3, default = 1)]
     pub threshold: u16,
+}
+
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub struct WalletPutRequestParams {
+    /// The name of the wallet.
+    #[schema(example = "My Wallet", default = "My Wallet")]
+    pub name: Option<String>,
 }
 
 /// Wallet owner.
@@ -155,6 +175,7 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/wallet/tab", get(v1_wallet_tab_handler))
         .route("/wallet/list", get(v1_wallet_list_handler))
         .route("/wallet/create", post(v1_wallet_post_handler))
+        .route("/wallet/update", put(v1_wallet_update_handler))
 }
 
 /// Get a wallet
@@ -556,6 +577,89 @@ async fn v1_wallet_post_handler(
     // If the wallet is not created, return a 500.
     let wallet = wallet.map_err(|_| AppError::InternalError)?;
     info!(?wallet);
+
+    // Change the wallet to the format that the API expects.
+    let wallet: Wallet = wallet.into();
+
+    Ok(Json::from(wallet))
+}
+
+/// Update a wallet
+#[utoipa::path(
+        put,
+        path = "/wallet/update",
+        params(
+            UpdateQuery
+        ),
+        request_body = WalletPutRequestParams,
+        responses(
+            (status = 200, description = "Wallet returned successfully", body = Wallet),
+            (status = 500, description = "Wallet bad request", body = WalletError),
+        )
+    )]
+#[autometrics]
+async fn v1_wallet_update_handler(
+    State(client): State<AppState>,
+    session: Session,
+    put: Query<UpdateQuery>,
+    Json(params): Json<WalletPutRequestParams>,
+) -> AppJsonResult<Wallet> {
+    // Verify the session
+    verify_session(&session)?;
+
+    // Get the get query.
+    let Query(query) = put;
+
+    let parsed_query_address: H160 = query.address.parse()?;
+    let checksum_address = to_checksum(&parsed_query_address, None);
+
+    // Get the wallets from the database.
+    let wallet = client
+        .clone()
+        .client
+        .unwrap()
+        .wallet()
+        .find_unique(wallet::address::equals(checksum_address.clone()))
+        .with(wallet::configurations::fetch(vec![]).with(configuration::owners::fetch(vec![])))
+        .exec()
+        .await?;
+
+    // If the wallet is not found, return a 404.
+    let wallet = wallet
+        .clone()
+        .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
+
+    // Check to see if the user is one of the owners of the wallet configurations.
+    let _ = wallet
+        .configurations
+        .unwrap()
+        .iter()
+        .find(|configuration| {
+            configuration.owners.as_ref().unwrap().iter().any(|owner| {
+                owner.clone().user_id.as_ref().unwrap() ==
+                    &session.get::<String>(&USER_ID_KEY).unwrap().unwrap().to_lowercase()
+            })
+        })
+        .ok_or(RouteError::WalletError(WalletError::BadRequest(
+            "User is not an owner of the wallet".to_string(),
+        )))?;
+
+    // Construct the params for the update.
+    let name = params.name;
+    info!(?name);
+    let mut params = vec![];
+    if name.is_some() {
+        params.push(wallet::name::set(name.unwrap()));
+    }
+
+    // Update the wallet name.
+    let wallet = client
+        .client
+        .unwrap()
+        .wallet()
+        .update(wallet::address::equals(checksum_address), params)
+        .exec()
+        .await?;
 
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();

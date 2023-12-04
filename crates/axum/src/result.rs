@@ -42,6 +42,7 @@ pub(crate) enum AppError {
     FromHexError(FromHexError),
     RustHexError(RustHexError),
     RouteError(RouteError),
+    AuthError(String),
     BadRequest,
     NotFound,
     InternalError,
@@ -120,6 +121,7 @@ impl IntoResponse for AppError {
             AppError::FromHexError(_) => (StatusCode::BAD_REQUEST, "Bad Hex".to_string()),
             AppError::RustHexError(_) => (StatusCode::BAD_REQUEST, "Bad Rust Hex".to_string()),
             AppError::Conflict => (StatusCode::CONFLICT, "Conflict".to_string()),
+            AppError::AuthError(msg) => (StatusCode::UNAUTHORIZED, msg),
             AppError::BadRequest => (StatusCode::BAD_REQUEST, "Bad Request".to_string()),
             AppError::NotFound => (StatusCode::NOT_FOUND, "Not Found".to_string()),
             AppError::InternalError => {

@@ -66,6 +66,33 @@ const getClient = (isPublic?: boolean) =>
       ? publicApiClient
       : adminApiClient;
 
+export const postAuthVerify = async ({
+  params,
+  body,
+}: {
+  params: {
+    query: { user_address: string };
+  };
+  body: {
+    message: string;
+    signature: string;
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/auth/verify", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+      body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getConfiguration = async (
   {
     params,
@@ -295,6 +322,21 @@ export const createUserOperation = async ({
     client.POST("/user_operation/create", {
       params,
       body,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const getNonce = async (params: {}, isPublic?: boolean) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/auth/nonce", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

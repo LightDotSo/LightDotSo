@@ -42,6 +42,8 @@ import { NetworkStack } from "@/components/network/network-stack";
 import type { WalletData } from "@/data";
 import { useCopy } from "@/hooks/useCopy";
 import { queries } from "@/queries";
+import { useModals } from "@/stores/useModals";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -62,6 +64,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   const { data: ens } = useEnsName({
     address: address,
   });
+  const { showAuthModal } = useModals();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -119,7 +122,8 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                     <button
                       className="flex items-center rounded-md bg-background-stronger px-3 py-2"
                       onClick={() => {
-                        return copy(address);
+                        copy(address);
+                        successToast("Copied wallet address");
                       }}
                     >
                       <p className="mr-2 text-sm text-text-weak">
@@ -145,7 +149,14 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         </div>
         <div className="flex flex-col space-y-4">
           <div className="mt-4 flex items-center justify-end gap-x-2 lg:mt-0">
-            <Button size="sm" className="rounded-full p-3" variant="outline">
+            <Button
+              size="sm"
+              className="rounded-full p-3"
+              variant="outline"
+              onClick={() => {
+                showAuthModal();
+              }}
+            >
               <Share className="h-3 w-3" />
               <span className="sr-only">Open share modal</span>
             </Button>
@@ -169,7 +180,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
               Deposit
             </Button>
           </div>
-          <div className="w-96 rounded-md border border-border-primary-weak bg-background-weak px-6 py-4">
+          <div className="w-96 rounded-md border border-border bg-background-weak px-6 py-4">
             <Suspense fallback={null}>
               <WalletOverviewBannerSparkline address={address} />
             </Suspense>

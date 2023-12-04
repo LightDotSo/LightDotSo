@@ -17,16 +17,18 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        check, configuration, feedback, health, notification, paymaster, paymaster_operation,
+        auth, check, configuration, feedback, health, notification, paymaster, paymaster_operation,
         portfolio, signature, support_request, token, token_price, transaction, user,
         user_operation, wallet, wallet_settings,
     },
+    sessions::{authenticated, RedisStore},
     state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
+use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
@@ -34,6 +36,8 @@ use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
 use tower_http::cors::{Any, CorsLayer};
+use tower_sessions::{Expiry, SessionManagerLayer};
+use tower_sessions_core::cookie::SameSite;
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
@@ -47,6 +51,10 @@ use utoipa_swagger_ui::SwaggerUi;
 ))]
 #[openapi(
     components(
+        schemas(auth::AuthError),
+        schemas(auth::AuthNonce),
+        schemas(auth::AuthSession),
+        schemas(auth::AuthVerifyPostRequestParams),
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
         schemas(configuration::ConfigurationOwner),
@@ -92,6 +100,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet::Wallet),
         schemas(wallet::WalletError),
         schemas(wallet::WalletPostRequestParams),
+        schemas(wallet::WalletPutRequestParams),
         schemas(wallet::WalletTab),
         schemas(wallet_settings::WalletSettings),
         schemas(wallet_settings::WalletSettingsError),
@@ -99,6 +108,10 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet_settings::WalletSettingsPostRequestParams),
     ),
     paths(
+        auth::v1_auth_nonce_handler,
+        auth::v1_auth_session_handler,
+        auth::v1_auth_logout_handler,
+        auth::v1_auth_verify_handler,
         check::handler,
         health::handler,
         configuration::v1_configuration_get_handler,
@@ -132,10 +145,12 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
         wallet::v1_wallet_tab_handler,
+        wallet::v1_wallet_update_handler,
         wallet_settings::v1_wallet_settings_get_handler,
         wallet_settings::v1_wallet_settings_post_handler,
     ),
     tags(
+        (name = "auth", description = "Auth API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "feedback", description = "Feedback API"),
@@ -158,11 +173,8 @@ use utoipa_swagger_ui::SwaggerUi;
 #[openapi(
     servers(
         (url = "https://api.light.so/v1", description = "Official API"),
-        (url = "https://api.light.so/admin/v1", description = "Internal Admin API",
-            variables(
-                ("username" = (default = "demo", description = "Default username for API")),
-            )
-        ),
+        (url = "https://api.light.so/authenticated/v1", description = "Authenticated API"),
+        (url = "https://api.light.so/admin/v1", description = "Internal Admin API"),
         (url = "http://localhost:3000/v1", description = "Local server"),
     )
 )]
@@ -173,6 +185,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create a shared client
     let db = Arc::new(create_client().await.unwrap());
+    let redis = get_redis_client().unwrap();
     let state = AppState { client: Some(db) };
 
     // Allow CORS
@@ -204,8 +217,20 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
+    // Rate limit based on IP address but only for authenticated users
+    let authenticated_governor_conf = Box::new(
+        GovernorConfigBuilder::default()
+            .per_second(30)
+            .burst_size(300)
+            .use_headers()
+            .key_extractor(SmartIpKeyExtractor)
+            .finish()
+            .unwrap(),
+    );
+
     // Create the API
     let api = Router::new()
+        .merge(auth::router())
         .merge(configuration::router())
         .merge(check::router())
         .merge(feedback::router())
@@ -224,6 +249,16 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_settings::router());
 
+    // Create the session store
+    let session_store = RedisStore::new(redis);
+    let session_manager_layer = SessionManagerLayer::new(session_store.clone())
+        .with_secure(false)
+        .with_domain("light.so".to_string())
+        .with_http_only(true)
+        .with_same_site(SameSite::Lax)
+        .with_name("lightdotso.sid")
+        .with_expiry(Expiry::OnInactivity(time::Duration::days(1)));
+
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
@@ -240,17 +275,34 @@ pub async fn start_api_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
-                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
+                .layer(session_manager_layer.clone())
+                // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
                 .layer(cors.clone())
                 .into_inner(),
         )
         .nest(
+            "/authenticated/v1",
+            api.clone().layer(
+                ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
+                    .layer(session_manager_layer.clone())
+                    .layer(middleware::from_fn(authenticated))
+                    .layer(OtelInResponseLayer)
+                    .layer(OtelAxumLayer::default())
+                    .layer(cors.clone())
+                    .into_inner(),
+            ),
+        )
+        .nest(
             "/admin/v1",
             api.clone().layer(
                 ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .layer(session_manager_layer.clone())
                     .layer(middleware::from_fn(admin))
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())

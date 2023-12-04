@@ -2,7 +2,6 @@ ignores:
   - "@babel/core"
   - "@lightdotso/kysely"
   - "@lightdotso/prisma"
-  - "@next-auth/prisma-adapter"
   - "@prisma/client"
   - "@tanstack/react-query"
   - "@tanstack/react-query-devtools"
@@ -17,7 +16,6 @@ ignores:
   - eslint-import-resolver-typescript
   - "@playwright/test"
   - checkly
-  - "@lightdotso/next-auth"
   - "@lightdotso/styles"
   - "@lightdotso/ui"
   - connectkit

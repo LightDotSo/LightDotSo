@@ -16,7 +16,7 @@
 "use client";
 
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { SocialLinks } from "@lightdotso/const";
+import { SOCIAL_LINKS } from "@lightdotso/const";
 import { Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -155,7 +155,7 @@ export const Header: FC = () => {
                         className="flex min-w-[160px] flex-col rounded-md bg-bg p-2"
                       >
                         <a
-                          href={SocialLinks.Twitter}
+                          href={SOCIAL_LINKS.Twitter}
                           target="_blank"
                           className="flex items-center rounded-md p-2 text-sm text-contrast-medium transition hover:bg-bg-lighter  hover:text-contrast-higher"
                           rel="noreferrer"
@@ -169,7 +169,7 @@ export const Header: FC = () => {
                           />
                         </a>
                         <a
-                          href={SocialLinks.Discord}
+                          href={SOCIAL_LINKS.Discord}
                           target="_blank"
                           className="flex items-center rounded-md p-2 text-sm text-contrast-medium transition hover:bg-bg-lighter  hover:text-contrast-higher"
                           rel="noreferrer"
@@ -232,7 +232,7 @@ export const Header: FC = () => {
                         </Link>
                         <a
                           target="_blank"
-                          href={SocialLinks.Github}
+                          href={SOCIAL_LINKS.Github}
                           className="flex items-center rounded-md p-2 text-sm text-contrast-medium transition hover:bg-bg-lighter  hover:text-contrast-higher"
                           rel="noreferrer"
                         >
@@ -253,7 +253,7 @@ export const Header: FC = () => {
           </div>
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
             <a
-              href={SocialLinks.Discord}
+              href={SOCIAL_LINKS.Discord}
               target="_blank"
               rel="noopener noreferrer"
               className="hidden items-center justify-center whitespace-nowrap rounded-xl border border-transparent bg-transparent px-4 py-2 text-base text-contrast-higher hover:bg-contrast-medium xl:inline-flex"

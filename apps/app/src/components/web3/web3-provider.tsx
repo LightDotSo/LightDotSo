@@ -21,6 +21,10 @@ import { InjectedConnector } from "wagmi/connectors/injected";
 import { publicProvider } from "wagmi/providers/public";
 import { CHAINS as configuredChains } from "@/const/chains";
 
+// -----------------------------------------------------------------------------
+// Wagmi
+// -----------------------------------------------------------------------------
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   configuredChains,
   [publicProvider()],

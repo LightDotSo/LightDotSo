@@ -20,6 +20,7 @@ import {
   getSignatureUserOperation,
   sendUserOperation,
 } from "@lightdotso/client";
+import { CONTRACT_ADDRESSES } from "@lightdotso/const";
 import { Button, toast } from "@lightdotso/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback, useState, useEffect } from "react";
@@ -223,7 +224,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
               ),
               signature: sig,
             },
-            "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+            CONTRACT_ADDRESSES["Entrypoint"],
           ]);
 
           res.match(

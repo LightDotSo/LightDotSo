@@ -15,7 +15,7 @@
 
 "use client";
 
-import { NotionLinks } from "@lightdotso/const";
+import { NOTION_LINKS } from "@lightdotso/const";
 import {
   Button,
   Card,
@@ -255,7 +255,7 @@ export const NewWalletForm: FC = () => {
                   By creating a new wallet, you are accepting our{" "}
                   <a
                     className="underline"
-                    href={NotionLinks["Terms of Service"]}
+                    href={NOTION_LINKS["Terms of Service"]}
                     target="_blank"
                     rel="noreferrer"
                   >

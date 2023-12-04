@@ -18,7 +18,7 @@
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
 import { Button, toast } from "@lightdotso/ui";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
 import type { Address, Hex } from "viem";
@@ -144,7 +144,9 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
 
   useEffect(() => {
     const fetchUserOp = async () => {
-      if (!data || !owner) return;
+      if (!data || !owner || !userOperation) {
+        return;
+      }
 
       const res = await createUserOperation({
         params: {
@@ -204,7 +206,8 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     };
 
     fetchUserOp();
-  }, [data, owner, userOperation, subdigest]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, owner, userOperation, subdigest, threshold, address]);
 
   return (
     <>

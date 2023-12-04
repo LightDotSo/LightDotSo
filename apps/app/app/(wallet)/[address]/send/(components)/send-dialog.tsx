@@ -462,9 +462,11 @@ export const SendDialog: FC<SendDialogProps> = ({
         transfer &&
         transfer.address &&
         transfer.asset &&
-        (transfer.assetType === "erc721" || transfer.assetType === "erc1155") &&
-        "quantity" in transfer.asset &&
-        "tokenId" in transfer.asset
+        (transfer.assetType === "erc721" ||
+          transfer.assetType === "erc1155" ||
+          transfer.assetType === "erc1155Batch") &&
+        (("quantity" in transfer.asset && "tokenId" in transfer.asset) ||
+          ("quantities" in transfer.asset && "tokenIds" in transfer.asset))
       ) {
         // Get the matching nft
         const nft =
@@ -485,8 +487,12 @@ export const SendDialog: FC<SendDialogProps> = ({
           throw new Error("No matching token found");
         }
 
-        // Encode the erc1155 `transferBatch`
-        if (nft.contract.type === "erc1155") {
+        // Encode the erc1155 `safeTransferFrom`
+        if (
+          transfer.assetType === "erc1155" &&
+          "quantity" in transfer.asset &&
+          "tokenId" in transfer.asset
+        ) {
           return [
             transfer.asset.address as Address,
             0n,
@@ -494,7 +500,7 @@ export const SendDialog: FC<SendDialogProps> = ({
               concat([
                 fromHex(
                   getFunctionSelector(
-                    "transferBatch(address[],uint256[],uint256[])",
+                    "safeTransferFrom(address,address,uint256,uint256,bytes)",
                   ),
                   "bytes",
                 ),
@@ -502,26 +508,32 @@ export const SendDialog: FC<SendDialogProps> = ({
                   encodeAbiParameters(
                     [
                       {
-                        name: "recipients",
-                        type: "address[]",
+                        name: "from",
+                        type: "address",
                       },
                       {
-                        name: "tokenIds",
-                        type: "uint256[]",
+                        name: "to",
+                        type: "address",
                       },
                       {
-                        name: "amounts",
-                        type: "uint256[]",
+                        name: "tokenId",
+                        type: "uint256",
+                      },
+                      {
+                        name: "value",
+                        type: "uint256",
+                      },
+                      {
+                        name: "data",
+                        type: "bytes",
                       },
                     ],
                     [
-                      Array(transfer.asset.quantity!).fill(
-                        transfer.address as Address,
-                      ),
-                      Array(transfer.asset.quantity!).fill(
-                        BigInt(transfer.asset?.tokenId!),
-                      ),
-                      Array(transfer.asset.quantity!).fill(1n),
+                      address,
+                      transfer.address as Address,
+                      BigInt(transfer.asset?.tokenId!),
+                      BigInt(transfer.asset.quantity!),
+                      "0x",
                     ],
                   ),
                   "bytes",
@@ -531,38 +543,101 @@ export const SendDialog: FC<SendDialogProps> = ({
           ];
         }
 
-        // Encode the erc721 `transfer`
-        return [
-          transfer.asset.address as Address,
-          0n,
-          toHex(
-            concat([
-              fromHex(
-                getFunctionSelector("transfer(address,uint256)"),
-                "bytes",
-              ),
-              fromHex(
-                encodeAbiParameters(
-                  [
-                    {
-                      name: "recipient",
-                      type: "address",
-                    },
-                    {
-                      name: "tokenId",
-                      type: "uint256",
-                    },
-                  ],
-                  [
-                    transfer.address as Address,
-                    BigInt(transfer.asset?.tokenId!),
-                  ],
+        // Encode the erc1155 `safeBatchTransferFrom`
+        if (
+          transfer.assetType === "erc1155Batch" &&
+          "quantities" in transfer.asset &&
+          "tokenIds" in transfer.asset
+        ) {
+          return [
+            transfer.asset.address as Address,
+            0n,
+            toHex(
+              concat([
+                fromHex(
+                  getFunctionSelector(
+                    "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)",
+                  ),
+                  "bytes",
                 ),
-                "bytes",
-              ),
-            ]),
-          ),
-        ];
+                fromHex(
+                  encodeAbiParameters(
+                    [
+                      {
+                        name: "from",
+                        type: "address",
+                      },
+                      {
+                        name: "to",
+                        type: "address",
+                      },
+                      {
+                        name: "ids",
+                        type: "uint256[]",
+                      },
+                      {
+                        name: "values",
+                        type: "uint256[]",
+                      },
+                      {
+                        name: "data",
+                        type: "bytes",
+                      },
+                    ],
+                    [
+                      address,
+                      transfer.address as Address,
+                      transfer.asset.tokenIds!.map(BigInt),
+                      transfer.asset.quantities!.map(BigInt),
+                      "0x",
+                    ],
+                  ),
+                  "bytes",
+                ),
+              ]),
+            ),
+          ];
+        }
+
+        if (transfer.assetType === "erc721" && "tokenId" in transfer.asset) {
+          // Encode the erc721 `transfer`
+          return [
+            transfer.asset.address as Address,
+            0n,
+            toHex(
+              concat([
+                fromHex(
+                  getFunctionSelector("transferFrom(address,address,uint256)"),
+                  "bytes",
+                ),
+                fromHex(
+                  encodeAbiParameters(
+                    [
+                      {
+                        name: "from",
+                        type: "address",
+                      },
+                      {
+                        name: "to",
+                        type: "address",
+                      },
+                      {
+                        name: "tokenId",
+                        type: "uint256",
+                      },
+                    ],
+                    [
+                      address,
+                      transfer.address as Address,
+                      BigInt(transfer.asset?.tokenId!),
+                    ],
+                  ),
+                  "bytes",
+                ),
+              ]),
+            ),
+          ];
+        }
       }
 
       throw new Error("Invalid transfer");
@@ -610,8 +685,67 @@ export const SendDialog: FC<SendDialogProps> = ({
             })}`,
           );
         } else {
+          let transformedTransfers = transfers;
+
+          // If there is a duplicate `erc1155` transfer, we need to encode as `erc1155Batch` instead of separate `erc1155` transfers
+          // Filter for same asset address + chainId w/ assetType `erc1155`
+          const erc1155Transfers = transfers.filter(
+            transfer =>
+              transfer.assetType === "erc1155" &&
+              transfer.asset &&
+              transfer.asset.address &&
+              "quantity" in transfer.asset &&
+              "tokenId" in transfer.asset,
+          );
+          const erc1155TransfersByAssetAddress: Map<string, Transfer[]> =
+            new Map();
+          erc1155Transfers.forEach(transfer => {
+            const transfers =
+              erc1155TransfersByAssetAddress.get(
+                `${transfer.asset?.address!}-${transfer.chainId}-${
+                  transfer.address
+                }`,
+              ) || [];
+            erc1155TransfersByAssetAddress.set(
+              `${transfer.asset?.address!}-${transfer.chainId}-${
+                transfer.address
+              }`,
+              [...transfers, transfer],
+            );
+          });
+          // For each duplicate `erc1155` transfer, encode as `erc1155Batch`
+          for (const [key, transfers] of erc1155TransfersByAssetAddress) {
+            // If the transfer count is more than one, there is a duplicate
+            if (transfers.length > 1) {
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const [address, chainId, _add] = key.split("-");
+              for (const transfer of transfers) {
+                // Remove the transfer from the array
+                transformedTransfers = transformedTransfers.filter(
+                  t => t !== transfer,
+                );
+              }
+              // Add the batch transfer to the array
+              transformedTransfers.push({
+                address: transfers[0].address,
+                addressOrEns: transfers[0].addressOrEns,
+                asset: {
+                  address,
+                  quantities: transfers.map(
+                    // @ts-expect-error
+                    transfer => transfer.asset?.quantity!,
+                  ),
+                  // @ts-expect-error
+                  tokenIds: transfers.map(transfer => transfer.asset?.tokenId!),
+                },
+                assetType: "erc1155Batch",
+                chainId: parseInt(chainId),
+              });
+            }
+          }
+
           // Encode the transfers for each item
-          const encodedTransfers = transfers.map(transfer =>
+          const encodedTransfers = transformedTransfers.map(transfer =>
             encodeTransfer(transfer),
           );
           // If the transfer count is more than one, encode as `executeBatch`

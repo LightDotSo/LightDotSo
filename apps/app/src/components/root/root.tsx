@@ -43,6 +43,10 @@ const CommandK = dynamic(() => import("@/components/command-k"), {
   ssr: false,
 });
 
+const AuthModal = dynamic(() => import("@/components/auth/auth-modal"), {
+  ssr: false,
+});
+
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
@@ -78,7 +82,7 @@ export const Root: FC<RootProps> = ({ children }) => {
             <Web3Provider>
               <main>
                 <div className="flex flex-col">
-                  <div className="border-b border-border lg:py-2">
+                  <div className="border-b border-b-border lg:py-2">
                     <div className="flex h-16 items-center px-2 md:px-4 lg:px-8">
                       <div className="flex items-center">
                         <RootLogo />
@@ -97,14 +101,17 @@ export const Root: FC<RootProps> = ({ children }) => {
                   {children}
                 </div>
               </main>
-              <Suspense fallback={null}>
+              <Suspense>
                 <AuthState />
               </Suspense>
               <Toaster />
+              <Suspense>
+                <AuthModal />
+              </Suspense>
+              <CommandK />
             </Web3Provider>
           </ReactQueryProvider>
         </ThemeProvider>
-        <CommandK />
         <TailwindIndicator />
         <Suspense>
           <VercelToolbar />
