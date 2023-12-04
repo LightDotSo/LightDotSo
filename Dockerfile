@@ -74,7 +74,7 @@ RUN make install && \
     sccache --show-stats
 
 # Slim down the image for runtime.
-FROM debian:bullseye-slim AS runtime
+FROM debian:bookworm-slim AS runtime
 
 # Switch to the runtime directory.
 WORKDIR /app
