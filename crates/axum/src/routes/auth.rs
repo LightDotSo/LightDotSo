@@ -17,6 +17,7 @@ use crate::{
     constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
+    sessions::{unix_timestamp, verify_session},
     state::AppState,
 };
 use autometrics::autometrics;
@@ -25,14 +26,11 @@ use axum::{
     Json, Router,
 };
 use ethers_main::{abi::ethereum_types::Signature, types::Address};
-use eyre::{eyre, Result};
+use eyre::eyre;
 use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use siwe::{generate_nonce, Message, VerificationOpts};
-use std::{
-    str::FromStr,
-    time::{SystemTime, UNIX_EPOCH},
-};
+use std::str::FromStr;
 use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
 
@@ -89,11 +87,8 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/auth/nonce", get(v1_auth_nonce_handler))
         .route("/auth/session", get(v1_auth_session_handler))
+        .route("/auth/logout", post(v1_auth_logout_handler))
         .route("/auth/verify", post(v1_auth_verify_handler))
-}
-
-pub fn unix_timestamp() -> Result<u64, eyre::Error> {
-    Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
 }
 
 // From: https://github.com/valorem-labs-inc/quay/blob/c3bd80f993e4da735c164c0b66f4bee1d23d5486/src/routes/sessions.rs#L12-L45
@@ -173,6 +168,23 @@ async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession>
     Ok(Json::from(AuthSession { expiration: session_expiry.to_string() }))
 }
 
+/// Logout a session
+#[utoipa::path(
+        post,
+        path = "/auth/logout",
+        responses(
+            (status = 200, description = "Auth logout returned successfully", body = ()),
+            (status = 404, description = "Auth logout not succeeded", body = AuthError),
+        )
+    )]
+async fn v1_auth_logout_handler(session: Session) -> AppJsonResult<()> {
+    info!(?session);
+
+    session.clear();
+
+    Ok(Json::from(()))
+}
+
 /// Verify a auth
 #[utoipa::path(
         post,
@@ -193,6 +205,9 @@ async fn v1_auth_verify_handler(
     Json(msg): Json<AuthVerifyPostRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
     info!(?session);
+
+    // Verify the session
+    verify_session(&session)?;
 
     // Parse the message
     let message = Message::from_str(&msg.message).map_err(|e| {

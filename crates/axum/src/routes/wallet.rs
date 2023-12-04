@@ -40,11 +40,21 @@ use lightdotso_solutions::{
 use lightdotso_tracing::tracing::{error, info, trace};
 use prisma_client_rust::or;
 use serde::{Deserialize, Serialize};
+use tower_sessions_core::Session;
 use utoipa::{IntoParams, ToSchema};
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
+    /// The address of the wallet.
+    pub address: String,
+    /// The chain id of the wallet.
+    pub chain_id: Option<i64>,
+}
+
+#[derive(Debug, Deserialize, Default, IntoParams)]
+#[into_params(parameter_in = Query)]
+pub struct UpdateQuery {
     /// The address of the wallet.
     pub address: String,
     /// The chain id of the wallet.
@@ -86,6 +96,13 @@ pub struct WalletPostRequestParams {
     /// The threshold of the wallet.
     #[schema(example = 3, default = 1)]
     pub threshold: u16,
+}
+
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub struct WalletPutRequestParams {
+    /// The name of the wallet.
+    #[schema(example = "My Wallet", default = "My Wallet")]
+    pub name: String,
 }
 
 /// Wallet owner.
@@ -557,6 +574,63 @@ async fn v1_wallet_post_handler(
     // If the wallet is not created, return a 500.
     let wallet = wallet.map_err(|_| AppError::InternalError)?;
     info!(?wallet);
+
+    // Change the wallet to the format that the API expects.
+    let wallet: Wallet = wallet.into();
+
+    Ok(Json::from(wallet))
+}
+
+/// Update a wallet
+#[utoipa::path(
+        put,
+        path = "/wallet/update",
+        params(
+            UpdateQuery
+        ),
+        request_body = WalletPutRequestParams,
+        responses(
+            (status = 200, description = "Wallet returned successfully", body = Wallet),
+            (status = 500, description = "Wallet bad request", body = WalletError),
+        )
+    )]
+#[autometrics]
+async fn v1_wallet_update_handler(
+    put: Query<UpdateQuery>,
+    State(client): State<AppState>,
+    Json(params): Json<WalletPutRequestParams>,
+    session: Session,
+) -> AppJsonResult<Wallet> {
+    // Get the get query.
+    let Query(query) = put;
+
+    let parsed_query_address: H160 = query.address.parse()?;
+    let checksum_address = to_checksum(&parsed_query_address, None);
+
+    let name = params.name;
+
+    // Get the wallets from the database.
+    let wallet = client
+        .clone()
+        .client
+        .unwrap()
+        .wallet()
+        .find_unique(wallet::address::equals(checksum_address.clone()))
+        .exec()
+        .await?;
+
+    // If the wallet is not found, return a 404.
+    let _ = wallet
+        .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
+
+    // Update the wallet name.
+    let wallet = client
+        .client
+        .unwrap()
+        .wallet()
+        .update(wallet::address::equals(checksum_address), vec![wallet::name::set(name)])
+        .exec()
+        .await?;
 
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();
