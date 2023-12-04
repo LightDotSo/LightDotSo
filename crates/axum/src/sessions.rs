@@ -110,7 +110,7 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
     Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
 }
 
-pub fn verify_session(session: &Session) -> Result<(), AppError> {
+pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
     match session.get::<String>(&NONCE_KEY) {
         Ok(Some(_)) => {}
         // Invalid nonce

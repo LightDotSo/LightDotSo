@@ -17,16 +17,18 @@ use crate::{
     constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
-    sessions::{unix_timestamp, verify_session},
+    sessions::unix_timestamp,
     state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
+    extract::State,
     routing::{get, post},
     Json, Router,
 };
-use ethers_main::{abi::ethereum_types::Signature, types::Address};
+use ethers_main::{abi::ethereum_types::Signature, types::Address, utils::to_checksum};
 use eyre::eyre;
+use lightdotso_prisma::user;
 use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use siwe::{generate_nonce, Message, VerificationOpts};
@@ -201,13 +203,11 @@ async fn v1_auth_logout_handler(session: Session) -> AppJsonResult<()> {
         )
     )]
 async fn v1_auth_verify_handler(
+    State(client): State<AppState>,
     session: Session,
     Json(msg): Json<AuthVerifyPostRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
     info!(?session);
-
-    // Verify the session
-    verify_session(&session)?;
 
     // Parse the message
     let message = Message::from_str(&msg.message).map_err(|e| {
@@ -266,6 +266,30 @@ async fn v1_auth_verify_handler(
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
                 "Failed to get insert address.".to_string(),
+            ))))
+        }
+    }
+
+    // Upsert the user
+    let user = client
+        .client
+        .unwrap()
+        .user()
+        .upsert(
+            user::address::equals(to_checksum(&message.address.into(), None)),
+            user::create(to_checksum(&message.address.into(), None), vec![]),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?user);
+
+    // Insert the user id into the session
+    match session.insert(&USER_ADDRESS_KEY, user.id) {
+        Ok(_) => {}
+        Err(_) => {
+            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
+                "Failed to get insert user id.".to_string(),
             ))))
         }
     }

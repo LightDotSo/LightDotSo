@@ -26,3 +26,7 @@ lazy_static! {
 lazy_static! {
     pub static ref USER_ADDRESS_KEY: &'static str = "userAddress";
 }
+
+lazy_static! {
+    pub static ref USER_ID_KEY: &'static str = "userId";
+}

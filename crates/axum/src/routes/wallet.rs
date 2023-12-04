@@ -16,6 +16,7 @@
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
+    sessions::verify_session,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -601,6 +602,9 @@ async fn v1_wallet_update_handler(
     Json(params): Json<WalletPutRequestParams>,
     session: Session,
 ) -> AppJsonResult<Wallet> {
+    // Verify the session
+    verify_session(&session)?;
+
     // Get the get query.
     let Query(query) = put;
 
