@@ -23,9 +23,7 @@ use crate::{
     },
     state::AppState,
 };
-use async_redis_session::RedisSessionStore;
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
-use axum_sessions::{async_session::MemoryStore, SessionLayer};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
@@ -36,7 +34,7 @@ use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
 use tower_http::cors::{Any, CorsLayer};
-use tower_sessions::{fred::prelude::*, Expiry, RedisStore, Session, SessionManagerLayer};
+use tower_sessions::{Expiry, MemoryStore, SessionManagerLayer};
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
@@ -234,6 +232,8 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_settings::router());
 
+    let session_store = MemoryStore::default();
+
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
@@ -250,11 +250,11 @@ pub async fn start_api_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
-                .layer(SessionLayer::new(
-                    MemoryStore::new(),
-                    b"please do not hardcode your secret; instead use a
-    cryptographically secure value",
-                ))
+                .layer(
+                    SessionManagerLayer::new(session_store)
+                        .with_secure(false)
+                        .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
+                )
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(OtelInResponseLayer)

@@ -677,7 +677,7 @@ checksum = "95cef5eb1e18adfb843202bf71587174e480ed67c0ca3e976bf40e82d9adce86"
 dependencies = [
  "autometrics-macros",
  "cfg_aliases",
- "http 0.2.9",
+ "http",
  "linkme",
  "metrics-exporter-prometheus 0.12.1",
  "once_cell",
@@ -714,8 +714,8 @@ dependencies = [
  "bitflags 1.3.2",
  "bytes",
  "futures-util",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "hyper",
  "itoa 1.0.9",
  "matchit 0.5.0",
@@ -750,8 +750,8 @@ dependencies = [
  "bytes",
  "futures-util",
  "headers",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "hyper",
  "itoa 1.0.9",
  "matchit 0.7.2",
@@ -782,8 +782,8 @@ dependencies = [
  "async-trait",
  "bytes",
  "futures-util",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "mime",
  "tower-layer",
  "tower-service",
@@ -798,30 +798,10 @@ dependencies = [
  "async-trait",
  "bytes",
  "futures-util",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "mime",
  "rustversion",
- "tower-layer",
- "tower-service",
-]
-
-[[package]]
-name = "axum-core"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de0ddc355eab88f4955090a823715df47acf0b7660aab7a69ad5ce6301ee3b73"
-dependencies = [
- "async-trait",
- "bytes",
- "futures-util",
- "http 1.0.0",
- "http-body 1.0.0",
- "http-body-util",
- "mime",
- "pin-project-lite",
- "rustversion",
- "sync_wrapper",
  "tower-layer",
  "tower-service",
 ]
@@ -847,7 +827,7 @@ dependencies = [
  "axum 0.6.20",
  "futures-core",
  "futures-util",
- "http 0.2.9",
+ "http",
  "opentelemetry 0.20.0",
  "pin-project-lite",
  "tower",
@@ -1804,9 +1784,9 @@ dependencies = [
 
 [[package]]
 name = "cookie"
-version = "0.18.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3cd91cf61412820176e137621345ee43b3f4423e589e7ae4e50d601d93e35ef8"
+checksum = "7efb37c3e1ccb1ff97164ad95ac1606e8ccd35b3fa0a7d99a304c7f4a428cc24"
 dependencies = [
  "percent-encoding",
  "time 0.3.30",
@@ -2274,9 +2254,9 @@ dependencies = [
 
 [[package]]
 name = "dashmap"
-version = "5.5.1"
+version = "5.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "edd72493923899c6f10c641bdbdeddc7183d6396641d99c1a0d1597f37f92e28"
+checksum = "978747c1d849a7d2ee5e8adc0159961c48fb7e5db2f06af6723b80123bb53856"
 dependencies = [
  "cfg-if",
  "hashbrown 0.14.0",
@@ -3435,7 +3415,7 @@ dependencies = [
  "futures-timer",
  "futures-util",
  "hashers",
- "http 0.2.9",
+ "http",
  "instant",
  "jsonwebtoken",
  "once_cell",
@@ -3472,7 +3452,7 @@ dependencies = [
  "futures-timer",
  "futures-util",
  "hashers",
- "http 0.2.9",
+ "http",
  "instant",
  "jsonwebtoken",
  "once_cell",
@@ -3510,7 +3490,7 @@ dependencies = [
  "futures-timer",
  "futures-util",
  "hashers",
- "http 0.2.9",
+ "http",
  "instant",
  "jsonwebtoken",
  "once_cell",
@@ -4566,7 +4546,7 @@ dependencies = [
  "futures-core",
  "futures-sink",
  "gloo-utils",
- "http 0.2.9",
+ "http",
  "js-sys",
  "pin-project",
  "serde",
@@ -4757,7 +4737,7 @@ dependencies = [
  "futures-core",
  "futures-sink",
  "futures-util",
- "http 0.2.9",
+ "http",
  "indexmap 1.9.3",
  "slab",
  "tokio",
@@ -4851,7 +4831,7 @@ dependencies = [
  "base64 0.21.3",
  "bytes",
  "headers-core",
- "http 0.2.9",
+ "http",
  "httpdate",
  "mime",
  "sha1",
@@ -4863,7 +4843,7 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e7f66481bfee273957b1f20485a4ff3362987f85b2c236580d81b4eb7a326429"
 dependencies = [
- "http 0.2.9",
+ "http",
 ]
 
 [[package]]
@@ -4976,47 +4956,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "http"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b32afd38673a8016f7c9ae69e5af41a58f81b1d31689040f2f1959594ce194ea"
-dependencies = [
- "bytes",
- "fnv",
- "itoa 1.0.9",
-]
-
-[[package]]
 name = "http-body"
 version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d5f38f16d184e36f2408a55281cd658ecbd3ca05cce6d6510a176eca393e26d1"
 dependencies = [
  "bytes",
- "http 0.2.9",
- "pin-project-lite",
-]
-
-[[package]]
-name = "http-body"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cac85db508abc24a2e48553ba12a996e87244a0395ce011e62b37158745d643"
-dependencies = [
- "bytes",
- "http 1.0.0",
-]
-
-[[package]]
-name = "http-body-util"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41cb79eb393015dadd30fc252023adb0b2400a0caee0fa2a077e6e21a551e840"
-dependencies = [
- "bytes",
- "futures-util",
- "http 1.0.0",
- "http-body 1.0.0",
+ "http",
  "pin-project-lite",
 ]
 
@@ -5055,8 +5001,8 @@ dependencies = [
  "futures-core",
  "futures-util",
  "h2",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "httparse",
  "httpdate",
  "itoa 1.0.9",
@@ -5074,7 +5020,7 @@ version = "0.23.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1788965e61b367cd03a62950836d5cd41560c3577d90e40e0819373194d1661c"
 dependencies = [
- "http 0.2.9",
+ "http",
  "hyper",
  "log",
  "rustls 0.20.8",
@@ -5090,7 +5036,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d78e1e73ec14cf7375674f74d7dde185c8206fd9dea6fb6295e8a98098aaa97"
 dependencies = [
  "futures-util",
- "http 0.2.9",
+ "http",
  "hyper",
  "log",
  "rustls 0.21.6",
@@ -5610,7 +5556,7 @@ dependencies = [
  "futures-channel",
  "futures-util",
  "gloo-net",
- "http 0.2.9",
+ "http",
  "jsonrpsee-core",
  "pin-project",
  "rustls-native-certs",
@@ -5690,7 +5636,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "24f4e2f3d223d810e363fb8b5616ec4c6254243ee7f452d05ac281cdc9cf76b2"
 dependencies = [
  "futures-util",
- "http 0.2.9",
+ "http",
  "hyper",
  "jsonrpsee-core",
  "jsonrpsee-types",
@@ -5737,7 +5683,7 @@ version = "0.20.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d88e35e9dfa89248ae3e92f689c1f0a190ce12d377eba7d2d08e5a7f6cc5694a"
 dependencies = [
- "http 0.2.9",
+ "http",
  "jsonrpsee-client-transport",
  "jsonrpsee-core",
  "jsonrpsee-types",
@@ -6063,8 +6009,8 @@ dependencies = [
  "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
  "governor 0.5.1",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "hyper",
  "hyper-rustls 0.24.1",
  "lightdotso-common",
@@ -6084,6 +6030,7 @@ dependencies = [
  "serde",
  "serde_json",
  "siwe",
+ "time 0.3.30",
  "tokio",
  "tower",
  "tower-http 0.4.3",
@@ -6105,7 +6052,7 @@ dependencies = [
  "dotenvy",
  "eyre",
  "futures",
- "http 0.2.9",
+ "http",
  "lightdotso-autometrics",
  "lightdotso-axum",
  "lightdotso-bundler",
@@ -7779,7 +7726,7 @@ checksum = "c7594ec0e11d8e33faf03530a4c49af7064ebba81c1480e01be67d90b356508b"
 dependencies = [
  "async-trait",
  "bytes",
- "http 0.2.9",
+ "http",
  "opentelemetry_api",
  "reqwest",
 ]
@@ -7792,7 +7739,7 @@ checksum = "7e5e5a5c4135864099f3faafbe939eb4d7f9b80ebf68a8448da961b32a7c1275"
 dependencies = [
  "async-trait",
  "futures-core",
- "http 0.2.9",
+ "http",
  "opentelemetry-http",
  "opentelemetry-proto",
  "opentelemetry-semantic-conventions",
@@ -8700,7 +8647,7 @@ source = "git+https://github.com/Brendonovich/prisma-client-rust?tag=0.6.10#9486
 dependencies = [
  "directories",
  "flate2",
- "http 0.2.9",
+ "http",
  "prisma-client-rust-sdk",
  "proc-macro2",
  "quote",
@@ -9645,8 +9592,8 @@ dependencies = [
  "futures-core",
  "futures-util",
  "h2",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "hyper",
  "hyper-rustls 0.24.1",
  "hyper-tls",
@@ -9971,7 +9918,7 @@ dependencies = [
  "bytes",
  "crc32fast",
  "futures",
- "http 0.2.9",
+ "http",
  "hyper",
  "hyper-rustls 0.23.2",
  "lazy_static",
@@ -10030,7 +9977,7 @@ dependencies = [
  "futures",
  "hex",
  "hmac 0.11.0",
- "http 0.2.9",
+ "http",
  "hyper",
  "log",
  "md-5 0.9.1",
@@ -11008,7 +10955,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "649f458d1b326863aecc235a0c1ab0e0110748304a7a658cc3a125b35e8de89e"
 dependencies = [
  "hex",
- "http 0.2.9",
+ "http",
  "iri-string",
  "k256",
  "rand 0.8.5",
@@ -11098,7 +11045,7 @@ dependencies = [
  "base64 0.13.1",
  "bytes",
  "futures",
- "http 0.2.9",
+ "http",
  "httparse",
  "log",
  "rand 0.8.5",
@@ -11715,7 +11662,7 @@ dependencies = [
  "glob",
  "gtk",
  "heck 0.4.1",
- "http 0.2.9",
+ "http",
  "ignore",
  "objc",
  "once_cell",
@@ -11809,7 +11756,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "108683199cb18f96d2d4134187bb789964143c845d2d154848dda209191fd769"
 dependencies = [
  "gtk",
- "http 0.2.9",
+ "http",
  "http-range",
  "rand 0.8.5",
  "raw-window-handle",
@@ -12458,8 +12405,8 @@ dependencies = [
  "futures-core",
  "futures-util",
  "h2",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "hyper",
  "hyper-timeout",
  "percent-encoding",
@@ -12488,8 +12435,8 @@ dependencies = [
  "base64 0.21.3",
  "bytes",
  "h2",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "hyper",
  "hyper-timeout",
  "percent-encoding",
@@ -12542,15 +12489,15 @@ dependencies = [
 
 [[package]]
 name = "tower-cookies"
-version = "0.10.0"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fd0118512cf0b3768f7fcccf0bef1ae41d68f2b45edc1e77432b36c97c56c6d"
+checksum = "40f38d941a2ffd8402b36e02ae407637a9caceb693aaf2edc910437db0f36984"
 dependencies = [
  "async-trait",
- "axum-core 0.4.0",
+ "axum-core 0.3.4",
  "cookie",
  "futures-util",
- "http 1.0.0",
+ "http",
  "parking_lot 0.12.1",
  "pin-project-lite",
  "tower-layer",
@@ -12567,8 +12514,8 @@ dependencies = [
  "bytes",
  "futures-core",
  "futures-util",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "http-range-header",
  "pin-project-lite",
  "tower",
@@ -12587,8 +12534,8 @@ dependencies = [
  "bytes",
  "futures-core",
  "futures-util",
- "http 0.2.9",
- "http-body 0.4.5",
+ "http",
+ "http-body",
  "http-range-header",
  "mime",
  "pin-project-lite",
@@ -12612,9 +12559,9 @@ checksum = "b6bc1c9ce2b5135ac7f93c72918fc37feb872bdc6a5533a8b85eb4b86bfdae52"
 
 [[package]]
 name = "tower-sessions"
-version = "0.7.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce23a9827d593712d471a19d3cb1334e57a97e5b34a9f02b4eef2114b7405dcd"
+checksum = "05b986b2b0961c19f4fc2a2bb56bac610ec6bcbc6294ae259a6dd82fbe14f2e7"
 dependencies = [
  "tower-sessions-core",
  "tower-sessions-memory-store",
@@ -12622,14 +12569,15 @@ dependencies = [
 
 [[package]]
 name = "tower-sessions-core"
-version = "0.7.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b1d733b3ae4a6a4cb80cd585e87ffe1a1a7011174581785039c83c4cd63ee61c"
+checksum = "1a4ac88780912c0eca4256d3c4c72832f4cefe6bfe60e6422e74e76170ea8577"
 dependencies = [
  "async-trait",
- "axum-core 0.4.0",
+ "axum-core 0.3.4",
+ "dashmap",
  "futures",
- "http 1.0.0",
+ "http",
  "parking_lot 0.12.1",
  "serde",
  "serde_json",
@@ -12644,9 +12592,9 @@ dependencies = [
 
 [[package]]
 name = "tower-sessions-memory-store"
-version = "0.7.0"
+version = "0.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "78d855ef8feaef2382c6df2cf4c4b6651dce890019ceaf0ec70c8af2516a1ce9"
+checksum = "dd7266315d6c43a82f3317836564d44768d68a84d8191b4d365f46276d6e4b35"
 dependencies = [
  "async-trait",
  "parking_lot 0.12.1",
@@ -12665,7 +12613,7 @@ dependencies = [
  "futures",
  "futures-core",
  "governor 0.6.0",
- "http 0.2.9",
+ "http",
  "pin-project",
  "thiserror",
  "tokio",
@@ -12804,7 +12752,7 @@ version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ad80bb643d9a70b13d10eb5d3241e2955afc880d3a7a15a40d6cc6f620091a02"
 dependencies = [
- "http 0.2.9",
+ "http",
  "opentelemetry-http",
  "opentelemetry_api",
  "tracing",
@@ -12966,7 +12914,7 @@ dependencies = [
  "base64 0.13.1",
  "byteorder",
  "bytes",
- "http 0.2.9",
+ "http",
  "httparse",
  "log",
  "rand 0.8.5",
@@ -12987,7 +12935,7 @@ dependencies = [
  "byteorder",
  "bytes",
  "data-encoding",
- "http 0.2.9",
+ "http",
  "httparse",
  "log",
  "rand 0.8.5",
@@ -13008,7 +12956,7 @@ dependencies = [
  "byteorder",
  "bytes",
  "data-encoding",
- "http 0.2.9",
+ "http",
  "httparse",
  "log",
  "rand 0.8.5",
@@ -14082,7 +14030,7 @@ dependencies = [
  "glib",
  "gtk",
  "html5ever",
- "http 0.2.9",
+ "http",
  "kuchiki",
  "libc",
  "log",

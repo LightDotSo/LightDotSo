@@ -23,7 +23,6 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use axum_sessions::extractors::WritableSession;
 use ethers_main::{abi::ethereum_types::Signature, types::Address};
 use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::{error, info};
@@ -106,7 +105,7 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
         )
     )]
 #[autometrics]
-async fn v1_auth_nonce_handler(mut session: Session) -> AppJsonResult<AuthNonce> {
+async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
     let nonce = generate_nonce();
 
     match &session.insert(NONCE_KEY, &nonce) {
@@ -156,7 +155,7 @@ async fn v1_auth_nonce_handler(mut session: Session) -> AppJsonResult<AuthNonce>
         )
     )]
 async fn v1_auth_verify_handler(
-    mut session: Session,
+    session: Session,
     Json(msg): Json<AuthVerifyPostRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
     info!(?session);
@@ -173,8 +172,8 @@ async fn v1_auth_verify_handler(
 
     // The frontend must set a session expiry
     let session_nonce = match session.get::<String>(NONCE_KEY) {
-        Some(nonce) => nonce,
-        None => {
+        Ok(Some(nonce)) => nonce,
+        Ok(None) | Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
                 "Failed to set nonce.".to_string(),
             ))))
