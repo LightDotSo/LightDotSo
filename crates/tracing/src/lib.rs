@@ -107,7 +107,7 @@ pub fn init_metrics() -> Result<()> {
 
     // Determine the log level based on the environment
     let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
-        "development" => Level::TRACE,
+        "debug" => Level::TRACE,
         "local" => Level::DEBUG,
         _ => Level::INFO,
     };

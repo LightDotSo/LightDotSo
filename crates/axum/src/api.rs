@@ -27,6 +27,10 @@ use crate::{
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
+use http::{
+    header::{ACCEPT, AUTHORIZATION, CONTENT_TYPE},
+    HeaderValue,
+};
 use lightdotso_db::db::create_client;
 use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
@@ -35,9 +39,15 @@ use tower::ServiceBuilder;
 use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
-use tower_http::cors::{Any, CorsLayer};
+use tower_http::cors::{AllowOrigin, CorsLayer};
 use tower_sessions::SessionManagerLayer;
-use utoipa::OpenApi;
+use utoipa::{
+    openapi::{
+        security::{ApiKey, ApiKeyValue, SecurityScheme},
+        Components,
+    },
+    OpenApi,
+};
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
@@ -190,6 +200,16 @@ pub async fn start_api_server() -> Result<()> {
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
     // License: Apache-2.0
+    let mut origins = vec!["http://light.so".parse::<HeaderValue>().unwrap()];
+    // Get the `ENVIROMENT` variable and if it is `development` then add `http://localhost:3000`
+    // to the `origins` array.
+    if let Ok(environment) = std::env::var("ENVIRONMENT") {
+        if environment == "development" {
+            if let Ok(localhost_origin) = "http://localhost:3001".parse() {
+                origins.push(localhost_origin);
+            }
+        }
+    }
     let cors = CorsLayer::new()
         .allow_methods([
             http::Method::GET,
@@ -199,8 +219,20 @@ pub async fn start_api_server() -> Result<()> {
             http::Method::DELETE,
             http::Method::OPTIONS,
         ])
-        .allow_headers(Any)
-        .allow_origin(Any)
+        .allow_credentials(true)
+        .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE])
+        .allow_origin(AllowOrigin::predicate(move |origin: &HeaderValue, _| {
+            origin
+                .to_str()
+                .map(|origin_string| {
+                    origin_string.ends_with(".vercel.app") ||
+                        origin_string.ends_with(".light.so") ||
+                        origins.iter().any(|allowed_origin| {
+                            allowed_origin.to_str().unwrap() == origin_string
+                        })
+                })
+                .unwrap_or(false)
+        }))
         .max_age(Duration::from_secs(86400));
 
     // Rate limit based on IP address
@@ -250,14 +282,21 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the session store
     let session_store = RedisStore::new(redis);
-    let session_manager_layer = SessionManagerLayer::new(session_store.clone());
+    let session_manager_layer =
+        SessionManagerLayer::new(session_store.clone()).with_domain("light.so".to_string());
+
+    // Create the api doc
+    let mut open_api = ApiDoc::openapi();
+    let components = open_api.components.get_or_insert(Components::new());
+    components
+        .add_security_scheme("sid", SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("id"))));
 
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
         .merge(api.clone())
-        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
-        .merge(Redoc::with_url("/v1/redoc", ApiDoc::openapi()))
+        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
+        .merge(Redoc::with_url("/v1/redoc", open_api.clone()))
         // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
         // via SwaggerUi instead we only make rapidoc to point to the existing doc.
         .merge(RapiDoc::new("/v1/api-docs/openapi.json").path("/rapidoc"))
