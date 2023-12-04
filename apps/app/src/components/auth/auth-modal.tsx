@@ -31,6 +31,9 @@ import {
 } from "@lightdotso/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
+import { useCallback } from "react";
+import { SiweMessage } from "siwe";
+import { useSignMessage, useNetwork } from "wagmi";
 import type { NonceData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
@@ -43,13 +46,40 @@ import { successToast } from "@/utils";
 
 export function AuthModal() {
   const { address } = useAuth();
+  const { signMessageAsync } = useSignMessage();
+  const { chain } = useNetwork();
   const { isAuthModalVisible, hideAuthModal } = useModals();
+
+  const handleSignIn = useCallback(async () => {
+    successToast(nonceData);
+
+    if (!nonceData || !chain) {
+      return;
+    }
+
+    const message = new SiweMessage({
+      domain: window.location.host,
+      address,
+      statement: "Sign in with Ethereum to light.so",
+      uri: window.location.origin,
+      version: "1",
+      chainId: chain.id,
+      nonce: nonceData.nonce!,
+    });
+    const messageToSign = message.prepareMessage();
+    const signature = await signMessageAsync({
+      message: message.prepareMessage(),
+    });
+
+    successToast(signature);
+    successToast(messageToSign);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const { data: nonce } = useSuspenseQuery<NonceData | null>({
+  const { data: nonceData } = useSuspenseQuery<NonceData | null>({
     queryKey: queries.nonce.get(address).queryKey,
     queryFn: async () => {
       if (!address) {
@@ -100,9 +130,7 @@ export function AuthModal() {
                 type="submit"
                 size="sm"
                 className="px-3"
-                onClick={() => {
-                  successToast(nonce);
-                }}
+                onClick={handleSignIn}
               >
                 <span className="sr-only">Copy</span>
                 <Copy className="h-4 w-4" />
