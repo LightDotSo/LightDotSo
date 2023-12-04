@@ -80,7 +80,7 @@ FROM debian:bookworm-slim AS runtime
 WORKDIR /app
 
 # sqlx depends on native TLS, which is missing in buster-slim.
-RUN apt update && apt install -y libsasl2-dev libssl1.1 ca-certificates
+RUN apt update && apt install -y libsasl2-dev libssl3 ca-certificates
 
 # Copy over the binaries.
 COPY --from=builder /app/target/release/lightdotso-bin /usr/local/bin
