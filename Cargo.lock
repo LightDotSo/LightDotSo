@@ -6001,6 +6001,7 @@ dependencies = [
 name = "lightdotso-axum"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "autometrics",
  "axum 0.6.20",
  "axum-tracing-opentelemetry",
@@ -6030,11 +6031,13 @@ dependencies = [
  "serde",
  "serde_json",
  "siwe",
+ "thiserror",
  "time 0.3.30",
  "tokio",
  "tower",
  "tower-http 0.4.3",
  "tower-sessions",
+ "tower-sessions-core",
  "tower_governor",
  "utoipa",
  "utoipa-rapidoc",

@@ -190,6 +190,7 @@
     "sensitive-headers",
   ] }
   tower-sessions = "0.5.0"
+  tower-sessions-core = "0.5.0"
   tracing = "0.1.37"
   tracing-test = "0.2.4"
   uniffi = "0.24.2"

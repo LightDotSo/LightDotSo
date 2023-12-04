@@ -21,12 +21,14 @@ use crate::{
         portfolio, signature, support_request, token, token_price, transaction, user,
         user_operation, wallet, wallet_settings,
     },
+    sessions::RedisStore,
     state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use eyre::Result;
 use lightdotso_db::db::create_client;
+use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use tower::ServiceBuilder;
@@ -34,7 +36,7 @@ use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
 use tower_http::cors::{Any, CorsLayer};
-use tower_sessions::{Expiry, MemoryStore, SessionManagerLayer};
+use tower_sessions::{Expiry, SessionManagerLayer};
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
@@ -182,6 +184,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create a shared client
     let db = Arc::new(create_client().await.unwrap());
+    let redis = get_redis_client().unwrap();
     let state = AppState { client: Some(db) };
 
     // Allow CORS
@@ -234,7 +237,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_settings::router());
 
-    let session_store = MemoryStore::default();
+    let session_store = RedisStore::new(redis);
 
     // Create the app for the server
     let app = Router::new()

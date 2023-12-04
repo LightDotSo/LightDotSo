@@ -32,8 +32,7 @@ use std::{
     str::FromStr,
     time::{SystemTime, UNIX_EPOCH},
 };
-use time::OffsetDateTime;
-use tower_sessions::{Expiry, Session};
+use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
