@@ -13,8 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use std::sync::Arc;
+use std::{
+    sync::Arc,
+    time::{SystemTime, UNIX_EPOCH},
+};
 
+use crate::{
+    constants::{EXPIRATION_TIME_KEY, NONCE_KEY},
+    result::AppError,
+};
 use async_trait::async_trait;
 use lightdotso_redis::redis::{Client, Commands};
 use time::OffsetDateTime;
@@ -97,4 +104,38 @@ impl SessionStore for RedisStore {
 
         Ok(())
     }
+}
+
+pub fn unix_timestamp() -> Result<u64, eyre::Error> {
+    Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
+}
+
+pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
+    // The frontend must set a session expiry
+    match session.get::<String>(&NONCE_KEY) {
+        Ok(Some(_)) => {}
+        // Invalid nonce
+        Ok(None) | Err(_) => {
+            return Err(AppError::AuthError("Failed to get nonce.".to_string()));
+        }
+    }
+    let now = match unix_timestamp() {
+        Ok(now) => now,
+        Err(_) => {
+            return Err(AppError::AuthError("Failed to get timestamp.".to_string()));
+        }
+    };
+    // Verify the session has not expired
+    match session.get::<u64>(&EXPIRATION_TIME_KEY) {
+        Err(_) | Ok(None) => {
+            return Err(AppError::AuthError("Failed to get expiration.".to_string()));
+        }
+        Ok(Some(ts)) => {
+            if now > ts {
+                return Err(AppError::AuthError("Session has expired.".to_string()));
+            }
+        }
+    }
+
+    Ok(())
 }

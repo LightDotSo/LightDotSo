@@ -99,6 +99,7 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet::Wallet),
         schemas(wallet::WalletError),
         schemas(wallet::WalletPostRequestParams),
+        schemas(wallet::WalletPutRequestParams),
         schemas(wallet::WalletTab),
         schemas(wallet_settings::WalletSettings),
         schemas(wallet_settings::WalletSettingsError),
@@ -108,6 +109,7 @@ use utoipa_swagger_ui::SwaggerUi;
     paths(
         auth::v1_auth_nonce_handler,
         auth::v1_auth_session_handler,
+        auth::v1_auth_logout_handler,
         auth::v1_auth_verify_handler,
         check::handler,
         health::handler,

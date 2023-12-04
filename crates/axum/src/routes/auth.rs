@@ -14,24 +14,25 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
+    sessions::unix_timestamp,
     state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
+    extract::State,
     routing::{get, post},
     Json, Router,
 };
-use ethers_main::{abi::ethereum_types::Signature, types::Address};
-use eyre::{eyre, Result};
+use ethers_main::{abi::ethereum_types::Signature, types::Address, utils::to_checksum};
+use eyre::eyre;
+use lightdotso_prisma::user;
 use lightdotso_tracing::tracing::{error, info};
 use serde::{Deserialize, Serialize};
 use siwe::{generate_nonce, Message, VerificationOpts};
-use std::{
-    str::FromStr,
-    time::{SystemTime, UNIX_EPOCH},
-};
+use std::str::FromStr;
 use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
 
@@ -88,15 +89,8 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/auth/nonce", get(v1_auth_nonce_handler))
         .route("/auth/session", get(v1_auth_session_handler))
+        .route("/auth/logout", post(v1_auth_logout_handler))
         .route("/auth/verify", post(v1_auth_verify_handler))
-}
-
-pub const NONCE_KEY: &str = "nonce";
-pub const EXPIRATION_TIME_KEY: &str = "expirationTime";
-pub const USER_ADDRESS_KEY: &str = "userAddress";
-
-pub fn unix_timestamp() -> Result<u64, eyre::Error> {
-    Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
 }
 
 // From: https://github.com/valorem-labs-inc/quay/blob/c3bd80f993e4da735c164c0b66f4bee1d23d5486/src/routes/sessions.rs#L12-L45
@@ -115,7 +109,7 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
 async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
     let nonce = generate_nonce();
 
-    match &session.insert(NONCE_KEY, &nonce) {
+    match &session.insert(&NONCE_KEY, &nonce) {
         Ok(_) => {
             info!("Nonce inserted into session");
         }
@@ -134,7 +128,7 @@ async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
             ))));
         }
     };
-    match session.insert(EXPIRATION_TIME_KEY, ts) {
+    match session.insert(&EXPIRATION_TIME_KEY, ts) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -164,7 +158,7 @@ async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession>
     info!(?session);
 
     // The frontend must set a session expiry
-    let session_expiry = match session.get::<u64>(EXPIRATION_TIME_KEY) {
+    let session_expiry = match session.get::<u64>(&EXPIRATION_TIME_KEY) {
         Ok(Some(expiry)) => expiry,
         Ok(None) | Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -174,6 +168,23 @@ async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession>
     };
 
     Ok(Json::from(AuthSession { expiration: session_expiry.to_string() }))
+}
+
+/// Logout a session
+#[utoipa::path(
+        post,
+        path = "/auth/logout",
+        responses(
+            (status = 200, description = "Auth logout returned successfully", body = ()),
+            (status = 404, description = "Auth logout not succeeded", body = AuthError),
+        )
+    )]
+async fn v1_auth_logout_handler(session: Session) -> AppJsonResult<()> {
+    info!(?session);
+
+    session.clear();
+
+    Ok(Json::from(()))
 }
 
 /// Verify a auth
@@ -192,6 +203,7 @@ async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession>
         )
     )]
 async fn v1_auth_verify_handler(
+    State(client): State<AppState>,
     session: Session,
     Json(msg): Json<AuthVerifyPostRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
@@ -208,7 +220,7 @@ async fn v1_auth_verify_handler(
     })?;
 
     // The frontend must set a session expiry
-    let session_nonce = match session.get::<String>(NONCE_KEY) {
+    let session_nonce = match session.get::<String>(&NONCE_KEY) {
         Ok(Some(nonce)) => nonce,
         Ok(None) | Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -241,7 +253,7 @@ async fn v1_auth_verify_handler(
         }
     };
     let expiry = now + 604800;
-    match session.insert(EXPIRATION_TIME_KEY, expiry) {
+    match session.insert(&EXPIRATION_TIME_KEY, expiry) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -249,11 +261,35 @@ async fn v1_auth_verify_handler(
             ))))
         }
     }
-    match session.insert(USER_ADDRESS_KEY, Address::from(message.address)) {
+    match session.insert(&USER_ADDRESS_KEY, Address::from(message.address)) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
                 "Failed to get insert address.".to_string(),
+            ))))
+        }
+    }
+
+    // Upsert the user
+    let user = client
+        .client
+        .unwrap()
+        .user()
+        .upsert(
+            user::address::equals(to_checksum(&message.address.into(), None)),
+            user::create(to_checksum(&message.address.into(), None), vec![]),
+            vec![],
+        )
+        .exec()
+        .await?;
+    info!(?user);
+
+    // Insert the user id into the session
+    match session.insert(&USER_ADDRESS_KEY, user.id) {
+        Ok(_) => {}
+        Err(_) => {
+            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
+                "Failed to get insert user id.".to_string(),
             ))))
         }
     }
