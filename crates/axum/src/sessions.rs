@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    constants::{EXPIRATION_TIME_KEY, NONCE_KEY},
+    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
     error::RouteError,
     result::AppError,
     routes::auth::AuthError,
@@ -147,6 +147,7 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
             return Err(AppError::AuthError("Failed to get timestamp.".to_string()));
         }
     };
+
     // Verify the session has not expired
     match session.get::<u64>(&EXPIRATION_TIME_KEY) {
         Err(_) | Ok(None) => {
@@ -156,6 +157,15 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
             if now > ts {
                 return Err(AppError::AuthError("Session has expired.".to_string()));
             }
+        }
+    }
+
+    // Verify that a user id is set
+    match session.get::<String>(&USER_ADDRESS_KEY) {
+        Ok(Some(_)) => {}
+        // Invalid nonce
+        Ok(None) | Err(_) => {
+            return Err(AppError::AuthError("Failed to get user id.".to_string()));
         }
     }
 
