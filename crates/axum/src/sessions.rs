@@ -20,7 +20,7 @@ use lightdotso_redis::redis::{Client, Commands};
 use time::OffsetDateTime;
 use tower_sessions_core::{session::Id, Session, SessionStore};
 
-// Redis implementation of https://github.dev/maxcountryman/tower-sessions/tree/3db1504b3f0adb41612b1b12d9d843986ddd4b72
+// Redis implementation of https://github.com/maxcountryman/tower-sessions/blob/3db1504b3f0adb41612b1b12d9d843986ddd4b72/redis-store/src/lib.rs
 // License: MIT
 // This is a copy of the original code, with the only difference being the use of `redis` instead of
 // `fred`.
