@@ -15,7 +15,7 @@
 
 import type { Address } from "viem";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
 // State
@@ -41,7 +41,7 @@ interface AuthState {
 // -----------------------------------------------------------------------------
 
 export const useAuth = create(
-  persist<AuthState>(
+  devtools(persist<AuthState>(
     (set, get) => ({
       address: undefined,
       setAddress: (address: Address | undefined) => set({ address }),
@@ -65,5 +65,5 @@ export const useAuth = create(
       storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
       skipHydration: true,
     },
-  ),
+  ),{name: "useAuth", serialize: { options: true }}),
 );

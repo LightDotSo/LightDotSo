@@ -18,6 +18,7 @@ import { isEqual } from "lodash";
 import type * as z from "zod";
 import { create } from "zustand";
 import { newFormStoreSchema } from "@/schemas/newForm";
+import { devtools} from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
 // State
@@ -41,7 +42,7 @@ interface FormStore {
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useNewFormStore = create<FormStore>((set, get) => ({
+export const useNewFormStore = create(devtools<FormStore>((set, get) => ({
   address: null,
   prevState: null,
   isValid: false,
@@ -121,4 +122,4 @@ export const useNewFormStore = create<FormStore>((set, get) => ({
     // Set loading state to false after async operation is finished
     set({ isLoading: false });
   },
-}));
+}),{name: "useNewFormStore", serialize: { options: true }}));

@@ -14,14 +14,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useSettings = create(set => ({
+export const useSettings = create(devtools(set => ({
   bears: 0,
   increasePopulation: () =>
     set((state: { bears: number }) => ({ bears: state.bears + 1 })),
   removeAllBears: () => set({ bears: 0 }),
-}));
+}), { name: "useSettings", serialize: { options: true } }));
