@@ -111,6 +111,7 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
 }
 
 pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
+    // The frontend must set a session expiry
     match session.get::<String>(&NONCE_KEY) {
         Ok(Some(_)) => {}
         // Invalid nonce
@@ -124,6 +125,7 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
             return Err(AppError::AuthError("Failed to get timestamp.".to_string()));
         }
     };
+    // Verify the session has not expired
     match session.get::<u64>(&EXPIRATION_TIME_KEY) {
         Err(_) | Ok(None) => {
             return Err(AppError::AuthError("Failed to get expiration.".to_string()));

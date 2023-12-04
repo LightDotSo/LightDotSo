@@ -22,7 +22,7 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::{get, post},
+    routing::{get, post, put},
     Json, Router,
 };
 use ethers_main::{
@@ -31,7 +31,7 @@ use ethers_main::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
-use lightdotso_prisma::{transaction, user, user_operation, wallet};
+use lightdotso_prisma::{configuration, transaction, user, user_operation, wallet};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -174,6 +174,7 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/wallet/tab", get(v1_wallet_tab_handler))
         .route("/wallet/list", get(v1_wallet_list_handler))
         .route("/wallet/create", post(v1_wallet_post_handler))
+        .route("/wallet/update", put(v1_wallet_update_handler))
 }
 
 /// Get a wallet
@@ -597,10 +598,10 @@ async fn v1_wallet_post_handler(
     )]
 #[autometrics]
 async fn v1_wallet_update_handler(
-    put: Query<UpdateQuery>,
     State(client): State<AppState>,
-    Json(params): Json<WalletPutRequestParams>,
     session: Session,
+    put: Query<UpdateQuery>,
+    Json(params): Json<WalletPutRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Verify the session
     verify_session(&session)?;
@@ -620,6 +621,7 @@ async fn v1_wallet_update_handler(
         .unwrap()
         .wallet()
         .find_unique(wallet::address::equals(checksum_address.clone()))
+        .with(wallet::configurations::fetch(vec![]).with(configuration::owners::fetch(vec![])))
         .exec()
         .await?;
 
