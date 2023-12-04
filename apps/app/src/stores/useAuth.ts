@@ -30,6 +30,7 @@ interface AuthState {
   setUserId: (userId: string | undefined) => void;
   sessionId: string | undefined;
   setSessionId: (session: string | undefined) => void;
+  isSessionValid: () => boolean;
   wallet: Address | undefined;
   setWallet: (wallet: Address | undefined) => void;
   logout: () => void;
@@ -41,7 +42,7 @@ interface AuthState {
 
 export const useAuth = create(
   persist<AuthState>(
-    set => ({
+    (set, get) => ({
       address: undefined,
       setAddress: (address: Address | undefined) => set({ address }),
       ens: undefined,
@@ -50,6 +51,10 @@ export const useAuth = create(
       setUserId: (userId: string | undefined) => set({ userId }),
       sessionId: undefined,
       setSessionId: (sessionId: string | undefined) => set({ sessionId }),
+      isSessionValid: () => {
+        const state = get();
+        return state.sessionId !== undefined;
+      },
       wallet: undefined,
       setWallet: (wallet: Address | undefined) => set({ wallet }),
       logout: () =>

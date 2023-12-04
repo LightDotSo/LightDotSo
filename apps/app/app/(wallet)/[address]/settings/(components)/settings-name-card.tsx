@@ -36,6 +36,7 @@ import * as z from "zod";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletData } from "@/data";
+import { useAuthModal } from "@/hooks/useAuthModal";
 import { queries } from "@/queries";
 import { successToast } from "@/utils";
 
@@ -69,6 +70,8 @@ type SettingsNameCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
+  const { isAuthValid, openAuthModal } = useAuthModal();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -126,6 +129,14 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Button
   // ---------------------------------------------------------------------------
 
+  const WalletLoginButton: FC = () => {
+    return (
+      <Button disabled={isAuthValid} onClick={openAuthModal}>
+        Login to update name
+      </Button>
+    );
+  };
+
   const WalletNameFormSubmitButton: FC = () => {
     return (
       <Button
@@ -136,6 +147,14 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         Update name
       </Button>
     );
+  };
+
+  const SettingsNameCardButton: FC = () => {
+    if (!isAuthValid) {
+      return <WalletLoginButton />;
+    }
+
+    return <WalletNameFormSubmitButton />;
   };
 
   // ---------------------------------------------------------------------------
@@ -153,7 +172,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
           .description
       }
-      footerContent={<WalletNameFormSubmitButton />}
+      footerContent={<SettingsNameCardButton />}
     >
       <Form {...form}>
         <form

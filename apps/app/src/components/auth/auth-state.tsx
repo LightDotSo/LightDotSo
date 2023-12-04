@@ -15,7 +15,7 @@
 
 "use client";
 
-import { getAuthSession, getUser } from "@lightdotso/client";
+import { getAuthSession, getUser, postAuthLogout } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -125,6 +125,8 @@ export const AuthState: FC = () => {
   useEffect(() => {
     if (sessionData) {
       setSessionId(sessionData.id);
+    } else {
+      setSessionId(undefined);
     }
   }, [sessionData, setSessionId]);
 
@@ -146,6 +148,11 @@ export const AuthState: FC = () => {
     if (address) {
       setAddress(address);
     }
+    // On logout, logout the user
+    else {
+      setAddress(undefined);
+      postAuthLogout();
+    }
   }, [address, router, setAddress]);
 
   useEffect(() => {
@@ -154,6 +161,7 @@ export const AuthState: FC = () => {
     if (
       address &&
       (pathname === "/" ||
+        pathname.startsWith("/overview") ||
         pathname === "/transactions" ||
         pathname === "/owners")
     ) {
