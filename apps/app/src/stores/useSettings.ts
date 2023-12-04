@@ -20,9 +20,18 @@ import { devtools } from "zustand/middleware";
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useSettings = create(devtools(set => ({
-  bears: 0,
-  increasePopulation: () =>
-    set((state: { bears: number }) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-}), { name: "useSettings", serialize: { options: true } }));
+export const useSettings = create(
+  devtools(
+    set => ({
+      bears: 0,
+      increasePopulation: () =>
+        set((state: { bears: number }) => ({ bears: state.bears + 1 })),
+      removeAllBears: () => set({ bears: 0 }),
+    }),
+    {
+      anonymousActionType: "useSettings",
+      name: "SettingsStore",
+      serialize: { options: true },
+    },
+  ),
+);

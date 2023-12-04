@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { create } from "zustand";
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 
 // -----------------------------------------------------------------------------
 // State
@@ -33,11 +33,20 @@ type ModalsStore = {
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useModals = create(devtools<ModalsStore>(set => ({
-  isAuthModalVisible: false,
-  isDepositModalVisible: false,
-  showAuthModal: () => set({ isAuthModalVisible: true }),
-  hideAuthModal: () => set({ isAuthModalVisible: false }),
-  showDepositModal: () => set({ isDepositModalVisible: true }),
-  hideDepositModal: () => set({ isDepositModalVisible: false }),
-}),{name: "useModals", serialize: { options: true }}));
+export const useModals = create(
+  devtools<ModalsStore>(
+    set => ({
+      isAuthModalVisible: false,
+      isDepositModalVisible: false,
+      showAuthModal: () => set({ isAuthModalVisible: true }),
+      hideAuthModal: () => set({ isAuthModalVisible: false }),
+      showDepositModal: () => set({ isDepositModalVisible: true }),
+      hideDepositModal: () => set({ isDepositModalVisible: false }),
+    }),
+    {
+      anonymousActionType: "useModals",
+      name: "ModalsStore",
+      serialize: { options: true },
+    },
+  ),
+);

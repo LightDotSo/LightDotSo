@@ -41,29 +41,36 @@ interface AuthState {
 // -----------------------------------------------------------------------------
 
 export const useAuth = create(
-  devtools(persist<AuthState>(
-    (set, get) => ({
-      address: undefined,
-      setAddress: (address: Address | undefined) => set({ address }),
-      ens: undefined,
-      setEns: (ens: string | undefined) => set({ ens }),
-      userId: undefined,
-      setUserId: (userId: string | undefined) => set({ userId }),
-      sessionId: undefined,
-      setSessionId: (sessionId: string | undefined) => set({ sessionId }),
-      isSessionValid: () => {
-        const state = get();
-        return state.sessionId !== undefined;
+  devtools(
+    persist<AuthState>(
+      (set, get) => ({
+        address: undefined,
+        setAddress: (address: Address | undefined) => set({ address }),
+        ens: undefined,
+        setEns: (ens: string | undefined) => set({ ens }),
+        userId: undefined,
+        setUserId: (userId: string | undefined) => set({ userId }),
+        sessionId: undefined,
+        setSessionId: (sessionId: string | undefined) => set({ sessionId }),
+        isSessionValid: () => {
+          const state = get();
+          return state.sessionId !== undefined;
+        },
+        wallet: undefined,
+        setWallet: (wallet: Address | undefined) => set({ wallet }),
+        logout: () =>
+          set({ address: undefined, wallet: undefined, userId: undefined }),
+      }),
+      {
+        name: "auth-state-v1", // name of the item in the storage (must be unique)
+        storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+        skipHydration: true,
       },
-      wallet: undefined,
-      setWallet: (wallet: Address | undefined) => set({ wallet }),
-      logout: () =>
-        set({ address: undefined, wallet: undefined, userId: undefined }),
-    }),
+    ),
     {
-      name: "auth-state-v1", // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
-      skipHydration: true,
+      anonymousActionType: "useAuth",
+      name: "AuthState",
+      serialize: { options: true },
     },
-  ),{name: "useAuth", serialize: { options: true }}),
+  ),
 );
