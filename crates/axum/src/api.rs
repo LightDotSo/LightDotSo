@@ -37,7 +37,13 @@ use tower_governor::{
 };
 use tower_http::cors::{Any, CorsLayer};
 use tower_sessions::SessionManagerLayer;
-use utoipa::OpenApi;
+use utoipa::{
+    openapi::{
+        security::{ApiKey, ApiKeyValue, SecurityScheme},
+        Components,
+    },
+    OpenApi,
+};
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_swagger_ui::SwaggerUi;
@@ -252,12 +258,18 @@ pub async fn start_api_server() -> Result<()> {
     let session_store = RedisStore::new(redis);
     let session_manager_layer = SessionManagerLayer::new(session_store.clone());
 
+    // Create the api doc
+    let mut open_api = ApiDoc::openapi();
+    let components = open_api.components.get_or_insert(Components::new());
+    components
+        .add_security_scheme("sid", SecurityScheme::ApiKey(ApiKey::Cookie(ApiKeyValue::new("id"))));
+
     // Create the app for the server
     let app = Router::new()
         .route("/", get("api.light.so"))
         .merge(api.clone())
-        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", ApiDoc::openapi()))
-        .merge(Redoc::with_url("/v1/redoc", ApiDoc::openapi()))
+        .merge(SwaggerUi::new("/v1/swagger-ui").url("/api-docs/openapi.json", open_api.clone()))
+        .merge(Redoc::with_url("/v1/redoc", open_api.clone()))
         // There is no need to create `RapiDoc::with_openapi` because the OpenApi is served
         // via SwaggerUi instead we only make rapidoc to point to the existing doc.
         .merge(RapiDoc::new("/v1/api-docs/openapi.json").path("/rapidoc"))

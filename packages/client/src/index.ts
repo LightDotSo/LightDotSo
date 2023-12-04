@@ -38,10 +38,12 @@ const devApiClient = createClient<paths>({
   headers: {
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_LIGHT_ADMIN_TOKEN}`,
   },
+  credentials: "include",
 });
 
 const publicApiClient = createClient<paths>({
   baseUrl: "https://api.light.so/v1",
+  credentials: "include",
 });
 
 const adminApiClient = createClient<paths>({
@@ -49,6 +51,7 @@ const adminApiClient = createClient<paths>({
   headers: {
     Authorization: `Bearer ${process.env.LIGHT_ADMIN_TOKEN}`,
   },
+  credentials: "include",
 });
 
 const rpcClient = (chainId: number, isPublic?: boolean) => {
