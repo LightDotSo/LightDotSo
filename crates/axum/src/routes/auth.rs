@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
+    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
     state::AppState,
@@ -91,10 +92,6 @@ pub(crate) fn router() -> Router<AppState> {
         .route("/auth/verify", post(v1_auth_verify_handler))
 }
 
-pub const NONCE_KEY: &str = "nonce";
-pub const EXPIRATION_TIME_KEY: &str = "expirationTime";
-pub const USER_ADDRESS_KEY: &str = "userAddress";
-
 pub fn unix_timestamp() -> Result<u64, eyre::Error> {
     Ok(SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs())
 }
@@ -115,7 +112,7 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
 async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
     let nonce = generate_nonce();
 
-    match &session.insert(NONCE_KEY, &nonce) {
+    match &session.insert(&NONCE_KEY, &nonce) {
         Ok(_) => {
             info!("Nonce inserted into session");
         }
@@ -134,7 +131,7 @@ async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
             ))));
         }
     };
-    match session.insert(EXPIRATION_TIME_KEY, ts) {
+    match session.insert(&EXPIRATION_TIME_KEY, ts) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -164,7 +161,7 @@ async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession>
     info!(?session);
 
     // The frontend must set a session expiry
-    let session_expiry = match session.get::<u64>(EXPIRATION_TIME_KEY) {
+    let session_expiry = match session.get::<u64>(&EXPIRATION_TIME_KEY) {
         Ok(Some(expiry)) => expiry,
         Ok(None) | Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -208,7 +205,7 @@ async fn v1_auth_verify_handler(
     })?;
 
     // The frontend must set a session expiry
-    let session_nonce = match session.get::<String>(NONCE_KEY) {
+    let session_nonce = match session.get::<String>(&NONCE_KEY) {
         Ok(Some(nonce)) => nonce,
         Ok(None) | Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(

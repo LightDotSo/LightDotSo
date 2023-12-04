@@ -6014,6 +6014,7 @@ dependencies = [
  "http-body",
  "hyper",
  "hyper-rustls 0.24.1",
+ "lazy_static",
  "lightdotso-common",
  "lightdotso-contracts",
  "lightdotso-db",
