@@ -73,6 +73,7 @@ export function AuthModal() {
         },
       );
     },
+    staleTime: Infinity,
   });
 
   const handleSignIn = useCallback(async () => {
@@ -110,10 +111,11 @@ export function AuthModal() {
   }, [address, chain, nonceData, signMessageAsync]);
 
   useEffect(() => {
-    if (address) {
+    // Refetch nonce data is not available and address is available
+    if (address && !nonceData) {
       refetch();
     }
-  }, [address, refetch]);
+  }, [address, nonceData, refetch]);
 
   if (isAuthModalVisible) {
     return (
