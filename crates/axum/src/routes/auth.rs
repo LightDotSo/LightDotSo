@@ -32,7 +32,8 @@ use std::{
     str::FromStr,
     time::{SystemTime, UNIX_EPOCH},
 };
-use tower_sessions::Session;
+use time::OffsetDateTime;
+use tower_sessions::{Expiry, Session};
 use utoipa::{IntoParams, ToSchema};
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -62,6 +63,12 @@ pub(crate) struct AuthNonce {
     nonce: String,
 }
 
+/// The session.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct AuthSession {
+    expiration: String,
+}
+
 // Implement From<String> for AuthNonce.
 impl From<String> for AuthNonce {
     fn from(nonce: String) -> Self {
@@ -81,6 +88,7 @@ pub struct AuthVerifyPostRequestParams {
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/auth/nonce", get(v1_auth_nonce_handler))
+        .route("/auth/session", get(v1_auth_session_handler))
         .route("/auth/verify", post(v1_auth_verify_handler))
 }
 
@@ -100,7 +108,7 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
         get,
         path = "/auth/nonce",
         responses(
-            (status = 200, description = "Auth nonce returned successfully"),
+            (status = 200, description = "Auth nonce returned successfully", body = AuthNonce),
             (status = 404, description = "Auth nonce not found", body = AuthError),
         )
     )]
@@ -135,8 +143,38 @@ async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
             ))));
         }
     }
+
+    // // Update the session expiry
+    // let expiry = Expiry::AtDateTime(OffsetDateTime::from_unix_timestamp(ts as i64).unwrap());
+    // session.set_expiry(Some(expiry));
+
     let auth_nonce: AuthNonce = nonce.into();
     Ok(Json::from(auth_nonce))
+}
+
+/// Get a session
+#[utoipa::path(
+        get,
+        path = "/auth/session",
+        responses(
+            (status = 200, description = "Auth session returned successfully", body = AuthSession),
+            (status = 404, description = "Auth session not found", body = AuthError),
+        )
+    )]
+async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession> {
+    info!(?session);
+
+    // The frontend must set a session expiry
+    let session_expiry = match session.get::<u64>(EXPIRATION_TIME_KEY) {
+        Ok(Some(expiry)) => expiry,
+        Ok(None) | Err(_) => {
+            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
+                "Failed to get expiration.".to_string(),
+            ))))
+        }
+    };
+
+    Ok(Json::from(AuthSession { expiration: session_expiry.to_string() }))
 }
 
 /// Verify a auth
@@ -175,7 +213,7 @@ async fn v1_auth_verify_handler(
         Ok(Some(nonce)) => nonce,
         Ok(None) | Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to set nonce.".to_string(),
+                "Failed to get nonce.".to_string(),
             ))))
         }
     };

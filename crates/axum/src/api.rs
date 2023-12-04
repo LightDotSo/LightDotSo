@@ -50,6 +50,7 @@ use utoipa_swagger_ui::SwaggerUi;
     components(
         schemas(auth::AuthError),
         schemas(auth::AuthNonce),
+        schemas(auth::AuthSession),
         schemas(auth::AuthVerifyPostRequestParams),
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
@@ -104,6 +105,7 @@ use utoipa_swagger_ui::SwaggerUi;
     ),
     paths(
         auth::v1_auth_nonce_handler,
+        auth::v1_auth_session_handler,
         auth::v1_auth_verify_handler,
         check::handler,
         health::handler,
@@ -250,13 +252,13 @@ pub async fn start_api_server() -> Result<()> {
             // License: Apache-2.0
             ServiceBuilder::new()
                 .layer(HandleErrorLayer::new(handle_error))
+                .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(
                     SessionManagerLayer::new(session_store)
                         .with_secure(false)
                         .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
                 )
                 // .layer(SetSensitiveRequestHeadersLayer::from_shared(Arc::clone(&headers)))
-                .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(OtelInResponseLayer)
                 .layer(OtelAxumLayer::default())
                 .layer(cors.clone())
