@@ -144,6 +144,7 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet::v1_wallet_list_handler,
         wallet::v1_wallet_post_handler,
         wallet::v1_wallet_tab_handler,
+        wallet::v1_wallet_update_handler,
         wallet_settings::v1_wallet_settings_get_handler,
         wallet_settings::v1_wallet_settings_post_handler,
     ),
