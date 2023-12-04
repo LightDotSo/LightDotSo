@@ -21,7 +21,7 @@ use crate::{
         portfolio, signature, support_request, token, token_price, transaction, user,
         user_operation, wallet, wallet_settings,
     },
-    sessions::RedisStore,
+    sessions::{authenticated, RedisStore},
     state::AppState,
 };
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
@@ -218,6 +218,16 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
+    let authenticated_governor_conf = Box::new(
+        GovernorConfigBuilder::default()
+            .per_second(30)
+            .burst_size(300)
+            .use_headers()
+            .key_extractor(SmartIpKeyExtractor)
+            .finish()
+            .unwrap(),
+    );
+
     // Create the API
     let api = Router::new()
         .merge(auth::router())
@@ -259,7 +269,7 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(HandleErrorLayer::new(handle_error))
                 .layer(GovernorLayer { config: Box::leak(governor_conf) })
                 .layer(
-                    SessionManagerLayer::new(session_store)
+                    SessionManagerLayer::new(session_store.clone())
                         .with_secure(false)
                         .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
                 )
@@ -268,6 +278,24 @@ pub async fn start_api_server() -> Result<()> {
                 .layer(OtelAxumLayer::default())
                 .layer(cors.clone())
                 .into_inner(),
+        )
+        .nest(
+            "/authenticated/v1",
+            api.clone().layer(
+                ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
+                    .layer(
+                        SessionManagerLayer::new(session_store)
+                            .with_secure(false)
+                            .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
+                    )
+                    .layer(middleware::from_fn(authenticated))
+                    .layer(OtelInResponseLayer)
+                    .layer(OtelAxumLayer::default())
+                    .layer(cors.clone())
+                    .into_inner(),
+            ),
         )
         .nest(
             "/admin/v1",
