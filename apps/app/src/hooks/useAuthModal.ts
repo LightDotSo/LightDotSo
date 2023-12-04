@@ -31,7 +31,7 @@ export const useAuthModal = () => {
   const openAuthModal = useCallback(() => {
     if (!address) {
       openProfile();
-    } else if (!isSessionValid) {
+    } else if (!isSessionValid()) {
       showAuthModal();
     }
   }, [address, isSessionValid, openProfile, showAuthModal]);
