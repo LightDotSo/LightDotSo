@@ -70,7 +70,6 @@
     "prometheus-exporter",
   ], default-features = false }
   axum = { version = "0.6.16", features = ["headers", "macros", "ws"] }
-  axum-sessions = "0.6.1"
   backon = "0.4.1"
   base64 = "0.21.3"
   byteorder = "1.4.3"
@@ -189,6 +188,7 @@
     "limit",
     "sensitive-headers",
   ] }
+  tower-sessions = "0.7.0"
   tracing = "0.1.37"
   tracing-test = "0.2.4"
   uniffi = "0.24.2"

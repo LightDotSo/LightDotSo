@@ -33,6 +33,7 @@ use std::{
     str::FromStr,
     time::{SystemTime, UNIX_EPOCH},
 };
+use tower_sessions::Session;
 use utoipa::{IntoParams, ToSchema};
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
@@ -105,7 +106,7 @@ pub fn unix_timestamp() -> Result<u64, eyre::Error> {
         )
     )]
 #[autometrics]
-async fn v1_auth_nonce_handler(mut session: WritableSession) -> AppJsonResult<AuthNonce> {
+async fn v1_auth_nonce_handler(mut session: Session) -> AppJsonResult<AuthNonce> {
     let nonce = generate_nonce();
 
     match &session.insert(NONCE_KEY, &nonce) {
@@ -155,7 +156,7 @@ async fn v1_auth_nonce_handler(mut session: WritableSession) -> AppJsonResult<Au
         )
     )]
 async fn v1_auth_verify_handler(
-    mut session: WritableSession,
+    mut session: Session,
     Json(msg): Json<AuthVerifyPostRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
     info!(?session);

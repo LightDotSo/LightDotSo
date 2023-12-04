@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub use redis;
+pub use redis_pool;
 
 pub mod lock;
 mod namespace;

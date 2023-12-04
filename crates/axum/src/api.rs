@@ -23,6 +23,7 @@ use crate::{
     },
     state::AppState,
 };
+use async_redis_session::RedisSessionStore;
 use axum::{error_handling::HandleErrorLayer, middleware, routing::get, Router};
 use axum_sessions::{async_session::MemoryStore, SessionLayer};
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
@@ -35,6 +36,7 @@ use tower_governor::{
     governor::GovernorConfigBuilder, key_extractor::SmartIpKeyExtractor, GovernorLayer,
 };
 use tower_http::cors::{Any, CorsLayer};
+use tower_sessions::{fred::prelude::*, Expiry, RedisStore, Session, SessionManagerLayer};
 use utoipa::OpenApi;
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
