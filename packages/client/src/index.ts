@@ -302,6 +302,21 @@ export const createUserOperation = async ({
   });
 };
 
+export const getNonce = async (params: {}, isPublic?: boolean) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/auth/nonce", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getPaymasterOperation = async (
   {
     params,

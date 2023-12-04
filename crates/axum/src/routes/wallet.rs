@@ -104,7 +104,7 @@ pub struct WalletPostRequestParams {
 pub struct WalletPutRequestParams {
     /// The name of the wallet.
     #[schema(example = "My Wallet", default = "My Wallet")]
-    pub name: String,
+    pub name: Option<String>,
 }
 
 /// Wallet owner.
@@ -613,8 +613,6 @@ async fn v1_wallet_update_handler(
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 
-    let name = params.name;
-
     // Get the wallets from the database.
     let wallet = client
         .clone()
@@ -637,27 +635,29 @@ async fn v1_wallet_update_handler(
         .unwrap()
         .iter()
         .find(|configuration| {
-            configuration
-                .owners
-                .as_ref()
-                .unwrap()
-                .iter()
-                .find(|owner| {
-                    owner.clone().user_id.as_ref().unwrap() ==
-                        &session.get::<String>(&USER_ID_KEY).unwrap().unwrap().to_lowercase()
-                })
-                .is_some()
+            configuration.owners.as_ref().unwrap().iter().any(|owner| {
+                owner.clone().user_id.as_ref().unwrap() ==
+                    &session.get::<String>(&USER_ID_KEY).unwrap().unwrap().to_lowercase()
+            })
         })
         .ok_or(RouteError::WalletError(WalletError::BadRequest(
             "User is not an owner of the wallet".to_string(),
         )))?;
+
+    // Construct the params for the update.
+    let name = params.name;
+    info!(?name);
+    let mut params = vec![];
+    if name.is_some() {
+        params.push(wallet::name::set(name.unwrap()));
+    }
 
     // Update the wallet name.
     let wallet = client
         .client
         .unwrap()
         .wallet()
-        .update(wallet::address::equals(checksum_address), vec![wallet::name::set(name)])
+        .update(wallet::address::equals(checksum_address), params)
         .exec()
         .await?;
 

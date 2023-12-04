@@ -286,7 +286,7 @@ pub async fn start_api_server() -> Result<()> {
                     .layer(HandleErrorLayer::new(handle_error))
                     .layer(GovernorLayer { config: Box::leak(authenticated_governor_conf) })
                     .layer(
-                        SessionManagerLayer::new(session_store)
+                        SessionManagerLayer::new(session_store.clone())
                             .with_secure(false)
                             .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
                     )
@@ -301,6 +301,12 @@ pub async fn start_api_server() -> Result<()> {
             "/admin/v1",
             api.clone().layer(
                 ServiceBuilder::new()
+                    .layer(HandleErrorLayer::new(handle_error))
+                    .layer(
+                        SessionManagerLayer::new(session_store.clone())
+                            .with_secure(false)
+                            .with_expiry(Expiry::OnInactivity(time::Duration::days(1))),
+                    )
                     .layer(middleware::from_fn(admin))
                     .layer(OtelInResponseLayer)
                     .layer(OtelAxumLayer::default())
