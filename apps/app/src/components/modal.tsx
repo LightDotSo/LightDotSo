@@ -15,7 +15,12 @@
 
 "use client";
 
-import { Dialog, DialogContent } from "@lightdotso/ui";
+import {
+  Dialog,
+  DialogContent,
+  DialogPortal,
+  DialogOverlay,
+} from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import type { FC } from "react";
@@ -40,9 +45,12 @@ export const Modal: FC<ModalProps> = ({ children }) => {
 
   return (
     <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
-      <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
-        {children}
-      </DialogContent>
+      <DialogPortal>
+        <DialogOverlay />
+        <DialogContent className="w-full overflow-scroll sm:max-h-[80%] sm:max-w-3xl">
+          {children}
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 };
