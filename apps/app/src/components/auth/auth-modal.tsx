@@ -31,7 +31,7 @@ import {
 } from "@lightdotso/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { SiweMessage } from "siwe";
 import { useSignMessage, useNetwork } from "wagmi";
 import type { NonceData } from "@/data";
@@ -50,9 +50,32 @@ export function AuthModal() {
   const { chain } = useNetwork();
   const { isAuthModalVisible, hideAuthModal } = useModals();
 
-  const handleSignIn = useCallback(async () => {
-    successToast(nonceData);
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
 
+  const { data: nonceData, refetch } = useSuspenseQuery<NonceData | null>({
+    queryKey: queries.nonce.get(address).queryKey,
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getNonce({});
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return null;
+        },
+      );
+    },
+  });
+
+  const handleSignIn = useCallback(async () => {
     if (!address || !nonceData || !chain) {
       return;
     }
@@ -84,32 +107,13 @@ export function AuthModal() {
         },
       );
     });
-  }, []);
+  }, [address, chain, nonceData, signMessageAsync]);
 
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const { data: nonceData } = useSuspenseQuery<NonceData | null>({
-    queryKey: queries.nonce.get(address).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getNonce({});
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return null;
-        },
-      );
-    },
-  });
+  useEffect(() => {
+    if (address) {
+      refetch();
+    }
+  }, [address, refetch]);
 
   if (isAuthModalVisible) {
     return (
