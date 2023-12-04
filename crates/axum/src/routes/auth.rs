@@ -238,7 +238,7 @@ async fn v1_auth_verify_handler(
         }
     };
     let expiry = now + 604800;
-    match session.insert(EXPIRATION_TIME_KEY, expiry) {
+    match session.insert(&EXPIRATION_TIME_KEY, expiry) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
@@ -246,7 +246,7 @@ async fn v1_auth_verify_handler(
             ))))
         }
     }
-    match session.insert(USER_ADDRESS_KEY, Address::from(message.address)) {
+    match session.insert(&USER_ADDRESS_KEY, Address::from(message.address)) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
