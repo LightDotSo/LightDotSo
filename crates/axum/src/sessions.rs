@@ -177,6 +177,7 @@ pub(crate) fn update_session_expiry(session: &Session) -> Result<(), AppError> {
     // Add 3 weeks to the expiry
     let ts = ts + 1814400;
 
+    // Insert the new expiration time into the session
     match session.insert(&EXPIRATION_TIME_KEY, ts) {
         Ok(_) => {}
         Err(_) => {
