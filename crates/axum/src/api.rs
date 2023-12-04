@@ -171,11 +171,8 @@ use utoipa_swagger_ui::SwaggerUi;
 #[openapi(
     servers(
         (url = "https://api.light.so/v1", description = "Official API"),
-        (url = "https://api.light.so/admin/v1", description = "Internal Admin API",
-            variables(
-                ("username" = (default = "demo", description = "Default username for API")),
-            )
-        ),
+        (url = "https://api.light.so/authenticated/v1", description = "Authenticated API"),
+        (url = "https://api.light.so/admin/v1", description = "Internal Admin API"),
         (url = "http://localhost:3000/v1", description = "Local server"),
     )
 )]
@@ -218,6 +215,7 @@ pub async fn start_api_server() -> Result<()> {
             .unwrap(),
     );
 
+    // Rate limit based on IP address but only for authenticated users
     let authenticated_governor_conf = Box::new(
         GovernorConfigBuilder::default()
             .per_second(30)
@@ -249,6 +247,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(wallet::router())
         .merge(wallet_settings::router());
 
+    // Create the session store
     let session_store = RedisStore::new(redis);
 
     // Create the app for the server
