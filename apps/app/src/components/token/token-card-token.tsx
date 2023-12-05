@@ -13,42 +13,50 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
+"use client";
+
 import type { FC } from "react";
+import { TokenImage } from "@/components/token/token-image";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokensWrapperProps = {
-  children: React.ReactNode;
+type TokenCardTokenProps = {
+  address: string;
+  chain_id: number;
+  amount: number;
+  decimals: number;
+  name?: string | null;
+  symbol: string;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokensWrapper: FC<TokensWrapperProps> = ({ children }) => {
+export const TokenCardToken: FC<TokenCardTokenProps> = ({
+  address,
+  chain_id,
+  amount,
+  name,
+  symbol,
+  decimals,
+}) => {
   return (
-    <div className="">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[35%]">Name</TableHead>
-            <TableHead className="w-[30%]">Balance</TableHead>
-            <TableHead>Last 7 Days</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>{children}</TableBody>
-      </Table>
+    <div className="flex items-center space-x-1.5">
+      <TokenImage
+        address={address}
+        chain_id={chain_id}
+        name={name}
+        symbol={symbol}
+      />{" "}
+      <div className="flex flex-col space-y-1.5">
+        <span className="text-sm text-text/90">{name ?? symbol}</span>
+        <span className="text-sm text-text-weak">
+          {(amount / 10 ** decimals).toFixed(3)} {symbol}
+        </span>
+      </div>
     </div>
   );
 };
