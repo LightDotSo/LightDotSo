@@ -17,7 +17,7 @@
 // Main
 // -----------------------------------------------------------------------------
 
-enum Category {
+export enum Category {
   Overview = "Overview",
   Transactions = "Transactions",
   Profile = "Profile",
@@ -32,23 +32,23 @@ enum Category {
 // Sub
 // -----------------------------------------------------------------------------
 
-enum OverviewSubCategory {
+export enum OverviewSubCategory {
   All = "All",
   Tokens = "Tokens",
   NFTs = "NFTs",
   Transactions = "Transactions",
 }
 
-enum SettingsSubCategory {
+export enum SettingsSubCategory {
   Account = "Account",
   Billing = "Billing",
   Deployment = "Deployment",
   WalletSettings = "Wallet Settings",
 }
 
-type SubCategory = string;
+export type SubCategory = string;
 
-type CategoryObject = {
+export type CategoryObject = {
   title: string;
   description: string;
   note?: string;

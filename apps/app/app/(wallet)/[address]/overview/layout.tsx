@@ -16,36 +16,10 @@
 import type { Metadata } from "next";
 import type { Address } from "viem";
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/invoke-portfolio-button";
-import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner";
+import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
+import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const/titles";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const overviewNavItems = [
-  {
-    title: "All",
-    href: "/overview",
-    id: "overview",
-  },
-  {
-    title: "Tokens",
-    href: "/overview/tokens",
-    id: "tokens",
-  },
-  {
-    title: "NFT",
-    href: "/overview/nfts",
-    id: "nfts",
-  },
-  {
-    title: "Transactions",
-    href: "/overview/transactions",
-    id: "transactions",
-  },
-];
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -78,15 +52,19 @@ export default function OverviewLayout({
   return (
     <>
       <div className="flex w-full flex-col space-y-8 border-b border-b-border sm:flex-row sm:space-x-12 sm:space-y-0">
-        <div className="max-w-7xl flex-1 space-y-8 px-2 py-8 sm:mx-auto md:px-4 md:py-12 lg:px-0">
+        <div className="max-w-7xl flex-1 space-y-8 px-2 py-6 sm:mx-auto md:px-4 lg:px-0">
           <WalletOverviewBanner address={params.address as Address} />
         </div>
       </div>
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1 space-y-8">
-          <LinkButtonGroup items={overviewNavItems}>
+      <div className="flex w-full flex-row border-b border-border py-4">
+        <div className="mx-auto max-w-7xl flex-1">
+          <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
             <InvokePortfolioButton address={params.address as Address} />
           </LinkButtonGroup>
+        </div>
+      </div>
+      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="mx-auto max-w-7xl flex-1 space-y-8 py-6">
           {children}
         </div>
       </div>

@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TableCell, TableRow } from "@lightdotso/ui";
+import { Number, TableCell, TableRow } from "@lightdotso/ui";
 import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { TokenCardActions } from "@/components/token/token-card-actions";
+import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 
 // -----------------------------------------------------------------------------
@@ -75,7 +76,14 @@ export const TokenCard: FC<TokenCardProps> = ({
         </span>{" "}
         {(amount / 10 ** decimals).toFixed(3)} {symbol}
       </TableCell>
-      <TableCell>${balance_usd.toFixed(2)}</TableCell>
+      <TableCell>
+        <Number
+          value={balance_usd}
+          prefix="$"
+          variant="neutral"
+          size="balance"
+        />
+      </TableCell>
       <TableCell>
         <Suspense fallback={null}>
           <TokenCardSparkline
@@ -84,11 +92,20 @@ export const TokenCard: FC<TokenCardProps> = ({
           />
         </Suspense>
       </TableCell>
-      <TableCell className="text-right">
+      <TableCell>
+        <Suspense fallback={null}>
+          <TokenCardPrice
+            address={tokenAddress as Address}
+            chain_id={chain_id}
+          />
+        </Suspense>
+      </TableCell>
+      <TableCell>
         <TokenCardActions
           address={address as Address}
           tokenAddress={tokenAddress}
           tokenDecimals={decimals}
+          tokenSymbol={symbol}
           chainId={chain_id}
         />
       </TableCell>

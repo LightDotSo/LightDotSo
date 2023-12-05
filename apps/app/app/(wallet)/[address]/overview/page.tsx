@@ -16,10 +16,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address } from "viem";
-// import { PortfolioChart } from "@/app/(wallet)/[address]/overview/(components)/portfolio-chart";
-import { TokensList } from "@/components/token/tokens-list";
+import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { handler as pageHandler } from "@/handlers/paths/[address]/overview/handler";
 import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/preloader";
@@ -83,12 +81,7 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      {/* <Suspense>
-        <PortfolioChart address={params.address as Address} />
-      </Suspense> */}
-      <Suspense>
-        <TokensList address={params.address as Address} />
-      </Suspense>
+      <OverviewList address={params.address as Address} />
     </HydrationBoundary>
   );
 }

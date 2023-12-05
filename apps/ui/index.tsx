@@ -153,6 +153,7 @@ export {
   NavigationMenuIndicator,
   NavigationMenuViewport,
 } from "./src/components/ui/navigation-menu";
+export { Number } from "./src/components/ui/number";
 export {
   Popover,
   PopoverTrigger,

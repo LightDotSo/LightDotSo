@@ -16,12 +16,12 @@
 "use client";
 
 import { getPortfolio } from "@lightdotso/client";
+import { Number } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { AreaChart } from "@tremor/react";
-import { useMemo } from "react";
+import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
 import type { PortfolioData } from "@/data";
 import { queries } from "@/queries";
 
@@ -29,7 +29,7 @@ import { queries } from "@/queries";
 // Props
 // -----------------------------------------------------------------------------
 
-interface PortfolioChartProps {
+interface WalletOverviewBannerSparklineProps {
   address: Address;
 }
 
@@ -37,7 +37,9 @@ interface PortfolioChartProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
+export const WalletOverviewBannerSparkline: FC<
+  WalletOverviewBannerSparklineProps
+> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -75,66 +77,55 @@ export const PortfolioChart: FC<PortfolioChartProps> = ({ address }) => {
     },
   });
 
-  const balances = useMemo(() => {
-    if (!portfolio || !portfolio.balances) {
-      return [];
-    }
-
-    // Format the date into a human readable format for each date in balances
-    const portfolioBalances = portfolio.balances.map(balance => {
-      return {
-        ...balance,
-        date: new Date(balance.date).toLocaleDateString(),
-      };
-    });
-    // Reverse the balances so that the chart starts from the beginning
-    return [...portfolioBalances].reverse();
-  }, [portfolio]);
-
   if (!portfolio) {
     return null;
   }
 
-  const valueFormatter = function (number: number) {
-    return "$ " + new Intl.NumberFormat("us").format(number).toString();
-  };
-
   return (
-    <>
-      <div className="hidden w-full rounded-md border border-border bg-background-weak p-8 py-16 sm:mt-8 sm:block sm:px-12">
-        <>
-          <WalletOverviewBannerSparkline address={address} />
-          <AreaChart
-            showAnimation
-            className="mt-12 h-72 w-full"
-            data={balances}
-            index="date"
-            categories={["balance"]}
-            colors={[
-              portfolio.balance_change_24h && portfolio.balance_change_24h > 0
-                ? "emerald"
-                : "red",
-            ]}
-            showLegend={false}
-            valueFormatter={valueFormatter}
-          />
-        </>
+    <div className="grid w-full grid-cols-2">
+      <div className="col-span-1 flex flex-col justify-between">
+        <span className="text-text-weak">Net Worth</span>
+        {portfolio.balances && (
+          <Number value={portfolio.balance ?? 0.0} size="xl" prefix="$" />
+        )}
       </div>
-      <div className="mt-8 sm:hidden">
-        <AreaChart
+      <div className="col-span-1 flex flex-col justify-between">
+        <span
+          className={cn(
+            "px-1.5 font-medium rounded",
+            portfolio.balance_change_24h && portfolio.balance_change_24h > 0
+              ? "text-emerald-500"
+              : "text-red-500",
+          )}
+        >
+          {portfolio.balance_change_24h < 0 ? "-" : "+"}
+          {portfolio.balance_change_24h_percentage &&
+          portfolio.balance_change_24h_percentage !== 0
+            ? Math.abs(portfolio.balance_change_24h_percentage).toFixed(2)
+            : "0.00"}
+          %&nbsp;
+          <span className="text-xs">
+            {portfolio.balance_change_24h && portfolio.balance_change_24h
+              ? `(${portfolio.balance_change_24h < 0 ? "-" : "+"}$${Math.abs(
+                  portfolio.balance_change_24h,
+                ).toFixed(3)})`
+              : ""}
+          </span>
+        </span>
+        <SparkAreaChart
+          // @ts-expect-error
+          showAnimation
+          data={[...portfolio.balances].reverse()}
           categories={["balance"]}
-          data={balances}
+          index="date"
           colors={[
             portfolio.balance_change_24h && portfolio.balance_change_24h > 0
               ? "emerald"
               : "red",
           ]}
-          index="date"
-          startEndOnly={true}
-          showGradient={false}
-          showYAxis={false}
+          className="h-8 w-full"
         />
       </div>
-    </>
+    </div>
   );
 };

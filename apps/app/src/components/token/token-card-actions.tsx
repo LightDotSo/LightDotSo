@@ -15,7 +15,13 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "@lightdotso/ui";
 import { Send, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
@@ -30,6 +36,7 @@ type TokenCardActionsProps = {
   chainId: number;
   tokenAddress: string;
   tokenDecimals: number;
+  tokenSymbol: string;
 };
 
 // -----------------------------------------------------------------------------
@@ -41,21 +48,42 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
   chainId,
   tokenAddress,
   tokenDecimals,
+  tokenSymbol,
 }) => {
   return (
-    <div className="flex items-center justify-end gap-x-4">
-      <Button size="sm" className="rounded-full p-3">
-        <RefreshCcw className="h-3 w-3" />
-        <span className="sr-only">Open share modal</span>
-      </Button>
-      <Button asChild size="sm" className="rounded-full p-3">
-        <Link
-          href={`/${address}/send?transfers=0:_:_:${chainId}:erc20:${tokenAddress}|${tokenDecimals}|0`}
-        >
-          <Send className="h-3 w-3" />
-          <span className="sr-only">Open send modal</span>
-        </Link>
-      </Button>
-    </div>
+    <TooltipProvider>
+      <div className="flex items-center gap-x-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>
+              <Button disabled size="sm" variant="strong">
+                <RefreshCcw className="h-3 w-3" />
+                <span className="sr-only">Open swap modal</span>
+              </Button>
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Swap {tokenSymbol}</p>
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>
+              <Button asChild size="sm" variant="strong">
+                <Link
+                  href={`/${address}/send?transfers=0:_:_:${chainId}:erc20:${tokenAddress}|${tokenDecimals}|0`}
+                >
+                  <Send className="h-3 w-3" />
+                  <span className="sr-only">Open send modal</span>
+                </Link>
+              </Button>
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Send {tokenSymbol}</p>
+          </TooltipContent>
+        </Tooltip>
+      </div>
+    </TooltipProvider>
   );
 };

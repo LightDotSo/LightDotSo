@@ -36,14 +36,15 @@ type TokensWrapperProps = {
 
 export const TokensWrapper: FC<TokensWrapperProps> = ({ children }) => {
   return (
-    <div className="rounded-md border border-border bg-background-weak">
+    <div className="">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Balance</TableHead>
-            <TableHead>Chart</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="w-[35%]">Token</TableHead>
+            <TableHead className="w-[30%]">Balance</TableHead>
+            <TableHead>Last 7D</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>{children}</TableBody>

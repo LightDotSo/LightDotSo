@@ -28,10 +28,6 @@ const sidebarNavItems = [
     href: "/settings",
   },
   {
-    title: TITLES.Settings.subcategories["Account"].title,
-    href: "/settings/account",
-  },
-  {
     title: TITLES.Settings.subcategories["Billing"].title,
     href: "/settings/billing",
   },

@@ -16,8 +16,8 @@
 "use client";
 
 import { getTokenPrice } from "@lightdotso/client";
+import { cn } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import type { TokenPriceData } from "@/data";
@@ -27,7 +27,7 @@ import { queries } from "@/queries";
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardSparklineProps = {
+type TokenCardPriceProps = {
   address: Address;
   chain_id: number;
 };
@@ -36,7 +36,7 @@ type TokenCardSparklineProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
+export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   address,
   chain_id,
 }) => {
@@ -83,18 +83,25 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   }
 
   return (
-    <SparkAreaChart
-      // @ts-expect-error
-      showAnimation
-      data={[...token_price.prices].reverse()}
-      categories={["price"]}
-      index="date"
-      colors={[
-        token_price.price_change_24h && token_price.price_change_24h > 0
-          ? "emerald"
-          : "red",
-      ]}
-      className="h-12 w-24"
-    />
+    <div className="flex flex-col space-y-1.5">
+      <span className="text-sm text-text/90">
+        ${token_price.price.toFixed(2)}
+      </span>
+      <span
+        className={cn(
+          "text-text/90",
+          token_price.price_change_24h && token_price.price_change_24h > 0
+            ? "text-emerald-500"
+            : "text-red-500",
+        )}
+      >
+        {token_price.price_change_24h < 0 ? "-" : "+"}
+        {token_price.price_change_24h_percentage &&
+        token_price.price_change_24h_percentage !== 0
+          ? Math.abs(token_price.price_change_24h_percentage).toFixed(2)
+          : "0.00"}
+        %&nbsp;
+      </span>
+    </div>
   );
 };

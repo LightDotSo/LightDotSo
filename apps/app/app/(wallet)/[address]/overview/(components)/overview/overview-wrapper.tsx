@@ -12,31 +12,20 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-import type { Metadata } from "next";
-import { TITLES } from "@/const/titles";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Settings.subcategories.Account.title,
-  description: TITLES.Settings.subcategories.Account.description,
-};
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface SettingsAccountLayoutProps {
+type OverviewWrapperProps = {
   children: React.ReactNode;
-}
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export default function Layout({ children }: SettingsAccountLayoutProps) {
-  return <>{children}</>;
-}
+export const OverviewWrapper: FC<OverviewWrapperProps> = ({ children }) => {
+  return <div className="h-full">{children}</div>;
+};

@@ -15,7 +15,13 @@
 
 "use client";
 
-import { Button } from "@lightdotso/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -38,15 +44,25 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
   address,
 }) => {
   return (
-    <Button
-      variant="outline"
-      className="py-5"
-      onClick={() => {
-        invokePortfolioAction(address as Address);
-        infoToast("Refreshed");
-      }}
-    >
-      <RefreshCcw className="h-4 w-4 text-text-weak" />
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span>
+            <Button
+              variant="strong"
+              onClick={() => {
+                invokePortfolioAction(address as Address);
+                infoToast("Refreshing...");
+              }}
+            >
+              <RefreshCcw className="h-4 w-4" />
+            </Button>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Refresh</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
