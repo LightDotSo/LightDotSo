@@ -23,7 +23,7 @@ import { useModals } from "@/stores/useModals";
 // -----------------------------------------------------------------------------
 
 export const useAuthModal = () => {
-  const { isSessionValid, address } = useAuth();
+  const { address, sessionId } = useAuth();
   const { openProfile } = useModal();
 
   const { showAuthModal } = useModals();
@@ -31,14 +31,14 @@ export const useAuthModal = () => {
   const openAuthModal = useCallback(() => {
     if (!address) {
       openProfile();
-    } else if (!isSessionValid()) {
+    } else if (typeof sessionId !== "string") {
       showAuthModal();
     }
-  }, [address, isSessionValid, openProfile, showAuthModal]);
+  }, [address, openProfile, sessionId, showAuthModal]);
 
   const isAuthValid = useMemo(() => {
-    return isSessionValid() && !!address;
-  }, [isSessionValid, address]);
+    return typeof sessionId === "string" && !!address;
+  }, [sessionId, address]);
 
   return { isAuthValid, openAuthModal };
 };

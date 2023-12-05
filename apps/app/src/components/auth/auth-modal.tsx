@@ -26,6 +26,7 @@ import {
   DialogOverlay,
   DialogTitle,
 } from "@lightdotso/ui";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import { useSignMessage, useNetwork } from "wagmi";
@@ -42,6 +43,7 @@ export function AuthModal() {
   const { signMessageAsync } = useSignMessage();
   const { chain } = useNetwork();
   const { isAuthModalVisible, hideAuthModal } = useModals();
+  const router = useRouter();
 
   // ---------------------------------------------------------------------------
   // Hooks
@@ -77,6 +79,7 @@ export function AuthModal() {
             res.match(
               _ => {
                 successToast("Successfully signed in!");
+                router.back();
               },
               _ => {
                 errorToast("Failed to sign in!");
@@ -96,7 +99,7 @@ export function AuthModal() {
         }
       },
     );
-  }, [address, chain, sessionId, signMessageAsync]);
+  }, [address, chain, router, sessionId, signMessageAsync]);
 
   if (isAuthModalVisible) {
     return (
