@@ -34,7 +34,7 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import type { FC } from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
@@ -195,9 +195,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
-  const defaultValues: Partial<WalletNameFormValues> = {
-    name: wallet?.name ?? "",
-  };
+  const defaultValues: Partial<WalletNameFormValues> = useMemo(() => {
+    return {
+      name: wallet?.name,
+    };
+  }, [wallet]);
 
   const form = useForm<WalletNameFormValues>({
     resolver: zodResolver(walletNameFormSchema),
@@ -228,7 +230,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         type="submit"
         form="walletNameForm"
         variant={isPending ? "loading" : "default"}
-        disabled={typeof form.getFieldState("name").error !== "undefined"}
+        disabled={
+          !isFormChanged ||
+          typeof form.getFieldState("name").error !== "undefined"
+        }
       >
         Update name
       </Button>
