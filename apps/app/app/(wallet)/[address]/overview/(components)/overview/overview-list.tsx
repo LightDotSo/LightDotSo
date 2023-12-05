@@ -20,9 +20,9 @@ import { useState, type FC } from "react";
 import type { Address } from "viem";
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
 import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-wrapper";
+import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { TokensList } from "@/components/token/tokens-list";
 import { OverviewSubCategory, TITLES } from "@/const/titles";
-import { OVERVIEW_NAV_ITEMS } from "../../(const)/nav-items";
 
 // -----------------------------------------------------------------------------
 // Const
