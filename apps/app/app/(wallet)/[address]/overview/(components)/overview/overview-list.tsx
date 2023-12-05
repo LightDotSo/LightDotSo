@@ -22,6 +22,7 @@ import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/ove
 import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-wrapper";
 import { TokensList } from "@/components/token/tokens-list";
 import { OverviewSubCategory, TITLES } from "@/const/titles";
+import { OVERVIEW_NAV_ITEMS } from "../../(const)/nav-items";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -71,6 +72,10 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
           {items.map(item => (
             <OverviewCard
               key={item}
+              href={`/${address}${
+                OVERVIEW_NAV_ITEMS.find(nav => nav.category === item)?.href ??
+                ""
+              }`}
               value={item}
               title={TITLES.Overview.subcategories[item]?.title}
             >

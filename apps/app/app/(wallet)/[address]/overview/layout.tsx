@@ -17,35 +17,9 @@ import type { Metadata } from "next";
 import type { Address } from "viem";
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/invoke-portfolio-button";
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
+import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const/titles";
-
-// -----------------------------------------------------------------------------
-// Const
-// -----------------------------------------------------------------------------
-
-const overviewNavItems = [
-  {
-    title: "All",
-    href: "/overview",
-    id: "overview",
-  },
-  {
-    title: "Tokens",
-    href: "/overview/tokens",
-    id: "tokens",
-  },
-  {
-    title: "NFT",
-    href: "/overview/nfts",
-    id: "nfts",
-  },
-  {
-    title: "Transactions",
-    href: "/overview/transactions",
-    id: "transactions",
-  },
-];
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -84,7 +58,7 @@ export default function OverviewLayout({
       </div>
       <div className="flex w-full flex-row border-b border-border py-4">
         <div className="mx-auto max-w-7xl flex-1">
-          <LinkButtonGroup items={overviewNavItems}>
+          <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
             <InvokePortfolioButton address={params.address as Address} />
           </LinkButtonGroup>
         </div>

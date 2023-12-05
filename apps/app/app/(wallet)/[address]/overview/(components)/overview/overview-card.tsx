@@ -13,8 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { Button } from "@lightdotso/ui";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { useMotionValue, Reorder, useDragControls } from "framer-motion";
+import { ChevronRightIcon } from "lucide-react";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { useRaisedShadow } from "@/app/(wallet)/[address]/overview/(hooks)/useRaisedShadow";
 
@@ -23,6 +26,7 @@ import { useRaisedShadow } from "@/app/(wallet)/[address]/overview/(hooks)/useRa
 // -----------------------------------------------------------------------------
 
 interface OverviewCardProps {
+  href: string;
   value: string;
   title: string;
   children: ReactNode;
@@ -32,7 +36,12 @@ interface OverviewCardProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OverviewCard = ({ children, title, value }: OverviewCardProps) => {
+export const OverviewCard = ({
+  href,
+  children,
+  title,
+  value,
+}: OverviewCardProps) => {
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
@@ -46,13 +55,23 @@ export const OverviewCard = ({ children, title, value }: OverviewCardProps) => {
       dragListener={false}
       dragControls={dragControls}
     >
-      <div className="flex w-full items-center">
-        <DragHandleDots2Icon
-          className="h-5 w-5 cursor-move text-text-icon-weaker"
-          onPointerDown={event => dragControls.start(event)}
-        />
-        <div className="ml-2 text-lg font-semibold text-text-primary">
-          {title}
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center">
+          <DragHandleDots2Icon
+            className="h-5 w-5 cursor-move text-text-icon-weaker"
+            onPointerDown={event => dragControls.start(event)}
+          />
+          <div className="ml-2 text-lg font-semibold text-text-primary">
+            {title}
+          </div>
+        </div>
+        <div>
+          <Button asChild size="sm" variant="outline">
+            <Link href={href}>
+              See All
+              <ChevronRightIcon className="ml-2 h-3 w-3" />
+            </Link>
+          </Button>
         </div>
       </div>
       {children}
