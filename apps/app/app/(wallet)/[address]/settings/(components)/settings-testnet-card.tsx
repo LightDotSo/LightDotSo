@@ -70,6 +70,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
   const [isFormChanged, setIsFormChanged] = useState(false);
+  const [key, setKey] = useState(Math.random());
 
   // ---------------------------------------------------------------------------
   // Query
@@ -113,7 +114,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: WalletSettingsData) => {
       const res = await updateWalletSettings({
         params: {
@@ -194,7 +195,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     return {
       enabled: wallet?.is_enabled_testnet ?? false,
     };
-  }, [wallet]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet, key]);
 
   const form = useForm<WalletTestnetFormValues>({
     resolver: zodResolver(walletTestnetFormSchema),
@@ -223,6 +225,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     );
   }, [defaultValues, formValues, delayedIsSuccess]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      setKey(Math.random());
+    }
+  }, [isSuccess]);
+
   // ---------------------------------------------------------------------------
   // Button
   // ---------------------------------------------------------------------------
@@ -239,7 +247,11 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           typeof form.getFieldState("enabled").error !== "undefined"
         }
       >
-        {delayedIsSuccess ? "Success!" : isPending ? "Saving..." : "Save"}
+        {!isError && delayedIsSuccess
+          ? "Success!"
+          : isPending
+            ? "Saving..."
+            : "Save"}
       </Button>
     );
   };

@@ -78,6 +78,7 @@ type SettingsNameCardProps = {
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   const { isAuthValid, openAuthModal } = useAuthModal();
   const [isFormChanged, setIsFormChanged] = useState(false);
+  const [key, setKey] = useState(Math.random());
 
   // ---------------------------------------------------------------------------
   // Query
@@ -120,7 +121,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: Partial<WalletData>) => {
       const res = await updateWallet({
         params: {
@@ -141,7 +142,13 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         err => {
           if (err instanceof Error) {
             errorToast(err.message);
+            return;
           }
+          if (typeof err === "string") {
+            errorToast(err);
+            return;
+          }
+          console.error(err);
         },
       );
     },
@@ -200,7 +207,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     return {
       name: wallet?.name,
     };
-  }, [wallet]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet, key]);
 
   const form = useForm<WalletNameFormValues>({
     resolver: zodResolver(walletNameFormSchema),
@@ -229,6 +237,12 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     );
   }, [defaultValues, formValues, delayedIsSuccess]);
 
+  useEffect(() => {
+    if (isSuccess) {
+      setKey(Math.random());
+    }
+  }, [isSuccess]);
+
   // ---------------------------------------------------------------------------
   // Button
   // ---------------------------------------------------------------------------
@@ -253,7 +267,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           typeof form.getFieldState("name").error !== "undefined"
         }
       >
-        {delayedIsSuccess
+        {!isError && delayedIsSuccess
           ? "Success!"
           : isPending
             ? "Updating name..."
