@@ -13,25 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { useModal } from "connectkit";
+import { useCallback, useMemo } from "react";
+import { useAuth } from "@/stores/useAuth";
+import { useModals } from "@/stores/useModals";
 
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useSettings = create(
-  devtools(
-    set => ({
-      bears: 0,
-      increasePopulation: () =>
-        set((state: { bears: number }) => ({ bears: state.bears + 1 })),
-      removeAllBears: () => set({ bears: 0 }),
-    }),
-    {
-      anonymousActionType: "useSettings",
-      name: "SettingsStore",
-      serialize: { options: true },
-    },
-  ),
-);
+export const useAuthModal = () => {
+  const { isSessionValid, address } = useAuth();
+  const { openProfile } = useModal();
+
+  const { showAuthModal } = useModals();
+
+  const openAuthModal = useCallback(() => {
+    if (!address) {
+      openProfile();
+    } else if (!isSessionValid()) {
+      showAuthModal();
+    }
+  }, [address, isSessionValid, openProfile, showAuthModal]);
+
+  const isAuthValid = useMemo(() => {
+    return isSessionValid() && !!address;
+  }, [isSessionValid, address]);
+
+  return { isAuthValid, openAuthModal };
+};

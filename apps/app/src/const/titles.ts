@@ -18,6 +18,7 @@
 // -----------------------------------------------------------------------------
 
 enum Category {
+  Overview = "Overview",
   Transactions = "Transactions",
   Profile = "Profile",
   Settings = "Settings",
@@ -30,6 +31,13 @@ enum Category {
 // -----------------------------------------------------------------------------
 // Sub
 // -----------------------------------------------------------------------------
+
+enum OverviewSubCategory {
+  All = "All",
+  Tokens = "Tokens",
+  NFTs = "NFTs",
+  Transactions = "Transactions",
+}
 
 enum SettingsSubCategory {
   Account = "Account",
@@ -52,6 +60,32 @@ type CategoryObject = {
 // -----------------------------------------------------------------------------
 
 export const TITLES: Record<Category, CategoryObject> = {
+  [Category.Overview]: {
+    title: "Overview",
+    description: "View your wallet overview.",
+    subcategories: {
+      [OverviewSubCategory.All]: {
+        title: "All",
+        description: "View all your wallet assets.",
+        subcategories: {},
+      },
+      [OverviewSubCategory.Tokens]: {
+        title: "Tokens",
+        description: "View your wallet tokens.",
+        subcategories: {},
+      },
+      [OverviewSubCategory.NFTs]: {
+        title: "NFTs",
+        description: "View your wallet NFTs.",
+        subcategories: {},
+      },
+      [OverviewSubCategory.Transactions]: {
+        title: "Transactions",
+        description: "View your wallet transactions.",
+        subcategories: {},
+      },
+    },
+  },
   [Category.Transactions]: {
     title: "Transactions",
     description: "Conduct and execute transactions.",

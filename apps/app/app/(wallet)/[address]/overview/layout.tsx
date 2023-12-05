@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Metadata } from "next";
 import type { Address } from "viem";
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/invoke-portfolio-button";
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
+import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -24,16 +26,35 @@ import { LinkButtonGroup } from "@/components/section/link-button-group";
 
 const overviewNavItems = [
   {
-    title: "Token",
+    title: "All",
     href: "/overview",
     id: "overview",
   },
   {
+    title: "Tokens",
+    href: "/overview/tokens",
+    id: "tokens",
+  },
+  {
     title: "NFT",
-    href: "/overview/nft",
-    id: "nft",
+    href: "/overview/nfts",
+    id: "nfts",
+  },
+  {
+    title: "Transactions",
+    href: "/overview/transactions",
+    id: "transactions",
   },
 ];
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Overview.subcategories.All.title,
+  description: TITLES.Overview.subcategories.All.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props

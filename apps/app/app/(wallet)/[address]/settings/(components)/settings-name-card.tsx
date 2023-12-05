@@ -15,7 +15,7 @@
 
 "use client";
 
-import { getWallet } from "@lightdotso/client";
+import { getWallet, updateWallet } from "@lightdotso/client";
 import {
   Button,
   Form,
@@ -28,7 +28,11 @@ import {
   Input,
 } from "@lightdotso/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useSuspenseQuery,
+  useQueryClient,
+  useMutation,
+} from "@tanstack/react-query";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
@@ -36,8 +40,9 @@ import * as z from "zod";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletData } from "@/data";
+import { useAuthModal } from "@/hooks/useAuthModal";
 import { queries } from "@/queries";
-import { successToast } from "@/utils";
+import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -69,11 +74,15 @@ type SettingsNameCardProps = {
 // -----------------------------------------------------------------------------
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
+  const { isAuthValid, openAuthModal } = useAuthModal();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: WalletData | undefined = useQueryClient().getQueryData(
+  const queryClient = useQueryClient();
+
+  const currentData: WalletData | undefined = queryClient.getQueryData(
     queries.wallet.get(address).queryKey,
   );
 
@@ -105,6 +114,81 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   });
 
   // ---------------------------------------------------------------------------
+  // Mutate
+  // ---------------------------------------------------------------------------
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data: Partial<WalletData>) => {
+      const res = await updateWallet({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+        body: {
+          name: data.name,
+        },
+      });
+
+      // Return if the response is 200
+      res.match(
+        data => {
+          successToast(data);
+        },
+        err => {
+          if (err instanceof Error) {
+            errorToast(err.message);
+          }
+        },
+      );
+    },
+    // When mutate is called:
+    onMutate: async (wallet: Partial<WalletData>) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({
+        queryKey: queries.wallet.get(address).queryKey,
+      });
+
+      // Snapshot the previous value
+      const previousSettings: WalletData | undefined = queryClient.getQueryData(
+        queries.wallet.get(address).queryKey,
+      );
+
+      // Optimistically update to the new value
+      queryClient.setQueryData(
+        queries.wallet.settings(address).queryKey,
+        (old: WalletData) => {
+          return { ...old, wallet };
+        },
+      );
+
+      // Return a context object with the snapshotted value
+      return { previousSettings };
+    },
+    // If the mutation fails, use the context we returned above
+    onError: (err, _newWalletSettings, context) => {
+      queryClient.setQueryData(
+        queries.wallet.get(address).queryKey,
+        context?.previousSettings,
+      );
+
+      if (err instanceof Error) {
+        errorToast(err.message);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: queries.wallet.get(address).queryKey,
+      });
+
+      // Invalidate the cache for the address
+      // fetch(`/api/revalidate/tag?tag=${address}`);
+    },
+    mutationKey: queries.wallet.get(address).queryKey,
+  });
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -119,23 +203,40 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   });
 
   function onSubmit(data: WalletNameFormValues) {
-    successToast(data);
+    mutate({ name: data.name });
   }
 
   // ---------------------------------------------------------------------------
   // Button
   // ---------------------------------------------------------------------------
 
+  const WalletLoginButton: FC = () => {
+    return (
+      <Button disabled={isAuthValid} onClick={openAuthModal}>
+        Login to update name
+      </Button>
+    );
+  };
+
   const WalletNameFormSubmitButton: FC = () => {
     return (
       <Button
         type="submit"
         form="walletNameForm"
+        variant={isPending ? "loading" : "default"}
         disabled={typeof form.getFieldState("name").error !== "undefined"}
       >
         Update name
       </Button>
     );
+  };
+
+  const SettingsNameCardButton: FC = () => {
+    if (!isAuthValid) {
+      return <WalletLoginButton />;
+    }
+
+    return <WalletNameFormSubmitButton />;
   };
 
   // ---------------------------------------------------------------------------
@@ -153,7 +254,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
           .description
       }
-      footerContent={<WalletNameFormSubmitButton />}
+      footerContent={<SettingsNameCardButton />}
     >
       <Form {...form}>
         <form

@@ -69,6 +69,10 @@ const getClient = (isPublic?: boolean) =>
       ? publicApiClient
       : adminApiClient;
 
+// -----------------------------------------------------------------------------
+// Auth
+// -----------------------------------------------------------------------------
+
 export const getAuthSession = async (
   {
     params,
@@ -85,6 +89,21 @@ export const getAuthSession = async (
     client.GET("/auth/session", {
       // @ts-ignore
       next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const postAuthLogout = async (params?: {}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.POST("/auth/logout", {
+      // @ts-ignore
+      next: { revalidate: 0 },
       params,
     }),
     () => new Error("Database error"),
@@ -668,6 +687,32 @@ export const getUserOperations = async (
       // @ts-ignore
       next: { revalidate: 300, tags: [params.query.address] },
       params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const updateWallet = async ({
+  params,
+  body,
+}: {
+  params: {
+    query: { address: string };
+  };
+  body: {
+    name?: string | null | undefined;
+  };
+}) => {
+  const client = getClient(true);
+
+  return ResultAsync.fromPromise(
+    client.PUT("/wallet/update", {
+      // @ts-ignore
+      next: { revalidate: 0 },
+      params,
+      body,
     }),
     () => new Error("Database error"),
   ).andThen(({ data, response, error }) => {

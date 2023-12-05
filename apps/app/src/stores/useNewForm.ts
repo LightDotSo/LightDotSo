@@ -17,6 +17,7 @@ import { createWallet } from "@lightdotso/client";
 import { isEqual } from "lodash";
 import type * as z from "zod";
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import { newFormStoreSchema } from "@/schemas/newForm";
 
 // -----------------------------------------------------------------------------
@@ -41,84 +42,95 @@ interface FormStore {
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useNewFormStore = create<FormStore>((set, get) => ({
-  address: null,
-  prevState: null,
-  isValid: false,
-  isLoading: false,
-  errors: null,
-  formValues: {
-    type: "multi",
-    name: "",
-  },
-  setFormValues: async values => {
-    const currentState = get().formValues;
-
-    set(prevState => ({ formValues: { ...prevState?.formValues, ...values } }));
-
-    // After state has been set, run validation
-    get().validate();
-
-    const nextState = get().formValues;
-
-    // Check if object properties changed and if form is valid
-    if (!isEqual(currentState, nextState) && get().isValid) {
-      // If valid, fetch to simulate
-      await get().fetchToCreate(false);
-    }
-
-    // Update prevState
-    set({ prevState: currentState });
-  },
-  validate: function () {
-    const result = newFormStoreSchema.safeParse(this?.formValues ?? {});
-    set({
-      isValid: result.success,
-      errors: result.success ? null : result.error,
-    });
-  },
-  fetchToCreate: async function (isCreate: boolean) {
-    // Run validation before fetching
-    get().validate();
-
-    if (!get().isValid) {
-      return;
-    }
-
-    // Set loading state to true before starting async operation
-    set({ isLoading: true });
-
-    // Replace with your actual fetch logic
-    const res = await createWallet({
-      params: {
-        query: {
-          simulate: !isCreate,
-        },
+export const useNewFormStore = create(
+  devtools<FormStore>(
+    (set, get) => ({
+      address: null,
+      prevState: null,
+      isValid: false,
+      isLoading: false,
+      errors: null,
+      formValues: {
+        type: "multi",
+        name: "",
       },
-      body: {
-        name: get().formValues.name!,
-        salt: get().formValues.salt!,
-        threshold: get().formValues.threshold!,
-        owners: get().formValues.owners!.map(owner => ({
-          weight: owner.weight!,
-          address: owner.address!,
-        })),
-      },
-    });
+      setFormValues: async values => {
+        const currentState = get().formValues;
 
-    // Parse the response and set the address
-    res.match(
-      data => {
-        set(() => ({
-          address: data?.address,
+        set(prevState => ({
+          formValues: { ...prevState?.formValues, ...values },
         }));
-      },
-      () => {
-        throw new Error("Error creating wallet");
-      },
-    );
 
-    // Set loading state to false after async operation is finished
-    set({ isLoading: false });
-  },
-}));
+        // After state has been set, run validation
+        get().validate();
+
+        const nextState = get().formValues;
+
+        // Check if object properties changed and if form is valid
+        if (!isEqual(currentState, nextState) && get().isValid) {
+          // If valid, fetch to simulate
+          await get().fetchToCreate(false);
+        }
+
+        // Update prevState
+        set({ prevState: currentState });
+      },
+      validate: function () {
+        const result = newFormStoreSchema.safeParse(this?.formValues ?? {});
+        set({
+          isValid: result.success,
+          errors: result.success ? null : result.error,
+        });
+      },
+      fetchToCreate: async function (isCreate: boolean) {
+        // Run validation before fetching
+        get().validate();
+
+        if (!get().isValid) {
+          return;
+        }
+
+        // Set loading state to true before starting async operation
+        set({ isLoading: true });
+
+        // Replace with your actual fetch logic
+        const res = await createWallet({
+          params: {
+            query: {
+              simulate: !isCreate,
+            },
+          },
+          body: {
+            name: get().formValues.name!,
+            salt: get().formValues.salt!,
+            threshold: get().formValues.threshold!,
+            owners: get().formValues.owners!.map(owner => ({
+              weight: owner.weight!,
+              address: owner.address!,
+            })),
+          },
+        });
+
+        // Parse the response and set the address
+        res.match(
+          data => {
+            set(() => ({
+              address: data?.address,
+            }));
+          },
+          () => {
+            throw new Error("Error creating wallet");
+          },
+        );
+
+        // Set loading state to false after async operation is finished
+        set({ isLoading: false });
+      },
+    }),
+    {
+      anonymousActionType: "useNewFormStore",
+      name: "FormStore",
+      serialize: { options: true },
+    },
+  ),
+);

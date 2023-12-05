@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
+    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ID_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
     sessions::{unix_timestamp, update_session_expiry},
@@ -26,7 +26,7 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use ethers_main::{abi::ethereum_types::Signature, types::Address, utils::to_checksum};
+use ethers_main::{abi::ethereum_types::Signature, utils::to_checksum};
 use eyre::eyre;
 use lightdotso_prisma::user;
 use lightdotso_tracing::tracing::{error, info};
@@ -252,14 +252,6 @@ async fn v1_auth_verify_handler(
             ))))
         }
     }
-    match session.insert(&USER_ADDRESS_KEY, Address::from(message.address)) {
-        Ok(_) => {}
-        Err(_) => {
-            return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
-                "Failed to get insert address.".to_string(),
-            ))))
-        }
-    }
 
     // Upsert the user
     let user = client
@@ -276,7 +268,7 @@ async fn v1_auth_verify_handler(
     info!(?user);
 
     // Insert the user id into the session
-    match session.insert(&USER_ADDRESS_KEY, user.id) {
+    match session.insert(&USER_ID_KEY, user.id) {
         Ok(_) => {}
         Err(_) => {
             return Err(AppError::RouteError(RouteError::AuthError(AuthError::InternalError(
