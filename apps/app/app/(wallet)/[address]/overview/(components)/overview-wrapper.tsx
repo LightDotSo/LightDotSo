@@ -12,21 +12,13 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
 import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokensWrapperProps = {
+type OverviewWrapperProps = {
   children: React.ReactNode;
 };
 
@@ -34,20 +26,6 @@ type TokensWrapperProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokensWrapper: FC<TokensWrapperProps> = ({ children }) => {
-  return (
-    <div className="">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Balance</TableHead>
-            <TableHead>Chart</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>{children}</TableBody>
-      </Table>
-    </div>
-  );
+export const OverviewWrapper: FC<OverviewWrapperProps> = ({ children }) => {
+  return <div className="h-full">{children}</div>;
 };
