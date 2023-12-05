@@ -54,7 +54,7 @@ export const useAuth = create(
         setSessionId: (sessionId: string | undefined) => set({ sessionId }),
         isSessionValid: () => {
           const state = get();
-          return state.sessionId !== undefined;
+          return typeof state.sessionId === "string";
         },
         wallet: undefined,
         setWallet: (wallet: Address | undefined) => set({ wallet }),

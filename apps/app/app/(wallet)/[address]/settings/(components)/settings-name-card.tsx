@@ -148,7 +148,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
             errorToast(err);
             return;
           }
-          console.error(err);
+          throw err;
         },
       );
     },
@@ -185,6 +185,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
       if (err instanceof Error) {
         errorToast(err.message);
+        return;
+      }
+      if (typeof err === "string") {
+        errorToast(err);
+        return;
       }
     },
     onSettled: () => {
@@ -336,7 +341,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
                   }
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Your name" {...field} />
+                  <Input
+                    placeholder="Your name"
+                    {...field}
+                    onBlur={() => form.trigger()}
+                  />
                 </FormControl>
                 <FormDescription>
                   {

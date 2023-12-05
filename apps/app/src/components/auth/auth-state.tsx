@@ -151,15 +151,18 @@ export const AuthState: FC = () => {
   // On component mount, or when the address from useAccount changes,
   // update the auth state's address
   useEffect(() => {
-    if (address) {
-      setAddress(address);
-    }
-    // On logout, logout the user
-    else {
-      setAddress(undefined);
-      setSessionId(undefined);
-      postAuthLogout();
-    }
+    const logout = async () => {
+      if (address) {
+        setAddress(address);
+      } else {
+        // On logout, clear the user
+        setAddress(undefined);
+        setSessionId(undefined);
+        await postAuthLogout();
+      }
+    };
+
+    logout();
   }, [address, setAddress, setSessionId]);
 
   // Subscribe to the user query
