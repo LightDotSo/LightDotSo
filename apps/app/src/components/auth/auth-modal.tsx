@@ -48,44 +48,54 @@ export function AuthModal() {
   // ---------------------------------------------------------------------------
 
   const handleSignIn = useCallback(async () => {
-    if (!address || !chain || !sessionId) {
+    if (!address || !chain || sessionId) {
       return;
     }
 
     const res = await getNonce();
 
-    if (res.isErr()) {
-      errorToast("Failed to get nonce!");
-      return;
-    }
+    res.match(
+      _ => {
+        const message = new SiweMessage({
+          domain: window.location.host,
+          address,
+          statement: "Sign in with Ethereum to light.so",
+          uri: window.location.origin,
+          version: "1",
+          chainId: chain.id,
+          nonce: res._unsafeUnwrap().nonce!,
+        });
+        const messageToSign = message.prepareMessage();
 
-    const message = new SiweMessage({
-      domain: window.location.host,
-      address,
-      statement: "Sign in with Ethereum to light.so",
-      uri: window.location.origin,
-      version: "1",
-      chainId: chain.id,
-      nonce: res._unsafeUnwrap().nonce!,
-    });
-    const messageToSign = message.prepareMessage();
-    const signature = await signMessageAsync({
-      message: message.prepareMessage(),
-    });
-
-    postAuthVerify({
-      params: { query: { user_address: address } },
-      body: { message: messageToSign, signature },
-    }).then(res => {
-      res.match(
-        _ => {
-          successToast("Successfully signed in!");
-        },
-        _ => {
-          errorToast("Failed to sign in!");
-        },
-      );
-    });
+        signMessageAsync({
+          message: message.prepareMessage(),
+        }).then(signature => {
+          postAuthVerify({
+            params: { query: { user_address: address } },
+            body: { message: messageToSign, signature },
+          }).then(res => {
+            res.match(
+              _ => {
+                successToast("Successfully signed in!");
+              },
+              _ => {
+                errorToast("Failed to sign in!");
+              },
+            );
+          });
+        });
+      },
+      err => {
+        if (err instanceof Error) {
+          errorToast(err.message);
+          return;
+        }
+        if (typeof err === "string") {
+          errorToast(err);
+          return;
+        }
+      },
+    );
   }, [address, chain, sessionId, signMessageAsync]);
 
   if (isAuthModalVisible) {
