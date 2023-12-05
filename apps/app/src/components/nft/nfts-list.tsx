@@ -31,13 +31,14 @@ import { queries } from "@/queries";
 
 export type NftsListProps = {
   address: Address;
+  limit?: number;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NftsList: FC<NftsListProps> = ({ address }) => {
+export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -81,9 +82,9 @@ export const NftsList: FC<NftsListProps> = ({ address }) => {
     <NftsWrapper>
       {data && data.nfts.length === 0 && <NftsEmpty />}
       {data &&
-        data.nfts.map(nft => (
-          <NftCard key={nft.nft_id} address={address} nft={nft} />
-        ))}
+        data.nfts
+          .slice(0, limit || data.nfts.length)
+          .map(nft => <NftCard key={nft.nft_id} address={address} nft={nft} />)}
     </NftsWrapper>
   );
 };
