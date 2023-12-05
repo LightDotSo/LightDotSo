@@ -42,6 +42,7 @@ import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/set
 import { TITLES } from "@/const/titles";
 import type { WalletData } from "@/data";
 import { useAuthModal } from "@/hooks/useAuthModal";
+import { useDelayedValue } from "@/hooks/useDelayedValue";
 import { queries } from "@/queries";
 import { errorToast, successToast } from "@/utils";
 
@@ -119,7 +120,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: async (data: Partial<WalletData>) => {
       const res = await updateWallet({
         params: {
@@ -222,6 +223,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     );
   }, [defaultValues, formValues]);
 
+  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+
   // ---------------------------------------------------------------------------
   // Button
   // ---------------------------------------------------------------------------
@@ -241,11 +244,16 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         form="walletNameForm"
         variant={isPending ? "loading" : "default"}
         disabled={
+          delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("name").error !== "undefined"
         }
       >
-        {isPending ? "Updating name..." : "Update name"}
+        {delayedIsSuccess
+          ? "Success!"
+          : isPending
+            ? "Updating name..."
+            : "Update name"}
       </Button>
     );
   };

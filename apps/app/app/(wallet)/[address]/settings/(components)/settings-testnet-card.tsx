@@ -40,6 +40,7 @@ import * as z from "zod";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletSettingsData } from "@/data";
+import { useDelayedValue } from "@/hooks/useDelayedValue";
 import { queries } from "@/queries";
 import { errorToast, successToast } from "@/utils";
 
@@ -112,7 +113,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess } = useMutation({
     mutationFn: async (data: WalletSettingsData) => {
       const res = await updateWalletSettings({
         params: {
@@ -216,6 +217,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
     );
   }, [defaultValues, formValues]);
 
+  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+
   // ---------------------------------------------------------------------------
   // Button
   // ---------------------------------------------------------------------------
@@ -227,11 +230,12 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
         form="walletTestnetForm"
         variant={isPending ? "loading" : "default"}
         disabled={
+          delayedIsSuccess ||
           !isFormChanged ||
           typeof form.getFieldState("enabled").error !== "undefined"
         }
       >
-        {isPending ? "Saving..." : "Save"}
+        {delayedIsSuccess ? "Success!" : isPending ? "Saving..." : "Save"}
       </Button>
     );
   };
