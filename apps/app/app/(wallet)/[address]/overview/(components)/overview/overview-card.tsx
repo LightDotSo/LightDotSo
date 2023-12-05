@@ -24,6 +24,7 @@ import { useRaisedShadow } from "@/app/(wallet)/[address]/overview/(hooks)/useRa
 
 interface OverviewCardProps {
   value: string;
+  title: string;
   children: ReactNode;
 }
 
@@ -31,7 +32,7 @@ interface OverviewCardProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OverviewCard = ({ children, value }: OverviewCardProps) => {
+export const OverviewCard = ({ children, title, value }: OverviewCardProps) => {
   const y = useMotionValue(0);
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
@@ -50,6 +51,9 @@ export const OverviewCard = ({ children, value }: OverviewCardProps) => {
           className="h-5 w-5 cursor-move text-text-icon-weaker"
           onPointerDown={event => dragControls.start(event)}
         />
+        <div className="ml-2 text-lg font-semibold text-text-primary">
+          {title}
+        </div>
       </div>
       {children}
     </Reorder.Item>

@@ -21,12 +21,15 @@ import type { Address } from "viem";
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
 import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-wrapper";
 import { TokensList } from "@/components/token/tokens-list";
+import { OverviewSubCategory, TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
 
-const initialItems = ["token", "nft", "transaction"];
+const initialItems = Object.keys(TITLES.Overview.subcategories).filter(
+  key => key !== OverviewSubCategory.All,
+);
 
 // -----------------------------------------------------------------------------
 // Props
@@ -45,11 +48,11 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
 
   const itemToComponent = (itemId: string): JSX.Element => {
     switch (itemId) {
-      case "token":
+      case OverviewSubCategory.Tokens:
         return <TokensList address={address} />;
-      case "nft":
+      case OverviewSubCategory.NFTs:
         return <TokensList address={address} />;
-      case "transaction":
+      case OverviewSubCategory.Transactions:
         return <TokensList address={address} />;
       default:
         return <></>;
@@ -66,7 +69,11 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
       >
         <AnimatePresence>
           {items.map(item => (
-            <OverviewCard key={item} value={item}>
+            <OverviewCard
+              key={item}
+              value={item}
+              title={TITLES.Overview.subcategories[item]?.title}
+            >
               {itemToComponent(item)}
             </OverviewCard>
           ))}
