@@ -16,7 +16,7 @@
 import type { Metadata } from "next";
 import type { Address } from "viem";
 import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(components)/invoke-portfolio-button";
-import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner";
+import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { TITLES } from "@/const/titles";
 

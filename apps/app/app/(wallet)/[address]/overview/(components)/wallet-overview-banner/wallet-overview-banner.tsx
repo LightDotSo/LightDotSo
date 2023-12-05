@@ -26,7 +26,7 @@ import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
-import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner-sparkline";
+import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 import { queries } from "@/queries";

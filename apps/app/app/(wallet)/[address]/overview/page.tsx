@@ -17,7 +17,7 @@
 
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
-import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview-list";
+import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { handler as pageHandler } from "@/handlers/paths/[address]/overview/handler";
 import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/preloader";

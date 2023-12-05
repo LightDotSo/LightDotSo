@@ -18,10 +18,18 @@ import { useMotionValue, Reorder, useDragControls } from "framer-motion";
 import type { ReactNode } from "react";
 import { useRaisedShadow } from "@/app/(wallet)/[address]/overview/(hooks)/useRaisedShadow";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface OverviewCardProps {
   value: string;
   children: ReactNode;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const OverviewCard = ({ children, value }: OverviewCardProps) => {
   const y = useMotionValue(0);

@@ -18,8 +18,8 @@
 import { AnimatePresence, Reorder } from "framer-motion";
 import { useState, type FC } from "react";
 import type { Address } from "viem";
-import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview-card";
-import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview-wrapper";
+import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
+import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-wrapper";
 import { TokensList } from "@/components/token/tokens-list";
 
 // -----------------------------------------------------------------------------
