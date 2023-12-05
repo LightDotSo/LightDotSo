@@ -34,6 +34,7 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import type { FC } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
@@ -75,6 +76,7 @@ type SettingsNameCardProps = {
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   const { isAuthValid, openAuthModal } = useAuthModal();
+  const [isFormChanged, setIsFormChanged] = useState(false);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -202,6 +204,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
     defaultValues,
   });
 
+  const formValues = form.watch();
+
   function onSubmit(data: WalletNameFormValues) {
     mutate({ name: data.name });
   }
@@ -240,6 +244,16 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   };
 
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setIsFormChanged(
+      JSON.stringify(formValues) !== JSON.stringify(defaultValues),
+    );
+  }, [defaultValues, formValues]);
+
+  // ---------------------------------------------------------------------------
   // Card
   // ---------------------------------------------------------------------------
 
@@ -254,7 +268,24 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
           .description
       }
-      footerContent={<SettingsNameCardButton />}
+      footerContent={
+        <>
+          {isFormChanged && (
+            <Button
+              variant="link"
+              onClick={() => {
+                if (defaultValues.name) {
+                  form.setValue("name", defaultValues.name);
+                }
+                form.trigger();
+              }}
+            >
+              Cancel
+            </Button>
+          )}
+          <SettingsNameCardButton />
+        </>
+      }
     >
       <Form {...form}>
         <form
