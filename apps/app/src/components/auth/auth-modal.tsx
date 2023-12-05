@@ -31,7 +31,7 @@ import {
 } from "@lightdotso/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Copy } from "lucide-react";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import { useSignMessage, useNetwork } from "wagmi";
 import type { AuthNonceData } from "@/data";
@@ -61,7 +61,7 @@ export function AuthModal() {
         return null;
       }
 
-      const res = await getNonce({});
+      const res = await getNonce();
 
       // Return if the response is 200
       return res.match(
@@ -77,6 +77,8 @@ export function AuthModal() {
   });
 
   const handleSignIn = useCallback(async () => {
+    await refetch();
+
     if (!address || !nonceData || !chain) {
       return;
     }
@@ -108,14 +110,7 @@ export function AuthModal() {
         },
       );
     });
-  }, [address, chain, nonceData, signMessageAsync]);
-
-  useEffect(() => {
-    // Refetch nonce data is not available and address is available
-    if (address && !nonceData) {
-      refetch();
-    }
-  }, [address, nonceData, refetch]);
+  }, [address, chain, nonceData, refetch, signMessageAsync]);
 
   if (isAuthModalVisible) {
     return (

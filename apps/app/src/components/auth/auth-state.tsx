@@ -16,7 +16,11 @@
 "use client";
 
 import { getAuthSession, getUser, postAuthLogout } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useSuspenseQuery,
+  useQueryClient,
+  QueryObserver,
+} from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { FC } from "react";
@@ -156,6 +160,32 @@ export const AuthState: FC = () => {
       postAuthLogout();
     }
   }, [address, router, setAddress]);
+
+  // Subscribe to the user query
+  useEffect(() => {
+    const observer = new QueryObserver<UserData | null>(queryClient, {
+      queryKey: queries.user.get(address as Address).queryKey,
+    });
+
+    const unsubscribe = observer.subscribe(result => {
+      setUserId(result.data?.id);
+    });
+
+    return () => unsubscribe();
+  }, [queryClient, address, setUserId]);
+
+  // Subscribe to the session query
+  useEffect(() => {
+    const observer = new QueryObserver<AuthSessionData | null>(queryClient, {
+      queryKey: queries.auth.session(address as Address).queryKey,
+    });
+
+    const unsubscribe = observer.subscribe(result => {
+      setSessionId(result.data?.id);
+    });
+
+    return () => unsubscribe();
+  }, [queryClient, address, setSessionId]);
 
   useEffect(() => {
     // If on the home page and selected paths, and the user is logged in, redirect to `/wallets`
