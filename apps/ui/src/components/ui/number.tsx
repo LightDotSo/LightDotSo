@@ -94,19 +94,17 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
     }, [spring, value]);
 
     return (
-      <>
-        <span className="text-text-weak">{prefix && prefix}</span>
-        <motion.span
-          ref={ref}
-          className={cn(numberVariantsWhole({ size, className }))}
-          {...props}
-        >
-          <NumberValue display={displayWhole} />.
-          <span className={cn(numberVariantsFraction({ size }))}>
-            <NumberValue display={displayFraction} />
-          </span>
-        </motion.span>
-      </>
+      <motion.span
+        ref={ref}
+        className={cn(numberVariantsWhole({ size, className }))}
+        {...props}
+      >
+        <span>{prefix && prefix}</span>
+        <NumberValue display={displayWhole} />.
+        <span className={cn(numberVariantsFraction({ size }))}>
+          <NumberValue display={displayFraction} />
+        </span>
+      </motion.span>
     );
   },
 );
