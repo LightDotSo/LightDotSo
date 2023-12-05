@@ -231,7 +231,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
           typeof form.getFieldState("enabled").error !== "undefined"
         }
       >
-        Update
+        {isPending ? "Saving..." : "Save"}
       </Button>
     );
   };
