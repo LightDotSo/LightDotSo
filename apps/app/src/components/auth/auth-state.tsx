@@ -157,9 +157,10 @@ export const AuthState: FC = () => {
     // On logout, logout the user
     else {
       setAddress(undefined);
+      setSessionId(undefined);
       postAuthLogout();
     }
-  }, [address, router, setAddress]);
+  }, [address, setAddress, setSessionId]);
 
   // Subscribe to the user query
   useEffect(() => {
