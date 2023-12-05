@@ -39,14 +39,13 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
 }) => {
   return (
     <Button
-      variant="outline"
-      className="bg-background-strong py-4"
+      variant="strong"
       onClick={() => {
         invokePortfolioAction(address as Address);
         infoToast("Refreshed");
       }}
     >
-      <RefreshCcw className="h-4 w-4 text-text-weak" />
+      <RefreshCcw className="h-4 w-4" />
     </Button>
   );
 };

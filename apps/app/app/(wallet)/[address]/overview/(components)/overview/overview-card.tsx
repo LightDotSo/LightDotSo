@@ -39,7 +39,7 @@ export const OverviewCard = ({ children, title, value }: OverviewCardProps) => {
 
   return (
     <Reorder.Item
-      className="space-y-3 rounded-md border border-border bg-background-weak p-4"
+      className="space-y-3 rounded-md border border-border bg-background p-4"
       value={value}
       id={value}
       style={{ boxShadow, y }}

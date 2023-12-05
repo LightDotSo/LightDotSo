@@ -43,12 +43,12 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
   tokenDecimals,
 }) => {
   return (
-    <div className="flex items-center justify-end gap-x-4">
-      <Button size="sm" className="rounded-full p-3">
+    <div className="flex items-center justify-end gap-x-2">
+      <Button size="sm" variant="strong">
         <RefreshCcw className="h-3 w-3" />
         <span className="sr-only">Open share modal</span>
       </Button>
-      <Button asChild size="sm" className="rounded-full p-3">
+      <Button asChild size="sm" variant="strong">
         <Link
           href={`/${address}/send?transfers=0:_:_:${chainId}:erc20:${tokenAddress}|${tokenDecimals}|0`}
         >
