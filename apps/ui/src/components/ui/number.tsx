@@ -77,14 +77,14 @@ const NumberValue = ({
 
 const Number = forwardRef<HTMLSpanElement, NumberProps>(
   ({ prefix, value, className, size, ...props }, ref) => {
-    let spring = useSpring(0.1, {
+    let spring = useSpring(0, {
       mass: 0.8,
       stiffness: 80,
       damping: 10,
     });
 
     let displayWhole = useTransform(spring, current =>
-      Math.floor(current).toLocaleString(),
+      Math.max(0, Math.floor(current)).toLocaleString(),
     );
 
     let displayFraction = useTransform(spring, current =>
