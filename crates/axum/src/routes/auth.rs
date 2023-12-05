@@ -221,6 +221,7 @@ async fn v1_auth_verify_handler(
             ))))
         }
     };
+    info!(?session_nonce);
 
     // Verify the signed message
     match message
