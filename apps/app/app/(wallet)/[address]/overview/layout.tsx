@@ -82,13 +82,15 @@ export default function OverviewLayout({
           <WalletOverviewBanner address={params.address as Address} />
         </div>
       </div>
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1 space-y-8">
+      <div className="flex w-full flex-row border-b border-border py-4">
+        <div className="mx-auto max-w-7xl flex-1">
           <LinkButtonGroup items={overviewNavItems}>
             <InvokePortfolioButton address={params.address as Address} />
           </LinkButtonGroup>
-          {children}
         </div>
+      </div>
+      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <div className="mx-auto max-w-7xl flex-1 space-y-8">{children}</div>
       </div>
     </>
   );

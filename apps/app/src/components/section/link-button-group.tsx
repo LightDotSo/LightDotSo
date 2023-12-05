@@ -65,59 +65,57 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
   }, [address, items, router]);
 
   return (
-    <div className="flex w-full pt-8 lg:justify-end">
-      <div>
-        <div className="sm:hidden">
-          <label htmlFor="tabs" className="sr-only">
-            Select a tab
-          </label>
-          <select
-            id="tabs"
-            name="tabs"
-            defaultValue={id}
-            className={cn(
-              buttonVariants({ variant: "outline" }),
-              "block w-full px-8",
-            )}
-            onChange={event => {
-              // Get the selected value
-              const value = event.target.value;
-              // Get the item from the items
-              const item = items.find(item => item.id === value);
-              // If the item is not found, return
-              if (!item) return;
-              // Navigate to the item
-              router.push(`/${address}${item.href}`);
-            }}
-          >
-            {items.map(item => (
-              <option key={item.id}>{item.title}</option>
-            ))}
-          </select>
-        </div>
-        <nav className="flex items-center space-x-4" aria-label="Tabs">
-          {children}
-          <div className="hidden rounded-md border border-border p-1 sm:block">
-            {items.map(item => (
-              <Link
-                key={item.id}
-                href={`/${address}${item.href}`}
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" }),
-                  "text-secondary bg-transparent hover:bg-transparent border-none text-xs",
-                  // If the item is the selected, add bg-selected
-                  item.id === id
-                    ? "bg-background-stronger text-text font-semibold hover:bg-background-stronger"
-                    : "text-text-weak",
-                )}
-                aria-current={item.id === id ? "page" : undefined}
-              >
-                {item.title}
-              </Link>
-            ))}
-          </div>
-        </nav>
+    <>
+      <div className="sm:hidden">
+        <label htmlFor="tabs" className="sr-only">
+          Select a tab
+        </label>
+        <select
+          id="tabs"
+          name="tabs"
+          defaultValue={id}
+          className={cn(
+            buttonVariants({ variant: "outline" }),
+            "block w-full px-8",
+          )}
+          onChange={event => {
+            // Get the selected value
+            const value = event.target.value;
+            // Get the item from the items
+            const item = items.find(item => item.id === value);
+            // If the item is not found, return
+            if (!item) return;
+            // Navigate to the item
+            router.push(`/${address}${item.href}`);
+          }}
+        >
+          {items.map(item => (
+            <option key={item.id}>{item.title}</option>
+          ))}
+        </select>
       </div>
-    </div>
+      <nav className="flex items-center justify-between" aria-label="Tabs">
+        <div className="hidden rounded-md border border-border bg-background-strong p-1 sm:block">
+          {items.map(item => (
+            <Link
+              key={item.id}
+              href={`/${address}${item.href}`}
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "text-secondary bg-transparent border-none py-1",
+                // If the item is the selected, add bg-selected
+                item.id === id
+                  ? "bg-background-body text-text font-semibold hover:bg-background-weaker"
+                  : "text-text-weak",
+              )}
+              aria-current={item.id === id ? "page" : undefined}
+            >
+              {item.title}
+            </Link>
+          ))}
+        </div>
+        {children}
+      </nav>
+    </>
   );
 };
