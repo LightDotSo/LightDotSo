@@ -33,7 +33,7 @@ import {
   useQueryClient,
   useMutation,
 } from "@tanstack/react-query";
-import type { FC } from "react";
+import { useState, type FC, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
@@ -68,6 +68,8 @@ type SettingsTestnetCardProps = {
 export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
+  const [isFormChanged, setIsFormChanged] = useState(false);
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -187,18 +189,32 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
-  const defaultValues: Partial<WalletTestnetFormValues> = {
-    enabled: wallet?.is_enabled_testnet ?? false,
-  };
+  const defaultValues: Partial<WalletTestnetFormValues> = useMemo(() => {
+    return {
+      enabled: wallet?.is_enabled_testnet ?? false,
+    };
+  }, [wallet]);
 
   const form = useForm<WalletTestnetFormValues>({
     resolver: zodResolver(walletTestnetFormSchema),
     defaultValues,
   });
 
+  const formValues = form.watch();
+
   async function onSubmit(data: WalletTestnetFormValues) {
     mutate({ is_enabled_testnet: data.enabled });
   }
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setIsFormChanged(
+      JSON.stringify(formValues) !== JSON.stringify(defaultValues),
+    );
+  }, [defaultValues, formValues]);
 
   // ---------------------------------------------------------------------------
   // Button
@@ -210,7 +226,10 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
         type="submit"
         form="walletTestnetForm"
         variant={isPending ? "loading" : "default"}
-        disabled={typeof form.getFieldState("enabled").error !== "undefined"}
+        disabled={
+          !isFormChanged ||
+          typeof form.getFieldState("enabled").error !== "undefined"
+        }
       >
         Update
       </Button>

@@ -213,6 +213,16 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   }
 
   // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    setIsFormChanged(
+      JSON.stringify(formValues) !== JSON.stringify(defaultValues),
+    );
+  }, [defaultValues, formValues]);
+
+  // ---------------------------------------------------------------------------
   // Button
   // ---------------------------------------------------------------------------
 
@@ -247,16 +257,6 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
     return <WalletNameFormSubmitButton />;
   };
-
-  // ---------------------------------------------------------------------------
-  // Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    setIsFormChanged(
-      JSON.stringify(formValues) !== JSON.stringify(defaultValues),
-    );
-  }, [defaultValues, formValues]);
 
   // ---------------------------------------------------------------------------
   // Card
