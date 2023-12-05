@@ -24,7 +24,7 @@ import { forwardRef, useEffect, useState } from "react";
 const numberVariantsWhole = cva("text-text", {
   variants: {
     size: {
-      xl: "text-xl font-bold md:text-2xl",
+      xl: "text-xl font-bold md:text-2xl lg:text-3xl",
       lg: "text-lg",
       base: "text-base",
     },
@@ -37,7 +37,7 @@ const numberVariantsWhole = cva("text-text", {
 const numberVariantsFraction = cva("text-sm text-text-weak", {
   variants: {
     size: {
-      xl: "text-base",
+      xl: "text-lg md:text-xl",
       lg: "text-sm",
       base: "text-xs",
     },
@@ -77,7 +77,11 @@ const NumberValue = ({
 
 const Number = forwardRef<HTMLSpanElement, NumberProps>(
   ({ prefix, value, className, size, ...props }, ref) => {
-    let spring = useSpring(0, { mass: 0.8, stiffness: 80, damping: 10 });
+    let spring = useSpring(0.1, {
+      mass: 0.8,
+      stiffness: 80,
+      damping: 10,
+    });
 
     let displayWhole = useTransform(spring, current =>
       Math.floor(current).toLocaleString(),

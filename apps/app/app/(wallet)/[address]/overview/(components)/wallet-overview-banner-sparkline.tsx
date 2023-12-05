@@ -85,8 +85,8 @@ export const WalletOverviewBannerSparkline: FC<
     <div className="grid w-full grid-cols-2">
       <div className="col-span-1 flex flex-col justify-between">
         <span className="text-text-weak">Net Worth</span>
-        {portfolio.balances && portfolio.balance && (
-          <Number value={portfolio.balance} size="xl" prefix="$" />
+        {portfolio.balances && (
+          <Number value={portfolio.balance ?? 0.0} size="xl" prefix="$" />
         )}
       </div>
       <div className="col-span-1 flex flex-col justify-between">
