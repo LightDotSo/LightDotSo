@@ -43,7 +43,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
   tokenDecimals,
 }) => {
   return (
-    <div className="flex items-center justify-end gap-x-2">
+    <div className="flex items-center gap-x-2">
       <Button size="sm" variant="strong">
         <RefreshCcw className="h-3 w-3" />
         <span className="sr-only">Open share modal</span>

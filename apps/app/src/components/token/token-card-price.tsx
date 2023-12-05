@@ -85,12 +85,11 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   return (
     <div className="flex flex-col space-y-1.5">
       <span className="text-text-strong text-sm font-medium">
-        {/* Add a blank character to beautify spacing */}&nbsp;&nbsp;$
-        {token_price.price.toFixed(2)}
+        ${token_price.price.toFixed(2)}
       </span>
       <span
         className={cn(
-          "px-1.5 font-medium rounded",
+          "font-medium rounded",
           token_price.price_change_24h && token_price.price_change_24h > 0
             ? "text-emerald-500"
             : "text-red-500",
