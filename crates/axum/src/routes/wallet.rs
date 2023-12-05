@@ -629,16 +629,22 @@ async fn v1_wallet_update_handler(
         .clone()
         .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
 
+    // Get the userid from the session.
+    let user_id = session.get::<String>(&USER_ID_KEY).unwrap().unwrap().to_lowercase();
+    info!(?user_id);
+
     // Check to see if the user is one of the owners of the wallet configurations.
     let _ = wallet
         .configurations
         .unwrap()
         .iter()
         .find(|configuration| {
-            configuration.owners.as_ref().unwrap().iter().any(|owner| {
-                owner.clone().user_id.as_ref().unwrap() ==
-                    &session.get::<String>(&USER_ID_KEY).unwrap().unwrap().to_lowercase()
-            })
+            configuration
+                .owners
+                .as_ref()
+                .unwrap()
+                .iter()
+                .any(|owner| owner.clone().user_id.as_ref().unwrap() == &user_id)
         })
         .ok_or(RouteError::WalletError(WalletError::BadRequest(
             "User is not an owner of the wallet".to_string(),

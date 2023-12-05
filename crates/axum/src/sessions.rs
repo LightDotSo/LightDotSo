@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::{
-    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ADDRESS_KEY},
+    constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ID_KEY},
     error::RouteError,
     result::AppError,
     routes::auth::AuthError,
@@ -161,7 +161,7 @@ pub(crate) fn verify_session(session: &Session) -> Result<(), AppError> {
     }
 
     // Verify that a user id is set
-    match session.get::<String>(&USER_ADDRESS_KEY) {
+    match session.get::<String>(&USER_ID_KEY) {
         Ok(Some(_)) => {}
         // Invalid nonce
         Ok(None) | Err(_) => {
