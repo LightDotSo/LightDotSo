@@ -81,21 +81,23 @@ export const WalletOverviewBannerSparkline: FC<
   }
 
   return (
-    <div className="flex flex-row items-center justify-between space-x-4">
-      <div className="flex flex-col justify-start space-y-1.5">
-        <span className="text-sm">Total Value</span>
-        <span className="text-xl font-bold text-text">
+    <div className="grid w-full grid-cols-2">
+      <div className="col-span-1 flex flex-col justify-between">
+        <span className="text-text-weak">Net Worth</span>
+        <span className="text-2xl font-bold text-text">
           $
           {portfolio.balances && portfolio.balance && portfolio.balance !== 0
             ? portfolio.balance.toFixed(2)
             : 0}
         </span>
+      </div>
+      <div className="col-span-1 flex flex-col justify-between">
         <span
           className={cn(
-            "px-1.5 text-xs font-medium rounded text-white",
+            "px-1.5 font-medium rounded",
             portfolio.balance_change_24h && portfolio.balance_change_24h > 0
-              ? "bg-emerald-500"
-              : "bg-red-500",
+              ? "text-emerald-500"
+              : "text-red-500",
           )}
         >
           {portfolio.balance_change_24h < 0 ? "-" : "+"}
@@ -112,20 +114,20 @@ export const WalletOverviewBannerSparkline: FC<
               : ""}
           </span>
         </span>
+        <SparkAreaChart
+          // @ts-expect-error
+          showAnimation
+          data={[...portfolio.balances].reverse()}
+          categories={["balance"]}
+          index="date"
+          colors={[
+            portfolio.balance_change_24h && portfolio.balance_change_24h > 0
+              ? "emerald"
+              : "red",
+          ]}
+          className="h-8 w-full"
+        />
       </div>
-      <SparkAreaChart
-        // @ts-expect-error
-        showAnimation
-        data={[...portfolio.balances].reverse()}
-        categories={["balance"]}
-        index="date"
-        colors={[
-          portfolio.balance_change_24h && portfolio.balance_change_24h > 0
-            ? "emerald"
-            : "red",
-        ]}
-        className="h-8 w-full"
-      />
     </div>
   );
 };

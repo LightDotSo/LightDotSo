@@ -78,7 +78,7 @@ export default function OverviewLayout({
   return (
     <>
       <div className="flex w-full flex-col space-y-8 border-b border-b-border sm:flex-row sm:space-x-12 sm:space-y-0">
-        <div className="max-w-7xl flex-1 space-y-8 px-2 py-8 sm:mx-auto md:px-4 md:py-12 lg:px-0">
+        <div className="max-w-7xl flex-1 space-y-8 px-2 py-6 sm:mx-auto md:px-4 lg:px-0">
           <WalletOverviewBanner address={params.address as Address} />
         </div>
       </div>
@@ -90,7 +90,9 @@ export default function OverviewLayout({
         </div>
       </div>
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1 space-y-8">{children}</div>
+        <div className="mx-auto max-w-7xl flex-1 space-y-8 py-6">
+          {children}
+        </div>
       </div>
     </>
   );
