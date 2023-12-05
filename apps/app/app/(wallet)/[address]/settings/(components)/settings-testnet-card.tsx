@@ -211,13 +211,17 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Hooks
   // ---------------------------------------------------------------------------
 
+  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+
   useEffect(() => {
+    if (delayedIsSuccess) {
+      setIsFormChanged(false);
+      return;
+    }
     setIsFormChanged(
       JSON.stringify(formValues) !== JSON.stringify(defaultValues),
     );
-  }, [defaultValues, formValues]);
-
-  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+  }, [defaultValues, formValues, delayedIsSuccess]);
 
   // ---------------------------------------------------------------------------
   // Button
