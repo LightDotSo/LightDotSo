@@ -58,19 +58,30 @@ export interface ButtonProps
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+
+    if (variant === "loading" && !asChild) {
+      return (
+        <Comp
+          ref={ref}
+          className={cn(buttonVariants({ variant, size, className }))}
+          {...props}
+        >
+          <>
+            {variant === "loading" && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            {props.children}
+          </>
+        </Comp>
+      );
+    }
+
     return (
       <Comp
         ref={ref}
         className={cn(buttonVariants({ variant, size, className }))}
         {...props}
-      >
-        <>
-          {variant === "loading" && (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          )}
-          {props.children}
-        </>
-      </Comp>
+      />
     );
   },
 );

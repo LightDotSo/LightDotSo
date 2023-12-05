@@ -30,7 +30,7 @@ import {
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { Send, Share } from "lucide-react";
+import { Send } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import type { FC } from "react";
@@ -149,16 +149,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         </div>
         <div className="flex flex-col space-y-4">
           <div className="mt-4 flex items-center justify-end gap-x-2 lg:mt-0">
-            <Button size="sm" className="rounded-full p-3" variant="outline">
-              <Share className="h-3 w-3" />
-              <span className="sr-only">Open share modal</span>
-            </Button>
-            <Button
-              asChild
-              size="sm"
-              className="rounded-full p-3"
-              variant="outline"
-            >
+            <Button asChild size="sm" className="rounded-full p-3">
               <Link href={`/${address}/send`}>
                 <Send className="h-3 w-3" />
                 <span className="sr-only">Open send</span>
