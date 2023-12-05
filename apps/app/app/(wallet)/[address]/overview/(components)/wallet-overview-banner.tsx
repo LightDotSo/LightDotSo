@@ -30,7 +30,7 @@ import {
   ClipboardDocumentCheckIcon,
 } from "@heroicons/react/24/outline";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { Send, Share } from "lucide-react";
+import { Send } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import type { FC } from "react";
@@ -68,7 +68,9 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: WalletData | undefined = useQueryClient().getQueryData(
+  const queryClient = useQueryClient();
+
+  const currentData: WalletData | undefined = queryClient.getQueryData(
     queries.wallet.get(address).queryKey,
   );
 
@@ -116,27 +118,29 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                       (typeof address === "string" && splitAddress(address))}
                 </h2>
                 <Tooltip>
-                  <TooltipTrigger>
-                    <button
-                      className="flex items-center rounded-md bg-background-stronger px-3 py-2"
-                      onClick={() => {
-                        copy(address);
-                        successToast("Copied wallet address");
-                      }}
-                    >
-                      <p className="mr-2 text-sm text-text-weak">
-                        {ens ?? splitAddress(address)}
-                      </p>
-                      {!isCopied ? (
-                        <ClipboardDocumentIcon className="h-4 w-4 text-text-weak" />
-                      ) : (
-                        <ClipboardDocumentCheckIcon className="h-4 w-4 text-text-weak" />
-                      )}
-                    </button>
-                    <TooltipContent>
-                      <p>Copy Wallet Address</p>
-                    </TooltipContent>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <button
+                        className="flex items-center rounded-md bg-background-stronger px-3 py-2"
+                        onClick={() => {
+                          copy(address);
+                          successToast("Copied wallet address");
+                        }}
+                      >
+                        <p className="mr-2 text-sm text-text-weak">
+                          {ens ?? splitAddress(address)}
+                        </p>
+                        {!isCopied ? (
+                          <ClipboardDocumentIcon className="h-4 w-4 text-text-weak" />
+                        ) : (
+                          <ClipboardDocumentCheckIcon className="h-4 w-4 text-text-weak" />
+                        )}
+                      </button>
+                    </span>
                   </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Copy Wallet Address</p>
+                  </TooltipContent>
                 </Tooltip>
                 <div className="flex justify-start">
                   <NetworkStack address={address} />
@@ -147,16 +151,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
         </div>
         <div className="flex flex-col space-y-4">
           <div className="mt-4 flex items-center justify-end gap-x-2 lg:mt-0">
-            <Button size="sm" className="rounded-full p-3" variant="outline">
-              <Share className="h-3 w-3" />
-              <span className="sr-only">Open share modal</span>
-            </Button>
-            <Button
-              asChild
-              size="sm"
-              className="rounded-full p-3"
-              variant="outline"
-            >
+            <Button asChild size="sm" className="rounded-full p-3">
               <Link href={`/${address}/send`}>
                 <Send className="h-3 w-3" />
                 <span className="sr-only">Open send</span>

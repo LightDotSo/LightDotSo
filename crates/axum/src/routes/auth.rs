@@ -17,7 +17,7 @@ use crate::{
     constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ID_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
-    sessions::{unix_timestamp, update_session_expiry},
+    sessions::{unix_timestamp, update_session_expiry, verify_session},
     state::AppState,
 };
 use autometrics::autometrics;
@@ -142,6 +142,8 @@ async fn v1_auth_nonce_handler(session: Session) -> AppJsonResult<AuthNonce> {
     )]
 async fn v1_auth_session_handler(session: Session) -> AppJsonResult<AuthSession> {
     info!(?session);
+
+    verify_session(&session)?;
 
     // The frontend must set a session expiry
     let session_expiry = match session.get::<u64>(&EXPIRATION_TIME_KEY) {

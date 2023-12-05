@@ -34,6 +34,7 @@ import {
   useMutation,
 } from "@tanstack/react-query";
 import type { FC } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
@@ -41,6 +42,7 @@ import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/set
 import { TITLES } from "@/const/titles";
 import type { WalletData } from "@/data";
 import { useAuthModal } from "@/hooks/useAuthModal";
+import { useDelayedValue } from "@/hooks/useDelayedValue";
 import { queries } from "@/queries";
 import { errorToast, successToast } from "@/utils";
 
@@ -75,6 +77,8 @@ type SettingsNameCardProps = {
 
 export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   const { isAuthValid, openAuthModal } = useAuthModal();
+  const [isFormChanged, setIsFormChanged] = useState(false);
+  const [key, setKey] = useState(Math.random());
 
   // ---------------------------------------------------------------------------
   // Query
@@ -117,7 +121,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: Partial<WalletData>) => {
       const res = await updateWallet({
         params: {
@@ -138,7 +142,13 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         err => {
           if (err instanceof Error) {
             errorToast(err.message);
+            return;
           }
+          if (typeof err === "string") {
+            errorToast(err);
+            return;
+          }
+          throw err;
         },
       );
     },
@@ -175,6 +185,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
       if (err instanceof Error) {
         errorToast(err.message);
+        return;
+      }
+      if (typeof err === "string") {
+        errorToast(err);
+        return;
       }
     },
     onSettled: () => {
@@ -193,18 +208,45 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
-  const defaultValues: Partial<WalletNameFormValues> = {
-    name: wallet?.name ?? "",
-  };
+  const defaultValues: Partial<WalletNameFormValues> = useMemo(() => {
+    return {
+      name: wallet?.name,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet, key]);
 
   const form = useForm<WalletNameFormValues>({
     resolver: zodResolver(walletNameFormSchema),
     defaultValues,
   });
 
+  const formValues = form.watch();
+
   function onSubmit(data: WalletNameFormValues) {
     mutate({ name: data.name });
   }
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+
+  useEffect(() => {
+    if (delayedIsSuccess) {
+      setIsFormChanged(false);
+      return;
+    }
+    setIsFormChanged(
+      JSON.stringify(formValues) !== JSON.stringify(defaultValues),
+    );
+  }, [defaultValues, formValues, delayedIsSuccess]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setKey(Math.random());
+    }
+  }, [isSuccess]);
 
   // ---------------------------------------------------------------------------
   // Button
@@ -224,9 +266,17 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         type="submit"
         form="walletNameForm"
         variant={isPending ? "loading" : "default"}
-        disabled={typeof form.getFieldState("name").error !== "undefined"}
+        disabled={
+          delayedIsSuccess ||
+          !isFormChanged ||
+          typeof form.getFieldState("name").error !== "undefined"
+        }
       >
-        Update name
+        {!isError && delayedIsSuccess
+          ? "Success!"
+          : isPending
+            ? "Updating name..."
+            : "Update name"}
       </Button>
     );
   };
@@ -254,7 +304,24 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         TITLES.Settings.subcategories["Wallet Settings"].subcategories["Name"]
           .description
       }
-      footerContent={<SettingsNameCardButton />}
+      footerContent={
+        <>
+          {isFormChanged && (
+            <Button
+              variant="link"
+              onClick={() => {
+                if (defaultValues.name) {
+                  form.setValue("name", defaultValues.name);
+                }
+                form.trigger();
+              }}
+            >
+              Cancel
+            </Button>
+          )}
+          <SettingsNameCardButton />
+        </>
+      }
     >
       <Form {...form}>
         <form
@@ -274,7 +341,11 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
                   }
                 </FormLabel>
                 <FormControl>
-                  <Input placeholder="Your name" {...field} />
+                  <Input
+                    placeholder="Your name"
+                    {...field}
+                    onBlur={() => form.trigger()}
+                  />
                 </FormControl>
                 <FormDescription>
                   {

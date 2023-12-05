@@ -33,13 +33,14 @@ import {
   useQueryClient,
   useMutation,
 } from "@tanstack/react-query";
-import type { FC } from "react";
+import { useState, type FC, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import type { Address } from "viem";
 import * as z from "zod";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
 import type { WalletSettingsData } from "@/data";
+import { useDelayedValue } from "@/hooks/useDelayedValue";
 import { queries } from "@/queries";
 import { errorToast, successToast } from "@/utils";
 
@@ -68,6 +69,9 @@ type SettingsTestnetCardProps = {
 export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   address,
 }) => {
+  const [isFormChanged, setIsFormChanged] = useState(false);
+  const [key, setKey] = useState(Math.random());
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -110,7 +114,7 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // Mutate
   // ---------------------------------------------------------------------------
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isSuccess, isError } = useMutation({
     mutationFn: async (data: WalletSettingsData) => {
       const res = await updateWalletSettings({
         params: {
@@ -187,18 +191,45 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
   // ---------------------------------------------------------------------------
 
   // This can come from your database or API.
-  const defaultValues: Partial<WalletTestnetFormValues> = {
-    enabled: wallet?.is_enabled_testnet ?? false,
-  };
+  const defaultValues: Partial<WalletTestnetFormValues> = useMemo(() => {
+    return {
+      enabled: wallet?.is_enabled_testnet ?? false,
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wallet, key]);
 
   const form = useForm<WalletTestnetFormValues>({
     resolver: zodResolver(walletTestnetFormSchema),
     defaultValues,
   });
 
+  const formValues = form.watch();
+
   async function onSubmit(data: WalletTestnetFormValues) {
     mutate({ is_enabled_testnet: data.enabled });
   }
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const delayedIsSuccess = useDelayedValue<boolean>(isSuccess, false, 3000);
+
+  useEffect(() => {
+    if (delayedIsSuccess) {
+      setIsFormChanged(false);
+      return;
+    }
+    setIsFormChanged(
+      JSON.stringify(formValues) !== JSON.stringify(defaultValues),
+    );
+  }, [defaultValues, formValues, delayedIsSuccess]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setKey(Math.random());
+    }
+  }, [isSuccess]);
 
   // ---------------------------------------------------------------------------
   // Button
@@ -210,9 +241,17 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
         type="submit"
         form="walletTestnetForm"
         variant={isPending ? "loading" : "default"}
-        disabled={typeof form.getFieldState("enabled").error !== "undefined"}
+        disabled={
+          delayedIsSuccess ||
+          !isFormChanged ||
+          typeof form.getFieldState("enabled").error !== "undefined"
+        }
       >
-        Update
+        {!isError && delayedIsSuccess
+          ? "Success!"
+          : isPending
+            ? "Saving..."
+            : "Save"}
       </Button>
     );
   };

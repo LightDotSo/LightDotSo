@@ -55,15 +55,16 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: UserOperationData[] | undefined =
-    useQueryClient().getQueryData(
-      queries.user_operation.list({
-        address,
-        status: "executed",
-        order: "asc",
-        limit: Number.MAX_SAFE_INTEGER,
-      }).queryKey,
-    );
+  const queryClient = useQueryClient();
+
+  const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
+    queries.user_operation.list({
+      address,
+      status: "executed",
+      order: "asc",
+      limit: Number.MAX_SAFE_INTEGER,
+    }).queryKey,
+  );
 
   const { data: ops } = useSuspenseQuery<UserOperationData[] | null>({
     queryKey: queries.user_operation.list({

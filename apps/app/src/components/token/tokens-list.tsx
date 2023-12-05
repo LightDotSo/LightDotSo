@@ -42,10 +42,12 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const walletSettings: WalletSettingsData | undefined =
-    useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
+  const queryClient = useQueryClient();
 
-  const currentData: TokenData[] | undefined = useQueryClient().getQueryData(
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+
+  const currentData: TokenData[] | undefined = queryClient.getQueryData(
     queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,

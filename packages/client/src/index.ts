@@ -375,7 +375,7 @@ export const createUserOperation = async ({
   });
 };
 
-export const getNonce = async (params: {}, isPublic?: boolean) => {
+export const getNonce = async (params?: {}, isPublic?: boolean) => {
   const client = getClient(isPublic);
 
   return ResultAsync.fromPromise(

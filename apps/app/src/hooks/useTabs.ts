@@ -90,7 +90,9 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: TabData | undefined = useQueryClient().getQueryData(
+  const queryClient = useQueryClient();
+
+  const currentData: TabData | undefined = queryClient.getQueryData(
     queries.wallet.tab({ address: walletAddress }).queryKey,
   );
 

@@ -16,6 +16,7 @@
 import { cn } from "@lightdotso/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
 import { forwardRef } from "react";
 
 const buttonVariants = cva(
@@ -27,7 +28,7 @@ const buttonVariants = cva(
           "bg-background-primary text-text-weakest hover:bg-background-primary/90",
         destructive:
           "bg-background-destructive text-text-inverse hover:bg-background-destructive/90",
-        loading: "bg-background-primary-weak text-text-weakest",
+        loading: "bg-background-primary-strong text-text-weakest",
         outline:
           "border border-border-primary-weak bg-background text-text hover:bg-background-stronger hover:text-text-weak",
         ghost: "hover:bg-background-stronger hover:text-text-weak",
@@ -57,6 +58,24 @@ export interface ButtonProps
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
+
+    if (variant === "loading" && !asChild) {
+      return (
+        <Comp
+          ref={ref}
+          className={cn(buttonVariants({ variant, size, className }))}
+          {...props}
+        >
+          <>
+            {variant === "loading" && (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            {props.children}
+          </>
+        </Comp>
+      );
+    }
+
     return (
       <Comp
         ref={ref}
