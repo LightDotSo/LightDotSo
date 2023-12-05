@@ -42,10 +42,12 @@ export const NftsList: FC<NftsListProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const walletSettings: WalletSettingsData | undefined =
-    useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
+  const queryClient = useQueryClient();
 
-  const currentData: NftData | undefined = useQueryClient().getQueryData(
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+
+  const currentData: NftData | undefined = queryClient.getQueryData(
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,

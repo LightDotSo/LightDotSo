@@ -41,8 +41,11 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: ConfigurationData | undefined =
-    useQueryClient().getQueryData(queries.configuration.get(address).queryKey);
+  const queryClient = useQueryClient();
+
+  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
+    queries.configuration.get(address).queryKey,
+  );
 
   const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
     queryKey: queries.configuration.get(address).queryKey,

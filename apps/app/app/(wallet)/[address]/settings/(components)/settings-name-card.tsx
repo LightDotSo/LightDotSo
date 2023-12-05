@@ -245,7 +245,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
           typeof form.getFieldState("name").error !== "undefined"
         }
       >
-        Update name
+        {isPending ? "Updating name..." : "Update name"}
       </Button>
     );
   };

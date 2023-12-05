@@ -46,10 +46,11 @@ export const UserOperationsList: FC<UserOperationsListProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: UserOperationData[] | undefined =
-    useQueryClient().getQueryData(
-      queries.user_operation.list({ address, status }).queryKey,
-    );
+  const queryClient = useQueryClient();
+
+  const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
+    queries.user_operation.list({ address, status }).queryKey,
+  );
 
   const { data } = useSuspenseQuery<UserOperationData[] | null>({
     queryKey: queries.user_operation.list({ address, status }).queryKey,

@@ -42,7 +42,9 @@ export const AuthState: FC = () => {
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: UserData | undefined = useQueryClient().getQueryData(
+  const queryClient = useQueryClient();
+
+  const currentData: UserData | undefined = queryClient.getQueryData(
     queries.user.get(address as Address).queryKey,
   );
 

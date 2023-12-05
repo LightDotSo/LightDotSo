@@ -107,18 +107,19 @@ export const SendDialog: FC<SendDialogProps> = ({
   // Query
   // ---------------------------------------------------------------------------
 
+  const queryClient = useQueryClient();
+
   const walletSettings: WalletSettingsData | undefined =
-    useQueryClient().getQueryData(queries.wallet.settings(address).queryKey);
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentTokenData: TokenData[] | undefined =
-    useQueryClient().getQueryData(
-      queries.token.list({
-        address,
-        is_testnet: walletSettings?.is_enabled_testnet,
-      }).queryKey,
-    );
+  const currentTokenData: TokenData[] | undefined = queryClient.getQueryData(
+    queries.token.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+  );
 
-  const currentNftData: NftData | undefined = useQueryClient().getQueryData(
+  const currentNftData: NftData | undefined = queryClient.getQueryData(
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,

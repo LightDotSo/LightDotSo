@@ -43,7 +43,9 @@ export const WalletOverviewBannerSparkline: FC<
   // Query
   // ---------------------------------------------------------------------------
 
-  const currentData: PortfolioData | undefined = useQueryClient().getQueryData(
+  const queryClient = useQueryClient();
+
+  const currentData: PortfolioData | undefined = queryClient.getQueryData(
     queries.portfolio.get(address).queryKey,
   );
 
