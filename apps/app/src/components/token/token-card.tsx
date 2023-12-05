@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { TableCell, TableRow } from "@lightdotso/ui";
+import { Number, TableCell, TableRow } from "@lightdotso/ui";
 import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -76,7 +76,14 @@ export const TokenCard: FC<TokenCardProps> = ({
         </span>{" "}
         {(amount / 10 ** decimals).toFixed(3)} {symbol}
       </TableCell>
-      <TableCell>${balance_usd.toFixed(2)}</TableCell>
+      <TableCell>
+        <Number
+          value={balance_usd}
+          prefix="$"
+          variant="neutral"
+          size="balance"
+        />
+      </TableCell>
       <TableCell>
         <Suspense fallback={null}>
           <TokenCardSparkline

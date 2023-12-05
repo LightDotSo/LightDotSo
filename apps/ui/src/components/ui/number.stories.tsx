@@ -48,8 +48,13 @@ export const Prefix: Story = {
   render: args => <Number value={100_000_000} {...args} prefix="$" />,
   args: {},
 };
-
 export const Large: Story = {
   render: args => <Number value={100_000_000} {...args} size="xl" />,
   args: {},
+};
+export const Neutral: Story = {
+  render: args => <Number value={300} {...args} />,
+  args: {
+    variant: "neutral",
+  },
 };

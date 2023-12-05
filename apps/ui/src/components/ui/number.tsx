@@ -23,26 +23,38 @@ import { forwardRef, useEffect, useState } from "react";
 
 const numberVariantsWhole = cva("text-text", {
   variants: {
+    variant: {
+      default: "font-bold",
+      neutral: "font-normal",
+    },
     size: {
       xl: "text-xl font-bold md:text-2xl lg:text-3xl",
       lg: "text-lg",
       base: "text-base",
+      balance: "text-lg font-medium",
     },
   },
   defaultVariants: {
+    variant: "default",
     size: "base",
   },
 });
 
-const numberVariantsFraction = cva("text-sm text-text-weak", {
+const numberVariantsFraction = cva("text-sm", {
   variants: {
+    variant: {
+      default: "text-text-weak",
+      neutral: "text-text/90",
+    },
     size: {
       xl: "text-lg md:text-xl",
       lg: "text-sm",
       base: "text-xs",
+      balance: "text-base font-medium",
     },
   },
   defaultVariants: {
+    variant: "default",
     size: "base",
   },
 });
@@ -76,7 +88,7 @@ const NumberValue = ({
 };
 
 const Number = forwardRef<HTMLSpanElement, NumberProps>(
-  ({ prefix, value, className, size, ...props }, ref) => {
+  ({ prefix, value, className, size, variant, ...props }, ref) => {
     let spring = useSpring(0, {
       mass: 0.8,
       stiffness: 80,
@@ -98,12 +110,12 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
     return (
       <motion.span
         ref={ref}
-        className={cn(numberVariantsWhole({ size, className }))}
+        className={cn(numberVariantsWhole({ size, variant, className }))}
         {...props}
       >
         {prefix && prefix}
         <NumberValue display={displayWhole} />
-        <span className={cn(numberVariantsFraction({ size }))}>
+        <span className={cn(numberVariantsFraction({ size, variant }))}>
           .
           <NumberValue display={displayFraction} />
         </span>
