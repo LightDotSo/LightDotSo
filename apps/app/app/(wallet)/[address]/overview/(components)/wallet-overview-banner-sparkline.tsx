@@ -16,6 +16,7 @@
 "use client";
 
 import { getPortfolio } from "@lightdotso/client";
+import { Number } from "@lightdotso/ui";
 import { cn } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { SparkAreaChart } from "@tremor/react";
@@ -84,12 +85,9 @@ export const WalletOverviewBannerSparkline: FC<
     <div className="grid w-full grid-cols-2">
       <div className="col-span-1 flex flex-col justify-between">
         <span className="text-text-weak">Net Worth</span>
-        <span className="text-2xl font-bold text-text">
-          $
-          {portfolio.balances && portfolio.balance && portfolio.balance !== 0
-            ? portfolio.balance.toFixed(2)
-            : 0}
-        </span>
+        {portfolio.balances && portfolio.balance && (
+          <Number value={portfolio.balance} size="xl" prefix="$" />
+        )}
       </div>
       <div className="col-span-1 flex flex-col justify-between">
         <span

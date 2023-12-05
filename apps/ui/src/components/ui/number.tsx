@@ -24,7 +24,7 @@ import { forwardRef, useEffect, useState } from "react";
 const numberVariantsWhole = cva("text-text", {
   variants: {
     size: {
-      xl: "text-xl",
+      xl: "text-xl font-bold md:text-2xl",
       lg: "text-lg",
       base: "text-base",
     },
@@ -47,7 +47,6 @@ const numberVariantsFraction = cva("text-sm text-text-weak", {
   },
 });
 
-// Update NumberProps to include VariantProps for both the whole and fraction number variants
 interface NumberProps
   extends HTMLMotionProps<"span">,
     VariantProps<typeof numberVariantsWhole>,
@@ -56,15 +55,14 @@ interface NumberProps
   value: number;
 }
 
-const NumberValue: React.FC<{ display: MotionValue<string> }> = ({
-  // eslint-disable-next-line react/prop-types
+const NumberValue = ({
   display,
-}) => {
-  // eslint-disable-next-line react/prop-types
+}: {
+  display: MotionValue<string>;
+}): JSX.Element => {
   const [value, setValue] = useState(() => display.get().toString());
 
   useEffect(() => {
-    // eslint-disable-next-line react/prop-types
     const unsubscribe = display.on("change", v => {
       setValue(v.toString());
     });
@@ -79,7 +77,7 @@ const NumberValue: React.FC<{ display: MotionValue<string> }> = ({
 
 const Number = forwardRef<HTMLSpanElement, NumberProps>(
   ({ prefix, value, className, size, ...props }, ref) => {
-    let spring = useSpring(value, { mass: 0.8, stiffness: 80, damping: 10 });
+    let spring = useSpring(0, { mass: 0.8, stiffness: 80, damping: 10 });
 
     let displayWhole = useTransform(spring, current =>
       Math.floor(current).toLocaleString(),
@@ -99,9 +97,10 @@ const Number = forwardRef<HTMLSpanElement, NumberProps>(
         className={cn(numberVariantsWhole({ size, className }))}
         {...props}
       >
-        <span>{prefix && prefix}</span>
-        <NumberValue display={displayWhole} />.
+        {prefix && prefix}
+        <NumberValue display={displayWhole} />
         <span className={cn(numberVariantsFraction({ size }))}>
+          .
           <NumberValue display={displayFraction} />
         </span>
       </motion.span>
