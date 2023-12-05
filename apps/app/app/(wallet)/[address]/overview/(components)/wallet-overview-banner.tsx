@@ -18,6 +18,7 @@
 import { getWallet } from "@lightdotso/client";
 import { Avatar, Button, TooltipProvider } from "@lightdotso/ui";
 import { splitAddress } from "@lightdotso/utils";
+import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Send } from "lucide-react";
 import Link from "next/link";
@@ -29,6 +30,7 @@ import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 import { queries } from "@/queries";
+import { errorToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -104,7 +106,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
             <WalletOverviewBannerSparkline address={address} />
           </Suspense>
         </div>
-        <div className="col-span-1 flex w-full items-center justify-end space-x-4">
+        <div className="col-span-1 flex w-full items-center justify-end space-x-2">
           <Button asChild size="sm" className="rounded-full p-3">
             <Link href={`/${address}/send`}>
               <Send className="h-3 w-3" />
@@ -114,9 +116,12 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
           <Button
             size="sm"
             type="button"
-            className="w-full md:w-24"
-            onClick={() => {}}
+            className="w-full md:w-28"
+            onClick={() => {
+              errorToast("Not implemented yet");
+            }}
           >
+            <PlusCircleIcon className="mr-2 h-5 w-5" />
             Deposit
           </Button>
         </div>
