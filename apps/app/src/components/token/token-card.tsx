@@ -18,6 +18,7 @@ import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { TokenCardActions } from "@/components/token/token-card-actions";
+import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 
 // -----------------------------------------------------------------------------
@@ -84,7 +85,15 @@ export const TokenCard: FC<TokenCardProps> = ({
           />
         </Suspense>
       </TableCell>
-      <TableCell className="text-right">
+      <TableCell>
+        <Suspense fallback={null}>
+          <TokenCardPrice
+            address={tokenAddress as Address}
+            chain_id={chain_id}
+          />
+        </Suspense>
+      </TableCell>
+      <TableCell>
         <TokenCardActions
           address={address as Address}
           tokenAddress={tokenAddress}

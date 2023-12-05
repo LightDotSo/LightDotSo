@@ -102,7 +102,7 @@ export const WalletOverviewBannerSparkline: FC<
           {portfolio.balance_change_24h_percentage &&
           portfolio.balance_change_24h_percentage !== 0
             ? Math.abs(portfolio.balance_change_24h_percentage).toFixed(2)
-            : 0}
+            : "0.00"}
           %&nbsp;
           <span className="text-xs">
             {portfolio.balance_change_24h && portfolio.balance_change_24h
