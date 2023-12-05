@@ -116,27 +116,29 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
                       (typeof address === "string" && splitAddress(address))}
                 </h2>
                 <Tooltip>
-                  <TooltipTrigger>
-                    <button
-                      className="flex items-center rounded-md bg-background-stronger px-3 py-2"
-                      onClick={() => {
-                        copy(address);
-                        successToast("Copied wallet address");
-                      }}
-                    >
-                      <p className="mr-2 text-sm text-text-weak">
-                        {ens ?? splitAddress(address)}
-                      </p>
-                      {!isCopied ? (
-                        <ClipboardDocumentIcon className="h-4 w-4 text-text-weak" />
-                      ) : (
-                        <ClipboardDocumentCheckIcon className="h-4 w-4 text-text-weak" />
-                      )}
-                    </button>
-                    <TooltipContent>
-                      <p>Copy Wallet Address</p>
-                    </TooltipContent>
+                  <TooltipTrigger asChild>
+                    <span>
+                      <button
+                        className="flex items-center rounded-md bg-background-stronger px-3 py-2"
+                        onClick={() => {
+                          copy(address);
+                          successToast("Copied wallet address");
+                        }}
+                      >
+                        <p className="mr-2 text-sm text-text-weak">
+                          {ens ?? splitAddress(address)}
+                        </p>
+                        {!isCopied ? (
+                          <ClipboardDocumentIcon className="h-4 w-4 text-text-weak" />
+                        ) : (
+                          <ClipboardDocumentCheckIcon className="h-4 w-4 text-text-weak" />
+                        )}
+                      </button>
+                    </span>
                   </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Copy Wallet Address</p>
+                  </TooltipContent>
                 </Tooltip>
                 <div className="flex justify-start">
                   <NetworkStack address={address} />

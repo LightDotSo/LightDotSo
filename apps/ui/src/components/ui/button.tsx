@@ -64,10 +64,12 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size, className }))}
         {...props}
       >
-        {variant === "loading" && (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        )}
-        {props.children}
+        <>
+          {variant === "loading" && (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          )}
+          {props.children}
+        </>
       </Comp>
     );
   },
