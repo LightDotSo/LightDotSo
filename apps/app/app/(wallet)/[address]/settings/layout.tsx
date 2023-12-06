@@ -70,7 +70,9 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
       >
         <HStackFull>
           <BaseLayerWrapper>
-            <SettingsPageWrapper nav={<SidebarNav items={sidebarNavItems} />}>
+            <SettingsPageWrapper
+              nav={<SidebarNav baseRef items={sidebarNavItems} />}
+            >
               {children}
             </SettingsPageWrapper>
           </BaseLayerWrapper>
