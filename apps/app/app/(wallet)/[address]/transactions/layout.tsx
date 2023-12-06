@@ -16,7 +16,6 @@
 import type { Metadata } from "next";
 import type { Address } from "viem";
 import { InvokeUserOperationButton } from "@/app/(wallet)/[address]/transactions/(components)/invoke-user-operation-button";
-import { NavDynamicOperation } from "@/app/(wallet)/[address]/transactions/(components)/nav-dynamic-operation";
 import { BannerSection } from "@/components/section/banner-section";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
@@ -85,7 +84,6 @@ export default function TransactionsLayout({
         <MiddleLayerWrapper>
           <LinkButtonGroup items={transactionsNavItems}>
             {nav}
-            <NavDynamicOperation />
             <InvokeUserOperationButton address={params.address as Address} />
           </LinkButtonGroup>
         </MiddleLayerWrapper>
