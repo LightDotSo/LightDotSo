@@ -15,6 +15,7 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
+import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -44,9 +45,9 @@ export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
         title="New Wallet"
         description="Create your own new Light Wallet."
       >
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <BannerSectionWrapper>
           <div className="mx-auto max-w-7xl flex-1">{children}</div>
-        </div>
+        </BannerSectionWrapper>
       </BannerSection>
     </>
   );

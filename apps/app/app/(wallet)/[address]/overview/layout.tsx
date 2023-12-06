@@ -19,6 +19,7 @@ import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(compon
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
+import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -63,11 +64,11 @@ export default function OverviewLayout({
           </LinkButtonGroup>
         </div>
       </div>
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+      <BannerSectionWrapper>
         <div className="mx-auto max-w-7xl flex-1 space-y-8 py-6">
           {children}
         </div>
-      </div>
+      </BannerSectionWrapper>
     </>
   );
 }

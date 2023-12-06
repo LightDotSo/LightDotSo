@@ -18,6 +18,7 @@ import type { Address } from "viem";
 import { InvokeUserOperationButton } from "@/app/(wallet)/[address]/transactions/(components)/invoke-user-operation-button";
 import { BannerSection } from "@/components/section/banner-section";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
+import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -76,14 +77,14 @@ export default function TransactionsLayout({
         title={TITLES.Transactions.title}
         description={TITLES.Transactions.description}
       >
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <BannerSectionWrapper>
           <div className="mx-auto max-w-5xl flex-1 space-y-8">
             <LinkButtonGroup items={transactionsNavItems}>
               <InvokeUserOperationButton address={params.address as Address} />
             </LinkButtonGroup>
             {children}
           </div>
-        </div>
+        </BannerSectionWrapper>
       </BannerSection>
     </>
   );

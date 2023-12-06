@@ -15,6 +15,7 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
+import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -45,11 +46,11 @@ export default function SendLayout({ children }: SendLayoutProps) {
         title={TITLES.Send.title}
         description={TITLES.Send.description}
       >
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+        <BannerSectionWrapper>
           <div className="mx-auto my-8 max-w-5xl flex-1 lg:my-16 xl:my-20">
             {children}
           </div>
-        </div>
+        </BannerSectionWrapper>
       </BannerSection>
     </>
   );
