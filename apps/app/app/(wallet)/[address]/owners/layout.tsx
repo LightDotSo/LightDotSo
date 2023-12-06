@@ -16,8 +16,8 @@
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
 import { HStackFull } from "@/components/stack/h-stack-full";
-import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
-import { BigTableWrapper } from "@/components/wrapper/big-table-wrapper";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -49,9 +49,9 @@ export default function OwnersLayout({ children }: OwnersLayoutProps) {
         description={TITLES.Owners.description}
       >
         <HStackFull>
-          <BannerSectionWrapper>
-            <BigTableWrapper>{children}</BigTableWrapper>
-          </BannerSectionWrapper>
+          <BaseLayerWrapper>
+            <BasicPageWrapper>{children}</BasicPageWrapper>
+          </BaseLayerWrapper>
         </HStackFull>
       </BannerSection>
     </>

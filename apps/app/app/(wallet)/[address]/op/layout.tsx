@@ -15,7 +15,8 @@
 
 import type { Metadata } from "next";
 import { HStackFull } from "@/components/stack/h-stack-full";
-import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -44,13 +45,11 @@ export default function TransactionsLayout({
 }: TransactionsLayoutProps) {
   return (
     <>
-      <BannerSectionWrapper>
-        <HStackFull>
-          <div className="mx-auto max-w-5xl flex-1 space-y-8 py-8 lg:py-14">
-            {children}
-          </div>
-        </HStackFull>
-      </BannerSectionWrapper>
+      <HStackFull>
+        <BaseLayerWrapper>
+          <BasicPageWrapper>{children}</BasicPageWrapper>
+        </BaseLayerWrapper>
+      </HStackFull>
     </>
   );
 }

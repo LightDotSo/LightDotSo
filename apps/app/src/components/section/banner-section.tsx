@@ -15,7 +15,6 @@
 
 import { Separator } from "@lightdotso/ui";
 import type { FC } from "react";
-import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -53,7 +52,7 @@ export const BannerSection: FC<BannerSectionProps> = ({
           </div>
         </div>
         <Separator className="my-0" />
-        <BannerSectionWrapper>{children}</BannerSectionWrapper>
+        {children}
       </div>
     </>
   );

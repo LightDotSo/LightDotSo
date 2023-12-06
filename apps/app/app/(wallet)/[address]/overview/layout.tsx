@@ -19,9 +19,9 @@ import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(compon
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
-import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
 import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
-import { SimplePageWrapper } from "@/components/wrapper/simple-page-wrapper";
+import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -64,9 +64,9 @@ export default function OverviewLayout({
           <InvokePortfolioButton address={params.address as Address} />
         </LinkButtonGroup>
       </MiddleLayerWrapper>
-      <BannerSectionWrapper>
-        <SimplePageWrapper>{children}</SimplePageWrapper>
-      </BannerSectionWrapper>
+      <BaseLayerWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
+      </BaseLayerWrapper>
     </>
   );
 }

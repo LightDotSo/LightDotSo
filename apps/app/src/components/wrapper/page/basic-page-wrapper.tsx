@@ -17,7 +17,7 @@
 // Props
 // -----------------------------------------------------------------------------
 
-interface BannerSectionWrapperProps {
+interface BasicPageWrapperProps {
   children: React.ReactNode;
 }
 
@@ -25,10 +25,8 @@ interface BannerSectionWrapperProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export function BannerSectionWrapper({ children }: BannerSectionWrapperProps) {
+export function BasicPageWrapper({ children }: BasicPageWrapperProps) {
   return (
-    <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-      {children}
-    </div>
+    <div className="mt-8 flex flex-col space-y-8 lg:mt-12">{children}</div>
   );
 }
