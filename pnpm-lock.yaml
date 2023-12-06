@@ -434,6 +434,9 @@ importers:
       blurhash:
         specifier: ^2.0.5
         version: 2.0.5
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
       clsx:
         specifier: ^2.0.0
         version: 2.0.0

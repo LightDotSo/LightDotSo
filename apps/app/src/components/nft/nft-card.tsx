@@ -39,7 +39,7 @@ export const NftCard: FC<NftCardProps> = ({ address, nft }) => {
   return (
     <li className="group relative col-span-1 flex flex-col overflow-hidden rounded-2xl border border-border text-center">
       <NftImage nft={nft} />
-      <div className="absolute inset-x-0 bottom-0 opacity-0 transition-all duration-300 animate-out slide-out-to-bottom group-hover:opacity-100 group-hover:animate-in group-hover:fade-in group-hover:zoom-in group-hover:slide-in-from-bottom">
+      <div className="absolute inset-x-0 bottom-0 translate-y-2 opacity-0 transition-transform duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <Button asChild className="w-full py-2">
           <Link
             href={`/${address}/send?transfers=0:_:_:${

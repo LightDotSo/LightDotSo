@@ -16,6 +16,8 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { Skeleton } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 import { useState, type FC, useEffect } from "react";
 import type { TokenData } from "@/data";
 
@@ -43,22 +45,43 @@ export const parseTokenAddress = (token: TokenData) => {
 };
 
 // -----------------------------------------------------------------------------
+// Cva
+// -----------------------------------------------------------------------------
+
+const tokenImageVariants = cva("inline-flex overflow-hidden rounded-full", {
+  variants: {
+    size: {
+      xs: "h-6 w-6",
+      sm: "h-8 w-8",
+      md: "h-12 w-12",
+      lg: "h-16 w-16",
+      xl: "h-24 w-24",
+    },
+  },
+  defaultVariants: {
+    size: "sm",
+  },
+});
+
+// -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type TokenImageProps = {
   token: TokenData;
+  size?: VariantProps<typeof tokenImageVariants>["size"];
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenImage: FC<TokenImageProps> = ({ token }) => {
+export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
   const [tokenChainId, tokenAddress] = parseTokenAddress(token);
 
+  const className = tokenImageVariants({ size });
   const imageSrc = `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`;
 
   useEffect(() => {
@@ -69,13 +92,13 @@ export const TokenImage: FC<TokenImageProps> = ({ token }) => {
   }, [imageSrc]);
 
   if (!isImageLoaded) {
-    return <Skeleton className="h-10 w-10 rounded-full" />;
+    return <Skeleton className={className} />;
   }
 
   if (isImageLoaded && !isImageError) {
     return (
       <img
-        className="inline-flex h-10 w-10 rounded-full"
+        className={className}
         src={imageSrc}
         alt={token.name ?? token.symbol}
         onLoad={() => setIsImageLoaded(true)}
@@ -85,7 +108,12 @@ export const TokenImage: FC<TokenImageProps> = ({ token }) => {
   }
 
   return (
-    <span className="mr-1.5 inline-flex h-10 w-10 items-center justify-center overflow-hidden text-ellipsis rounded-full border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak">
+    <span
+      className={cn(
+        className,
+        "mr-1.5 items-center justify-center text-ellipsis border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak",
+      )}
+    >
       {shortenName(token.name ?? token.symbol)}
     </span>
   );
