@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use client";
 
-import { cn } from "@lightdotso/utils";
 import { cva } from "class-variance-authority";
 import { toast, Toaster as SonnerToaster } from "sonner";
 import { buttonVariants } from "./button";
@@ -49,12 +48,10 @@ const Toaster = () => {
           toast: toastVariants({ variant: "default" }),
           title: "text-sm font-semibold text-ellipsis overflow-hidden",
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
+          loader: "text-text",
           // cancelButton: buttonVariants({ variant: "outline" }),
           // closeButton: buttonVariants({ variant: "outline" }),
-          actionButton: cn(
-            buttonVariants({ variant: "outline" }),
-            "bg-background border-border-inverse text-text-inverse",
-          ),
+          actionButton: buttonVariants({ variant: "outline" }),
           success: toastVariants({ variant: "success" }),
           error: toastVariants({ variant: "destructive" }),
           info: toastVariants({ variant: "info" }),
