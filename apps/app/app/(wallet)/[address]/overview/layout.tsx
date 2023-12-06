@@ -20,8 +20,9 @@ import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(compone
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { LargeLayerWrapper } from "@/components/wrapper/layer/large-layer-wrapper";
 import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
-import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
+import { MinimalPageWrapper } from "@/components/wrapper/page/minimal-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -54,16 +55,16 @@ export default function OverviewLayout({
 }: OverviewLayoutProps) {
   return (
     <>
-      <MiddleLayerWrapper>
+      <LargeLayerWrapper>
         <WalletOverviewBanner address={params.address as Address} />
-      </MiddleLayerWrapper>
+      </LargeLayerWrapper>
       <MiddleLayerWrapper>
         <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
           <InvokePortfolioButton address={params.address as Address} />
         </LinkButtonGroup>
       </MiddleLayerWrapper>
       <BaseLayerWrapper>
-        <BasicPageWrapper>{children}</BasicPageWrapper>
+        <MinimalPageWrapper>{children}</MinimalPageWrapper>
       </BaseLayerWrapper>
     </>
   );

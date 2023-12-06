@@ -17,7 +17,7 @@ import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
 import { HStackFull } from "@/components/stack/h-stack-full";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
-import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
+import { MinimalPageWrapper } from "@/components/wrapper/page/minimal-page-wrapper";
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -49,7 +49,7 @@ export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
       >
         <HStackFull>
           <BaseLayerWrapper>
-            <BasicPageWrapper>{children}</BasicPageWrapper>
+            <MinimalPageWrapper>{children}</MinimalPageWrapper>
           </BaseLayerWrapper>
         </HStackFull>
       </BannerSection>

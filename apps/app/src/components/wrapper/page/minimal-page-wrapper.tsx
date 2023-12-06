@@ -13,33 +13,18 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { cn } from "@lightdotso/utils";
-
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface BaseLayerWrapperProps {
+interface MinimalPageWrapperProps {
   children: React.ReactNode;
-  className?: string;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export function BaseLayerWrapper({
-  children,
-  className,
-}: BaseLayerWrapperProps) {
-  return (
-    <div
-      className={cn(
-        "flex w-full overflow-x-scroll flex-row px-2 md:px-4 lg:px-8 md:overflow-hidden",
-        className,
-      )}
-    >
-      <div className="mx-auto max-w-7xl flex-1">{children}</div>
-    </div>
-  );
+export function MinimalPageWrapper({ children }: MinimalPageWrapperProps) {
+  return <div className="mt-6 flex flex-col space-y-6">{children}</div>;
 }

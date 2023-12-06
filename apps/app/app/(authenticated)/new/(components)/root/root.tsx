@@ -80,7 +80,7 @@ export const NewRoot: FC<NewRootProps> = async ({
   children,
 }) => {
   return (
-    <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-12 lg:space-y-0">
+    <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
       <div className="w-full flex-1 space-y-6">
         <nav aria-label="Progress">
           <ol className="divide-y divide-border rounded-md border border-border md:flex md:divide-y-0">
