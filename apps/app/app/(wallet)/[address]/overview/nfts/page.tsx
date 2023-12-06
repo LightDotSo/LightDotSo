@@ -19,10 +19,8 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
 import { NftsList } from "@/components/nft/nfts-list";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { handler as pageHandler } from "@/handlers/paths/[address]/overview/nfts/handler";
-import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/nfts/preloader";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/paths/[address]/overview/nfts/handler";
+import { preloader } from "@/preloaders/paths/[address]/overview/nfts/preloader";
 import { queries } from "@/queries";
 import { getQueryClient } from "@/services";
 
@@ -44,15 +42,12 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   preloader(params);
-  pagePreloader(params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = await handler(params);
-
-  const { nfts, nftValuation } = await pageHandler(params);
+  const { walletSettings, nfts, nftValuation } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query

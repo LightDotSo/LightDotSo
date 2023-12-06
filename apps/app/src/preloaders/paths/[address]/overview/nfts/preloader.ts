@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
+import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
 import { preload as preloadGetNftValuation } from "@/services/getNftValuation";
-// import { preload as preloadGetNfts } from "@/services/getNfts";
 
 // -----------------------------------------------------------------------------
 // Preloader
 // -----------------------------------------------------------------------------
 
 export const preloader = async (params: { address: string }) => {
-  // preloadGetNfts(params.address as Address);
+  addressPreloader(params);
   preloadGetNftValuation(params.address as Address);
 };

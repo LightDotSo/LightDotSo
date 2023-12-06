@@ -18,10 +18,8 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { handler as pageHandler } from "@/handlers/paths/[address]/overview/handler";
-import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/preloader";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/paths/[address]/overview/handler";
+import { preloader } from "@/preloaders/paths/[address]/overview/preloader";
 import { queries } from "@/queries";
 import { getQueryClient } from "@/services";
 
@@ -43,15 +41,12 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   preloader(params);
-  pagePreloader(params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = await handler(params);
-
-  const { tokens, portfolio } = await pageHandler(params);
+  const { walletSettings, tokens, portfolio } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
