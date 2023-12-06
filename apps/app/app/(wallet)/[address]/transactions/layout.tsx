@@ -19,6 +19,7 @@ import { InvokeUserOperationButton } from "@/app/(wallet)/[address]/transactions
 import { BannerSection } from "@/components/section/banner-section";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
+import { BigTableWrapper } from "@/components/wrapper/big-table-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -78,12 +79,12 @@ export default function TransactionsLayout({
         description={TITLES.Transactions.description}
       >
         <BannerSectionWrapper>
-          <div className="mx-auto max-w-5xl flex-1 space-y-8">
+          <BigTableWrapper>
             <LinkButtonGroup items={transactionsNavItems}>
               <InvokeUserOperationButton address={params.address as Address} />
             </LinkButtonGroup>
             {children}
-          </div>
+          </BigTableWrapper>
         </BannerSectionWrapper>
       </BannerSection>
     </>

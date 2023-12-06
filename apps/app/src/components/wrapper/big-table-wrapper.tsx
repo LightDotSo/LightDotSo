@@ -13,26 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import { BannerSection } from "@/components/section/banner-section";
-import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
-import { BigTableWrapper } from "@/components/wrapper/big-table-wrapper";
-import { TITLES } from "@/const/titles";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Activity.title,
-  description: TITLES.Activity.description,
-};
-
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface ActivityLayoutProps {
+interface BigTableWrapperProps {
   children: React.ReactNode;
 }
 
@@ -40,17 +25,6 @@ interface ActivityLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function ActivityLayout({ children }: ActivityLayoutProps) {
-  return (
-    <>
-      <BannerSection
-        title={TITLES.Activity.title}
-        description={TITLES.Activity.description}
-      >
-        <BannerSectionWrapper>
-          <BigTableWrapper>{children}</BigTableWrapper>
-        </BannerSectionWrapper>
-      </BannerSection>
-    </>
-  );
+export function BigTableWrapper({ children }: BigTableWrapperProps) {
+  return <div className="mx-auto my-4 flex-1 space-y-8">{children}</div>;
 }
