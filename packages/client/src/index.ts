@@ -16,10 +16,8 @@
 import {
   llamaGetSchema,
   llamaPostSchema,
-  nftsByOwnerSchema,
   nftWalletValuationsSchema,
   simplehashChainSchema,
-  simplehashTestnetChainSchema,
   simplehashMainnetChainSchema,
 } from "@lightdotso/schemas";
 import { ResultAsync, err, ok } from "neverthrow";
@@ -754,28 +752,24 @@ export const updateWalletSettings = async ({
 
 export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
   const chains = isTestnet
-    ? simplehashTestnetChainSchema.options.join(",")
-    : simplehashChainSchema.options.join(",");
+    ? simplehashChainSchema.options.join(",")
+    : simplehashMainnetChainSchema.options.join(",");
 
   return ResultAsync.fromPromise(
-    zodFetch(
+    fetch(
       `https://api.simplehash.com/api/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=50`,
-      nftsByOwnerSchema,
-      "GET",
       {
-        revalidate: 300,
-        tags: [address],
-      },
-      {
-        "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          "X-API-KEY": process.env.SIMPLEHASH_API_KEY!,
+        },
       },
     ),
-    err => {
-      if (err instanceof Error) {
-        return err;
-      }
-    },
-  );
+    err => err as Error,
+  ).andThen(response => {
+    return ResultAsync.fromPromise(response.json(), err => err as Error);
+  });
 };
 
 export const getNftValuation = async (address: string) => {

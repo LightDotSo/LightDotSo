@@ -15,13 +15,13 @@
 
 import type { Address } from "viem";
 import { preload as preloadGetNftValuation } from "@/services/getNftValuation";
-import { preload as preloadGetNfts } from "@/services/getNfts";
+// import { preload as preloadGetNfts } from "@/services/getNfts";
 
 // -----------------------------------------------------------------------------
 // Preloader
 // -----------------------------------------------------------------------------
 
 export const preloader = async (params: { address: string }) => {
-  preloadGetNfts(params.address as Address);
+  // preloadGetNfts(params.address as Address);
   preloadGetNftValuation(params.address as Address);
 };

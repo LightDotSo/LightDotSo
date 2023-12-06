@@ -27,3 +27,4 @@ ignores:
   - "@lightdotso/wagmi"
   - "@wagmi/core"
   - blurhash
+  - sonner

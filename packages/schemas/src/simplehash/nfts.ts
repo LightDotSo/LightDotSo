@@ -171,6 +171,6 @@ export const nftSchema = z.object({
 export const nftsByOwnerSchema = z.object({
   next_cursor: z.string().nullable(),
   next: z.string().nullable(),
-  previous: z.any(),
-  nfts: z.array(nftSchema),
+  previous: z.string().nullable(),
+  // nfts: z.array(nftSchema),
 });
