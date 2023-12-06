@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Separator } from "@lightdotso/ui";
 import type { FC } from "react";
+import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -39,8 +39,8 @@ export const BannerSection: FC<BannerSectionProps> = ({
 }) => {
   return (
     <>
-      <div className="flex-1">
-        <div className="mx-auto max-w-7xl flex-1 px-4 py-8 sm:py-12 lg:flex lg:items-center lg:justify-between lg:px-8">
+      <MiddleLayerWrapper>
+        <div className="py-4 sm:py-8 lg:flex lg:items-center lg:justify-between">
           <div className="flex flex-col justify-between gap-4">
             <h2 className="text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">
               {title}
@@ -53,9 +53,8 @@ export const BannerSection: FC<BannerSectionProps> = ({
             </div>
           )}
         </div>
-        <Separator className="my-0" />
-        {children}
-      </div>
+      </MiddleLayerWrapper>
+      {children}
     </>
   );
 };
