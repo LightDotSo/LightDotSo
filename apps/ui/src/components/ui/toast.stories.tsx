@@ -96,6 +96,9 @@ export const Success: Story = {
   args: {
     message: "Your request was successful.",
     variant: "success",
+    data: {
+      description: "This is a description.",
+    },
   },
 };
 export const Info: Story = {

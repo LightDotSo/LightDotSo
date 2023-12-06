@@ -26,12 +26,12 @@ const toastVariants = cva(
       variant: {
         default: "border bg-background",
         destructive:
-          "destructive group border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse",
+          "border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse",
         success:
-          "success group border-4 border-border-success-weaker bg-background-success text-text-inverse",
-        info: "info group border-4 border-border-info-weaker bg-background-info text-text-inverse",
+          "border-4 border-border-success-weaker bg-background-success text-text-inverse",
+        info: "border-4 border-border-info-weaker bg-background-info text-text-inverse",
         warning:
-          "warning group border-4 border-border-warning-weaker bg-background-warning text-text-inverse",
+          "border-4 border-border-warning-weaker bg-background-warning text-text-inverse",
       },
     },
     defaultVariants: {
@@ -53,7 +53,7 @@ const Toaster = () => {
           // closeButton: buttonVariants({ variant: "outline" }),
           actionButton: cn(
             buttonVariants({ variant: "outline" }),
-            "bg-white, border-border-inverse text-text-inverse",
+            "bg-background border-border-inverse text-text-inverse",
           ),
           success: toastVariants({ variant: "success" }),
           error: toastVariants({ variant: "destructive" }),
