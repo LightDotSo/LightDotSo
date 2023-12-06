@@ -131,8 +131,8 @@ export const SettingsTestnetCard: FC<SettingsTestnetCardProps> = ({
 
       // Return if the response is 200
       res.match(
-        data => {
-          successToast(data);
+        _ => {
+          successToast("Successfully updated wallet settings.");
         },
         err => {
           if (err instanceof Error) {

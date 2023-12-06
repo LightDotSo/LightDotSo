@@ -136,8 +136,8 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
 
       // Return if the response is 200
       res.match(
-        data => {
-          successToast(data);
+        _ => {
+          successToast("Successfully updated name.");
         },
         err => {
           if (err instanceof Error) {

@@ -99,8 +99,8 @@ export const AccountForm: FC = () => {
     defaultValues,
   });
 
-  function onSubmit(data: AccountFormValues) {
-    successToast(data);
+  function onSubmit(_data: AccountFormValues) {
+    successToast("Your account has been updated.");
   }
 
   return (

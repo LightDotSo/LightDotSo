@@ -95,8 +95,8 @@ export const ProfileForm: FC = () => {
     control: form.control,
   });
 
-  function onSubmit(data: ProfileFormValues) {
-    successToast(data);
+  function onSubmit(_data: ProfileFormValues) {
+    successToast("Profile updated.");
   }
 
   return (

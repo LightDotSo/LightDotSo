@@ -57,7 +57,6 @@ import {
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 import { newFormSchema } from "@/schemas/newForm";
 import { useNewFormStore } from "@/stores/useNewForm";
-import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -124,8 +123,7 @@ export const NewWalletForm: FC = () => {
   }, [name, type]);
 
   const onSubmit = useCallback(
-    (data: NewFormValues) => {
-      successToast(data);
+    (_data: NewFormValues) => {
       navigateToStep();
     },
     [navigateToStep],
