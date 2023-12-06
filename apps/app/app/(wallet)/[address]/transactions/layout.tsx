@@ -16,6 +16,7 @@
 import type { Metadata } from "next";
 import type { Address } from "viem";
 import { InvokeUserOperationButton } from "@/app/(wallet)/[address]/transactions/(components)/invoke-user-operation-button";
+import { NavDynamicOperation } from "@/app/(wallet)/[address]/transactions/(components)/nav-dynamic-operation";
 import { BannerSection } from "@/components/section/banner-section";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
@@ -60,6 +61,7 @@ export const metadata: Metadata = {
 
 interface TransactionsLayoutProps {
   children: React.ReactNode;
+  nav: React.ReactNode;
   params: {
     address: string;
   };
@@ -71,6 +73,7 @@ interface TransactionsLayoutProps {
 
 export default function TransactionsLayout({
   children,
+  nav,
   params,
 }: TransactionsLayoutProps) {
   return (
@@ -81,6 +84,8 @@ export default function TransactionsLayout({
       >
         <MiddleLayerWrapper>
           <LinkButtonGroup items={transactionsNavItems}>
+            {nav}
+            <NavDynamicOperation />
             <InvokeUserOperationButton address={params.address as Address} />
           </LinkButtonGroup>
         </MiddleLayerWrapper>
