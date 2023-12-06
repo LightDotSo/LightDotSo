@@ -33,15 +33,15 @@ export const OVERVIEW_NAV_ITEMS = [
     category: OverviewSubCategory.Tokens,
   },
   {
-    title: "NFT",
+    title: "NFTs",
     href: "/overview/nfts",
     id: "nfts",
     category: OverviewSubCategory.NFTs,
   },
   {
-    title: "Transactions",
-    href: "/overview/transactions",
-    id: "transactions",
-    category: OverviewSubCategory.Transactions,
+    title: "History",
+    href: "/overview/history",
+    id: "history",
+    category: OverviewSubCategory.History,
   },
 ];

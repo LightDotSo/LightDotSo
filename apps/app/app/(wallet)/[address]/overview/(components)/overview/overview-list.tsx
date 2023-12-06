@@ -21,6 +21,7 @@ import type { Address } from "viem";
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
 import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-wrapper";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
+import { NftsList } from "@/components/nft/nfts-list";
 import { TokensList } from "@/components/token/tokens-list";
 import { OverviewSubCategory, TITLES } from "@/const/titles";
 
@@ -50,10 +51,10 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
   const itemToComponent = (itemId: string): JSX.Element => {
     switch (itemId) {
       case OverviewSubCategory.Tokens:
-        return <TokensList address={address} />;
+        return <TokensList address={address} limit={4} />;
       case OverviewSubCategory.NFTs:
-        return <TokensList address={address} />;
-      case OverviewSubCategory.Transactions:
+        return <NftsList address={address} limit={6} />;
+      case OverviewSubCategory.History:
         return <TokensList address={address} />;
       default:
         return <></>;

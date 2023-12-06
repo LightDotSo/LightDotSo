@@ -31,13 +31,14 @@ import { queries } from "@/queries";
 
 export type TokensListProps = {
   address: Address;
+  limit?: number;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokensList: FC<TokensListProps> = ({ address }) => {
+export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -85,13 +86,15 @@ export const TokensList: FC<TokensListProps> = ({ address }) => {
     <TokensWrapper>
       {data && data.length === 0 && <TokensEmpty />}
       {data &&
-        data.map(token => (
-          <TokenCard
-            key={`${token.address}-${token.chain_id}`}
-            address={address}
-            token={token}
-          />
-        ))}
+        data
+          .slice(0, limit || data.length)
+          .map(token => (
+            <TokenCard
+              key={`${token.address}-${token.chain_id}`}
+              address={address}
+              token={token}
+            />
+          ))}
     </TokensWrapper>
   );
 };

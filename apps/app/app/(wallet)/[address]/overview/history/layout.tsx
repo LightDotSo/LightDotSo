@@ -13,42 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
-import type { FC } from "react";
+import type { Metadata } from "next";
+import { TITLES } from "@/const/titles";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Overview.subcategories.History.title,
+  description: TITLES.Overview.subcategories.History.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokensWrapperProps = {
+interface OverviewHistoryLayoutProps {
   children: React.ReactNode;
-};
+}
 
 // -----------------------------------------------------------------------------
-// Component
+// Layout
 // -----------------------------------------------------------------------------
 
-export const TokensWrapper: FC<TokensWrapperProps> = ({ children }) => {
-  return (
-    <div className="">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[35%]">Name</TableHead>
-            <TableHead className="w-[30%]">Balance</TableHead>
-            <TableHead>Last 7 Days</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>{children}</TableBody>
-      </Table>
-    </div>
-  );
-};
+export default function Layout({ children }: OverviewHistoryLayoutProps) {
+  return <>{children}</>;
+}

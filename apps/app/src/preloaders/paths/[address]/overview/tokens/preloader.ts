@@ -13,24 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { FC } from "react";
+import type { Address } from "viem";
+import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
+import { preload as preloadGetToken } from "@/services/getTokens";
 
 // -----------------------------------------------------------------------------
-// Props
+// Preloader
 // -----------------------------------------------------------------------------
 
-type NftsWrapperProps = {
-  children: React.ReactNode;
-};
-
-// -----------------------------------------------------------------------------
-// Component
-// -----------------------------------------------------------------------------
-
-export const NftsWrapper: FC<NftsWrapperProps> = ({ children }) => {
-  return (
-    <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
-      {children}
-    </ul>
-  );
+export const preloader = async (params: { address: string }) => {
+  preloadGetPortfolio(params.address as Address);
+  preloadGetToken(params.address as Address);
 };

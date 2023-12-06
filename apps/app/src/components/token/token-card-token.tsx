@@ -13,30 +13,50 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import { TITLES } from "@/const/titles";
+"use client";
 
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Overview.subcategories.Transactions.title,
-  description: TITLES.Overview.subcategories.Transactions.description,
-};
+import type { FC } from "react";
+import { TokenImage } from "@/components/token/token-image";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface OverviewTransactionsLayoutProps {
-  children: React.ReactNode;
-}
+type TokenCardTokenProps = {
+  address: string;
+  chain_id: number;
+  amount: number;
+  decimals: number;
+  name?: string | null;
+  symbol: string;
+};
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export default function Layout({ children }: OverviewTransactionsLayoutProps) {
-  return <>{children}</>;
-}
+export const TokenCardToken: FC<TokenCardTokenProps> = ({
+  address,
+  chain_id,
+  amount,
+  name,
+  symbol,
+  decimals,
+}) => {
+  return (
+    <div className="flex items-center space-x-3">
+      <TokenImage
+        address={address}
+        chain_id={chain_id}
+        name={name}
+        symbol={symbol}
+      />{" "}
+      <div className="flex flex-col space-y-1.5">
+        <span className="text-sm text-text/90">{name ?? symbol}</span>
+        <span className="text-sm text-text-weak">
+          {(amount / 10 ** decimals).toFixed(3)} {symbol}
+        </span>
+      </div>
+    </div>
+  );
+};
