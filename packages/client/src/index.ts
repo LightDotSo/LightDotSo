@@ -771,6 +771,9 @@ export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
       },
     ),
     err => {
+      if (err instanceof z.ZodError) {
+        return err.message;
+      }
       if (err instanceof Error) {
         return err;
       }

@@ -36,3 +36,4 @@ ignores:
   - "@storybook/theming"
   - storybook-dark-mode
   - "@emotion/is-prop-valid"
+  - "@radix-ui/react-toast"

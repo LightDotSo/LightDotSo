@@ -27,6 +27,21 @@ export const shortenName = (name: string) => {
   return name.match(/\b\w/g)?.join("").substring(0, 3);
 };
 
+export const parseTokenAddress = (token: TokenData) => {
+  if (
+    token.chain_id == 137 &&
+    token.address == "0x0000000000000000000000000000000000000000"
+  ) {
+    return [1, "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"];
+  }
+
+  if (token.address == "0x0000000000000000000000000000000000000000") {
+    return [1, "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"];
+  }
+
+  return [token.chain_id, token.address.toLowerCase()];
+};
+
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
@@ -39,13 +54,12 @@ type TokenImageProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenImage: FC<TokenImageProps> = ({
-  token: { address, chain_id, name, symbol },
-}) => {
+export const TokenImage: FC<TokenImageProps> = ({ token }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isImageError, setIsImageError] = useState(false);
+  const [tokenChainId, tokenAddress] = parseTokenAddress(token);
 
-  const imageSrc = `https://logos.covalenthq.com/tokens/${chain_id}/${address.toLowerCase()}.png`;
+  const imageSrc = `https://logos.covalenthq.com/tokens/${tokenChainId}/${tokenAddress}.png`;
 
   useEffect(() => {
     const image = new Image();
@@ -63,7 +77,7 @@ export const TokenImage: FC<TokenImageProps> = ({
       <img
         className="inline-flex h-10 w-10 rounded-full"
         src={imageSrc}
-        alt={name ?? symbol}
+        alt={token.name ?? token.symbol}
         onLoad={() => setIsImageLoaded(true)}
         onErrorCapture={() => setIsImageError(true)}
       />
@@ -72,7 +86,7 @@ export const TokenImage: FC<TokenImageProps> = ({
 
   return (
     <span className="mr-1.5 inline-flex h-10 w-10 items-center justify-center overflow-hidden text-ellipsis rounded-full border border-border-primary-weak bg-background-stronger text-xs leading-none text-text-weak">
-      {shortenName(name ?? symbol)}
+      {shortenName(token.name ?? token.symbol)}
     </span>
   );
 };
