@@ -14,21 +14,47 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { StoryObj, Meta } from "@storybook/react";
+import type { ReactNode } from "react";
+import type { ExternalToast } from "sonner";
+import { toast } from "sonner";
 import { Button } from "./button";
-import { ToastAction } from "./toast";
-import { useToast, type Toast as ToastProps } from "./use-toast";
 
-const ToastDemo = (props: ToastProps) => {
-  const { toast } = useToast();
-
+const ToastDemo = ({
+  message,
+  data,
+  variant = "default",
+}: {
+  message: ReactNode;
+  variant?: "default" | "success" | "error" | "loading" | "info" | "warning";
+  data?: ExternalToast;
+}) => {
   return (
     <>
       <Button
         variant="outline"
         onClick={() => {
-          toast({
-            ...props,
-          });
+          switch (variant) {
+            case "default":
+              toast(message, data);
+              break;
+            case "success":
+              toast.success(message, data);
+              break;
+            case "error":
+              toast.error(message, data);
+              break;
+            case "loading":
+              toast.loading(message, data);
+              break;
+            case "warning":
+              toast.warning(message, data);
+              break;
+            case "info":
+              toast.info(message, data);
+              break;
+            default:
+              break;
+          }
         }}
       >
         Show Toast
@@ -49,46 +75,72 @@ type Story = StoryObj<typeof ToastDemo>;
 
 export const Simple: Story = {
   args: {
-    description: "Your message has been sent.",
+    message: "Hello World",
   },
 };
-
-export const WithTitle: Story = {
+export const Description: Story = {
   args: {
-    title: "Uh oh! Something went wrong.",
-    description: "There was a problem with your request.",
+    message: "Hello World",
+    data: {
+      description: "This is a description.",
+    },
   },
 };
-
-export const WithAction: Story = {
+export const Error: Story = {
   args: {
-    title: "Uh oh! Something went wrong.",
-    description: "There was a problem with your request.",
-    action: <ToastAction altText="Try again">Try again</ToastAction>,
+    message: "There was a problem with your request.",
+    variant: "error",
   },
 };
-
-export const Destructive: Story = {
-  args: {
-    variant: "destructive",
-    title: "Uh oh! Something went wrong.",
-    description: "There was a problem with your request.",
-    action: <ToastAction altText="Try again">Try again</ToastAction>,
-  },
-};
-
 export const Success: Story = {
   args: {
+    message: "Your request was successful.",
     variant: "success",
-    title: "Success!",
-    description: "Your message has been sent.",
+    data: {
+      description: "This is a description.",
+    },
   },
 };
-
 export const Info: Story = {
   args: {
+    message: "This is an informational message.",
     variant: "info",
-    title: "Info",
-    description: "Your message has been sent.",
+  },
+};
+export const Warning: Story = {
+  args: {
+    message: "This is a warning message.",
+    variant: "warning",
+  },
+};
+export const Loading: Story = {
+  args: {
+    message: "Loading...",
+    variant: "loading",
+  },
+};
+export const Action: Story = {
+  args: {
+    message: "This is an informational message.",
+    variant: "info",
+    data: {
+      action: {
+        label: "Action",
+        onClick: () => {
+          console.info("Action clicked");
+        },
+      },
+    },
+  },
+};
+export const Close: Story = {
+  args: {
+    message: "This is an informational message.",
+    variant: "info",
+    data: {
+      cancel: {
+        label: "Cancel",
+      },
+    },
   },
 };

@@ -1,15 +1,14 @@
 import type { Preview } from "@storybook/react";
 import "@lightdotso/styles/global.css";
 import * as React from "react";
-import { ToastProvider } from "../src/components/ui/toast";
-import { Toaster } from "../src/components/ui/toaster";
+import { Toaster } from "../src/components/ui/toast";
 
 export const decorators = [
   Story => (
-    <ToastProvider>
+    <>
       <Story />
       <Toaster />
-    </ToastProvider>
+    </>
   ),
 ];
 

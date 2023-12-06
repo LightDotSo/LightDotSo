@@ -88,6 +88,7 @@
     "react-hook-form": "^7.48.2",
     "server-only": "^0.0.1",
     "siwe": "^2.1.4",
+    "sonner": "^1.2.4",
     "superjson": "^2.2.1",
     "viem": "^1.19.9",
     "wagmi": "^1.4.7",

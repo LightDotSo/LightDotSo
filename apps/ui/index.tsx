@@ -203,17 +203,7 @@ export {
   TabsContent,
 } from "./src/components/ui/tabs";
 export { Textarea } from "./src/components/ui/textarea";
-export {
-  ToastProvider,
-  ToastViewport,
-  Toast,
-  ToastTitle,
-  ToastDescription,
-  ToastClose,
-  ToastAction,
-} from "./src/components/ui/toast";
-export type { ToastProps, ToastActionElement } from "./src/components/ui/toast";
-export { Toaster } from "./src/components/ui/toaster";
+export { toast, Toaster } from "./src/components/ui/toast";
 export { Toggle, toggleVariants } from "./src/components/ui/toggle";
 export {
   Tooltip,
@@ -221,6 +211,5 @@ export {
   TooltipContent,
   TooltipProvider,
 } from "./src/components/ui/tooltip";
-export { useToast, toast } from "./src/components/ui/use-toast";
 export { ThemeProvider } from "./src/providers/theme-provider";
 export { ReactQueryProvider } from "./src/providers/react-query";

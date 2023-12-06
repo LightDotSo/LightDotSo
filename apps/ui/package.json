@@ -105,6 +105,7 @@
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "shadcn-ui": "^0.4.1",
+    "sonner": "^1.2.4",
     "storybook": "^7.6.0",
     "storybook-dark-mode": "^3.0.3",
     "tailwindcss": "^3.3.5",

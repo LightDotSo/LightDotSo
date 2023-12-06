@@ -21,14 +21,14 @@ import {
   sendUserOperation,
 } from "@lightdotso/client";
 import { CONTRACT_ADDRESSES } from "@lightdotso/const";
-import { Button, toast } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useCallback, useState, useEffect } from "react";
 import type { FC } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 import { queries } from "@/queries";
-import { errorToast, serializeBigInt } from "@/utils";
+import { errorToast, serializeBigInt, successToast } from "@/utils";
 import {
   useLightVerifyingPaymasterGetHash,
   useLightVerifyingPaymasterSenderNonce,
@@ -228,17 +228,8 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
           ]);
 
           res.match(
-            ok => {
-              toast({
-                title: "You submitted the userOperation result",
-                description: (
-                  <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                    <code className="text-white">
-                      {JSON.stringify(ok, null, 2)}
-                    </code>
-                  </pre>
-                ),
-              });
+            _ => {
+              successToast("You submitted the userOperation result");
             },
             err => {
               if (err instanceof Error) {

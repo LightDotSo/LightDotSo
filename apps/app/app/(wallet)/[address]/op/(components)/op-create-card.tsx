@@ -17,7 +17,7 @@
 
 import { createUserOperation } from "@lightdotso/client";
 import { subdigestOf } from "@lightdotso/solutions";
-import { Button, toast } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 import type { FC } from "react";
@@ -34,7 +34,7 @@ import { useSignMessage } from "wagmi";
 import type { ConfigurationData } from "@/data";
 import { useAuth } from "@/stores/useAuth";
 import type { UserOperation } from "@/types";
-import { errorToast, serializeBigInt } from "@/utils";
+import { errorToast, serializeBigInt, successToast } from "@/utils";
 import {
   lightWalletABI,
   lightWalletFactoryABI,
@@ -180,17 +180,8 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
       });
 
       res.match(
-        res => {
-          toast({
-            title: "You submitted the userOperation result",
-            description: (
-              <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                <code className="text-white">
-                  {JSON.stringify(res, null, 2)}
-                </code>
-              </pre>
-            ),
-          });
+        _ => {
+          successToast("You submitted the userOperation result");
           if (threshold >= owner.weight) {
             router.push(
               `/${address}/op/${userOperation.chainId}/${userOperation.hash}`,
