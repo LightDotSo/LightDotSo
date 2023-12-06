@@ -44,7 +44,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({
   decimals,
 }) => {
   return (
-    <div className="flex items-center space-x-1.5">
+    <div className="flex items-center space-x-3">
       <TokenImage
         address={address}
         chain_id={chain_id}
