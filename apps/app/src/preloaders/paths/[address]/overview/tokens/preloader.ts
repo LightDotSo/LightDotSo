@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
+import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
 import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
 import { preload as preloadGetToken } from "@/services/getTokens";
 
@@ -22,6 +23,7 @@ import { preload as preloadGetToken } from "@/services/getTokens";
 // -----------------------------------------------------------------------------
 
 export const preloader = async (params: { address: string }) => {
+  addressPreloader(params);
   preloadGetPortfolio(params.address as Address);
   preloadGetToken(params.address as Address);
 };
