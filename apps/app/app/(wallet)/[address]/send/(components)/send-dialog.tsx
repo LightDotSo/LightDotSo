@@ -71,7 +71,7 @@ import { useTransfersQueryState } from "@/app/(wallet)/[address]/send/(hooks)";
 import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
-import type { NftData, TokenData, WalletSettingsData } from "@/data";
+import type { NftDataPage, TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import type { Transfer, Transfers } from "@/schemas";
 import { sendFormConfigurationSchema } from "@/schemas/sendForm";
@@ -119,7 +119,7 @@ export const SendDialog: FC<SendDialogProps> = ({
     }).queryKey,
   );
 
-  const currentNftData: NftData | undefined = queryClient.getQueryData(
+  const currentNftData: NftDataPage | undefined = queryClient.getQueryData(
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,

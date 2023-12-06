@@ -22,7 +22,7 @@ import type { Address } from "viem";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsEmpty } from "@/components/nft/nfts-empty";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
-import type { NftData, WalletSettingsData } from "@/data";
+import type { NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
@@ -48,14 +48,14 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentData: NftData | undefined = queryClient.getQueryData(
+  const currentData: NftDataPage | undefined = queryClient.getQueryData(
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<NftData | null>({
+  const { data } = useSuspenseQuery<NftDataPage | null>({
     queryKey: queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
