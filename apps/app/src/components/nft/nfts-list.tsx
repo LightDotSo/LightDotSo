@@ -84,6 +84,13 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
       {data &&
         data.nfts
           .slice(0, limit || data.nfts.length)
+          .filter(
+            nft =>
+              nft.collection &&
+              (nft.collection?.spam_score === null ||
+                nft.collection?.spam_score === undefined ||
+                nft.collection?.spam_score < 30),
+          )
           .map(nft => <NftCard key={nft.nft_id} address={address} nft={nft} />)}
     </NftsWrapper>
   );

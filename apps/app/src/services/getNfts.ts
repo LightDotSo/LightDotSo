@@ -21,9 +21,9 @@ import type { Address } from "viem";
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address, isTestnet?: boolean) => {
-  void getClientNftsByOwner(address, isTestnet);
-};
+// export const preload = (address: Address, isTestnet?: boolean) => {
+//   void getClientNftsByOwner(address, isTestnet);
+// };
 
 // -----------------------------------------------------------------------------
 // Service

@@ -32,7 +32,12 @@ test("getNftsByOwner", async () => {
   //   "stale",
   // ]);
   // Check that the array length is greater than 0
-  expect(result._unsafeUnwrap().nfts.length).toBeGreaterThan(0);
+  expect(
+    (result as { _unsafeUnwrap: () => any })._unsafeUnwrap().wallets.length,
+  ).toBeGreaterThan(0);
+
+  // Log the result
+  // console.log(result._unsafeUnwrap());
 
   // Log the result
   // console.log(result._unsafeUnwrap());
