@@ -64,7 +64,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
   return (
     <OverviewWrapper>
       <Reorder.Group
-        className="relative flex flex-col space-y-4"
+        className="relative flex flex-col space-y-6"
         axis="y"
         values={items}
         onReorder={setItems}

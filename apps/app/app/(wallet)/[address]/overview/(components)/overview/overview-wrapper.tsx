@@ -27,5 +27,5 @@ type OverviewWrapperProps = {
 // -----------------------------------------------------------------------------
 
 export const OverviewWrapper: FC<OverviewWrapperProps> = ({ children }) => {
-  return <div className="h-full">{children}</div>;
+  return children;
 };
