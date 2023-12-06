@@ -13,47 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import { BannerSection } from "@/components/section/banner-section";
-import { HStackFull } from "@/components/stack/h-stack-full";
-import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
-import { BigTableWrapper } from "@/components/wrapper/big-table-wrapper";
-import { TITLES } from "@/const/titles";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: TITLES.Activity.title,
-  description: TITLES.Activity.description,
-};
+import { cn } from "@lightdotso/utils";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface ActivityLayoutProps {
+interface BaseLayerWrapperProps {
   children: React.ReactNode;
+  className?: string;
 }
 
 // -----------------------------------------------------------------------------
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function ActivityLayout({ children }: ActivityLayoutProps) {
+export function BaseLayerWrapper({
+  children,
+  className,
+}: BaseLayerWrapperProps) {
   return (
-    <>
-      <BannerSection
-        title={TITLES.Activity.title}
-        description={TITLES.Activity.description}
-      >
-        <HStackFull>
-          <BannerSectionWrapper>
-            <BigTableWrapper>{children}</BigTableWrapper>
-          </BannerSectionWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <div className={cn("flex w-full flex-row", className)}>
+      <div className="mx-auto max-w-7xl flex-1">{children}</div>
+    </div>
   );
 }

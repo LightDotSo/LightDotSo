@@ -26,5 +26,9 @@ interface BigTableWrapperProps {
 // -----------------------------------------------------------------------------
 
 export function BigTableWrapper({ children }: BigTableWrapperProps) {
-  return <div className="mx-auto my-4 flex-1 space-y-8">{children}</div>;
+  return (
+    <div className="mx-auto max-w-7xl flex-1 px-2 md:px-4 lg:px-0">
+      <div className="my-4 flex-1 space-y-8">{children}</div>
+    </div>
+  );
 }

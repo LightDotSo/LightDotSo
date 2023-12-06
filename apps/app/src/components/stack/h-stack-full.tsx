@@ -13,25 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import { BannerSection } from "@/components/section/banner-section";
-import { HStackFull } from "@/components/stack/h-stack-full";
-import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
-
-// -----------------------------------------------------------------------------
-// Metadata
-// -----------------------------------------------------------------------------
-
-export const metadata: Metadata = {
-  title: "New Wallet",
-  description: "Create a new wallet.",
-};
-
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface NewWalletLayoutProps {
+interface HStackFullProps {
   children: React.ReactNode;
 }
 
@@ -39,19 +25,6 @@ interface NewWalletLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
-  return (
-    <>
-      <BannerSection
-        title="New Wallet"
-        description="Create your own new Light Wallet."
-      >
-        <HStackFull>
-          <BannerSectionWrapper>
-            <div className="mx-auto max-w-7xl flex-1">{children}</div>
-          </BannerSectionWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
-  );
+export function HStackFull({ children }: HStackFullProps) {
+  return <div className="mx-auto flex w-full flex-1 flex-col">{children}</div>;
 }

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import { HStackFull } from "@/components/stack/h-stack-full";
 import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
 import { TITLES } from "@/const/titles";
 
@@ -44,9 +45,11 @@ export default function TransactionsLayout({
   return (
     <>
       <BannerSectionWrapper>
-        <div className="mx-auto max-w-5xl flex-1 space-y-8 py-8 lg:py-14">
-          {children}
-        </div>
+        <HStackFull>
+          <div className="mx-auto max-w-5xl flex-1 space-y-8 py-8 lg:py-14">
+            {children}
+          </div>
+        </HStackFull>
       </BannerSectionWrapper>
     </>
   );

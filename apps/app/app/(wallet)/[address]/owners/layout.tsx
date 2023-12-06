@@ -15,7 +15,9 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
+import { HStackFull } from "@/components/stack/h-stack-full";
 import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
+import { BigTableWrapper } from "@/components/wrapper/big-table-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -46,11 +48,11 @@ export default function OwnersLayout({ children }: OwnersLayoutProps) {
         title={TITLES.Owners.title}
         description={TITLES.Owners.description}
       >
-        <BannerSectionWrapper>
-          <div className="mx-auto my-8 max-w-5xl flex-1 lg:my-16 xl:my-20">
-            {children}
-          </div>
-        </BannerSectionWrapper>
+        <HStackFull>
+          <BannerSectionWrapper>
+            <BigTableWrapper>{children}</BigTableWrapper>
+          </BannerSectionWrapper>
+        </HStackFull>
       </BannerSection>
     </>
   );

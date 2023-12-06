@@ -53,11 +53,7 @@ export const BannerSection: FC<BannerSectionProps> = ({
           </div>
         </div>
         <Separator className="my-0" />
-        <BannerSectionWrapper>
-          <div className="mx-auto max-w-7xl flex-1 px-2 md:px-4 lg:px-0">
-            {children}
-          </div>
-        </BannerSectionWrapper>
+        <BannerSectionWrapper>{children}</BannerSectionWrapper>
       </div>
     </>
   );

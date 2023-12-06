@@ -15,6 +15,7 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
+import { HStackFull } from "@/components/stack/h-stack-full";
 import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
 import { TITLES } from "@/const/titles";
 
@@ -46,11 +47,13 @@ export default function SendLayout({ children }: SendLayoutProps) {
         title={TITLES.Send.title}
         description={TITLES.Send.description}
       >
-        <BannerSectionWrapper>
-          <div className="mx-auto my-8 max-w-5xl flex-1 lg:my-16 xl:my-20">
-            {children}
-          </div>
-        </BannerSectionWrapper>
+        <HStackFull>
+          <BannerSectionWrapper>
+            <div className="mx-auto my-8 max-w-5xl flex-1 lg:my-16 xl:my-20">
+              {children}
+            </div>
+          </BannerSectionWrapper>
+        </HStackFull>
       </BannerSection>
     </>
   );

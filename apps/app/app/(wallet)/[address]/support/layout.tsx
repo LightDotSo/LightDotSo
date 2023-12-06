@@ -15,6 +15,7 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
+import { HStackFull } from "@/components/stack/h-stack-full";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -45,7 +46,7 @@ export default function SupportLayout({ children }: SupportLayoutProps) {
         title={TITLES.Support.title}
         description={TITLES.Support.description}
       >
-        {children}
+        <HStackFull>{children}</HStackFull>
       </BannerSection>
     </>
   );

@@ -20,6 +20,8 @@ import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(compone
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
 import { BannerSectionWrapper } from "@/components/wrapper/banner-section-wrapper";
+import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
+import { SimplePageWrapper } from "@/components/wrapper/simple-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -57,17 +59,13 @@ export default function OverviewLayout({
           <WalletOverviewBanner address={params.address as Address} />
         </div>
       </div>
-      <div className="flex w-full flex-row border-b border-border py-4">
-        <div className="mx-auto max-w-7xl flex-1">
-          <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
-            <InvokePortfolioButton address={params.address as Address} />
-          </LinkButtonGroup>
-        </div>
-      </div>
+      <MiddleLayerWrapper>
+        <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
+          <InvokePortfolioButton address={params.address as Address} />
+        </LinkButtonGroup>
+      </MiddleLayerWrapper>
       <BannerSectionWrapper>
-        <div className="mx-auto max-w-7xl flex-1 space-y-8 py-6">
-          {children}
-        </div>
+        <SimplePageWrapper>{children}</SimplePageWrapper>
       </BannerSectionWrapper>
     </>
   );
