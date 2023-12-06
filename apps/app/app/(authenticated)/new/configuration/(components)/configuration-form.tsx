@@ -310,8 +310,8 @@ export const ConfigurationForm: FC = () => {
   }, [name, type, threshold, salt, owners]);
 
   const onSubmit = useCallback(
-    (data: NewFormValues) => {
-      successToast(data);
+    (_data: NewFormValues) => {
+      successToast("Configuration updated.");
       navigateToStep();
     },
     [navigateToStep],

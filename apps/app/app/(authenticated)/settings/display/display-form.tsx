@@ -90,8 +90,8 @@ export const DisplayForm: FC = () => {
     defaultValues,
   });
 
-  function onSubmit(data: DisplayFormValues) {
-    successToast(data);
+  function onSubmit(_data: DisplayFormValues) {
+    successToast("Display updated.");
   }
 
   return (

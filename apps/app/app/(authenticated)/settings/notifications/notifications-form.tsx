@@ -71,8 +71,8 @@ export const NotificationsForm: FC = () => {
     defaultValues,
   });
 
-  function onSubmit(data: NotificationsFormValues) {
-    successToast(data);
+  function onSubmit(_data: NotificationsFormValues) {
+    successToast("Notifications updated.");
   }
 
   return (

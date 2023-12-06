@@ -67,8 +67,8 @@ export const AppearanceForm: FC = () => {
     defaultValues,
   });
 
-  function onSubmit(data: AppearanceFormValues) {
-    successToast(data);
+  function onSubmit(_data: AppearanceFormValues) {
+    successToast("Your preferences have been updated.");
   }
 
   return (
