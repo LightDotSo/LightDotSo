@@ -21,14 +21,11 @@ import { TokenCardActions } from "@/components/token/token-card-actions";
 import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 import { TokenCardToken } from "@/components/token/token-card-token";
+import type { TokenData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
-
-export const shortenName = (name: string) => {
-  return name.match(/\b\w/g)?.join("").substring(0, 3);
-};
 
 export const separateFloat = (x: number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -40,48 +37,22 @@ export const separateFloat = (x: number) => {
 
 type TokenCardProps = {
   address: string;
-  token: {
-    address: string;
-    chain_id: number;
-    amount: number;
-    balance_usd: number;
-    decimals: number;
-    name?: string | null;
-    symbol: string;
-  };
+  token: TokenData;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCard: FC<TokenCardProps> = ({
-  address,
-  token: {
-    balance_usd,
-    name,
-    symbol,
-    amount,
-    decimals,
-    address: tokenAddress,
-    chain_id,
-  },
-}) => {
+export const TokenCard: FC<TokenCardProps> = ({ address, token }) => {
   return (
-    <TableRow key={`${tokenAddress}-${chain_id}`}>
+    <TableRow key={`${token.address}-${token.chain_id}`}>
       <TableCell className="font-medium">
-        <TokenCardToken
-          address={tokenAddress}
-          chain_id={chain_id}
-          amount={amount}
-          decimals={decimals}
-          name={name}
-          symbol={symbol}
-        />
+        <TokenCardToken token={token} />
       </TableCell>
       <TableCell>
         <Number
-          value={balance_usd}
+          value={token.balance_usd}
           prefix="$"
           variant="neutral"
           size="balance"
@@ -89,28 +60,16 @@ export const TokenCard: FC<TokenCardProps> = ({
       </TableCell>
       <TableCell>
         <Suspense fallback={null}>
-          <TokenCardSparkline
-            address={tokenAddress as Address}
-            chain_id={chain_id}
-          />
+          <TokenCardSparkline token={token} />
         </Suspense>
       </TableCell>
       <TableCell>
         <Suspense fallback={null}>
-          <TokenCardPrice
-            address={tokenAddress as Address}
-            chain_id={chain_id}
-          />
+          <TokenCardPrice token={token} />
         </Suspense>
       </TableCell>
       <TableCell>
-        <TokenCardActions
-          address={address as Address}
-          tokenAddress={tokenAddress}
-          tokenDecimals={decimals}
-          tokenSymbol={symbol}
-          chainId={chain_id}
-        />
+        <TokenCardActions address={address as Address} token={token} />
       </TableCell>
     </TableRow>
   );

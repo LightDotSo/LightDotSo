@@ -17,44 +17,28 @@
 
 import type { FC } from "react";
 import { TokenImage } from "@/components/token/token-image";
+import type { TokenData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardTokenProps = {
-  address: string;
-  chain_id: number;
-  amount: number;
-  decimals: number;
-  name?: string | null;
-  symbol: string;
-};
+type TokenCardTokenProps = { token: TokenData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenCardToken: FC<TokenCardTokenProps> = ({
-  address,
-  chain_id,
-  amount,
-  name,
-  symbol,
-  decimals,
-}) => {
+export const TokenCardToken: FC<TokenCardTokenProps> = ({ token }) => {
   return (
     <div className="flex items-center space-x-3">
-      <TokenImage
-        address={address}
-        chain_id={chain_id}
-        name={name}
-        symbol={symbol}
-      />{" "}
+      <TokenImage token={token} />{" "}
       <div className="flex flex-col space-y-1.5">
-        <span className="text-sm text-text/90">{name ?? symbol}</span>
+        <span className="text-sm text-text/90">
+          {token.name ?? token.symbol}
+        </span>
         <span className="text-sm text-text-weak">
-          {(amount / 10 ** decimals).toFixed(3)} {symbol}
+          {(token.amount / 10 ** token.decimals).toFixed(3)} {token.symbol}
         </span>
       </div>
     </div>
