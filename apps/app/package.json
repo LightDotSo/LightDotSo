@@ -63,6 +63,7 @@
     "@vercel/toolbar": "^0.1.5",
     "@wagmi/core": "^1.4.7",
     "blurhash": "^2.0.5",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "connectkit": "^1.5.3",
     "copy-to-clipboard": "^3.3.3",
