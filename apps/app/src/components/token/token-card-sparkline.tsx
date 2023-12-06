@@ -20,25 +20,21 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { SparkAreaChart } from "@tremor/react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import type { TokenPriceData } from "@/data";
+import type { TokenData, TokenPriceData } from "@/data";
 import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardSparklineProps = {
-  address: Address;
-  chain_id: number;
-};
+type TokenCardSparklineProps = { token: TokenData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
-  address,
-  chain_id,
+  token: { address, chain_id },
 }) => {
   // ---------------------------------------------------------------------------
   // Query
@@ -47,11 +43,11 @@ export const TokenCardSparkline: FC<TokenCardSparklineProps> = ({
   const queryClient = useQueryClient();
 
   const currentData: TokenPriceData | undefined = queryClient.getQueryData(
-    queries.token_price.get(address, chain_id).queryKey,
+    queries.token_price.get(address as Address, chain_id).queryKey,
   );
 
   const { data: token_price } = useSuspenseQuery<TokenPriceData | null>({
-    queryKey: queries.token_price.get(address, chain_id).queryKey,
+    queryKey: queries.token_price.get(address as Address, chain_id).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

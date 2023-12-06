@@ -15,7 +15,7 @@
 
 export type { AuthNonceData, AuthSessionData } from "./auth";
 export type { ConfigurationData } from "./configuration";
-export type { NftData } from "./nft";
+export type { NftData, NftDataPage } from "./nft";
 export type { PortfolioData } from "./portfolio";
 export type { TokenData } from "./token";
 export type { TokenPriceData } from "./tokenPrice";

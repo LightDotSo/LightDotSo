@@ -17,6 +17,7 @@
 
 import { Skeleton } from "@lightdotso/ui";
 import { useState, type FC, useEffect } from "react";
+import type { TokenData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Const
@@ -31,10 +32,7 @@ export const shortenName = (name: string) => {
 // -----------------------------------------------------------------------------
 
 type TokenImageProps = {
-  address: string;
-  chain_id: number;
-  name?: string | null;
-  symbol: string;
+  token: TokenData;
 };
 
 // -----------------------------------------------------------------------------
@@ -42,10 +40,7 @@ type TokenImageProps = {
 // -----------------------------------------------------------------------------
 
 export const TokenImage: FC<TokenImageProps> = ({
-  address,
-  chain_id,
-  name,
-  symbol,
+  token: { address, chain_id, name, symbol },
 }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isImageError, setIsImageError] = useState(false);

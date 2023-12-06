@@ -26,18 +26,13 @@ import { Send, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
 import type { Address } from "viem";
+import type { TokenData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardActionsProps = {
-  address: Address;
-  chainId: number;
-  tokenAddress: string;
-  tokenDecimals: number;
-  tokenSymbol: string;
-};
+type TokenCardActionsProps = { address: Address; token: TokenData };
 
 // -----------------------------------------------------------------------------
 // Component
@@ -45,10 +40,7 @@ type TokenCardActionsProps = {
 
 export const TokenCardActions: FC<TokenCardActionsProps> = ({
   address,
-  chainId,
-  tokenAddress,
-  tokenDecimals,
-  tokenSymbol,
+  token: { address: tokenAddress, chain_id, decimals, symbol },
 }) => {
   return (
     <TooltipProvider>
@@ -63,7 +55,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
             </span>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Swap {tokenSymbol}</p>
+            <p>Swap {symbol}</p>
           </TooltipContent>
         </Tooltip>
         <Tooltip>
@@ -71,7 +63,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
             <span>
               <Button asChild size="sm" variant="strong">
                 <Link
-                  href={`/${address}/send?transfers=0:_:_:${chainId}:erc20:${tokenAddress}|${tokenDecimals}|0`}
+                  href={`/${address}/send?transfers=0:_:_:${chain_id}:erc20:${tokenAddress}|${decimals}|0`}
                 >
                   <Send className="h-3 w-3" />
                   <span className="sr-only">Open send modal</span>
@@ -80,7 +72,7 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
             </span>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Send {tokenSymbol}</p>
+            <p>Send {symbol}</p>
           </TooltipContent>
         </Tooltip>
       </div>
