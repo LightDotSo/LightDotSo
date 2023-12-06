@@ -13,35 +13,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { OverviewSubCategory } from "@/const/titles";
+import type { Address } from "viem";
+import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
+import { preload as preloadGetToken } from "@/services/getTokens";
 
 // -----------------------------------------------------------------------------
-// Const
+// Preloader
 // -----------------------------------------------------------------------------
 
-export const OVERVIEW_NAV_ITEMS = [
-  {
-    title: "All",
-    href: "/overview",
-    id: "overview",
-    category: OverviewSubCategory.All,
-  },
-  {
-    title: "Tokens",
-    href: "/overview/tokens",
-    id: "tokens",
-    category: OverviewSubCategory.Tokens,
-  },
-  {
-    title: "NFTs",
-    href: "/overview/nfts",
-    id: "nfts",
-    category: OverviewSubCategory.NFTs,
-  },
-  {
-    title: "History",
-    href: "/overview/history",
-    id: "history",
-    category: OverviewSubCategory.History,
-  },
-];
+export const preloader = async (params: { address: string }) => {
+  preloadGetPortfolio(params.address as Address);
+  preloadGetToken(params.address as Address);
+};

@@ -54,7 +54,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
         return <TokensList address={address} limit={4} />;
       case OverviewSubCategory.NFTs:
         return <NftsList address={address} limit={6} />;
-      case OverviewSubCategory.Transactions:
+      case OverviewSubCategory.History:
         return <TokensList address={address} />;
       default:
         return <></>;

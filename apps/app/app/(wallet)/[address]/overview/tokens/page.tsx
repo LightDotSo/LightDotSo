@@ -18,10 +18,10 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
-import { NftsList } from "@/components/nft/nfts-list";
+import { TokensList } from "@/components/token/tokens-list";
 import { handler } from "@/handlers/paths/[address]/handler";
-import { handler as pageHandler } from "@/handlers/paths/[address]/overview/nft/handler";
-import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/nft/preloader";
+import { handler as pageHandler } from "@/handlers/paths/[address]/overview/tokens/handler";
+import { preloader as pagePreloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
 import { getQueryClient } from "@/services";
@@ -52,7 +52,7 @@ export default async function Page({ params }: PageProps) {
 
   const { walletSettings } = await handler(params);
 
-  const { nfts, nftValuation } = await pageHandler(params);
+  const { tokens, portfolio } = await pageHandler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -69,21 +69,20 @@ export default async function Page({ params }: PageProps) {
     walletSettings,
   );
   queryClient.setQueryData(
-    queries.nft_valuation.get(params.address as Address).queryKey,
-    nftValuation,
+    queries.portfolio.get(params.address as Address).queryKey,
+    portfolio,
   );
   queryClient.setQueryData(
-    queries.nft.list({
+    queries.token.list({
       address: params.address as Address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
-    nfts,
+    tokens,
   );
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense>
-        <NftsList address={params.address as Address} />
+        <TokensList address={params.address as Address} />
       </Suspense>
     </HydrationBoundary>
   );

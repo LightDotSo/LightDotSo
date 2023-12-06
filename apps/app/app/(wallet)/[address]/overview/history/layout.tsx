@@ -21,15 +21,15 @@ import { TITLES } from "@/const/titles";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Overview.subcategories.Transactions.title,
-  description: TITLES.Overview.subcategories.Transactions.description,
+  title: TITLES.Overview.subcategories.History.title,
+  description: TITLES.Overview.subcategories.History.description,
 };
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface OverviewTransactionsLayoutProps {
+interface OverviewHistoryLayoutProps {
   children: React.ReactNode;
 }
 
@@ -37,6 +37,6 @@ interface OverviewTransactionsLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function Layout({ children }: OverviewTransactionsLayoutProps) {
+export default function Layout({ children }: OverviewHistoryLayoutProps) {
   return <>{children}</>;
 }

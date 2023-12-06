@@ -36,7 +36,7 @@ export enum OverviewSubCategory {
   All = "All",
   Tokens = "Tokens",
   NFTs = "NFTs",
-  Transactions = "Transactions",
+  History = "History",
 }
 
 export enum SettingsSubCategory {
@@ -79,9 +79,9 @@ export const TITLES: Record<Category, CategoryObject> = {
         description: "View your wallet NFTs.",
         subcategories: {},
       },
-      [OverviewSubCategory.Transactions]: {
-        title: "Transactions",
-        description: "View your wallet transactions.",
+      [OverviewSubCategory.History]: {
+        title: "History",
+        description: "View your wallet history.",
         subcategories: {},
       },
     },
