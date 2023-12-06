@@ -13,12 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Result } from "neverthrow";
-import { notFound } from "next/navigation";
-import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
+import { handler as nftHandler } from "@/handlers/paths/[address]/overview/nfts/handler";
+import { handler as tokenHandler } from "@/handlers/paths/[address]/overview/tokens/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getPortfolio, getTokens } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -35,36 +33,26 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = await addressHandler(params);
+  const addressHandlerPromise = addressHandler(params);
+  const tokenHandlerPromise = tokenHandler(params);
+  const nftHandlerPromise = nftHandler(params);
 
-  const tokensPromise = getTokens(
-    params.address as Address,
-    walletSettings.is_enabled_testnet,
-  );
-
-  const portfolioPromise = getPortfolio(params.address as Address);
-
-  const [tokens, portfolio] = await Promise.all([
-    tokensPromise,
-    portfolioPromise,
-  ]);
+  const [{ walletSettings }, { tokens, portfolio }, { nfts, nftValuation }] =
+    await Promise.all([
+      addressHandlerPromise,
+      tokenHandlerPromise,
+      nftHandlerPromise,
+    ]);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([tokens, portfolio]);
-
-  return res.match(
-    ([tokens, portfolio]) => {
-      return {
-        walletSettings: walletSettings,
-        tokens: tokens,
-        portfolio: portfolio,
-      };
-    },
-    () => {
-      return notFound();
-    },
-  );
+  return {
+    walletSettings: walletSettings,
+    tokens: tokens,
+    portfolio: portfolio,
+    nfts: nfts,
+    nftValuation: nftValuation,
+  };
 };

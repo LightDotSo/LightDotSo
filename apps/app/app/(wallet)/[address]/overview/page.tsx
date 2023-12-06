@@ -46,7 +46,8 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, tokens, portfolio } = await handler(params);
+  const { walletSettings, tokens, portfolio, nfts, nftValuation } =
+    await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -72,6 +73,17 @@ export default async function Page({ params }: PageProps) {
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     tokens,
+  );
+  queryClient.setQueryData(
+    queries.nft_valuation.get(params.address as Address).queryKey,
+    nftValuation,
+  );
+  queryClient.setQueryData(
+    queries.nft.list({
+      address: params.address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+    nfts,
   );
 
   return (
