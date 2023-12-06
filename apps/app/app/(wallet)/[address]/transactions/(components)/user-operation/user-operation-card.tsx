@@ -26,6 +26,7 @@ import {
 import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import type { FC } from "react";
+import type { UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -33,26 +34,7 @@ import type { FC } from "react";
 
 type UserOperationCardProps = {
   address: string;
-  userOperation: {
-    call_data: string;
-    call_gas_limit: number;
-    chain_id: number;
-    hash: string;
-    init_code: string;
-    max_fee_per_gas: number;
-    max_priority_fee_per_gas: number;
-    nonce: number;
-    paymaster_and_data: string;
-    pre_verification_gas: number;
-    sender: string;
-    signatures: {
-      owner_id: string;
-      signature: string;
-      signature_type: number;
-    }[];
-    status: string;
-    verification_gas_limit: number;
-  };
+  userOperation: UserOperationData;
 };
 
 // -----------------------------------------------------------------------------
@@ -61,25 +43,23 @@ type UserOperationCardProps = {
 
 export const UserOperationCard: FC<UserOperationCardProps> = ({
   address,
-  userOperation,
+  userOperation: { hash, chain_id, sender, status },
 }) => {
   return (
     <Accordion
-      key={userOperation.hash}
+      key={hash}
       collapsible
       type="single"
       className="w-full rounded-md border border-border"
     >
       <AccordionItem className="w-full border-none" value="item-1">
-        <div key={userOperation.hash} className="flex items-center p-4">
+        <div key={hash} className="flex items-center p-4">
           <Avatar className="h-9 w-9">
-            <AvatarFallback>{userOperation.chain_id}</AvatarFallback>
+            <AvatarFallback>{chain_id}</AvatarFallback>
           </Avatar>
           <div className="ml-4 space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {userOperation.sender}
-            </p>
-            <p className="text-sm text-text-weak">{userOperation.hash}</p>
+            <p className="text-sm font-medium leading-none">{sender}</p>
+            <p className="text-sm text-text-weak">{hash}</p>
           </div>
           <div className="ml-auto font-medium">
             <AccordionTrigger>
@@ -89,8 +69,7 @@ export const UserOperationCard: FC<UserOperationCardProps> = ({
                   "hover:bg-transparent",
                 )}
               >
-                {userOperation.status.charAt(0) +
-                  userOperation.status.slice(1).toLowerCase()}
+                {status.charAt(0) + status.slice(1).toLowerCase()}
               </span>
             </AccordionTrigger>
           </div>
@@ -98,11 +77,7 @@ export const UserOperationCard: FC<UserOperationCardProps> = ({
         <AccordionContent className="bg-background-stronger px-4 pt-4">
           <div className="flex w-full justify-end">
             <Button asChild>
-              <Link
-                href={`/${address}/op/${userOperation.chain_id}/${userOperation.hash}`}
-              >
-                Confirm
-              </Link>
+              <Link href={`/${address}/op/${chain_id}/${hash}`}>Confirm</Link>
             </Button>
           </div>
         </AccordionContent>
