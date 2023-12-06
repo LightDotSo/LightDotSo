@@ -114,7 +114,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
             </Link>
           ))}
         </div>
-        {children}
+        <div className="hidden md:block">{children}</div>
       </nav>
     </>
   );

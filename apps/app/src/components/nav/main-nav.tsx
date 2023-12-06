@@ -140,7 +140,7 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
   return (
     <div
       className={cn(
-        "flex items-center space-x-4 lg:space-x-6 overflow-x-scroll overflow-y-visible lg:overflow-x-visible scrollbar-none",
+        "flex items-center space-x-4 lg:space-x-6 overflow-x-scroll overflow-y-hidden lg:overflow-x-visible md:overflow-y-visible scrollbar-none",
         className,
       )}
       {...props}

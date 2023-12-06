@@ -19,6 +19,9 @@ import { InvokePortfolioButton } from "@/app/(wallet)/[address]/overview/(compon
 import { WalletOverviewBanner } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
 import { LinkButtonGroup } from "@/components/section/link-button-group";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
+import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -51,23 +54,17 @@ export default function OverviewLayout({
 }: OverviewLayoutProps) {
   return (
     <>
-      <div className="flex w-full flex-col space-y-8 border-b border-b-border sm:flex-row sm:space-x-12 sm:space-y-0">
-        <div className="max-w-7xl flex-1 space-y-8 px-2 py-6 sm:mx-auto md:px-4 lg:px-0">
-          <WalletOverviewBanner address={params.address as Address} />
-        </div>
-      </div>
-      <div className="flex w-full flex-row border-b border-border py-4">
-        <div className="mx-auto max-w-7xl flex-1">
-          <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
-            <InvokePortfolioButton address={params.address as Address} />
-          </LinkButtonGroup>
-        </div>
-      </div>
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <div className="mx-auto max-w-7xl flex-1 space-y-8 py-6">
-          {children}
-        </div>
-      </div>
+      <MiddleLayerWrapper>
+        <WalletOverviewBanner address={params.address as Address} />
+      </MiddleLayerWrapper>
+      <MiddleLayerWrapper>
+        <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
+          <InvokePortfolioButton address={params.address as Address} />
+        </LinkButtonGroup>
+      </MiddleLayerWrapper>
+      <BaseLayerWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
+      </BaseLayerWrapper>
     </>
   );
 }

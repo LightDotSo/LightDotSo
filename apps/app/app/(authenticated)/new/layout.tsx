@@ -15,6 +15,9 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
+import { HStackFull } from "@/components/stack/h-stack-full";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 
 // -----------------------------------------------------------------------------
 // Metadata
@@ -44,9 +47,11 @@ export default function NewWalletLayout({ children }: NewWalletLayoutProps) {
         title="New Wallet"
         description="Create your own new Light Wallet."
       >
-        <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <div className="mx-auto max-w-7xl flex-1">{children}</div>
-        </div>
+        <HStackFull>
+          <BaseLayerWrapper>
+            <BasicPageWrapper>{children}</BasicPageWrapper>
+          </BaseLayerWrapper>
+        </HStackFull>
       </BannerSection>
     </>
   );

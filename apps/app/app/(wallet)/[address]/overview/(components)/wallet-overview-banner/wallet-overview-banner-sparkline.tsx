@@ -123,7 +123,7 @@ export const WalletOverviewBannerSparkline: FC<
               ? "emerald"
               : "red",
           ]}
-          className="h-8 w-full"
+          className="lg;w-full h-8 w-32"
         />
       </div>
     </div>

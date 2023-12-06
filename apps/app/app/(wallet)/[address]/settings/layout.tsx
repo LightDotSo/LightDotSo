@@ -16,6 +16,9 @@
 import type { Metadata } from "next";
 import { SidebarNav } from "@/components/nav/sidebar-nav";
 import { BannerSection } from "@/components/section/banner-section";
+import { HStackFull } from "@/components/stack/h-stack-full";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { SettingsPageWrapper } from "@/components/wrapper/page/settings-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -65,12 +68,15 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         title={TITLES.Settings.title}
         description={TITLES.Settings.description}
       >
-        <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-32 lg:space-y-0">
-          <aside className="lg:w-1/5">
-            <SidebarNav baseRef items={sidebarNavItems} />
-          </aside>
-          <div className="flex-1 lg:max-w-3xl">{children}</div>
-        </div>
+        <HStackFull>
+          <BaseLayerWrapper>
+            <SettingsPageWrapper
+              nav={<SidebarNav baseRef items={sidebarNavItems} />}
+            >
+              {children}
+            </SettingsPageWrapper>
+          </BaseLayerWrapper>
+        </HStackFull>
       </BannerSection>
     </>
   );
