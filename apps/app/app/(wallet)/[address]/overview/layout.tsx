@@ -54,11 +54,9 @@ export default function OverviewLayout({
 }: OverviewLayoutProps) {
   return (
     <>
-      <div className="flex w-full flex-col space-y-8 border-b border-b-border sm:flex-row sm:space-x-12 sm:space-y-0">
-        <div className="max-w-7xl flex-1 space-y-8 px-2 py-6 sm:mx-auto md:px-4 lg:px-0">
-          <WalletOverviewBanner address={params.address as Address} />
-        </div>
-      </div>
+      <MiddleLayerWrapper>
+        <WalletOverviewBanner address={params.address as Address} />
+      </MiddleLayerWrapper>
       <MiddleLayerWrapper>
         <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
           <InvokePortfolioButton address={params.address as Address} />

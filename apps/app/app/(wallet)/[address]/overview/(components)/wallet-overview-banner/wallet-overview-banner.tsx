@@ -27,8 +27,6 @@ import {
 import { splitAddress } from "@lightdotso/utils";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { Send } from "lucide-react";
-import Link from "next/link";
 import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -97,8 +95,8 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
 
   return (
     <TooltipProvider>
-      <div className="grid grid-cols-1 gap-x-4 lg:grid-cols-4">
-        <div className="col-span-2 flex w-full flex-row items-center space-x-5 border-r border-border">
+      <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-4 lg:gap-x-4">
+        <div className="col-span-2 flex w-full flex-row items-center space-x-5 lg:border-r lg:border-border">
           <Avatar className="h-16 w-16">
             <PlaceholderOrb address={address ?? "0x"} />
           </Avatar>
@@ -113,22 +111,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
             <WalletOverviewBannerSparkline address={address} />
           </Suspense>
         </div>
-        <div className="col-span-1 flex w-full items-center justify-end space-x-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span>
-                <Button asChild size="sm" className="rounded-full p-3">
-                  <Link href={`/${address}/send`}>
-                    <Send className="h-3 w-3" />
-                    <span className="sr-only">Open send</span>
-                  </Link>
-                </Button>
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Send Assets</p>
-            </TooltipContent>
-          </Tooltip>
+        <div className="col-span-1 flex w-full items-center justify-end">
           <Tooltip>
             <TooltipTrigger asChild>
               <span>

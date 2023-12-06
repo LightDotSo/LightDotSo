@@ -47,9 +47,11 @@ export const BannerSection: FC<BannerSectionProps> = ({
             </h2>
             <p className="leading-8 text-text-weak">{description}</p>
           </div>
-          <div className="mt-4 flex items-center gap-x-6 lg:mt-0 lg:shrink-0">
-            {cta}
-          </div>
+          {cta && (
+            <div className="mt-4 flex items-center gap-x-6 lg:mt-0 lg:shrink-0">
+              {cta}
+            </div>
+          )}
         </div>
         <Separator className="my-0" />
         {children}

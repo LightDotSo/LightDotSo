@@ -102,7 +102,7 @@ export const Tabs: FC<TabProps> = ({
   return (
     <nav
       ref={navRef}
-      className="relative z-0 mb-1.5 mt-2 flex shrink-0 items-center justify-center lg:my-0 lg:py-2"
+      className="relative z-0 flex shrink-0 items-center justify-center lg:mb-1.5 lg:mt-2 lg:py-2"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
       onPointerLeave={e => setHoveredTabIndex(null)}
     >
@@ -116,7 +116,7 @@ export const Tabs: FC<TabProps> = ({
             <motion.a
               ref={el => (anchorRefs[i] = el)}
               className={clsx(
-                "relative z-20 mb-0.5 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak",
+                "relative z-20 flex h-10 cursor-pointer select-none items-center rounded-md bg-transparent px-2.5 text-sm font-medium transition-colors hover:text-text-weak lg:mb-0.5",
                 !isActive ? "text-text-weak" : "text-text",
               )}
               onPointerEnter={() => {

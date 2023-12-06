@@ -33,7 +33,12 @@ export function BaseLayerWrapper({
   className,
 }: BaseLayerWrapperProps) {
   return (
-    <div className={cn("flex w-full flex-row", className)}>
+    <div
+      className={cn(
+        "flex w-full flex-row overflow-x-scroll px-2 md:px-4 lg:px-8",
+        className,
+      )}
+    >
       <div className="mx-auto max-w-7xl flex-1">{children}</div>
     </div>
   );
