@@ -69,7 +69,7 @@
     "react-hook-form": "^7.48.2",
     "superjson": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
-    "vite": "^5.0.3",
+    "vite": "^5.0.5",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -111,7 +111,7 @@
     "typescript": "^5.3.2",
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0",
-    "vite": "^5.0.3"
+    "vite": "^5.0.5"
   },
   "peerDependencies": {
     "esbuild": "^0.17.3"
