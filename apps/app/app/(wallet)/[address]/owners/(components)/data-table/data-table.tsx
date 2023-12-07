@@ -40,7 +40,7 @@ import type {
   VisibilityState,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table-toolbar";
+import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Props
