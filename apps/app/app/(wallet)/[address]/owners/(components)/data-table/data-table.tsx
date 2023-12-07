@@ -57,12 +57,24 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data }: DataTableProps) {
+  // ---------------------------------------------------------------------------
+  // States
+  // ---------------------------------------------------------------------------
+
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
+  // ---------------------------------------------------------------------------
+  // Store
+  // ---------------------------------------------------------------------------
+
   const { setOwnerTable } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Table
+  // ---------------------------------------------------------------------------
 
   const table = useReactTable({
     data,
@@ -86,6 +98,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
   useEffect(() => {
     setOwnerTable(table);
   }, [
@@ -102,6 +118,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     table.getColumn("weight")?.getIsVisible(),
     setOwnerTable,
   ]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <div className="space-y-4">
