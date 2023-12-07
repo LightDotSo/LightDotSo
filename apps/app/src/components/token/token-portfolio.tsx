@@ -15,55 +15,48 @@
 
 "use client";
 
-import { getTokens } from "@lightdotso/client";
+import { getPortfolio } from "@lightdotso/client";
+import { Number } from "@lightdotso/ui";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
-import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
-import type { TokenData, WalletSettingsData } from "@/data";
+import type { PortfolioData } from "@/data";
 import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface TokensDataTableProps {
+type TokenPortfolioProps = {
   address: Address;
-}
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
+export const TokenPortfolio: FC<TokenPortfolioProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
-
-  const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queries.token.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet,
-    }).queryKey,
+  const currentData: PortfolioData | undefined = queryClient.getQueryData(
+    queries.portfolio.get(address).queryKey,
   );
 
-  const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
-    queryKey: queries.token.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet,
-    }).queryKey,
+  const { data: portfolio } = useSuspenseQuery<PortfolioData | null>({
+    queryKey: queries.portfolio.get(address).queryKey,
     queryFn: async () => {
-      const res = await getTokens({
+      if (!address) {
+        return null;
+      }
+
+      const res = await getPortfolio({
         params: {
           query: {
-            address,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            address: address,
           },
         },
       });
@@ -80,9 +73,17 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
     },
   });
 
+  if (!portfolio) {
+    return null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <div className="rounded-md border border-border bg-background p-4">
-      <DataTable data={tokens ?? []} columns={columns} />
-    </div>
+    portfolio.balances && (
+      <Number value={portfolio.balance ?? 0.0} size="xl" prefix="$" />
+    )
   );
 };
