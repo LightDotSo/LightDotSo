@@ -28,7 +28,7 @@ import { queries } from "@/queries";
 // Props
 // -----------------------------------------------------------------------------
 
-interface OwnersDataTableProps {
+interface OwnersDataProps {
   address: Address;
 }
 
@@ -36,7 +36,7 @@ interface OwnersDataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
+export const OwnersData: FC<OwnersDataProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------

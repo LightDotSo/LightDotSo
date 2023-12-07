@@ -17,7 +17,7 @@ import { Skeleton } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
-import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
+import { OwnersData } from "@/app/(wallet)/[address]/owners/_data";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
@@ -70,7 +70,7 @@ export default async function Page({ params }: PageProps) {
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
           <Suspense fallback={<Skeleton className="h-8 w-32" />}>
-            <OwnersDataTable address={params.address as Address} />
+            <OwnersData address={params.address as Address} />
           </Suspense>
         </HydrationBoundary>
       );
