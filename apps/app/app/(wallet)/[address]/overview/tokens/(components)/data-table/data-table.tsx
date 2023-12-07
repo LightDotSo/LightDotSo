@@ -62,7 +62,9 @@ export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    ["chain_id"]: false,
+  });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -106,8 +108,6 @@ export function DataTable({ columns, data }: DataTableProps) {
     setTokenTable(table);
   }, [
     table,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("address")?.getFilterValue(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id"),
     // eslint-disable-next-line react-hooks/exhaustive-deps

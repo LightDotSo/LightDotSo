@@ -26,6 +26,7 @@ import { DataTableViewOptions } from "@/app/(wallet)/[address]/overview/tokens/(
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
+import { getChainNameById } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -83,7 +84,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             title="Chain"
             options={Array.from(uniqueChainIdValues).map(i => ({
               value: i.toString(),
-              label: i.toString(),
+              label: getChainNameById(i),
             }))}
           />
         )}

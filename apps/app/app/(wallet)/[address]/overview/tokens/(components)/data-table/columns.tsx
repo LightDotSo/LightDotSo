@@ -24,6 +24,7 @@ import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 import { TokenCardToken } from "@/components/token/token-card-token";
 import type { TokenData } from "@/data";
+import { getChainNameById } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -62,7 +63,7 @@ export const columns: ColumnDef<TokenData>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex items-center">
-        <span>{row.getValue("chain_id")}</span>
+        <span>{getChainNameById(row.getValue("chain_id"))}</span>
       </div>
     ),
     filterFn: (row, id, value) => {
