@@ -39,30 +39,31 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-toolbar";
+import type { ConfigurationOwnerData } from "@/data/configuration";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+interface DataTableProps {
+  columns: ColumnDef<ConfigurationOwnerData>[];
+  data: ConfigurationOwnerData[];
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+export function DataTable({ columns, data }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const { setOwnerTable } = useTables();
 
   const table = useReactTable({
     data,
@@ -85,6 +86,10 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
+
+  useEffect(() => {
+    setOwnerTable(table);
+  }, [table, setOwnerTable]);
 
   return (
     <div className="space-y-4">

@@ -17,15 +17,17 @@
 // Data
 // -----------------------------------------------------------------------------
 
+export type ConfigurationOwnerData = {
+  address: string;
+  id: string;
+  weight: number;
+};
+
 export type ConfigurationData = {
   address: string;
   checkpoint: number;
   id: string;
   image_hash: string;
-  owners: {
-    address: string;
-    id: string;
-    weight: number;
-  }[];
+  owners: ConfigurationOwnerData[];
   threshold: number;
 };
