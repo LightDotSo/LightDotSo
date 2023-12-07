@@ -21,22 +21,21 @@ import type { Table } from "@tanstack/react-table";
 import { DataTableFacetedFilter } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-view-options";
 import { MAX_WEIGHT } from "@/const/configuration";
+import type { ConfigurationOwnerData } from "@/data/configuration";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableToolbarProps<TData> {
-  table: Table<TData>;
+interface DataTableToolbarProps {
+  table: Table<ConfigurationOwnerData>;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar<TData>({
-  table,
-}: DataTableToolbarProps<TData>) {
+export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (

@@ -15,8 +15,8 @@
 
 import type { Metadata } from "next";
 import { BannerSection } from "@/components/section/banner-section";
-import { HStackFull } from "@/components/stack/h-stack-full";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
 import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const/titles";
 
@@ -48,12 +48,15 @@ export default function OwnersLayout({ children }: OwnersLayoutProps) {
         title={TITLES.Owners.title}
         description={TITLES.Owners.description}
       >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <BasicPageWrapper>{children}</BasicPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
+        <MiddleLayerWrapper>
+          <div className="flex w-full items-center justify-end">
+            <div>Hi.</div>
+          </div>
+        </MiddleLayerWrapper>
       </BannerSection>
+      <BaseLayerWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
+      </BaseLayerWrapper>
     </>
   );
 }
