@@ -40,7 +40,7 @@ import type {
   VisibilityState,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import type { ConfigurationOwnerData } from "@/data/configuration";
+import type { ConfigurationOwnerData } from "@/data";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------

@@ -29,7 +29,7 @@ import {
   EyeNoneIcon,
 } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
-import type { ConfigurationOwnerData } from "@/data/configuration";
+import type { ConfigurationOwnerData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props

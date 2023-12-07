@@ -16,8 +16,7 @@
 import type { Table } from "@tanstack/react-table";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { TokenData } from "@/data";
-import type { ConfigurationOwnerData } from "@/data/configuration";
+import type { TokenData, ConfigurationOwnerData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // State

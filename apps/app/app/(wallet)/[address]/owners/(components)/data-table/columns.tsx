@@ -20,7 +20,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-column-header";
 import { DataTableRowActions } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-row-actions";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import type { ConfigurationOwnerData } from "@/data/configuration";
+import type { ConfigurationOwnerData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Definitions
