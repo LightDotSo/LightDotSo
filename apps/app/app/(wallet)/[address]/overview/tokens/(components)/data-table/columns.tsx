@@ -1,0 +1,76 @@
+// Copyright (C) 2023 Light, Inc.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"use client";
+
+import { Avatar } from "@lightdotso/ui";
+import type { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-column-header";
+import { DataTableRowActions } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-row-actions";
+import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
+import { TokenCardToken } from "@/components/token/token-card-token";
+import type { TokenData } from "@/data";
+
+// -----------------------------------------------------------------------------
+// Definitions
+// -----------------------------------------------------------------------------
+
+export const columns: ColumnDef<TokenData>[] = [
+  {
+    accessorKey: "name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Name" />
+    ),
+    cell: ({ row }) => <TokenCardToken token={row.original} />,
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "address",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Owner" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <Avatar className="mr-3 h-7 w-7">
+          <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
+        </Avatar>
+        {row.getValue("address")}
+      </div>
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "chain_id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Chain" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex items-center">
+        <span>{row.getValue("chain_id")}</span>
+      </div>
+    ),
+    filterFn: (row, id, value) => {
+      return value.includes((row.getValue(id) as number).toString());
+    },
+    enableSorting: false,
+    enableHiding: true,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
+  },
+];

@@ -40,6 +40,7 @@ export const metadata: Metadata = {
 
 type OverviewLayoutProps = {
   children: React.ReactNode;
+  nav: React.ReactNode;
   params: {
     address: string;
   };
@@ -51,6 +52,7 @@ type OverviewLayoutProps = {
 
 export default function OverviewLayout({
   children,
+  nav,
   params,
 }: OverviewLayoutProps) {
   return (
@@ -60,6 +62,7 @@ export default function OverviewLayout({
       </LargeLayerWrapper>
       <MiddleLayerWrapper>
         <LinkButtonGroup items={OVERVIEW_NAV_ITEMS}>
+          {nav}
           <InvokePortfolioButton address={params.address as Address} />
         </LinkButtonGroup>
       </MiddleLayerWrapper>
