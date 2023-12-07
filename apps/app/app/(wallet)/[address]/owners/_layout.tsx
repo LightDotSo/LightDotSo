@@ -13,41 +13,40 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Table } from "@tanstack/react-table";
-import { create } from "zustand";
-import { devtools } from "zustand/middleware";
-import type { TokenData } from "@/data";
-import type { ConfigurationOwnerData } from "@/data/configuration";
+import { BannerSection } from "@/components/section/banner-section";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
+import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
+import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
-// State
+// Props
 // -----------------------------------------------------------------------------
 
-type TablesStore = {
-  ownerTable: Table<ConfigurationOwnerData> | null;
-  setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
-  tokenTable: Table<TokenData> | null;
-  setTokenTable: (tableObject: Table<TokenData>) => void;
-};
+interface OwnersInnerLayoutProps {
+  children: React.ReactNode;
+  nav: React.ReactNode;
+}
 
 // -----------------------------------------------------------------------------
-// Hook
+// Layout
 // -----------------------------------------------------------------------------
 
-export const useTables = create(
-  devtools<TablesStore>(
-    set => ({
-      ownerTable: null,
-      setOwnerTable: tableObject => set({ ownerTable: tableObject }),
-      tokenTable: null,
-      setTokenTable: tableObject => set({ tokenTable: tableObject }),
-    }),
-    {
-      anonymousActionType: "useTables",
-      name: "TablesStore",
-      serialize: {
-        options: true,
-      },
-    },
-  ),
-);
+export default function OwnersInnerLayout({
+  children,
+  nav,
+}: OwnersInnerLayoutProps) {
+  return (
+    <>
+      <BannerSection
+        title={TITLES.Owners.title}
+        description={TITLES.Owners.description}
+      >
+        <MiddleLayerWrapper>{nav}</MiddleLayerWrapper>
+      </BannerSection>
+      <BaseLayerWrapper>
+        <BasicPageWrapper>{children}</BasicPageWrapper>
+      </BaseLayerWrapper>
+    </>
+  );
+}

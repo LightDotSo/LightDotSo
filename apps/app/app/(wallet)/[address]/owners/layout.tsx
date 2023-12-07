@@ -14,10 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
-import { BannerSection } from "@/components/section/banner-section";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
-import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
-import { BasicPageWrapper } from "@/components/wrapper/page/basic-page-wrapper";
 import { TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -42,21 +38,5 @@ interface OwnersLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function OwnersLayout({ children }: OwnersLayoutProps) {
-  return (
-    <>
-      <BannerSection
-        title={TITLES.Owners.title}
-        description={TITLES.Owners.description}
-      >
-        <MiddleLayerWrapper>
-          <div className="flex w-full items-center justify-end">
-            <div>Hi.</div>
-          </div>
-        </MiddleLayerWrapper>
-      </BannerSection>
-      <BaseLayerWrapper>
-        <BasicPageWrapper>{children}</BasicPageWrapper>
-      </BaseLayerWrapper>
-    </>
-  );
+  return <>{children}</>;
 }
