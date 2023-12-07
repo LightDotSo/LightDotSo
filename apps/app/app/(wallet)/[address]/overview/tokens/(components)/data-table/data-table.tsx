@@ -116,6 +116,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     table.getColumn("chain_id")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("sparkline")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("price")?.getIsVisible(),
     setTokenTable,
   ]);
 

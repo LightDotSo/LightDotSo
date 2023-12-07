@@ -15,11 +15,13 @@
 
 "use client";
 
-import { Avatar } from "@lightdotso/ui";
+import { Number } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
+import { Suspense } from "react";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-column-header";
 import { DataTableRowActions } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-row-actions";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
+import { TokenCardPrice } from "@/components/token/token-card-price";
+import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 import { TokenCardToken } from "@/components/token/token-card-token";
 import type { TokenData } from "@/data";
 
@@ -38,17 +40,17 @@ export const columns: ColumnDef<TokenData>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "address",
+    accessorKey: "balance_usd",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Owner" />
+      <DataTableColumnHeader column={column} title="Balance" />
     ),
     cell: ({ row }) => (
-      <div className="flex items-center">
-        <Avatar className="mr-3 h-7 w-7">
-          <PlaceholderOrb address={row.getValue("address") ?? "0x"} />
-        </Avatar>
-        {row.getValue("address")}
-      </div>
+      <Number
+        value={row.getValue("balance_usd")}
+        prefix="$"
+        variant="neutral"
+        size="balance"
+      />
     ),
     enableSorting: false,
     enableHiding: false,
@@ -66,6 +68,32 @@ export const columns: ColumnDef<TokenData>[] = [
     filterFn: (row, id, value) => {
       return value.includes((row.getValue(id) as number).toString());
     },
+    enableSorting: false,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "sparkline",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Last 7 Days" />
+    ),
+    cell: ({ row }) => (
+      <Suspense fallback={null}>
+        <TokenCardSparkline token={row.original} />
+      </Suspense>
+    ),
+    enableSorting: false,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "price",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Price" />
+    ),
+    cell: ({ row }) => (
+      <Suspense fallback={null}>
+        <TokenCardPrice token={row.original} />
+      </Suspense>
+    ),
     enableSorting: false,
     enableHiding: true,
   },
