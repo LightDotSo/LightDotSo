@@ -88,13 +88,17 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   useEffect(() => {
     setOwnerTable(table);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     table,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("address")?.getFilterValue(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("weight"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("weight")?.getFacetedUniqueValues(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("weight")?.getCanHide(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("weight")?.getIsVisible(),
     setOwnerTable,
   ]);
