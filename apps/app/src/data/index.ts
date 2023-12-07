@@ -14,7 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export type { AuthNonceData, AuthSessionData } from "./auth";
-export type { ConfigurationData } from "./configuration";
+export type {
+  ConfigurationData,
+  ConfigurationOwnerData,
+} from "./configuration";
 export type { NftData, NftDataPage } from "./nft";
 export type { PortfolioData } from "./portfolio";
 export type { TokenData } from "./token";
