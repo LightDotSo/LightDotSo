@@ -14,9 +14,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // -----------------------------------------------------------------------------
-// Default
+// Page
 // -----------------------------------------------------------------------------
 
-export default function Default() {
+export default function Page() {
   return <div>NFTs</div>;
 }

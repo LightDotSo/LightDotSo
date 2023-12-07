@@ -16,7 +16,7 @@
 import { NavLayoutBar } from "@/app/(wallet)/[address]/overview/tokens/(components)/nav-layout-bar";
 
 // -----------------------------------------------------------------------------
-// Default
+// Page
 // -----------------------------------------------------------------------------
 
 export default function Page() {
