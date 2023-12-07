@@ -40,7 +40,6 @@ import type {
   VisibilityState,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-toolbar";
 import type { ConfigurationOwnerData } from "@/data/configuration";
 import { useTables } from "@/stores/useTables";
 
@@ -89,11 +88,19 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   useEffect(() => {
     setOwnerTable(table);
-  }, [table, setOwnerTable]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    table,
+    table.getColumn("address")?.getFilterValue(),
+    table.getColumn("weight"),
+    table.getColumn("weight")?.getFacetedUniqueValues(),
+    table.getColumn("weight")?.getCanHide(),
+    table.getColumn("weight")?.getIsVisible(),
+    setOwnerTable,
+  ]);
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
       <div className="rounded-md border border-border">
         <Table>
           <TableHeader>

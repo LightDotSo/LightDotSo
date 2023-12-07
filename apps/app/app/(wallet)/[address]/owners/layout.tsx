@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Metadata } from "next";
+import { NavLayoutBar } from "@/app/(wallet)/[address]/owners/(components)/nav-layout-bar";
 import { BannerSection } from "@/components/section/banner-section";
 import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
 import { MiddleLayerWrapper } from "@/components/wrapper/layer/middle-layer-wrapper";
@@ -49,9 +50,7 @@ export default function OwnersLayout({ children }: OwnersLayoutProps) {
         description={TITLES.Owners.description}
       >
         <MiddleLayerWrapper>
-          <div className="flex w-full items-center justify-end">
-            <div>Hi.</div>
-          </div>
+          <NavLayoutBar />
         </MiddleLayerWrapper>
       </BannerSection>
       <BaseLayerWrapper>
