@@ -17,7 +17,6 @@
 "@lightdotso/docs": minor
 "@lightdotso/contracts": minor
 "@lightdotso/app": minor
-"@lightdotso/web": minor
 "@lightdotso/android": minor
 "@lightdotso/ui": minor
 "@lightdotso/crates": minor
