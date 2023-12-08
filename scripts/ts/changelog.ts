@@ -41,7 +41,7 @@ type GitMetadata = {
 await appendChangelog();
 
 async function appendChangelog() {
-  await execa("git", ["fetch", "origin", "main"]);
+  await execa("git", ["fetch", "origin", "main:main"]);
 
   await execa("git", ["checkout", "main", "--", CHANGELOG_PATH]);
 
