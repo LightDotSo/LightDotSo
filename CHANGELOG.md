@@ -1,5 +1,17 @@
 ## [Unreleased]
 
+## Major changes
+
+## Minor changes
+
+## Patch changes
+
+Add changeset Root
+
+Add changeset Root
+
+Add changeset Root
+
 ## [0.0.1] - 2023-12-08 - 2023-12-08
 
 ### Patch changes
