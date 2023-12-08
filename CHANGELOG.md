@@ -1,4 +1,8 @@
+# Changelog
+
 ## [Unreleased]
+
+### Added
 
 ### Major changes
 
