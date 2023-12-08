@@ -17,25 +17,12 @@ interface Env {
   ASSETS: R2Bucket;
 }
 
-export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
-    const url = new URL(request.url);
-    const objectName = url.pathname.slice(1);
-
-    if (request.method === "GET") {
-      const object = await env.ASSETS.get(objectName);
-
-      if (object === null) {
-        return new Response("Object Not Found", { status: 404 });
-      }
-
-      const headers = new Headers();
-      object.writeHttpMetadata(headers);
-      headers.set("etag", object.httpEtag);
-
-      return new Response(object.body, {
-        headers,
-      });
-    }
-  },
+export const onRequest: PagesFunction<Env> = async context => {
+  const url = new URL(context.request.url);
+  const objectName = url.pathname.slice(1);
+  const obj = await context.env.ASSETS.get(objectName);
+  if (obj === null) {
+    return new Response("Not found", { status: 404 });
+  }
+  return new Response(obj.body);
 };
