@@ -10,7 +10,7 @@ const REPO_URL = "https://github.com/LightDotSo/LightDotSo";
 const CHANGELOG_PATH = "CHANGELOG.md";
 const CHANGELOG_DOCS_PATH = "apps/changelog/app/changelog.mdx";
 const VERSION_PATH = path.join(process.cwd(), "package.json");
-const INCLUDE_CHANGESETS = "all"; // "diff" | "all"
+const INCLUDE_CHANGESETS = "diff"; // "diff" | "all"
 
 enum ChangeType {
   PATCH,
@@ -48,6 +48,14 @@ async function appendChangelog() {
   const currentChangelog = readFileSync(CHANGELOG_PATH).toString();
 
   const newChangelog = await renderChangelog();
+
+  const currentVersion = getCurrentVersion();
+  const newVersion = await getVersion();
+  if (currentVersion === newVersion) {
+    console.info(`Version ${newVersion} is already in the CHANGELOG`);
+    return;
+  }
+
   writeFileSync(CHANGELOG_PATH, `${newChangelog}\n${currentChangelog}`);
   writeFileSync(CHANGELOG_DOCS_PATH, `${newChangelog}\n${currentChangelog}`);
 }
@@ -169,4 +177,11 @@ function parseGitLog(log: string): GitMetadata {
     ) ?? [];
 
   return { commitHash, authorName, authorEmail, title };
+}
+
+function getCurrentVersion() {
+  const currentChangelog = readFileSync(CHANGELOG_PATH).toString();
+  const versionLine = currentChangelog.split("\n")[0];
+  const versionMatch = versionLine.match(/Version (\d+\.\d+\.\d+)/);
+  return versionMatch ? versionMatch[1] : null;
 }
