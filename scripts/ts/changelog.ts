@@ -104,7 +104,7 @@ async function getChanges(include: "diff" | "all") {
 
   if (include === "diff") {
     const changesetDiff = (
-      await execa("git", ["diff", "main", ".changeset/pre.json"])
+      await execa("git", ["diff", "main", "--", ".changeset/pre.json"])
     ).stdout;
 
     const addedLinesRegex = /\+\s+"(?!.*:)([^"]+)"/g;
