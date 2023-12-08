@@ -15,24 +15,19 @@
 
 "use client";
 
-import {
-  Button,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@lightdotso/ui";
-import { RefreshCcw } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { infoToast } from "@/utils";
+import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
+import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
+import type { NftDataPage, WalletSettingsData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface InvokePortfolioButtonProps {
+interface NftsDataTableProps {
   address: Address;
 }
 
@@ -40,31 +35,26 @@ interface InvokePortfolioButtonProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
-  address,
-}) => {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span>
-            <Button
-              size="unsized"
-              variant="strong"
-              className="h-8 px-3 py-1"
-              onClick={() => {
-                invokePortfolioAction(address as Address);
-                infoToast("Refreshing...");
-              }}
-            >
-              <RefreshCcw className="h-4 w-4" />
-            </Button>
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Refresh</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+
+  const nftPage: NftDataPage | undefined = queryClient.getQueryData(
+    queries.nft.list({
+      address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
   );
+
+  if (!nftPage) {
+    return null;
+  }
+
+  return <DataTable data={nftPage.nfts ?? []} columns={columns} />;
 };

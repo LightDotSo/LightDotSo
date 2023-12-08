@@ -25,6 +25,7 @@ import type { NftData } from "@/data";
 // -----------------------------------------------------------------------------
 
 type NftImageProps = {
+  className?: string;
   nft: NftData;
 };
 
@@ -33,6 +34,7 @@ type NftImageProps = {
 // -----------------------------------------------------------------------------
 
 export const NftImage: FC<NftImageProps> = ({
+  className,
   nft: {
     contract_address,
     image_url,
@@ -46,21 +48,23 @@ export const NftImage: FC<NftImageProps> = ({
   return (
     <div
       className={cn(
-        "grayscale duration-500 ease-in-out relative aspect-w-1 aspect-h-1 bg-background",
-        !isImageLoaded && "animate-pulse bg-emphasis-medium",
-        !isImageLoaded
-          ? "scale-90 blur-xl grayscale"
-          : "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0",
+        "relative aspect-w-1 aspect-h-1 bg-background overflow-hidden w-full",
+        className,
       )}
-      style={{ aspectRatio: "1" }}
     >
       {!isImageLoaded && blurhash && (
-        <div className="absolute inset-0">
-          <Blurhash hash={blurhash} />
+        <div className="absolute inset-0 h-full w-full">
+          <Blurhash width="100%" height="100%" hash={blurhash} />
         </div>
       )}
       <img
-        className="absolute inset-0 w-full"
+        className={cn(
+          "absolute inset-0 w-full duration-500 ease-in-out",
+          !isImageLoaded && "animate-pulse bg-emphasis-medium",
+          !isImageLoaded
+            ? "scale-90 blur-xl"
+            : "scale-100 blur-0 grayscale-0 group-hover:scale-125 group-hover:blur-2 group-hover:grayscale-0",
+        )}
         src={
           image_url ?? image_large_url ?? extra_metadata?.image_original_url!
         }

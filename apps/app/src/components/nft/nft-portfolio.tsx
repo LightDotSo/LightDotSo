@@ -15,56 +15,60 @@
 
 "use client";
 
-import {
-  Button,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
-} from "@lightdotso/ui";
-import { RefreshCcw } from "lucide-react";
+import { Number } from "@lightdotso/ui";
+import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { infoToast } from "@/utils";
+import type { NftPortfolioData } from "@/data";
+import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface InvokePortfolioButtonProps {
+type NftPortfolioProps = {
   address: Address;
-}
+  size?: "xl" | "balance";
+  isNeutral?: boolean;
+};
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
+export const NftPortfolio: FC<NftPortfolioProps> = ({
   address,
+  size = "xl",
+  isNeutral = false,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
+  const portfolio: NftPortfolioData | undefined = queryClient.getQueryData(
+    queries.nft_valuation.get(address).queryKey,
+  );
+
+  if (!portfolio) {
+    return null;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span>
-            <Button
-              size="unsized"
-              variant="strong"
-              className="h-8 px-3 py-1"
-              onClick={() => {
-                invokePortfolioAction(address as Address);
-                infoToast("Refreshing...");
-              }}
-            >
-              <RefreshCcw className="h-4 w-4" />
-            </Button>
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Refresh</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    portfolio &&
+    portfolio.wallets &&
+    portfolio.wallets.length > 0 && (
+      <Number
+        value={portfolio.wallets[0].usd_value ?? 0.0}
+        size={size}
+        prefix="$"
+        variant={isNeutral ? "neutral" : undefined}
+      />
+    )
   );
 };

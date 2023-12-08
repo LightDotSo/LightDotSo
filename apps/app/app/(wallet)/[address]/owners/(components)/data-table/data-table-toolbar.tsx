@@ -17,27 +17,54 @@
 
 import { Button, Input } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
-import { DataTableFacetedFilter } from "@/app/(wallet)/[address]/owners/(components)/data-table-faceted-filter";
-import { DataTableViewOptions } from "@/app/(wallet)/[address]/owners/(components)/data-table-view-options";
-import { MAX_WEIGHT } from "@/const/configuration";
+import { useMemo } from "react";
+import type { Address } from "viem";
+import { DataTableFacetedFilter } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-faceted-filter";
+import { DataTableViewOptions } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-view-options";
+import type { ConfigurationData, ConfigurationOwnerData } from "@/data";
+import { queries } from "@/queries";
+import { useAuth } from "@/stores/useAuth";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableToolbarProps<TData> {
-  table: Table<TData>;
+interface DataTableToolbarProps {
+  table: Table<ConfigurationOwnerData>;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar<TData>({
-  table,
-}: DataTableToolbarProps<TData>) {
+export function DataTableToolbar({ table }: DataTableToolbarProps) {
+  const { wallet } = useAuth();
   const isFiltered = table.getState().columnFilters.length > 0;
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
+  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
+    queries.configuration.get(wallet as Address).queryKey,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Hook
+  // ---------------------------------------------------------------------------
+
+  const uniqueWeightValues = useMemo(() => {
+    // Get all unique weight values from current data
+    const uniqueWeightValues = new Set<number>();
+    currentData?.owners.forEach(owner => {
+      uniqueWeightValues.add(owner.weight);
+    });
+    return uniqueWeightValues;
+  }, [currentData]);
 
   return (
     <div className="flex items-center justify-between">
@@ -55,9 +82,9 @@ export function DataTableToolbar<TData>({
           <DataTableFacetedFilter
             column={table.getColumn("weight")}
             title="Weight"
-            options={Array.from(Array(MAX_WEIGHT).keys()).map(i => ({
-              value: (i + 1).toString(),
-              label: (i + 1).toString(),
+            options={Array.from(uniqueWeightValues).map(i => ({
+              value: i.toString(),
+              label: i.toString(),
             }))}
           />
         )}

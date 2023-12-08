@@ -17,54 +17,47 @@
 
 import {
   Button,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  TooltipProvider,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
 } from "@lightdotso/ui";
-import { RefreshCcw } from "lucide-react";
-import type { FC } from "react";
-import type { Address } from "viem";
-import invokePortfolioAction from "@/actions/invokePortfolioAction";
-import { infoToast } from "@/utils";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import type { Row } from "@tanstack/react-table";
+import type { TokenData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface InvokePortfolioButtonProps {
-  address: Address;
+interface DataTableRowActionsProps {
+  row: Row<TokenData>;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
-  address,
-}) => {
+export function DataTableRowActions({ row: _ }: DataTableRowActionsProps) {
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span>
-            <Button
-              size="unsized"
-              variant="strong"
-              className="h-8 px-3 py-1"
-              onClick={() => {
-                invokePortfolioAction(address as Address);
-                infoToast("Refreshing...");
-              }}
-            >
-              <RefreshCcw className="h-4 w-4" />
-            </Button>
-          </span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Refresh</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="flex h-8 w-8 p-0 data-[state=open]:bg-background-stronger"
+        >
+          <DotsHorizontalIcon className="h-4 w-4" />
+          <span className="sr-only">Open menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuItem>Copy Address</DropdownMenuItem>
+        <DropdownMenuItem>
+          Delete
+          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
-};
+}

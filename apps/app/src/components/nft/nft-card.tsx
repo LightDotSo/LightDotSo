@@ -16,37 +16,55 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { Button } from "@lightdotso/ui";
+import { cn } from "@lightdotso/utils";
 import Link from "next/link";
 import { type FC } from "react";
 import { NftImage } from "@/components/nft/nft-image";
-import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
 import type { NftData } from "@/data";
+import { useAuth } from "@/stores/useAuth";
+import { getChainIdBySimplehashChainName } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type NftCardProps = {
-  address: string;
   nft: NftData;
+  showName?: boolean;
+  showDescription?: boolean;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NftCard: FC<NftCardProps> = ({ address, nft }) => {
+export const NftCard: FC<NftCardProps> = ({
+  nft,
+  showName = true,
+  showDescription = true,
+}) => {
+  const { wallet } = useAuth();
+
   return (
-    <li className="group relative col-span-1 flex flex-col overflow-hidden rounded-2xl border border-border text-center">
-      <NftImage nft={nft} />
+    <li
+      className={cn(
+        "group relative col-span-1 rounded-md flex flex-col overflow-hidden bg-background",
+        "border border-border",
+      )}
+    >
+      <NftImage nft={nft} className="rounded-t-md" />
+      <div className="flex flex-col space-y-3 px-3 py-4">
+        {showName && <div className="text-sm text-text">{nft.name}</div>}
+        {showDescription && (
+          <div className="text-xs text-text-weak"># {nft.token_id}</div>
+        )}
+      </div>
       <div className="absolute inset-x-0 bottom-0 translate-y-2 opacity-0 transition-transform duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <Button asChild className="w-full py-2">
           <Link
-            href={`/${address}/send?transfers=0:_:_:${
-              SIMPLEHASH_CHAIN_ID_MAPPING[
-                nft.chain! as keyof typeof SIMPLEHASH_CHAIN_ID_MAPPING
-              ]
-            }:${nft.contract.type?.toLowerCase()}:${nft.contract_address}|${
+            href={`/${wallet}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
+              nft.chain!,
+            )}:${nft.contract.type?.toLowerCase()}:${nft.contract_address}|${
               nft.token_id
             }|${nft.contract.type?.toLowerCase() === "erc721" ? 1 : 0}`}
           >

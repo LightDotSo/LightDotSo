@@ -17,28 +17,16 @@
 
 import { Avatar, Checkbox } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { z } from "zod";
-import { DataTableColumnHeader } from "@/app/(wallet)/[address]/owners/(components)/data-table-column-header";
-import { DataTableRowActions } from "@/app/(wallet)/[address]/owners/(components)/data-table-row-actions";
+import { DataTableColumnHeader } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-column-header";
+import { DataTableRowActions } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-row-actions";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-
-// -----------------------------------------------------------------------------
-// Schema
-// -----------------------------------------------------------------------------
-
-export const ownerSchema = z.object({
-  id: z.string(),
-  address: z.string(),
-  weight: z.number(),
-});
-
-export type Owner = z.infer<typeof ownerSchema>;
+import type { ConfigurationOwnerData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Definitions
 // -----------------------------------------------------------------------------
 
-export const columns: ColumnDef<Owner>[] = [
+export const columns: ColumnDef<ConfigurationOwnerData>[] = [
   {
     id: "select",
     header: ({ table }) => (

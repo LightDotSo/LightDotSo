@@ -60,6 +60,7 @@ export const metadata: Metadata = {
 
 interface TransactionsLayoutProps {
   children: React.ReactNode;
+  nav: React.ReactNode;
   params: {
     address: string;
   };
@@ -71,6 +72,7 @@ interface TransactionsLayoutProps {
 
 export default function TransactionsLayout({
   children,
+  nav,
   params,
 }: TransactionsLayoutProps) {
   return (
@@ -81,6 +83,7 @@ export default function TransactionsLayout({
       >
         <MiddleLayerWrapper>
           <LinkButtonGroup items={transactionsNavItems}>
+            {nav}
             <InvokeUserOperationButton address={params.address as Address} />
           </LinkButtonGroup>
         </MiddleLayerWrapper>

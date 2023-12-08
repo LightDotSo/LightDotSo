@@ -13,21 +13,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
+import type { ColumnDef } from "@tanstack/react-table";
+import type { NftData } from "@/data";
+
 // -----------------------------------------------------------------------------
-// Data
+// Definitions
 // -----------------------------------------------------------------------------
 
-export type ConfigurationOwnerData = {
-  address: string;
-  id: string;
-  weight: number;
-};
-
-export type ConfigurationData = {
-  address: string;
-  checkpoint: number;
-  id: string;
-  image_hash: string;
-  owners: ConfigurationOwnerData[];
-  threshold: number;
-};
+export const columns: ColumnDef<NftData>[] = [
+  {
+    accessorKey: "chain",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "name",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "description",
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: true,
+    enableHiding: true,
+  },
+];

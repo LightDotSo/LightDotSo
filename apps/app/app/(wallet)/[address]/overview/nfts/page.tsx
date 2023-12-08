@@ -18,7 +18,9 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
-import { NftsList } from "@/components/nft/nfts-list";
+import { NftsDataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/nft-data-table";
+import { NftPortfolio } from "@/components/nft/nft-portfolio";
+import { PortfolioSection } from "@/components/section/portfolio-section";
 import { handler } from "@/handlers/paths/[address]/overview/nfts/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/nfts/preloader";
 import { queries } from "@/queries";
@@ -77,8 +79,13 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      <PortfolioSection title="Total NFTs Value">
+        <Suspense>
+          <NftPortfolio address={params.address as Address} />
+        </Suspense>
+      </PortfolioSection>
       <Suspense>
-        <NftsList address={params.address as Address} />
+        <NftsDataTable address={params.address as Address} />
       </Suspense>
     </HydrationBoundary>
   );

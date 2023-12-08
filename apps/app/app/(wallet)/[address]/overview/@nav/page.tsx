@@ -13,17 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export type { AuthNonceData, AuthSessionData } from "./auth";
-export type {
-  ConfigurationData,
-  ConfigurationOwnerData,
-} from "./configuration";
-export type { NftData, NftDataPage } from "./nft";
-export type { TokenPortfolioData, NftPortfolioData } from "./portfolio";
-export type { TokenData } from "./token";
-export type { TokenPriceData } from "./tokenPrice";
-export type { TransactionData } from "./transaction";
-export type { UserData } from "./user";
-export type { UserOperationData } from "./userOperation";
-export type { WalletSettingsData } from "./walletSettings";
-export type { WalletData } from "./wallet";
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
+export default function Page() {
+  return null;
+}
