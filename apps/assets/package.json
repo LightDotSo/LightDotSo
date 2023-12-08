@@ -12,6 +12,17 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
+  "scripts": {
+    "build": "tsc",
+    "dev": "wrangler pages dev . functions --r2=ASSETS"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20231121.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "wrangler": "^3.19.0"
+  },
   "publishConfig": {
     "access": "public"
   }

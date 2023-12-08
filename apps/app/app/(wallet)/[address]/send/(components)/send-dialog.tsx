@@ -926,11 +926,10 @@ export const SendDialog: FC<SendDialogProps> = ({
         });
         // If the token is an erc1155 token meaning the quantity must be less than or equal to the token count
       } else if (
-        (nft.contract.type?.toLowerCase() === "erc1155" &&
-          // Get the owner quantity from the owners array
-          nft.owners?.find(owner => owner.owner_address === address)
-            ?.quantity) ??
-        1 < quantity
+        nft.contract.type?.toLowerCase() === "erc1155" &&
+        // Get the owner quantity from the owners array
+        (nft.owners?.find(owner => owner.owner_address === address)?.quantity ??
+          1) < quantity
       ) {
         // Show an error on the message
         form.setError(`transfers.${index}.asset.quantity`, {
@@ -1094,9 +1093,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                       <div className="flex items-center space-x-3">
                                         <div className="relative inline-block w-full">
                                           <Input
-                                            id="address"
+                                            id="quantity"
                                             className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                                            type="number"
+                                            type="text"
                                             {...field}
                                             placeholder="Quantity of tokens to transfer"
                                             onBlur={e => {
@@ -1327,9 +1326,9 @@ export const SendDialog: FC<SendDialogProps> = ({
                                       <div className="flex items-center space-x-3">
                                         <div className="relative inline-block w-full">
                                           <Input
-                                            id="address"
+                                            id="quantity"
                                             className="[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                                            type="number"
+                                            type="text"
                                             {...field}
                                             placeholder="Quantity of tokens to transfer"
                                             onBlur={e => {
@@ -1587,11 +1586,15 @@ export const SendDialog: FC<SendDialogProps> = ({
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
               >
-                <Link
-                  href={`/${address}/op?userOperations=${userOperationsParams!}`}
-                >
-                  Continue
-                </Link>
+                {form.formState.isValid ? (
+                  <Link
+                    href={`/${address}/op?userOperations=${userOperationsParams!}`}
+                  >
+                    Continue
+                  </Link>
+                ) : (
+                  <span className="cursor-not-allowed">Continue</span>
+                )}
               </Button>
             </CardFooter>
           </form>
