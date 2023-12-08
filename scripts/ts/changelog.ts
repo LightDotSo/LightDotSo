@@ -50,6 +50,10 @@ async function appendChangelog() {
   const newChangelog = await renderChangelog();
 
   const currentVersion = getCurrentVersion();
+  if (!currentVersion) {
+    console.error("Could not find current version in CHANGELOG");
+    return;
+  }
   const newVersion = await getVersion();
   if (currentVersion === newVersion) {
     console.info(`Version ${newVersion} is already in the CHANGELOG`);
@@ -65,9 +69,7 @@ async function renderChangelog() {
   const version = await getVersion();
   const date = new Date();
 
-  return `## Version ${version}
-
-Release date: ${date.toDateString()}
+  return `## [${version}] - ${date.toISOString().split("T")[0]}
 
 ${await renderChangelogItems("Major changes", changes.major)}\n
 ${await renderChangelogItems("Minor changes", changes.minor)}\n
@@ -181,7 +183,12 @@ function parseGitLog(log: string): GitMetadata {
 
 function getCurrentVersion() {
   const currentChangelog = readFileSync(CHANGELOG_PATH).toString();
-  const versionLine = currentChangelog.split("\n")[0];
-  const versionMatch = versionLine.match(/Version (\d+\.\d+\.\d+)/);
-  return versionMatch ? versionMatch[1] : null;
+  const lines = currentChangelog.split("\n");
+  for (let line of lines) {
+    const versionMatch = line.match(/\[([\d+.]*)\]/);
+    if (versionMatch) {
+      return versionMatch[1];
+    }
+  }
+  return null;
 }
