@@ -1,5 +1,11 @@
 # @lightdotso/crates
 
+## 0.1.0-pre.9
+
+### Patch Changes
+
+- [#875](https://github.com/LightDotSo/LightDotSo/pull/875) [`b481706`](https://github.com/LightDotSo/LightDotSo/commit/b481706e0c62f37b68a77ea372d849c535c27852) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix user creation
+
 ## 0.1.0-pre.8
 
 ### Patch Changes
