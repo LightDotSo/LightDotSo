@@ -19,15 +19,15 @@ import { Button } from "@lightdotso/ui";
 import Link from "next/link";
 import { type FC } from "react";
 import { NftImage } from "@/components/nft/nft-image";
-import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
 import type { NftData } from "@/data";
+import { useAuth } from "@/stores/useAuth";
+import { getChainIdBySimplehashChainName } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 type NftCardProps = {
-  address: string;
   nft: NftData;
 };
 
@@ -35,18 +35,18 @@ type NftCardProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const NftCard: FC<NftCardProps> = ({ address, nft }) => {
+export const NftCard: FC<NftCardProps> = ({ nft }) => {
+  const { wallet } = useAuth();
+
   return (
     <li className="group relative col-span-1 flex flex-col overflow-hidden rounded-2xl border border-border text-center">
       <NftImage nft={nft} />
       <div className="absolute inset-x-0 bottom-0 translate-y-2 opacity-0 transition-transform duration-300 group-hover:translate-y-0 group-hover:opacity-100">
         <Button asChild className="w-full py-2">
           <Link
-            href={`/${address}/send?transfers=0:_:_:${
-              SIMPLEHASH_CHAIN_ID_MAPPING[
-                nft.chain! as keyof typeof SIMPLEHASH_CHAIN_ID_MAPPING
-              ]
-            }:${nft.contract.type?.toLowerCase()}:${nft.contract_address}|${
+            href={`/${wallet}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
+              nft.chain!,
+            )}:${nft.contract.type?.toLowerCase()}:${nft.contract_address}|${
               nft.token_id
             }|${nft.contract.type?.toLowerCase() === "erc721" ? 1 : 0}`}
           >

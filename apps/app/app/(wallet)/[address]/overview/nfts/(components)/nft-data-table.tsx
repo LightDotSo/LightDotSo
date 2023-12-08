@@ -15,13 +15,11 @@
 
 "use client";
 
-import { getNftsByOwner } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { NftCard } from "@/components/nft/nft-card";
-import { NftsEmpty } from "@/components/nft/nfts-empty";
-import { NftsWrapper } from "@/components/nft/nfts-wrapper";
+import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
+import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 import type { NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 
@@ -29,16 +27,15 @@ import { queries } from "@/queries";
 // Props
 // -----------------------------------------------------------------------------
 
-export type NftsListProps = {
+interface NftsDataTableProps {
   address: Address;
-  limit?: number;
-};
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
+export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -48,50 +45,16 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentData: NftDataPage | undefined = queryClient.getQueryData(
+  const nftPage: NftDataPage | undefined = queryClient.getQueryData(
     queries.nft.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<NftDataPage | null>({
-    queryKey: queries.nft.list({
-      address,
-      is_testnet: walletSettings?.is_enabled_testnet,
-    }).queryKey,
-    queryFn: async () => {
-      const res = await getNftsByOwner(
-        address,
-        walletSettings?.is_enabled_testnet,
-      );
+  if (!nftPage) {
+    return null;
+  }
 
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
-
-  return (
-    <NftsWrapper>
-      {data && data.nfts.length === 0 && <NftsEmpty />}
-      {data &&
-        data.nfts
-          .slice(0, limit || data.nfts.length)
-          .filter(
-            nft =>
-              nft.collection &&
-              (nft.collection?.spam_score === null ||
-                nft.collection?.spam_score === undefined ||
-                nft.collection?.spam_score < 30),
-          )
-          .map(nft => <NftCard key={nft.nft_id} nft={nft} />)}
-    </NftsWrapper>
-  );
+  return <DataTable data={nftPage.nfts ?? []} columns={columns} />;
 };

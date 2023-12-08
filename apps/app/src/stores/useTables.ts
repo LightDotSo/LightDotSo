@@ -16,13 +16,15 @@
 import type { Table } from "@tanstack/react-table";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import type { TokenData, ConfigurationOwnerData } from "@/data";
+import type { TokenData, ConfigurationOwnerData, NftData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // State
 // -----------------------------------------------------------------------------
 
 type TablesStore = {
+  nftTable: Table<NftData> | null;
+  setNftTable: (tableObject: Table<NftData>) => void;
   ownerTable: Table<ConfigurationOwnerData> | null;
   setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
   tokenTable: Table<TokenData> | null;
@@ -36,6 +38,8 @@ type TablesStore = {
 export const useTables = create(
   devtools<TablesStore>(
     set => ({
+      nftTable: null,
+      setNftTable: tableObject => set({ nftTable: tableObject }),
       ownerTable: null,
       setOwnerTable: tableObject => set({ ownerTable: tableObject }),
       tokenTable: null,

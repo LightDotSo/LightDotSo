@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { CHAINS } from "@/const/chains";
-import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
+"use client";
 
-export function getChainNameById(chainId: number): string {
-  const chain = CHAINS.find(chain => chain.id === chainId);
-  return chain?.name ?? "Unknown";
-}
+import type { FC } from "react";
+import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table-toolbar";
+import { useTables } from "@/stores/useTables";
 
-export function getChainIdBySimplehashChainName(chain: string): number {
-  if (chain in SIMPLEHASH_CHAIN_ID_MAPPING) {
-    const chainId =
-      SIMPLEHASH_CHAIN_ID_MAPPING[
-        chain as keyof typeof SIMPLEHASH_CHAIN_ID_MAPPING
-      ];
-    return chainId;
-  } else {
-    return 1;
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const NavLayoutBar: FC = () => {
+  const { nftTable } = useTables();
+
+  if (!nftTable) {
+    return null;
   }
-}
+
+  return <DataTableToolbar table={nftTable} />;
+};
