@@ -55,6 +55,7 @@ async function appendChangelog() {
   //   return;
   // }
   const newVersion = await getVersion();
+  // if (currentVersion === newVersion) {
   if (!currentVersion || currentVersion === newVersion) {
     console.info(`Version ${newVersion} is already in the CHANGELOG`);
     return;
