@@ -1,3 +1,7 @@
+# Changelog
+
+## [Unreleased]
+
 ## Version 0.0.0
 
 Release date: Thu Dec 07 2023
