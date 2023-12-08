@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
       - name: Git Config
         run: |
-          git config user.name "${GITHUB_ACTOR}"
+          git config user.name "LightDotSoBot"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
