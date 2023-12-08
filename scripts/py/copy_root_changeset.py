@@ -25,10 +25,10 @@ def process_file(input_file, target_file="CHANGELOG.md"):
 def update_changelog(changelog_file, section, description):
     with open(changelog_file, 'r') as f:
         lines = f.readlines()
-    unreleased_index = next(i for i, line in enumerate(lines) if line.startswith("## [Unreleased]\n"))
+    unreleased_index = next(i for i, line in enumerate(lines) if line.startswith("## [Unreleased]"))
     next_section_index = next((i for i, line in enumerate(lines[unreleased_index+1:], start=unreleased_index+1) if line.startswith("##")), len(lines))
     if section not in lines[unreleased_index:next_section_index]:
-        lines.insert(next_section_index, '\n{}{}\n'.format(section, description))
+        lines.insert(next_section_index, '\n{}\n{}\n'.format(section, description))
     with open(changelog_file, 'w') as f:
         f.write(''.join(lines))
 

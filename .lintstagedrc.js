@@ -15,7 +15,8 @@ module.exports = {
   ],
   ".changeset/**/*.md": [
     "python3 scripts/py/copy_root_changeset.py",
-    "git add",
+    "pnpm run prettier:cmd --write CHANGELOG.md",
+    "git add CHANGELOG.md",
   ],
   "thunder-tests/**/*.json": ["./scripts/check_thunder_url.sh"],
 };
