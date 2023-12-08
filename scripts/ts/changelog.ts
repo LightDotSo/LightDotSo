@@ -50,12 +50,12 @@ async function appendChangelog() {
   const newChangelog = await renderChangelog();
 
   const currentVersion = getCurrentVersion();
-  if (!currentVersion) {
-    console.error("Could not find current version in CHANGELOG");
-    return;
-  }
+  // if (!currentVersion) {
+  //   console.error("Could not find current version in CHANGELOG");
+  //   return;
+  // }
   const newVersion = await getVersion();
-  if (currentVersion === newVersion) {
+  if (!currentVersion || currentVersion === newVersion) {
     console.info(`Version ${newVersion} is already in the CHANGELOG`);
     return;
   }
