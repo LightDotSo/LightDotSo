@@ -25,7 +25,6 @@ Update esling config w/ plugins
 **[chore: ini tailwind config (#281)](https://github.com/LightDotSo/LightDotSo/commit/5504b14314e9f00b74738792de9fe4c66d21c02f)** (@lightdotso/tailwindcss) by Shun Kakinoki (39187513+shunkakinoki@users.noreply.github.com)
 
 Deprecate line clamp
-
 **[feat: ini prisma rust (#186)](https://github.com/LightDotSo/LightDotSo/commit/58e2264e5866f53e14da8da434ce1140abe72597)** (@lightdotso/crates, @lightdotso/bin) by Shun Kakinoki (39187513+shunkakinoki@users.noreply.github.com)
 
 Add rust prisma
