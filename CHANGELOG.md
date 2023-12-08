@@ -1,7 +1,5 @@
 ## [Unreleased]
 
-## [0.0.0] - 2023-12-08
-
 ### Major changes
 
 **[chore: ini ios version (#118)](https://github.com/LightDotSo/LightDotSo/commit/3c7e61ab5f82d6767b3fb4edfeeb9811377618eb)** (@lightdotso/ios)
