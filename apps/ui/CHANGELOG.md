@@ -1,5 +1,27 @@
 # @lightdotso/ui
 
+## 1.1.0
+
+### Minor Changes
+
+- [#143](https://github.com/LightDotSo/LightDotSo/pull/143) [`1aab6d8`](https://github.com/LightDotSo/LightDotSo/commit/1aab6d87fc1d2c5ebf274c14c1ac0e386b54b7a1) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate License to AGPL-3.0
+
+- [#170](https://github.com/LightDotSo/LightDotSo/pull/170) [`bb793e5`](https://github.com/LightDotSo/LightDotSo/commit/bb793e593d9d9e68150c706d37b96fd04fe2e73d) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add @shadcn/ui components
+
+### Patch Changes
+
+- [#171](https://github.com/LightDotSo/LightDotSo/pull/171) [`ecb7d14`](https://github.com/LightDotSo/LightDotSo/commit/ecb7d148012f692ce0365d2c10b7163e99c8fe18) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - chore: upgrade dependencies
+
+- [#149](https://github.com/LightDotSo/LightDotSo/pull/149) [`5142911`](https://github.com/LightDotSo/LightDotSo/commit/51429114636eff5d0a0553af96dc2d0f5120a702) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Migrate to AGPLv3
+
+- [#141](https://github.com/LightDotSo/LightDotSo/pull/141) [`60799ab`](https://github.com/LightDotSo/LightDotSo/commit/60799ab9cb59fb121bcb75d9c009add727689810) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - migrate to dist dir for storybook
+
+- [#600](https://github.com/LightDotSo/LightDotSo/pull/600) [`060f3b4`](https://github.com/LightDotSo/LightDotSo/commit/060f3b466d4427eea73117c202a0f4f3cd76544a) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Add home
+
+- Updated dependencies [[`5142911`](https://github.com/LightDotSo/LightDotSo/commit/51429114636eff5d0a0553af96dc2d0f5120a702), [`e8603f0`](https://github.com/LightDotSo/LightDotSo/commit/e8603f08ae6e55ed48c69c1c404da0630472d05c), [`1aab6d8`](https://github.com/LightDotSo/LightDotSo/commit/1aab6d87fc1d2c5ebf274c14c1ac0e386b54b7a1), [`8d8eb17`](https://github.com/LightDotSo/LightDotSo/commit/8d8eb1757888ebdab1d73584bac9f453b527b3d0), [`060f3b4`](https://github.com/LightDotSo/LightDotSo/commit/060f3b466d4427eea73117c202a0f4f3cd76544a)]:
+  - @lightdotso/utils@0.1.0
+  - @lightdotso/styles@1.1.0
+
 ## 1.1.0-pre.5
 
 ### Patch Changes
