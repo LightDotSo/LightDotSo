@@ -5,6 +5,7 @@
     "tagName": "v${version}"
   },
   "github": {
+    "autoGenerate": true,
     "release": true,
     "releaseName": "v${version}",
     "web": true
