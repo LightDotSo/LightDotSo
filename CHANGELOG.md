@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## Version 0.0.0
+## Version 0.0.1
 
 Release date: Thu Dec 07 2023
 
@@ -177,3 +177,7 @@ Initial Working Bin
 Add lightdotso keychain
 
 ---
+
+## Version 0.0.0
+
+Initial Release: Thu Dec 07 2023
