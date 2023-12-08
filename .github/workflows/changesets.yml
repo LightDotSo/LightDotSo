@@ -52,6 +52,9 @@ jobs:
       - name: Node Build
         run: |
           pnpm run build:turbo
+      - name: Enter Pre
+        run: |
+          pnpm changeset pre enter pre
       - name: Publish to NPM
         uses: changesets/action@v1
         continue-on-error: true
