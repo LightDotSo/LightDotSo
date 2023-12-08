@@ -15,19 +15,18 @@
 
 "use client";
 
-import { getPortfolio } from "@lightdotso/client";
 import { Number } from "@lightdotso/ui";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import type { TokenPortfolioData } from "@/data";
+import type { NftPortfolioData } from "@/data";
 import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenPortfolioProps = {
+type NftPortfolioProps = {
   address: Address;
   size?: "xl" | "balance";
   isNeutral?: boolean;
@@ -37,7 +36,7 @@ type TokenPortfolioProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokenPortfolio: FC<TokenPortfolioProps> = ({
+export const NftPortfolio: FC<NftPortfolioProps> = ({
   address,
   size = "xl",
   isNeutral = false,
@@ -48,36 +47,9 @@ export const TokenPortfolio: FC<TokenPortfolioProps> = ({
 
   const queryClient = useQueryClient();
 
-  const currentData: TokenPortfolioData | undefined = queryClient.getQueryData(
-    queries.portfolio.get(address).queryKey,
+  const portfolio: NftPortfolioData | undefined = queryClient.getQueryData(
+    queries.nft_valuation.get(address).queryKey,
   );
-
-  const { data: portfolio } = useSuspenseQuery<TokenPortfolioData | null>({
-    queryKey: queries.portfolio.get(address).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getPortfolio({
-        params: {
-          query: {
-            address: address,
-          },
-        },
-      });
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
 
   if (!portfolio) {
     return null;
@@ -88,9 +60,11 @@ export const TokenPortfolio: FC<TokenPortfolioProps> = ({
   // ---------------------------------------------------------------------------
 
   return (
-    portfolio.balances && (
+    portfolio &&
+    portfolio.wallets &&
+    portfolio.wallets.length > 0 && (
       <Number
-        value={portfolio.balance ?? 0.0}
+        value={portfolio.wallets[0].usd_value ?? 0.0}
         size={size}
         prefix="$"
         variant={isNeutral ? "neutral" : undefined}

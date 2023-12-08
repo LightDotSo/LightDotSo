@@ -21,7 +21,9 @@ import type { Address } from "viem";
 import { OverviewCard } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-card";
 import { OverviewWrapper } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-wrapper";
 import { OVERVIEW_NAV_ITEMS } from "@/app/(wallet)/[address]/overview/(const)/nav-items";
+import { NftPortfolio } from "@/components/nft/nft-portfolio";
 import { NftsList } from "@/components/nft/nfts-list";
+import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { TokensList } from "@/components/token/tokens-list";
 import { OverviewSubCategory, TITLES } from "@/const/titles";
 
@@ -61,6 +63,18 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
     }
   };
 
+  const itemToNav = (itemId: string): JSX.Element => {
+    switch (itemId) {
+      case OverviewSubCategory.Tokens:
+        return <TokenPortfolio isNeutral address={address} size="balance" />;
+      case OverviewSubCategory.NFTs:
+        return <NftPortfolio isNeutral address={address} size="balance" />;
+      case OverviewSubCategory.History:
+      default:
+        return <></>;
+    }
+  };
+
   return (
     <OverviewWrapper>
       <Reorder.Group
@@ -79,6 +93,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
               }`}
               value={item}
               title={TITLES.Overview.subcategories[item]?.title}
+              nav={itemToNav(item)}
             >
               {itemToComponent(item)}
             </OverviewCard>

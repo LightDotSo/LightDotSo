@@ -30,6 +30,7 @@ interface OverviewCardProps {
   value: string;
   title: string;
   children: ReactNode;
+  nav: ReactNode;
 }
 
 // -----------------------------------------------------------------------------
@@ -39,6 +40,7 @@ interface OverviewCardProps {
 export const OverviewCard = ({
   href,
   children,
+  nav,
   title,
   value,
 }: OverviewCardProps) => {
@@ -65,7 +67,8 @@ export const OverviewCard = ({
             {title}
           </div>
         </div>
-        <div>
+        <div className="flex items-center space-x-3">
+          {nav}
           <Button asChild size="sm" variant="outline">
             <Link href={href}>
               See All

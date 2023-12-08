@@ -17,12 +17,19 @@
 // Data
 // -----------------------------------------------------------------------------
 
-export type PortfolioData = {
+export type TokenPortfolioData = {
   balance: number;
   balance_change_24h: number;
   balance_change_24h_percentage: number;
   balances: {
     balance: number;
     date: string;
+  }[];
+};
+
+export type NftPortfolioData = {
+  wallets: {
+    address: string;
+    usd_value: number;
   }[];
 };
