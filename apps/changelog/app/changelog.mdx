@@ -173,9 +173,3 @@ Initial Working Bin
 **[perf: ini sccache (#303)](https://github.com/LightDotSo/LightDotSo/commit/6aeb8395fbcdd18c92c1fd300f7b5a56846c64e0)** (@lightdotso/crates)
 
 Add lightdotso keychain
-
----
-
-## [0.0.0] - 2023-12-07
-
-Initial Release: Thu Dec 07 2023
