@@ -13,12 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-interface Env {
-  ASSETS: Fetcher;
+// eslint-disable-next-line no-unused-vars
+export async function onRequest(context) {
+  const obj = await context.env.ASSETS.get("some-key");
+  if (obj === null) {
+    return new Response("Not found", { status: 404 });
+  }
+  return new Response(obj.body);
 }
-
-export default {
-  async fetch(request: Request, env: Env) {
-    return env.ASSETS.fetch(request);
-  },
-};
