@@ -45,6 +45,10 @@ jobs:
           fetch-depth: 0
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Bun Install
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
       - name: Node Build
         run: |
           pnpm run build:turbo
