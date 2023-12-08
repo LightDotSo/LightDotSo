@@ -51,7 +51,7 @@
     "prisma:turbo": "dotenv -- turbo run prisma",
     "release:publish": "changeset publish",
     "release:root": "cross-env HUSKY=0 pnpm release-it",
-    "release:version": "changeset version && pnpm install --lockfile-only && pnpx bun scripts/ts/changelog.ts && pnpm run fix",
+    "release:version": "changeset version && pnpm install --lockfile-only && bun scripts/ts/changelog.ts && pnpm run fix",
     "solhint:cmd": "solhint \"contracts/**/*.sol\" --noPrompt",
     "solhint:fix": "solhint \"contracts/**/*.sol\" --noPrompt --fix",
     "solhint:lint": "solhint \"contracts/**/*.sol\" --noPrompt",
