@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## Patch changes
+
+Add changeset Root
+
 ## [0.0.1] - 2023-12-08 - 2023-12-08
 
 **[fix: wallet creation (#875)](https://github.com/LightDotSo/LightDotSo/commit/b481706e0c62f37b68a77ea372d849c535c27852)** (@lightdotso/crates)
