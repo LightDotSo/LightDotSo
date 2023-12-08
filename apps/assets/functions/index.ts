@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 interface Env {
-  BUCKET: R2Bucket;
+  ASSETS: R2Bucket;
 }
 
 export default {
@@ -23,7 +23,7 @@ export default {
     const objectName = url.pathname.slice(1);
 
     if (request.method === "GET") {
-      const object = await env.BUCKET.get(objectName);
+      const object = await env.ASSETS.get(objectName);
 
       if (object === null) {
         return new Response("Object Not Found", { status: 404 });
