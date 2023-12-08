@@ -54,7 +54,7 @@ export const NftImage: FC<NftImageProps> = ({
     >
       {!isImageLoaded && blurhash && (
         <div className="absolute inset-0 h-full w-full">
-          <Blurhash hash={blurhash} />
+          <Blurhash width="100%" height="100%" hash={blurhash} />
         </div>
       )}
       <img
