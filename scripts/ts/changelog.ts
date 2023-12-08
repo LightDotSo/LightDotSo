@@ -9,7 +9,7 @@ import { execa } from "execa";
 const REPO_URL = "https://github.com/LightDotSo/LightDotSo";
 const CHANGELOG_PATH = "CHANGELOG.md";
 const CHANGELOG_DOCS_PATH = "apps/changelog/app/changelog.mdx";
-const VERSION_PATH = path.join(process.cwd(), "apps/app/package.json");
+const VERSION_PATH = path.join(process.cwd(), "package.json");
 const INCLUDE_CHANGESETS = "all"; // "diff" | "all"
 
 enum ChangeType {
@@ -58,12 +58,13 @@ async function renderChangelog() {
   const date = new Date();
 
   return `## Version ${version}
-Release date: ${date.toDateString()}
-${await renderChangelogItems("Major changes", changes.major)}
-${await renderChangelogItems("Minor changes", changes.minor)}
-${await renderChangelogItems("Patch changes", changes.patch)}
----
 
+Release date: ${date.toDateString()}
+
+${await renderChangelogItems("Major changes", changes.major)}\n
+${await renderChangelogItems("Minor changes", changes.minor)}\n
+${await renderChangelogItems("Patch changes", changes.patch)}\n
+---
 `;
 }
 
@@ -79,7 +80,7 @@ async function renderChangelogItems(
     output += `**[${changelogItem.title}](${REPO_URL}/commit/${
       changelogItem.commitHash
     })** (${changelogItem.packages.map(e => e.package).join(", ")})`;
-    output += `\n\n${changelogItem.description}\n\n`;
+    output += `\n${changelogItem.description}\n`;
   }
 
   return output;
