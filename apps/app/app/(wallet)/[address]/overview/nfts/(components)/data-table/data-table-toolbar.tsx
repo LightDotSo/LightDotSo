@@ -26,7 +26,6 @@ import { DataTableViewOptions } from "@/app/(wallet)/[address]/overview/nfts/(co
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
-import { getChainIdBySimplehashChainName } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -66,13 +65,13 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // Hook
   // ---------------------------------------------------------------------------
 
-  const uniqueChainIdValues = useMemo(() => {
+  const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
-    const uniqueChainIdValues = new Set<number>();
+    const uniqueChainValues = new Set<string>();
     currentData?.nfts.forEach(nft => {
-      uniqueChainIdValues.add(getChainIdBySimplehashChainName(nft.chain!));
+      uniqueChainValues.add(nft.chain!);
     });
-    return uniqueChainIdValues;
+    return uniqueChainValues;
   }, [currentData]);
 
   return (
@@ -82,9 +81,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           <DataTableFacetedFilter
             column={table.getColumn("chain")}
             title="Chain"
-            options={Array.from(uniqueChainIdValues).map(chain => ({
-              value: chain.toString(),
-              label: chain.toString(),
+            options={Array.from(uniqueChainValues).map(chain => ({
+              value: chain,
+              label: chain,
             }))}
           />
         )}

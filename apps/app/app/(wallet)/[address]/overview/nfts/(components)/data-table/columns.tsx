@@ -17,7 +17,6 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table-column-header";
-import { NftCard } from "@/components/nft/nft-card";
 import type { NftData } from "@/data";
 import { getChainNameById } from "@/utils/chain";
 
@@ -26,14 +25,6 @@ import { getChainNameById } from "@/utils/chain";
 // -----------------------------------------------------------------------------
 
 export const columns: ColumnDef<NftData>[] = [
-  {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
-    ),
-    cell: ({ row }) => <NftCard nft={row.original} />,
-    enableSorting: false,
-  },
   {
     accessorKey: "chain",
     header: ({ column }) => (

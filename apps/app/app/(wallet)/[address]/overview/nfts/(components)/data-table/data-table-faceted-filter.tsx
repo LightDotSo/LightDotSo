@@ -64,7 +64,7 @@ export function DataTableFacetedFilter({
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <PlusCircledIcon className="mr-2 h-4 w-4" />
-          {title}
+          <span className="capitalize">{title}</span>
           {selectedValues?.size > 0 && (
             <>
               <Separator orientation="vertical" className="mx-2 h-4" />
@@ -89,7 +89,7 @@ export function DataTableFacetedFilter({
                       <Badge
                         key={option.value}
                         variant="secondary"
-                        className="rounded-sm px-1 font-normal"
+                        className="rounded-sm px-1 font-normal capitalize"
                       >
                         {option.label}
                       </Badge>
@@ -136,7 +136,7 @@ export function DataTableFacetedFilter({
                     {option.icon && (
                       <option.icon className="mr-2 h-4 w-4 text-text-weak" />
                     )}
-                    <span>{option.label}</span>
+                    <span className="capitalize">{option.label}</span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
                         {facets.get(option.value)}
