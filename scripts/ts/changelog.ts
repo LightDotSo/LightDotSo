@@ -42,7 +42,11 @@ await appendChangelog();
 async function appendChangelog() {
   await execa("git", ["checkout", "main", "--", CHANGELOG_PATH]);
 
-  const currentChangelog = readFileSync(CHANGELOG_PATH).toString();
+  let currentChangelog = readFileSync(CHANGELOG_PATH).toString();
+
+  if (currentChangelog.startsWith("## [Unreleased]")) {
+    currentChangelog = currentChangelog.replace("## [Unreleased]\n", "");
+  }
 
   const newChangelog = await renderChangelog();
 
