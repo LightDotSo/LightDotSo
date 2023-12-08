@@ -3,14 +3,11 @@
 // License: MIT
 
 import { readFileSync, writeFileSync } from "node:fs";
-import path from "path";
 import { execa } from "execa";
 
 const REPO_URL = "https://github.com/LightDotSo/LightDotSo";
 const CHANGELOG_PATH = "CHANGELOG.md";
 const CHANGELOG_DOCS_PATH = "apps/changelog/app/changelog.mdx";
-const VERSION_PATH = path.join(process.cwd(), "package.json");
-const INCLUDE_CHANGESETS = "diff"; // "diff" | "all"
 
 enum ChangeType {
   PATCH,
@@ -49,25 +46,12 @@ async function appendChangelog() {
 
   const newChangelog = await renderChangelog();
 
-  const currentVersion = getCurrentVersion();
-  // if (!currentVersion) {
-  //   console.error("Could not find current version in CHANGELOG");
-  //   return;
-  // }
-  const newVersion = await getVersion();
-  if (currentVersion === newVersion) {
-    console.info(`Version ${newVersion} is already in the CHANGELOG`);
-    return;
-  }
-
   writeFileSync(CHANGELOG_PATH, `${newChangelog}\n${currentChangelog}`);
   writeFileSync(CHANGELOG_DOCS_PATH, `${newChangelog}\n${currentChangelog}`);
 }
 
 async function renderChangelog() {
-  const changes = await getChanges(INCLUDE_CHANGESETS);
-  // const version = await getVersion();
-  // const date = new Date();
+  const changes = await getChanges();
 
   return `## [Unreleased]
 
@@ -95,28 +79,17 @@ async function renderChangelogItems(
   return output;
 }
 
-async function getVersion() {
-  return (await import(VERSION_PATH)).default.version;
-}
-
-async function getChanges(include: "diff" | "all") {
+async function getChanges() {
   const changesetsToInclude: string[] = [];
 
-  if (include === "diff") {
-    const changesetDiff = (
-      await execa("git", ["diff", "main", "--", ".changeset/pre.json"])
-    ).stdout;
+  const changesetDiff = (
+    await execa("git", ["diff", "main", "--", ".changeset/pre.json"])
+  ).stdout;
 
-    const addedLinesRegex = /\+\s+"(?!.*:)([^"]+)"/g;
-    changesetsToInclude.push(
-      ...[...changesetDiff.matchAll(addedLinesRegex)].map(match => match[1]),
-    );
-  } else if (include === "all") {
-    changesetsToInclude.push(
-      ...(await import(path.join(process.cwd(), ".changeset/pre.json"))).default
-        .changesets,
-    );
-  }
+  const addedLinesRegex = /\+\s+"(?!.*:)([^"]+)"/g;
+  changesetsToInclude.push(
+    ...[...changesetDiff.matchAll(addedLinesRegex)].map(match => match[1]),
+  );
 
   const changesetContents = await Promise.all(
     changesetsToInclude.map(async addedChangeset => {
@@ -178,16 +151,4 @@ function parseGitLog(log: string): GitMetadata {
     ) ?? [];
 
   return { commitHash, authorName, authorEmail, title };
-}
-
-function getCurrentVersion() {
-  const currentChangelog = readFileSync(CHANGELOG_PATH).toString();
-  const lines = currentChangelog.split("\n");
-  for (let line of lines) {
-    const versionMatch = line.match(/\[([\d+.]*)\]/);
-    if (versionMatch) {
-      return versionMatch[1];
-    }
-  }
-  return null;
 }
