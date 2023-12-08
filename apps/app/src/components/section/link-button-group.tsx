@@ -95,14 +95,14 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
         </select>
       </div>
       <nav className="flex items-center justify-between" aria-label="Tabs">
-        <div className="hidden rounded-md border border-border bg-background-strong p-1 sm:block">
+        <div className="hidden rounded-md border border-border bg-background-strong p-0.5 sm:block">
           {items.map(item => (
             <Link
               key={item.id}
               href={`/${address}${item.href}`}
               className={cn(
                 buttonVariants({ variant: "outline", size: "sm" }),
-                "text-secondary bg-transparent border-none py-1",
+                "text-secondary bg-transparent border-none py-0 text-sm h-8",
                 // If the item is the selected, add bg-selected
                 item.id === id
                   ? "bg-background-body text-text font-semibold hover:bg-background-weaker"

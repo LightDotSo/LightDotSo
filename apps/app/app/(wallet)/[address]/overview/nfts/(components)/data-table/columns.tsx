@@ -32,6 +32,22 @@ export const columns: ColumnDef<NftData>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "spam_score",
+    accessorFn: row => {
+      return row.collection?.spam_score;
+    },
+    filterFn: (row, id, value) => {
+      if (row.getValue(id) === undefined) {
+        return true;
+      }
+      return Number(value) === 0
+        ? Number(row.getValue(id)) === 0
+        : Number(value) <= Number(row.getValue(id));
+    },
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
     accessorKey: "name",
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

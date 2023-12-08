@@ -32,6 +32,7 @@ type NftCardProps = {
   nft: NftData;
   showName?: boolean;
   showDescription?: boolean;
+  showSpamScore?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -42,6 +43,7 @@ export const NftCard: FC<NftCardProps> = ({
   nft,
   showName = true,
   showDescription = true,
+  showSpamScore = false,
 }) => {
   const { wallet } = useAuth();
 
@@ -53,14 +55,24 @@ export const NftCard: FC<NftCardProps> = ({
       )}
     >
       <NftImage nft={nft} className="rounded-t-md" />
-      <div className="flex flex-col space-y-3 px-3 py-4">
-        {showName && <div className="text-sm text-text">{nft.name}</div>}
-        {showDescription && (
-          <div className="text-xs text-text-weak"># {nft.token_id}</div>
-        )}
-      </div>
+      {(showName || showDescription) && (
+        <div className="flex flex-col space-y-3 px-3 py-4">
+          {showName && <div className="text-sm text-text">{nft.name}</div>}
+          {showDescription && (
+            <div className="text-xs text-text-weak"># {nft.token_id}</div>
+          )}
+          {showSpamScore && (
+            <div className="text-xs text-text-weak">
+              Spam Score: {nft.collection?.spam_score}
+            </div>
+          )}
+        </div>
+      )}
       <div className="absolute inset-x-0 bottom-0 translate-y-2 opacity-0 transition-transform duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-        <Button asChild className="w-full py-2">
+        <Button
+          asChild
+          className="w-full rounded-none py-2 opacity-100 hover:bg-background-primary-strong"
+        >
           <Link
             href={`/${wallet}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
               nft.chain!,

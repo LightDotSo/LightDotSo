@@ -87,6 +87,16 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
+        {table.getColumn("spam_score") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("spam_score")}
+            title="Spam"
+            options={["Yes", "No"].map(value => ({
+              value: value === "No" ? "0" : "70",
+              label: value,
+            }))}
+          />
+        )}
         {isFiltered && (
           <Button
             variant="ghost"
