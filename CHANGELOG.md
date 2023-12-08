@@ -2,6 +2,10 @@
 
 ## Patch changes
 
+Add proper root changesets log
+
+## Patch changes
+
 Add wallets table
 
 ## Patch changes

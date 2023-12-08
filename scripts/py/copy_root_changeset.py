@@ -2,6 +2,23 @@ import re
 import os
 import sys
 
+def update_changelog(changelog_file, new_section, new_description):
+    with open(changelog_file, 'r') as f:
+        lines = f.readlines()
+
+    unreleased_index = next(i for i, line in enumerate(lines) if line.startswith("## [Unreleased]"))
+    next_section_index = next((i for i, line in enumerate(lines[unreleased_index+1:], start=unreleased_index+1) if line.startswith("##")), len(lines))
+
+    section_indices = [i + unreleased_index for i, line in enumerate(lines[unreleased_index:next_section_index]) if line.strip() == new_section]
+    if section_indices:
+        lines[section_indices[-1]] += new_description + '\n'
+    else:
+        lines.insert(next_section_index, f'\n{new_section}\n{new_description}\n')
+
+    with open(changelog_file, 'w') as f:
+        f.write(''.join(lines))
+
+
 def process_file(input_file, target_file="CHANGELOG.md"):
     version_bump = ""
     with open(input_file, 'r') as f:
@@ -18,19 +35,9 @@ def process_file(input_file, target_file="CHANGELOG.md"):
     elif version_bump == 'patch':
         section = '## Patch changes'
     else:
-        print('Invalid version bump: {}'.format(version_bump))
-        return
-    update_changelog(target_file, section, description)
+        print(f'Invalid version bump: {version_bump}')
 
-def update_changelog(changelog_file, section, description):
-    with open(changelog_file, 'r') as f:
-        lines = f.readlines()
-    unreleased_index = next(i for i, line in enumerate(lines) if line.startswith("## [Unreleased]"))
-    next_section_index = next((i for i, line in enumerate(lines[unreleased_index+1:], start=unreleased_index+1) if line.startswith("##")), len(lines))
-    if section not in lines[unreleased_index:next_section_index]:
-        lines.insert(next_section_index, '\n{}\n{}\n'.format(section, description))
-    with open(changelog_file, 'w') as f:
-        f.write(''.join(lines))
+    update_changelog(target_file, section, description)
 
 if __name__ == "__main__":
     for filename in sys.argv[1:]:
