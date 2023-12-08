@@ -32,6 +32,7 @@ type NftCardProps = {
   nft: NftData;
   showName?: boolean;
   showDescription?: boolean;
+  showSpamScore?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -42,6 +43,7 @@ export const NftCard: FC<NftCardProps> = ({
   nft,
   showName = true,
   showDescription = true,
+  showSpamScore = false,
 }) => {
   const { wallet } = useAuth();
 
@@ -58,6 +60,11 @@ export const NftCard: FC<NftCardProps> = ({
           {showName && <div className="text-sm text-text">{nft.name}</div>}
           {showDescription && (
             <div className="text-xs text-text-weak"># {nft.token_id}</div>
+          )}
+          {showSpamScore && (
+            <div className="text-xs text-text-weak">
+              Spam Score: {nft.collection?.spam_score}
+            </div>
           )}
         </div>
       )}

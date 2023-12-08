@@ -78,7 +78,12 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnVisibility,
       rowSelection,
       columnFilters,
+      pagination: {
+        pageIndex: 0,
+        pageSize: -1,
+      },
     },
+    paginateExpandedRows: false,
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
@@ -114,6 +119,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     table.getColumn("description")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("description")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("spam_score")?.getCanHide(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("spam_score")?.getIsVisible(),
     setNftTable,
   ]);
 
@@ -124,8 +133,9 @@ export function DataTable({ columns, data }: DataTableProps) {
   return (
     <NftsWrapper>
       {table.getRowModel().rows?.length ? (
-        table.getRowModel().rows.map(row => (
-          <>
+        table
+          .getRowModel()
+          .rows.map(row => (
             <NftCard
               key={row.id}
               nft={row.original}
@@ -135,9 +145,11 @@ export function DataTable({ columns, data }: DataTableProps) {
               showDescription={row
                 .getVisibleCells()
                 .some(cell => cell.column.id === "description")}
+              showSpamScore={row
+                .getVisibleCells()
+                .some(cell => cell.column.id === "spam_score")}
             />
-          </>
-        ))
+          ))
       ) : (
         <NftsEmpty />
       )}

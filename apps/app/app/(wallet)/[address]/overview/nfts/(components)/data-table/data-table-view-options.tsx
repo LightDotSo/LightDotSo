@@ -73,7 +73,9 @@ export function DataTableViewOptions({ table }: DataTableViewOptionsProps) {
                   ? "Name"
                   : column.id === "description"
                     ? "Description"
-                    : ""}
+                    : column.id === "spam_score"
+                      ? "Spam Score"
+                      : ""}
               </DropdownMenuCheckboxItem>
             );
           })}
