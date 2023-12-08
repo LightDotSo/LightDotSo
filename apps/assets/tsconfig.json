@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
     "lib": ["esnext"],
+    "outDir": "dist",
+    "rootDir": "functions",
     "types": ["@cloudflare/workers-types"]
-  }
+  },
+  "include": ["functions/**/*"]
 }
