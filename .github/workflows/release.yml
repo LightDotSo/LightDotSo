@@ -9,20 +9,6 @@ on:
     branches:
       - main
 jobs:
-  release-status:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - name: Fetch Head
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Node Install
-        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Release Status
-        run: |
-          pnpm release-it --dry-run
   release:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -49,7 +35,6 @@ jobs:
   release-check:
     if: always()
     needs:
-      - release-status
       - release
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -57,5 +42,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: release-status,release
+          allowed-skips: release
           jobs: ${{ toJSON(needs) }}
