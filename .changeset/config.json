@@ -11,5 +11,5 @@
   "linked": [],
   "access": "public",
   "baseBranch": "origin/main",
-  "ignore": ["@lightdotso/fastlane"]
+  "ignore": []
 }
