@@ -12,6 +12,9 @@
   },
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
+  "dependencies": {
+    "@cloudflare/workers-types": "^4.20231121.0"
+  },
   "publishConfig": {
     "access": "public"
   }

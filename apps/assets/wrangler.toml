@@ -1,0 +1,8 @@
+name = "assets"
+main = "src/worker.ts"
+compatibility_date = "2023-08-07"
+workers_dev = false
+
+[[r2_buckets]]
+  binding = "BUCKET"
+  bucket_name = "assets"
