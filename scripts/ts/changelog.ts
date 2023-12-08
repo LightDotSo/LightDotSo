@@ -66,10 +66,10 @@ async function appendChangelog() {
 
 async function renderChangelog() {
   const changes = await getChanges(INCLUDE_CHANGESETS);
-  const version = await getVersion();
+  // const version = await getVersion();
   const date = new Date();
 
-  return `## [${version}] - ${date.toISOString().split("T")[0]}
+  return `## [Unreleased] - ${date.toISOString().split("T")[0]}
 
 ${await renderChangelogItems("Major changes", changes.major)}\n
 ${await renderChangelogItems("Minor changes", changes.minor)}\n
