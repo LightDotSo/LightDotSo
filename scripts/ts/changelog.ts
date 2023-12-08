@@ -50,10 +50,10 @@ async function appendChangelog() {
   const newChangelog = await renderChangelog();
 
   const currentVersion = getCurrentVersion();
-  if (!currentVersion) {
-    console.error("Could not find current version in CHANGELOG");
-    return;
-  }
+  // if (!currentVersion) {
+  //   console.error("Could not find current version in CHANGELOG");
+  //   return;
+  // }
   const newVersion = await getVersion();
   if (currentVersion === newVersion) {
     console.info(`Version ${newVersion} is already in the CHANGELOG`);
@@ -66,15 +66,14 @@ async function appendChangelog() {
 
 async function renderChangelog() {
   const changes = await getChanges(INCLUDE_CHANGESETS);
-  const version = await getVersion();
+  // const version = await getVersion();
   const date = new Date();
 
-  return `## [${version}] - ${date.toISOString().split("T")[0]}
+  return `## [Unreleased] - ${date.toISOString().split("T")[0]}
 
 ${await renderChangelogItems("Major changes", changes.major)}\n
 ${await renderChangelogItems("Minor changes", changes.minor)}\n
 ${await renderChangelogItems("Patch changes", changes.patch)}\n
----
 `;
 }
 
