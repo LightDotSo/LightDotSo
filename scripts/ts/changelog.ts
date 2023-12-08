@@ -74,7 +74,6 @@ async function renderChangelog() {
 ${await renderChangelogItems("Major changes", changes.major)}\n
 ${await renderChangelogItems("Minor changes", changes.minor)}\n
 ${await renderChangelogItems("Patch changes", changes.patch)}\n
----
 `;
 }
 
