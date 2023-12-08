@@ -9,8 +9,8 @@ import { execa } from "execa";
 const REPO_URL = "https://github.com/LightDotSo/LightDotSo";
 const CHANGELOG_PATH = "CHANGELOG.md";
 const CHANGELOG_DOCS_PATH = "apps/changelog/app/changelog.mdx";
-const VERSION_PATH = path.join(process.cwd(), "apps/app/package.json");
-const INCLUDE_CHANGESETS = "all"; // "diff" | "all"
+const VERSION_PATH = path.join(process.cwd(), "package.json");
+const INCLUDE_CHANGESETS = "diff"; // "diff" | "all"
 
 enum ChangeType {
   PATCH,
@@ -48,6 +48,14 @@ async function appendChangelog() {
   const currentChangelog = readFileSync(CHANGELOG_PATH).toString();
 
   const newChangelog = await renderChangelog();
+
+  const currentVersion = getCurrentVersion();
+  const newVersion = await getVersion();
+  if (currentVersion === newVersion) {
+    console.info(`Version ${newVersion} is already in the CHANGELOG`);
+    return;
+  }
+
   writeFileSync(CHANGELOG_PATH, `${newChangelog}\n${currentChangelog}`);
   writeFileSync(CHANGELOG_DOCS_PATH, `${newChangelog}\n${currentChangelog}`);
 }
@@ -58,12 +66,13 @@ async function renderChangelog() {
   const date = new Date();
 
   return `## Version ${version}
-Release date: ${date.toDateString()}
-${await renderChangelogItems("Major changes", changes.major)}
-${await renderChangelogItems("Minor changes", changes.minor)}
-${await renderChangelogItems("Patch changes", changes.patch)}
----
 
+Release date: ${date.toDateString()}
+
+${await renderChangelogItems("Major changes", changes.major)}\n
+${await renderChangelogItems("Minor changes", changes.minor)}\n
+${await renderChangelogItems("Patch changes", changes.patch)}\n
+---
 `;
 }
 
@@ -79,7 +88,7 @@ async function renderChangelogItems(
     output += `**[${changelogItem.title}](${REPO_URL}/commit/${
       changelogItem.commitHash
     })** (${changelogItem.packages.map(e => e.package).join(", ")})`;
-    output += `\n\n${changelogItem.description}\n\n`;
+    output += `\n${changelogItem.description}\n`;
   }
 
   return output;
@@ -168,4 +177,11 @@ function parseGitLog(log: string): GitMetadata {
     ) ?? [];
 
   return { commitHash, authorName, authorEmail, title };
+}
+
+function getCurrentVersion() {
+  const currentChangelog = readFileSync(CHANGELOG_PATH).toString();
+  const versionLine = currentChangelog.split("\n")[0];
+  const versionMatch = versionLine.match(/Version (\d+\.\d+\.\d+)/);
+  return versionMatch ? versionMatch[1] : null;
 }

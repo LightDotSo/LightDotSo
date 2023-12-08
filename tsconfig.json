@@ -20,9 +20,9 @@
       }
     ],
     "paths": {
-      "@/out/*": ["out/*"],
-      "@/contracts/*": ["contracts/src/*"],
-      "@/contracts/test/spec/*": ["contracts/test/spec/*"]
+      "@/out/*": ["./out/*"],
+      "@/contracts/*": ["./contracts/src/*"],
+      "@/contracts/test/spec/*": ["./contracts/test/spec/*"]
     }
   },
   "include": [
