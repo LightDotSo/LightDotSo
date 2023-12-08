@@ -85,14 +85,8 @@ async function renderChangelogItems(
 }
 
 async function getChangedFilenames() {
-  const diff = (
-    await execa("git", [
-      "diff",
-      "origin/changeset-release/main",
-      "--",
-      ".changeset",
-    ])
-  ).stdout;
+  const diff = (await execa("git", ["diff", "main", "--", ".changeset"]))
+    .stdout;
   const parsedDiff = parse(diff);
 
   return parsedDiff
