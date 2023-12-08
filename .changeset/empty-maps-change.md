@@ -6,7 +6,6 @@
 "@lightdotso/desktop": patch
 "@lightdotso/docs": patch
 "@lightdotso/app": patch
-"@lightdotso/web": patch
 "@lightdotso/ui": patch
 ---
 

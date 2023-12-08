@@ -13,7 +13,6 @@
 "@lightdotso/docs": patch
 "@lightdotso/contracts": patch
 "@lightdotso/app": patch
-"@lightdotso/web": patch
 "@lightdotso/android": patch
 "@lightdotso/ui": patch
 "@lightdotso/crates": patch
