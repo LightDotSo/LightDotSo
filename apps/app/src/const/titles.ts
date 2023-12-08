@@ -18,6 +18,8 @@
 // -----------------------------------------------------------------------------
 
 export enum Category {
+  New = "New",
+  Wallets = "Wallets",
   Overview = "Overview",
   Transactions = "Transactions",
   Profile = "Profile",
@@ -60,6 +62,16 @@ export type CategoryObject = {
 // -----------------------------------------------------------------------------
 
 export const TITLES: Record<Category, CategoryObject> = {
+  [Category.New]: {
+    title: "New Wallet",
+    description: "Create a new wallet.",
+    subcategories: {},
+  },
+  [Category.Wallets]: {
+    title: "Wallet List",
+    description: "View your wallet list.",
+    subcategories: {},
+  },
   [Category.Overview]: {
     title: "Overview",
     description: "View your wallet overview.",
