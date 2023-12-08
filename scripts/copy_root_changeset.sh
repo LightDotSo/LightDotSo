@@ -28,8 +28,8 @@ do
         section="Patch changes"
         ;;
       *)
-       echo "Invalid version bump: ${version_bump}"
-       exit 1
+        echo "Invalid version bump: ${version_bump}"
+        exit 1
     esac
 
     # Use printf to properly format newline characters in the description
