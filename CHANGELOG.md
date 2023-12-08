@@ -4,7 +4,7 @@
 
 ### Added
 
-## Version 0.0.1
+## [0.0.1] - 2023-12-07
 
 Release date: Thu Dec 07 2023
 
