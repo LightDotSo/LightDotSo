@@ -5,6 +5,5 @@
     "outDir": "functions",
     "rootDir": "src",
     "types": ["@cloudflare/workers-types"]
-  },
-  "exclude": ["functions/**/*"]
+  }
 }
