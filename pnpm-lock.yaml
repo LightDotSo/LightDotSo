@@ -242,6 +242,9 @@ importers:
       npm-package-json-lint-config-default:
         specifier: ^6.0.0
         version: 6.0.0(npm-package-json-lint@7.1.0)
+      parse-diff:
+        specifier: ^0.11.1
+        version: 0.11.1
       postcss:
         specifier: ^8.4.31
         version: 8.4.31
@@ -27679,6 +27682,10 @@ packages:
 
   /parse-cache-control@1.0.1:
     resolution: {integrity: sha512-60zvsJReQPX5/QP0Kzfd/VrpjScIQ7SHBW6bFCYfEP+fp0Eppr1SHhIO5nd1PjZtvclzSzES9D/p5nFJurwfWg==}
+
+  /parse-diff@0.11.1:
+    resolution: {integrity: sha512-Oq4j8LAOPOcssanQkIjxosjATBIEJhCxMCxPhMu+Ci4wdNmAEdx0O+a7gzbR2PyKXgKPvRLIN5g224+dJAsKHA==}
+    dev: true
 
   /parse-duration@1.1.0:
     resolution: {integrity: sha512-z6t9dvSJYaPoQq7quMzdEagSFtpGu+utzHqqxmpVWNNZRIXnvqyCvn9XsTdh7c/w0Bqmdz3RB3YnRaKtpRtEXQ==}
