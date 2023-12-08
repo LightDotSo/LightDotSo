@@ -20,6 +20,7 @@ import { Suspense } from "react";
 import type { Address } from "viem";
 import { NftsDataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/nft-data-table";
 import { NftPortfolio } from "@/components/nft/nft-portfolio";
+import { PortfolioSection } from "@/components/section/portfolio-section";
 import { handler } from "@/handlers/paths/[address]/overview/nfts/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/nfts/preloader";
 import { queries } from "@/queries";
@@ -78,12 +79,11 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="col-span-1 flex flex-col justify-between">
-        <span className="text-text-weak">Total NFTs Value</span>
+      <PortfolioSection title="Total NFTs Value">
         <Suspense>
           <NftPortfolio address={params.address as Address} />
         </Suspense>
-      </div>
+      </PortfolioSection>
       <Suspense>
         <NftsDataTable address={params.address as Address} />
       </Suspense>
