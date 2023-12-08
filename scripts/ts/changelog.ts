@@ -65,9 +65,7 @@ async function renderChangelog() {
   const version = await getVersion();
   const date = new Date();
 
-  return `## Version ${version}
-
-Release date: ${date.toDateString()}
+  return `## Version ${version} - ${date.toISOString().split("T")[0]}
 
 ${await renderChangelogItems("Major changes", changes.major)}\n
 ${await renderChangelogItems("Minor changes", changes.minor)}\n
