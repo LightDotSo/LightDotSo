@@ -4,6 +4,7 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { execa } from "execa";
+import parse from "parse-diff";
 
 const REPO_URL = "https://github.com/LightDotSo/LightDotSo";
 const CHANGELOG_PATH = "CHANGELOG.md";
@@ -83,6 +84,16 @@ async function renderChangelogItems(
   return output;
 }
 
+async function getChangedFilenames() {
+  const diff = (await execa("git", ["diff", "main", "--", ".changeset"]))
+    .stdout;
+  const parsedDiff = parse(diff);
+
+  return parsedDiff
+    .map(file => file.to?.replace(".changeset/", "").replace(".md", ""))
+    .filter((filename): filename is string => filename !== undefined);
+}
+
 async function getChanges() {
   const changesetsToInclude: string[] = [];
 
@@ -94,6 +105,12 @@ async function getChanges() {
   changesetsToInclude.push(
     ...[...changesetDiff.matchAll(addedLinesRegex)].map(match => match[1]),
   );
+
+  const filenames = await getChangedFilenames();
+  const filteredFilenames = filenames.filter(filename =>
+    /^[a-z]+-[a-z]+-[a-z]+$/.test(filename),
+  );
+  changesetsToInclude.push(...filteredFilenames);
 
   const changesetContents = await Promise.all(
     changesetsToInclude.map(async addedChangeset => {
