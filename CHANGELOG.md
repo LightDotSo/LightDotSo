@@ -2,6 +2,10 @@
 
 ## Patch changes
 
+Add wallets table
+
+## Patch changes
+
 Fix the underlying input quantity problem
 
 <video controls>
