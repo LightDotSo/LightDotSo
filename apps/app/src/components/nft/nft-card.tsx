@@ -62,7 +62,10 @@ export const NftCard: FC<NftCardProps> = ({
         </div>
       )}
       <div className="absolute inset-x-0 bottom-0 translate-y-2 opacity-0 transition-transform duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-        <Button asChild className="w-full py-2">
+        <Button
+          asChild
+          className="w-full rounded-none py-2 opacity-100 hover:bg-background-primary-strong"
+        >
           <Link
             href={`/${wallet}/send?transfers=0:_:_:${getChainIdBySimplehashChainName(
               nft.chain!,
