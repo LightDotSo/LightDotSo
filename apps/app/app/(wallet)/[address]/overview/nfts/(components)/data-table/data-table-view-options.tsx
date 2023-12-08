@@ -69,7 +69,11 @@ export function DataTableViewOptions({ table }: DataTableViewOptionsProps) {
                 checked={column.getIsVisible()}
                 onCheckedChange={value => column.toggleVisibility(!!value)}
               >
-                {column.id === "chain" ? "Chain" : ""}
+                {column.id === "name"
+                  ? "Name"
+                  : column.id === "description"
+                    ? "Description"
+                    : ""}
               </DropdownMenuCheckboxItem>
             );
           })}

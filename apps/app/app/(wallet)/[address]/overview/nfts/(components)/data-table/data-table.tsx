@@ -103,15 +103,17 @@ export function DataTable({ columns, data }: DataTableProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("name"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain")?.getCanHide(),
+    table.getColumn("name")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain")?.getIsVisible(),
+    table.getColumn("name")?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("sparkline")?.getIsVisible(),
+    table.getColumn("description")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("price")?.getIsVisible(),
+    table.getColumn("description")?.getIsVisible(),
     setNftTable,
   ]);
 
@@ -124,9 +126,16 @@ export function DataTable({ columns, data }: DataTableProps) {
       {table.getRowModel().rows?.length ? (
         table.getRowModel().rows.map(row => (
           <>
-            {row.getVisibleCells().map(cell => (
-              <NftCard key={cell.id} nft={cell.row.original} />
-            ))}
+            <NftCard
+              key={row.id}
+              nft={row.original}
+              showName={row
+                .getVisibleCells()
+                .some(cell => cell.column.id === "name")}
+              showDescription={row
+                .getVisibleCells()
+                .some(cell => cell.column.id === "description")}
+            />
           </>
         ))
       ) : (
