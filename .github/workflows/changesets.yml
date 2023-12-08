@@ -28,7 +28,7 @@ jobs:
         run: |
           pnpm changeset status
   changesets-release:
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -63,6 +63,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
   changesets-check:
     if: always()
     needs:
