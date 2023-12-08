@@ -1,6 +1,6 @@
 {
   "git": {
-    "commitMessage": "🤖 chore: release v${version}",
+    "commitMessage": "chore: release v${version} [skip ci]",
     "requireUpstream": false,
     "tagName": "v${version}"
   },
