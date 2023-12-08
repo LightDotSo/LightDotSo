@@ -12,11 +12,11 @@ def process_file(input_file, target_file="CHANGELOG.md"):
         description = content.split('\n', 4)[-1]
     section = None
     if version_bump == 'major':
-        section = '\n## Major changes\n'
+        section = '## Major changes'
     elif version_bump == 'minor':
-        section = '\n## Minor changes\n'
+        section = '## Minor changes'
     elif version_bump == 'patch':
-        section = '\n## Patch changes\n'
+        section = '## Patch changes'
     else:
         print('Invalid version bump: {}'.format(version_bump))
         return
