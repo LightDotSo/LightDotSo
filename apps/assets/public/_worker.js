@@ -12,6 +12,7 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 export default {
   async fetch(request, env) {
     return env.ASSETS.fetch(request);
