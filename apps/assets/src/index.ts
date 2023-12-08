@@ -13,8 +13,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export default {
-  async fetch(request, env) {
-    return env.ASSETS.fetch(request);
-  },
+interface Env {
+  ASSETS: R2Bucket;
+}
+
+export const onRequest: PagesFunction<Env> = async context => {
+  const url = new URL(context.request.url);
+  const objectName = url.pathname.slice(1);
+  const obj = await context.env.ASSETS.get(objectName);
+  if (obj === null) {
+    return new Response("Not found", { status: 404 });
+  }
+  return new Response(obj.body);
 };
