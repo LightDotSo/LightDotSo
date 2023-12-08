@@ -56,7 +56,9 @@ export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    ["spam_score"]: false,
+  });
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
     {
       id: "spam_score",
