@@ -13,22 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NavLayoutBar } from "@/app/(authenticated)/wallets/(components)/nav-layout-bar";
-import { WalletsDataTable } from "@/app/(authenticated)/wallets/(components)/wallets-data-table";
+"use client";
+
+import type { FC } from "react";
+import { DataTableToolbar } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-toolbar";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+export const NavLayoutBar: FC = () => {
+  const { walletTable } = useTables();
 
-  return (
-    <>
-      <NavLayoutBar />
-      <WalletsDataTable />
-    </>
-  );
-}
+  if (!walletTable) {
+    return null;
+  }
+
+  return <DataTableToolbar table={walletTable} />;
+};
