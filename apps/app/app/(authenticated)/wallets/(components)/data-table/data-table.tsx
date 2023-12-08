@@ -39,6 +39,7 @@ import type {
   SortingState,
   VisibilityState,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { WalletData } from "@/data";
 import { useTables } from "@/stores/useTables";
@@ -57,6 +58,7 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data }: DataTableProps) {
+  const router = useRouter();
   // ---------------------------------------------------------------------------
   // States
   // ---------------------------------------------------------------------------
@@ -156,7 +158,9 @@ export function DataTable({ columns, data }: DataTableProps) {
               table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
+                  className="cursor-pointer"
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => router.push(`/${row.original.address}`)}
                 >
                   {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
