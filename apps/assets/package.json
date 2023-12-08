@@ -13,7 +13,7 @@
   "license": "AGPL-3.0-or-later",
   "author": "Light, Inc.",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && mv dist/index.js public/_worker.js",
     "dev": "wrangler pages dev functions --r2=ASSETS"
   },
   "dependencies": {
