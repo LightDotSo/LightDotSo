@@ -1,0 +1,46 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "CHANGELOG.md"
+  pull_request:
+    branches:
+      - main
+jobs:
+  release:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Fetch Head
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          fetch-depth: 0
+      - name: Node Install
+        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      - name: Node Build
+        run: |
+          pnpm run build:turbo
+      - name: Release
+        run: |
+          pnpm run release:root
+        env:
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  release-check:
+    if: always()
+    needs:
+      - release
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check All Green
+        uses: re-actors/alls-green@release/v1
+        with:
+          allowed-skips: release
+          jobs: ${{ toJSON(needs) }}
