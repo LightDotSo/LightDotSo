@@ -1579,22 +1579,22 @@ export const SendDialog: FC<SendDialogProps> = ({
               </Button>
               <Button
                 asChild
-                disabled={!form.formState.isValid && !!userOperationsParams}
+                disabled={
+                  !form.formState.isValid &&
+                  typeof userOperationsParams !== "undefined"
+                }
                 variant={form.formState.isValid ? "default" : "outline"}
                 type="submit"
               >
-                <>
-                  {form.formState.isValid && userOperationsParams && (
-                    <Link
-                      href={`/${address}/op?userOperations=${userOperationsParams!}`}
-                    >
-                      Continue
-                    </Link>
-                  )}
-                  {!form.formState.isValid && (
-                    <span className={cn("cursor-not-allowed")}>Continue</span>
-                  )}
-                </>
+                {form.formState.isValid ? (
+                  <Link
+                    href={`/${address}/op?userOperations=${userOperationsParams!}`}
+                  >
+                    Continue
+                  </Link>
+                ) : (
+                  <span className="cursor-not-allowed">Continue</span>
+                )}
               </Button>
             </CardFooter>
           </form>
