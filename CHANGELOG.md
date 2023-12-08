@@ -1,4 +1,6 @@
-## [Unreleased]
+## [0.0.0] - 2023-12-08
+
+### Added
 
 ### Major changes
 
