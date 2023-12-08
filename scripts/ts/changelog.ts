@@ -85,6 +85,12 @@ async function renderChangelogItems(
 }
 
 async function getChangedFilenames() {
+  const currentBranch = (
+    await execa("git", ["rev-parse", "--abbrev-ref", "HEAD"])
+  ).stdout;
+
+  await execa("git", ["checkout", "main"]);
+
   const latestTag = (
     await execa("git", [
       "describe",
@@ -94,6 +100,8 @@ async function getChangedFilenames() {
       "--abbrev=0",
     ])
   ).stdout;
+
+  await execa("git", ["checkout", currentBranch]);
 
   const diff = (await execa("git", ["diff", latestTag, "--", ".changeset"]))
     .stdout;
