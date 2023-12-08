@@ -1,8 +1,20 @@
 ## [Unreleased]
 
-## [0.0.1] - 2023-12-08 - 2023-12-08
+## Patch changes
 
-### Patch changes
+Fix the underlying input quantity problem
+
+<video controls>
+  <source src="https://lightcache.net/ipsum-tenetur-pariatur.mp4" type="video/mp4">
+</video>
+
+Thank you to [@kzycras](https://twitter.com/kzycras) and [@littlemonastar](https://twitter.com/littlemonastar) for the feedback!
+
+## Patch changes
+
+Add changeset Root
+
+## [0.0.1] - 2023-12-08 - 2023-12-08
 
 **[fix: wallet creation (#875)](https://github.com/LightDotSo/LightDotSo/commit/b481706e0c62f37b68a77ea372d849c535c27852)** (@lightdotso/crates)
 

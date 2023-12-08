@@ -2,7 +2,7 @@
 "@lightdotso/app": patch
 ---
 
-Fix the issue for not being able to set proper input quantity
+Fix the underlying input quantity problem
 
 <video controls>
   <source src="https://lightcache.net/ipsum-tenetur-pariatur.mp4" type="video/mp4">

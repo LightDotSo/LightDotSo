@@ -13,5 +13,10 @@ module.exports = {
     "pnpm run npm-package-json:lint",
     "pnpm run sort-package-json:fix",
   ],
-  "thunder-tests/**/*.json": ["./scripts/check-thunder-url.sh"],
+  ".changeset/**/*.md": [
+    "python3 scripts/py/copy_root_changeset.py",
+    "pnpm run prettier:cmd --write CHANGELOG.md",
+    "git add CHANGELOG.md",
+  ],
+  "thunder-tests/**/*.json": ["./scripts/check_thunder_url.sh"],
 };
