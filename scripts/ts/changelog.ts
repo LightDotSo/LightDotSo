@@ -8,7 +8,7 @@ import { execa } from "execa";
 
 const REPO_URL = "https://github.com/LightDotSo/LightDotSo";
 const CHANGELOG_PATH = "CHANGELOG.md";
-const CHANGELOG_DOCS_PATH = "apps/docs/pages/changelog.mdx";
+const CHANGELOG_DOCS_PATH = "apps/changelog/app/changelog.mdx";
 const VERSION_PATH = path.join(process.cwd(), "apps/app/package.json");
 const INCLUDE_CHANGESETS = "all"; // "diff" | "all"
 
