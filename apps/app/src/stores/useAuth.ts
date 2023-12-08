@@ -57,8 +57,8 @@ export const useAuth = create(
           set({ address: undefined, wallet: undefined, userId: undefined }),
       }),
       {
-        name: "auth-state-v1", // name of the item in the storage (must be unique)
-        storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+        name: "auth-state-v1",
+        storage: createJSONStorage(() => sessionStorage),
         skipHydration: true,
       },
     ),
