@@ -37,7 +37,9 @@ export const columns: ColumnDef<NftData>[] = [
       return row.collection?.spam_score;
     },
     filterFn: (row, id, value) => {
-      return Number(value) > Number(row.getValue(id));
+      return Number(value) === 0
+        ? Number(row.getValue(id)) === 0
+        : Number(value) <= Number(row.getValue(id));
     },
     enableSorting: true,
     enableHiding: true,

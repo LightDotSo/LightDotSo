@@ -92,7 +92,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             column={table.getColumn("spam_score")}
             title="Spam"
             options={["Yes", "No"].map(value => ({
-              value: value.toLowerCase() === "yes" ? "0" : "100",
+              value: value === "No" ? "0" : "70",
               label: value,
             }))}
           />

@@ -57,7 +57,12 @@ export function DataTable({ columns, data }: DataTableProps) {
 
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    {
+      id: "spam_score",
+      value: "0",
+    },
+  ]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
   // ---------------------------------------------------------------------------
