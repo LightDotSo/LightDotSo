@@ -12,13 +12,8 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-interface Env {
-  ASSETS: Fetcher;
-}
-
 export default {
-  async fetch(request: Request, env: Env) {
+  async fetch(request, env) {
     return env.ASSETS.fetch(request);
   },
 };
