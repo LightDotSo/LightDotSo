@@ -4,7 +4,6 @@
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { execa } from "execa";
-import parse from "parse-diff";
 
 const REPO_URL = "https://github.com/LightDotSo/LightDotSo";
 const CHANGELOG_PATH = "CHANGELOG.md";
@@ -41,8 +40,6 @@ type GitMetadata = {
 await appendChangelog();
 
 async function appendChangelog() {
-  await execa("git", ["fetch", "origin", "main:main"]);
-
   await execa("git", ["checkout", "main", "--", CHANGELOG_PATH]);
 
   let currentChangelog = readFileSync(CHANGELOG_PATH).toString();
@@ -86,34 +83,6 @@ async function renderChangelogItems(
   return output;
 }
 
-async function getChangedFilenames() {
-  const currentBranch = (
-    await execa("git", ["rev-parse", "--abbrev-ref", "HEAD"])
-  ).stdout;
-
-  await execa("git", ["checkout", "main"]);
-
-  const latestTag = (
-    await execa("git", [
-      "describe",
-      "--tags",
-      "--match",
-      "v*.*.*",
-      "--abbrev=0",
-    ])
-  ).stdout;
-
-  await execa("git", ["checkout", currentBranch]);
-
-  const diff = (await execa("git", ["diff", latestTag, "--", ".changeset"]))
-    .stdout;
-  const parsedDiff = parse(diff);
-
-  return parsedDiff
-    .map(file => file.to?.replace(".changeset/", "").replace(".md", ""))
-    .filter((filename): filename is string => filename !== undefined);
-}
-
 async function getChanges() {
   const changesetsToInclude: string[] = [];
 
@@ -125,12 +94,6 @@ async function getChanges() {
   changesetsToInclude.push(
     ...[...changesetDiff.matchAll(addedLinesRegex)].map(match => match[1]),
   );
-
-  const filenames = await getChangedFilenames();
-  const filteredFilenames = filenames.filter(filename =>
-    /^[a-z]+-[a-z]+-[a-z]+$/.test(filename),
-  );
-  changesetsToInclude.push(...filteredFilenames);
 
   const changesetContents = await Promise.all(
     changesetsToInclude.map(async addedChangeset => {
