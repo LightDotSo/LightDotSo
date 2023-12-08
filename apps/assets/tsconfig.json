@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": ["esnext"],
-    "outDir": "dist",
-    "rootDir": "src",
-    "types": ["@cloudflare/workers-types"]
-  }
-}

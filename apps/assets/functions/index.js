@@ -15,9 +15,10 @@
 
 // eslint-disable-next-line no-unused-vars
 export async function onRequest(context) {
-  const obj = await context.env.ASSETS.get("some-key");
-  if (obj === null) {
-    return new Response("Not found", { status: 404 });
-  }
+  const url = new URL(context.request.url);
+  const obj = await context.env.ASSETS.get(url.pathname);
+  // if (obj === null) {
+  // return new Response("Not found", { status: 404 });
+  // }
   return new Response(obj.body);
 }
