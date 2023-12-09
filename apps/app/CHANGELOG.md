@@ -1,5 +1,18 @@
 # @lightdotso/app
 
+## 1.1.1
+
+### Patch Changes
+
+- [#1079](https://github.com/LightDotSo/LightDotSo/pull/1079) [`fd93311`](https://github.com/LightDotSo/LightDotSo/commit/fd93311fefd79a450f9357d0e06a0da3d1c994f3) Thanks [@shunkakinoki](https://github.com/shunkakinoki)! - Fix the issue for not being able to set proper input quantity
+
+  <video controls>
+    <source src="https://lightcache.net/ipsum-tenetur-pariatur.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  Thank you to [@kzycras](https://twitter.com/kzycras) and [@littlemonastar](https://twitter.com/littlemonastar) for the feedback!
+
 ## 1.1.0
 
 ### Minor Changes
