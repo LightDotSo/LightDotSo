@@ -18,7 +18,7 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-column-header";
 import type { TransactionData } from "@/data";
-import { getChainNameById } from "@/utils/chain";
+import { getChainById, getChainNameById } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -45,7 +45,16 @@ export const columns: ColumnDef<TransactionData>[] = [
     accessorKey: "hash",
     cell: ({ row }) => (
       <div className="flex items-center">
-        <span>{row.getValue("hash")}</span>
+        <a
+          className="hover:underline"
+          target="_blank"
+          rel="noreferrer"
+          href={`${getChainById(row.getValue("chain_id"))?.blockExplorers
+            ?.default.url}/tx/${row.getValue("hash")}
+          `}
+        >
+          {row.getValue("hash")}
+        </a>
       </div>
     ),
     header: ({ column }) => (
@@ -64,7 +73,11 @@ export const columns: ColumnDef<TransactionData>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex items-center">
-        <span>{new Date(row.getValue("timestamp")).toLocaleTimeString()}</span>
+        <span>
+          {new Date(row.getValue("timestamp")).toLocaleDateString() +
+            " " +
+            new Date(row.getValue("timestamp")).toLocaleTimeString()}
+        </span>
       </div>
     ),
     filterFn: (row, id, value) => {
