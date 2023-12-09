@@ -21,6 +21,7 @@ import type {
   ConfigurationOwnerData,
   NftData,
   WalletData,
+  TransactionData,
 } from "@/data";
 
 // -----------------------------------------------------------------------------
@@ -34,6 +35,8 @@ type TablesStore = {
   setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
   tokenTable: Table<TokenData> | null;
   setTokenTable: (tableObject: Table<TokenData>) => void;
+  transactionTable: Table<TransactionData> | null;
+  setTransactionTable: (tableObject: Table<TransactionData>) => void;
   walletTable: Table<WalletData> | null;
   setWalletTable: (tableObject: Table<WalletData>) => void;
 };
@@ -51,6 +54,9 @@ export const useTables = create(
       setOwnerTable: tableObject => set({ ownerTable: tableObject }),
       tokenTable: null,
       setTokenTable: tableObject => set({ tokenTable: tableObject }),
+      transactionTable: null,
+      setTransactionTable: tableObject =>
+        set({ transactionTable: tableObject }),
       walletTable: null,
       setWalletTable: tableObject => set({ walletTable: tableObject }),
     }),
