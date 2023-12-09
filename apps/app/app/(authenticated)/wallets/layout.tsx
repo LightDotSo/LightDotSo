@@ -25,15 +25,15 @@ import { TITLES } from "@/const/titles";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.New.title,
-  description: TITLES.New.description,
+  title: TITLES.Wallets.title,
+  description: TITLES.Wallets.description,
 };
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface NewLayoutProps {
+interface WalletsLayoutProps {
   children: React.ReactNode;
 }
 
@@ -41,12 +41,12 @@ interface NewLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function NewLayout({ children }: NewLayoutProps) {
+export default function WalletsLayout({ children }: WalletsLayoutProps) {
   return (
     <>
       <BannerSection
-        title={TITLES.New.title}
-        description={TITLES.New.description}
+        title={TITLES.Wallets.title}
+        description={TITLES.Wallets.description}
       >
         <HStackFull>
           <BaseLayerWrapper>
