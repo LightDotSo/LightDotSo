@@ -8,7 +8,7 @@ on:
       - main
 jobs:
   release:
-    if: github.event_name == 'push' && github.actor == 'LightDotSoBot' && contains(github.event.head_commit.message, 'changesets pr')
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, 'changesets pr')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

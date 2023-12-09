@@ -13,8 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Chain } from "viem";
 import { CHAINS } from "@/const/chains";
 import { SIMPLEHASH_CHAIN_ID_MAPPING } from "@/const/simplehash";
+
+export function getChainById(chainId: number): Chain {
+  const chain = CHAINS.find(chain => chain.id === chainId)!;
+  return chain;
+}
 
 export function getChainNameById(chainId: number): string {
   const chain = CHAINS.find(chain => chain.id === chainId);
