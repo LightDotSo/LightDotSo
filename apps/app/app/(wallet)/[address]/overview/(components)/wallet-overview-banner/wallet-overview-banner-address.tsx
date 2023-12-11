@@ -33,7 +33,7 @@ import {
 import { splitAddress } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown, User } from "lucide-react";
-import type { FC } from "react";
+import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
@@ -61,6 +61,11 @@ export const WalletOverviewBannerAddress: FC<
     address: address,
   });
   const [, copy] = useCopy();
+
+  const handleAddressClick = useCallback(() => {
+    copy(address);
+    successToast("Copied to clipboard");
+  }, [address, copy]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -111,10 +116,7 @@ export const WalletOverviewBannerAddress: FC<
               variant="unstyled"
               size="unsized"
               className="text-2xl font-extrabold tracking-tight"
-              onClick={() => {
-                copy(address);
-                successToast("Copied to clipboard");
-              }}
+              onClick={handleAddressClick}
             >
               {wallet
                 ? wallet.name
@@ -133,12 +135,7 @@ export const WalletOverviewBannerAddress: FC<
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
-              <DropdownMenuItem
-                onClick={() => {
-                  copy(address);
-                  successToast("Copied to clipboard");
-                }}
-              >
+              <DropdownMenuItem onClick={handleAddressClick}>
                 <User className="mr-2 h-4 w-4" />
                 <span>Copy Address</span>
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
