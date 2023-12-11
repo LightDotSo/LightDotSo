@@ -5,6 +5,7 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "changelog-host": "https://github.com",
+  "release-as": "0.1.0",
   "draft": false,
   "prerelease": false,
   "skip-github-release": false,
