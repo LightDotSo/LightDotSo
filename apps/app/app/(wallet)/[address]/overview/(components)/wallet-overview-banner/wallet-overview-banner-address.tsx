@@ -38,7 +38,9 @@ import type { Address } from "viem";
 import { useEnsName } from "wagmi";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
+import { useCopy } from "@/hooks/useCopy";
 import { queries } from "@/queries";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -58,6 +60,7 @@ export const WalletOverviewBannerAddress: FC<
   const { data: ens } = useEnsName({
     address: address,
   });
+  const [, copy] = useCopy();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -101,17 +104,25 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="h-16 w-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="flex justify-start space-x-3 overflow-hidden text-ellipsis pr-3 text-left text-2xl font-extrabold tracking-tight text-text">
+      <div className="flex justify-start space-x-3 overflow-hidden text-ellipsis pr-3 text-left">
         <Tooltip>
           <TooltipTrigger asChild>
-            <span>
+            <Button
+              variant="unstyled"
+              size="unsized"
+              className="text-2xl font-extrabold tracking-tight"
+              onClick={() => {
+                copy(address);
+                successToast("Copied to clipboard");
+              }}
+            >
               {wallet
                 ? wallet.name
                 : ens ?? (typeof address === "string" && splitAddress(address))}
-            </span>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Copy Address</p>
+            <p>Copy Address {splitAddress(address)}</p>
           </TooltipContent>
         </Tooltip>
         <DropdownMenu>
@@ -122,7 +133,12 @@ export const WalletOverviewBannerAddress: FC<
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  copy(address);
+                  successToast("Copied to clipboard");
+                }}
+              >
                 <User className="mr-2 h-4 w-4" />
                 <span>Copy Address</span>
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

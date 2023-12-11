@@ -35,6 +35,7 @@ const buttonVariants = cva(
           "border border-border-primary-weak bg-background text-text hover:bg-background-stronger hover:text-text-weak",
         ghost: "hover:bg-background-stronger hover:text-text-weak",
         link: "text-text underline-offset-4 hover:underline",
+        unstyled: "",
       },
       size: {
         default: "h-10 px-4 py-2",
