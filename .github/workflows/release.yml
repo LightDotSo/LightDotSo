@@ -3,14 +3,13 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 jobs:
-  release:
-    if: github.event_name == 'push' && contains(github.event.head_commit.message, 'changesets pr')
+  release-please:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      release-pr: ${{ steps.release.outputs.pr }}
+      tag-name: ${{ steps.release.outputs.tag_name }}
     permissions:
       contents: write
     steps:
@@ -19,30 +18,36 @@ jobs:
         with:
           token: ${{ secrets.BOT_TOKEN }}
           fetch-depth: 0
-      - name: Git Config
-        run: |
-          git config user.name "LightDotSoBot"
-          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-      - name: Node Install
-        uses: wallet-rs/wallet-rs/.github/actions/node-install@main
-      - name: Node Build
-        run: |
-          pnpm run build:turbo
-      - name: Release
-        run: |
-          pnpm run release:root
-        env:
-          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Run release-please
+        id: release
+        uses: google-github-actions/release-please-action@v3
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          command: manifest
+      # - name: Git Config
+      #   run: |
+      #     git config user.name "LightDotSoBot"
+      #     git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      # - name: Node Install
+      #   uses: wallet-rs/wallet-rs/.github/actions/node-install@main
+      # - name: Node Build
+      #   run: |
+      #     pnpm run build:turbo
+      # - name: Release
+      #   run: |
+      #     pnpm run release:root
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   release-check:
     if: always()
     needs:
-      - release
+      - release-please
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: release
+          allowed-skips: release-please
           jobs: ${{ toJSON(needs) }}
