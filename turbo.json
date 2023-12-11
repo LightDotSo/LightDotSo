@@ -25,6 +25,9 @@
       "env": ["CI", "PLAYWRIGHT_HEADLESS", "PLAYWRIGHT_TEST_BASE_URL"],
       "outputs": []
     },
+    "//#fix": {
+      "dependsOn": ["//#lint"]
+    },
     "//#lint": {
       "dependsOn": [],
       "inputs": [
