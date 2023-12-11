@@ -49,5 +49,5 @@ jobs:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: release
+          allowed-skips: release-please
           jobs: ${{ toJSON(needs) }}
