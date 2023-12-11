@@ -1,201 +1,528 @@
-## [Unreleased]
-
-## Patch changes
-
-Add proper root changesets log
-
-## Patch changes
-
-Add wallets table
-
-## Patch changes
-
-Fix the underlying input quantity problem
-
-<video controls>
-  <source src="https://lightcache.net/ipsum-tenetur-pariatur.mp4" type="video/mp4">
-</video>
-
-Thank you to [@kzycras](https://twitter.com/kzycras) and [@littlemonastar](https://twitter.com/littlemonastar) for the feedback!
-
-## Patch changes
-
-Add changeset Root
-
-## [0.0.1] - 2023-12-08 - 2023-12-08
-
-**[fix: wallet creation (#875)](https://github.com/LightDotSo/LightDotSo/commit/b481706e0c62f37b68a77ea372d849c535c27852)** (@lightdotso/crates)
-
-Fix user creation
-
-### Added
-
-### Major changes
-
-**[chore: ini ios version (#118)](https://github.com/LightDotSo/LightDotSo/commit/3c7e61ab5f82d6767b3fb4edfeeb9811377618eb)** (@lightdotso/ios)
-
-Add Makefile and Build Configurations
-
-**[feat: ini home (#600)](https://github.com/LightDotSo/LightDotSo/commit/060f3b466d4427eea73117c202a0f4f3cd76544a)** (@lightdotso/const, @lightdotso/home, @lightdotso/tailwindcss, @lightdotso/eslint-config, @lightdotso/styles, @lightdotso/ui)
-
-Add home
-
-### Minor changes
-
-**[chore: [LIGHT-10] Utils (#159)](https://github.com/LightDotSo/LightDotSo/commit/e2b76af8b2aba9da0ccd1d107cff3ee87d3e5388)** (@lightdotso/eslint-config)
-
-Update esling config w/ plugins
-
-**[chore: ini tailwind config (#281)](https://github.com/LightDotSo/LightDotSo/commit/5504b14314e9f00b74738792de9fe4c66d21c02f)** (@lightdotso/tailwindcss)
-
-Deprecate line clamp
-
-**[feat: ini prisma rust (#186)](https://github.com/LightDotSo/LightDotSo/commit/58e2264e5866f53e14da8da434ce1140abe72597)** (@lightdotso/crates, @lightdotso/bin)
-
-Add rust prisma
-
-**[chore: migrate license (#143)](https://github.com/LightDotSo/LightDotSo/commit/1aab6d87fc1d2c5ebf274c14c1ac0e386b54b7a1)** (@lightdotso/tailwindcss, @lightdotso/prettier, @lightdotso/tsconfig, @lightdotso/eslint-config, @lightdotso/styles, @lightdotso/background, @lightdotso/resources, @lightdotso/content, @lightdotso/inpage, @lightdotso/changelog, @lightdotso/extension, @lightdotso/popup, @lightdotso/utils, @lightdotso/wagmi, @lightdotso/desktop, @lightdotso/docs, @lightdotso/contracts, @lightdotso/app, @lightdotso/web, @lightdotso/android, @lightdotso/ui, @lightdotso/crates, @lightdotso/pods, @lightdotso/bin, @lightdotso/ios)
-
-Migrate License to AGPL-3.0
-
-**[feat: ini fly config (#178)](https://github.com/LightDotSo/LightDotSo/commit/1a646de5aaab926dd60c96659b70e05020aaf339)** (@lightdotso/crates, @lightdotso/bin)
-
-Add version w/ vergen
-
-**[feat: ini typography (#170)](https://github.com/LightDotSo/LightDotSo/commit/bb793e593d9d9e68150c706d37b96fd04fe2e73d)** (@lightdotso/ui)
-
-Add @shadcn/ui components
-
-**[feat: ini calculate image hash (#206)](https://github.com/LightDotSo/LightDotSo/commit/d7b35bae70c1abdcc4bbb42d3b393487a237fb5b)** (@lightdotso/solutions)
-
-Add image hash calculation
-
-**[chore: ini rpc (#228)](https://github.com/LightDotSo/LightDotSo/commit/f0d51966a428223f4a8428870942cd774dd2de08)** (@lightdotso/bin)
-
-Add RPC crate
-
-**[chore: ini solution decode (#223)](https://github.com/LightDotSo/LightDotSo/commit/53b6fcf50bfe573a67b05cfb95256c748cd4e06c)** (@lightdotso/solutions)
-
-Add decoded utils
-
-**[feat: ini docgen (#190)](https://github.com/LightDotSo/LightDotSo/commit/d99f6a05366c5464924f4ced0d4ec6ce68731bef)** (@lightdotso/docs)
-
-Add docgen
-
-**[perf: ini kysley (#274)](https://github.com/LightDotSo/LightDotSo/commit/5018f2d9bd37a6c27c052d2e0a15a63a00533c9e)** (@lightdotso/prisma)
-
-Add kysely
-
-**[feat: ini wagmi (#131)](https://github.com/LightDotSo/LightDotSo/commit/67892b116f492f46c94e210fb28ac35ef85adc5e)** (@lightdotso/wagmi, @lightdotso/contracts)
-
-Init wagmi generation
-
-**[feat: ini trpc (#267)](https://github.com/LightDotSo/LightDotSo/commit/0f9baa9c9a495ef138464f6becb524937a8f7a26)** (@lightdotso/prisma, @lightdotso/trpc, @lightdotso/api, @lightdotso/app)
-
-Modularize TRPC
-
-**[feat: ini migration (#198)](https://github.com/LightDotSo/LightDotSo/commit/234fdc882d684c34f2e101ee4ef9b967c33857b9)** (@lightdotso/wagmi, @lightdotso/contracts)
-
-Ini light wallet
-
-**[feat: ini api init (#244)](https://github.com/LightDotSo/LightDotSo/commit/3bb1a02026dbf1493321d68226ea959ad18c19c0)** (@lightdotso/prisma, @lightdotso/api)
-
-Add prisma api
-
-### Patch changes
-
-**[feat: ini evmts (#147)](https://github.com/LightDotSo/LightDotSo/commit/b51701f851c4f1b3d6b288ef7b11a3d8691c9193)** (@lightdotso/contracts)
-
-Add evmts
-
-**[chore: update factory path (#216)](https://github.com/LightDotSo/LightDotSo/commit/09329e97c332451e5aad1a3bf1eac3a58ae62c13)** (@lightdotso/contracts)
-
-Update factory test path
-
-**[chore: ini noir contracts (#125)](https://github.com/LightDotSo/LightDotSo/commit/d1968ab108623aafe29da732770557adb0ce8505)** (@lightdotso/contracts)
-
-Add noir contracts
-
-**[chore: ini rye config (#218)](https://github.com/LightDotSo/LightDotSo/commit/46d1efc7257fd365289d1da9580d99855b4c7287)** (@lightdotso/bin)
-
-Ini tui
-
-**[chore: ini pnpm upgrade (#171)](https://github.com/LightDotSo/LightDotSo/commit/ecb7d148012f692ce0365d2c10b7163e99c8fe18)** (@lightdotso/eslint-config, @lightdotso/solutions, @lightdotso/changelog, @lightdotso/popup, @lightdotso/desktop, @lightdotso/docs, @lightdotso/app, @lightdotso/web, @lightdotso/ui)
-
-chore: upgrade dependencies
-
-**[chore: Gt/add libs (#115)](https://github.com/LightDotSo/LightDotSo/commit/de6d8856173affdec69a356a2f202a4d67df61d6)** (@lightdotso/contracts)
-
-Add initial libs
-
-**[chore: ini license check (#149)](https://github.com/LightDotSo/LightDotSo/commit/51429114636eff5d0a0553af96dc2d0f5120a702)** (@lightdotso/tailwindcss, @lightdotso/prettier, @lightdotso/eslint-config, @lightdotso/background, @lightdotso/content, @lightdotso/inpage, @lightdotso/changelog, @lightdotso/popup, @lightdotso/utils, @lightdotso/wagmi, @lightdotso/desktop, @lightdotso/docs, @lightdotso/contracts, @lightdotso/app, @lightdotso/web, @lightdotso/android, @lightdotso/ui, @lightdotso/crates, @lightdotso/bin, @lightdotso/ios)
-
-Migrate to AGPLv3
-
-**[chore: Gt/ini UI packages (#138)](https://github.com/LightDotSo/LightDotSo/commit/8d8eb1757888ebdab1d73584bac9f453b527b3d0)** (@lightdotso/tailwindcss, @lightdotso/styles, @lightdotso/utils)
-
-feat: ini tailwindcss styles & utils
-
-**[perf: ini indexer eth (#474)](https://github.com/LightDotSo/LightDotSo/commit/dd7284250c23bc9b74a52298a1e7d87e9c05c673)** (@lightdotso/crates)
-
-Add indexer for arbitrum,base,polygon
-
-**[chore: update base tests (#201)](https://github.com/LightDotSo/LightDotSo/commit/71707aec4b1867552d7e5a30898966cd3ded9b98)** (@lightdotso/contracts)
-
-Added base tests
-
-**[fix: flow (#582)](https://github.com/LightDotSo/LightDotSo/commit/0a15e862b78fa871fe9cc09a239314b3be862430)** (@lightdotso/contracts)
-
-Add simulation flow
-
-**[feat: ini api (#557)](https://github.com/LightDotSo/LightDotSo/commit/a8cc4ddc12d26e5d68531732cbd4199fd3fc0cec)** (@lightdotso/desktop, @lightdotso/crates)
-
-Add rspc package
-
-**[perf: refactor bytes32 factory (#472)](https://github.com/LightDotSo/LightDotSo/commit/6a1a082e284255bc36c015412053455bdc2ebb4e)** (@lightdotso/contracts)
-
-Convert to uint256 from bytes32 hash
-
-**[refactor: tests dir (#212)](https://github.com/LightDotSo/LightDotSo/commit/add76950d61a13ce9a8d368e41552da9caf3ade6)** (@lightdotso/contracts)
-
-Refactor test suite
-
-**[feat: migrate spec dir (#154)](https://github.com/LightDotSo/LightDotSo/commit/4d140bf17b5791938f91a26bc2ad2a945f1f7356)** (@lightdotso/contracts)
-
-Added vitest testing w/ anvil.js and viem
-
-**[chore: update base tests (#203)](https://github.com/LightDotSo/LightDotSo/commit/b5daf7ebdc0abf5a58fb67d6cd669de2fe918bb2)** (@lightdotso/contracts)
-
-Add base test
-
-**[chore: ini inngest check (#307)](https://github.com/LightDotSo/LightDotSo/commit/b396b3a5ad71815f42f3b264a38f8dca2de5bd47)** (@lightdotso/api)
-
-Add inngest check
-
-**[feat: ini hardhat vitest (#134)](https://github.com/LightDotSo/LightDotSo/commit/e51dccfc813d8fa65a0db172806a4e7db5b46683)** (@lightdotso/wagmi, @lightdotso/contracts)
-
-chore: ini vitest w/ hardhat
-
-**[chore: update (#141)](https://github.com/LightDotSo/LightDotSo/commit/60799ab9cb59fb121bcb75d9c009add727689810)** (@lightdotso/ui)
-
-migrate to dist dir for storybook
-
-**[chore: ini imp rpc (#469)](https://github.com/LightDotSo/LightDotSo/commit/b1e202dc794ff7080a06ccc3fc67d6eee1bceedf)** (@lightdotso/crates, @lightdotso/bin)
-
-Update gas sig
-
-**[chore: ini pods (#136)](https://github.com/LightDotSo/LightDotSo/commit/c7fc4d156f8477ffd971464d6ff3ac47a3dc2119)** (@lightdotso/pods)
-
-Init cert-manager
-
-**[chore: Gt/add libs (#115) (#117)](https://github.com/LightDotSo/LightDotSo/commit/89bd35e0bf82e0fcb89ad0e235963d8efc7a8109)** (@lightdotso/crates)
-
-Add workspace deps
-
-**[feat: ini wagmi (#131)](https://github.com/LightDotSo/LightDotSo/commit/67892b116f492f46c94e210fb28ac35ef85adc5e)** (@lightdotso/bin)
-
-Initial Working Bin
-
-**[perf: ini sccache (#303)](https://github.com/LightDotSo/LightDotSo/commit/6aeb8395fbcdd18c92c1fd300f7b5a56846c64e0)** (@lightdotso/crates)
-
-Add lightdotso keychain
+# Changelog
+
+## [0.1.0](https://github.com/LightDotSo/LightDotSo/compare/lightdotso-v0.0.1...lightdotso-v0.1.0) (2023-12-11)
+
+### Features
+
+- complete refactor trpc ([#331](https://github.com/LightDotSo/LightDotSo/issues/331)) ([fe21be0](https://github.com/LightDotSo/LightDotSo/commit/fe21be09221eda79dd96db4b33cf703ced2be508))
+- create type ([#739](https://github.com/LightDotSo/LightDotSo/issues/739)) ([1482535](https://github.com/LightDotSo/LightDotSo/commit/148253507935c1920f0fb2fda1ff45bf792b38ed))
+- **create-turbo:** apply official-starter transform ([0d3f16f](https://github.com/LightDotSo/LightDotSo/commit/0d3f16f5c5e4b2ac6ed44f9eda9584b8a05af94a))
+- **create-turbo:** create basic ([735760f](https://github.com/LightDotSo/LightDotSo/commit/735760fd008ef2138175477689f06f5ef7f460f1))
+- **create-turbo:** install dependencies ([08e8b55](https://github.com/LightDotSo/LightDotSo/commit/08e8b55431abeba1396613c278909eb85708d8a0))
+- deprecate auth ([#1029](https://github.com/LightDotSo/LightDotSo/issues/1029)) ([eeae460](https://github.com/LightDotSo/LightDotSo/commit/eeae4602d2eae695573c415102226a9823240098))
+- encode sig ([#785](https://github.com/LightDotSo/LightDotSo/issues/785)) ([5954477](https://github.com/LightDotSo/LightDotSo/commit/5954477e46e2f0b8d1da82c2d230c310965fd868))
+- Feat/ini observability ([#539](https://github.com/LightDotSo/LightDotSo/issues/539)) ([d6b8d9b](https://github.com/LightDotSo/LightDotSo/commit/d6b8d9bfd18ab9ce71ade19027864cff1b804e32))
+- Feat/ini simulator rpc ([#451](https://github.com/LightDotSo/LightDotSo/issues/451)) ([90cbfba](https://github.com/LightDotSo/LightDotSo/commit/90cbfbaf79ca617870b5bdb4919640494686c932))
+- feat/ini ui ([#22](https://github.com/LightDotSo/LightDotSo/issues/22)) ([58dbea3](https://github.com/LightDotSo/LightDotSo/commit/58dbea31c764e8e5920b5f4e358aa4d9771e416a))
+- ini ([#754](https://github.com/LightDotSo/LightDotSo/issues/754)) ([c0919fa](https://github.com/LightDotSo/LightDotSo/commit/c0919fa763368168de92344b5c441fcd32477853))
+- ini aa factory ([#48](https://github.com/LightDotSo/LightDotSo/issues/48)) ([b85f88f](https://github.com/LightDotSo/LightDotSo/commit/b85f88fa99b6ce0e25799bb3b76291fbc0c85aa9))
+- ini activity ([#905](https://github.com/LightDotSo/LightDotSo/issues/905)) ([97c86ba](https://github.com/LightDotSo/LightDotSo/commit/97c86ba0e9edfaf3271077b9059a6ccae182193d))
+- ini activity list ([#933](https://github.com/LightDotSo/LightDotSo/issues/933)) ([ed4cb3b](https://github.com/LightDotSo/LightDotSo/commit/ed4cb3b69725efca7f7823b44e2c62f5b60b6b34))
+- ini admin api ([#729](https://github.com/LightDotSo/LightDotSo/issues/729)) ([588971a](https://github.com/LightDotSo/LightDotSo/commit/588971a13a605d324b3886a7ff8b6bb01097a5b8))
+- ini alchemy ([#580](https://github.com/LightDotSo/LightDotSo/issues/580)) ([179240f](https://github.com/LightDotSo/LightDotSo/commit/179240f4355b515039f7e1e82dd5c17dbbfe1103))
+- ini api ([#557](https://github.com/LightDotSo/LightDotSo/issues/557)) ([a8cc4dd](https://github.com/LightDotSo/LightDotSo/commit/a8cc4ddc12d26e5d68531732cbd4199fd3fc0cec))
+- ini api docker ([#452](https://github.com/LightDotSo/LightDotSo/issues/452)) ([f52a040](https://github.com/LightDotSo/LightDotSo/commit/f52a040100a9b15cd0f4cb7b6509bec8fa2ca351))
+- ini api fly ([#419](https://github.com/LightDotSo/LightDotSo/issues/419)) ([6e73a5d](https://github.com/LightDotSo/LightDotSo/commit/6e73a5d805be8c43fcfe587bac1eb9f5a73e4a9d))
+- ini api init ([#244](https://github.com/LightDotSo/LightDotSo/issues/244)) ([3bb1a02](https://github.com/LightDotSo/LightDotSo/commit/3bb1a02026dbf1493321d68226ea959ad18c19c0))
+- ini api prisma ([#185](https://github.com/LightDotSo/LightDotSo/issues/185)) ([15f20a9](https://github.com/LightDotSo/LightDotSo/commit/15f20a9f795f05c16db06d01ad26b240a9015ec3))
+- ini api query ([#749](https://github.com/LightDotSo/LightDotSo/issues/749)) ([e1d4376](https://github.com/LightDotSo/LightDotSo/commit/e1d4376eee17259ab98f2d9f6fe9fbccaad01778))
+- ini app chore ([#949](https://github.com/LightDotSo/LightDotSo/issues/949)) ([794f018](https://github.com/LightDotSo/LightDotSo/commit/794f0187aa8db7adf95995e7db2dfb6115afd1d0))
+- ini app configurations ([#841](https://github.com/LightDotSo/LightDotSo/issues/841)) ([518f121](https://github.com/LightDotSo/LightDotSo/commit/518f1219d692c9389d548e0bfb150f138806286f))
+- ini app modal ([#1049](https://github.com/LightDotSo/LightDotSo/issues/1049)) ([931af26](https://github.com/LightDotSo/LightDotSo/commit/931af26cdf34ba7b64064d4ae46b292cc35c0f8c))
+- ini app new ([#731](https://github.com/LightDotSo/LightDotSo/issues/731)) ([0dabb7c](https://github.com/LightDotSo/LightDotSo/commit/0dabb7c7bf3a9cc95db45bda9b81439324cd8068))
+- ini app op ([#854](https://github.com/LightDotSo/LightDotSo/issues/854)) ([bdd3a39](https://github.com/LightDotSo/LightDotSo/commit/bdd3a390dbd80fc4568c65dda87b6856437ec036))
+- ini auth ([#1032](https://github.com/LightDotSo/LightDotSo/issues/1032)) ([98198ea](https://github.com/LightDotSo/LightDotSo/commit/98198eaa070637bf67df43e3ef41bddcc480fd93))
+- ini auth ([#280](https://github.com/LightDotSo/LightDotSo/issues/280)) ([5fcf769](https://github.com/LightDotSo/LightDotSo/commit/5fcf7698433d0fab94603b59fc5a33c3afa0fb72))
+- ini auth ([#736](https://github.com/LightDotSo/LightDotSo/issues/736)) ([725b9c5](https://github.com/LightDotSo/LightDotSo/commit/725b9c597058e32a973adde10292e8d2b901d682))
+- ini auth hook ([#748](https://github.com/LightDotSo/LightDotSo/issues/748)) ([2fdcaae](https://github.com/LightDotSo/LightDotSo/commit/2fdcaae1e5f8fe6aa02ea7bdac548afe35687c69))
+- ini auth modal ([#1035](https://github.com/LightDotSo/LightDotSo/issues/1035)) ([1643ed0](https://github.com/LightDotSo/LightDotSo/commit/1643ed075e5e1f596bd22cee775c243bca711d96))
+- ini auth prisma ([#290](https://github.com/LightDotSo/LightDotSo/issues/290)) ([8012971](https://github.com/LightDotSo/LightDotSo/commit/8012971423e4b1ef3bf159a9c98478ffe2831549))
+- ini auth session ([#1039](https://github.com/LightDotSo/LightDotSo/issues/1039)) ([5aa530a](https://github.com/LightDotSo/LightDotSo/commit/5aa530ac34671194cf11178a59b136b8f0686804))
+- ini authenticated endpoint ([#1034](https://github.com/LightDotSo/LightDotSo/issues/1034)) ([2fc78dc](https://github.com/LightDotSo/LightDotSo/commit/2fc78dcba8c8960286e75469c8f361e37f8e244f))
+- ini auto metrics ([#367](https://github.com/LightDotSo/LightDotSo/issues/367)) ([9aaf146](https://github.com/LightDotSo/LightDotSo/commit/9aaf146f77c2a7fb8f4562dbbfcf0df9532db43b))
+- ini autometrics ([#406](https://github.com/LightDotSo/LightDotSo/issues/406)) ([7c02c12](https://github.com/LightDotSo/LightDotSo/commit/7c02c12d7e666c184a145606eee605e2f6ba52e3))
+- ini balance wallet testnet ([#942](https://github.com/LightDotSo/LightDotSo/issues/942)) ([133f619](https://github.com/LightDotSo/LightDotSo/commit/133f619f9f386e7be74400b9ab267d32243b434e))
+- ini base address ([#611](https://github.com/LightDotSo/LightDotSo/issues/611)) ([7881500](https://github.com/LightDotSo/LightDotSo/commit/7881500d32308a76a1383b2acb8454acaf1e8bb0))
+- ini billing ([#834](https://github.com/LightDotSo/LightDotSo/issues/834)) ([82a11e5](https://github.com/LightDotSo/LightDotSo/commit/82a11e58850c16ae38303836da88f8bc4225632e))
+- ini brady ([#657](https://github.com/LightDotSo/LightDotSo/issues/657)) ([4943d19](https://github.com/LightDotSo/LightDotSo/commit/4943d198a9770c293a420a3480e597809c0e8856))
+- ini build pay ([#833](https://github.com/LightDotSo/LightDotSo/issues/833)) ([59a5424](https://github.com/LightDotSo/LightDotSo/commit/59a5424d9258eda992ad8f3bb247d215fe52e4fd))
+- ini builder ([#724](https://github.com/LightDotSo/LightDotSo/issues/724)) ([33153e4](https://github.com/LightDotSo/LightDotSo/commit/33153e46cf55bc13d6424a1dfeb1edbd84bfa933))
+- ini bundler ([#430](https://github.com/LightDotSo/LightDotSo/issues/430)) ([6c7dd72](https://github.com/LightDotSo/LightDotSo/commit/6c7dd72e729b2a2af9cfd0e8c6c8779962d7ef29))
+- ini bundler ([#432](https://github.com/LightDotSo/LightDotSo/issues/432)) ([eb7f71a](https://github.com/LightDotSo/LightDotSo/commit/eb7f71ae9e8c76521ace247afa9d71cfbb606a8f))
+- ini bundler rpc ([#633](https://github.com/LightDotSo/LightDotSo/issues/633)) ([9498173](https://github.com/LightDotSo/LightDotSo/commit/94981731f52ccb8a286416e1925f0ffcb52f5c98))
+- ini calculate image hash ([#206](https://github.com/LightDotSo/LightDotSo/issues/206)) ([d7b35ba](https://github.com/LightDotSo/LightDotSo/commit/d7b35bae70c1abdcc4bbb42d3b393487a237fb5b))
+- ini calldata ([#953](https://github.com/LightDotSo/LightDotSo/issues/953)) ([6dcfb5f](https://github.com/LightDotSo/LightDotSo/commit/6dcfb5f4a87e8f78c37736c601c50aa386e8b298))
+- ini chain overview ([#1089](https://github.com/LightDotSo/LightDotSo/issues/1089)) ([6404127](https://github.com/LightDotSo/LightDotSo/commit/6404127166e4de6931e43c782beccf7877e34fb9))
+- ini chain sig ([#758](https://github.com/LightDotSo/LightDotSo/issues/758)) ([e229079](https://github.com/LightDotSo/LightDotSo/commit/e229079ee38401a53fb18983965107c50dcc6362))
+- ini checkly testing ([#275](https://github.com/LightDotSo/LightDotSo/issues/275)) ([43d86cd](https://github.com/LightDotSo/LightDotSo/commit/43d86cd250c622884fbcad63c95ac0cfa4db2439))
+- ini checksum ([#392](https://github.com/LightDotSo/LightDotSo/issues/392)) ([bffd249](https://github.com/LightDotSo/LightDotSo/commit/bffd24954f6916f244465bec075707b755fe89db))
+- ini clean package ([#935](https://github.com/LightDotSo/LightDotSo/issues/935)) ([4a2521e](https://github.com/LightDotSo/LightDotSo/commit/4a2521e66df25a136c9194840dfbf440b1b199ed))
+- ini client fetch ([#332](https://github.com/LightDotSo/LightDotSo/issues/332)) ([2550ec0](https://github.com/LightDotSo/LightDotSo/commit/2550ec0c7fef6dae4e2fe53975df515684bee943))
+- ini common crate ([#783](https://github.com/LightDotSo/LightDotSo/issues/783)) ([152a9a0](https://github.com/LightDotSo/LightDotSo/commit/152a9a070ff6c3eb68a135d23db7507883d91102))
+- ini configuration ([#761](https://github.com/LightDotSo/LightDotSo/issues/761)) ([d079ada](https://github.com/LightDotSo/LightDotSo/commit/d079adaad2277f85169094026b80e50b82fa46b5))
+- ini configuration owner ([#770](https://github.com/LightDotSo/LightDotSo/issues/770)) ([517db12](https://github.com/LightDotSo/LightDotSo/commit/517db12c8766d5461e5762c1924b1680086357c8))
+- ini configurations ([#44](https://github.com/LightDotSo/LightDotSo/issues/44)) ([6f2129d](https://github.com/LightDotSo/LightDotSo/commit/6f2129d918c528109e9cbe1adc66e5c6974f17e0))
+- ini confirm ([#778](https://github.com/LightDotSo/LightDotSo/issues/778)) ([86e966a](https://github.com/LightDotSo/LightDotSo/commit/86e966ab3db53a3957e681a819cbeddcebe8ffa4))
+- ini connect ([#283](https://github.com/LightDotSo/LightDotSo/issues/283)) ([413bfd3](https://github.com/LightDotSo/LightDotSo/commit/413bfd35fad8d23452a3803f38f9f703d7e43ac0))
+- ini connectkit ([#333](https://github.com/LightDotSo/LightDotSo/issues/333)) ([f878e73](https://github.com/LightDotSo/LightDotSo/commit/f878e7307d18014e9e76c2366315e8c792e88844))
+- ini console ([#599](https://github.com/LightDotSo/LightDotSo/issues/599)) ([27e7df2](https://github.com/LightDotSo/LightDotSo/commit/27e7df28f18c4f85ef374e7d370f23a3ad9473f7))
+- ini const CAP ([#1010](https://github.com/LightDotSo/LightDotSo/issues/1010)) ([236926d](https://github.com/LightDotSo/LightDotSo/commit/236926d862c8da0bb8504cd75594c96c213635a9))
+- ini const capitalize ([#1022](https://github.com/LightDotSo/LightDotSo/issues/1022)) ([2f0cc85](https://github.com/LightDotSo/LightDotSo/commit/2f0cc856f057b04022434cb7ca775ae1a443a427))
+- ini consumer ([#360](https://github.com/LightDotSo/LightDotSo/issues/360)) ([a64e587](https://github.com/LightDotSo/LightDotSo/commit/a64e5878c9097f1934f8aeae85ff41f2070a5b81))
+- ini consumer payload tuple ([#914](https://github.com/LightDotSo/LightDotSo/issues/914)) ([8eb6867](https://github.com/LightDotSo/LightDotSo/commit/8eb68675156f597607d7240d05cbdc3ff5e047eb))
+- ini consumer v2 ([#388](https://github.com/LightDotSo/LightDotSo/issues/388)) ([f9d3da8](https://github.com/LightDotSo/LightDotSo/commit/f9d3da80c7bcec27189013ef1cd6a5f0792a9295))
+- ini create ([#743](https://github.com/LightDotSo/LightDotSo/issues/743)) ([fcbed07](https://github.com/LightDotSo/LightDotSo/commit/fcbed0740037cb1275b8ab9e9dbe8b54fbfe5dcf))
+- ini cross cookie ([#393](https://github.com/LightDotSo/LightDotSo/issues/393)) ([35667a7](https://github.com/LightDotSo/LightDotSo/commit/35667a733e821826a0f043c7e74dee79d16d3116))
+- ini data ([#946](https://github.com/LightDotSo/LightDotSo/issues/946)) ([dc96d49](https://github.com/LightDotSo/LightDotSo/commit/dc96d49d2d976cdf6c470ace475b816bde058e9c))
+- ini data table ([#1058](https://github.com/LightDotSo/LightDotSo/issues/1058)) ([6de537f](https://github.com/LightDotSo/LightDotSo/commit/6de537f1f1e67d340e4e22d85feb98559cb5de2b))
+- ini db ([#676](https://github.com/LightDotSo/LightDotSo/issues/676)) ([b67a7a0](https://github.com/LightDotSo/LightDotSo/commit/b67a7a0c9e2a52842962cb4b55bb311b4570b11f))
+- ini decode ([#697](https://github.com/LightDotSo/LightDotSo/issues/697)) ([6065acb](https://github.com/LightDotSo/LightDotSo/commit/6065acbeb1a715b6e1c8346cf9e2a404a79cc27a))
+- ini deploy ([#346](https://github.com/LightDotSo/LightDotSo/issues/346)) ([dbb6822](https://github.com/LightDotSo/LightDotSo/commit/dbb6822cc3db02a5ec3d89c8ba35c68b6df9c4f8))
+- ini deploy success ([#788](https://github.com/LightDotSo/LightDotSo/issues/788)) ([f7a223c](https://github.com/LightDotSo/LightDotSo/commit/f7a223c958281ede5789619a6bb70120942b53c5))
+- ini desktop ([#8](https://github.com/LightDotSo/LightDotSo/issues/8)) ([c937411](https://github.com/LightDotSo/LightDotSo/commit/c937411711e46af5786a6d4d4f9a46cf6ec6307b))
+- ini discord telegram redis kafka ([#352](https://github.com/LightDotSo/LightDotSo/issues/352)) ([7f78566](https://github.com/LightDotSo/LightDotSo/commit/7f785664ed18815007fb4f879cf55fe73f638126))
+- ini docgen ([#190](https://github.com/LightDotSo/LightDotSo/issues/190)) ([d99f6a0](https://github.com/LightDotSo/LightDotSo/commit/d99f6a05366c5464924f4ced0d4ec6ce68731bef))
+- ini encode sig ([#784](https://github.com/LightDotSo/LightDotSo/issues/784)) ([a7b1484](https://github.com/LightDotSo/LightDotSo/commit/a7b148447543bbe97f43a80db5b9455fd7918262))
+- ini encoding ([#1020](https://github.com/LightDotSo/LightDotSo/issues/1020)) ([73f89b5](https://github.com/LightDotSo/LightDotSo/commit/73f89b5d97eb45f7490104d5be24949762ad10dd))
+- ini ens name ([#287](https://github.com/LightDotSo/LightDotSo/issues/287)) ([b2e227d](https://github.com/LightDotSo/LightDotSo/commit/b2e227daa197383d20ad4324d15be3892c68b6c8))
+- ini env parse from clap ([#329](https://github.com/LightDotSo/LightDotSo/issues/329)) ([7e35d47](https://github.com/LightDotSo/LightDotSo/commit/7e35d47d59fd20a2b9791a9372f53ac50689e18b))
+- ini evmts ([#147](https://github.com/LightDotSo/LightDotSo/issues/147)) ([b51701f](https://github.com/LightDotSo/LightDotSo/commit/b51701f851c4f1b3d6b288ef7b11a3d8691c9193))
+- ini execute batch ([#220](https://github.com/LightDotSo/LightDotSo/issues/220)) ([b96cc28](https://github.com/LightDotSo/LightDotSo/commit/b96cc285f08ebab25988bad51325c98e336d7188))
+- ini experimental query ([#336](https://github.com/LightDotSo/LightDotSo/issues/336)) ([6241992](https://github.com/LightDotSo/LightDotSo/commit/624199220cc8d5000b31476b00f3b6baa484c206))
+- ini explorer ([#368](https://github.com/LightDotSo/LightDotSo/issues/368)) ([77973d5](https://github.com/LightDotSo/LightDotSo/commit/77973d5c42c645b542ced8d05fd38cca41becff2))
+- ini exporter ([#532](https://github.com/LightDotSo/LightDotSo/issues/532)) ([da055d7](https://github.com/LightDotSo/LightDotSo/commit/da055d7fcdcae96ca788ecd0347ca2eba8ab1238))
+- ini extension ([#31](https://github.com/LightDotSo/LightDotSo/issues/31)) ([7c2cbb5](https://github.com/LightDotSo/LightDotSo/commit/7c2cbb50bfd527ea04e1b9e200347da87f4a1380))
+- ini fallback const ([#825](https://github.com/LightDotSo/LightDotSo/issues/825)) ([24a6e5b](https://github.com/LightDotSo/LightDotSo/commit/24a6e5baaadd36673d902ba55315b03159ed222d))
+- ini flex col ([#815](https://github.com/LightDotSo/LightDotSo/issues/815)) ([f92c5b0](https://github.com/LightDotSo/LightDotSo/commit/f92c5b01d8a9577c325d5f045cfe645ec68e31c8))
+- ini flow ([#224](https://github.com/LightDotSo/LightDotSo/issues/224)) ([59da0a1](https://github.com/LightDotSo/LightDotSo/commit/59da0a1a2ab27815595dc17a6940d494af80e90c))
+- ini fly config ([#178](https://github.com/LightDotSo/LightDotSo/issues/178)) ([1a646de](https://github.com/LightDotSo/LightDotSo/commit/1a646de5aaab926dd60c96659b70e05020aaf339))
+- ini gas + pm ([#585](https://github.com/LightDotSo/LightDotSo/issues/585)) ([d260b2e](https://github.com/LightDotSo/LightDotSo/commit/d260b2e72aacf4eae7939b0f8a63132e4dc837ef))
+- ini gas rpc v3 ([#647](https://github.com/LightDotSo/LightDotSo/issues/647)) ([c323415](https://github.com/LightDotSo/LightDotSo/commit/c32341561ef0d50a4dbf90d1720effb8c0055270))
+- ini get wallets ([#746](https://github.com/LightDotSo/LightDotSo/issues/746)) ([9eb4c89](https://github.com/LightDotSo/LightDotSo/commit/9eb4c89aae6d1108f8893ca1928dc748399ed5be))
+- ini graphql ([#579](https://github.com/LightDotSo/LightDotSo/issues/579)) ([b8e7a17](https://github.com/LightDotSo/LightDotSo/commit/b8e7a1798aed662519320187d3b564d714f91938))
+- ini graphql polling update ([#858](https://github.com/LightDotSo/LightDotSo/issues/858)) ([940d309](https://github.com/LightDotSo/LightDotSo/commit/940d3097ce93939e4cc7f25fd24d7ae463717809))
+- ini hackathon slot ([#820](https://github.com/LightDotSo/LightDotSo/issues/820)) ([89c2454](https://github.com/LightDotSo/LightDotSo/commit/89c2454a7887f8c5c2cc1f95275ed8c6dbb8a8aa))
+- ini handler ([#695](https://github.com/LightDotSo/LightDotSo/issues/695)) ([7f8dd4d](https://github.com/LightDotSo/LightDotSo/commit/7f8dd4dd8ba3a2d8583c6b25f3daee6c7e36207a))
+- ini handler preloader ([#941](https://github.com/LightDotSo/LightDotSo/issues/941)) ([653a62c](https://github.com/LightDotSo/LightDotSo/commit/653a62c39ea1e820009a89de793ef364a67fa603))
+- ini hardhat vitest ([#134](https://github.com/LightDotSo/LightDotSo/issues/134)) ([e51dccf](https://github.com/LightDotSo/LightDotSo/commit/e51dccfc813d8fa65a0db172806a4e7db5b46683))
+- ini history data table ([#1088](https://github.com/LightDotSo/LightDotSo/issues/1088)) ([e5d7384](https://github.com/LightDotSo/LightDotSo/commit/e5d7384e51989aae131d2dfb86a33db418579612))
+- ini home ([#600](https://github.com/LightDotSo/LightDotSo/issues/600)) ([060f3b4](https://github.com/LightDotSo/LightDotSo/commit/060f3b466d4427eea73117c202a0f4f3cd76544a))
+- ini indexer ([#480](https://github.com/LightDotSo/LightDotSo/issues/480)) ([4c0bc70](https://github.com/LightDotSo/LightDotSo/commit/4c0bc706a74bf9fe4a88d2f7f63fc7199bd2d0fd))
+- ini indexer bin ([#348](https://github.com/LightDotSo/LightDotSo/issues/348)) ([c54df34](https://github.com/LightDotSo/LightDotSo/commit/c54df34df5686d4bf25bf23d4e868977adac2fae))
+- ini indexer it ([#359](https://github.com/LightDotSo/LightDotSo/issues/359)) ([a4c176d](https://github.com/LightDotSo/LightDotSo/commit/a4c176ddaab4a413c63548e66f7adf9b42db4d02))
+- ini inngest ([#873](https://github.com/LightDotSo/LightDotSo/issues/873)) ([8c2639e](https://github.com/LightDotSo/LightDotSo/commit/8c2639e1a51857da3f6e697df3ef8bdb550fad7c))
+- ini int ([#755](https://github.com/LightDotSo/LightDotSo/issues/755)) ([ae4f01d](https://github.com/LightDotSo/LightDotSo/commit/ae4f01dee1891322985f2d4f3c72d82375c8146a))
+- ini interception routes ([#757](https://github.com/LightDotSo/LightDotSo/issues/757)) ([2934a81](https://github.com/LightDotSo/LightDotSo/commit/2934a81897c933fccdd9a973c824a8251d2a8631))
+- ini internal indexer ([#463](https://github.com/LightDotSo/LightDotSo/issues/463)) ([ceb333c](https://github.com/LightDotSo/LightDotSo/commit/ceb333c6a157e2b798aa235fa36a8e05d2c34fc2))
+- ini internal rpc ([#445](https://github.com/LightDotSo/LightDotSo/issues/445)) ([5570147](https://github.com/LightDotSo/LightDotSo/commit/5570147dd425e76df8ac970c720717edf9240d66))
+- ini invoke update ([#874](https://github.com/LightDotSo/LightDotSo/issues/874)) ([bf8bed3](https://github.com/LightDotSo/LightDotSo/commit/bf8bed310562c8cf6f04925bdf15f176fa9d1163))
+- ini ios ([#24](https://github.com/LightDotSo/LightDotSo/issues/24)) ([3f61d71](https://github.com/LightDotSo/LightDotSo/commit/3f61d7125b5d9e1d6ffb71e9d1eab2c7479b9c60))
+- ini kafka consumer ([#915](https://github.com/LightDotSo/LightDotSo/issues/915)) ([7e5ff90](https://github.com/LightDotSo/LightDotSo/commit/7e5ff90295c0b5a70dd71b76db81f99f62931205))
+- ini kafka exporter ([#549](https://github.com/LightDotSo/LightDotSo/issues/549)) ([f403b74](https://github.com/LightDotSo/LightDotSo/commit/f403b74ee54c3ed83789f7c7689386b459dce44a))
+- ini kafka produce ([#415](https://github.com/LightDotSo/LightDotSo/issues/415)) ([eb27bd4](https://github.com/LightDotSo/LightDotSo/commit/eb27bd4aee34bc78c3ff60f09a1c25923c0f98ef))
+- ini kysley edge ([#273](https://github.com/LightDotSo/LightDotSo/issues/273)) ([fe74d3f](https://github.com/LightDotSo/LightDotSo/commit/fe74d3f4eea13d19ed114389df04bdc158639642))
+- ini lazy staci ([#1033](https://github.com/LightDotSo/LightDotSo/issues/1033)) ([c0d2cdb](https://github.com/LightDotSo/LightDotSo/commit/c0d2cdbb68e53f74f192395eddbe0e7466155ce1))
+- ini local auth ([#1025](https://github.com/LightDotSo/LightDotSo/issues/1025)) ([285c4fa](https://github.com/LightDotSo/LightDotSo/commit/285c4fa470809eee4940b86cf0286eb02513deea))
+- ini local db ([#285](https://github.com/LightDotSo/LightDotSo/issues/285)) ([5b578f4](https://github.com/LightDotSo/LightDotSo/commit/5b578f474dd50409bb273065d3645465d9ce638f))
+- ini migrate status enum ([#806](https://github.com/LightDotSo/LightDotSo/issues/806)) ([377599b](https://github.com/LightDotSo/LightDotSo/commit/377599b2c4dcfc50ac124cbeade73f3de35b6140))
+- ini migration ([#198](https://github.com/LightDotSo/LightDotSo/issues/198)) ([234fdc8](https://github.com/LightDotSo/LightDotSo/commit/234fdc882d684c34f2e101ee4ef9b967c33857b9))
+- ini misc api ([#792](https://github.com/LightDotSo/LightDotSo/issues/792)) ([cb16446](https://github.com/LightDotSo/LightDotSo/commit/cb16446e681c46b99096751bd21468df2736fba5))
+- ini misc changes ([#1052](https://github.com/LightDotSo/LightDotSo/issues/1052)) ([0eed00b](https://github.com/LightDotSo/LightDotSo/commit/0eed00b9a387e631695f2aceae1d532e7819f0d4))
+- ini multi consumers ([#482](https://github.com/LightDotSo/LightDotSo/issues/482)) ([aeed95e](https://github.com/LightDotSo/LightDotSo/commit/aeed95eebfae9b2aac48e233ec77cfd968b389d3))
+- ini multi threads ([#494](https://github.com/LightDotSo/LightDotSo/issues/494)) ([6eb9db2](https://github.com/LightDotSo/LightDotSo/commit/6eb9db258f83701dd510cc6e6ff09c11908f766b))
+- ini name param ([#737](https://github.com/LightDotSo/LightDotSo/issues/737)) ([76e3bdf](https://github.com/LightDotSo/LightDotSo/commit/76e3bdf2e93a7b4003b27fe4f6a31989479b0338))
+- ini new ([#693](https://github.com/LightDotSo/LightDotSo/issues/693)) ([a05ddc3](https://github.com/LightDotSo/LightDotSo/commit/a05ddc3e2fdce3b6e7bf23e8e2ff4aaac8bd658d))
+- ini new 2 ([#733](https://github.com/LightDotSo/LightDotSo/issues/733)) ([a0b6519](https://github.com/LightDotSo/LightDotSo/commit/a0b6519b7aade161ea5be3487030ae814e56a393))
+- ini next 14 ([#811](https://github.com/LightDotSo/LightDotSo/issues/811)) ([70a7ab0](https://github.com/LightDotSo/LightDotSo/commit/70a7ab0572d0a364ce7844118768410d8c35dd4b))
+- ini next auth ([#1024](https://github.com/LightDotSo/LightDotSo/issues/1024)) ([f06fa2e](https://github.com/LightDotSo/LightDotSo/commit/f06fa2e2c458cc90016394801804251d4f920a8c))
+- ini next auth ([#279](https://github.com/LightDotSo/LightDotSo/issues/279)) ([cfddce5](https://github.com/LightDotSo/LightDotSo/commit/cfddce5012443b208bf51bec42084acf1a9d2aff))
+- ini next sentry ([#616](https://github.com/LightDotSo/LightDotSo/issues/616)) ([9cbf658](https://github.com/LightDotSo/LightDotSo/commit/9cbf658df05d5e107d49c41ffc5e24e3dd955b54))
+- ini next ui ([#814](https://github.com/LightDotSo/LightDotSo/issues/814)) ([118fc07](https://github.com/LightDotSo/LightDotSo/commit/118fc0786b3bb1d80792eb673468d6e113026751))
+- ini nft send ([#1002](https://github.com/LightDotSo/LightDotSo/issues/1002)) ([194a04f](https://github.com/LightDotSo/LightDotSo/commit/194a04f0d4f1217fbb8dd049d9aa7631c2746113))
+- ini node ([#26](https://github.com/LightDotSo/LightDotSo/issues/26)) ([abae9fc](https://github.com/LightDotSo/LightDotSo/commit/abae9fc83068212bc539e756ceb47ac75b6cd6c3))
+- ini not found ([#821](https://github.com/LightDotSo/LightDotSo/issues/821)) ([ce00c6c](https://github.com/LightDotSo/LightDotSo/commit/ce00c6c1b3b89efe735a3aa86950d9ae0a5febe2))
+- ini notifier ([#520](https://github.com/LightDotSo/LightDotSo/issues/520)) ([c19fbd1](https://github.com/LightDotSo/LightDotSo/commit/c19fbd1587554168c8b5c5b1eef81718d6ada875))
+- ini o1 check ([#397](https://github.com/LightDotSo/LightDotSo/issues/397)) ([3f9ad19](https://github.com/LightDotSo/LightDotSo/commit/3f9ad1903c96bcc3f03b90e4d000bda34edd85f2))
+- ini op deployment ([#939](https://github.com/LightDotSo/LightDotSo/issues/939)) ([f7d6919](https://github.com/LightDotSo/LightDotSo/commit/f7d6919ccee368be35e8b34f7a1a9301a34af826))
+- ini op deployment ([#940](https://github.com/LightDotSo/LightDotSo/issues/940)) ([66eec38](https://github.com/LightDotSo/LightDotSo/commit/66eec3882763c882e6720967cface2795309c70e))
+- ini op sig ([#786](https://github.com/LightDotSo/LightDotSo/issues/786)) ([1fc4d31](https://github.com/LightDotSo/LightDotSo/commit/1fc4d310a9b5ce54a4e32b0669961b2ab8125a1a))
+- ini opts ([#835](https://github.com/LightDotSo/LightDotSo/issues/835)) ([d3d5f76](https://github.com/LightDotSo/LightDotSo/commit/d3d5f7627a875a8451d306a0366f883afa8bf333))
+- ini overview ([#894](https://github.com/LightDotSo/LightDotSo/issues/894)) ([d4ad483](https://github.com/LightDotSo/LightDotSo/commit/d4ad48312afdf6e3c14c7523e34650ae0040d21a))
+- ini overviews metadata ([#1042](https://github.com/LightDotSo/LightDotSo/issues/1042)) ([0f1fd2a](https://github.com/LightDotSo/LightDotSo/commit/0f1fd2a2d4a8b0ca7ba49ba17e043e776b4ae82f))
+- ini owners data table ([#928](https://github.com/LightDotSo/LightDotSo/issues/928)) ([322c0bd](https://github.com/LightDotSo/LightDotSo/commit/322c0bd6cd541a4868a2ef40e4423d2aaf902ab1))
+- ini paymaster op ([#839](https://github.com/LightDotSo/LightDotSo/issues/839)) ([2605f37](https://github.com/LightDotSo/LightDotSo/commit/2605f37af68ce2cf095e0db916c5cf096c484a07))
+- ini paymaster ops ([#655](https://github.com/LightDotSo/LightDotSo/issues/655)) ([8e5e5c4](https://github.com/LightDotSo/LightDotSo/commit/8e5e5c4b698a37c3f54fff933a059df554ccdd03))
+- ini persist auth ([#769](https://github.com/LightDotSo/LightDotSo/issues/769)) ([87d0339](https://github.com/LightDotSo/LightDotSo/commit/87d0339f00bdbdee97917d869c37c5b238e12ba2))
+- ini playground ([#373](https://github.com/LightDotSo/LightDotSo/issues/373)) ([b8a9a58](https://github.com/LightDotSo/LightDotSo/commit/b8a9a580773f7afc4bf27ffe6fede2d3ddab309b))
+- ini playwright v2 ([#292](https://github.com/LightDotSo/LightDotSo/issues/292)) ([858ac03](https://github.com/LightDotSo/LightDotSo/commit/858ac030096ee718ad21c94dbdcb40cc12557ef1))
+- ini playwright v3 ([#293](https://github.com/LightDotSo/LightDotSo/issues/293)) ([cbbb39e](https://github.com/LightDotSo/LightDotSo/commit/cbbb39e2630291468fff16a14704586e191e4c39))
+- ini pm ([#581](https://github.com/LightDotSo/LightDotSo/issues/581)) ([5d7618f](https://github.com/LightDotSo/LightDotSo/commit/5d7618ff73d53b522629fce8c2456afc42b4cafa))
+- ini pm os ([#980](https://github.com/LightDotSo/LightDotSo/issues/980)) ([71965ae](https://github.com/LightDotSo/LightDotSo/commit/71965aefc7dc7f04a5f6a520b084289a545b0124))
+- ini polling ([#662](https://github.com/LightDotSo/LightDotSo/issues/662)) ([1b23b39](https://github.com/LightDotSo/LightDotSo/commit/1b23b39f37d8b20f07887ba17ec6533c515209e1))
+- ini polling op ([#801](https://github.com/LightDotSo/LightDotSo/issues/801)) ([239d3c6](https://github.com/LightDotSo/LightDotSo/commit/239d3c681c4a198740045e209fd54d8fa4b3edf9))
+- ini port ([#895](https://github.com/LightDotSo/LightDotSo/issues/895)) ([00b4f16](https://github.com/LightDotSo/LightDotSo/commit/00b4f161dada5d80d76cabe461436e7b67e419fb))
+- ini prisma ([#883](https://github.com/LightDotSo/LightDotSo/issues/883)) ([97e7d09](https://github.com/LightDotSo/LightDotSo/commit/97e7d099c12af422fe46bfc75c4df0e5405153a0))
+- ini prisma ([#877](https://github.com/LightDotSo/LightDotSo/issues/877)) ([49d03d6](https://github.com/LightDotSo/LightDotSo/commit/49d03d6e285be9014cdbd20ff214c12316b93d9d))
+- ini prisma rust ([#186](https://github.com/LightDotSo/LightDotSo/issues/186)) ([58e2264](https://github.com/LightDotSo/LightDotSo/commit/58e2264e5866f53e14da8da434ce1140abe72597))
+- ini prisma update ([#667](https://github.com/LightDotSo/LightDotSo/issues/667)) ([1901cf9](https://github.com/LightDotSo/LightDotSo/commit/1901cf984b33b549f3807bccbea39605a2163468))
+- ini proper sessions ([#1041](https://github.com/LightDotSo/LightDotSo/issues/1041)) ([3b8ef8c](https://github.com/LightDotSo/LightDotSo/commit/3b8ef8cb518f10485779acb8972b2101e0791c9a))
+- ini query client ([#911](https://github.com/LightDotSo/LightDotSo/issues/911)) ([1b9cc33](https://github.com/LightDotSo/LightDotSo/commit/1b9cc331dd6c96cf6438b2671d508949b015069f))
+- ini react client ([#334](https://github.com/LightDotSo/LightDotSo/issues/334)) ([14cc154](https://github.com/LightDotSo/LightDotSo/commit/14cc1544b6667c7b513d04376101e3975497fe21))
+- ini redis client ([#805](https://github.com/LightDotSo/LightDotSo/issues/805)) ([a8c3cca](https://github.com/LightDotSo/LightDotSo/commit/a8c3cca0fa35685afb90f3a4303fb3c3385466f6))
+- ini refactor fc ([#920](https://github.com/LightDotSo/LightDotSo/issues/920)) ([fc1fea0](https://github.com/LightDotSo/LightDotSo/commit/fc1fea010757992ab18c2894f0ab25549b962614))
+- ini refactor solutions ([#882](https://github.com/LightDotSo/LightDotSo/issues/882)) ([bb1bbf9](https://github.com/LightDotSo/LightDotSo/commit/bb1bbf9f750946745816f3536c304995cb0dbcf8))
+- ini release please ([#1091](https://github.com/LightDotSo/LightDotSo/issues/1091)) ([7f690af](https://github.com/LightDotSo/LightDotSo/commit/7f690afa940553b19510f5f6572c00c16a89154a))
+- ini release root ([#1062](https://github.com/LightDotSo/LightDotSo/issues/1062)) ([ff55263](https://github.com/LightDotSo/LightDotSo/commit/ff55263922165e14cf93fa7673a350afc5f95521))
+- ini retries ([#389](https://github.com/LightDotSo/LightDotSo/issues/389)) ([938abd9](https://github.com/LightDotSo/LightDotSo/commit/938abd97142d726bd832ef4ecd59a98d04b6cf1b))
+- ini retry queue ([#509](https://github.com/LightDotSo/LightDotSo/issues/509)) ([a3726a2](https://github.com/LightDotSo/LightDotSo/commit/a3726a226ffd1b49d6021a8f286700255dd5fe15))
+- ini retry sink ([#523](https://github.com/LightDotSo/LightDotSo/issues/523)) ([f7d0128](https://github.com/LightDotSo/LightDotSo/commit/f7d01284a7d9c0b37e8b873a443a3f7b5d8c720e))
+- ini revamp db ([#692](https://github.com/LightDotSo/LightDotSo/issues/692)) ([e9de019](https://github.com/LightDotSo/LightDotSo/commit/e9de019d5b7cc2b54ad4a4733f4acf076a8fa639))
+- ini reverted ([#999](https://github.com/LightDotSo/LightDotSo/issues/999)) ([135a841](https://github.com/LightDotSo/LightDotSo/commit/135a84173511c44148cd971c675513943a56993a))
+- ini root layouts ([#870](https://github.com/LightDotSo/LightDotSo/issues/870)) ([4065e1a](https://github.com/LightDotSo/LightDotSo/commit/4065e1ab00ccb7e5377329fafdc0989b87c536c8))
+- ini rpc revert ([#645](https://github.com/LightDotSo/LightDotSo/issues/645)) ([fdc8686](https://github.com/LightDotSo/LightDotSo/commit/fdc8686ec46c4255ab3444151ead6c9e4bc608dc))
+- ini run query ([#803](https://github.com/LightDotSo/LightDotSo/issues/803)) ([c91d7cb](https://github.com/LightDotSo/LightDotSo/commit/c91d7cb0f46dcd9b68bcc563b83d32a80fa8ffc4))
+- ini rust toolchain ([#13](https://github.com/LightDotSo/LightDotSo/issues/13)) ([8afa198](https://github.com/LightDotSo/LightDotSo/commit/8afa198dc5bf163b1d2cf383b65d110e13efb148))
+- ini safe contracts ([#47](https://github.com/LightDotSo/LightDotSo/issues/47)) ([3dab2df](https://github.com/LightDotSo/LightDotSo/commit/3dab2dfcd7adae19f8e63b0b93a984541ea7fd54))
+- ini satsu dep ([#796](https://github.com/LightDotSo/LightDotSo/issues/796)) ([0f1d13e](https://github.com/LightDotSo/LightDotSo/commit/0f1d13e2bc60a043c5b9c9933db41117b26eb991))
+- ini satsuma ([#767](https://github.com/LightDotSo/LightDotSo/issues/767)) ([94777c3](https://github.com/LightDotSo/LightDotSo/commit/94777c357d8ddc796b72c2e6eb4e4b1e2c47664c))
+- ini sb dark mode ([#922](https://github.com/LightDotSo/LightDotSo/issues/922)) ([c8f712d](https://github.com/LightDotSo/LightDotSo/commit/c8f712d1b46a7b28427b225bd9aaed716b2ed2a2))
+- ini schema ([#752](https://github.com/LightDotSo/LightDotSo/issues/752)) ([ad4c6b8](https://github.com/LightDotSo/LightDotSo/commit/ad4c6b807fb83baf940ef2cbe3de506d165f950a))
+- ini scroll gradient ([#843](https://github.com/LightDotSo/LightDotSo/issues/843)) ([8b6ca62](https://github.com/LightDotSo/LightDotSo/commit/8b6ca62990704197ae53316a8617f0d73e9e0d8d))
+- ini select props ([#842](https://github.com/LightDotSo/LightDotSo/issues/842)) ([c1cba3f](https://github.com/LightDotSo/LightDotSo/commit/c1cba3f2b1dcbe60ac0f841a06267562f725ed2a))
+- ini send ([#637](https://github.com/LightDotSo/LightDotSo/issues/637)) ([dfb6301](https://github.com/LightDotSo/LightDotSo/commit/dfb6301375a156c3e397282983cf6926fcec959b))
+- ini send dialog ([#947](https://github.com/LightDotSo/LightDotSo/issues/947)) ([2a37ceb](https://github.com/LightDotSo/LightDotSo/commit/2a37ceb694c4ec814b08c1723251897f9eae64c8))
+- ini server ([#641](https://github.com/LightDotSo/LightDotSo/issues/641)) ([90e68e0](https://github.com/LightDotSo/LightDotSo/commit/90e68e0fe14bbf1f772b6dd87889e135ee4a48f6))
+- ini server cache ([#819](https://github.com/LightDotSo/LightDotSo/issues/819)) ([eb680a1](https://github.com/LightDotSo/LightDotSo/commit/eb680a1bb2d9a06da09c081bdd721876ae4feacf))
+- ini settings ([#732](https://github.com/LightDotSo/LightDotSo/issues/732)) ([258daf5](https://github.com/LightDotSo/LightDotSo/commit/258daf5aa0542dbda908e24527be6f6d515c14de))
+- ini settings data ([#945](https://github.com/LightDotSo/LightDotSo/issues/945)) ([9a50796](https://github.com/LightDotSo/LightDotSo/commit/9a507962d000eabd4149205e93251cc6cd034f9e))
+- ini shadcn ui ([#168](https://github.com/LightDotSo/LightDotSo/issues/168)) ([cf5904d](https://github.com/LightDotSo/LightDotSo/commit/cf5904dac1b517a732afc72314b429301549a03c))
+- ini signer tree construct ([#721](https://github.com/LightDotSo/LightDotSo/issues/721)) ([fbe9180](https://github.com/LightDotSo/LightDotSo/commit/fbe9180185af9845dcdcb9b5c9dea0eb5e2d4c47))
+- ini simplehash api ([#1000](https://github.com/LightDotSo/LightDotSo/issues/1000)) ([4bdebf9](https://github.com/LightDotSo/LightDotSo/commit/4bdebf9a5a2df9cf750d6798ad84a8c5d0ec8ffb))
+- ini simulate ([#735](https://github.com/LightDotSo/LightDotSo/issues/735)) ([5bb8401](https://github.com/LightDotSo/LightDotSo/commit/5bb84011dc9efa7ff4c2f94ce16ed5d8f38f3e8d))
+- ini simulator ([#442](https://github.com/LightDotSo/LightDotSo/issues/442)) ([68c6391](https://github.com/LightDotSo/LightDotSo/commit/68c639192ef298955952f1e42d9d138aa4d80f5a))
+- ini sonner toast ([#1053](https://github.com/LightDotSo/LightDotSo/issues/1053)) ([e834299](https://github.com/LightDotSo/LightDotSo/commit/e8342995ab1beb01b92e72a5a46fbfe86d3af222))
+- ini sub refactor ([#795](https://github.com/LightDotSo/LightDotSo/issues/795)) ([4f51551](https://github.com/LightDotSo/LightDotSo/commit/4f515516be3c21f4c26c660b78e02690837a2922))
+- ini subgraph ([#571](https://github.com/LightDotSo/LightDotSo/issues/571)) ([8bd50c4](https://github.com/LightDotSo/LightDotSo/commit/8bd50c43721fbd16ec9fb0933715aaa78b77778c))
+- ini success ([#742](https://github.com/LightDotSo/LightDotSo/issues/742)) ([5ef214d](https://github.com/LightDotSo/LightDotSo/commit/5ef214d61358010fee050067b13c94a5ba2e85b7))
+- ini tabs count ([#931](https://github.com/LightDotSo/LightDotSo/issues/931)) ([d03ff3e](https://github.com/LightDotSo/LightDotSo/commit/d03ff3e89b36c05a9e0336a1092a5c9a7ea558d5))
+- ini the graph handler ([#575](https://github.com/LightDotSo/LightDotSo/issues/575)) ([ca4cc7f](https://github.com/LightDotSo/LightDotSo/commit/ca4cc7f10d04c9caf45018098397b483f73c84b3))
+- ini thunder surl ([#598](https://github.com/LightDotSo/LightDotSo/issues/598)) ([4d59dc3](https://github.com/LightDotSo/LightDotSo/commit/4d59dc37fbbadbe9e08d7086d413c87866e09f27))
+- ini toaster ([#957](https://github.com/LightDotSo/LightDotSo/issues/957)) ([5010422](https://github.com/LightDotSo/LightDotSo/commit/501042211b35f6ec7fae180600112bb7541ad2b0))
+- ini token ([#898](https://github.com/LightDotSo/LightDotSo/issues/898)) ([bdf3394](https://github.com/LightDotSo/LightDotSo/commit/bdf3394721e3b977073b8566e15bfb966102def6))
+- ini token card ([#1050](https://github.com/LightDotSo/LightDotSo/issues/1050)) ([0c44fc2](https://github.com/LightDotSo/LightDotSo/commit/0c44fc224d4f1b0d6c2faa4959531c7e0d3a6166))
+- ini token price ([#892](https://github.com/LightDotSo/LightDotSo/issues/892)) ([b5bfd9a](https://github.com/LightDotSo/LightDotSo/commit/b5bfd9ac3d49d7bdb0ae1d8e1478c93ca9562d83))
+- ini token send ([#952](https://github.com/LightDotSo/LightDotSo/issues/952)) ([5609c44](https://github.com/LightDotSo/LightDotSo/commit/5609c448dce308f718c2cf95669cf39f9a4fe278))
+- ini tracing ([#183](https://github.com/LightDotSo/LightDotSo/issues/183)) ([ad81875](https://github.com/LightDotSo/LightDotSo/commit/ad81875543fbac1afb826895f95c0293e3e35a67))
+- ini tracing ([#345](https://github.com/LightDotSo/LightDotSo/issues/345)) ([efaa5f5](https://github.com/LightDotSo/LightDotSo/commit/efaa5f5d9a06df7914b4f50b60502a916a653780))
+- ini transfers ([#950](https://github.com/LightDotSo/LightDotSo/issues/950)) ([acd465d](https://github.com/LightDotSo/LightDotSo/commit/acd465d0964395a984f9f90d569466bf81156315))
+- ini tree nodes ([#715](https://github.com/LightDotSo/LightDotSo/issues/715)) ([6a581fa](https://github.com/LightDotSo/LightDotSo/commit/6a581fa3ae91774f563ea091ab958cb8949407e7))
+- ini trpc ([#267](https://github.com/LightDotSo/LightDotSo/issues/267)) ([0f9baa9](https://github.com/LightDotSo/LightDotSo/commit/0f9baa9c9a495ef138464f6becb524937a8f7a26))
+- ini tx dialog ([#791](https://github.com/LightDotSo/LightDotSo/issues/791)) ([182892a](https://github.com/LightDotSo/LightDotSo/commit/182892ad7cb114f8baac3e046e0bf6e6c04d54ec))
+- ini type ([#740](https://github.com/LightDotSo/LightDotSo/issues/740)) ([f3856de](https://github.com/LightDotSo/LightDotSo/commit/f3856dec6ab76d30f2b3a2f21a56d9ba3628a808))
+- ini typography ([#170](https://github.com/LightDotSo/LightDotSo/issues/170)) ([bb793e5](https://github.com/LightDotSo/LightDotSo/commit/bb793e593d9d9e68150c706d37b96fd04fe2e73d))
+- ini ui shu ([#923](https://github.com/LightDotSo/LightDotSo/issues/923)) ([54bffc0](https://github.com/LightDotSo/LightDotSo/commit/54bffc0e211c67d523d854f5d18140fd167994ad))
+- ini uo api ([#862](https://github.com/LightDotSo/LightDotSo/issues/862)) ([03010eb](https://github.com/LightDotSo/LightDotSo/commit/03010eb1b018c2c1641f6b303363c58c8d179921))
+- ini uop ([#773](https://github.com/LightDotSo/LightDotSo/issues/773)) ([948d238](https://github.com/LightDotSo/LightDotSo/commit/948d238e3a85acb898ecbb858f8f3c2f5dad7c67))
+- ini uop ([#977](https://github.com/LightDotSo/LightDotSo/issues/977)) ([a797562](https://github.com/LightDotSo/LightDotSo/commit/a7975628e3e093429da24b1bcdb22f881d4433de))
+- ini upgrade ([#363](https://github.com/LightDotSo/LightDotSo/issues/363)) ([c731568](https://github.com/LightDotSo/LightDotSo/commit/c73156805f9d7a7f2772be6e634777cd120d3cef))
+- ini upgrade ([#728](https://github.com/LightDotSo/LightDotSo/issues/728)) ([52ffe6b](https://github.com/LightDotSo/LightDotSo/commit/52ffe6b6d4b338afbe21c8d3c8594dae3cf348f2))
+- ini upstash redis ([#909](https://github.com/LightDotSo/LightDotSo/issues/909)) ([8e46b31](https://github.com/LightDotSo/LightDotSo/commit/8e46b31b9587a1902912691f3b2956ee326e5c4f))
+- ini upstash redis api ([#249](https://github.com/LightDotSo/LightDotSo/issues/249)) ([34032af](https://github.com/LightDotSo/LightDotSo/commit/34032af0ff2b7bc452a36ec0905b13f22fcffc8c))
+- ini user fit ([#777](https://github.com/LightDotSo/LightDotSo/issues/777)) ([aac7b1b](https://github.com/LightDotSo/LightDotSo/commit/aac7b1b579b5df636b4895a0852f422228bd08f9))
+- ini user oeprations polling ([#771](https://github.com/LightDotSo/LightDotSo/issues/771)) ([9d2df00](https://github.com/LightDotSo/LightDotSo/commit/9d2df00327b28db668b9731f3c5e0b211f4fde31))
+- ini user opi ([#776](https://github.com/LightDotSo/LightDotSo/issues/776)) ([ff1dba0](https://github.com/LightDotSo/LightDotSo/commit/ff1dba09d9ee92c946cb137e7f72f75efa1c74ac))
+- ini utoipa ([#559](https://github.com/LightDotSo/LightDotSo/issues/559)) ([e3428ad](https://github.com/LightDotSo/LightDotSo/commit/e3428ad90bc5304c77454051eaf05a84480b3016))
+- ini v2 ([#374](https://github.com/LightDotSo/LightDotSo/issues/374)) ([c3b8cbb](https://github.com/LightDotSo/LightDotSo/commit/c3b8cbb2b3bf000bce9596a358dee94c4895cdf4))
+- ini v2 ([#830](https://github.com/LightDotSo/LightDotSo/issues/830)) ([8684ad4](https://github.com/LightDotSo/LightDotSo/commit/8684ad41b2db0af881d7b52bedcac738ce81ff44))
+- ini v3 ([#375](https://github.com/LightDotSo/LightDotSo/issues/375)) ([93a1640](https://github.com/LightDotSo/LightDotSo/commit/93a1640bffa2623d00ccacd11df3d9195224c8a6))
+- ini v3 ([#734](https://github.com/LightDotSo/LightDotSo/issues/734)) ([49fbf81](https://github.com/LightDotSo/LightDotSo/commit/49fbf810e13e029a08a2ba1e50e7c88479a6bf1b))
+- ini v3 deployer ([#828](https://github.com/LightDotSo/LightDotSo/issues/828)) ([7ae6d90](https://github.com/LightDotSo/LightDotSo/commit/7ae6d901c2f5f3ca0e7f554c93733c92b6825b81))
+- ini vercel toolbar ([#744](https://github.com/LightDotSo/LightDotSo/issues/744)) ([df0ad17](https://github.com/LightDotSo/LightDotSo/commit/df0ad17d233aa568ffd855ea1ff306145de47b6e))
+- ini w/ cors ([#1040](https://github.com/LightDotSo/LightDotSo/issues/1040)) ([28cf37a](https://github.com/LightDotSo/LightDotSo/commit/28cf37af55f7cc337c709472b1f4ae8e4c931976))
+- ini wagmi ([#131](https://github.com/LightDotSo/LightDotSo/issues/131)) ([67892b1](https://github.com/LightDotSo/LightDotSo/commit/67892b116f492f46c94e210fb28ac35ef85adc5e))
+- ini walelt multi ([#881](https://github.com/LightDotSo/LightDotSo/issues/881)) ([7f76f30](https://github.com/LightDotSo/LightDotSo/commit/7f76f305aa33de0524afd9c94559491107624ba0))
+- ini wallet create ([#726](https://github.com/LightDotSo/LightDotSo/issues/726)) ([9703fd5](https://github.com/LightDotSo/LightDotSo/commit/9703fd5ef49d28f44df4ed334ab78397f99c7719))
+- ini wallet invoke button ([#884](https://github.com/LightDotSo/LightDotSo/issues/884)) ([03faceb](https://github.com/LightDotSo/LightDotSo/commit/03faceb91bae127206f093bb7111d5f930a57396))
+- ini wallet ls ([#750](https://github.com/LightDotSo/LightDotSo/issues/750)) ([63e2ae8](https://github.com/LightDotSo/LightDotSo/commit/63e2ae81be6b77d7b1b7c4845e844049601baf2e))
+- ini wallet settings ([#910](https://github.com/LightDotSo/LightDotSo/issues/910)) ([c98430e](https://github.com/LightDotSo/LightDotSo/commit/c98430e120c2c87e1156242736182922239874fd))
+- ini wallet settings api ([#936](https://github.com/LightDotSo/LightDotSo/issues/936)) ([069f725](https://github.com/LightDotSo/LightDotSo/commit/069f725d433673a1f698bbb869199eb421309421))
+- ini wallet settings components ([#937](https://github.com/LightDotSo/LightDotSo/issues/937)) ([8db0208](https://github.com/LightDotSo/LightDotSo/commit/8db0208d9c4ec1da6a1d024b0da392d10d73a63e))
+- ini wallets ([#1087](https://github.com/LightDotSo/LightDotSo/issues/1087)) ([1eb3070](https://github.com/LightDotSo/LightDotSo/commit/1eb307004ea3fb694d602fd2861baa54bc2e4e0e))
+- ini wrappers ([#1051](https://github.com/LightDotSo/LightDotSo/issues/1051)) ([e39fdbc](https://github.com/LightDotSo/LightDotSo/commit/e39fdbc99c4997763e04b112d8d0dcbd9dde63e5))
+- migrate eyre ([#423](https://github.com/LightDotSo/LightDotSo/issues/423)) ([37b15c3](https://github.com/LightDotSo/LightDotSo/commit/37b15c389924cd27360364955b1b45eeaf11ef7c))
+- migrate spec dir ([#154](https://github.com/LightDotSo/LightDotSo/issues/154)) ([4d140bf](https://github.com/LightDotSo/LightDotSo/commit/4d140bf17b5791938f91a26bc2ad2a945f1f7356))
+- refacotr modal logic ([#1044](https://github.com/LightDotSo/LightDotSo/issues/1044)) ([3bd89ef](https://github.com/LightDotSo/LightDotSo/commit/3bd89efd812d47a68813f88f6a45b0ad1ec2973f))
+- refactor ([#1057](https://github.com/LightDotSo/LightDotSo/issues/1057)) ([ff23be4](https://github.com/LightDotSo/LightDotSo/commit/ff23be4b01750a3fe5d188499aa72f5116961ef9))
+- refactor create user operation ([#808](https://github.com/LightDotSo/LightDotSo/issues/808)) ([b724e9b](https://github.com/LightDotSo/LightDotSo/commit/b724e9b2a243832f63b3c9a57882c5e2870b5aec))
+- refactor form config ([#794](https://github.com/LightDotSo/LightDotSo/issues/794)) ([b28c5b7](https://github.com/LightDotSo/LightDotSo/commit/b28c5b70839baf3f0e56158d758ec4e95ae20bcc))
+- refactor llama schema ([#872](https://github.com/LightDotSo/LightDotSo/issues/872)) ([fb91339](https://github.com/LightDotSo/LightDotSo/commit/fb91339c069df7759b8cfba2fdcb663eeeab6d9c))
+- refactor loaders ([#1056](https://github.com/LightDotSo/LightDotSo/issues/1056)) ([0eab050](https://github.com/LightDotSo/LightDotSo/commit/0eab050e6241398a99edfa0c69c36c016efafc88))
+- refactor schema ([#759](https://github.com/LightDotSo/LightDotSo/issues/759)) ([2d22685](https://github.com/LightDotSo/LightDotSo/commit/2d22685bf11db83ea85389e9b60374d3575245aa))
+- refactor schema ([#790](https://github.com/LightDotSo/LightDotSo/issues/790)) ([8e7cb2d](https://github.com/LightDotSo/LightDotSo/commit/8e7cb2ded94ea42ee05670aa9d2b82044591fd51))
+- refactor signature operation ([#867](https://github.com/LightDotSo/LightDotSo/issues/867)) ([7c9daeb](https://github.com/LightDotSo/LightDotSo/commit/7c9daeb596276991d5c3561b3766ee8c3d7feb50))
+- refactor storybook ui ([#167](https://github.com/LightDotSo/LightDotSo/issues/167)) ([4a19bcf](https://github.com/LightDotSo/LightDotSo/commit/4a19bcf828dd934b7ac876ca1e26b7cd8b08dcda))
+- refactor styles ([#921](https://github.com/LightDotSo/LightDotSo/issues/921)) ([2d2618b](https://github.com/LightDotSo/LightDotSo/commit/2d2618b256d7251a557d7fb7789abf6320a5bd92))
+- refactor subgraph ([#855](https://github.com/LightDotSo/LightDotSo/issues/855)) ([825fdd4](https://github.com/LightDotSo/LightDotSo/commit/825fdd4fab688d3e4b1a0f84ee2e3257b3d23238))
+- rename colors ([#924](https://github.com/LightDotSo/LightDotSo/issues/924)) ([70d9de3](https://github.com/LightDotSo/LightDotSo/commit/70d9de3533c6d2bf06ce70439ea45e743e569f76))
+- rename mobile ([#9](https://github.com/LightDotSo/LightDotSo/issues/9)) ([76ce564](https://github.com/LightDotSo/LightDotSo/commit/76ce5640236a8893448196530106b5964f38079d))
+- signer crate ([#824](https://github.com/LightDotSo/LightDotSo/issues/824)) ([0eab0d2](https://github.com/LightDotSo/LightDotSo/commit/0eab0d208c5c45db082b280bcb757d1ed33cf76c))
+- update ([#1096](https://github.com/LightDotSo/LightDotSo/issues/1096)) ([b55360a](https://github.com/LightDotSo/LightDotSo/commit/b55360ac8efeef5b10d1302a6286eb62ad8d24e5))
+- update toast contents ([#1054](https://github.com/LightDotSo/LightDotSo/issues/1054)) ([993ac2f](https://github.com/LightDotSo/LightDotSo/commit/993ac2f3e8dc6f9e1e9131322934a4955bf87257))
+- upgardes ([#387](https://github.com/LightDotSo/LightDotSo/issues/387)) ([7d514c3](https://github.com/LightDotSo/LightDotSo/commit/7d514c35394b0eb08917842848b4aa230d89be1c))
+- upgrade ncu ([#893](https://github.com/LightDotSo/LightDotSo/issues/893)) ([b9e3065](https://github.com/LightDotSo/LightDotSo/commit/b9e3065b88786c666b632c30c94732979fb07fab))
+- upgrade ncu ([#912](https://github.com/LightDotSo/LightDotSo/issues/912)) ([d3170cf](https://github.com/LightDotSo/LightDotSo/commit/d3170cfdc97cbaaaf5e4cd6e28277062e6feca59))
+
+### Bug Fixes
+
+- 2 type ([#774](https://github.com/LightDotSo/LightDotSo/issues/774)) ([5c8d6e4](https://github.com/LightDotSo/LightDotSo/commit/5c8d6e4501531cb919dc1f4cb34dd6807fac3c10))
+- add eth filter ([#507](https://github.com/LightDotSo/LightDotSo/issues/507)) ([9199161](https://github.com/LightDotSo/LightDotSo/commit/9199161f220e81e5ac1aeb9ef19023c2973596e4))
+- add instrumentals ([#371](https://github.com/LightDotSo/LightDotSo/issues/371)) ([c2815e1](https://github.com/LightDotSo/LightDotSo/commit/c2815e14b42d1a42f172ecf6066f0ddcc47a5d5a))
+- address bug ([#1004](https://github.com/LightDotSo/LightDotSo/issues/1004)) ([b700465](https://github.com/LightDotSo/LightDotSo/commit/b70046500ab3382d8121ec211b38b5b386357c71))
+- admin rate limit ([#730](https://github.com/LightDotSo/LightDotSo/issues/730)) ([9ca4ee6](https://github.com/LightDotSo/LightDotSo/commit/9ca4ee6751efc47c164a7d63ebd70cb980f86f74))
+- api session ([#1038](https://github.com/LightDotSo/LightDotSo/issues/1038)) ([28303c1](https://github.com/LightDotSo/LightDotSo/commit/28303c12603845c5fcb0802e51c1f6f8112590b8))
+- app ([#680](https://github.com/LightDotSo/LightDotSo/issues/680)) ([12531e4](https://github.com/LightDotSo/LightDotSo/commit/12531e4cfa2e1dc1d9150fe8d1d0960bb26c7f3e))
+- app styles ([#925](https://github.com/LightDotSo/LightDotSo/issues/925)) ([bc03ca7](https://github.com/LightDotSo/LightDotSo/commit/bc03ca7f9c4a71529502608622d47a109400c2dd))
+- auth url ([#622](https://github.com/LightDotSo/LightDotSo/issues/622)) ([367de02](https://github.com/LightDotSo/LightDotSo/commit/367de02a5e820fa659c405465264cd7290e416c0))
+- base test ([#627](https://github.com/LightDotSo/LightDotSo/issues/627)) ([c236ce6](https://github.com/LightDotSo/LightDotSo/commit/c236ce62e6048d09601700a637171f02a7087dc1))
+- build ([#832](https://github.com/LightDotSo/LightDotSo/issues/832)) ([c26d3a0](https://github.com/LightDotSo/LightDotSo/commit/c26d3a0870dd96ea5c037063501ee3950d2f8b20))
+- build explorer ([#370](https://github.com/LightDotSo/LightDotSo/issues/370)) ([b59ee14](https://github.com/LightDotSo/LightDotSo/commit/b59ee1463a5ebeaa46ad118b81f621da74a8c742))
+- bump subgraph ([#973](https://github.com/LightDotSo/LightDotSo/issues/973)) ([23f48aa](https://github.com/LightDotSo/LightDotSo/commit/23f48aa6a3e223d36af79660f913c5272a7f1cd8))
+- bundler ([#649](https://github.com/LightDotSo/LightDotSo/issues/649)) ([a0287fd](https://github.com/LightDotSo/LightDotSo/commit/a0287fd6881ae1b592ab9eeacdd72dcf20825f60))
+- bundler port ([#437](https://github.com/LightDotSo/LightDotSo/issues/437)) ([7f0ebf9](https://github.com/LightDotSo/LightDotSo/commit/7f0ebf9fd9a411c6319c95b4d02536bc8ca99312))
+- candide rpc urls ([#1011](https://github.com/LightDotSo/LightDotSo/issues/1011)) ([b54d650](https://github.com/LightDotSo/LightDotSo/commit/b54d650ee10647a26e2d2f57b419d6c8ba114689))
+- card ([#1061](https://github.com/LightDotSo/LightDotSo/issues/1061)) ([78b3f17](https://github.com/LightDotSo/LightDotSo/commit/78b3f17474d6fe01547a930667034516f1a56263))
+- cargo impl ([#725](https://github.com/LightDotSo/LightDotSo/issues/725)) ([65338c6](https://github.com/LightDotSo/LightDotSo/commit/65338c641b5c953e34b22d27efdba4ca1e915b0c))
+- changesets action ([#120](https://github.com/LightDotSo/LightDotSo/issues/120)) ([77602e9](https://github.com/LightDotSo/LightDotSo/commit/77602e9a92a5955366d66c8f6260edeb9d9b64a1))
+- chore deployemnts ([#554](https://github.com/LightDotSo/LightDotSo/issues/554)) ([9519ac7](https://github.com/LightDotSo/LightDotSo/commit/9519ac788ceba125aeed12a268013610858cd1ad))
+- cle ([#712](https://github.com/LightDotSo/LightDotSo/issues/712)) ([39b73d4](https://github.com/LightDotSo/LightDotSo/commit/39b73d40dd6b5a2dd6dc1f347eb55f64b6e93e83))
+- code lint ([#175](https://github.com/LightDotSo/LightDotSo/issues/175)) ([4ba324b](https://github.com/LightDotSo/LightDotSo/commit/4ba324b869229c487d7e5697cfedab78b494074a))
+- config ([#756](https://github.com/LightDotSo/LightDotSo/issues/756)) ([66e9f24](https://github.com/LightDotSo/LightDotSo/commit/66e9f24fe8676f0a51b913b937e11e0cf4cd9d6a))
+- configuration api ([#727](https://github.com/LightDotSo/LightDotSo/issues/727)) ([a676ef7](https://github.com/LightDotSo/LightDotSo/commit/a676ef71d00bf85bc7961658f21bd44cda2e67e7))
+- const pm addresses ([#981](https://github.com/LightDotSo/LightDotSo/issues/981)) ([01a00de](https://github.com/LightDotSo/LightDotSo/commit/01a00deb32b9f3901fdd89869ff33a08357e74f6))
+- consumer error handling ([#497](https://github.com/LightDotSo/LightDotSo/issues/497)) ([e497991](https://github.com/LightDotSo/LightDotSo/commit/e4979915d5e942a0c7be19c1b758bebc6242508e))
+- contracts gha ([#510](https://github.com/LightDotSo/LightDotSo/issues/510)) ([a1b861c](https://github.com/LightDotSo/LightDotSo/commit/a1b861cdfdfe2c6eeb6ca3c8e79aaaa8d5217f0a))
+- cors ([#385](https://github.com/LightDotSo/LightDotSo/issues/385)) ([b378789](https://github.com/LightDotSo/LightDotSo/commit/b3787898945b41ea8ab5a6267185d6d4d773d7c6))
+- cors client ([#376](https://github.com/LightDotSo/LightDotSo/issues/376)) ([4430582](https://github.com/LightDotSo/LightDotSo/commit/4430582045642db606938bfc54d8729b67797e0b))
+- crate ([#860](https://github.com/LightDotSo/LightDotSo/issues/860)) ([98eb553](https://github.com/LightDotSo/LightDotSo/commit/98eb553b2fbec59164ef76267652bb96ecd0d490))
+- crate db ([#864](https://github.com/LightDotSo/LightDotSo/issues/864)) ([feeb27e](https://github.com/LightDotSo/LightDotSo/commit/feeb27ecdf38eb4d3e2db58f4a83176793869d5b))
+- crate db 2 ([#865](https://github.com/LightDotSo/LightDotSo/issues/865)) ([d7ad0c1](https://github.com/LightDotSo/LightDotSo/commit/d7ad0c19f3a8f4dd0d83331794da704a093f32d8))
+- create issues ([#681](https://github.com/LightDotSo/LightDotSo/issues/681)) ([3ab395f](https://github.com/LightDotSo/LightDotSo/commit/3ab395f5617954950e78fe616b6728ce7e534265))
+- db attr ([#861](https://github.com/LightDotSo/LightDotSo/issues/861)) ([2642972](https://github.com/LightDotSo/LightDotSo/commit/2642972fe167892618b2053e548f564fab60b3c5))
+- db block ([#682](https://github.com/LightDotSo/LightDotSo/issues/682)) ([4bf6fee](https://github.com/LightDotSo/LightDotSo/commit/4bf6fee5b4be07708c8ed126c25f0d51aa080051))
+- db polling tx address ([#930](https://github.com/LightDotSo/LightDotSo/issues/930)) ([bad0788](https://github.com/LightDotSo/LightDotSo/commit/bad0788a02c09e655a65ab8cf141a1e8798eff4b))
+- db upser ([#916](https://github.com/LightDotSo/LightDotSo/issues/916)) ([d80b6de](https://github.com/LightDotSo/LightDotSo/commit/d80b6de8394181a280b367cb14ee6bf46c4922bc))
+- db vars ([#932](https://github.com/LightDotSo/LightDotSo/issues/932)) ([b1cad9c](https://github.com/LightDotSo/LightDotSo/commit/b1cad9cdb70d002ea76a6bad20fe2bb74601f517))
+- debug pm ([#652](https://github.com/LightDotSo/LightDotSo/issues/652)) ([a07862e](https://github.com/LightDotSo/LightDotSo/commit/a07862e4f6b886ec1741ada27e89bc057569a933))
+- deploy hosted ([#594](https://github.com/LightDotSo/LightDotSo/issues/594)) ([c625a71](https://github.com/LightDotSo/LightDotSo/commit/c625a71ad230f3ae2313339adf6c1c3cb5b7a93f))
+- depreacate configuration create ([#689](https://github.com/LightDotSo/LightDotSo/issues/689)) ([afa1002](https://github.com/LightDotSo/LightDotSo/commit/afa10028724914970fcab5079ff9df68b3d7d67d))
+- deprecate isSessionValid ([#1047](https://github.com/LightDotSo/LightDotSo/issues/1047)) ([e3b54ec](https://github.com/LightDotSo/LightDotSo/commit/e3b54ecfc8fa5a534dbd1f976e8807b4cd2b26e1))
+- deprecate swagger ([#454](https://github.com/LightDotSo/LightDotSo/issues/454)) ([638a866](https://github.com/LightDotSo/LightDotSo/commit/638a866e5d3275c306de04265313ea087eff0298))
+- direction asc ([#934](https://github.com/LightDotSo/LightDotSo/issues/934)) ([eaba72a](https://github.com/LightDotSo/LightDotSo/commit/eaba72a66725576cc0f9c29931aba151042859f2))
+- dis ([#988](https://github.com/LightDotSo/LightDotSo/issues/988)) ([a0343ab](https://github.com/LightDotSo/LightDotSo/commit/a0343abbcdbbae0f3e19feff49a84859c9bc101d))
+- disable auth routing ([#1001](https://github.com/LightDotSo/LightDotSo/issues/1001)) ([b886d50](https://github.com/LightDotSo/LightDotSo/commit/b886d505bf231908e638e61847b1ee71dde4bddf))
+- disable deps ([#1021](https://github.com/LightDotSo/LightDotSo/issues/1021)) ([9b11a10](https://github.com/LightDotSo/LightDotSo/commit/9b11a10b4ba4bb129edfb7ceb77b890bc90cb111))
+- disable logs ([#987](https://github.com/LightDotSo/LightDotSo/issues/987)) ([8f5a896](https://github.com/LightDotSo/LightDotSo/commit/8f5a8962b8bebd448c903211166ba73249ddb4f6))
+- docker build ([#617](https://github.com/LightDotSo/LightDotSo/issues/617)) ([8e2a79a](https://github.com/LightDotSo/LightDotSo/commit/8e2a79aff790793c3093b5fa7bb17089fe1bdc89))
+- double consumer count ([#534](https://github.com/LightDotSo/LightDotSo/issues/534)) ([b04de19](https://github.com/LightDotSo/LightDotSo/commit/b04de19e0d02bc7875e5972eacb39f6520b8ead5))
+- e2e error ([#453](https://github.com/LightDotSo/LightDotSo/issues/453)) ([87d1fa9](https://github.com/LightDotSo/LightDotSo/commit/87d1fa9f9d7150dd99d54aac8b540a6e95e2da2e))
+- edge ([#818](https://github.com/LightDotSo/LightDotSo/issues/818)) ([db1a612](https://github.com/LightDotSo/LightDotSo/commit/db1a6129c04e34c06b51ae0892959cb6ad35939d))
+- entrypoint ([#434](https://github.com/LightDotSo/LightDotSo/issues/434)) ([48f5eb2](https://github.com/LightDotSo/LightDotSo/commit/48f5eb2720dcf4b847443960147720ad049b683d))
+- error safe panic ([#499](https://github.com/LightDotSo/LightDotSo/issues/499)) ([e652b60](https://github.com/LightDotSo/LightDotSo/commit/e652b60aee7f3b5a7fccd18533a7f78e8e7f0c0c))
+- error safe revert ([#500](https://github.com/LightDotSo/LightDotSo/issues/500)) ([8f0e445](https://github.com/LightDotSo/LightDotSo/commit/8f0e445cfbba877766473218fa21c8c0dcdab788))
+- eslint ([#793](https://github.com/LightDotSo/LightDotSo/issues/793)) ([d754f58](https://github.com/LightDotSo/LightDotSo/commit/d754f581f18e52aed69deea173e2f79290a17529))
+- estimate gas ([#642](https://github.com/LightDotSo/LightDotSo/issues/642)) ([2cf6523](https://github.com/LightDotSo/LightDotSo/commit/2cf6523ad7e42e6de21bc063aa606df9b3200b82))
+- exporter bug ([#537](https://github.com/LightDotSo/LightDotSo/issues/537)) ([0b68adf](https://github.com/LightDotSo/LightDotSo/commit/0b68adf77ef14e6b92b4cdf51e9feed87bc1028d))
+- exporter periodic ([#550](https://github.com/LightDotSo/LightDotSo/issues/550)) ([b899b6c](https://github.com/LightDotSo/LightDotSo/commit/b899b6c86e04719324576d089ff3d23176445134))
+- fetch nft ([#1055](https://github.com/LightDotSo/LightDotSo/issues/1055)) ([cb49806](https://github.com/LightDotSo/LightDotSo/commit/cb498068653a5962baacd1fb90049ff2a669bf80))
+- Fix/it ([#709](https://github.com/LightDotSo/LightDotSo/issues/709)) ([b51a719](https://github.com/LightDotSo/LightDotSo/commit/b51a7196bc11f42faaf1ec803180b45a05ea06dd))
+- flaky tests ([#838](https://github.com/LightDotSo/LightDotSo/issues/838)) ([088329c](https://github.com/LightDotSo/LightDotSo/commit/088329cced3cb2eeddff8f2192e407c58c2a2486))
+- flow ([#582](https://github.com/LightDotSo/LightDotSo/issues/582)) ([0a15e86](https://github.com/LightDotSo/LightDotSo/commit/0a15e862b78fa871fe9cc09a239314b3be862430))
+- fly ([#863](https://github.com/LightDotSo/LightDotSo/issues/863)) ([54de07d](https://github.com/LightDotSo/LightDotSo/commit/54de07d2fa750c0e2cad105d6938e9fc3c17e2e8))
+- fly deploy stg ([#810](https://github.com/LightDotSo/LightDotSo/issues/810)) ([613a77c](https://github.com/LightDotSo/LightDotSo/commit/613a77ce88773bef9b35572dacbbd22e0ca2e8e9))
+- fork testing ([#610](https://github.com/LightDotSo/LightDotSo/issues/610)) ([a3910f4](https://github.com/LightDotSo/LightDotSo/commit/a3910f4b5219e9c367a31667750eadb6e325294b))
+- frame to conversion ([#498](https://github.com/LightDotSo/LightDotSo/issues/498)) ([41ebb10](https://github.com/LightDotSo/LightDotSo/commit/41ebb103b4bc2ae9acd8a157873678ae0f15483b))
+- gas ([#609](https://github.com/LightDotSo/LightDotSo/issues/609)) ([4e01935](https://github.com/LightDotSo/LightDotSo/commit/4e01935ee42ed3b8352cb9a2380d58774c2117d8))
+- gas rpc ([#620](https://github.com/LightDotSo/LightDotSo/issues/620)) ([b06562c](https://github.com/LightDotSo/LightDotSo/commit/b06562ccecd0f4ee224b3a499f16fd97d990d27c))
+- gas v4 ([#658](https://github.com/LightDotSo/LightDotSo/issues/658)) ([3e0d5fd](https://github.com/LightDotSo/LightDotSo/commit/3e0d5fdb02fcab04444ce8d67f9a8bfcaa51a1ce))
+- gas v5 ([#659](https://github.com/LightDotSo/LightDotSo/issues/659)) ([eeefa45](https://github.com/LightDotSo/LightDotSo/commit/eeefa454c410468ef871c8ff107c4ae90d370d56))
+- gass calldata send ([#1012](https://github.com/LightDotSo/LightDotSo/issues/1012)) ([0a4f734](https://github.com/LightDotSo/LightDotSo/commit/0a4f7347aefc0dfd4f1f2a7cf44a5920e6a728a3))
+- get a config ([#678](https://github.com/LightDotSo/LightDotSo/issues/678)) ([5b92c0e](https://github.com/LightDotSo/LightDotSo/commit/5b92c0ea17ee25231dff75abd551b8228a502b4f))
+- gha ([#738](https://github.com/LightDotSo/LightDotSo/issues/738)) ([9a12a52](https://github.com/LightDotSo/LightDotSo/commit/9a12a529ab2eeecb72b4e79fd08ba99ab3fc1985))
+- gha v2 ([#850](https://github.com/LightDotSo/LightDotSo/issues/850)) ([2321c33](https://github.com/LightDotSo/LightDotSo/commit/2321c3345103b6d879ec26fa4be10bfc4de21d41))
+- grafana loki subgraph ([#966](https://github.com/LightDotSo/LightDotSo/issues/966)) ([70ed5fd](https://github.com/LightDotSo/LightDotSo/commit/70ed5fd8401d5c8d07888c6af8da464a0381edc9))
+- hash msg ([#775](https://github.com/LightDotSo/LightDotSo/issues/775)) ([24710e0](https://github.com/LightDotSo/LightDotSo/commit/24710e0fd0e3f8cac464d3fbd782744984759e2d))
+- indexer bugs ([#408](https://github.com/LightDotSo/LightDotSo/issues/408)) ([30f16c4](https://github.com/LightDotSo/LightDotSo/commit/30f16c4458e8bd4ffad41a45e7f1707f6131f156))
+- indexer panic ([#574](https://github.com/LightDotSo/LightDotSo/issues/574)) ([3478bb4](https://github.com/LightDotSo/LightDotSo/commit/3478bb4c762ad267599476b558506bd706bc6c84))
+- ini button ([#1046](https://github.com/LightDotSo/LightDotSo/issues/1046)) ([2914dc3](https://github.com/LightDotSo/LightDotSo/commit/2914dc3bab85d39c6d4742283e4c81b13204afa8))
+- ini deployment ([#597](https://github.com/LightDotSo/LightDotSo/issues/597)) ([822585a](https://github.com/LightDotSo/LightDotSo/commit/822585aa3dc46cce06a2e195202b7a83f2c0d622))
+- ini err ([#431](https://github.com/LightDotSo/LightDotSo/issues/431)) ([590df78](https://github.com/LightDotSo/LightDotSo/commit/590df781649d79e672a1bcf0a0d8a44b52e8380e))
+- ini error consumer ([#518](https://github.com/LightDotSo/LightDotSo/issues/518)) ([cf9b0aa](https://github.com/LightDotSo/LightDotSo/commit/cf9b0aa5b2e388aa726be60b649cb81974543058))
+- ini fmt ([#361](https://github.com/LightDotSo/LightDotSo/issues/361)) ([4cec3d8](https://github.com/LightDotSo/LightDotSo/commit/4cec3d8201ca45df7d4928b3b27615f5d83e17a7))
+- ini hash check ([#766](https://github.com/LightDotSo/LightDotSo/issues/766)) ([156cdc1](https://github.com/LightDotSo/LightDotSo/commit/156cdc1ccc8db9ed2cc265b4096e8edd3f638389))
+- ini invoke ([#573](https://github.com/LightDotSo/LightDotSo/issues/573)) ([7a178f1](https://github.com/LightDotSo/LightDotSo/commit/7a178f1a1bae04008f6036c0f05553239be07cb4))
+- ini ip v6 ([#441](https://github.com/LightDotSo/LightDotSo/issues/441)) ([a2caa4e](https://github.com/LightDotSo/LightDotSo/commit/a2caa4e5c12345fbb12e6edd11f9e8798b015b35))
+- ini llama nodes ([#576](https://github.com/LightDotSo/LightDotSo/issues/576)) ([1ff9ce0](https://github.com/LightDotSo/LightDotSo/commit/1ff9ce0b05ed9bc3e7c0fe5f17986780763dfa90))
+- ini new builder config ([#903](https://github.com/LightDotSo/LightDotSo/issues/903)) ([6bc55e6](https://github.com/LightDotSo/LightDotSo/commit/6bc55e6714885b605d5d61a6aeb50d99dacf2749))
+- ini next auth ([#1023](https://github.com/LightDotSo/LightDotSo/issues/1023)) ([14fd7c6](https://github.com/LightDotSo/LightDotSo/commit/14fd7c68baa628af2b396610a968fef5c85f73cc))
+- ini nonce axum ([#851](https://github.com/LightDotSo/LightDotSo/issues/851)) ([77616eb](https://github.com/LightDotSo/LightDotSo/commit/77616eba4f71548bc0ceaa8dd2bcdbe31379a3c2))
+- ini paymaster multiplier ([#624](https://github.com/LightDotSo/LightDotSo/issues/624)) ([ee7a642](https://github.com/LightDotSo/LightDotSo/commit/ee7a6428303278b288d400c06e15b2c1f4a57979))
+- ini po ([#896](https://github.com/LightDotSo/LightDotSo/issues/896)) ([893b74a](https://github.com/LightDotSo/LightDotSo/commit/893b74ae72e612c4ba457dc7f660c3538fb7e88e))
+- ini push tracing ([#536](https://github.com/LightDotSo/LightDotSo/issues/536)) ([feefaf8](https://github.com/LightDotSo/LightDotSo/commit/feefaf8036f401ae2006770e70cb3f97f18f7313))
+- ini quick fix ([#421](https://github.com/LightDotSo/LightDotSo/issues/421)) ([1c7b726](https://github.com/LightDotSo/LightDotSo/commit/1c7b7265d9277e74d149d4f58f9ed59044dae866))
+- ini random rpc ([#519](https://github.com/LightDotSo/LightDotSo/issues/519)) ([0868ef8](https://github.com/LightDotSo/LightDotSo/commit/0868ef830ee76ca58f90cfe4eb47ae6e20a367c0))
+- ini retry ([#525](https://github.com/LightDotSo/LightDotSo/issues/525)) ([70f3cca](https://github.com/LightDotSo/LightDotSo/commit/70f3cca05b39499bed0d1209d868746fb6cd6d59))
+- ini schema ([#888](https://github.com/LightDotSo/LightDotSo/issues/888)) ([2a1f98d](https://github.com/LightDotSo/LightDotSo/commit/2a1f98d22b229575142fe207d5ad699d8ec5b44a))
+- ini schema v3 ([#890](https://github.com/LightDotSo/LightDotSo/issues/890)) ([74b90ee](https://github.com/LightDotSo/LightDotSo/commit/74b90ee57db9a2abe7e23c285d3e2b68d0edf281))
+- ini signature recover ([#720](https://github.com/LightDotSo/LightDotSo/issues/720)) ([5c6c21d](https://github.com/LightDotSo/LightDotSo/commit/5c6c21d3090130689a8395683bc7db49bee5a3a1))
+- ini sol ([#719](https://github.com/LightDotSo/LightDotSo/issues/719)) ([bcad37c](https://github.com/LightDotSo/LightDotSo/commit/bcad37c1255711e2f070b3745ca02c4903335013))
+- ini str ([#722](https://github.com/LightDotSo/LightDotSo/issues/722)) ([da3dbc2](https://github.com/LightDotSo/LightDotSo/commit/da3dbc26991d14c4cd73af10b30f223493fe52b4))
+- ini v1 ([#572](https://github.com/LightDotSo/LightDotSo/issues/572)) ([32b31d8](https://github.com/LightDotSo/LightDotSo/commit/32b31d881ec89e0c3a4fe03a1572b0c3de5a1cf9))
+- ini wallet impl ([#713](https://github.com/LightDotSo/LightDotSo/issues/713)) ([22d7751](https://github.com/LightDotSo/LightDotSo/commit/22d77514ace7e21cd8838cccafa3895ecf74c9bf))
+- ini wallet tab ([#868](https://github.com/LightDotSo/LightDotSo/issues/868)) ([cb89a64](https://github.com/LightDotSo/LightDotSo/commit/cb89a64ab844f403995ffa0ca33642eaffe15df7))
+- ini wallet tab ([#869](https://github.com/LightDotSo/LightDotSo/issues/869)) ([2dc50a7](https://github.com/LightDotSo/LightDotSo/commit/2dc50a70fdb00609bc33871a32e99d45dc4a480e))
+- inngest testnet flag ([#956](https://github.com/LightDotSo/LightDotSo/issues/956)) ([8caf4c8](https://github.com/LightDotSo/LightDotSo/commit/8caf4c8bc5a8932447dfc0cc19190de5fc5f7ad4))
+- kafka consumer ([#481](https://github.com/LightDotSo/LightDotSo/issues/481)) ([5b30d07](https://github.com/LightDotSo/LightDotSo/commit/5b30d07631a4e24723e2d1bcfeadc12bc5e51639))
+- kafka init ([#394](https://github.com/LightDotSo/LightDotSo/issues/394)) ([8f2e23c](https://github.com/LightDotSo/LightDotSo/commit/8f2e23c6363a12fba7c37c4b37514aed68e81554))
+- layout button ([#826](https://github.com/LightDotSo/LightDotSo/issues/826)) ([d14c92a](https://github.com/LightDotSo/LightDotSo/commit/d14c92a1f0c8c46f4dbd998dfec4a7c0e13d6cc0))
+- libssl3 ([#1037](https://github.com/LightDotSo/LightDotSo/issues/1037)) ([774eb62](https://github.com/LightDotSo/LightDotSo/commit/774eb629cd277dbc7694fa0153bd3bc295e5c01f))
+- light wallet ([#797](https://github.com/LightDotSo/LightDotSo/issues/797)) ([aa1a996](https://github.com/LightDotSo/LightDotSo/commit/aa1a996a6bc5af772ae0e7e1b9aecb1ddd9a72e8))
+- log body ([#639](https://github.com/LightDotSo/LightDotSo/issues/639)) ([275990e](https://github.com/LightDotSo/LightDotSo/commit/275990e6570f45307d32381017f84129fdb2a2f2))
+- log body v2 ([#640](https://github.com/LightDotSo/LightDotSo/issues/640)) ([2db6d9b](https://github.com/LightDotSo/LightDotSo/commit/2db6d9b1699bb2c84213acbcca96ff2dab57aec2))
+- loki run ([#551](https://github.com/LightDotSo/LightDotSo/issues/551)) ([8ac3b6b](https://github.com/LightDotSo/LightDotSo/commit/8ac3b6b5032b728f0b79f111feafe74227619d42))
+- main ([#698](https://github.com/LightDotSo/LightDotSo/issues/698)) ([37b030e](https://github.com/LightDotSo/LightDotSo/commit/37b030ea1314d2d89230b9d7dc9e27067f285bce))
+- max record number ([#503](https://github.com/LightDotSo/LightDotSo/issues/503)) ([cb014f0](https://github.com/LightDotSo/LightDotSo/commit/cb014f0cb6edc3abcfb69681051adf4455fe7e2d))
+- memory ([#548](https://github.com/LightDotSo/LightDotSo/issues/548)) ([ea4c6fa](https://github.com/LightDotSo/LightDotSo/commit/ea4c6fad66f530ca7b87f6320d7dc08779b1f447))
+- memory leak ([#547](https://github.com/LightDotSo/LightDotSo/issues/547)) ([e90f765](https://github.com/LightDotSo/LightDotSo/commit/e90f7651ac1f6ec45f603dd8cafcc273e710cf16))
+- misc ([#768](https://github.com/LightDotSo/LightDotSo/issues/768)) ([2c8ecbc](https://github.com/LightDotSo/LightDotSo/commit/2c8ecbcb31e62b05a602ceceb54dc7d9a623a91c))
+- misc app changes ([#827](https://github.com/LightDotSo/LightDotSo/issues/827)) ([2b8a52b](https://github.com/LightDotSo/LightDotSo/commit/2b8a52bc59a784f81a5ff07e6f423ab1c6f178dd))
+- misc deployment ([#829](https://github.com/LightDotSo/LightDotSo/issues/829)) ([99dfba9](https://github.com/LightDotSo/LightDotSo/commit/99dfba9941bb30a057fd1e1b07c1e3372d75b292))
+- multiplier v2 ([#625](https://github.com/LightDotSo/LightDotSo/issues/625)) ([01b03d2](https://github.com/LightDotSo/LightDotSo/commit/01b03d26f12f3eaa2d10bed5e7b5ec8ae28e4273))
+- name update ([#1043](https://github.com/LightDotSo/LightDotSo/issues/1043)) ([075c2a1](https://github.com/LightDotSo/LightDotSo/commit/075c2a12a09989741a8658d5b00833c474ee0948))
+- nav bar ([#745](https://github.com/LightDotSo/LightDotSo/issues/745)) ([6a1ede3](https://github.com/LightDotSo/LightDotSo/commit/6a1ede31ffd11fa031c6cfb4d0d6fafcd6cb036d))
+- navigation ([#1016](https://github.com/LightDotSo/LightDotSo/issues/1016)) ([fb32d3c](https://github.com/LightDotSo/LightDotSo/commit/fb32d3c678117528d7ec81bf1430bef73a7a5a73))
+- neon ([#669](https://github.com/LightDotSo/LightDotSo/issues/669)) ([8d86b88](https://github.com/LightDotSo/LightDotSo/commit/8d86b8872c0e4dd73de9b7a2a1d3bb14b19928eb))
+- neon polling ([#672](https://github.com/LightDotSo/LightDotSo/issues/672)) ([1d33b25](https://github.com/LightDotSo/LightDotSo/commit/1d33b258448fc9a47bed0cf35132f3507dd8f685))
+- next auth url ([#338](https://github.com/LightDotSo/LightDotSo/issues/338)) ([56f586c](https://github.com/LightDotSo/LightDotSo/commit/56f586cb19fd4d41eb0db154fef768a1d71c03cb))
+- node lint ([#193](https://github.com/LightDotSo/LightDotSo/issues/193)) ([e999639](https://github.com/LightDotSo/LightDotSo/commit/e99963957318c974c71054953f2b0340200160b4))
+- nonce for deployment disable ([#1015](https://github.com/LightDotSo/LightDotSo/issues/1015)) ([bba0910](https://github.com/LightDotSo/LightDotSo/commit/bba09100af1fa6045c77e6e268c9e11bafad9cf8))
+- nonce op ([#994](https://github.com/LightDotSo/LightDotSo/issues/994)) ([02bc2da](https://github.com/LightDotSo/LightDotSo/commit/02bc2da477d7f12b6294403f823a9b2617973728))
+- offchain hash ([#837](https://github.com/LightDotSo/LightDotSo/issues/837)) ([c81cded](https://github.com/LightDotSo/LightDotSo/commit/c81cded6445006a98050ea35752b468a8461b3c9))
+- og str ([#878](https://github.com/LightDotSo/LightDotSo/issues/878)) ([cd30998](https://github.com/LightDotSo/LightDotSo/commit/cd309986617bad830530a40c758db60cc6595950))
+- og v3 ([#879](https://github.com/LightDotSo/LightDotSo/issues/879)) ([a46b01d](https://github.com/LightDotSo/LightDotSo/commit/a46b01d657049f201c5e14322617742d429e19b1))
+- omn ([#325](https://github.com/LightDotSo/LightDotSo/issues/325)) ([5aa3905](https://github.com/LightDotSo/LightDotSo/commit/5aa39057f3f8b299e0524bc06cf6e2544e9baf21))
+- op init code ([#954](https://github.com/LightDotSo/LightDotSo/issues/954)) ([4db9ffe](https://github.com/LightDotSo/LightDotSo/commit/4db9ffe22add765dc2bbb871030bd487d42c667e))
+- op nullable ([#970](https://github.com/LightDotSo/LightDotSo/issues/970)) ([2d67642](https://github.com/LightDotSo/LightDotSo/commit/2d676421185c7a6be72f8d47cd3beef0c1e25ac8))
+- op routing ([#1014](https://github.com/LightDotSo/LightDotSo/issues/1014)) ([6225227](https://github.com/LightDotSo/LightDotSo/commit/6225227f077d746d8cde61b043ff6d30a19c5e98))
+- opg ([#965](https://github.com/LightDotSo/LightDotSo/issues/965)) ([2deaca5](https://github.com/LightDotSo/LightDotSo/commit/2deaca58a1e3f8651026c13823c06b1825285972))
+- optional ws ([#420](https://github.com/LightDotSo/LightDotSo/issues/420)) ([b99e352](https://github.com/LightDotSo/LightDotSo/commit/b99e35248edf9e17792f53d483880bf509f8828b))
+- parsing traits ([#859](https://github.com/LightDotSo/LightDotSo/issues/859)) ([c65d9a6](https://github.com/LightDotSo/LightDotSo/commit/c65d9a698b680f9baf6f44afa6832732efb8da98))
+- paymaster ([#959](https://github.com/LightDotSo/LightDotSo/issues/959)) ([7cbd928](https://github.com/LightDotSo/LightDotSo/commit/7cbd928aa5dfbf5ec27be92063a3d93f907d1ea4))
+- paymaster pack ([#960](https://github.com/LightDotSo/LightDotSo/issues/960)) ([0ecd759](https://github.com/LightDotSo/LightDotSo/commit/0ecd75964eeab5e28298a8a66c4215e8e114175c))
+- percentage ([#504](https://github.com/LightDotSo/LightDotSo/issues/504)) ([a2bcb2b](https://github.com/LightDotSo/LightDotSo/commit/a2bcb2b246edcb4f1cf0f281ab0e4cdd14de6705))
+- pm upsert ([#969](https://github.com/LightDotSo/LightDotSo/issues/969)) ([ea68201](https://github.com/LightDotSo/LightDotSo/commit/ea6820134f671b003809d8809abec8526cbfbdc8))
+- pmi ([#651](https://github.com/LightDotSo/LightDotSo/issues/651)) ([939caa4](https://github.com/LightDotSo/LightDotSo/commit/939caa4a8b6145f66c6bac3bad4c819b6b0f3f92))
+- pol ([#660](https://github.com/LightDotSo/LightDotSo/issues/660)) ([1e4bb07](https://github.com/LightDotSo/LightDotSo/commit/1e4bb07603a288cfff53e7180e920e3b16e86489))
+- polling ([#679](https://github.com/LightDotSo/LightDotSo/issues/679)) ([b1bed74](https://github.com/LightDotSo/LightDotSo/commit/b1bed74649f7b911c0018e0c7d4aa81c7c3c33bf))
+- polling ([#799](https://github.com/LightDotSo/LightDotSo/issues/799)) ([be7f032](https://github.com/LightDotSo/LightDotSo/commit/be7f032ce6926f9e741a4e89fbe8a1cc6d23a792))
+- port dashboard ([#891](https://github.com/LightDotSo/LightDotSo/issues/891)) ([91ae896](https://github.com/LightDotSo/LightDotSo/commit/91ae8966bff7584bc7a1e69d86c5f51892d27484))
+- port layout ([#897](https://github.com/LightDotSo/LightDotSo/issues/897)) ([d364b2c](https://github.com/LightDotSo/LightDotSo/commit/d364b2c387d197035c96e2f13a085bad21f136bc))
+- portfolio action ([#885](https://github.com/LightDotSo/LightDotSo/issues/885)) ([237b028](https://github.com/LightDotSo/LightDotSo/commit/237b028114a87e73046fc02745a75963a456e070))
+- prisma paymaster addr ([#963](https://github.com/LightDotSo/LightDotSo/issues/963)) ([f01b8de](https://github.com/LightDotSo/LightDotSo/commit/f01b8de86cb4268a8499b98073c228ac26c0aa53))
+- prisma undefined ([#250](https://github.com/LightDotSo/LightDotSo/issues/250)) ([9194335](https://github.com/LightDotSo/LightDotSo/commit/9194335eaeea7f8fe43c10cc1948bd49d8d4e393))
+- prisma uop ([#964](https://github.com/LightDotSo/LightDotSo/issues/964)) ([5861feb](https://github.com/LightDotSo/LightDotSo/commit/5861feb2743e7bcd3e0a93dd80397a2a973b0a04))
+- proj ([#623](https://github.com/LightDotSo/LightDotSo/issues/623)) ([ec080cd](https://github.com/LightDotSo/LightDotSo/commit/ec080cd32f7c5f7caf86a2b530bf4e283e81d7cc))
+- prom eyre ([#553](https://github.com/LightDotSo/LightDotSo/issues/553)) ([fdc4a38](https://github.com/LightDotSo/LightDotSo/commit/fdc4a38023ac3bb84594078c56e82996fc4a522d))
+- quick fix v2 ([#422](https://github.com/LightDotSo/LightDotSo/issues/422)) ([04a9424](https://github.com/LightDotSo/LightDotSo/commit/04a9424d2cd4b0c7bc80ab08c4af48625916d413))
+- recover mod ([#716](https://github.com/LightDotSo/LightDotSo/issues/716)) ([4efe56f](https://github.com/LightDotSo/LightDotSo/commit/4efe56f65f6948a36e82c9075f8ec72a202f686d))
+- recover sig ([#723](https://github.com/LightDotSo/LightDotSo/issues/723)) ([0041d49](https://github.com/LightDotSo/LightDotSo/commit/0041d493f17addd42365c73493cca96f87c2ff3a))
+- redis block ([#907](https://github.com/LightDotSo/LightDotSo/issues/907)) ([31f8269](https://github.com/LightDotSo/LightDotSo/commit/31f82695c8d7c651d3526b3b0107c9fa3f6602ca))
+- redis check ([#908](https://github.com/LightDotSo/LightDotSo/issues/908)) ([cbebc60](https://github.com/LightDotSo/LightDotSo/commit/cbebc6042d5389fd868517a333fb90e3126ec9f2))
+- refactor wallet namespace ([#913](https://github.com/LightDotSo/LightDotSo/issues/913)) ([6dc207a](https://github.com/LightDotSo/LightDotSo/commit/6dc207a903748f36eb36e3a5a26dda818d098c6c))
+- release ([#302](https://github.com/LightDotSo/LightDotSo/issues/302)) ([8b1dc25](https://github.com/LightDotSo/LightDotSo/commit/8b1dc2581752c4ee91e969cdadb10d3a9ed6e604))
+- release plz config ([#1094](https://github.com/LightDotSo/LightDotSo/issues/1094)) ([0f49ebe](https://github.com/LightDotSo/LightDotSo/commit/0f49ebe4cf7e8ae21a793ddfcc223888fd60e8fa))
+- retry tc api ([#840](https://github.com/LightDotSo/LightDotSo/issues/840)) ([9ddb5db](https://github.com/LightDotSo/LightDotSo/commit/9ddb5db4369960ee84be7b5c4d6ab429da545e35))
+- return ([#1018](https://github.com/LightDotSo/LightDotSo/issues/1018)) ([c8bf992](https://github.com/LightDotSo/LightDotSo/commit/c8bf9928770893fef0e43da0426f308d25ecc80b))
+- root changelog ([#1063](https://github.com/LightDotSo/LightDotSo/issues/1063)) ([80c872c](https://github.com/LightDotSo/LightDotSo/commit/80c872c1fac002c797c4773ea8c565f412eb4fff))
+- root type ([#926](https://github.com/LightDotSo/LightDotSo/issues/926)) ([832e6a7](https://github.com/LightDotSo/LightDotSo/commit/832e6a755fd526ff5f89aa6ccc803243ff534a37))
+- route group ([#871](https://github.com/LightDotSo/LightDotSo/issues/871)) ([d758aaf](https://github.com/LightDotSo/LightDotSo/commit/d758aaf55c6823bca2b539ac29ac7fb4e9b3be35))
+- rpc calls ([#577](https://github.com/LightDotSo/LightDotSo/issues/577)) ([39bd23a](https://github.com/LightDotSo/LightDotSo/commit/39bd23a4aab9b1c439c19d1b7bab6421273dc4db))
+- rpc prom ([#604](https://github.com/LightDotSo/LightDotSo/issues/604)) ([ac9de04](https://github.com/LightDotSo/LightDotSo/commit/ac9de04122586a6ba5b2572f099c5c61d18d807a))
+- rpc server ([#816](https://github.com/LightDotSo/LightDotSo/issues/816)) ([9a7e0a6](https://github.com/LightDotSo/LightDotSo/commit/9a7e0a600811945818348fe3423debbe49bfd6d9))
+- rust ([#409](https://github.com/LightDotSo/LightDotSo/issues/409)) ([10f2d48](https://github.com/LightDotSo/LightDotSo/commit/10f2d487759f72c4c042e39cad51cb708176caf8))
+- rust gha ([#407](https://github.com/LightDotSo/LightDotSo/issues/407)) ([f9e972d](https://github.com/LightDotSo/LightDotSo/commit/f9e972dd4b9bf75c7a5cd6785a72508cb593d8f8))
+- satsuma enabled ([#917](https://github.com/LightDotSo/LightDotSo/issues/917)) ([0912b07](https://github.com/LightDotSo/LightDotSo/commit/0912b071fc3a102d6fbd698adf85bfbbb417d912))
+- sch ([#889](https://github.com/LightDotSo/LightDotSo/issues/889)) ([0f6c3dd](https://github.com/LightDotSo/LightDotSo/commit/0f6c3dda6ad6cfc0d95fad90b8f1e4b8dc4b7aac))
+- send issue ([#1079](https://github.com/LightDotSo/LightDotSo/issues/1079)) ([fd93311](https://github.com/LightDotSo/LightDotSo/commit/fd93311fefd79a450f9357d0e06a0da3d1c994f3))
+- session match ([#1045](https://github.com/LightDotSo/LightDotSo/issues/1045)) ([1bdd751](https://github.com/LightDotSo/LightDotSo/commit/1bdd751a5e8f84451b98b1e9ff5b1521f8fc3fc4))
+- set ([#886](https://github.com/LightDotSo/LightDotSo/issues/886)) ([e529e3d](https://github.com/LightDotSo/LightDotSo/commit/e529e3dfc80ce6de231bb9ff432476b49656d951))
+- sig ([#653](https://github.com/LightDotSo/LightDotSo/issues/653)) ([b9f2adc](https://github.com/LightDotSo/LightDotSo/commit/b9f2adc97a95d10218a1c4a46479e39e64d62096))
+- sig 3 ([#656](https://github.com/LightDotSo/LightDotSo/issues/656)) ([19cb29a](https://github.com/LightDotSo/LightDotSo/commit/19cb29ab03a7a4df38ef7b642d9979ad789ac943))
+- sig maelability as 27/28 ([#836](https://github.com/LightDotSo/LightDotSo/issues/836)) ([7171933](https://github.com/LightDotSo/LightDotSo/commit/7171933f7eff70145a05d6f327eb9516ffa0ada6))
+- siwe ([#369](https://github.com/LightDotSo/LightDotSo/issues/369)) ([bf4d18d](https://github.com/LightDotSo/LightDotSo/commit/bf4d18df81ced7ebfe45524da371b5a8f4014fbc))
+- status chains ([#1017](https://github.com/LightDotSo/LightDotSo/issues/1017)) ([25bc72e](https://github.com/LightDotSo/LightDotSo/commit/25bc72e63968c1f029057f4f53c100456600db51))
+- subgraph deployment ([#984](https://github.com/LightDotSo/LightDotSo/issues/984)) ([8f70dc0](https://github.com/LightDotSo/LightDotSo/commit/8f70dc027fbecfb9673b9355fc5e61acec050654))
+- subgraph versioning ([#857](https://github.com/LightDotSo/LightDotSo/issues/857)) ([d71449a](https://github.com/LightDotSo/LightDotSo/commit/d71449a6e05e1fd9a1b4114b049664af9732755c))
+- switcher ([#831](https://github.com/LightDotSo/LightDotSo/issues/831)) ([3e42cab](https://github.com/LightDotSo/LightDotSo/commit/3e42cab97298fe33a2941db2e9886879ce0498b5))
+- table stles ([#929](https://github.com/LightDotSo/LightDotSo/issues/929)) ([defa584](https://github.com/LightDotSo/LightDotSo/commit/defa5844db71fe4c904452394742ff67c3fa7e4d))
+- task based bundler ([#435](https://github.com/LightDotSo/LightDotSo/issues/435)) ([1c00fdc](https://github.com/LightDotSo/LightDotSo/commit/1c00fdce2282dfe4c325580d55902d61877fcddf))
+- test spec ([#327](https://github.com/LightDotSo/LightDotSo/issues/327)) ([967e5e0](https://github.com/LightDotSo/LightDotSo/commit/967e5e0832a073a6f5d1bb62bad6f7caee72525d))
+- testnet ([#943](https://github.com/LightDotSo/LightDotSo/issues/943)) ([33a89f8](https://github.com/LightDotSo/LightDotSo/commit/33a89f83c71ed61256924b553e01a5702d6aae54))
+- tracing logging ([#584](https://github.com/LightDotSo/LightDotSo/issues/584)) ([0bf9721](https://github.com/LightDotSo/LightDotSo/commit/0bf97211db53eac3d02887267a36e8be521791ab))
+- transfer query ([#951](https://github.com/LightDotSo/LightDotSo/issues/951)) ([970e95c](https://github.com/LightDotSo/LightDotSo/commit/970e95cfa471262c98c88b74795beed4da8fdc92))
+- unnecessary arg ([#308](https://github.com/LightDotSo/LightDotSo/issues/308)) ([5ab1e64](https://github.com/LightDotSo/LightDotSo/commit/5ab1e64d8a188085c53c731f6f7b11d4cdfb6d5b)), closes [#297](https://github.com/LightDotSo/LightDotSo/issues/297) [#297](https://github.com/LightDotSo/LightDotSo/issues/297)
+- uop db ([#972](https://github.com/LightDotSo/LightDotSo/issues/972)) ([c3be56f](https://github.com/LightDotSo/LightDotSo/commit/c3be56f968fb1ffd2340452edf2861eaf652229a))
+- update ([#1019](https://github.com/LightDotSo/LightDotSo/issues/1019)) ([99cefa0](https://github.com/LightDotSo/LightDotSo/commit/99cefa03343053205ee160f5ab9ca3aa34ff1ce1))
+- update to bookworm ([#1036](https://github.com/LightDotSo/LightDotSo/issues/1036)) ([bffcfe3](https://github.com/LightDotSo/LightDotSo/commit/bffcfe37f66978a0d6a0f444dc1408741e3f25c0))
+- url ([#822](https://github.com/LightDotSo/LightDotSo/issues/822)) ([c282216](https://github.com/LightDotSo/LightDotSo/commit/c282216303d9a1adf9eb43a7e7096aa15fb718a0))
+- v1e ([#772](https://github.com/LightDotSo/LightDotSo/issues/772)) ([648dd35](https://github.com/LightDotSo/LightDotSo/commit/648dd357445e647ef911de636c869e744a62d9ae))
+- v2 sig ([#654](https://github.com/LightDotSo/LightDotSo/issues/654)) ([0438d4c](https://github.com/LightDotSo/LightDotSo/commit/0438d4cad9606a9d85c1a38c41d939372acb7af3))
+- v20 ([#993](https://github.com/LightDotSo/LightDotSo/issues/993)) ([c84a686](https://github.com/LightDotSo/LightDotSo/commit/c84a686766267d16dfe75a7d6df912e9f0086405))
+- val ([#663](https://github.com/LightDotSo/LightDotSo/issues/663)) ([c6ac695](https://github.com/LightDotSo/LightDotSo/commit/c6ac695f6410b9a03387d3c72ba74973bde21998))
+- wallet creation ([#875](https://github.com/LightDotSo/LightDotSo/issues/875)) ([b481706](https://github.com/LightDotSo/LightDotSo/commit/b481706e0c62f37b68a77ea372d849c535c27852))
+- wallet creation failed unique constraint ([#780](https://github.com/LightDotSo/LightDotSo/issues/780)) ([ed1a1e9](https://github.com/LightDotSo/LightDotSo/commit/ed1a1e9aec35e9942cc514026edc845430d4f32b))
+- wallet get ([#753](https://github.com/LightDotSo/LightDotSo/issues/753)) ([dbfa4d4](https://github.com/LightDotSo/LightDotSo/commit/dbfa4d40d0bc66aedf2cec3a795fc55c038dbc8e))
+- wallet signers ([#711](https://github.com/LightDotSo/LightDotSo/issues/711)) ([965c4cf](https://github.com/LightDotSo/LightDotSo/commit/965c4cf01bc9a3664bdf4da8dd205cef0a80e527))
+
+### Performance Improvements
+
+- deploy chain ids ([#492](https://github.com/LightDotSo/LightDotSo/issues/492)) ([0b94fb5](https://github.com/LightDotSo/LightDotSo/commit/0b94fb5f14fbde8e3069b44fec7be14d29850f0e))
+- Feat/ini block consume ([#418](https://github.com/LightDotSo/LightDotSo/issues/418)) ([4505828](https://github.com/LightDotSo/LightDotSo/commit/4505828f4480188f1d206de3ec811a2f3f0c4935))
+- fix week 7 ([86550f9](https://github.com/LightDotSo/LightDotSo/commit/86550f91e9f929f37b663b6d7eb8be6ebd8c992c))
+- ini account deploy ([#545](https://github.com/LightDotSo/LightDotSo/issues/545)) ([91a30b1](https://github.com/LightDotSo/LightDotSo/commit/91a30b10bdb13e1f2386e4ec6894c11b420d835b))
+- ini address ([#644](https://github.com/LightDotSo/LightDotSo/issues/644)) ([c455304](https://github.com/LightDotSo/LightDotSo/commit/c4553045b509c050ea499978d46e2731683b43f5))
+- ini api check ([#596](https://github.com/LightDotSo/LightDotSo/issues/596)) ([d2a8618](https://github.com/LightDotSo/LightDotSo/commit/d2a8618da5cc3726eb4dcac058b334d08f910df4))
+- ini api refactor ([#760](https://github.com/LightDotSo/LightDotSo/issues/760)) ([9342fc3](https://github.com/LightDotSo/LightDotSo/commit/9342fc36640809d19ffee99c09346038336c0006))
+- ini app edge runtime ([#817](https://github.com/LightDotSo/LightDotSo/issues/817)) ([d2a32f0](https://github.com/LightDotSo/LightDotSo/commit/d2a32f0b4ea58cb584b90046f55c84f28b654ba3))
+- ini blast api ([#506](https://github.com/LightDotSo/LightDotSo/issues/506)) ([7ca2ee5](https://github.com/LightDotSo/LightDotSo/commit/7ca2ee56004e8dcfffb10c7dfb0fff0a95b5a6b5))
+- ini cargo ([#395](https://github.com/LightDotSo/LightDotSo/issues/395)) ([86550f9](https://github.com/LightDotSo/LightDotSo/commit/86550f91e9f929f37b663b6d7eb8be6ebd8c992c))
+- ini chainid ([#648](https://github.com/LightDotSo/LightDotSo/issues/648)) ([2630197](https://github.com/LightDotSo/LightDotSo/commit/2630197e45c7fe7d956e5fbc406c5eda92da743d))
+- ini changelog ([#700](https://github.com/LightDotSo/LightDotSo/issues/700)) ([5e047b2](https://github.com/LightDotSo/LightDotSo/commit/5e047b2a267f349d9dca599bacfbb67def36a5a6))
+- ini consumer tx ([#483](https://github.com/LightDotSo/LightDotSo/issues/483)) ([7ac4b95](https://github.com/LightDotSo/LightDotSo/commit/7ac4b955825319ce0820d95549ee624d4dc4aa4d))
+- ini continue on error ([#517](https://github.com/LightDotSo/LightDotSo/issues/517)) ([5f9e851](https://github.com/LightDotSo/LightDotSo/commit/5f9e8513d21fa59293dfd00baff9c40977b9ef55))
+- ini docker sccache ([#465](https://github.com/LightDotSo/LightDotSo/issues/465)) ([e71a24b](https://github.com/LightDotSo/LightDotSo/commit/e71a24ba8659fc4093d29cc8e25f3fea1cebf2a8))
+- ini exporter ([#533](https://github.com/LightDotSo/LightDotSo/issues/533)) ([81ccb3b](https://github.com/LightDotSo/LightDotSo/commit/81ccb3b91b1420a9133af3801a3d12ae21e6a0cc))
+- ini fork test ([#473](https://github.com/LightDotSo/LightDotSo/issues/473)) ([6a6572e](https://github.com/LightDotSo/LightDotSo/commit/6a6572e863ede4870dae7ada35807dbcaca2aa3e))
+- ini gas rpc ([#446](https://github.com/LightDotSo/LightDotSo/issues/446)) ([20ad9db](https://github.com/LightDotSo/LightDotSo/commit/20ad9dbbaee855e7a29e1c3c084d7a3e9594a0e6))
+- ini indexer eth ([#474](https://github.com/LightDotSo/LightDotSo/issues/474)) ([dd72842](https://github.com/LightDotSo/LightDotSo/commit/dd7284250c23bc9b74a52298a1e7d87e9c05c673))
+- ini indexer internal ([#535](https://github.com/LightDotSo/LightDotSo/issues/535)) ([e7adcfd](https://github.com/LightDotSo/LightDotSo/commit/e7adcfd07dbd24d73c6b85438025fb278d5ae222))
+- ini kafka poll to 1 ([#502](https://github.com/LightDotSo/LightDotSo/issues/502)) ([d8f8b31](https://github.com/LightDotSo/LightDotSo/commit/d8f8b319e1e8138623f5b659caa46796647dfc77))
+- ini kernel ([#64](https://github.com/LightDotSo/LightDotSo/issues/64)) ([1d131d8](https://github.com/LightDotSo/LightDotSo/commit/1d131d8b56fdaa16f544b840669e8f9d98657b10))
+- ini kysley ([#274](https://github.com/LightDotSo/LightDotSo/issues/274)) ([5018f2d](https://github.com/LightDotSo/LightDotSo/commit/5018f2d9bd37a6c27c052d2e0a15a63a00533c9e))
+- ini mock test ([#362](https://github.com/LightDotSo/LightDotSo/issues/362)) ([c0af1fc](https://github.com/LightDotSo/LightDotSo/commit/c0af1fc891074f1e6db42699cb237259f6317d11))
+- ini node real ([#530](https://github.com/LightDotSo/LightDotSo/issues/530)) ([7c1cba5](https://github.com/LightDotSo/LightDotSo/commit/7c1cba519ce0ffbbb8bf8b5f363c136ab7ffa427))
+- ini otel push ([#402](https://github.com/LightDotSo/LightDotSo/issues/402)) ([181791e](https://github.com/LightDotSo/LightDotSo/commit/181791e7ef3349bb65c9828928d07190254910d1))
+- ini prometheus ([#405](https://github.com/LightDotSo/LightDotSo/issues/405)) ([d0aff35](https://github.com/LightDotSo/LightDotSo/commit/d0aff355386c02c9d7b35881274f35f71059820a))
+- ini retry commit ([#391](https://github.com/LightDotSo/LightDotSo/issues/391)) ([25de14b](https://github.com/LightDotSo/LightDotSo/commit/25de14b837a8bf29af77107884f461e895616331))
+- ini reverse proxy ([#404](https://github.com/LightDotSo/LightDotSo/issues/404)) ([1e8b1c7](https://github.com/LightDotSo/LightDotSo/commit/1e8b1c75607b7886056570a4a85f600cfb141740))
+- ini rpc internal ([#522](https://github.com/LightDotSo/LightDotSo/issues/522)) ([fa80e2b](https://github.com/LightDotSo/LightDotSo/commit/fa80e2b91d224cd21c9feca9d822dbeed51b40f7))
+- ini run ([#608](https://github.com/LightDotSo/LightDotSo/issues/608)) ([54e412b](https://github.com/LightDotSo/LightDotSo/commit/54e412b5abda8d246c641cd2b43dae95337f0cb5))
+- ini satsuma api ([#807](https://github.com/LightDotSo/LightDotSo/issues/807)) ([d5dea43](https://github.com/LightDotSo/LightDotSo/commit/d5dea4351291d481cc28bdfc941c471c1db24b26))
+- ini sccache ([#303](https://github.com/LightDotSo/LightDotSo/issues/303)) ([6aeb839](https://github.com/LightDotSo/LightDotSo/commit/6aeb8395fbcdd18c92c1fd300f7b5a56846c64e0))
+- ini script flow ([#508](https://github.com/LightDotSo/LightDotSo/issues/508)) ([335f7f3](https://github.com/LightDotSo/LightDotSo/commit/335f7f377e16c4d25cfccca11ebc5f5b8305b1fa))
+- ini tracing layers ([#566](https://github.com/LightDotSo/LightDotSo/issues/566)) ([b3ca0bd](https://github.com/LightDotSo/LightDotSo/commit/b3ca0bdf25e8deab308f01b6099f5e9dd3efa70a))
+- ini tx dialog ([#779](https://github.com/LightDotSo/LightDotSo/issues/779)) ([d309ccf](https://github.com/LightDotSo/LightDotSo/commit/d309ccf8a2590e2c6da5c71ab1fa9f0e7b17404c))
+- migrate canary release ([#433](https://github.com/LightDotSo/LightDotSo/issues/433)) ([07fdcba](https://github.com/LightDotSo/LightDotSo/commit/07fdcba2e4c83a958d05608794781b6908d089e6))
+- p ([#666](https://github.com/LightDotSo/LightDotSo/issues/666)) ([8d87489](https://github.com/LightDotSo/LightDotSo/commit/8d8748943fc49f9bb2639fa1432d1087c4c7b296))
+- refactor bytes32 factory ([#472](https://github.com/LightDotSo/LightDotSo/issues/472)) ([6a1a082](https://github.com/LightDotSo/LightDotSo/commit/6a1a082e284255bc36c015412053455bdc2ebb4e))
+- refactor light tracing ([#414](https://github.com/LightDotSo/LightDotSo/issues/414)) ([f30cc91](https://github.com/LightDotSo/LightDotSo/commit/f30cc91ae096e4260048ada8ee942940c5564878))
+- update npm ([#626](https://github.com/LightDotSo/LightDotSo/issues/626)) ([f49d07d](https://github.com/LightDotSo/LightDotSo/commit/f49d07d554db3897d952103e695067290fed07f3))
