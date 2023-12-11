@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "plugins": ["cargo-workspace"],
-  "release-type": "simple",
+  "release-type": "node",
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "changelog-host": "https://github.com",
@@ -17,7 +17,7 @@
   "sequential-calls": false,
   "packages": {
     ".": {
-      "release-type": "simple",
+      "release-type": "node",
       "component": "lightdotso",
       "package-name": "lightdotso",
       "include-component-in-tag": false,
