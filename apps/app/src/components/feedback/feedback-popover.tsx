@@ -21,6 +21,7 @@ import {
   Button,
   PopoverContent,
 } from "@lightdotso/ui";
+import { Megaphone } from "lucide-react";
 import { useState } from "react";
 import type { FC } from "react";
 import { FeedbackForm } from "@/components/feedback/feedback-form";
@@ -44,7 +45,8 @@ export const FeedbackPopover: FC = () => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="hidden md:block">
+        <Button variant="outline">
+          <Megaphone className="mr-2 h-4 w-4 shrink-0 opacity-50" />
           Feedback
           <span className="sr-only">Open popover</span>
         </Button>

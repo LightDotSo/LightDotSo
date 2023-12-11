@@ -80,8 +80,9 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
 
   return (
     <NftsWrapper>
-      {data && data.nfts.length === 0 && <NftsEmpty />}
+      {data && data.nfts && data.nfts.length === 0 && <NftsEmpty />}
       {data &&
+        data.nfts &&
         data.nfts
           .slice(0, limit || data.nfts.length)
           .filter(
