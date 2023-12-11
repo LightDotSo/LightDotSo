@@ -17,8 +17,8 @@
     "src/index.js"
   ],
   "dependencies": {
-    "prettier": "^3.1.0",
-    "prettier-plugin-tailwindcss": "^0.5.7"
+    "prettier": "^3.1.1",
+    "prettier-plugin-tailwindcss": "^0.5.9"
   },
   "publishConfig": {
     "access": "restricted"
