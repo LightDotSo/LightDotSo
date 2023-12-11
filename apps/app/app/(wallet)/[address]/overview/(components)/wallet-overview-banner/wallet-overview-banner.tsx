@@ -15,26 +15,19 @@
 
 "use client";
 
-import { getWallet } from "@lightdotso/client";
 import {
-  Avatar,
   Button,
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { splitAddress } from "@lightdotso/utils";
 import { PlusCircleIcon } from "@heroicons/react/24/outline";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { useEnsName } from "wagmi";
+import { WalletOverviewBannerAddress } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-address";
 import { WalletOverviewBannerSparkline } from "@/app/(wallet)/[address]/overview/(components)/wallet-overview-banner/wallet-overview-banner-sparkline";
-import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
-import type { WalletData } from "@/data";
-import { queries } from "@/queries";
 import { errorToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -52,66 +45,18 @@ interface WalletOverviewBannerProps {
 export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
   address,
 }) => {
-  const { data: ens } = useEnsName({
-    address: address,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const queryClient = useQueryClient();
-
-  const currentData: WalletData | undefined = queryClient.getQueryData(
-    queries.wallet.get(address).queryKey,
-  );
-
-  const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: queries.wallet.get(address).queryKey,
-    queryFn: async () => {
-      if (!address) {
-        return null;
-      }
-
-      const res = await getWallet({
-        params: {
-          query: {
-            address: address,
-          },
-        },
-      });
-
-      // Return if the response is 200
-      return res.match(
-        data => {
-          return data;
-        },
-        _ => {
-          return currentData ?? null;
-        },
-      );
-    },
-  });
-
   return (
-    <TooltipProvider>
-      <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-4 lg:gap-x-8">
-        <div className="col-span-2 flex w-full flex-row items-center space-x-5 lg:border-r lg:border-border">
-          <Avatar className="h-16 w-16">
-            <PlaceholderOrb address={address ?? "0x"} />
-          </Avatar>
-          <div className="flex justify-start overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight text-text">
-            {wallet
-              ? wallet.name
-              : ens ?? (typeof address === "string" && splitAddress(address))}
-          </div>
-        </div>
-        <div className="col-span-1 flex w-full">
-          <Suspense fallback={null}>
-            <WalletOverviewBannerSparkline address={address} />
-          </Suspense>
-        </div>
-        <div className="col-span-1 flex w-full items-center justify-end">
+    <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-4 lg:gap-x-8">
+      <div className="col-span-2 flex w-full flex-row items-center space-x-5 lg:border-r lg:border-border">
+        <WalletOverviewBannerAddress address={address} />
+      </div>
+      <div className="col-span-1 flex w-full">
+        <Suspense fallback={null}>
+          <WalletOverviewBannerSparkline address={address} />
+        </Suspense>
+      </div>
+      <div className="col-span-1 flex w-full items-center justify-end">
+        <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <span>
@@ -132,8 +77,8 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
               <p>Deposit Assets</p>
             </TooltipContent>
           </Tooltip>
-        </div>
+        </TooltipProvider>
       </div>
-    </TooltipProvider>
+    </div>
   );
 };
