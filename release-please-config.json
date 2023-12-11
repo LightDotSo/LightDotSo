@@ -5,7 +5,7 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "changelog-host": "https://github.com",
-  "draft": true,
+  "draft": false,
   "prerelease": false,
   "skip-github-release": false,
   "always-link-local": false,
@@ -19,7 +19,14 @@
       "release-type": "simple",
       "component": "lightdotso",
       "package-name": "lightdotso",
-      "include-component-in-tag": false
+      "include-component-in-tag": false,
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "package.json",
+          "jsonpath": "$.version"
+        }
+      ]
     }
   }
 }
