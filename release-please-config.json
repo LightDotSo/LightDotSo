@@ -11,8 +11,8 @@
   "always-link-local": false,
   "separate-pull-requests": false,
   "group-pull-request-title-pattern": "chore: release ${branch}",
-  "release-search-depth": 400,
-  "commit-search-depth": 500,
+  "release-search-depth": 300,
+  "commit-search-depth": 3000,
   "sequential-calls": false,
   "packages": {
     ".": { "release-type": "node" }
