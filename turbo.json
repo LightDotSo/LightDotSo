@@ -26,7 +26,8 @@
       "outputs": []
     },
     "//#fix": {
-      "dependsOn": ["//#lint"]
+      "dependsOn": [],
+      "inputs": ["**"]
     },
     "//#lint": {
       "dependsOn": [],
