@@ -61,7 +61,7 @@
     "taplo:lint": "taplo lint *.toml crates/**/Cargo.toml fly/**/fly.toml",
     "test": "vitest",
     "test:compile": "dotenv -- turbo run build --filter=contracts --filter=solutions --filter=schemas --filter=client",
-    "test:coverage": "vitest --coverage --no-threads",
+    "test:coverage": "vitest --coverage",
     "test:typecheck": "vitest typecheck",
     "test:ui": "vitest dev --ui",
     "tsc": "tsc --noEmit",

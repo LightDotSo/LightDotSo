@@ -12,6 +12,8 @@
   "separate-pull-requests": false,
   "pull-request-title-pattern": "chore: release (${version})",
   "group-pull-request-title-pattern": "chore: group release (${version})",
+  "release-search-depth": 300,
+  "commit-search-depth": 3000,
   "sequential-calls": false,
   "packages": {
     ".": {
