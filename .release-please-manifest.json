@@ -1,0 +1,20 @@
+{
+  "plugins": ["cargo-workspace"],
+  "release-type": "node",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "prerelease-type": "beta",
+  "changelog-host": "https://github.com",
+  "draft": true,
+  "prerelease": false,
+  "skip-github-release": false,
+  "always-link-local": false,
+  "separate-pull-requests": false,
+  "group-pull-request-title-pattern": "chore: release ${branch}",
+  "release-search-depth": 400,
+  "commit-search-depth": 500,
+  "sequential-calls": false,
+  "packages": {
+    ".": { "release-type": "node" }
+  }
+}
