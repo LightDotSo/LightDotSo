@@ -21,8 +21,9 @@ import {
   Button,
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
   Tooltip,
   TooltipContent,
@@ -31,7 +32,7 @@ import {
 } from "@lightdotso/ui";
 import { splitAddress } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, User } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
@@ -100,7 +101,7 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="h-16 w-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="flex justify-start space-x-3 overflow-hidden text-ellipsis text-left text-2xl font-extrabold tracking-tight text-text">
+      <div className="flex justify-start space-x-3 overflow-hidden text-ellipsis pr-3 text-left text-2xl font-extrabold tracking-tight text-text">
         <Tooltip>
           <TooltipTrigger asChild>
             <span>
@@ -120,8 +121,13 @@ export const WalletOverviewBannerAddress: FC<
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Appearance</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <User className="mr-2 h-4 w-4" />
+                <span>Copy Address</span>
+                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
