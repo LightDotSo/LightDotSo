@@ -26,6 +26,7 @@ import Script from "next/script";
 import { Suspense } from "react";
 import type { FC } from "react";
 import { AuthState } from "@/components/auth/auth-state";
+import { ChainPopover } from "@/components/chain/chain-popover";
 import { VercelToolbar } from "@/components/dev/vercel-toolbar";
 import { FeedbackPopover } from "@/components/feedback/feedback-popover";
 import { MainNav } from "@/components/nav/main-nav";
@@ -91,6 +92,7 @@ export const Root: FC<RootProps> = ({ children }) => {
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
+                        <ChainPopover />
                         <FeedbackPopover />
                         <UserNav />
                         <ConnectButton />
