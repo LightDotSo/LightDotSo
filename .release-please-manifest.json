@@ -14,5 +14,7 @@
   "release-search-depth": 400,
   "commit-search-depth": 500,
   "sequential-calls": false,
-  ".": "0.1.0"
+  "packages": {
+    ".": { "release-type": "node" }
+  }
 }
