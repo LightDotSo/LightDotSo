@@ -50,8 +50,15 @@ jobs:
         run: |
           pnpm turbo run lint
       - if: failure()
+        name: Node Fix
+        run: |
+          pnpm turbo run fix
+      - if: failure()
         name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_user_name: LightDotSoBot
+          commit_user_email: ${GITHUB_ACTOR}@users.noreply.github.com
   node-test:
     runs-on: ubuntu-latest
     timeout-minutes: 90
