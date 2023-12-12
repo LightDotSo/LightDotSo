@@ -133,6 +133,9 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
               showSpamScore={row
                 .getVisibleCells()
                 .some(cell => cell.column.id === "spam_score")}
+              showChain={row
+                .getVisibleCells()
+                .some(cell => cell.column.id === "chain")}
             />
           ))
       ) : (

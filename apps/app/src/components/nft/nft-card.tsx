@@ -22,7 +22,11 @@ import { type FC } from "react";
 import { NftImage } from "@/components/nft/nft-image";
 import type { NftData } from "@/data";
 import { useAuth } from "@/stores/useAuth";
-import { getChainIdBySimplehashChainName } from "@/utils/chain";
+import { ChainLogo } from "@/svgs";
+import {
+  getChainBySimplehashChainName,
+  getChainIdBySimplehashChainName,
+} from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -33,6 +37,7 @@ type NftCardProps = {
   showName?: boolean;
   showDescription?: boolean;
   showSpamScore?: boolean;
+  showChain?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -44,6 +49,7 @@ export const NftCard: FC<NftCardProps> = ({
   showName = true,
   showDescription = true,
   showSpamScore = false,
+  showChain = false,
 }) => {
   const { wallet } = useAuth();
 
@@ -55,7 +61,7 @@ export const NftCard: FC<NftCardProps> = ({
       )}
     >
       <NftImage nft={nft} className="rounded-t-md" />
-      {(showName || showDescription) && (
+      {(showName || showDescription || showSpamScore || showChain) && (
         <div className="flex flex-col space-y-3 px-3 py-4">
           {showName && <div className="text-sm text-text">{nft.name}</div>}
           {showDescription && (
@@ -64,6 +70,17 @@ export const NftCard: FC<NftCardProps> = ({
           {showSpamScore && (
             <div className="text-xs text-text-weak">
               Spam Score: {nft.collection?.spam_score}
+            </div>
+          )}
+          {showSpamScore && (
+            <div className="flex items-center text-xs text-text-weak">
+              {getChainIdBySimplehashChainName(nft.chain!) && (
+                <ChainLogo
+                  className="mr-1.5 h-4 w-4"
+                  chainId={getChainIdBySimplehashChainName(nft.chain!)}
+                />
+              )}
+              {getChainBySimplehashChainName(nft.chain!)?.name}
             </div>
           )}
         </div>
