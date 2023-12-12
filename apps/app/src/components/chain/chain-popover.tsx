@@ -29,8 +29,12 @@ import {
 import { ArrowUpRight, Network } from "lucide-react";
 import { useState } from "react";
 import type { FC } from "react";
-import { CHAINS } from "@/const/chains";
+import type { Address } from "viem";
+import { useQueryClient } from "wagmi";
+import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
+import type { WalletSettingsData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
 import { ChainLogo } from "@/svgs";
 
@@ -42,6 +46,17 @@ export const ChainPopover: FC = () => {
   const isMounted = useIsMounted();
   const { wallet } = useAuth();
   const [open, setOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(
+      queries.wallet.settings(wallet as Address).queryKey,
+    );
 
   // If the address is empty, return null
   if (!isMounted || !wallet) {
@@ -77,8 +92,12 @@ export const ChainPopover: FC = () => {
                 className="flex items-center"
                 value={chain.id.toString()}
                 onSelect={currentValue => {
+                  // Set the chains based on the wallet settings
+                  let chains = walletSettings?.is_enabled_testnet
+                    ? CHAINS
+                    : MAINNET_CHAINS;
                   // Get the current chain from the chain id
-                  const currentChain = CHAINS.find(
+                  const currentChain = chains.find(
                     chain => chain.id === Number(currentValue),
                   );
                   window.open(
