@@ -28,12 +28,18 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { TokensEmpty } from "@/components/token/tokens-empty";
+import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores/useTables";
@@ -120,12 +126,17 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
       columnFilters: tokenColumnFilters,
       pagination: {
         pageIndex: 0,
-        pageSize: -1,
+        pageSize: OVERVIEW_ROW_COUNT,
       },
     },
     paginateExpandedRows: false,
     enableRowSelection: false,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   // ---------------------------------------------------------------------------

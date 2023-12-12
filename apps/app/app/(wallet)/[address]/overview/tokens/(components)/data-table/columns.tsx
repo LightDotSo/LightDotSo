@@ -20,11 +20,11 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Suspense } from "react";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-column-header";
 import { TokenCardActions } from "@/components/token/token-card-actions";
+import { TokenCardChain } from "@/components/token/token-card-chain";
 import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 import { TokenCardToken } from "@/components/token/token-card-token";
 import type { TokenData } from "@/data";
-import { getChainNameById } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -61,11 +61,7 @@ export const columns: ColumnDef<TokenData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Chain" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <span>{getChainNameById(row.getValue("chain_id"))}</span>
-      </div>
-    ),
+    cell: ({ row }) => <TokenCardChain token={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes((row.getValue(id) as number).toString());
     },

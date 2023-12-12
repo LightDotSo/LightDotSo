@@ -28,12 +28,18 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { TransactionsEmpty } from "@/components/transaction/transactions-empty";
+import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TransactionData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores/useTables";
@@ -64,6 +70,8 @@ export const TransactionsList: FC<TransactionsListProps> = ({
     transactionColumnVisibility,
     transactionRowSelection,
     transactionSorting,
+    setTransactionSorting,
+    setTransactionColumnVisibility,
   } = useTables();
 
   // ---------------------------------------------------------------------------
@@ -123,12 +131,19 @@ export const TransactionsList: FC<TransactionsListProps> = ({
       columnFilters: transactionColumnFilters,
       pagination: {
         pageIndex: 0,
-        pageSize: -1,
+        pageSize: OVERVIEW_ROW_COUNT,
       },
     },
     paginateExpandedRows: false,
     enableRowSelection: false,
+    onSortingChange: setTransactionSorting,
+    onColumnVisibilityChange: setTransactionColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   // ---------------------------------------------------------------------------
@@ -160,6 +175,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
           table
             .getRowModel()
             .rows.slice(0, limit || table.getRowModel().rows?.length)
+            .filter(row => row.getVisibleCells().length > 0)
             .map(row => (
               <TableRow
                 key={row.id}

@@ -17,8 +17,10 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-column-header";
+import { TransactionCardChain } from "@/components/transaction/transaction-card-chain";
+import { TransactionCardHash } from "@/components/transaction/transaction-card-hash";
+import { TransactionCardTimestamp } from "@/components/transaction/transaction-card-timestamp";
 import type { TransactionData } from "@/data";
-import { getChainById, getChainNameById } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Definitions
@@ -30,11 +32,7 @@ export const columns: ColumnDef<TransactionData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Chain" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <span>{getChainNameById(row.getValue("chain_id"))}</span>
-      </div>
-    ),
+    cell: ({ row }) => <TransactionCardChain transaction={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes((row.getValue(id) as number).toString());
     },
@@ -43,20 +41,7 @@ export const columns: ColumnDef<TransactionData>[] = [
   },
   {
     accessorKey: "hash",
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <a
-          className="hover:underline"
-          target="_blank"
-          rel="noreferrer"
-          href={`${getChainById(row.getValue("chain_id"))?.blockExplorers
-            ?.default.url}/tx/${row.getValue("hash")}
-          `}
-        >
-          {row.getValue("hash")}
-        </a>
-      </div>
-    ),
+    cell: ({ row }) => <TransactionCardHash transaction={row.original} />,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Tx Hash" />
     ),
@@ -71,15 +56,7 @@ export const columns: ColumnDef<TransactionData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Timestamp" />
     ),
-    cell: ({ row }) => (
-      <div className="flex items-center">
-        <span>
-          {new Date(row.getValue("timestamp")).toLocaleDateString() +
-            " " +
-            new Date(row.getValue("timestamp")).toLocaleTimeString()}
-        </span>
-      </div>
-    ),
+    cell: ({ row }) => <TransactionCardTimestamp transaction={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },

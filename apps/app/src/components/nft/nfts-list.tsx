@@ -17,13 +17,22 @@
 
 import { getNftsByOwner } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsEmpty } from "@/components/nft/nfts-empty";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
+import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores/useTables";
@@ -102,12 +111,17 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
       columnFilters: nftColumnFilters,
       pagination: {
         pageIndex: 0,
-        pageSize: -1,
+        pageSize: OVERVIEW_ROW_COUNT,
       },
     },
     paginateExpandedRows: false,
     enableRowSelection: false,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   // ---------------------------------------------------------------------------
@@ -120,6 +134,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
         table
           .getRowModel()
           .rows.slice(0, limit || table.getRowModel().rows?.length)
+          .filter(row => row.getVisibleCells().length > 0)
           .map(row => (
             <NftCard
               key={row.id}
