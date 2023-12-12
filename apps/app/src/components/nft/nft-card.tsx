@@ -46,10 +46,10 @@ type NftCardProps = {
 
 export const NftCard: FC<NftCardProps> = ({
   nft,
+  showChain = false,
   showName = true,
   showDescription = true,
   showSpamScore = false,
-  showChain = false,
 }) => {
   const { wallet } = useAuth();
 
@@ -61,18 +61,9 @@ export const NftCard: FC<NftCardProps> = ({
       )}
     >
       <NftImage nft={nft} className="rounded-t-md" />
-      {(showName || showDescription || showSpamScore || showChain) && (
+      {(showChain || showName || showDescription || showSpamScore) && (
         <div className="flex flex-col space-y-3 px-3 py-4">
-          {showName && <div className="text-sm text-text">{nft.name}</div>}
-          {showDescription && (
-            <div className="text-xs text-text-weak"># {nft.token_id}</div>
-          )}
-          {showSpamScore && (
-            <div className="text-xs text-text-weak">
-              Spam Score: {nft.collection?.spam_score}
-            </div>
-          )}
-          {showSpamScore && (
+          {showChain && (
             <div className="flex items-center text-xs text-text-weak">
               {getChainIdBySimplehashChainName(nft.chain!) && (
                 <ChainLogo
@@ -81,6 +72,15 @@ export const NftCard: FC<NftCardProps> = ({
                 />
               )}
               {getChainBySimplehashChainName(nft.chain!)?.name}
+            </div>
+          )}
+          {showName && <div className="text-sm text-text">{nft.name}</div>}
+          {showDescription && (
+            <div className="text-xs text-text-weak"># {nft.token_id}</div>
+          )}
+          {showSpamScore && (
+            <div className="text-xs text-text-weak">
+              Spam Score: {nft.collection?.spam_score}
             </div>
           )}
         </div>
