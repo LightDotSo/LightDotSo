@@ -92,6 +92,7 @@ export function DataTable({ columns, data }: DataTableProps) {
       },
     },
     enableRowSelection: true,
+    paginateExpandedRows: false,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
