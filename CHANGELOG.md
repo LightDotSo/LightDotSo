@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.1](https://github.com/LightDotSo/LightDotSo/compare/v0.1.0...v0.1.1) (2023-12-12)
+
+### Bug Fixes
+
+- node v3 ([#1121](https://github.com/LightDotSo/LightDotSo/issues/1121)) ([145ef0c](https://github.com/LightDotSo/LightDotSo/commit/145ef0c38938c05b12fb93583eafd9a11bb424e4))
+- release as ([#1123](https://github.com/LightDotSo/LightDotSo/issues/1123)) ([fffc26e](https://github.com/LightDotSo/LightDotSo/commit/fffc26e56ab500d6549d5cdabb6ad3c3e209cf33))
+- release etc ([#1124](https://github.com/LightDotSo/LightDotSo/issues/1124)) ([7610c57](https://github.com/LightDotSo/LightDotSo/commit/7610c57f43c8fb0030bcc0e35c6fde55040f57a4))
+- settings deployment ([#1125](https://github.com/LightDotSo/LightDotSo/issues/1125)) ([a819b34](https://github.com/LightDotSo/LightDotSo/commit/a819b3416e315525af2786befe8ef86d593097a1))
+
 ## [0.1.0](https://github.com/LightDotSo/LightDotSo/compare/v0.1.2...v0.1.0) (2023-12-11)
 
 ### Features
