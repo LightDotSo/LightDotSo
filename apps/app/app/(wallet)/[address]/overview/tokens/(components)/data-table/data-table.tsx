@@ -107,13 +107,19 @@ export function DataTable({ columns, data }: DataTableProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("sparkline"),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("sparkline")?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("price"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("price")?.getIsVisible(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("actions"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    table.getColumn("actions")?.getIsVisible(),
     setTokenTable,
   ]);
 

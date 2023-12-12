@@ -79,7 +79,9 @@ export function DataTableViewOptions({ table }: DataTableViewOptionsProps) {
                         ? "Last 7 Days"
                         : column.id === "price"
                           ? "Price"
-                          : ""}
+                          : column.id === "actions"
+                            ? "Actions"
+                            : ""}
               </DropdownMenuCheckboxItem>
             );
           })}

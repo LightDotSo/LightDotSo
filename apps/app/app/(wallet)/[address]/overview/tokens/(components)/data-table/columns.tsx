@@ -19,7 +19,7 @@ import { Number } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Suspense } from "react";
 import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-column-header";
-import { DataTableRowActions } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-row-actions";
+import { TokenCardActions } from "@/components/token/token-card-actions";
 import { TokenCardPrice } from "@/components/token/token-card-price";
 import { TokenCardSparkline } from "@/components/token/token-card-sparkline";
 import { TokenCardToken } from "@/components/token/token-card-token";
@@ -99,7 +99,16 @@ export const columns: ColumnDef<TokenData>[] = [
     enableHiding: true,
   },
   {
-    id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    accessorKey: "actions",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Actions" />
+    ),
+    cell: ({ row }) => (
+      <Suspense fallback={null}>
+        <TokenCardActions token={row.original} />
+      </Suspense>
+    ),
+    enableSorting: false,
+    enableHiding: true,
   },
 ];

@@ -57,10 +57,10 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   const {
-    transactionColumnFilters,
-    transactionColumnVisibility,
-    transactionRowSelection,
-    transactionSorting,
+    tokenColumnFilters,
+    tokenColumnVisibility,
+    tokenRowSelection,
+    tokenSorting,
   } = useTables();
 
   // ---------------------------------------------------------------------------
@@ -114,10 +114,10 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
     data: data ?? ([] as TokenData[]),
     columns: columns,
     state: {
-      sorting: transactionSorting,
-      columnVisibility: transactionColumnVisibility,
-      rowSelection: transactionRowSelection,
-      columnFilters: transactionColumnFilters,
+      sorting: tokenSorting,
+      columnVisibility: tokenColumnVisibility,
+      rowSelection: tokenRowSelection,
+      columnFilters: tokenColumnFilters,
       pagination: {
         pageIndex: 0,
         pageSize: -1,
