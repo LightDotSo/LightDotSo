@@ -31,14 +31,7 @@
     },
     "//#lint": {
       "dependsOn": [],
-      "inputs": [
-        "apps/**",
-        "configurations/**",
-        "contracts/**",
-        "crates/**",
-        "fastlane/**",
-        "packages/**"
-      ],
+      "inputs": ["**"],
       "outputs": []
     },
     "//#prisma": {
