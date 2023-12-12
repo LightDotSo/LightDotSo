@@ -38,3 +38,9 @@ export function getChainIdBySimplehashChainName(chain: string): number {
     return 1;
   }
 }
+
+export function getChainBySimplehashChainName(chain: string): Chain {
+  const chainId = getChainIdBySimplehashChainName(chain);
+  const chainInfo = getChainById(chainId);
+  return chainInfo;
+}

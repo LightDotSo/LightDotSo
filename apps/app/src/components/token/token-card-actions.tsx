@@ -25,23 +25,24 @@ import {
 import { Send, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
-import type { Address } from "viem";
 import type { TokenData } from "@/data";
+import { useAuth } from "@/stores/useAuth";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type TokenCardActionsProps = { address: Address; token: TokenData };
+type TokenCardActionsProps = { token: TokenData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const TokenCardActions: FC<TokenCardActionsProps> = ({
-  address,
   token: { address: tokenAddress, chain_id, decimals, symbol },
 }) => {
+  const { address } = useAuth();
+
   return (
     <TooltipProvider>
       <div className="flex items-center gap-x-2">

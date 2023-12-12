@@ -15,7 +15,7 @@
 
 "use client";
 
-import { getTokens } from "@lightdotso/client";
+import { getTransactions } from "@lightdotso/client";
 import {
   Table,
   TableBody,
@@ -32,9 +32,9 @@ import {
 } from "@tanstack/react-table";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
-import { TokensEmpty } from "@/components/token/tokens-empty";
-import type { TokenData, WalletSettingsData } from "@/data";
+import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
+import { TransactionsEmpty } from "@/components/transaction/transactions-empty";
+import type { TransactionData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores/useTables";
 
@@ -42,7 +42,7 @@ import { useTables } from "@/stores/useTables";
 // Props
 // -----------------------------------------------------------------------------
 
-export type TokensListProps = {
+export type TransactionsListProps = {
   address: Address;
   limit?: number;
 };
@@ -51,16 +51,19 @@ export type TokensListProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
+export const TransactionsList: FC<TransactionsListProps> = ({
+  address,
+  limit,
+}) => {
   // ---------------------------------------------------------------------------
   // Store
   // ---------------------------------------------------------------------------
 
   const {
-    tokenColumnFilters,
-    tokenColumnVisibility,
-    tokenRowSelection,
-    tokenSorting,
+    transactionColumnFilters,
+    transactionColumnVisibility,
+    transactionRowSelection,
+    transactionSorting,
   } = useTables();
 
   // ---------------------------------------------------------------------------
@@ -69,27 +72,27 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
 
   const queryClient = useQueryClient();
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+  // const walletSettings: WalletSettingsData | undefined =
+  // queryClient.getQueryData(queries.wallet.settings(address).queryKey);
 
-  const currentData: TokenData[] | undefined = queryClient.getQueryData(
-    queries.token.list({
+  const currentData: TransactionData[] | undefined = queryClient.getQueryData(
+    queries.transaction.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      // is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<TokenData[] | null>({
-    queryKey: queries.token.list({
+  const { data } = useSuspenseQuery<TransactionData[] | null>({
+    queryKey: queries.transaction.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      // is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     queryFn: async () => {
-      const res = await getTokens({
+      const res = await getTransactions({
         params: {
           query: {
             address,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            // is_testnet: walletSettings?.is_enabled_testnet,
           },
         },
       });
@@ -111,13 +114,13 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
 
   const table = useReactTable({
-    data: data ?? ([] as TokenData[]),
+    data: data ?? ([] as TransactionData[]),
     columns: columns,
     state: {
-      sorting: tokenSorting,
-      columnVisibility: tokenColumnVisibility,
-      rowSelection: tokenRowSelection,
-      columnFilters: tokenColumnFilters,
+      sorting: transactionSorting,
+      columnVisibility: transactionColumnVisibility,
+      rowSelection: transactionRowSelection,
+      columnFilters: transactionColumnFilters,
       pagination: {
         pageIndex: 0,
         pageSize: -1,
@@ -170,7 +173,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
               </TableRow>
             ))
         ) : (
-          <TokensEmpty />
+          <TransactionsEmpty />
         )}
       </TableBody>
     </Table>

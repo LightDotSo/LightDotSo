@@ -25,6 +25,7 @@ import { NftPortfolio } from "@/components/nft/nft-portfolio";
 import { NftsList } from "@/components/nft/nfts-list";
 import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { TokensList } from "@/components/token/tokens-list";
+import { TransactionsList } from "@/components/transaction/transactions-list";
 import { OverviewSubCategory, TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -57,7 +58,7 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
       case OverviewSubCategory.NFTs:
         return <NftsList address={address} limit={6} />;
       case OverviewSubCategory.History:
-        return <TokensList address={address} />;
+        return <TransactionsList address={address} limit={6} />;
       default:
         return <></>;
     }

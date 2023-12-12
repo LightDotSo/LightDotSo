@@ -22,7 +22,11 @@ import { type FC } from "react";
 import { NftImage } from "@/components/nft/nft-image";
 import type { NftData } from "@/data";
 import { useAuth } from "@/stores/useAuth";
-import { getChainIdBySimplehashChainName } from "@/utils/chain";
+import { ChainLogo } from "@/svgs";
+import {
+  getChainBySimplehashChainName,
+  getChainIdBySimplehashChainName,
+} from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -33,6 +37,7 @@ type NftCardProps = {
   showName?: boolean;
   showDescription?: boolean;
   showSpamScore?: boolean;
+  showChain?: boolean;
 };
 
 // -----------------------------------------------------------------------------
@@ -41,6 +46,7 @@ type NftCardProps = {
 
 export const NftCard: FC<NftCardProps> = ({
   nft,
+  showChain = false,
   showName = true,
   showDescription = true,
   showSpamScore = false,
@@ -55,8 +61,19 @@ export const NftCard: FC<NftCardProps> = ({
       )}
     >
       <NftImage nft={nft} className="rounded-t-md" />
-      {(showName || showDescription) && (
+      {(showChain || showName || showDescription || showSpamScore) && (
         <div className="flex flex-col space-y-3 px-3 py-4">
+          {showChain && (
+            <div className="flex items-center text-xs text-text-weak">
+              {getChainIdBySimplehashChainName(nft.chain!) && (
+                <ChainLogo
+                  className="mr-1.5 h-4 w-4"
+                  chainId={getChainIdBySimplehashChainName(nft.chain!)}
+                />
+              )}
+              {getChainBySimplehashChainName(nft.chain!)?.name}
+            </div>
+          )}
           {showName && <div className="text-sm text-text">{nft.name}</div>}
           {showDescription && (
             <div className="text-xs text-text-weak"># {nft.token_id}</div>

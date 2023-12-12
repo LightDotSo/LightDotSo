@@ -28,8 +28,8 @@ export const columns: ColumnDef<NftData>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
-    enableSorting: false,
-    enableHiding: false,
+    enableSorting: true,
+    enableHiding: true,
   },
   {
     accessorKey: "spam_score",
