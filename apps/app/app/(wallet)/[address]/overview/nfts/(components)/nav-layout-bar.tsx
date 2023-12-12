@@ -17,6 +17,7 @@
 
 import { useEffect, type FC, useState } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table-toolbar";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
@@ -25,6 +26,7 @@ import { useTables } from "@/stores/useTables";
 
 export const NavLayoutBar: FC = () => {
   const { nftTable } = useTables();
+  const isMounted = useIsMounted();
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export const NavLayoutBar: FC = () => {
     useTables.persist.onFinishHydration(() => {
       setIsHydrated(true);
     });
-  }, []);
+  }, [isMounted]);
 
   // ---------------------------------------------------------------------------
   // Render
