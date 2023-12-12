@@ -75,10 +75,14 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     return uniqueChainValues;
   }, [currentData]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table.getColumn("chain") && (
+        {table && table.getColumn("chain") && (
           <DataTableFacetedFilter
             column={table.getColumn("chain")}
             title="Chain"
@@ -88,7 +92,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {table.getColumn("spam_score") && (
+        {table && table.getColumn("spam_score") && (
           <DataTableFacetedFilter
             column={table.getColumn("spam_score")}
             title="Spam"

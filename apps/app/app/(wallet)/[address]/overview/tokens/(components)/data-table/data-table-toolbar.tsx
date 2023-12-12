@@ -76,10 +76,14 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     return uniqueChainIdValues;
   }, [currentData]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table.getColumn("chain_id") && (
+        {table && table.getColumn("chain_id") && (
           <DataTableFacetedFilter
             column={table.getColumn("chain_id")}
             title="Chain"

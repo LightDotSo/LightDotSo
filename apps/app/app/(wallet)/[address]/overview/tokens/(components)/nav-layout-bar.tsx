@@ -15,7 +15,7 @@
 
 "use client";
 
-import { useEffect, type FC } from "react";
+import { useEffect, type FC, useState } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-toolbar";
 import { useTables } from "@/stores/useTables";
 
@@ -25,12 +25,20 @@ import { useTables } from "@/stores/useTables";
 
 export const NavLayoutBar: FC = () => {
   const { tokenTable } = useTables();
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
     useTables.persist.rehydrate();
+    useTables.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
   }, []);
 
-  if (!tokenTable) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!tokenTable || !isHydrated) {
     return null;
   }
 
