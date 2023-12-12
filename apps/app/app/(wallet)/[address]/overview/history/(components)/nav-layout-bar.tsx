@@ -15,8 +15,9 @@
 
 "use client";
 
-import type { FC } from "react";
+import { useEffect, type FC, useState } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-toolbar";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
@@ -25,8 +26,21 @@ import { useTables } from "@/stores/useTables";
 
 export const NavLayoutBar: FC = () => {
   const { transactionTable } = useTables();
+  const isMounted = useIsMounted();
+  const [isHydrated, setIsHydrated] = useState(false);
 
-  if (!transactionTable) {
+  useEffect(() => {
+    useTables.persist.rehydrate();
+    useTables.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
+  }, [isMounted]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!transactionTable || !isHydrated) {
     return null;
   }
 

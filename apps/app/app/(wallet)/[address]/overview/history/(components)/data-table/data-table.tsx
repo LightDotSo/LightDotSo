@@ -33,13 +33,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
 import type { TransactionData } from "@/data";
 import { useTables } from "@/stores/useTables";
 
@@ -58,26 +53,20 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // States
-  // ---------------------------------------------------------------------------
-
-  const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    ["spam_score"]: false,
-  });
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    {
-      id: "spam_score",
-      value: "0",
-    },
-  ]);
-  const [sorting, setSorting] = useState<SortingState>([]);
-
-  // ---------------------------------------------------------------------------
   // Store
   // ---------------------------------------------------------------------------
 
-  const { setTransactionTable } = useTables();
+  const {
+    transactionColumnFilters,
+    transactionColumnVisibility,
+    transactionRowSelection,
+    transactionSorting,
+    setTransactionColumnFilters,
+    setTransactionColumnVisibility,
+    setTransactionRowSelection,
+    setTransactionSorting,
+    setTransactionTable,
+  } = useTables();
 
   // ---------------------------------------------------------------------------
   // Table
@@ -87,10 +76,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     data,
     columns,
     state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
+      sorting: transactionSorting,
+      columnVisibility: transactionColumnVisibility,
+      rowSelection: transactionRowSelection,
+      columnFilters: transactionColumnFilters,
       pagination: {
         pageIndex: 0,
         pageSize: -1,
@@ -98,10 +87,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     },
     paginateExpandedRows: false,
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setTransactionRowSelection,
+    onSortingChange: setTransactionSorting,
+    onColumnFiltersChange: setTransactionColumnFilters,
+    onColumnVisibilityChange: setTransactionColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

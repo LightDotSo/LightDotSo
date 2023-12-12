@@ -63,7 +63,15 @@ type TablesStore = {
   setTokenRowSelection: OnChangeFn<RowSelectionState>;
   setTokenSorting: OnChangeFn<SortingState>;
   setTokenTable: (tableObject: Table<TokenData>) => void;
+  transactionColumnFilters: ColumnFiltersState;
+  transactionColumnVisibility: VisibilityState;
+  transactionRowSelection: RowSelectionState;
+  transactionSorting: SortingState;
   transactionTable: Table<TransactionData> | null;
+  setTransactionColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setTransactionColumnVisibility: OnChangeFn<VisibilityState>;
+  setTransactionRowSelection: OnChangeFn<RowSelectionState>;
+  setTransactionSorting: OnChangeFn<SortingState>;
   setTransactionTable: (tableObject: Table<TransactionData>) => void;
   walletTable: Table<WalletData> | null;
   setWalletTable: (tableObject: Table<WalletData>) => void;
@@ -160,7 +168,43 @@ export const useTables = create(
                 : sorting,
           })),
         setTokenTable: tableObject => set({ tokenTable: tableObject }),
+        transactionColumnFilters: [],
+        transactionColumnVisibility: {},
+        transactionRowSelection: {},
+        transactionSorting: [],
         transactionTable: null,
+        setTransactionColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            transactionColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.transactionColumnFilters)
+                : columnFilters,
+          })),
+        setTransactionColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            transactionColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.transactionColumnVisibility)
+                : columnVisibility,
+          })),
+        setTransactionRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            transactionRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.transactionRowSelection)
+                : rowSelection,
+          })),
+        setTransactionSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            transactionSorting:
+              sorting instanceof Function
+                ? sorting(prevState.transactionSorting)
+                : sorting,
+          })),
         setTransactionTable: tableObject =>
           set({ transactionTable: tableObject }),
         walletTable: null,
