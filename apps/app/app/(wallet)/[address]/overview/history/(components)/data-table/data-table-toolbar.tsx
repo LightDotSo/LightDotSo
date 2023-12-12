@@ -26,6 +26,7 @@ import { DataTableViewOptions } from "@/app/(wallet)/[address]/overview/history/
 import type { TransactionData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
+import { useTables } from "@/stores/useTables";
 import { getChainNameById } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
@@ -42,7 +43,7 @@ interface DataTableToolbarProps {
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const { transactionColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -82,7 +83,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {isFiltered && (
+        {transactionColumnFilters && transactionColumnFilters.length > 0 && (
           <Button
             variant="ghost"
             className="h-8 px-2 lg:px-3"

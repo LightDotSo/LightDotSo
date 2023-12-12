@@ -56,29 +56,30 @@ export function DataTableViewOptions({ table }: DataTableViewOptionsProps) {
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {table
-          .getAllColumns()
-          .filter(
-            column =>
-              typeof column.accessorFn !== "undefined" && column.getCanHide(),
-          )
-          .map(column => {
-            return (
-              <DropdownMenuCheckboxItem
-                key={column.id}
-                checked={column.getIsVisible()}
-                onCheckedChange={value => column.toggleVisibility(!!value)}
-              >
-                {column.id === "chain_id"
-                  ? "Chain"
-                  : column.id === "hash"
-                    ? "Tx Hash"
-                    : column.id === "timestamp"
-                      ? "Timestamp"
-                      : ""}
-              </DropdownMenuCheckboxItem>
-            );
-          })}
+        {table &&
+          table
+            .getAllColumns()
+            .filter(
+              column =>
+                typeof column.accessorFn !== "undefined" && column.getCanHide(),
+            )
+            .map(column => {
+              return (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  checked={column.getIsVisible()}
+                  onCheckedChange={value => column.toggleVisibility(!!value)}
+                >
+                  {column.id === "chain_id"
+                    ? "Chain"
+                    : column.id === "hash"
+                      ? "Tx Hash"
+                      : column.id === "timestamp"
+                        ? "Timestamp"
+                        : ""}
+                </DropdownMenuCheckboxItem>
+              );
+            })}
       </DropdownMenuContent>
     </DropdownMenu>
   );
