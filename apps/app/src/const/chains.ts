@@ -20,13 +20,26 @@ import {
   optimism,
   sepolia,
   polygonMumbai,
+  arbitrum,
+  gnosis,
+  bsc,
+  avalanche,
 } from "viem/chains";
 
 // -----------------------------------------------------------------------------
 // Mainnet
 // -----------------------------------------------------------------------------
 
-export const MAINNET_CHAINS = [mainnet, base, polygon, optimism];
+export const MAINNET_CHAINS = [
+  mainnet,
+  optimism,
+  bsc,
+  gnosis,
+  polygon,
+  base,
+  avalanche,
+  arbitrum,
+];
 
 // -----------------------------------------------------------------------------
 // Testnet

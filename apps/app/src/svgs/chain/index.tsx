@@ -25,6 +25,7 @@ import { AvalancheLogo } from "./avalanche";
 import { BaseLogo } from "./base";
 import { BscLogo } from "./bsc";
 import { EthereumLogo } from "./ethereum";
+import { GnosisLogo } from "./gnosis";
 import { OptimismLogo } from "./optimism";
 import { PolygonLogo } from "./polygon";
 import { getChainById, shortenName } from "@/utils";
@@ -77,16 +78,18 @@ export const ChainLogo: FC<ChainLogoProps> = ({
     // -------------------------------------------------------------------------
     case 1:
       return <EthereumLogo {...props} />;
+    case 10:
+      return <OptimismLogo {...props} />;
     case 56:
       return <BscLogo {...props} />;
+    case 100:
+      return <GnosisLogo {...props} />;
     case 137:
       return <PolygonLogo {...props} />;
     case 43114:
       return <AvalancheLogo {...props} />;
     case 42161:
       return <ArbitrumLogo {...props} />;
-    case 10:
-      return <OptimismLogo {...props} />;
     // -------------------------------------------------------------------------
     // Testnet
     // -------------------------------------------------------------------------

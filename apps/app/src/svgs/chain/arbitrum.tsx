@@ -28,7 +28,7 @@ export const ArbitrumLogo: React.ForwardRefExoticComponent<
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M1 1H23V23H1V1Z" fill="#495775" />
+    <rect x="1" y="1" width="22" height="22" rx="6" fill="#495775" />
     <path
       d="M12.031 13.969L13.735 16.642L15.309 15.73L13.071 12.204L12.031 13.969ZM16.743 14.658V13.928L14.298 10.12L13.391 11.659L15.751 15.476L16.604 14.981C16.6454 14.9476 16.6792 14.9058 16.7033 14.8584C16.7275 14.811 16.7413 14.7591 16.744 14.706L16.743 14.658Z"
       fill="#28A0F0"
