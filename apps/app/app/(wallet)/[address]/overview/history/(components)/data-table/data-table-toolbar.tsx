@@ -83,7 +83,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {transactionColumnFilters && transactionColumnFilters.length > 0 && (
+        {transactionColumnFilters.length > 0 && (
           <Button
             variant="ghost"
             className="h-8 px-2 lg:px-3"

@@ -83,7 +83,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table && table.getColumn("chain_id") && (
+        {table.getColumn("chain_id") && (
           <DataTableFacetedFilter
             column={table.getColumn("chain_id")}
             title="Chain"
@@ -93,7 +93,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {tokenColumnFilters && tokenColumnFilters.length > 0 && (
+        {tokenColumnFilters.length > 0 && (
           <Button
             variant="ghost"
             className="h-8 px-2 lg:px-3"

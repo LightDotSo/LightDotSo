@@ -82,7 +82,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table && table.getColumn("chain") && (
+        {table.getColumn("chain") && (
           <DataTableFacetedFilter
             column={table.getColumn("chain")}
             title="Chain"
@@ -92,7 +92,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {table && table.getColumn("spam_score") && (
+        {table.getColumn("spam_score") && (
           <DataTableFacetedFilter
             column={table.getColumn("spam_score")}
             title="Spam"
@@ -102,7 +102,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {nftColumnFilters && nftColumnFilters.length > 0 && (
+        {nftColumnFilters.length > 0 && (
           <Button
             variant="ghost"
             className="h-8 px-2 lg:px-3"
