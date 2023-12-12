@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { cn } from "@lightdotso/utils";
 import type {
   FC,
   ForwardRefExoticComponent,
@@ -47,12 +48,17 @@ export const TestnetChainLogoWrapper: FC<TestnetChainLogoWrapperProps> = ({
   ref: _,
   ...props
 }) => (
-  <div className="relative inline-block">
+  <span className="relative inline-block">
     <Logo {...props} />
-    <span className="absolute bottom-0 right-2 inline-flex h-2 w-2 items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger p-1 text-[6px]">
+    <span
+      className={cn(
+        "absolute bottom-0 right-0 inline-flex h-2 w-2 items-center justify-center rounded-full border border-border-primary-weak bg-background-stronger p-1 text-[6px]",
+        props.className?.includes("h-6 w-6") && "h-3 w-3 text-[8px]",
+      )}
+    >
       {shortenName(getChainById(chainId).name)}
     </span>
-  </div>
+  </span>
 );
 
 // -----------------------------------------------------------------------------
