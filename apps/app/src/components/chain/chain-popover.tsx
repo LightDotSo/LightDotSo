@@ -74,6 +74,7 @@ export const ChainPopover: FC = () => {
             {CHAINS.map(chain => (
               <CommandItem
                 key={chain.id}
+                className="flex items-center"
                 value={chain.id.toString()}
                 onSelect={currentValue => {
                   // Get the current chain from the chain id
@@ -85,7 +86,7 @@ export const ChainPopover: FC = () => {
                   );
                 }}
               >
-                <ChainLogo chainId={chain.id} className="mr-2 h-4 w-4" />
+                <ChainLogo chainId={chain.id} className="mr-2 h-5 w-5" />
                 {chain.name}
                 <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </CommandItem>
