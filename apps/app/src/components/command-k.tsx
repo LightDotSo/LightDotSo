@@ -104,7 +104,7 @@ export const CommandK: FC = () => {
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [onClearSearch, copyURIParams, copyDecodedURIParams]);
+  }, [onClearSearch, copyURIParams, copyDecodedURIParams, wallet, copy]);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
