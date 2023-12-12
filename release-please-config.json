@@ -1,9 +1,34 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "356126ba3b8dc33e4a906def65af811726e38c11",
+  "last-release-sha": "356126ba3b8dc33e4a906def65af811726e38c11",
+  "plugins": [],
+  "release-type": "simple",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "changelog-host": "https://github.com",
+  "release-as": "0.1.0",
+  "draft": false,
+  "prerelease": false,
+  "skip-github-release": false,
+  "always-link-local": false,
+  "separate-pull-requests": false,
+  "pull-request-title-pattern": "chore${scope}: release ${version}",
+  "group-pull-request-title-pattern": "chore${scope}: release v${version}",
+  "release-search-depth": 300,
+  "commit-search-depth": 3000,
+  "sequential-calls": false,
   "packages": {
     ".": {
-      "release-type": "node",
-      "include-component-in-tag": false
+      "release-type": "simple",
+      "include-component-in-tag": false,
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "package.json",
+          "jsonpath": "$.version"
+        }
+      ]
     }
   }
 }
