@@ -40,6 +40,8 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { FC } from "react";
 import { useCopy } from "@/hooks/useCopy";
+import { useAuth } from "@/stores/useAuth";
+import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -48,6 +50,7 @@ import { useCopy } from "@/hooks/useCopy";
 export const CommandK: FC = () => {
   const [open, setOpen] = useState(false);
   const [, copy] = useCopy();
+  const { wallet } = useAuth();
 
   const router = useRouter();
 
@@ -77,6 +80,13 @@ export const CommandK: FC = () => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setOpen(open => !open);
+      }
+      if (e.key === "a" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        if (wallet) {
+          copy(wallet);
+          successToast("Copied to clipboard");
+        }
       }
       if (e.key === "d" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();

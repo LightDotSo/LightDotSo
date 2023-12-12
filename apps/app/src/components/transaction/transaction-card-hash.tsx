@@ -39,8 +39,8 @@ export const TransactionCardHash: FC<TransactionCardHashProps> = ({
         className="group-hover:underline"
         target="_blank"
         rel="noreferrer"
-        href={`${getChainById(chain_id)?.blockExplorers?.default.url}/tx/${hash}
-          `}
+        href={`${getChainById(chain_id)?.blockExplorers?.default
+          .url}/tx/${hash}`}
       >
         {hash}
       </a>

@@ -32,7 +32,7 @@ import {
 } from "@lightdotso/ui";
 import { splitAddress } from "@lightdotso/utils";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, User } from "lucide-react";
+import { ChevronDown, Copy } from "lucide-react";
 import { useCallback, type FC } from "react";
 import type { Address } from "viem";
 import { useEnsName } from "wagmi";
@@ -109,7 +109,7 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="h-16 w-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="flex justify-start space-x-3 overflow-hidden text-ellipsis pr-3 text-left">
+      <div className="flex justify-start space-x-3 overflow-hidden text-ellipsis py-1 pl-1 pr-3 text-left">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -136,9 +136,9 @@ export const WalletOverviewBannerAddress: FC<
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={handleAddressClick}>
-                <User className="mr-2 h-4 w-4" />
+                <Copy className="mr-2 h-4 w-4" />
                 <span>Copy Address</span>
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                <DropdownMenuShortcut>⇧⌘A</DropdownMenuShortcut>
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
