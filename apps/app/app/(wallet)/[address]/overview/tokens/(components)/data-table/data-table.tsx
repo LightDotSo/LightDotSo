@@ -33,13 +33,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
 import type { TokenData } from "@/data";
 import { useTables } from "@/stores/useTables";
 
@@ -58,21 +53,20 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // States
-  // ---------------------------------------------------------------------------
-
-  const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    ["chain_id"]: false,
-  });
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
-
-  // ---------------------------------------------------------------------------
   // Store
   // ---------------------------------------------------------------------------
 
-  const { setTokenTable } = useTables();
+  const {
+    tokenColumnFilters,
+    tokenColumnVisibility,
+    tokenRowSelection,
+    tokenSorting,
+    setTokenColumnFilters,
+    setTokenColumnVisibility,
+    setTokenRowSelection,
+    setTokenSorting,
+    setTokenTable,
+  } = useTables();
 
   // ---------------------------------------------------------------------------
   // Table
@@ -82,16 +76,16 @@ export function DataTable({ columns, data }: DataTableProps) {
     data,
     columns,
     state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
+      sorting: tokenSorting,
+      columnVisibility: tokenColumnVisibility,
+      rowSelection: tokenRowSelection,
+      columnFilters: tokenColumnFilters,
     },
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setTokenRowSelection,
+    onSortingChange: setTokenSorting,
+    onColumnFiltersChange: setTokenColumnFilters,
+    onColumnVisibilityChange: setTokenColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

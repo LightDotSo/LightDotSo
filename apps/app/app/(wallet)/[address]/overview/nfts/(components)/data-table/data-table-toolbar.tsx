@@ -26,7 +26,6 @@ import { DataTableViewOptions } from "@/app/(wallet)/[address]/overview/nfts/(co
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
-import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,7 +41,7 @@ interface DataTableToolbarProps {
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const { nftColumnFilters } = useTables();
+  const isFiltered = table.getState().columnFilters.length > 0;
 
   // ---------------------------------------------------------------------------
   // Query
@@ -98,7 +97,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {nftColumnFilters && nftColumnFilters.length > 0 && (
+        {isFiltered && (
           <Button
             variant="ghost"
             className="h-8 px-2 lg:px-3"

@@ -53,7 +53,15 @@ type TablesStore = {
   setNftTable: (tableObject: Table<NftData>) => void;
   ownerTable: Table<ConfigurationOwnerData> | null;
   setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
+  tokenColumnFilters: ColumnFiltersState;
+  tokenColumnVisibility: VisibilityState;
+  tokenRowSelection: RowSelectionState;
+  tokenSorting: SortingState;
   tokenTable: Table<TokenData> | null;
+  setTokenColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setTokenColumnVisibility: OnChangeFn<VisibilityState>;
+  setTokenRowSelection: OnChangeFn<RowSelectionState>;
+  setTokenSorting: OnChangeFn<SortingState>;
   setTokenTable: (tableObject: Table<TokenData>) => void;
   transactionTable: Table<TransactionData> | null;
   setTransactionTable: (tableObject: Table<TransactionData>) => void;
@@ -114,7 +122,43 @@ export const useTables = create(
         setNftTable: tableObject => set({ nftTable: tableObject }),
         ownerTable: null,
         setOwnerTable: tableObject => set({ ownerTable: tableObject }),
+        tokenColumnFilters: [],
+        tokenColumnVisibility: { ["chain_id"]: false },
+        tokenRowSelection: {},
+        tokenSorting: [],
         tokenTable: null,
+        setTokenColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            tokenColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.tokenColumnFilters)
+                : columnFilters,
+          })),
+        setTokenColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            tokenColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.tokenColumnVisibility)
+                : columnVisibility,
+          })),
+        setTokenRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            tokenRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.tokenRowSelection)
+                : rowSelection,
+          })),
+        setTokenSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            tokenSorting:
+              sorting instanceof Function
+                ? sorting(prevState.tokenSorting)
+                : sorting,
+          })),
         setTokenTable: tableObject => set({ tokenTable: tableObject }),
         transactionTable: null,
         setTransactionTable: tableObject =>

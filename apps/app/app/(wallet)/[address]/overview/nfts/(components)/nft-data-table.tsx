@@ -16,12 +16,13 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table";
 import type { NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -51,6 +52,14 @@ export const NftsDataTable: FC<NftsDataTableProps> = ({ address }) => {
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    useTables.persist.rehydrate();
+  }, []);
 
   if (!nftPage) {
     return null;

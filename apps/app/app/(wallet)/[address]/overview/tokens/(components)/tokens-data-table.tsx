@@ -17,12 +17,13 @@
 
 import { getTokens } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -79,6 +80,14 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
       );
     },
   });
+
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    useTables.persist.rehydrate();
+  }, []);
 
   return (
     <div className="rounded-md border border-border bg-background p-4">
