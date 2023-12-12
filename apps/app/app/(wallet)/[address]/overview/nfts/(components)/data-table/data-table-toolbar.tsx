@@ -26,6 +26,7 @@ import { DataTableViewOptions } from "@/app/(wallet)/[address]/overview/nfts/(co
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -41,7 +42,7 @@ interface DataTableToolbarProps {
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const { nftColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -74,10 +75,14 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     return uniqueChainValues;
   }, [currentData]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table.getColumn("chain") && (
+        {table && table.getColumn("chain") && (
           <DataTableFacetedFilter
             column={table.getColumn("chain")}
             title="Chain"
@@ -87,7 +92,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {table.getColumn("spam_score") && (
+        {table && table.getColumn("spam_score") && (
           <DataTableFacetedFilter
             column={table.getColumn("spam_score")}
             title="Spam"
@@ -97,7 +102,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {isFiltered && (
+        {nftColumnFilters && nftColumnFilters.length > 0 && (
           <Button
             variant="ghost"
             className="h-8 px-2 lg:px-3"

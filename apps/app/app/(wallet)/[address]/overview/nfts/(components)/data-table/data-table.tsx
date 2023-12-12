@@ -24,13 +24,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsEmpty } from "@/components/nft/nfts-empty";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
@@ -52,26 +47,20 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // States
-  // ---------------------------------------------------------------------------
-
-  const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    ["spam_score"]: false,
-  });
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    {
-      id: "spam_score",
-      value: "0",
-    },
-  ]);
-  const [sorting, setSorting] = useState<SortingState>([]);
-
-  // ---------------------------------------------------------------------------
   // Store
   // ---------------------------------------------------------------------------
 
-  const { setNftTable } = useTables();
+  const {
+    nftColumnFilters,
+    nftColumnVisibility,
+    nftRowSelection,
+    nftSorting,
+    setNftColumnFilters,
+    setNftColumnVisibility,
+    setNftRowSelection,
+    setNftSorting,
+    setNftTable,
+  } = useTables();
 
   // ---------------------------------------------------------------------------
   // Table
@@ -81,10 +70,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     data,
     columns,
     state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
+      sorting: nftSorting,
+      columnVisibility: nftColumnVisibility,
+      rowSelection: nftRowSelection,
+      columnFilters: nftColumnFilters,
       pagination: {
         pageIndex: 0,
         pageSize: -1,
@@ -92,10 +81,10 @@ export function DataTable({ columns, data }: DataTableProps) {
     },
     paginateExpandedRows: false,
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setNftRowSelection,
+    onSortingChange: setNftSorting,
+    onColumnFiltersChange: setNftColumnFilters,
+    onColumnVisibilityChange: setNftColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
