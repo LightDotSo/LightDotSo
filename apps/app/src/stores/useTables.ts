@@ -127,7 +127,12 @@ export const useTables = create(
                 ? sorting(prevState.nftSorting)
                 : sorting,
           })),
-        setNftTable: tableObject => set({ nftTable: tableObject }),
+        setNftTable: tableObject =>
+          set({
+            nftTable: tableObject,
+            tokenTable: null,
+            transactionTable: null,
+          }),
         ownerTable: null,
         setOwnerTable: tableObject => set({ ownerTable: tableObject }),
         tokenColumnFilters: [],
@@ -167,7 +172,12 @@ export const useTables = create(
                 ? sorting(prevState.tokenSorting)
                 : sorting,
           })),
-        setTokenTable: tableObject => set({ tokenTable: tableObject }),
+        setTokenTable: tableObject =>
+          set({
+            tokenTable: tableObject,
+            nftTable: null,
+            transactionTable: null,
+          }),
         transactionColumnFilters: [],
         transactionColumnVisibility: {},
         transactionRowSelection: {},
@@ -206,7 +216,11 @@ export const useTables = create(
                 : sorting,
           })),
         setTransactionTable: tableObject =>
-          set({ transactionTable: tableObject }),
+          set({
+            transactionTable: tableObject,
+            nftTable: null,
+            tokenTable: null,
+          }),
         walletTable: null,
         setWalletTable: tableObject => set({ walletTable: tableObject }),
       }),
