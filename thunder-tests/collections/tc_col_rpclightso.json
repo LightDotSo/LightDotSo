@@ -51,11 +51,11 @@
       "colId": "be17b027-c42e-4599-813b-7c1a3479774a",
       "containerId": "",
       "name": "gas_requestGasEstimation",
-      "url": "https://rpc.light.so/11155111",
+      "url": "https://rpc.light.so/137",
       "method": "POST",
       "sortNum": 30000,
       "created": "2023-08-26T10:07:19.550Z",
-      "modified": "2023-09-21T19:33:51.946Z",
+      "modified": "2023-12-12T01:50:13.769Z",
       "headers": [
         {
           "name": "accept",

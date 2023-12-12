@@ -15,6 +15,7 @@
 
 "use client";
 
+import { getWalletSettings } from "@lightdotso/client";
 import {
   Command,
   CommandEmpty,
@@ -26,11 +27,16 @@ import {
   Button,
   PopoverContent,
 } from "@lightdotso/ui";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowUpRight, Network } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { FC } from "react";
-import { CHAINS } from "@/const/chains";
+import type { Address } from "viem";
+import { useQueryClient } from "wagmi";
+import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
+import type { WalletSettingsData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
+import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
 import { ChainLogo } from "@/svgs";
 
@@ -42,6 +48,55 @@ export const ChainPopover: FC = () => {
   const isMounted = useIsMounted();
   const { wallet } = useAuth();
   const [open, setOpen] = useState(false);
+
+  // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
+  const currentData: WalletSettingsData | undefined = queryClient.getQueryData([
+    "wallet_settings",
+    wallet,
+  ]);
+
+  const { data: walletSettings } = useSuspenseQuery<WalletSettingsData | null>({
+    queryKey: queries.wallet.settings(wallet as Address).queryKey,
+    queryFn: async () => {
+      if (!wallet) {
+        return null;
+      }
+
+      const res = await getWalletSettings({
+        params: {
+          query: {
+            address: wallet,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return currentData ?? null;
+        },
+      );
+    },
+  });
+  // ---------------------------------------------------------------------------
+  // Hooks
+  // ---------------------------------------------------------------------------
+
+  const chains = useMemo(() => {
+    return walletSettings?.is_enabled_testnet ? CHAINS : MAINNET_CHAINS;
+  }, [walletSettings?.is_enabled_testnet]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   // If the address is empty, return null
   if (!isMounted || !wallet) {
@@ -58,12 +113,12 @@ export const ChainPopover: FC = () => {
           aria-expanded={open}
         >
           <div className="inline-flex rounded-md bg-background-strong p-1">
-            {CHAINS.slice(0, 3).map(chain => (
+            {chains.slice(0, 3).map(chain => (
               <ChainLogo key={chain.id} chainId={chain.id} />
             ))}
           </div>
           <Network className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          <span className="ml-1">{CHAINS.length}</span>
+          <span className="ml-1">{chains.length}</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -71,13 +126,14 @@ export const ChainPopover: FC = () => {
           <CommandInput placeholder="Search chain..." />
           <CommandEmpty>No chain found.</CommandEmpty>
           <CommandGroup>
-            {CHAINS.map(chain => (
+            {chains.map(chain => (
               <CommandItem
                 key={chain.id}
+                className="flex items-center"
                 value={chain.id.toString()}
                 onSelect={currentValue => {
                   // Get the current chain from the chain id
-                  const currentChain = CHAINS.find(
+                  const currentChain = chains.find(
                     chain => chain.id === Number(currentValue),
                   );
                   window.open(
@@ -85,7 +141,7 @@ export const ChainPopover: FC = () => {
                   );
                 }}
               >
-                <ChainLogo chainId={chain.id} className="mr-2 h-4 w-4" />
+                <ChainLogo chainId={chain.id} className="mr-2 h-5 w-5" />
                 {chain.name}
                 <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </CommandItem>

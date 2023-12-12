@@ -92,7 +92,9 @@ export const Root: FC<RootProps> = ({ children }) => {
                       </div>
                       <div className="ml-auto flex items-center space-x-2.5">
                         {/* <Search /> */}
-                        <ChainPopover />
+                        <Suspense>
+                          <ChainPopover />
+                        </Suspense>
                         <FeedbackPopover />
                         <UserNav />
                         <ConnectButton />

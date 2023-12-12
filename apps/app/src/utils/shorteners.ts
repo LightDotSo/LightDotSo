@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export { getChainById } from "./chain";
-export { debounce } from "./debounce";
-export { errorToast, successToast, infoToast } from "./toast";
-export { serializeBigInt } from "./bigint";
-export { shortenName } from "./shorteners";
+export const shortenName = (name: string) => {
+  return name.match(/\b\w/g)?.join("").substring(0, 3);
+};

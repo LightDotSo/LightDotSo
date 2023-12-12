@@ -20,14 +20,11 @@ import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 import { useState, type FC, useEffect } from "react";
 import type { TokenData } from "@/data";
+import { shortenName } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Const
 // -----------------------------------------------------------------------------
-
-export const shortenName = (name: string) => {
-  return name.match(/\b\w/g)?.join("").substring(0, 3);
-};
 
 export const parseTokenAddress = (token: TokenData) => {
   if (
