@@ -12,6 +12,7 @@ jobs:
       tag-name: ${{ steps.release.outputs.tag_name }}
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - name: Fetch Head
         uses: actions/checkout@v4
@@ -20,10 +21,9 @@ jobs:
           fetch-depth: 0
       - name: Run release-please
         id: release
-        uses: google-github-actions/release-please-action@v3
+        uses: google-github-actions/release-please-action@v4
         with:
           token: ${{ secrets.BOT_TOKEN }}
-          command: manifest
       # - name: Git Config
       #   run: |
       #     git config user.name "LightDotSoBot"
