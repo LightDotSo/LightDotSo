@@ -15,7 +15,7 @@
 
 "use client";
 
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table-toolbar";
 import { useTables } from "@/stores/useTables";
 
@@ -25,6 +25,10 @@ import { useTables } from "@/stores/useTables";
 
 export const NavLayoutBar: FC = () => {
   const { nftTable } = useTables();
+
+  useEffect(() => {
+    useTables.persist.rehydrate();
+  }, []);
 
   if (!nftTable) {
     return null;
