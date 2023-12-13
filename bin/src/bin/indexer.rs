@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use clap::Parser;
+use eyre::Result;
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_db::db::create_client;
@@ -25,7 +26,7 @@ use lightdotso_tracing::{
 use std::sync::Arc;
 
 #[tokio::main]
-pub async fn main() {
+pub async fn main() -> Result<()> {
     // Initialize tracing
     let res = init_metrics();
     if let Err(e) = res {
@@ -49,7 +50,7 @@ pub async fn main() {
     let args = IndexerArgs::parse();
 
     // Create the db client
-    let db = Arc::new(create_client().await.unwrap());
+    let db = Arc::new(create_client().await?);
 
     // Construct the futures
     let indexer_future = args.run(db);
@@ -63,4 +64,6 @@ pub async fn main() {
         eprintln!("Error: {:?}", e);
         std::process::exit(1);
     }
+
+    Ok(())
 }

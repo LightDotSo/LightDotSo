@@ -5984,6 +5984,7 @@ dependencies = [
 name = "lightdotso-app"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "lazy_static",
  "lightdotso-prisma",
  "platform-dirs",
@@ -6381,6 +6382,7 @@ dependencies = [
 name = "lightdotso-redis"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "futures",
  "lazy_static",
  "lightdotso-tracing",

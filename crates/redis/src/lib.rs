@@ -15,13 +15,15 @@
 
 pub use redis;
 
+use eyre::Result;
+
 pub mod lock;
 mod namespace;
 pub mod wallet;
 
 // From: https://github.com/upstash/redis-examples/blob/27558e2192f7f0cd5b22e1869a433bbe96bad64d/using_redis-rs/src/main.rs
 /// Get a redis client from the environment variables
-pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
+pub fn get_redis_client() -> Result<redis::Client> {
     // Get the environment variables
     let host = std::env::var("UPSTASH_REDIS_HOST")?;
     let password = std::env::var("UPSTASH_REDIS_PASSWORD")?;
@@ -30,12 +32,12 @@ pub fn get_redis_client() -> Result<redis::Client, Box<dyn std::error::Error>> {
     // If host is localhost, connect to redis without password
     if host == "localhost" {
         let connection_link = format!("redis://{}:{}", host, port);
-        return redis::Client::open(connection_link).map_err(|e| e.into());
+        return Ok(redis::Client::open(connection_link)?);
     }
 
     // Format the connection link
     let connection_link = format!("rediss://default:{}@{}:{}", password, host, port);
 
     // Return the client
-    redis::Client::open(connection_link).map_err(|e| e.into())
+    Ok(redis::Client::open(connection_link)?)
 }

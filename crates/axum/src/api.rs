@@ -193,8 +193,8 @@ pub async fn start_api_server() -> Result<()> {
     info!("Starting API server");
 
     // Create a shared client
-    let db = Arc::new(create_client().await.unwrap());
-    let redis = get_redis_client().unwrap();
+    let db = Arc::new(create_client().await?);
+    let redis = get_redis_client()?;
     let state = AppState { client: db };
 
     // Allow CORS
