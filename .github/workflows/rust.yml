@@ -169,6 +169,7 @@ jobs:
           cargo clippy \
             --all-features \
             ${{ matrix.package }} \
+            --no-deps -D clippy::expect_used -D clippy::unwrap_used \
             --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
         continue-on-error: true
       - if: matrix.check
