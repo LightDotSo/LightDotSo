@@ -26,21 +26,24 @@ import {
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
-import type { TransactionData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableViewOptionsProps {
-  table: Table<TransactionData>;
+interface DataTableViewOptionsProps<TData> {
+  table: Table<TData>;
+  columnMapping: { [columnId: string]: string };
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableViewOptions({ table }: DataTableViewOptionsProps) {
+export function DataTableViewOptions<TData>({
+  table,
+  columnMapping,
+}: DataTableViewOptionsProps<TData>) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -56,30 +59,24 @@ export function DataTableViewOptions({ table }: DataTableViewOptionsProps) {
       <DropdownMenuContent align="end" className="w-[150px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {table &&
-          table
-            .getAllColumns()
-            .filter(
-              column =>
-                typeof column.accessorFn !== "undefined" && column.getCanHide(),
-            )
-            .map(column => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  checked={column.getIsVisible()}
-                  onCheckedChange={value => column.toggleVisibility(!!value)}
-                >
-                  {column.id === "chain_id"
-                    ? "Chain"
-                    : column.id === "hash"
-                      ? "Tx Hash"
-                      : column.id === "timestamp"
-                        ? "Timestamp"
-                        : ""}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
+        {table
+          .getAllColumns()
+          .filter(
+            column =>
+              typeof column.accessorFn !== "undefined" && column.getCanHide(),
+          )
+          .map(column => {
+            return (
+              <DropdownMenuCheckboxItem
+                key={column.id}
+                className="capitalize"
+                checked={column.getIsVisible()}
+                onCheckedChange={value => column.toggleVisibility(!!value)}
+              >
+                {columnMapping[column.id]}
+              </DropdownMenuCheckboxItem>
+            );
+          })}
       </DropdownMenuContent>
     </DropdownMenu>
   );

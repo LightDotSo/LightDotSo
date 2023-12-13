@@ -21,8 +21,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { Address } from "viem";
-import { DataTableViewOptions } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table-view-options";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
+import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
@@ -113,7 +113,15 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <DataTableViewOptions
+        table={table}
+        columnMapping={{
+          chain: "Chain",
+          name: "Name",
+          description: "Description",
+          spam_score: "Spam Score",
+        }}
+      />
     </>
   );
 }
