@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::signers::AwsSigner;
-use eyre::{Context, Result};
+use eyre::{eyre, Context, Result};
 use lightdotso_redis::{
     get_redis_client,
     lock::{LockGuard, LockManager},
@@ -94,10 +94,10 @@ impl KmsSigner {
             }
         }
         if lock.is_none() {
-            return Err(eyre::eyre!("could not lock any key_id"));
+            return Err(eyre!("could not lock any key_id"));
         }
         if kid.is_none() {
-            return Err(eyre::eyre!("could not lock any key_id"));
+            return Err(eyre!("could not lock any key_id"));
         }
 
         if let Some(kid) = kid {

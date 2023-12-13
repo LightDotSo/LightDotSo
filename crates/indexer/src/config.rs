@@ -15,7 +15,7 @@
 
 use crate::indexer::Indexer;
 use clap::Parser;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
 use std::sync::Arc;
@@ -68,7 +68,7 @@ impl IndexerArgs {
         // Check if the chain id is not 0
         if self.chain_id == 0 {
             // Return an error
-            return Err(eyre::eyre!("Chain id is 0"));
+            return Err(eyre!("Chain id is 0"));
         }
 
         // Construct the indexer

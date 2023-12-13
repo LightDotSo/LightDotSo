@@ -85,7 +85,7 @@ pub(crate) fn read_uint24(data: &[u8], index: usize) -> Result<(u32, usize), eyr
     let new_pointer = index + 3;
 
     if data.len() < new_pointer {
-        return Err(eyre::eyre!("index out of bounds of the input data"));
+        return Err(eyre!("index out of bounds of the input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -100,7 +100,7 @@ pub(crate) fn read_uint32(data: &[u8], index: usize) -> Result<(u32, usize), eyr
     let new_pointer = index + 4;
 
     if data.len() < new_pointer {
-        return Err(eyre::eyre!("Index out of bounds of the input data"));
+        return Err(eyre!("Index out of bounds of the input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -114,7 +114,7 @@ pub(crate) fn read_bytes32(data: &[u8], index: usize) -> Result<([u8; 32], usize
     let new_pointer = index + 32;
 
     if data.len() < new_pointer {
-        return Err(eyre::eyre!("index is out of bounds of the input data"));
+        return Err(eyre!("index is out of bounds of the input data"));
     }
 
     let slice = &data[index..new_pointer];

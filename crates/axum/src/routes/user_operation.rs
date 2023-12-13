@@ -30,7 +30,7 @@ use ethers_main::{
     types::H160,
     utils::{hex, to_checksum},
 };
-use eyre::{Report, Result};
+use eyre::{eyre, Report, Result};
 use lightdotso_common::{
     traits::{HexToBytes, VecU8ToHex},
     utils::hex_to_bytes,
@@ -972,7 +972,7 @@ async fn v1_user_operation_signature_handler(
             let owner = owners
                 .iter()
                 .find(|&owner| owner.id == sig.owner_id)
-                .ok_or(eyre::eyre!("Owner not found"))?;
+                .ok_or(eyre!("Owner not found"))?;
 
             let mut signature_slice = [0; ECDSA_SIGNATURE_LENGTH];
             let bytes = sig.signature.hex_to_bytes()?;

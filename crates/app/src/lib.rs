@@ -19,7 +19,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use crate::{constants::LIGHTDOTSO_DB, utils::get_lightdotso_dir};
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_prisma::{new_client_with_url, PrismaClient};
 use std::sync::Arc;
 
@@ -45,7 +45,7 @@ pub async fn create_db() -> Result<PrismaClient> {
         let client = new_client_with_url(&("file:".to_string() + library_url)).await?;
         Ok(client)
     } else {
-        Err(eyre::eyre!("Failed to create db"))
+        Err(eyre!("Failed to create db"))
     }
 }
 

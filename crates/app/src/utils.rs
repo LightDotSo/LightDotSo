@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::constants::{DEV_APP_DIR, LIGHTDOTSO_APP_DIR};
-use eyre::Result;
+use eyre::{eyre, Result};
 use std::path::PathBuf;
 
 // From: https://github.com/tomheaton/tauri-rspc-prisma/blob/e135a252a7c08d4a81847934ed73296c998f2753/core/src/utils.rs#L8
@@ -32,6 +32,6 @@ pub fn get_lightdotso_dir() -> Result<PathBuf> {
 
             Ok(data_dir)
         }
-        None => Err(eyre::eyre!("Failed to get lightdotso dir")),
+        None => Err(eyre!("Failed to get lightdotso dir")),
     }
 }
