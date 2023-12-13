@@ -77,7 +77,6 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             table.getColumn("address")?.setFilterValue(event.target.value)
           }
         />
-
         {table.getColumn("weight") && (
           <DataTableFacetedFilter
             column={table.getColumn("weight")}
@@ -90,7 +89,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         )}
         {isFiltered && (
           <Button
-            variant="ghost"
+            variant="outline"
             className="h-8 px-2 lg:px-3"
             onClick={() => table.resetColumnFilters()}
           >
