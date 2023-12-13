@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use eyre::Result;
 use lightdotso_solutions::{
     config::WalletConfig,
     types::{AddressSignatureLeaf, NestedLeaf, SignatureLeaf, Signer, SignerNode, SubdigestLeaf},
     utils::parse_hex_to_bytes32,
 };
-use eyre::Result;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_signatures() -> Result<()> {
