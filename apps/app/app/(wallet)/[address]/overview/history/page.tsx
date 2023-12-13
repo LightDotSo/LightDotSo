@@ -16,7 +16,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address } from "viem";
 import { HistoryDataTable } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table";
 import { HistoryDataTablePagination } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table-pagination";
