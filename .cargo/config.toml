@@ -16,7 +16,6 @@
 
 [build]
   rustflags = [
-    "--cfg",
     "-D",
     "warnings",
     "-D",
