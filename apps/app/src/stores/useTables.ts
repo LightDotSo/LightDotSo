@@ -183,7 +183,9 @@ export const useTables = create(
           set({
             nftTable: tableObject,
             tokenTable: null,
+            userOperationTable: null,
             transactionTable: null,
+            walletTable: null,
           }),
         ownerColumnFilters: [],
         ownerColumnVisibility: {},
@@ -237,8 +239,10 @@ export const useTables = create(
         setOwnerTable: tableObject =>
           set({
             ownerTable: tableObject,
+            userOperationTable: null,
             tokenTable: null,
             transactionTable: null,
+            walletTable: null,
           }),
         userOperationColumnFilters: [],
         userOperationColumnVisibility: {},
@@ -294,6 +298,8 @@ export const useTables = create(
             userOperationTable: tableObject,
             nftTable: null,
             transactionTable: null,
+            tokenTable: null,
+            walletTable: null,
           }),
         tokenColumnFilters: [],
         tokenColumnVisibility: { ["chain_id"]: false },
@@ -348,7 +354,9 @@ export const useTables = create(
           set({
             tokenTable: tableObject,
             nftTable: null,
+            userOperationTable: null,
             transactionTable: null,
+            walletTable: null,
           }),
         transactionColumnFilters: [],
         transactionColumnVisibility: {},
@@ -403,7 +411,9 @@ export const useTables = create(
           set({
             transactionTable: tableObject,
             nftTable: null,
+            userOperationTable: null,
             tokenTable: null,
+            walletTable: null,
           }),
         walletColumnFilters: [],
         walletColumnVisibility: {},
@@ -454,7 +464,14 @@ export const useTables = create(
                 ? sorting(prevState.walletSorting)
                 : sorting,
           })),
-        setWalletTable: tableObject => set({ walletTable: tableObject }),
+        setWalletTable: tableObject =>
+          set({
+            walletTable: tableObject,
+            nftTable: null,
+            userOperationTable: null,
+            tokenTable: null,
+            transactionTable: null,
+          }),
       }),
       {
         name: "table-state-v1",
