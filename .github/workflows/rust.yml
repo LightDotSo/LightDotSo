@@ -112,7 +112,7 @@ jobs:
           pnpm run build:turbo
       - if: matrix.workspace
         name: Set up Docker
-        uses: docker-practice/actions-setup-docker@master
+        uses: douglascamata/setup-docker-macos-action@main
       - if: matrix.workspace
         name: Docker Compose Up
         run: |
