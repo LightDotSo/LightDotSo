@@ -117,7 +117,7 @@ jobs:
         name: Docker Compose Up
         run: |
           docker-compose up -d --build
-      - if: matrix.workspace
+      - if: matrix.workspace || matrix.check
         name: Make Install
         run: |
           make install
