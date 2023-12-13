@@ -53,6 +53,7 @@ export const WalletsDataTable: FC = () => {
         params: {
           query: {
             owner: address,
+            limit: 300,
           },
         },
       });

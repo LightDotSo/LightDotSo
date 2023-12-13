@@ -54,7 +54,17 @@ type TablesStore = {
   setNftRowSelection: OnChangeFn<RowSelectionState>;
   setNftSorting: OnChangeFn<SortingState>;
   setNftTable: (tableObject: Table<NftData>) => void;
+  ownerColumnFilters: ColumnFiltersState;
+  ownerColumnVisibility: VisibilityState;
+  ownerPagination: PaginationState;
+  ownerRowSelection: RowSelectionState;
+  ownerSorting: SortingState;
   ownerTable: Table<ConfigurationOwnerData> | null;
+  setOwnerColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setOwnerColumnVisibility: OnChangeFn<VisibilityState>;
+  setOwnerPagination: OnChangeFn<PaginationState>;
+  setOwnerRowSelection: OnChangeFn<RowSelectionState>;
+  setOwnerSorting: OnChangeFn<SortingState>;
   setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
   tokenColumnFilters: ColumnFiltersState;
   tokenColumnVisibility: VisibilityState;
@@ -162,8 +172,61 @@ export const useTables = create(
             tokenTable: null,
             transactionTable: null,
           }),
+        ownerColumnFilters: [],
+        ownerColumnVisibility: {},
+        ownerPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
+        ownerRowSelection: {},
+        ownerSorting: [],
         ownerTable: null,
-        setOwnerTable: tableObject => set({ ownerTable: tableObject }),
+        setOwnerColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            ownerColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.ownerColumnFilters)
+                : columnFilters,
+          })),
+        setOwnerColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            ownerColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.ownerColumnVisibility)
+                : columnVisibility,
+          })),
+        setOwnerPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            ownerPagination:
+              pagination instanceof Function
+                ? pagination(prevState.ownerPagination)
+                : pagination,
+          })),
+        setOwnerRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            ownerRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.ownerRowSelection)
+                : rowSelection,
+          })),
+        setOwnerSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            ownerSorting:
+              sorting instanceof Function
+                ? sorting(prevState.ownerSorting)
+                : sorting,
+          })),
+        setOwnerTable: tableObject =>
+          set({
+            ownerTable: tableObject,
+            tokenTable: null,
+            transactionTable: null,
+          }),
         tokenColumnFilters: [],
         tokenColumnVisibility: { ["chain_id"]: false },
         tokenPagination: {
