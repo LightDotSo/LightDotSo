@@ -124,7 +124,7 @@ jobs:
       - name: Make Prisma
         run: |
           pnpm turbo run prisma
-      - if: matrix.workspace
+      - if: matrix.workspace || matrix.check
         name: Make Rundler
         run: |
           make rundler
