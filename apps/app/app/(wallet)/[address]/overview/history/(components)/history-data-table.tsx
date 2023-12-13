@@ -66,6 +66,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
         params: {
           query: {
             address,
+            limit: transactionPagination.pageSize,
           },
         },
       });
