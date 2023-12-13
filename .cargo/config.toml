@@ -17,9 +17,12 @@
 [build]
   rustflags = [
     "--cfg",
-    "-D warnings",
-    "-D clippy::expect_used",
-    "-D clippy::unwrap_used",
+    "-D",
+    "warnings",
+    "-D",
+    "clippy::expect_used",
+    "-D",
+    "clippy::unwrap_used",
   ]
 
 [target.x86_64-apple-darwin]
