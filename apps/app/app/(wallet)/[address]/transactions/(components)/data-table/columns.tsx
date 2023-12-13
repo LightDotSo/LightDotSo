@@ -20,6 +20,7 @@ import { DataTableColumnHeader } from "@/components/data-table/data-table-column
 import { UserOperationCardChain } from "@/components/user-operation/user-operation-card-chain";
 import { UserOperationCardHash } from "@/components/user-operation/user-operation-card-hash";
 import { UserOperationCardNonce } from "@/components/user-operation/user-operation-card-nonce";
+import { UserOperationCardStatus } from "@/components/user-operation/user-operation-card-status";
 import type { UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
@@ -43,7 +44,7 @@ export const columns: ColumnDef<UserOperationData>[] = [
     accessorKey: "hash",
     cell: ({ row }) => <UserOperationCardHash userOperation={row.original} />,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tx Hash" />
+      <DataTableColumnHeader column={column} title="User Operation Hash" />
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -57,6 +58,18 @@ export const columns: ColumnDef<UserOperationData>[] = [
       <DataTableColumnHeader column={column} title="Nonce" />
     ),
     cell: ({ row }) => <UserOperationCardNonce userOperation={row.original} />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => <UserOperationCardStatus userOperation={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },

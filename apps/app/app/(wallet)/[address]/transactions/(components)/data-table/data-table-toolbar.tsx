@@ -98,8 +98,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         table={table}
         columnMapping={{
           chain_id: "Chain",
-          hash: "Tx Hash",
-          timestamp: "Timestamp",
+          hash: "User Operation Hash",
+          nonce: "Nonce",
+          status: "Status",
         }}
       />
     </>
