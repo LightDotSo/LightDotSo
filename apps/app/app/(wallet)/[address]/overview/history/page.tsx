@@ -19,6 +19,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
 import { HistoryDataTable } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table";
+import { HistoryDataTablePagination } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table-pagination";
 import { preloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
 import { queries } from "@/queries";
 import { getQueryClient, getTransactions } from "@/services";
@@ -64,9 +65,8 @@ export default async function Page({ params }: PageProps) {
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense>
-            <HistoryDataTable address={params.address as Address} />
-          </Suspense>
+          <HistoryDataTable address={params.address as Address} />
+          <HistoryDataTablePagination />
         </HydrationBoundary>
       );
     },
