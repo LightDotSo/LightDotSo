@@ -19,7 +19,7 @@ use ethers::{
     types::{H256, U256},
     utils::keccak256,
 };
-use eyre::Result;
+use eyre::{eyre, Result};
 use serde::{Deserialize, Serialize};
 
 /// The struct representation of a wallet config
@@ -49,22 +49,28 @@ impl WalletConfig {
     // Requires the internal_root to be set before calling this function
     // internal_root is computed by the module
     pub fn image_hash_of_wallet_config(&self) -> Result<[u8; 32]> {
-        Ok(keccak256(encode(&[
-            Token::FixedBytes(
-                keccak256(encode(&[
-                    Token::FixedBytes(self.internal_root.unwrap().0.to_vec()),
-                    Token::Uint(U256::from(self.threshold)),
-                ]))
-                .to_vec(),
-            ),
-            Token::Uint(U256::from(self.checkpoint)),
-        ])))
+        if let Some(internal_root) = self.internal_root {
+            Ok(keccak256(encode(&[
+                Token::FixedBytes(
+                    keccak256(encode(&[
+                        Token::FixedBytes(internal_root.0.to_vec()),
+                        Token::Uint(U256::from(self.threshold)),
+                    ]))
+                    .to_vec(),
+                ),
+                Token::Uint(U256::from(self.checkpoint)),
+            ])))
+        }
+        // If the internal root is not set, return an error
+        else {
+            Err(eyre!("Internal root is not set"))
+        }
     }
 
     /// Regenerate the image hash of the wallet config from the internal tree root to the image hash
     /// setter
     pub fn regenerate_image_hash(&mut self, subdigest: [u8; 32]) -> Result<[u8; 32]> {
-        self.internal_root = Some(self.tree.calculate_image_hash_from_node(subdigest).into());
+        self.internal_root = Some(self.tree.calculate_image_hash_from_node(subdigest)?.into());
         self.image_hash_of_wallet_config()
     }
 
@@ -128,9 +134,9 @@ mod tests {
     };
 
     #[test]
-    fn test_image_hash_of_wallet_config() {
+    fn test_image_hash_of_wallet_config() -> Result<()> {
         let leaf = ECDSASignatureLeaf {
-            address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+            address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse()?,
             signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
             signature: [0u8; 65].into(),
         };
@@ -150,38 +156,38 @@ mod tests {
             internal_root: Some(
                 parse_hex_to_bytes32(
                     "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
-                )
-                .unwrap()
+                )?
                 .into(),
             ),
         };
 
         let expected = parse_hex_to_bytes32(
             "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6",
-        )
-        .unwrap();
-        assert_eq!(expected, wc.image_hash_of_wallet_config().unwrap());
+        )?;
+        assert_eq!(expected, wc.image_hash_of_wallet_config()?);
+
+        Ok(())
     }
 
     #[test]
-    fn test_is_wallet_valid() {
+    fn test_is_wallet_valid() -> Result<()> {
         // Define some dummy signers
         let signer1 = Signer {
             weight: Some(1),
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                address: "0x6FFEcCF6F31e0a469D55DEdE5651D34A6ECd9FC5".parse().unwrap(),
+                address: "0x6FFEcCF6F31e0a469D55DEdE5651D34A6ECd9FC5".parse()?,
             }),
         };
         let signer2 = Signer {
             weight: Some(3),
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse().unwrap(),
+                address: "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed".parse()?,
             }),
         };
         let signer3 = Signer {
             weight: Some(6),
             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                address: "0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf".parse().unwrap(),
+                address: "0x2aF8DDAb77A7c90a38CF26F29763365D0028cfEf".parse()?,
             }),
         };
 
@@ -217,5 +223,7 @@ mod tests {
         // The config has invalid threshold
         config.threshold = 100;
         assert!(!config.is_wallet_valid());
+
+        Ok(())
     }
 }

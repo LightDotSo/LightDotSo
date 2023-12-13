@@ -66,7 +66,7 @@ impl PaymasterArgs {
                 );
 
                 // Add the paymaster server
-                server.add_methods(PaymasterApi {}.into_rpc(), JsonRpcServerType::Http).unwrap();
+                server.add_methods(PaymasterApi {}.into_rpc(), JsonRpcServerType::Http)?;
 
                 // Start the server
                 let handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));

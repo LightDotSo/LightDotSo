@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     error::RouteError,
     result::{AppError, AppJsonResult},
@@ -692,7 +694,7 @@ async fn v1_user_operation_post_handler(
         digest_chain_id as u64,
         sender_address,
         user_operation_hash.hex_to_bytes32()?,
-    );
+    )?;
     info!(?subdigest);
 
     let recovered_sig = recover_ecdsa_signature(&sig_bytes, &subdigest, 0)?;
@@ -759,7 +761,7 @@ async fn v1_user_operation_post_handler(
     if user_operation.paymaster_and_data.len() > 2 {
         let paymaster_data = user_operation.paymaster_and_data.hex_to_bytes()?;
         let (decded_paymaster_address, _, valid_after, _msg) =
-            decode_paymaster_and_data(paymaster_data);
+            decode_paymaster_and_data(paymaster_data)?;
 
         let paymaster = client
             .clone()

@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::Address;
+use eyre::Result;
 use lightdotso_solutions::{
     config::WalletConfig,
     io::{read_wallet_config, write_wallet_config},
@@ -25,22 +26,24 @@ use lightdotso_solutions::{
 };
 
 #[test]
-fn test_wallet_config_from_json() {
+fn test_wallet_config_from_json() -> Result<()> {
     // Load JSON from file
-    let wallet_config = read_wallet_config("tests/samples/sample1_out.json").unwrap();
+    let wallet_config = read_wallet_config("tests/samples/sample1_out.json")?;
 
     // Parse JSON to WalletConfig
-    // let wallet_config: WalletConfig = serde_json::from_str(&wallet_config_json).unwrap();
+    // let wallet_config: WalletConfig = serde_json::from_str(&wallet_config_json)?;
 
     // Now you can use your WalletConfig struct
     println!("Checkpoint: {}", &wallet_config.checkpoint);
     // add more tests...
+
+    Ok(())
 }
 
 #[test]
-fn test_wallet_ecdsa_to_json() {
+fn test_wallet_ecdsa_to_json() -> Result<()> {
     let ecdsa_leaf = ECDSASignatureLeaf {
-        address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+        address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse()?,
         signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
         signature: [0u8; 65].into(),
     };
@@ -66,22 +69,24 @@ fn test_wallet_ecdsa_to_json() {
     println!("Checkpoint: {}", config.checkpoint);
 
     // Write WalletConfig back to a different JSON file
-    write_wallet_config(&config, "tests/samples/sample2_out.json").unwrap();
+    write_wallet_config(&config, "tests/samples/sample2_out.json")?;
 
-    let wallet_config = read_wallet_config("tests/samples/sample2_out.json").unwrap();
+    let wallet_config = read_wallet_config("tests/samples/sample2_out.json")?;
 
     // Parse JSON to WalletConfig
-    // let wallet_config: WalletConfig = serde_json::from_str(&wallet_config_json).unwrap();
+    // let wallet_config: WalletConfig = serde_json::from_str(&wallet_config_json)?;
 
     // Now you can use your WalletConfig struct
     println!("Checkpoint: {}", &wallet_config.checkpoint);
     // add more tests...
+
+    Ok(())
 }
 
 #[test]
-fn test_wallet_complex_to_json() {
+fn test_wallet_complex_to_json() -> Result<()> {
     let ecdsa_leaf = ECDSASignatureLeaf {
-        address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+        address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse()?,
         signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
         signature: [0u8; 65].into(),
     };
@@ -144,7 +149,7 @@ fn test_wallet_complex_to_json() {
                 signer: Some(Signer {
                     weight: Some(2),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0x1111111111111111111111111111111111111111".parse().unwrap(),
+                        address: "0x1111111111111111111111111111111111111111".parse()?,
                     }),
                 }),
             })),
@@ -163,14 +168,16 @@ fn test_wallet_complex_to_json() {
     println!("Checkpoint: {}", config.checkpoint);
 
     // Write WalletConfig back to a different JSON file
-    write_wallet_config(&config, "tests/samples/sample3_out.json").unwrap();
+    write_wallet_config(&config, "tests/samples/sample3_out.json")?;
 
-    let wallet_config = read_wallet_config("tests/samples/sample3_out.json").unwrap();
+    let wallet_config = read_wallet_config("tests/samples/sample3_out.json")?;
 
     // Parse JSON to WalletConfig
-    // let wallet_config: WalletConfig = serde_json::from_str(&wallet_config_json).unwrap();
+    // let wallet_config: WalletConfig = serde_json::from_str(&wallet_config_json)?;
 
     // Now you can use your WalletConfig struct
     println!("Checkpoint: {}", &wallet_config.checkpoint);
+
     // add more tests...
+    Ok(())
 }

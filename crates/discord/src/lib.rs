@@ -13,24 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use eyre::Result;
 use serenity::{
     http::Http,
     json::Value,
     model::{channel::Embed, webhook::Webhook},
 };
 
-pub async fn notify(webhook: &str, content: Value) {
+pub async fn notify(webhook: &str, content: Value) -> Result<()> {
     // You don't need a token when you are only dealing with webhooks.
     let http = Http::new("");
-    let webhook =
-        Webhook::from_url(&http, webhook).await.expect("Replace the webhook with your own");
+    let webhook = Webhook::from_url(&http, webhook).await?;
 
     webhook
         .execute(&http, false, |w| {
             w.content(content).username("LightDotSo").avatar_url("https://assets.light.so/icon.png")
         })
-        .await
-        .expect("Could not execute webhook.");
+        .await?;
+
+    Ok(())
 }
 
 pub async fn notify_create_wallet(
@@ -38,7 +39,7 @@ pub async fn notify_create_wallet(
     address: &str,
     chain_id: &str,
     transaction_hash: &str,
-) {
+) -> Result<()> {
     let embed = Embed::fake(|e| {
         e.title("Wallet Created")
             .description(format!(
@@ -48,5 +49,7 @@ pub async fn notify_create_wallet(
             .color(0x00ff00)
     });
 
-    notify(webhook, embed).await;
+    notify(webhook, embed).await?;
+
+    Ok(())
 }

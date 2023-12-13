@@ -36,7 +36,7 @@ impl Notifier {
         info!("Notifier run, starting");
 
         if let Some(webhook) = &self.webhook {
-            notify_create_wallet(
+            let _ = notify_create_wallet(
                 webhook,
                 "&to_checksum(address, None)",
                 "&self.chain_id.to_string()",

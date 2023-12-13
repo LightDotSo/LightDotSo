@@ -51,7 +51,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_write_config_to_json() {
+    fn test_write_config_to_json() -> Result<()> {
         let config = WalletConfig {
             signature_type: 0,
             checkpoint: 0,
@@ -66,7 +66,9 @@ mod tests {
         println!("Checkpoint: {}", config.checkpoint);
 
         // Write WalletConfig back to a different JSON file
-        write_wallet_config(&config, "tests/samples/sample1_out.json").unwrap();
-        read_wallet_config("tests/samples/sample1_out.json").unwrap();
+        write_wallet_config(&config, "tests/samples/sample1_out.json")?;
+        read_wallet_config("tests/samples/sample1_out.json")?;
+
+        Ok(())
     }
 }

@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     config::IndexerArgs,
     namespace::{ERC1155, ERC20, ERC721, ETH, IMAGE_HASH_UPDATED, LIGHT_WALLET_INITIALIZED},

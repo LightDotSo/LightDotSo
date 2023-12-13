@@ -50,13 +50,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_config_1() {
+    fn test_config_1() -> Result<()> {
         let members = vec![
             SignerNode {
                 signer: Some(Signer {
                     weight: Some(2),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse()?,
                     }),
                 }),
                 left: None,
@@ -68,8 +68,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -82,8 +81,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -94,7 +92,7 @@ mod tests {
                 signer: Some(Signer {
                     weight: Some(1),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse().unwrap(),
+                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse()?,
                     }),
                 }),
                 left: None,
@@ -102,12 +100,14 @@ mod tests {
             },
         ];
 
-        let node = rooted_node_builder(members).unwrap();
+        let node = rooted_node_builder(members)?;
         insta::assert_debug_snapshot!(node);
+
+        Ok(())
     }
 
     #[test]
-    fn test_config_2() {
+    fn test_config_2() -> Result<()> {
         let members = vec![
             SignerNode {
                 signer: Some(Signer {
@@ -115,8 +115,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000000",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -129,8 +128,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000001",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -143,8 +141,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000002",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -157,8 +154,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000003",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -171,8 +167,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000004",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -185,8 +180,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000005",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -199,8 +193,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000006",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -213,8 +206,7 @@ mod tests {
                     leaf: SignatureLeaf::SubdigestSignature(SubdigestLeaf {
                         hash: parse_hex_to_bytes32(
                             "0x0000000000000000000000000000000000000000000000000000000000000007",
-                        )
-                        .unwrap()
+                        )?
                         .into(),
                     }),
                 }),
@@ -223,12 +215,14 @@ mod tests {
             },
         ];
 
-        let node = rooted_node_builder(members).unwrap();
+        let node = rooted_node_builder(members)?;
         insta::assert_debug_snapshot!(node);
+
+        Ok(())
     }
 
     #[test]
-    fn test_config_3() {
+    fn test_config_3() -> Result<()> {
         let members = vec![
             SignerNode {
                 signer: Some(Signer {
@@ -248,7 +242,7 @@ mod tests {
                                 signer: Some(Signer {
                                     weight: Some(2),
                                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse()?,
                                     }),
                                 }),
                                 left: None,
@@ -263,7 +257,7 @@ mod tests {
                                         hash: parse_hex_to_bytes32(
                                             "0x0000000000000000000000000000000000000000000000000000000000000006",
                                         )
-                                        .unwrap()
+                                        ?
                                         .into(),
                                     }),
                                 }),
@@ -281,7 +275,7 @@ mod tests {
                                 hash: parse_hex_to_bytes32(
                                     "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df10000000000000000",
                                 )
-                                .unwrap()
+                                ?
                                 .into(),
                             }),
                         }),
@@ -297,7 +291,7 @@ mod tests {
                         hash: parse_hex_to_bytes32(
                             "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
                         )
-                        .unwrap()
+                        ?
                         .into(),
                     }),
                 }),
@@ -311,7 +305,7 @@ mod tests {
                         hash: parse_hex_to_bytes32(
                             "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
                         )
-                        .unwrap()
+                        ?
                         .into(),
                     }),
                 }),
@@ -322,7 +316,7 @@ mod tests {
                 signer: Some(Signer {
                     weight: Some(1),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse().unwrap(),
+                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse()?,
                     }),
                 }),
                 left: None,
@@ -330,7 +324,9 @@ mod tests {
             },
         ];
 
-        let node = rooted_node_builder(members).unwrap();
+        let node = rooted_node_builder(members)?;
         insta::assert_debug_snapshot!(node);
+
+        Ok(())
     }
 }

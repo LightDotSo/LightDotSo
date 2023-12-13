@@ -47,9 +47,7 @@ impl SimulatorArgs {
                 );
 
                 // Add the simulator server
-                server
-                    .add_methods(SimulatorServerImpl {}.into_rpc(), JsonRpcServerType::Http)
-                    .unwrap();
+                server.add_methods(SimulatorServerImpl {}.into_rpc(), JsonRpcServerType::Http)?;
 
                 // Start the server
                 let _handle = server.start().await.map_err(|e| eyre!("Error in handle: {:?}", e));

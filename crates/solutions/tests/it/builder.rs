@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use eyre::Result;
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     recover::recover_signature,
@@ -26,26 +27,24 @@ const SIGNATURES: &[&str] = &[
 ];
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_rooted_builder() {
+async fn test_integration_rooted_builder() -> Result<()> {
     for (i, signature) in SIGNATURES.iter().enumerate() {
         println!("{}", i);
 
-        let sig = from_hex_string(signature).unwrap().into();
+        let sig = from_hex_string(signature)?.into();
         // Notice that the recovered addresses are hypothetical as we don't have the original
         // user_op_hash that was used for the subdigest.
         let user_op_hash = parse_hex_to_bytes32(
             "0x4fc471aea4f6850725688fbdba63383a7678b9dcba1b4ae9a837bf3d01a1833e",
-        )
-        .unwrap();
+        )?;
 
         let config = recover_signature(
-            "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse().unwrap(),
+            "0xFbd80Fe5cE1ECe895845Fd131bd621e2B6A1345F".parse()?,
             11155111,
             user_op_hash,
             sig,
         )
-        .await
-        .unwrap();
+        .await?;
 
         println!("signers: {:?}", config.tree.get_signers());
 
@@ -56,7 +55,7 @@ async fn test_integration_rooted_builder() {
             .collect::<Vec<_>>();
 
         // Build the tree
-        let new_config_tree = rooted_node_builder(signer_nodes).unwrap();
+        let new_config_tree = rooted_node_builder(signer_nodes)?;
 
         println!("new signer tree: {:?}", new_config_tree.clone());
         println!("signers tree: {:?}", config.tree);
@@ -64,4 +63,6 @@ async fn test_integration_rooted_builder() {
         insta::assert_debug_snapshot!(format!("{}-config", i.to_string()), config.clone().tree);
         insta::assert_debug_snapshot!(format!("{}-config", i.to_string()), new_config_tree.clone());
     }
+
+    Ok(())
 }

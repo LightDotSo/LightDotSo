@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     constants::USER_ID_KEY,
     error::RouteError,
@@ -418,7 +420,7 @@ async fn v1_wallet_post_handler(
     let image_hash_bytes: H256 = image_hash.into();
 
     // Calculate the new wallet address.
-    let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
+    let new_wallet_address = get_address(image_hash_bytes, salt_bytes)?;
 
     // Check if the wallet configuration is valid.
     let valid = config.is_wallet_valid();

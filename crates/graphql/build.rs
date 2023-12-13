@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-fn main() {
+use eyre::Result;
+
+fn main() -> Result<()> {
     cynic_codegen::register_schema("graph")
-        .from_sdl_file("./schemas/graph.graphql")
-        .unwrap()
-        .as_default()
-        .unwrap();
+        .from_sdl_file("./schemas/graph.graphql")?
+        .as_default()?;
+
+    Ok(())
 }

@@ -2340,6 +2340,7 @@ dependencies = [
 name = "desktop"
 version = "0.0.0"
 dependencies = [
+ "eyre",
  "serde",
  "serde_json",
  "tauri",
@@ -6161,6 +6162,7 @@ dependencies = [
 name = "lightdotso-discord"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "serenity",
  "tokio",
 ]
@@ -6256,6 +6258,7 @@ dependencies = [
 name = "lightdotso-kafka"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "lazy_static",
  "lightdotso-tracing",
  "rdkafka",

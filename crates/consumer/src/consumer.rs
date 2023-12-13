@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::config::ConsumerArgs;
+#![allow(clippy::expect_used)]
+#![allow(clippy::unwrap_used)]
 
+use crate::config::ConsumerArgs;
 use backon::{ExponentialBuilder, Retryable};
 use clap::Parser;
 use ethers::types::{Block, H256};

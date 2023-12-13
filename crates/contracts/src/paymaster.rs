@@ -18,7 +18,8 @@ use ethers::{
     providers::{Http, Provider},
     types::Address,
 };
-use eyre::Result;
+use eyre::{Context, Result};
+use std::convert::TryInto;
 
 use crate::provider::get_provider;
 
@@ -39,18 +40,20 @@ pub async fn get_paymaster(
 }
 
 /// Construct the paymaster and data.
-pub fn decode_paymaster_and_data(msg: Vec<u8>) -> (Address, u64, u64, Vec<u8>) {
+pub fn decode_paymaster_and_data(msg: Vec<u8>) -> Result<(Address, u64, u64, Vec<u8>)> {
     // Get the verifying paymaster address.
     let verifying_paymaster_address = Address::from_slice(&msg[0..20]);
 
     // Get the valid until.
-    let valid_until = u64::from_be_bytes(msg[44..52].try_into().unwrap());
+    let valid_until =
+        u64::from_be_bytes(msg[44..52].try_into().wrap_err("Failed to convert valid_until data")?);
     // Get the valid after.
-    let valid_after = u64::from_be_bytes(msg[76..84].try_into().unwrap());
+    let valid_after =
+        u64::from_be_bytes(msg[76..84].try_into().wrap_err("Failed to convert valid_after data")?);
     // Get the signature.
     let signature = msg[84..].to_vec();
 
-    (verifying_paymaster_address, valid_until, valid_after, signature)
+    Ok((verifying_paymaster_address, valid_until, valid_after, signature))
 }
 
 #[cfg(test)]
@@ -58,6 +61,7 @@ mod tests {
     use super::*;
     use crate::constants::LIGHT_PAYMASTER_ADDRESSES;
     use ethers::utils::hex;
+    use eyre::Result;
 
     #[ignore]
     #[tokio::test]
@@ -75,13 +79,13 @@ mod tests {
     }
 
     #[test]
-    fn test_decode_paymaster_and_data() {
+    fn test_decode_paymaster_and_data() -> Result<()> {
         // Get the expected msg.
         let expected_msg: Vec<u8> = hex::decode("0dcd1bf9a1b36ce34237eeafef220931846bcd8200000000000000000000000000000000000000000000000000000000deadbeef0000000000000000000000000000000000000000000000000000000000001234dd74227f0b9c29afe4ffa17a1d0076230f764cf3cb318a4e670a47e9cd97e6b75ee38c587228a59bb37773a89066a965cc210c49891a662af5f14e9e5e74d6a51c").unwrap();
 
         // Decode the paymaster and data.
         let (verifying_paymaster_address, valid_until, valid_after, signature) =
-            decode_paymaster_and_data(expected_msg);
+            decode_paymaster_and_data(expected_msg)?;
 
         // Expected result.
         let expected_verifying_paymaster_address =
@@ -95,6 +99,8 @@ mod tests {
         assert_eq!(valid_until, expected_valid_until);
         assert_eq!(valid_after, expected_valid_after);
         assert_eq!(signature, expected_signature);
+
+        Ok(())
     }
 
     // #1
@@ -111,13 +117,13 @@ mod tests {
     // 0x000000000003193facb32d1c120719892b7ae97700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000065643124173269fd5124338fe57905c8e9402a934232072eedc3420d5973db004087c40323361543d1ace025caea2b7904d343e6927856318f19fac43ca66a4ef935216a1c
 
     #[test]
-    fn test_decode_paymaster_and_data_raw() {
+    fn test_decode_paymaster_and_data_raw() -> Result<()> {
         // Get the expected msg.
         let number_one_msg: Vec<u8> = hex::decode("0x000000000003193facb32d1c120719892b7ae977000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000656459c5a8db79acb7d63838be51e9fef633a7bb5cb024c5b00120f3288869d0e052e5395eba458e03a3107e25bab992a1154bf19cb6ca75be8fdcd48845840c2ece416f1b").unwrap();
 
         // Decode the paymaster and data.
         let (_verifying_paymaster_address, valid_until, valid_after, _signature) =
-            decode_paymaster_and_data(number_one_msg);
+            decode_paymaster_and_data(number_one_msg)?;
 
         // Log the result.
         println!("#1");
@@ -129,11 +135,13 @@ mod tests {
 
         // Decode the paymaster and data.
         let (_verifying_paymaster_address, valid_until, valid_after, _signature) =
-            decode_paymaster_and_data(number_two_msg);
+            decode_paymaster_and_data(number_two_msg)?;
 
         // Log the result.
         println!("#2");
         println!("valid_until: {:?}", valid_until);
         println!("valid_after: {:?}", valid_after);
+
+        Ok(())
     }
 }

@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::polling::user_operations::UserOperation;
 use ethers::types::{Bloom, Log, OtherFields, Transaction, TransactionReceipt, H160};
 use lightdotso_common::traits::HexToBytes;

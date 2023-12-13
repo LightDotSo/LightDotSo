@@ -25,8 +25,15 @@ use prisma_client_rust::{
 
 #[derive(Debug)]
 pub enum DbError {
+    EyreError(eyre::Error),
     PrismaError(QueryError),
     NotFound,
+}
+
+impl From<eyre::Error> for DbError {
+    fn from(error: eyre::Error) -> Self {
+        DbError::EyreError(error)
+    }
 }
 
 impl From<QueryError> for DbError {
@@ -42,6 +49,7 @@ impl From<QueryError> for DbError {
 impl IntoResponse for DbError {
     fn into_response(self) -> Response {
         let status = match self {
+            DbError::EyreError(_) => StatusCode::INTERNAL_SERVER_ERROR,
             DbError::PrismaError(error) if error.is_prisma_error::<UniqueKeyViolation>() => {
                 StatusCode::CONFLICT
             }
