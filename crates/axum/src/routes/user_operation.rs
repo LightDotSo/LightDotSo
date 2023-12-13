@@ -383,7 +383,6 @@ async fn v1_user_operation_get_handler(
     // Get the user operations from the database.
     let user_operation = client
         .client
-        .unwrap()
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
         .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
@@ -427,9 +426,7 @@ async fn v1_user_operation_update_handler(
 
     // Get the user operations from the database.
     let user_operation = client
-        .clone()
         .client
-        .unwrap()
         .user_operation()
         .find_many(vec![
             user_operation::sender::equals(to_checksum(&address, None)),
@@ -454,7 +451,6 @@ async fn v1_user_operation_update_handler(
         let _ = client
             .clone()
             .client
-            .unwrap()
             .user_operation()
             .update_many(
                 vec![
@@ -497,9 +493,7 @@ async fn v1_user_operation_nonce_handler(
 
     // Get the user operations from the database.
     let user_operation = client
-        .clone()
         .client
-        .unwrap()
         .user_operation()
         .find_first(vec![
             user_operation::chain_id::equals(chain_id),
@@ -526,7 +520,7 @@ async fn v1_user_operation_nonce_handler(
             //         // Fetch the receipt and logs
             //         let receipt = client
             //             .client
-            //             .unwrap()
+            //
             //             .receipt()
             //             .find_unique(receipt::transaction_hash::equals(hash))
             //             .with(receipt::logs::fetch(vec![]).with(log::topics::fetch(vec![])))
@@ -540,8 +534,8 @@ async fn v1_user_operation_nonce_handler(
             //             // Iterate through the logs and check if the first log is an `Account
             //             // Deployed` event
             //             // Unwrap is safe because `with::Fetch`` has been called
-            //             for log in receipt.logs.unwrap() {
-            //                 for topic in log.topics.unwrap() {
+            //             for log in receipt.logs {
+            //                 for topic in log.topics {
             //                     // If the data is equal to the hash of the `AccountDeployed`
             // event                     if topic.id ==
             // *"0xd51a9c61267aa6196961883ecf5ff2da6619c37dac0fa92122513fb32c032d2d-0" &&
@@ -614,7 +608,6 @@ async fn v1_user_operation_list_handler(
     // Get the user operations from the database.
     let user_operations = client
         .client
-        .unwrap()
         .user_operation()
         .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
@@ -706,14 +699,8 @@ async fn v1_user_operation_post_handler(
     info!(?recovered_sig);
 
     // Get the owner from the database.
-    let owner = client
-        .clone()
-        .client
-        .unwrap()
-        .owner()
-        .find_unique(owner::id::equals(sig.clone().owner_id))
-        .exec()
-        .await?;
+    let owner =
+        client.client.owner().find_unique(owner::id::equals(sig.clone().owner_id)).exec().await?;
     info!(?owner);
 
     // If the owner is not found, return a 404.
@@ -730,9 +717,7 @@ async fn v1_user_operation_post_handler(
 
     // Get the wallet from the database.
     let wallet = client
-        .clone()
         .client
-        .unwrap()
         .wallet()
         .find_unique(wallet::address::equals(user_operation.clone().sender))
         .exec()
@@ -744,9 +729,7 @@ async fn v1_user_operation_post_handler(
 
     // Get the current configuration for the wallet.
     let configuration = client
-        .clone()
         .client
-        .unwrap()
         .configuration()
         .find_first(vec![configuration::address::equals(user_operation.clone().sender)])
         .order_by(configuration::checkpoint::order(Direction::Desc))
@@ -781,7 +764,6 @@ async fn v1_user_operation_post_handler(
         let paymaster = client
             .clone()
             .client
-            .unwrap()
             .paymaster()
             .upsert(
                 paymaster::address_chain_id(to_checksum(&decded_paymaster_address, None), chain_id),
@@ -800,7 +782,6 @@ async fn v1_user_operation_post_handler(
         let paymaster_operation = client
             .clone()
             .client
-            .unwrap()
             .paymaster_operation()
             .find_unique(paymaster_operation::valid_after_paymaster_id(
                 DateTime::<Utc>::from_utc(
@@ -825,7 +806,6 @@ async fn v1_user_operation_post_handler(
     // Create the user operation in the database w/ the sig.
     let user_operation: Result<lightdotso_prisma::user_operation::Data> = client
         .client
-        .unwrap()
         ._transaction()
         .run(|client| async move {
             let user_operation = client
@@ -904,9 +884,7 @@ async fn v1_user_operation_signature_handler(
 
     // Get the user operations from the database.
     let user_operation = client
-        .clone()
         .client
-        .unwrap()
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
         .with(user_operation::signatures::fetch(vec![signature::user_operation_hash::equals(
@@ -928,7 +906,6 @@ async fn v1_user_operation_signature_handler(
     // Get the wallet from the database.
     let wallet = client
         .client
-        .unwrap()
         .wallet()
         .find_unique(wallet::address::equals(user_operation.clone().sender))
         .with(

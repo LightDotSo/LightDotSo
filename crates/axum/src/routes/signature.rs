@@ -135,7 +135,6 @@ async fn v1_signature_get_handler(
     // Get the signatures from the database.
     let signature = client
         .client
-        .unwrap()
         .signature()
         .find_unique(signature::user_operation_hash::equals(user_operation_hash))
         .with(signature::owner::fetch())
@@ -183,7 +182,6 @@ async fn v1_signature_list_handler(
     // Get the signatures from the database.
     let signatures = client
         .client
-        .unwrap()
         .signature()
         .find_many(query)
         .order_by(signature::created_at::order(Direction::Desc))
@@ -241,7 +239,6 @@ async fn v1_signature_post_handler(
     // Create the signature the database.
     let signature = client
         .client
-        .unwrap()
         .signature()
         .create(
             sig.signature.hex_to_bytes()?,

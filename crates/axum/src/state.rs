@@ -18,5 +18,5 @@ use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct AppState {
-    pub client: Option<Arc<PrismaClient>>,
+    pub client: Arc<PrismaClient>,
 }

@@ -19,19 +19,14 @@ use eyre::Result;
 use lightdotso_tracing::tracing::{info, warn};
 use std::net::{SocketAddr, TcpListener};
 
-use crate::state::AppState;
-
 pub async fn start_internal_server() -> Result<()> {
     info!("Starting internal server");
-
-    let state = AppState { client: None };
 
     prometheus_exporter::init();
 
     let app = Router::new()
         .merge(crate::routes::health::router())
-        .merge(crate::routes::metrics::router())
-        .with_state(state);
+        .merge(crate::routes::metrics::router());
 
     let mut port_number = 9091;
     let max_port_number = 65535;

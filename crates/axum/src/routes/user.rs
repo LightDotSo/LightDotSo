@@ -88,7 +88,6 @@ async fn v1_user_get_handler(
     // Get the users from the database.
     let user = client
         .client
-        .unwrap()
         .user()
         .find_unique(user::address::equals(to_checksum(&parsed_query_address, None)))
         .exec()

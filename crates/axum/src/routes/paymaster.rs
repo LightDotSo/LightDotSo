@@ -94,13 +94,8 @@ async fn v1_paymaster_get_handler(
     info!("Get paymaster for address: {:?}", query);
 
     // Get the paymasters from the database.
-    let paymaster = client
-        .client
-        .unwrap()
-        .paymaster()
-        .find_unique(paymaster::id::equals(query.id))
-        .exec()
-        .await?;
+    let paymaster =
+        client.client.paymaster().find_unique(paymaster::id::equals(query.id)).exec().await?;
 
     // If the paymaster is not found, return a 404.
     let paymaster = paymaster.ok_or(RouteError::PaymasterError(PaymasterError::NotFound(
@@ -136,7 +131,6 @@ async fn v1_paymaster_list_handler(
     // Get the paymasters from the database.
     let paymasters = client
         .client
-        .unwrap()
         .paymaster()
         .find_many(vec![])
         .skip(pagination.offset.unwrap_or(0))

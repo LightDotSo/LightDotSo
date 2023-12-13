@@ -101,7 +101,6 @@ async fn v1_feedback_post_handler(
     // Create the feedback the database.
     let feedback = client
         .client
-        .unwrap()
         .feedback()
         .create(feedback.text, feedback.emoji, lightdotso_prisma::user::id::equals(user_id), vec![])
         .exec()

@@ -152,7 +152,6 @@ async fn v1_configuration_get_handler(
         Some(checkpoint) => {
             client
                 .client
-                .unwrap()
                 .configuration()
                 .find_unique(configuration::address_checkpoint(checksum_address, checkpoint))
                 .with(configuration::owners::fetch(vec![]))
@@ -162,7 +161,6 @@ async fn v1_configuration_get_handler(
         None => {
             client
                 .client
-                .unwrap()
                 .configuration()
                 .find_first(vec![configuration::address::equals(checksum_address)])
                 .order_by(configuration::checkpoint::order(Direction::Desc))
@@ -206,7 +204,6 @@ async fn v1_configuration_list_handler(
     // Get the configurations from the database.
     let configurations = client
         .client
-        .unwrap()
         .configuration()
         .find_many(vec![])
         .order_by(configuration::checkpoint::order(Direction::Desc))

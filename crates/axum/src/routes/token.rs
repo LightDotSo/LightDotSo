@@ -138,7 +138,6 @@ async fn v1_token_get_handler(
     // Get the tokens from the database.
     let token = client
         .client
-        .unwrap()
         .token()
         .find_unique(token::address_chain_id(checksum_address, query.chain_id))
         .exec()
@@ -193,7 +192,6 @@ async fn v1_token_list_handler(
     // Get the tokens from the database.
     let balances = client
         .client
-        .unwrap()
         .wallet_balance()
         .find_many(params)
         .order_by(wallet_balance::balance_usd::order(Direction::Desc))
