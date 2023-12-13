@@ -135,6 +135,7 @@ pub async fn upsert_transaction_with_log_receipt(
         transaction::block_number::set(transaction.block_number.map(|n| n.as_u32() as i32)),
         transaction::to::set(transaction.to.map(|to| to_checksum(&to, None))),
         transaction::wallet_address::set(Some(to_checksum(&wallet_address, None))),
+        transaction::is_testnet::set(!MAINNET_CHAIN_IDS.contains_key(&(chain_id as u64))),
     ];
 
     // Don't push from the params if it is `Determistic Option Zero` or `Determistic Option None`.
