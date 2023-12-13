@@ -13,64 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Skeleton } from "@lightdotso/ui";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { Suspense } from "react";
-import type { Address } from "viem";
-import { ActivityList } from "@/app/(wallet)/[address]/activity/(components)/activity-list";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { queries } from "@/queries";
-import { getTransactions, getQueryClient } from "@/services";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type PageProps = {
-  params: { address: string };
-};
-
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  await handler(params);
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const queryClient = getQueryClient();
-
-  const res = await getTransactions(params.address as Address);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return res.match(
-    res => {
-      queryClient.setQueryData(
-        queries.transaction.list({ address: params.address as Address })
-          .queryKey,
-        res,
-      );
-
-      return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense fallback={<Skeleton className="h-8 w-32" />}>
-            <ActivityList address={params.address as Address} />
-          </Suspense>
-        </HydrationBoundary>
-      );
-    },
-    _ => {
-      return null;
-    },
-  );
-}
+export default async function Page() {}
