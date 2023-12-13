@@ -13,24 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { WalletsDataTable } from "@/app/(authenticated)/wallets/(components)/wallets-data-table";
-import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-pagination";
-import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
+"use client";
+
+import { useEffect, type FC } from "react";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
+export const WalletsDataTablePagination: FC = () => {
+  const { walletTable } = useTables();
+
+  useEffect(() => {
+    if (!useTables.persist.hasHydrated()) {
+      useTables.persist.rehydrate();
+    }
+  }, []);
+
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <>
-      <WalletsDataTableToolbar />
-      <WalletsDataTable />
-      <WalletsDataTablePagination />
-    </>
-  );
-}
+  if (!walletTable || !useTables.persist.hasHydrated()) {
+    return null;
+  }
+
+  return <DataTablePagination table={walletTable} />;
+};

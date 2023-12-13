@@ -38,6 +38,7 @@ import { cn } from "@lightdotso/utils";
 import {
   CaretSortIcon,
   CheckIcon,
+  GridIcon,
   PlusCircledIcon,
   StackIcon,
 } from "@radix-ui/react-icons";
@@ -303,6 +304,21 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
                         <span className="hidden">{wallet.address}</span>
                       </CommandItem>
                     ))}
+              </CommandGroup>
+            </CommandList>
+            <CommandSeparator />
+            <CommandList>
+              <CommandGroup>
+                <CommandItem
+                  className="text-sm"
+                  onSelect={() => {
+                    setOpen(false);
+                    router.push("/wallets");
+                  }}
+                >
+                  <GridIcon className="mr-2 h-5 w-5" />
+                  All Wallets
+                </CommandItem>
               </CommandGroup>
             </CommandList>
             <CommandSeparator />
