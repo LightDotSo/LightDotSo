@@ -31,14 +31,13 @@ import {
 import { cn } from "@lightdotso/utils";
 import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
-import type { NftData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableFacetedFilterProps {
-  column?: Column<NftData, unknown>;
+interface DataTableFacetedFilterProps<TData, TValue> {
+  column?: Column<TData, TValue>;
   title?: string;
   options: {
     label: string;
@@ -51,11 +50,11 @@ interface DataTableFacetedFilterProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableFacetedFilter({
+export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
-}: DataTableFacetedFilterProps) {
+}: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
 
