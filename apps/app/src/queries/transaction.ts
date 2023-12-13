@@ -25,6 +25,7 @@ type TransactionFilter = {
   address: Address;
   order?: "desc" | "asc";
   limit?: number;
+  offset?: number;
 };
 
 // -----------------------------------------------------------------------------
