@@ -46,7 +46,7 @@
   [workspace.package]
     version = "0.1.0"
     edition = "2021"
-    rust-version = "1.71"
+    rust-version = "1.74"
     license = "AGPL-3.0-or-later"
     homepage = "https://github.com/LightDotSo/LightDotSo"
     repository = "https://github.com/LightDotSo/LightDotSo"
@@ -178,7 +178,7 @@
   tokio = { version = "1", features = ["full"] }
   tonic = { version = "0.10.0", features = ["tls", "tls-roots"] }
   tower = { version = "0.4.12" }
-  tower_governor = { version = "0.1.0", features = ["tracing"] }
+  tower_governor = { git = "https://github.com/benwis/tower-governor", rev = "d6cb6acf904207aec1c2618592a8bb469e932cad", package = "tower_governor" }
   tower-http = { version = "0.4", features = [
     "trace",
     "auth",
