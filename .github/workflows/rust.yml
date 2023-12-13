@@ -101,7 +101,7 @@ jobs:
         uses: mozilla-actions/sccache-action@v0.0.3
         with:
           version: "v0.5.2"
-      - if: matrix.workspace
+      - if: matrix.workspace || matrix.check
         name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
