@@ -13,6 +13,7 @@
   crate-type = ["staticlib"]
 
 [dependencies]
+  eyre = { workspace = true }
   lightdotso-keychain = { path = "../keychain" }
   uniffi = { workspace = true }
   uniffi_macros = { workspace = true }

@@ -6501,6 +6501,7 @@ dependencies = [
 name = "lightwallet-core"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "lightdotso-keychain",
  "uniffi",
  "uniffi_build",

@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-fn main() {
-    uniffi_build::generate_scaffolding("./src/LightWalletCore.udl").unwrap();
+use eyre::Result;
+
+fn main() -> Result<()> {
+    uniffi_build::generate_scaffolding("./src/LightWalletCore.udl")?;
 }

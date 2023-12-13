@@ -225,11 +225,11 @@ pub async fn start_api_server() -> Result<()> {
             origin
                 .to_str()
                 .map(|origin_string| {
-                    origin_string.ends_with(".vercel.app") ||
-                        origin_string.ends_with(".light.so") ||
-                        origins.iter().any(|allowed_origin| {
-                            allowed_origin.to_str().unwrap() == origin_string
-                        })
+                    origin_string.ends_with(".vercel.app")
+                        || origin_string.ends_with(".light.so")
+                        || origins
+                            .iter()
+                            .any(|allowed_origin| allowed_origin.to_str().unwrap() == origin_string)
                 })
                 .unwrap_or(false)
         }))

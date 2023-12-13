@@ -518,8 +518,8 @@ async fn v1_wallet_post_handler(
                                     user_data
                                         .iter()
                                         .find(|user| {
-                                            user.address ==
-                                                to_checksum(
+                                            user.address
+                                                == to_checksum(
                                                     &owner.address.parse::<H160>().unwrap(),
                                                     None,
                                                 )

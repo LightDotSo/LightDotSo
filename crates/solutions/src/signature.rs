@@ -94,8 +94,8 @@ pub async fn recover_dynamic_signature(
     };
 
     let recovered_address = match signature_type {
-        DynamicSignatureType::DynamicSignatureTypeEthSign |
-        DynamicSignatureType::DynamicSignatureTypeEIP712 => {
+        DynamicSignatureType::DynamicSignatureTypeEthSign
+        | DynamicSignatureType::DynamicSignatureTypeEIP712 => {
             let signature_leaf = recover_ecdsa_signature(data, subdigest, starting_index)?;
             signature_leaf.address
         }
