@@ -18,7 +18,8 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
-import { NftsDataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/nft-data-table";
+import { NftsDataTable } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table";
+import { NftsDataTablePagination } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table-pagination";
 import { NftPortfolio } from "@/components/nft/nft-portfolio";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { handler } from "@/handlers/paths/[address]/overview/nfts/handler";
@@ -87,6 +88,7 @@ export default async function Page({ params }: PageProps) {
       <Suspense>
         <NftsDataTable address={params.address as Address} />
       </Suspense>
+      <NftsDataTablePagination />
     </HydrationBoundary>
   );
 }

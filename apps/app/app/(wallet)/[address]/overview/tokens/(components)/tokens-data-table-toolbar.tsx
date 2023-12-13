@@ -13,12 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NftsDataTableToolbar } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table-toolbar";
+"use client";
+
+import { useEffect, type FC } from "react";
+import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-toolbar";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default function Page() {
-  return <NftsDataTableToolbar />;
-}
+export const TokensDataTableToolbar: FC = () => {
+  const { tokenTable } = useTables();
+
+  useEffect(() => {
+    if (!useTables.persist.hasHydrated()) {
+      useTables.persist.rehydrate();
+    }
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!tokenTable || !useTables.persist.hasHydrated()) {
+    return null;
+  }
+
+  return <DataTableToolbar table={tokenTable} />;
+};
