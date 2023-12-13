@@ -106,7 +106,7 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      - if: matrix.workspace
+      - if: matrix.workspace || matrix.check
         name: Node Build
         run: |
           pnpm run build:turbo
