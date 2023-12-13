@@ -111,6 +111,9 @@ jobs:
         run: |
           pnpm run build:turbo
       - if: matrix.workspace
+        name: Set up Docker
+        uses: crazy-max/ghaction-setup-docker@v2
+      - if: matrix.workspace
         name: Docker Compose Up
         run: |
           docker-compose up -d --build
