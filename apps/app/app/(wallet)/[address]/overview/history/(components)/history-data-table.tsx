@@ -51,8 +51,11 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
-    queries.transaction.list({ address, limit: transactionPagination.pageSize })
-      .queryKey,
+    queries.transaction.list({
+      address,
+      limit: transactionPagination.pageSize,
+      offset: transactionPagination.pageIndex * transactionPagination.pageSize,
+    }).queryKey,
   );
 
   const { data: transactions } = useQuery<TransactionData[] | null>({
@@ -60,12 +63,16 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     queryKey: queries.transaction.list({
       address,
       limit: transactionPagination.pageSize,
+      offset: transactionPagination.pageIndex * transactionPagination.pageSize,
     }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({
         params: {
           query: {
             address,
+            limit: transactionPagination.pageSize,
+            offset:
+              transactionPagination.pageIndex * transactionPagination.pageSize,
           },
         },
       });

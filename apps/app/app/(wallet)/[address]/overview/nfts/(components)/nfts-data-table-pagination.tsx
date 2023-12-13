@@ -16,15 +16,15 @@
 "use client";
 
 import { useEffect, type FC } from "react";
-import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-toolbar";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NavLayoutBar: FC = () => {
-  const { tokenTable } = useTables();
+export const NftsDataTablePagination: FC = () => {
+  const { nftTable } = useTables();
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
@@ -36,9 +36,9 @@ export const NavLayoutBar: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!tokenTable || !useTables.persist.hasHydrated()) {
+  if (!nftTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTableToolbar table={tokenTable} />;
+  return <DataTablePagination table={nftTable} />;
 };

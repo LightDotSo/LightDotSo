@@ -35,7 +35,7 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
-import type { TokenData } from "@/data";
+import type { UserOperationData } from "@/data";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
@@ -43,8 +43,8 @@ import { useTables } from "@/stores/useTables";
 // -----------------------------------------------------------------------------
 
 interface DataTableProps {
-  columns: ColumnDef<TokenData>[];
-  data: TokenData[];
+  columns: ColumnDef<UserOperationData>[];
+  data: UserOperationData[];
 }
 
 // -----------------------------------------------------------------------------
@@ -57,17 +57,17 @@ export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   const {
-    tokenColumnFilters,
-    tokenColumnVisibility,
-    tokenRowSelection,
-    tokenSorting,
-    tokenPagination,
-    setTokenColumnFilters,
-    setTokenColumnVisibility,
-    setTokenPagination,
-    setTokenRowSelection,
-    setTokenSorting,
-    setTokenTable,
+    userOperationColumnFilters,
+    userOperationColumnVisibility,
+    userOperationPagination,
+    userOperationRowSelection,
+    userOperationSorting,
+    setUserOperationColumnFilters,
+    setUserOperationColumnVisibility,
+    setUserOperationPagination,
+    setUserOperationRowSelection,
+    setUserOperationSorting,
+    setUserOperationTable,
   } = useTables();
 
   // ---------------------------------------------------------------------------
@@ -78,18 +78,19 @@ export function DataTable({ columns, data }: DataTableProps) {
     data,
     columns,
     state: {
-      sorting: tokenSorting,
-      columnVisibility: tokenColumnVisibility,
-      rowSelection: tokenRowSelection,
-      columnFilters: tokenColumnFilters,
-      pagination: tokenPagination,
+      sorting: userOperationSorting,
+      columnVisibility: userOperationColumnVisibility,
+      rowSelection: userOperationRowSelection,
+      columnFilters: userOperationColumnFilters,
+      pagination: userOperationPagination,
     },
+    paginateExpandedRows: false,
     enableRowSelection: true,
-    onRowSelectionChange: setTokenRowSelection,
-    onSortingChange: setTokenSorting,
-    onColumnFiltersChange: setTokenColumnFilters,
-    onColumnVisibilityChange: setTokenColumnVisibility,
-    onPaginationChange: setTokenPagination,
+    onRowSelectionChange: setUserOperationRowSelection,
+    onSortingChange: setUserOperationSorting,
+    onColumnFiltersChange: setUserOperationColumnFilters,
+    onColumnVisibilityChange: setUserOperationColumnVisibility,
+    onPaginationChange: setUserOperationPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -103,7 +104,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    setTokenTable(table);
+    setUserOperationTable(table);
   }, [
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -111,22 +112,18 @@ export function DataTable({ columns, data }: DataTableProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("chain_id")?.getFacetedUniqueValues(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("chain_id")?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("sparkline"),
+    table.getColumn("chain_id")?.getFacetedUniqueValues(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("sparkline")?.getIsVisible(),
+    table.getColumn("hash")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("price"),
+    table.getColumn("hash")?.getIsVisible(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("price")?.getIsVisible(),
+    table.getColumn("timestamp")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("actions"),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("actions")?.getIsVisible(),
-    setTokenTable,
+    table.getColumn("timestamp")?.getIsVisible(),
+    setUserOperationTable,
   ]);
 
   // ---------------------------------------------------------------------------

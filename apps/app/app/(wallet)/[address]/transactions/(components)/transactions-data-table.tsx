@@ -16,32 +16,38 @@
 "use client";
 
 import { getUserOperations } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
-import { UserOperationCard } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operation-card";
-import { UserOperationsEmpty } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operations-empty";
-import { UserOperationsWrapper } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operations-wrapper";
+import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data-table/columns";
+import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
 import type { UserOperationData } from "@/data";
 import { queries } from "@/queries";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type UserOperationsListProps = {
+interface TransactionsDataTableProps {
   address: Address;
   status: "all" | "proposed" | "executed";
-};
+}
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const UserOperationsList: FC<UserOperationsListProps> = ({
+export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
   status,
 }) => {
+  const { userOperationPagination } = useTables();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -49,17 +55,34 @@ export const UserOperationsList: FC<UserOperationsListProps> = ({
   const queryClient = useQueryClient();
 
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queries.user_operation.list({ address, status }).queryKey,
+    queries.user_operation.list({
+      address,
+      status,
+      limit: userOperationPagination.pageSize,
+      offset:
+        userOperationPagination.pageIndex * userOperationPagination.pageSize,
+    }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<UserOperationData[] | null>({
-    queryKey: queries.user_operation.list({ address, status }).queryKey,
+  const { data: transactions } = useQuery<UserOperationData[] | null>({
+    placeholderData: keepPreviousData,
+    queryKey: queries.user_operation.list({
+      address,
+      status,
+      limit: userOperationPagination.pageSize,
+      offset:
+        userOperationPagination.pageIndex * userOperationPagination.pageSize,
+    }).queryKey,
     queryFn: async () => {
       const res = await getUserOperations({
         params: {
           query: {
             address,
             status: status === "all" ? undefined : status,
+            limit: userOperationPagination.pageSize,
+            offset:
+              userOperationPagination.pageIndex *
+              userOperationPagination.pageSize,
           },
         },
       });
@@ -76,17 +99,13 @@ export const UserOperationsList: FC<UserOperationsListProps> = ({
     },
   });
 
+  if (!transactions) {
+    return null;
+  }
+
   return (
-    <UserOperationsWrapper>
-      {data && data.length === 0 && <UserOperationsEmpty />}
-      {data &&
-        data.map(userOperation => (
-          <UserOperationCard
-            key={userOperation.hash}
-            address={address}
-            userOperation={userOperation}
-          />
-        ))}
-    </UserOperationsWrapper>
+    <div className="rounded-md border border-border bg-background p-4">
+      <DataTable data={transactions ?? []} columns={columns} />
+    </div>
   );
 };

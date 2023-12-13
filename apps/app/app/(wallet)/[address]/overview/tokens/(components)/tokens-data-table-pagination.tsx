@@ -13,10 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
+import { useEffect, type FC } from "react";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { useTables } from "@/stores/useTables";
+
 // -----------------------------------------------------------------------------
-// Default
+// Component
 // -----------------------------------------------------------------------------
 
-export default function Default() {
-  return <div>All</div>;
-}
+export const TokensDataTablePagination: FC = () => {
+  const { tokenTable } = useTables();
+
+  useEffect(() => {
+    if (!useTables.persist.hasHydrated()) {
+      useTables.persist.rehydrate();
+    }
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!tokenTable || !useTables.persist.hasHydrated()) {
+    return null;
+  }
+
+  return <DataTablePagination table={tokenTable} />;
+};

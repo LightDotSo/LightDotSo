@@ -29,6 +29,7 @@ import type {
   NftData,
   WalletData,
   TransactionData,
+  UserOperationData,
 } from "@/data";
 
 // -----------------------------------------------------------------------------
@@ -44,23 +45,49 @@ type OnChangeFn<T> = (value: T | ((prevState: T) => T)) => void;
 type TablesStore = {
   nftColumnFilters: ColumnFiltersState;
   nftColumnVisibility: VisibilityState;
+  nftPagination: PaginationState;
   nftRowSelection: RowSelectionState;
   nftSorting: SortingState;
   nftTable: Table<NftData> | null;
   setNftColumnFilters: OnChangeFn<ColumnFiltersState>;
   setNftColumnVisibility: OnChangeFn<VisibilityState>;
+  setNftPagination: OnChangeFn<PaginationState>;
   setNftRowSelection: OnChangeFn<RowSelectionState>;
   setNftSorting: OnChangeFn<SortingState>;
   setNftTable: (tableObject: Table<NftData>) => void;
+  ownerColumnFilters: ColumnFiltersState;
+  ownerColumnVisibility: VisibilityState;
+  ownerPagination: PaginationState;
+  ownerRowSelection: RowSelectionState;
+  ownerSorting: SortingState;
   ownerTable: Table<ConfigurationOwnerData> | null;
+  setOwnerColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setOwnerColumnVisibility: OnChangeFn<VisibilityState>;
+  setOwnerPagination: OnChangeFn<PaginationState>;
+  setOwnerRowSelection: OnChangeFn<RowSelectionState>;
+  setOwnerSorting: OnChangeFn<SortingState>;
   setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
+  userOperationColumnFilters: ColumnFiltersState;
+  userOperationColumnVisibility: VisibilityState;
+  userOperationPagination: PaginationState;
+  userOperationRowSelection: RowSelectionState;
+  userOperationSorting: SortingState;
+  userOperationTable: Table<UserOperationData> | null;
+  setUserOperationColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setUserOperationColumnVisibility: OnChangeFn<VisibilityState>;
+  setUserOperationPagination: OnChangeFn<PaginationState>;
+  setUserOperationRowSelection: OnChangeFn<RowSelectionState>;
+  setUserOperationSorting: OnChangeFn<SortingState>;
+  setUserOperationTable: (tableObject: Table<UserOperationData>) => void;
   tokenColumnFilters: ColumnFiltersState;
   tokenColumnVisibility: VisibilityState;
+  tokenPagination: PaginationState;
   tokenRowSelection: RowSelectionState;
   tokenSorting: SortingState;
   tokenTable: Table<TokenData> | null;
   setTokenColumnFilters: OnChangeFn<ColumnFiltersState>;
   setTokenColumnVisibility: OnChangeFn<VisibilityState>;
+  setTokenPagination: OnChangeFn<PaginationState>;
   setTokenRowSelection: OnChangeFn<RowSelectionState>;
   setTokenSorting: OnChangeFn<SortingState>;
   setTokenTable: (tableObject: Table<TokenData>) => void;
@@ -76,7 +103,17 @@ type TablesStore = {
   setTransactionRowSelection: OnChangeFn<RowSelectionState>;
   setTransactionSorting: OnChangeFn<SortingState>;
   setTransactionTable: (tableObject: Table<TransactionData>) => void;
+  walletColumnFilters: ColumnFiltersState;
+  walletColumnVisibility: VisibilityState;
+  walletPagination: PaginationState;
+  walletRowSelection: RowSelectionState;
+  walletSorting: SortingState;
   walletTable: Table<WalletData> | null;
+  setWalletColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setWalletColumnVisibility: OnChangeFn<VisibilityState>;
+  setWalletPagination: OnChangeFn<PaginationState>;
+  setWalletRowSelection: OnChangeFn<RowSelectionState>;
+  setWalletSorting: OnChangeFn<SortingState>;
   setWalletTable: (tableObject: Table<WalletData>) => void;
 };
 
@@ -95,6 +132,10 @@ export const useTables = create(
           },
         ],
         nftColumnVisibility: { ["spam_score"]: false },
+        nftPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
         nftRowSelection: {},
         nftSorting: [],
         nftTable: null,
@@ -113,6 +154,14 @@ export const useTables = create(
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.nftColumnVisibility)
                 : columnVisibility,
+          })),
+        setNftPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            nftPagination:
+              pagination instanceof Function
+                ? pagination(prevState.nftPagination)
+                : pagination,
           })),
         setNftRowSelection: rowSelection =>
           set(prevState => ({
@@ -134,12 +183,130 @@ export const useTables = create(
           set({
             nftTable: tableObject,
             tokenTable: null,
+            userOperationTable: null,
             transactionTable: null,
+            walletTable: null,
           }),
+        ownerColumnFilters: [],
+        ownerColumnVisibility: {},
+        ownerPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
+        ownerRowSelection: {},
+        ownerSorting: [],
         ownerTable: null,
-        setOwnerTable: tableObject => set({ ownerTable: tableObject }),
+        setOwnerColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            ownerColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.ownerColumnFilters)
+                : columnFilters,
+          })),
+        setOwnerColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            ownerColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.ownerColumnVisibility)
+                : columnVisibility,
+          })),
+        setOwnerPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            ownerPagination:
+              pagination instanceof Function
+                ? pagination(prevState.ownerPagination)
+                : pagination,
+          })),
+        setOwnerRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            ownerRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.ownerRowSelection)
+                : rowSelection,
+          })),
+        setOwnerSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            ownerSorting:
+              sorting instanceof Function
+                ? sorting(prevState.ownerSorting)
+                : sorting,
+          })),
+        setOwnerTable: tableObject =>
+          set({
+            ownerTable: tableObject,
+            userOperationTable: null,
+            tokenTable: null,
+            transactionTable: null,
+            walletTable: null,
+          }),
+        userOperationColumnFilters: [],
+        userOperationColumnVisibility: {},
+        userOperationPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
+        userOperationRowSelection: {},
+        userOperationSorting: [],
+        userOperationTable: null,
+        setUserOperationColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            userOperationColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.userOperationColumnFilters)
+                : columnFilters,
+          })),
+        setUserOperationColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            userOperationColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.userOperationColumnVisibility)
+                : columnVisibility,
+          })),
+        setUserOperationPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            userOperationPagination:
+              pagination instanceof Function
+                ? pagination(prevState.userOperationPagination)
+                : pagination,
+          })),
+        setUserOperationRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            userOperationRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.userOperationRowSelection)
+                : rowSelection,
+          })),
+        setUserOperationSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            userOperationSorting:
+              sorting instanceof Function
+                ? sorting(prevState.userOperationSorting)
+                : sorting,
+          })),
+        setUserOperationTable: tableObject =>
+          set({
+            userOperationTable: tableObject,
+            nftTable: null,
+            transactionTable: null,
+            tokenTable: null,
+            walletTable: null,
+          }),
         tokenColumnFilters: [],
         tokenColumnVisibility: { ["chain_id"]: false },
+        tokenPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
         tokenRowSelection: {},
         tokenSorting: [],
         tokenTable: null,
@@ -158,6 +325,14 @@ export const useTables = create(
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.tokenColumnVisibility)
                 : columnVisibility,
+          })),
+        setTokenPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            tokenPagination:
+              pagination instanceof Function
+                ? pagination(prevState.tokenPagination)
+                : pagination,
           })),
         setTokenRowSelection: rowSelection =>
           set(prevState => ({
@@ -179,7 +354,9 @@ export const useTables = create(
           set({
             tokenTable: tableObject,
             nftTable: null,
+            userOperationTable: null,
             transactionTable: null,
+            walletTable: null,
           }),
         transactionColumnFilters: [],
         transactionColumnVisibility: {},
@@ -234,10 +411,67 @@ export const useTables = create(
           set({
             transactionTable: tableObject,
             nftTable: null,
+            userOperationTable: null,
             tokenTable: null,
+            walletTable: null,
           }),
+        walletColumnFilters: [],
+        walletColumnVisibility: {},
+        walletPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
+        walletRowSelection: {},
+        walletSorting: [],
         walletTable: null,
-        setWalletTable: tableObject => set({ walletTable: tableObject }),
+        setWalletColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            walletColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.walletColumnFilters)
+                : columnFilters,
+          })),
+        setWalletColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            walletColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.walletColumnVisibility)
+                : columnVisibility,
+          })),
+        setWalletPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            walletPagination:
+              pagination instanceof Function
+                ? pagination(prevState.walletPagination)
+                : pagination,
+          })),
+        setWalletRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            walletRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.walletRowSelection)
+                : rowSelection,
+          })),
+        setWalletSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            walletSorting:
+              sorting instanceof Function
+                ? sorting(prevState.walletSorting)
+                : sorting,
+          })),
+        setWalletTable: tableObject =>
+          set({
+            walletTable: tableObject,
+            nftTable: null,
+            userOperationTable: null,
+            tokenTable: null,
+            transactionTable: null,
+          }),
       }),
       {
         name: "table-state-v1",

@@ -16,15 +16,15 @@
 "use client";
 
 import { useEffect, type FC } from "react";
-import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/data-table-toolbar";
+import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-toolbar";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NavLayoutBar: FC = () => {
-  const { nftTable } = useTables();
+export const HistoryDataTableToolbar: FC = () => {
+  const { transactionTable } = useTables();
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
@@ -36,9 +36,9 @@ export const NavLayoutBar: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!nftTable || !useTables.persist.hasHydrated()) {
+  if (!transactionTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTableToolbar table={nftTable} />;
+  return <DataTableToolbar table={transactionTable} />;
 };

@@ -15,30 +15,30 @@
 
 "use client";
 
-import { useEffect, type FC } from "react";
-import { DataTablePagination } from "@/components/data-table/data-table-pagination";
-import { useTables } from "@/stores/useTables";
+import type { FC } from "react";
+import type { UserOperationData } from "@/data";
+import { ChainLogo } from "@/svgs";
+import { getChainById } from "@/utils";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type UserOperationCardChainProps = { userOperation: UserOperationData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const HistoryDataTablePagination: FC = () => {
-  const { transactionTable } = useTables();
-
-  useEffect(() => {
-    if (!useTables.persist.hasHydrated()) {
-      useTables.persist.rehydrate();
-    }
-  }, []);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  if (!transactionTable || !useTables.persist.hasHydrated()) {
-    return null;
-  }
-
-  return <DataTablePagination table={transactionTable} />;
+export const UserOperationCardChain: FC<UserOperationCardChainProps> = ({
+  userOperation: { chain_id },
+}) => {
+  return (
+    <div className="flex items-center space-x-1.5">
+      <ChainLogo className="h-6 w-6" chainId={chain_id} />
+      <span className="text-sm font-medium text-text">
+        {getChainById(chain_id).name}
+      </span>
+    </div>
+  );
 };

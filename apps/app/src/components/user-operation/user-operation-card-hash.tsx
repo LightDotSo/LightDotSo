@@ -13,33 +13,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
+"use client";
+
+import { ArrowUpRight } from "lucide-react";
+import type { FC } from "react";
+import type { UserOperationData } from "@/data";
+import { getChainById } from "@/utils";
 
 // -----------------------------------------------------------------------------
-// Type
+// Props
 // -----------------------------------------------------------------------------
 
-type TransactionFilter = {
-  address: Address;
-  order?: "desc" | "asc";
-  limit?: number;
-  offset?: number;
+type UserOperationCardHashProps = { userOperation: UserOperationData };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const UserOperationCardHash: FC<UserOperationCardHashProps> = ({
+  userOperation: { chain_id, hash },
+}) => {
+  return (
+    <div className="group flex items-center space-x-1.5">
+      <a
+        className="group-hover:underline"
+        target="_blank"
+        rel="noreferrer"
+        href={`${getChainById(chain_id)?.blockExplorers?.default
+          .url}/tx/${hash}`}
+      >
+        {hash}
+      </a>
+      <ArrowUpRight className="ml-2 h-4 w-4 shrink-0 opacity-50 group-hover:underline group-hover:opacity-100" />
+    </div>
+  );
 };
-
-// -----------------------------------------------------------------------------
-// Keys
-// -----------------------------------------------------------------------------
-
-export const transaction = createQueryKeys("transaction", {
-  list: (filter: TransactionFilter) => ({
-    queryKey: [{ filter }],
-  }),
-});
-
-// -----------------------------------------------------------------------------
-// Infer
-// -----------------------------------------------------------------------------
-
-export type TransactionKeys = inferQueryKeys<typeof transaction>;

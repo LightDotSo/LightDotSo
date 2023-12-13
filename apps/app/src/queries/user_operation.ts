@@ -26,6 +26,7 @@ type UserOperationFilter = {
   status: "all" | "proposed" | "executed";
   order?: "desc" | "asc";
   limit?: number;
+  offset?: number;
 };
 
 // -----------------------------------------------------------------------------

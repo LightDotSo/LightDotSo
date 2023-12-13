@@ -23,8 +23,8 @@ import { useTables } from "@/stores/useTables";
 // Component
 // -----------------------------------------------------------------------------
 
-export const HistoryDataTablePagination: FC = () => {
-  const { transactionTable } = useTables();
+export const WalletsDataTablePagination: FC = () => {
+  const { walletTable } = useTables();
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
@@ -36,9 +36,9 @@ export const HistoryDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!transactionTable || !useTables.persist.hasHydrated()) {
+  if (!walletTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTablePagination table={transactionTable} />;
+  return <DataTablePagination table={walletTable} />;
 };

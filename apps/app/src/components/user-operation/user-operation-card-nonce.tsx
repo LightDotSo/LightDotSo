@@ -15,30 +15,21 @@
 
 "use client";
 
-import { useEffect, type FC } from "react";
-import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table-toolbar";
-import { useTables } from "@/stores/useTables";
+import type { FC } from "react";
+import type { UserOperationData } from "@/data";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type UserOperationCardNonceProps = { userOperation: UserOperationData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NavLayoutBar: FC = () => {
-  const { transactionTable } = useTables();
-
-  useEffect(() => {
-    if (!useTables.persist.hasHydrated()) {
-      useTables.persist.rehydrate();
-    }
-  }, []);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  if (!transactionTable || !useTables.persist.hasHydrated()) {
-    return null;
-  }
-
-  return <DataTableToolbar table={transactionTable} />;
+export const UserOperationCardNonce: FC<UserOperationCardNonceProps> = ({
+  userOperation: { nonce },
+}) => {
+  return <div className="group flex items-center space-x-1.5">{nonce}</div>;
 };

@@ -19,6 +19,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Suspense } from "react";
 import type { Address } from "viem";
 import { TokensDataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table";
+import { TokensDataTablePagination } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table-pagination";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { handler } from "@/handlers/paths/[address]/overview/tokens/handler";
@@ -86,6 +87,7 @@ export default async function Page({ params }: PageProps) {
       <Suspense>
         <TokensDataTable address={params.address as Address} />
       </Suspense>
+      <TokensDataTablePagination />
     </HydrationBoundary>
   );
 }

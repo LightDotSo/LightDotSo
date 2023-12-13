@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NavLayoutBar } from "@/app/(wallet)/[address]/overview/tokens/(components)/nav-layout-bar";
+import { TokensDataTableToolbar } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
 export default function Page() {
-  return <NavLayoutBar />;
+  return <TokensDataTableToolbar />;
 }

@@ -12,22 +12,23 @@
 //
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"use client";
+
 import type { FC } from "react";
-
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
-
-type UserOperationsWrapperProps = {
-  children: React.ReactNode;
-};
+import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-toolbar";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const UserOperationsWrapper: FC<UserOperationsWrapperProps> = ({
-  children,
-}) => {
-  return <div className="flex w-full flex-col space-y-4">{children}</div>;
+export const OwnersDataTableToolbar: FC = () => {
+  const { ownerTable } = useTables();
+
+  if (!ownerTable) {
+    return null;
+  }
+
+  return <DataTableToolbar table={ownerTable} />;
 };

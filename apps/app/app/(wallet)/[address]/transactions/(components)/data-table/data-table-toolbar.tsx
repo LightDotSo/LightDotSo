@@ -23,17 +23,18 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
+import type { UserOperationData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores/useAuth";
 import { useTables } from "@/stores/useTables";
+import { getChainNameById } from "@/utils/chain";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
 interface DataTableToolbarProps {
-  table: Table<NftData>;
+  table: Table<UserOperationData>;
 }
 
 // -----------------------------------------------------------------------------
@@ -42,7 +43,7 @@ interface DataTableToolbarProps {
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const { nftColumnFilters } = useTables();
+  const { transactionColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -50,15 +51,9 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
-  const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(
-      queries.wallet.settings(wallet as Address).queryKey,
-    );
-
-  const currentData: NftDataPage | undefined = queryClient.getQueryData(
-    queries.nft.list({
+  const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
+    queries.transaction.list({
       address: wallet as Address,
-      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
@@ -68,41 +63,27 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
-    const uniqueChainValues = new Set<string>();
-    currentData?.nfts.forEach(nft => {
-      uniqueChainValues.add(nft.chain!);
+    const uniqueChainValues = new Set<number>();
+    currentData?.forEach(transaction => {
+      uniqueChainValues.add(transaction.chain_id!);
     });
     return uniqueChainValues;
   }, [currentData]);
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">
-        {table && table.getColumn("chain") && (
+        {table.getColumn("chain_id") && (
           <DataTableFacetedFilter
-            column={table.getColumn("chain")}
+            column={table.getColumn("chain_id")}
             title="Chain"
             options={Array.from(uniqueChainValues).map(chain => ({
-              value: chain,
-              label: chain,
+              value: chain.toString(),
+              label: getChainNameById(chain),
             }))}
           />
         )}
-        {table && table.getColumn("spam_score") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("spam_score")}
-            title="Spam"
-            options={["Yes", "No"].map(value => ({
-              value: value === "No" ? "0" : "70",
-              label: value,
-            }))}
-          />
-        )}
-        {nftColumnFilters.length > 0 && (
+        {transactionColumnFilters.length > 0 && (
           <Button
             variant="outline"
             className="h-8 px-2 lg:px-3"
@@ -116,10 +97,10 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       <DataTableViewOptions
         table={table}
         columnMapping={{
-          chain: "Chain",
-          name: "Name",
-          description: "Description",
-          spam_score: "Spam Score",
+          chain_id: "Chain",
+          hash: "User Operation Hash",
+          nonce: "Nonce",
+          status: "Status",
         }}
       />
     </>

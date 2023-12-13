@@ -787,7 +787,7 @@ export interface operations {
       /** @description Auth logout returned successfully */
       200: {
         content: {
-          "application/json": Record<string, unknown> | null;
+          "application/json": unknown;
         };
       };
       /** @description Auth logout not succeeded */
@@ -1433,6 +1433,8 @@ export interface operations {
         offset?: number | null;
         limit?: number | null;
         address?: string | null;
+        /** @description The flag to indicate if the transaction is a testnet transaction. */
+        is_testnet?: boolean | null;
       };
     };
     responses: {
@@ -1563,6 +1565,8 @@ export interface operations {
          * Default is `asc`.
          */
         order?: ("asc" | "desc") | null;
+        /** @description The flag to indicate if the operation is a testnet user operation. */
+        is_testnet?: boolean | null;
       };
     };
     responses: {

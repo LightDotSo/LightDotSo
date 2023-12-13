@@ -23,7 +23,7 @@ import { useTables } from "@/stores/useTables";
 // Component
 // -----------------------------------------------------------------------------
 
-export const NavLayoutBar: FC = () => {
+export const WalletsDataTableToolbar: FC = () => {
   const { walletTable } = useTables();
 
   if (!walletTable) {

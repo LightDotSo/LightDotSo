@@ -33,14 +33,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import type { WalletData } from "@/data";
 import { useTables } from "@/stores/useTables";
 
@@ -59,20 +54,24 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   const router = useRouter();
-  // ---------------------------------------------------------------------------
-  // States
-  // ---------------------------------------------------------------------------
-
-  const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
 
   // ---------------------------------------------------------------------------
   // Store
   // ---------------------------------------------------------------------------
 
-  const { setWalletTable } = useTables();
+  const {
+    walletColumnFilters,
+    walletColumnVisibility,
+    walletRowSelection,
+    walletSorting,
+    walletPagination,
+    setWalletColumnFilters,
+    setWalletColumnVisibility,
+    setWalletPagination,
+    setWalletRowSelection,
+    setWalletSorting,
+    setWalletTable,
+  } = useTables();
 
   // ---------------------------------------------------------------------------
   // Table
@@ -82,21 +81,18 @@ export function DataTable({ columns, data }: DataTableProps) {
     data,
     columns,
     state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
-      pagination: {
-        pageIndex: 0,
-        pageSize: -1,
-      },
+      sorting: walletSorting,
+      columnVisibility: walletColumnVisibility,
+      rowSelection: walletRowSelection,
+      columnFilters: walletColumnFilters,
+      pagination: walletPagination,
     },
     enableRowSelection: true,
-    paginateExpandedRows: false,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setWalletRowSelection,
+    onSortingChange: setWalletSorting,
+    onColumnFiltersChange: setWalletColumnFilters,
+    onColumnVisibilityChange: setWalletColumnVisibility,
+    onPaginationChange: setWalletPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

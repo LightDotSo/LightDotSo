@@ -18,7 +18,7 @@
 import { Button, Input } from "@lightdotso/ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
-import { DataTableViewOptions } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-view-options";
+import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { WalletData } from "@/data";
 
 // -----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         />
         {isFiltered && (
           <Button
-            variant="ghost"
+            variant="outline"
             className="h-8 px-2 lg:px-3"
             onClick={() => table.resetColumnFilters()}
           >
@@ -62,7 +62,13 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           </Button>
         )}
       </div>
-      <DataTableViewOptions table={table} />
+      <DataTableViewOptions
+        table={table}
+        columnMapping={{
+          name: "Name",
+          address: "Address",
+        }}
+      />
     </div>
   );
 }

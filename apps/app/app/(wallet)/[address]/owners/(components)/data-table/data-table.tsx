@@ -33,13 +33,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
-} from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
 import type { ConfigurationOwnerData } from "@/data";
 import { useTables } from "@/stores/useTables";
 
@@ -58,19 +53,22 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // States
-  // ---------------------------------------------------------------------------
-
-  const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [sorting, setSorting] = useState<SortingState>([]);
-
-  // ---------------------------------------------------------------------------
   // Store
   // ---------------------------------------------------------------------------
 
-  const { setOwnerTable } = useTables();
+  const {
+    ownerColumnFilters,
+    ownerColumnVisibility,
+    ownerRowSelection,
+    ownerSorting,
+    ownerPagination,
+    setOwnerColumnFilters,
+    setOwnerColumnVisibility,
+    setOwnerPagination,
+    setOwnerRowSelection,
+    setOwnerSorting,
+    setOwnerTable,
+  } = useTables();
 
   // ---------------------------------------------------------------------------
   // Table
@@ -80,16 +78,18 @@ export function DataTable({ columns, data }: DataTableProps) {
     data,
     columns,
     state: {
-      sorting,
-      columnVisibility,
-      rowSelection,
-      columnFilters,
+      sorting: ownerSorting,
+      columnVisibility: ownerColumnVisibility,
+      rowSelection: ownerRowSelection,
+      columnFilters: ownerColumnFilters,
+      pagination: ownerPagination,
     },
     enableRowSelection: true,
-    onRowSelectionChange: setRowSelection,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setOwnerRowSelection,
+    onSortingChange: setOwnerSorting,
+    onColumnFiltersChange: setOwnerColumnFilters,
+    onColumnVisibilityChange: setOwnerColumnVisibility,
+    onPaginationChange: setOwnerPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

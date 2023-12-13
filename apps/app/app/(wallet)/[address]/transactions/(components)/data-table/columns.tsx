@@ -17,22 +17,23 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import { TransactionCardChain } from "@/components/transaction/transaction-card-chain";
-import { TransactionCardHash } from "@/components/transaction/transaction-card-hash";
-import { TransactionCardTimestamp } from "@/components/transaction/transaction-card-timestamp";
-import type { TransactionData } from "@/data";
+import { UserOperationCardChain } from "@/components/user-operation/user-operation-card-chain";
+import { UserOperationCardHash } from "@/components/user-operation/user-operation-card-hash";
+import { UserOperationCardNonce } from "@/components/user-operation/user-operation-card-nonce";
+import { UserOperationCardStatus } from "@/components/user-operation/user-operation-card-status";
+import type { UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Definitions
 // -----------------------------------------------------------------------------
 
-export const columns: ColumnDef<TransactionData>[] = [
+export const columns: ColumnDef<UserOperationData>[] = [
   {
     accessorKey: "chain_id",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Chain" />
     ),
-    cell: ({ row }) => <TransactionCardChain transaction={row.original} />,
+    cell: ({ row }) => <UserOperationCardChain userOperation={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes((row.getValue(id) as number).toString());
     },
@@ -41,9 +42,9 @@ export const columns: ColumnDef<TransactionData>[] = [
   },
   {
     accessorKey: "hash",
-    cell: ({ row }) => <TransactionCardHash transaction={row.original} />,
+    cell: ({ row }) => <UserOperationCardHash userOperation={row.original} />,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tx Hash" />
+      <DataTableColumnHeader column={column} title="User Operation Hash" />
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -52,11 +53,23 @@ export const columns: ColumnDef<TransactionData>[] = [
     enableHiding: true,
   },
   {
-    accessorKey: "timestamp",
+    accessorKey: "nonce",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Timestamp" />
+      <DataTableColumnHeader column={column} title="Nonce" />
     ),
-    cell: ({ row }) => <TransactionCardTimestamp transaction={row.original} />,
+    cell: ({ row }) => <UserOperationCardNonce userOperation={row.original} />,
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: true,
+    enableHiding: true,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row }) => <UserOperationCardStatus userOperation={row.original} />,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },

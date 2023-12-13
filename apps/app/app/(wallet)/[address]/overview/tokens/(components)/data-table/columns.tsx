@@ -18,7 +18,7 @@
 import { Number } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Suspense } from "react";
-import { DataTableColumnHeader } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-column-header";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { TokenCardActions } from "@/components/token/token-card-actions";
 import { TokenCardChain } from "@/components/token/token-card-chain";
 import { TokenCardPrice } from "@/components/token/token-card-price";

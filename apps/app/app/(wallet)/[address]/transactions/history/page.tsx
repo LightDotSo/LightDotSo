@@ -13,11 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Skeleton } from "@lightdotso/ui";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address } from "viem";
-import { UserOperationsList } from "@/app/(wallet)/[address]/transactions/(components)/user-operation/user-operations-list";
+import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
+import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
@@ -72,12 +71,11 @@ export default async function Page({ params }: PageProps) {
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense fallback={<Skeleton className="h-8 w-32" />}>
-            <UserOperationsList
-              address={params.address as Address}
-              status="executed"
-            />
-          </Suspense>
+          <TransactionsDataTable
+            address={params.address as Address}
+            status="executed"
+          />
+          <TransactionsDataTablePagination />
         </HydrationBoundary>
       );
     },

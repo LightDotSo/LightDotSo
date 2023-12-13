@@ -15,49 +15,25 @@
 
 "use client";
 
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@lightdotso/ui";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import type { Row } from "@tanstack/react-table";
-import type { NftData } from "@/data";
+import type { FC } from "react";
+import type { UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableRowActionsProps {
-  row: Row<NftData>;
-}
+type UserOperationCardStatusProps = { userOperation: UserOperationData };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableRowActions({ row: _ }: DataTableRowActionsProps) {
+export const UserOperationCardStatus: FC<UserOperationCardStatusProps> = ({
+  userOperation: { status },
+}) => {
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex h-8 w-8 p-0 data-[state=open]:bg-background-stronger"
-        >
-          <DotsHorizontalIcon className="h-4 w-4" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Copy Address</DropdownMenuItem>
-        <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div className="group flex items-center space-x-1.5">
+      {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
+    </div>
   );
-}
+};

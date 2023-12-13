@@ -16,7 +16,13 @@
 "use client";
 
 import { updateUserOperation } from "@lightdotso/client";
-import { Button } from "@lightdotso/ui";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "@lightdotso/ui";
 import { RefreshCcw } from "lucide-react";
 import type { FC } from "react";
 import type { Address } from "viem";
@@ -38,28 +44,40 @@ export const InvokeUserOperationButton: FC<InvokeUserOperationProps> = ({
   address,
 }) => {
   return (
-    <Button
-      variant="outline"
-      className="py-5"
-      onClick={() => {
-        updateUserOperation({
-          params: { query: { address: address } },
-        }).then(res => {
-          infoToast("Updating operation...");
-          res.match(
-            _success => {
-              successToast("Operation updated");
-            },
-            err => {
-              if (err instanceof Error) {
-                errorToast(err.message);
-              }
-            },
-          );
-        });
-      }}
-    >
-      <RefreshCcw className="h-4 w-4 text-text-weak" />
-    </Button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span>
+            <Button
+              size="unsized"
+              variant="strong"
+              className="h-8 px-3 py-1"
+              onClick={() => {
+                updateUserOperation({
+                  params: { query: { address: address } },
+                }).then(res => {
+                  infoToast("Updating operation...");
+                  res.match(
+                    _success => {
+                      successToast("Operation updated");
+                    },
+                    err => {
+                      if (err instanceof Error) {
+                        errorToast(err.message);
+                      }
+                    },
+                  );
+                });
+              }}
+            >
+              <RefreshCcw className="h-4 w-4" />
+            </Button>
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Refresh</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

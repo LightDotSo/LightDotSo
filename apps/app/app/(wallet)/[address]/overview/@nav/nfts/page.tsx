@@ -13,12 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NavLayoutBar } from "@/app/(wallet)/[address]/overview/nfts/(components)/nav-layout-bar";
+import { NftsDataTableToolbar } from "@/app/(wallet)/[address]/overview/nfts/(components)/nfts-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
 export default function Page() {
-  return <NavLayoutBar />;
+  return <NftsDataTableToolbar />;
 }

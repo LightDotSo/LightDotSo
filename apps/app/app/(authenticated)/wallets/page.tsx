@@ -13,8 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { NavLayoutBar } from "@/app/(authenticated)/wallets/(components)/nav-layout-bar";
 import { WalletsDataTable } from "@/app/(authenticated)/wallets/(components)/wallets-data-table";
+import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-pagination";
+import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Page
@@ -27,8 +28,9 @@ export default async function Page() {
 
   return (
     <>
-      <NavLayoutBar />
+      <WalletsDataTableToolbar />
       <WalletsDataTable />
+      <WalletsDataTablePagination />
     </>
   );
 }

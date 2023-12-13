@@ -16,15 +16,15 @@
 "use client";
 
 import { useEffect, type FC } from "react";
-import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { DataTableToolbar } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-toolbar";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const HistoryDataTablePagination: FC = () => {
-  const { transactionTable } = useTables();
+export const TransactionsDataTableToolbar: FC = () => {
+  const { userOperationTable } = useTables();
 
   useEffect(() => {
     if (!useTables.persist.hasHydrated()) {
@@ -36,9 +36,9 @@ export const HistoryDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!transactionTable || !useTables.persist.hasHydrated()) {
+  if (!userOperationTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTablePagination table={transactionTable} />;
+  return <DataTableToolbar table={userOperationTable} />;
 };

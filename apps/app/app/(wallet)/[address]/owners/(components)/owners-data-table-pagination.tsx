@@ -15,20 +15,30 @@
 
 "use client";
 
-import type { FC } from "react";
-import { DataTableToolbar } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table-toolbar";
+import { useEffect, type FC } from "react";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
 import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NavLayoutBar: FC = () => {
+export const OwnersDataTablePagination: FC = () => {
   const { ownerTable } = useTables();
 
-  if (!ownerTable) {
+  useEffect(() => {
+    if (!useTables.persist.hasHydrated()) {
+      useTables.persist.rehydrate();
+    }
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!ownerTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 
-  return <DataTableToolbar table={ownerTable} />;
+  return <DataTablePagination table={ownerTable} />;
 };

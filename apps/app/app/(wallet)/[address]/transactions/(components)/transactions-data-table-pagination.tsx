@@ -15,10 +15,30 @@
 
 "use client";
 
+import { useEffect, type FC } from "react";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { useTables } from "@/stores/useTables";
+
 // -----------------------------------------------------------------------------
-// Default
+// Component
 // -----------------------------------------------------------------------------
 
-export default function Default() {
-  return <div>Root</div>;
-}
+export const TransactionsDataTablePagination: FC = () => {
+  const { userOperationTable } = useTables();
+
+  useEffect(() => {
+    if (!useTables.persist.hasHydrated()) {
+      useTables.persist.rehydrate();
+    }
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!userOperationTable || !useTables.persist.hasHydrated()) {
+    return null;
+  }
+
+  return <DataTablePagination table={userOperationTable} />;
+};
