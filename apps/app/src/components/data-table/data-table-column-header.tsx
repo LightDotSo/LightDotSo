@@ -29,15 +29,14 @@ import {
   EyeNoneIcon,
 } from "@radix-ui/react-icons";
 import type { Column } from "@tanstack/react-table";
-import type { TransactionData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableColumnHeaderProps
+interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
-  column: Column<TransactionData, unknown>;
+  column: Column<TData, TValue>;
   title: string;
 }
 
@@ -45,11 +44,11 @@ interface DataTableColumnHeaderProps
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableColumnHeader({
+export function DataTableColumnHeader<TData, TValue>({
   column,
   title,
   className,
-}: DataTableColumnHeaderProps) {
+}: DataTableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>;
   }

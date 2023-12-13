@@ -17,8 +17,8 @@
 
 import { Avatar } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-column-header";
 import { DataTableRowActions } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-row-actions";
+import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 
