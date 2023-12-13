@@ -93,12 +93,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - if: matrix.workspace
-        name: Free Disk Space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          large-packages: false
-          tool-cache: false
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
       - name: Node Install
