@@ -110,6 +110,8 @@ pub struct ListQuery {
     /// Default is `asc`.
     #[param(inline)]
     pub order: Option<ListQueryOrder>,
+    /// The flag to indicate if the operation is a testnet user operation.
+    pub is_testnet: Option<bool>,
 }
 
 #[derive(Debug, Deserialize, ToSchema)]
@@ -587,19 +589,20 @@ async fn v1_user_operation_list_handler(
     info!(?pagination);
 
     // If the address is provided, add it to the query.
-    let query = match pagination.address {
+    let mut query = match pagination.address {
         Some(owner) => vec![user_operation::sender::equals(owner)],
         None => vec![],
     };
 
     // If the status is provided, add it to the query.
-    let query = match pagination.status {
-        Some(status) => {
-            let status = user_operation::status::equals(status.into());
-            query.into_iter().chain(vec![status]).collect()
-        }
-        None => query,
-    };
+    if let Some(status) = pagination.status {
+        query.push(user_operation::status::equals(status.into()))
+    }
+
+    // If the is_testnet is provided, add it to the query.
+    if let Some(is_testnet) = pagination.is_testnet {
+        query.push(user_operation::is_testnet::equals(is_testnet))
+    }
 
     // Parse the order from the pagination query.
     let order = match pagination.order {

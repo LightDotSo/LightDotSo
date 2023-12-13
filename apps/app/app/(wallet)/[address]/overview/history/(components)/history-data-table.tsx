@@ -15,13 +15,19 @@
 
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
+import { getTransactions } from "@lightdotso/client";
+import {
+  keepPreviousData,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
 import type { TransactionData } from "@/data";
 import { queries } from "@/queries";
+import { useTables } from "@/stores/useTables";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -36,25 +42,53 @@ interface HistoryDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
+  const { transactionPagination } = useTables();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const queryClient = useQueryClient();
 
-  const trsansactions: TransactionData[] | undefined = queryClient.getQueryData(
-    queries.transaction.list({
-      address,
-    }).queryKey,
+  const currentData: TransactionData[] | undefined = queryClient.getQueryData(
+    queries.transaction.list({ address, limit: transactionPagination.pageSize })
+      .queryKey,
   );
 
-  if (!trsansactions) {
+  const { data: transactions } = useQuery<TransactionData[] | null>({
+    placeholderData: keepPreviousData,
+    queryKey: queries.transaction.list({
+      address,
+      limit: transactionPagination.pageSize,
+    }).queryKey,
+    queryFn: async () => {
+      const res = await getTransactions({
+        params: {
+          query: {
+            address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return currentData ?? null;
+        },
+      );
+    },
+  });
+
+  if (!transactions) {
     return null;
   }
 
   return (
     <div className="rounded-md border border-border bg-background p-4">
-      <DataTable data={trsansactions ?? []} columns={columns} />
+      <DataTable data={transactions ?? []} columns={columns} />
     </div>
   );
 };

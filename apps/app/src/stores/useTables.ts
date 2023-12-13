@@ -15,6 +15,7 @@
 
 import type {
   ColumnFiltersState,
+  PaginationState,
   RowSelectionState,
   SortingState,
   Table,
@@ -65,11 +66,13 @@ type TablesStore = {
   setTokenTable: (tableObject: Table<TokenData>) => void;
   transactionColumnFilters: ColumnFiltersState;
   transactionColumnVisibility: VisibilityState;
+  transactionPagination: PaginationState;
   transactionRowSelection: RowSelectionState;
   transactionSorting: SortingState;
   transactionTable: Table<TransactionData> | null;
   setTransactionColumnFilters: OnChangeFn<ColumnFiltersState>;
   setTransactionColumnVisibility: OnChangeFn<VisibilityState>;
+  setTransactionPagination: OnChangeFn<PaginationState>;
   setTransactionRowSelection: OnChangeFn<RowSelectionState>;
   setTransactionSorting: OnChangeFn<SortingState>;
   setTransactionTable: (tableObject: Table<TransactionData>) => void;
@@ -180,6 +183,10 @@ export const useTables = create(
           }),
         transactionColumnFilters: [],
         transactionColumnVisibility: {},
+        transactionPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
         transactionRowSelection: {},
         transactionSorting: [],
         transactionTable: null,
@@ -198,6 +205,14 @@ export const useTables = create(
               columnVisibility instanceof Function
                 ? columnVisibility(prevState.transactionColumnVisibility)
                 : columnVisibility,
+          })),
+        setTransactionPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            transactionPagination:
+              pagination instanceof Function
+                ? pagination(prevState.transactionPagination)
+                : pagination,
           })),
         setTransactionRowSelection: rowSelection =>
           set(prevState => ({

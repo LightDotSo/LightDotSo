@@ -41,6 +41,8 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     // The sender address to filter by.
     pub address: Option<String>,
+    /// The flag to indicate if the transaction is a testnet transaction.
+    pub is_testnet: Option<bool>,
 }
 
 /// Transaction operation errors
@@ -147,7 +149,7 @@ async fn v1_transaction_list_handler(
     info!(?pagination);
 
     // If the address is provided, add it to the query.
-    let query = match pagination.address {
+    let mut query = match pagination.address {
         Some(addr) => {
             vec![or![
                 transaction::wallet_address::equals(Some(addr.clone())),
@@ -157,6 +159,11 @@ async fn v1_transaction_list_handler(
         }
         None => vec![],
     };
+
+    // If the is_testnet is provided, add it to the query.
+    if let Some(is_testnet) = pagination.is_testnet {
+        query.push(transaction::is_testnet::equals(is_testnet))
+    }
 
     // Get the transactions from the database.
     let transactions = client
