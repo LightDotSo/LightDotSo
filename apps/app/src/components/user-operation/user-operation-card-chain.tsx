@@ -13,10 +13,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
+import type { FC } from "react";
+import type { UserOperationData } from "@/data";
+import { ChainLogo } from "@/svgs";
+import { getChainById } from "@/utils";
+
 // -----------------------------------------------------------------------------
-// Default
+// Props
 // -----------------------------------------------------------------------------
 
-export default function Default() {
-  return <div>History</div>;
-}
+type UserOperationCardChainProps = { userOperation: UserOperationData };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const UserOperationCardChain: FC<UserOperationCardChainProps> = ({
+  userOperation: { chain_id },
+}) => {
+  return (
+    <div className="flex items-center space-x-1.5">
+      <ChainLogo className="h-6 w-6" chainId={chain_id} />
+      <span className="text-sm font-medium text-text">
+        {getChainById(chain_id).name}
+      </span>
+    </div>
+  );
+};

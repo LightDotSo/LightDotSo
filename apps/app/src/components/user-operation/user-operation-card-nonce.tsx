@@ -13,10 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
+import type { FC } from "react";
+import type { UserOperationData } from "@/data";
+
 // -----------------------------------------------------------------------------
-// Default
+// Props
 // -----------------------------------------------------------------------------
 
-export default function Default() {
-  return <div>All</div>;
-}
+type UserOperationCardNonceProps = { userOperation: UserOperationData };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
+export const UserOperationCardNonce: FC<UserOperationCardNonceProps> = ({
+  userOperation: { nonce },
+}) => {
+  return <div className="group flex items-center space-x-1.5">{nonce}</div>;
+};

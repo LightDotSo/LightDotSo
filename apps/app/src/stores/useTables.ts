@@ -29,6 +29,7 @@ import type {
   NftData,
   WalletData,
   TransactionData,
+  UserOperationData,
 } from "@/data";
 
 // -----------------------------------------------------------------------------
@@ -66,6 +67,18 @@ type TablesStore = {
   setOwnerRowSelection: OnChangeFn<RowSelectionState>;
   setOwnerSorting: OnChangeFn<SortingState>;
   setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
+  userOperationColumnFilters: ColumnFiltersState;
+  userOperationColumnVisibility: VisibilityState;
+  userOperationPagination: PaginationState;
+  userOperationRowSelection: RowSelectionState;
+  userOperationSorting: SortingState;
+  userOperationTable: Table<UserOperationData> | null;
+  setUserOperationColumnFilters: OnChangeFn<ColumnFiltersState>;
+  setUserOperationColumnVisibility: OnChangeFn<VisibilityState>;
+  setUserOperationPagination: OnChangeFn<PaginationState>;
+  setUserOperationRowSelection: OnChangeFn<RowSelectionState>;
+  setUserOperationSorting: OnChangeFn<SortingState>;
+  setUserOperationTable: (tableObject: Table<UserOperationData>) => void;
   tokenColumnFilters: ColumnFiltersState;
   tokenColumnVisibility: VisibilityState;
   tokenPagination: PaginationState;
@@ -225,6 +238,61 @@ export const useTables = create(
           set({
             ownerTable: tableObject,
             tokenTable: null,
+            transactionTable: null,
+          }),
+        userOperationColumnFilters: [],
+        userOperationColumnVisibility: {},
+        userOperationPagination: {
+          pageIndex: 0,
+          pageSize: 10,
+        },
+        userOperationRowSelection: {},
+        userOperationSorting: [],
+        userOperationTable: null,
+        setUserOperationColumnFilters: columnFilters =>
+          set(prevState => ({
+            ...prevState,
+            userOperationColumnFilters:
+              columnFilters instanceof Function
+                ? columnFilters(prevState.userOperationColumnFilters)
+                : columnFilters,
+          })),
+        setUserOperationColumnVisibility: columnVisibility =>
+          set(prevState => ({
+            ...prevState,
+            userOperationColumnVisibility:
+              columnVisibility instanceof Function
+                ? columnVisibility(prevState.userOperationColumnVisibility)
+                : columnVisibility,
+          })),
+        setUserOperationPagination: pagination =>
+          set(prevState => ({
+            ...prevState,
+            userOperationPagination:
+              pagination instanceof Function
+                ? pagination(prevState.userOperationPagination)
+                : pagination,
+          })),
+        setUserOperationRowSelection: rowSelection =>
+          set(prevState => ({
+            ...prevState,
+            userOperationRowSelection:
+              rowSelection instanceof Function
+                ? rowSelection(prevState.userOperationRowSelection)
+                : rowSelection,
+          })),
+        setUserOperationSorting: sorting =>
+          set(prevState => ({
+            ...prevState,
+            userOperationSorting:
+              sorting instanceof Function
+                ? sorting(prevState.userOperationSorting)
+                : sorting,
+          })),
+        setUserOperationTable: tableObject =>
+          set({
+            userOperationTable: tableObject,
+            nftTable: null,
             transactionTable: null,
           }),
         tokenColumnFilters: [],
