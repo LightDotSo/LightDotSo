@@ -95,6 +95,8 @@ jobs:
           submodules: recursive
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
+        with:
+          name: ${{ matrix.name }}
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Install sccache-cache
