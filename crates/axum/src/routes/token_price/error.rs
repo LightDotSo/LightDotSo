@@ -13,26 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::feedback;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Types
+// Error
 // -----------------------------------------------------------------------------
 
-/// Feedback root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct Feedback {
-    /// The text of the feedback.
-    pub text: String,
-    /// The emoji of the feedback.
-    pub emoji: String,
-}
-
-/// Implement From<feedback::Data> for Feedback.
-impl From<feedback::Data> for Feedback {
-    fn from(feedback: feedback::Data) -> Self {
-        Self { text: feedback.text, emoji: feedback.emoji }
-    }
+/// TokenPrice error.
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum TokenPriceError {
+    /// TokenPrice query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// TokenPrice not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }

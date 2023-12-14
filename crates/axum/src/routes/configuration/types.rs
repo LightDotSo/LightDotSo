@@ -51,7 +51,7 @@ pub(crate) struct ConfigurationOwner {
     weight: i64,
 }
 
-// Implement From<configuration::Data> for Configuration.
+/// Implement From<configuration::Data> for Configuration.
 impl From<configuration::Data> for Configuration {
     fn from(configuration: configuration::Data) -> Self {
         Self {
@@ -67,7 +67,7 @@ impl From<configuration::Data> for Configuration {
     }
 }
 
-// Implement From<owner::Data> for Owner.
+/// Implement From<owner::Data> for Owner.
 impl From<owner::Data> for ConfigurationOwner {
     fn from(owner: owner::Data) -> Self {
         Self {

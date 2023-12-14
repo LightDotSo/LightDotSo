@@ -158,7 +158,7 @@ pub(crate) struct WalletTab {
     transaction_count: i64,
 }
 
-// Implement From<wallet::Data> for Wallet.
+/// Implement From<wallet::Data> for Wallet.
 impl From<wallet::Data> for Wallet {
     fn from(wallet: wallet::Data) -> Self {
         Self {

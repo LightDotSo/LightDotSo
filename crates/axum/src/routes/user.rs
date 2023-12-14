@@ -49,7 +49,7 @@ pub(crate) struct User {
     id: String,
 }
 
-// Implement From<user::Data> for User.
+/// Implement From<user::Data> for User.
 impl From<user::Data> for User {
     fn from(user: user::Data) -> Self {
         Self { id: user.id }

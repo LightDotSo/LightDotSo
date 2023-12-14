@@ -26,7 +26,7 @@ pub struct UserOperationConstruct {
     pub chain_id: i64,
 }
 
-// Implement From<UserOperationConstruct> for User operation.
+/// Implement From<UserOperationConstruct> for User operation.
 impl From<UserOperationConstruct> for UserOperationWithTransactionAndReceiptLogs {
     fn from(op: UserOperationConstruct) -> Self {
         Self {

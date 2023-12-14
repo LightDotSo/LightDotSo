@@ -13,26 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::feedback;
-use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+pub(crate) mod error;
+pub(crate) mod get;
+pub(crate) mod list;
+pub(crate) mod types;
+
+use crate::state::AppState;
+use autometrics::autometrics;
+use axum::{routing::get, Router};
+
+pub(crate) use get::{__path_v1_token_get_handler, v1_token_get_handler};
+pub(crate) use list::{__path_v1_token_list_handler, v1_token_list_handler};
 
 // -----------------------------------------------------------------------------
-// Types
+// Router
 // -----------------------------------------------------------------------------
 
-/// Feedback root type.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct Feedback {
-    /// The text of the feedback.
-    pub text: String,
-    /// The emoji of the feedback.
-    pub emoji: String,
-}
-
-/// Implement From<feedback::Data> for Feedback.
-impl From<feedback::Data> for Feedback {
-    fn from(feedback: feedback::Data) -> Self {
-        Self { text: feedback.text, emoji: feedback.emoji }
-    }
+#[autometrics]
+pub(crate) fn router() -> Router<AppState> {
+    Router::new()
+        .route("/token/get", get(v1_token_get_handler))
+        .route("/token/list", get(v1_token_list_handler))
 }

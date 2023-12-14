@@ -13,7 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use lightdotso_prisma::feedback;
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 
@@ -21,18 +20,23 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Feedback root type.
+/// TokenPrice root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct Feedback {
-    /// The text of the feedback.
-    pub text: String,
-    /// The emoji of the feedback.
-    pub emoji: String,
+pub(crate) struct TokenPrice {
+    /// The price of the token price.
+    pub price: f64,
+    /// The change of the token price in the last 24 hours.
+    pub price_change_24h: f64,
+    /// The percentage change of the token price in the last 24 hours.
+    pub price_change_24h_percentage: f64,
+    /// The historical prices of the token price.
+    pub prices: Vec<TokenPriceDate>,
 }
 
-/// Implement From<feedback::Data> for Feedback.
-impl From<feedback::Data> for Feedback {
-    fn from(feedback: feedback::Data) -> Self {
-        Self { text: feedback.text, emoji: feedback.emoji }
-    }
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct TokenPriceDate {
+    /// The price of the token price.
+    pub price: f64,
+    /// The date of the token price.
+    pub date: String,
 }

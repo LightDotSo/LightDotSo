@@ -72,7 +72,7 @@ pub struct WalletSettingsPostRequestParams {
     pub wallet_settings: WalletSettingsOptional,
 }
 
-// Implement From<wallet_settings::Data> for WalletSettings.
+/// Implement From<wallet_settings::Data> for WalletSettings.
 impl From<wallet_settings::Data> for WalletSettings {
     fn from(wallet_settings: wallet_settings::Data) -> Self {
         Self { is_enabled_testnet: wallet_settings.is_enabled_testnet }

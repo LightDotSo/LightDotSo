@@ -132,7 +132,7 @@ pub enum ListQueryStatus {
     Reverted,
 }
 
-// Implement From<owner::Data> for Owner.
+/// Implement From<owner::Data> for Owner.
 impl From<ListQueryStatus> for UserOperationStatus {
     fn from(status: ListQueryStatus) -> Self {
         match status {
@@ -288,7 +288,7 @@ impl TryFrom<UserOperationCreate> for RundlerUserOperation {
     }
 }
 
-// Implement From<user_operation::Data> for User operation.
+/// Implement From<user_operation::Data> for User operation.
 impl From<user_operation::Data> for UserOperation {
     fn from(user_operation: user_operation::Data) -> Self {
         Self {
@@ -318,21 +318,21 @@ impl From<user_operation::Data> for UserOperation {
     }
 }
 
-// Implement From<owner::Data> for Owner.
+/// Implement From<owner::Data> for Owner.
 impl From<owner::Data> for UserOperationOwner {
     fn from(owner: owner::Data) -> Self {
         Self { id: owner.id.to_string(), address: owner.address.to_string(), weight: owner.weight }
     }
 }
 
-// Implement From<paymaster::Data> for Paymaster.
+/// Implement From<paymaster::Data> for Paymaster.
 impl From<paymaster::Data> for UserOperationPaymaster {
     fn from(paymaster: paymaster::Data) -> Self {
         Self { address: paymaster.address }
     }
 }
 
-// Implement From<signature::Data> for Owner.
+/// Implement From<signature::Data> for Owner.
 impl From<signature::Data> for UserOperationSignature {
     fn from(signature: signature::Data) -> Self {
         Self {
@@ -343,7 +343,7 @@ impl From<signature::Data> for UserOperationSignature {
     }
 }
 
-// Implement From<transaction::Data> for Owner.
+/// Implement From<transaction::Data> for Owner.
 impl From<transaction::Data> for UserOperationTransaction {
     fn from(transaction: transaction::Data) -> Self {
         Self { hash: transaction.hash }
