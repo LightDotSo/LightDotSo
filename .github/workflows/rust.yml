@@ -32,7 +32,7 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/crates"
-  rust:
+  rust-matrix:
     strategy:
       matrix:
         include:
@@ -189,12 +189,12 @@ jobs:
     if: always()
     needs:
       - rust-turbo
-      - rust
+      - rust-matrix
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: rust
+          allowed-skips: rust-matrix
           jobs: ${{ toJSON(needs) }}
