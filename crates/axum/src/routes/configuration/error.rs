@@ -13,34 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod error;
-pub mod logout;
-pub mod nonce;
-pub mod session;
-pub mod verify;
-
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{
-    routing::{get, post},
-    Router,
-};
-
-pub(crate) use crate::routes::auth::error::AuthError;
-pub(crate) use crate::routes::auth::logout::v1_auth_logout_handler;
-pub(crate) use crate::routes::auth::nonce::v1_auth_nonce_handler;
-pub(crate) use crate::routes::auth::session::v1_auth_session_handler;
-pub(crate) use crate::routes::auth::verify::v1_auth_verify_handler;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Router
+// Types
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/auth/nonce", get(v1_auth_nonce_handler))
-        .route("/auth/session", get(v1_auth_session_handler))
-        .route("/auth/logout", post(v1_auth_logout_handler))
-        .route("/auth/verify", post(v1_auth_verify_handler))
+/// Configuration errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum ConfigurationError {
+    /// Configuration query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Configuration not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
 }

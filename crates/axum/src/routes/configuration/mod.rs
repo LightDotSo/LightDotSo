@@ -14,23 +14,20 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod error;
-pub mod logout;
-pub mod nonce;
-pub mod session;
-pub mod verify;
+pub mod get;
+pub mod list;
+pub mod types;
 
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{
-    routing::{get, post},
-    Router,
+use crate::{
+    routes::configuration::{
+        get::v1_configuration_get_handler, list::v1_configuration_list_handler,
+    },
+    state::AppState,
 };
+use autometrics::autometrics;
+use axum::{routing::get, Router};
 
-pub(crate) use crate::routes::auth::error::AuthError;
-pub(crate) use crate::routes::auth::logout::v1_auth_logout_handler;
-pub(crate) use crate::routes::auth::nonce::v1_auth_nonce_handler;
-pub(crate) use crate::routes::auth::session::v1_auth_session_handler;
-pub(crate) use crate::routes::auth::verify::v1_auth_verify_handler;
+pub(crate) use error::ConfigurationError;
 
 // -----------------------------------------------------------------------------
 // Router
@@ -39,8 +36,6 @@ pub(crate) use crate::routes::auth::verify::v1_auth_verify_handler;
 #[autometrics]
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
-        .route("/auth/nonce", get(v1_auth_nonce_handler))
-        .route("/auth/session", get(v1_auth_session_handler))
-        .route("/auth/logout", post(v1_auth_logout_handler))
-        .route("/auth/verify", post(v1_auth_verify_handler))
+        .route("/configuration/get", get(v1_configuration_get_handler))
+        .route("/configuration/list", get(v1_configuration_list_handler))
 }
