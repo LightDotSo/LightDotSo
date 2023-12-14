@@ -35,8 +35,7 @@ export const RootContext: FC = () => {
   // Stores
   // ---------------------------------------------------------------------------
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { address, errors, formValues: _, isValid, isLoading } = useNewForm();
+  const { address, errors, formValues, isValid, isLoading } = useNewForm();
 
   // ---------------------------------------------------------------------------
   // Render
@@ -50,7 +49,9 @@ export const RootContext: FC = () => {
             <code className="break-all text-text">
               {isLoading ? "IsLoading" : "Loaded"}
               <br />
-              {address}
+              {address && <>{address}</>}
+              <br />
+              {formValues?.name && <>Name: {formValues.name}</>}
             </code>
           </pre>
         </motion.div>
