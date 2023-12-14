@@ -56,7 +56,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const {

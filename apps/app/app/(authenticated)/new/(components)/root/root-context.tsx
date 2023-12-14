@@ -24,7 +24,7 @@ import { useNewForm } from "@/stores";
 
 export const RootContext: FC = () => {
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const { address, errors, formValues, isValid, isLoading } = useNewForm();
