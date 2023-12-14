@@ -170,10 +170,10 @@ jobs:
         run: |
           cargo clippy \
             --all-features \
+            --message-format=json \
             ${{ matrix.package }} \
-            --no-deps -D clippy::expect_used -D clippy::unwrap_used \
-            --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
-        continue-on-error: true
+            -- --no-deps -D clippy::expect_used -D clippy::unwrap_used \
+            | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
       - if: matrix.check
         name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
