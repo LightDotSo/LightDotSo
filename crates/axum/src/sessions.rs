@@ -19,7 +19,7 @@ use crate::{
     constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ID_KEY},
     error::RouteError,
     result::AppError,
-    routes::auth::AuthError,
+    routes::auth::error::AuthError,
 };
 use async_trait::async_trait;
 use axum::{

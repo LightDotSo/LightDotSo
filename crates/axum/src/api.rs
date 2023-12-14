@@ -62,10 +62,10 @@ use utoipa_swagger_ui::SwaggerUi;
 ))]
 #[openapi(
     components(
-        schemas(auth::AuthError),
-        schemas(auth::AuthNonce),
-        schemas(auth::AuthSession),
-        schemas(auth::AuthVerifyPostRequestParams),
+        schemas(auth::error::AuthError),
+        schemas(auth::nonce::AuthNonce),
+        schemas(auth::session::AuthSession),
+        schemas(auth::verify::AuthVerifyPostRequestParams),
         schemas(configuration::Configuration),
         schemas(configuration::ConfigurationError),
         schemas(configuration::ConfigurationOwner),
@@ -119,10 +119,10 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet_settings::WalletSettingsPostRequestParams),
     ),
     paths(
-        auth::v1_auth_nonce_handler,
-        auth::v1_auth_session_handler,
-        auth::v1_auth_logout_handler,
-        auth::v1_auth_verify_handler,
+        auth::nonce::v1_auth_nonce_handler,
+        auth::session::v1_auth_session_handler,
+        auth::logout::v1_auth_logout_handler,
+        auth::verify::v1_auth_verify_handler,
         check::check::handler,
         health::health::handler,
         configuration::v1_configuration_get_handler,
@@ -189,7 +189,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (url = "http://localhost:3000/v1", description = "Local server"),
     )
 )]
-struct ApiDoc;
+pub(crate) struct ApiDoc;
 
 pub async fn start_api_server() -> Result<()> {
     info!("Starting API server");

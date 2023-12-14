@@ -16,6 +16,10 @@
 use autometrics::autometrics;
 use axum::response::IntoResponse;
 
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
+
 /// Check if the server is running.
 #[utoipa::path(
         get,

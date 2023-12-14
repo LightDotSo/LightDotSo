@@ -13,22 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+pub mod error;
+pub mod logout;
+pub mod nonce;
+pub mod session;
+pub mod verify;
+
+pub(crate) use crate::routes::auth::error::AuthError;
+pub(crate) use crate::routes::auth::logout::v1_auth_logout_handler;
+pub(crate) use crate::routes::auth::nonce::v1_auth_nonce_handler;
+pub(crate) use crate::routes::auth::session::v1_auth_session_handler;
+pub(crate) use crate::routes::auth::verify::v1_auth_verify_handler;
+
+use crate::state::AppState;
 use autometrics::autometrics;
-use axum::response::IntoResponse;
+use axum::{
+    routing::{get, post},
+    Router,
+};
 
 // -----------------------------------------------------------------------------
-// Handler
+// Router
 // -----------------------------------------------------------------------------
 
-/// Check the health of the server.
-#[utoipa::path(
-        get,
-        path = "/health",
-        responses(
-            (status = 200, description = "Health returned successfully"),
-        )
-    )]
 #[autometrics]
-pub async fn handler() -> impl IntoResponse {
-    "Ok"
+pub(crate) fn router() -> Router<AppState> {
+    Router::new()
+        .route("/auth/nonce", get(v1_auth_nonce_handler))
+        .route("/auth/session", get(v1_auth_session_handler))
+        .route("/auth/logout", post(v1_auth_logout_handler))
+        .route("/auth/verify", post(v1_auth_verify_handler))
 }

@@ -13,22 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::autometrics;
-use axum::response::IntoResponse;
+use crate::result::AppJsonResult;
+use axum::Json;
+use lightdotso_tracing::tracing::info;
+use tower_sessions::Session;
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Check the health of the server.
+/// Logout a session
 #[utoipa::path(
-        get,
-        path = "/health",
+        post,
+        path = "/auth/logout",
         responses(
-            (status = 200, description = "Health returned successfully"),
+            (status = 200, description = "Auth logout returned successfully", body = ()),
+            (status = 404, description = "Auth logout not succeeded", body = AuthError),
         )
     )]
-#[autometrics]
-pub async fn handler() -> impl IntoResponse {
-    "Ok"
+pub(crate) async fn v1_auth_logout_handler(session: Session) -> AppJsonResult<()> {
+    info!(?session);
+
+    session.clear();
+
+    Ok(Json::from(()))
 }

@@ -13,22 +13,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::autometrics;
-use axum::response::IntoResponse;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Handler
+// Types
 // -----------------------------------------------------------------------------
 
-/// Check the health of the server.
-#[utoipa::path(
-        get,
-        path = "/health",
-        responses(
-            (status = 200, description = "Health returned successfully"),
-        )
-    )]
-#[autometrics]
-pub async fn handler() -> impl IntoResponse {
-    "Ok"
+/// Auth operation errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum AuthError {
+    // Auth query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// Auth not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+    /// Internal error.
+    #[schema(example = "Internal error")]
+    InternalError(String),
 }

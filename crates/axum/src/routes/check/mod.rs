@@ -21,6 +21,10 @@ use autometrics::autometrics;
 use axum::{routing::get, Router};
 use http_body::Body as HttpBody;
 
+// -----------------------------------------------------------------------------
+// Router
+// -----------------------------------------------------------------------------
+
 #[autometrics]
 pub(crate) fn router<S, B>() -> Router<S, B>
 where
