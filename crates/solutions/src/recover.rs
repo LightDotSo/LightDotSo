@@ -45,7 +45,7 @@ pub async fn recover_signature(
     // Legacy signature
     if signature_type == 0x00 {
         let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
-        base_sig_module.set_subdigest();
+        let _ = base_sig_module.set_subdigest();
         base_sig_module.set_signature(sig);
         return base_sig_module.recover(0).await;
     }
@@ -53,7 +53,7 @@ pub async fn recover_signature(
     // Dynamic signature
     if signature_type == 0x01 {
         let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
-        base_sig_module.set_subdigest();
+        let _ = base_sig_module.set_subdigest();
         // Set the signature after the first byte
         base_sig_module.set_signature(sig.as_slice()[1..].to_vec().into());
         return base_sig_module.recover(1).await;
@@ -62,7 +62,7 @@ pub async fn recover_signature(
     // No ChainId signature
     if signature_type == 0x02 {
         let mut base_sig_module = SigModule::new(address, chain_id, digest, None);
-        base_sig_module.set_subdigest();
+        let _ = base_sig_module.set_subdigest();
         base_sig_module.set_signature(sig.as_slice()[1..].to_vec().into());
         return base_sig_module.recover(2).await;
     }
@@ -106,7 +106,7 @@ async fn recover_chained(
         let (sig_size, sig_rindex) = read_uint24(signature.as_slice(), rindex)?;
         let nrindex = sig_rindex + (sig_size as usize);
 
-        let hashed_digest = set_image_hash(signature.as_slice()[sig_rindex..nrindex].to_vec());
+        let hashed_digest = set_image_hash(signature.as_slice()[sig_rindex..nrindex].to_vec())?;
         config = Some(
             recover_signature(
                 address,
@@ -117,15 +117,17 @@ async fn recover_chained(
             .await?,
         );
 
-        if config.as_ref().unwrap().weight < config.as_ref().unwrap().threshold.into() {
+        if config.as_ref().ok_or_else(|| eyre!("config is None"))?.weight
+            < config.as_ref().ok_or_else(|| eyre!("config is None"))?.threshold.into()
+        {
             return Err(eyre!("Less than threshold"));
         }
 
-        if config.as_ref().unwrap().checkpoint >= checkpoint {
+        if config.as_ref().ok_or_else(|| eyre!("config is None"))?.checkpoint >= checkpoint {
             return Err(eyre!("Invalid checkpoint"));
         }
 
-        checkpoint = config.as_ref().unwrap().checkpoint;
+        checkpoint = config.as_ref().ok_or_else(|| eyre!("config is None"))?.checkpoint;
         rindex = nrindex;
     }
 
@@ -140,14 +142,11 @@ async fn recover_chained(
     }
 }
 
-fn set_image_hash(sig_hash: Vec<u8>) -> [u8; 32] {
-    keccak256(
-        encode_packed(&[
-            Token::FixedBytes(keccak256("SetImageHash(bytes32 imageHash)").to_vec()),
-            Token::FixedBytes(sig_hash),
-        ])
-        .unwrap(),
-    )
+fn set_image_hash(sig_hash: Vec<u8>) -> Result<[u8; 32]> {
+    Ok(keccak256(encode_packed(&[
+        Token::FixedBytes(keccak256("SetImageHash(bytes32 imageHash)").to_vec()),
+        Token::FixedBytes(sig_hash),
+    ])?))
 }
 
 #[cfg(test)]
@@ -158,38 +157,42 @@ mod tests {
     use eyre::eyre;
 
     #[tokio::test]
-    async fn test_recover_signature_empty() {
+    async fn test_recover_signature_empty() -> Result<()> {
         let signature: Signature = vec![].into();
 
         let expected_err = eyre!("Invalid signature length");
 
         let res = recover_signature(Address::zero(), 1, [1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
+
+        Ok(())
     }
 
     #[tokio::test]
-    async fn test_decode_invalid_signature_type() {
+    async fn test_decode_invalid_signature_type() -> Result<()> {
         let signature: Signature = vec![0x9].into();
 
         let expected_err = eyre!("Invalid signature type");
 
         let res = recover_signature(Address::zero(), 1, [1u8; 32], signature).await.unwrap_err();
         assert_eq!(res.to_string(), expected_err.to_string());
+
+        Ok(())
     }
 
     #[test]
-    fn test_set_image_hash() {
+    fn test_set_image_hash() -> Result<()> {
         let digest = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000000001",
-        )
-        .unwrap();
+        )?;
         let expected_output = parse_hex_to_bytes32(
             "0xb5e1f9d781177bfdce4895e85793155c359e351caedd1c17a5c684d110566de7",
-        )
-        .unwrap();
+        )?;
 
-        let result = set_image_hash(digest.to_vec());
+        let result = set_image_hash(digest.to_vec())?;
 
         assert_eq!(result, expected_output);
+
+        Ok(())
     }
 }

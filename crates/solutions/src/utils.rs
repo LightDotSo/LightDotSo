@@ -20,26 +20,20 @@ use ethers::{
 };
 use eyre::{eyre, Result};
 
-pub fn hash_message_bytes32(msg: &[u8; 32]) -> [u8; 32] {
-    keccak256(
-        encode_packed(&[
-            Token::String("\x19Ethereum Signed Message:\n32".to_string()),
-            Token::FixedBytes(msg.to_vec()),
-        ])
-        .unwrap(),
-    )
+pub fn hash_message_bytes32(msg: &[u8; 32]) -> Result<[u8; 32]> {
+    Ok(keccak256(encode_packed(&[
+        Token::String("\x19Ethereum Signed Message:\n32".to_string()),
+        Token::FixedBytes(msg.to_vec()),
+    ])?))
 }
 
-pub fn render_subdigest(chain_id: u64, address: Address, digest: [u8; 32]) -> [u8; 32] {
-    keccak256(
-        encode_packed(&[
-            Token::String("\x19\x01".to_string()),
-            Token::FixedBytes(left_pad_u64_to_bytes32(chain_id).to_vec()),
-            Token::Address(address),
-            Token::FixedBytes(digest.to_vec()),
-        ])
-        .unwrap(),
-    )
+pub fn render_subdigest(chain_id: u64, address: Address, digest: [u8; 32]) -> Result<[u8; 32]> {
+    Ok(keccak256(encode_packed(&[
+        Token::String("\x19\x01".to_string()),
+        Token::FixedBytes(left_pad_u64_to_bytes32(chain_id).to_vec()),
+        Token::Address(address),
+        Token::FixedBytes(digest.to_vec()),
+    ])?))
 }
 
 pub(crate) fn read_uint8_address(data: &[u8], index: usize) -> Result<(u8, Address, usize)> {
@@ -91,7 +85,7 @@ pub(crate) fn read_uint24(data: &[u8], index: usize) -> Result<(u32, usize), eyr
     let new_pointer = index + 3;
 
     if data.len() < new_pointer {
-        return Err(eyre::eyre!("index out of bounds of the input data"));
+        return Err(eyre!("index out of bounds of the input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -106,7 +100,7 @@ pub(crate) fn read_uint32(data: &[u8], index: usize) -> Result<(u32, usize), eyr
     let new_pointer = index + 4;
 
     if data.len() < new_pointer {
-        return Err(eyre::eyre!("Index out of bounds of the input data"));
+        return Err(eyre!("Index out of bounds of the input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -120,7 +114,7 @@ pub(crate) fn read_bytes32(data: &[u8], index: usize) -> Result<([u8; 32], usize
     let new_pointer = index + 32;
 
     if data.len() < new_pointer {
-        return Err(eyre::eyre!("index is out of bounds of the input data"));
+        return Err(eyre!("index is out of bounds of the input data"));
     }
 
     let slice = &data[index..new_pointer];
@@ -191,95 +185,100 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_hash_message() {
+    fn test_hash_message() -> Result<()> {
         let message = parse_hex_to_bytes32(
             "0x84fcef6a64ccef82e5436d5281e94687e0371478798a1ce226da0b9838113ce8",
-        )
-        .unwrap();
-        let result_original = hash_message_bytes32(&message);
+        )?;
+        let result_original = hash_message_bytes32(&message)?;
         let result: [u8; 32] = hash_message(message).into();
         let expected = parse_hex_to_bytes32(
             "0xdafe5b72d714f0405b7b2c2c04bf346d94964b3fd39265cc05db27f6910dbb60",
-        )
-        .unwrap();
+        )?;
         assert_eq!(result, result_original);
         assert_eq!(result, expected);
+
+        Ok(())
     }
 
     #[test]
-    fn test_render_subdigest() {
+    fn test_render_subdigest() -> Result<()> {
         let digest = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000000001",
-        )
-        .unwrap();
+        )?;
 
-        let res = render_subdigest(
-            1,
-            "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f".parse().unwrap(),
-            digest,
-        );
+        let res =
+            render_subdigest(1, "0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f".parse()?, digest)?;
 
         let expected = parse_hex_to_bytes32(
             "0x349298d2e05ff7da41925abdea9f3453feada8ea0b96bac074d14609ce004ded",
-        )
-        .unwrap();
+        )?;
 
         assert_eq!(res, expected);
+
+        Ok(())
     }
 
     #[test]
-    fn test_read_uint8_address() {
+    fn test_read_uint8_address() -> Result<()> {
         let data = [1u8; 25];
         let index = 0usize;
         let result = read_uint8_address(&data, index);
 
         assert!(result.is_ok());
-        let (a, _b, new_pointer) = result.unwrap();
+        let (a, _b, new_pointer) = result?;
         assert_eq!(a, 1);
         assert_eq!(new_pointer, 21);
+
+        Ok(())
     }
 
     #[test]
-    fn test_read_uint16() {
+    fn test_read_uint16() -> Result<()> {
         let data: [u8; 4] = [0x01, 0x02, 0xab, 0xcd];
         let index: usize = 0;
         let result = read_uint16(&data, index);
 
         assert!(result.is_ok());
-        let (value, new_pointer) = result.unwrap();
+        let (value, new_pointer) = result?;
 
         assert_eq!(value, 0x0102);
         assert_eq!(new_pointer, 2);
+
+        Ok(())
     }
 
     #[test]
-    fn test_read_uint24() {
+    fn test_read_uint24() -> Result<()> {
         let data: [u8; 5] = [0x01, 0xab, 0xcd, 0xef, 0x23];
         let index: usize = 0;
         let result = read_uint24(&data, index);
 
         assert!(result.is_ok());
-        let (value, new_pointer) = result.unwrap();
+        let (value, new_pointer) = result?;
 
         assert_eq!(value, 0x01abcd);
         assert_eq!(new_pointer, 3);
+
+        Ok(())
     }
 
     #[test]
-    fn test_read_uint32() {
+    fn test_read_uint32() -> Result<()> {
         let data: [u8; 5] = [0x01, 0xab, 0xcd, 0xef, 0x23];
         let index: usize = 0;
         let result = read_uint32(&data, index);
 
         assert!(result.is_ok());
-        let (value, new_pointer) = result.unwrap();
+        let (value, new_pointer) = result?;
 
         assert_eq!(value, 0x01abcdef);
         assert_eq!(new_pointer, 4);
+
+        Ok(())
     }
 
     #[test]
-    fn test_read_bytes32() {
+    fn test_read_bytes32() -> Result<()> {
         let data: [u8; 40] = [
             0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e,
             0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c,
@@ -289,7 +288,7 @@ mod tests {
         let result = read_bytes32(&data, index);
 
         assert!(result.is_ok());
-        let (value, new_pointer) = result.unwrap();
+        let (value, new_pointer) = result?;
 
         let expected: [u8; 32] = [
             0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e,
@@ -299,21 +298,26 @@ mod tests {
 
         assert_eq!(value, expected);
         assert_eq!(new_pointer, 32);
+
+        Ok(())
     }
 
     #[test]
-    fn test_hash_keccak_256() {
+    fn test_hash_keccak_256() -> Result<()> {
         let a: [u8; 32] = [1; 32];
         let b: [u8; 32] = [2; 32];
         let result = hash_keccak_256(a, b);
         assert_ne!(a, result);
+
+        Ok(())
     }
 
     #[test]
-    fn test_parse_hex_to_bytes32() {
+    fn test_parse_hex_to_bytes32() -> Result<()> {
         let hex = "0x28691a6618bc54d40e2d3af7bda922140e8c3f5e8f7abc5a6462e7b4528f4000";
-        let result = parse_hex_to_bytes32(hex);
-        assert!(result.is_ok());
-        assert_eq!(result.unwrap().len(), 32);
+        let result = parse_hex_to_bytes32(hex)?;
+        assert_eq!(result.len(), 32);
+
+        Ok(())
     }
 }

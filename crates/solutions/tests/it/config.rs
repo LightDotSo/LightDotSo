@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use eyre::Result;
 use lightdotso_solutions::{
     config::WalletConfig,
     types::{AddressSignatureLeaf, NestedLeaf, SignatureLeaf, Signer, SignerNode, SubdigestLeaf},
@@ -20,7 +21,7 @@ use lightdotso_solutions::{
 };
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_signatures() {
+async fn test_integration_signatures() -> Result<()> {
     let config_1: WalletConfig = WalletConfig {
       signature_type: 0,
       checkpoint: 999999,
@@ -36,7 +37,7 @@ async fn test_integration_signatures() {
                 signer: Some(Signer {
                     weight: Some(2),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                        address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse()?,
                     }),
                 }),
             })),
@@ -49,7 +50,7 @@ async fn test_integration_signatures() {
                         hash: parse_hex_to_bytes32(
                             "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
                         )
-                        .unwrap()
+                        ?
                         .into(),
                     }),
                 }),
@@ -66,7 +67,7 @@ async fn test_integration_signatures() {
                         hash: parse_hex_to_bytes32(
                             "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
                         )
-                        .unwrap()
+                        ?
                         .into(),
                     }),
                 }),
@@ -77,7 +78,7 @@ async fn test_integration_signatures() {
                 signer: Some(Signer {
                     weight: Some(1),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse().unwrap(),
+                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse()?,
                     }),
                 }),
             })),
@@ -105,7 +106,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000000",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -119,7 +120,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000001",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -136,7 +137,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000002",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -150,7 +151,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000003",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -170,7 +171,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000004",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -184,7 +185,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000005",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -201,7 +202,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000006",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -215,7 +216,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x0000000000000000000000000000000000000000000000000000000000000007",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -244,7 +245,7 @@ async fn test_integration_signatures() {
                         signer: Some(Signer {
                             weight: Some(2),
                             leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                                address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse().unwrap(),
+                                address: "0x07ab71Fe97F9122a2dBE3797aa441623f5a59DB1".parse()?,
                             }),
                         }),
                     })),
@@ -257,7 +258,7 @@ async fn test_integration_signatures() {
                                 hash: parse_hex_to_bytes32(
                                     "0x0000000000000000000000000000000000000000000000000000000000000006",
                                 )
-                                .unwrap()
+                                ?
                                 .into(),
                                 }),
                         }),
@@ -273,7 +274,7 @@ async fn test_integration_signatures() {
                             hash: parse_hex_to_bytes32(
                                 "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df10000000000000000",
                             )
-                            .unwrap()
+                            ?
                             .into(),
                         }),
                     }),
@@ -297,7 +298,7 @@ async fn test_integration_signatures() {
                         hash: parse_hex_to_bytes32(
                             "0xb374baf809e388014912ca7020c8ef51ad68591db3f010f9e35a77c15d4d6bed",
                         )
-                        .unwrap()
+                        ?
                         .into(),
                     }),
                 }),
@@ -314,7 +315,7 @@ async fn test_integration_signatures() {
                         hash: parse_hex_to_bytes32(
                             "0x787c83a19321fc70f8653f8faa39cce60bf26cac51c25df1b0634eb7ddbe0c60",
                         )
-                        .unwrap()
+                        ?
                         .into(),
                     }),
                 }),
@@ -325,7 +326,7 @@ async fn test_integration_signatures() {
                 signer: Some(Signer {
                     weight: Some(1),
                     leaf: SignatureLeaf::AddressSignature(AddressSignatureLeaf {
-                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse().unwrap(),
+                        address: "0xdafea492d9c6733ae3d56b7ed1adb60692c98bc5".parse()?,
                     }),
                 }),
             })),
@@ -344,7 +345,9 @@ async fn test_integration_signatures() {
 
     for (i, config) in configs.iter_mut().enumerate() {
         let _ = config.regenerate_image_hash([0; 32]);
-        let r = config.image_hash_of_wallet_config().unwrap();
-        assert_eq!(r, parse_hex_to_bytes32(image_hashes[i]).unwrap());
+        let r = config.image_hash_of_wallet_config()?;
+        assert_eq!(r, parse_hex_to_bytes32(image_hashes[i])?);
     }
+
+    Ok(())
 }

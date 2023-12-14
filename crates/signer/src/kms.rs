@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::signers::AwsSigner;
-use eyre::Context;
+use eyre::{eyre, Context, Result};
 use lightdotso_redis::{
     get_redis_client,
     lock::{LockGuard, LockManager},
@@ -46,7 +46,7 @@ impl KmsSigner {
         let (tx, rx) = oneshot::channel::<String>();
 
         // Create the redis client
-        let redis_client: Client = get_redis_client().unwrap();
+        let redis_client: Client = get_redis_client()?;
 
         let kms_guard = SpawnGuard::spawn_with_guard(Self::lock_manager_loop(
             vec![redis_client],
@@ -69,7 +69,7 @@ impl KmsSigner {
         chain_id: u64,
         ttl_millis: u64,
         locked_tx: oneshot::Sender<String>,
-    ) {
+    ) -> Result<()> {
         info!("starting lock manager loop");
 
         let lm = LockManager::new(clients);
@@ -94,22 +94,33 @@ impl KmsSigner {
             }
         }
         if lock.is_none() {
-            return;
+            return Err(eyre!("could not lock any key_id"));
         }
-        let _ = locked_tx.send(kid.unwrap());
+        if kid.is_none() {
+            return Err(eyre!("could not lock any key_id"));
+        }
 
-        let lg = LockGuard { lock: lock.unwrap() };
-        loop {
-            sleep(Duration::from_millis(ttl_millis / 10)).await;
-            match lm.extend(&lg.lock, ttl_millis as usize).await {
-                Ok(_) => {
-                    debug!("extended lock");
-                }
-                Err(e) => {
-                    error!("could not extend lock: {e:?}");
+        if let Some(kid) = kid {
+            info!("sending locked key_id {kid}");
+            let _ = locked_tx.send(kid);
+        }
+
+        if let Some(lock) = lock {
+            let lg = LockGuard { lock };
+            loop {
+                sleep(Duration::from_millis(ttl_millis / 10)).await;
+                match lm.extend(&lg.lock, ttl_millis as usize).await {
+                    Ok(_) => {
+                        debug!("extended lock");
+                    }
+                    Err(e) => {
+                        error!("could not extend lock: {e:?}");
+                    }
                 }
             }
         }
+
+        Ok(())
     }
 }
 

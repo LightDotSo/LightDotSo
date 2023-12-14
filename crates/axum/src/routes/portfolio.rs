@@ -106,9 +106,7 @@ async fn v1_portfolio_get_handler(
 
     // Get the latest portfolio.
     let latest_portfolio: Vec<PortfolioQueryReturnType> = client
-        .clone()
         .client
-        .unwrap()
         ._query_raw(raw!(
             "SELECT balanceUSD as balance, timestamp as date
             FROM WalletBalance
@@ -128,9 +126,7 @@ async fn v1_portfolio_get_handler(
 
     // Get the past portfolio.
     let past_portfolio: Vec<PortfolioQueryReturnType> = client
-        .clone()
         .client
-        .unwrap()
         ._query_raw(raw!(
             "SELECT AVG(balanceUSD) as balance, DATE(timestamp) as date
             FROM WalletBalance

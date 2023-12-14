@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::Address;
+use eyre::Result;
 use lightdotso_common::traits::VecU8ToHex;
 use lightdotso_solutions::{
     io::write_wallet_config,
@@ -35,19 +36,18 @@ const SIGNATURES: &[&str] = &[
 ];
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_signatures() {
+async fn test_integration_signatures() -> Result<()> {
     for (i, signature) in SIGNATURES.iter().enumerate() {
         println!("{}", i);
 
-        let sig = from_hex_string(signature).unwrap().into();
+        let sig = from_hex_string(signature)?.into();
         // Notice that the recovered addresses are hypothetical as we don't have the original
         // user_op_hash that was used for the subdigest.
         let user_op_hash = parse_hex_to_bytes32(
             "0x0000000000000000000000000000000000000000000000000000000000000001",
-        )
-        .unwrap();
+        )?;
 
-        let config = recover_signature(Address::zero(), 1, user_op_hash, sig).await.unwrap();
+        let config = recover_signature(Address::zero(), 1, user_op_hash, sig).await?;
 
         // println!("tree: {:?}", config.tree);
 
@@ -59,12 +59,12 @@ async fn test_integration_signatures() {
         //     parse_hex_to_bytes32(
         //         "0xc9185cef7e5a78ba5220f4f1e7854a8e257cc0191aab3a3b8c3f9e2cca6f6bb2"
         //     )
-        //     .unwrap()
+        //     ?
         //     .into()
         // );
 
         // Encode the config into bytes and print it
-        let recovered_signature = config.encode().unwrap();
+        let recovered_signature = config.encode()?;
         println!("{}", recovered_signature.to_hex_string());
         println!("{}", signature);
         // Print if the recovered signature matches the original signature (true or false)
@@ -73,30 +73,30 @@ async fn test_integration_signatures() {
 
         // Write WalletConfig back to a different JSON file
         let path_name = format!("tests/samples/wallet_config_{}.json", i);
-        write_wallet_config(&config.clone(), path_name).unwrap();
+        write_wallet_config(&config.clone(), path_name)?;
         insta::assert_debug_snapshot!(i.to_string(), config.clone().tree);
     }
+    Ok(())
 }
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_signature_reduce() {
+async fn test_integration_signature_reduce() -> Result<()> {
     let signature = "0x0200050000000a0102aa79283d0206aba8c14a2a30df589648c54490e7020314327739c49f93a04c38623b54a4a75b49e6f646000062020001000000000001fde94c874698620141d895ddd82dc36898bd03b2dd2dd6b970e25fbabc54fd6e65eaf44b207f28dd282e0e8661196d9d4c112c12f4798ac7ac46c8d814df79571b020101b1f69536d293ee3764ce9881894a68029666a851030400005a00034d2c18410daf9379ce00b4ef13330a18b8677c1b95e814c8859ce1159668cf2a5180c7a5b809a746574ed14403dd5f78828c718a8aaac8924a7dfab22a5d85a11b020102cae521702a655832403bf3f751dce0be2fe8af2a0400005c0102b02b38d317751d4b7864097800a82b4f2090b2f70102b53dafe1716b3a7c5ee2072c6881658447fe465a0400002c0102254f1e583509980fe791fb12a0471d7c59c06ad50102ef86b8b2e0cf2ff0660840031f45adc50abd734c0102080aa40b944885f166dedade5f4d5fa4a13cbfad";
-    let sig = from_hex_string(signature).unwrap().into();
+    let sig = from_hex_string(signature)?.into();
     // Notice that the recovered addresses are hypothetical as we don't have the original
     // user_op_hash that was used for the subdigest.
     let user_op_hash =
-        parse_hex_to_bytes32("0x0000000000000000000000000000000000000000000000000000000000000001")
-            .unwrap();
+        parse_hex_to_bytes32("0x0000000000000000000000000000000000000000000000000000000000000001")?;
 
-    let mut config = recover_signature(Address::zero(), 1, user_op_hash, sig).await.unwrap();
+    let mut config = recover_signature(Address::zero(), 1, user_op_hash, sig).await?;
 
     // Write reducedd WalletConfig back to a different JSON file
-    let path_name = format!("tests/samples/wallet_reduced_config_before.json");
-    write_wallet_config(&config.clone(), path_name).unwrap();
+    let path_name = "tests/samples/wallet_reduced_config_before.json".to_string();
+    write_wallet_config(&config.clone(), path_name)?;
 
     // Reduce the config
     config.reduce();
-    let new_recovered_signature = config.encode().unwrap();
+    let new_recovered_signature = config.encode()?;
 
     let reduced_signature = "0x0200050000000a0102aa79283d0206aba8c14a2a30df589648c54490e7020314327739c49f93a04c38623b54a4a75b49e6f646000062020001000000000001fde94c874698620141d895ddd82dc36898bd03b2dd2dd6b970e25fbabc54fd6e65eaf44b207f28dd282e0e8661196d9d4c112c12f4798ac7ac46c8d814df79571b020101b1f69536d293ee3764ce9881894a68029666a851030400005a00034d2c18410daf9379ce00b4ef13330a18b8677c1b95e814c8859ce1159668cf2a5180c7a5b809a746574ed14403dd5f78828c718a8aaac8924a7dfab22a5d85a11b020102cae521702a655832403bf3f751dce0be2fe8af2a03e2496cd84fa4ff4c8516a508536c5a3a13cfccc3887d1bd321ed005989ce42130102080aa40b944885f166dedade5f4d5fa4a13cbfad";
     println!("{}", new_recovered_signature.to_hex_string());
@@ -104,6 +104,8 @@ async fn test_integration_signature_reduce() {
     assert_eq!(new_recovered_signature.to_hex_string(), reduced_signature);
 
     // Write reducedd WalletConfig back to a different JSON file
-    let path_name = format!("tests/samples/wallet_reduced_config_after.json");
-    write_wallet_config(&config.clone(), path_name).unwrap();
+    let path_name = "tests/samples/wallet_reduced_config_after.json".to_string();
+    write_wallet_config(&config.clone(), path_name)?;
+
+    Ok(())
 }

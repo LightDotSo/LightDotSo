@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use clap::Parser;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_axum::internal::start_internal_server;
 use lightdotso_bin::version::SHORT_VERSION;
 use lightdotso_polling::config::PollingArgs;
@@ -31,7 +31,7 @@ pub async fn start_polling() -> Result<()> {
         })
     })
     .join()
-    .expect("Thread panicked");
+    .map_err(|_| eyre!("Thread panicked"))?;
     Ok(())
 }
 

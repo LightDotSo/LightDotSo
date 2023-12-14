@@ -9,6 +9,7 @@
   repository.workspace = true
 
 [dependencies]
+  eyre = { workspace = true }
   futures = { workspace = true }
   lazy_static = { workspace = true }
   lightdotso-tracing = { workspace = true }

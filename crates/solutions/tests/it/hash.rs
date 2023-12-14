@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::types::{Address, H256};
+use eyre::Result;
 use lightdotso_solutions::{
     config::WalletConfig,
     hash::get_address,
@@ -22,7 +23,7 @@ use lightdotso_solutions::{
 };
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_hash_first() {
+async fn test_integration_hash_first() -> Result<()> {
     let config = WalletConfig {
         signature_type: 0,
         checkpoint: 1,
@@ -40,27 +41,28 @@ async fn test_integration_hash_first() {
         internal_root: Some(
             parse_hex_to_bytes32(
                 "0x0000000000000000000000016ca6d1e2d5347bfab1d91e883f1915560e09129d",
-            )
-            .unwrap()
+            )?
             .into(),
         ),
     };
 
     // Simulate the image hash of the wallet config.
-    let image_hash = config.image_hash_of_wallet_config().unwrap();
+    let image_hash = config.image_hash_of_wallet_config()?;
 
     // Parse the image hash to bytes.
     let image_hash_bytes: H256 = image_hash.into();
 
     // Parse the salt to bytes.
     let salt_bytes: H256 =
-        "0x0000000000000000000000000000000000000000000000000000000000000001".parse().unwrap();
+        "0x0000000000000000000000000000000000000000000000000000000000000001".parse()?;
 
     // Calculate the new wallet address.
-    let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
+    let new_wallet_address = get_address(image_hash_bytes, salt_bytes)?;
 
     // Check the new wallet address.
-    let expected: Address = "0x10DbbE70128929723c1b982e53c51653232e4Ff2".parse().unwrap();
+    let expected: Address = "0x10DbbE70128929723c1b982e53c51653232e4Ff2".parse()?;
 
     assert_eq!(expected, new_wallet_address);
+
+    Ok(())
 }

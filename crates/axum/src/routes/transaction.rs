@@ -110,7 +110,6 @@ async fn v1_transaction_get_handler(
     // Get the transactions from the database.
     let transaction = client
         .client
-        .unwrap()
         .transaction()
         .find_unique(transaction::hash::equals(query.transaction_hash))
         .exec()
@@ -168,7 +167,6 @@ async fn v1_transaction_list_handler(
     // Get the transactions from the database.
     let transactions = client
         .client
-        .unwrap()
         .transaction()
         .find_many(query)
         .order_by(transaction::timestamp::order(Direction::Desc))

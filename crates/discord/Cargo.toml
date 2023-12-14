@@ -9,5 +9,6 @@
   repository.workspace = true
 
 [dependencies]
+  eyre = { workspace = true }
   serenity = "0.11"
   tokio = { workspace = true }

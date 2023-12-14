@@ -13,6 +13,7 @@
   tauri-build = { workspace = true }
 
 [dependencies]
+  eyre = { workspace = true }
   serde = { workspace = true }
   serde_json = { workspace = true }
   tauri = { workspace = true }

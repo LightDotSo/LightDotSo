@@ -15,7 +15,7 @@
 
 use crate::polling::Polling;
 use clap::Parser;
-use eyre::Result;
+use eyre::{eyre, Result};
 use lightdotso_graphql::constants::{
     SATSUMA_BASE_URL, SATSUMA_LIVE_IDS, THE_GRAPH_HOSTED_SERVICE_URLS,
 };
@@ -64,7 +64,7 @@ impl PollingArgs {
                 let url = format!(
                     "{}/{}/{}",
                     SATSUMA_BASE_URL.clone(),
-                    self.satsuma_api_key.clone().unwrap(),
+                    self.satsuma_api_key.clone().ok_or_else(|| eyre!("satsuma_api_key is None"))?,
                     id
                 );
                 info!("url: {}", url);

@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     admin::admin,
     handle_error,
@@ -193,9 +195,9 @@ pub async fn start_api_server() -> Result<()> {
     info!("Starting API server");
 
     // Create a shared client
-    let db = Arc::new(create_client().await.unwrap());
-    let redis = get_redis_client().unwrap();
-    let state = AppState { client: Some(db) };
+    let db = Arc::new(create_client().await?);
+    let redis = get_redis_client()?;
+    let state = AppState { client: db };
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85
@@ -225,11 +227,11 @@ pub async fn start_api_server() -> Result<()> {
             origin
                 .to_str()
                 .map(|origin_string| {
-                    origin_string.ends_with(".vercel.app") ||
-                        origin_string.ends_with(".light.so") ||
-                        origins.iter().any(|allowed_origin| {
-                            allowed_origin.to_str().unwrap() == origin_string
-                        })
+                    origin_string.ends_with(".vercel.app")
+                        || origin_string.ends_with(".light.so")
+                        || origins
+                            .iter()
+                            .any(|allowed_origin| allowed_origin.to_str().unwrap() == origin_string)
                 })
                 .unwrap_or(false)
         }))

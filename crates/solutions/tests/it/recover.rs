@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use ethers::utils::hex;
+use eyre::Result;
 use lightdotso_solutions::{
     recover::recover_signature,
     types::{ECDSASignatureLeaf, ECDSASignatureType, SignatureLeaf},
@@ -30,22 +31,24 @@ pub const FIRST_IMAGE_HASH: &str =
     "0xb7f285c774a1c925209bebaab24662b22e7cf32e2f7a412bfcb1bf52294b9ed6";
 
 #[tokio::test(flavor = "multi_thread")]
-async fn test_integration_module_first() {
-    let sig = from_hex_string(FIRST_SIG).unwrap().into();
-    let user_op_hash = parse_hex_to_bytes32(FIRST_USER_OP_HASH).unwrap();
-    let wallet = FIRST_WALLET.parse().unwrap();
-    let image_hash = parse_hex_to_bytes32(FIRST_IMAGE_HASH).unwrap();
+async fn test_integration_module_first() -> Result<()> {
+    let sig = from_hex_string(FIRST_SIG)?.into();
+    let user_op_hash = parse_hex_to_bytes32(FIRST_USER_OP_HASH)?;
+    let wallet = FIRST_WALLET.parse()?;
+    let image_hash = parse_hex_to_bytes32(FIRST_IMAGE_HASH)?;
 
-    let config = recover_signature(wallet, 11155111, user_op_hash, sig).await.unwrap();
+    let config = recover_signature(wallet, 11155111, user_op_hash, sig).await?;
     println!("{:?}", config);
 
     assert_eq!(config.checkpoint, 1);
     assert_eq!(config.threshold, 1);
     assert_eq!(config.weight, 1);
     assert_eq!(config.clone().tree.signer.unwrap().leaf, SignatureLeaf::ECDSASignature(ECDSASignatureLeaf{
-      address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse().unwrap(),
+      address: "0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D".parse()?,
       signature_type: ECDSASignatureType::ECDSASignatureTypeEIP712,
       signature: hex::decode("0x783610798879fb9af654e2a99929e00e82c3a0f4288c08bc30266b64dc3e23285d634f6658fdeeb5ba9193b5e935a42a1d9bdf5007144707c9082e6eda5d8fbd1b").unwrap().try_into().unwrap()
     }));
-    assert_eq!(config.image_hash_of_wallet_config().unwrap(), image_hash);
+    assert_eq!(config.image_hash_of_wallet_config()?, image_hash);
+
+    Ok(())
 }

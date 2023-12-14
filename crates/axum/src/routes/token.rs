@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
@@ -138,7 +140,6 @@ async fn v1_token_get_handler(
     // Get the tokens from the database.
     let token = client
         .client
-        .unwrap()
         .token()
         .find_unique(token::address_chain_id(checksum_address, query.chain_id))
         .exec()
@@ -193,7 +194,6 @@ async fn v1_token_list_handler(
     // Get the tokens from the database.
     let balances = client
         .client
-        .unwrap()
         .wallet_balance()
         .find_many(params)
         .order_by(wallet_balance::balance_usd::order(Direction::Desc))

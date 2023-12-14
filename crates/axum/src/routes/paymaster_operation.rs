@@ -111,9 +111,7 @@ async fn v1_paymaster_operation_get_handler(
 
     // First get the paymaster from the database.
     let paymaster = client
-        .clone()
         .client
-        .unwrap()
         .paymaster()
         .find_unique(paymaster::address_chain_id(
             to_checksum(&parsed_query_address, None),
@@ -130,7 +128,6 @@ async fn v1_paymaster_operation_get_handler(
     // Get the paymasters from the database.
     let paymaster_operation = client
         .client
-        .unwrap()
         .paymaster_operation()
         .find_unique(paymaster_operation::valid_after_paymaster_id(
             valid_after.into(),
@@ -173,7 +170,6 @@ async fn v1_paymaster_operation_list_handler(
     // Get the paymasters from the database.
     let paymasters = client
         .client
-        .unwrap()
         .paymaster_operation()
         .find_many(vec![])
         .skip(pagination.offset.unwrap_or(0))

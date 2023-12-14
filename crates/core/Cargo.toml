@@ -18,4 +18,5 @@
   uniffi_macros = { workspace = true }
 
 [build-dependencies]
+  eyre = { workspace = true }
   uniffi_build = { workspace = true, features = ["builtin-bindgen"] }

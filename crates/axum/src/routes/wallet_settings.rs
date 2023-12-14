@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{error::RouteError, result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
@@ -112,7 +114,6 @@ async fn v1_wallet_settings_get_handler(
     // Get the signatures from the database.
     let wallet_settings = client
         .client
-        .unwrap()
         .wallet_settings()
         .find_unique(wallet_settings::wallet_address::equals(checksum_address))
         .exec()
@@ -172,7 +173,6 @@ async fn v1_wallet_settings_post_handler(
     // Create the wallet_settings the database.
     let wallet_settings = client
         .client
-        .unwrap()
         .wallet_settings()
         .upsert(
             wallet_settings::wallet_address::equals(checksum_address.clone()),

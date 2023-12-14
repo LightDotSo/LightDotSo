@@ -103,7 +103,7 @@ pub fn init_metrics() -> Result<()> {
     let _ = dotenv();
 
     // Retrieve the required environment variables for tracing
-    let fly_app_name = std::env::var("FLY_APP_NAME").unwrap();
+    let fly_app_name = std::env::var("FLY_APP_NAME")?;
 
     // Determine the log level based on the environment
     let log_level = match std::env::var("ENVIRONMENT").unwrap_or_default().as_str() {
@@ -154,8 +154,7 @@ pub fn init_metrics() -> Result<()> {
                 .with_sampler(Sampler::ParentBased(Box::new(Sampler::TraceIdRatioBased(0.03))))
                 .with_resource(resources),
         )
-        .install_batch(opentelemetry::runtime::Tokio)
-        .unwrap();
+        .install_batch(opentelemetry::runtime::Tokio)?;
 
     // Create the OpenTelemetry layer
     let telemetry_layer = tracing_opentelemetry::layer().with_tracer(tracer);

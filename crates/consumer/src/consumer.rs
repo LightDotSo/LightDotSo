@@ -13,8 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::config::ConsumerArgs;
+#![allow(clippy::expect_used)]
+#![allow(clippy::unwrap_used)]
 
+use crate::config::ConsumerArgs;
 use backon::{ExponentialBuilder, Retryable};
 use clap::Parser;
 use ethers::types::{Block, H256};
@@ -101,11 +103,11 @@ impl Consumer {
                     match m.topic() {
                         // If the topic is the transaction topic
                         topic
-                            if topic == TRANSACTION.to_string() ||
-                                topic == RETRY_TRANSACTION.to_string() ||
-                                topic == RETRY_TRANSACTION_0.to_string() ||
-                                topic == RETRY_TRANSACTION_1.to_string() ||
-                                topic == RETRY_TRANSACTION_2.to_string() =>
+                            if topic == TRANSACTION.to_string()
+                                || topic == RETRY_TRANSACTION.to_string()
+                                || topic == RETRY_TRANSACTION_0.to_string()
+                                || topic == RETRY_TRANSACTION_1.to_string()
+                                || topic == RETRY_TRANSACTION_2.to_string() =>
                         {
                             // Convert the payload to a string
                             let payload_opt = m.payload_view::<str>();
@@ -192,8 +194,8 @@ impl Consumer {
                                             // Create a new producer
                                             let client = &self.producer.clone();
 
-                                            if topic == TRANSACTION.to_string() ||
-                                                topic == RETRY_TRANSACTION.to_string()
+                                            if topic == TRANSACTION.to_string()
+                                                || topic == RETRY_TRANSACTION.to_string()
                                             {
                                                 info!("Block: {:?} at chain_id: {:?} error, adding to retry queue: 0", block.number.unwrap().as_u64(), chain_id);
                                                 let _ = {

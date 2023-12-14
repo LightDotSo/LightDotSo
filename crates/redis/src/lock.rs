@@ -17,6 +17,7 @@
 // License: BSD-3-Clause
 // Modified to use our redis client for locking implementation
 
+use eyre::{eyre, Result};
 use futures::{future::join_all, Future};
 use rand::{thread_rng, Rng, RngCore};
 use redis::{Client, RedisResult, Value, Value::Okay};
@@ -199,10 +200,10 @@ impl LockManager {
 
             let drift = (ttl as f32 * CLOCK_DRIFT_FACTOR) as usize + 2;
             let elapsed = start_time.elapsed();
-            let validity_time = ttl -
-                drift -
-                elapsed.as_secs() as usize * 1000 -
-                elapsed.subsec_nanos() as usize / 1_000_000;
+            let validity_time = ttl
+                - drift
+                - elapsed.as_secs() as usize * 1000
+                - elapsed.subsec_nanos() as usize / 1_000_000;
 
             if n >= self.quorum && validity_time > 0 {
                 return Ok(Lock {
@@ -247,13 +248,14 @@ impl LockManager {
     ///
     /// If it fails. `None` is returned.
     /// A user should retry after a short wait time.
-    pub async fn lock<'a>(&'a self, resource: &[u8], ttl: usize) -> Result<Lock<'a>, LockError> {
-        let val = self.get_unique_lock_id().unwrap();
+    pub async fn lock<'a>(&'a self, resource: &[u8], ttl: usize) -> Result<Lock<'a>> {
+        let val = self.get_unique_lock_id()?;
 
         self.exec_or_retry(resource, &val.clone(), ttl, move |client| {
             Self::lock_instance(client, resource, val.clone(), ttl)
         })
         .await
+        .map_err(|_| eyre!("Failed to lock"))
     }
 
     /// Loops until the lock is acquired.

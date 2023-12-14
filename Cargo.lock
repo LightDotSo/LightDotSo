@@ -2340,6 +2340,7 @@ dependencies = [
 name = "desktop"
 version = "0.0.0"
 dependencies = [
+ "eyre",
  "serde",
  "serde_json",
  "tauri",
@@ -4623,24 +4624,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "governor"
-version = "0.6.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "821239e5672ff23e2a7060901fa622950bbd80b649cdaadd78d1c1767ed14eb4"
-dependencies = [
- "cfg-if",
- "dashmap",
- "futures",
- "futures-timer",
- "no-std-compat",
- "nonzero_ext",
- "parking_lot 0.12.1",
- "quanta 0.11.1",
- "rand 0.8.5",
- "smallvec 1.11.0",
-]
-
-[[package]]
 name = "graphql-parser"
 version = "0.3.0"
 source = "git+https://github.com/prisma/graphql-parser#6a3f58bd879065588e710cb02b5bd30c1ce182c3"
@@ -5984,6 +5967,7 @@ dependencies = [
 name = "lightdotso-app"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "lazy_static",
  "lightdotso-prisma",
  "platform-dirs",
@@ -6009,7 +5993,7 @@ dependencies = [
  "const-hex",
  "ethers 2.0.9 (git+https://github.com/gakonst/ethers-rs)",
  "eyre",
- "governor 0.5.1",
+ "governor",
  "http",
  "http-body",
  "hyper",
@@ -6178,6 +6162,7 @@ dependencies = [
 name = "lightdotso-discord"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "serenity",
  "tokio",
 ]
@@ -6273,6 +6258,7 @@ dependencies = [
 name = "lightdotso-kafka"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "lazy_static",
  "lightdotso-tracing",
  "rdkafka",
@@ -6381,6 +6367,7 @@ dependencies = [
 name = "lightdotso-redis"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "futures",
  "lazy_static",
  "lightdotso-tracing",
@@ -6517,6 +6504,7 @@ dependencies = [
 name = "lightwallet-core"
 version = "0.1.0"
 dependencies = [
+ "eyre",
  "lightdotso-keychain",
  "uniffi",
  "uniffi_build",
@@ -12608,15 +12596,14 @@ dependencies = [
 
 [[package]]
 name = "tower_governor"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "db81d9313372d714152194f3f2b66badda23a783fb6a97462e35f632814f4cff"
+version = "0.0.4"
+source = "git+https://github.com/benwis/tower-governor?rev=d6cb6acf904207aec1c2618592a8bb469e932cad#d6cb6acf904207aec1c2618592a8bb469e932cad"
 dependencies = [
  "axum 0.6.20",
  "forwarded-header-value",
  "futures",
  "futures-core",
- "governor 0.6.0",
+ "governor",
  "http",
  "pin-project",
  "thiserror",

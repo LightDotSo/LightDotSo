@@ -259,7 +259,6 @@ async fn v1_auth_verify_handler(
     // Upsert the user
     let user = client
         .client
-        .unwrap()
         .user()
         .upsert(
             user::address::equals(to_checksum(&message.address.into(), None)),

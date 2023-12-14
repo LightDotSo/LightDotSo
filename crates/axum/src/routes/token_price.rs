@@ -122,9 +122,7 @@ async fn v1_token_price_get_handler(
 
     // Get the tokens from the database.
     let token = client
-        .clone()
         .client
-        .unwrap()
         .token()
         .find_unique(token::address_chain_id(checksum_address, query.chain_id))
         .exec()
@@ -135,9 +133,7 @@ async fn v1_token_price_get_handler(
 
     // Get the tokens from the database.
     let result: Vec<TokenPriceQueryReturnType> = client
-        .clone()
         .client
-        .unwrap()
         ._query_raw(raw!(
             "SELECT AVG(price) as price, DATE(timestamp) as date
             FROM TokenPrice

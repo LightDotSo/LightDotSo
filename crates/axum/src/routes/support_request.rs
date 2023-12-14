@@ -111,7 +111,6 @@ async fn v1_support_request_post_handler(
     // Create the support_request the database.
     let support_request = client
         .client
-        .unwrap()
         .support_request()
         .create(
             support_request.title,

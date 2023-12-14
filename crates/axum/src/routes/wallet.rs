@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::{
     constants::USER_ID_KEY,
     error::RouteError,
@@ -204,7 +206,6 @@ async fn v1_wallet_get_handler(
     // Get the wallets from the database.
     let wallet = client
         .client
-        .unwrap()
         .wallet()
         .find_unique(wallet::address::equals(checksum_address))
         .exec()
@@ -247,9 +248,7 @@ async fn v1_wallet_tab_handler(
 
     // Get the wallets from the database.
     let wallet = client
-        .clone()
         .client
-        .unwrap()
         .wallet()
         .find_unique(wallet::address::equals(checksum_address.clone()))
         .with(wallet::users::fetch(vec![]))
@@ -262,9 +261,7 @@ async fn v1_wallet_tab_handler(
 
     // Get the transactions from the database.
     let wallet_transactions = client
-        .clone()
         .client
-        .unwrap()
         .transaction()
         .find_many(vec![or![
             transaction::wallet_address::equals(Some(checksum_address.clone())),
@@ -327,7 +324,6 @@ async fn v1_wallet_list_handler(
     // Get the wallets from the database.
     let wallets = client
         .client
-        .unwrap()
         .wallet()
         .find_many(query)
         .skip(pagination.offset.unwrap_or(0))
@@ -424,7 +420,7 @@ async fn v1_wallet_post_handler(
     let image_hash_bytes: H256 = image_hash.into();
 
     // Calculate the new wallet address.
-    let new_wallet_address = get_address(image_hash_bytes, salt_bytes);
+    let new_wallet_address = get_address(image_hash_bytes, salt_bytes)?;
 
     // Check if the wallet configuration is valid.
     let valid = config.is_wallet_valid();
@@ -440,7 +436,6 @@ async fn v1_wallet_post_handler(
         // Check if the wallet exists.
         let wallet = client
             .client
-            .unwrap()
             .wallet()
             .find_first(vec![wallet::address::equals(to_checksum(&new_wallet_address, None))])
             .exec()
@@ -462,9 +457,7 @@ async fn v1_wallet_post_handler(
     // Attempt to create a user in case it does not exist.
     // If the user already exists, it will be skipped.
     let res = client
-        .clone()
         .client
-        .unwrap()
         .user()
         .create_many(
             owners
@@ -484,7 +477,6 @@ async fn v1_wallet_post_handler(
 
     let wallet: Result<lightdotso_prisma::wallet::Data> = client
         .client
-        .unwrap()
         ._transaction()
         .run(|client| async move {
             // Create the configuration to the database.
@@ -528,8 +520,8 @@ async fn v1_wallet_post_handler(
                                     user_data
                                         .iter()
                                         .find(|user| {
-                                            user.address ==
-                                                to_checksum(
+                                            user.address
+                                                == to_checksum(
                                                     &owner.address.parse::<H160>().unwrap(),
                                                     None,
                                                 )
@@ -615,9 +607,7 @@ async fn v1_wallet_update_handler(
 
     // Get the wallets from the database.
     let wallet = client
-        .clone()
         .client
-        .unwrap()
         .wallet()
         .find_unique(wallet::address::equals(checksum_address.clone()))
         .with(wallet::configurations::fetch(vec![]).with(configuration::owners::fetch(vec![])))
@@ -661,7 +651,6 @@ async fn v1_wallet_update_handler(
     // Update the wallet name.
     let wallet = client
         .client
-        .unwrap()
         .wallet()
         .update(wallet::address::equals(checksum_address), params)
         .exec()

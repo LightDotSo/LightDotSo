@@ -32,12 +32,12 @@ jobs:
         uses: wallet-rs/wallet-rs/.github/actions/turbo-trigger@main
         with:
           workspace: "@lightdotso/crates"
-  rust:
+  rust-matrix:
     strategy:
       matrix:
         include:
           - name: Workspace
-            os: buildjet-4vcpu-ubuntu-2204
+            os: macos-latest
             target: x86_64-unknown-linux-gnu
             package: --workspace
             check: false
@@ -62,7 +62,7 @@ jobs:
             target: x86_64-apple-darwin
             package: --package lightwallet-core
             check: false
-            test: false
+            test: true
             workspace: false
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
@@ -93,34 +93,33 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - if: matrix.workspace
-        name: Free Disk Space
-        uses: jlumbroso/free-disk-space@main
-        with:
-          large-packages: false
-          tool-cache: false
       - name: Rust Install
         uses: wallet-rs/wallet-rs/.github/actions/rust-install@main
+        with:
+          name: ${{ matrix.name }}
       - name: Node Install
         uses: wallet-rs/wallet-rs/.github/actions/node-install@main
       - name: Install sccache-cache
         uses: mozilla-actions/sccache-action@v0.0.3
         with:
           version: "v0.5.2"
-      - if: matrix.workspace
+      - if: matrix.workspace || matrix.check
         name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-      - if: matrix.workspace
+      - if: matrix.workspace || matrix.check
         name: Node Build
         run: |
           pnpm run build:turbo
       - if: matrix.workspace
+        name: Set up Docker
+        uses: douglascamata/setup-docker-macos-action@main
+      - if: matrix.workspace
         name: Docker Compose Up
         run: |
           docker-compose up -d --build
-      - if: matrix.workspace
+      - if: matrix.workspace || matrix.check
         name: Make Install
         run: |
           make install
@@ -171,9 +170,10 @@ jobs:
         run: |
           cargo clippy \
             --all-features \
+            --message-format=json \
             ${{ matrix.package }} \
-            --message-format=json | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
-        continue-on-error: true
+            -- --no-deps -D clippy::expect_used -D clippy::unwrap_used \
+            | clippy-sarif | tee rust-clippy-results.sarif | sarif-fmt
       - if: matrix.check
         name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
@@ -191,12 +191,12 @@ jobs:
     if: always()
     needs:
       - rust-turbo
-      - rust
+      - rust-matrix
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - name: Check All Green
         uses: re-actors/alls-green@release/v1
         with:
-          allowed-skips: rust
+          allowed-skips: rust-matrix
           jobs: ${{ toJSON(needs) }}

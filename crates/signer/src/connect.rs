@@ -15,7 +15,7 @@
 
 use crate::kms::KmsSigner;
 use ethers::signers::AwsSigner;
-use eyre::{Context, Result};
+use eyre::{eyre, Context, Result};
 use rusoto_core::Region;
 use std::time::Duration;
 use tokio::time::timeout;
@@ -35,9 +35,9 @@ pub async fn connect_to_kms() -> Result<AwsSigner, eyre::Report> {
         ),
     )
     .await
-    .map_err(|e| eyre::eyre!("Timeout Error: {}", e))?;
+    .map_err(|e| eyre!("Timeout Error: {}", e))?;
 
-    let signer = signer.map_err(|e| eyre::eyre!("KmsSigner connection error: {}", e))?.signer;
+    let signer = signer.map_err(|e| eyre!("KmsSigner connection error: {}", e))?.signer;
 
     Ok(signer)
 }

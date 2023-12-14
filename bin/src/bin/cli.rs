@@ -19,13 +19,15 @@ use std::sync::Arc;
 /// Structue of the CLI is extremely influenced from reth.
 /// https://github.com/paradigmxyz/reth/tree/main/bin/reth
 use clap::{ArgAction, Args, Parser, Subcommand};
+use eyre::Result;
 use lightdotso_db::db::create_client;
 use lightdotso_tracing::{
     tracing::{metadata::LevelFilter, Level},
     tracing_subscriber::{filter::Directive, EnvFilter},
 };
+
 /// Parse CLI options, set up logging and run the chosen command.
-pub async fn run() -> eyre::Result<()> {
+pub async fn run() -> Result<()> {
     // Parse CLI options
     let opt = Cli::parse();
 
@@ -35,7 +37,7 @@ pub async fn run() -> eyre::Result<()> {
     lightdotso_tracing::tracing_subscriber::fmt().with_env_filter(filter).init();
 
     // Create the db client
-    let db = Arc::new(create_client().await.unwrap());
+    let db = Arc::new(create_client().await?);
 
     // Run the chosen command
     match opt.command {

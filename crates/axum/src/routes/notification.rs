@@ -109,7 +109,6 @@ async fn v1_notification_get_handler(
     // Get the notifications from the database.
     let notification = client
         .client
-        .unwrap()
         .notification()
         .find_unique(notification::id::equals(query.notification_id))
         .exec()
@@ -149,7 +148,6 @@ async fn v1_notification_list_handler(
     // Get the notifications from the database.
     let notifications = client
         .client
-        .unwrap()
         .notification()
         .find_many(vec![])
         .skip(pagination.offset.unwrap_or(0))
@@ -185,7 +183,6 @@ async fn v1_notification_read_handler(
     // Create the notification the database.
     let notifications = client
         .client
-        .unwrap()
         .notification()
         .update_many(
             vec![lightdotso_prisma::notification::id::contains(

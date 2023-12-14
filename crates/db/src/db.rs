@@ -13,6 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#![allow(clippy::unwrap_used)]
+
 use crate::error::DbError;
 use autometrics::autometrics;
 use axum::extract::Json;
@@ -421,7 +423,7 @@ pub async fn upsert_user_operation(
 
         // Parse the paymaster and data
         let (paymaster_address, _valid_until, valid_after, _sig) =
-            decode_paymaster_and_data(paymaster_and_data.to_vec());
+            decode_paymaster_and_data(paymaster_and_data.to_vec())?;
 
         // Upsert the paymaster if matches one of ours
         if LIGHT_PAYMASTER_ADDRESSES.contains(&paymaster_address) {
@@ -488,9 +490,9 @@ pub async fn upsert_user_operation_logs(
         .into_iter()
         .filter(|log| {
             uow.logs.iter().any(|l| {
-                l.log_index == log.log_index.map(U256::from) &&
-                    l.log_index.is_some() &&
-                    log.log_index.is_some()
+                l.log_index == log.log_index.map(U256::from)
+                    && l.log_index.is_some()
+                    && log.log_index.is_some()
             })
         })
         .collect::<Vec<_>>();
