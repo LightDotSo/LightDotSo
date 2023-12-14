@@ -18,16 +18,14 @@ pub(crate) mod get;
 pub(crate) mod list;
 pub(crate) mod types;
 
-use crate::{
-    routes::configuration::{
-        get::v1_configuration_get_handler, list::v1_configuration_list_handler,
-    },
-    state::AppState,
-};
+use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
 
 pub(crate) use error::ConfigurationError;
+pub(crate) use get::{__path_v1_configuration_get_handler, v1_configuration_get_handler};
+pub(crate) use list::{__path_v1_configuration_list_handler, v1_configuration_list_handler};
+pub(crate) use types::{Configuration, ConfigurationOwner};
 
 // -----------------------------------------------------------------------------
 // Router

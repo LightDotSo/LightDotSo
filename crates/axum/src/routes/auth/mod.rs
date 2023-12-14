@@ -27,10 +27,18 @@ use axum::{
 };
 
 pub(crate) use crate::routes::auth::error::AuthError;
-pub(crate) use crate::routes::auth::logout::v1_auth_logout_handler;
-pub(crate) use crate::routes::auth::nonce::v1_auth_nonce_handler;
-pub(crate) use crate::routes::auth::session::v1_auth_session_handler;
-pub(crate) use crate::routes::auth::verify::v1_auth_verify_handler;
+pub(crate) use crate::routes::auth::logout::{
+    __path_v1_auth_logout_handler, v1_auth_logout_handler,
+};
+pub(crate) use crate::routes::auth::nonce::{
+    __path_v1_auth_nonce_handler, v1_auth_nonce_handler, AuthNonce,
+};
+pub(crate) use crate::routes::auth::session::{
+    __path_v1_auth_session_handler, v1_auth_session_handler, AuthSession,
+};
+pub(crate) use crate::routes::auth::verify::{
+    __path_v1_auth_verify_handler, v1_auth_verify_handler, AuthVerifyPostRequestParams,
+};
 
 // -----------------------------------------------------------------------------
 // Router

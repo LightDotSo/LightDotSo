@@ -20,7 +20,7 @@ use autometrics::autometrics;
 use axum::{routing::get, Router};
 use http_body::Body as HttpBody;
 
-pub(crate) use crate::routes::health::health::handler;
+pub(crate) use crate::routes::health::health::{__path_handler, handler};
 
 // -----------------------------------------------------------------------------
 // Router
