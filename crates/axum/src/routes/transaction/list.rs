@@ -13,118 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use super::types::Transaction;
+use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::get,
-    Json, Router,
+    Json,
 };
 use lightdotso_prisma::transaction;
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
-use serde::{Deserialize, Serialize};
-use utoipa::{IntoParams, ToSchema};
+use serde::Deserialize;
+use utoipa::IntoParams;
 
-#[derive(Debug, Deserialize, Default, IntoParams)]
-#[into_params(parameter_in = Query)]
-pub struct GetQuery {
-    pub transaction_hash: String,
-}
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    // The offset of the first transaction to return.
+    /// The offset of the first transaction to return.
     pub offset: Option<i64>,
-    // The maximum number of transactions to return.
+    /// The maximum number of transactions to return.
     pub limit: Option<i64>,
-    // The sender address to filter by.
+    /// The sender address to filter by.
     pub address: Option<String>,
     /// The flag to indicate if the transaction is a testnet transaction.
     pub is_testnet: Option<bool>,
 }
 
-/// Transaction operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum TransactionError {
-    // Transaction query error.
-    #[schema(example = "Bad request")]
-    BadRequest(String),
-    /// Transaction not found by id.
-    #[schema(example = "id = 1")]
-    NotFound(String),
-}
-
-/// Item to do.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct Transaction {
-    /// The chain id of the transaction.
-    chain_id: i64,
-    /// The hash of the transaction.
-    hash: String,
-    /// The timestamp of the transaction.
-    timestamp: String,
-}
-
-/// Implement From<transaction::Data> for Transaction.
-impl From<transaction::Data> for Transaction {
-    fn from(transaction: transaction::Data) -> Self {
-        Self {
-            chain_id: transaction.chain_id,
-            hash: transaction.hash,
-            timestamp: transaction.timestamp.to_rfc3339(),
-        }
-    }
-}
-
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/transaction/get", get(v1_transaction_get_handler))
-        .route("/transaction/list", get(v1_transaction_list_handler))
-}
-
-/// Get a transaction
-#[utoipa::path(
-        get,
-        path = "/transaction/get",
-        params(
-            GetQuery
-        ),
-        responses(
-            (status = 200, description = "Transaction returned successfully", body = Transaction),
-            (status = 404, description = "Transaction not found", body = TransactionError),
-        )
-    )]
-#[autometrics]
-async fn v1_transaction_get_handler(
-    get: Query<GetQuery>,
-    State(client): State<AppState>,
-) -> AppJsonResult<Transaction> {
-    // Get the get query.
-    let Query(query) = get;
-
-    info!("Get transaction for address: {:?}", query);
-
-    // Get the transactions from the database.
-    let transaction = client
-        .client
-        .transaction()
-        .find_unique(transaction::hash::equals(query.transaction_hash))
-        .exec()
-        .await?;
-
-    // If the transaction is not found, return a 404.
-    let transaction = transaction.ok_or(RouteError::TransactionError(
-        TransactionError::NotFound("Transaction not found".to_string()),
-    ))?;
-
-    // Change the transaction to the format that the API expects.
-    let transaction: Transaction = transaction.into();
-
-    Ok(Json::from(transaction))
-}
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
 
 /// Returns a list of transactions.
 #[utoipa::path(
@@ -139,7 +60,7 @@ async fn v1_transaction_get_handler(
         )
     )]
 #[autometrics]
-async fn v1_transaction_list_handler(
+pub(crate) async fn v1_transaction_list_handler(
     pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Transaction>> {
