@@ -78,9 +78,5 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!configuration) {
-    return null;
-  }
-
   return <DataTable data={configuration?.owners ?? []} columns={columns} />;
 };

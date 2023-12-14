@@ -15,7 +15,7 @@
 
 "use client";
 
-import type { FC } from "react";
+import { useEffect, type FC } from "react";
 import { DataTableToolbar } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-toolbar";
 import { useTables } from "@/stores";
 
@@ -24,17 +24,19 @@ import { useTables } from "@/stores";
 // -----------------------------------------------------------------------------
 
 export const WalletsDataTableToolbar: FC = () => {
-  // ---------------------------------------------------------------------------
-  // Stores
-  // ---------------------------------------------------------------------------
-
   const { walletTable } = useTables();
+
+  useEffect(() => {
+    if (!useTables.persist.hasHydrated()) {
+      useTables.persist.rehydrate();
+    }
+  }, []);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!walletTable) {
+  if (!walletTable || !useTables.persist.hasHydrated()) {
     return null;
   }
 

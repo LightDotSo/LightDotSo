@@ -17,12 +17,11 @@
 
 import { getWallets } from "@lightdotso/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, type FC } from "react";
+import { type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/columns";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
 import type { WalletData } from "@/data";
-import { useIsMounted } from "@/hooks/useIsMounted";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores";
 
@@ -36,7 +35,6 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -75,15 +73,6 @@ export const WalletsDataTable: FC = () => {
       );
     },
   });
-
-  // ---------------------------------------------------------------------------
-  // Effect Hooks
-  // ---------------------------------------------------------------------------
-
-  useEffect(() => {
-    // resetWalletTable();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMounted]);
 
   // ---------------------------------------------------------------------------
   // Render

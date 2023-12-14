@@ -55,7 +55,6 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   const router = useRouter();
-  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -89,6 +88,9 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnFilters: walletColumnFilters,
       pagination: walletPagination,
     },
+    paginateExpandedRows: false,
+    enableRowSelection: true,
+    manualPagination: true,
     onRowSelectionChange: setWalletRowSelection,
     onSortingChange: setWalletSorting,
     onColumnFiltersChange: setWalletColumnFilters,
@@ -109,7 +111,6 @@ export function DataTable({ columns, data }: DataTableProps) {
   useEffect(() => {
     setWalletTable(table);
   }, [
-    isMounted,
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("address"),
