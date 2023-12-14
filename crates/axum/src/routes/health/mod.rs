@@ -14,12 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #[allow(clippy::module_inception)]
-pub mod health;
+pub(crate) mod health;
 
-pub use crate::routes::health::health::handler;
 use autometrics::autometrics;
 use axum::{routing::get, Router};
 use http_body::Body as HttpBody;
+
+pub(crate) use crate::routes::health::health::handler;
 
 // -----------------------------------------------------------------------------
 // Router

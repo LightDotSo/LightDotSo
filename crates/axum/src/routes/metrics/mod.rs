@@ -13,9 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use autometrics::{autometrics, prometheus_exporter};
-use axum::{response::IntoResponse, routing::get, Router};
+#[allow(clippy::module_inception)]
+pub(crate) mod metrics;
+
+use autometrics::autometrics;
+use axum::{routing::get, Router};
 use http_body::Body as HttpBody;
+
+pub(crate) use crate::routes::metrics::metrics::handler;
 
 #[autometrics]
 pub(crate) fn router<S, B>() -> Router<S, B>
@@ -24,9 +29,4 @@ where
     S: Clone + Send + Sync + 'static,
 {
     Router::new().route("/metrics", get(handler))
-}
-
-#[autometrics]
-async fn handler() -> impl IntoResponse {
-    prometheus_exporter::encode_http_response()
 }

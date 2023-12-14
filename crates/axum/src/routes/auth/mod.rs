@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod error;
-pub mod logout;
-pub mod nonce;
-pub mod session;
-pub mod verify;
+pub(crate) mod error;
+pub(crate) mod logout;
+pub(crate) mod nonce;
+pub(crate) mod session;
+pub(crate) mod verify;
 
 use crate::state::AppState;
 use autometrics::autometrics;

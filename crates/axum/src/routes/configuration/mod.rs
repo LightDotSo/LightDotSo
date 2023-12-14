@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod error;
-pub mod get;
-pub mod list;
-pub mod types;
+pub(crate) mod error;
+pub(crate) mod get;
+pub(crate) mod list;
+pub(crate) mod types;
 
 use crate::{
     routes::configuration::{
