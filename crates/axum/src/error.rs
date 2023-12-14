@@ -17,7 +17,7 @@ use crate::routes::{
     auth::error::AuthError, configuration::error::ConfigurationError,
     feedback::error::FeedbackError, notification::error::NotificationError,
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
-    portfolio::error::PortfolioError, signature::SignatureError,
+    portfolio::error::PortfolioError, signature::error::SignatureError,
     support_request::SupportRequestError, token::TokenError, token_price::TokenPriceError,
     transaction::TransactionError, user::UserError, user_operation::UserOperationError,
     wallet::WalletError, wallet_settings::WalletSettingsError,
