@@ -21,7 +21,7 @@ use utoipa::ToSchema;
 // Types
 // -----------------------------------------------------------------------------
 
-/// Configuration.
+/// Configuration root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct Configuration {
     /// The id of the configuration.

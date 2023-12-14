@@ -13,44 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use super::types::Feedback;
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::post,
-    Json, Router,
+    Json,
 };
-use lightdotso_prisma::feedback;
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
+
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
-    // The id of the user operation.
+    /// The id of the user to query.
     pub user_id: String,
 }
 
-/// Feedback operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum FeedbackError {
-    // Feedback query error.
-    #[schema(example = "Bad request")]
-    BadRequest(String),
-    /// Feedback not found by id.
-    #[schema(example = "id = 1")]
-    NotFound(String),
-}
-
-/// Item to do.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct Feedback {
-    // The text of the feedback.
-    pub text: String,
-    // The emoji of the feedback.
-    pub emoji: String,
-}
+// -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct FeedbackPostRequestParams {
@@ -58,17 +45,9 @@ pub struct FeedbackPostRequestParams {
     pub feedback: Feedback,
 }
 
-// Implement From<feedback::Data> for Feedback.
-impl From<feedback::Data> for Feedback {
-    fn from(feedback: feedback::Data) -> Self {
-        Self { text: feedback.text, emoji: feedback.emoji }
-    }
-}
-
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/feedback/create", post(v1_feedback_post_handler))
-}
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
 
 /// Create a feedback
 #[utoipa::path(
@@ -84,7 +63,7 @@ pub(crate) fn router() -> Router<AppState> {
         )
     )]
 #[autometrics]
-async fn v1_feedback_post_handler(
+pub(crate) async fn v1_feedback_post_handler(
     post: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<FeedbackPostRequestParams>,

@@ -37,6 +37,7 @@ use utoipa::IntoParams;
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
+    /// The address of the configuration to query.
     pub address: String,
     /// The optional checkpoint to filter by.
     pub checkpoint: Option<i64>,
