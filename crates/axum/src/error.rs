@@ -21,7 +21,7 @@ use crate::routes::{
     support_request::error::SupportRequestError, token::error::TokenError,
     token_price::error::TokenPriceError, transaction::error::TransactionError,
     user::error::UserError, user_operation::error::UserOperationError, wallet::error::WalletError,
-    wallet_settings::WalletSettingsError,
+    wallet_settings::error::WalletSettingsError,
 };
 use http::StatusCode;
 
