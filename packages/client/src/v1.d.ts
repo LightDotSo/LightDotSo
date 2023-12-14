@@ -171,6 +171,13 @@ export interface paths {
      */
     get: operations["v1_token_list_handler"];
   };
+  "/token/list/count": {
+    /**
+     * Returns a count of list of tokens.
+     * @description Returns a count of list of tokens.
+     */
+    get: operations["v1_token_list_count_handler"];
+  };
   "/token_price/get": {
     /**
      * Get a token_price
@@ -191,6 +198,13 @@ export interface paths {
      * @description Returns a list of transactions.
      */
     get: operations["v1_transaction_list_handler"];
+  };
+  "/transaction/list/count": {
+    /**
+     * Returns a count of list of transactions.
+     * @description Returns a count of list of transactions.
+     */
+    get: operations["v1_transaction_list_count_handler"];
   };
   "/user/get": {
     /**
@@ -219,6 +233,13 @@ export interface paths {
      * @description Returns a list of user operations.
      */
     get: operations["v1_user_operation_list_handler"];
+  };
+  "/user_operation/list/count": {
+    /**
+     * Returns a count of user operations.
+     * @description Returns a count of user operations.
+     */
+    get: operations["v1_user_operation_list_count_handler"];
   };
   "/user_operation/nonce": {
     /**
@@ -261,6 +282,13 @@ export interface paths {
      * @description Returns a list of wallets.
      */
     get: operations["v1_wallet_list_handler"];
+  };
+  "/wallet/list/count": {
+    /**
+     * Returns a count of list of wallets.
+     * @description Returns a count of list of wallets.
+     */
+    get: operations["v1_wallet_list_count_handler"];
   };
   "/wallet/settings/get": {
     /**
@@ -306,7 +334,7 @@ export interface components {
       /** @description Internal error. */
       InternalError: string;
     }]>;
-    /** @description Item to do. */
+    /** @description Auth nonce. */
     AuthNonce: {
       nonce: string;
     };
@@ -321,7 +349,7 @@ export interface components {
       message: string;
       signature: string;
     };
-    /** @description Item to do. */
+    /** @description Configuration root type. */
     Configuration: {
       /** @description The address of the configuration. */
       address: string;
@@ -342,7 +370,7 @@ export interface components {
        */
       threshold: number;
     };
-    /** @description Configuration operation errors */
+    /** @description Configuration errors */
     ConfigurationError: OneOf<[{
       /** @description Configuration query error. */
       BadRequest: string;
@@ -350,7 +378,7 @@ export interface components {
       /** @description Configuration not found by id. */
       NotFound: string;
     }]>;
-    /** @description Owner */
+    /** @description Configuration Owner. */
     ConfigurationOwner: {
       /** @description The address of the owner. */
       address: string;
@@ -367,13 +395,16 @@ export interface components {
        */
       weight: number;
     };
-    /** @description Item to do. */
+    /** @description Feedback root type. */
     Feedback: {
+      /** @description The emoji of the feedback. */
       emoji: string;
+      /** @description The text of the feedback. */
       text: string;
     };
-    /** @description Feedback operation errors */
+    /** @description Feedback error */
     FeedbackError: OneOf<[{
+      /** @description Feedback bad request error. */
       BadRequest: string;
     }, {
       /** @description Feedback not found by id. */
@@ -382,12 +413,14 @@ export interface components {
     FeedbackPostRequestParams: {
       feedback: components["schemas"]["Feedback"];
     };
-    /** @description Item to do. */
+    /** @description Notification root type. */
     Notification: {
+      /** @description The id of the notification to read for. */
       id: string;
     };
     /** @description Notification operation errors */
     NotificationError: OneOf<[{
+      /** @description Notification query error. */
       BadRequest: string;
     }, {
       /** @description Notification not found by id. */
@@ -395,6 +428,7 @@ export interface components {
     }]>;
     /** @description Item to request. */
     NotificationReadRequest: {
+      /** @description The id of the notification to read for. */
       id: string;
     };
     NotificationReadRequestParams: {
@@ -417,78 +451,111 @@ export interface components {
        */
       weight: number;
     };
-    /** @description Item to do. */
+    /** @description Paymaster root type. */
     Paymaster: {
+      /** @description The address of the paymaster. */
       address: string;
     };
     /** @description Paymaster operation errors */
     PaymasterError: OneOf<[{
+      /** @description Paymaster query error. */
       BadRequest: string;
     }, {
       /** @description Paymaster not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to do. */
+    /** @description PaymasterOperation root type. */
     PaymasterOperation: {
+      /** @description The id of the paymaster operation. */
       id: string;
     };
-    /** @description PaymasterOperation operation errors */
+    /** @description PaymasterOperation errors */
     PaymasterOperationError: OneOf<[{
+      /** @description PaymasterOperation query error. */
       BadRequest: string;
     }, {
       /** @description PaymasterOperation not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to do. */
+    /** @description Portfolio root type. */
     Portfolio: {
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The balance of the portfolio.
+       */
       balance: number;
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The change of the balance in the last 24 hours.
+       */
       balance_change_24h: number;
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The percentage change of the balance in the last 24 hours.
+       */
       balance_change_24h_percentage: number;
+      /** @description The historical balances of the portfolio. */
       balances: components["schemas"]["PortfolioBalanceDate"][];
     };
     /** @description Portfolio to do. */
     PortfolioBalanceDate: {
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The balance of the portfolio.
+       */
       balance: number;
+      /** @description The date of the balance. */
       date: string;
     };
     /** @description Portfolio operation errors */
     PortfolioError: OneOf<[{
+      /** @description Portfolio query error. */
       BadRequest: string;
     }, {
       /** @description Portfolio already exists conflict. */
       Conflict: string;
     }]>;
-    /** @description Item to do. */
+    /** @description Signature root type. */
     Signature: {
+      /** @description The owner id of the signature. */
       owner_id: string;
+      /** @description The signature of the user operation in hex. */
       signature: string;
-      /** Format: int32 */
+      /**
+       * Format: int32
+       * @description The type of the signature.
+       */
       signature_type: number;
     };
     /** @description Signature operation errors */
     SignatureError: OneOf<[{
+      /** @description Signature query error. */
       BadRequest: string;
     }, {
       /** @description Signature not found by id. */
       NotFound: string;
     }]>;
+    /** @description Signature operation errors */
     SignaturePostRequestParams: {
       signature: components["schemas"]["Signature"];
     };
-    /** @description Item to do. */
+    /** @description Support Request root type. */
     SupportRequest: {
+      /** @description The area of the support_request. */
       area: string;
+      /** @description The description of the support_request. */
       description: string;
-      /** Format: int32 */
+      /**
+       * Format: int32
+       * @description The severity of the support_request.
+       */
       severity: number;
+      /** @description The title of the support_request. */
       title: string;
     };
     /** @description Support_request operation errors */
     SupportRequestError: OneOf<[{
+      /** @description Support_request query error. */
       BadRequest: string;
     }, {
       /** @description Support_request not found by id. */
@@ -497,50 +564,89 @@ export interface components {
     SupportRequestPostRequestParams: {
       support_request: components["schemas"]["SupportRequest"];
     };
-    /** @description Item to do. */
+    /** @description Token root type. */
     Token: {
+      /** @description The address of the token. */
       address: string;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The amount of the token.
+       */
       amount: number;
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The balance of the token in USD.
+       */
       balance_usd: number;
-      /** Format: int64 */
+      /**
+       * Format: int64
+       * @description The chain id of the token.
+       */
       chain_id: number;
-      /** Format: int32 */
+      /**
+       * Format: int32
+       * @description The decimals of the token.
+       */
       decimals: number;
+      /** @description The name of the token. */
       name?: string | null;
+      /** @description The symbol of the token. */
       symbol: string;
     };
-    /** @description Token operation errors */
+    /** @description Token error. */
     TokenError: OneOf<[{
+      /** @description Token query error. */
       BadRequest: string;
     }, {
       /** @description Token not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to do. */
+    /** @description Count of list of tokens. */
+    TokenListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of tokens.
+       */
+      count: number;
+    };
+    /** @description TokenPrice root type. */
     TokenPrice: {
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The price of the token price.
+       */
       price: number;
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The change of the token price in the last 24 hours.
+       */
       price_change_24h: number;
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The percentage change of the token price in the last 24 hours.
+       */
       price_change_24h_percentage: number;
+      /** @description The historical prices of the token price. */
       prices: components["schemas"]["TokenPriceDate"][];
     };
     TokenPriceDate: {
+      /** @description The date of the token price. */
       date: string;
-      /** Format: double */
+      /**
+       * Format: double
+       * @description The price of the token price.
+       */
       price: number;
     };
-    /** @description TokenPrice operation errors */
+    /** @description TokenPrice error. */
     TokenPriceError: OneOf<[{
+      /** @description TokenPrice query error. */
       BadRequest: string;
     }, {
       /** @description TokenPrice not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to do. */
+    /** @description Transaction root type. */
     Transaction: {
       /**
        * Format: int64
@@ -554,23 +660,33 @@ export interface components {
     };
     /** @description Transaction operation errors */
     TransactionError: OneOf<[{
+      /** @description Transaction query error. */
       BadRequest: string;
     }, {
       /** @description Transaction not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to do. */
+    /** @description Count of list of user operations. */
+    TransactionListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of user operations..
+       */
+      count: number;
+    };
+    /** @description User root type. */
     User: {
       id: string;
     };
     /** @description User operation errors */
     UserError: OneOf<[{
+      /** @description User query error. */
       BadRequest: string;
     }, {
       /** @description User not found by id. */
       NotFound: string;
     }]>;
-    /** @description Item to do. */
+    /** @description User operation root type. */
     UserOperation: {
       call_data: string;
       /** Format: int64 */
@@ -625,6 +741,14 @@ export interface components {
       /** @description User operation not found by id. */
       NotFound: string;
     }]>;
+    /** @description Count of list of user operations. */
+    UserOperationListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of user operations..
+       */
+      count: number;
+    };
     /** @description Nonce */
     UserOperationNonce: {
       /**
@@ -633,7 +757,7 @@ export interface components {
        */
       nonce: number;
     };
-    /** @description Paymaster */
+    /** @description User operation paymaster */
     UserOperationPaymaster: {
       /** @description The address of the paymaster. */
       address: string;
@@ -642,7 +766,7 @@ export interface components {
       signature: components["schemas"]["UserOperationSignature"];
       user_operation: components["schemas"]["UserOperationCreate"];
     };
-    /** @description Signature */
+    /** @description User operation signature */
     UserOperationSignature: {
       /** @description The id of the owner of the signature. */
       owner_id: string;
@@ -659,16 +783,20 @@ export interface components {
       /** @description User operation updated successfully. */
       Updated: string;
     };
-    /** @description Transaction */
+    /** @description User operation transaction */
     UserOperationTransaction: {
       /** @description The hash of the transaction. */
       hash: string;
     };
-    /** @description Wallet to do. */
+    /** @description Wallet root type. */
     Wallet: {
+      /** @description The address of the wallet. */
       address: string;
+      /** @description The address of the factory. */
       factory_address: string;
+      /** @description The name of the wallet. */
       name: string;
+      /** @description The salt of the wallet. */
       salt: string;
     };
     /** @description Wallet operation errors */
@@ -689,6 +817,14 @@ export interface components {
        */
       InvalidConfiguration: string;
     }]>;
+    /** @description Count of list of wallets. */
+    WalletListCount: {
+      /**
+       * Format: int64
+       * @description The count of the list of wallets.
+       */
+      count: number;
+    };
     WalletPostRequestParams: {
       /**
        * @description The name of the wallet.
@@ -728,8 +864,9 @@ export interface components {
        */
       name?: string | null;
     };
-    /** @description Item to do. */
+    /** @description WalletSettings root type. */
     WalletSettings: {
+      /** @description The wallet_settings of whether the testnet is enabled. */
       is_enabled_testnet: boolean;
     };
     /** @description WalletSettings operation errors */
@@ -739,8 +876,9 @@ export interface components {
       /** @description WalletSettings not found by id. */
       NotFound: string;
     }]>;
-    /** @description Optional Item to do. */
+    /** @description Optional WalletSettings root type. */
     WalletSettingsOptional: {
+      /** @description The update query of wallet_settings of whether the testnet is enabled. */
       is_enabled_testnet?: boolean | null;
     };
     WalletSettingsPostRequestParams: {
@@ -899,6 +1037,7 @@ export interface operations {
   v1_configuration_get_handler: {
     parameters: {
       query: {
+        /** @description The address of the configuration to query. */
         address: string;
         /** @description The optional checkpoint to filter by. */
         checkpoint?: number | null;
@@ -939,7 +1078,7 @@ export interface operations {
           "application/json": components["schemas"]["Configuration"][];
         };
       };
-      /** @description Configuration bad request */
+      /** @description Configurations bad request */
       500: {
         content: {
           "application/json": components["schemas"]["ConfigurationError"];
@@ -954,6 +1093,7 @@ export interface operations {
   v1_feedback_post_handler: {
     parameters: {
       query: {
+        /** @description The id of the user to query. */
         user_id: string;
       };
     };
@@ -984,6 +1124,7 @@ export interface operations {
   v1_notification_get_handler: {
     parameters: {
       query: {
+        /** @description The id of the notification to get. */
         notification_id: string;
       };
     };
@@ -1009,7 +1150,9 @@ export interface operations {
   v1_notification_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first notification to return. */
         offset?: number | null;
+        /** @description The maximum number of notifications to return. */
         limit?: number | null;
       };
     };
@@ -1085,7 +1228,9 @@ export interface operations {
   v1_paymaster_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first paymaster to return. */
         offset?: number | null;
+        /** @description The maximum number of paymasters to return. */
         limit?: number | null;
       };
     };
@@ -1141,7 +1286,9 @@ export interface operations {
   v1_paymaster_operation_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first paymaster operation to return. */
         offset?: number | null;
+        /** @description The maximum number of paymaster operations to return. */
         limit?: number | null;
       };
     };
@@ -1193,7 +1340,9 @@ export interface operations {
   v1_signature_post_handler: {
     parameters: {
       query: {
+        /** @description The hash of the user operation. */
         user_operation_hash: string;
+        /** @description The procedure to create(default: OnChain) */
         procedure?: ("Offchain" | "Onchain" | "Erc1271") | null;
       };
     };
@@ -1261,8 +1410,11 @@ export interface operations {
   v1_signature_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first signature to return. */
         offset?: number | null;
+        /** @description The maximum number of signatures to return. */
         limit?: number | null;
+        /** @description The user operation hash to filter by. */
         user_operation_hash?: string | null;
       };
     };
@@ -1288,6 +1440,7 @@ export interface operations {
   v1_support_request_post_handler: {
     parameters: {
       query: {
+        /** @description The wallet address of the user operation. */
         wallet_address: string;
       };
     };
@@ -1346,8 +1499,11 @@ export interface operations {
   v1_token_list_handler: {
     parameters: {
       query: {
+        /** @description The offset of the first token to return. */
         offset?: number | null;
+        /** @description The maximum number of tokens to return. */
         limit?: number | null;
+        /** @description The address of the wallet. */
         address: string;
         /** @description The flag to indicate if the token is a spam. */
         is_spam?: boolean | null;
@@ -1360,6 +1516,40 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Token"][];
+        };
+      };
+      /** @description Token bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["TokenError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of tokens.
+   * @description Returns a count of list of tokens.
+   */
+  v1_token_list_count_handler: {
+    parameters: {
+      query: {
+        /** @description The offset of the first token to return. */
+        offset?: number | null;
+        /** @description The maximum number of tokens to return. */
+        limit?: number | null;
+        /** @description The address of the wallet. */
+        address: string;
+        /** @description The flag to indicate if the token is a spam. */
+        is_spam?: boolean | null;
+        /** @description The flag to indicate if the token is a testnet token. */
+        is_testnet?: boolean | null;
+      };
+    };
+    responses: {
+      /** @description Tokens returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TokenListCount"];
         };
       };
       /** @description Token bad request */
@@ -1405,6 +1595,7 @@ export interface operations {
   v1_transaction_get_handler: {
     parameters: {
       query: {
+        /** @description The transaction hash. */
         transaction_hash: string;
       };
     };
@@ -1430,8 +1621,11 @@ export interface operations {
   v1_transaction_list_handler: {
     parameters: {
       query?: {
+        /** @description The offset of the first transaction to return. */
         offset?: number | null;
+        /** @description The maximum number of transactions to return. */
         limit?: number | null;
+        /** @description The sender address to filter by. */
         address?: string | null;
         /** @description The flag to indicate if the transaction is a testnet transaction. */
         is_testnet?: boolean | null;
@@ -1442,6 +1636,38 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["Transaction"][];
+        };
+      };
+      /** @description Transaction bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["TransactionError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of transactions.
+   * @description Returns a count of list of transactions.
+   */
+  v1_transaction_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first transaction to return. */
+        offset?: number | null;
+        /** @description The maximum number of transactions to return. */
+        limit?: number | null;
+        /** @description The sender address to filter by. */
+        address?: string | null;
+        /** @description The flag to indicate if the transaction is a testnet transaction. */
+        is_testnet?: boolean | null;
+      };
+    };
+    responses: {
+      /** @description Transactions returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TransactionListCount"];
         };
       };
       /** @description Transaction bad request */
@@ -1585,6 +1811,45 @@ export interface operations {
     };
   };
   /**
+   * Returns a count of user operations.
+   * @description Returns a count of user operations.
+   */
+  v1_user_operation_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first user operation to return. */
+        offset?: number | null;
+        /** @description The maximum number of user operations to return. */
+        limit?: number | null;
+        /** @description The sender address to filter by. */
+        address?: string | null;
+        /** @description The status to filter by. */
+        status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+        /**
+         * @description The direction to order by.
+         * Default is `asc`.
+         */
+        order?: ("asc" | "desc") | null;
+        /** @description The flag to indicate if the operation is a testnet user operation. */
+        is_testnet?: boolean | null;
+      };
+    };
+    responses: {
+      /** @description User Operation count returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["UserOperationListCount"];
+        };
+      };
+      /** @description User Operation count bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["UserOperationError"];
+        };
+      };
+    };
+  };
+  /**
    * Get a user operation nonce
    * @description Get a user operation nonce
    */
@@ -1619,7 +1884,9 @@ export interface operations {
   v1_user_operation_signature_handler: {
     parameters: {
       query: {
+        /** @description The user operation hash to get. */
         user_operation_hash: string;
+        /** @description The type of signature to get for. */
         signature_type?: number | null;
       };
     };
@@ -1766,12 +2033,43 @@ export interface operations {
     };
   };
   /**
+   * Returns a count of list of wallets.
+   * @description Returns a count of list of wallets.
+   */
+  v1_wallet_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first wallet to return. */
+        offset?: number | null;
+        /** @description The maximum number of wallets to return. */
+        limit?: number | null;
+        /** @description A filter to return wallets w/ a given owner. */
+        owner?: string | null;
+      };
+    };
+    responses: {
+      /** @description Wallets returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["WalletListCount"];
+        };
+      };
+      /** @description Wallet bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["WalletError"];
+        };
+      };
+    };
+  };
+  /**
    * Get a wallet_settings
    * @description Get a wallet_settings
    */
   v1_wallet_settings_get_handler: {
     parameters: {
       query: {
+        /** @description The address of the wallet settings. */
         address: string;
       };
     };
@@ -1797,6 +2095,7 @@ export interface operations {
   v1_wallet_settings_post_handler: {
     parameters: {
       query: {
+        /** @description The hash of the wallet settings. */
         address: string;
       };
     };
