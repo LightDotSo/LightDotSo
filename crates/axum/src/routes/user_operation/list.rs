@@ -19,10 +19,13 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{user_operation, UserOperationStatus};
+use lightdotso_prisma::{
+    user_operation::{self, WhereParam},
+    UserOperationStatus,
+};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::Direction;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
@@ -56,7 +59,7 @@ pub enum ListQueryOrder {
     Desc,
 }
 
-#[derive(Debug, Deserialize, ToSchema)]
+#[derive(Clone, Debug, Deserialize, ToSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum ListQueryStatus {
     Proposed,
@@ -78,6 +81,17 @@ impl From<ListQueryStatus> for UserOperationStatus {
 }
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Count of list of user operations.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct UserOperationListCount {
+    /// The count of the list of user operations..
+    pub count: i64,
+}
+
+// -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
@@ -95,31 +109,18 @@ impl From<ListQueryStatus> for UserOperationStatus {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_handler(
-    pagination: Query<ListQuery>,
+    query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<UserOperation>> {
-    // Get the pagination query.
-    let Query(pagination) = pagination;
-    info!(?pagination);
+    // Get the query.
+    let Query(list_query) = query;
+    info!(?list_query);
 
-    // If the address is provided, add it to the query.
-    let mut query = match pagination.address {
-        Some(owner) => vec![user_operation::sender::equals(owner)],
-        None => vec![],
-    };
-
-    // If the status is provided, add it to the query.
-    if let Some(status) = pagination.status {
-        query.push(user_operation::status::equals(status.into()))
-    }
-
-    // If the is_testnet is provided, add it to the query.
-    if let Some(is_testnet) = pagination.is_testnet {
-        query.push(user_operation::is_testnet::equals(is_testnet))
-    }
+    // Construct the query.
+    let query = construct_user_operation_list_query(&list_query);
 
     // Parse the order from the pagination query.
-    let order = match pagination.order {
+    let order = match list_query.order {
         Some(ListQueryOrder::Asc) => Direction::Asc,
         Some(ListQueryOrder::Desc) => Direction::Desc,
         None => Direction::Asc,
@@ -130,8 +131,8 @@ pub(crate) async fn v1_user_operation_list_handler(
         .client
         .user_operation()
         .find_many(query)
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
+        .skip(list_query.offset.unwrap_or(0))
+        .take(list_query.limit.unwrap_or(10))
         .order_by(user_operation::nonce::order(order))
         .with(user_operation::signatures::fetch(vec![]))
         .with(user_operation::transaction::fetch())
@@ -143,4 +144,56 @@ pub(crate) async fn v1_user_operation_list_handler(
         user_operations.into_iter().map(UserOperation::from).collect();
 
     Ok(Json::from(user_operations))
+}
+
+/// Returns a count of user operations.
+#[utoipa::path(
+        get,
+        path = "/user_operation/list/count",
+        params(
+            ListQuery
+        ),
+        responses(
+            (status = 200, description = "User Operation count returned successfully", body = UserOperationListCount),
+            (status = 500, description = "User Operation count bad request", body = UserOperationError),
+        )
+    )]
+#[autometrics]
+pub(crate) async fn v1_user_operation_list_count_handler(
+    query: Query<ListQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<UserOperationListCount> {
+    // Get the query.
+    let Query(list_query) = query;
+    info!(?list_query);
+
+    // Construct the query.
+    let query = construct_user_operation_list_query(&list_query);
+
+    // Get the user operations from the database.
+    let count = client.client.user_operation().count(query).exec().await?;
+
+    Ok(Json::from(UserOperationListCount { count }))
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+/// Constructs a query for user operation.
+fn construct_user_operation_list_query(query: &ListQuery) -> Vec<WhereParam> {
+    let mut query_exp = match &query.address {
+        Some(address) => vec![user_operation::sender::equals(address.to_string())],
+        None => vec![],
+    };
+
+    if let Some(status) = &query.status {
+        query_exp.push(user_operation::status::equals(status.clone().into()));
+    }
+
+    if let Some(is_testnet) = query.is_testnet {
+        query_exp.push(user_operation::is_testnet::equals(is_testnet));
+    }
+
+    query_exp
 }

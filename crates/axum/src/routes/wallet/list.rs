@@ -78,7 +78,7 @@ pub(crate) async fn v1_wallet_list_handler(
     let Query(list_query) = query;
 
     // Construct the query.
-    let query = construct_query(&list_query);
+    let query = construct_wallet_list_query(&list_query);
 
     // Get the wallets from the database.
     let wallets = client
@@ -117,7 +117,7 @@ pub(crate) async fn v1_wallet_list_count_handler(
     let Query(list_query) = query;
 
     // Construct the query.
-    let query = construct_query(&list_query);
+    let query = construct_wallet_list_query(&list_query);
 
     // Get the wallets from the database.
     let count = client.client.wallet().count(query).exec().await?;
@@ -130,7 +130,7 @@ pub(crate) async fn v1_wallet_list_count_handler(
 // -----------------------------------------------------------------------------
 
 /// Constructs a query for the database.
-fn construct_query(query: &ListQuery) -> Vec<WhereParam> {
+fn construct_wallet_list_query(query: &ListQuery) -> Vec<WhereParam> {
     match &query.owner {
         Some(owner) => vec![wallet::users::some(vec![user::address::equals(owner.to_string())])],
         None => vec![],

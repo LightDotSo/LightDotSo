@@ -23,10 +23,11 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::wallet_balance;
+use eyre::Result;
+use lightdotso_prisma::{wallet_balance, wallet_balance::WhereParam};
 use prisma_client_rust::Direction;
-use serde::Deserialize;
-use utoipa::IntoParams;
+use serde::{Deserialize, Serialize};
+use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -48,6 +49,17 @@ pub struct ListQuery {
 }
 
 // -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Count of list of tokens.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct TokenListCount {
+    /// The count of the list of tokens.
+    pub count: i64,
+}
+
+// -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
@@ -65,37 +77,24 @@ pub struct ListQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_token_list_handler(
-    list: Query<ListQuery>,
+    query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Token>> {
-    // Get the pagination query.
-    let Query(pagination) = list;
+    // Get the list_query query.
+    let Query(list_query) = query;
 
-    let parsed_query_address: H160 = pagination.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
-
-    let mut params = vec![
-        wallet_balance::wallet_address::equals(checksum_address),
-        wallet_balance::is_latest::equals(true),
-        wallet_balance::chain_id::not(0),
-        wallet_balance::is_spam::equals(pagination.is_spam.unwrap_or(false)),
-        wallet_balance::amount::not(Some(0)),
-    ];
-
-    // If is_testnet is not set or true, only return the tokens that are not testnet tokens.
-    if pagination.is_testnet != Some(true) {
-        params.push(wallet_balance::is_testnet::equals(false));
-    }
+    // Construct the query.
+    let query = construct_token_list_query(&list_query)?;
 
     // Get the tokens from the database.
     let balances = client
         .client
         .wallet_balance()
-        .find_many(params)
+        .find_many(query)
         .order_by(wallet_balance::balance_usd::order(Direction::Desc))
         .with(wallet_balance::token::fetch())
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
+        .skip(list_query.offset.unwrap_or(0))
+        .take(list_query.limit.unwrap_or(10))
         .exec()
         .await?;
 
@@ -103,4 +102,58 @@ pub(crate) async fn v1_token_list_handler(
     let tokens: Vec<Token> = balances.into_iter().map(|balance| balance.into()).collect();
 
     Ok(Json::from(tokens))
+}
+
+/// Returns a count of list of tokens.
+#[utoipa::path(
+        get,
+        path = "/token/list/count",
+        params(
+            ListQuery
+        ),
+        responses(
+            (status = 200, description = "Tokens returned successfully", body = TokenListCount),
+            (status = 500, description = "Token bad request", body = TokenError),
+        )
+    )]
+#[autometrics]
+pub(crate) async fn v1_token_list_count_handler(
+    query: Query<ListQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<TokenListCount> {
+    // Get the list_query query.
+    let Query(list_query) = query;
+
+    // Construct the query.
+    let query = construct_token_list_query(&list_query)?;
+
+    // Get the tokens from the database.
+    let count = client.client.wallet_balance().count(query).exec().await?;
+
+    Ok(Json::from(TokenListCount { count }))
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+/// Constructs a params list for tokens.
+fn construct_token_list_query(query: &ListQuery) -> Result<Vec<WhereParam>> {
+    let parsed_query_address: H160 = query.address.parse()?;
+    let checksum_address = to_checksum(&parsed_query_address, None);
+
+    let mut query_params = vec![
+        wallet_balance::wallet_address::equals(checksum_address),
+        wallet_balance::is_latest::equals(true),
+        wallet_balance::chain_id::not(0),
+        wallet_balance::is_spam::equals(query.is_spam.unwrap_or(false)),
+        wallet_balance::amount::not(Some(0)),
+    ];
+
+    // If is_testnet is not set or true, only return the tokens that are not testnet tokens.
+    if query.is_testnet != Some(true) {
+        query_params.push(wallet_balance::is_testnet::equals(false));
+    }
+
+    Ok(query_params)
 }
