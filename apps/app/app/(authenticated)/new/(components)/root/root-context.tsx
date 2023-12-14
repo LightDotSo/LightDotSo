@@ -59,8 +59,8 @@ export const RootContext: FC = () => {
           className="rounded-md border border-border-info-weaker bg-background-info-weakest p-4"
           initial={{ opacity: 0, y: 300 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, x: 300 }}
-          transition={{ duration: 0.3 }}
+          exit={{ opacity: 0, y: 300 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Badge className="mb-1" variant="info">
             <span className="text-text-weakest">Info</span>
@@ -94,8 +94,8 @@ export const RootContext: FC = () => {
             className="rounded-md border border-border-warning-weaker bg-background-warning-weakest p-4"
             initial={{ opacity: 0, y: 300 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, x: 300 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: 300 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <Badge className="mb-1" variant="warning">
               <span className="text-text-weakest">Warning</span>
@@ -139,8 +139,8 @@ export const RootContext: FC = () => {
             className="rounded-md border border-border-error-weaker bg-background-error/15 p-4"
             initial={{ opacity: 0, y: 300 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, x: 300 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: 300 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <Badge className="mb-1" variant="error">
               <span className="text-text-weakest">Error</span>
