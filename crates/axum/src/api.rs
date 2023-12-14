@@ -123,7 +123,7 @@ use utoipa_swagger_ui::SwaggerUi;
         auth::v1_auth_session_handler,
         auth::v1_auth_logout_handler,
         auth::v1_auth_verify_handler,
-        check::handler,
+        check::check::handler,
         health::handler,
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
