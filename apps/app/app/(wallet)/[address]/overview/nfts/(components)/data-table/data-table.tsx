@@ -30,7 +30,7 @@ import { NftCard } from "@/components/nft/nft-card";
 import { NftsEmpty } from "@/components/nft/nfts-empty";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
 import type { NftData } from "@/data";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

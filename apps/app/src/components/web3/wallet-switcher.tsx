@@ -52,7 +52,7 @@ import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { WalletData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { queries } from "@/queries";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

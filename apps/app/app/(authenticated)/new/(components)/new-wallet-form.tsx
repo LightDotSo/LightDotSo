@@ -56,7 +56,7 @@ import {
 } from "@/app/(authenticated)/new/(hooks)";
 import type { WalletType } from "@/app/(authenticated)/new/(hooks)";
 import { newFormSchema } from "@/schemas/newForm";
-import { useNewFormStore } from "@/stores/useNewForm";
+import { useNewForm } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Types
@@ -70,7 +70,7 @@ type NewFormValues = z.infer<typeof newFormSchema>;
 
 export const NewWalletForm: FC = () => {
   const router = useRouter();
-  const { setFormValues } = useNewFormStore();
+  const { setFormValues } = useNewForm();
 
   const [name, setName] = useNameQueryState();
   const [type, setType] = useTypeQueryState();
@@ -128,6 +128,10 @@ export const NewWalletForm: FC = () => {
     },
     [navigateToStep],
   );
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <Card className="flex flex-col space-y-6 px-2 py-4 lg:px-6 lg:pb-6 lg:pt-8">

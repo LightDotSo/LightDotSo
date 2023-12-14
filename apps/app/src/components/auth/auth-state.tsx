@@ -29,7 +29,7 @@ import type { Address } from "viem";
 import { useAccount, useEnsName } from "wagmi";
 import type { AuthSessionData, UserData } from "@/data";
 import { queries } from "@/queries";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

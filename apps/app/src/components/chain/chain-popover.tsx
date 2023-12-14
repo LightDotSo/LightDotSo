@@ -37,7 +37,7 @@ import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import type { WalletSettingsData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { queries } from "@/queries";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";
 
 // -----------------------------------------------------------------------------

@@ -42,7 +42,7 @@ import { TransactionsEmpty } from "@/components/transaction/transactions-empty";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TransactionData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -42,7 +42,7 @@ import { TokensEmpty } from "@/components/token/tokens-empty";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

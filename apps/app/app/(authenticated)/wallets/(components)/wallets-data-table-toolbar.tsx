@@ -17,7 +17,7 @@
 
 import type { FC } from "react";
 import { DataTableToolbar } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-toolbar";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -25,6 +25,10 @@ import { useTables } from "@/stores/useTables";
 
 export const WalletsDataTableToolbar: FC = () => {
   const { walletTable } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   if (!walletTable) {
     return null;

@@ -21,7 +21,7 @@ import Link from "next/link";
 import { type FC } from "react";
 import { NftImage } from "@/components/nft/nft-image";
 import type { NftData } from "@/data";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 import { ChainLogo } from "@/svgs";
 import {
   getChainBySimplehashChainName,

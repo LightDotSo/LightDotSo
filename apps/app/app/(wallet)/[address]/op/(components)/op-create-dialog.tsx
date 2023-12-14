@@ -21,7 +21,7 @@ import { isAddressEqual } from "viem";
 import type { Address } from "viem";
 import { OpCreateCard } from "@/app/(wallet)/[address]/op/(components)/op-create-card";
 import type { ConfigurationData } from "@/data";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 import type { UserOperation } from "@/types";
 
 // -----------------------------------------------------------------------------

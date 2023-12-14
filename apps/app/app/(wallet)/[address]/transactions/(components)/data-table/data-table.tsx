@@ -36,7 +36,7 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
 import type { UserOperationData } from "@/data";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

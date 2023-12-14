@@ -23,13 +23,17 @@ import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/c
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
 import type { WalletData } from "@/data";
 import { queries } from "@/queries";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const WalletsDataTable: FC = () => {
+  // ---------------------------------------------------------------------------
+  // Store
+  // ---------------------------------------------------------------------------
+
   const { address } = useAuth();
 
   // ---------------------------------------------------------------------------
@@ -69,6 +73,10 @@ export const WalletsDataTable: FC = () => {
       );
     },
   });
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return <DataTable data={wallets ?? []} columns={columns} />;
 };

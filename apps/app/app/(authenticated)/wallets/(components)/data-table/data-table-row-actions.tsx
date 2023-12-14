@@ -40,6 +40,10 @@ interface DataTableRowActionsProps {
 // -----------------------------------------------------------------------------
 
 export function DataTableRowActions({ row: _ }: DataTableRowActionsProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

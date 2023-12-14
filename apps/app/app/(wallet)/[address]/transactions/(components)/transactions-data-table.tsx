@@ -27,7 +27,7 @@ import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
 import type { UserOperationData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

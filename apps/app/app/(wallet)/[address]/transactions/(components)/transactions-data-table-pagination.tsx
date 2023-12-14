@@ -17,7 +17,7 @@
 
 import { useEffect, type FC } from "react";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

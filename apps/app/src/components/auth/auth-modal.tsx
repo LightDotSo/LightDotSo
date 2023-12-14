@@ -30,8 +30,7 @@ import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { SiweMessage } from "siwe";
 import { useSignMessage, useNetwork } from "wagmi";
-import { useAuth } from "@/stores/useAuth";
-import { useModals } from "@/stores/useModals";
+import { useAuth, useModals } from "@/stores";
 import { errorToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

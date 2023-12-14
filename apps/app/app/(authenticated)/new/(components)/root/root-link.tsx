@@ -146,6 +146,10 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
 
   let requiredParams = ["name", "owners", "salt", "threshold"];
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <button
       disabled={

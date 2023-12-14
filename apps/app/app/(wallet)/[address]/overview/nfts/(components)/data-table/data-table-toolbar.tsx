@@ -25,8 +25,7 @@ import { DataTableFacetedFilter } from "@/components/data-table/data-table-facet
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import { useAuth } from "@/stores/useAuth";
-import { useTables } from "@/stores/useTables";
+import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -33,7 +33,7 @@ import Link from "next/link";
 import { useTheme } from "next-themes";
 import type { FC } from "react";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
