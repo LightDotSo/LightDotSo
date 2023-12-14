@@ -37,6 +37,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { WalletData } from "@/data";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -54,6 +55,7 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Stores
@@ -87,7 +89,6 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnFilters: walletColumnFilters,
       pagination: walletPagination,
     },
-    enableRowSelection: true,
     onRowSelectionChange: setWalletRowSelection,
     onSortingChange: setWalletSorting,
     onColumnFiltersChange: setWalletColumnFilters,
@@ -108,6 +109,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   useEffect(() => {
     setWalletTable(table);
   }, [
+    isMounted,
     table,
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("address"),

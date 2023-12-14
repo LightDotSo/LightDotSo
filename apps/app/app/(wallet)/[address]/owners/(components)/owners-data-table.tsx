@@ -17,12 +17,14 @@
 
 import { getConfiguration } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/owners/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/owners/(components)/data-table/data-table";
 import type { ConfigurationData } from "@/data";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { queries } from "@/queries";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,6 +39,13 @@ interface OwnersDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
+  // ---------------------------------------------------------------------------
+  // Stores
+  // ---------------------------------------------------------------------------
+
+  const { resetOwnerTable } = useTables();
+  const isMounted = useIsMounted();
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -73,6 +82,15 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
       );
     },
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  useEffect(() => {
+    resetOwnerTable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMounted]);
 
   // ---------------------------------------------------------------------------
   // Render

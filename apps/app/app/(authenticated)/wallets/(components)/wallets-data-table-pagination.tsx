@@ -46,7 +46,7 @@ export const WalletsDataTablePagination: FC = () => {
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!walletTable || !useTables.persist.hasHydrated()) {
+  if (!walletTable) {
     return null;
   }
 

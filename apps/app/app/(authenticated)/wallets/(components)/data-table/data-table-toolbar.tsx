@@ -72,6 +72,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         columnMapping={{
           name: "Name",
           address: "Address",
+          actions: "Actions",
         }}
       />
     </div>
