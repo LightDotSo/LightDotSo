@@ -39,14 +39,14 @@ pub(crate) struct UserOperationCreate {
     paymaster_and_data: String,
 }
 
-/// Paymaster
+/// User operation paymaster
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperationPaymaster {
     /// The address of the paymaster.
     address: String,
 }
 
-/// Owner
+/// User operation owner
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperationOwner {
     /// The id of the owner.
@@ -57,7 +57,7 @@ pub(crate) struct UserOperationOwner {
     pub weight: i64,
 }
 
-/// Signature
+/// User operation signature
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperationSignature {
     /// The id of the owner of the signature.
@@ -68,7 +68,7 @@ pub(crate) struct UserOperationSignature {
     pub signature_type: i32,
 }
 
-/// Transaction
+/// User operation transaction
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub(crate) struct UserOperationTransaction {
     /// The hash of the transaction.

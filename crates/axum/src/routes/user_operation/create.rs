@@ -68,6 +68,10 @@ pub struct PostQuery {
     pub chain_id: i64,
 }
 
+// -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
+
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
 pub struct UserOperationPostRequestParams {
     // The user operation to create.
@@ -75,6 +79,10 @@ pub struct UserOperationPostRequestParams {
     // The signature of the user operation.
     pub signature: UserOperationSignature,
 }
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 /// Item to create.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
@@ -112,6 +120,11 @@ impl TryFrom<UserOperationCreate> for RundlerUserOperation {
         })
     }
 }
+
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
+
 /// Create a user operation
 #[utoipa::path(
         post,
