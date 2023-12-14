@@ -24,7 +24,7 @@ import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table
 import type { WalletData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { queries } from "@/queries";
-import { useAuth, useTables } from "@/stores";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -36,7 +36,6 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { resetWalletTable } = useTables();
   const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
@@ -82,7 +81,7 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   useEffect(() => {
-    resetWalletTable();
+    // resetWalletTable();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isMounted]);
 

@@ -66,7 +66,6 @@ type TablesStore = {
   setOwnerPagination: OnChangeFn<PaginationState>;
   setOwnerRowSelection: OnChangeFn<RowSelectionState>;
   setOwnerSorting: OnChangeFn<SortingState>;
-  resetOwnerTable: () => void;
   setOwnerTable: (tableObject: Table<ConfigurationOwnerData>) => void;
   userOperationColumnFilters: ColumnFiltersState;
   userOperationColumnVisibility: VisibilityState;
@@ -110,7 +109,6 @@ type TablesStore = {
   walletRowSelection: RowSelectionState;
   walletSorting: SortingState;
   walletTable: Table<WalletData> | null;
-  resetWalletTable: () => void;
   setWalletColumnFilters: OnChangeFn<ColumnFiltersState>;
   setWalletColumnVisibility: OnChangeFn<VisibilityState>;
   setWalletPagination: OnChangeFn<PaginationState>;
@@ -199,10 +197,6 @@ export const useTables = create(
         ownerRowSelection: {},
         ownerSorting: [],
         ownerTable: null,
-        resetOwnerTable: () =>
-          set({
-            ownerTable: null,
-          }),
         setOwnerColumnFilters: columnFilters =>
           set(prevState => ({
             ...prevState,
@@ -435,10 +429,6 @@ export const useTables = create(
         walletRowSelection: {},
         walletSorting: [],
         walletTable: null,
-        resetWalletTable: () =>
-          set({
-            walletTable: null,
-          }),
         setWalletColumnFilters: columnFilters =>
           set(prevState => ({
             ...prevState,
