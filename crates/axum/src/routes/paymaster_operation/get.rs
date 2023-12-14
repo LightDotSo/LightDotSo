@@ -13,19 +13,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::{error::RouteError, result::AppJsonResult, state::AppState};
+use super::types::PaymasterOperation;
+use crate::{
+    error::RouteError, result::AppJsonResult,
+    routes::paymaster_operation::error::PaymasterOperationError, state::AppState,
+};
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::get,
-    Json, Router,
+    Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_prisma::{paymaster, paymaster_operation};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::chrono::{NaiveDateTime, Utc};
-use serde::{Deserialize, Serialize};
-use utoipa::{IntoParams, ToSchema};
+use serde::Deserialize;
+use utoipa::IntoParams;
+
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
@@ -38,45 +45,9 @@ pub struct GetQuery {
     pub valid_after: i64,
 }
 
-#[derive(Debug, Deserialize, Default, IntoParams)]
-#[into_params(parameter_in = Query)]
-pub struct ListQuery {
-    // The offset of the first paymaster to return.
-    pub offset: Option<i64>,
-    // The maximum number of paymasters to return.
-    pub limit: Option<i64>,
-}
-
-/// PaymasterOperation operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum PaymasterOperationError {
-    // PaymasterOperation query error.
-    #[schema(example = "Bad request")]
-    BadRequest(String),
-    /// PaymasterOperation not found by id.
-    #[schema(example = "id = 1")]
-    NotFound(String),
-}
-
-/// Item to do.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct PaymasterOperation {
-    id: String,
-}
-
-// Implement From<paymaster_operation::Data> for PaymasterOperation.
-impl From<paymaster_operation::Data> for PaymasterOperation {
-    fn from(paymaster_operation: paymaster_operation::Data) -> Self {
-        Self { id: paymaster_operation.id }
-    }
-}
-
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/paymaster_operation/get", get(v1_paymaster_operation_get_handler))
-        .route("/paymaster_operation/list", get(v1_paymaster_operation_list_handler))
-}
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
 
 /// Get a paymaster
 #[utoipa::path(
@@ -91,7 +62,7 @@ pub(crate) fn router() -> Router<AppState> {
         )
     )]
 #[autometrics]
-async fn v1_paymaster_operation_get_handler(
+pub(crate) async fn v1_paymaster_operation_get_handler(
     get: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<PaymasterOperation> {
@@ -145,41 +116,4 @@ async fn v1_paymaster_operation_get_handler(
     let paymaster_operation: PaymasterOperation = paymaster_operation.into();
 
     Ok(Json::from(paymaster_operation))
-}
-
-/// Returns a list of paymasters.
-#[utoipa::path(
-        get,
-        path = "/paymaster_operation/list",
-        params(
-            ListQuery
-        ),
-        responses(
-            (status = 200, description = "Paymaster Operations returned successfully", body = [PaymasterOperation]),
-            (status = 500, description = "Paymaster Operation bad request", body = PaymasterOperationError),
-        )
-    )]
-#[autometrics]
-async fn v1_paymaster_operation_list_handler(
-    pagination: Query<ListQuery>,
-    State(client): State<AppState>,
-) -> AppJsonResult<Vec<PaymasterOperation>> {
-    // Get the pagination query.
-    let Query(pagination) = pagination;
-
-    // Get the paymasters from the database.
-    let paymasters = client
-        .client
-        .paymaster_operation()
-        .find_many(vec![])
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
-        .exec()
-        .await?;
-
-    // Change the paymasters to the format that the API expects.
-    let paymasters: Vec<PaymasterOperation> =
-        paymasters.into_iter().map(PaymasterOperation::from).collect();
-
-    Ok(Json::from(paymasters))
 }

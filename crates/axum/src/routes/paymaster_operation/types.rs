@@ -13,28 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod error;
-pub(crate) mod get;
-pub(crate) mod list;
-pub(crate) mod read;
-pub(crate) mod types;
-
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{routing::get, Router};
-
-pub(crate) use get::{__path_v1_notification_get_handler, v1_notification_get_handler};
-pub(crate) use list::{__path_v1_notification_list_handler, v1_notification_list_handler};
-pub(crate) use read::{__path_v1_notification_read_handler, v1_notification_read_handler};
+use lightdotso_prisma::paymaster_operation;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Router
+// Types
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/notification/get", get(v1_notification_get_handler))
-        .route("/notification/list", get(v1_notification_list_handler))
-        .route("/notification/read", get(v1_notification_read_handler))
+/// PaymasterOperation root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct PaymasterOperation {
+    /// The id of the paymaster operation.
+    id: String,
+}
+
+/// Implement From<paymaster_operation::Data> for PaymasterOperation.
+impl From<paymaster_operation::Data> for PaymasterOperation {
+    fn from(paymaster_operation: paymaster_operation::Data) -> Self {
+        Self { id: paymaster_operation.id }
+    }
 }
