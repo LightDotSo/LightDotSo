@@ -109,7 +109,7 @@ export const WalletOverviewBannerAddress: FC<
       <Avatar className="h-16 w-16">
         <PlaceholderOrb address={address ?? "0x"} />
       </Avatar>
-      <div className="flex justify-start space-x-3 overflow-hidden text-ellipsis py-1 pl-1 pr-3 text-left">
+      <div className="flex space-x-3 overflow-hidden text-ellipsis p-1 text-left">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button

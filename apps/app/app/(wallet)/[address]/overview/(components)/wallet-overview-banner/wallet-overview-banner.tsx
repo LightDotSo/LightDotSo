@@ -47,7 +47,7 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-1 gap-y-4 lg:grid-cols-4 lg:gap-x-8">
-      <div className="col-span-2 flex w-full flex-row items-center space-x-5 lg:border-r lg:border-border">
+      <div className="col-span-2 flex w-full flex-row items-center space-x-3 lg:border-r lg:border-border">
         <WalletOverviewBannerAddress address={address} />
       </div>
       <div className="col-span-1 flex w-full">
