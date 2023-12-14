@@ -20,7 +20,7 @@ use crate::routes::{
     portfolio::error::PortfolioError, signature::error::SignatureError,
     support_request::error::SupportRequestError, token::error::TokenError,
     token_price::error::TokenPriceError, transaction::error::TransactionError,
-    user::error::UserError, user_operation::error::UserOperationError, wallet::WalletError,
+    user::error::UserError, user_operation::error::UserOperationError, wallet::error::WalletError,
     wallet_settings::WalletSettingsError,
 };
 use http::StatusCode;
