@@ -19,9 +19,9 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        auth, check, configuration, feedback, health, notification, paymaster, paymaster_operation,
-        portfolio, signature, support_request, token, token_price, transaction, user,
-        user_operation, wallet, wallet_settings,
+        auth, check, configuration, feedback, health, metrics, notification, paymaster,
+        paymaster_operation, portfolio, signature, support_request, token, token_price,
+        transaction, user, user_operation, wallet, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
     state::AppState,
@@ -268,6 +268,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(check::router())
         .merge(feedback::router())
         .merge(health::router())
+        .merge(metrics::router())
         .merge(notification::router())
         .merge(paymaster::router())
         .merge(paymaster_operation::router())
