@@ -14,12 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::routes::{
-    auth::AuthError, configuration::ConfigurationError, feedback::FeedbackError,
-    notification::NotificationError, paymaster::PaymasterError,
-    paymaster_operation::PaymasterOperationError, portfolio::PortfolioError,
-    signature::SignatureError, support_request::SupportRequestError, token::TokenError,
-    token_price::TokenPriceError, transaction::TransactionError, user::UserError,
-    user_operation::UserOperationError, wallet::WalletError, wallet_settings::WalletSettingsError,
+    auth::error::AuthError, configuration::error::ConfigurationError,
+    feedback::error::FeedbackError, notification::error::NotificationError,
+    paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
+    portfolio::error::PortfolioError, signature::error::SignatureError,
+    support_request::error::SupportRequestError, token::error::TokenError,
+    token_price::error::TokenPriceError, transaction::error::TransactionError,
+    user::error::UserError, user_operation::error::UserOperationError, wallet::error::WalletError,
+    wallet_settings::error::WalletSettingsError,
 };
 use http::StatusCode;
 
