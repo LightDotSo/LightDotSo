@@ -13,6 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use super::types::{Portfolio, PortfolioBalanceDate};
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
@@ -20,14 +21,17 @@ use crate::{
 use autometrics::autometrics;
 use axum::{
     extract::{Query, State},
-    routing::get,
-    Json, Router,
+    Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{raw, PrismaValue};
-use serde::{Deserialize, Serialize};
-use utoipa::{IntoParams, ToSchema};
+use serde::Deserialize;
+use utoipa::IntoParams;
+
+// -----------------------------------------------------------------------------
+// Query
+// -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[into_params(parameter_in = Query)]
@@ -36,32 +40,9 @@ pub struct GetQuery {
     pub address: String,
 }
 
-/// Portfolio operation errors
-#[derive(Serialize, Deserialize, ToSchema)]
-pub(crate) enum PortfolioError {
-    // Portfolio query error.
-    #[schema(example = "Bad request")]
-    BadRequest(String),
-    /// Portfolio already exists conflict.
-    #[schema(example = "Portfolio already exists")]
-    Conflict(String),
-}
-
-/// Item to do.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct Portfolio {
-    balance: f64,
-    balance_change_24h: f64,
-    balance_change_24h_percentage: f64,
-    balances: Vec<PortfolioBalanceDate>,
-}
-
-/// Portfolio to do.
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-pub(crate) struct PortfolioBalanceDate {
-    balance: f64,
-    date: String,
-}
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
 
 #[derive(Clone, Debug, Deserialize)]
 struct PortfolioQueryReturnType {
@@ -76,10 +57,9 @@ impl From<PortfolioQueryReturnType> for PortfolioBalanceDate {
     }
 }
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new().route("/portfolio/get", get(v1_portfolio_get_handler))
-}
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
 
 /// Get a portfolio
 #[utoipa::path(
@@ -94,7 +74,7 @@ pub(crate) fn router() -> Router<AppState> {
         )
     )]
 #[autometrics]
-async fn v1_portfolio_get_handler(
+pub(crate) async fn v1_portfolio_get_handler(
     get: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Portfolio> {

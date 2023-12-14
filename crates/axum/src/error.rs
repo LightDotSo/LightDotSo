@@ -17,10 +17,10 @@ use crate::routes::{
     auth::error::AuthError, configuration::error::ConfigurationError,
     feedback::error::FeedbackError, notification::error::NotificationError,
     paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
-    portfolio::PortfolioError, signature::SignatureError, support_request::SupportRequestError,
-    token::TokenError, token_price::TokenPriceError, transaction::TransactionError,
-    user::UserError, user_operation::UserOperationError, wallet::WalletError,
-    wallet_settings::WalletSettingsError,
+    portfolio::error::PortfolioError, signature::SignatureError,
+    support_request::SupportRequestError, token::TokenError, token_price::TokenPriceError,
+    transaction::TransactionError, user::UserError, user_operation::UserOperationError,
+    wallet::WalletError, wallet_settings::WalletSettingsError,
 };
 use http::StatusCode;
 
