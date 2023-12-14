@@ -56,7 +56,7 @@ export function DataTable({ columns, data }: DataTableProps) {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const {
@@ -87,7 +87,9 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnFilters: walletColumnFilters,
       pagination: walletPagination,
     },
+    paginateExpandedRows: false,
     enableRowSelection: true,
+    manualPagination: true,
     onRowSelectionChange: setWalletRowSelection,
     onSortingChange: setWalletSorting,
     onColumnFiltersChange: setWalletColumnFilters,

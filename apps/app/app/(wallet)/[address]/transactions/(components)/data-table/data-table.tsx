@@ -53,7 +53,7 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const {

@@ -53,7 +53,7 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const {
@@ -84,7 +84,9 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnFilters: ownerColumnFilters,
       pagination: ownerPagination,
     },
+    paginateExpandedRows: false,
     enableRowSelection: true,
+    manualPagination: true,
     onRowSelectionChange: setOwnerRowSelection,
     onSortingChange: setOwnerSorting,
     onColumnFiltersChange: setOwnerColumnFilters,

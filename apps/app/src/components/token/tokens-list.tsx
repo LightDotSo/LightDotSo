@@ -58,7 +58,7 @@ export type TokensListProps = {
 
 export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const {

@@ -36,7 +36,7 @@ interface DataTableToolbarProps {
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const { walletColumnFilters } = useTables();
@@ -72,6 +72,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
         columnMapping={{
           name: "Name",
           address: "Address",
+          actions: "Actions",
         }}
       />
     </div>

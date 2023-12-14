@@ -23,11 +23,15 @@ const badgeVariants = cva(
       variant: {
         default:
           "border-transparent bg-background-primary text-text-weakest hover:bg-background-primary/80",
-        secondary:
-          "text-secondary-foreground border-transparent bg-background-strong hover:bg-background-strong/80",
         destructive:
           "border-transparent bg-background-destructive text-text-inverse hover:bg-background-destructive/80",
+        warning:
+          "border-transparent bg-background-warning text-text-inverse hover:bg-background-warning/80",
+        error:
+          "border-transparent bg-background-error text-text-inverse hover:bg-background-error/80",
+        info: "border-transparent bg-background-info text-text-inverse hover:bg-background-info/80",
         outline: "text-text",
+        unstyled: "border-0",
       },
     },
     defaultVariants: {

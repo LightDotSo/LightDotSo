@@ -102,7 +102,7 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
               href={`/${address}${item.href}`}
               className={cn(
                 buttonVariants({ variant: "outline", size: "sm" }),
-                "text-secondary bg-transparent border-none py-0 text-sm h-8",
+                "bg-transparent border-none py-0 text-sm h-8",
                 // If the item is the selected, add bg-selected
                 item.id === id
                   ? "bg-background-body text-text font-semibold hover:bg-background-weaker"

@@ -17,7 +17,7 @@
 
 import { getWallets } from "@lightdotso/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { FC } from "react";
+import { type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/columns";
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
@@ -31,7 +31,7 @@ import { useAuth } from "@/stores";
 
 export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();

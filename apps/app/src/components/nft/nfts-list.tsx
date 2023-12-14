@@ -52,7 +52,7 @@ export type NftsListProps = {
 
 export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   // ---------------------------------------------------------------------------
-  // Store
+  // Stores
   // ---------------------------------------------------------------------------
 
   const { nftColumnFilters, nftColumnVisibility, nftRowSelection, nftSorting } =

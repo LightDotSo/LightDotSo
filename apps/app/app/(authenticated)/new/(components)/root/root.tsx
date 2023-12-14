@@ -119,9 +119,7 @@ export const NewRoot: FC<NewRootProps> = async ({
         <div className="mx-auto flex h-full flex-col">{children}</div>
       </div>
       <aside className="lg:w-1/4">
-        <div className="h-full rounded-md border border-border bg-background-weak">
-          <RootContext />
-        </div>
+        <RootContext />
       </aside>
     </div>
   );
