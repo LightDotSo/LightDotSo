@@ -16,6 +16,7 @@
 "use client";
 
 import { getNftsByOwner } from "@lightdotso/client";
+import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getCoreRowModel,
@@ -30,12 +31,11 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { NftCard } from "@/components/nft/nft-card";
-import { NftsEmpty } from "@/components/nft/nfts-empty";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -154,7 +154,20 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
             />
           ))
       ) : (
-        <NftsEmpty />
+        <div className="col-span-6">
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
       )}
     </NftsWrapper>
   );

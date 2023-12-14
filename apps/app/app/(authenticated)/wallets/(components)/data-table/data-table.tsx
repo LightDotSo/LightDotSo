@@ -37,7 +37,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import type { WalletData } from "@/data";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

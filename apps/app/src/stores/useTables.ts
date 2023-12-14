@@ -182,6 +182,7 @@ export const useTables = create(
         setNftTable: tableObject =>
           set({
             nftTable: tableObject,
+            ownerTable: null,
             tokenTable: null,
             userOperationTable: null,
             transactionTable: null,
@@ -239,6 +240,7 @@ export const useTables = create(
         setOwnerTable: tableObject =>
           set({
             ownerTable: tableObject,
+            nftTable: null,
             userOperationTable: null,
             tokenTable: null,
             transactionTable: null,
@@ -296,6 +298,7 @@ export const useTables = create(
         setUserOperationTable: tableObject =>
           set({
             userOperationTable: tableObject,
+            ownerTable: null,
             nftTable: null,
             transactionTable: null,
             tokenTable: null,
@@ -353,6 +356,7 @@ export const useTables = create(
         setTokenTable: tableObject =>
           set({
             tokenTable: tableObject,
+            ownerTable: null,
             nftTable: null,
             userOperationTable: null,
             transactionTable: null,
@@ -410,6 +414,7 @@ export const useTables = create(
         setTransactionTable: tableObject =>
           set({
             transactionTable: tableObject,
+            ownerTable: null,
             nftTable: null,
             userOperationTable: null,
             tokenTable: null,
@@ -467,6 +472,7 @@ export const useTables = create(
         setWalletTable: tableObject =>
           set({
             walletTable: tableObject,
+            ownerTable: null,
             nftTable: null,
             userOperationTable: null,
             tokenTable: null,

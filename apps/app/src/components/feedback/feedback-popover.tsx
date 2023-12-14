@@ -26,7 +26,7 @@ import { useState } from "react";
 import type { FC } from "react";
 import { FeedbackForm } from "@/components/feedback/feedback-form";
 import { useIsMounted } from "@/hooks/useIsMounted";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

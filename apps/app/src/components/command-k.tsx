@@ -40,7 +40,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { FC } from "react";
 import { useCopy } from "@/hooks/useCopy";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------

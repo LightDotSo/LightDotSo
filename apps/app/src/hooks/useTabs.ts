@@ -22,7 +22,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
 import { queries } from "@/queries";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Types

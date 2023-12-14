@@ -17,7 +17,7 @@
 
 import { useEffect, type FC } from "react";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table-toolbar";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component

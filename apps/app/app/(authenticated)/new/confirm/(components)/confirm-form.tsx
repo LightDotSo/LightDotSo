@@ -54,7 +54,7 @@ import {
   newFormConfigurationSchema,
   newFormStoreSchema,
 } from "@/schemas/newForm";
-import { useNewFormStore } from "@/stores/useNewForm";
+import { useNewForm } from "@/stores";
 import { errorToast, infoToast, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ type NewFormValues = z.infer<typeof newFormStoreSchema>;
 
 export const ConfirmForm: FC = () => {
   const router = useRouter();
-  const { address, setFormValues, fetchToCreate } = useNewFormStore();
+  const { address, setFormValues, fetchToCreate } = useNewForm();
 
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();

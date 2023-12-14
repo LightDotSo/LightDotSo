@@ -66,8 +66,7 @@ import { publicClient } from "@/clients/public";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import { MAX_THRESHOLD, MAX_WEIGHT } from "@/const/configuration";
 import { newFormSchema, newFormConfigurationSchema } from "@/schemas/newForm";
-import { useAuth } from "@/stores/useAuth";
-import { useNewFormStore } from "@/stores/useNewForm";
+import { useAuth, useNewForm } from "@/stores";
 import { debounce, successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -96,7 +95,7 @@ function timestampToBytes32(timestamp: number): string {
 export const ConfigurationForm: FC = () => {
   const { address: userAddress, ens: userEns } = useAuth();
   const router = useRouter();
-  const { setFormValues, fetchToCreate } = useNewFormStore();
+  const { setFormValues, fetchToCreate } = useNewForm();
 
   // ---------------------------------------------------------------------------
   // Query State

@@ -15,8 +15,7 @@
 
 import { useModal } from "connectkit";
 import { useCallback, useMemo } from "react";
-import { useAuth } from "@/stores/useAuth";
-import { useModals } from "@/stores/useModals";
+import { useAuth, useModals } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Hook

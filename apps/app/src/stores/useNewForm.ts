@@ -42,7 +42,7 @@ interface FormStore {
 // Hook
 // -----------------------------------------------------------------------------
 
-export const useNewFormStore = create(
+export const useNewForm = create(
   devtools<FormStore>(
     (set, get) => ({
       address: null,
@@ -128,7 +128,7 @@ export const useNewFormStore = create(
       },
     }),
     {
-      anonymousActionType: "useNewFormStore",
+      anonymousActionType: "useNewForm",
       name: "FormStore",
       serialize: { options: true },
     },

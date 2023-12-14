@@ -20,6 +20,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import type { Table } from "@tanstack/react-table";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { WalletData } from "@/data";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -34,7 +35,11 @@ interface DataTableToolbarProps {
 // -----------------------------------------------------------------------------
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
-  const isFiltered = table.getState().columnFilters.length > 0;
+  // ---------------------------------------------------------------------------
+  // Store
+  // ---------------------------------------------------------------------------
+
+  const { walletColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -51,7 +56,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
         />
-        {isFiltered && (
+        {walletColumnFilters.length > 0 && (
           <Button
             variant="outline"
             className="h-8 px-2 lg:px-3"

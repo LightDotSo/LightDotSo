@@ -25,7 +25,7 @@ import { DataTableFacetedFilter } from "@/components/data-table/data-table-facet
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { ConfigurationData, ConfigurationOwnerData } from "@/data";
 import { queries } from "@/queries";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth, useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -40,8 +40,12 @@ interface DataTableToolbarProps {
 // -----------------------------------------------------------------------------
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
+  // ---------------------------------------------------------------------------
+  // Store
+  // ---------------------------------------------------------------------------
+
   const { wallet } = useAuth();
-  const isFiltered = table.getState().columnFilters.length > 0;
+  const { ownerColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
   // Query
@@ -66,6 +70,10 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     return uniqueWeightValues;
   }, [currentData]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
@@ -87,7 +95,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {isFiltered && (
+        {ownerColumnFilters.length > 0 && (
           <Button
             variant="outline"
             className="h-8 px-2 lg:px-3"

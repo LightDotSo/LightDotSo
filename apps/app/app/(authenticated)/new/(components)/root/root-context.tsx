@@ -16,14 +16,22 @@
 "use client";
 
 import type { FC } from "react";
-import { useNewFormStore } from "@/stores/useNewForm";
+import { useNewForm } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
 export const RootContext: FC = () => {
-  const { address, errors, formValues, isValid, isLoading } = useNewFormStore();
+  // ---------------------------------------------------------------------------
+  // Store
+  // ---------------------------------------------------------------------------
+
+  const { address, errors, formValues, isValid, isLoading } = useNewForm();
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <div>

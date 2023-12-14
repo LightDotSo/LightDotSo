@@ -32,7 +32,7 @@ import {
 } from "viem";
 import { useSignMessage } from "wagmi";
 import type { ConfigurationData } from "@/data";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 import type { UserOperation } from "@/types";
 import { errorToast, serializeBigInt, successToast } from "@/utils";
 import {

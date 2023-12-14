@@ -26,7 +26,7 @@ import { Send, RefreshCcw } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
 import type { TokenData } from "@/data";
-import { useAuth } from "@/stores/useAuth";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props

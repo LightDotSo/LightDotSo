@@ -49,14 +49,26 @@ interface RootLinkProps {
 // -----------------------------------------------------------------------------
 
 export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
+  // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
 
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold] = useThresholdQueryState();
   const [salt] = useSaltQueryState();
   const [owners] = useOwnersQueryState();
+
+  // ---------------------------------------------------------------------------
+  // Mapping
+  // ---------------------------------------------------------------------------
 
   const linkSteps = steps.map(step => {
     // Update the status of the step based on the current step
@@ -95,6 +107,10 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   const step =
     linkSteps.find(step => step.href.includes(stepType)) ?? linkSteps[0];
 
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
   const navigateToStep = useCallback(
     (step: Step) => {
       const url = new URL(step.href, window.location.origin);
@@ -109,6 +125,10 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [name, type, threshold, salt, owners],
   );
+
+  // ---------------------------------------------------------------------------
+  // Validation
+  // ---------------------------------------------------------------------------
 
   const validateParams = (
     params: ReadonlyURLSearchParams,
@@ -145,6 +165,10 @@ export const RootLink: FC<RootLinkProps> = ({ currentStepType, stepType }) => {
   };
 
   let requiredParams = ["name", "owners", "salt", "threshold"];
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <button

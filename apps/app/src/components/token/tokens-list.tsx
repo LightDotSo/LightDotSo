@@ -38,11 +38,10 @@ import {
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
-import { TokensEmpty } from "@/components/token/tokens-empty";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -181,7 +180,11 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
               </TableRow>
             ))
         ) : (
-          <TokensEmpty />
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              No results.
+            </TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>

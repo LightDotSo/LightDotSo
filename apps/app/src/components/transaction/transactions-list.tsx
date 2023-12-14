@@ -38,11 +38,10 @@ import {
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
-import { TransactionsEmpty } from "@/components/transaction/transactions-empty";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TransactionData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores/useTables";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -189,7 +188,11 @@ export const TransactionsList: FC<TransactionsListProps> = ({
               </TableRow>
             ))
         ) : (
-          <TransactionsEmpty />
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              No results.
+            </TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>
