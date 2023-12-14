@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { Suspense } from "react";
 import type { Address } from "viem";
 import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
 import { OwnersDataTablePagination } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-pagination";
@@ -69,9 +68,7 @@ export default async function Page({ params }: PageProps) {
 
       return (
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <Suspense>
-            <OwnersDataTable address={params.address as Address} />
-          </Suspense>
+          <OwnersDataTable address={params.address as Address} />
           <OwnersDataTablePagination />
         </HydrationBoundary>
       );

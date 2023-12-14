@@ -16,7 +16,7 @@
 "use client";
 
 import { getConfiguration } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useEffect, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/owners/(components)/data-table/columns";
@@ -56,7 +56,7 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
     queries.configuration.get(address).queryKey,
   );
 
-  const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
+  const { data: configuration } = useQuery<ConfigurationData | null>({
     queryKey: queries.configuration.get(address).queryKey,
     queryFn: async () => {
       if (!address) {
