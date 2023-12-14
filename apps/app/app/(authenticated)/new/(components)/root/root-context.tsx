@@ -152,7 +152,9 @@ export const RootContext: FC = () => {
                   value={`item-${index}`}
                   className="border-border-error-weaker"
                 >
-                  <AccordionTrigger>{error.code}</AccordionTrigger>
+                  <AccordionTrigger>
+                    {error.code} {error.path}
+                  </AccordionTrigger>
                   <AccordionContent className="text-text-error">
                     {error.message}
                   </AccordionContent>
