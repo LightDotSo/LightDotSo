@@ -31,6 +31,7 @@ const badgeVariants = cva(
           "border-transparent bg-background-error text-text-inverse hover:bg-background-error/80",
         info: "border-transparent bg-background-info text-text-inverse hover:bg-background-info/80",
         outline: "text-text",
+        unstyled: "border-0",
       },
     },
     defaultVariants: {
