@@ -13,8 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#[allow(clippy::module_inception)]
+pub mod health;
+
+pub use crate::routes::health::health::handler;
 use autometrics::autometrics;
-use axum::{response::IntoResponse, routing::get, Router};
+use axum::{routing::get, Router};
 use http_body::Body as HttpBody;
 
 #[autometrics]
@@ -24,17 +28,4 @@ where
     S: Clone + Send + Sync + 'static,
 {
     Router::new().route("/health", get(handler))
-}
-
-/// Check the health of the server.
-#[utoipa::path(
-        get,
-        path = "/health",
-        responses(
-            (status = 200, description = "Health returned successfully"),
-        )
-    )]
-#[autometrics]
-async fn handler() -> impl IntoResponse {
-    "Ok"
 }

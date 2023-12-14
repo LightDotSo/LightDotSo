@@ -124,7 +124,7 @@ use utoipa_swagger_ui::SwaggerUi;
         auth::v1_auth_logout_handler,
         auth::v1_auth_verify_handler,
         check::check::handler,
-        health::handler,
+        health::health::handler,
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
         feedback::v1_feedback_post_handler,
