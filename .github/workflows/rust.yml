@@ -62,7 +62,7 @@ jobs:
             target: x86_64-apple-darwin
             package: --package lightwallet-core
             check: false
-            test: false
+            test: true
             workspace: false
     if: needs.rust-turbo.outputs.trigger == 'true'
     needs:
