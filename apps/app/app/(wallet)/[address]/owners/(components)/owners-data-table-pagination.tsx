@@ -17,6 +17,7 @@
 
 import { useEffect, type FC } from "react";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { useIsMounted } from "@/hooks/useIsMounted";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -29,6 +30,7 @@ export const OwnersDataTablePagination: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { ownerTable } = useTables();
+  const isMounted = useIsMounted();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
@@ -38,13 +40,13 @@ export const OwnersDataTablePagination: FC = () => {
     if (!useTables.persist.hasHydrated()) {
       useTables.persist.rehydrate();
     }
-  }, []);
+  }, [isMounted]);
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  if (!ownerTable || !useTables.persist.hasHydrated()) {
+  if (!ownerTable) {
     return null;
   }
 
