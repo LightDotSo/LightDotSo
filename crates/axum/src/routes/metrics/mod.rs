@@ -22,6 +22,10 @@ use http_body::Body as HttpBody;
 
 pub(crate) use crate::routes::metrics::metrics::handler;
 
+// -----------------------------------------------------------------------------
+// Router
+// -----------------------------------------------------------------------------
+
 #[autometrics]
 pub(crate) fn router<S, B>() -> Router<S, B>
 where

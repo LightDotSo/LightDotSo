@@ -13,25 +13,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod error;
-pub(crate) mod get;
-pub(crate) mod list;
-pub(crate) mod types;
-
-use crate::state::AppState;
-use autometrics::autometrics;
-use axum::{routing::get, Router};
-
-pub(crate) use get::{__path_v1_configuration_get_handler, v1_configuration_get_handler};
-pub(crate) use list::{__path_v1_configuration_list_handler, v1_configuration_list_handler};
+use lightdotso_prisma::notification;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 
 // -----------------------------------------------------------------------------
-// Router
+// Types
 // -----------------------------------------------------------------------------
 
-#[autometrics]
-pub(crate) fn router() -> Router<AppState> {
-    Router::new()
-        .route("/configuration/get", get(v1_configuration_get_handler))
-        .route("/configuration/list", get(v1_configuration_list_handler))
+/// Notification root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct Notification {
+    /// The id of the notification to read for.
+    id: String,
+}
+
+/// Implement From<notification::Data> for Notification.
+impl From<notification::Data> for Notification {
+    fn from(notification: notification::Data) -> Self {
+        Self { id: notification.id }
+    }
 }

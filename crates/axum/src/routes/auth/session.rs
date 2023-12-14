@@ -17,7 +17,7 @@ use crate::{
     constants::EXPIRATION_TIME_KEY,
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::auth::AuthError,
+    routes::auth::error::AuthError,
     sessions::{update_session_expiry, verify_session},
 };
 use axum::Json;

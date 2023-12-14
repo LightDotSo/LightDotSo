@@ -21,11 +21,7 @@ pub use crate::state::AppState;
 use autometrics::autometrics;
 use axum::{routing::post, Router};
 
-pub(crate) use create::{
-    FeedbackPostRequestParams, __path_v1_feedback_post_handler, v1_feedback_post_handler,
-};
-pub(crate) use error::FeedbackError;
-pub(crate) use types::Feedback;
+pub(crate) use create::{__path_v1_feedback_post_handler, v1_feedback_post_handler};
 
 // -----------------------------------------------------------------------------
 // Router

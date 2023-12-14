@@ -16,6 +16,10 @@
 use autometrics::{autometrics, prometheus_exporter};
 use axum::response::IntoResponse;
 
+// -----------------------------------------------------------------------------
+// Handler
+// -----------------------------------------------------------------------------
+
 #[autometrics]
 pub(crate) async fn handler() -> impl IntoResponse {
     prometheus_exporter::encode_http_response()

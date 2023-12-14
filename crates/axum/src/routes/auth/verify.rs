@@ -17,7 +17,7 @@ use crate::{
     constants::{EXPIRATION_TIME_KEY, NONCE_KEY, USER_ID_KEY},
     error::RouteError,
     result::{AppError, AppJsonResult},
-    routes::auth::{nonce::AuthNonce, AuthError},
+    routes::auth::{error::AuthError, nonce::AuthNonce},
     sessions::unix_timestamp,
     state::AppState,
 };
