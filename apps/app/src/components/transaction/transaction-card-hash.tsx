@@ -33,6 +33,10 @@ type TransactionCardHashProps = { transaction: TransactionData };
 export const TransactionCardHash: FC<TransactionCardHashProps> = ({
   transaction: { chain_id, hash },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="group flex items-center space-x-1.5">
       <a

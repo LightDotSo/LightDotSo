@@ -44,6 +44,10 @@ export const UserNav: FC = () => {
   const { theme, setTheme } = useTheme();
   const { address } = useAuth();
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   // If the address is empty, return null
   if (!isMounted || !address) {
     return null;

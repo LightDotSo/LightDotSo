@@ -97,6 +97,10 @@ export const FeedbackForm: FC<FeedbackFormProps> = ({ onClose }) => {
     });
   }
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Form {...form}>
       <form className="space-y-2" onSubmit={form.handleSubmit(onSubmit)}>

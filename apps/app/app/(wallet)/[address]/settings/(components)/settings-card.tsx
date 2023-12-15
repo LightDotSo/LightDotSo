@@ -47,6 +47,10 @@ export const SettingsCard: FC<SettingsCardProps> = ({
   children,
   footerContent,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Card>
       <CardHeader>

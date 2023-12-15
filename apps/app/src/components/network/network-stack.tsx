@@ -98,6 +98,10 @@ export const NetworkStack: FC<NetworkStackProps> = ({ address, id }) => {
 
   const NETWORK_STACK_NUMBER = 6;
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div
       className={clsx("flex flex-row rounded-full bg-bg-dark")}

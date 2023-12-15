@@ -49,6 +49,10 @@ export const NetworkItem: FC<NetworkItemProps> = ({
     hidden: { opacity: 0, x: -10 },
   };
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <m.li
       className={className}

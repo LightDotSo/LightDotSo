@@ -22,6 +22,10 @@ import { SettingsSection } from "@/components/section/settings-section";
 // -----------------------------------------------------------------------------
 
 export default function SettingsProfilePage() {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <SettingsSection
       title="Appearance"

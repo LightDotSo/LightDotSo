@@ -62,6 +62,10 @@ interface SettingsLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function SettingsLayout({ children }: SettingsLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <BannerSection

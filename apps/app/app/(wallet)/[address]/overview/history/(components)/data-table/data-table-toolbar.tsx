@@ -85,6 +85,10 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
     return uniqueChainValues;
   }, [currentData]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="flex flex-1 items-center space-x-2">

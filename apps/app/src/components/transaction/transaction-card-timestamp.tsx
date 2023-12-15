@@ -31,6 +31,10 @@ type TransactionCardTimestampProps = { transaction: TransactionData };
 export const TransactionCardTimestamp: FC<TransactionCardTimestampProps> = ({
   transaction: { timestamp },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex items-center space-x-1.5">
       <span>

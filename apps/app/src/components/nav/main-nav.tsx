@@ -133,6 +133,10 @@ export const MainNav: FC<MainNavProps> = ({ className = "", ...props }) => {
     setHookProps({ tabs: typeTabs });
   }, [typeTabs]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   if (type === "authenticated") {
     return null;
   }

@@ -52,6 +52,10 @@ export const SidebarNav: FC<SidebarNavProps> = ({
 
   const baseHref = baseRef ? pathname.split("/")[1] : undefined;
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <nav
       className={cn(

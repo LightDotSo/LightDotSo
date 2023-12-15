@@ -75,6 +75,10 @@ export const NotificationsForm: FC = () => {
     successToast("Notifications updated.");
   }
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Form {...form}>
       <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>

@@ -950,6 +950,10 @@ export const SendDialog: FC<SendDialogProps> = ({
 
   const debouncedValidateAddress = debounce(validateAddress, 300);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="grid gap-10">
       <TooltipProvider delayDuration={300}>

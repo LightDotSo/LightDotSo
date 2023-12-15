@@ -88,6 +88,10 @@ export const TokenImage: FC<TokenImageProps> = ({ token, size }) => {
     image.onerror = () => setIsImageError(true);
   }, [imageSrc]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   if (!isImageLoaded) {
     return <Skeleton className={className} />;
   }

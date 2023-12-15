@@ -30,6 +30,10 @@ export function SettingsPageWrapper({
   children,
   nav,
 }: SettingsPageWrapperProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-32 lg:space-y-0">
       <aside className="lg:w-1/5">{nav}</aside>

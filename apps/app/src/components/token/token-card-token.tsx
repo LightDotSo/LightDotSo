@@ -30,6 +30,10 @@ type TokenCardTokenProps = { token: TokenData };
 // -----------------------------------------------------------------------------
 
 export const TokenCardToken: FC<TokenCardTokenProps> = ({ token }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex items-center space-x-3">
       <TokenImage token={token} />{" "}

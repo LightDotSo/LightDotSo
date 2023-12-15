@@ -71,6 +71,10 @@ export const WalletSwitcher: FC<WalletSwitcherProps> = ({
   // eslint-disable-next-line react/prop-types
   className,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Suspense fallback={<Skeleton className="mx-2 h-8 w-32" />}>
       <WalletSwitcherButton className={className} />
@@ -175,6 +179,10 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
     setScrollIsAtTop(scrollTop < 10);
     // setScrollIsAtBottom(scrollHeight - scrollTop === clientHeight);
   };
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   // If the address is empty or is not mounted, don't render
   if (!isMounted || !address || isLoading) {

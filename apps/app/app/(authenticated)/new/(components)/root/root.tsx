@@ -79,6 +79,10 @@ export const NewRoot: FC<NewRootProps> = async ({
   currentStepType,
   children,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
       <div className="w-full flex-1 space-y-6">

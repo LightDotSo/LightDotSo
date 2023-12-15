@@ -28,6 +28,10 @@ interface MiddleLayerWrapperProps {
 // -----------------------------------------------------------------------------
 
 export function MiddleLayerWrapper({ children }: MiddleLayerWrapperProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <BaseLayerWrapper className="border-b border-border py-4">
       {children}

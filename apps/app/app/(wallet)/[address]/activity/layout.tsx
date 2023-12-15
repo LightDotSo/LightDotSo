@@ -42,6 +42,10 @@ interface ActivityLayoutProps {
 // -----------------------------------------------------------------------------
 
 export default function ActivityLayout({ children }: ActivityLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <BannerSection

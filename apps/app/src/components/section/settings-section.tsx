@@ -34,6 +34,10 @@ export const SettingsSection: FC<SettingsSectionProps> = ({
   description,
   children,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="space-y-6">
       <div>

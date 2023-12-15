@@ -43,6 +43,10 @@ interface TransactionsLayoutProps {
 export default function TransactionsLayout({
   children,
 }: TransactionsLayoutProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <HStackFull>

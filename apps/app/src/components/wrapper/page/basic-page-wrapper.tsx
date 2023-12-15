@@ -26,6 +26,10 @@ interface BasicPageWrapperProps {
 // -----------------------------------------------------------------------------
 
 export function BasicPageWrapper({ children }: BasicPageWrapperProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="mt-8 flex flex-col space-y-8 lg:mt-12">{children}</div>
   );

@@ -48,6 +48,10 @@ export const OverviewCard = ({
   const boxShadow = useRaisedShadow(y);
   const dragControls = useDragControls();
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Reorder.Item
       className="space-y-3 rounded-md border border-border bg-background p-4"

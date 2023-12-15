@@ -45,6 +45,10 @@ export const NftImage: FC<NftImageProps> = ({
 }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div
       className={cn(

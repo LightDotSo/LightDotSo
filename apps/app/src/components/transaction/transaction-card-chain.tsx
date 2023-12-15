@@ -33,6 +33,10 @@ type TransactionCardChainProps = { transaction: TransactionData };
 export const TransactionCardChain: FC<TransactionCardChainProps> = ({
   transaction: { chain_id },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex items-center space-x-1.5">
       <ChainLogo className="h-6 w-6" chainId={chain_id} />

@@ -76,6 +76,10 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
     }
   };
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <OverviewWrapper>
       <Reorder.Group

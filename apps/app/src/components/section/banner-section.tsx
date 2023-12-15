@@ -37,6 +37,10 @@ export const BannerSection: FC<BannerSectionProps> = ({
   cta,
   children,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <MiddleLayerWrapper>

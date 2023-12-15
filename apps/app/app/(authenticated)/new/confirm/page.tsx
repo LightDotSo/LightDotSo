@@ -24,6 +24,10 @@ import { ConfirmForm } from "@/app/(authenticated)/new/confirm/(components)/conf
 // -----------------------------------------------------------------------------
 
 export default async function Page() {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <NewRoot currentStepType={StepsEnum.Confirm}>

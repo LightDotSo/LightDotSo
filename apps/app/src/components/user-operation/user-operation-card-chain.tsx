@@ -33,6 +33,10 @@ type UserOperationCardChainProps = { userOperation: UserOperationData };
 export const UserOperationCardChain: FC<UserOperationCardChainProps> = ({
   userOperation: { chain_id },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="flex items-center space-x-1.5">
       <ChainLogo className="h-6 w-6" chainId={chain_id} />

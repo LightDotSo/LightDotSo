@@ -43,6 +43,10 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
 }) => {
   const { address } = useAuth();
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <TooltipProvider>
       <div className="flex items-center gap-x-2">

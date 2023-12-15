@@ -57,14 +57,14 @@ export default async function Page({ params }: PageProps) {
 
   const res = await getWalletSettings(params.address as Address);
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
   queryClient.setQueryData(
     queries.wallet.settings(params.address as Address).queryKey,
     res.unwrapOr(null),
   );
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

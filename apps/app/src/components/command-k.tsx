@@ -106,6 +106,10 @@ export const CommandK: FC = () => {
     return () => document.removeEventListener("keydown", down);
   }, [onClearSearch, copyURIParams, copyDecodedURIParams, wallet, copy]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Type a command or search..." />

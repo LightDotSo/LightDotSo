@@ -29,6 +29,10 @@ export const RootLogo: FC = () => {
   const type = usePathType();
   const pathname = usePathname();
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Link
       href={

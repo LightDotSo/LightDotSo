@@ -64,6 +64,10 @@ export const LinkButtonGroup: FC<TransactionsButtonLayoutProps> = ({
     });
   }, [address, items, router]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="sm:hidden">

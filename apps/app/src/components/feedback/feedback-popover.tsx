@@ -37,6 +37,10 @@ export const FeedbackPopover: FC = () => {
   const { address } = useAuth();
   const [open, setOpen] = useState(false);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   // If the address is empty, return null
   if (!isMounted || !address) {
     return null;
