@@ -14,16 +14,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { PaginationState } from "@tanstack/react-table";
-import { createParser, useQueryState } from "next-usequerystate";
+import { useQueryState } from "next-usequerystate";
 
 // -----------------------------------------------------------------------------
 // Parser
 // -----------------------------------------------------------------------------
 
-export const paginationParser = createParser({
-  parse(value: string): PaginationState | null {
+export const paginationParser = {
+  parse(value: string): PaginationState {
     if (!value) {
-      return null;
+      return {
+        pageIndex: 0,
+        pageSize: 10,
+      };
     }
     const [pageIndex, pageSize] = value.split(",").map(Number.parseInt);
     return { pageIndex, pageSize };
@@ -31,7 +34,7 @@ export const paginationParser = createParser({
   serialize(value: PaginationState): string {
     return `${value.pageIndex},${value.pageSize}`;
   },
-}).withDefault({ pageIndex: 0, pageSize: 10 });
+};
 
 // -----------------------------------------------------------------------------
 // Hook

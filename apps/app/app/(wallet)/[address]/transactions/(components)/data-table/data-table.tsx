@@ -35,6 +35,7 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
+import { usePaginationQueryState } from "@/app/(authenticated)/wallets/(hooks)";
 import type { UserOperationData } from "@/data";
 import { useTables } from "@/stores";
 
@@ -53,6 +54,8 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data, pageCount }: DataTableProps) {
+  const [paginationState, setPaginationState] = usePaginationQueryState();
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -60,12 +63,12 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   const {
     userOperationColumnFilters,
     userOperationColumnVisibility,
-    userOperationPagination,
+    // userOperationPagination,
     userOperationRowSelection,
     userOperationSorting,
     setUserOperationColumnFilters,
     setUserOperationColumnVisibility,
-    setUserOperationPagination,
+    // setUserOperationPagination,
     setUserOperationRowSelection,
     setUserOperationSorting,
     setUserOperationTable,
@@ -83,7 +86,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       columnVisibility: userOperationColumnVisibility,
       rowSelection: userOperationRowSelection,
       columnFilters: userOperationColumnFilters,
-      pagination: userOperationPagination,
+      pagination: paginationState,
     },
     pageCount: pageCount,
     paginateExpandedRows: false,
@@ -93,7 +96,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     onSortingChange: setUserOperationSorting,
     onColumnFiltersChange: setUserOperationColumnFilters,
     onColumnVisibilityChange: setUserOperationColumnVisibility,
-    onPaginationChange: setUserOperationPagination,
+    onPaginationChange: setPaginationState,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
