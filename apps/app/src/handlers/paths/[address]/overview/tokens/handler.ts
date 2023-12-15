@@ -62,7 +62,7 @@ export const handler = async (params: { address: string }) => {
   const res = Result.combineWithAllErrors([tokens, tokensCount, portfolio]);
 
   return res.match(
-    ([tokens, portfolio]) => {
+    ([tokens, tokensCount, portfolio]) => {
       return {
         walletSettings: walletSettings,
         tokens: tokens,
