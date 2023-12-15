@@ -45,13 +45,14 @@ import { useTables } from "@/stores";
 interface DataTableProps {
   columns: ColumnDef<UserOperationData>[];
   data: UserOperationData[];
+  pageCount: number;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data }: DataTableProps) {
+export function DataTable({ columns, data, pageCount }: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -84,6 +85,7 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnFilters: userOperationColumnFilters,
       pagination: userOperationPagination,
     },
+    pageCount: pageCount,
     paginateExpandedRows: false,
     enableRowSelection: true,
     manualPagination: true,
@@ -120,10 +122,6 @@ export function DataTable({ columns, data }: DataTableProps) {
     table.getColumn("hash")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("hash")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getIsVisible(),
     setUserOperationTable,
   ]);
 

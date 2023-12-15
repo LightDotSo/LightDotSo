@@ -16,7 +16,7 @@
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
 import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
-import { preload as preloadGetToken } from "@/services/getTokens";
+import { preload as preloadGetTokens } from "@/services/getTokens";
 
 // -----------------------------------------------------------------------------
 // Preloader
@@ -25,5 +25,5 @@ import { preload as preloadGetToken } from "@/services/getTokens";
 export const preloader = async (params: { address: string }) => {
   addressPreloader(params);
   preloadGetPortfolio(params.address as Address);
-  preloadGetToken(params.address as Address);
+  preloadGetTokens(params.address as Address);
 };

@@ -15,17 +15,17 @@
 
 "use client";
 
-import { getTransactions } from "@lightdotso/client";
+import { getTransactions, getTransactionsCount } from "@lightdotso/client";
 import {
   keepPreviousData,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
-import type { TransactionData } from "@/data";
+import type { TransactionCountData, TransactionData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
 
@@ -45,6 +45,14 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const { transactionPagination } = useTables();
 
   // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const offsetCount = useMemo(() => {
+    return transactionPagination.pageSize * transactionPagination.pageIndex;
+  }, [transactionPagination.pageSize, transactionPagination.pageIndex]);
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -54,7 +62,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     queries.transaction.list({
       address,
       limit: transactionPagination.pageSize,
-      offset: transactionPagination.pageIndex * transactionPagination.pageSize,
+      offset: offsetCount,
     }).queryKey,
   );
 
@@ -63,7 +71,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     queryKey: queries.transaction.list({
       address,
       limit: transactionPagination.pageSize,
-      offset: transactionPagination.pageIndex * transactionPagination.pageSize,
+      offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({
@@ -71,8 +79,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
           query: {
             address,
             limit: transactionPagination.pageSize,
-            offset:
-              transactionPagination.pageIndex * transactionPagination.pageSize,
+            offset: offsetCount,
           },
         },
       });
@@ -89,13 +96,65 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     },
   });
 
-  if (!transactions) {
+  const currentCountData: TransactionCountData | undefined =
+    queryClient.getQueryData(
+      queries.transaction.list({ address: address as Address }).queryKey,
+    );
+
+  const { data: transactionsCount } = useQuery<TransactionCountData | null>({
+    queryKey: queries.transaction.listCount({ address: address as Address })
+      .queryKey,
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getTransactionsCount({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return currentCountData ?? null;
+        },
+      );
+    },
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const pageCount = useMemo(() => {
+    if (!transactionsCount || !transactionsCount?.count) {
+      return null;
+    }
+    return Math.ceil(transactionsCount.count / transactionPagination.pageSize);
+  }, [transactionsCount, transactionPagination.pageSize]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!pageCount) {
     return null;
   }
 
   return (
     <div className="rounded-md border border-border bg-background p-4">
-      <DataTable data={transactions ?? []} columns={columns} />
+      <DataTable
+        data={transactions ?? []}
+        columns={columns}
+        pageCount={pageCount}
+      />
     </div>
   );
 };

@@ -13,16 +13,31 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { getTransactionsCount as getClientTransactionsCount } from "@lightdotso/client";
+import "server-only";
+import type { Address } from "viem";
+
 // -----------------------------------------------------------------------------
-// Data
+// Pre
 // -----------------------------------------------------------------------------
 
-export type TransactionData = {
-  chain_id: number;
-  hash: string;
-  timestamp: string;
+export const preload = (address: Address) => {
+  void getTransactionsCount(address);
 };
 
-export type TransactionCountData = {
-  count: number;
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getTransactionsCount = async (address: Address) => {
+  return getClientTransactionsCount(
+    {
+      params: {
+        query: {
+          address,
+        },
+      },
+    },
+    false,
+  );
 };

@@ -13,16 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
+import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+import { preload as preloadGetTransactions } from "@/services/getTransactions";
+import { preload as preloadGetTransactionsCount } from "@/services/getTransactionsCount";
+
 // -----------------------------------------------------------------------------
-// Data
+// Preloader
 // -----------------------------------------------------------------------------
 
-export type TransactionData = {
-  chain_id: number;
-  hash: string;
-  timestamp: string;
-};
-
-export type TransactionCountData = {
-  count: number;
+export const preloader = async (params: { address: string }) => {
+  addressPreloader(params);
+  preloadGetTransactions(params.address as Address);
+  preloadGetTransactionsCount(params.address as Address);
 };

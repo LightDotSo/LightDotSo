@@ -13,11 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { Result } from "neverthrow";
+import { notFound } from "next/navigation";
+import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
-import { handler as historyHandler } from "@/handlers/paths/[address]/overview/history/handler";
-import { handler as nftsHandler } from "@/handlers/paths/[address]/overview/nfts/handler";
-import { handler as tokensHandler } from "@/handlers/paths/[address]/overview/tokens/handler";
 import { validateAddress } from "@/handlers/validators/address";
+import { getTransactions, getTransactionsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -34,35 +35,39 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const addressHandlerPromise = addressHandler(params);
-  const tokensHandlerPromise = tokensHandler(params);
-  const nftsHandlerPromise = nftsHandler(params);
-  const historyHandlerPromise = historyHandler(params);
+  const { walletSettings } = await addressHandler(params);
 
-  const [
-    { walletSettings },
-    { tokens, tokensCount, portfolio },
-    { nfts, nftValuation },
-    { transactions, transactionsCount },
-  ] = await Promise.all([
-    addressHandlerPromise,
-    tokensHandlerPromise,
-    nftsHandlerPromise,
-    historyHandlerPromise,
+  const transactionsPromise = getTransactions(
+    params.address as Address,
+    // walletSettings.is_enabled_testnet,
+  );
+
+  const transactionsCountPromise = getTransactionsCount(
+    params.address as Address,
+    // walletSettings.is_enabled_testnet,
+  );
+
+  const [transactions, transactionsCount] = await Promise.all([
+    transactionsPromise,
+    transactionsCountPromise,
   ]);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  return {
-    walletSettings: walletSettings,
-    tokens: tokens,
-    tokensCount: tokensCount,
-    portfolio: portfolio,
-    nfts: nfts,
-    nftValuation: nftValuation,
-    transactions: transactions,
-    transactionsCount: transactionsCount,
-  };
+  const res = Result.combineWithAllErrors([transactions, transactionsCount]);
+
+  return res.match(
+    ([transactions, transactionsCount]) => {
+      return {
+        walletSettings: walletSettings,
+        transactions: transactions,
+        transactionsCount: transactionsCount,
+      };
+    },
+    () => {
+      return notFound();
+    },
+  );
 };

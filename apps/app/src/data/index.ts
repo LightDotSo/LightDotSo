@@ -20,10 +20,13 @@ export type {
 } from "./configuration";
 export type { NftData, NftDataPage } from "./nft";
 export type { TokenPortfolioData, NftPortfolioData } from "./portfolio";
-export type { TokenData } from "./token";
+export type { TokenData, TokenCountData } from "./token";
 export type { TokenPriceData } from "./tokenPrice";
-export type { TransactionData } from "./transaction";
+export type { TransactionData, TransactionCountData } from "./transaction";
 export type { UserData } from "./user";
-export type { UserOperationData } from "./userOperation";
+export type {
+  UserOperationData,
+  UserOperationCountData,
+} from "./userOperation";
 export type { WalletSettingsData } from "./walletSettings";
 export type { WalletData, WalletCountData } from "./wallet";

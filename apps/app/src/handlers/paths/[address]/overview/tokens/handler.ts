@@ -18,7 +18,7 @@ import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getPortfolio, getTokens } from "@/services";
+import { getPortfolio, getTokens, getTokensCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -42,10 +42,16 @@ export const handler = async (params: { address: string }) => {
     walletSettings.is_enabled_testnet,
   );
 
+  const tokensCountPromise = getTokensCount(
+    params.address as Address,
+    walletSettings.is_enabled_testnet,
+  );
+
   const portfolioPromise = getPortfolio(params.address as Address);
 
-  const [tokens, portfolio] = await Promise.all([
+  const [tokens, tokensCount, portfolio] = await Promise.all([
     tokensPromise,
+    tokensCountPromise,
     portfolioPromise,
   ]);
 
@@ -53,13 +59,14 @@ export const handler = async (params: { address: string }) => {
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([tokens, portfolio]);
+  const res = Result.combineWithAllErrors([tokens, tokensCount, portfolio]);
 
   return res.match(
-    ([tokens, portfolio]) => {
+    ([tokens, tokensCount, portfolio]) => {
       return {
         walletSettings: walletSettings,
         tokens: tokens,
+        tokensCount: tokensCount,
         portfolio: portfolio,
       };
     },

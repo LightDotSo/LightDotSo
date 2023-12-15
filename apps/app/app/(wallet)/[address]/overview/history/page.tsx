@@ -19,9 +19,10 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { HistoryDataTable } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table";
 import { HistoryDataTablePagination } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table-pagination";
-import { preloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
+import { handler } from "@/handlers/paths/[address]/overview/history/handler";
+import { preloader } from "@/preloaders/paths/[address]/overview/history/preloader";
 import { queries } from "@/queries";
-import { getQueryClient, getTransactions } from "@/services";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -43,34 +44,45 @@ export default async function Page({ params }: PageProps) {
   preloader(params);
 
   // ---------------------------------------------------------------------------
+  // Handlers
+  // ---------------------------------------------------------------------------
+
+  const { walletSettings, transactions, transactionsCount } =
+    await handler(params);
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
   const queryClient = getQueryClient();
 
-  const res = await getTransactions(params.address as Address);
-
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return res.match(
-    res => {
-      queryClient.setQueryData(
-        queries.transaction.list({ address: params.address as Address })
-          .queryKey,
-        res,
-      );
+  queryClient.setQueryData(
+    queries.wallet.settings(params.address as Address).queryKey,
+    walletSettings,
+  );
+  queryClient.setQueryData(
+    queries.transaction.list({
+      address: params.address as Address,
+      // is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+    transactions,
+  );
+  queryClient.setQueryData(
+    queries.transaction.listCount({
+      address: params.address as Address,
+      // is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+    transactionsCount,
+  );
 
-      return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <HistoryDataTable address={params.address as Address} />
-          <HistoryDataTablePagination />
-        </HydrationBoundary>
-      );
-    },
-    _ => {
-      return null;
-    },
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <HistoryDataTable address={params.address as Address} />
+      <HistoryDataTablePagination />
+    </HydrationBoundary>
   );
 }

@@ -15,17 +15,17 @@
 
 "use client";
 
-import { getUserOperations } from "@lightdotso/client";
+import { getUserOperations, getUserOperationsCount } from "@lightdotso/client";
 import {
   keepPreviousData,
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
-import type { UserOperationData } from "@/data";
+import type { UserOperationCountData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
 
@@ -49,6 +49,14 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   const { userOperationPagination } = useTables();
 
   // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const offsetCount = useMemo(() => {
+    return userOperationPagination.pageSize * userOperationPagination.pageIndex;
+  }, [userOperationPagination.pageSize, userOperationPagination.pageIndex]);
+
+  // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
 
@@ -59,8 +67,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
       address,
       status,
       limit: userOperationPagination.pageSize,
-      offset:
-        userOperationPagination.pageIndex * userOperationPagination.pageSize,
+      offset: offsetCount,
     }).queryKey,
   );
 
@@ -70,8 +77,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
       address,
       status,
       limit: userOperationPagination.pageSize,
-      offset:
-        userOperationPagination.pageIndex * userOperationPagination.pageSize,
+      offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
       const res = await getUserOperations({
@@ -80,9 +86,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
             address,
             status: status === "all" ? undefined : status,
             limit: userOperationPagination.pageSize,
-            offset:
-              userOperationPagination.pageIndex *
-              userOperationPagination.pageSize,
+            offset: offsetCount,
           },
         },
       });
@@ -99,13 +103,73 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     },
   });
 
-  if (!transactions) {
+  const currentCountData: UserOperationCountData | undefined =
+    queryClient.getQueryData(
+      queries.user_operation.listCount({ address: address as Address, status })
+        .queryKey,
+    );
+
+  const { data: userOperationsCount } = useQuery<UserOperationCountData | null>(
+    {
+      queryKey: queries.user_operation.listCount({
+        address: address as Address,
+        status,
+      }).queryKey,
+      queryFn: async () => {
+        if (!address) {
+          return null;
+        }
+
+        const res = await getUserOperationsCount({
+          params: {
+            query: {
+              address: address,
+              status: status === "all" ? undefined : status,
+            },
+          },
+        });
+
+        // Return if the response is 200
+        return res.match(
+          data => {
+            return data;
+          },
+          _ => {
+            return currentCountData ?? null;
+          },
+        );
+      },
+    },
+  );
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const pageCount = useMemo(() => {
+    if (!userOperationsCount || !userOperationsCount?.count) {
+      return null;
+    }
+    return Math.ceil(
+      userOperationsCount.count / userOperationPagination.pageSize,
+    );
+  }, [userOperationsCount, userOperationPagination.pageSize]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!pageCount) {
     return null;
   }
 
   return (
     <div className="rounded-md border border-border bg-background p-4">
-      <DataTable data={transactions ?? []} columns={columns} />
+      <DataTable
+        data={transactions ?? []}
+        columns={columns}
+        pageCount={pageCount}
+      />
     </div>
   );
 };

@@ -50,7 +50,8 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, tokens, portfolio } = await handler(params);
+  const { walletSettings, tokens, tokensCount, portfolio } =
+    await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -77,6 +78,14 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     tokens,
   );
+  queryClient.setQueryData(
+    queries.token.listCount({
+      address: params.address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet,
+    }).queryKey,
+    tokensCount,
+  );
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <PortfolioSection title="Total Token Value">

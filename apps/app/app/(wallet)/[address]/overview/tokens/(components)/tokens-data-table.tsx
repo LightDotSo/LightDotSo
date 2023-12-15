@@ -15,14 +15,19 @@
 
 "use client";
 
-import { getTokens } from "@lightdotso/client";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
-import { type FC } from "react";
+import { getTokens, getTokensCount } from "@lightdotso/client";
+import {
+  useQueryClient,
+  useQuery,
+  keepPreviousData,
+} from "@tanstack/react-query";
+import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
-import type { TokenData, WalletSettingsData } from "@/data";
+import type { TokenCountData, TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
+import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -37,6 +42,16 @@ interface TokensDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
+  const { tokenPagination } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const offsetCount = useMemo(() => {
+    return tokenPagination.pageSize * tokenPagination.pageIndex;
+  }, [tokenPagination.pageSize, tokenPagination.pageIndex]);
+
   // ---------------------------------------------------------------------------
   // Query
   // ---------------------------------------------------------------------------
@@ -50,13 +65,16 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
     queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
+      offset: offsetCount,
     }).queryKey,
   );
 
-  const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
+  const { data: tokens } = useQuery<TokenData[] | null>({
+    placeholderData: keepPreviousData,
     queryKey: queries.token.list({
       address,
       is_testnet: walletSettings?.is_enabled_testnet,
+      offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
       const res = await getTokens({
@@ -64,6 +82,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
           query: {
             address,
             is_testnet: walletSettings?.is_enabled_testnet,
+            offset: offsetCount,
           },
         },
       });
@@ -80,9 +99,59 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
     },
   });
 
+  const currentCountData: TokenCountData | undefined = queryClient.getQueryData(
+    queries.token.list({ address: address as Address }).queryKey,
+  );
+
+  const { data: tokensCount } = useQuery<TokenCountData | null>({
+    queryKey: queries.token.listCount({ address: address as Address }).queryKey,
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getTokensCount({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return currentCountData ?? null;
+        },
+      );
+    },
+  });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const pageCount = useMemo(() => {
+    if (!tokensCount || !tokensCount?.count) {
+      return null;
+    }
+    return Math.ceil(tokensCount.count / tokenPagination.pageSize);
+  }, [tokensCount, tokenPagination.pageSize]);
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  if (!pageCount) {
+    return null;
+  }
+
   return (
     <div className="rounded-md border border-border bg-background p-4">
-      <DataTable data={tokens ?? []} columns={columns} />
+      <DataTable data={tokens ?? []} columns={columns} pageCount={pageCount} />
     </div>
   );
 };

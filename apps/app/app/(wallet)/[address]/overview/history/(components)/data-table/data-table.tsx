@@ -45,13 +45,14 @@ import { useTables } from "@/stores";
 interface DataTableProps {
   columns: ColumnDef<TransactionData>[];
   data: TransactionData[];
+  pageCount: number;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data }: DataTableProps) {
+export function DataTable({ columns, data, pageCount }: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -84,6 +85,7 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnFilters: transactionColumnFilters,
       pagination: transactionPagination,
     },
+    pageCount: pageCount,
     paginateExpandedRows: false,
     enableRowSelection: true,
     onRowSelectionChange: setTransactionRowSelection,
