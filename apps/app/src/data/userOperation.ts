@@ -40,3 +40,7 @@ export type UserOperationData = {
   } | null;
   verification_gas_limit: number;
 };
+
+export type UserOperationCountData = {
+  count: number;
+};

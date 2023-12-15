@@ -56,7 +56,6 @@ export const WalletsDataTable: FC = () => {
       address: address as Address,
       limit: walletPagination.pageSize,
       offset: offsetCount,
-      // offset: walletPagination.pageSize * walletPagination.pageIndex,
     }).queryKey,
   );
 
@@ -65,7 +64,6 @@ export const WalletsDataTable: FC = () => {
       address: address as Address,
       limit: walletPagination.pageSize,
       offset: offsetCount,
-      // offset: walletPagination.pageSize * walletPagination.pageIndex,
     }).queryKey,
     queryFn: async () => {
       if (!address) {
@@ -78,7 +76,6 @@ export const WalletsDataTable: FC = () => {
             owner: address,
             limit: walletPagination.pageSize,
             offset: offsetCount,
-            // offset: walletPagination.pageSize * walletPagination.pageIndex,
           },
         },
       });
@@ -127,6 +124,10 @@ export const WalletsDataTable: FC = () => {
       );
     },
   });
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
 
   const pageCount = useMemo(() => {
     if (!walletsCount || !walletsCount?.count) {
