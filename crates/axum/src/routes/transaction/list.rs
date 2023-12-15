@@ -146,8 +146,9 @@ fn construct_transaction_list_query(query: &ListQuery) -> Vec<WhereParam> {
         None => vec![],
     };
 
-    if let Some(is_testnet) = query.is_testnet {
-        query_exp.push(transaction::is_testnet::equals(is_testnet));
+    match query.is_testnet {
+        Some(false) | None => query_exp.push(transaction::is_testnet::equals(false)),
+        _ => (),
     }
 
     query_exp

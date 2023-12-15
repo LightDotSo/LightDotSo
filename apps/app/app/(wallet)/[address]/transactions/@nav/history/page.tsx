@@ -13,35 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getTransactionsCount as getClientTransactionsCount } from "@lightdotso/client";
-import "server-only";
-import type { Address } from "viem";
+import { TransactionsDataTableToolbar } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Page
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address, is_testnet?: boolean) => {
-  void getTransactionsCount(address, is_testnet);
-};
-
-// -----------------------------------------------------------------------------
-// Service
-// -----------------------------------------------------------------------------
-
-export const getTransactionsCount = async (
-  address: Address,
-  is_testnet?: boolean,
-) => {
-  return getClientTransactionsCount(
-    {
-      params: {
-        query: {
-          address,
-          is_testnet,
-        },
-      },
-    },
-    false,
-  );
-};
+export default function Page() {
+  return <TransactionsDataTableToolbar status="executed" />;
+}

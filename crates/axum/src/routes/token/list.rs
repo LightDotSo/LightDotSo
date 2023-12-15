@@ -151,8 +151,9 @@ fn construct_token_list_query(query: &ListQuery) -> Result<Vec<WhereParam>> {
     ];
 
     // If is_testnet is not set or true, only return the tokens that are not testnet tokens.
-    if query.is_testnet != Some(true) {
-        query_params.push(wallet_balance::is_testnet::equals(false));
+    match query.is_testnet {
+        Some(false) | None => query_params.push(wallet_balance::is_testnet::equals(false)),
+        _ => (),
     }
 
     Ok(query_params)

@@ -39,7 +39,7 @@ import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
-import type { TransactionData } from "@/data";
+import type { TransactionData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
 
@@ -79,27 +79,27 @@ export const TransactionsList: FC<TransactionsListProps> = ({
 
   const queryClient = useQueryClient();
 
-  // const walletSettings: WalletSettingsData | undefined =
-  // queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
 
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address,
-      // is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
   const { data } = useSuspenseQuery<TransactionData[] | null>({
     queryKey: queries.transaction.list({
       address,
-      // is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({
         params: {
           query: {
             address,
-            // is_testnet: walletSettings?.is_enabled_testnet,
+            is_testnet: walletSettings?.is_enabled_testnet,
           },
         },
       });

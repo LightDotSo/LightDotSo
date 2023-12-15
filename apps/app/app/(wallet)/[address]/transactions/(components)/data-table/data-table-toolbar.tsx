@@ -23,7 +23,7 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import type { UserOperationData } from "@/data";
+import type { UserOperationData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth, useTables } from "@/stores";
 import { getChainNameById } from "@/utils/chain";
@@ -32,7 +32,8 @@ import { getChainNameById } from "@/utils/chain";
 // Props
 // -----------------------------------------------------------------------------
 
-interface DataTableToolbarProps {
+export interface DataTableToolbarProps {
+  status: "all" | "proposed" | "executed";
   table: Table<UserOperationData>;
 }
 
@@ -40,9 +41,17 @@ interface DataTableToolbarProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTableToolbar({ table }: DataTableToolbarProps) {
+export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const { transactionColumnFilters } = useTables();
+  const { userOperationPagination, userOperationColumnFilters } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const offsetCount = useMemo(() => {
+    return userOperationPagination.pageSize * userOperationPagination.pageIndex;
+  }, [userOperationPagination.pageSize, userOperationPagination.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -50,9 +59,18 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(
+      queries.wallet.settings(wallet as Address).queryKey,
+    );
+
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
-    queries.transaction.list({
+    queries.user_operation.list({
       address: wallet as Address,
+      status: status,
+      offset: offsetCount,
+      limit: userOperationPagination.pageSize,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
@@ -63,8 +81,8 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const uniqueChainValues = useMemo(() => {
     // Get all unique weight values from current data
     const uniqueChainValues = new Set<number>();
-    currentData?.forEach(transaction => {
-      uniqueChainValues.add(transaction.chain_id!);
+    currentData?.forEach(userOperation => {
+      uniqueChainValues.add(userOperation.chain_id!);
     });
     return uniqueChainValues;
   }, [currentData]);
@@ -82,7 +100,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
             }))}
           />
         )}
-        {transactionColumnFilters.length > 0 && (
+        {userOperationColumnFilters.length > 0 && (
           <Button
             variant="outline"
             className="h-8 px-2 lg:px-3"

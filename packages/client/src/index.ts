@@ -699,6 +699,7 @@ export const getTransactions = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             address?: string | null | undefined;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };
@@ -729,6 +730,7 @@ export const getTransactionsCount = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             address?: string | null | undefined;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };
@@ -761,6 +763,7 @@ export const getUserOperations = async (
             address?: string | null | undefined;
             direction?: ("asc" | "desc") | null | undefined;
             status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };
@@ -793,6 +796,7 @@ export const getUserOperationsCount = async (
             address?: string | null | undefined;
             direction?: ("asc" | "desc") | null | undefined;
             status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };

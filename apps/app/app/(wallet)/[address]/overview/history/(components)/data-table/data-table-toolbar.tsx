@@ -23,7 +23,7 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import type { TransactionData } from "@/data";
+import type { TransactionData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth, useTables } from "@/stores";
 import { getChainNameById } from "@/utils/chain";
@@ -42,7 +42,15 @@ interface DataTableToolbarProps {
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const { transactionColumnFilters } = useTables();
+  const { transactionPagination, transactionColumnFilters } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const offsetCount = useMemo(() => {
+    return transactionPagination.pageSize * transactionPagination.pageIndex;
+  }, [transactionPagination.pageSize, transactionPagination.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -50,9 +58,17 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(
+      queries.wallet.settings(wallet as Address).queryKey,
+    );
+
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address: wallet as Address,
+      offset: offsetCount,
+      limit: transactionPagination.pageSize,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
