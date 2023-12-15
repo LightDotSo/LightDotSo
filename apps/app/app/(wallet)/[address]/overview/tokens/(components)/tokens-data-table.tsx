@@ -136,7 +136,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
 
   const pageCount = useMemo(() => {
     if (!tokensCount || !tokensCount?.count) {
-      return 10;
+      return null;
     }
     return Math.ceil(tokensCount.count / tokenPagination.pageSize);
   }, [tokensCount, tokenPagination.pageSize]);
@@ -144,6 +144,10 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!pageCount) {
+    return null;
+  }
 
   return (
     <div className="rounded-md border border-border bg-background p-4">

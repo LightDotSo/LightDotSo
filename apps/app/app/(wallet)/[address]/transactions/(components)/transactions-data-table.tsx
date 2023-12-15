@@ -148,7 +148,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const pageCount = useMemo(() => {
     if (!userOperationsCount || !userOperationsCount?.count) {
-      return 10;
+      return null;
     }
     return Math.ceil(
       userOperationsCount.count / userOperationPagination.pageSize,
@@ -158,6 +158,10 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!pageCount) {
+    return null;
+  }
 
   return (
     <div className="rounded-md border border-border bg-background p-4">

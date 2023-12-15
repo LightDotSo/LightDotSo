@@ -131,7 +131,7 @@ export const WalletsDataTable: FC = () => {
 
   const pageCount = useMemo(() => {
     if (!walletsCount || !walletsCount?.count) {
-      return 10;
+      return null;
     }
     return Math.ceil(walletsCount.count / walletPagination.pageSize);
   }, [walletsCount, walletPagination.pageSize]);
@@ -139,6 +139,10 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!pageCount) {
+    return null;
+  }
 
   return (
     <DataTable data={wallets ?? []} columns={columns} pageCount={pageCount} />

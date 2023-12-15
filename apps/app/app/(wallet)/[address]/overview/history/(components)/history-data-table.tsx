@@ -135,7 +135,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
 
   const pageCount = useMemo(() => {
     if (!transactionsCount || !transactionsCount?.count) {
-      return 10;
+      return null;
     }
     return Math.ceil(transactionsCount.count / transactionPagination.pageSize);
   }, [transactionsCount, transactionPagination.pageSize]);
@@ -143,6 +143,10 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
+
+  if (!pageCount) {
+    return null;
+  }
 
   return (
     <div className="rounded-md border border-border bg-background p-4">
