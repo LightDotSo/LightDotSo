@@ -100,6 +100,10 @@ export function AuthModal() {
     );
   }, [address, chain, router, sessionId, signMessageAsync]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   if (isAuthModalVisible) {
     return (
       <Dialog open>

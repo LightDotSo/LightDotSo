@@ -44,6 +44,10 @@ export function DataTableViewOptions<TData>({
   table,
   columnMapping,
 }: DataTableViewOptionsProps<TData>) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

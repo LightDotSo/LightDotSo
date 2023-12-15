@@ -32,6 +32,10 @@ export const PortfolioSection: FC<PortfolioSectionProps> = ({
   title,
   children,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="col-span-1 flex flex-col justify-between">
       <span className="text-text-weak">{title}</span>

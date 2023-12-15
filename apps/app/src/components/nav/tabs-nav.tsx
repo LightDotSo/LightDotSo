@@ -99,6 +99,10 @@ export const Tabs: FC<TabProps> = ({
     }
   }, [selectedRect, navRect, selectedTabIndex, isAnimated]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <nav
       ref={navRef}

@@ -42,7 +42,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { walletColumnFilters } = useTables();
 
   // ---------------------------------------------------------------------------
-  // Query
+  // Render
   // ---------------------------------------------------------------------------
 
   return (

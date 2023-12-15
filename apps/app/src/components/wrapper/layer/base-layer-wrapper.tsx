@@ -32,6 +32,10 @@ export function BaseLayerWrapper({
   children,
   className,
 }: BaseLayerWrapperProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div
       className={cn(

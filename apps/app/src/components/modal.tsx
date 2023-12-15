@@ -43,6 +43,10 @@ export const Modal: FC<ModalProps> = ({ children }) => {
     router.back();
   }, [router]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Dialog open={true} defaultOpen={true} onOpenChange={onDismiss}>
       <DialogPortal>

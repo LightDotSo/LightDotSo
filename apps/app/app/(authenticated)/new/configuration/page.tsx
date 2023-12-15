@@ -24,6 +24,10 @@ import { ConfigurationForm } from "@/app/(authenticated)/new/configuration/(comp
 // -----------------------------------------------------------------------------
 
 export default async function Page() {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <NewRoot currentStepType={StepsEnum.Configuration}>

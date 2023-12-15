@@ -28,6 +28,10 @@ interface LargeLayerWrapperProps {
 // -----------------------------------------------------------------------------
 
 export function LargeLayerWrapper({ children }: LargeLayerWrapperProps) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <BaseLayerWrapper className="border-b border-border py-4 md:py-6">
       {children}

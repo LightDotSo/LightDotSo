@@ -200,6 +200,10 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, owner, userOperation, subdigest, threshold, address]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="grid gap-4 py-4">

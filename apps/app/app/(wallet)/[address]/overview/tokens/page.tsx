@@ -59,10 +59,6 @@ export default async function Page({ params }: PageProps) {
 
   const queryClient = getQueryClient();
 
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
   queryClient.setQueryData(
     queries.wallet.settings(params.address as Address).queryKey,
     walletSettings,
@@ -85,6 +81,10 @@ export default async function Page({ params }: PageProps) {
     }).queryKey,
     tokensCount,
   );
+
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

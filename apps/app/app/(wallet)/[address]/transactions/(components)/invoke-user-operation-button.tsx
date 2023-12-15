@@ -43,6 +43,10 @@ interface InvokeUserOperationProps {
 export const InvokeUserOperationButton: FC<InvokeUserOperationProps> = ({
   address,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <TooltipProvider>
       <Tooltip>

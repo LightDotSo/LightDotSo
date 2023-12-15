@@ -247,6 +247,10 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
     processSignature();
   }, [chainId, userOperation]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">

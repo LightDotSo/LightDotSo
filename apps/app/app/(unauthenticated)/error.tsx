@@ -36,6 +36,10 @@ export default function Error({ error, reset }: ErrorProps) {
     console.error(error);
   }, [error]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div>
       <h2>Something went wrong!</h2>

@@ -76,6 +76,10 @@ export default function TransactionsLayout({
   params,
 }: TransactionsLayoutProps) {
   return (
+    // ---------------------------------------------------------------------------
+    // Render
+    // ---------------------------------------------------------------------------
+
     <>
       <BannerSection
         title={TITLES.Transactions.title}

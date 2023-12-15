@@ -55,6 +55,10 @@ export const PlaceholderOrb: FC<PlaceholderOrbProps> = ({
 }) => {
   const color = colors[address[41]?.charCodeAt(0) % colors.length];
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <span
       className={clsx(

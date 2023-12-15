@@ -31,6 +31,10 @@ type UserOperationCardStatusProps = { userOperation: UserOperationData };
 export const UserOperationCardStatus: FC<UserOperationCardStatusProps> = ({
   userOperation: { status },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="group flex items-center space-x-1.5">
       {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}

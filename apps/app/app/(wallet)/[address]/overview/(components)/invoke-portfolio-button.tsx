@@ -43,6 +43,10 @@ interface InvokePortfolioButtonProps {
 export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
   address,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <TooltipProvider>
       <Tooltip>

@@ -47,6 +47,10 @@ const config = createConfig({
 });
 
 function Web3Provider({ children }: { children: React.ReactNode }) {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <WagmiConfig config={config}>
       <ConnectKitProvider>{children}</ConnectKitProvider>

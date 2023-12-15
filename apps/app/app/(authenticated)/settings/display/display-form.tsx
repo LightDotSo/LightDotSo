@@ -94,6 +94,10 @@ export const DisplayForm: FC = () => {
     successToast("Display updated.");
   }
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Form {...form}>
       <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>

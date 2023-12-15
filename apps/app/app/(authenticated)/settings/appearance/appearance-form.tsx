@@ -71,6 +71,10 @@ export const AppearanceForm: FC = () => {
     successToast("Your preferences have been updated.");
   }
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Form {...form}>
       <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>

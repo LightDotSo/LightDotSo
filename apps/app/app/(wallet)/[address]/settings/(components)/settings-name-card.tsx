@@ -256,6 +256,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   // ---------------------------------------------------------------------------
 
   const WalletLoginButton: FC = () => {
+    // ---------------------------------------------------------------------------
+    // Render
+    // ---------------------------------------------------------------------------
+
     return (
       <Button disabled={isAuthValid} onClick={openAuthModal}>
         Login to update name
@@ -264,6 +268,10 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   };
 
   const WalletNameFormSubmitButton: FC = () => {
+    // ---------------------------------------------------------------------------
+    // Render
+    // ---------------------------------------------------------------------------
+
     return (
       <Button
         type="submit"
@@ -293,7 +301,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
   };
 
   // ---------------------------------------------------------------------------
-  // Card
+  // Render
   // ---------------------------------------------------------------------------
 
   return (

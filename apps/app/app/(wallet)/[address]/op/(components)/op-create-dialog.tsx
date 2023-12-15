@@ -54,6 +54,10 @@ export const OpCreateDialog: FC<OpCreateDialogProps> = ({
     );
   }, [config.owners, userAddress]);
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <>
       <div className="mt-4 flex flex-col space-y-3 text-center sm:text-left">

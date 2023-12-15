@@ -33,6 +33,10 @@ type UserOperationCardHashProps = { userOperation: UserOperationData };
 export const UserOperationCardHash: FC<UserOperationCardHashProps> = ({
   userOperation: { chain_id, hash },
 }) => {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <div className="group flex items-center space-x-1.5">
       <a

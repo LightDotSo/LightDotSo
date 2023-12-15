@@ -82,6 +82,7 @@ export const ChainLogo: FC<ChainLogoProps> = ({
     // -------------------------------------------------------------------------
     // Mainnet
     // -------------------------------------------------------------------------
+
     case 1:
       return <EthereumLogo {...props} />;
     case 10:
@@ -96,9 +97,11 @@ export const ChainLogo: FC<ChainLogoProps> = ({
       return <AvalancheLogo {...props} />;
     case 42161:
       return <ArbitrumLogo {...props} />;
+
     // -------------------------------------------------------------------------
     // Testnet
     // -------------------------------------------------------------------------
+
     case 80001:
       return (
         <TestnetChainLogoWrapper

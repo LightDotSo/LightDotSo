@@ -103,6 +103,10 @@ export const AccountForm: FC = () => {
     successToast("Your account has been updated.");
   }
 
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
   return (
     <Form {...form}>
       <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
