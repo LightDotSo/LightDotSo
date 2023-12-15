@@ -22,3 +22,7 @@ export type TransactionData = {
   hash: string;
   timestamp: string;
 };
+
+export type TransactionCountData = {
+  count: number;
+};

@@ -105,13 +105,16 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const currentCountData: UserOperationCountData | undefined =
     queryClient.getQueryData(
-      queries.wallet.list({ address: address as Address }).queryKey,
+      queries.user_operation.listCount({ address: address as Address, status })
+        .queryKey,
     );
 
   const { data: userOperationsCount } = useQuery<UserOperationCountData | null>(
     {
-      queryKey: queries.wallet.listCount({ address: address as Address })
-        .queryKey,
+      queryKey: queries.user_operation.listCount({
+        address: address as Address,
+        status,
+      }).queryKey,
       queryFn: async () => {
         if (!address) {
           return null;
@@ -121,6 +124,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           params: {
             query: {
               address: address,
+              status: status === "all" ? undefined : status,
             },
           },
         });

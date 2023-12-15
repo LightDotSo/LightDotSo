@@ -36,6 +36,9 @@ export const transaction = createQueryKeys("transaction", {
   list: (filter: TransactionFilter) => ({
     queryKey: [{ filter }],
   }),
+  listCount: (filter: TransactionFilter) => ({
+    queryKey: [{ filter }],
+  }),
 });
 
 // -----------------------------------------------------------------------------

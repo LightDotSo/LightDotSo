@@ -37,6 +37,9 @@ export const user_operation = createQueryKeys("user_operation", {
   list: (filter: UserOperationFilter) => ({
     queryKey: [{ filter }],
   }),
+  listCount: (filter: UserOperationFilter) => ({
+    queryKey: [{ filter }],
+  }),
 });
 
 // -----------------------------------------------------------------------------
