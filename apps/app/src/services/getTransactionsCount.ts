@@ -21,20 +21,24 @@ import type { Address } from "viem";
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getTransactionsCount(address);
+export const preload = (address: Address, is_testnet?: boolean) => {
+  void getTransactionsCount(address, is_testnet);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTransactionsCount = async (address: Address) => {
+export const getTransactionsCount = async (
+  address: Address,
+  is_testnet?: boolean,
+) => {
   return getClientTransactionsCount(
     {
       params: {
         query: {
           address,
+          is_testnet,
         },
       },
     },

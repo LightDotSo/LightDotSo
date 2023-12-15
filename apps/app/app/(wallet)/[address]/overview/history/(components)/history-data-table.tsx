@@ -25,7 +25,11 @@ import { useMemo, type FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/data-table";
-import type { TransactionCountData, TransactionData } from "@/data";
+import type {
+  TransactionCountData,
+  TransactionData,
+  WalletSettingsData,
+} from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
 
@@ -58,11 +62,15 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
 
   const queryClient = useQueryClient();
 
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address,
       limit: transactionPagination.pageSize,
       offset: offsetCount,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
@@ -72,6 +80,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
       address,
       limit: transactionPagination.pageSize,
       offset: offsetCount,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({
@@ -80,6 +89,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
             address,
             limit: transactionPagination.pageSize,
             offset: offsetCount,
+            is_testnet: walletSettings?.is_enabled_testnet,
           },
         },
       });

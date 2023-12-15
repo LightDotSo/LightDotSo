@@ -39,12 +39,12 @@ export const handler = async (params: { address: string }) => {
 
   const transactionsPromise = getTransactions(
     params.address as Address,
-    // walletSettings.is_enabled_testnet,
+    walletSettings.is_enabled_testnet,
   );
 
   const transactionsCountPromise = getTransactionsCount(
     params.address as Address,
-    // walletSettings.is_enabled_testnet,
+    walletSettings.is_enabled_testnet,
   );
 
   const [transactions, transactionsCount] = await Promise.all([

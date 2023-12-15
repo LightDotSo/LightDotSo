@@ -26,6 +26,7 @@ type TransactionFilter = {
   order?: "desc" | "asc";
   limit?: number;
   offset?: number;
+  is_testnet?: boolean;
 };
 
 // -----------------------------------------------------------------------------

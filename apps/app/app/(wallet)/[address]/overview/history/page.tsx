@@ -67,14 +67,14 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.transaction.list({
       address: params.address as Address,
-      // is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     transactions,
   );
   queryClient.setQueryData(
     queries.transaction.listCount({
       address: params.address as Address,
-      // is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     transactionsCount,
   );

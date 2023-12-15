@@ -23,7 +23,7 @@ import { useMemo } from "react";
 import type { Address } from "viem";
 import { DataTableFacetedFilter } from "@/components/data-table/data-table-faceted-filter";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
-import type { TransactionData } from "@/data";
+import type { TransactionData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth, useTables } from "@/stores";
 import { getChainNameById } from "@/utils/chain";
@@ -50,9 +50,15 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const queryClient = useQueryClient();
 
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(
+      queries.wallet.settings(wallet as Address).queryKey,
+    );
+
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address: wallet as Address,
+      is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );
 
