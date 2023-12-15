@@ -18,6 +18,16 @@ import type { inferQueryKeys } from "@lukemorales/query-key-factory";
 import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
+// Type
+// -----------------------------------------------------------------------------
+
+type WalletFilter = {
+  address: Address;
+  limit?: number;
+  offset?: number;
+};
+
+// -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
@@ -25,8 +35,11 @@ export const wallet = createQueryKeys("wallet", {
   get: (address: Address) => ({
     queryKey: [address],
   }),
-  list: (address: Address) => ({
-    queryKey: [address],
+  list: (filter: WalletFilter) => ({
+    queryKey: [{ filter }],
+  }),
+  listCount: (filter: WalletFilter) => ({
+    queryKey: [{ filter }],
   }),
   settings: (address: Address) => ({
     queryKey: [address],

@@ -46,13 +46,14 @@ import { useTables } from "@/stores";
 interface DataTableProps {
   columns: ColumnDef<WalletData>[];
   data: WalletData[];
+  pageCount: number;
 }
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data }: DataTableProps) {
+export function DataTable({ columns, data, pageCount }: DataTableProps) {
   const router = useRouter();
 
   // ---------------------------------------------------------------------------
@@ -87,6 +88,7 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnFilters: walletColumnFilters,
       pagination: walletPagination,
     },
+    pageCount: pageCount,
     paginateExpandedRows: false,
     enableRowSelection: true,
     manualPagination: true,

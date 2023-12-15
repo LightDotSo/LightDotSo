@@ -23,3 +23,7 @@ export type WalletData = {
   name: string;
   salt: string;
 };
+
+export type WalletCountData = {
+  count: number;
+};

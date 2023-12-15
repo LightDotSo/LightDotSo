@@ -197,7 +197,7 @@ export const SettingsNameCard: FC<SettingsNameCardProps> = ({ address }) => {
         queryKey: queries.wallet.get(address).queryKey,
       });
       queryClient.invalidateQueries({
-        queryKey: queries.wallet.list(address).queryKey,
+        queryKey: queries.wallet.list({ address: address }).queryKey,
       });
 
       // Invalidate the cache for the address
