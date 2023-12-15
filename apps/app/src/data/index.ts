@@ -20,7 +20,7 @@ export type {
 } from "./configuration";
 export type { NftData, NftDataPage } from "./nft";
 export type { TokenPortfolioData, NftPortfolioData } from "./portfolio";
-export type { TokenData } from "./token";
+export type { TokenData, TokenCountData } from "./token";
 export type { TokenPriceData } from "./tokenPrice";
 export type { TransactionData, TransactionCountData } from "./transaction";
 export type { UserData } from "./user";

@@ -26,3 +26,7 @@ export type TokenData = {
   name?: string | null;
   symbol: string;
 };
+
+export type TokenCountData = {
+  count: number;
+};

@@ -24,6 +24,7 @@ import type { Address } from "viem";
 type TokenFilter = {
   address: Address;
   is_testnet?: boolean;
+  offset?: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -32,6 +33,9 @@ type TokenFilter = {
 
 export const token = createQueryKeys("token", {
   list: (filter: TokenFilter) => ({
+    queryKey: [{ filter }],
+  }),
+  listCount: (filter: TokenFilter) => ({
     queryKey: [{ filter }],
   }),
 });
