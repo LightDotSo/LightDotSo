@@ -23,11 +23,11 @@ import {
 } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
+import { usePaginationQueryState } from "@/app/(authenticated)/wallets/(hooks)";
 import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
 import type { UserOperationCountData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,15 +46,15 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
   status,
 }) => {
-  const { userOperationPagination } = useTables();
+  const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
-    return userOperationPagination.pageSize * userOperationPagination.pageIndex;
-  }, [userOperationPagination.pageSize, userOperationPagination.pageIndex]);
+    return paginationState.pageSize * paginationState.pageIndex;
+  }, [paginationState.pageSize, paginationState.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -66,7 +66,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queries.user_operation.list({
       address,
       status,
-      limit: userOperationPagination.pageSize,
+      limit: paginationState.pageSize,
       offset: offsetCount,
     }).queryKey,
   );
@@ -76,7 +76,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queryKey: queries.user_operation.list({
       address,
       status,
-      limit: userOperationPagination.pageSize,
+      limit: paginationState.pageSize,
       offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
@@ -85,7 +85,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           query: {
             address,
             status: status === "all" ? undefined : status,
-            limit: userOperationPagination.pageSize,
+            limit: paginationState.pageSize,
             offset: offsetCount,
           },
         },
@@ -150,10 +150,8 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     if (!userOperationsCount || !userOperationsCount?.count) {
       return null;
     }
-    return Math.ceil(
-      userOperationsCount.count / userOperationPagination.pageSize,
-    );
-  }, [userOperationsCount, userOperationPagination.pageSize]);
+    return Math.ceil(userOperationsCount.count / paginationState.pageSize);
+  }, [userOperationsCount, paginationState.pageSize]);
 
   // ---------------------------------------------------------------------------
   // Render
