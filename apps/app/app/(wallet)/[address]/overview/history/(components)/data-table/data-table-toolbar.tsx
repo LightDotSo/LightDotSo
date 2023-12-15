@@ -42,7 +42,15 @@ interface DataTableToolbarProps {
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const { transactionColumnFilters } = useTables();
+  const { transactionPagination, transactionColumnFilters } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Effect Hooks
+  // ---------------------------------------------------------------------------
+
+  const offsetCount = useMemo(() => {
+    return transactionPagination.pageSize * transactionPagination.pageIndex;
+  }, [transactionPagination.pageSize, transactionPagination.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -58,6 +66,8 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address: wallet as Address,
+      offset: offsetCount,
+      limit: transactionPagination.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );

@@ -67,6 +67,8 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.transaction.list({
       address: params.address as Address,
+      limit: 10,
+      offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     transactions,
@@ -74,6 +76,8 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.transaction.listCount({
       address: params.address as Address,
+      limit: 10,
+      offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     transactionsCount,

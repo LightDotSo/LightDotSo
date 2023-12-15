@@ -16,14 +16,26 @@
 "use client";
 
 import { useEffect, type FC } from "react";
+import type { DataTableToolbarProps } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-toolbar";
 import { DataTableToolbar } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-toolbar";
 import { useTables } from "@/stores";
+
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+export type TransactionsDataTableToolbarProps = Pick<
+  DataTableToolbarProps,
+  "status"
+>;
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const TransactionsDataTableToolbar: FC = () => {
+export const TransactionsDataTableToolbar: FC<
+  TransactionsDataTableToolbarProps
+> = ({ status }) => {
   const { userOperationTable } = useTables();
 
   useEffect(() => {
@@ -40,5 +52,5 @@ export const TransactionsDataTableToolbar: FC = () => {
     return null;
   }
 
-  return <DataTableToolbar table={userOperationTable} />;
+  return <DataTableToolbar status={status} table={userOperationTable} />;
 };
