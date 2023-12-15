@@ -191,8 +191,9 @@ fn construct_user_operation_list_query(query: &ListQuery) -> Vec<WhereParam> {
         query_exp.push(user_operation::status::equals(status.clone().into()));
     }
 
-    if let Some(is_testnet) = query.is_testnet {
-        query_exp.push(user_operation::is_testnet::equals(is_testnet));
+    match &query.is_testnet {
+        Some(false) | None => query_exp.push(user_operation::is_testnet::equals(false)),
+        _ => (),
     }
 
     query_exp
