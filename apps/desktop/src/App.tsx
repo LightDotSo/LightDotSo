@@ -15,7 +15,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api";
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
