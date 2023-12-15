@@ -25,6 +25,7 @@ import { DataTableFacetedFilter } from "@/components/data-table/data-table-facet
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import type { UserOperationData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
+import { usePaginationQueryState } from "@/querystates";
 import { useAuth, useTables } from "@/stores";
 import { getChainNameById } from "@/utils/chain";
 
@@ -43,15 +44,21 @@ export interface DataTableToolbarProps {
 
 export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
   const { wallet } = useAuth();
-  const { userOperationPagination, userOperationColumnFilters } = useTables();
+  const { userOperationColumnFilters } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
+  const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
-    return userOperationPagination.pageSize * userOperationPagination.pageIndex;
-  }, [userOperationPagination.pageSize, userOperationPagination.pageIndex]);
+    return paginationState.pageSize * paginationState.pageIndex;
+  }, [paginationState.pageSize, paginationState.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -69,7 +76,7 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
       address: wallet as Address,
       status: status,
       offset: offsetCount,
-      limit: userOperationPagination.pageSize,
+      limit: paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
   );

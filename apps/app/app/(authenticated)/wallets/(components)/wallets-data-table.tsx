@@ -23,7 +23,8 @@ import { columns } from "@/app/(authenticated)/wallets/(components)/data-table/c
 import { DataTable } from "@/app/(authenticated)/wallets/(components)/data-table/data-table";
 import type { WalletCountData, WalletData } from "@/data";
 import { queries } from "@/queries";
-import { useAuth, useTables } from "@/stores";
+import { usePaginationQueryState } from "@/querystates";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -35,15 +36,20 @@ export const WalletsDataTable: FC = () => {
   // ---------------------------------------------------------------------------
 
   const { address } = useAuth();
-  const { walletPagination } = useTables();
+
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
+  const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
-    return walletPagination.pageSize * walletPagination.pageIndex;
-  }, [walletPagination.pageSize, walletPagination.pageIndex]);
+    return paginationState.pageSize * paginationState.pageIndex;
+  }, [paginationState.pageSize, paginationState.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -54,7 +60,7 @@ export const WalletsDataTable: FC = () => {
   const currentData: WalletData[] | undefined = queryClient.getQueryData(
     queries.wallet.list({
       address: address as Address,
-      limit: walletPagination.pageSize,
+      limit: paginationState.pageSize,
       offset: offsetCount,
     }).queryKey,
   );
@@ -62,7 +68,7 @@ export const WalletsDataTable: FC = () => {
   const { data: wallets } = useQuery<WalletData[] | null>({
     queryKey: queries.wallet.list({
       address: address as Address,
-      limit: walletPagination.pageSize,
+      limit: paginationState.pageSize,
       offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
@@ -74,7 +80,7 @@ export const WalletsDataTable: FC = () => {
         params: {
           query: {
             owner: address,
-            limit: walletPagination.pageSize,
+            limit: paginationState.pageSize,
             offset: offsetCount,
           },
         },
@@ -133,8 +139,8 @@ export const WalletsDataTable: FC = () => {
     if (!walletsCount || !walletsCount?.count) {
       return null;
     }
-    return Math.ceil(walletsCount.count / walletPagination.pageSize);
-  }, [walletsCount, walletPagination.pageSize]);
+    return Math.ceil(walletsCount.count / paginationState.pageSize);
+  }, [walletsCount, paginationState.pageSize]);
 
   // ---------------------------------------------------------------------------
   // Render

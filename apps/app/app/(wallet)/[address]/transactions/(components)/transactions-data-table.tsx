@@ -23,11 +23,11 @@ import {
 } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
-import { usePaginationQueryState } from "@/app/(authenticated)/wallets/(hooks)";
 import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
 import type { UserOperationCountData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
+import { usePaginationQueryState } from "@/querystates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,6 +46,10 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
   status,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------

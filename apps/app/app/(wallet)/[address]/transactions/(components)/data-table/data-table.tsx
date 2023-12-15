@@ -35,8 +35,8 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
-import { usePaginationQueryState } from "@/app/(authenticated)/wallets/(hooks)";
 import type { UserOperationData } from "@/data";
+import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -54,6 +54,10 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data, pageCount }: DataTableProps) {
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
   const [paginationState, setPaginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -63,12 +67,10 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   const {
     userOperationColumnFilters,
     userOperationColumnVisibility,
-    // userOperationPagination,
     userOperationRowSelection,
     userOperationSorting,
     setUserOperationColumnFilters,
     setUserOperationColumnVisibility,
-    // setUserOperationPagination,
     setUserOperationRowSelection,
     setUserOperationSorting,
     setUserOperationTable,
