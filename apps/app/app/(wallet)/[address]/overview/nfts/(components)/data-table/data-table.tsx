@@ -27,6 +27,7 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
+import { usePaginationQueryState } from "@/app/(authenticated)/wallets/(hooks)";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
 import type { NftData } from "@/data";
@@ -46,6 +47,8 @@ interface DataTableProps {
 // -----------------------------------------------------------------------------
 
 export function DataTable({ columns, data }: DataTableProps) {
+  const [paginationState, setPaginationState] = usePaginationQueryState();
+
   // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
@@ -53,12 +56,12 @@ export function DataTable({ columns, data }: DataTableProps) {
   const {
     nftColumnFilters,
     nftColumnVisibility,
-    nftPagination,
+    // nftPagination,
     nftRowSelection,
     nftSorting,
     setNftColumnFilters,
     setNftColumnVisibility,
-    setNftPagination,
+    // setNftPagination,
     setNftRowSelection,
     setNftSorting,
     setNftTable,
@@ -76,7 +79,7 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnVisibility: nftColumnVisibility,
       rowSelection: nftRowSelection,
       columnFilters: nftColumnFilters,
-      pagination: nftPagination,
+      pagination: paginationState,
     },
     paginateExpandedRows: false,
     enableRowSelection: true,
@@ -84,7 +87,7 @@ export function DataTable({ columns, data }: DataTableProps) {
     onSortingChange: setNftSorting,
     onColumnFiltersChange: setNftColumnFilters,
     onColumnVisibilityChange: setNftColumnVisibility,
-    onPaginationChange: setNftPagination,
+    onPaginationChange: setPaginationState,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
