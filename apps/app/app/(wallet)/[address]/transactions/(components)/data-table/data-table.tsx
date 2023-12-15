@@ -122,10 +122,6 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     table.getColumn("hash")?.getCanHide(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     table.getColumn("hash")?.getIsVisible(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getCanHide(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    table.getColumn("timestamp")?.getIsVisible(),
     setUserOperationTable,
   ]);
 
