@@ -13,19 +13,39 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { getUserOperationsCount as getClientUserOperationsCount } from "@lightdotso/client";
+import "server-only";
 import type { Address } from "viem";
-import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
-import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
-import { preload as preloadGetTokens } from "@/services/getTokens";
-import { preload as preloadGetTokensCount } from "@/services/getTokensCount";
 
 // -----------------------------------------------------------------------------
-// Preloader
+// Pre
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
-  addressPreloader(params);
-  preloadGetPortfolio(params.address as Address);
-  preloadGetTokens(params.address as Address);
-  preloadGetTokensCount(params.address as Address);
+export const preload = (address: Address) => {
+  void getUserOperationsCount(address);
+};
+
+// -----------------------------------------------------------------------------
+// Service
+// -----------------------------------------------------------------------------
+
+export const getUserOperationsCount = async (
+  address: Address,
+  status?: "proposed" | "pending" | "executed" | "reverted" | "all",
+  direction?: "asc" | "desc",
+  limit?: number,
+) => {
+  return getClientUserOperationsCount(
+    {
+      params: {
+        query: {
+          address,
+          status: status === "all" ? undefined : status,
+          direction: direction ?? undefined,
+          limit: limit ?? undefined,
+        },
+      },
+    },
+    false,
+  );
 };
