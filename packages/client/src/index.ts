@@ -263,6 +263,36 @@ export const getWallets = async (
   });
 };
 
+export const getWalletsCount = async (
+  {
+    params,
+  }: {
+    params: {
+      query?:
+        | {
+            offset?: number | null | undefined;
+            limit?: number | null | undefined;
+            owner?: string | null | undefined;
+          }
+        | undefined;
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/wallet/list/count", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const createFeedback = async ({
   params,
   body,
@@ -606,6 +636,35 @@ export const getTokens = async (
   });
 };
 
+export const getTokensCount = async (
+  {
+    params,
+  }: {
+    params: {
+      query: {
+        offset?: number | null | undefined;
+        limit?: number | null | undefined;
+        address: string;
+        is_testnet?: boolean | null | undefined;
+      };
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/token/list/count", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getTokenPrice = async (
   {
     params,
@@ -660,6 +719,36 @@ export const getTransactions = async (
   });
 };
 
+export const getTransactionsCount = async (
+  {
+    params,
+  }: {
+    params: {
+      query?:
+        | {
+            offset?: number | null | undefined;
+            limit?: number | null | undefined;
+            address?: string | null | undefined;
+          }
+        | undefined;
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/transaction/list/count", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
 export const getUserOperations = async (
   {
     params,
@@ -682,6 +771,38 @@ export const getUserOperations = async (
 
   return ResultAsync.fromPromise(
     client.GET("/user_operation/list", {
+      // @ts-ignore
+      next: { revalidate: 300, tags: [params.query.address] },
+      params,
+    }),
+    () => new Error("Database error"),
+  ).andThen(({ data, response, error }) => {
+    return response.status === 200 && data ? ok(data) : err(error);
+  });
+};
+
+export const getUserOperationsCount = async (
+  {
+    params,
+  }: {
+    params: {
+      query?:
+        | {
+            offset?: number | null | undefined;
+            limit?: number | null | undefined;
+            address?: string | null | undefined;
+            direction?: ("asc" | "desc") | null | undefined;
+            status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+          }
+        | undefined;
+    };
+  },
+  isPublic?: boolean,
+) => {
+  const client = getClient(isPublic);
+
+  return ResultAsync.fromPromise(
+    client.GET("/user_operation/list/count", {
       // @ts-ignore
       next: { revalidate: 300, tags: [params.query.address] },
       params,

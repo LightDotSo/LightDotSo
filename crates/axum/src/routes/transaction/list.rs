@@ -20,11 +20,11 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::transaction;
+use lightdotso_prisma::transaction::{self, WhereParam};
 use lightdotso_tracing::tracing::info;
 use prisma_client_rust::{or, Direction};
-use serde::Deserialize;
-use utoipa::IntoParams;
+use serde::{Deserialize, Serialize};
+use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -41,6 +41,17 @@ pub struct ListQuery {
     pub address: Option<String>,
     /// The flag to indicate if the transaction is a testnet transaction.
     pub is_testnet: Option<bool>,
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Count of list of user operations.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct TransactionListCount {
+    /// The count of the list of user operations..
+    pub count: i64,
 }
 
 // -----------------------------------------------------------------------------
@@ -61,15 +72,70 @@ pub struct ListQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_list_handler(
-    pagination: Query<ListQuery>,
+    query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Transaction>> {
-    // Get the pagination query.
-    let Query(pagination) = pagination;
-    info!(?pagination);
+    // Get the  query.
+    let Query(list_query) = query;
+    info!(?list_query);
 
     // If the address is provided, add it to the query.
-    let mut query = match pagination.address {
+    let query = construct_transaction_list_query(&list_query);
+
+    // Get the transactions from the database.
+    let transactions = client
+        .client
+        .transaction()
+        .find_many(query)
+        .order_by(transaction::timestamp::order(Direction::Desc))
+        .skip(list_query.offset.unwrap_or(0))
+        .take(list_query.limit.unwrap_or(10))
+        .exec()
+        .await?;
+
+    // Change the transactions to the format that the API expects.
+    let transactions: Vec<Transaction> = transactions.into_iter().map(Transaction::from).collect();
+
+    Ok(Json::from(transactions))
+}
+
+/// Returns a count of list of transactions.
+#[utoipa::path(
+        get,
+        path = "/transaction/list/count",
+        params(
+            ListQuery
+        ),
+        responses(
+            (status = 200, description = "Transactions returned successfully", body = TransactionListCount),
+            (status = 500, description = "Transaction bad request", body = TransactionError),
+        )
+    )]
+#[autometrics]
+pub(crate) async fn v1_transaction_list_count_handler(
+    query: Query<ListQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<TransactionListCount> {
+    // Get the  query.
+    let Query(list_query) = query;
+    info!(?list_query);
+
+    // If the address is provided, add it to the query.
+    let query = construct_transaction_list_query(&list_query);
+
+    // Get the transactions from the database.
+    let count = client.client.transaction().count(query).exec().await?;
+
+    Ok(Json::from(TransactionListCount { count }))
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+/// Constructs a query for transactions.
+fn construct_transaction_list_query(query: &ListQuery) -> Vec<WhereParam> {
+    let mut query_exp = match &query.address {
         Some(addr) => {
             vec![or![
                 transaction::wallet_address::equals(Some(addr.clone())),
@@ -80,24 +146,9 @@ pub(crate) async fn v1_transaction_list_handler(
         None => vec![],
     };
 
-    // If the is_testnet is provided, add it to the query.
-    if let Some(is_testnet) = pagination.is_testnet {
-        query.push(transaction::is_testnet::equals(is_testnet))
+    if let Some(is_testnet) = query.is_testnet {
+        query_exp.push(transaction::is_testnet::equals(is_testnet));
     }
 
-    // Get the transactions from the database.
-    let transactions = client
-        .client
-        .transaction()
-        .find_many(query)
-        .order_by(transaction::timestamp::order(Direction::Desc))
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
-        .exec()
-        .await?;
-
-    // Change the transactions to the format that the API expects.
-    let transactions: Vec<Transaction> = transactions.into_iter().map(Transaction::from).collect();
-
-    Ok(Json::from(transactions))
+    query_exp
 }

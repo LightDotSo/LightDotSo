@@ -20,9 +20,12 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use lightdotso_prisma::{user, wallet};
-use serde::Deserialize;
-use utoipa::IntoParams;
+use lightdotso_prisma::{
+    user,
+    wallet::{self, WhereParam},
+};
+use serde::{Deserialize, Serialize};
+use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -37,6 +40,17 @@ pub struct ListQuery {
     pub limit: Option<i64>,
     /// A filter to return wallets w/ a given owner.
     pub owner: Option<String>,
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Count of list of wallets.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+pub(crate) struct WalletListCount {
+    /// The count of the list of wallets.
+    pub count: i64,
 }
 
 // -----------------------------------------------------------------------------
@@ -57,24 +71,22 @@ pub struct ListQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_list_handler(
-    pagination: Query<ListQuery>,
+    query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
-    // Get the pagination query.
-    let Query(pagination) = pagination;
+    // Get the query.
+    let Query(list_query) = query;
 
-    let query = match pagination.owner {
-        Some(owner) => vec![wallet::users::some(vec![user::address::equals(owner)])],
-        None => vec![],
-    };
+    // Construct the query.
+    let query = construct_wallet_list_query(&list_query);
 
     // Get the wallets from the database.
     let wallets = client
         .client
         .wallet()
         .find_many(query)
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
+        .skip(list_query.offset.unwrap_or(0))
+        .take(list_query.limit.unwrap_or(10))
         .exec()
         .await?;
 
@@ -82,4 +94,45 @@ pub(crate) async fn v1_wallet_list_handler(
     let wallets: Vec<Wallet> = wallets.into_iter().map(Wallet::from).collect();
 
     Ok(Json::from(wallets))
+}
+
+/// Returns a count of list of wallets.
+#[utoipa::path(
+        get,
+        path = "/wallet/list/count",
+        params(
+            ListQuery
+        ),
+        responses(
+            (status = 200, description = "Wallets returned successfully", body = WalletListCount),
+            (status = 500, description = "Wallet bad request", body = WalletError),
+        )
+    )]
+#[autometrics]
+pub(crate) async fn v1_wallet_list_count_handler(
+    query: Query<ListQuery>,
+    State(client): State<AppState>,
+) -> AppJsonResult<WalletListCount> {
+    // Get the query.
+    let Query(list_query) = query;
+
+    // Construct the query.
+    let query = construct_wallet_list_query(&list_query);
+
+    // Get the wallets from the database.
+    let count = client.client.wallet().count(query).exec().await?;
+
+    Ok(Json::from(WalletListCount { count }))
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+/// Constructs a query for the database.
+fn construct_wallet_list_query(query: &ListQuery) -> Vec<WhereParam> {
+    match &query.owner {
+        Some(owner) => vec![wallet::users::some(vec![user::address::equals(owner.to_string())])],
+        None => vec![],
+    }
 }

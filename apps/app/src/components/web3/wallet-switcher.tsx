@@ -107,11 +107,12 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const queryClient = useQueryClient();
 
   const currentData: WalletData[] | undefined = queryClient.getQueryData(
-    queries.wallet.list(address as Address).queryKey,
+    queries.wallet.list({ address: address as Address, limit: 300 }).queryKey,
   );
 
   const { data, isLoading } = useSuspenseQuery<WalletData[] | null>({
-    queryKey: queries.wallet.list(address as Address).queryKey,
+    queryKey: queries.wallet.list({ address: address as Address, limit: 300 })
+      .queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
