@@ -93,6 +93,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     pageCount: pageCount,
     paginateExpandedRows: false,
     enableRowSelection: true,
+    manualPagination: true,
     onRowSelectionChange: setTransactionRowSelection,
     onSortingChange: setTransactionSorting,
     onColumnFiltersChange: setTransactionColumnFilters,

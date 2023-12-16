@@ -14,8 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { WalletsDataTable } from "@/app/(authenticated)/wallets/(components)/wallets-data-table";
-import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-pagination";
-import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -40,9 +38,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <>
-      <WalletsDataTableToolbar />
       <WalletsDataTable />
-      <WalletsDataTablePagination />
     </>
   );
 }
