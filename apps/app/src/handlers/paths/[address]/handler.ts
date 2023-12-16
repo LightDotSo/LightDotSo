@@ -34,11 +34,15 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getWallet(params.address as Address);
+  const walletPromise = getWallet({ address: params.address as Address });
 
-  const configPromise = getConfiguration(params.address as Address);
+  const configPromise = getConfiguration({
+    address: params.address as Address,
+  });
 
-  const walletSettingsPromise = getWalletSettings(params.address as Address);
+  const walletSettingsPromise = getWalletSettings({
+    address: params.address as Address,
+  });
 
   const [wallet, config, walletSettings] = await Promise.all([
     walletPromise,

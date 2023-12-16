@@ -14,24 +14,28 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getTokens as getClientTokens } from "@lightdotso/client";
+import type { TokenListParams } from "@/params";
 import "server-only";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getTokens(address);
+export const preload = (params: TokenListParams) => {
+  void getTokens(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTokens = async (address: Address, is_testnet?: boolean) => {
+export const getTokens = async (params: TokenListParams) => {
   return getClientTokens(
-    { params: { query: { address: address, is_testnet: is_testnet } } },
+    {
+      params: {
+        query: { address: params.address, is_testnet: params.is_testnet },
+      },
+    },
     false,
   );
 };

@@ -14,13 +14,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getNftsByOwner as getClientNftsByOwner } from "@lightdotso/client";
+import type { NftListParams } from "@/params";
 import "server-only";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getNfts = async (address: Address, isTestnet?: boolean) => {
-  return getClientNftsByOwner(address, isTestnet);
+export const getNfts = async (params: NftListParams) => {
+  return getClientNftsByOwner(params.address, params.is_testnet);
 };

@@ -13,11 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import type { Address, Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Params
 // -----------------------------------------------------------------------------
+
+export type UserOperationGetParams = {
+  hash: Hex;
+};
+
+export type UserOperationNonceParams = {
+  address: Address;
+  chain_id: number;
+};
 
 export type UserOperationListParams = {
   address: Address;

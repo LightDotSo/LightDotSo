@@ -24,7 +24,10 @@ export type { TokenPriceParams } from "./tokenPrice";
 export type { TransactionListParams } from "./transaction";
 export type { UserParams } from "./user";
 export type {
+  UserOperationGetParams,
+  UserOperationNonceParams,
   UserOperationListParams,
   UserOperationListCountParams,
 } from "./userOperation";
 export type { WalletParams, WalletListParams } from "./wallet";
+export type { WalletSettingsParams } from "./walletSettings";

@@ -25,5 +25,5 @@ export const preloader = async (params: {
   chainId: string;
   userOperationHash: string;
 }) => {
-  preloadGetUserOperation(params.userOperationHash as Hex);
+  preloadGetUserOperation({ hash: params.userOperationHash as Hex });
 };

@@ -37,12 +37,14 @@ export const handler = async (params: { address: string }) => {
 
   const { walletSettings } = await addressHandler(params);
 
-  const nftsPromise = getNfts(
-    params.address as Address,
-    walletSettings.is_enabled_testnet,
-  );
+  const nftsPromise = getNfts({
+    address: params.address as Address,
+    is_testnet: walletSettings.is_enabled_testnet,
+  });
 
-  const nftValuationPromise = getNftValuation(params.address as Address);
+  const nftValuationPromise = getNftValuation({
+    address: params.address as Address,
+  });
 
   const [nfts, nftValuation] = await Promise.all([
     nftsPromise,

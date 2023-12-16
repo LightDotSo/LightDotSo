@@ -50,7 +50,7 @@ export const handler = async (
 
   const { walletSettings } = await addressHandler(params);
 
-  const res = await getConfiguration(params.address as Address);
+  const res = await getConfiguration({ address: params.address as Address });
 
   // ---------------------------------------------------------------------------
   // Parse

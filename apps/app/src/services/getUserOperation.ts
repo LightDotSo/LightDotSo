@@ -14,24 +14,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getUserOperation as getClientUserOperation } from "@lightdotso/client";
+import type { UserOperationGetParams } from "@/params";
 import "server-only";
-import type { Hex } from "viem";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (user_operation_hash: Hex) => {
-  void getUserOperation(user_operation_hash);
+export const preload = (params: UserOperationGetParams) => {
+  void getUserOperation(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getUserOperation = async (user_operation_hash: Hex) => {
+export const getUserOperation = async (params: UserOperationGetParams) => {
   return getClientUserOperation(
-    { params: { query: { user_operation_hash: user_operation_hash } } },
+    { params: { query: { user_operation_hash: params.hash } } },
     false,
   );
 };

@@ -69,10 +69,10 @@ export const handler = async (
   // ---------------------------------------------------------------------------
 
   const noncePromises = userOperationsQuery.map(operation => {
-    return getUserOperationNonce(
-      params.address as Address,
-      Number(operation.chainId) as number,
-    );
+    return getUserOperationNonce({
+      address: params.address as Address,
+      chain_id: Number(operation.chainId) as number,
+    });
   });
 
   // Resolve all promises
@@ -87,9 +87,11 @@ export const handler = async (
   // Fetch Wallet and Configuration
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getWallet(params.address as Address);
+  const walletPromise = getWallet({ address: params.address as Address });
 
-  const configPromise = getConfiguration(params.address as Address);
+  const configPromise = getConfiguration({
+    address: params.address as Address,
+  });
 
   const [walletRes, configRes] = await Promise.all([
     walletPromise,

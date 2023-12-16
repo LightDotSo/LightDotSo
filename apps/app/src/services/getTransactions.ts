@@ -14,31 +14,28 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getTransactions as getClientTransactions } from "@lightdotso/client";
+import type { TransactionListParams } from "@/params";
 import "server-only";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address, is_testnet?: boolean) => {
-  void getTransactions(address, is_testnet);
+export const preload = (params: TransactionListParams) => {
+  void getTransactions(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTransactions = async (
-  address: Address,
-  is_testnet?: boolean,
-) => {
+export const getTransactions = async (params: TransactionListParams) => {
   return getClientTransactions(
     {
       params: {
         query: {
-          address,
-          is_testnet,
+          address: params.address,
+          is_testnet: params.is_testnet,
         },
       },
     },

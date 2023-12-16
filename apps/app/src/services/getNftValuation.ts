@@ -14,21 +14,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getNftValuation as getClientNftValuation } from "@lightdotso/client";
+import type { NftValuationParams } from "@/params";
 import "server-only";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getClientNftValuation(address);
+export const preload = (params: NftValuationParams) => {
+  void getClientNftValuation(params.address);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getNftValuation = async (address: Address) => {
-  return getClientNftValuation(address);
+export const getNftValuation = async (params: NftValuationParams) => {
+  return getClientNftValuation(params.address);
 };

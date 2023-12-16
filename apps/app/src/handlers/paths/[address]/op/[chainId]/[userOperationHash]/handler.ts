@@ -52,7 +52,9 @@ export const handler = async (params: {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const userOperation = await getUserOperation(params.userOperationHash as Hex);
+  const userOperation = await getUserOperation({
+    hash: params.userOperationHash as Hex,
+  });
 
   // ---------------------------------------------------------------------------
   // Parse

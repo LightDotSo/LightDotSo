@@ -14,21 +14,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getPortfolio as getClientPortfolio } from "@lightdotso/client";
+import type { PortfolioParams } from "@/params";
 import "server-only";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getPortfolio(address);
+export const preload = (params: PortfolioParams) => {
+  void getPortfolio(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getPortfolio = async (address: Address) => {
-  return getClientPortfolio({ params: { query: { address: address } } }, false);
+export const getPortfolio = async (params: PortfolioParams) => {
+  return getClientPortfolio(
+    { params: { query: { address: params.address } } },
+    false,
+  );
 };
