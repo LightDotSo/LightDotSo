@@ -33,18 +33,21 @@ import { getQueryClient } from "@/services";
 
 interface PageProps {
   params: { address: Address };
+  searchParams: {
+    pagination?: string;
+  };
 }
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers

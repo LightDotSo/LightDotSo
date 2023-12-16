@@ -18,18 +18,32 @@ import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
+import { paginationParser } from "@/querystates";
 import { getTransactions, getTransactionsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (params: { address: string }) => {
+export const handler = async (
+  params: { address: string },
+  searchParams: {
+    pagination?: string;
+  },
+) => {
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
 
   validateAddress(params.address);
+
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
+  );
 
   // ---------------------------------------------------------------------------
   // Fetch
@@ -39,6 +53,8 @@ export const handler = async (params: { address: string }) => {
 
   const transactionsPromise = getTransactions({
     address: params.address as Address,
+    offset: paginationState.pageIndex * paginationState.pageSize,
+    limit: paginationState.pageSize,
     is_testnet: walletSettings.is_enabled_testnet,
   });
 

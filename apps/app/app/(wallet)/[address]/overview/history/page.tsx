@@ -19,6 +19,7 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { HistoryDataTable } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table";
 import { HistoryDataTablePagination } from "@/app/(wallet)/[address]/overview/history/(components)/history-data-table-pagination";
+import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/history/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/history/preloader";
 import { queries } from "@/queries";
@@ -30,25 +31,30 @@ import { getQueryClient } from "@/services";
 
 interface PageProps {
   params: { address: Address };
+  searchParams: {
+    pagination?: string;
+  };
 }
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, transactions, transactionsCount } =
-    await handler(params);
+  const { walletSettings, transactions, transactionsCount } = await handler(
+    params,
+    searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -63,7 +69,7 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.transaction.list({
       address: params.address as Address,
-      limit: 10,
+      limit: OVERVIEW_ROW_COUNT,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
@@ -72,8 +78,6 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.transaction.listCount({
       address: params.address as Address,
-      limit: 10,
-      offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     transactionsCount,

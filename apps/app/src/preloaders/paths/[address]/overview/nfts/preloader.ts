@@ -15,13 +15,32 @@
 
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+import { paginationParser } from "@/querystates";
 import { preload as preloadGetNftValuation } from "@/services/getNftValuation";
 
 // -----------------------------------------------------------------------------
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
+export const preloader = async (
+  params: { address: string },
+  searchParams: {
+    pagination?: string;
+  },
+) => {
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
   addressPreloader(params);
   preloadGetNftValuation({ address: params.address as Address });
 };

@@ -22,6 +22,7 @@ import { TokensDataTable } from "@/app/(wallet)/[address]/overview/tokens/(compo
 import { TokensDataTablePagination } from "@/app/(wallet)/[address]/overview/tokens/(components)/tokens-data-table-pagination";
 import { PortfolioSection } from "@/components/section/portfolio-section";
 import { TokenPortfolio } from "@/components/token/token-portfolio";
+import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/tokens/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/tokens/preloader";
 import { queries } from "@/queries";
@@ -33,25 +34,30 @@ import { getQueryClient } from "@/services";
 
 interface PageProps {
   params: { address: Address };
+  searchParams: {
+    pagination?: string;
+  };
 }
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, tokens, tokensCount, portfolio } =
-    await handler(params);
+  const { walletSettings, tokens, tokensCount, portfolio } = await handler(
+    params,
+    searchParams,
+  );
 
   // ---------------------------------------------------------------------------
   // Query
@@ -70,6 +76,8 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.token.list({
       address: params.address as Address,
+      limit: OVERVIEW_ROW_COUNT,
+      offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     tokens,

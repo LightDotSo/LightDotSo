@@ -75,7 +75,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
       address: wallet as Address,
       offset: offsetCount,
       limit: paginationState.pageSize,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 

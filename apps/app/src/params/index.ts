@@ -19,9 +19,12 @@ export type { NftListParams } from "./nft";
 export type { NftValuationParams } from "./nftValuation";
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
 export type { PortfolioParams } from "./portfolio";
-export type { TokenListParams } from "./token";
+export type { TokenListParams, TokenListCountParams } from "./token";
 export type { TokenPriceParams } from "./tokenPrice";
-export type { TransactionListParams } from "./transaction";
+export type {
+  TransactionListParams,
+  TransactionListCountParams,
+} from "./transaction";
 export type { UserParams } from "./user";
 export type {
   UserOperationGetParams,

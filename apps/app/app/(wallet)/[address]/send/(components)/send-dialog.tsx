@@ -115,28 +115,33 @@ export const SendDialog: FC<SendDialogProps> = ({
   const currentTokenData: TokenData[] | undefined = queryClient.getQueryData(
     queries.token.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: Number.MAX_SAFE_INTEGER,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
   const currentNftData: NftDataPage | undefined = queryClient.getQueryData(
     queries.nft.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
   const { data: tokens } = useSuspenseQuery<TokenData[] | null>({
     queryKey: queries.token.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: Number.MAX_SAFE_INTEGER,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
       const res = await getTokens({
         params: {
           query: {
             address,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
+            limit: Number.MAX_SAFE_INTEGER,
           },
         },
       });

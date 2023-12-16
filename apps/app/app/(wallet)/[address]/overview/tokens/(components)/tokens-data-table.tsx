@@ -68,7 +68,8 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   const currentData: TokenData[] | undefined = queryClient.getQueryData(
     queries.token.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      limit: paginationState.pageSize,
       offset: offsetCount,
     }).queryKey,
   );
@@ -77,7 +78,8 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
     placeholderData: keepPreviousData,
     queryKey: queries.token.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      limit: paginationState.pageSize,
       offset: offsetCount,
     }).queryKey,
     queryFn: async () => {
@@ -85,7 +87,8 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
         params: {
           query: {
             address,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
+            limit: paginationState.pageSize,
             offset: offsetCount,
           },
         },
@@ -104,11 +107,17 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
   });
 
   const currentCountData: TokenCountData | undefined = queryClient.getQueryData(
-    queries.token.list({ address: address as Address }).queryKey,
+    queries.token.listCount({
+      address: address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
   );
 
   const { data: tokensCount } = useQuery<TokenCountData | null>({
-    queryKey: queries.token.listCount({ address: address as Address }).queryKey,
+    queryKey: queries.token.listCount({
+      address: address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -118,6 +127,7 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
         params: {
           query: {
             address: address,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
           },
         },
       });

@@ -74,7 +74,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
       address,
       limit: paginationState.pageSize,
       offset: offsetCount,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
@@ -84,7 +84,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
       address,
       limit: paginationState.pageSize,
       offset: offsetCount,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({
@@ -93,7 +93,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
             address,
             limit: paginationState.pageSize,
             offset: offsetCount,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
           },
         },
       });
@@ -112,12 +112,17 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
 
   const currentCountData: TransactionCountData | undefined =
     queryClient.getQueryData(
-      queries.transaction.list({ address: address as Address }).queryKey,
+      queries.transaction.listCount({
+        address: address as Address,
+        is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      }).queryKey,
     );
 
   const { data: transactionsCount } = useQuery<TransactionCountData | null>({
-    queryKey: queries.transaction.listCount({ address: address as Address })
-      .queryKey,
+    queryKey: queries.transaction.listCount({
+      address: address as Address,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -127,6 +132,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
         params: {
           query: {
             address: address,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
           },
         },
       });
