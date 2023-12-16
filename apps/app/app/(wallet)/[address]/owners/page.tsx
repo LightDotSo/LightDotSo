@@ -16,7 +16,6 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
-import { OwnersDataTablePagination } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/owners/handler";
 import { preloader } from "@/preloaders/paths/[address]/owners/preloader";
 import { queries } from "@/queries";
@@ -74,7 +73,6 @@ export default async function Page({ params, searchParams }: PageProps) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <OwnersDataTable address={params.address as Address} />
-      <OwnersDataTablePagination />
     </HydrationBoundary>
   );
 }
