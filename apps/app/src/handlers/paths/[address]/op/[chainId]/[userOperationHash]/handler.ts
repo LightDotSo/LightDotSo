@@ -36,7 +36,7 @@ export const handler = async (params: {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await addressHandler(params);
+  const { config } = await addressHandler(params);
 
   // ---------------------------------------------------------------------------
   // Validators
@@ -62,7 +62,7 @@ export const handler = async (params: {
 
   return userOperation.match(
     userOperation => {
-      return { userOperation: userOperation };
+      return { config: config, userOperation: userOperation };
     },
     () => {
       notFound();

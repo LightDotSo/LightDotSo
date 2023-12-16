@@ -16,10 +16,8 @@
 import type { Address } from "viem";
 import { OpCreateDialog } from "@/app/(wallet)/[address]/op/(components)/op-create-dialog";
 import { Modal } from "@/components/modal";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { handler as userOperationsHandler } from "@/handlers/paths/[address]/op/handler";
-import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/op/[chainId]/preloader";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/paths/[address]/op/handler";
+import { preloader } from "@/preloaders/paths/[address]/op/[chainId]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -41,15 +39,13 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
-  userOpPreloader(params, searchParams);
+  preloader(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { config } = await handler(params);
-  const { userOperations } = await userOperationsHandler(params, searchParams);
+  const { config, userOperations } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Render

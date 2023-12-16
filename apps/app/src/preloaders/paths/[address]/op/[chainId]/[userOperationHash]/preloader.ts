@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Hex } from "viem";
+import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
 import { preload as preloadGetUserOperation } from "@/services/getUserOperation";
 
 // -----------------------------------------------------------------------------
@@ -26,4 +27,5 @@ export const preloader = async (params: {
   userOperationHash: string;
 }) => {
   preloadGetUserOperation({ hash: params.userOperationHash as Hex });
+  addressPreloader(params);
 };
