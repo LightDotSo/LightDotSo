@@ -22,7 +22,7 @@ use utoipa::ToSchema;
 
 /// TokenPrice root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct TokenPrice {
     /// The price of the token price.
     pub price: f64,
@@ -35,7 +35,7 @@ pub(crate) struct TokenPrice {
 }
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct TokenPriceDate {
     /// The price of the token price.
     pub price: f64,

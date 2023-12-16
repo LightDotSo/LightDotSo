@@ -26,7 +26,7 @@ use utoipa::IntoParams;
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
     /// The offset of the first paymaster operation to return.

@@ -115,7 +115,7 @@ export const postAuthVerify = async ({
   body,
 }: {
   params: {
-    query: { userAddress: string };
+    query: { user_address: string };
   };
   body: {
     message: string;
@@ -166,7 +166,7 @@ export const getWallet = async (
     params,
   }: {
     params: {
-      query: { address: string; chainId?: number | null | undefined };
+      query: { address: string; chain_id?: number | null | undefined };
     };
   },
   isPublic?: boolean,
@@ -298,7 +298,7 @@ export const createFeedback = async ({
   body,
 }: {
   params: {
-    query: { userId: string };
+    query: { user_id: string };
   };
   body: {
     feedback: {
@@ -360,33 +360,33 @@ export const createUserOperation = async ({
 }: {
   params: {
     query: {
-      chainId: number;
+      chain_id: number;
     };
   };
   body: {
     paymaster?: {
       address: string;
       sender: string;
-      senderNonce: number;
+      sender_nonce: number;
     };
     signature: {
-      ownerId: string;
+      owner_id: string;
       signature: string;
-      signatureType: number;
+      signature_type: number;
     };
-    userOperation: {
-      chainId: number;
-      callData: string;
-      callGasLimit: number;
+    user_operation: {
+      chain_id: number;
+      call_data: string;
+      call_gas_limit: number;
       hash: string;
-      initCode: string;
-      maxFeePerGas: number;
-      maxPriorityFeePerGas: number;
+      init_code: string;
+      max_fee_per_gas: number;
+      max_priority_fee_per_gas: number;
       nonce: number;
-      paymasterAndData: string;
-      preVerificationGas: number;
+      paymaster_and_data: string;
+      pre_verification_gas: number;
       sender: string;
-      verificationGasLimit: number;
+      verification_gas_limit: number;
     };
   };
 }) => {
@@ -423,7 +423,7 @@ export const getPaymasterOperation = async (
     params,
   }: {
     params: {
-      query: { address: string; chainId: number; validAfter: number };
+      query: { address: string; chain_id: number; valid_after: number };
     };
   },
   isPublic?: boolean,
@@ -495,7 +495,7 @@ export const getUserOperation = async (
     params,
   }: {
     params: {
-      query: { userOperationHash: string };
+      query: { user_operation_hash: string };
     };
   },
   isPublic?: boolean,
@@ -540,7 +540,7 @@ export const getUserOperationNonce = async (
     params,
   }: {
     params: {
-      query: { address: string; chainId: number };
+      query: { address: string; chain_id: number };
     };
   },
   isPublic?: boolean,
@@ -564,7 +564,7 @@ export const getSignatureUserOperation = async (
     params,
   }: {
     params: {
-      query: { userOperationHash: string };
+      query: { user_operation_hash: string };
     };
   },
   isPublic?: boolean,
@@ -588,7 +588,7 @@ export const getToken = async (
     params,
   }: {
     params: {
-      query: { address: string; chainId: number };
+      query: { address: string; chain_id: number };
     };
   },
   isPublic?: boolean,
@@ -616,7 +616,7 @@ export const getTokens = async (
         offset?: number | null | undefined;
         limit?: number | null | undefined;
         address: string;
-        isTestnet?: boolean | null | undefined;
+        is_testnet?: boolean | null | undefined;
       };
     };
   },
@@ -645,7 +645,7 @@ export const getTokensCount = async (
         offset?: number | null | undefined;
         limit?: number | null | undefined;
         address: string;
-        isTestnet?: boolean | null | undefined;
+        is_testnet?: boolean | null | undefined;
       };
     };
   },
@@ -670,7 +670,7 @@ export const getTokenPrice = async (
     params,
   }: {
     params: {
-      query: { address: string; chainId: number };
+      query: { address: string; chain_id: number };
     };
   },
   isPublic?: boolean,
@@ -699,7 +699,7 @@ export const getTransactions = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             address?: string | null | undefined;
-            isTestnet?: boolean | null | undefined;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };
@@ -730,7 +730,7 @@ export const getTransactionsCount = async (
             offset?: number | null | undefined;
             limit?: number | null | undefined;
             address?: string | null | undefined;
-            isTestnet?: boolean | null | undefined;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };
@@ -763,7 +763,7 @@ export const getUserOperations = async (
             address?: string | null | undefined;
             direction?: ("asc" | "desc") | null | undefined;
             status?: ("proposed" | "pending" | "executed" | "reverted") | null;
-            isTestnet?: boolean | null | undefined;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };
@@ -796,7 +796,7 @@ export const getUserOperationsCount = async (
             address?: string | null | undefined;
             direction?: ("asc" | "desc") | null | undefined;
             status?: ("proposed" | "pending" | "executed" | "reverted") | null;
-            isTestnet?: boolean | null | undefined;
+            is_testnet?: boolean | null | undefined;
           }
         | undefined;
     };
@@ -851,8 +851,8 @@ export const updateWalletSettings = async ({
     query: { address: string };
   };
   body: {
-    walletSettings: {
-      isEnabledTestnet?: boolean | null | undefined;
+    wallet_settings: {
+      is_enabled_testnet?: boolean | null | undefined;
     };
   };
 }) => {
