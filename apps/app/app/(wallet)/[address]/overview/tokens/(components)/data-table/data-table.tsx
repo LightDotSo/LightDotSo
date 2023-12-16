@@ -36,6 +36,7 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
 import type { TokenData } from "@/data";
+import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -54,6 +55,12 @@ interface DataTableProps {
 
 export function DataTable({ columns, data, pageCount }: DataTableProps) {
   // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
+  const [paginationState, setPaginationState] = usePaginationQueryState();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -62,10 +69,8 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     tokenColumnVisibility,
     tokenRowSelection,
     tokenSorting,
-    tokenPagination,
     setTokenColumnFilters,
     setTokenColumnVisibility,
-    setTokenPagination,
     setTokenRowSelection,
     setTokenSorting,
     setTokenTable,
@@ -83,7 +88,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       columnVisibility: tokenColumnVisibility,
       rowSelection: tokenRowSelection,
       columnFilters: tokenColumnFilters,
-      pagination: tokenPagination,
+      pagination: paginationState,
     },
     pageCount: pageCount,
     enableRowSelection: true,
@@ -91,7 +96,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     onSortingChange: setTokenSorting,
     onColumnFiltersChange: setTokenColumnFilters,
     onColumnVisibilityChange: setTokenColumnVisibility,
-    onPaginationChange: setTokenPagination,
+    onPaginationChange: setPaginationState,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

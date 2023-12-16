@@ -31,7 +31,7 @@ import type {
   WalletSettingsData,
 } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores";
+import { usePaginationQueryState } from "@/querystates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,15 +46,19 @@ interface HistoryDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
-  const { transactionPagination } = useTables();
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
+  const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
-    return transactionPagination.pageSize * transactionPagination.pageIndex;
-  }, [transactionPagination.pageSize, transactionPagination.pageIndex]);
+    return paginationState.pageSize * paginationState.pageIndex;
+  }, [paginationState.pageSize, paginationState.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -68,7 +72,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address,
-      limit: transactionPagination.pageSize,
+      limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
@@ -78,7 +82,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     placeholderData: keepPreviousData,
     queryKey: queries.transaction.list({
       address,
-      limit: transactionPagination.pageSize,
+      limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
@@ -87,7 +91,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
         params: {
           query: {
             address,
-            limit: transactionPagination.pageSize,
+            limit: paginationState.pageSize,
             offset: offsetCount,
             is_testnet: walletSettings?.is_enabled_testnet,
           },
@@ -147,8 +151,8 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
     if (!transactionsCount || !transactionsCount?.count) {
       return null;
     }
-    return Math.ceil(transactionsCount.count / transactionPagination.pageSize);
-  }, [transactionsCount, transactionPagination.pageSize]);
+    return Math.ceil(transactionsCount.count / paginationState.pageSize);
+  }, [transactionsCount, paginationState.pageSize]);
 
   // ---------------------------------------------------------------------------
   // Render

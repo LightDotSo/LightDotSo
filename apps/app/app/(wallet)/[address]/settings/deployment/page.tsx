@@ -55,12 +55,14 @@ export default async function Page({ params }: PageProps) {
 
   const queryClient = getQueryClient();
 
-  const res = await getUserOperations(
-    params.address as Address,
-    "executed",
-    "asc",
-    Number.MAX_SAFE_INTEGER,
-  );
+  const res = await getUserOperations({
+    address: params.address as Address,
+    status: "executed",
+    direction: "asc",
+    limit: Number.MAX_SAFE_INTEGER,
+    offset: 0,
+    is_testnet: walletSettings?.is_enabled_testnet ?? false,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
@@ -76,8 +78,10 @@ export default async function Page({ params }: PageProps) {
         queries.user_operation.list({
           address: params.address as Address,
           status: "executed",
-          order: "asc",
+          direction: "asc",
           limit: Number.MAX_SAFE_INTEGER,
+          offset: 0,
+          is_testnet: walletSettings?.is_enabled_testnet ?? false,
         }).queryKey,
         res,
       );

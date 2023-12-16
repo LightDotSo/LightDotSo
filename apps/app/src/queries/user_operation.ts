@@ -15,31 +15,21 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Type
-// -----------------------------------------------------------------------------
-
-type UserOperationFilter = {
-  address: Address;
-  status: "all" | "proposed" | "executed";
-  order?: "desc" | "asc";
-  limit?: number;
-  offset?: number;
-  is_testnet?: boolean;
-};
+import type {
+  UserOperationListCountParams,
+  UserOperationListParams,
+} from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const user_operation = createQueryKeys("user_operation", {
-  list: (filter: UserOperationFilter) => ({
-    queryKey: [{ filter }],
+  list: (Params: UserOperationListParams) => ({
+    queryKey: [{ Params }],
   }),
-  listCount: (filter: UserOperationFilter) => ({
-    queryKey: [{ filter }],
+  listCount: (Params: UserOperationListCountParams) => ({
+    queryKey: [{ Params }],
   }),
 });
 

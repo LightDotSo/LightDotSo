@@ -23,11 +23,15 @@ import {
 } from "@tanstack/react-query";
 import { useMemo, type FC } from "react";
 import type { Address } from "viem";
-import { usePaginationQueryState } from "@/app/(authenticated)/wallets/(hooks)";
 import { columns } from "@/app/(wallet)/[address]/transactions/(components)/data-table/columns";
 import { DataTable } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table";
-import type { UserOperationCountData, UserOperationData } from "@/data";
+import type {
+  UserOperationCountData,
+  UserOperationData,
+  WalletSettingsData,
+} from "@/data";
 import { queries } from "@/queries";
+import { usePaginationQueryState } from "@/querystates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -46,6 +50,10 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   address,
   status,
 }) => {
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
   const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
@@ -62,12 +70,17 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const queryClient = useQueryClient();
 
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
     queries.user_operation.list({
       address,
       status,
+      direction: "asc",
       limit: paginationState.pageSize,
       offset: offsetCount,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
@@ -76,8 +89,10 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queryKey: queries.user_operation.list({
       address,
       status,
+      direction: "asc",
       limit: paginationState.pageSize,
       offset: offsetCount,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
       const res = await getUserOperations({
@@ -85,8 +100,10 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           query: {
             address,
             status: status === "all" ? undefined : status,
+            direction: "asc",
             limit: paginationState.pageSize,
             offset: offsetCount,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
           },
         },
       });
@@ -105,8 +122,11 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
 
   const currentCountData: UserOperationCountData | undefined =
     queryClient.getQueryData(
-      queries.user_operation.listCount({ address: address as Address, status })
-        .queryKey,
+      queries.user_operation.listCount({
+        address: address as Address,
+        status,
+        is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      }).queryKey,
     );
 
   const { data: userOperationsCount } = useQuery<UserOperationCountData | null>(
@@ -114,6 +134,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
       queryKey: queries.user_operation.listCount({
         address: address as Address,
         status,
+        is_testnet: walletSettings?.is_enabled_testnet ?? false,
       }).queryKey,
       queryFn: async () => {
         if (!address) {

@@ -27,7 +27,7 @@ import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/d
 import { DataTable } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/data-table";
 import type { TokenCountData, TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
-import { useTables } from "@/stores";
+import { usePaginationQueryState } from "@/querystates";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -42,15 +42,19 @@ interface TokensDataTableProps {
 // -----------------------------------------------------------------------------
 
 export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
-  const { tokenPagination } = useTables();
+  // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
+  const [paginationState] = usePaginationQueryState();
 
   // ---------------------------------------------------------------------------
   // Effect Hooks
   // ---------------------------------------------------------------------------
 
   const offsetCount = useMemo(() => {
-    return tokenPagination.pageSize * tokenPagination.pageIndex;
-  }, [tokenPagination.pageSize, tokenPagination.pageIndex]);
+    return paginationState.pageSize * paginationState.pageIndex;
+  }, [paginationState.pageSize, paginationState.pageIndex]);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -138,8 +142,8 @@ export const TokensDataTable: FC<TokensDataTableProps> = ({ address }) => {
     if (!tokensCount || !tokensCount?.count) {
       return null;
     }
-    return Math.ceil(tokensCount.count / tokenPagination.pageSize);
-  }, [tokensCount, tokenPagination.pageSize]);
+    return Math.ceil(tokensCount.count / paginationState.pageSize);
+  }, [tokensCount, paginationState.pageSize]);
 
   // ---------------------------------------------------------------------------
   // Render

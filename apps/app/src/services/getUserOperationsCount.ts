@@ -15,14 +15,14 @@
 
 import { getUserOperationsCount as getClientUserOperationsCount } from "@lightdotso/client";
 import "server-only";
-import type { Address } from "viem";
+import type { UserOperationListCountParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getUserOperationsCount(address);
+export const preload = (params: UserOperationListCountParams) => {
+  void getUserOperationsCount(params);
 };
 
 // -----------------------------------------------------------------------------
@@ -30,19 +30,15 @@ export const preload = (address: Address) => {
 // -----------------------------------------------------------------------------
 
 export const getUserOperationsCount = async (
-  address: Address,
-  status?: "proposed" | "pending" | "executed" | "reverted" | "all",
-  direction?: "asc" | "desc",
-  limit?: number,
+  params: UserOperationListCountParams,
 ) => {
   return getClientUserOperationsCount(
     {
       params: {
         query: {
-          address,
-          status: status === "all" ? undefined : status,
-          direction: direction ?? undefined,
-          limit: limit ?? undefined,
+          address: params.address,
+          status: params.status === "all" ? undefined : params.status,
+          is_testnet: params.is_testnet,
         },
       },
     },

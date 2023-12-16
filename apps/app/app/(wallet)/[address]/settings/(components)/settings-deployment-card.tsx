@@ -25,7 +25,7 @@ import type { FC } from "react";
 import type { Address, Chain, Hex } from "viem";
 import { SettingsCard } from "@/app/(wallet)/[address]/settings/(components)/settings-card";
 import { TITLES } from "@/const/titles";
-import type { UserOperationData } from "@/data";
+import type { UserOperationData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 
 // -----------------------------------------------------------------------------
@@ -57,12 +57,17 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
 
   const queryClient = useQueryClient();
 
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
     queries.user_operation.list({
       address,
       status: "executed",
-      order: "asc",
+      direction: "asc",
+      offset: 0,
       limit: Number.MAX_SAFE_INTEGER,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
@@ -70,8 +75,10 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     queryKey: queries.user_operation.list({
       address,
       status: "executed",
-      order: "asc",
+      direction: "asc",
+      offset: 0,
       limit: Number.MAX_SAFE_INTEGER,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
       if (!address) {
@@ -85,6 +92,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
             status: "executed",
             direction: "asc",
             limit: Number.MAX_SAFE_INTEGER,
+            offset: 0,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
           },
         },
       });

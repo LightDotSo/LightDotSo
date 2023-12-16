@@ -13,33 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { PaginationState } from "@tanstack/react-table";
-import { useQueryState } from "next-usequerystate";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Parser
+// Type
 // -----------------------------------------------------------------------------
 
-export const paginationParser = {
-  parse(value: string): PaginationState {
-    if (!value) {
-      return {
-        pageIndex: 0,
-        pageSize: 10,
-      };
-    }
-    const [pageIndex, pageSize] = value.split(",").map(Number.parseInt);
-    return { pageIndex, pageSize };
-  },
-  serialize(value: PaginationState): string {
-    return `${value.pageIndex},${value.pageSize}`;
-  },
+export type UserOperationListParams = {
+  address: Address;
+  status: "all" | "proposed" | "executed";
+  direction: "desc" | "asc";
+  limit: number;
+  offset: number;
+  is_testnet: boolean;
 };
 
-// -----------------------------------------------------------------------------
-// Hook
-// -----------------------------------------------------------------------------
-
-export const usePaginationQueryState = () => {
-  return useQueryState("pagination", paginationParser);
-};
+export type UserOperationListCountParams = Omit<
+  UserOperationListParams,
+  "direction" | "limit" | "offset"
+>;

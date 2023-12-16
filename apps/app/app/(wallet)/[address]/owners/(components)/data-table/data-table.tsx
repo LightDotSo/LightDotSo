@@ -36,6 +36,7 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
 import type { ConfigurationOwnerData } from "@/data";
+import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -53,6 +54,12 @@ interface DataTableProps {
 
 export function DataTable({ columns, data }: DataTableProps) {
   // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
+  const [paginationState, setPaginationState] = usePaginationQueryState();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
@@ -61,10 +68,8 @@ export function DataTable({ columns, data }: DataTableProps) {
     ownerColumnVisibility,
     ownerRowSelection,
     ownerSorting,
-    ownerPagination,
     setOwnerColumnFilters,
     setOwnerColumnVisibility,
-    setOwnerPagination,
     setOwnerRowSelection,
     setOwnerSorting,
     setOwnerTable,
@@ -82,7 +87,7 @@ export function DataTable({ columns, data }: DataTableProps) {
       columnVisibility: ownerColumnVisibility,
       rowSelection: ownerRowSelection,
       columnFilters: ownerColumnFilters,
-      pagination: ownerPagination,
+      pagination: paginationState,
     },
     paginateExpandedRows: false,
     enableRowSelection: true,
@@ -91,7 +96,7 @@ export function DataTable({ columns, data }: DataTableProps) {
     onSortingChange: setOwnerSorting,
     onColumnFiltersChange: setOwnerColumnFilters,
     onColumnVisibilityChange: setOwnerColumnVisibility,
-    onPaginationChange: setOwnerPagination,
+    onPaginationChange: setPaginationState,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

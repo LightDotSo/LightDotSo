@@ -36,6 +36,7 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
 import type { TransactionData } from "@/data";
+import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
 
 // -----------------------------------------------------------------------------
@@ -54,18 +55,22 @@ interface DataTableProps {
 
 export function DataTable({ columns, data, pageCount }: DataTableProps) {
   // ---------------------------------------------------------------------------
+  // Query States
+  // ---------------------------------------------------------------------------
+
+  const [paginationState, setPaginationState] = usePaginationQueryState();
+
+  // ---------------------------------------------------------------------------
   // Stores
   // ---------------------------------------------------------------------------
 
   const {
     transactionColumnFilters,
     transactionColumnVisibility,
-    transactionPagination,
     transactionRowSelection,
     transactionSorting,
     setTransactionColumnFilters,
     setTransactionColumnVisibility,
-    setTransactionPagination,
     setTransactionRowSelection,
     setTransactionSorting,
     setTransactionTable,
@@ -83,7 +88,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       columnVisibility: transactionColumnVisibility,
       rowSelection: transactionRowSelection,
       columnFilters: transactionColumnFilters,
-      pagination: transactionPagination,
+      pagination: paginationState,
     },
     pageCount: pageCount,
     paginateExpandedRows: false,
@@ -92,7 +97,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
     onSortingChange: setTransactionSorting,
     onColumnFiltersChange: setTransactionColumnFilters,
     onColumnVisibilityChange: setTransactionColumnVisibility,
-    onPaginationChange: setTransactionPagination,
+    onPaginationChange: setPaginationState,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
