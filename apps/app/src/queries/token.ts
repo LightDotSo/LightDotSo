@@ -15,28 +15,18 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Type
-// -----------------------------------------------------------------------------
-
-type TokenFilter = {
-  address: Address;
-  is_testnet?: boolean;
-  offset?: number;
-};
+import type { TokenListParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const token = createQueryKeys("token", {
-  list: (filter: TokenFilter) => ({
-    queryKey: [{ filter }],
+  list: (params: TokenListParams) => ({
+    queryKey: [{ params }],
   }),
-  listCount: (filter: TokenFilter) => ({
-    queryKey: [{ filter }],
+  listCount: (params: TokenListParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

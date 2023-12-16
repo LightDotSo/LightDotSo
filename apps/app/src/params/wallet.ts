@@ -13,12 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export type { AuthParams } from "./auth";
-export type { PaymasterOperationGetParams } from "./paymasterOperation";
-export type { TokenListParams } from "./token";
-export type { TransactionListParams } from "./transaction";
-export type {
-  UserOperationListParams,
-  UserOperationListCountParams,
-} from "./userOperation";
-export type { WalletListParams } from "./wallet";
+import type { Address } from "viem";
+
+// -----------------------------------------------------------------------------
+// Params
+// -----------------------------------------------------------------------------
+
+export type WalletListParams = {
+  address: Address;
+  limit?: number;
+  offset?: number;
+};

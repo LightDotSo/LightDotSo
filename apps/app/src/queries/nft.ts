@@ -15,24 +15,15 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Type
-// -----------------------------------------------------------------------------
-
-type NftFilter = {
-  address: Address;
-  is_testnet?: boolean;
-};
+import type { NftListParams } from "@/params/nft";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const nft = createQueryKeys("nft", {
-  list: (filter: NftFilter) => ({
-    queryKey: [{ filter }],
+  list: (params: NftListParams) => ({
+    queryKey: [{ params }],
   }),
 });
 
