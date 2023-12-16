@@ -24,6 +24,7 @@ use utoipa::ToSchema;
 
 /// User operation create.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationCreate {
     chain_id: i64,
     hash: String,
@@ -41,6 +42,7 @@ pub(crate) struct UserOperationCreate {
 
 /// User operation paymaster
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationPaymaster {
     /// The address of the paymaster.
     address: String,
@@ -48,6 +50,7 @@ pub(crate) struct UserOperationPaymaster {
 
 /// User operation owner
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationOwner {
     /// The id of the owner.
     pub id: String,
@@ -59,6 +62,7 @@ pub(crate) struct UserOperationOwner {
 
 /// User operation signature
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationSignature {
     /// The id of the owner of the signature.
     pub owner_id: String,
@@ -70,6 +74,7 @@ pub(crate) struct UserOperationSignature {
 
 /// User operation transaction
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationTransaction {
     /// The hash of the transaction.
     pub hash: String,
@@ -85,6 +90,7 @@ pub(crate) enum UserOperationSuccess {
 
 /// User operation root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperation {
     chain_id: i64,
     hash: String,

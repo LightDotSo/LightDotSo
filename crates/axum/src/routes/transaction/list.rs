@@ -31,6 +31,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
     /// The offset of the first transaction to return.
@@ -49,6 +50,7 @@ pub struct ListQuery {
 
 /// Count of list of user operations.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct TransactionListCount {
     /// The count of the list of user operations..
     pub count: i64,

@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// WalletSettings root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct WalletSettings {
     /// The wallet_settings of whether the testnet is enabled.
     pub is_enabled_testnet: bool,
@@ -30,6 +31,7 @@ pub(crate) struct WalletSettings {
 
 /// Optional WalletSettings root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct WalletSettingsOptional {
     /// The update query of wallet_settings of whether the testnet is enabled.
     pub is_enabled_testnet: Option<bool>,

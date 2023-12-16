@@ -25,6 +25,7 @@ use utoipa::ToSchema;
 
 /// Token root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Token {
     /// The address of the token.
     pub address: String,

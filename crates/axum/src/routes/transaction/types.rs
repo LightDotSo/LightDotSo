@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// Transaction root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Transaction {
     /// The chain id of the transaction.
     chain_id: i64,

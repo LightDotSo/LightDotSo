@@ -25,6 +25,7 @@ use utoipa::ToSchema;
 // -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct NotificationReadRequestParams {
     /// The array of the notifications to query.
     pub notifications: Vec<NotificationReadRequest>,
@@ -32,6 +33,7 @@ pub(crate) struct NotificationReadRequestParams {
 
 /// Item to request.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct NotificationReadRequest {
     /// The id of the notification to read for.
     id: String,

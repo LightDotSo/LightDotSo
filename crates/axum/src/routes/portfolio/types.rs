@@ -22,6 +22,7 @@ use utoipa::ToSchema;
 
 /// Portfolio root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Portfolio {
     /// The balance of the portfolio.
     pub balance: f64,
@@ -35,6 +36,7 @@ pub(crate) struct Portfolio {
 
 /// Portfolio to do.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct PortfolioBalanceDate {
     /// The balance of the portfolio.
     pub balance: f64,

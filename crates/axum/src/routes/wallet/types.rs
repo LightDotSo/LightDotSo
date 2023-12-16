@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// Wallet root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Wallet {
     /// The address of the wallet.
     pub address: String,
@@ -48,6 +49,7 @@ impl From<wallet::Data> for Wallet {
 
 /// Wallet owner.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 #[schema(example = json!({"address": "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed", "weight": 1}))]
 pub(crate) struct Owner {
     /// The address of the owner.

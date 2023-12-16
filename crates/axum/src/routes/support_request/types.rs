@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// Support Request root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct SupportRequest {
     /// The title of the support_request.
     pub title: String,

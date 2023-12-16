@@ -34,6 +34,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
     /// The offset of the first token to return.
@@ -54,6 +55,7 @@ pub struct ListQuery {
 
 /// Count of list of tokens.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct TokenListCount {
     /// The count of the list of tokens.
     pub count: i64,

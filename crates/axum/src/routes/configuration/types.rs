@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// Configuration root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Configuration {
     /// The id of the configuration.
     id: String,
@@ -40,6 +41,7 @@ pub(crate) struct Configuration {
 
 /// Configuration Owner.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct ConfigurationOwner {
     /// The id of the owner.
     id: String,

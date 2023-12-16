@@ -28,6 +28,7 @@ use utoipa::IntoParams;
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub(crate) struct ListQuery {
     /// The offset of the first notification to return.

@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// Notification root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Notification {
     /// The id of the notification to read for.
     id: String,

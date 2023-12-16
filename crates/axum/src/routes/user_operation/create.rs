@@ -62,6 +62,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
     // The chain id to create the user operation for.
@@ -73,6 +74,7 @@ pub struct PostQuery {
 // -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub struct UserOperationPostRequestParams {
     // The user operation to create.
     pub user_operation: UserOperationCreate,
@@ -86,6 +88,7 @@ pub struct UserOperationPostRequestParams {
 
 /// Item to create.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationCreate {
     chain_id: i64,
     hash: String,

@@ -37,6 +37,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
     // The hash of the user operation.
@@ -48,6 +49,7 @@ pub struct PostQuery {
 // -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub struct AuthVerifyPostRequestParams {
     // The signature of the message.
     pub signature: String,

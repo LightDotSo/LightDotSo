@@ -37,6 +37,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct UpdateQuery {
     /// The address of the wallet.
@@ -50,6 +51,7 @@ pub struct UpdateQuery {
 // -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub struct WalletPutRequestParams {
     /// The name of the wallet.
     #[schema(example = "My Wallet", default = "My Wallet")]

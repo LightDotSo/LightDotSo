@@ -32,6 +32,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct NonceQuery {
     /// The chain id to get the user operation nonce for.
@@ -46,6 +47,7 @@ pub struct NonceQuery {
 
 /// Nonce
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct UserOperationNonce {
     /// The hash of the transaction.
     pub nonce: i64,

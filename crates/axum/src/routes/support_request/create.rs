@@ -30,6 +30,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
     /// The wallet address of the user operation.
@@ -41,6 +42,7 @@ pub struct PostQuery {
 // -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub struct SupportRequestPostRequestParams {
     /// The result of the support_request.
     pub support_request: SupportRequest,

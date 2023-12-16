@@ -24,6 +24,7 @@ use utoipa::ToSchema;
 
 /// Signature root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Signature {
     /// The signature of the user operation in hex.
     pub signature: String,

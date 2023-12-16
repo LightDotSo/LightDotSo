@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// Feedback root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct Feedback {
     /// The text of the feedback.
     pub text: String,

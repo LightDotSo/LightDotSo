@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// PaymasterOperation root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct PaymasterOperation {
     /// The id of the paymaster operation.
     id: String,

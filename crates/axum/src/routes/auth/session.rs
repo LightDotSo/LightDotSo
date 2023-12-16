@@ -32,6 +32,7 @@ use utoipa::ToSchema;
 
 /// The session.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub(crate) struct AuthSession {
     /// The session id.
     id: String,

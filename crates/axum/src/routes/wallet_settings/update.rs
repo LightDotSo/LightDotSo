@@ -33,6 +33,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct PostQuery {
     /// The hash of the wallet settings.
@@ -44,6 +45,7 @@ pub struct PostQuery {
 // -----------------------------------------------------------------------------
 
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
 pub struct WalletSettingsPostRequestParams {
     /// The result of the wallet_settings.
     pub wallet_settings: WalletSettingsOptional,
