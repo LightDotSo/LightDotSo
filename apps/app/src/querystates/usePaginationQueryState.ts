@@ -25,7 +25,9 @@ export const paginationParser = createParser({
     if (!value) {
       return null;
     }
-    const [pageIndex, pageSize] = value.split(",").map(Number.parseInt);
+    const [pageIndex, pageSize] = value
+      .split(",")
+      .map(val => Number.parseInt(val));
     if (isNaN(pageIndex) || isNaN(pageSize)) {
       return null;
     }

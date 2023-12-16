@@ -77,7 +77,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queries.user_operation.list({
       address,
       status,
-      direction: "asc",
+      direction: "desc",
       limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -89,7 +89,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queryKey: queries.user_operation.list({
       address,
       status,
-      direction: "asc",
+      direction: "desc",
       limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -100,7 +100,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           query: {
             address,
             status: status === "all" ? undefined : status,
-            direction: "asc",
+            direction: "desc",
             limit: paginationState.pageSize,
             offset: offsetCount,
             is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -146,6 +146,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
             query: {
               address: address,
               status: status === "all" ? undefined : status,
+              is_testnet: walletSettings?.is_enabled_testnet ?? false,
             },
           },
         });
