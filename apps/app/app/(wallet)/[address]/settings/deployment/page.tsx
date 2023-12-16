@@ -19,10 +19,10 @@ import { Suspense } from "react";
 import type { Address, Hex } from "viem";
 import { SettingsDeploymentCard } from "@/app/(wallet)/[address]/settings/(components)/settings-deployment-card";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
-import { handler } from "@/handlers/paths/[address]/handler";
+import { handler } from "@/handlers/paths/[address]/settings/deployment/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
-import { getUserOperations, getQueryClient } from "@/services";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -47,7 +47,8 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { wallet, config, walletSettings } = await handler(params);
+  const { wallet, config, walletSettings, userOperations } =
+    await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -55,14 +56,17 @@ export default async function Page({ params }: PageProps) {
 
   const queryClient = getQueryClient();
 
-  const res = await getUserOperations({
-    address: params.address as Address,
-    status: "executed",
-    direction: "asc",
-    limit: Number.MAX_SAFE_INTEGER,
-    offset: 0,
-    is_testnet: walletSettings?.is_enabled_testnet ?? false,
-  });
+  queryClient.setQueryData(
+    queries.user_operation.list({
+      address: params.address as Address,
+      status: "executed",
+      direction: "asc",
+      limit: Number.MAX_SAFE_INTEGER,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    userOperations,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
@@ -72,42 +76,20 @@ export default async function Page({ params }: PageProps) {
     ? CHAINS
     : MAINNET_CHAINS;
 
-  return res.match(
-    res => {
-      queryClient.setQueryData(
-        queries.user_operation.list({
-          address: params.address as Address,
-          status: "executed",
-          direction: "asc",
-          limit: Number.MAX_SAFE_INTEGER,
-          offset: 0,
-          is_testnet: walletSettings?.is_enabled_testnet ?? false,
-        }).queryKey,
-        res,
-      );
-
-      return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <div className="space-y-8 lg:space-y-12">
-            {wallet_chains.map(chain => (
-              <Suspense
-                key={chain.id}
-                fallback={<Skeleton className="h-8 w-32" />}
-              >
-                <SettingsDeploymentCard
-                  chain={JSON.stringify(chain)}
-                  address={params.address as Address}
-                  image_hash={config.image_hash as Hex}
-                  salt={wallet.salt as Hex}
-                />
-              </Suspense>
-            ))}
-          </div>
-        </HydrationBoundary>
-      );
-    },
-    _ => {
-      return null;
-    },
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="space-y-8 lg:space-y-12">
+        {wallet_chains.map(chain => (
+          <Suspense key={chain.id} fallback={<Skeleton className="h-8 w-32" />}>
+            <SettingsDeploymentCard
+              chain={JSON.stringify(chain)}
+              address={params.address as Address}
+              image_hash={config.image_hash as Hex}
+              salt={wallet.salt as Hex}
+            />
+          </Suspense>
+        ))}
+      </div>
+    </HydrationBoundary>
   );
 }

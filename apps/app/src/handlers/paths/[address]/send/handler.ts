@@ -13,50 +13,46 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
-import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
-import { Modal } from "@/components/modal";
-import { handler } from "@/handlers/paths/[address]/send/handler";
-import { preloader } from "@/preloaders/paths/[address]/send/preloader";
+import { transferParser } from "@/app/(wallet)/[address]/send/(hooks)";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
+import { validateAddress } from "@/handlers/validators/address";
 
 // -----------------------------------------------------------------------------
-// Props
+// Handler
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
+export const handler = async (
+  params: { address: string },
   searchParams: {
     transfers?: string;
+  },
+) => {
+  // ---------------------------------------------------------------------------
+  // Validators
+  // ---------------------------------------------------------------------------
+
+  validateAddress(params.address);
+
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const transfers = transferParser.parseServerSide(searchParams.transfers);
+
+  // ---------------------------------------------------------------------------
+  // Fetch
+  // ---------------------------------------------------------------------------
+
+  const { wallet, config, walletSettings } = await addressHandler(params);
+
+  // ---------------------------------------------------------------------------
+  // Parse
+  // ---------------------------------------------------------------------------
+
+  return {
+    transfers: transfers,
+    wallet: wallet,
+    config: config,
+    walletSettings: walletSettings,
   };
 };
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default async function Page({ params, searchParams }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { transfers } = await handler(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <Modal>
-      <SendDialog
-        address={params.address as Address}
-        initialTransfers={transfers ?? []}
-      />
-    </Modal>
-  );
-}
