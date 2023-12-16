@@ -67,7 +67,7 @@ export const handler = async (params: { address: string }) => {
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const [tokens, portfolio, nfts, nftValuation, transactions] =
+  const [tokensRes, portfolioRes, nftsRes, nftValuationRes, transactionsRes] =
     await Promise.all([
       tokensPromise,
       portfolioPromise,
@@ -82,10 +82,17 @@ export const handler = async (params: { address: string }) => {
 
   return {
     walletSettings: walletSettings,
-    tokens: tokens,
-    portfolio: portfolio,
-    nfts: nfts,
-    nftValuation: nftValuation,
-    transactions: transactions,
+    tokens: tokensRes.unwrapOr([]),
+    portfolio: portfolioRes.unwrapOr({
+      balance: 0,
+      balance_change_24h: 0,
+      balance_change_24h_percentage: 0,
+      balances: [],
+    }),
+    nfts: nftsRes.unwrapOr([]),
+    nftValuation: nftValuationRes.unwrapOr({
+      wallets: [{ address: params.address, usd_value: 0 }],
+    }),
+    transactions: transactionsRes.unwrapOr([]),
   };
 };

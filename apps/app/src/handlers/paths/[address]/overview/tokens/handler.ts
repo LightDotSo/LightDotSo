@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Result } from "neverthrow";
-import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
@@ -87,7 +86,19 @@ export const handler = async (
       };
     },
     () => {
-      return notFound();
+      return {
+        walletSettings: walletSettings,
+        tokens: [],
+        tokensCount: {
+          count: 0,
+        },
+        portfolio: {
+          balance: 0,
+          balance_change_24h: 0,
+          balance_change_24h_percentage: 0,
+          balances: [],
+        },
+      };
     },
   );
 };
