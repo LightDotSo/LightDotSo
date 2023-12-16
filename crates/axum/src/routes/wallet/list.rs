@@ -32,6 +32,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "camelCase")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
     /// The offset of the first wallet to return.
@@ -48,6 +49,7 @@ pub struct ListQuery {
 
 /// Count of list of wallets.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "camelCase")]
 pub(crate) struct WalletListCount {
     /// The count of the list of wallets.
     pub count: i64,

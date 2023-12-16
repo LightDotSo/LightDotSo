@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// Paymaster root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "camelCase")]
 pub(crate) struct Paymaster {
     /// The address of the paymaster.
     address: String,

@@ -34,6 +34,7 @@ use utoipa::ToSchema;
 
 /// Auth nonce.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "camelCase")]
 pub(crate) struct AuthNonce {
     pub(crate) nonce: String,
 }

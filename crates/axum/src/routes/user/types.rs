@@ -23,6 +23,7 @@ use utoipa::ToSchema;
 
 /// User root type.
 #[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "camelCase")]
 pub(crate) struct User {
     id: String,
 }

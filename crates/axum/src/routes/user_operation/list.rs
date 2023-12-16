@@ -33,6 +33,7 @@ use utoipa::{IntoParams, ToSchema};
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "camelCase")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
     /// The offset of the first user operation to return.
@@ -53,14 +54,12 @@ pub struct ListQuery {
 }
 
 #[derive(Debug, Deserialize, ToSchema)]
-#[serde(rename_all = "snake_case")]
 pub enum ListQueryOrder {
     Asc,
     Desc,
 }
 
 #[derive(Clone, Debug, Deserialize, ToSchema)]
-#[serde(rename_all = "snake_case")]
 pub enum ListQueryStatus {
     Proposed,
     Pending,
