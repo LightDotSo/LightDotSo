@@ -17,18 +17,32 @@ import { Result } from "neverthrow";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
+import { paginationParser } from "@/querystates";
 import { getUserOperations, getUserOperationsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (params: { address: string }) => {
+export const handler = async (
+  params: { address: string },
+  searchParams: {
+    pagination?: string;
+  },
+) => {
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
 
   validateAddress(params.address);
+
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
+  );
 
   // ---------------------------------------------------------------------------
   // Fetch
@@ -39,8 +53,8 @@ export const handler = async (params: { address: string }) => {
   const userOperationsPromise = getUserOperations({
     address: params.address as Address,
     status: "proposed",
-    offset: 0,
-    limit: 10,
+    offset: paginationState.pageIndex * paginationState.pageSize,
+    limit: paginationState.pageSize,
     direction: "desc",
     is_testnet: walletSettings.is_enabled_testnet,
   });
@@ -68,6 +82,7 @@ export const handler = async (params: { address: string }) => {
   return res.match(
     ([userOperations, userOperationsCount]) => {
       return {
+        paginationState: paginationState,
         walletSettings: walletSettings,
         userOperations: userOperations,
         userOperationsCount: userOperationsCount,
@@ -75,6 +90,7 @@ export const handler = async (params: { address: string }) => {
     },
     () => {
       return {
+        paginationState: paginationState,
         walletSettings: walletSettings,
         userOperations: [],
         userOperationsCount: { count: 0 },
