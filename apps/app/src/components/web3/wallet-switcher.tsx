@@ -111,12 +111,17 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
   const queryClient = useQueryClient();
 
   const currentData: WalletData[] | undefined = queryClient.getQueryData(
-    queries.wallet.list({ address: address as Address, limit: 300 }).queryKey,
+    queries.wallet.list({
+      address: address as Address,
+      limit: Number.MAX_SAFE_INTEGER,
+    }).queryKey,
   );
 
   const { data, isLoading } = useSuspenseQuery<WalletData[] | null>({
-    queryKey: queries.wallet.list({ address: address as Address, limit: 300 })
-      .queryKey,
+    queryKey: queries.wallet.list({
+      address: address as Address,
+      limit: Number.MAX_SAFE_INTEGER,
+    }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -126,7 +131,7 @@ export const WalletSwitcherButton: FC<WalletSwitcherProps> = ({
         params: {
           query: {
             owner: address,
-            limit: 300,
+            limit: Number.MAX_SAFE_INTEGER,
           },
         },
       });
