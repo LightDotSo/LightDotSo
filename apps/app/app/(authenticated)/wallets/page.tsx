@@ -18,10 +18,22 @@ import { WalletsDataTablePagination } from "@/app/(authenticated)/wallets/(compo
 import { WalletsDataTableToolbar } from "@/app/(authenticated)/wallets/(components)/wallets-data-table-toolbar";
 
 // -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
+type PageProps = {
+  searchParams: {
+    pagination?: string;
+  };
+};
+
+// -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {
+// TODO: Add implement session based search params handler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default async function Page({ searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
