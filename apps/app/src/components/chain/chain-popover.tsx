@@ -61,7 +61,7 @@ export const ChainPopover: FC = () => {
   ]);
 
   const { data: walletSettings } = useSuspenseQuery<WalletSettingsData | null>({
-    queryKey: queries.wallet.settings(wallet as Address).queryKey,
+    queryKey: queries.wallet.settings({ address: wallet as Address }).queryKey,
     queryFn: async () => {
       if (!wallet) {
         return null;

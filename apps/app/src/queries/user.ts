@@ -15,15 +15,15 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
+import type { UserParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const user = createQueryKeys("user", {
-  get: (address: Address) => ({
-    queryKey: [address],
+  get: (params: UserParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

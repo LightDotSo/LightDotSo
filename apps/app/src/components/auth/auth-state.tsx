@@ -49,11 +49,11 @@ export const AuthState: FC = () => {
   const queryClient = useQueryClient();
 
   const currentData: UserData | undefined = queryClient.getQueryData(
-    queries.user.get(address as Address).queryKey,
+    queries.user.get({ address: address as Address }).queryKey,
   );
 
   const { data } = useSuspenseQuery<UserData | null>({
-    queryKey: queries.user.get(address as Address).queryKey,
+    queryKey: queries.user.get({ address: address as Address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -80,7 +80,7 @@ export const AuthState: FC = () => {
   });
 
   const { data: sessionData } = useSuspenseQuery<AuthSessionData | null>({
-    queryKey: queries.auth.session(address as Address).queryKey,
+    queryKey: queries.auth.session({ address: address as Address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;
@@ -168,7 +168,7 @@ export const AuthState: FC = () => {
   // Subscribe to the user query
   useEffect(() => {
     const observer = new QueryObserver<UserData | null>(queryClient, {
-      queryKey: queries.user.get(address as Address).queryKey,
+      queryKey: queries.user.get({ address: address as Address }).queryKey,
     });
 
     const unsubscribe = observer.subscribe(result => {
@@ -181,7 +181,7 @@ export const AuthState: FC = () => {
   // Subscribe to the session query
   useEffect(() => {
     const observer = new QueryObserver<AuthSessionData | null>(queryClient, {
-      queryKey: queries.auth.session(address as Address).queryKey,
+      queryKey: queries.auth.session({ address: address as Address }).queryKey,
     });
 
     const unsubscribe = observer.subscribe(result => {

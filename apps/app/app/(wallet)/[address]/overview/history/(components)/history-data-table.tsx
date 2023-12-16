@@ -67,7 +67,7 @@ export const HistoryDataTable: FC<HistoryDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
 
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({

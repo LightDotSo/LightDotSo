@@ -15,15 +15,15 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
+import type { NftValuationParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const nft_valuation = createQueryKeys("nft_valuation", {
-  get: (address: Address) => ({
-    queryKey: [address],
+  get: (params: NftValuationParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

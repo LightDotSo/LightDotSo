@@ -13,22 +13,13 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { createQueryKeys } from "@lukemorales/query-key-factory";
-import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { TokenPriceParams } from "@/params";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Keys
+// Params
 // -----------------------------------------------------------------------------
 
-export const token_price = createQueryKeys("token_price", {
-  get: (params: TokenPriceParams) => ({
-    queryKey: [{ params }],
-  }),
-});
-
-// -----------------------------------------------------------------------------
-// Infer
-// -----------------------------------------------------------------------------
-
-export type TokenPriceKeys = inferQueryKeys<typeof token_price>;
+export type TokenPriceParams = {
+  address: Address;
+  chain_id: number;
+};

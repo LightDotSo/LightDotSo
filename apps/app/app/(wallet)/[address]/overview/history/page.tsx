@@ -57,7 +57,7 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings(params.address as Address).queryKey,
+    queries.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(

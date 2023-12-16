@@ -15,25 +15,15 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Type
-// -----------------------------------------------------------------------------
-
-type PaymasterOperationFilter = {
-  address: Address;
-  chainId: number;
-  valid_after: number;
-};
+import type { PaymasterOperationGetParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const paymaster_operation = createQueryKeys("paymaster_operation", {
-  get: (filter: PaymasterOperationFilter) => ({
-    queryKey: [{ filter }],
+  get: (params: PaymasterOperationGetParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

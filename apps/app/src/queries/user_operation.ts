@@ -25,11 +25,11 @@ import type {
 // -----------------------------------------------------------------------------
 
 export const user_operation = createQueryKeys("user_operation", {
-  list: (Params: UserOperationListParams) => ({
-    queryKey: [{ Params }],
+  list: (params: UserOperationListParams) => ({
+    queryKey: [{ params }],
   }),
-  listCount: (Params: UserOperationListCountParams) => ({
-    queryKey: [{ Params }],
+  listCount: (params: UserOperationListCountParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

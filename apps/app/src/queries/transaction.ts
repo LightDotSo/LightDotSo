@@ -15,30 +15,17 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
-
-// -----------------------------------------------------------------------------
-// Type
-// -----------------------------------------------------------------------------
-
-type TransactionFilter = {
-  address: Address;
-  order?: "desc" | "asc";
-  limit?: number;
-  offset?: number;
-  is_testnet?: boolean;
-};
-
+import type { TransactionListParams } from "@/params";
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const transaction = createQueryKeys("transaction", {
-  list: (filter: TransactionFilter) => ({
-    queryKey: [{ filter }],
+  list: (params: TransactionListParams) => ({
+    queryKey: [{ params }],
   }),
-  listCount: (filter: TransactionFilter) => ({
-    queryKey: [{ filter }],
+  listCount: (params: TransactionListParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

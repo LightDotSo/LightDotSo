@@ -74,11 +74,11 @@ export const WalletOverviewBannerAddress: FC<
   const queryClient = useQueryClient();
 
   const currentData: WalletData | undefined = queryClient.getQueryData(
-    queries.wallet.get(address).queryKey,
+    queries.wallet.get({ address }).queryKey,
   );
 
   const { data: wallet } = useSuspenseQuery<WalletData | null>({
-    queryKey: queries.wallet.get(address).queryKey,
+    queryKey: queries.wallet.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

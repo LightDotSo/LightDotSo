@@ -45,11 +45,12 @@ export const TokenCardPrice: FC<TokenCardPriceProps> = ({
   const queryClient = useQueryClient();
 
   const currentData: TokenPriceData | undefined = queryClient.getQueryData(
-    queries.token_price.get(address as Address, chain_id).queryKey,
+    queries.token_price.get({ address: address as Address, chain_id }).queryKey,
   );
 
   const { data: token_price } = useSuspenseQuery<TokenPriceData | null>({
-    queryKey: queries.token_price.get(address as Address, chain_id).queryKey,
+    queryKey: queries.token_price.get({ address: address as Address, chain_id })
+      .queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

@@ -47,11 +47,11 @@ export const WalletOverviewBannerSparkline: FC<
   const queryClient = useQueryClient();
 
   const currentData: TokenPortfolioData | undefined = queryClient.getQueryData(
-    queries.portfolio.get(address).queryKey,
+    queries.portfolio.get({ address }).queryKey,
   );
 
   const { data: portfolio } = useSuspenseQuery<TokenPortfolioData | null>({
-    queryKey: queries.portfolio.get(address).queryKey,
+    queryKey: queries.portfolio.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

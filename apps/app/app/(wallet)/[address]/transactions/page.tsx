@@ -28,13 +28,16 @@ import { getQueryClient } from "@/services";
 
 type PageProps = {
   params: { address: string };
+  searchParams: {
+    pagination?: string;
+  };
 };
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params, searchParams }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
@@ -45,8 +48,12 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, userOperations, userOperationsCount } =
-    await handler(params);
+  const {
+    paginationState,
+    walletSettings,
+    userOperations,
+    userOperationsCount,
+  } = await handler(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -55,7 +62,7 @@ export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   queryClient.setQueryData(
-    queries.wallet.settings(params.address as Address).queryKey,
+    queries.wallet.settings({ address: params.address as Address }).queryKey,
     walletSettings,
   );
   queryClient.setQueryData(
@@ -63,8 +70,8 @@ export default async function Page({ params }: PageProps) {
       address: params.address as Address,
       status: "proposed",
       direction: "asc",
-      limit: 10,
-      offset: 0,
+      limit: paginationState.pageSize,
+      offset: paginationState.pageIndex * paginationState.pageSize,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     userOperations,
