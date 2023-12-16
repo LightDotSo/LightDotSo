@@ -18,7 +18,7 @@ import type { Address } from "viem";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/transactions/history/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { preloader } from "@/preloaders/paths/[address]/transactions/history/preloader";
 import { queries } from "@/queries";
 import { getQueryClient } from "@/services";
 
@@ -42,7 +42,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params);
+  preloader(params, searchParams);
 
   // ---------------------------------------------------------------------------
   // Handlers

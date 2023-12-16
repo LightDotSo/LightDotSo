@@ -15,23 +15,23 @@
 
 import { getConfiguration as getClientConfiguration } from "@lightdotso/client";
 import "server-only";
-import type { Address } from "viem";
+import type { ConfigurationParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getConfiguration(address);
+export const preload = (params: ConfigurationParams) => {
+  void getConfiguration(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getConfiguration = async (address: Address) => {
+export const getConfiguration = async (params: ConfigurationParams) => {
   return getClientConfiguration(
-    { params: { query: { address: address } } },
+    { params: { query: { address: params.address } } },
     false,
   );
 };

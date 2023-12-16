@@ -15,17 +15,30 @@
 
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
-import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
-import { preload as preloadGetTokens } from "@/services/getTokens";
-import { preload as preloadGetTokensCount } from "@/services/getTokensCount";
+import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
+import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";
 
 // -----------------------------------------------------------------------------
 // Preloader
 // -----------------------------------------------------------------------------
 
 export const preloader = async (params: { address: string }) => {
+  // ---------------------------------------------------------------------------
+  // Preload
+  // ---------------------------------------------------------------------------
+
   addressPreloader(params);
-  preloadGetPortfolio({ address: params.address as Address });
-  preloadGetTokens({ address: params.address as Address });
-  preloadGetTokensCount({ address: params.address as Address });
+  preloadGetUserOperations({
+    address: params.address as Address,
+    offset: 0,
+    limit: Number.MAX_SAFE_INTEGER,
+    direction: "asc",
+    status: "executed",
+    is_testnet: false,
+  });
+  preloadGetUserOperationsCount({
+    address: params.address as Address,
+    status: "executed",
+    is_testnet: false,
+  });
 };

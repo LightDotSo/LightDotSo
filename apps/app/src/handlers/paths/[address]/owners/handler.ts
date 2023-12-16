@@ -13,68 +13,59 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { notFound } from "next/navigation";
 import type { Address } from "viem";
-import { OwnersDataTable } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table";
-import { OwnersDataTablePagination } from "@/app/(wallet)/[address]/owners/(components)/owners-data-table-pagination";
-import { handler } from "@/handlers/paths/[address]/owners/handler";
-import { preloader } from "@/preloaders/paths/[address]/owners/preloader";
-import { queries } from "@/queries";
-import { getQueryClient } from "@/services";
+import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
+import { validateAddress } from "@/handlers/validators/address";
+import { paginationParser } from "@/querystates";
+import { getConfiguration } from "@/services";
 
 // -----------------------------------------------------------------------------
-// Props
+// Handler
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
+export const handler = async (
+  params: { address: string },
   searchParams: {
     pagination?: string;
-  };
+  },
+) => {
+  // ---------------------------------------------------------------------------
+  // Validators
+  // ---------------------------------------------------------------------------
+
+  validateAddress(params.address);
+
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Fetch
+  // ---------------------------------------------------------------------------
+
+  const { walletSettings } = await addressHandler(params);
+
+  const res = await getConfiguration({ address: params.address as Address });
+
+  // ---------------------------------------------------------------------------
+  // Parse
+  // ---------------------------------------------------------------------------
+
+  return res.match(
+    configuration => {
+      return {
+        paginationState: paginationState,
+        configuration: configuration,
+        walletSettings: walletSettings,
+      };
+    },
+    () => {
+      notFound();
+    },
+  );
 };
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default async function Page({ params, searchParams }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { configuration, walletSettings } = await handler(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Query
-  // ---------------------------------------------------------------------------
-
-  const queryClient = getQueryClient();
-
-  queryClient.setQueryData(
-    queries.wallet.settings({ address: params.address as Address }).queryKey,
-    walletSettings,
-  );
-  queryClient.setQueryData(
-    queries.configuration.get({
-      address: params.address as Address,
-    }).queryKey,
-    configuration,
-  );
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <OwnersDataTable address={params.address as Address} />
-      <OwnersDataTablePagination />
-    </HydrationBoundary>
-  );
-}

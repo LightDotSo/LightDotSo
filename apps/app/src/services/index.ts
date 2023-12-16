@@ -14,7 +14,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { getConfiguration } from "@/services/getConfiguration";
-export { getLlama } from "@/services/getLlama";
 export { getPortfolio } from "@/services/getPortfolio";
 export { getQueryClient } from "@/services/getQueryClient";
 export { getNfts } from "@/services/getNfts";

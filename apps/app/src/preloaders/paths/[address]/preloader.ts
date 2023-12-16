@@ -23,7 +23,7 @@ import { preload as preloadGetWalletSettings } from "@/services/getWalletSetting
 // -----------------------------------------------------------------------------
 
 export const preloader = async (params: { address: string }) => {
-  preloadGetConfiguration(params.address as Address);
-  preloadGetWallet(params.address as Address);
-  preloadGetWalletSettings(params.address as Address);
+  preloadGetConfiguration({ address: params.address as Address });
+  preloadGetWallet({ address: params.address as Address });
+  preloadGetWalletSettings({ address: params.address as Address });
 };

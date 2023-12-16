@@ -24,6 +24,6 @@ import { preload as preloadGetTransactionsCount } from "@/services/getTransactio
 
 export const preloader = async (params: { address: string }) => {
   addressPreloader(params);
-  preloadGetTransactions(params.address as Address);
-  preloadGetTransactionsCount(params.address as Address);
+  preloadGetTransactions({ address: params.address as Address });
+  preloadGetTransactionsCount({ address: params.address as Address });
 };

@@ -23,6 +23,7 @@ import type { UserOperation as PermissionlessUserOperation } from "permissionles
 import { toHex, fromHex } from "viem";
 import type { Address, Hex } from "viem";
 import { userOperationsParser } from "@/app/(wallet)/[address]/op/(hooks)";
+import type { ConfigurationData } from "@/data";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
 import { getConfiguration, getUserOperationNonce, getWallet } from "@/services";
@@ -38,6 +39,7 @@ export const handler = async (
     userOperations?: string;
   },
 ): Promise<{
+  config: ConfigurationData;
   userOperations: UserOperation[];
 }> => {
   // ---------------------------------------------------------------------------
@@ -69,10 +71,10 @@ export const handler = async (
   // ---------------------------------------------------------------------------
 
   const noncePromises = userOperationsQuery.map(operation => {
-    return getUserOperationNonce(
-      params.address as Address,
-      Number(operation.chainId) as number,
-    );
+    return getUserOperationNonce({
+      address: params.address as Address,
+      chain_id: Number(operation.chainId) as number,
+    });
   });
 
   // Resolve all promises
@@ -87,9 +89,11 @@ export const handler = async (
   // Fetch Wallet and Configuration
   // ---------------------------------------------------------------------------
 
-  const walletPromise = getWallet(params.address as Address);
+  const walletPromise = getWallet({ address: params.address as Address });
 
-  const configPromise = getConfiguration(params.address as Address);
+  const configPromise = getConfiguration({
+    address: params.address as Address,
+  });
 
   const [walletRes, configRes] = await Promise.all([
     walletPromise,
@@ -214,6 +218,7 @@ export const handler = async (
 
   // Return an object containing an array of userOperations and an array of hashes
   return {
+    config: config,
     userOperations: userOperations,
   };
 };

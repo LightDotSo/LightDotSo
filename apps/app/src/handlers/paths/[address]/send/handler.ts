@@ -13,18 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { Result } from "neverthrow";
-import { notFound } from "next/navigation";
-import type { Address } from "viem";
+import { transferParser } from "@/app/(wallet)/[address]/send/(hooks)";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getTransactions, getTransactionsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (params: { address: string }) => {
+export const handler = async (
+  params: { address: string },
+  searchParams: {
+    transfers?: string;
+  },
+) => {
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
@@ -32,42 +34,25 @@ export const handler = async (params: { address: string }) => {
   validateAddress(params.address);
 
   // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const transfers = transferParser.parseServerSide(searchParams.transfers);
+
+  // ---------------------------------------------------------------------------
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = await addressHandler(params);
-
-  const transactionsPromise = getTransactions({
-    address: params.address as Address,
-    is_testnet: walletSettings.is_enabled_testnet,
-  });
-
-  const transactionsCountPromise = getTransactionsCount({
-    address: params.address as Address,
-    is_testnet: walletSettings.is_enabled_testnet,
-  });
-
-  const [transactions, transactionsCount] = await Promise.all([
-    transactionsPromise,
-    transactionsCountPromise,
-  ]);
+  const { wallet, config, walletSettings } = await addressHandler(params);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([transactions, transactionsCount]);
-
-  return res.match(
-    ([transactions, transactionsCount]) => {
-      return {
-        walletSettings: walletSettings,
-        transactions: transactions,
-        transactionsCount: transactionsCount,
-      };
-    },
-    () => {
-      return notFound();
-    },
-  );
+  return {
+    transfers: transfers,
+    wallet: wallet,
+    config: config,
+    walletSettings: walletSettings,
+  };
 };

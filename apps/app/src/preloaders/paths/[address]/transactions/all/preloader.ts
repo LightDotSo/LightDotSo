@@ -14,49 +14,45 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
-import { SendDialog } from "@/app/(wallet)/[address]/send/(components)/send-dialog";
-import { Modal } from "@/components/modal";
-import { handler } from "@/handlers/paths/[address]/send/handler";
-import { preloader } from "@/preloaders/paths/[address]/send/preloader";
+import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+import { paginationParser } from "@/querystates";
+import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
+import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";
 
 // -----------------------------------------------------------------------------
-// Props
+// Preloader
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
+export const preloader = async (
+  params: { address: string },
   searchParams: {
-    transfers?: string;
-  };
-};
-
-// -----------------------------------------------------------------------------
-// Page
-// -----------------------------------------------------------------------------
-
-export default async function Page({ params, searchParams }: PageProps) {
+    pagination?: string;
+  },
+) => {
   // ---------------------------------------------------------------------------
-  // Preloaders
+  // Parsers
   // ---------------------------------------------------------------------------
 
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { transfers } = await handler(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
-
-  return (
-    <Modal>
-      <SendDialog
-        address={params.address as Address}
-        initialTransfers={transfers ?? []}
-      />
-    </Modal>
+  const paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
   );
-}
+
+  // ---------------------------------------------------------------------------
+  // Preload
+  // ---------------------------------------------------------------------------
+
+  addressPreloader(params);
+  preloadGetUserOperations({
+    address: params.address as Address,
+    offset: paginationState.pageIndex * paginationState.pageSize,
+    limit: paginationState.pageSize,
+    direction: "desc",
+    status: "all",
+    is_testnet: false,
+  });
+  preloadGetUserOperationsCount({
+    address: params.address as Address,
+    status: "all",
+    is_testnet: false,
+  });
+};

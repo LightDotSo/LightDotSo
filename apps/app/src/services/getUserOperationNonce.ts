@@ -15,14 +15,14 @@
 
 import { getUserOperationNonce as getClientUserOperationNonce } from "@lightdotso/client";
 import "server-only";
-import type { Address } from "viem";
+import type { UserOperationNonceParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address, chain_id: number) => {
-  void getUserOperationNonce(address, chain_id);
+export const preload = (params: UserOperationNonceParams) => {
+  void getUserOperationNonce(params);
 };
 
 // -----------------------------------------------------------------------------
@@ -30,13 +30,12 @@ export const preload = (address: Address, chain_id: number) => {
 // -----------------------------------------------------------------------------
 
 export const getUserOperationNonce = async (
-  address: Address,
-  chain_id: number,
+  params: UserOperationNonceParams,
 ) => {
   return getClientUserOperationNonce(
     {
       params: {
-        query: { address: address, chain_id: chain_id },
+        query: { address: params.address, chain_id: params.chain_id },
       },
     },
     false,

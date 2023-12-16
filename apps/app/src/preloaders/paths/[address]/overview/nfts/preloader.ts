@@ -23,5 +23,5 @@ import { preload as preloadGetNftValuation } from "@/services/getNftValuation";
 
 export const preloader = async (params: { address: string }) => {
   addressPreloader(params);
-  preloadGetNftValuation(params.address as Address);
+  preloadGetNftValuation({ address: params.address as Address });
 };

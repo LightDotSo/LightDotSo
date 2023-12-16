@@ -13,15 +13,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+
 // -----------------------------------------------------------------------------
 // Preloader
 // -----------------------------------------------------------------------------
 
 export const preloader = (
-  _params: { address: string },
+  params: { address: string },
   _searchParams: {
     userOperations?: string;
   },
 ) => {
-  void {};
+  addressPreloader(params);
 };

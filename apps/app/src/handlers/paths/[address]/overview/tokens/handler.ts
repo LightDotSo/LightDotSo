@@ -37,17 +37,17 @@ export const handler = async (params: { address: string }) => {
 
   const { walletSettings } = await addressHandler(params);
 
-  const tokensPromise = getTokens(
-    params.address as Address,
-    walletSettings.is_enabled_testnet,
-  );
+  const tokensPromise = getTokens({
+    address: params.address as Address,
+    is_testnet: walletSettings.is_enabled_testnet,
+  });
 
-  const tokensCountPromise = getTokensCount(
-    params.address as Address,
-    walletSettings.is_enabled_testnet,
-  );
+  const tokensCountPromise = getTokensCount({
+    address: params.address as Address,
+    is_testnet: walletSettings.is_enabled_testnet,
+  });
 
-  const portfolioPromise = getPortfolio(params.address as Address);
+  const portfolioPromise = getPortfolio({ address: params.address as Address });
 
   const [tokens, tokensCount, portfolio] = await Promise.all([
     tokensPromise,

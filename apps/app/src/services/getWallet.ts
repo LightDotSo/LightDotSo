@@ -14,21 +14,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getWallet as getClientWallet } from "@lightdotso/client";
+import type { WalletParams } from "@/params";
 import "server-only";
-import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getWallet(address);
+export const preload = (params: WalletParams) => {
+  void getWallet(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getWallet = async (address: Address) => {
-  return getClientWallet({ params: { query: { address: address } } }, false);
+export const getWallet = async (params: WalletParams) => {
+  return getClientWallet(
+    { params: { query: { address: params.address } } },
+    false,
+  );
 };

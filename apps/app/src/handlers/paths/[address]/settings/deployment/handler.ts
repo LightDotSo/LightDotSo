@@ -14,11 +14,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { Result } from "neverthrow";
-import { notFound } from "next/navigation";
 import type { Address } from "viem";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { getTransactions, getTransactionsCount } from "@/services";
+import { getUserOperations, getUserOperationsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
@@ -35,39 +34,55 @@ export const handler = async (params: { address: string }) => {
   // Fetch
   // ---------------------------------------------------------------------------
 
-  const { walletSettings } = await addressHandler(params);
+  const { wallet, config, walletSettings } = await addressHandler(params);
 
-  const transactionsPromise = getTransactions({
+  const userOperationsPromise = getUserOperations({
     address: params.address as Address,
+    status: "executed",
+    direction: "asc",
+    limit: Number.MAX_SAFE_INTEGER,
+    offset: 0,
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const transactionsCountPromise = getTransactionsCount({
+  const userOperationsCountPromise = getUserOperationsCount({
     address: params.address as Address,
+    status: "executed",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const [transactions, transactionsCount] = await Promise.all([
-    transactionsPromise,
-    transactionsCountPromise,
+  const [userOperations, userOperationsCount] = await Promise.all([
+    userOperationsPromise,
+    userOperationsCountPromise,
   ]);
 
   // ---------------------------------------------------------------------------
   // Parse
   // ---------------------------------------------------------------------------
 
-  const res = Result.combineWithAllErrors([transactions, transactionsCount]);
+  const res = Result.combineWithAllErrors([
+    userOperations,
+    userOperationsCount,
+  ]);
 
   return res.match(
-    ([transactions, transactionsCount]) => {
+    ([userOperations, userOperationsCount]) => {
       return {
+        wallet: wallet,
+        config: config,
         walletSettings: walletSettings,
-        transactions: transactions,
-        transactionsCount: transactionsCount,
+        userOperations: userOperations,
+        userOperationsCount: userOperationsCount,
       };
     },
     () => {
-      return notFound();
+      return {
+        wallet: wallet,
+        config: config,
+        walletSettings: walletSettings,
+        userOperations: [],
+        userOperationsCount: { count: 0 },
+      };
     },
   );
 };

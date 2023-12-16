@@ -19,10 +19,10 @@ import { Suspense } from "react";
 import type { Address } from "viem";
 import { SettingsNameCard } from "@/app/(wallet)/[address]/settings/(components)/settings-name-card";
 import { SettingsTestnetCard } from "@/app/(wallet)/[address]/settings/(components)/settings-testnet-card";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/paths/[address]/settings/handler";
+import { preloader } from "@/preloaders/paths/[address]/settings/preloader";
 import { queries } from "@/queries";
-import { getWalletSettings, getQueryClient } from "@/services";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -47,7 +47,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await handler(params);
+  const { walletSettings } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -55,11 +55,9 @@ export default async function Page({ params }: PageProps) {
 
   const queryClient = getQueryClient();
 
-  const res = await getWalletSettings(params.address as Address);
-
   queryClient.setQueryData(
     queries.wallet.settings({ address: params.address as Address }).queryKey,
-    res.unwrapOr(null),
+    walletSettings,
   );
 
   // ---------------------------------------------------------------------------

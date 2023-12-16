@@ -17,10 +17,8 @@ import type { Address } from "viem";
 import { OpConfirmDialog } from "@/app/(wallet)/[address]/op/(components)/op-confirm-dialog";
 import { Modal } from "@/components/modal";
 import { parseNumber } from "@/handlers/parsers";
-import { handler } from "@/handlers/paths/[address]/handler";
-import { handler as userOpHandler } from "@/handlers/paths/[address]/op/[chainId]/[userOperationHash]/handler";
-import { preloader as userOpPreloader } from "@/preloaders/paths/[address]/op/[chainId]/[userOperationHash]/preloader";
-import { preloader } from "@/preloaders/paths/[address]/preloader";
+import { handler } from "@/handlers/paths/[address]/op/[chainId]/[userOperationHash]/handler";
+import { preloader } from "@/preloaders/paths/[address]/op/[chainId]/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -40,7 +38,6 @@ export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
 
   preloader(params);
-  userOpPreloader(params);
 
   // ---------------------------------------------------------------------------
   // Parsers
@@ -52,8 +49,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { config } = await handler(params);
-  const { userOperation } = await userOpHandler(params);
+  const { config, userOperation } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Render
