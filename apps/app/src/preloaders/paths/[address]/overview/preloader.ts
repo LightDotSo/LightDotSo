@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
+import { preloader as preloadOverviewHistory } from "@/preloaders/paths/[address]/overview/history/preloader";
+import { preloader as preloadOverviewNfts } from "@/preloaders/paths/[address]/overview/nfts/preloader";
+import { preloader as preloadOverviewTokens } from "@/preloaders/paths/[address]/overview/tokens/preloader";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
-import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
-import { preload as preloadGetTokens } from "@/services/getTokens";
 
 // -----------------------------------------------------------------------------
 // Preloader
@@ -24,6 +24,7 @@ import { preload as preloadGetTokens } from "@/services/getTokens";
 
 export const preloader = async (params: { address: string }) => {
   addressPreloader(params);
-  preloadGetPortfolio(params.address as Address);
-  preloadGetTokens(params.address as Address);
+  preloadOverviewHistory(params);
+  preloadOverviewNfts(params);
+  preloadOverviewTokens(params);
 };
