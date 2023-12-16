@@ -361,7 +361,7 @@ export interface components {
       /** @description The id of the configuration. */
       id: string;
       /** @description The image hash of the configuration. */
-      image_hash: string;
+      imageHash: string;
       /** @description The owners of the configuration. */
       owners: components["schemas"]["ConfigurationOwner"][];
       /**
@@ -488,12 +488,12 @@ export interface components {
        * Format: double
        * @description The change of the balance in the last 24 hours.
        */
-      balance_change_24h: number;
+      balanceChange24h: number;
       /**
        * Format: double
        * @description The percentage change of the balance in the last 24 hours.
        */
-      balance_change_24h_percentage: number;
+      balanceChange24hPercentage: number;
       /** @description The historical balances of the portfolio. */
       balances: components["schemas"]["PortfolioBalanceDate"][];
     };
@@ -518,14 +518,14 @@ export interface components {
     /** @description Signature root type. */
     Signature: {
       /** @description The owner id of the signature. */
-      owner_id: string;
+      ownerId: string;
       /** @description The signature of the user operation in hex. */
       signature: string;
       /**
        * Format: int32
        * @description The type of the signature.
        */
-      signature_type: number;
+      signatureType: number;
     };
     /** @description Signature operation errors */
     SignatureError: OneOf<[{
@@ -562,7 +562,7 @@ export interface components {
       NotFound: string;
     }]>;
     SupportRequestPostRequestParams: {
-      support_request: components["schemas"]["SupportRequest"];
+      supportRequest: components["schemas"]["SupportRequest"];
     };
     /** @description Token root type. */
     Token: {
@@ -577,12 +577,12 @@ export interface components {
        * Format: double
        * @description The balance of the token in USD.
        */
-      balance_usd: number;
+      balanceUsd: number;
       /**
        * Format: int64
        * @description The chain id of the token.
        */
-      chain_id: number;
+      chainId: number;
       /**
        * Format: int32
        * @description The decimals of the token.
@@ -620,12 +620,12 @@ export interface components {
        * Format: double
        * @description The change of the token price in the last 24 hours.
        */
-      price_change_24h: number;
+      priceChange24h: number;
       /**
        * Format: double
        * @description The percentage change of the token price in the last 24 hours.
        */
-      price_change_24h_percentage: number;
+      priceChange24hPercentage: number;
       /** @description The historical prices of the token price. */
       prices: components["schemas"]["TokenPriceDate"][];
     };
@@ -652,7 +652,7 @@ export interface components {
        * Format: int64
        * @description The chain id of the transaction.
        */
-      chain_id: number;
+      chainId: number;
       /** @description The hash of the transaction. */
       hash: string;
       /** @description The timestamp of the transaction. */
@@ -688,51 +688,51 @@ export interface components {
     }]>;
     /** @description User operation root type. */
     UserOperation: {
-      call_data: string;
+      callData: string;
       /** Format: int64 */
-      call_gas_limit: number;
+      callGasLimit: number;
       /** Format: int64 */
-      chain_id: number;
+      chainId: number;
       hash: string;
-      init_code: string;
+      initCode: string;
       /** Format: int64 */
-      max_fee_per_gas: number;
+      maxFeePerGas: number;
       /** Format: int64 */
-      max_priority_fee_per_gas: number;
+      maxPriorityFeePerGas: number;
       /** Format: int64 */
       nonce: number;
       paymaster?: components["schemas"]["UserOperationPaymaster"] | null;
-      paymaster_and_data: string;
+      paymasterAndData: string;
       /** Format: int64 */
-      pre_verification_gas: number;
+      preVerificationGas: number;
       sender: string;
       signatures: components["schemas"]["UserOperationSignature"][];
       status: string;
       transaction?: components["schemas"]["UserOperationTransaction"] | null;
       /** Format: int64 */
-      verification_gas_limit: number;
+      verificationGasLimit: number;
     };
     /** @description Item to create. */
     UserOperationCreate: {
-      call_data: string;
+      callData: string;
       /** Format: int64 */
-      call_gas_limit: number;
+      callGasLimit: number;
       /** Format: int64 */
-      chain_id: number;
+      chainId: number;
       hash: string;
-      init_code: string;
+      initCode: string;
       /** Format: int64 */
-      max_fee_per_gas: number;
+      maxFeePerGas: number;
       /** Format: int64 */
-      max_priority_fee_per_gas: number;
+      maxPriorityFeePerGas: number;
       /** Format: int64 */
       nonce: number;
-      paymaster_and_data: string;
+      paymasterAndData: string;
       /** Format: int64 */
-      pre_verification_gas: number;
+      preVerificationGas: number;
       sender: string;
       /** Format: int64 */
-      verification_gas_limit: number;
+      verificationGasLimit: number;
     };
     /** @description User operation operation errors */
     UserOperationError: OneOf<[{
@@ -764,19 +764,19 @@ export interface components {
     };
     UserOperationPostRequestParams: {
       signature: components["schemas"]["UserOperationSignature"];
-      user_operation: components["schemas"]["UserOperationCreate"];
+      userOperation: components["schemas"]["UserOperationCreate"];
     };
     /** @description User operation signature */
     UserOperationSignature: {
       /** @description The id of the owner of the signature. */
-      owner_id: string;
+      ownerId: string;
       /** @description The signature in hex string. */
       signature: string;
       /**
        * Format: int32
        * @description The signature type
        */
-      signature_type: number;
+      signatureType: number;
     };
     /** @description User operation operation errors */
     UserOperationSuccess: {
@@ -793,7 +793,7 @@ export interface components {
       /** @description The address of the wallet. */
       address: string;
       /** @description The address of the factory. */
-      factory_address: string;
+      factoryAddress: string;
       /** @description The name of the wallet. */
       name: string;
       /** @description The salt of the wallet. */
@@ -867,7 +867,7 @@ export interface components {
     /** @description WalletSettings root type. */
     WalletSettings: {
       /** @description The wallet_settings of whether the testnet is enabled. */
-      is_enabled_testnet: boolean;
+      isEnabledTestnet: boolean;
     };
     /** @description WalletSettings operation errors */
     WalletSettingsError: OneOf<[{
@@ -879,10 +879,10 @@ export interface components {
     /** @description Optional WalletSettings root type. */
     WalletSettingsOptional: {
       /** @description The update query of wallet_settings of whether the testnet is enabled. */
-      is_enabled_testnet?: boolean | null;
+      isEnabledTestnet?: boolean | null;
     };
     WalletSettingsPostRequestParams: {
-      wallet_settings: components["schemas"]["WalletSettingsOptional"];
+      walletSettings: components["schemas"]["WalletSettingsOptional"];
     };
     /** @description WalletTab to do. */
     WalletTab: {
@@ -890,17 +890,17 @@ export interface components {
        * Format: int64
        * @description The number of owners of the wallet.
        */
-      owner_count: number;
+      ownerCount: number;
       /**
        * Format: int64
        * @description The number of transactions of the wallet.
        */
-      transaction_count: number;
+      transactionCount: number;
       /**
        * Format: int64
        * @description The pending number of user_operations of the wallet.
        */
-      user_operation_count: number;
+      userOperationCount: number;
     };
   };
   responses: never;
@@ -983,7 +983,7 @@ export interface operations {
   v1_auth_verify_handler: {
     parameters: {
       query: {
-        user_address: string;
+        userAddress: string;
       };
     };
     requestBody: {
@@ -1094,7 +1094,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description The id of the user to query. */
-        user_id: string;
+        userId: string;
       };
     };
     requestBody: {
@@ -1125,7 +1125,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description The id of the notification to get. */
-        notification_id: string;
+        notificationId: string;
       };
     };
     responses: {
@@ -1259,9 +1259,9 @@ export interface operations {
         /** @description The address of the paymaster. */
         address: string;
         /** @description The chain id of the paymaster. */
-        chain_id: number;
+        chainId: number;
         /** @description The timestamp of the paymaster. */
-        valid_after: number;
+        validAfter: number;
       };
     };
     responses: {
@@ -1341,7 +1341,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description The hash of the user operation. */
-        user_operation_hash: string;
+        userOperationHash: string;
         /** @description The procedure to create(default: OnChain) */
         procedure?: ("Offchain" | "Onchain" | "Erc1271") | null;
       };
@@ -1385,7 +1385,7 @@ export interface operations {
   v1_signature_get_handler: {
     parameters: {
       query: {
-        user_operation_hash: string;
+        userOperationHash: string;
       };
     };
     responses: {
@@ -1415,7 +1415,7 @@ export interface operations {
         /** @description The maximum number of signatures to return. */
         limit?: number | null;
         /** @description The user operation hash to filter by. */
-        user_operation_hash?: string | null;
+        userOperationHash?: string | null;
       };
     };
     responses: {
@@ -1441,7 +1441,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description The wallet address of the user operation. */
-        wallet_address: string;
+        walletAddress: string;
       };
     };
     requestBody: {
@@ -1474,7 +1474,7 @@ export interface operations {
         /** @description The address of the token. */
         address: string;
         /** @description The chain id of the token. */
-        chain_id: number;
+        chainId: number;
       };
     };
     responses: {
@@ -1506,9 +1506,9 @@ export interface operations {
         /** @description The address of the wallet. */
         address: string;
         /** @description The flag to indicate if the token is a spam. */
-        is_spam?: boolean | null;
+        isSpam?: boolean | null;
         /** @description The flag to indicate if the token is a testnet token. */
-        is_testnet?: boolean | null;
+        isTestnet?: boolean | null;
       };
     };
     responses: {
@@ -1540,9 +1540,9 @@ export interface operations {
         /** @description The address of the wallet. */
         address: string;
         /** @description The flag to indicate if the token is a spam. */
-        is_spam?: boolean | null;
+        isSpam?: boolean | null;
         /** @description The flag to indicate if the token is a testnet token. */
-        is_testnet?: boolean | null;
+        isTestnet?: boolean | null;
       };
     };
     responses: {
@@ -1570,7 +1570,7 @@ export interface operations {
         /** @description The address of the token_price. */
         address: string;
         /** @description The chain id of the token_price. */
-        chain_id: number;
+        chainId: number;
       };
     };
     responses: {
@@ -1596,7 +1596,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description The transaction hash. */
-        transaction_hash: string;
+        transactionHash: string;
       };
     };
     responses: {
@@ -1628,7 +1628,7 @@ export interface operations {
         /** @description The sender address to filter by. */
         address?: string | null;
         /** @description The flag to indicate if the transaction is a testnet transaction. */
-        is_testnet?: boolean | null;
+        isTestnet?: boolean | null;
       };
     };
     responses: {
@@ -1660,7 +1660,7 @@ export interface operations {
         /** @description The sender address to filter by. */
         address?: string | null;
         /** @description The flag to indicate if the transaction is a testnet transaction. */
-        is_testnet?: boolean | null;
+        isTestnet?: boolean | null;
       };
     };
     responses: {
@@ -1710,7 +1710,7 @@ export interface operations {
   v1_user_operation_post_handler: {
     parameters: {
       query: {
-        chain_id: number;
+        chainId: number;
       };
     };
     requestBody: {
@@ -1753,7 +1753,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description The user operation hash to get. */
-        user_operation_hash: string;
+        userOperationHash: string;
       };
     };
     responses: {
@@ -1792,7 +1792,7 @@ export interface operations {
          */
         order?: ("asc" | "desc") | null;
         /** @description The flag to indicate if the operation is a testnet user operation. */
-        is_testnet?: boolean | null;
+        isTestnet?: boolean | null;
       };
     };
     responses: {
@@ -1831,7 +1831,7 @@ export interface operations {
          */
         order?: ("asc" | "desc") | null;
         /** @description The flag to indicate if the operation is a testnet user operation. */
-        is_testnet?: boolean | null;
+        isTestnet?: boolean | null;
       };
     };
     responses: {
@@ -1857,7 +1857,7 @@ export interface operations {
     parameters: {
       query: {
         /** @description The chain id to get the user operation nonce for. */
-        chain_id: number;
+        chainId: number;
         /** @description The sender address to filter by. */
         address: string;
       };
@@ -1885,9 +1885,9 @@ export interface operations {
     parameters: {
       query: {
         /** @description The user operation hash to get. */
-        user_operation_hash: string;
+        userOperationHash: string;
         /** @description The type of signature to get for. */
-        signature_type?: number | null;
+        signatureType?: number | null;
       };
     };
     responses: {
@@ -1984,7 +1984,7 @@ export interface operations {
         /** @description The address of the wallet. */
         address: string;
         /** @description The chain id of the wallet. */
-        chain_id?: number | null;
+        chainId?: number | null;
       };
     };
     responses: {
@@ -2141,7 +2141,7 @@ export interface operations {
         /** @description The address of the wallet. */
         address: string;
         /** @description The chain id of the wallet. */
-        chain_id?: number | null;
+        chainId?: number | null;
       };
     };
     responses: {
@@ -2169,7 +2169,7 @@ export interface operations {
         /** @description The address of the wallet. */
         address: string;
         /** @description The chain id of the wallet. */
-        chain_id?: number | null;
+        chainId?: number | null;
       };
     };
     requestBody: {

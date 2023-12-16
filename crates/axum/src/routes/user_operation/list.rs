@@ -54,12 +54,14 @@ pub struct ListQuery {
 }
 
 #[derive(Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
 pub enum ListQueryOrder {
     Asc,
     Desc,
 }
 
 #[derive(Clone, Debug, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
 pub enum ListQueryStatus {
     Proposed,
     Pending,

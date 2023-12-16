@@ -34,6 +34,7 @@ use utoipa::IntoParams;
 // -----------------------------------------------------------------------------
 
 #[derive(Debug, Deserialize, Default, IntoParams)]
+#[serde(rename_all = "camelCase")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
     /// The address of the portfolio.
