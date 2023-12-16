@@ -44,11 +44,11 @@ export const OwnersDataTable: FC<OwnersDataTableProps> = ({ address }) => {
   const queryClient = useQueryClient();
 
   const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queries.configuration.get(address).queryKey,
+    queries.configuration.get({ address }).queryKey,
   );
 
   const { data: configuration } = useQuery<ConfigurationData | null>({
-    queryKey: queries.configuration.get(address).queryKey,
+    queryKey: queries.configuration.get({ address }).queryKey,
     queryFn: async () => {
       if (!address) {
         return null;

@@ -48,7 +48,7 @@ export const NftPortfolio: FC<NftPortfolioProps> = ({
   const queryClient = useQueryClient();
 
   const portfolio: NftPortfolioData | undefined = queryClient.getQueryData(
-    queries.nft_valuation.get(address).queryKey,
+    queries.nft_valuation.get({ address }).queryKey,
   );
 
   if (!portfolio) {

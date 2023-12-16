@@ -15,16 +15,15 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
-import type { WalletListParams } from "@/params";
+import type { WalletListParams, WalletParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const wallet = createQueryKeys("wallet", {
-  get: (address: Address) => ({
-    queryKey: [address],
+  get: (params: WalletParams) => ({
+    queryKey: [{ params }],
   }),
   list: (params: WalletListParams) => ({
     queryKey: [{ params }],
@@ -32,11 +31,11 @@ export const wallet = createQueryKeys("wallet", {
   listCount: (params: WalletListParams) => ({
     queryKey: [{ params }],
   }),
-  settings: (address: Address) => ({
-    queryKey: [address],
+  settings: (params: WalletParams) => ({
+    queryKey: [{ params }],
   }),
-  tab: ({ address }: { address?: Address }) => ({
-    queryKey: [{ address }],
+  tab: (params: WalletParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

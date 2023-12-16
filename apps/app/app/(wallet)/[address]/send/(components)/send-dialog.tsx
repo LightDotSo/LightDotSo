@@ -110,7 +110,7 @@ export const SendDialog: FC<SendDialogProps> = ({
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
 
   const currentTokenData: TokenData[] | undefined = queryClient.getQueryData(
     queries.token.list({

@@ -19,6 +19,10 @@ import type { Address } from "viem";
 // Params
 // -----------------------------------------------------------------------------
 
+export type WalletParams = {
+  address: Address;
+};
+
 export type WalletListParams = {
   address: Address;
   limit?: number;

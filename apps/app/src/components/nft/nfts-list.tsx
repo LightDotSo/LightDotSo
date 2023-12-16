@@ -65,7 +65,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
 
   const currentData: NftDataPage | undefined = queryClient.getQueryData(
     queries.nft.list({

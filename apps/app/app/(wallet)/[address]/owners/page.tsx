@@ -62,7 +62,8 @@ export default async function Page({ params }: PageProps) {
   return res.match(
     res => {
       queryClient.setQueryData(
-        queries.configuration.get(params.address as Address).queryKey,
+        queries.configuration.get({ address: params.address as Address })
+          .queryKey,
         res,
       );
 

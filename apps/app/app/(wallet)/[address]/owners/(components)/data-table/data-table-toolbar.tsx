@@ -54,7 +54,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
   const queryClient = useQueryClient();
 
   const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queries.configuration.get(wallet as Address).queryKey,
+    queries.configuration.get({ address: wallet as Address }).queryKey,
   );
 
   // ---------------------------------------------------------------------------

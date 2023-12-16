@@ -75,7 +75,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const queryClient = useQueryClient();
 
   const walletSettings: WalletSettingsData | undefined =
-    queryClient.getQueryData(queries.wallet.settings(address).queryKey);
+    queryClient.getQueryData(queries.wallet.settings({ address }).queryKey);
 
   const currentData: TokenData[] | undefined = queryClient.getQueryData(
     queries.token.list({

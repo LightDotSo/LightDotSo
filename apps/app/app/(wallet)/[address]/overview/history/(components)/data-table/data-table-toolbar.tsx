@@ -67,7 +67,7 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
 
   const walletSettings: WalletSettingsData | undefined =
     queryClient.getQueryData(
-      queries.wallet.settings(wallet as Address).queryKey,
+      queries.wallet.settings({ address: wallet as Address }).queryKey,
     );
 
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(

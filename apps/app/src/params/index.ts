@@ -14,11 +14,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export type { AuthParams } from "./auth";
+export type { ConfigurationParams } from "./configuration";
+export type { NftListParams } from "./nft";
+export type { NftValuationParams } from "./nftValuation";
 export type { PaymasterOperationGetParams } from "./paymasterOperation";
+export type { PortfolioParams } from "./portfolio";
 export type { TokenListParams } from "./token";
+export type { TokenPriceParams } from "./tokenPrice";
 export type { TransactionListParams } from "./transaction";
+export type { UserParams } from "./user";
 export type {
   UserOperationListParams,
   UserOperationListCountParams,
 } from "./userOperation";
-export type { WalletListParams } from "./wallet";
+export type { WalletParams, WalletListParams } from "./wallet";

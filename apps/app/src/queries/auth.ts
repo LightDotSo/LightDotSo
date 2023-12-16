@@ -15,18 +15,18 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { Address } from "viem";
+import type { AuthParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
 
 export const auth = createQueryKeys("auth", {
-  nonce: (address?: Address) => ({
-    queryKey: [address ? { address } : {}],
+  nonce: (params: AuthParams) => ({
+    queryKey: [{ params }],
   }),
-  session: (address: Address) => ({
-    queryKey: [address],
+  session: (params: AuthParams) => ({
+    queryKey: [{ params }],
   }),
 });
 

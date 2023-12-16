@@ -21,6 +21,7 @@ import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
+import type { Address } from "viem";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores";
 
@@ -93,11 +94,12 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
   const queryClient = useQueryClient();
 
   const currentData: TabData | undefined = queryClient.getQueryData(
-    queries.wallet.tab({ address: walletAddress }).queryKey,
+    queries.wallet.tab({ address: walletAddress as Address }).queryKey,
   );
 
   const { data } = useSuspenseQuery<TabData | null>({
-    queryKey: queries.wallet.tab({ address: walletAddress }).queryKey,
+    queryKey: queries.wallet.tab({ address: walletAddress as Address })
+      .queryKey,
     queryFn: async () => {
       if (!walletAddress) {
         return null;
