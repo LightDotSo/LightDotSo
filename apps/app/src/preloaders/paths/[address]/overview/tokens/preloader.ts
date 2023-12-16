@@ -15,6 +15,7 @@
 
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+import { paginationParser } from "@/querystates";
 import { preload as preloadGetPortfolio } from "@/services/getPortfolio";
 import { preload as preloadGetTokens } from "@/services/getTokens";
 import { preload as preloadGetTokensCount } from "@/services/getTokensCount";
@@ -23,9 +24,34 @@ import { preload as preloadGetTokensCount } from "@/services/getTokensCount";
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
+export const preloader = async (
+  params: { address: string },
+  searchParams: {
+    pagination?: string;
+  },
+) => {
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
   addressPreloader(params);
   preloadGetPortfolio({ address: params.address as Address });
-  preloadGetTokens({ address: params.address as Address });
-  preloadGetTokensCount({ address: params.address as Address });
+  preloadGetTokens({
+    address: params.address as Address,
+    offset: paginationState.pageIndex * paginationState.pageSize,
+    limit: paginationState.pageSize,
+    is_testnet: false,
+  });
+  preloadGetTokensCount({
+    address: params.address as Address,
+    is_testnet: false,
+  });
 };

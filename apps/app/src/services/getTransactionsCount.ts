@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { getTransactionsCount as getClientTransactionsCount } from "@lightdotso/client";
-import type { TransactionListParams } from "@/params";
+import type { TransactionListCountParams } from "@/params";
 import "server-only";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (params: TransactionListParams) => {
+export const preload = (params: TransactionListCountParams) => {
   void getTransactionsCount(params);
 };
 
@@ -29,7 +29,9 @@ export const preload = (params: TransactionListParams) => {
 // Service
 // -----------------------------------------------------------------------------
 
-export const getTransactionsCount = async (params: TransactionListParams) => {
+export const getTransactionsCount = async (
+  params: TransactionListCountParams,
+) => {
   return getClientTransactionsCount(
     {
       params: {

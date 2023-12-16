@@ -80,21 +80,25 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const currentData: TokenData[] | undefined = queryClient.getQueryData(
     queries.token.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: OVERVIEW_ROW_COUNT,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
   const { data } = useSuspenseQuery<TokenData[] | null>({
     queryKey: queries.token.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: OVERVIEW_ROW_COUNT,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
       const res = await getTokens({
         params: {
           query: {
             address,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
           },
         },
       });

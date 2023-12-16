@@ -18,6 +18,7 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { OverviewList } from "@/app/(wallet)/[address]/overview/(components)/overview/overview-list";
+import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/overview/handler";
 import { preloader } from "@/preloaders/paths/[address]/overview/preloader";
 import { queries } from "@/queries";
@@ -46,7 +47,7 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { walletSettings, tokens, tokensCount, portfolio, nfts, nftValuation } =
+  const { walletSettings, tokens, portfolio, nfts, nftValuation } =
     await handler(params);
 
   // ---------------------------------------------------------------------------
@@ -66,16 +67,11 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.token.list({
       address: params.address as Address,
+      limit: OVERVIEW_ROW_COUNT,
+      offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     tokens,
-  );
-  queryClient.setQueryData(
-    queries.token.listCount({
-      address: params.address as Address,
-      is_testnet: walletSettings?.is_enabled_testnet,
-    }).queryKey,
-    tokensCount,
   );
   queryClient.setQueryData(
     queries.nft_valuation.get({ address: params.address as Address }).queryKey,

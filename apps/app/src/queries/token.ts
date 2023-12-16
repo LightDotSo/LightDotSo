@@ -15,7 +15,7 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { TokenListParams } from "@/params";
+import type { TokenListParams, TokenListCountParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Keys
@@ -25,7 +25,7 @@ export const token = createQueryKeys("token", {
   list: (params: TokenListParams) => ({
     queryKey: [{ params }],
   }),
-  listCount: (params: TokenListParams) => ({
+  listCount: (params: TokenListCountParams) => ({
     queryKey: [{ params }],
   }),
 });

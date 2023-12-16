@@ -21,6 +21,9 @@ import type { Address } from "viem";
 
 export type TokenListParams = {
   address: Address;
-  is_testnet?: boolean;
-  offset?: number;
+  is_testnet: boolean;
+  limit: number;
+  offset: number;
 };
+
+export type TokenListCountParams = Omit<TokenListParams, "limit" | "offset">;

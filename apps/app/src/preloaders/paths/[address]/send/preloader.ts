@@ -13,10 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+import { preload as preloadGetTokens } from "@/services/getTokens";
 
 // -----------------------------------------------------------------------------
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = addressPreloader;
+export const preloader = async (params: { address: string }) => {
+  addressPreloader(params);
+
+  preloadGetTokens({
+    address: params.address as Address,
+    offset: 0,
+    limit: Number.MAX_SAFE_INTEGER,
+    is_testnet: false,
+  });
+};

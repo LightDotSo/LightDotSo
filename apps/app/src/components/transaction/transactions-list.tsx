@@ -85,21 +85,25 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: OVERVIEW_ROW_COUNT,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
   const { data } = useSuspenseQuery<TransactionData[] | null>({
     queryKey: queries.transaction.list({
       address,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      limit: OVERVIEW_ROW_COUNT,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     queryFn: async () => {
       const res = await getTransactions({
         params: {
           query: {
             address,
-            is_testnet: walletSettings?.is_enabled_testnet,
+            is_testnet: walletSettings?.is_enabled_testnet ?? false,
           },
         },
       });

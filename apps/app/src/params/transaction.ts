@@ -21,8 +21,12 @@ import type { Address } from "viem";
 
 export type TransactionListParams = {
   address: Address;
-  order?: "desc" | "asc";
-  limit?: number;
-  offset?: number;
-  is_testnet?: boolean;
+  limit: number;
+  offset: number;
+  is_testnet: boolean;
 };
+
+export type TransactionListCountParams = Omit<
+  TransactionListParams,
+  "limit" | "offset"
+>;

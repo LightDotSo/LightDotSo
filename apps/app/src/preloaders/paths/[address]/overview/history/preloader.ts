@@ -15,6 +15,7 @@
 
 import type { Address } from "viem";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
+import { paginationParser } from "@/querystates";
 import { preload as preloadGetTransactions } from "@/services/getTransactions";
 import { preload as preloadGetTransactionsCount } from "@/services/getTransactionsCount";
 
@@ -22,8 +23,33 @@ import { preload as preloadGetTransactionsCount } from "@/services/getTransactio
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (params: { address: string }) => {
+export const preloader = async (
+  params: { address: string },
+  searchParams: {
+    pagination?: string;
+  },
+) => {
+  // ---------------------------------------------------------------------------
+  // Parsers
+  // ---------------------------------------------------------------------------
+
+  const paginationState = paginationParser.parseServerSide(
+    searchParams.pagination,
+  );
+
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
   addressPreloader(params);
-  preloadGetTransactions({ address: params.address as Address });
-  preloadGetTransactionsCount({ address: params.address as Address });
+  preloadGetTransactions({
+    address: params.address as Address,
+    offset: paginationState.pageIndex * paginationState.pageSize,
+    limit: paginationState.pageSize,
+    is_testnet: false,
+  });
+  preloadGetTransactionsCount({
+    address: params.address as Address,
+    is_testnet: false,
+  });
 };

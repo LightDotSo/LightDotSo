@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { preloader as preloadOverviewHistory } from "@/preloaders/paths/[address]/overview/history/preloader";
-import { preloader as preloadOverviewNfts } from "@/preloaders/paths/[address]/overview/nfts/preloader";
-import { preloader as preloadOverviewTokens } from "@/preloaders/paths/[address]/overview/tokens/preloader";
+// import { preloader as preloadOverviewHistory } from "@/preloaders/paths/[address]/overview/history/preloader";
+// import { preloader as preloadOverviewNfts } from "@/preloaders/paths/[address]/overview/nfts/preloader";
+// import { preloader as preloadOverviewTokens } from "@/preloaders/paths/[address]/overview/tokens/preloader";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
 
 // -----------------------------------------------------------------------------
@@ -24,7 +24,7 @@ import { preloader as addressPreloader } from "@/preloaders/paths/[address]/prel
 
 export const preloader = async (params: { address: string }) => {
   addressPreloader(params);
-  preloadOverviewHistory(params);
-  preloadOverviewNfts(params);
-  preloadOverviewTokens(params);
+  // preloadOverviewHistory(params);
+  // preloadOverviewNfts(params);
+  // preloadOverviewTokens(params);
 };

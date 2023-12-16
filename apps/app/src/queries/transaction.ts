@@ -15,7 +15,10 @@
 
 import { createQueryKeys } from "@lukemorales/query-key-factory";
 import type { inferQueryKeys } from "@lukemorales/query-key-factory";
-import type { TransactionListParams } from "@/params";
+import type {
+  TransactionListParams,
+  TransactionListCountParams,
+} from "@/params";
 // -----------------------------------------------------------------------------
 // Keys
 // -----------------------------------------------------------------------------
@@ -24,7 +27,7 @@ export const transaction = createQueryKeys("transaction", {
   list: (params: TransactionListParams) => ({
     queryKey: [{ params }],
   }),
-  listCount: (params: TransactionListParams) => ({
+  listCount: (params: TransactionListCountParams) => ({
     queryKey: [{ params }],
   }),
 });
