@@ -13,35 +13,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { getUserOperationsCount as getClientUserOperationsCount } from "@lightdotso/client";
-import "server-only";
-import type { UserOperationListCountParams } from "@/params";
+import type { Address } from "viem";
 
 // -----------------------------------------------------------------------------
-// Pre
+// Type
 // -----------------------------------------------------------------------------
 
-export const preload = (params: UserOperationListCountParams) => {
-  void getUserOperationsCount(params);
+export type UserOperationListParams = {
+  address: Address;
+  status: "all" | "proposed" | "executed";
+  direction: "desc" | "asc";
+  limit: number;
+  offset: number;
+  is_testnet: boolean;
 };
 
-// -----------------------------------------------------------------------------
-// Service
-// -----------------------------------------------------------------------------
-
-export const getUserOperationsCount = async (
-  params: UserOperationListCountParams,
-) => {
-  return getClientUserOperationsCount(
-    {
-      params: {
-        query: {
-          address: params.address,
-          status: params.status === "all" ? undefined : params.status,
-          is_testnet: params.is_testnet,
-        },
-      },
-    },
-    false,
-  );
-};
+export type UserOperationListCountParams = Omit<
+  UserOperationListParams,
+  "direction" | "limit" | "offset"
+>;

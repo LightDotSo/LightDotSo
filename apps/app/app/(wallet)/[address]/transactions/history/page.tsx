@@ -17,10 +17,10 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
-import { handler } from "@/handlers/paths/[address]/handler";
+import { handler } from "@/handlers/paths/[address]/transactions/history/handler";
 import { preloader } from "@/preloaders/paths/[address]/preloader";
 import { queries } from "@/queries";
-import { getUserOperations, getQueryClient } from "@/services";
+import { getQueryClient } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -45,7 +45,8 @@ export default async function Page({ params }: PageProps) {
   // Handlers
   // ---------------------------------------------------------------------------
 
-  await handler(params);
+  const { walletSettings, userOperations, userOperationsCount } =
+    await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -53,34 +54,41 @@ export default async function Page({ params }: PageProps) {
 
   const queryClient = getQueryClient();
 
-  const res = await getUserOperations(params.address as Address, "executed");
+  queryClient.setQueryData(
+    queries.wallet.settings(params.address as Address).queryKey,
+    walletSettings,
+  );
+  queryClient.setQueryData(
+    queries.user_operation.list({
+      address: params.address as Address,
+      status: "executed",
+      direction: "asc",
+      limit: 10,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    userOperations,
+  );
+  queryClient.setQueryData(
+    queries.user_operation.listCount({
+      address: params.address as Address,
+      status: "executed",
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    userOperationsCount,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return res.match(
-    res => {
-      queryClient.setQueryData(
-        queries.user_operation.list({
-          address: params.address as Address,
-          status: "executed",
-        }).queryKey,
-        res,
-      );
-
-      return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-          <TransactionsDataTable
-            address={params.address as Address}
-            status="executed"
-          />
-          <TransactionsDataTablePagination />
-        </HydrationBoundary>
-      );
-    },
-    _ => {
-      return null;
-    },
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TransactionsDataTable
+        address={params.address as Address}
+        status="executed"
+      />
+      <TransactionsDataTablePagination />
+    </HydrationBoundary>
   );
 }

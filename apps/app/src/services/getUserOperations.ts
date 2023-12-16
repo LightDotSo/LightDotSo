@@ -15,34 +15,31 @@
 
 import { getUserOperations as getClientUserOperations } from "@lightdotso/client";
 import "server-only";
-import type { Address } from "viem";
+import type { UserOperationListParams } from "@/params";
 
 // -----------------------------------------------------------------------------
 // Pre
 // -----------------------------------------------------------------------------
 
-export const preload = (address: Address) => {
-  void getUserOperations(address);
+export const preload = (params: UserOperationListParams) => {
+  void getUserOperations(params);
 };
 
 // -----------------------------------------------------------------------------
 // Service
 // -----------------------------------------------------------------------------
 
-export const getUserOperations = async (
-  address: Address,
-  status?: "proposed" | "pending" | "executed" | "reverted" | "all",
-  direction?: "asc" | "desc",
-  limit?: number,
-) => {
+export const getUserOperations = async (params: UserOperationListParams) => {
   return getClientUserOperations(
     {
       params: {
         query: {
-          address,
-          status: status === "all" ? undefined : status,
-          direction: direction ?? undefined,
-          limit: limit ?? undefined,
+          address: params.address,
+          status: params.status === "all" ? undefined : params.status,
+          direction: params.direction,
+          limit: params.limit,
+          offset: params.offset,
+          is_testnet: params.is_testnet,
         },
       },
     },

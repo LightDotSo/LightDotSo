@@ -75,9 +75,10 @@ export function DataTableToolbar({ status, table }: DataTableToolbarProps) {
     queries.user_operation.list({
       address: wallet as Address,
       status: status,
+      direction: "asc",
       offset: offsetCount,
       limit: paginationState.pageSize,
-      is_testnet: walletSettings?.is_enabled_testnet,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
   );
 
