@@ -20,6 +20,7 @@ pnpm-workspace.yaml
 .changeset
 .next
 .rustc_info.json
+.venv
 
 build
 debug

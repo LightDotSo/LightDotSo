@@ -3,13 +3,12 @@
   version = "0.1.0"
   description = "Add your description here"
   authors = [{ name = "Shun Kakinoki", email = "shunkakinoki@gmail.com" }]
-  dependencies = [
-    "halmos <= 0.0.8",
-    "slither-analyzer <= 0.9.6",
-    "setuptools>=68.0.0",
-  ]
   readme = "README.md"
-  requires-python = ">= 3.8"
+  requires-python = ">= 3.11"
+  dependencies = ["pusher>=3.3.2"]
+
+  [project.scripts]
+    hello = "lightdotso:hello"
 
 [build-system]
   requires = ["hatchling"]
@@ -17,7 +16,10 @@
 
 [tool.rye]
   managed = true
-  dev_dependencies = []
+  dev-dependencies = []
 
 [tool.hatch.metadata]
   allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+  packages = ["src/lightdotso"]

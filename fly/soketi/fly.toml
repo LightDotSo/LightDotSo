@@ -1,43 +1,46 @@
-# fly.toml app configuration file generated for lightdotso-api-stg on 2023-10-19T02:17:08-07:00
+# fly.toml app configuration file generated for lightdotso-soketi on 2023-12-16T18:10:41-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lightdotso-api-stg"
+app = "lightdotso-soketi"
 primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
 
-[experimental]
-  entrypoint = ["/usr/local/bin/api"]
-
 [build]
-  image = "ghcr.io/lightdotso/lightdotso:latest"
+  dockerfile = "./Dockerfile"
 
 [deploy]
   strategy = "bluegreen"
 
 [http_service]
-  internal_port = 3000
+  internal_port = 6001
   force_https = true
   auto_stop_machines = false
   auto_start_machines = true
   min_machines_running = 1
+  processes = ["app"]
   [http_service.concurrency]
     type = "requests"
     hard_limit = 250
     soft_limit = 200
 
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
+
 [checks]
   [checks.health]
-    port = 9091
+    port = 6001
     type = "http"
     interval = "15s"
     timeout = "10s"
     grace_period = "30s"
     method = "get"
-    path = "/health"
+    path = "/"
 
 [[metrics]]
-  port = 9091
+  port = 9601
   path = "/metrics"

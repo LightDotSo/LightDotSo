@@ -93,6 +93,7 @@
     "**/.next/**",
     "**/.swiftpm/**",
     "**/.turbo/**",
+    "**/.venv/**",
     "**/build/**",
     "**/coverage/**",
     "**/debug/**",

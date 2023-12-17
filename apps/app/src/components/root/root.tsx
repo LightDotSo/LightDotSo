@@ -35,6 +35,7 @@ import { RootLogo } from "@/components/root/root-logo";
 import { ConnectButton } from "@/components/web3/connect-button";
 import { WalletSwitcher } from "@/components/web3/wallet-switcher";
 import { Web3Provider } from "@/components/web3/web3-provider";
+import { WssState } from "@/components/wss/wss-state";
 
 // -----------------------------------------------------------------------------
 // Dynamic
@@ -117,6 +118,7 @@ export const Root: FC<RootProps> = ({ children }) => {
                 <AuthModal />
               </Suspense>
               <CommandK />
+              <WssState />
             </Web3Provider>
           </ReactQueryProvider>
         </ThemeProvider>
