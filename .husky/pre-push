@@ -1,5 +1,3 @@
 #!/bin/sh
 
 git branch | grep \"*\" | egrep -v \"^* main$\""
-
-echo "📝 Creating .husky/pre-commit"
