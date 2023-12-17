@@ -4,5 +4,5 @@
 [ -n "$CI" ] && exit 0
 
 git diff --cached --name-status
-pnpm lint-staged --allow-empty --debug
+pnpm lint-staged --allow-empty
 git add .gas-snapshot
