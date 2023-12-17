@@ -5,7 +5,12 @@
   authors = [{ name = "Shun Kakinoki", email = "shunkakinoki@gmail.com" }]
   readme = "README.md"
   requires-python = ">= 3.11"
-  dependencies = ["pusher>=3.3.2"]
+  dependencies = [
+    "halmos <= 0.0.8",
+    "slither-analyzer <= 0.9.6",
+    "setuptools>=68.0.0",
+    "pusher>=3.3.2",
+  ]
 
   [project.scripts]
     hello = "lightdotso:hello"
