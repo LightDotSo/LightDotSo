@@ -42,5 +42,5 @@ kill_timeout = "5s"
     path = "/"
 
 [[metrics]]
-  port = 9091
+  port = 9601
   path = "/metrics"

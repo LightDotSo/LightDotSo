@@ -82,6 +82,7 @@
     "permissionless": "^0.0.15",
     "postgres": "^3.4.3",
     "prisma": "^5.7.0",
+    "pusher-js": "^7.6.0",
     "react": "^18.2.0",
     "react-blurhash": "^0.3.0",
     "react-dom": "^18.2.0",
