@@ -30,7 +30,7 @@ export const WssState: FC = () => {
 
     // Bind to an event on the channel
     channel.bind("test-event", function (data: any) {
-      console.info(data.text);
+      console.info("test-event data:", data);
     });
 
     // Unsubscribe from the channel when the component unmounts
