@@ -29,18 +29,14 @@ type Story = StoryObj<typeof Button>;
 
 export const Base: Story = {
   render: args => <Button {...args}>Base</Button>,
-  args: {},
-};
-export const Disabled: Story = {
-  render: args => <Button {...args}>Disabled</Button>,
   args: {
-    disabled: true,
+    variant: "default",
   },
 };
-export const Strong: Story = {
-  render: args => <Button {...args}>Strong</Button>,
+export const Shadow: Story = {
+  render: args => <Button {...args}>Shadow</Button>,
   args: {
-    variant: "strong",
+    variant: "shadow",
   },
 };
 export const Outline: Story = {
@@ -61,10 +57,22 @@ export const Link: Story = {
     variant: "link",
   },
 };
+export const Strong: Story = {
+  render: args => <Button {...args}>Strong</Button>,
+  args: {
+    variant: "strong",
+  },
+};
 export const Loading: Story = {
   render: args => <Button {...args}>Loading</Button>,
   args: {
     variant: "loading",
+  },
+};
+export const Disabled: Story = {
+  render: args => <Button {...args}>Disabled</Button>,
+  args: {
+    disabled: true,
   },
 };
 export const WithIcon: Story = {
@@ -73,4 +81,64 @@ export const WithIcon: Story = {
       <Mail className="mr-2 h-4 w-4" /> Login with Email Button
     </Button>
   ),
+};
+export const Default: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="strong">
+        Strong
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "default",
+  },
+};
+export const Destructive: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="strong">
+        Strong
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "destructive",
+  },
 };
