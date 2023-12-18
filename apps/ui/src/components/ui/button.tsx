@@ -20,7 +20,7 @@ import { Loader2 } from "lucide-react";
 import { forwardRef } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30",
   {
     variants: {
       variant: {
@@ -29,7 +29,7 @@ const buttonVariants = cva(
         outline: "border",
         ghost: "",
         link: "underline-offset-4 hover:underline",
-        loading: "",
+        loading: "cursor-wait",
         unstyled: "",
       },
       intent: {
@@ -118,7 +118,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <Comp
           ref={ref}
-          className={cn(buttonVariants({ variant, intent, size, className }))}
+          className={cn(
+            buttonVariants({
+              variant,
+              intent,
+              size,
+              className,
+            }),
+          )}
           data-variant={variant ?? "default"}
           {...props}
         >
@@ -135,7 +142,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         ref={ref}
-        className={cn(buttonVariants({ variant, intent, size, className }))}
+        className={cn(
+          buttonVariants({
+            variant,
+            intent,
+            size,
+            className,
+          }),
+        )}
         data-variant={variant ?? "default"}
         {...props}
       />

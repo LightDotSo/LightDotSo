@@ -14,7 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Loader2, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { Button } from "./button";
 
 const meta: Meta<typeof Button> = {
@@ -95,6 +95,9 @@ export const Default: Story = {
       <Button {...args} variant="loading">
         Loading
       </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
     </div>
   ),
   args: {
@@ -121,6 +124,9 @@ export const Destructive: Story = {
       </Button>
       <Button {...args} variant="loading">
         Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
       </Button>
     </div>
   ),
