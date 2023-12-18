@@ -35,12 +35,13 @@ import {
   DeleteIcon,
   CopyIcon,
   CopySlashIcon,
+  Computer,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import type { FC } from "react";
 import { useCopy } from "@/hooks/useCopy";
-import { useAuth } from "@/stores";
+import { useAuth, useDev } from "@/stores";
 import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
@@ -51,6 +52,7 @@ export const CommandK: FC = () => {
   const [open, setOpen] = useState(false);
   const [, copy] = useCopy();
   const { wallet } = useAuth();
+  const { toggleDev } = useDev();
 
   const router = useRouter();
 
@@ -87,6 +89,10 @@ export const CommandK: FC = () => {
           copy(wallet);
           successToast("Copied to clipboard");
         }
+      }
+      if (e.key === "v" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        toggleDev();
       }
       if (e.key === "d" && e.shiftKey && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -148,6 +154,16 @@ export const CommandK: FC = () => {
           </CommandItem>
         </CommandGroup>
         <CommandGroup heading="Dev">
+          <CommandItem
+            onSelect={() => {
+              toggleDev();
+              setOpen(false);
+            }}
+          >
+            <Computer className="mr-2 h-4 w-4" />
+            <span>Toggle Dev</span>
+            <CommandShortcut>⌘⇧V</CommandShortcut>
+          </CommandItem>
           <CommandItem
             onSelect={() => {
               onClearSearch();
