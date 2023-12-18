@@ -53,7 +53,7 @@ use utoipa::IntoParams;
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct SignatureQuery {
+pub struct GetQuery {
     /// The user operation hash to get.
     pub user_operation_hash: String,
     /// The type of signature to get for.
@@ -69,7 +69,7 @@ pub struct SignatureQuery {
         get,
         path = "/user_operation/signature",
         params(
-            SignatureQuery
+            GetQuery
         ),
         responses(
             (status = 200, description = "User Operation signature returned successfully", body = String),
@@ -78,11 +78,11 @@ pub struct SignatureQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_signature_handler(
-    signature: Query<SignatureQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<String> {
     // Get the get query.
-    let Query(query) = signature;
+    let Query(query) = get_query;
     let user_operation_hash = query.user_operation_hash.clone();
     let signature_type = query.signature_type.unwrap_or(1);
 

@@ -110,18 +110,18 @@ pub(crate) struct UserOperationListCount {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_handler(
-    query: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<UserOperation>> {
-    // Get the query.
-    let Query(list_query) = query;
-    info!(?list_query);
+    // Get the list query.
+    let Query(query) = list_query;
+    info!(?query);
 
     // Construct the query.
-    let query = construct_user_operation_list_query(&list_query);
+    let query_params = construct_user_operation_list_query_params(&query);
 
     // Parse the order from the pagination query.
-    let order = match list_query.order {
+    let order = match query.order {
         Some(ListQueryOrder::Asc) => Direction::Asc,
         Some(ListQueryOrder::Desc) => Direction::Desc,
         None => Direction::Asc,
@@ -131,9 +131,9 @@ pub(crate) async fn v1_user_operation_list_handler(
     let user_operations = client
         .client
         .user_operation()
-        .find_many(query)
-        .skip(list_query.offset.unwrap_or(0))
-        .take(list_query.limit.unwrap_or(10))
+        .find_many(query_params)
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
         .order_by(user_operation::nonce::order(order))
         .with(user_operation::signatures::fetch(vec![]))
         .with(user_operation::transaction::fetch())
@@ -161,18 +161,18 @@ pub(crate) async fn v1_user_operation_list_handler(
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_count_handler(
-    query: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<UserOperationListCount> {
-    // Get the query.
-    let Query(list_query) = query;
-    info!(?list_query);
+    // Get the list query.
+    let Query(query) = list_query;
+    info!(?query);
 
     // Construct the query.
-    let query = construct_user_operation_list_query(&list_query);
+    let query_params = construct_user_operation_list_query_params(&query);
 
     // Get the user operations from the database.
-    let count = client.client.user_operation().count(query).exec().await?;
+    let count = client.client.user_operation().count(query_params).exec().await?;
 
     Ok(Json::from(UserOperationListCount { count }))
 }
@@ -182,7 +182,7 @@ pub(crate) async fn v1_user_operation_list_count_handler(
 // -----------------------------------------------------------------------------
 
 /// Constructs a query for user operation.
-fn construct_user_operation_list_query(query: &ListQuery) -> Vec<WhereParam> {
+fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
     let mut query_exp = match &query.address {
         Some(address) => vec![user_operation::sender::equals(address.to_string())],
         None => vec![],

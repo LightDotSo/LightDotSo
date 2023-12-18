@@ -57,11 +57,11 @@ pub struct GetQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_get_handler(
-    get: Query<GetQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<User> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
 
     info!("Get user for address: {:?}", query);
 

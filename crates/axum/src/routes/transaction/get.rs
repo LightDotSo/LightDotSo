@@ -58,11 +58,11 @@ pub struct GetQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_get_handler(
-    get: Query<GetQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Transaction> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
 
     info!("Get transaction for address: {:?}", query);
 

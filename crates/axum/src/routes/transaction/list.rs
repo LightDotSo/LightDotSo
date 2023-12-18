@@ -74,24 +74,24 @@ pub(crate) struct TransactionListCount {
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_list_handler(
-    query: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Transaction>> {
-    // Get the  query.
-    let Query(list_query) = query;
-    info!(?list_query);
+    // Get the list query.
+    let Query(query) = list_query;
+    info!(?query);
 
     // If the address is provided, add it to the query.
-    let query = construct_transaction_list_query(&list_query);
+    let query_params = construct_transaction_list_query_params(&query);
 
     // Get the transactions from the database.
     let transactions = client
         .client
         .transaction()
-        .find_many(query)
+        .find_many(query_params)
         .order_by(transaction::timestamp::order(Direction::Desc))
-        .skip(list_query.offset.unwrap_or(0))
-        .take(list_query.limit.unwrap_or(10))
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
 
@@ -115,18 +115,18 @@ pub(crate) async fn v1_transaction_list_handler(
     )]
 #[autometrics]
 pub(crate) async fn v1_transaction_list_count_handler(
-    query: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<TransactionListCount> {
-    // Get the  query.
-    let Query(list_query) = query;
-    info!(?list_query);
+    // Get the list query.
+    let Query(query) = list_query;
+    info!(?query);
 
     // If the address is provided, add it to the query.
-    let query = construct_transaction_list_query(&list_query);
+    let query_params = construct_transaction_list_query_params(&query);
 
     // Get the transactions from the database.
-    let count = client.client.transaction().count(query).exec().await?;
+    let count = client.client.transaction().count(query_params).exec().await?;
 
     Ok(Json::from(TransactionListCount { count }))
 }
@@ -136,7 +136,7 @@ pub(crate) async fn v1_transaction_list_count_handler(
 // -----------------------------------------------------------------------------
 
 /// Constructs a query for transactions.
-fn construct_transaction_list_query(query: &ListQuery) -> Vec<WhereParam> {
+fn construct_transaction_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
     let mut query_exp = match &query.address {
         Some(addr) => {
             vec![or![

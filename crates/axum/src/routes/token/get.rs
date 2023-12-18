@@ -60,11 +60,11 @@ pub struct GetQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_token_get_handler(
-    get: Query<GetQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Token> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
 
     info!("Get token for address: {:?}", query);
     let parsed_query_address: H160 = query.address.parse()?;

@@ -145,17 +145,16 @@ impl TryFrom<UserOperationCreate> for RundlerUserOperation {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_post_handler(
-    post: Query<PostQuery>,
+    post_query: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<UserOperationPostRequestParams>,
 ) -> AppJsonResult<UserOperation> {
     // Get the post query.
-    let Query(post) = post;
-
-    info!(?post);
+    let Query(query) = post_query;
+    info!(?query);
 
     // Get the chain id from the post query.
-    let chain_id = post.chain_id;
+    let chain_id = query.chain_id;
 
     let user_operation = params.user_operation.clone();
     let user_operation_hash = params.user_operation.clone().hash;

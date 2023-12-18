@@ -57,11 +57,11 @@ pub struct GetQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_get_handler(
-    get: Query<GetQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<UserOperation> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
     let user_operation_hash = query.user_operation_hash.clone();
 
     // Get the user operations from the database.

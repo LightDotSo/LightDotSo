@@ -59,13 +59,14 @@ pub struct ListQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_signature_list_handler(
-    pagination: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Signature>> {
-    // Get the pagination query.
-    let Query(pagination) = pagination;
+    // Get the list query.
+    let Query(query) = list_query;
 
-    let query = match pagination.user_operation_hash {
+    // Construct the query parameters.
+    let query_params = match query.user_operation_hash {
         Some(user_operation_hash) => {
             vec![signature::user_operation_hash::equals(user_operation_hash)]
         }
@@ -76,10 +77,10 @@ pub(crate) async fn v1_signature_list_handler(
     let signatures = client
         .client
         .signature()
-        .find_many(query)
+        .find_many(query_params)
         .order_by(signature::created_at::order(Direction::Desc))
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
 

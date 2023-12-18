@@ -81,15 +81,15 @@ pub struct SignaturePostRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_signature_post_handler(
-    post: Query<PostQuery>,
+    post_query: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<SignaturePostRequestParams>,
 ) -> AppJsonResult<Signature> {
     // Get the post query.
-    let Query(post) = post;
+    let Query(query) = post_query;
 
     // Get the procedure from the post query.
-    let post_procedure = post.procedure.unwrap_or(PostQueryProcedure::Onchain);
+    let post_procedure = query.procedure.unwrap_or(PostQueryProcedure::Onchain);
 
     // Match the procedure to the signature procedure.
     let procedure = match post_procedure {
@@ -99,7 +99,7 @@ pub(crate) async fn v1_signature_post_handler(
     };
 
     // Get the chain id from the post query.
-    let user_operation_hash = post.user_operation_hash;
+    let user_operation_hash = query.user_operation_hash;
 
     // Get the signature from the post body.
     let sig = params.signature;

@@ -64,11 +64,11 @@ pub struct GetQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_paymaster_operation_get_handler(
-    get: Query<GetQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<PaymasterOperation> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
     let timestamp = NaiveDateTime::from_timestamp_opt(query.valid_after, 0);
 
     // If the timestamp is not valid, return a 500.
