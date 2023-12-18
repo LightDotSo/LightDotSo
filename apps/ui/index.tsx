@@ -211,5 +211,6 @@ export {
   TooltipContent,
   TooltipProvider,
 } from "./src/components/ui/tooltip";
+export { Footer } from "./src/templates/footer";
 export { ThemeProvider } from "./src/providers/theme-provider";
 export { ReactQueryProvider } from "./src/providers/react-query";

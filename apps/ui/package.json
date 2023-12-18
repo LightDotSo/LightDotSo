@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
+    "@lightdotso/const": "workspace:*",
     "@lightdotso/styles": "workspace:*",
     "@lightdotso/utils": "workspace:*",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -67,6 +68,7 @@
     "react-day-picker": "^8.9.1",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.2",
+    "react-icons": "^4.12.0",
     "superjson": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "vite": "^5.0.10",

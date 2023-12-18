@@ -13,16 +13,4 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export enum Internal {
-  CHANGELOG = "Changelog",
-  DOCS = "Docs",
-  HOME = "Home",
-}
-
-export const INTERNAL_LINKS: {
-  readonly [key in Internal]: string;
-} = {
-  [Internal.CHANGELOG]: "https://changelog.light.so",
-  [Internal.DOCS]: "https://docs.light.so",
-  [Internal.HOME]: "https://light.so",
-};
+export { Footer } from "./footer";

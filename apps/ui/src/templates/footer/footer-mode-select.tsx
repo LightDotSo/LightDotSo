@@ -13,31 +13,34 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-// -----------------------------------------------------------------------------
-// Props
-// -----------------------------------------------------------------------------
+"use client";
 
-interface SettingsPageWrapperProps {
-  children: React.ReactNode;
-  nav: React.ReactNode;
-}
+import { useTheme } from "next-themes";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export function SettingsPageWrapper({
-  children,
-  nav,
-}: SettingsPageWrapperProps) {
-  // ---------------------------------------------------------------------------
-  // Render
-  // ---------------------------------------------------------------------------
+export const FooterModeSelect: FC = () => {
+  const { theme, setTheme } = useTheme();
 
   return (
-    <div className="mb-12 mt-8 flex flex-col space-y-8 lg:mt-12 lg:flex-row lg:space-x-32 lg:space-y-0">
-      <aside className="lg:w-1/5">{nav}</aside>
-      <div className="flex-1 lg:max-w-3xl">{children}</div>
+    <div>
+      <select
+        id="mode"
+        name="mode"
+        className="mt-1 w-full cursor-pointer rounded-md border-border bg-inherit py-2 pl-3 pr-10 text-base text-text-weak sm:block sm:text-sm"
+        value={theme}
+        onBlur={() => {}}
+        onChange={e => {
+          return setTheme(e.target.value);
+        }}
+      >
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="system">System</option>
+      </select>
     </div>
   );
-}
+};

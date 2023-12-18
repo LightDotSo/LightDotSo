@@ -18,6 +18,7 @@ import {
   ThemeProvider,
   ReactQueryProvider,
   Toaster,
+  Footer,
 } from "@lightdotso/ui";
 import "@lightdotso/styles/global.css";
 import dynamic from "next/dynamic";
@@ -110,6 +111,7 @@ export const Root: FC<RootProps> = ({ children }) => {
                   {children}
                 </div>
               </main>
+              <Footer />
               <Suspense>
                 <AuthState />
               </Suspense>
