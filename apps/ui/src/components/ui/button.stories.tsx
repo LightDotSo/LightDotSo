@@ -28,48 +28,43 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 export const Base: Story = {
-  render: args => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Base</Button>,
   args: {},
 };
+export const Disabled: Story = {
+  render: args => <Button {...args}>Disabled</Button>,
+  args: {
+    disabled: true,
+  },
+};
 export const Strong: Story = {
-  render: args => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Strong</Button>,
   args: {
     variant: "strong",
   },
 };
-export const Destructive: Story = {
-  render: args => <Button {...args}>Button</Button>,
-  args: {
-    variant: "destructive",
-  },
-};
 export const Outline: Story = {
-  render: args => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Outline</Button>,
   args: {
     variant: "outline",
   },
 };
 export const Ghost: Story = {
-  render: args => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Ghost</Button>,
   args: {
     variant: "ghost",
   },
 };
 export const Link: Story = {
-  render: args => <Button {...args}>Button</Button>,
+  render: args => <Button {...args}>Link</Button>,
   args: {
     variant: "link",
   },
 };
 export const Loading: Story = {
-  render: args => (
-    <Button {...args}>
-      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-      Button
-    </Button>
-  ),
+  render: args => <Button {...args}>Loading</Button>,
   args: {
-    variant: "outline",
+    variant: "loading",
   },
 };
 export const WithIcon: Story = {

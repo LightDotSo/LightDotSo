@@ -24,17 +24,44 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-background-primary text-text-weakest hover:bg-background-primary/90",
-        strong:
-          "bg-background-stronger text-text hover:bg-background-stronger/90 hover:text-text-weak",
-        destructive:
-          "bg-background-destructive text-text-inverse hover:bg-background-destructive/90",
-        loading: "bg-background-primary-strong text-text-weakest",
-        outline:
-          "border border-border-primary-weak bg-background text-text hover:bg-background-stronger hover:text-text-weak",
-        ghost: "hover:bg-background-stronger hover:text-text-weak",
-        link: "text-text underline-offset-4 hover:underline",
+        default: "",
+        outline: "",
+        ghost: "",
+        link: "underline-offset-4 hover:underline",
+        strong: "",
+        loading: "",
+        unstyled: "",
+      },
+      intent: {
+        default: [
+          // Primary
+          ["data-[variant=primary]:bg-background-primary"],
+          ["data-[variant=primary]:text-text-weakest"],
+          ["data-[variant=primary]:hover:bg-background-primary/90"],
+          // Outline
+          ["data-[variant=outline]:border"],
+          ["data-[variant=outline]:border-border-primary-weak"],
+          ["data-[variant=outline]:bg-background"],
+          ["data-[variant=outline]:text-text"],
+          ["data-[variant=outline]:hover:bg-background-stronger"],
+          ["data-[variant=outline]:hover:text-text-weak"],
+          // Ghost
+          ["data-[variant=ghost]:hover:bg-background-stronger"],
+          ["data-[variant=ghost]:hover:text-text-weak"],
+          // Link
+          ["data-[variant=link]:text-text"],
+          // Strong
+          ["data-[variant=strong]:bg-background-stronger"],
+          ["data-[variant=strong]:text-text"],
+          ["data-[variant=strong]:hover:bg-background-stronger/90"],
+          ["data-[variant=strong]:hover:text-text-weak"],
+          // Loading
+          ["data-[variant=loading]:bg-background-primary-strong"],
+          ["data-[variant=loading]:hover:bg-background-primary/90"],
+          ["data-[variant=loading]:text-text-weakest"],
+        ],
+        // destructive:
+        // "bg-background-destructive text-text-inverse hover:bg-background-destructive/90",
         unstyled: "",
       },
       size: {
@@ -47,6 +74,7 @@ const buttonVariants = cva(
     },
     defaultVariants: {
       variant: "default",
+      intent: "default",
       size: "default",
     },
   },
@@ -67,6 +95,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         <Comp
           ref={ref}
           className={cn(buttonVariants({ variant, size, className }))}
+          data-variant={variant}
           {...props}
         >
           <>
@@ -83,6 +112,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         ref={ref}
         className={cn(buttonVariants({ variant, size, className }))}
+        data-variant={variant}
         {...props}
       />
     );
