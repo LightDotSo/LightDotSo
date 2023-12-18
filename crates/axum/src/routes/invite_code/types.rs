@@ -29,11 +29,13 @@ pub(crate) struct InviteCode {
     id: String,
     /// The code of the invite code.
     code: String,
+    /// The status of the invite code.
+    status: String,
 }
 
 /// Implement From<invite_code::Data> for InviteCode.
 impl From<invite_code::Data> for InviteCode {
     fn from(invite_code: invite_code::Data) -> Self {
-        Self { id: invite_code.id, code: invite_code.code }
+        Self { id: invite_code.id, code: invite_code.code, status: invite_code.status.to_string() }
     }
 }
