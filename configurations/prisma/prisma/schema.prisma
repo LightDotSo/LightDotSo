@@ -562,14 +562,21 @@ model Feedback {
   @@index([userId])
 }
 
+enum SupportRequestStatus {
+  OPEN
+  ACTIVE
+  CLOSED
+}
+
 model SupportRequest {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String               @id @default(cuid())
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
   title       String
   description String
   area        String
   severity    Int
+  status      SupportRequestStatus @default(OPEN)
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
