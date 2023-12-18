@@ -31,6 +31,8 @@ export function BasicPageWrapper({ children }: BasicPageWrapperProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="mt-8 flex flex-col space-y-8 lg:mt-12">{children}</div>
+    <div className="mb-12 mt-8 flex flex-col space-y-8 lg:mt-12">
+      {children}
+    </div>
   );
 }
