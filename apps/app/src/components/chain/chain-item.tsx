@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import clsx from "clsx";
+import { cn } from "@lightdotso/utils";
 import { m } from "framer-motion";
 import type { FC, MouseEventHandler } from "react";
 import type { Address, Chain } from "viem";
@@ -61,6 +61,7 @@ export const ChainItem: FC<ChainItemProps> = ({
       style={{
         listStyle: "none",
         marginRight: "-5px",
+        padding: 0,
       }}
       variants={item}
       whileHover={{
@@ -74,15 +75,12 @@ export const ChainItem: FC<ChainItemProps> = ({
         target="_blank"
         rel="noreferrer"
         href={`${blockExplorers?.default.url}/address/${address}`}
-        className={clsx(
-          "flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-md border border-border bg-background-weak hover:bg-background-stronger",
-          s.transitionfix,
-        )}
+        className={cn("cursor-pointer overflow-hidden", s.transitionfix)}
         onClick={e => {
           return e.stopPropagation();
         }}
       >
-        <ChainLogo chainId={chainId} className="h-full w-full object-fill" />
+        <ChainLogo chainId={chainId} className="h-8 w-8 rounded-lg bg-border" />
       </a>
     </m.li>
   );

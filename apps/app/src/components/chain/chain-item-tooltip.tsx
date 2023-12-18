@@ -15,7 +15,7 @@
 
 // From: OG Light https://github.com/LightDotSo/LightDotSo/blob/026cc175225642102c708bd7c7f5d76dc222d62c/apps/app/src/components/NetworkTooltip/NetworkTooltip.tsx
 
-import clsx from "clsx";
+import { cn } from "@lightdotso/utils";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
 import type { FC, ReactNode } from "react";
@@ -88,7 +88,7 @@ const ChainItemTooltipComponent: FC<ChainItemToolTipComponentProps> = ({
 
     return (
       <motion.div
-        className={clsx(
+        className={cn(
           "absolute z-10 shadow-md",
           isShowing ? "pointer-events-auto" : "pointer-events-none",
         )}

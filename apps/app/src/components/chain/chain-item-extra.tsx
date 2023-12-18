@@ -62,7 +62,7 @@ export const ChainItemExtra: FC<ChainItemExtraProps> = ({
       }}
     >
       <button
-        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-border bg-background-strongest text-xs font-extrabold text-text"
+        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-border bg-background-strongest text-xs font-extrabold text-text"
         onClick={onClick}
       >
         <span>+{length}</span>
