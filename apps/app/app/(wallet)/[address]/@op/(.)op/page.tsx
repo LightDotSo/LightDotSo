@@ -17,7 +17,7 @@ import type { Address } from "viem";
 import { OpCreateDialog } from "@/app/(wallet)/[address]/op/(components)/op-create-dialog";
 import { Modal } from "@/components/modal";
 import { handler } from "@/handlers/paths/[address]/op/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/[chainId]/preloader";
+import { preloader } from "@/preloaders/paths/[address]/op/preloader";
 
 // -----------------------------------------------------------------------------
 // Props

@@ -16,9 +16,8 @@
 import type { Address } from "viem";
 import { OpConfirmDialog } from "@/app/(wallet)/[address]/op/(components)/op-confirm-dialog";
 import { Modal } from "@/components/modal";
-import { parseNumber } from "@/handlers/parsers";
-import { handler } from "@/handlers/paths/[address]/op/[chainId]/[userOperationHash]/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/[chainId]/[userOperationHash]/preloader";
+import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
+import { preloader } from "@/preloaders/paths/[address]/op/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -40,12 +39,6 @@ export default async function Page({ params }: PageProps) {
   preloader(params);
 
   // ---------------------------------------------------------------------------
-  // Parsers
-  // ---------------------------------------------------------------------------
-
-  const chainId = parseNumber(params.chainId);
-
-  // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
@@ -60,7 +53,6 @@ export default async function Page({ params }: PageProps) {
       <OpConfirmDialog
         config={config}
         address={params.address as Address}
-        chainId={chainId}
         userOperation={userOperation}
       />
     </Modal>

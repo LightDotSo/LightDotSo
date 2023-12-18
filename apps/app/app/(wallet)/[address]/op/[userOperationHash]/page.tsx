@@ -13,59 +13,45 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { notFound } from "next/navigation";
-import type { Hex } from "viem";
-import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
-import {
-  validateAddress,
-  validateNumber,
-  validateUserOperationHash,
-} from "@/handlers/validators";
-import { getUserOperation } from "@/services/getUserOperation";
+import type { Address } from "viem";
+import { OpConfirmDialog } from "@/app/(wallet)/[address]/op/(components)/op-confirm-dialog";
+import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
+import { preloader } from "@/preloaders/paths/[address]/op/[userOperationHash]/preloader";
 
 // -----------------------------------------------------------------------------
-// Handler
+// Props
 // -----------------------------------------------------------------------------
 
-export const handler = async (params: {
-  address: string;
-  chainId: string;
-  userOperationHash: string;
-}) => {
+type PageProps = {
+  params: { address: string; userOperationHash: string };
+};
+
+// -----------------------------------------------------------------------------
+// Page
+// -----------------------------------------------------------------------------
+
+export default async function Page({ params }: PageProps) {
+  // ---------------------------------------------------------------------------
+  // Preloaders
+  // ---------------------------------------------------------------------------
+
+  preloader(params);
+
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
-  const { config } = await addressHandler(params);
+  const { config, userOperation } = await handler(params);
 
   // ---------------------------------------------------------------------------
-  // Validators
+  // Render
   // ---------------------------------------------------------------------------
 
-  validateAddress(params.address);
-
-  validateNumber(params.chainId);
-
-  validateUserOperationHash(params.userOperationHash);
-
-  // ---------------------------------------------------------------------------
-  // Fetch
-  // ---------------------------------------------------------------------------
-
-  const userOperation = await getUserOperation({
-    hash: params.userOperationHash as Hex,
-  });
-
-  // ---------------------------------------------------------------------------
-  // Parse
-  // ---------------------------------------------------------------------------
-
-  return userOperation.match(
-    userOperation => {
-      return { config: config, userOperation: userOperation };
-    },
-    () => {
-      notFound();
-    },
+  return (
+    <OpConfirmDialog
+      config={config}
+      address={params.address as Address}
+      userOperation={userOperation}
+    />
   );
-};
+}

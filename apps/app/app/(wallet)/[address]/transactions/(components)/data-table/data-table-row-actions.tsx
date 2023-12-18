@@ -13,48 +13,60 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Address } from "viem";
-import { OpCreateDialog } from "@/app/(wallet)/[address]/op/(components)/op-create-dialog";
-import { handler } from "@/handlers/paths/[address]/op/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/preloader";
+"use client";
+
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@lightdotso/ui";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import type { Row } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
+import type { UserOperationData } from "@/data";
+import { useAuth } from "@/stores";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string };
-  searchParams: {
-    userOperations?: string;
-  };
-};
+interface DataTableRowActionsProps {
+  row: Row<UserOperationData>;
+}
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params, searchParams);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { config, userOperations } = await handler(params, searchParams);
-
+export function DataTableRowActions({ row }: DataTableRowActionsProps) {
+  const { wallet } = useAuth();
+  const router = useRouter();
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <OpCreateDialog
-      config={config}
-      address={params.address as Address}
-      userOperations={userOperations}
-    />
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="flex h-8 w-8 p-0 data-[state=open]:bg-background-stronger"
+        >
+          <DotsHorizontalIcon className="h-4 w-4" />
+          <span className="sr-only">Open menu</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuItem
+          onClick={() => {
+            router.push(`/${wallet}/op/${row.original.hash}`);
+          }}
+        >
+          Execute
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

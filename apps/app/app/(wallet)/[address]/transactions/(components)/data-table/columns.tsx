@@ -16,6 +16,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import { DataTableRowActions } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-row-actions";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { UserOperationCardChain } from "@/components/user-operation/user-operation-card-chain";
 import { UserOperationCardHash } from "@/components/user-operation/user-operation-card-hash";
@@ -75,5 +76,9 @@ export const columns: ColumnDef<UserOperationData>[] = [
     },
     enableSorting: true,
     enableHiding: true,
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
   },
 ];
