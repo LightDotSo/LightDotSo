@@ -22,7 +22,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@lightdotso/ui";
-import { Send, RefreshCcw } from "lucide-react";
+import { Send, Shuffle } from "lucide-react";
 import Link from "next/link";
 import type { FC } from "react";
 import type { TokenData } from "@/data";
@@ -49,12 +49,12 @@ export const TokenCardActions: FC<TokenCardActionsProps> = ({
 
   return (
     <TooltipProvider>
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center justify-end gap-x-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <span>
               <Button disabled size="sm" variant="strong">
-                <RefreshCcw className="h-4 w-4" />
+                <Shuffle className="h-4 w-4" />
                 <span className="sr-only">Open swap modal</span>
               </Button>
             </span>
