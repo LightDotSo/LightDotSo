@@ -23,7 +23,7 @@ const toastVariants = cva(
   "pointer-events-auto relative flex w-full items-center space-x-4 overflow-hidden rounded-md border p-4 shadow-xl transition-all",
   {
     variants: {
-      variant: {
+      intent: {
         default: "border bg-background",
         destructive:
           "border-4 border-border-destructive-weaker bg-background-destructive text-text-inverse",
@@ -35,7 +35,7 @@ const toastVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "default",
+      intent: "default",
     },
   },
 );
@@ -46,17 +46,17 @@ const Toaster = () => {
       toastOptions={{
         unstyled: true,
         classNames: {
-          toast: toastVariants({ variant: "default" }),
+          toast: toastVariants({ intent: "default" }),
           title: "text-sm font-semibold text-ellipsis overflow-hidden",
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
           loader: "text-text",
           // cancelButton: buttonVariants({ variant: "outline" }),
           // closeButton: buttonVariants({ variant: "outline" }),
           actionButton: buttonVariants({ variant: "outline" }),
-          success: toastVariants({ variant: "success" }),
-          error: toastVariants({ variant: "destructive" }),
-          info: toastVariants({ variant: "info" }),
-          warning: toastVariants({ variant: "warning" }),
+          success: toastVariants({ intent: "success" }),
+          error: toastVariants({ intent: "destructive" }),
+          info: toastVariants({ intent: "info" }),
+          warning: toastVariants({ intent: "warning" }),
         },
       }}
     />

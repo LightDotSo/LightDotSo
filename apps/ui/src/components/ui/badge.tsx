@@ -13,6 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Heavily inspired by the badge primitives introduced by @fiveoutofnine
+// Site: https://www.fiveoutofnine.com/design/component/badge
+// Code: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/ui/badge/styles.tsx
+// License: MIT
+
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -21,21 +26,71 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-background-primary text-text-weakest hover:bg-background-primary/80",
-        destructive:
-          "border-transparent bg-background-destructive text-text-inverse hover:bg-background-destructive/80",
-        warning:
-          "border-transparent bg-background-warning text-text-inverse hover:bg-background-warning/80",
-        error:
-          "border-transparent bg-background-error text-text-inverse hover:bg-background-error/80",
-        info: "border-transparent bg-background-info text-text-inverse hover:bg-background-info/80",
+        default: "border-transparent",
+        shadow: "border",
         outline: "text-text",
         unstyled: "border-0",
+      },
+      intent: {
+        default: [
+          // Default
+          ["data-[variant=default]:bg-background-primary"],
+          ["data-[variant=default]:text-text-weakest"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-primary"],
+          ["data-[variant=shadow]:bg-background-primary-weakest"],
+          ["data-[variant=shadow]:text-text-inverse-weakest"],
+        ],
+        destructive: [
+          // Default
+          ["data-[variant=default]:bg-background-destructive"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-destructive"],
+          ["data-[variant=shadow]:bg-background-destructive-weakest"],
+          ["data-[variant=shadow]:text-text-destructive"],
+        ],
+        warning: [
+          // Default
+          ["data-[variant=default]:bg-background-warning"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-warning"],
+          ["data-[variant=shadow]:bg-background-warning-weakest"],
+          ["data-[variant=shadow]:text-text-warning"],
+        ],
+        error: [
+          // Default
+          ["data-[variant=default]:bg-background-error"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-error"],
+          ["data-[variant=shadow]:bg-background-error-weakest"],
+          ["data-[variant=shadow]:text-text-error"],
+        ],
+        info: [
+          // Default
+          ["data-[variant=default]:bg-background-info"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-info"],
+          ["data-[variant=shadow]:bg-background-info-weakest"],
+          ["data-[variant=shadow]:text-text-info"],
+        ],
+        success: [
+          // Default
+          ["data-[variant=default]:bg-background-success"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-success"],
+          ["data-[variant=shadow]:bg-background-success-weakest"],
+          ["data-[variant=shadow]:text-text-success"],
+        ],
       },
     },
     defaultVariants: {
       variant: "default",
+      intent: "default",
     },
   },
 );
@@ -44,9 +99,13 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
+function Badge({ className, variant, intent, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <div
+      className={cn(badgeVariants({ variant, intent }), className)}
+      data-variant={variant ?? "default"}
+      {...props}
+    />
   );
 }
 

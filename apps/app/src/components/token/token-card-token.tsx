@@ -38,9 +38,7 @@ export const TokenCardToken: FC<TokenCardTokenProps> = ({ token }) => {
     <div className="flex items-center space-x-3">
       <TokenImage token={token} />{" "}
       <div className="flex flex-col space-y-1.5">
-        <span className="text-sm text-text/90">
-          {token.name ?? token.symbol}
-        </span>
+        <span className="text-sm text-text">{token.name ?? token.symbol}</span>
         <span className="text-sm text-text-weak">
           {(token.amount / 10 ** token.decimals).toFixed(3)} {token.symbol}
         </span>

@@ -22,6 +22,9 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
+        default: "",
+      },
+      intent: {
         default: "bg-background text-text",
         destructive:
           "border-destructive/50 dark:border-destructive text-text-destructive [&>svg]:text-text-destructive",
@@ -29,6 +32,7 @@ const alertVariants = cva(
     },
     defaultVariants: {
       variant: "default",
+      intent: "default",
     },
   },
 );
@@ -36,11 +40,12 @@ const alertVariants = cva(
 const Alert = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
->(({ className, variant, ...props }, ref) => (
+>(({ className, variant, intent, ...props }, ref) => (
   <div
     ref={ref}
     role="alert"
-    className={cn(alertVariants({ variant }), className)}
+    className={cn(alertVariants({ variant, intent }), className)}
+    data-variant={variant ?? "default"}
     {...props}
   />
 ));

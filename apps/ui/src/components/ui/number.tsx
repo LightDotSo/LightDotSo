@@ -44,7 +44,7 @@ const numberVariantsFraction = cva("text-sm", {
   variants: {
     variant: {
       default: "text-text-weak",
-      neutral: "text-text/90",
+      neutral: "text-text",
     },
     size: {
       xl: "text-lg md:text-xl",

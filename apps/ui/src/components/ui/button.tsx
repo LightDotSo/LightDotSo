@@ -13,6 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Heavily inspired by the button primitives introduced by @fiveoutofnine
+// Site: https://www.fiveoutofnine.com/design/component/button
+// Code: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/ui/button/styles.tsx
+// License: MIT
+
 import { cn } from "@lightdotso/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -20,22 +25,73 @@ import { Loader2 } from "lucide-react";
 import { forwardRef } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30",
   {
     variants: {
       variant: {
-        default:
-          "bg-background-primary text-text-weakest hover:bg-background-primary/90",
-        strong:
-          "bg-background-stronger text-text hover:bg-background-stronger/90 hover:text-text-weak",
-        destructive:
-          "bg-background-destructive text-text-inverse hover:bg-background-destructive/90",
-        loading: "bg-background-primary-strong text-text-weakest",
-        outline:
-          "border border-border-primary-weak bg-background text-text hover:bg-background-stronger hover:text-text-weak",
-        ghost: "hover:bg-background-stronger hover:text-text-weak",
-        link: "text-text underline-offset-4 hover:underline",
+        default: "border",
+        shadow: "",
+        outline: "border",
+        ghost: "",
+        link: "underline-offset-4 hover:underline",
+        loading: "cursor-wait",
         unstyled: "",
+      },
+      intent: {
+        default: [
+          // Default
+          ["data-[variant=default]:border-border-primary-weak"],
+          ["data-[variant=default]:bg-background-primary"],
+          ["data-[variant=default]:text-text-weakest"],
+          ["data-[variant=default]:hover:border-border-primary-weaker"],
+          ["data-[variant=default]:hover:bg-background-primary-weak"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-stronger"],
+          ["data-[variant=shadow]:text-text-primary"],
+          ["data-[variant=shadow]:hover:bg-background-strongest"],
+          // Outline
+          ["data-[variant=outline]:border-border-primary-weak"],
+          ["data-[variant=outline]:text-text"],
+          ["data-[variant=outline]:active:border-border-primary"],
+          ["data-[variant=outline]:hover:border-border-primary"],
+          // Ghost
+          ["data-[variant=ghost]:text-text"],
+          ["data-[variant=ghost]:hover:text-text-weak"],
+          ["data-[variant=ghost]:hover:bg-background-stronger"],
+          // Link
+          ["data-[variant=link]:text-text"],
+          // Loading
+          ["data-[variant=loading]:bg-background-primary-strong"],
+          ["data-[variant=loading]:text-text-weakest"],
+          ["data-[variant=loading]:hover:bg-background-primary-weak"],
+        ],
+        destructive: [
+          // Default
+          ["data-[variant=default]:border-border-destructive-weak"],
+          ["data-[variant=default]:bg-background-destructive"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-destructive-weaker"],
+          ["data-[variant=default]:hover:bg-background-destructive-weak"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-destructive-weak"],
+          ["data-[variant=shadow]:text-text-destructive-strong"],
+          ["data-[variant=shadow]:hover:bg-background-destructive-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-destructive-weak"],
+          ["data-[variant=outline]:text-text-destructive"],
+          ["data-[variant=outline]:active:border-border-destructive-stronger"],
+          ["data-[variant=outline]:hover:border-border-destructive-stronger"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-destructive"],
+          ["data-[variant=ghost]:hover:text-text-destructive-strong"],
+          ["data-[variant=ghost]:hover:bg-background-destructive-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-destructive"],
+          // Loading
+          ["data-[variant=loading]:bg-background-destructive-strong"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-destructive-weak"],
+        ],
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -47,6 +103,7 @@ const buttonVariants = cva(
     },
     defaultVariants: {
       variant: "default",
+      intent: "default",
       size: "default",
     },
   },
@@ -59,14 +116,22 @@ export interface ButtonProps
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, intent, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
 
     if (variant === "loading" && !asChild) {
       return (
         <Comp
           ref={ref}
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(
+            buttonVariants({
+              variant,
+              intent,
+              size,
+              className,
+            }),
+          )}
+          data-variant={variant ?? "default"}
           {...props}
         >
           <>
@@ -82,7 +147,15 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         ref={ref}
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({
+            variant,
+            intent,
+            size,
+            className,
+          }),
+        )}
+        data-variant={variant ?? "default"}
         {...props}
       />
     );

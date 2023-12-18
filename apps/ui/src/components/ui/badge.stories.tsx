@@ -26,37 +26,57 @@ export default meta;
 
 type Story = StoryObj<typeof Badge>;
 
-export const Base: Story = {
-  render: args => <Badge {...args}>Badge</Badge>,
-  args: {},
-};
-export const Destructive: Story = {
-  render: args => <Badge {...args}>Badge</Badge>,
+export const Default: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Badge {...args} intent="default">
+        Default
+      </Badge>
+      <Badge {...args} intent="destructive">
+        Destructive
+      </Badge>
+      <Badge {...args} intent="error">
+        Error
+      </Badge>
+      <Badge {...args} intent="info">
+        Info
+      </Badge>
+      <Badge {...args} intent="warning">
+        Warning
+      </Badge>
+      <Badge {...args} intent="success">
+        Success
+      </Badge>
+    </div>
+  ),
   args: {
-    variant: "destructive",
+    variant: "default",
   },
 };
-export const Warning: Story = {
-  render: args => <Badge {...args}>Badge</Badge>,
+export const Shadow: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Badge {...args} intent="default">
+        Default
+      </Badge>
+      <Badge {...args} intent="destructive">
+        Destructive
+      </Badge>
+      <Badge {...args} intent="error">
+        Error
+      </Badge>
+      <Badge {...args} intent="info">
+        Info
+      </Badge>
+      <Badge {...args} intent="warning">
+        Warning
+      </Badge>
+      <Badge {...args} intent="success">
+        Success
+      </Badge>
+    </div>
+  ),
   args: {
-    variant: "warning",
-  },
-};
-export const Error: Story = {
-  render: args => <Badge {...args}>Badge</Badge>,
-  args: {
-    variant: "error",
-  },
-};
-export const Info: Story = {
-  render: args => <Badge {...args}>Badge</Badge>,
-  args: {
-    variant: "info",
-  },
-};
-export const Outline: Story = {
-  render: args => <Badge {...args}>Badge</Badge>,
-  args: {
-    variant: "outline",
+    variant: "shadow",
   },
 };
