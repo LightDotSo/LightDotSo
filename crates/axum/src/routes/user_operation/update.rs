@@ -35,7 +35,7 @@ use utoipa::IntoParams;
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct UpdateQuery {
+pub struct PostQuery {
     /// The sender address to filter by.
     pub address: String,
 }
@@ -49,7 +49,7 @@ pub struct UpdateQuery {
         post,
         path = "/user_operation/update",
         params(
-            UpdateQuery
+            PostQuery
         ),
         responses(
             (status = 200, description = "User Operation updated successfully", body = UserOperationSuccess),
@@ -58,11 +58,11 @@ pub struct UpdateQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_update_handler(
-    post: Query<UpdateQuery>,
+    post_query: Query<PostQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<UserOperationSuccess> {
     // Get the get query.
-    let Query(query) = post;
+    let Query(query) = post_query;
     // Get the wallet address from the nonce query.
     let address: H160 = query.address.parse()?;
 

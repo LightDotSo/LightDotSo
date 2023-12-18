@@ -66,15 +66,15 @@ pub struct FeedbackPostRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_feedback_post_handler(
-    post: Query<PostQuery>,
+    post_query: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<FeedbackPostRequestParams>,
 ) -> AppJsonResult<Feedback> {
     // Get the post query.
-    let Query(post) = post;
+    let Query(query) = post_query;
 
     // Get the user id from the post query.
-    let user_id = post.user_id;
+    let user_id = query.user_id;
 
     // Get the feedback from the post body.
     let feedback = params.feedback;

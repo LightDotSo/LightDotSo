@@ -57,11 +57,11 @@ pub struct ListQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_configuration_list_handler(
-    pagination: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Configuration>> {
-    // Get the pagination query.
-    let Query(pagination) = pagination;
+    // Get the list query.
+    let Query(query) = list_query;
 
     // Get the configurations from the database.
     let configurations = client
@@ -69,8 +69,8 @@ pub(crate) async fn v1_configuration_list_handler(
         .configuration()
         .find_many(vec![])
         .order_by(configuration::checkpoint::order(Direction::Desc))
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
 

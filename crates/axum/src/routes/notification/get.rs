@@ -58,11 +58,11 @@ pub(crate) struct GetQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_get_handler(
-    get: Query<GetQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Notification> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
 
     info!("Get notification for address: {:?}", query);
 

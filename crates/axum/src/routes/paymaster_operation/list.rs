@@ -56,7 +56,7 @@ pub(crate) async fn v1_paymaster_operation_list_handler(
     pagination: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<PaymasterOperation>> {
-    // Get the pagination query.
+    // Get the list query.
     let Query(pagination) = pagination;
 
     // Get the paymasters from the database.

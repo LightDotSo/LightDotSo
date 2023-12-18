@@ -73,22 +73,22 @@ pub(crate) struct WalletListCount {
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_list_handler(
-    query: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
-    // Get the query.
-    let Query(list_query) = query;
+    // Get the list query.
+    let Query(query) = list_query;
 
     // Construct the query.
-    let query = construct_wallet_list_query(&list_query);
+    let query_params = construct_wallet_list_query_params(&query);
 
     // Get the wallets from the database.
     let wallets = client
         .client
         .wallet()
-        .find_many(query)
-        .skip(list_query.offset.unwrap_or(0))
-        .take(list_query.limit.unwrap_or(10))
+        .find_many(query_params)
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
 
@@ -112,17 +112,17 @@ pub(crate) async fn v1_wallet_list_handler(
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_list_count_handler(
-    query: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<WalletListCount> {
     // Get the query.
-    let Query(list_query) = query;
+    let Query(query) = list_query;
 
     // Construct the query.
-    let query = construct_wallet_list_query(&list_query);
+    let query_params = construct_wallet_list_query_params(&query);
 
     // Get the wallets from the database.
-    let count = client.client.wallet().count(query).exec().await?;
+    let count = client.client.wallet().count(query_params).exec().await?;
 
     Ok(Json::from(WalletListCount { count }))
 }
@@ -132,7 +132,7 @@ pub(crate) async fn v1_wallet_list_count_handler(
 // -----------------------------------------------------------------------------
 
 /// Constructs a query for the database.
-fn construct_wallet_list_query(query: &ListQuery) -> Vec<WhereParam> {
+fn construct_wallet_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
     match &query.owner {
         Some(owner) => vec![wallet::users::some(vec![user::address::equals(owner.to_string())])],
         None => vec![],

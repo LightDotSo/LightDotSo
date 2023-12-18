@@ -55,19 +55,19 @@ pub(crate) struct ListQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_list_handler(
-    pagination: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Notification>> {
-    // Get the pagination query.
-    let Query(pagination) = pagination;
+    // Get the list query.
+    let Query(query) = list_query;
 
     // Get the notifications from the database.
     let notifications = client
         .client
         .notification()
         .find_many(vec![])
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
 

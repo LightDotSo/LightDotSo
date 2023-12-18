@@ -79,11 +79,11 @@ impl From<TokenPriceQueryReturnType> for TokenPriceDate {
     )]
 #[autometrics]
 pub(crate) async fn v1_token_price_get_handler(
-    get: Query<GetQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<TokenPrice> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
 
     info!("Get token for address: {:?}", query);
     let parsed_query_address: H160 = query.address.parse()?;

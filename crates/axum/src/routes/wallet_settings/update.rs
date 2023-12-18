@@ -72,13 +72,14 @@ pub struct WalletSettingsPostRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_post_handler(
-    post: Query<PostQuery>,
+    post_query: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<WalletSettingsPostRequestParams>,
 ) -> AppJsonResult<WalletSettings> {
     // Get the post query.
-    let Query(post) = post;
+    let Query(post) = post_query;
 
+    // Parse the address from the post query.
     let parsed_query_address: H160 = post.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);
 

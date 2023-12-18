@@ -34,7 +34,7 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct NonceQuery {
+pub struct GetQuery {
     /// The chain id to get the user operation nonce for.
     pub chain_id: i64,
     /// The sender address to filter by.
@@ -62,7 +62,7 @@ pub(crate) struct UserOperationNonce {
         get,
         path = "/user_operation/nonce",
         params(
-            NonceQuery
+            GetQuery
         ),
         responses(
             (status = 200, description = "User Operation nonce returned successfully", body = UserOperationNonce),
@@ -71,11 +71,11 @@ pub(crate) struct UserOperationNonce {
     )]
 #[autometrics]
 pub(crate) async fn v1_user_operation_nonce_handler(
-    get: Query<NonceQuery>,
+    get_query: Query<GetQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<UserOperationNonce> {
     // Get the get query.
-    let Query(query) = get;
+    let Query(query) = get_query;
     let chain_id = query.chain_id;
     // Get the wallet address from the nonce query.
     let address: H160 = query.address.parse()?;

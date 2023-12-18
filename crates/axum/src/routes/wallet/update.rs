@@ -39,7 +39,7 @@ use utoipa::{IntoParams, ToSchema};
 #[derive(Debug, Deserialize, Default, IntoParams)]
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
-pub struct UpdateQuery {
+pub struct PutQuery {
     /// The address of the wallet.
     pub address: String,
     /// The chain id of the wallet.
@@ -67,7 +67,7 @@ pub struct WalletPutRequestParams {
         put,
         path = "/wallet/update",
         params(
-            UpdateQuery
+            PutQuery
         ),
         request_body = WalletPutRequestParams,
         responses(
@@ -79,14 +79,14 @@ pub struct WalletPutRequestParams {
 pub(crate) async fn v1_wallet_update_handler(
     State(client): State<AppState>,
     session: Session,
-    put: Query<UpdateQuery>,
+    put_query: Query<PutQuery>,
     Json(params): Json<WalletPutRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Verify the session
     verify_session(&session)?;
 
     // Get the get query.
-    let Query(query) = put;
+    let Query(query) = put_query;
 
     let parsed_query_address: H160 = query.address.parse()?;
     let checksum_address = to_checksum(&parsed_query_address, None);

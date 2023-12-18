@@ -100,12 +100,12 @@ pub struct WalletPostRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_post_handler(
-    post: Query<PostQuery>,
+    post_query: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<WalletPostRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Get the post query.
-    let Query(post) = post;
+    let Query(query) = post_query;
 
     let factory_address: H160 = *LIGHT_WALLET_FACTORY_ADDRESS;
 
@@ -178,7 +178,7 @@ pub(crate) async fn v1_wallet_post_handler(
     }
 
     // If the simulate flag is set, return the wallet address.
-    if post.simulate.unwrap_or(false) {
+    if query.simulate.unwrap_or(false) {
         // Check if the wallet exists.
         let wallet = client
             .client

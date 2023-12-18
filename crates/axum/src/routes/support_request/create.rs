@@ -63,15 +63,15 @@ pub struct SupportRequestPostRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_support_request_post_handler(
-    post: Query<PostQuery>,
+    post_query: Query<PostQuery>,
     State(client): State<AppState>,
     Json(params): Json<SupportRequestPostRequestParams>,
 ) -> AppJsonResult<SupportRequest> {
     // Get the post query.
-    let Query(post) = post;
+    let Query(query) = post_query;
 
     // Get the wallet address from the post query.
-    let wallet_address: H160 = post.wallet_address.parse()?;
+    let wallet_address: H160 = query.wallet_address.parse()?;
 
     // Get the support_request from the post body.
     let support_request = params.support_request;
