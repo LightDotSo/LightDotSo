@@ -63,7 +63,7 @@ export const RootContext: FC = () => {
           exit={{ opacity: 0, y: 300 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          <Badge className="mb-1" variant="info">
+          <Badge className="mb-1" intent="info">
             Info
           </Badge>
           <Accordion className="text-text-info-strong" type="multiple">
@@ -98,7 +98,7 @@ export const RootContext: FC = () => {
             exit={{ opacity: 0, y: 300 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <Badge className="mb-1" variant="warning">
+            <Badge className="mb-1" intent="warning">
               Warning
             </Badge>
             <Accordion className="text-text-warning-strong" type="multiple">
@@ -143,7 +143,7 @@ export const RootContext: FC = () => {
             exit={{ opacity: 0, y: 300 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <Badge className="mb-1" variant="error">
+            <Badge className="mb-1" intent="error">
               Error
             </Badge>
             <Accordion className="text-text-error-strong" type="multiple">

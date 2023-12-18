@@ -45,6 +45,7 @@ const Alert = forwardRef<
     ref={ref}
     role="alert"
     className={cn(alertVariants({ variant, intent }), className)}
+    data-variant={variant ?? "default"}
     {...props}
   />
 ));
