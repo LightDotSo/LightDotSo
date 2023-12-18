@@ -40,7 +40,6 @@ import {
 
 type OpConfirmDialogProps = {
   address: Address;
-  chainId: number;
   config: {
     address: string;
     checkpoint: number;
@@ -80,7 +79,6 @@ type OpConfirmDialogProps = {
 
 export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
   // address,
-  chainId,
   config,
   userOperation,
 }) => {
@@ -104,7 +102,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
 
   const { data: paymasterHash } = useLightVerifyingPaymasterGetHash({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-    chainId,
+    chainId: userOperation.chain_id,
     args: [
       {
         sender: userOperation.sender as Address,
@@ -132,7 +130,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
 
   const { data: paymasterNonce } = useLightVerifyingPaymasterSenderNonce({
     address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-    chainId: Number(chainId),
+    chainId: Number(userOperation.chain_id),
     args: [userOperation.sender as Address],
   });
 
@@ -143,7 +141,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
   const { data: paymasterOperation } = useSuspenseQuery({
     queryKey: queries.paymaster_operation.get({
       address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-      chainId: chainId,
+      chainId: userOperation.chain_id,
       valid_after: fromHex(
         `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
         "number",
@@ -154,7 +152,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
         params: {
           query: {
             address: userOperation.paymaster_and_data.slice(0, 42) as Address,
-            chain_id: chainId,
+            chain_id: userOperation.chain_id,
             valid_after: fromHex(
               `0x${userOperation.paymaster_and_data.slice(162, 170)}`,
               "number",
@@ -208,7 +206,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
       await sigRes.match(
         async sig => {
           // Sned the user operation
-          const res = await sendUserOperation(chainId, [
+          const res = await sendUserOperation(userOperation.chain_id, [
             {
               sender: userOperation.sender,
               nonce: toHex(userOperation.nonce),
@@ -245,7 +243,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
     };
 
     processSignature();
-  }, [chainId, userOperation]);
+  }, [userOperation]);
 
   // ---------------------------------------------------------------------------
   // Render
@@ -266,7 +264,9 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
           <code>userOperation: {JSON.stringify(userOperation, null, 2)}</code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">chainId: {chainId}</code>
+          <code className="break-all text-text">
+            chainId: {userOperation.chain_id}
+          </code>
         </pre>
         <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
           <code className="break-all text-text">

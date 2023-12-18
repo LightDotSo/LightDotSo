@@ -23,7 +23,6 @@ import { preload as preloadGetUserOperation } from "@/services/getUserOperation"
 
 export const preloader = async (params: {
   address: string;
-  chainId: string;
   userOperationHash: string;
 }) => {
   preloadGetUserOperation({ hash: params.userOperationHash as Hex });
