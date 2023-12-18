@@ -433,6 +433,8 @@ export interface components {
       code: string;
       /** @description The id of the invite code. */
       id: string;
+      /** @description The status of the invite code. */
+      status: string;
     };
     /** @description InviteCode errors */
     InviteCodeError: OneOf<[{
