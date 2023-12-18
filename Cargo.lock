@@ -6369,6 +6369,7 @@ version = "0.1.0"
 dependencies = [
  "eyre",
  "hyper",
+ "hyper-rustls 0.24.1",
  "lazy_static",
  "pusher",
  "tokio",

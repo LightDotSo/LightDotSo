@@ -22,7 +22,7 @@ async fn test_integration_test() -> Result<()> {
     let pusher = get_pusher()?;
 
     let mut hash_map = HashMap::new();
-    hash_map.insert("message", "hello world");
+    hash_map.insert("message", "hello world from rust");
 
     let res = pusher.trigger(TEST_CHANNEL.as_str(), TEST_EVENT.as_str(), &hash_map).await;
 

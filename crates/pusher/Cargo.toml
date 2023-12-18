@@ -11,6 +11,7 @@
 [dependencies]
   eyre = { workspace = true }
   hyper = { workspace = true }
+  hyper-rustls = { workspace = true }
   lazy_static = { workspace = true }
   pusher = "0.4.5"
   tokio = { workspace = true }
