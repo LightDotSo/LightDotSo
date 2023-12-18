@@ -113,7 +113,7 @@ export const ChainPopover: FC = () => {
           role="combobox"
           aria-expanded={open}
         >
-          <Globe className="ml-2 mr-1 h-5 w-5 shrink-0" />
+          <Globe className="ml-2 mr-1 h-4 w-4 shrink-0" />
           <ChainStack
             className="mr-2"
             address={wallet}
