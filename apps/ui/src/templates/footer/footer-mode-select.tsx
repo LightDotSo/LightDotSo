@@ -13,16 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-export enum Internal {
-  CHANGELOG = "Changelog",
-  DOCS = "Docs",
-  HOME = "Home",
-}
+"use client";
 
-export const INTERNAL_LINKS: {
-  readonly [key in Internal]: string;
-} = {
-  [Internal.CHANGELOG]: "https://changelog.light.so",
-  [Internal.DOCS]: "https://docs.light.so",
-  [Internal.HOME]: "https://light.so",
+import { useTheme } from "next-themes";
+import type { FC } from "react";
+
+export const FooterModeSelect: FC = () => {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div>
+      <select
+        id="mode"
+        name="mode"
+        className="mt-1 w-full cursor-pointer rounded-md border-border bg-inherit py-2 pl-3 pr-10 text-base text-text-weak sm:block sm:text-sm"
+        value={theme}
+        onBlur={() => {}}
+        onChange={e => {
+          return setTheme(e.target.value);
+        }}
+      >
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+        <option value="system">System</option>
+      </select>
+    </div>
+  );
 };

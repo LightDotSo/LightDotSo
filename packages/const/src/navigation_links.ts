@@ -19,17 +19,16 @@ import { SOCIAL_LINKS } from "./social_links";
 
 export const NAVIGATION_LINKS = {
   resources: [
-    { name: "Changelog", href: INTERNAL_LINKS.Changelog, external: false },
-    { name: "Docs", href: INTERNAL_LINKS.Docs, external: false },
-    { name: "FAQ", href: NOTION_LINKS.Faq, external: true },
-    { name: "Membership", href: INTERNAL_LINKS.Membership, external: false },
-    { name: "Support", href: SOCIAL_LINKS.Discord, external: true },
+    { name: "Changelog", href: INTERNAL_LINKS.Changelog },
+    { name: "Docs", href: INTERNAL_LINKS.Docs },
+    { name: "FAQ", href: NOTION_LINKS.Faq },
+    { name: "Support", href: SOCIAL_LINKS.Discord },
   ],
   company: [
-    { name: "Careers", href: NOTION_LINKS.Careers, external: true },
-    { name: "Home", href: INTERNAL_LINKS.Home, external: false },
-    { name: "Open", href: SOCIAL_LINKS.Plausible, external: false },
-    { name: "Notion", href: SOCIAL_LINKS.Notion, external: true },
+    { name: "Careers", href: NOTION_LINKS.Careers },
+    { name: "Home", href: INTERNAL_LINKS.Home },
+    { name: "Open", href: SOCIAL_LINKS.Plausible },
+    { name: "Notion", href: SOCIAL_LINKS.Notion },
   ],
   legal: [
     {
