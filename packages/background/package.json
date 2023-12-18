@@ -22,7 +22,7 @@
     "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.10.5",
     "typescript": "^5.3.3"
   },
   "publishConfig": {
