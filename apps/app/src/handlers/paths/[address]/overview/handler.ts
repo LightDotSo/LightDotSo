@@ -53,6 +53,7 @@ export const handler = async (params: { address: string }) => {
 
   const nftsPromise = getNfts({
     address: params.address as Address,
+    limit: OVERVIEW_ROW_COUNT,
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
