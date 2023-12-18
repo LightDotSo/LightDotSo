@@ -22,6 +22,10 @@ import type { FC, SVGProps } from "react";
 
 export type LightHorizontalLogoProps = SVGProps<SVGSVGElement>;
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export const LightHorizontalLogo: FC<LightHorizontalLogoProps> = ({
   className = "",
   ...props

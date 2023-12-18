@@ -26,8 +26,7 @@ type LogoProps = SVGProps<SVGSVGElement>;
 // Component
 // -----------------------------------------------------------------------------
 
-// eslint-disable-next-line react/prop-types
-export const Logo: FC<LogoProps> = ({ className = "", ...props }) => {
+export const Logo: FC<LogoProps> = ({ className, ...props }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

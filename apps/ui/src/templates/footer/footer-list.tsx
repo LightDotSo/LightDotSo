@@ -16,6 +16,10 @@
 import { NAVIGATION_LINKS } from "@lightdotso/const";
 import type { FC } from "react";
 
+// -----------------------------------------------------------------------------
+// Props
+// -----------------------------------------------------------------------------
+
 interface ListItem {
   name: string;
   href: string;
@@ -25,6 +29,10 @@ interface FooterListItemProps {
   items: ListItem[];
   title: string;
 }
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
   return (
@@ -49,6 +57,10 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
     </div>
   );
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const FooterList: FC = () => {
   return (

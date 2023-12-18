@@ -18,6 +18,10 @@ import { FooterList } from "./footer-list";
 import { FooterModeSelect } from "./footer-mode-select";
 import { FooterSocial } from "./footer-social";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export const Footer: FC = () => {
   return (
     <footer className="border-t border-border" aria-labelledby="footer-heading">

@@ -18,6 +18,10 @@
 import { useTheme } from "next-themes";
 import type { FC } from "react";
 
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
+
 export const FooterModeSelect: FC = () => {
   const { theme, setTheme } = useTheme();
 

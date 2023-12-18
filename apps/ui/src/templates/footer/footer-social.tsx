@@ -18,6 +18,10 @@ import type { FC, SVGProps } from "react";
 import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
 import { LightHorizontalLogo } from "../../svgs/logo/light-horizontal";
 
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
 const navigation = {
   social: [
     {
@@ -43,6 +47,10 @@ const navigation = {
     },
   ],
 };
+
+// -----------------------------------------------------------------------------
+// Component
+// -----------------------------------------------------------------------------
 
 export const FooterSocial: FC = () => {
   return (
