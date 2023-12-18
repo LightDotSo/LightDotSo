@@ -23,6 +23,7 @@
     "crates/keychain",
     "crates/notifier",
     "crates/polling",
+    "crates/pusher",
     "crates/opentelemetry",
     "crates/paymaster",
     "crates/prometheus",
@@ -116,6 +117,7 @@
   lightdotso-notifier = { path = "./crates/notifier" }
   lightdotso-opentelemetry = { path = "./crates/opentelemetry" }
   lightdotso-paymaster = { path = "./crates/paymaster" }
+  lightdotso-pusher = { path = "./crates/pusher" }
   lightdotso-polling = { path = "./crates/polling" }
   lightdotso-prometheus = { path = "./crates/prometheus" }
   lightdotso-prisma = { path = "./crates/prisma" }

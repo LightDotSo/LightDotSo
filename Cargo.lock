@@ -6364,6 +6364,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "lightdotso-pusher"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "hyper",
+ "hyper-rustls 0.24.1",
+ "lazy_static",
+ "pusher",
+ "tokio",
+]
+
+[[package]]
 name = "lightdotso-redis"
 version = "0.1.0"
 dependencies = [
@@ -8941,6 +8953,24 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "pusher"
+version = "0.4.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83b3d16d397f64c2a6a576b069d3c62de1edb92414676a1cb2fa09686ffb06e9"
+dependencies = [
+ "bytes",
+ "hex",
+ "hmac 0.12.1",
+ "hyper",
+ "md-5 0.10.5",
+ "regex",
+ "serde",
+ "serde_json",
+ "sha2 0.10.7",
+ "url",
 ]
 
 [[package]]
