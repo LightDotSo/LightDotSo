@@ -64,7 +64,7 @@ export const RootContext: FC = () => {
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <Badge className="mb-1" variant="info">
-            <span className="text-text-weakest">Info</span>
+            Info
           </Badge>
           <Accordion className="text-text-info-strong" type="multiple">
             <AccordionItem value="item-1" className="border-border-info-weaker">
@@ -99,7 +99,7 @@ export const RootContext: FC = () => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <Badge className="mb-1" variant="warning">
-              <span className="text-text-weakest">Warning</span>
+              Warning
             </Badge>
             <Accordion className="text-text-warning-strong" type="multiple">
               <AccordionItem
@@ -144,7 +144,7 @@ export const RootContext: FC = () => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <Badge className="mb-1" variant="error">
-              <span className="text-text-weakest">Error</span>
+              Error
             </Badge>
             <Accordion className="text-text-error-strong" type="multiple">
               {errors.issues.map((error, index) => (
