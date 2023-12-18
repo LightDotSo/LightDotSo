@@ -29,9 +29,7 @@ type Story = StoryObj<typeof Button>;
 
 export const Base: Story = {
   render: args => <Button {...args}>Base</Button>,
-  args: {
-    variant: "default",
-  },
+  args: {},
 };
 export const Shadow: Story = {
   render: args => <Button {...args}>Shadow</Button>,
