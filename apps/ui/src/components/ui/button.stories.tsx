@@ -57,12 +57,6 @@ export const Link: Story = {
     variant: "link",
   },
 };
-export const Strong: Story = {
-  render: args => <Button {...args}>Strong</Button>,
-  args: {
-    variant: "strong",
-  },
-};
 export const Loading: Story = {
   render: args => <Button {...args}>Loading</Button>,
   args: {
@@ -100,9 +94,6 @@ export const Default: Story = {
       <Button {...args} variant="link">
         Link
       </Button>
-      <Button {...args} variant="strong">
-        Strong
-      </Button>
       <Button {...args} variant="loading">
         Loading
       </Button>
@@ -129,9 +120,6 @@ export const Destructive: Story = {
       </Button>
       <Button {...args} variant="link">
         Link
-      </Button>
-      <Button {...args} variant="strong">
-        Strong
       </Button>
       <Button {...args} variant="loading">
         Loading

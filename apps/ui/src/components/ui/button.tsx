@@ -29,7 +29,6 @@ const buttonVariants = cva(
         outline: "border",
         ghost: "",
         link: "underline-offset-4 hover:underline",
-        strong: "",
         loading: "",
         unstyled: "",
       },
@@ -47,24 +46,19 @@ const buttonVariants = cva(
           ["data-[variant=shadow]:hover:bg-background-strongest"],
           // Outline
           ["data-[variant=outline]:border-border-primary-weak"],
-          ["data-[variant=outline]:bg-background"],
           ["data-[variant=outline]:text-text"],
-          ["data-[variant=outline]:hover:bg-background-stronger"],
-          ["data-[variant=outline]:hover:text-text-weak"],
+          ["data-[variant=outline]:active:border-border-primary"],
+          ["data-[variant=outline]:hover:border-border-primary"],
           // Ghost
-          ["data-[variant=ghost]:hover:bg-background-stronger"],
           ["data-[variant=ghost]:hover:text-text-weak"],
+          ["data-[variant=ghost]:hover:text-text-strong"],
+          ["data-[variant=ghost]:hover:bg-background-stronger"],
           // Link
           ["data-[variant=link]:text-text"],
-          // Strong
-          ["data-[variant=strong]:bg-background-stronger"],
-          ["data-[variant=strong]:text-text"],
-          ["data-[variant=strong]:hover:bg-background-stronger/90"],
-          ["data-[variant=strong]:hover:text-text-weak"],
           // Loading
           ["data-[variant=loading]:bg-background-primary-strong"],
-          ["data-[variant=loading]:hover:bg-background-primary/90"],
           ["data-[variant=loading]:text-text-weakest"],
+          ["data-[variant=loading]:hover:bg-background-primary-weak"],
         ],
         destructive: [
           // Default
@@ -72,31 +66,26 @@ const buttonVariants = cva(
           ["data-[variant=default]:bg-background-destructive"],
           ["data-[variant=default]:text-text-inverse"],
           ["data-[variant=default]:hover:border-border-destructive-weaker"],
-          ["data-[variant=default]:hover:bg-background-destructive/90"],
+          ["data-[variant=default]:hover:bg-background-destructive-weak"],
           // Shadow
           ["data-[variant=shadow]:bg-background-destructive-weak"],
           ["data-[variant=shadow]:text-text-destructive-strong"],
           ["data-[variant=shadow]:hover:bg-background-destructive-weaker"],
           // Outline
           ["data-[variant=outline]:border-border-destructive-weak"],
-          ["data-[variant=outline]:bg-background-destructive"],
-          ["data-[variant=outline]:text-text"],
-          ["data-[variant=outline]:hover:bg-background-destructive-stronger"],
-          ["data-[variant=outline]:hover:text-text-weak"],
+          ["data-[variant=outline]:text-text-destructive"],
+          ["data-[variant=outline]:active:border-border-destructive-stronger"],
+          ["data-[variant=outline]:hover:border-border-destructive-stronger"],
           // Ghost
           ["data-[variant=ghost]:text-text-destructive"],
-          ["data-[variant=ghost]:hover:bg-background-destructive-stronger"],
-          ["data-[variant=ghost]:hover:text-text-destructive-weak"],
+          ["data-[variant=ghost]:hover:text-text-destructive-strong"],
+          ["data-[variant=ghost]:hover:bg-background-destructive-weaker"],
           // Link
           ["data-[variant=link]:text-text-destructive"],
-          // Strong
-          ["data-[variant=strong]:bg-background-destructive-stronger"],
-          ["data-[variant=strong]:hover:bg-background-destructive-stronger/90"],
-          ["data-[variant=strong]:hover:text-text-weak"],
           // Loading
           ["data-[variant=loading]:bg-background-destructive-strong"],
-          ["data-[variant=loading]:hover:bg-background-destructive/90"],
-          ["data-[variant=loading]:text-text-weakest"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-destructive-weak"],
         ],
       },
       size: {

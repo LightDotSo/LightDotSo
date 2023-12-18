@@ -54,7 +54,7 @@ export const InvokePortfolioButton: FC<InvokePortfolioButtonProps> = ({
           <span>
             <Button
               size="unsized"
-              variant="strong"
+              variant="shadow"
               className="h-8 px-3 py-1"
               onClick={() => {
                 invokePortfolioAction(address as Address);
