@@ -76,6 +76,7 @@ model User {
   wallets       Wallet[]
   feedbacks     Feedback[]
   notifications Notification[]
+  inviteCodes   InviteCode[]
 }
 
 model VerificationRequest {
@@ -562,14 +563,21 @@ model Feedback {
   @@index([userId])
 }
 
+enum SupportRequestStatus {
+  OPEN
+  ACTIVE
+  CLOSED
+}
+
 model SupportRequest {
-  id          String   @id @default(cuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          String               @id @default(cuid())
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
   title       String
   description String
   area        String
   severity    Int
+  status      SupportRequestStatus @default(OPEN)
 
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
@@ -658,4 +666,23 @@ model WalletSettings {
   walletAddress String @unique
 
   @@index([walletAddress])
+}
+
+enum InviteCodeStatus {
+  ACTIVE
+  USED
+}
+
+model InviteCode {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  code   String           @unique
+  status InviteCodeStatus @default(ACTIVE)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId])
 }

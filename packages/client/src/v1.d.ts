@@ -73,6 +73,20 @@ export interface paths {
      */
     get: operations["handler"];
   };
+  "/invite_code/get": {
+    /**
+     * Get a paymaster
+     * @description Get a paymaster
+     */
+    get: operations["v1_invite_code_get_handler"];
+  };
+  "/invite_code/list": {
+    /**
+     * Returns a list of paymasters.
+     * @description Returns a list of paymasters.
+     */
+    get: operations["v1_invite_code_list_handler"];
+  };
   "/notification/get": {
     /**
      * Get a notification
@@ -413,6 +427,23 @@ export interface components {
     FeedbackPostRequestParams: {
       feedback: components["schemas"]["Feedback"];
     };
+    /** @description InviteCode root type. */
+    InviteCode: {
+      /** @description The code of the invite code. */
+      code: string;
+      /** @description The id of the invite code. */
+      id: string;
+      /** @description The status of the invite code. */
+      status: string;
+    };
+    /** @description InviteCode errors */
+    InviteCodeError: OneOf<[{
+      /** @description InviteCode query error. */
+      BadRequest: string;
+    }, {
+      /** @description InviteCode not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Notification root type. */
     Notification: {
       /** @description The id of the notification to read for. */
@@ -1113,6 +1144,60 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["FeedbackError"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a paymaster
+   * @description Get a paymaster
+   */
+  v1_invite_code_get_handler: {
+    parameters: {
+      query: {
+        /** @description The code of the invite code. */
+        code: string;
+      };
+    };
+    responses: {
+      /** @description Invite code returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InviteCode"];
+        };
+      };
+      /** @description Invite code not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["InviteCodeError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of paymasters.
+   * @description Returns a list of paymasters.
+   */
+  v1_invite_code_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first invite code to return. */
+        offset?: number | null;
+        /** @description The maximum number of invite codes to return. */
+        limit?: number | null;
+      };
+    };
+    responses: {
+      /** @description Invite Codes returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["InviteCode"][];
+        };
+      };
+      /** @description Invite Code bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["InviteCodeError"];
         };
       };
     };

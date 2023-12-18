@@ -13,23 +13,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod auth;
-pub(crate) mod check;
-pub(crate) mod configuration;
-pub(crate) mod feedback;
-pub(crate) mod health;
-pub(crate) mod invite_code;
-pub(crate) mod metrics;
-pub(crate) mod notification;
-pub(crate) mod paymaster;
-pub(crate) mod paymaster_operation;
-pub(crate) mod portfolio;
-pub(crate) mod signature;
-pub(crate) mod support_request;
-pub(crate) mod token;
-pub(crate) mod token_price;
-pub(crate) mod transaction;
-pub(crate) mod user;
-pub(crate) mod user_operation;
-pub(crate) mod wallet;
-pub(crate) mod wallet_settings;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
+
+// -----------------------------------------------------------------------------
+// Error
+// -----------------------------------------------------------------------------
+
+/// InviteCode errors
+#[derive(Serialize, Deserialize, ToSchema)]
+pub(crate) enum InviteCodeError {
+    /// InviteCode query error.
+    #[schema(example = "Bad request")]
+    BadRequest(String),
+    /// InviteCode not found by id.
+    #[schema(example = "id = 1")]
+    NotFound(String),
+}

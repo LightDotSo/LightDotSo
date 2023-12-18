@@ -55,19 +55,19 @@ pub struct ListQuery {
     )]
 #[autometrics]
 pub(crate) async fn v1_paymaster_list_handler(
-    pagination: Query<ListQuery>,
+    list_query: Query<ListQuery>,
     State(client): State<AppState>,
 ) -> AppJsonResult<Vec<Paymaster>> {
     // Get the list query.
-    let Query(pagination) = pagination;
+    let Query(query) = list_query;
 
     // Get the paymasters from the database.
     let paymasters = client
         .client
         .paymaster()
         .find_many(vec![])
-        .skip(pagination.offset.unwrap_or(0))
-        .take(pagination.limit.unwrap_or(10))
+        .skip(query.offset.unwrap_or(0))
+        .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
 
