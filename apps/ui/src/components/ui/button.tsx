@@ -119,7 +119,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         <Comp
           ref={ref}
           className={cn(buttonVariants({ variant, intent, size, className }))}
-          data-variant={variant}
+          data-variant={variant ?? "default"}
           {...props}
         >
           <>
@@ -136,7 +136,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         ref={ref}
         className={cn(buttonVariants({ variant, intent, size, className }))}
-        data-variant={variant}
+        data-variant={variant ?? "default"}
         {...props}
       />
     );
