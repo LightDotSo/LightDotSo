@@ -32,7 +32,7 @@ import {
 } from "viem";
 import { useSignMessage } from "wagmi";
 import type { ConfigurationData } from "@/data";
-import { useAuth } from "@/stores";
+import { useAuth, useDev } from "@/stores";
 import type { UserOperation } from "@/types";
 import { errorToast, serializeBigInt, successToast } from "@/utils";
 import {
@@ -62,6 +62,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
   userOperation,
 }) => {
   const { address: userAddress } = useAuth();
+  const { isDev } = useDev();
   const router = useRouter();
 
   const subdigest = subdigestOf(
@@ -206,53 +207,55 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
 
   return (
     <>
-      <div className="grid gap-4 py-4">
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code>
-            userOperation: {userOperation && serializeBigInt(userOperation)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            chainId: {Number(userOperation.chainId)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            decodedInitCode:{" "}
-            {decodedInitCode && serializeBigInt(decodedInitCode)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            decodedCallData:{" "}
-            {decodedCallData && serializeBigInt(decodedCallData)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            userOpHash: {userOperation.hash}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterNonce: {serializeBigInt(paymasterNonce)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterHash: {paymasterHash}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">subdigest: {subdigest}</code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            owners: {owners && JSON.stringify(owners, null, 2)}
-          </code>
-        </pre>
-      </div>
+      {isDev && (
+        <div className="grid gap-4 py-4">
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code>
+              userOperation: {userOperation && serializeBigInt(userOperation)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              chainId: {Number(userOperation.chainId)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              decodedInitCode:{" "}
+              {decodedInitCode && serializeBigInt(decodedInitCode)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              decodedCallData:{" "}
+              {decodedCallData && serializeBigInt(decodedCallData)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              userOpHash: {userOperation.hash}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              paymasterNonce: {serializeBigInt(paymasterNonce)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              paymasterHash: {paymasterHash}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">subdigest: {subdigest}</code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              owners: {owners && JSON.stringify(owners, null, 2)}
+            </code>
+          </pre>
+        </div>
+      )}
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
         <Button disabled={!owner} onClick={() => signMessage()}>
           Sign Transaction

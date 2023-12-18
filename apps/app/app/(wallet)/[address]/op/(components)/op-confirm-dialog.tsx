@@ -28,6 +28,7 @@ import type { FC } from "react";
 import { toHex, fromHex, recoverMessageAddress } from "viem";
 import type { Hex, Address } from "viem";
 import { queries } from "@/queries";
+import { useDev } from "@/stores";
 import { errorToast, serializeBigInt, successToast } from "@/utils";
 import {
   useLightVerifyingPaymasterGetHash,
@@ -82,6 +83,7 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
   config,
   userOperation,
 }) => {
+  const { isDev } = useDev();
   const [recoveredAddress, setRecoveredAddress] = useState<Address>();
 
   // Get the cumulative weight of all owners in the userOperation signatures array and check if it is greater than or equal to the threshold
@@ -259,46 +261,48 @@ export const OpConfirmDialog: FC<OpConfirmDialogProps> = ({
           Are you sure you want to sign this confirm?
         </p>
       </div>
-      <div className="grid gap-4 py-4">
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code>userOperation: {JSON.stringify(userOperation, null, 2)}</code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            chainId: {userOperation.chain_id}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterNonce: {serializeBigInt(paymasterNonce)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterHash: {paymasterHash}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterSignedMsg: {paymasterSignedMsg}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            paymasterOperation: {JSON.stringify(paymasterOperation, null, 2)}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            recoveredAddress: {recoveredAddress}
-          </code>
-        </pre>
-        <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
-          <code className="break-all text-text">
-            config: {JSON.stringify(config, null, 2)}
-          </code>
-        </pre>
-      </div>
+      {isDev && (
+        <div className="grid gap-4 py-4">
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code>userOperation: {JSON.stringify(userOperation, null, 2)}</code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              chainId: {userOperation.chain_id}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              paymasterNonce: {serializeBigInt(paymasterNonce)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              paymasterHash: {paymasterHash}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              paymasterSignedMsg: {paymasterSignedMsg}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              paymasterOperation: {JSON.stringify(paymasterOperation, null, 2)}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              recoveredAddress: {recoveredAddress}
+            </code>
+          </pre>
+          <pre className="grid grid-cols-4 items-center gap-4 overflow-auto">
+            <code className="break-all text-text">
+              config: {JSON.stringify(config, null, 2)}
+            </code>
+          </pre>
+        </div>
+      )}
       <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">
         <Button disabled={!isValid} onClick={() => handleConfirm()}>
           Confirm

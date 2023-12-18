@@ -14,6 +14,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 export { useAuth } from "./useAuth";
+export { useDev } from "./useDev";
 export { useModals } from "./useModals";
 export { useNewForm } from "./useNewForm";
 export { useSettings } from "./useSettings";
