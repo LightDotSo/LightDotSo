@@ -15,12 +15,13 @@
 
 use crate::routes::{
     auth::error::AuthError, configuration::error::ConfigurationError,
-    feedback::error::FeedbackError, notification::error::NotificationError,
-    paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
-    portfolio::error::PortfolioError, signature::error::SignatureError,
-    support_request::error::SupportRequestError, token::error::TokenError,
-    token_price::error::TokenPriceError, transaction::error::TransactionError,
-    user::error::UserError, user_operation::error::UserOperationError, wallet::error::WalletError,
+    feedback::error::FeedbackError, invite_code::error::InviteCodeError,
+    notification::error::NotificationError, paymaster::error::PaymasterError,
+    paymaster_operation::error::PaymasterOperationError, portfolio::error::PortfolioError,
+    signature::error::SignatureError, support_request::error::SupportRequestError,
+    token::error::TokenError, token_price::error::TokenPriceError,
+    transaction::error::TransactionError, user::error::UserError,
+    user_operation::error::UserOperationError, wallet::error::WalletError,
     wallet_settings::error::WalletSettingsError,
 };
 use http::StatusCode;
@@ -31,6 +32,7 @@ pub(crate) enum RouteError {
     AuthError(AuthError),
     ConfigurationError(ConfigurationError),
     FeedbackError(FeedbackError),
+    InviteCodeError(InviteCodeError),
     NotificationError(NotificationError),
     PaymasterError(PaymasterError),
     PaymasterOperationError(PaymasterOperationError),
@@ -74,6 +76,15 @@ impl RouteErrorStatusCodeAndMsg for FeedbackError {
         match self {
             FeedbackError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             FeedbackError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
+}
+
+impl RouteErrorStatusCodeAndMsg for InviteCodeError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            InviteCodeError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            InviteCodeError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
         }
     }
 }
@@ -203,6 +214,7 @@ impl RouteErrorStatusCodeAndMsg for RouteError {
             RouteError::AuthError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
+            RouteError::InviteCodeError(err) => err.error_status_code_and_msg(),
             RouteError::NotificationError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterError(err) => err.error_status_code_and_msg(),
             RouteError::PaymasterOperationError(err) => err.error_status_code_and_msg(),

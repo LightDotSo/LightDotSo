@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::PaymasterOperation;
+use super::types::InviteCode;
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::extract::{Query, State};
@@ -29,9 +29,9 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    /// The offset of the first paymaster operation to return.
+    /// The offset of the first invite code to return.
     pub offset: Option<i64>,
-    /// The maximum number of paymaster operations to return.
+    /// The maximum number of invite codes to return.
     pub limit: Option<i64>,
 }
 
@@ -42,27 +42,27 @@ pub struct ListQuery {
 /// Returns a list of paymasters.
 #[utoipa::path(
         get,
-        path = "/paymaster_operation/list",
+        path = "/invite_code/list",
         params(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Paymaster Operations returned successfully", body = [PaymasterOperation]),
-            (status = 500, description = "Paymaster Operation bad request", body = PaymasterOperationError),
+            (status = 200, description = "Invite Codes returned successfully", body = [InviteCode]),
+            (status = 500, description = "Invite Code bad request", body = InviteCodeError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_paymaster_operation_list_handler(
+pub(crate) async fn v1_invite_code_list_handler(
     list_query: Query<ListQuery>,
     State(client): State<AppState>,
-) -> AppJsonResult<Vec<PaymasterOperation>> {
+) -> AppJsonResult<Vec<InviteCode>> {
     // Get the list query.
     let Query(query) = list_query;
 
     // Get the paymasters from the database.
     let paymasters = client
         .client
-        .paymaster_operation()
+        .invite_code()
         .find_many(vec![])
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
@@ -70,8 +70,7 @@ pub(crate) async fn v1_paymaster_operation_list_handler(
         .await?;
 
     // Change the paymasters to the format that the API expects.
-    let paymasters: Vec<PaymasterOperation> =
-        paymasters.into_iter().map(PaymasterOperation::from).collect();
+    let paymasters: Vec<InviteCode> = paymasters.into_iter().map(InviteCode::from).collect();
 
     Ok(Json::from(paymasters))
 }

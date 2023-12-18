@@ -19,8 +19,8 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        auth, check, configuration, feedback, health, metrics, notification, paymaster,
-        paymaster_operation, portfolio, signature, support_request, token, token_price,
+        auth, check, configuration, feedback, health, invite_code, metrics, notification,
+        paymaster, paymaster_operation, portfolio, signature, support_request, token, token_price,
         transaction, user, user_operation, wallet, wallet_settings,
     },
     sessions::{authenticated, RedisStore},
@@ -72,6 +72,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(feedback::create::FeedbackPostRequestParams),
         schemas(feedback::error::FeedbackError),
         schemas(feedback::types::Feedback),
+        schemas(invite_code::error::InviteCodeError),
+        schemas(invite_code::types::InviteCode),
         schemas(notification::error::NotificationError),
         schemas(notification::read::NotificationReadRequest),
         schemas(notification::read::NotificationReadRequestParams),
@@ -132,6 +134,8 @@ use utoipa_swagger_ui::SwaggerUi;
         configuration::v1_configuration_get_handler,
         configuration::v1_configuration_list_handler,
         feedback::v1_feedback_post_handler,
+        invite_code::v1_invite_code_get_handler,
+        invite_code::v1_invite_code_list_handler,
         notification::v1_notification_get_handler,
         notification::v1_notification_list_handler,
         notification::v1_notification_read_handler,
@@ -174,6 +178,7 @@ use utoipa_swagger_ui::SwaggerUi;
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
         (name = "feedback", description = "Feedback API"),
+        (name = "invite_code", description = "Invite Code API"),
         (name = "health", description = "Health API"),
         (name = "notification", description = "Notification API"),
         (name = "paymaster", description = "Paymaster API"),
@@ -277,6 +282,7 @@ pub async fn start_api_server() -> Result<()> {
         .merge(check::router())
         .merge(feedback::router())
         .merge(health::router())
+        .merge(invite_code::router())
         .merge(metrics::router())
         .merge(notification::router())
         .merge(paymaster::router())
