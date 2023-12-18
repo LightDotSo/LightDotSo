@@ -13,37 +13,30 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import clsx from "clsx";
 import { m } from "framer-motion";
-import type { FC, MouseEventHandler } from "react";
-import type { Address, Chain } from "viem";
-import s from "@/components/network/network-item.module.css";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type NetworkItemProps = {
-  address: Address;
+export type ChainItemExtraProps = {
   className?: string;
   id: string;
-  onMouseEnter?: MouseEventHandler<HTMLLIElement>;
-  network: Chain;
+  length: number;
+  onClick?: () => void;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NetworkItem: FC<NetworkItemProps> = ({
-  address,
+export const ChainItemExtra: FC<ChainItemExtraProps> = ({
   className,
   id,
-  network,
-  onMouseEnter,
+  length,
+  onClick,
 }) => {
-  const { id: networkId, network: name, blockExplorers } = network;
-
   const item = {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: -10 },
@@ -59,7 +52,7 @@ export const NetworkItem: FC<NetworkItemProps> = ({
       id={id}
       style={{
         listStyle: "none",
-        marginRight: "-5px",
+        marginRight: "-10px",
       }}
       variants={item}
       whileHover={{
@@ -67,32 +60,13 @@ export const NetworkItem: FC<NetworkItemProps> = ({
         marginRight: "5px",
         transition: { ease: "easeOut" },
       }}
-      onMouseEnter={onMouseEnter}
     >
-      <a
-        target="_blank"
-        rel="noreferrer"
-        href={`${blockExplorers?.default.url}/address/${address}`}
-        className={clsx(
-          "flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-border-primary-weak bg-background-weak hover:bg-background-stronger",
-          s.transitionfix,
-        )}
-        onClick={e => {
-          return e.stopPropagation();
-        }}
+      <button
+        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-border bg-background-strongest text-xs font-extrabold text-text"
+        onClick={onClick}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt={networkId.toString()}
-          src={`https://icons.llamao.fi/icons/chains/rsz_${
-            name === "homestead"
-              ? "ethereum"
-              : name === "matic"
-                ? "polygon"
-                : name
-          }.jpg`}
-        />
-      </a>
+        <span>+{length}</span>
+      </button>
     </m.li>
   );
 };

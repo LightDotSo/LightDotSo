@@ -13,28 +13,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import clsx from "clsx";
 import { m } from "framer-motion";
 import type { FC, MouseEventHandler } from "react";
+import type { Address, Chain } from "viem";
+import s from "@/components/chain/chain-item.module.css";
+import { ChainLogo } from "@/svgs";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type NetworkItemExtraProps = {
+export type ChainItemProps = {
+  address: Address;
+  chain: Chain;
+  className?: string;
   id: string;
-  length: number;
-  onMouseEnter: MouseEventHandler<HTMLLIElement>;
+  onMouseEnter?: MouseEventHandler<HTMLLIElement>;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
+export const ChainItem: FC<ChainItemProps> = ({
+  address,
+  className,
   id,
-  length,
+  chain,
   onMouseEnter,
 }) => {
+  const { id: chainId, blockExplorers } = chain;
+
   const item = {
     visible: { opacity: 1, x: 0 },
     hidden: { opacity: 0, x: -10 },
@@ -46,10 +56,11 @@ export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
 
   return (
     <m.li
+      className={className}
       id={id}
       style={{
         listStyle: "none",
-        marginRight: "-10px",
+        marginRight: "-5px",
       }}
       variants={item}
       whileHover={{
@@ -59,14 +70,20 @@ export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
       }}
       onMouseEnter={onMouseEnter}
     >
-      <button
-        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-border-primary-weak bg-background-weak text-base font-extrabold text-text"
+      <a
+        target="_blank"
+        rel="noreferrer"
+        href={`${blockExplorers?.default.url}/address/${address}`}
+        className={clsx(
+          "flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-md border border-border bg-background-weak hover:bg-background-stronger",
+          s.transitionfix,
+        )}
         onClick={e => {
-          e.stopPropagation();
+          return e.stopPropagation();
         }}
       >
-        <span>+{length}</span>
-      </button>
+        <ChainLogo chainId={chainId} className="h-full w-full object-fill" />
+      </a>
     </m.li>
   );
 };
