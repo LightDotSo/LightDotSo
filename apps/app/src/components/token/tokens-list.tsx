@@ -38,7 +38,6 @@ import {
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/tokens/(components)/data-table/columns";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TokenData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
@@ -49,7 +48,7 @@ import { useTables } from "@/stores";
 
 export type TokensListProps = {
   address: Address;
-  limit?: number;
+  limit: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -80,7 +79,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const currentData: TokenData[] | undefined = queryClient.getQueryData(
     queries.token.list({
       address,
-      limit: OVERVIEW_ROW_COUNT,
+      limit: limit,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
@@ -89,7 +88,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
   const { data } = useSuspenseQuery<TokenData[] | null>({
     queryKey: queries.token.list({
       address,
-      limit: OVERVIEW_ROW_COUNT,
+      limit: limit,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
@@ -129,7 +128,7 @@ export const TokensList: FC<TokensListProps> = ({ address, limit }) => {
       columnFilters: tokenColumnFilters,
       pagination: {
         pageIndex: 0,
-        pageSize: OVERVIEW_ROW_COUNT,
+        pageSize: limit,
       },
     },
     paginateExpandedRows: false,

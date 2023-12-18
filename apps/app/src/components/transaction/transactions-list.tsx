@@ -38,7 +38,6 @@ import {
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { TransactionData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
@@ -49,7 +48,7 @@ import { useTables } from "@/stores";
 
 export type TransactionsListProps = {
   address: Address;
-  limit?: number;
+  limit: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -85,7 +84,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   const currentData: TransactionData[] | undefined = queryClient.getQueryData(
     queries.transaction.list({
       address,
-      limit: OVERVIEW_ROW_COUNT,
+      limit: limit,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
@@ -94,7 +93,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
   const { data } = useSuspenseQuery<TransactionData[] | null>({
     queryKey: queries.transaction.list({
       address,
-      limit: OVERVIEW_ROW_COUNT,
+      limit: limit,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
@@ -134,7 +133,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
       columnFilters: transactionColumnFilters,
       pagination: {
         pageIndex: 0,
-        pageSize: OVERVIEW_ROW_COUNT,
+        pageSize: limit,
       },
     },
     paginateExpandedRows: false,

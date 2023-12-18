@@ -26,6 +26,7 @@ import { NftsList } from "@/components/nft/nfts-list";
 import { TokenPortfolio } from "@/components/token/token-portfolio";
 import { TokensList } from "@/components/token/tokens-list";
 import { TransactionsList } from "@/components/transaction/transactions-list";
+import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import { OverviewSubCategory, TITLES } from "@/const/titles";
 
 // -----------------------------------------------------------------------------
@@ -54,11 +55,13 @@ export const OverviewList: FC<OverviewListProps> = ({ address }) => {
   const itemToComponent = (itemId: string): JSX.Element => {
     switch (itemId) {
       case OverviewSubCategory.Tokens:
-        return <TokensList address={address} limit={4} />;
+        return <TokensList address={address} limit={OVERVIEW_ROW_COUNT} />;
       case OverviewSubCategory.NFTs:
-        return <NftsList address={address} limit={6} />;
+        return <NftsList address={address} limit={OVERVIEW_ROW_COUNT} />;
       case OverviewSubCategory.History:
-        return <TransactionsList address={address} limit={6} />;
+        return (
+          <TransactionsList address={address} limit={OVERVIEW_ROW_COUNT} />
+        );
       default:
         return <></>;
     }

@@ -875,14 +875,26 @@ export const updateWalletSettings = async ({
 // Simplehash
 // -----------------------------------------------------------------------------
 
-export const getNftsByOwner = async (address: string, isTestnet?: boolean) => {
+export const getNftsByOwner = async ({
+  address,
+  limit = 10,
+  cursor,
+  isTestnet,
+}: {
+  address: string;
+  limit?: number;
+  cursor?: string;
+  isTestnet?: boolean;
+}) => {
   const chains = isTestnet
     ? simplehashChainSchema.options.join(",")
     : simplehashMainnetChainSchema.options.join(",");
 
   return ResultAsync.fromPromise(
     fetch(
-      `https://api.simplehash.com/api/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=50`,
+      `https://api.simplehash.com/api/v0/nfts/owners?chains=${chains}&wallet_addresses=${address}&limit=${limit}${
+        cursor ? `&cursor=${cursor}` : ""
+      }`,
       {
         method: "GET",
         headers: {
