@@ -24,7 +24,7 @@ test("getNftsByOwner", async () => {
   // Call your function with actual address
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const actualAddress = "0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"; // replace with actual address
-  await getNftsByOwner(actualAddress);
+  await getNftsByOwner({ address: actualAddress });
   // const result = await getNftsByOwner(actualAddress);
 
   // Expect that status is either "success" or "stale"

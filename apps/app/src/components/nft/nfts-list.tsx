@@ -32,7 +32,6 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
-import { OVERVIEW_ROW_COUNT } from "@/const/numbers";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
@@ -43,7 +42,7 @@ import { useTables } from "@/stores";
 
 export type NftsListProps = {
   address: Address;
-  limit?: number;
+  limit: number;
 };
 
 // -----------------------------------------------------------------------------
@@ -77,13 +76,15 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
   const { data } = useSuspenseQuery<NftDataPage | null>({
     queryKey: queries.nft.list({
       address,
+      limit: limit,
       is_testnet: walletSettings?.is_enabled_testnet,
     }).queryKey,
     queryFn: async () => {
-      const res = await getNftsByOwner(
-        address,
-        walletSettings?.is_enabled_testnet,
-      );
+      const res = await getNftsByOwner({
+        address: address,
+        limit: limit,
+        isTestnet: walletSettings?.is_enabled_testnet,
+      });
 
       // Return if the response is 200
       return res.match(
@@ -111,7 +112,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
       columnFilters: nftColumnFilters,
       pagination: {
         pageIndex: 0,
-        pageSize: OVERVIEW_ROW_COUNT,
+        pageSize: limit,
       },
     },
     paginateExpandedRows: false,

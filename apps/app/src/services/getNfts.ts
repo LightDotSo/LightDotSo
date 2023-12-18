@@ -22,5 +22,8 @@ import "server-only";
 // -----------------------------------------------------------------------------
 
 export const getNfts = async (params: NftListParams) => {
-  return getClientNftsByOwner(params.address, params.is_testnet);
+  return getClientNftsByOwner({
+    address: params.address,
+    isTestnet: params.is_testnet,
+  });
 };
