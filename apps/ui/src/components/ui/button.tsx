@@ -34,10 +34,10 @@ const buttonVariants = cva(
       },
       intent: {
         default: [
-          // Primary
-          ["data-[variant=primary]:bg-background-primary"],
-          ["data-[variant=primary]:text-text-weakest"],
-          ["data-[variant=primary]:hover:bg-background-primary/90"],
+          // Default
+          ["data-[variant=default]:bg-background-primary"],
+          ["data-[variant=default]:text-text-weakest"],
+          ["data-[variant=default]:hover:bg-background-primary/90"],
           // Outline
           ["data-[variant=outline]:border"],
           ["data-[variant=outline]:border-border-primary-weak"],
