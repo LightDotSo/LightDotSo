@@ -28,11 +28,12 @@ import {
   PopoverContent,
 } from "@lightdotso/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ArrowUpRight, Network } from "lucide-react";
+import { ArrowUpRight, Globe } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useQueryClient } from "wagmi";
+import { ChainStack } from "@/components/chain/chain-stack";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import type { WalletSettingsData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -107,18 +108,18 @@ export const ChainPopover: FC = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="px-2.5"
+          className="px-1"
           variant="outline"
           role="combobox"
           aria-expanded={open}
         >
-          <div className="inline-flex rounded-md bg-background-strong p-1">
-            {chains.slice(0, 3).map(chain => (
-              <ChainLogo key={chain.id} chainId={chain.id} />
-            ))}
-          </div>
-          <Network className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          <span className="ml-1">{chains.length}</span>
+          <Globe className="ml-2 mr-1 h-4 w-4 shrink-0" />
+          <ChainStack
+            className="mr-2"
+            address={wallet}
+            chains={chains}
+            onClick={() => setOpen(true)}
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">

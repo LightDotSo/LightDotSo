@@ -13,36 +13,37 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import clsx from "clsx";
+import { cn } from "@lightdotso/utils";
 import { m } from "framer-motion";
 import type { FC, MouseEventHandler } from "react";
 import type { Address, Chain } from "viem";
-import s from "@/components/network/network-item.module.css";
+import s from "@/components/chain/chain-item.module.css";
+import { ChainLogo } from "@/svgs";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type NetworkItemProps = {
+export type ChainItemProps = {
   address: Address;
+  chain: Chain;
   className?: string;
   id: string;
   onMouseEnter?: MouseEventHandler<HTMLLIElement>;
-  network: Chain;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NetworkItem: FC<NetworkItemProps> = ({
+export const ChainItem: FC<ChainItemProps> = ({
   address,
   className,
   id,
-  network,
+  chain,
   onMouseEnter,
 }) => {
-  const { id: networkId, network: name, blockExplorers } = network;
+  const { id: chainId, blockExplorers } = chain;
 
   const item = {
     visible: { opacity: 1, x: 0 },
@@ -60,6 +61,7 @@ export const NetworkItem: FC<NetworkItemProps> = ({
       style={{
         listStyle: "none",
         marginRight: "-5px",
+        padding: 0,
       }}
       variants={item}
       whileHover={{
@@ -73,25 +75,12 @@ export const NetworkItem: FC<NetworkItemProps> = ({
         target="_blank"
         rel="noreferrer"
         href={`${blockExplorers?.default.url}/address/${address}`}
-        className={clsx(
-          "flex h-8 w-8 cursor-pointer items-center justify-center overflow-hidden rounded-full border-2 border-border-primary-weak bg-background-weak hover:bg-background-stronger",
-          s.transitionfix,
-        )}
+        className={cn("cursor-pointer overflow-hidden", s.transitionfix)}
         onClick={e => {
           return e.stopPropagation();
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt={networkId.toString()}
-          src={`https://icons.llamao.fi/icons/chains/rsz_${
-            name === "homestead"
-              ? "ethereum"
-              : name === "matic"
-                ? "polygon"
-                : name
-          }.jpg`}
-        />
+        <ChainLogo chainId={chainId} className="h-8 w-8 rounded-lg bg-border" />
       </a>
     </m.li>
   );

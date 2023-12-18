@@ -50,7 +50,7 @@ export const FeedbackPopover: FC = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline">
-          <Megaphone className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+          <Megaphone className="mr-2 h-4 w-4 shrink-0" />
           Feedback
           <span className="sr-only">Open popover</span>
         </Button>

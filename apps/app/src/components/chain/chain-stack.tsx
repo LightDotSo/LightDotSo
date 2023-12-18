@@ -13,24 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import clsx from "clsx";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import { useReducer, useCallback } from "react";
 import type { FC } from "react";
 import type { Address, Chain } from "viem";
-import {
-  arbitrum,
-  polygon,
-  optimism,
-  mainnet,
-  base,
-  avalanche,
-  gnosis,
-} from "wagmi/chains";
-import { NetworkItem } from "@/components/network/network-item";
-import { NetworkItemExtra } from "@/components/network/network-item-extra";
-import type { NetworkToolTipComponentProps } from "@/components/network/network-tooltip";
-import { NetworkTooltip } from "@/components/network/network-tooltip";
+import { ChainItem } from "@/components/chain/chain-item";
+import { ChainItemExtra } from "@/components/chain/chain-item-extra";
+import type { ChainItemToolTipComponentProps } from "@/components/chain/chain-item-tooltip";
+import { ChainItemTooltip } from "@/components/chain/chain-item-tooltip";
 
 // -----------------------------------------------------------------------------
 // Logic
@@ -60,16 +50,25 @@ const defaultState = { activeId: null, target: null, text: "" };
 // Props
 // -----------------------------------------------------------------------------
 
-export type NetworkStackProps = Pick<NetworkToolTipComponentProps, "id"> & {
+export type ChainStackProps = Pick<ChainItemToolTipComponentProps, "id"> & {
+  className?: string;
   address: Address;
+  chains: Chain[];
   disableLoading?: boolean;
+  onClick?: () => void;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NetworkStack: FC<NetworkStackProps> = ({ address, id }) => {
+export const ChainStack: FC<ChainStackProps> = ({
+  className,
+  address,
+  chains,
+  id,
+  onClick,
+}) => {
   const [{ activeId, target }, dispatch] = useReducer(reducer, defaultState);
 
   const select = useCallback((e: any) => {
@@ -86,60 +85,49 @@ export const NetworkStack: FC<NetworkStackProps> = ({ address, id }) => {
     });
   }, []);
 
-  const networks: Chain[] = [
-    mainnet,
-    arbitrum,
-    polygon,
-    optimism,
-    base,
-    avalanche,
-    gnosis,
-  ];
-
-  const NETWORK_STACK_NUMBER = 6;
+  const CHAIN_STACK_NUMBER = 3;
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <div
-      className={clsx("flex flex-row rounded-full bg-bg-dark")}
-      onMouseLeave={hide}
-    >
+    <div className={className} onMouseLeave={hide}>
       <LazyMotion features={domAnimation}>
-        <NetworkTooltip id={address} activeId={activeId} target={target}>
-          {networks && activeId === networks?.length.toString()
+        <ChainItemTooltip id={address} activeId={activeId} target={target}>
+          {chains && activeId === chains?.length.toString()
             ? "See More"
-            : (networks && networks[activeId]?.name) ??
-              (networks && networks[activeId]?.id) ??
+            : (chains && chains[activeId]?.name) ??
+              (chains && chains[activeId]?.id) ??
               ""}
-        </NetworkTooltip>
-        <m.ul className="flex shrink justify-end">
-          {!networks?.length && <div className="h-14 bg-inherit" />}
-          {networks &&
-            typeof networks[0] !== "undefined" &&
-            networks?.slice(0, NETWORK_STACK_NUMBER).map((network, id) => {
+        </ChainItemTooltip>
+        <m.ul className="flex shrink items-center justify-end">
+          {!chains?.length && <div className="h-14" />}
+          {chains &&
+            typeof chains[0] !== "undefined" &&
+            chains?.slice(0, CHAIN_STACK_NUMBER).map((chain, id) => {
               return (
-                <NetworkItem
+                <ChainItem
                   key={id}
+                  className="z-[2]"
                   id={id.toString()}
                   address={address}
-                  network={network}
+                  chain={chain}
                   onMouseEnter={select}
                 />
               );
             })}
-          {networks?.length > NETWORK_STACK_NUMBER && (
-            <NetworkItemExtra
+          {chains?.length > CHAIN_STACK_NUMBER && (
+            <ChainItemExtra
               key={id}
-              id={String(networks?.length)}
+              className="z-[3]"
+              id={String(chains?.length)}
               length={
-                networks?.length > NETWORK_STACK_NUMBER
-                  ? networks?.length - NETWORK_STACK_NUMBER
-                  : networks?.length
+                chains?.length > CHAIN_STACK_NUMBER
+                  ? chains?.length - CHAIN_STACK_NUMBER
+                  : chains?.length
               }
-              onMouseEnter={select}
+              onClick={onClick}
             />
           )}
         </m.ul>

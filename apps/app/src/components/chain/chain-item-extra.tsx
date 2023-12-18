@@ -14,26 +14,28 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import { m } from "framer-motion";
-import type { FC, MouseEventHandler } from "react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-export type NetworkItemExtraProps = {
+export type ChainItemExtraProps = {
+  className?: string;
   id: string;
   length: number;
-  onMouseEnter: MouseEventHandler<HTMLLIElement>;
+  onClick?: () => void;
 };
 
 // -----------------------------------------------------------------------------
 // Component
 // -----------------------------------------------------------------------------
 
-export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
+export const ChainItemExtra: FC<ChainItemExtraProps> = ({
+  className,
   id,
   length,
-  onMouseEnter,
+  onClick,
 }) => {
   const item = {
     visible: { opacity: 1, x: 0 },
@@ -46,6 +48,7 @@ export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
 
   return (
     <m.li
+      className={className}
       id={id}
       style={{
         listStyle: "none",
@@ -57,13 +60,10 @@ export const NetworkItemExtra: FC<NetworkItemExtraProps> = ({
         marginRight: "5px",
         transition: { ease: "easeOut" },
       }}
-      onMouseEnter={onMouseEnter}
     >
       <button
-        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border-2 border-border-primary-weak bg-background-weak text-base font-extrabold text-text"
-        onClick={e => {
-          e.stopPropagation();
-        }}
+        className="mr-1.5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-border bg-background-strongest text-xs font-extrabold text-text"
+        onClick={onClick}
       >
         <span>+{length}</span>
       </button>

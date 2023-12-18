@@ -87,7 +87,7 @@ export const NewRoot: FC<NewRootProps> = async ({
     <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
       <div className="w-full flex-1 space-y-6">
         <nav aria-label="Progress">
-          <ol className="divide-y divide-border rounded-md border border-border md:flex md:divide-y-0">
+          <ol className="divide-y divide-border overflow-hidden rounded-md border border-border bg-background-weak md:flex md:divide-y-0">
             {steps.map((step, stepIdx) => (
               <li key={step.name} className="relative md:flex md:flex-1">
                 <RootLink
@@ -122,7 +122,7 @@ export const NewRoot: FC<NewRootProps> = async ({
         </nav>
         <div className="mx-auto flex h-full flex-col">{children}</div>
       </div>
-      <aside className="lg:w-1/4">
+      <aside className="hidden w-96 lg:block">
         <RootContext />
       </aside>
     </div>

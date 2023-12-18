@@ -15,7 +15,7 @@
 
 // From: OG Light https://github.com/LightDotSo/LightDotSo/blob/026cc175225642102c708bd7c7f5d76dc222d62c/apps/app/src/components/NetworkTooltip/NetworkTooltip.tsx
 
-import clsx from "clsx";
+import { cn } from "@lightdotso/utils";
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect, useCallback, useMemo, memo } from "react";
 import type { FC, ReactNode } from "react";
@@ -32,7 +32,7 @@ const DEFAULT_POSITIONS = { popper: null };
 // Props
 // -----------------------------------------------------------------------------
 
-export type NetworkToolTipComponentProps = {
+export type ChainItemToolTipComponentProps = {
   id?: string;
   target: any;
   activeId: any;
@@ -43,7 +43,7 @@ export type NetworkToolTipComponentProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-const NetworkTooltipComponent: FC<NetworkToolTipComponentProps> = ({
+const ChainItemTooltipComponent: FC<ChainItemToolTipComponentProps> = ({
   id = 0,
   target,
   activeId,
@@ -88,7 +88,7 @@ const NetworkTooltipComponent: FC<NetworkToolTipComponentProps> = ({
 
     return (
       <motion.div
-        className={clsx(
+        className={cn(
           "absolute z-10 shadow-md",
           isShowing ? "pointer-events-auto" : "pointer-events-none",
         )}
@@ -100,7 +100,7 @@ const NetworkTooltipComponent: FC<NetworkToolTipComponentProps> = ({
         <motion.div
           ref={popoverRef}
           className="absolute inline-block rounded-md border border-border bg-background-weak px-3 py-1 text-left text-sm font-semibold text-text"
-          layoutId={`network-tooltip-${id}`}
+          layoutId={`chain-tooltip-${id}`}
           transition={!isMounted ? { duration: 0 } : { duration: 0.3 }}
           style={{
             ...(popper || {}),
@@ -113,4 +113,4 @@ const NetworkTooltipComponent: FC<NetworkToolTipComponentProps> = ({
   }, [isShowing, onAnimationComplete, popper, children, id]);
 };
 
-export const NetworkTooltip = memo(NetworkTooltipComponent);
+export const ChainItemTooltip = memo(ChainItemTooltipComponent);
