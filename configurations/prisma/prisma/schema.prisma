@@ -668,15 +668,21 @@ model WalletSettings {
   @@index([walletAddress])
 }
 
+enum InviteCodeStatus {
+  ACTIVE
+  USED
+}
+
 model InviteCode {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  code   String @unique
-  userId String
+  code   String           @unique
+  status InviteCodeStatus @default(ACTIVE)
 
-  user User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   @@index([userId])
 }
