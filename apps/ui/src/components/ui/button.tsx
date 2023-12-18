@@ -13,6 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Heavily inspired by the button primitives introduced by @fiveoutofnine
+// Site: https://www.fiveoutofnine.com/design/component/button
+// Code: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/ui/button/styles.tsx
+// License: MIT
+
 import { cn } from "@lightdotso/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -50,8 +55,8 @@ const buttonVariants = cva(
           ["data-[variant=outline]:active:border-border-primary"],
           ["data-[variant=outline]:hover:border-border-primary"],
           // Ghost
+          ["data-[variant=ghost]:text-text"],
           ["data-[variant=ghost]:hover:text-text-weak"],
-          ["data-[variant=ghost]:hover:text-text-strong"],
           ["data-[variant=ghost]:hover:bg-background-stronger"],
           // Link
           ["data-[variant=link]:text-text"],

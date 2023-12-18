@@ -13,6 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// Heavily inspired by the badge primitives introduced by @fiveoutofnine
+// Site: https://www.fiveoutofnine.com/design/component/badge
+// Code: https://github.com/fiveoutofnine/www/blob/a04dd54f76f57c145155dce96744d003f0d3de5e/components/ui/badge/styles.tsx
+// License: MIT
+
 import { cn } from "@lightdotso/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
