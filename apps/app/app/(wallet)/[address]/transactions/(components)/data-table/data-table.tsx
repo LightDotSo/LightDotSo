@@ -18,6 +18,7 @@
 import {
   Collapsible,
   CollapsibleContent,
+  CollapsibleTrigger,
   Table,
   TableBody,
   TableCell,
@@ -161,16 +162,22 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
           table.getRowModel().rows.map(row => (
             <Collapsible key={row.id} asChild>
               <>
-                <TableRow data-state={row.getIsSelected() && "selected"}>
-                  {row.getAllCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+                <CollapsibleTrigger
+                  asChild
+                  className="cursor-pointer [&[data-state=open]>td>button>svg]:rotate-180"
+                  type={undefined}
+                >
+                  <TableRow>
+                    {row.getAllCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </CollapsibleTrigger>
                 <CollapsibleContent asChild>
                   <TableCell className="p-0" colSpan={row.getAllCells().length}>
                     <div className="flex h-20 w-full bg-light">Content</div>

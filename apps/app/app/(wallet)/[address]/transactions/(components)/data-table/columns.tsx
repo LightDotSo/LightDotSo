@@ -15,7 +15,7 @@
 
 "use client";
 
-import { Button, CollapsibleTrigger } from "@lightdotso/ui";
+import { Button } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ChevronDown } from "lucide-react";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -81,14 +81,9 @@ export const columns: ColumnDef<UserOperationData>[] = [
   {
     id: "actions",
     cell: ({ row: _ }) => (
-      <CollapsibleTrigger
-        asChild
-        className="flex flex-1 items-center justify-between py-4 transition-all [&[data-state=open]>svg]:rotate-180"
-      >
-        <Button variant="ghost" className=" block rounded-full p-3">
-          <ChevronDown className="h-4 w-4 shrink-0 fill-text transition-transform duration-200" />
-        </Button>
-      </CollapsibleTrigger>
+      <Button variant="ghost" className="block rounded-full p-3">
+        <ChevronDown className="h-4 w-4 shrink-0 fill-text transition-transform duration-200" />
+      </Button>
     ),
     enableHiding: false,
   },
