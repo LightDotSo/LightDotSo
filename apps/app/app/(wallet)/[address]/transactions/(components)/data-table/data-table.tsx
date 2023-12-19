@@ -16,9 +16,17 @@
 "use client";
 
 import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
+  Progress,
   Table,
   TableBody,
   TableCell,
@@ -37,6 +45,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 import { useEffect } from "react";
 import type { UserOperationData } from "@/data";
 import { usePaginationQueryState } from "@/querystates";
@@ -180,7 +189,42 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
                 </CollapsibleTrigger>
                 <CollapsibleContent asChild>
                   <TableCell className="p-0" colSpan={row.getAllCells().length}>
-                    <div className="flex h-20 w-full bg-light">Content</div>
+                    <div className="mt-4 grid gap-4 md:grid-cols-3">
+                      <Card className="col-span-1 bg-background-stronger">
+                        <CardHeader>
+                          <CardTitle className="text-lg">
+                            Transaction Information
+                          </CardTitle>
+                          <CardDescription>
+                            Get more information about this transaction.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>{row.original.sender}</CardContent>
+                        <CardFooter className="flex w-full items-center justify-end pt-6">
+                          <Button asChild>
+                            <Link
+                              href={`/${row.original.sender}/op/${row.original.hash}`}
+                            >
+                              See More
+                            </Link>
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                      <Card className="col-span-2 bg-background-stronger">
+                        <CardHeader>
+                          <CardTitle className="text-lg">Progress</CardTitle>
+                          <CardDescription>
+                            View the progress of this transaction.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <Progress value={row.original.signatures.length} />
+                        </CardContent>
+                        <CardFooter className="flex w-full items-center justify-end pt-6">
+                          {row.original.nonce}
+                        </CardFooter>
+                      </Card>
+                    </div>
                   </TableCell>
                 </CollapsibleContent>
               </>
