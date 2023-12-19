@@ -388,7 +388,7 @@ model UserOperation {
   signature            Bytes?
 
   createdAt  DateTime            @default(now())
-  updatedAt  DateTime            @default(now()) @updatedAt
+  updatedAt  DateTime            @updatedAt
   chainId    BigInt
   /// The address of the entry point contract
   entryPoint String
