@@ -37,10 +37,10 @@
     "studio:dev": "dotenv -e .env.development prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^5.7.0",
+    "@prisma/client": "^5.7.1",
     "kysely-postgres-js": "^2.0.0",
     "postgres": "^3.4.3",
-    "prisma": "^5.7.0",
+    "prisma": "^5.7.1",
     "prisma-kysely": "^1.7.1",
     "zod": "^3.22.4",
     "zod-prisma": "^0.5.4"

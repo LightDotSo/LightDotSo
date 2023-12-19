@@ -26,7 +26,7 @@
     "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-editorconfig": "^4.0.3",
     "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsonc": "^2.11.1",
+    "eslint-plugin-jsonc": "^2.11.2",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-neverthrow": "^1.1.4",
     "eslint-plugin-prettier": "^5.0.1",

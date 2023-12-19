@@ -22,11 +22,11 @@
   "dependencies": {
     "@babel/core": "^7.23.6",
     "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.1.0",
+    "@heroicons/react": "^2.1.1",
     "@lightdotso/const": "workspace:*",
     "@lightdotso/ui": "workspace:*",
-    "@sentry/integrations": "^7.88.0",
-    "@sentry/nextjs": "^7.88.0",
+    "@sentry/integrations": "^7.89.0",
+    "@sentry/nextjs": "^7.89.0",
     "clsx": "^2.0.0",
     "critters": "^0.0.20",
     "next": "^14.0.4",
@@ -46,7 +46,7 @@
     "@types/react-dom": "^18.2.18",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.6",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.3.3"
   },
   "publishConfig": {

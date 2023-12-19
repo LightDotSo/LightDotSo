@@ -30,7 +30,7 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "tailwind-merge": "^2.1.0",
-    "viem": "^1.20.1"
+    "viem": "^1.20.2"
   },
   "devDependencies": {
     "@lightdotso/tsconfig": "workspace:*",
