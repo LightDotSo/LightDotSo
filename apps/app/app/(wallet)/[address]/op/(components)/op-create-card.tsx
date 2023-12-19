@@ -184,9 +184,7 @@ export const OpCreateCard: FC<OpCreateCardProps> = ({
         _ => {
           successToast("You submitted the userOperation result");
           if (threshold >= owner.weight) {
-            router.push(
-              `/${address}/op/${userOperation.hash}`,
-            );
+            router.push(`/${address}/op/${userOperation.hash}`);
           }
         },
         err => {
