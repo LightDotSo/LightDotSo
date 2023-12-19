@@ -49,11 +49,11 @@ jobs:
       - name: Node Lint
         run: |
           pnpm turbo run lint
-      - if: failure()
+      - if: failure() && github.event_name == 'pull_request'
         name: Node Fix
         run: |
           pnpm turbo run fix
-      - if: failure()
+      - if: failure() && github.event_name == 'pull_request'
         name: Commit and Push
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
