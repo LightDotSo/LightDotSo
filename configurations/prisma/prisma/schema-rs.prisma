@@ -387,6 +387,8 @@ model UserOperation {
   /// Data passed into the account along with the nonce during the verification step
   signature            Bytes?
 
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
   chainId    BigInt
   /// The address of the entry point contract
   entryPoint String

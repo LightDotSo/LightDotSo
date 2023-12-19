@@ -81,6 +81,14 @@ module.exports = {
         "emphasis-low": "var(--emphasis-low)",
         "emphasis-medium": "var(--emphasis-medium)",
         "emphasis-high": "var(--emphasis-high)",
+        // light
+        light: {
+          DEFAULT: "hsl(var(--light) / <alpha-value>)",
+          strong: "hsl(var(--light-strong) / <alpha-value>)",
+          stronger: "hsl(var(--light-stronger) / <alpha-value>)",
+          weak: "hsl(var(--light-weak) / <alpha-value>)",
+          weaker: "hsl(var(--light-weaker) / <alpha-value>)",
+        },
         // variables
         background: {
           DEFAULT: "hsl(var(--background) / <alpha-value>)",

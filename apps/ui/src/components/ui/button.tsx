@@ -25,7 +25,7 @@ import { Loader2 } from "lucide-react";
 import { forwardRef } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-30",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
   {
     variants: {
       variant: {
@@ -45,25 +45,32 @@ const buttonVariants = cva(
           ["data-[variant=default]:text-text-weakest"],
           ["data-[variant=default]:hover:border-border-primary-weaker"],
           ["data-[variant=default]:hover:bg-background-primary-weak"],
+          ["data-[variant=default]:active:bg-background-primary-weaker"],
+          ["data-[variant=default]:active:ring-light"],
           // Shadow
           ["data-[variant=shadow]:bg-background-stronger"],
           ["data-[variant=shadow]:text-text-primary"],
           ["data-[variant=shadow]:hover:bg-background-strongest"],
+          ["data-[variant=shadow]:active:ring-light"],
           // Outline
           ["data-[variant=outline]:border-border-primary-weak"],
           ["data-[variant=outline]:text-text"],
           ["data-[variant=outline]:active:border-border-primary"],
           ["data-[variant=outline]:hover:border-border-primary"],
+          ["data-[variant=outline]:active:border-light"],
+          ["data-[variant=outline]:active:ring-0"],
           // Ghost
           ["data-[variant=ghost]:text-text"],
           ["data-[variant=ghost]:hover:text-text-weak"],
           ["data-[variant=ghost]:hover:bg-background-stronger"],
+          ["data-[variant=ghost]:active:ring-light"],
           // Link
           ["data-[variant=link]:text-text"],
           // Loading
           ["data-[variant=loading]:bg-background-primary-strong"],
           ["data-[variant=loading]:text-text-weakest"],
           ["data-[variant=loading]:hover:bg-background-primary-weak"],
+          ["data-[variant=loading]:active:ring-light"],
         ],
         destructive: [
           // Default
@@ -72,25 +79,32 @@ const buttonVariants = cva(
           ["data-[variant=default]:text-text-inverse"],
           ["data-[variant=default]:hover:border-border-destructive-weaker"],
           ["data-[variant=default]:hover:bg-background-destructive-weak"],
+          ["data-[variant=default]:active:ring-border-destructive-weaker"],
           // Shadow
           ["data-[variant=shadow]:bg-background-destructive-weak"],
           ["data-[variant=shadow]:text-text-destructive-strong"],
           ["data-[variant=shadow]:hover:bg-background-destructive-weaker"],
+          ["data-[variant=shadow]:active:ring-destructive-weak"],
+          ["data-[variant=shadow]:active:ring-border-destructive-weaker"],
           // Outline
           ["data-[variant=outline]:border-border-destructive-weak"],
           ["data-[variant=outline]:text-text-destructive"],
           ["data-[variant=outline]:active:border-border-destructive-stronger"],
           ["data-[variant=outline]:hover:border-border-destructive-stronger"],
+          ["data-[variant=outline]:active:border-border-destructive-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
           // Ghost
           ["data-[variant=ghost]:text-text-destructive"],
           ["data-[variant=ghost]:hover:text-text-destructive-strong"],
           ["data-[variant=ghost]:hover:bg-background-destructive-weaker"],
+          ["data-[variant=ghost]:active:ring-border-destructive-weaker"],
           // Link
           ["data-[variant=link]:text-text-destructive"],
           // Loading
           ["data-[variant=loading]:bg-background-destructive-strong"],
           ["data-[variant=loading]:text-text-inverse"],
           ["data-[variant=loading]:hover:bg-background-destructive-weak"],
+          ["data-[variant=loading]:active:ring-border-destructive-weaker"],
         ],
       },
       size: {
