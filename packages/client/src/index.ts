@@ -550,7 +550,7 @@ export const getUserOperationNonce = async (
   return ResultAsync.fromPromise(
     client.GET("/user_operation/nonce", {
       // @ts-ignore
-      next: { revalidate: 300, tags: [params.query.address] },
+      next: { revalidate: 0, tags: [params.query.address] },
       params,
     }),
     () => new Error("Database error"),
