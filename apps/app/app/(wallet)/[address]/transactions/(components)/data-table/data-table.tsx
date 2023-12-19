@@ -16,6 +16,8 @@
 "use client";
 
 import {
+  Collapsible,
+  CollapsibleContent,
   Table,
   TableBody,
   TableCell,
@@ -157,16 +159,25 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       <TableBody>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map(row => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-            >
-              {row.getVisibleCells().map(cell => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
+            <Collapsible key={row.id} asChild>
+              <>
+                <TableRow data-state={row.getIsSelected() && "selected"}>
+                  {row.getAllCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+                <CollapsibleContent asChild>
+                  <TableCell className="p-0" colSpan={row.getAllCells().length}>
+                    <div className="flex h-20 w-full bg-light">Content</div>
+                  </TableCell>
+                </CollapsibleContent>
+              </>
+            </Collapsible>
           ))
         ) : (
           <TableRow>

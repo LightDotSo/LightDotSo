@@ -52,6 +52,11 @@ export {
 } from "./src/components/ui/card";
 export { Checkbox } from "./src/components/ui/checkbox";
 export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "./src/components/ui/collapsible";
+export {
   Command,
   CommandDialog,
   CommandInput,
