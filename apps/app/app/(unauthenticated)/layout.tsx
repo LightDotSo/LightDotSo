@@ -13,7 +13,21 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import "@lightdotso/styles/global.css";
+import type { Metadata } from "next";
+import { BannerSection } from "@/components/section/banner-section";
+import { HStackFull } from "@/components/stack/h-stack-full";
+import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
+import { MinimalPageWrapper } from "@/components/wrapper/page/minimal-page-wrapper";
+import { TITLES } from "@/const/titles";
+
+// -----------------------------------------------------------------------------
+// Metadata
+// -----------------------------------------------------------------------------
+
+export const metadata: Metadata = {
+  title: TITLES.Wallets.title,
+  description: TITLES.Wallets.description,
+};
 
 // -----------------------------------------------------------------------------
 // Props
@@ -33,8 +47,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="flex flex-col space-y-8 py-20 lg:flex-row lg:space-x-12 lg:space-y-0">
-      <div className="mx-auto max-w-7xl flex-1">{children}</div>
-    </div>
+    <>
+      <BannerSection
+        title={TITLES.Root.title}
+        description={TITLES.Root.description}
+      >
+        <HStackFull>
+          <BaseLayerWrapper>
+            <MinimalPageWrapper>{children}</MinimalPageWrapper>
+          </BaseLayerWrapper>
+        </HStackFull>
+      </BannerSection>
+    </>
   );
 }
