@@ -15,6 +15,7 @@
 
 "use client";
 
+import { getConfiguration } from "@lightdotso/client";
 import {
   Button,
   Card,
@@ -34,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
@@ -47,7 +49,9 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useEffect } from "react";
-import type { UserOperationData } from "@/data";
+import type { Address } from "viem";
+import type { ConfigurationData, UserOperationData } from "@/data";
+import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
 
@@ -57,6 +61,7 @@ import { useTables } from "@/stores";
 
 interface DataTableProps {
   columns: ColumnDef<UserOperationData>[];
+  address: Address;
   data: UserOperationData[];
   pageCount: number;
 }
@@ -65,7 +70,12 @@ interface DataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data, pageCount }: DataTableProps) {
+export function DataTable({
+  columns,
+  address,
+  data,
+  pageCount,
+}: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Query States
   // ---------------------------------------------------------------------------
@@ -143,6 +153,43 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   ]);
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
+  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
+    queries.configuration.get({ address }).queryKey,
+  );
+
+  const { data: configuration } = useQuery<ConfigurationData | null>({
+    queryKey: queries.configuration.get({ address }).queryKey,
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getConfiguration({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return currentData ?? null;
+        },
+      );
+    },
+  });
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -199,8 +246,8 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
                             Get more information about this transaction.
                           </CardDescription>
                         </CardHeader>
-                        <CardContent>{row.original.sender}</CardContent>
-                        <CardFooter className="flex w-full items-center justify-end pt-6">
+                        <CardContent />
+                        <CardFooter className="flex w-full items-center justify-end">
                           <Button asChild>
                             <Link
                               href={`/${row.original.sender}/op/${row.original.hash}`}
@@ -218,11 +265,32 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
                           </CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <Progress value={row.original.signatures.length} />
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <Progress
+                              className="col-span-1"
+                              value={
+                                (row.original.signatures.length /
+                                  configuration?.threshold!) *
+                                100
+                              }
+                            />
+                            <div className="col-span-1">
+                              Threshold: {configuration?.threshold!}/
+                              {configuration?.owners?.length!}
+                            </div>
+                          </div>
                         </CardContent>
-                        <CardFooter className="flex w-full items-center justify-end pt-6">
-                          {row.original.nonce}
-                        </CardFooter>
+                        {row.original.status === "PROPOSED" && (
+                          <CardFooter className="flex w-full items-center justify-end">
+                            <Button asChild>
+                              <Link
+                                href={`/${row.original.sender}/op/${row.original.hash}`}
+                              >
+                                Execute
+                              </Link>
+                            </Button>
+                          </CardFooter>
+                        )}
                       </Card>
                     </div>
                   </TableCell>
