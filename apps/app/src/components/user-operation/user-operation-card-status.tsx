@@ -15,6 +15,7 @@
 
 "use client";
 
+import { Badge } from "@lightdotso/ui";
 import type { FC } from "react";
 import type { UserOperationData } from "@/data";
 
@@ -37,7 +38,24 @@ export const UserOperationCardStatus: FC<UserOperationCardStatusProps> = ({
 
   return (
     <div className="group flex items-center space-x-1.5">
-      {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
+      <Badge
+        variant="shadow"
+        intent={
+          status === "EXECUTED"
+            ? "success"
+            : status === "PROPOSED"
+              ? "warning"
+              : status === "PENDING"
+                ? "info"
+                : status === "INVALID"
+                  ? "destructive"
+                  : status === "REVERTED"
+                    ? "error"
+                    : "error"
+        }
+      >
+        {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
+      </Badge>
     </div>
   );
 };

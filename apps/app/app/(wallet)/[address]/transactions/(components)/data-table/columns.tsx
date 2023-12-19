@@ -15,8 +15,9 @@
 
 "use client";
 
+import { Button } from "@lightdotso/ui";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableRowActions } from "@/app/(wallet)/[address]/transactions/(components)/data-table/data-table-row-actions";
+import { ChevronDown } from "lucide-react";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { UserOperationCardChain } from "@/components/user-operation/user-operation-card-chain";
 import { UserOperationCardHash } from "@/components/user-operation/user-operation-card-hash";
@@ -79,6 +80,11 @@ export const columns: ColumnDef<UserOperationData>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <DataTableRowActions row={row} />,
+    cell: ({ row: _ }) => (
+      <Button variant="ghost" className="block rounded-full p-3">
+        <ChevronDown className="h-4 w-4 shrink-0 fill-text transition-transform duration-200" />
+      </Button>
+    ),
+    enableHiding: false,
   },
 ];

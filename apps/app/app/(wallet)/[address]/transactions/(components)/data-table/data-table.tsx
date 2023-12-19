@@ -15,7 +15,19 @@
 
 "use client";
 
+import { getConfiguration } from "@lightdotso/client";
 import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Progress,
   Table,
   TableBody,
   TableCell,
@@ -23,6 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@lightdotso/ui";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
@@ -34,8 +47,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
+import Link from "next/link";
 import { useEffect } from "react";
-import type { UserOperationData } from "@/data";
+import type { Address } from "viem";
+import type { ConfigurationData, UserOperationData } from "@/data";
+import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
 
@@ -45,6 +61,7 @@ import { useTables } from "@/stores";
 
 interface DataTableProps {
   columns: ColumnDef<UserOperationData>[];
+  address: Address;
   data: UserOperationData[];
   pageCount: number;
 }
@@ -53,7 +70,12 @@ interface DataTableProps {
 // Component
 // -----------------------------------------------------------------------------
 
-export function DataTable({ columns, data, pageCount }: DataTableProps) {
+export function DataTable({
+  columns,
+  address,
+  data,
+  pageCount,
+}: DataTableProps) {
   // ---------------------------------------------------------------------------
   // Query States
   // ---------------------------------------------------------------------------
@@ -131,6 +153,43 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
   ]);
 
   // ---------------------------------------------------------------------------
+  // Query
+  // ---------------------------------------------------------------------------
+
+  const queryClient = useQueryClient();
+
+  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
+    queries.configuration.get({ address }).queryKey,
+  );
+
+  const { data: configuration } = useQuery<ConfigurationData | null>({
+    queryKey: queries.configuration.get({ address }).queryKey,
+    queryFn: async () => {
+      if (!address) {
+        return null;
+      }
+
+      const res = await getConfiguration({
+        params: {
+          query: {
+            address: address,
+          },
+        },
+      });
+
+      // Return if the response is 200
+      return res.match(
+        data => {
+          return data;
+        },
+        _ => {
+          return currentData ?? null;
+        },
+      );
+    },
+  });
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
@@ -157,16 +216,87 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
       <TableBody>
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map(row => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-            >
-              {row.getVisibleCells().map(cell => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
+            <Collapsible key={row.id} asChild>
+              <>
+                <CollapsibleTrigger
+                  asChild
+                  className="cursor-pointer [&[data-state=open]>td>button>svg]:rotate-180"
+                  type={undefined}
+                >
+                  <TableRow>
+                    {row.getAllCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </CollapsibleTrigger>
+                <CollapsibleContent asChild>
+                  <TableCell className="p-0" colSpan={row.getAllCells().length}>
+                    <div className="mt-4 grid gap-4 md:grid-cols-3">
+                      <Card className="col-span-1 bg-background-stronger">
+                        <CardHeader>
+                          <CardTitle className="text-lg">
+                            Transaction Information
+                          </CardTitle>
+                          <CardDescription>
+                            Get more information about this transaction.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent />
+                        <CardFooter className="flex w-full items-center justify-end">
+                          <Button asChild>
+                            <Link
+                              href={`/${row.original.sender}/op/${row.original.hash}`}
+                            >
+                              See More
+                            </Link>
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                      <Card className="col-span-2 bg-background-stronger">
+                        <CardHeader>
+                          <CardTitle className="text-lg">Progress</CardTitle>
+                          <CardDescription>
+                            View the progress of this transaction.
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="grid gap-4 md:grid-cols-2">
+                            <Progress
+                              className="col-span-1"
+                              value={
+                                (row.original.signatures.length /
+                                  configuration?.threshold!) *
+                                100
+                              }
+                            />
+                            <div className="col-span-1">
+                              Threshold: {configuration?.threshold!}/
+                              {configuration?.owners?.length!}
+                            </div>
+                          </div>
+                        </CardContent>
+                        {row.original.status === "PROPOSED" && (
+                          <CardFooter className="flex w-full items-center justify-end">
+                            <Button asChild>
+                              <Link
+                                href={`/${row.original.sender}/op/${row.original.hash}`}
+                              >
+                                Execute
+                              </Link>
+                            </Button>
+                          </CardFooter>
+                        )}
+                      </Card>
+                    </div>
+                  </TableCell>
+                </CollapsibleContent>
+              </>
+            </Collapsible>
           ))
         ) : (
           <TableRow>

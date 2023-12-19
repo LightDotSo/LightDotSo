@@ -187,6 +187,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     <div className="rounded-md border border-border bg-background p-4">
       <DataTable
         data={transactions ?? []}
+        address={address}
         columns={columns}
         pageCount={pageCount}
       />
