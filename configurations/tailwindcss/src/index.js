@@ -129,6 +129,10 @@ module.exports = {
           strong: "hsl(var(--background-inverse-strong) / <alpha-value>)",
           stronger: "hsl(var(--background-inverse-stronger) / <alpha-value>)",
         },
+        "background-new": {
+          DEFAULT: "hsl(var(--background-new) / <alpha-value>)",
+          weakest: "hsl(var(--background-new-weakest) / <alpha-value>)",
+        },
         "background-primary": {
           DEFAULT: "hsl(var(--background-primary) / <alpha-value>)",
           strong: "hsl(var(--background-primary-strong) / <alpha-value>)",
@@ -184,6 +188,9 @@ module.exports = {
           strongest: "hsl(var(--border-inverse-strongest) / <alpha-value>)",
           weaker: "hsl(var(--border-inverse-weaker) / <alpha-value>)",
           weakest: "hsl(var(--border-inverse-weakest) / <alpha-value>)",
+        },
+        "border-new": {
+          DEFAULT: "hsl(var(--border-new) / <alpha-value>)",
         },
         "border-primary": {
           DEFAULT: "hsl(var(--border-primary) / <alpha-value>)",
@@ -272,6 +279,9 @@ module.exports = {
           strongest:
             "hsl(var(--text-link-destructive-strongest) / <alpha-value>)",
           weak: "hsl(var(--text-link-destructive-weak) / <alpha-value>)",
+        },
+        "text-new": {
+          DEFAULT: "hsl(var(--text-new) / <alpha-value>)",
         },
         "text-primary": {
           DEFAULT: "hsl(var(--text-primary) / <alpha-value>)",

@@ -34,7 +34,7 @@ export const RootWelcomeCards: FC = () => {
   // ---------------------------------------------------------------------------
 
   return (
-    <div className="grid w-full gap-4 md:grid-cols-2">
+    <div className="grid w-full gap-6 md:grid-cols-2">
       <Card className="col-span-1">
         <CardHeader>
           <div>
