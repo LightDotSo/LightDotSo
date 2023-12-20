@@ -13,51 +13,51 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import type { Metadata } from "next";
-import { BannerSection } from "@/components/section/banner-section";
-import { HStackFull } from "@/components/stack/h-stack-full";
-import { BaseLayerWrapper } from "@/components/wrapper/layer/base-layer-wrapper";
-import { MinimalPageWrapper } from "@/components/wrapper/page/minimal-page-wrapper";
-import { TITLES } from "@/const/titles";
+import { Wallet } from "lucide-react";
+import type { FC } from "react";
 
 // -----------------------------------------------------------------------------
-// Metadata
+// Types
 // -----------------------------------------------------------------------------
 
-export const metadata: Metadata = {
-  title: TITLES.Wallets.title,
-  description: TITLES.Wallets.description,
+type Entity = "wallet" | "token" | "transaction" | "nft";
+
+// -----------------------------------------------------------------------------
+// Const
+// -----------------------------------------------------------------------------
+
+const entityDescription: Record<Entity, string> = {
+  wallet: "wallets",
+  token: "tokens",
+  transaction: "transactions",
+  nft: "NFTs",
 };
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface RootLayoutProps {
-  children: React.ReactNode;
+interface TableEmptyProps {
+  entity: Entity;
 }
 
 // -----------------------------------------------------------------------------
-// Layout
+// Component
 // -----------------------------------------------------------------------------
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export const TableEmpty: FC<TableEmptyProps> = ({ entity }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <>
-      <BannerSection
-        title={TITLES.Root.title}
-        description={TITLES.Root.description}
-      >
-        <HStackFull>
-          <BaseLayerWrapper>
-            <MinimalPageWrapper>{children}</MinimalPageWrapper>
-          </BaseLayerWrapper>
-        </HStackFull>
-      </BannerSection>
-    </>
+    <div className="mt-3 space-y-3">
+      <span className="inline-flex rounded-full border-2 border-border p-4">
+        <Wallet className="mx-auto h-10 w-10 text-lg text-border" />
+      </span>
+      <div className="text-text-weaker">
+        No {entityDescription[entity]} in wallet.
+      </div>
+    </div>
   );
-}
+};

@@ -134,3 +134,123 @@ export const Destructive: Story = {
     intent: "destructive",
   },
 };
+export const Error: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "error",
+  },
+};
+export const Warning: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "warning",
+  },
+};
+export const Info: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "info",
+  },
+};
+export const Success: Story = {
+  render: args => (
+    <div className="flex items-center space-x-2">
+      <Button {...args} variant="default">
+        Default
+      </Button>
+      <Button {...args} variant="shadow">
+        Shadow
+      </Button>
+      <Button {...args} variant="outline">
+        Outline
+      </Button>
+      <Button {...args} variant="ghost">
+        Ghost
+      </Button>
+      <Button {...args} variant="link">
+        Link
+      </Button>
+      <Button {...args} variant="loading">
+        Loading
+      </Button>
+      <Button {...args} disabled>
+        Disabled
+      </Button>
+    </div>
+  ),
+  args: {
+    intent: "success",
+  },
+};

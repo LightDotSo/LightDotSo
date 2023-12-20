@@ -35,6 +35,7 @@ import {
 } from "@tanstack/react-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
+import { TableEmpty } from "@/components/state/table-empty";
 import type { ConfigurationOwnerData } from "@/data";
 import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
@@ -175,7 +176,7 @@ export function DataTable({ columns, data }: DataTableProps) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <TableEmpty entity="wallet" />
                 </TableCell>
               </TableRow>
             )}

@@ -25,7 +25,7 @@ import { Loader2 } from "lucide-react";
 import { forwardRef } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
+  "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-info focus-visible:ring-offset-2 active:ring-2 disabled:cursor-not-allowed disabled:opacity-30 disabled:ring-0",
   {
     variants: {
       variant: {
@@ -105,6 +105,142 @@ const buttonVariants = cva(
           ["data-[variant=loading]:text-text-inverse"],
           ["data-[variant=loading]:hover:bg-background-destructive-weak"],
           ["data-[variant=loading]:active:ring-border-destructive-weaker"],
+        ],
+        error: [
+          // Default
+          ["data-[variant=default]:border-border-error-weak"],
+          ["data-[variant=default]:bg-background-error"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-error-weaker"],
+          ["data-[variant=default]:hover:bg-background-error-weak"],
+          ["data-[variant=default]:active:ring-border-error-weaker"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-error/50"],
+          ["data-[variant=shadow]:text-text-error-strong"],
+          ["data-[variant=shadow]:hover:bg-background-error/30"],
+          ["data-[variant=shadow]:active:ring-error-weak"],
+          ["data-[variant=shadow]:active:ring-border-error-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-error-weak"],
+          ["data-[variant=outline]:text-text-error"],
+          ["data-[variant=outline]:active:border-border-error-weak"],
+          ["data-[variant=outline]:hover:border-border-error-weak"],
+          ["data-[variant=outline]:active:border-border-error-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-error"],
+          ["data-[variant=ghost]:hover:text-text-error-strong"],
+          ["data-[variant=ghost]:hover:bg-background-error-weaker"],
+          ["data-[variant=ghost]:active:ring-border-error-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-error"],
+          // Loading
+          ["data-[variant=loading]:bg-background-error"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-error/70"],
+          ["data-[variant=loading]:active:ring-border-error-weaker"],
+        ],
+        warning: [
+          // Default
+          ["data-[variant=default]:border-border-warning-weak"],
+          ["data-[variant=default]:bg-background-warning"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-warning-weaker"],
+          ["data-[variant=default]:hover:bg-background-warning/80"],
+          ["data-[variant=default]:active:ring-border-warning-weaker"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-warning/50"],
+          ["data-[variant=shadow]:text-text-warning"],
+          ["data-[variant=shadow]:hover:bg-background-warning/30"],
+          ["data-[variant=shadow]:active:ring-warning-weak"],
+          ["data-[variant=shadow]:active:ring-border-warning-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-warning"],
+          ["data-[variant=outline]:text-text-warning"],
+          ["data-[variant=outline]:active:border-border-warning-weak"],
+          ["data-[variant=outline]:hover:border-border-warning-weak"],
+          ["data-[variant=outline]:active:border-border-warning-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-warning"],
+          ["data-[variant=ghost]:hover:text-text-warning-strong"],
+          ["data-[variant=ghost]:hover:bg-background-warning/20"],
+          ["data-[variant=ghost]:active:ring-border-warning-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-warning"],
+          // Loading
+          ["data-[variant=loading]:bg-background-warning"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-warning/70"],
+          ["data-[variant=loading]:active:ring-border-warning-weaker"],
+        ],
+        info: [
+          // Default
+          ["data-[variant=default]:border-border-info-weak"],
+          ["data-[variant=default]:bg-background-info"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-info-weaker"],
+          ["data-[variant=default]:hover:bg-background-info-weak"],
+          ["data-[variant=default]:active:ring-border-info-weaker"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-info/50"],
+          ["data-[variant=shadow]:text-text-info"],
+          ["data-[variant=shadow]:hover:bg-background-info/30"],
+          ["data-[variant=shadow]:active:ring-info-weak"],
+          ["data-[variant=shadow]:active:ring-border-info-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-info"],
+          ["data-[variant=outline]:text-text-info"],
+          ["data-[variant=outline]:active:border-border-info-weak"],
+          ["data-[variant=outline]:hover:border-border-info-weak"],
+          ["data-[variant=outline]:active:border-border-info-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-info"],
+          ["data-[variant=ghost]:hover:text-text-info-strong"],
+          ["data-[variant=ghost]:hover:bg-background-info/20"],
+          ["data-[variant=ghost]:active:ring-border-info-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-info"],
+          // Loading
+          ["data-[variant=loading]:bg-background-info"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-info/70"],
+          ["data-[variant=loading]:active:ring-border-info-weaker"],
+        ],
+        success: [
+          // Default
+          ["data-[variant=default]:border-border-success-weak"],
+          ["data-[variant=default]:bg-background-success"],
+          ["data-[variant=default]:text-text-inverse"],
+          ["data-[variant=default]:hover:border-border-success-weaker"],
+          ["data-[variant=default]:hover:bg-background-success-weak"],
+          ["data-[variant=default]:active:ring-border-success-weaker"],
+          // Shadow
+          ["data-[variant=shadow]:bg-background-success/50"],
+          ["data-[variant=shadow]:text-text-success"],
+          ["data-[variant=shadow]:hover:bg-background-success/30"],
+          ["data-[variant=shadow]:active:ring-success-weak"],
+          ["data-[variant=shadow]:active:ring-border-success-weaker"],
+          // Outline
+          ["data-[variant=outline]:border-border-success"],
+          ["data-[variant=outline]:text-text-success"],
+          ["data-[variant=outline]:active:border-border-success-weak"],
+          ["data-[variant=outline]:hover:border-border-success-weak"],
+          ["data-[variant=outline]:active:border-border-success-weaker"],
+          ["data-[variant=outline]:active:ring-0"],
+          // Ghost
+          ["data-[variant=ghost]:text-text-success"],
+          ["data-[variant=ghost]:hover:text-text-success-strong"],
+          ["data-[variant=ghost]:hover:bg-background-success/20"],
+          ["data-[variant=ghost]:active:ring-border-success-weaker"],
+          // Link
+          ["data-[variant=link]:text-text-success"],
+          // Loading
+          ["data-[variant=loading]:bg-background-success"],
+          ["data-[variant=loading]:text-text-inverse"],
+          ["data-[variant=loading]:hover:bg-background-success/70"],
+          ["data-[variant=loading]:active:ring-border-success-weaker"],
         ],
       },
       size: {

@@ -15,8 +15,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import { RootWelcomeCards } from "@/app/(unauthenticated)/(components)/root-welcome-cards";
+
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page() {}
+export default async function Page() {
+  // ---------------------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------------------
+
+  return (
+    <>
+      <RootWelcomeCards />
+    </>
+  );
+}

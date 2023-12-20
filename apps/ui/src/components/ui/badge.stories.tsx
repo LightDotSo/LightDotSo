@@ -38,11 +38,11 @@ export const Default: Story = {
       <Badge {...args} intent="error">
         Error
       </Badge>
-      <Badge {...args} intent="info">
-        Info
-      </Badge>
       <Badge {...args} intent="warning">
         Warning
+      </Badge>
+      <Badge {...args} intent="info">
+        Info
       </Badge>
       <Badge {...args} intent="success">
         Success
@@ -65,11 +65,11 @@ export const Shadow: Story = {
       <Badge {...args} intent="error">
         Error
       </Badge>
-      <Badge {...args} intent="info">
-        Info
-      </Badge>
       <Badge {...args} intent="warning">
         Warning
+      </Badge>
+      <Badge {...args} intent="info">
+        Info
       </Badge>
       <Badge {...args} intent="success">
         Success

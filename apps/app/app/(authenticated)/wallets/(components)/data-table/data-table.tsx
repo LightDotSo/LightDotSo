@@ -38,6 +38,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { DataTableToolbar } from "@/app/(authenticated)/wallets/(components)/data-table/data-table-toolbar";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { TableEmpty } from "@/components/state/table-empty";
 import type { WalletData } from "@/data";
 import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
@@ -188,7 +189,7 @@ export function DataTable({ columns, data, pageCount }: DataTableProps) {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    <TableEmpty entity="wallet" />
                   </TableCell>
                 </TableRow>
               )}

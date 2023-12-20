@@ -50,15 +50,6 @@ const badgeVariants = cva(
           ["data-[variant=shadow]:bg-background-destructive-weakest"],
           ["data-[variant=shadow]:text-text-destructive"],
         ],
-        warning: [
-          // Default
-          ["data-[variant=default]:bg-background-warning"],
-          ["data-[variant=default]:text-text-inverse"],
-          // Shadow
-          ["data-[variant=shadow]:border-border-warning"],
-          ["data-[variant=shadow]:bg-background-warning-weakest"],
-          ["data-[variant=shadow]:text-text-warning"],
-        ],
         error: [
           // Default
           ["data-[variant=default]:bg-background-error"],
@@ -67,6 +58,15 @@ const badgeVariants = cva(
           ["data-[variant=shadow]:border-border-error"],
           ["data-[variant=shadow]:bg-background-error-weakest"],
           ["data-[variant=shadow]:text-text-error"],
+        ],
+        warning: [
+          // Default
+          ["data-[variant=default]:bg-background-warning"],
+          ["data-[variant=default]:text-text-inverse"],
+          // Shadow
+          ["data-[variant=shadow]:border-border-warning"],
+          ["data-[variant=shadow]:bg-background-warning-weakest"],
+          ["data-[variant=shadow]:text-text-warning"],
         ],
         info: [
           // Default

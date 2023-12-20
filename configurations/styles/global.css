@@ -40,6 +40,8 @@
     --background-inverse: 0 0% 9%;
     --background-inverse-strong: 0 0% 56%;
     --background-inverse-stronger: 0 0% 78%;
+    --background-new: 265 67% 96%;
+    --background-new-weakest: 270 60% 98%;
     --background-primary: 0 0% 9%;
     --background-primary-strong: 0 0% 5%;
     --background-primary-stronger: 0 0% 5%;
@@ -80,6 +82,7 @@
     --border-inverse-strongest: 0 0% 100%;
     --border-inverse-weaker: 220 26% 30%;
     --border-inverse-weakest: 218 43% 12%;
+    --border-new: 262 75% 92%;
     --border-primary: 0 0% 9%;
     --border-primary-strong: 0 0% 9%;
     --border-primary-stronger: 0 0% 9%;
@@ -142,6 +145,7 @@
     --text-link-destructive-stronger: 0 74% 17%;
     --text-link-destructive-strongest: 0 61% 12%;
     --text-link-destructive-weak: 0 79% 83%;
+    --text-new: 263 64% 50%;
     --text-primary: 0 0% 9%;
     --text-primary-strong: 231 100% 27%;
     --text-primary-stronger: 235 94% 19%;
@@ -178,6 +182,8 @@
     --background-inverse: 0 0% 9%;
     --background-inverse-strong: 0 0% 16%;
     --background-inverse-stronger: 0 0% 31%;
+    --background-new: 264 79% 26%;
+    --background-new-weakest: 218 43% 12%;
     --background-primary: 0 0% 93%;
     --background-primary-strong: 0 0% 63%;
     --background-primary-stronger: 0 0% 20%;
@@ -218,6 +224,7 @@
     --border-inverse-strongest: 0 0% 100%;
     --border-inverse-weaker: 220 26% 30%;
     --border-inverse-weakest: 218 43% 12%;
+    --border-new: 263 78% 42%;
     --border-primary: 0 0% 93%;
     --border-primary-strong: 0 0% 93%;
     --border-primary-stronger: 0 0% 93%;
@@ -280,6 +287,7 @@
     --text-link-destructive-stronger: 0 79% 83%;
     --text-link-destructive-strongest: 0 0% 100%;
     --text-link-destructive-weak: 220 26% 30%;
+    --text-new: 263 68% 81%;
     --text-primary: 0 0% 93%;
     --text-primary-strong: 209 100% 80%;
     --text-primary-stronger: 209 100% 80%;
