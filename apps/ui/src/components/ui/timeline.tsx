@@ -32,11 +32,7 @@ export const Timeline: FC<TimelineProps> = ({
   ...props
 }) => {
   return (
-    <ol
-      data-testid="timeline-component"
-      className={cn("relative border-l border-border", className)}
-      {...props}
-    >
+    <ol className={cn("relative border-l border-border", className)} {...props}>
       {children}
     </ol>
   );
