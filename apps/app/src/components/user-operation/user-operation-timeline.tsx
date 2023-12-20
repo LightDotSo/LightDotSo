@@ -22,7 +22,7 @@ import {
   TimelinePoint,
   TimelineTitle,
 } from "@lightdotso/ui";
-import { Check, PenLineIcon } from "lucide-react";
+import { Check, Hourglass, PenLineIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import TimeAgo from "timeago-react";
 import type { Address } from "viem";
@@ -109,7 +109,9 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
       ))}
       <TimelineItem>
         <TimelinePoint>
-          <span className="inline-flex h-6 w-6 rounded-full border border-dashed border-border-warning p-1" />
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-border-warning-weak bg-background-warning p-1">
+            <Hourglass className="h-2.5 w-2.5 text-text-inverse" />
+          </span>
         </TimelinePoint>
         <TimelineContent>
           <TimelineTitle>Waiting for Execution</TimelineTitle>
