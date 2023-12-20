@@ -202,6 +202,15 @@ export {
   TableCaption,
 } from "./src/components/ui/table";
 export {
+  Timeline,
+  TimelineContent,
+  TimelineItem,
+  TimelinePoint,
+  TimelineTitle,
+  TimelineBody,
+  TimelineTime,
+} from "./src/components/ui/timeline";
+export {
   Tabs,
   TabsList,
   TabsTrigger,

@@ -25,12 +25,8 @@
 import { cn } from "@lightdotso/utils";
 import type { ComponentProps, FC, ReactNode } from "react";
 
-export interface TimelineProps extends ComponentProps<"ol"> {}
-export const Timeline: FC<TimelineProps> = ({
-  children,
-  className,
-  ...props
-}) => {
+interface TimelineProps extends ComponentProps<"ol"> {}
+const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
   return (
     <ol className={cn("relative border-l border-border", className)} {...props}>
       {children}
@@ -38,10 +34,10 @@ export const Timeline: FC<TimelineProps> = ({
   );
 };
 
-export interface TimelnePointProps extends ComponentProps<"div"> {
+interface TimelnePointProps extends ComponentProps<"div"> {
   icon?: ReactNode;
 }
-export const TimelinePoint: FC<TimelnePointProps> = ({
+const TimelinePoint: FC<TimelnePointProps> = ({
   children,
   className,
   icon,
@@ -61,8 +57,8 @@ export const TimelinePoint: FC<TimelnePointProps> = ({
   );
 };
 
-export interface TimelineContentProps extends ComponentProps<"div"> {}
-export const TimelineContent: FC<TimelineContentProps> = ({
+interface TimelineContentProps extends ComponentProps<"div"> {}
+const TimelineContent: FC<TimelineContentProps> = ({
   children,
   className,
   ...props
@@ -74,8 +70,8 @@ export const TimelineContent: FC<TimelineContentProps> = ({
   );
 };
 
-export interface TimelineItemProps extends ComponentProps<"li"> {}
-export const TimelineItem: FC<TimelineItemProps> = ({
+interface TimelineItemProps extends ComponentProps<"li"> {}
+const TimelineItem: FC<TimelineItemProps> = ({
   children,
   className,
   ...props
@@ -87,8 +83,8 @@ export const TimelineItem: FC<TimelineItemProps> = ({
   );
 };
 
-export interface TimelineTitleProps extends ComponentProps<"h1"> {}
-export const TimelineTitle: FC<TimelineTitleProps> = ({
+interface TimelineTitleProps extends ComponentProps<"h1"> {}
+const TimelineTitle: FC<TimelineTitleProps> = ({
   children,
   className,
   ...props
@@ -100,8 +96,8 @@ export const TimelineTitle: FC<TimelineTitleProps> = ({
   );
 };
 
-export interface TimelineBodyProps extends ComponentProps<"p"> {}
-export const TimelineBody: FC<TimelineBodyProps> = ({
+interface TimelineBodyProps extends ComponentProps<"p"> {}
+const TimelineBody: FC<TimelineBodyProps> = ({
   children,
   className,
   ...props
@@ -116,8 +112,8 @@ export const TimelineBody: FC<TimelineBodyProps> = ({
   );
 };
 
-export interface TimelineTimeProps extends ComponentProps<"time"> {}
-export const TimelineTime: FC<TimelineTimeProps> = ({
+interface TimelineTimeProps extends ComponentProps<"time"> {}
+const TimelineTime: FC<TimelineTimeProps> = ({
   children,
   className,
   ...props
@@ -133,4 +129,14 @@ export const TimelineTime: FC<TimelineTimeProps> = ({
       {children}
     </time>
   );
+};
+
+export {
+  Timeline,
+  TimelineContent,
+  TimelineItem,
+  TimelinePoint,
+  TimelineTitle,
+  TimelineBody,
+  TimelineTime,
 };
