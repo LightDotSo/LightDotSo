@@ -32,6 +32,7 @@ import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/nfts/(components)/data-table/columns";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
+import { TableEmpty } from "@/components/state/table-empty";
 import type { NftData, NftDataPage, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
@@ -163,7 +164,7 @@ export const NftsList: FC<NftsListProps> = ({ address, limit }) => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <TableEmpty entity="nft" />
                 </TableCell>
               </TableRow>
             </TableBody>

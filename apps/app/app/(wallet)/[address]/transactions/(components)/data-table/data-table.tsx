@@ -50,6 +50,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useEffect } from "react";
 import type { Address } from "viem";
+import { TableEmpty } from "@/components/state/table-empty";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
@@ -301,7 +302,7 @@ export function DataTable({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
+              <TableEmpty entity="transaction" />
             </TableCell>
           </TableRow>
         )}

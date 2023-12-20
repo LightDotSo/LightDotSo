@@ -29,6 +29,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { NftCard } from "@/components/nft/nft-card";
 import { NftsWrapper } from "@/components/nft/nfts-wrapper";
+import { TableEmpty } from "@/components/state/table-empty";
 import type { NftData } from "@/data";
 import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
@@ -173,7 +174,7 @@ export function DataTable({ columns, data }: DataTableProps) {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  <TableEmpty entity="nft" />
                 </TableCell>
               </TableRow>
             </TableBody>

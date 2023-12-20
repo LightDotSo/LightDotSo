@@ -38,6 +38,7 @@ import {
 import type { FC } from "react";
 import type { Address } from "viem";
 import { columns } from "@/app/(wallet)/[address]/overview/history/(components)/data-table/columns";
+import { TableEmpty } from "@/components/state/table-empty";
 import type { TransactionData, WalletSettingsData } from "@/data";
 import { queries } from "@/queries";
 import { useTables } from "@/stores";
@@ -193,7 +194,7 @@ export const TransactionsList: FC<TransactionsListProps> = ({
         ) : (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
+              <TableEmpty entity="transaction" />
             </TableCell>
           </TableRow>
         )}
