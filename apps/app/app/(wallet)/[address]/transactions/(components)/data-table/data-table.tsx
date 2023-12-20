@@ -50,7 +50,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useEffect } from "react";
 import type { Address } from "viem";
-import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction-card/transaction-card-execute-button";
+import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
 import { TableEmpty } from "@/components/state/table-empty";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";

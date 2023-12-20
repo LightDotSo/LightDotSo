@@ -15,6 +15,7 @@
 
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
+import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
 import { handler } from "@/handlers/paths/[address]/transactions/handler";
@@ -84,6 +85,25 @@ export default async function Page({ params, searchParams }: PageProps) {
     }).queryKey,
     userOperationsCount,
   );
+  queryClient.setQueryData(
+    queries.user_operation.list({
+      address: params.address as Address,
+      status: "all",
+      direction: "asc",
+      limit: paginationState.pageSize,
+      offset: paginationState.pageIndex * paginationState.pageSize,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    userOperations,
+  );
+  queryClient.setQueryData(
+    queries.user_operation.listCount({
+      address: params.address as Address,
+      status: "all",
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    userOperationsCount,
+  );
 
   // ---------------------------------------------------------------------------
   // Render
@@ -91,8 +111,16 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable address={params.address as Address} status="all" />
-      <TransactionsDataTablePagination />
+      <OverviewSection
+        title="Queue"
+        href={`/${params.address}/transactions/queue`}
+      >
+        <TransactionsDataTable
+          address={params.address as Address}
+          status="all"
+        />
+        <TransactionsDataTablePagination />
+      </OverviewSection>
     </HydrationBoundary>
   );
 }
