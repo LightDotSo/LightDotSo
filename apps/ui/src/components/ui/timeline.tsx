@@ -23,7 +23,7 @@
 // License: MIT
 
 import { cn } from "@lightdotso/utils";
-import type { ComponentProps, FC, ReactNode } from "react";
+import type { ComponentProps, FC } from "react";
 
 interface TimelineProps extends ComponentProps<"ol"> {}
 const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
@@ -34,21 +34,17 @@ const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
   );
 };
 
-interface TimelnePointProps extends ComponentProps<"div"> {
-  icon?: ReactNode;
-}
+interface TimelnePointProps extends ComponentProps<"div"> {}
 const TimelinePoint: FC<TimelnePointProps> = ({
   children,
   className,
-  icon,
   ...props
 }) => {
   return (
-    <div data-testid="timeline-point" className={className} {...props}>
-      {children}
-      {icon ? (
-        <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full ring-2 ring-light">
-          {icon}
+    <div className={className} {...props}>
+      {children ? (
+        <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-background ring-2 ring-light">
+          {children}
         </span>
       ) : (
         <div className="absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border border-border-weak bg-background-primary" />

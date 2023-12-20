@@ -17,6 +17,7 @@
 // License: MIT
 
 import type { Meta, StoryObj } from "@storybook/react";
+import { Wallet } from "lucide-react";
 import {
   Timeline,
   TimelineContent,
@@ -71,6 +72,21 @@ export const Base: Story = {
           <TimelineBody>
             Get started with dozens of web components and interactive elements
             built on top of Tailwind CSS.
+          </TimelineBody>
+        </TimelineContent>
+      </TimelineItem>
+      <TimelineItem>
+        <TimelinePoint>
+          <span className="inline-flex p-1">
+            <Wallet className="h-3 w-3 text-text" />
+          </span>
+        </TimelinePoint>
+        <TimelineContent>
+          <TimelineTime>December 2023</TimelineTime>
+          <TimelineTitle>Everything else is secondary</TimelineTitle>
+          <TimelineBody>
+            Have the courage to follow your heart and intuition. They somehow
+            know what you truly want to become.
           </TimelineBody>
         </TimelineContent>
       </TimelineItem>
