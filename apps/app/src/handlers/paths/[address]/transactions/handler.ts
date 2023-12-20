@@ -15,21 +15,16 @@
 
 import { Result } from "neverthrow";
 import type { Address } from "viem";
+import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
 import { handler as addressHandler } from "@/handlers/paths/[address]/handler";
 import { validateAddress } from "@/handlers/validators/address";
-import { paginationParser } from "@/querystates";
 import { getUserOperations, getUserOperationsCount } from "@/services";
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-export const handler = async (
-  params: { address: string },
-  searchParams: {
-    pagination?: string;
-  },
-) => {
+export const handler = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
   // Validators
   // ---------------------------------------------------------------------------
@@ -37,37 +32,49 @@ export const handler = async (
   validateAddress(params.address);
 
   // ---------------------------------------------------------------------------
-  // Parsers
-  // ---------------------------------------------------------------------------
-
-  const paginationState = paginationParser.parseServerSide(
-    searchParams.pagination,
-  );
-
-  // ---------------------------------------------------------------------------
   // Fetch
   // ---------------------------------------------------------------------------
 
   const { walletSettings } = await addressHandler(params);
 
-  const userOperationsPromise = getUserOperations({
+  const queuedUserOperationsPromise = getUserOperations({
     address: params.address as Address,
     status: "proposed",
-    offset: paginationState.pageIndex * paginationState.pageSize,
-    limit: paginationState.pageSize,
+    offset: 0,
+    limit: TRANSACTION_ROW_COUNT,
     direction: "desc",
     is_testnet: walletSettings.is_enabled_testnet,
   });
-
-  const userOperationsCountPromise = getUserOperationsCount({
+  const queuedUserOperationsCountPromise = getUserOperationsCount({
     address: params.address as Address,
     status: "proposed",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 
-  const [userOperations, userOperationsCount] = await Promise.all([
-    userOperationsPromise,
-    userOperationsCountPromise,
+  const historyUserOperationsPromise = getUserOperations({
+    address: params.address as Address,
+    status: "executed",
+    offset: 0,
+    limit: TRANSACTION_ROW_COUNT,
+    direction: "desc",
+    is_testnet: walletSettings.is_enabled_testnet,
+  });
+  const historyUserOperationsCountPromise = getUserOperationsCount({
+    address: params.address as Address,
+    status: "executed",
+    is_testnet: walletSettings.is_enabled_testnet,
+  });
+
+  const [
+    queuedUserOperations,
+    queuedUserOperationsCount,
+    historyUserOperations,
+    historyUserOperationsCount,
+  ] = await Promise.all([
+    queuedUserOperationsPromise,
+    queuedUserOperationsCountPromise,
+    historyUserOperationsPromise,
+    historyUserOperationsCountPromise,
   ]);
 
   // ---------------------------------------------------------------------------
@@ -75,25 +82,34 @@ export const handler = async (
   // ---------------------------------------------------------------------------
 
   const res = Result.combineWithAllErrors([
-    userOperations,
-    userOperationsCount,
+    queuedUserOperations,
+    queuedUserOperationsCount,
+    historyUserOperations,
+    historyUserOperationsCount,
   ]);
 
   return res.match(
-    ([userOperations, userOperationsCount]) => {
+    ([
+      queuedUserOperations,
+      queuedUserOperationsCount,
+      historyUserOperations,
+      historyUserOperationsCount,
+    ]) => {
       return {
-        paginationState: paginationState,
         walletSettings: walletSettings,
-        userOperations: userOperations,
-        userOperationsCount: userOperationsCount,
+        queuedUserOperations: queuedUserOperations,
+        queuedUserOperationsCount: queuedUserOperationsCount,
+        historyUserOperations: historyUserOperations,
+        historyUserOperationsCount: historyUserOperationsCount,
       };
     },
     () => {
       return {
-        paginationState: paginationState,
         walletSettings: walletSettings,
-        userOperations: [],
-        userOperationsCount: { count: 0 },
+        queuedUserOperations: [],
+        queuedUserOperationsCount: { count: 0 },
+        historyUserOperations: [],
+        historyUserOperationsCount: { count: 0 },
       };
     },
   );

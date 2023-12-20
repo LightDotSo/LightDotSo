@@ -14,8 +14,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import type { Address } from "viem";
+import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
 import { preloader as addressPreloader } from "@/preloaders/paths/[address]/preloader";
-import { paginationParser } from "@/querystates";
 import { preload as preloadGetUserOperations } from "@/services/getUserOperations";
 import { preload as preloadGetUserOperationsCount } from "@/services/getUserOperationsCount";
 
@@ -23,20 +23,7 @@ import { preload as preloadGetUserOperationsCount } from "@/services/getUserOper
 // Preloader
 // -----------------------------------------------------------------------------
 
-export const preloader = async (
-  params: { address: string },
-  searchParams: {
-    pagination?: string;
-  },
-) => {
-  // ---------------------------------------------------------------------------
-  // Parsers
-  // ---------------------------------------------------------------------------
-
-  const paginationState = paginationParser.parseServerSide(
-    searchParams.pagination,
-  );
-
+export const preloader = async (params: { address: string }) => {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
@@ -44,15 +31,28 @@ export const preloader = async (
   addressPreloader(params);
   preloadGetUserOperations({
     address: params.address as Address,
-    offset: paginationState.pageIndex * paginationState.pageSize,
-    limit: paginationState.pageSize,
-    direction: "desc",
+    offset: 0,
+    limit: TRANSACTION_ROW_COUNT,
+    direction: "asc",
     status: "proposed",
     is_testnet: false,
   });
   preloadGetUserOperationsCount({
     address: params.address as Address,
     status: "proposed",
+    is_testnet: false,
+  });
+  preloadGetUserOperations({
+    address: params.address as Address,
+    offset: 0,
+    limit: TRANSACTION_ROW_COUNT,
+    direction: "desc",
+    status: "executed",
+    is_testnet: false,
+  });
+  preloadGetUserOperationsCount({
+    address: params.address as Address,
+    status: "executed",
     is_testnet: false,
   });
 };

@@ -17,8 +17,8 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
-import { handler } from "@/handlers/paths/[address]/transactions/all/handler";
-import { preloader } from "@/preloaders/paths/[address]/transactions/all/preloader";
+import { handler } from "@/handlers/paths/[address]/transactions/queue/handler";
+import { preloader } from "@/preloaders/paths/[address]/transactions/queue/preloader";
 import { queries } from "@/queries";
 import { getQueryClient } from "@/services";
 
@@ -68,7 +68,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.list({
       address: params.address as Address,
-      status: "all",
+      status: "proposed",
       direction: "asc",
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
@@ -79,7 +79,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.listCount({
       address: params.address as Address,
-      status: "all",
+      status: "proposed",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     userOperationsCount,
@@ -91,7 +91,10 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable address={params.address as Address} status="all" />
+      <TransactionsDataTable
+        address={params.address as Address}
+        status="proposed"
+      />
       <TransactionsDataTablePagination />
     </HydrationBoundary>
   );

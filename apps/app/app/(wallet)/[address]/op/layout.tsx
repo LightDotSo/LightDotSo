@@ -24,15 +24,15 @@ import { TITLES } from "@/const/titles";
 // -----------------------------------------------------------------------------
 
 export const metadata: Metadata = {
-  title: TITLES.Transactions.title,
-  description: TITLES.Transactions.description,
+  title: TITLES.UserOperation.title,
+  description: TITLES.UserOperation.description,
 };
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-interface TransactionsLayoutProps {
+interface UserOperationLayoutProps {
   children: React.ReactNode;
 }
 
@@ -40,9 +40,9 @@ interface TransactionsLayoutProps {
 // Layout
 // -----------------------------------------------------------------------------
 
-export default function TransactionsLayout({
+export default function UserOperationLayout({
   children,
-}: TransactionsLayoutProps) {
+}: UserOperationLayoutProps) {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------

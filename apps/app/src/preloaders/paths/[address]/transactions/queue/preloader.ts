@@ -46,13 +46,13 @@ export const preloader = async (
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    direction: "desc",
-    status: "all",
+    direction: "asc",
+    status: "proposed",
     is_testnet: false,
   });
   preloadGetUserOperationsCount({
     address: params.address as Address,
-    status: "all",
+    status: "proposed",
     is_testnet: false,
   });
 };

@@ -724,6 +724,7 @@ export interface components {
       call_gas_limit: number;
       /** Format: int64 */
       chain_id: number;
+      created_at: string;
       hash: string;
       init_code: string;
       /** Format: int64 */
@@ -740,6 +741,7 @@ export interface components {
       signatures: components["schemas"]["UserOperationSignature"][];
       status: string;
       transaction?: components["schemas"]["UserOperationTransaction"] | null;
+      updated_at: string;
       /** Format: int64 */
       verification_gas_limit: number;
     };
@@ -794,11 +796,13 @@ export interface components {
       address: string;
     };
     UserOperationPostRequestParams: {
-      signature: components["schemas"]["UserOperationSignature"];
+      signature: components["schemas"]["UserOperationCreateSignature"];
       user_operation: components["schemas"]["UserOperationCreate"];
     };
     /** @description User operation signature */
     UserOperationSignature: {
+      /** @description The created time of the signature. */
+      created_at: string;
       /** @description The id of the owner of the signature. */
       owner_id: string;
       /** @description The signature in hex string. */

@@ -15,8 +15,10 @@
 
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import type { Address } from "viem";
+import { OverviewSection } from "@/app/(wallet)/[address]/transactions/(components)/overview/overview-section";
 import { TransactionsDataTable } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table";
 import { TransactionsDataTablePagination } from "@/app/(wallet)/[address]/transactions/(components)/transactions-data-table-pagination";
+import { TRANSACTION_ROW_COUNT } from "@/const/numbers";
 import { handler } from "@/handlers/paths/[address]/transactions/handler";
 import { preloader } from "@/preloaders/paths/[address]/transactions/preloader";
 import { queries } from "@/queries";
@@ -28,32 +30,30 @@ import { getQueryClient } from "@/services";
 
 type PageProps = {
   params: { address: string };
-  searchParams: {
-    pagination?: string;
-  };
 };
 
 // -----------------------------------------------------------------------------
 // Page
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
   // ---------------------------------------------------------------------------
   // Preloaders
   // ---------------------------------------------------------------------------
 
-  preloader(params, searchParams);
+  preloader(params);
 
   // ---------------------------------------------------------------------------
   // Handlers
   // ---------------------------------------------------------------------------
 
   const {
-    paginationState,
     walletSettings,
-    userOperations,
-    userOperationsCount,
-  } = await handler(params, searchParams);
+    queuedUserOperations,
+    queuedUserOperationsCount,
+    historyUserOperations,
+    historyUserOperationsCount,
+  } = await handler(params);
 
   // ---------------------------------------------------------------------------
   // Query
@@ -70,11 +70,11 @@ export default async function Page({ params, searchParams }: PageProps) {
       address: params.address as Address,
       status: "proposed",
       direction: "asc",
-      limit: paginationState.pageSize,
-      offset: paginationState.pageIndex * paginationState.pageSize,
+      limit: TRANSACTION_ROW_COUNT,
+      offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
-    userOperations,
+    queuedUserOperations,
   );
   queryClient.setQueryData(
     queries.user_operation.listCount({
@@ -82,7 +82,26 @@ export default async function Page({ params, searchParams }: PageProps) {
       status: "proposed",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
-    userOperationsCount,
+    queuedUserOperationsCount,
+  );
+  queryClient.setQueryData(
+    queries.user_operation.list({
+      address: params.address as Address,
+      status: "executed",
+      direction: "desc",
+      limit: TRANSACTION_ROW_COUNT,
+      offset: 0,
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    historyUserOperations,
+  );
+  queryClient.setQueryData(
+    queries.user_operation.listCount({
+      address: params.address as Address,
+      status: "executed",
+      is_testnet: walletSettings?.is_enabled_testnet ?? false,
+    }).queryKey,
+    historyUserOperationsCount,
   );
 
   // ---------------------------------------------------------------------------
@@ -91,11 +110,26 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable
-        address={params.address as Address}
-        status="proposed"
-      />
-      <TransactionsDataTablePagination />
+      <OverviewSection
+        title="Queue"
+        href={`/${params.address}/transactions/queue`}
+      >
+        <TransactionsDataTable
+          address={params.address as Address}
+          status="proposed"
+        />
+        <TransactionsDataTablePagination />
+      </OverviewSection>
+      <OverviewSection
+        title="History"
+        href={`/${params.address}/transactions/history`}
+      >
+        <TransactionsDataTable
+          address={params.address as Address}
+          status="executed"
+        />
+        <TransactionsDataTablePagination />
+      </OverviewSection>
     </HydrationBoundary>
   );
 }

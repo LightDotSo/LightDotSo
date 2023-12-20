@@ -15,7 +15,7 @@
 
 #![allow(clippy::unwrap_used)]
 
-use super::types::{UserOperation, UserOperationSignature};
+use super::types::UserOperation;
 use crate::{
     result::{AppError, AppJsonResult},
     state::AppState,
@@ -79,7 +79,7 @@ pub struct UserOperationPostRequestParams {
     // The user operation to create.
     pub user_operation: UserOperationCreate,
     // The signature of the user operation.
-    pub signature: UserOperationSignature,
+    pub signature: UserOperationCreateSignature,
 }
 
 // -----------------------------------------------------------------------------
@@ -122,6 +122,18 @@ impl TryFrom<UserOperationCreate> for RundlerUserOperation {
             signature: vec![].into(),
         })
     }
+}
+
+/// User operation signature
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct UserOperationCreateSignature {
+    /// The id of the owner of the signature.
+    pub owner_id: String,
+    /// The signature in hex string.
+    pub signature: String,
+    /// The signature type
+    pub signature_type: i32,
 }
 
 // -----------------------------------------------------------------------------

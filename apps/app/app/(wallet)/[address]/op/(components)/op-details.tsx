@@ -13,48 +13,35 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
+import type { FC } from "react";
 import type { Address } from "viem";
-import { OpConfirmDialog } from "@/app/(wallet)/[address]/op/(components)/op-confirm-dialog";
-import { Modal } from "@/components/modal";
-import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/[userOperationHash]/preloader";
+import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
+import type { ConfigurationData, UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string; chainId: string; userOperationHash: string };
+type OpDetailsProps = {
+  address: Address;
+  config: ConfigurationData;
+  userOperation: UserOperationData;
 };
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { config, userOperation } = await handler(params);
-
+export const OpDetails: FC<OpDetailsProps> = ({ userOperation }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Modal>
-      <OpConfirmDialog
-        config={config}
-        address={params.address as Address}
-        userOperation={userOperation}
-      />
-    </Modal>
+    <>
+      <UserOperationTimeline userOperation={userOperation} />
+    </>
   );
-}
+};

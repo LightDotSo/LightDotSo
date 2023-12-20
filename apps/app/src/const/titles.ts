@@ -22,6 +22,7 @@ export enum Category {
   New = "New",
   Wallets = "Wallets",
   Overview = "Overview",
+  UserOperation = "UserOperation",
   Transactions = "Transactions",
   Profile = "Profile",
   Settings = "Settings",
@@ -34,6 +35,10 @@ export enum Category {
 // -----------------------------------------------------------------------------
 // Sub
 // -----------------------------------------------------------------------------
+
+export enum UserOperationSubCategory {
+  Details = "Details",
+}
 
 export enum OverviewSubCategory {
   All = "All",
@@ -77,6 +82,17 @@ export const TITLES: Record<Category, CategoryObject> = {
     title: "Wallet List",
     description: "View your wallet list.",
     subcategories: {},
+  },
+  [Category.UserOperation]: {
+    title: "Transaction",
+    description: "Perform and execute transactions.",
+    subcategories: {
+      [UserOperationSubCategory.Details]: {
+        title: "Details",
+        description: "View transaction details.",
+        subcategories: {},
+      },
+    },
   },
   [Category.Overview]: {
     title: "Overview",

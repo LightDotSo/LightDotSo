@@ -13,45 +13,40 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+"use client";
+
+import { Button } from "@lightdotso/ui";
+import type { FC } from "react";
 import type { Address } from "viem";
-import { OpDetails } from "@/app/(wallet)/[address]/op/(components)/op-details";
-import { handler } from "@/handlers/paths/[address]/op/[userOperationHash]/handler";
-import { preloader } from "@/preloaders/paths/[address]/op/[userOperationHash]/preloader";
+import { useUserOperationSubmit } from "@/app/(wallet)/[address]/transactions/(hooks)/useUserOperationSubmit";
+import type { ConfigurationData, UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
 // Props
 // -----------------------------------------------------------------------------
 
-type PageProps = {
-  params: { address: string; userOperationHash: string };
+type TransactionCardExecuteButtonProps = {
+  address: Address;
+  config: ConfigurationData;
+  userOperation: UserOperationData;
 };
 
 // -----------------------------------------------------------------------------
-// Page
+// Component
 // -----------------------------------------------------------------------------
 
-export default async function Page({ params }: PageProps) {
-  // ---------------------------------------------------------------------------
-  // Preloaders
-  // ---------------------------------------------------------------------------
-
-  preloader(params);
-
-  // ---------------------------------------------------------------------------
-  // Handlers
-  // ---------------------------------------------------------------------------
-
-  const { config, userOperation } = await handler(params);
+export const TransactionCardExecuteButton: FC<
+  TransactionCardExecuteButtonProps
+> = ({ address, config, userOperation }) => {
+  const { handleConfirm } = useUserOperationSubmit({
+    address: address,
+    config: config,
+    userOperation: userOperation,
+  });
 
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return (
-    <OpDetails
-      config={config}
-      address={params.address as Address}
-      userOperation={userOperation}
-    />
-  );
-}
+  return <Button onClick={handleConfirm}>Execute</Button>;
+};
