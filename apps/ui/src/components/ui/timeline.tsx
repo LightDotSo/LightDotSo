@@ -41,13 +41,13 @@ const TimelinePoint: FC<TimelnePointProps> = ({
   ...props
 }) => {
   return (
-    <div className={cn("z-20", className)} {...props}>
+    <div className={className} {...props}>
       {children ? (
-        <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-background ring-2 ring-light">
+        <span className="absolute -left-3 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-background ring-2 ring-light">
           {children}
         </span>
       ) : (
-        <div className="absolute -left-1.5 mt-2 h-3 w-3 rounded-full border border-border-weak bg-background-primary" />
+        <div className="absolute -left-1.5 z-20 mt-2 h-3 w-3 rounded-full border border-border-weak bg-background-primary" />
       )}
     </div>
   );
