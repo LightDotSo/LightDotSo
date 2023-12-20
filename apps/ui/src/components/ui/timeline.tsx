@@ -28,7 +28,7 @@ import type { ComponentProps, FC } from "react";
 interface TimelineProps extends ComponentProps<"ol"> {}
 const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
   return (
-    <ol className={cn("relative border-l border-border", className)} {...props}>
+    <ol className={cn("relative", className)} {...props}>
       {children}
     </ol>
   );
@@ -41,13 +41,13 @@ const TimelinePoint: FC<TimelnePointProps> = ({
   ...props
 }) => {
   return (
-    <div className={className} {...props}>
+    <div className={cn("z-20", className)} {...props}>
       {children ? (
         <span className="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full bg-background ring-2 ring-light">
           {children}
         </span>
       ) : (
-        <div className="absolute -left-1.5 mt-1.5 h-3 w-3 rounded-full border border-border-weak bg-background-primary" />
+        <div className="absolute -left-1.5 mt-2 h-3 w-3 rounded-full border border-border-weak bg-background-primary" />
       )}
     </div>
   );
@@ -60,7 +60,7 @@ const TimelineContent: FC<TimelineContentProps> = ({
   ...props
 }) => {
   return (
-    <div className={className} {...props}>
+    <div className={cn("pb-4", className)} {...props}>
       {children}
     </div>
   );
@@ -73,7 +73,11 @@ const TimelineItem: FC<TimelineItemProps> = ({
   ...props
 }) => {
   return (
-    <li className={cn("mb-10 ml-6", className)} {...props}>
+    <li
+      className={cn("pl-6 border-l border-border last:border-0", className)}
+      {...props}
+    >
+      <div className="absolute left-0 top-0 z-10 h-2 w-1 bg-background" />
       {children}
     </li>
   );
@@ -100,7 +104,7 @@ const TimelineBody: FC<TimelineBodyProps> = ({
 }) => {
   return (
     <div
-      className={cn("mb-4 text-base font-normal text-text-weak", className)}
+      className={cn("text-base font-normal text-text-weak", className)}
       {...props}
     >
       {children}
