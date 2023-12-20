@@ -68,7 +68,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.list({
       address: params.address as Address,
-      status: "proposed",
+      status: "all",
       direction: "asc",
       limit: paginationState.pageSize,
       offset: paginationState.pageIndex * paginationState.pageSize,
@@ -79,7 +79,7 @@ export default async function Page({ params, searchParams }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.listCount({
       address: params.address as Address,
-      status: "proposed",
+      status: "all",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     userOperationsCount,
@@ -91,10 +91,7 @@ export default async function Page({ params, searchParams }: PageProps) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <TransactionsDataTable
-        address={params.address as Address}
-        status="proposed"
-      />
+      <TransactionsDataTable address={params.address as Address} status="all" />
       <TransactionsDataTablePagination />
     </HydrationBoundary>
   );

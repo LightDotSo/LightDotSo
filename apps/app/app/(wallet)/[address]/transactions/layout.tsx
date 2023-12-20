@@ -29,13 +29,13 @@ import { TITLES } from "@/const/titles";
 
 const transactionsNavItems = [
   {
-    title: "Queue",
+    title: "All",
     href: "/transactions",
     id: "transactions",
   },
   {
-    title: "All",
-    href: "/transactions/all",
+    title: "Queue",
+    href: "/transactions/queue",
     id: "all",
   },
   {
