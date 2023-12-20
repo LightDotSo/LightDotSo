@@ -36,7 +36,7 @@ const transactionsNavItems = [
   {
     title: "Queue",
     href: "/transactions/queue",
-    id: "all",
+    id: "queue",
   },
   {
     title: "History",
