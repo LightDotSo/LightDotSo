@@ -56,8 +56,8 @@ export const RootWelcomeCards: FC = () => {
       <Card className="col-span-1">
         <CardHeader>
           <div>
-            <span className="inline-block rounded-full border border-border-info bg-background-info-weakest p-2">
-              <Gamepad className="h-5 w-5 text-border-info" />
+            <span className="inline-block rounded-full border border-border-new bg-background-new/25 p-2">
+              <Gamepad className="h-5 w-5 text-border-new" />
             </span>
           </div>
           <CardTitle>Try demo mode</CardTitle>
