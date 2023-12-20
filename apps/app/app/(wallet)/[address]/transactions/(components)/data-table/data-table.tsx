@@ -51,6 +51,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import type { Address } from "viem";
 import { TableEmpty } from "@/components/state/table-empty";
+import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
@@ -237,7 +238,7 @@ export function DataTable({
                 </CollapsibleTrigger>
                 <CollapsibleContent asChild>
                   <TableCell className="p-0" colSpan={row.getAllCells().length}>
-                    <div className="mt-4 grid gap-4 md:grid-cols-3">
+                    <div className="my-4 grid gap-4 md:grid-cols-3">
                       <Card className="col-span-1 bg-background-stronger">
                         <CardHeader>
                           <CardTitle className="text-lg">
@@ -278,6 +279,11 @@ export function DataTable({
                             <div className="col-span-1">
                               Threshold: {configuration?.threshold!}/
                               {configuration?.owners?.length!}
+                            </div>
+                            <div className="col-span-2 px-4">
+                              <UserOperationTimeline
+                                userOperation={row.original}
+                              />
                             </div>
                           </div>
                         </CardContent>

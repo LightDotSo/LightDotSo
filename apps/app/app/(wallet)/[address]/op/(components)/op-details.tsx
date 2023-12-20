@@ -17,6 +17,7 @@
 
 import type { FC } from "react";
 import type { Address } from "viem";
+import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";
 
 // -----------------------------------------------------------------------------
@@ -33,12 +34,14 @@ type OpDetailsProps = {
 // Component
 // -----------------------------------------------------------------------------
 
-export const OpDetails: FC<OpDetailsProps> = ({
-  userOperation: { chain_id },
-}) => {
+export const OpDetails: FC<OpDetailsProps> = ({ userOperation }) => {
   // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
-  return null;
+  return (
+    <>
+      <UserOperationTimeline userOperation={userOperation} />
+    </>
+  );
 };

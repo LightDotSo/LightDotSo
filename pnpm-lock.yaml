@@ -521,6 +521,9 @@ importers:
       superjson:
         specifier: ^2.2.1
         version: 2.2.1
+      timeago-react:
+        specifier: ^3.0.6
+        version: 3.0.6(react@18.2.0)
       viem:
         specifier: ^1.20.2
         version: 1.20.2(typescript@5.3.3)(zod@3.22.4)
@@ -32430,6 +32433,19 @@ packages:
     dependencies:
       convert-hrtime: 3.0.0
     dev: true
+
+  /timeago-react@3.0.6(react@18.2.0):
+    resolution: {integrity: sha512-4ywnCX3iFjdp84WPK7gt8s4n0FxXbYM+xv8hYL73p83dpcMxzmO+0W4xJuxflnkWNvum5aEaqTe6LZ3lUIudjQ==}
+    peerDependencies:
+      react: ^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      timeago.js: 4.0.2
+    dev: false
+
+  /timeago.js@4.0.2:
+    resolution: {integrity: sha512-a7wPxPdVlQL7lqvitHGGRsofhdwtkoSXPGATFuSOA2i1ZNQEPLrGnj68vOp2sOJTCFAQVXPeNMX/GctBaO9L2w==}
+    dev: false
 
   /timeout-abort-controller@2.0.0:
     resolution: {integrity: sha512-2FAPXfzTPYEgw27bQGTHc0SzrbmnU2eso4qo172zMLZzaGqeu09PFa5B2FCUHM1tflgRqPgn5KQgp6+Vex4uNA==}

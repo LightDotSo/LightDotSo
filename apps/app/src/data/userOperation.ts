@@ -33,12 +33,15 @@ export type UserOperationData = {
     owner_id: string;
     signature: string;
     signature_type: number;
+    created_at: string;
   }[];
   status: string;
   transaction?: {
     hash: string;
   } | null;
   verification_gas_limit: number;
+  created_at: string;
+  updated_at: string;
 };
 
 export type UserOperationCountData = {

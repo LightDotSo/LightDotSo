@@ -70,6 +70,8 @@ pub(crate) struct UserOperationSignature {
     pub signature: String,
     /// The signature type
     pub signature_type: i32,
+    /// The created time of the signature.
+    pub created_at: String,
 }
 
 /// User operation transaction
@@ -108,6 +110,8 @@ pub(crate) struct UserOperation {
     paymaster: Option<UserOperationPaymaster>,
     signatures: Vec<UserOperationSignature>,
     transaction: Option<UserOperationTransaction>,
+    created_at: String,
+    updated_at: String,
 }
 
 /// Implement From<user_operation::Data> for User operation.
@@ -136,6 +140,8 @@ impl From<user_operation::Data> for UserOperation {
             transaction: user_operation.transaction.and_then(|transaction| {
                 transaction.map(|data| UserOperationTransaction::from(*data))
             }),
+            created_at: user_operation.created_at.to_rfc3339(),
+            updated_at: user_operation.updated_at.to_rfc3339(),
         }
     }
 }
@@ -161,6 +167,7 @@ impl From<signature::Data> for UserOperationSignature {
             owner_id: signature.owner_id.to_string(),
             signature: signature.signature.to_hex_string(),
             signature_type: signature.signature_type,
+            created_at: signature.created_at.to_rfc3339(),
         }
     }
 }

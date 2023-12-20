@@ -42,7 +42,7 @@ export const Base: Story = {
   render: args => (
     <Timeline>
       <TimelineItem>
-        <TimelinePoint />
+        <TimelinePoint>Hi</TimelinePoint>
         <TimelineContent>
           <TimelineTime>February 2022</TimelineTime>
           <TimelineTitle>Application UI code in Tailwind CSS</TimelineTitle>
@@ -53,7 +53,7 @@ export const Base: Story = {
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
-        <TimelinePoint />
+        <TimelinePoint>Hi</TimelinePoint>
         <TimelineContent>
           <TimelineTime>March 2022</TimelineTime>
           <TimelineTitle>Marketing UI design in Figma</TimelineTitle>
@@ -65,9 +65,8 @@ export const Base: Story = {
         </TimelineContent>
       </TimelineItem>
       <TimelineItem>
-        <TimelinePoint />
+        <TimelinePoint>L</TimelinePoint>
         <TimelineContent>
-          <TimelineTime>April 2022</TimelineTime>
           <TimelineTitle>E-Commerce UI code in Tailwind CSS</TimelineTitle>
           <TimelineBody>
             Get started with dozens of web components and interactive elements

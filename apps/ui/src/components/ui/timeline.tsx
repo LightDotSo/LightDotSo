@@ -34,7 +34,9 @@ const Timeline: FC<TimelineProps> = ({ children, className, ...props }) => {
   );
 };
 
-interface TimelnePointProps extends ComponentProps<"div"> {}
+interface TimelnePointProps extends ComponentProps<"div"> {
+  children: React.ReactNode;
+}
 const TimelinePoint: FC<TimelnePointProps> = ({
   children,
   className,
@@ -42,13 +44,9 @@ const TimelinePoint: FC<TimelnePointProps> = ({
 }) => {
   return (
     <div className={className} {...props}>
-      {children ? (
-        <span className="absolute -left-3 z-20 flex h-6 w-6 items-center justify-center rounded-full bg-background ring-2 ring-light">
-          {children}
-        </span>
-      ) : (
-        <div className="absolute -left-1.5 z-20 mt-2 h-3 w-3 rounded-full border border-border-weak bg-background-primary" />
-      )}
+      <span className="absolute -left-3 z-20 flex h-6 w-6 items-center justify-center rounded-full">
+        {children}
+      </span>
     </div>
   );
 };
@@ -74,10 +72,13 @@ const TimelineItem: FC<TimelineItemProps> = ({
 }) => {
   return (
     <li
-      className={cn("pl-6 border-l border-border last:border-0", className)}
+      className={cn(
+        "pl-6 border-l border-border-strong last:border-0",
+        className,
+      )}
       {...props}
     >
-      <div className="absolute left-0 top-0 z-10 h-2 w-1 bg-background" />
+      {/* <div className="absolute left-0 top-0 z-10 h-2 w-1 bg-background" /> */}
       {children}
     </li>
   );
@@ -90,7 +91,10 @@ const TimelineTitle: FC<TimelineTitleProps> = ({
   ...props
 }) => {
   return (
-    <h1 className={cn("text-lg font-semibold text-text", className)} {...props}>
+    <h1
+      className={cn("text-base font-semibold text-text", className)}
+      {...props}
+    >
       {children}
     </h1>
   );
@@ -120,10 +124,7 @@ const TimelineTime: FC<TimelineTimeProps> = ({
 }) => {
   return (
     <time
-      className={cn(
-        "mb-1 text-sm font-normal leading-none text-text",
-        className,
-      )}
+      className={cn("text-sm font-normal leading-none text-text", className)}
       {...props}
     >
       {children}
