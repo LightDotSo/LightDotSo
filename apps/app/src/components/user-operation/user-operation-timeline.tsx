@@ -22,10 +22,35 @@ import {
   TimelinePoint,
   TimelineTitle,
 } from "@lightdotso/ui";
-import type { FC } from "react";
+import { Check, PenLineIcon } from "lucide-react";
+import type { FC, ReactNode } from "react";
 import TimeAgo from "timeago-react";
+import type { Address } from "viem";
 import { PlaceholderOrb } from "@/components/lightdotso/placeholder-orb";
 import type { UserOperationData } from "@/data";
+
+// -----------------------------------------------------------------------------
+// Wrapper
+// -----------------------------------------------------------------------------
+
+interface AddressPinPointerProps {
+  address: Address;
+  children: ReactNode;
+}
+
+export const AddressPinPointer: FC<AddressPinPointerProps> = ({
+  address,
+  children,
+}) => (
+  <span className="relative inline-block">
+    <span className="relative">
+      <Avatar className="h-6 w-6">
+        <PlaceholderOrb address={address} />
+      </Avatar>
+    </span>
+    <span className="absolute left-3 top-2 h-3 w-3">{children}</span>
+  </span>
+);
 
 // -----------------------------------------------------------------------------
 // Props
@@ -48,11 +73,13 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
     <Timeline>
       <TimelineItem>
         <TimelinePoint>
-          <Avatar className="h-6 w-6">
-            <PlaceholderOrb
-              address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
-            />
-          </Avatar>
+          <AddressPinPointer
+            address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
+          >
+            <span className="inline-flex rounded-full border border-border-success bg-background-success p-1">
+              <Check className="h-2 w-2 text-text-inverse" />
+            </span>
+          </AddressPinPointer>
         </TimelinePoint>
         <TimelineContent>
           <TimelineTitle>Created</TimelineTitle>
@@ -64,11 +91,13 @@ export const UserOperationTimeline: FC<UserOperationTimelineProps> = ({
       {signatures.map(({ created_at, owner_id }) => (
         <TimelineItem key={owner_id}>
           <TimelinePoint>
-            <Avatar className="h-6 w-6">
-              <PlaceholderOrb
-                address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
-              />
-            </Avatar>
+            <AddressPinPointer
+              address={"0x4fd9D0eE6D6564E80A9Ee00c0163fC952d0A45Ed"}
+            >
+              <span className="inline-flex rounded-full border border-border-info bg-background-info p-1">
+                <PenLineIcon className="h-2 w-2 text-text-inverse" />
+              </span>
+            </AddressPinPointer>
           </TimelinePoint>
           <TimelineContent>
             <TimelineTitle>Signed</TimelineTitle>
