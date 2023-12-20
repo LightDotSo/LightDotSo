@@ -46,7 +46,7 @@ export const preloader = async (
     address: params.address as Address,
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    direction: "desc",
+    direction: "asc",
     status: "proposed",
     is_testnet: false,
   });

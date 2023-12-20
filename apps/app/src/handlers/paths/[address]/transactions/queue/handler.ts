@@ -55,7 +55,7 @@ export const handler = async (
     status: "proposed",
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
-    direction: "desc",
+    direction: "asc",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 

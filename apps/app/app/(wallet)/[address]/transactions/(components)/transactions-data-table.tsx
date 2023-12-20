@@ -100,7 +100,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           query: {
             address,
             status: status === "all" ? undefined : status,
-            direction: "desc",
+            direction: status === "proposed" ? "asc" : "desc",
             limit: paginationState.pageSize,
             offset: offsetCount,
             is_testnet: walletSettings?.is_enabled_testnet ?? false,
