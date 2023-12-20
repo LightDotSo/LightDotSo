@@ -50,6 +50,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 import { useEffect } from "react";
 import type { Address } from "viem";
+import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction-card/transaction-card-execute-button";
 import { TableEmpty } from "@/components/state/table-empty";
 import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";
@@ -287,17 +288,16 @@ export function DataTable({
                             </div>
                           </div>
                         </CardContent>
-                        {row.original.status === "PROPOSED" && (
-                          <CardFooter className="flex w-full items-center justify-end">
-                            <Button asChild>
-                              <Link
-                                href={`/${row.original.sender}/op/${row.original.hash}`}
-                              >
-                                Execute
-                              </Link>
-                            </Button>
-                          </CardFooter>
-                        )}
+                        {configuration &&
+                          row.original.status === "PROPOSED" && (
+                            <CardFooter className="flex w-full items-center justify-end">
+                              <TransactionCardExecuteButton
+                                address={address}
+                                config={configuration}
+                                userOperation={row.original}
+                              />
+                            </CardFooter>
+                          )}
                       </Card>
                     </div>
                   </TableCell>
