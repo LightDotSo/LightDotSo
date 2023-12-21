@@ -81,6 +81,10 @@ module.exports = {
           strong: "hsl(var(--background-inverse-strong) / <alpha-value>)",
           stronger: "hsl(var(--background-inverse-stronger) / <alpha-value>)",
         },
+        "background-neutral": {
+          DEFAULT: "hsl(var(--background-neutral) / <alpha-value>)",
+          weakest: "hsl(var(--background-neutral-weakest) / <alpha-value>)",
+        },
         "background-new": {
           DEFAULT: "hsl(var(--background-new) / <alpha-value>)",
           weakest: "hsl(var(--background-new-weakest) / <alpha-value>)",
@@ -141,8 +145,17 @@ module.exports = {
           weaker: "hsl(var(--border-inverse-weaker) / <alpha-value>)",
           weakest: "hsl(var(--border-inverse-weakest) / <alpha-value>)",
         },
+        "border-neutral": {
+          DEFAULT: "hsl(var(--border-neutral) / <alpha-value>)",
+          weak: "hsl(var(--border-neutral-weak) / <alpha-value>)",
+          weaker: "hsl(var(--border-neutral-weaker) / <alpha-value>)",
+          weakest: "hsl(var(--border-neutral-weakest) / <alpha-value>)",
+        },
         "border-new": {
           DEFAULT: "hsl(var(--border-new) / <alpha-value>)",
+          weak: "hsl(var(--border-new-weak) / <alpha-value>)",
+          weaker: "hsl(var(--border-new-weaker) / <alpha-value>)",
+          weakest: "hsl(var(--border-new-weakest) / <alpha-value>)",
         },
         "border-primary": {
           DEFAULT: "hsl(var(--border-primary) / <alpha-value>)",
