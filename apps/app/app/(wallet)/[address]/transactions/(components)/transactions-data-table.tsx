@@ -184,13 +184,11 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
   }
 
   return (
-    <div className="rounded-md border border-border bg-background p-4">
-      <DataTable
-        data={transactions ?? []}
-        address={address}
-        columns={columns}
-        pageCount={pageCount}
-      />
-    </div>
+    <DataTable
+      data={transactions ?? []}
+      address={address}
+      columns={columns}
+      pageCount={pageCount}
+    />
   );
 };

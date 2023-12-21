@@ -46,7 +46,7 @@ const buttonVariants = cva(
           ["data-[variant=default]:hover:border-border-primary-weaker"],
           ["data-[variant=default]:hover:bg-background-primary-weak"],
           ["data-[variant=default]:active:bg-background-primary-weaker"],
-          ["data-[variant=default]:active:ring-border-primary"],
+          ["data-[variant=default]:active:ring-border-primary-weak"],
           // Shadow
           ["data-[variant=shadow]:bg-background-stronger"],
           ["data-[variant=shadow]:text-text-primary"],
@@ -238,9 +238,9 @@ const buttonVariants = cva(
         ],
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        default: "h-9 px-4 py-2",
+        sm: "h-8 px-3 py-1.5",
+        lg: "h-10 px-8",
         icon: "h-10 w-10",
         unsized: "",
       },

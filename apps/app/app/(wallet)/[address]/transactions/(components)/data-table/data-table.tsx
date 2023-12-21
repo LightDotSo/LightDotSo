@@ -16,28 +16,9 @@
 "use client";
 
 import { getConfiguration } from "@lightdotso/client";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-  Progress,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@lightdotso/ui";
+import { Table, TableBody, TableCell, TableRow } from "@lightdotso/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -46,13 +27,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { ColumnDef } from "@tanstack/react-table";
-import Link from "next/link";
-import { useEffect } from "react";
+import type { ColumnDef, Row } from "@tanstack/react-table";
+import { useEffect, useMemo } from "react";
 import type { Address } from "viem";
-import { TransactionCardExecuteButton } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card-execute-button";
+import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card";
 import { TableEmpty } from "@/components/state/table-empty";
-import { UserOperationTimeline } from "@/components/user-operation/user-operation-timeline";
 import type { ConfigurationData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
@@ -193,126 +172,77 @@ export function DataTable({
   });
 
   // ---------------------------------------------------------------------------
+  // State Hooks
+  // ---------------------------------------------------------------------------
+
+  const items: { original: UserOperationData; row: Row<UserOperationData> }[] =
+    useMemo(
+      () =>
+        table.getRowModel().rows.map(row => ({ original: row.original, row })),
+      [table],
+    );
+
+  const groupedItems = useMemo(() => {
+    function groupBy(
+      array: { original: UserOperationData; row: Row<UserOperationData> }[],
+    ) {
+      return array.reduce((acc: Record<string, typeof array>, item) => {
+        const key = formatDate(item.original);
+        (acc[key] = acc[key] || []).push(item);
+        return acc;
+      }, {});
+    }
+
+    function formatDate(item: UserOperationData) {
+      const date = new Date(item.created_at);
+      return date.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+
+    return groupBy(items);
+  }, [items]);
+
+  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
-    <Table>
-      <TableHeader>
-        {table.getHeaderGroups().map(headerGroup => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map(header => {
-              return (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map(row => (
-            <Collapsible key={row.id} asChild>
-              <>
-                <CollapsibleTrigger
-                  asChild
-                  className="cursor-pointer [&[data-state=open]>td>button>svg]:rotate-180"
-                  type={undefined}
-                >
-                  <TableRow>
-                    {row.getAllCells().map(cell => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </CollapsibleTrigger>
-                <CollapsibleContent asChild>
-                  <TableCell className="p-0" colSpan={row.getAllCells().length}>
-                    <div className="my-4 grid gap-4 md:grid-cols-3">
-                      <Card className="col-span-1 bg-background-stronger">
-                        <CardHeader>
-                          <CardTitle className="text-lg">
-                            Transaction Information
-                          </CardTitle>
-                          <CardDescription>
-                            Get more information about this transaction.
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent />
-                        <CardFooter className="flex w-full items-center justify-end">
-                          <Button asChild>
-                            <Link
-                              href={`/${row.original.sender}/op/${row.original.hash}`}
-                            >
-                              See More
-                            </Link>
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                      <Card className="col-span-2 bg-background-stronger">
-                        <CardHeader>
-                          <CardTitle className="text-lg">Progress</CardTitle>
-                          <CardDescription>
-                            View the progress of this transaction.
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="grid gap-4 md:grid-cols-2">
-                            <Progress
-                              className="col-span-1"
-                              value={
-                                (row.original.signatures.length /
-                                  configuration?.threshold!) *
-                                100
-                              }
-                            />
-                            <div className="col-span-1">
-                              Threshold: {configuration?.threshold!}/
-                              {configuration?.owners?.length!}
-                            </div>
-                            <div className="col-span-2 px-4">
-                              <UserOperationTimeline
-                                userOperation={row.original}
-                              />
-                            </div>
-                          </div>
-                        </CardContent>
-                        {configuration &&
-                          row.original.status === "PROPOSED" && (
-                            <CardFooter className="flex w-full items-center justify-end">
-                              <TransactionCardExecuteButton
-                                address={address}
-                                config={configuration}
-                                userOperation={row.original}
-                              />
-                            </CardFooter>
-                          )}
-                      </Card>
-                    </div>
-                  </TableCell>
-                </CollapsibleContent>
-              </>
-            </Collapsible>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              <TableEmpty entity="transaction" />
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      {Object.keys(groupedItems).length > 0 && configuration ? (
+        <>
+          {Object.entries(groupedItems).map(([date, itemsInSameDate]) => (
+            <div key={date} className="mb-4 space-y-3">
+              <div className="text-text-weak">{date}</div>
+              <Table className="overflow-hidden rounded-md border border-border bg-background">
+                <TableBody>
+                  {itemsInSameDate.map(({ original: userOperation, row }) => (
+                    <TransactionCard
+                      key={userOperation.hash}
+                      address={address}
+                      configuration={configuration}
+                      userOperation={userOperation}
+                      row={row}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          ))}
+        </>
+      ) : (
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableEmpty entity="transaction" />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      )}
+    </>
   );
 }

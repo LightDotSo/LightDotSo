@@ -45,9 +45,7 @@ export const OverviewSection = ({
     <div className="space-y-4">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center">
-          <div className="ml-2 text-xl font-semibold text-text-primary">
-            {title}
-          </div>
+          <div className="text-xl font-semibold text-text-primary">{title}</div>
         </div>
         <div className="flex items-center space-x-3">
           <Button asChild size="sm" variant="outline">
