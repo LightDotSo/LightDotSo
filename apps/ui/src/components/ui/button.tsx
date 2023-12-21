@@ -46,7 +46,7 @@ const buttonVariants = cva(
           ["data-[variant=default]:hover:border-border-primary-weaker"],
           ["data-[variant=default]:hover:bg-background-primary-weak"],
           ["data-[variant=default]:active:bg-background-primary-weaker"],
-          ["data-[variant=default]:active:ring-border-primary"],
+          ["data-[variant=default]:active:ring-border-primary-weak"],
           // Shadow
           ["data-[variant=shadow]:bg-background-stronger"],
           ["data-[variant=shadow]:text-text-primary"],
