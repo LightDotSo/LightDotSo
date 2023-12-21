@@ -20,5 +20,5 @@ import { TransactionsDataTableToolbar } from "@/app/(wallet)/[address]/transacti
 // -----------------------------------------------------------------------------
 
 export default function Page() {
-  return <TransactionsDataTableToolbar status="history" />;
+  return <TransactionsDataTableToolbar status="proposed" />;
 }

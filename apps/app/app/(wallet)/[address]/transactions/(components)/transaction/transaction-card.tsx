@@ -71,7 +71,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
           type={undefined}
         >
           <TableRow>
-            {row.getAllCells().map(cell => (
+            {row.getVisibleCells().map(cell => (
               <TableCell key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </TableCell>
