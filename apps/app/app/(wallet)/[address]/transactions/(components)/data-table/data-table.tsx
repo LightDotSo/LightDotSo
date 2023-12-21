@@ -213,9 +213,9 @@ export function DataTable({
       {Object.keys(groupedItems).length > 0 && configuration ? (
         <>
           {Object.entries(groupedItems).map(([date, itemsInSameDate]) => (
-            <div key={date} className="mb-4">
-              <h2 className="text-2xl font-bold">{date}</h2>
-              <Table>
+            <div key={date} className="mb-4 space-y-3">
+              <div className="text-text-weak">{date}</div>
+              <Table className="overflow-hidden rounded-md border border-border bg-background">
                 <TableBody>
                   {itemsInSameDate.map(({ original: userOperation, row }) => (
                     <TransactionCard
