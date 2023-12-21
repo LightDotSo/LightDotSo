@@ -46,31 +46,30 @@ const buttonVariants = cva(
           ["data-[variant=default]:hover:border-border-primary-weaker"],
           ["data-[variant=default]:hover:bg-background-primary-weak"],
           ["data-[variant=default]:active:bg-background-primary-weaker"],
-          ["data-[variant=default]:active:ring-light"],
+          ["data-[variant=default]:active:ring-border-primary"],
           // Shadow
           ["data-[variant=shadow]:bg-background-stronger"],
           ["data-[variant=shadow]:text-text-primary"],
           ["data-[variant=shadow]:hover:bg-background-strongest"],
-          ["data-[variant=shadow]:active:ring-light"],
+          ["data-[variant=shadow]:active:ring-border-primary"],
           // Outline
           ["data-[variant=outline]:border-border-primary-weak"],
           ["data-[variant=outline]:text-text"],
-          ["data-[variant=outline]:active:border-border-primary"],
           ["data-[variant=outline]:hover:border-border-primary"],
-          ["data-[variant=outline]:active:border-light"],
+          ["data-[variant=outline]:active:border-border-primary-weaker"],
           ["data-[variant=outline]:active:ring-0"],
           // Ghost
           ["data-[variant=ghost]:text-text"],
           ["data-[variant=ghost]:hover:text-text-weak"],
           ["data-[variant=ghost]:hover:bg-background-stronger"],
-          ["data-[variant=ghost]:active:ring-light"],
+          ["data-[variant=ghost]:active:ring-border-primary"],
           // Link
           ["data-[variant=link]:text-text"],
           // Loading
           ["data-[variant=loading]:bg-background-primary-strong"],
           ["data-[variant=loading]:text-text-weakest"],
           ["data-[variant=loading]:hover:bg-background-primary-weak"],
-          ["data-[variant=loading]:active:ring-light"],
+          ["data-[variant=loading]:active:ring-border-primary"],
         ],
         destructive: [
           // Default
@@ -89,7 +88,6 @@ const buttonVariants = cva(
           // Outline
           ["data-[variant=outline]:border-border-destructive-weak"],
           ["data-[variant=outline]:text-text-destructive"],
-          ["data-[variant=outline]:active:border-border-destructive-stronger"],
           ["data-[variant=outline]:hover:border-border-destructive-stronger"],
           ["data-[variant=outline]:active:border-border-destructive-weaker"],
           ["data-[variant=outline]:active:ring-0"],
@@ -123,7 +121,6 @@ const buttonVariants = cva(
           // Outline
           ["data-[variant=outline]:border-border-error-weak"],
           ["data-[variant=outline]:text-text-error"],
-          ["data-[variant=outline]:active:border-border-error-weak"],
           ["data-[variant=outline]:hover:border-border-error-weak"],
           ["data-[variant=outline]:active:border-border-error-weaker"],
           ["data-[variant=outline]:active:ring-0"],
@@ -157,7 +154,6 @@ const buttonVariants = cva(
           // Outline
           ["data-[variant=outline]:border-border-warning"],
           ["data-[variant=outline]:text-text-warning"],
-          ["data-[variant=outline]:active:border-border-warning-weak"],
           ["data-[variant=outline]:hover:border-border-warning-weak"],
           ["data-[variant=outline]:active:border-border-warning-weaker"],
           ["data-[variant=outline]:active:ring-0"],
@@ -191,7 +187,6 @@ const buttonVariants = cva(
           // Outline
           ["data-[variant=outline]:border-border-info"],
           ["data-[variant=outline]:text-text-info"],
-          ["data-[variant=outline]:active:border-border-info-weak"],
           ["data-[variant=outline]:hover:border-border-info-weak"],
           ["data-[variant=outline]:active:border-border-info-weaker"],
           ["data-[variant=outline]:active:ring-0"],
@@ -225,7 +220,6 @@ const buttonVariants = cva(
           // Outline
           ["data-[variant=outline]:border-border-success"],
           ["data-[variant=outline]:text-text-success"],
-          ["data-[variant=outline]:active:border-border-success-weak"],
           ["data-[variant=outline]:hover:border-border-success-weak"],
           ["data-[variant=outline]:active:border-border-success-weaker"],
           ["data-[variant=outline]:active:ring-0"],
