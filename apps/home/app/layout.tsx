@@ -13,21 +13,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import { ThemeProvider } from "@lightdotso/ui";
-import "@/styles/index.css";
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
-      <body className="min-h-[100dvh] bg-white dark:bg-black">
-        <ThemeProvider forcedTheme="dark" attribute="class">
-          {children}
-        </ThemeProvider>
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   );
 }

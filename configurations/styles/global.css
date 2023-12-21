@@ -9,12 +9,6 @@
     --font-inter: "Inter", -apple-system, system-ui, BlinkMacSystemFont,
       "Helvetica Neue", "Helvetica", sans-serif;
 
-    --light-weaker: 46 97 65%;
-    --light-weak: 43 96% 56%;
-    --light: 38 92% 50%;
-    --light-strong: 32 95% 44%;
-    --light-stronger: 26 90% 37%;
-
     --background: 0 0% 99%;
     --background-body: 0 0% 100%;
     --background-overlay: 0 0% 0% / 0.44;
