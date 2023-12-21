@@ -195,10 +195,11 @@ export function DataTable({
 
     function formatDate(item: UserOperationData) {
       const date = new Date(item.created_at);
-      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
-        2,
-        "0",
-      )}-${String(date.getDate()).padStart(2, "0")}`;
+      return date.toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      });
     }
 
     return groupBy(items);
