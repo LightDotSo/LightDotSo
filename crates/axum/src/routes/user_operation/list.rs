@@ -24,7 +24,7 @@ use lightdotso_prisma::{
     UserOperationStatus,
 };
 use lightdotso_tracing::tracing::info;
-use prisma_client_rust::Direction;
+use prisma_client_rust::{or, Direction};
 use serde::{Deserialize, Serialize};
 use utoipa::{IntoParams, ToSchema};
 
@@ -67,18 +67,8 @@ pub enum ListQueryStatus {
     Pending,
     Executed,
     Reverted,
-}
-
-/// Implement From<owner::Data> for Owner.
-impl From<ListQueryStatus> for UserOperationStatus {
-    fn from(status: ListQueryStatus) -> Self {
-        match status {
-            ListQueryStatus::Proposed => UserOperationStatus::Proposed,
-            ListQueryStatus::Pending => UserOperationStatus::Pending,
-            ListQueryStatus::Executed => UserOperationStatus::Executed,
-            ListQueryStatus::Reverted => UserOperationStatus::Reverted,
-        }
-    }
+    History,
+    Invalid,
 }
 
 // -----------------------------------------------------------------------------
@@ -134,7 +124,7 @@ pub(crate) async fn v1_user_operation_list_handler(
         .find_many(query_params)
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
-        .order_by(user_operation::nonce::order(order))
+        .order_by(user_operation::created_at::order(order))
         .with(user_operation::signatures::fetch(vec![]))
         .with(user_operation::transaction::fetch())
         .exec()
@@ -189,7 +179,28 @@ fn construct_user_operation_list_query_params(query: &ListQuery) -> Vec<WherePar
     };
 
     if let Some(status) = &query.status {
-        query_exp.push(user_operation::status::equals(status.clone().into()));
+        match status {
+            ListQueryStatus::Proposed => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Proposed))
+            }
+            ListQueryStatus::History => query_exp.push(or![
+                user_operation::status::equals(UserOperationStatus::Executed),
+                user_operation::status::equals(UserOperationStatus::Reverted),
+                user_operation::status::equals(UserOperationStatus::Invalid),
+            ]),
+            ListQueryStatus::Pending => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Pending))
+            }
+            ListQueryStatus::Executed => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Executed))
+            }
+            ListQueryStatus::Reverted => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Reverted))
+            }
+            ListQueryStatus::Invalid => {
+                query_exp.push(user_operation::status::equals(UserOperationStatus::Invalid))
+            }
+        }
     }
 
     match &query.is_testnet {

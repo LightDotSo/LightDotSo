@@ -762,7 +762,16 @@ export const getUserOperations = async (
             limit?: number | null | undefined;
             address?: string | null | undefined;
             direction?: ("asc" | "desc") | null | undefined;
-            status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+            status?:
+              | (
+                  | "proposed"
+                  | "pending"
+                  | "executed"
+                  | "reverted"
+                  | "history"
+                  | "invalid"
+                )
+              | null;
             is_testnet?: boolean | null | undefined;
           }
         | undefined;
@@ -795,7 +804,16 @@ export const getUserOperationsCount = async (
             limit?: number | null | undefined;
             address?: string | null | undefined;
             direction?: ("asc" | "desc") | null | undefined;
-            status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+            status?:
+              | (
+                  | "proposed"
+                  | "pending"
+                  | "executed"
+                  | "reverted"
+                  | "history"
+                  | "invalid"
+                )
+              | null;
             is_testnet?: boolean | null | undefined;
           }
         | undefined;

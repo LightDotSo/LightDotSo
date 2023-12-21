@@ -1874,7 +1874,7 @@ export interface operations {
         /** @description The sender address to filter by. */
         address?: string | null;
         /** @description The status to filter by. */
-        status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+        status?: ("proposed" | "pending" | "executed" | "reverted" | "history" | "invalid") | null;
         /**
          * @description The direction to order by.
          * Default is `asc`.
@@ -1913,7 +1913,7 @@ export interface operations {
         /** @description The sender address to filter by. */
         address?: string | null;
         /** @description The status to filter by. */
-        status?: ("proposed" | "pending" | "executed" | "reverted") | null;
+        status?: ("proposed" | "pending" | "executed" | "reverted" | "history" | "invalid") | null;
         /**
          * @description The direction to order by.
          * Default is `asc`.
