@@ -21,20 +21,12 @@
   },
   "dependencies": {
     "@babel/core": "^7.23.6",
-    "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.1.1",
-    "@lightdotso/const": "workspace:*",
-    "@lightdotso/ui": "workspace:*",
     "@sentry/integrations": "^7.89.0",
     "@sentry/nextjs": "^7.89.0",
-    "clsx": "^2.0.0",
     "critters": "^0.0.20",
     "next": "^14.0.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^4.12.0",
-    "react-popper": "^2.3.0",
-    "swiper": "^11.0.5"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@lightdotso/eslint-config": "workspace:*",
