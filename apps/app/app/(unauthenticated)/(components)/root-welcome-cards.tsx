@@ -56,7 +56,7 @@ export const RootWelcomeCards: FC = () => {
       <Card className="col-span-1">
         <CardHeader>
           <div>
-            <span className="inline-block rounded-full border border-border-new bg-background-new/25 p-2">
+            <span className="inline-block rounded-full border border-border-new bg-background-new-weakest p-2">
               <Gamepad className="h-5 w-5 text-border-new" />
             </span>
           </div>

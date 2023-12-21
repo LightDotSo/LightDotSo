@@ -187,8 +187,8 @@
     --background-inverse-stronger: 0 0% 31%;
     --background-neutral: 213 98% 44%;
     --background-neutral-weakest: 216 50% 12%;
-    --background-new: 264 79% 26%;
-    --background-new-weakest: 218 43% 12%;
+    --background-new: 263 78%, 42%;
+    --background-new-weakest: 270 60%, 98%;
     --background-primary: 0 0% 93%;
     --background-primary-strong: 0 0% 63%;
     --background-primary-stronger: 0 0% 20%;
@@ -233,10 +233,10 @@
     --border-neutral-weak: 221 96%, 36%;
     --border-neutral-weaker: 221 96%, 36%;
     --border-neutral-weakest: 243 90%, 12%;
-    --border-new: 263 64%, 50%;
+    --border-new: 263, 64%, 50%;
     --border-new-weak: 263 64%, 69%;
     --border-new-weaker: 262 75%, 92%;
-    --border-new-weakest: 262 85%, 11%;
+    --border-new-weakest: 263 85% 11%;
     --border-primary: 0 0% 93%;
     --border-primary-strong: 0 0% 93%;
     --border-primary-stronger: 0 0% 93%;
