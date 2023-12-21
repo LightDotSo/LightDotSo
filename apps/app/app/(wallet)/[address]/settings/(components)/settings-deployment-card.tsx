@@ -64,7 +64,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     queries.user_operation.list({
       address,
       status: "history",
-      direction: "desc",
+      direction: "asc",
       offset: 0,
       limit: Number.MAX_SAFE_INTEGER,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -75,7 +75,7 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
     queryKey: queries.user_operation.list({
       address,
       status: "history",
-      direction: "desc",
+      direction: "asc",
       offset: 0,
       limit: Number.MAX_SAFE_INTEGER,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
