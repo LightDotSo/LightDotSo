@@ -27,8 +27,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import type { ColumnDef, Row } from "@tanstack/react-table";
-import { useEffect, useMemo } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { useEffect } from "react";
 import type { Address } from "viem";
 import { TransactionCard } from "@/app/(wallet)/[address]/transactions/(components)/transaction/transaction-card";
 import { TableEmpty } from "@/components/state/table-empty";
@@ -36,6 +36,7 @@ import type { ConfigurationData, UserOperationData } from "@/data";
 import { queries } from "@/queries";
 import { usePaginationQueryState } from "@/querystates";
 import { useTables } from "@/stores";
+import { groupByDate } from "@/utils/group";
 
 // -----------------------------------------------------------------------------
 // Props
@@ -171,39 +172,11 @@ export function DataTable({
     },
   });
 
-  // ---------------------------------------------------------------------------
-  // State Hooks
-  // ---------------------------------------------------------------------------
+  const items = table
+    .getRowModel()
+    .rows.map(row => ({ original: row.original, row }));
 
-  const items: { original: UserOperationData; row: Row<UserOperationData> }[] =
-    useMemo(
-      () =>
-        table.getRowModel().rows.map(row => ({ original: row.original, row })),
-      [table],
-    );
-
-  const groupedItems = useMemo(() => {
-    function groupBy(
-      array: { original: UserOperationData; row: Row<UserOperationData> }[],
-    ) {
-      return array.reduce((acc: Record<string, typeof array>, item) => {
-        const key = formatDate(item.original);
-        (acc[key] = acc[key] || []).push(item);
-        return acc;
-      }, {});
-    }
-
-    function formatDate(item: UserOperationData) {
-      const date = new Date(item.created_at);
-      return date.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      });
-    }
-
-    return groupBy(items);
-  }, [items]);
+  const groupedItems = groupByDate(items);
 
   // ---------------------------------------------------------------------------
   // Render

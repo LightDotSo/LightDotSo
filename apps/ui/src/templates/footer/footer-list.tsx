@@ -37,16 +37,13 @@ interface FooterListItemProps {
 export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
   return (
     <div>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-text-weaker">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-text-weak">
         {title}
       </h3>
       <ul className="mt-4 space-y-4 ">
         {items.map(item => {
           return (
-            <li
-              key={item.name}
-              className="text-text-weak hover:text-text hover:underline"
-            >
+            <li key={item.name} className="text-text-weak/60 hover:underline">
               <a href={item.href} target="_blank" rel="noreferrer">
                 {item.name}
               </a>

@@ -17,6 +17,13 @@
 
 import { useTheme } from "next-themes";
 import type { FC } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 
 // -----------------------------------------------------------------------------
 // Component
@@ -27,20 +34,16 @@ export const FooterModeSelect: FC = () => {
 
   return (
     <div>
-      <select
-        id="mode"
-        name="mode"
-        className="mt-1 w-full cursor-pointer rounded-md border-border bg-inherit py-2 pl-3 pr-10 text-base text-text-weak sm:block sm:text-sm"
-        value={theme}
-        onBlur={() => {}}
-        onChange={e => {
-          return setTheme(e.target.value);
-        }}
-      >
-        <option value="dark">Dark</option>
-        <option value="light">Light</option>
-        <option value="system">System</option>
-      </select>
+      <Select defaultValue={theme} onValueChange={setTheme}>
+        <SelectTrigger className="w-24">
+          <SelectValue placeholder="Select a theme" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="dark">Dark</SelectItem>
+          <SelectItem value="light">Light</SelectItem>
+          <SelectItem value="system">System</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 };
