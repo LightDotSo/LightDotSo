@@ -33,7 +33,6 @@ import { useMemo, useState } from "react";
 import type { FC } from "react";
 import type { Address } from "viem";
 import { useQueryClient } from "wagmi";
-import { ChainStack } from "@/components/chain/chain-stack";
 import { CHAINS, MAINNET_CHAINS } from "@/const/chains";
 import type { WalletSettingsData } from "@/data";
 import { useIsMounted } from "@/hooks/useIsMounted";
@@ -108,18 +107,25 @@ export const ChainPopover: FC = () => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          className="px-1"
+          className="h-9 px-2 py-1"
+          size="unsized"
           variant="outline"
           role="combobox"
           aria-expanded={open}
         >
-          <Globe className="ml-2 mr-1 h-4 w-4 shrink-0" />
-          <ChainStack
-            className="mr-2"
-            address={wallet}
-            chains={chains}
-            onClick={() => setOpen(true)}
-          />
+          <Globe className="mr-1 h-4 w-4 shrink-0" />
+          <div className="flex -space-x-1.5 overflow-hidden">
+            {chains.slice(0, 3).map(chain => (
+              <ChainLogo
+                key={chain.id}
+                chainId={chain.id}
+                className="h-6 w-6 rounded-lg bg-border"
+              />
+            ))}
+            <span className="flex h-6 w-6 items-center justify-center rounded-lg border border-border bg-background-strongest text-xs text-text">
+              {chains.length > 3 ? `+${chains.length - 3}` : null}
+            </span>
+          </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">

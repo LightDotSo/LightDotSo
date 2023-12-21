@@ -65,7 +65,6 @@ export const WalletOverviewBanner: FC<WalletOverviewBannerProps> = ({
             <TooltipTrigger asChild>
               <span>
                 <Button
-                  size="sm"
                   type="button"
                   className="w-full md:w-28"
                   onClick={() => {
