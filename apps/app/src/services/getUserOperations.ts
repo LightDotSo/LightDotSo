@@ -35,7 +35,7 @@ export const getUserOperations = async (params: UserOperationListParams) => {
       params: {
         query: {
           address: params.address,
-          status: params.status === "all" ? undefined : params.status,
+          status: params.status,
           direction: params.direction,
           limit: params.limit,
           offset: params.offset,

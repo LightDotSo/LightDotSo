@@ -87,7 +87,7 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.list({
       address: params.address as Address,
-      status: "executed",
+      status: "history",
       direction: "desc",
       limit: TRANSACTION_ROW_COUNT,
       offset: 0,
@@ -98,7 +98,7 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.listCount({
       address: params.address as Address,
-      status: "executed",
+      status: "history",
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
     }).queryKey,
     historyUserOperationsCount,
@@ -126,7 +126,7 @@ export default async function Page({ params }: PageProps) {
       >
         <TransactionsDataTable
           address={params.address as Address}
-          status="executed"
+          status="history"
         />
         <TransactionsDataTablePagination />
       </OverviewSection>

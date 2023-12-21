@@ -38,7 +38,7 @@ export const handler = async (params: { address: string }) => {
 
   const userOperationsPromise = getUserOperations({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     direction: "asc",
     limit: Number.MAX_SAFE_INTEGER,
     offset: 0,
@@ -47,7 +47,7 @@ export const handler = async (params: { address: string }) => {
 
   const userOperationsCountPromise = getUserOperationsCount({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 

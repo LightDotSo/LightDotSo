@@ -39,7 +39,7 @@ import { usePaginationQueryState } from "@/querystates";
 
 interface TransactionsDataTableProps {
   address: Address;
-  status: "all" | "proposed" | "executed";
+  status: "proposed" | "history";
 }
 
 // -----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queries.user_operation.list({
       address,
       status,
-      direction: "desc",
+      direction: status === "proposed" ? "asc" : "desc",
       limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -89,7 +89,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
     queryKey: queries.user_operation.list({
       address,
       status,
-      direction: "desc",
+      direction: status === "proposed" ? "asc" : "desc",
       limit: paginationState.pageSize,
       offset: offsetCount,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -99,7 +99,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
         params: {
           query: {
             address,
-            status: status === "all" ? undefined : status,
+            status,
             direction: status === "proposed" ? "asc" : "desc",
             limit: paginationState.pageSize,
             offset: offsetCount,
@@ -145,7 +145,7 @@ export const TransactionsDataTable: FC<TransactionsDataTableProps> = ({
           params: {
             query: {
               address: address,
-              status: status === "all" ? undefined : status,
+              status: status,
               is_testnet: walletSettings?.is_enabled_testnet ?? false,
             },
           },

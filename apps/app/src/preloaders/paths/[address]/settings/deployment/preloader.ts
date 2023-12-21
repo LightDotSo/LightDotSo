@@ -33,12 +33,12 @@ export const preloader = async (params: { address: string }) => {
     offset: 0,
     limit: Number.MAX_SAFE_INTEGER,
     direction: "asc",
-    status: "executed",
+    status: "history",
     is_testnet: false,
   });
   preloadGetUserOperationsCount({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     is_testnet: false,
   });
 };

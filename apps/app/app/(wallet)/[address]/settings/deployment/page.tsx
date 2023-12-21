@@ -59,7 +59,7 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.list({
       address: params.address as Address,
-      status: "executed",
+      status: "history",
       direction: "asc",
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,

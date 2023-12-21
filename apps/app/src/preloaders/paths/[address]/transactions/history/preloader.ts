@@ -47,12 +47,12 @@ export const preloader = async (
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     direction: "desc",
-    status: "executed",
+    status: "history",
     is_testnet: false,
   });
   preloadGetUserOperationsCount({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     is_testnet: false,
   });
 };
