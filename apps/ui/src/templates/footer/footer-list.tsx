@@ -43,7 +43,7 @@ export const FooterListItem: FC<FooterListItemProps> = ({ items, title }) => {
       <ul className="mt-4 space-y-4 ">
         {items.map(item => {
           return (
-            <li key={item.name} className="text-text-weaker hover:underline">
+            <li key={item.name} className="text-text-weak/60 hover:underline">
               <a href={item.href} target="_blank" rel="noreferrer">
                 {item.name}
               </a>
