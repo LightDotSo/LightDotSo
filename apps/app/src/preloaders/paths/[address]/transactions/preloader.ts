@@ -47,12 +47,12 @@ export const preloader = async (params: { address: string }) => {
     offset: 0,
     limit: TRANSACTION_ROW_COUNT,
     direction: "desc",
-    status: "executed",
+    status: "history",
     is_testnet: false,
   });
   preloadGetUserOperationsCount({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     is_testnet: false,
   });
 };

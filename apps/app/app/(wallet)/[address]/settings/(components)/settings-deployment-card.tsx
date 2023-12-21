@@ -63,8 +63,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const currentData: UserOperationData[] | undefined = queryClient.getQueryData(
     queries.user_operation.list({
       address,
-      status: "executed",
-      direction: "asc",
+      status: "history",
+      direction: "desc",
       offset: 0,
       limit: Number.MAX_SAFE_INTEGER,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -74,8 +74,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
   const { data: ops } = useSuspenseQuery<UserOperationData[] | null>({
     queryKey: queries.user_operation.list({
       address,
-      status: "executed",
-      direction: "asc",
+      status: "history",
+      direction: "desc",
       offset: 0,
       limit: Number.MAX_SAFE_INTEGER,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
@@ -89,8 +89,8 @@ export const SettingsDeploymentCard: FC<SettingsDeploymentCardProps> = ({
         params: {
           query: {
             address: address,
-            status: "executed",
-            direction: "asc",
+            status: "history",
+            direction: "desc",
             limit: Number.MAX_SAFE_INTEGER,
             offset: 0,
             is_testnet: walletSettings?.is_enabled_testnet ?? false,

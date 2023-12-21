@@ -52,7 +52,7 @@ export const handler = async (
 
   const userOperationsPromise = getUserOperations({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     offset: paginationState.pageIndex * paginationState.pageSize,
     limit: paginationState.pageSize,
     direction: "desc",
@@ -61,7 +61,7 @@ export const handler = async (
 
   const userOperationsCountPromise = getUserOperationsCount({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 

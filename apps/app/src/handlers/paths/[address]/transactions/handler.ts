@@ -42,7 +42,7 @@ export const handler = async (params: { address: string }) => {
     status: "proposed",
     offset: 0,
     limit: TRANSACTION_ROW_COUNT,
-    direction: "desc",
+    direction: "asc",
     is_testnet: walletSettings.is_enabled_testnet,
   });
   const queuedUserOperationsCountPromise = getUserOperationsCount({
@@ -53,7 +53,7 @@ export const handler = async (params: { address: string }) => {
 
   const historyUserOperationsPromise = getUserOperations({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     offset: 0,
     limit: TRANSACTION_ROW_COUNT,
     direction: "desc",
@@ -61,7 +61,7 @@ export const handler = async (params: { address: string }) => {
   });
   const historyUserOperationsCountPromise = getUserOperationsCount({
     address: params.address as Address,
-    status: "executed",
+    status: "history",
     is_testnet: walletSettings.is_enabled_testnet,
   });
 

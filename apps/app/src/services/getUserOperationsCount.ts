@@ -37,7 +37,7 @@ export const getUserOperationsCount = async (
       params: {
         query: {
           address: params.address,
-          status: params.status === "all" ? undefined : params.status,
+          status: params.status,
           is_testnet: params.is_testnet,
         },
       },

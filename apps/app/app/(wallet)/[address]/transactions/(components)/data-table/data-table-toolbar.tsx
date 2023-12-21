@@ -34,7 +34,7 @@ import { getChainNameById } from "@/utils/chain";
 // -----------------------------------------------------------------------------
 
 export interface DataTableToolbarProps {
-  status: "all" | "proposed" | "executed";
+  status: "proposed" | "history";
   table: Table<UserOperationData>;
 }
 

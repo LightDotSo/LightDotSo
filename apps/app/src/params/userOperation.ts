@@ -30,7 +30,7 @@ export type UserOperationNonceParams = {
 
 export type UserOperationListParams = {
   address: Address;
-  status: "all" | "proposed" | "executed";
+  status: "proposed" | "history";
   direction: "desc" | "asc";
   limit: number;
   offset: number;

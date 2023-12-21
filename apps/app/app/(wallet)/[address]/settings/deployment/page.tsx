@@ -59,8 +59,8 @@ export default async function Page({ params }: PageProps) {
   queryClient.setQueryData(
     queries.user_operation.list({
       address: params.address as Address,
-      status: "executed",
-      direction: "asc",
+      status: "history",
+      direction: "desc",
       limit: Number.MAX_SAFE_INTEGER,
       offset: 0,
       is_testnet: walletSettings?.is_enabled_testnet ?? false,
