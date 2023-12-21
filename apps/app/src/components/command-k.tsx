@@ -110,7 +110,14 @@ export const CommandK: FC = () => {
 
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [onClearSearch, copyURIParams, copyDecodedURIParams, wallet, copy]);
+  }, [
+    onClearSearch,
+    copyURIParams,
+    copyDecodedURIParams,
+    wallet,
+    copy,
+    toggleDev,
+  ]);
 
   // ---------------------------------------------------------------------------
   // Render
