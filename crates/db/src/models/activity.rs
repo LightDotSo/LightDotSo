@@ -18,7 +18,7 @@ use autometrics::autometrics;
 use axum::extract::Json;
 use lightdotso_prisma::{
     activity, feedback, notification, transaction, user_operation, ActivityEntity,
-    ActivityProcedure,
+    ActivityOperation,
 };
 use lightdotso_tracing::tracing::info;
 use serde_json::Value;
@@ -39,7 +39,7 @@ pub struct CustomParams {
 pub async fn create_activity_with_user_and_wallet(
     db: Database,
     entity: ActivityEntity,
-    procedure: ActivityProcedure,
+    procedure: ActivityOperation,
     log: Value,
     user: String,
     wallet_address: Option<String>,
