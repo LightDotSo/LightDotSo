@@ -29,8 +29,8 @@ use lightdotso_contracts::{
     types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_prisma::{
-    log, log_topic, paymaster, paymaster_operation, receipt, transaction, transaction_category,
-    user_operation, wallet, PrismaClient, UserOperationStatus,
+    log, log_topic, paymaster, paymaster_operation, receipt, transaction, user_operation, wallet,
+    PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -79,26 +79,26 @@ pub async fn create_wallet_with_configuration(
     Ok(Json::from(wallet))
 }
 
-#[autometrics]
-pub async fn create_transaction_category(
-    db: Database,
-    category: String,
-    transaction_hash: ethers::types::H256,
-) -> AppJsonResult<transaction_category::Data> {
-    info!("Creating transaction category");
+// #[autometrics]
+// pub async fn create_transaction_category(
+//     db: Database,
+//     category: String,
+//     transaction_hash: ethers::types::H256,
+// ) -> AppJsonResult<transaction_category::Data> {
+//     info!("Creating transaction category");
 
-    let category = db
-        .transaction_category()
-        .create(
-            category,
-            transaction::UniqueWhereParam::HashEquals(format!("{:?}", transaction_hash)),
-            vec![],
-        )
-        .exec()
-        .await?;
+//     let category = db
+//         .transaction_category()
+//         .create(
+//             category,
+//             transaction::UniqueWhereParam::HashEquals(format!("{:?}", transaction_hash)),
+//             vec![],
+//         )
+//         .exec()
+//         .await?;
 
-    Ok(Json::from(category))
-}
+//     Ok(Json::from(category))
+// }
 
 /// Taken from: https://prisma.brendonovich.dev/extra/transactions
 #[autometrics]
