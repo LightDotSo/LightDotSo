@@ -34,6 +34,7 @@ use http::{
     HeaderValue,
 };
 use lightdotso_db::db::create_client;
+use lightdotso_kafka::get_producer;
 use lightdotso_redis::get_redis_client;
 use lightdotso_tracing::tracing::info;
 use std::{net::SocketAddr, sync::Arc, time::Duration};
@@ -215,8 +216,9 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create a shared client
     let db = Arc::new(create_client().await?);
+    let producer = Arc::new(get_producer()?);
     let redis = get_redis_client()?;
-    let state = AppState { client: db };
+    let state = AppState { client: db, producer };
 
     // Allow CORS
     // From: https://github.com/MystenLabs/sui/blob/13df03f2fad0e80714b596f55b04e0b7cea37449/crates/sui-faucet/src/main.rs#L85

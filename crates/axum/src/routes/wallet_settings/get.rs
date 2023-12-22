@@ -60,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<WalletSettings> {
     // Get the get query.
     let Query(query) = get_query;
@@ -71,7 +71,7 @@ pub(crate) async fn v1_wallet_settings_get_handler(
     info!("Get wallet_settings for address: {:?}", checksum_address);
 
     // Get the signatures from the database.
-    let wallet_settings = client
+    let wallet_settings = state
         .client
         .wallet_settings()
         .find_unique(wallet_settings::wallet_address::equals(checksum_address))

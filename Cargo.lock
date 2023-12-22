@@ -6003,6 +6003,7 @@ dependencies = [
  "lightdotso-contracts",
  "lightdotso-db",
  "lightdotso-indexer",
+ "lightdotso-kafka",
  "lightdotso-paymaster",
  "lightdotso-prisma",
  "lightdotso-prometheus",

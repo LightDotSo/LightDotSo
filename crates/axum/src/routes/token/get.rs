@@ -61,7 +61,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_token_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Token> {
     // Get the get query.
     let Query(query) = get_query;
@@ -71,7 +71,7 @@ pub(crate) async fn v1_token_get_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the tokens from the database.
-    let token = client
+    let token = state
         .client
         .token()
         .find_unique(token::address_chain_id(checksum_address, query.chain_id))

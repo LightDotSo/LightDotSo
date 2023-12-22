@@ -77,7 +77,7 @@ pub struct AuthVerifyPostRequestParams {
         )
     )]
 pub(crate) async fn v1_auth_verify_handler(
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     session: Session,
     Json(msg): Json<AuthVerifyPostRequestParams>,
 ) -> AppJsonResult<AuthNonce> {
@@ -138,7 +138,7 @@ pub(crate) async fn v1_auth_verify_handler(
     }
 
     // Upsert the user
-    let user = client
+    let user = state
         .client
         .user()
         .upsert(

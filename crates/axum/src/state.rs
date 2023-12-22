@@ -13,10 +13,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+use lightdotso_kafka::rdkafka::producer::FutureProducer;
 use lightdotso_prisma::PrismaClient;
 use std::sync::Arc;
 
 #[derive(Clone)]
 pub struct AppState {
     pub client: Arc<PrismaClient>,
+    pub producer: Arc<FutureProducer>,
 }

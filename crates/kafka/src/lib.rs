@@ -15,13 +15,14 @@
 
 use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::error;
-pub use rdkafka;
 use rdkafka::{
     config::ClientConfig,
     consumer::stream_consumer::StreamConsumer,
     producer::{FutureProducer, FutureRecord},
 };
 use std::sync::Arc;
+
+pub use rdkafka;
 
 pub mod namespace;
 pub mod topics;

@@ -80,7 +80,7 @@ impl From<TokenPriceQueryReturnType> for TokenPriceDate {
 #[autometrics]
 pub(crate) async fn v1_token_price_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<TokenPrice> {
     // Get the get query.
     let Query(query) = get_query;
@@ -90,7 +90,7 @@ pub(crate) async fn v1_token_price_get_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the tokens from the database.
-    let token = client
+    let token = state
         .client
         .token()
         .find_unique(token::address_chain_id(checksum_address, query.chain_id))
@@ -101,7 +101,7 @@ pub(crate) async fn v1_token_price_get_handler(
     let token = token.ok_or(AppError::NotFound)?;
 
     // Get the tokens from the database.
-    let result: Vec<TokenPriceQueryReturnType> = client
+    let result: Vec<TokenPriceQueryReturnType> = state
         .client
         ._query_raw(raw!(
             "SELECT AVG(price) as price, DATE(timestamp) as date

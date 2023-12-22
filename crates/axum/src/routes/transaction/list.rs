@@ -75,7 +75,7 @@ pub(crate) struct TransactionListCount {
 #[autometrics]
 pub(crate) async fn v1_transaction_list_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Transaction>> {
     // Get the list query.
     let Query(query) = list_query;
@@ -85,7 +85,7 @@ pub(crate) async fn v1_transaction_list_handler(
     let query_params = construct_transaction_list_query_params(&query);
 
     // Get the transactions from the database.
-    let transactions = client
+    let transactions = state
         .client
         .transaction()
         .find_many(query_params)
@@ -116,7 +116,7 @@ pub(crate) async fn v1_transaction_list_handler(
 #[autometrics]
 pub(crate) async fn v1_transaction_list_count_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<TransactionListCount> {
     // Get the list query.
     let Query(query) = list_query;
@@ -126,7 +126,7 @@ pub(crate) async fn v1_transaction_list_count_handler(
     let query_params = construct_transaction_list_query_params(&query);
 
     // Get the transactions from the database.
-    let count = client.client.transaction().count(query_params).exec().await?;
+    let count = state.client.transaction().count(query_params).exec().await?;
 
     Ok(Json::from(TransactionListCount { count }))
 }

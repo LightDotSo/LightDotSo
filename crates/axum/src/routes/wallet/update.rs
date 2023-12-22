@@ -26,7 +26,9 @@ use axum::{
     Json,
 };
 use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::{configuration, wallet};
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::topics::activity::produce_activity_message;
+use lightdotso_prisma::{configuration, wallet, ActivityEntity, ActivityOperation};
 use lightdotso_tracing::tracing::info;
 use serde::{Deserialize, Serialize};
 use tower_sessions_core::Session;
@@ -77,7 +79,7 @@ pub struct WalletPutRequestParams {
     )]
 #[autometrics]
 pub(crate) async fn v1_wallet_update_handler(
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     session: Session,
     put_query: Query<PutQuery>,
     Json(params): Json<WalletPutRequestParams>,
@@ -92,7 +94,7 @@ pub(crate) async fn v1_wallet_update_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the wallets from the database.
-    let wallet = client
+    let wallet = state
         .client
         .wallet()
         .find_unique(wallet::address::equals(checksum_address.clone()))
@@ -135,12 +137,25 @@ pub(crate) async fn v1_wallet_update_handler(
     }
 
     // Update the wallet name.
-    let wallet = client
+    let wallet = state
         .client
         .wallet()
         .update(wallet::address::equals(checksum_address), params)
         .exec()
         .await?;
+
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::Wallet,
+        ActivityOperation::Update,
+        serde_json::to_value(&wallet)?,
+        CustomParams {
+            wallet_address: Some(wallet.address.clone()),
+            user_id: Some(user_id),
+            ..Default::default()
+        },
+    )
+    .await?;
 
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();

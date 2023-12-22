@@ -77,7 +77,7 @@ impl From<PortfolioQueryReturnType> for PortfolioBalanceDate {
 #[autometrics]
 pub(crate) async fn v1_portfolio_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Portfolio> {
     // Get the get query.
     let Query(query) = get_query;
@@ -86,7 +86,7 @@ pub(crate) async fn v1_portfolio_get_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the latest portfolio.
-    let latest_portfolio: Vec<PortfolioQueryReturnType> = client
+    let latest_portfolio: Vec<PortfolioQueryReturnType> = state
         .client
         ._query_raw(raw!(
             "SELECT balanceUSD as balance, timestamp as date
@@ -106,7 +106,7 @@ pub(crate) async fn v1_portfolio_get_handler(
     }
 
     // Get the past portfolio.
-    let past_portfolio: Vec<PortfolioQueryReturnType> = client
+    let past_portfolio: Vec<PortfolioQueryReturnType> = state
         .client
         ._query_raw(raw!(
             "SELECT AVG(balanceUSD) as balance, DATE(timestamp) as date

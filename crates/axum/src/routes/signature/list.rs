@@ -60,7 +60,7 @@ pub struct ListQuery {
 #[autometrics]
 pub(crate) async fn v1_signature_list_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Signature>> {
     // Get the list query.
     let Query(query) = list_query;
@@ -74,7 +74,7 @@ pub(crate) async fn v1_signature_list_handler(
     };
 
     // Get the signatures from the database.
-    let signatures = client
+    let signatures = state
         .client
         .signature()
         .find_many(query_params)

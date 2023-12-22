@@ -78,7 +78,7 @@ pub(crate) struct WalletTab {
 #[autometrics]
 pub(crate) async fn v1_wallet_tab_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<WalletTab> {
     // Get the get query.
     let Query(query) = get_query;
@@ -89,7 +89,7 @@ pub(crate) async fn v1_wallet_tab_handler(
     info!(?checksum_address);
 
     // Get the wallets from the database.
-    let wallet = client
+    let wallet = state
         .client
         .wallet()
         .find_unique(wallet::address::equals(checksum_address.clone()))
@@ -102,7 +102,7 @@ pub(crate) async fn v1_wallet_tab_handler(
     info!(?wallet);
 
     // Get the transactions from the database.
-    let wallet_transactions = client
+    let wallet_transactions = state
         .client
         .transaction()
         .find_many(vec![or![

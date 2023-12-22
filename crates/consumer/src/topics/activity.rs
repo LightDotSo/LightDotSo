@@ -157,6 +157,8 @@ pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
 
                 // Create custom params
                 let custom_params = CustomParams {
+                    user_id,
+                    wallet_address,
                     invite_code_id,
                     support_request_id,
                     wallet_settings_id,
@@ -172,8 +174,6 @@ pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                     entity,
                     operation,
                     log.clone(),
-                    user_id,
-                    wallet_address,
                     custom_params,
                 )
                 .await;

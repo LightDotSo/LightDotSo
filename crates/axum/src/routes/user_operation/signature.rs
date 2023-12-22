@@ -79,7 +79,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_signature_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<String> {
     // Get the get query.
     let Query(query) = get_query;
@@ -87,7 +87,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
     let signature_type = query.signature_type.unwrap_or(1);
 
     // Get the user operations from the database.
-    let user_operation = client
+    let user_operation = state
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
@@ -108,7 +108,7 @@ pub(crate) async fn v1_user_operation_signature_handler(
     info!("{}", signatures.len());
 
     // Get the wallet from the database.
-    let wallet = client
+    let wallet = state
         .client
         .wallet()
         .find_unique(wallet::address::equals(user_operation.clone().sender))

@@ -58,7 +58,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_paymaster_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Paymaster> {
     // Get the get query.
     let Query(query) = get_query;
@@ -67,7 +67,7 @@ pub(crate) async fn v1_paymaster_get_handler(
 
     // Get the paymasters from the database.
     let paymaster =
-        client.client.paymaster().find_unique(paymaster::id::equals(query.id)).exec().await?;
+        state.client.paymaster().find_unique(paymaster::id::equals(query.id)).exec().await?;
 
     // If the paymaster is not found, return a 404.
     let paymaster = paymaster.ok_or(RouteError::PaymasterError(PaymasterError::NotFound(

@@ -27,6 +27,7 @@
   lightdotso-contracts = { workspace = true }
   lightdotso-db = { workspace = true }
   lightdotso-indexer = { workspace = true }
+  lightdotso-kafka = { workspace = true }
   lightdotso-paymaster = { workspace = true }
   lightdotso-prisma = { workspace = true }
   lightdotso-prometheus = { workspace = true }

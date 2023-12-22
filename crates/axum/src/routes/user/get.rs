@@ -58,7 +58,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<User> {
     // Get the get query.
     let Query(query) = get_query;
@@ -68,7 +68,7 @@ pub(crate) async fn v1_user_get_handler(
     let parsed_query_address: H160 = query.address.parse()?;
 
     // Get the users from the database.
-    let user = client
+    let user = state
         .client
         .user()
         .find_unique(user::address::equals(to_checksum(&parsed_query_address, None)))

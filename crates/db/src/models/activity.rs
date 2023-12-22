@@ -26,6 +26,8 @@ use serde_json::Value;
 
 #[derive(Default, Serialize, Deserialize)]
 pub struct CustomParams {
+    pub user_id: Option<String>,
+    pub wallet_address: Option<String>,
     pub invite_code_id: Option<String>,
     pub support_request_id: Option<String>,
     pub wallet_settings_id: Option<String>,
@@ -42,14 +44,20 @@ pub async fn create_activity_with_user_and_wallet(
     entity: ActivityEntity,
     operation: ActivityOperation,
     log: Value,
-    user_id: Option<String>,
-    wallet_address: Option<String>,
+
     custom_params: CustomParams,
 ) -> AppJsonResult<activity::Data> {
     info!("Creating activity at entity: {:?}", entity);
 
-    let mut params =
-        vec![activity::user_id::set(user_id), activity::wallet_address::set(wallet_address)];
+    let mut params = vec![];
+
+    if let Some(user_id) = custom_params.user_id {
+        params.push(activity::user_id::set(Some(user_id)));
+    }
+
+    if let Some(wallet_address) = custom_params.wallet_address {
+        params.push(activity::wallet_address::set(Some(wallet_address)));
+    }
 
     if let Some(invite_code_id) = custom_params.invite_code_id {
         params.push(activity::invite_code_id::set(Some(invite_code_id)));

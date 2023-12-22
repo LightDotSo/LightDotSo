@@ -101,7 +101,7 @@ pub struct WalletPostRequestParams {
 #[autometrics]
 pub(crate) async fn v1_wallet_post_handler(
     post_query: Query<PostQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<WalletPostRequestParams>,
 ) -> AppJsonResult<Wallet> {
     // Get the post query.
@@ -180,7 +180,7 @@ pub(crate) async fn v1_wallet_post_handler(
     // If the simulate flag is set, return the wallet address.
     if query.simulate.unwrap_or(false) {
         // Check if the wallet exists.
-        let wallet = client
+        let wallet = state
             .client
             .wallet()
             .find_first(vec![wallet::address::equals(to_checksum(&new_wallet_address, None))])
@@ -202,7 +202,7 @@ pub(crate) async fn v1_wallet_post_handler(
 
     // Attempt to create a user in case it does not exist.
     // If the user already exists, it will be skipped.
-    let res = client
+    let res = state
         .client
         .user()
         .create_many(
@@ -221,7 +221,7 @@ pub(crate) async fn v1_wallet_post_handler(
         .await?;
     info!(?res);
 
-    let wallet: Result<lightdotso_prisma::wallet::Data> = client
+    let wallet: Result<lightdotso_prisma::wallet::Data> = state
         .client
         ._transaction()
         .run(|client| async move {

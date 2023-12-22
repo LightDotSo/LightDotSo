@@ -74,7 +74,7 @@ pub(crate) struct WalletListCount {
 #[autometrics]
 pub(crate) async fn v1_wallet_list_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Wallet>> {
     // Get the list query.
     let Query(query) = list_query;
@@ -83,7 +83,7 @@ pub(crate) async fn v1_wallet_list_handler(
     let query_params = construct_wallet_list_query_params(&query);
 
     // Get the wallets from the database.
-    let wallets = client
+    let wallets = state
         .client
         .wallet()
         .find_many(query_params)
@@ -113,7 +113,7 @@ pub(crate) async fn v1_wallet_list_handler(
 #[autometrics]
 pub(crate) async fn v1_wallet_list_count_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<WalletListCount> {
     // Get the query.
     let Query(query) = list_query;
@@ -122,7 +122,7 @@ pub(crate) async fn v1_wallet_list_count_handler(
     let query_params = construct_wallet_list_query_params(&query);
 
     // Get the wallets from the database.
-    let count = client.client.wallet().count(query_params).exec().await?;
+    let count = state.client.wallet().count(query_params).exec().await?;
 
     Ok(Json::from(WalletListCount { count }))
 }

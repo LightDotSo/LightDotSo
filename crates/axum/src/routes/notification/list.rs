@@ -56,13 +56,13 @@ pub(crate) struct ListQuery {
 #[autometrics]
 pub(crate) async fn v1_notification_list_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Notification>> {
     // Get the list query.
     let Query(query) = list_query;
 
     // Get the notifications from the database.
-    let notifications = client
+    let notifications = state
         .client
         .notification()
         .find_many(vec![])

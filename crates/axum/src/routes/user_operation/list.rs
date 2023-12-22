@@ -101,7 +101,7 @@ pub(crate) struct UserOperationListCount {
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Vec<UserOperation>> {
     // Get the list query.
     let Query(query) = list_query;
@@ -118,7 +118,7 @@ pub(crate) async fn v1_user_operation_list_handler(
     };
 
     // Get the user operations from the database.
-    let user_operations = client
+    let user_operations = state
         .client
         .user_operation()
         .find_many(query_params)
@@ -152,7 +152,7 @@ pub(crate) async fn v1_user_operation_list_handler(
 #[autometrics]
 pub(crate) async fn v1_user_operation_list_count_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<UserOperationListCount> {
     // Get the list query.
     let Query(query) = list_query;
@@ -162,7 +162,7 @@ pub(crate) async fn v1_user_operation_list_count_handler(
     let query_params = construct_user_operation_list_query_params(&query);
 
     // Get the user operations from the database.
-    let count = client.client.user_operation().count(query_params).exec().await?;
+    let count = state.client.user_operation().count(query_params).exec().await?;
 
     Ok(Json::from(UserOperationListCount { count }))
 }

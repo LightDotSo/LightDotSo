@@ -56,13 +56,13 @@ pub struct ListQuery {
 #[autometrics]
 pub(crate) async fn v1_paymaster_list_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Paymaster>> {
     // Get the list query.
     let Query(query) = list_query;
 
     // Get the paymasters from the database.
-    let paymasters = client
+    let paymasters = state
         .client
         .paymaster()
         .find_many(vec![])

@@ -54,13 +54,13 @@ pub struct ListQuery {
 #[autometrics]
 pub(crate) async fn v1_activity_list_handler(
     list_query: Query<ListQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Vec<Activity>> {
     // Get the list query.
     let Query(query) = list_query;
 
     // Get the activities from the database.
-    let activities = client
+    let activities = state
         .client
         .activity()
         .find_many(vec![])

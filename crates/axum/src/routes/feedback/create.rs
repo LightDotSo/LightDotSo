@@ -67,7 +67,7 @@ pub struct FeedbackPostRequestParams {
 #[autometrics]
 pub(crate) async fn v1_feedback_post_handler(
     post_query: Query<PostQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<FeedbackPostRequestParams>,
 ) -> AppJsonResult<Feedback> {
     // Get the post query.
@@ -80,7 +80,7 @@ pub(crate) async fn v1_feedback_post_handler(
     let feedback = params.feedback;
 
     // Create the feedback the database.
-    let feedback = client
+    let feedback = state
         .client
         .feedback()
         .create(feedback.text, feedback.emoji, lightdotso_prisma::user::id::equals(user_id), vec![])

@@ -73,7 +73,7 @@ pub struct WalletSettingsPostRequestParams {
 #[autometrics]
 pub(crate) async fn v1_wallet_settings_post_handler(
     post_query: Query<PostQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<WalletSettingsPostRequestParams>,
 ) -> AppJsonResult<WalletSettings> {
     // Get the post query.
@@ -97,7 +97,7 @@ pub(crate) async fn v1_wallet_settings_post_handler(
     }
 
     // Create the wallet_settings the database.
-    let wallet_settings = client
+    let wallet_settings = state
         .client
         .wallet_settings()
         .upsert(

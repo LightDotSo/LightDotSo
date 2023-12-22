@@ -58,13 +58,13 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_invite_code_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<InviteCode> {
     // Get the get query.
     let Query(query) = get_query;
 
     // Get the paymasters from the database.
-    let invite_code = client
+    let invite_code = state
         .client
         .invite_code()
         .find_unique(invite_code::code::equals(query.code))

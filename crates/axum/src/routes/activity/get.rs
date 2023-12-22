@@ -58,14 +58,14 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_activity_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Activity> {
     // Get the get query.
     let Query(query) = get_query;
 
     // Get the activitys from the database.
     let activity =
-        client.client.activity().find_unique(activity::id::equals(query.id)).exec().await?;
+        state.client.activity().find_unique(activity::id::equals(query.id)).exec().await?;
 
     // If the activity is not found, return a 404.
     let activity = activity.ok_or(RouteError::ActivityError(ActivityError::NotFound(
