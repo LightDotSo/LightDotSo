@@ -15,11 +15,14 @@
 
 import PusherClient from "pusher-js";
 
-export const pusherClient = new PusherClient("PUSHER_KEY", {
-  wsHost: "soketi.light.so",
-  wsPort: 6001,
-  wssPort: 443,
-  forceTLS: true,
-  disableStats: true,
-  enabledTransports: ["ws", "wss"],
-});
+export const pusherClient = new PusherClient(
+  process.env.NEXT_PUBLIC_SOKETI_DEFAULT_APP_KEY!,
+  {
+    wsHost: "soketi.light.so",
+    wsPort: 6001,
+    wssPort: 443,
+    forceTLS: true,
+    disableStats: true,
+    enabledTransports: ["ws", "wss"],
+  },
+);
