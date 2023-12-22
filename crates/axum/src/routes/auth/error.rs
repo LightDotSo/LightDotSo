@@ -32,4 +32,7 @@ pub(crate) enum AuthError {
     /// Internal error.
     #[schema(example = "Internal error")]
     InternalError(String),
+    /// Unauthorized error.
+    #[schema(example = "Unauthorized")]
+    Unauthorized(String),
 }

@@ -10,6 +10,27 @@ export type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<
 export type OneOf<T extends any[]> = T extends [infer Only] ? Only : T extends [infer A, infer B, ...infer Rest] ? OneOf<[XOR<A, B>, ...Rest]> : never;
 
 export interface paths {
+  "/activity/get": {
+    /**
+     * Get a activity
+     * @description Get a activity
+     */
+    get: operations["v1_activity_get_handler"];
+  };
+  "/activity/list": {
+    /**
+     * Returns a list of activities.
+     * @description Returns a list of activities.
+     */
+    get: operations["v1_activity_list_handler"];
+  };
+  "/activity/list/count": {
+    /**
+     * Returns a count of list of activities.
+     * @description Returns a count of list of activities.
+     */
+    get: operations["v1_activity_list_count_handler"];
+  };
   "/auth/logout": {
     /**
      * Logout a session
@@ -72,6 +93,13 @@ export interface paths {
      * @description Check the health of the server.
      */
     get: operations["handler"];
+  };
+  "/invite_code/create": {
+    /**
+     * Create a invite_code
+     * @description Create a invite_code
+     */
+    post: operations["v1_invite_code_post_handler"];
   };
   "/invite_code/get": {
     /**
@@ -318,13 +346,6 @@ export interface paths {
      */
     post: operations["v1_wallet_settings_post_handler"];
   };
-  "/wallet/tab": {
-    /**
-     * Get a wallet tab
-     * @description Get a wallet tab
-     */
-    get: operations["v1_wallet_tab_handler"];
-  };
   "/wallet/update": {
     /**
      * Update a wallet
@@ -338,6 +359,19 @@ export type webhooks = Record<string, never>;
 
 export interface components {
   schemas: {
+    /** @description Activity root type. */
+    Activity: {
+      /** @description The id of the activity. */
+      id: string;
+    };
+    /** @description Activity errors */
+    ActivityError: OneOf<[{
+      /** @description Activity query error. */
+      BadRequest: string;
+    }, {
+      /** @description Activity not found by id. */
+      NotFound: string;
+    }]>;
     /** @description Auth operation errors */
     AuthError: OneOf<[{
       BadRequest: string;
@@ -347,6 +381,9 @@ export interface components {
     }, {
       /** @description Internal error. */
       InternalError: string;
+    }, {
+      /** @description Unauthorized error. */
+      Unauthorized: string;
     }]>;
     /** @description Auth nonce. */
     AuthNonce: {
@@ -862,6 +899,11 @@ export interface components {
     };
     WalletPostRequestParams: {
       /**
+       * @description The invite code of the wallet.
+       * @example BFD-23S
+       */
+      invite_code: string;
+      /**
        * @description The name of the wallet.
        * @default My Wallet
        * @example My Wallet
@@ -919,24 +961,6 @@ export interface components {
     WalletSettingsPostRequestParams: {
       wallet_settings: components["schemas"]["WalletSettingsOptional"];
     };
-    /** @description WalletTab to do. */
-    WalletTab: {
-      /**
-       * Format: int64
-       * @description The number of owners of the wallet.
-       */
-      owner_count: number;
-      /**
-       * Format: int64
-       * @description The number of transactions of the wallet.
-       */
-      transaction_count: number;
-      /**
-       * Format: int64
-       * @description The pending number of user_operations of the wallet.
-       */
-      user_operation_count: number;
-    };
   };
   responses: never;
   parameters: never;
@@ -951,6 +975,92 @@ export type external = Record<string, never>;
 
 export interface operations {
 
+  /**
+   * Get a activity
+   * @description Get a activity
+   */
+  v1_activity_get_handler: {
+    parameters: {
+      query: {
+        /** @description The id of the activity. */
+        id: string;
+      };
+    };
+    responses: {
+      /** @description Activity returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Activity"];
+        };
+      };
+      /** @description Activity not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["ActivityError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a list of activities.
+   * @description Returns a list of activities.
+   */
+  v1_activity_list_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first activity to return. */
+        offset?: number | null;
+        /** @description The maximum number of activities to return. */
+        limit?: number | null;
+        /** @description The sender address to filter by. */
+        address?: string | null;
+      };
+    };
+    responses: {
+      /** @description Activities returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["Activity"][];
+        };
+      };
+      /** @description Activity bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ActivityError"];
+        };
+      };
+    };
+  };
+  /**
+   * Returns a count of list of activities.
+   * @description Returns a count of list of activities.
+   */
+  v1_activity_list_count_handler: {
+    parameters: {
+      query?: {
+        /** @description The offset of the first activity to return. */
+        offset?: number | null;
+        /** @description The maximum number of activities to return. */
+        limit?: number | null;
+        /** @description The sender address to filter by. */
+        address?: string | null;
+      };
+    };
+    responses: {
+      /** @description Activities returned successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["ActivityListCount"];
+        };
+      };
+      /** @description Activity bad request */
+      500: {
+        content: {
+          "application/json": components["schemas"]["ActivityError"];
+        };
+      };
+    };
+  };
   /**
    * Logout a session
    * @description Logout a session
@@ -1148,6 +1258,37 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["FeedbackError"];
+        };
+      };
+    };
+  };
+  /**
+   * Create a invite_code
+   * @description Create a invite_code
+   */
+  v1_invite_code_post_handler: {
+    parameters: {
+      query: {
+        /** @description The user id of the user. */
+        user_id: string;
+      };
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["InviteCodePostRequestParams"];
+      };
+    };
+    responses: {
+      /** @description invite_code created successfully */
+      200: {
+        content: {
+          "application/json": components["schemas"]["invite_code"];
+        };
+      };
+      /** @description invite_code internal error */
+      500: {
+        content: {
+          "application/json": components["schemas"]["invite_codeError"];
         };
       };
     };
@@ -2216,34 +2357,6 @@ export interface operations {
       500: {
         content: {
           "application/json": components["schemas"]["WalletSettingsError"];
-        };
-      };
-    };
-  };
-  /**
-   * Get a wallet tab
-   * @description Get a wallet tab
-   */
-  v1_wallet_tab_handler: {
-    parameters: {
-      query: {
-        /** @description The address of the wallet. */
-        address: string;
-        /** @description The chain id of the wallet. */
-        chain_id?: number | null;
-      };
-    };
-    responses: {
-      /** @description Wallet tab returned successfully */
-      200: {
-        content: {
-          "application/json": components["schemas"]["WalletTab"];
-        };
-      };
-      /** @description Wallet tab not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["WalletError"];
         };
       };
     };

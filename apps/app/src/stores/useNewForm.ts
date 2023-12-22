@@ -101,6 +101,7 @@ export const useNewForm = create(
             },
           },
           body: {
+            invite_code: "",
             name: get().formValues.name!,
             salt: get().formValues.salt!,
             threshold: get().formValues.threshold!,

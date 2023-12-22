@@ -27,6 +27,7 @@ use axum::{
     middleware::Next,
     response::Response,
 };
+use eyre::{eyre, Result};
 use lightdotso_redis::redis::{Client, Commands};
 use std::{
     sync::Arc,
@@ -223,5 +224,16 @@ pub async fn authenticated<B>(
             Ok(response)
         }
         Err(_) => Err(StatusCode::UNAUTHORIZED),
+    }
+}
+
+/// Get the user id from the session.
+pub fn get_user_id(session: &mut Session) -> Result<String> {
+    match session.get::<String>(&USER_ID_KEY) {
+        Ok(Some(user_id)) => {
+            let user_id = user_id.to_lowercase();
+            Ok(user_id)
+        }
+        _ => Err(eyre!("No user id found in session.")),
     }
 }

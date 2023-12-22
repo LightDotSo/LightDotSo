@@ -32,7 +32,9 @@ use ethers_main::{
 };
 use eyre::{eyre, Result};
 use lightdotso_contracts::constants::LIGHT_WALLET_FACTORY_ADDRESS;
-use lightdotso_prisma::wallet;
+use lightdotso_db::models::activity::CustomParams;
+use lightdotso_kafka::topics::activity::produce_activity_message;
+use lightdotso_prisma::{wallet, ActivityEntity, ActivityOperation, InviteCodeStatus};
 use lightdotso_solutions::{
     builder::rooted_node_builder,
     config::WalletConfig,
@@ -77,6 +79,9 @@ pub struct WalletPostRequestParams {
     /// The threshold of the wallet.
     #[schema(example = 3, default = 1)]
     pub threshold: u16,
+    /// The invite code of the wallet.
+    #[schema(example = "BFD-23S")]
+    pub invite_code: String,
 }
 
 // -----------------------------------------------------------------------------
@@ -200,6 +205,26 @@ pub(crate) async fn v1_wallet_post_handler(
         }));
     }
 
+    // If the simulate flag is not set, check if the invite code is valid.
+    let invite_code = params.invite_code;
+
+    // Check if the invite code is valid.
+    let invite_code_data = state
+        .client
+        .invite_code()
+        .find_first(vec![lightdotso_prisma::invite_code::code::equals(invite_code.clone())])
+        .exec()
+        .await?;
+
+    // IF the status of the invite code is not ACTIVE, return a 400.
+    if invite_code_data
+        .as_ref()
+        .map(|invite_code| invite_code.status != InviteCodeStatus::Active)
+        .unwrap_or(true)
+    {
+        return Err(AppError::BadRequest);
+    }
+
     // Attempt to create a user in case it does not exist.
     // If the user already exists, it will be skipped.
     let res = state
@@ -316,8 +341,44 @@ pub(crate) async fn v1_wallet_post_handler(
     let wallet = wallet.map_err(|_| AppError::InternalError)?;
     info!(?wallet);
 
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::Wallet,
+        ActivityOperation::Create,
+        serde_json::to_value(&wallet)?,
+        CustomParams { wallet_address: Some(wallet.address.clone()), ..Default::default() },
+    )
+    .await?;
+
     // Change the wallet to the format that the API expects.
     let wallet: Wallet = wallet.into();
+
+    // Invalidate the invite code.
+    let invite_code = state
+        .client
+        .invite_code()
+        .update(
+            lightdotso_prisma::invite_code::code::equals(invite_code),
+            vec![lightdotso_prisma::invite_code::status::set(InviteCodeStatus::Used)],
+        )
+        .exec()
+        .await?;
+    info!(?invite_code);
+
+    // Produce an activity message.
+    produce_activity_message(
+        state.producer.clone(),
+        ActivityEntity::InviteCode,
+        ActivityOperation::Update,
+        serde_json::to_value(&invite_code)?,
+        CustomParams {
+            wallet_address: Some(wallet.address.clone()),
+            invite_code_id: Some(invite_code.id.clone()),
+            ..Default::default()
+        },
+    )
+    .await?;
 
     Ok(Json::from(wallet))
 }

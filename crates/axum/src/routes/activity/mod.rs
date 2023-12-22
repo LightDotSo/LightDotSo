@@ -23,7 +23,10 @@ use autometrics::autometrics;
 use axum::{routing::get, Router};
 
 pub(crate) use get::{__path_v1_activity_get_handler, v1_activity_get_handler};
-pub(crate) use list::{__path_v1_activity_list_handler, v1_activity_list_handler};
+pub(crate) use list::{
+    __path_v1_activity_list_count_handler, __path_v1_activity_list_handler,
+    v1_activity_list_count_handler, v1_activity_list_handler,
+};
 
 // -----------------------------------------------------------------------------
 // Router
@@ -34,4 +37,5 @@ pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/activity/get", get(v1_activity_get_handler))
         .route("/activity/list", get(v1_activity_list_handler))
+        .route("/activity/list/count", get(v1_activity_list_count_handler))
 }

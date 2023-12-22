@@ -18,8 +18,10 @@ use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
 use axum::extract::{Query, State};
 use axum::Json;
-use serde::Deserialize;
-use utoipa::IntoParams;
+use lightdotso_prisma::activity::{self, WhereParam};
+use lightdotso_tracing::tracing::info;
+use serde::{Deserialize, Serialize};
+use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -33,6 +35,22 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     /// The maximum number of activities to return.
     pub limit: Option<i64>,
+    /// The user id to filter by.
+    pub user_id: Option<String>,
+    /// The wallet address to filter by.
+    pub wallet_address: Option<String>,
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Count of list of user operations.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct ActivityListCount {
+    /// The count of the list of user operations..
+    pub count: i64,
 }
 
 // -----------------------------------------------------------------------------
@@ -59,11 +77,14 @@ pub(crate) async fn v1_activity_list_handler(
     // Get the list query.
     let Query(query) = list_query;
 
+    // If the address is provided, add it to the query.
+    let query_params = construct_activity_list_query_params(&query);
+
     // Get the activities from the database.
     let activities = state
         .client
         .activity()
-        .find_many(vec![])
+        .find_many(query_params)
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
@@ -73,4 +94,54 @@ pub(crate) async fn v1_activity_list_handler(
     let activities: Vec<Activity> = activities.into_iter().map(Activity::from).collect();
 
     Ok(Json::from(activities))
+}
+
+/// Returns a count of list of activities.
+#[utoipa::path(
+        get,
+        path = "/activity/list/count",
+        params(
+            ListQuery
+        ),
+        responses(
+            (status = 200, description = "Activities returned successfully", body = ActivityListCount),
+            (status = 500, description = "Activity bad request", body = ActivityError),
+        )
+    )]
+#[autometrics]
+pub(crate) async fn v1_activity_list_count_handler(
+    list_query: Query<ListQuery>,
+    State(state): State<AppState>,
+) -> AppJsonResult<ActivityListCount> {
+    // Get the list query.
+    let Query(query) = list_query;
+    info!(?query);
+
+    // If the address is provided, add it to the query.
+    let query_params = construct_activity_list_query_params(&query);
+
+    // Get the activities from the database.
+    let count = state.client.activity().count(query_params).exec().await?;
+
+    Ok(Json::from(ActivityListCount { count }))
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+/// Constructs a query for activities.
+fn construct_activity_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
+    let mut query_exp = match &query.wallet_address {
+        Some(addr) => {
+            vec![activity::wallet_address::equals(Some(addr.clone()))]
+        }
+        None => vec![],
+    };
+
+    if let Some(id) = &query.user_id {
+        query_exp.push(activity::user_id::equals(Some(id.clone())));
+    }
+
+    query_exp
 }

@@ -20,8 +20,10 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use serde::Deserialize;
-use utoipa::IntoParams;
+use lightdotso_prisma::notification::{self, WhereParam};
+use lightdotso_tracing::tracing::info;
+use serde::{Deserialize, Serialize};
+use utoipa::{IntoParams, ToSchema};
 
 // -----------------------------------------------------------------------------
 // Query
@@ -35,6 +37,22 @@ pub(crate) struct ListQuery {
     pub offset: Option<i64>,
     /// The maximum number of notifications to return.
     pub limit: Option<i64>,
+    /// The user id to filter by.
+    pub user_id: Option<String>,
+    /// The wallet address to filter by.
+    pub wallet_address: Option<String>,
+}
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Count of list of user operations.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct NotificationListCount {
+    /// The count of the list of user operations..
+    pub count: i64,
 }
 
 // -----------------------------------------------------------------------------
@@ -61,11 +79,14 @@ pub(crate) async fn v1_notification_list_handler(
     // Get the list query.
     let Query(query) = list_query;
 
+    // If the address is provided, add it to the query.
+    let query_params = construct_notification_list_query_params(&query);
+
     // Get the notifications from the database.
     let notifications = state
         .client
         .notification()
-        .find_many(vec![])
+        .find_many(query_params)
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
@@ -76,4 +97,54 @@ pub(crate) async fn v1_notification_list_handler(
         notifications.into_iter().map(Notification::from).collect();
 
     Ok(Json::from(notifications))
+}
+
+/// Returns a count of list of notifications.
+#[utoipa::path(
+        get,
+        path = "/notification/list/count",
+        params(
+            ListQuery
+        ),
+        responses(
+            (status = 200, description = "Notifications returned successfully", body = NotificationListCount),
+            (status = 500, description = "Notification bad request", body = NotificationError),
+        )
+    )]
+#[autometrics]
+pub(crate) async fn v1_notification_list_count_handler(
+    list_query: Query<ListQuery>,
+    State(state): State<AppState>,
+) -> AppJsonResult<NotificationListCount> {
+    // Get the list query.
+    let Query(query) = list_query;
+    info!(?query);
+
+    // If the address is provided, add it to the query.
+    let query_params = construct_notification_list_query_params(&query);
+
+    // Get the notifications from the database.
+    let count = state.client.notification().count(query_params).exec().await?;
+
+    Ok(Json::from(NotificationListCount { count }))
+}
+
+// -----------------------------------------------------------------------------
+// Utils
+// -----------------------------------------------------------------------------
+
+/// Constructs a query for notifications.
+fn construct_notification_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
+    let mut query_exp = match &query.wallet_address {
+        Some(addr) => {
+            vec![notification::wallet_address::equals(Some(addr.clone()))]
+        }
+        None => vec![],
+    };
+
+    if let Some(id) = &query.user_id {
+        query_exp.push(notification::user_id::equals(Some(id.clone())));
+    }
+
+    query_exp
 }

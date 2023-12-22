@@ -68,6 +68,7 @@ impl RouteErrorStatusCodeAndMsg for AuthError {
             AuthError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
             AuthError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
             AuthError::InternalError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg.to_string()),
+            AuthError::Unauthorized(msg) => (StatusCode::UNAUTHORIZED, msg.to_string()),
         }
     }
 }

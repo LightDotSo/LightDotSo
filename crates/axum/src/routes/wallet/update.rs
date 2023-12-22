@@ -17,8 +17,11 @@
 
 use super::types::Wallet;
 use crate::{
-    constants::USER_ID_KEY, error::RouteError, result::AppJsonResult,
-    routes::wallet::error::WalletError, sessions::verify_session, state::AppState,
+    error::RouteError,
+    result::AppJsonResult,
+    routes::wallet::error::WalletError,
+    sessions::{get_user_id, verify_session},
+    state::AppState,
 };
 use autometrics::autometrics;
 use axum::{
@@ -80,7 +83,7 @@ pub struct WalletPutRequestParams {
 #[autometrics]
 pub(crate) async fn v1_wallet_update_handler(
     State(state): State<AppState>,
-    session: Session,
+    mut session: Session,
     put_query: Query<PutQuery>,
     Json(params): Json<WalletPutRequestParams>,
 ) -> AppJsonResult<Wallet> {
@@ -108,7 +111,7 @@ pub(crate) async fn v1_wallet_update_handler(
         .ok_or(RouteError::WalletError(WalletError::NotFound("Wallet not found".to_string())))?;
 
     // Get the userid from the session.
-    let user_id = session.get::<String>(&USER_ID_KEY).unwrap().unwrap().to_lowercase();
+    let user_id = get_user_id(&mut session)?;
     info!(?user_id);
 
     // Check to see if the user is one of the owners of the wallet configurations.
@@ -144,6 +147,7 @@ pub(crate) async fn v1_wallet_update_handler(
         .exec()
         .await?;
 
+    // Produce an activity message.
     produce_activity_message(
         state.producer.clone(),
         ActivityEntity::Wallet,
