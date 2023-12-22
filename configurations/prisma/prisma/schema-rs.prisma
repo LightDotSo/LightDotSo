@@ -103,6 +103,30 @@ model Configuration {
   @@unique([address, checkpoint])
 }
 
+model Category {
+  id     String         @id @default(cuid())
+  action CategoryAction
+
+  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
+  transactionHash String
+
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
+  @@index([transactionHash])
+  @@index([userOperationHash])
+}
+
+enum CategoryAction {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER
+  APPROVE
+  MINT
+  RECEIVE
+  SWAP
+}
+
 model Owner {
   id        String   @id @default(cuid())
   address   String
@@ -333,8 +357,8 @@ model Transaction {
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
+  category       Category[]
   userOperations UserOperation[]
-  //  transactionCategory TransactionCategory[]
 
   @@index([walletAddress])
   @@index([notificationId])
@@ -403,9 +427,9 @@ model UserOperation {
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
+  category   Category[]
   history    History[]
   signatures Signature[]
-  // userOperationCategory UserOperationCategory[]
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])

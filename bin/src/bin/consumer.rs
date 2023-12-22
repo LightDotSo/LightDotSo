@@ -39,8 +39,8 @@ pub async fn main() {
     // Spawn tasks in the custom runtime and store join handles
     let mut handles = Vec::new();
 
-    // 8xs the number of CPUs for consumer count
-    let consumer_count = num_cpus::get() * 8;
+    // Multiply the number of CPUs by the multiplier
+    let consumer_count = num_cpus::get() * args.cpu_multiplier;
     info!("Starting {} consumers", consumer_count);
 
     for _ in 0..consumer_count {
