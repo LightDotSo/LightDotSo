@@ -13,13 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use eyre::Result;
+use crate::error::DbError;
+use axum::Json;
 use lightdotso_prisma::PrismaClient;
-use prisma_client_rust::NewClientError;
+use std::sync::Arc;
 
-/// Create a new Prisma client.
-pub async fn create_client() -> Result<PrismaClient, NewClientError> {
-    let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder().build().await;
-
-    client
-}
+pub type Database = Arc<PrismaClient>;
+pub type AppResult<T> = Result<T, DbError>;
+pub type AppJsonResult<T> = AppResult<Json<T>>;

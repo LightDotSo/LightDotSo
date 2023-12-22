@@ -13,13 +13,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use eyre::Result;
-use lightdotso_prisma::PrismaClient;
-use prisma_client_rust::NewClientError;
-
-/// Create a new Prisma client.
-pub async fn create_client() -> Result<PrismaClient, NewClientError> {
-    let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder().build().await;
-
-    client
-}
+pub mod activity;
+pub mod paymaster_operation;
+pub mod transaction;
+pub mod user_operation;
+pub mod wallet;

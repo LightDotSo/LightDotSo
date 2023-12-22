@@ -30,12 +30,12 @@ use eyre::Result;
 use lightdotso_contracts::{
     provider::get_provider, types::UserOperationWithTransactionAndReceiptLogs,
 };
+use lightdotso_db::models::{
+    user_operation::{upsert_user_operation, upsert_user_operation_logs},
+    wallet::upsert_wallet_with_configuration,
+};
 use lightdotso_db::{
-    db::{
-        create_client, upsert_transaction_with_log_receipt, upsert_user_operation,
-        upsert_user_operation_logs, upsert_wallet_with_configuration,
-    },
-    error::DbError,
+    db::create_client, error::DbError, models::transaction::upsert_transaction_with_log_receipt,
 };
 use lightdotso_graphql::{
     polling::{
