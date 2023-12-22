@@ -16,13 +16,17 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/hooks/use-tabs.tsx
 // License: MIT
 
-import { getConfiguration } from "@lightdotso/client";
+import { getConfiguration, getUserOperationsCount } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
-import type { ConfigurationData } from "@/data";
+import type {
+  ConfigurationData,
+  UserOperationCountData,
+  WalletSettingsData,
+} from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores";
 
@@ -83,9 +87,15 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   const queryClient = useQueryClient();
 
-  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
-    queries.configuration.get({ address: walletAddress as Address }).queryKey,
-  );
+  const walletSettings: WalletSettingsData | undefined =
+    queryClient.getQueryData(
+      queries.wallet.settings({ address: walletAddress as Address }).queryKey,
+    );
+
+  const currentConfigurationData: ConfigurationData | undefined =
+    queryClient.getQueryData(
+      queries.configuration.get({ address: walletAddress as Address }).queryKey,
+    );
 
   const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
     queryKey: queries.configuration.get({ address: walletAddress as Address })
@@ -109,15 +119,56 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
           return data;
         },
         _ => {
-          return currentData ?? null;
+          return currentConfigurationData ?? null;
         },
       );
     },
   });
 
+  const currentUserOperationCountData: UserOperationCountData | undefined =
+    queryClient.getQueryData(
+      queries.user_operation.listCount({
+        address: walletAddress as Address,
+        status: "proposed",
+        is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      }).queryKey,
+    );
+
+  const { data: userOperationCount } =
+    useSuspenseQuery<UserOperationCountData | null>({
+      queryKey: queries.user_operation.listCount({
+        address: walletAddress as Address,
+        status: "proposed",
+        is_testnet: walletSettings?.is_enabled_testnet ?? false,
+      }).queryKey,
+      queryFn: async () => {
+        if (!walletAddress) {
+          return null;
+        }
+
+        const res = await getUserOperationsCount({
+          params: {
+            query: {
+              address: walletAddress,
+            },
+          },
+        });
+
+        // Return if the response is 200
+        return res.match(
+          data => {
+            return data;
+          },
+          _ => {
+            return currentUserOperationCountData ?? null;
+          },
+        );
+      },
+    });
+
   // Inside useTabs function
   const transformedTabs: Tab[] = useMemo(() => {
-    if (!configuration) {
+    if (!configuration || !userOperationCount) {
       return tabs.map(tab => ({ ...tab, number: 0 }));
     }
 
@@ -125,15 +176,15 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
       let number = 0;
       if (tab.id === "owners") {
         number = configuration.owners.length;
+      } else if (tab.id === "transactions") {
+        number = userOperationCount.count;
       }
-      // else if (tab.id === "transactions") {
-      //   number = data.user_operation_count;
-      // } else if (tab.id === "activity") {
+      // else if (tab.id === "activity") {
       //   number = data.transaction_count;
       // }
       return { ...tab, number };
     });
-  }, [tabs, configuration]);
+  }, [configuration, userOperationCount, tabs]);
 
   return {
     tabProps: {
