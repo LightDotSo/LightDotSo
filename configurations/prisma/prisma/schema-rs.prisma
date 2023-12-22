@@ -333,20 +333,11 @@ model Transaction {
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
-  userOperations      UserOperation[]
-  transactionCategory TransactionCategory[]
+  userOperations UserOperation[]
+  //  transactionCategory TransactionCategory[]
 
   @@index([walletAddress])
   @@index([notificationId])
-}
-
-model TransactionCategory {
-  id       String @id @default(cuid())
-  category String
-
-  transaction Transaction @relation(fields: [id], references: [hash])
-
-  @@index([id])
 }
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
@@ -412,9 +403,9 @@ model UserOperation {
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
-  history               History[]
-  signatures            Signature[]
-  userOperationCategory UserOperationCategory[]
+  history    History[]
+  signatures Signature[]
+  // userOperationCategory UserOperationCategory[]
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])
@@ -462,15 +453,6 @@ enum UserOperationStatus {
   EXECUTED
   REVERTED
   INVALID
-}
-
-model UserOperationCategory {
-  id       String @id @default(cuid())
-  category String
-
-  userOperation UserOperation @relation(fields: [id], references: [hash])
-
-  @@index([id])
 }
 
 model Signature {
