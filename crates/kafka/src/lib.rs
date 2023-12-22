@@ -15,10 +15,6 @@
 
 use eyre::{eyre, Result};
 use lightdotso_tracing::tracing::error;
-use namespace::{
-    ERROR_TRANSACTION, RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1,
-    RETRY_TRANSACTION_2, TRANSACTION,
-};
 pub use rdkafka;
 use rdkafka::{
     config::ClientConfig,
@@ -28,6 +24,7 @@ use rdkafka::{
 use std::sync::Arc;
 
 pub mod namespace;
+pub mod topics;
 
 /// Configure a Kafka client with the required settings.
 pub fn configure_client(group: &str) -> Result<ClientConfig, Box<dyn std::error::Error>> {
@@ -98,59 +95,5 @@ pub async fn produce_message(
 ) -> Result<()> {
     let payload = message.to_string();
     let _ = producer.send::<Vec<u8>, _, _>(FutureRecord::to(topic).payload(&payload), None).await;
-    Ok(())
-}
-
-// Produce a message with Transaction topic.
-pub async fn produce_transaction_message(
-    producer: Arc<FutureProducer>,
-    message: &str,
-) -> Result<()> {
-    produce_message(producer, TRANSACTION.as_str(), message).await?;
-    Ok(())
-}
-
-// Produce a message with retry Transaction topic.
-pub async fn produce_retry_transaction_message(
-    producer: Arc<FutureProducer>,
-    message: &str,
-) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION.as_str(), message).await?;
-    Ok(())
-}
-
-// Produce a message with retry Transaction 0 topic.
-pub async fn produce_retry_transaction_0_message(
-    producer: Arc<FutureProducer>,
-    message: &str,
-) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION_0.as_str(), message).await?;
-    Ok(())
-}
-
-// Produce a message with retry Transaction 1 topic.
-pub async fn produce_retry_transaction_1_message(
-    producer: Arc<FutureProducer>,
-    message: &str,
-) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION_1.as_str(), message).await?;
-    Ok(())
-}
-
-// Produce a message with retry Transaction 2 topic.
-pub async fn produce_retry_transaction_2_message(
-    producer: Arc<FutureProducer>,
-    message: &str,
-) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION_2.as_str(), message).await?;
-    Ok(())
-}
-
-// Produce a message with error Transaction topic.
-pub async fn produce_error_transaction_message(
-    producer: Arc<FutureProducer>,
-    message: &str,
-) -> Result<()> {
-    produce_message(producer, ERROR_TRANSACTION.as_str(), message).await?;
     Ok(())
 }

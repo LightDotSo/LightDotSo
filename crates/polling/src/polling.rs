@@ -47,7 +47,8 @@ use lightdotso_graphql::{
     traits::UserOperationConstruct,
 };
 use lightdotso_kafka::{
-    get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
+    get_producer, rdkafka::producer::FutureProducer,
+    topics::transaction::produce_transaction_message,
 };
 use lightdotso_opentelemetry::polling::PollingMetrics;
 use lightdotso_prisma::PrismaClient;

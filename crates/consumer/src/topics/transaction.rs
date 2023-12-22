@@ -24,8 +24,10 @@ use lightdotso_kafka::{
         RETRY_TRANSACTION, RETRY_TRANSACTION_0, RETRY_TRANSACTION_1, RETRY_TRANSACTION_2,
         TRANSACTION,
     },
-    produce_error_transaction_message, produce_retry_transaction_0_message,
-    produce_retry_transaction_1_message, produce_retry_transaction_2_message,
+    topics::transaction::{
+        produce_error_transaction_message, produce_retry_transaction_0_message,
+        produce_retry_transaction_1_message, produce_retry_transaction_2_message,
+    },
 };
 use lightdotso_opentelemetry::consumer::ConsumerMetrics;
 use lightdotso_prisma::PrismaClient;
