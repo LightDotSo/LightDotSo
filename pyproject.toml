@@ -10,6 +10,7 @@
     "slither-analyzer <= 0.9.6",
     "setuptools>=68.0.0",
     "pusher>=3.3.2",
+    "python-dotenv>=1.0.0",
   ]
 
   [project.scripts]
