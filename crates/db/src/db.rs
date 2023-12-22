@@ -29,8 +29,8 @@ use lightdotso_contracts::{
     types::UserOperationWithTransactionAndReceiptLogs,
 };
 use lightdotso_prisma::{
-    log, log_topic, paymaster, paymaster_operation, receipt, transaction, user_operation, wallet,
-    PrismaClient, UserOperationStatus,
+    activity, log, log_topic, paymaster, paymaster_operation, receipt, transaction, user_operation,
+    wallet, ActivityEntity, ActivityProcedure, PrismaClient, UserOperationStatus,
 };
 use lightdotso_tracing::{
     tracing::{info, info_span, trace},
@@ -52,6 +52,28 @@ pub async fn create_client() -> Result<PrismaClient, NewClientError> {
     let client: Result<PrismaClient, NewClientError> = PrismaClient::_builder().build().await;
 
     client
+}
+
+/// Create a new activity.
+#[autometrics]
+pub async fn create_activity_with_user_and_wallet(
+    db: Database,
+    entity: ActivityEntity,
+    procedure: ActivityProcedure,
+    user: String,
+    wallet_address: Option<String>,
+) -> AppJsonResult<activity::Data> {
+    info!("Creating activity at address: {:?}", entity);
+
+    let mut params = vec![activity::user_id::set(Some(user))];
+
+    if let Some(addr) = wallet_address {
+        params.push(activity::wallet_address::set(Some(addr)));
+    }
+
+    let activity = db.activity().create(entity, procedure, json!({}), params).exec().await?;
+
+    Ok(Json::from(activity))
 }
 
 /// Create a new wallet.
