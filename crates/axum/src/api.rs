@@ -130,6 +130,7 @@ use utoipa_swagger_ui::SwaggerUi;
     paths(
         activity::v1_activity_get_handler,
         activity::v1_activity_list_handler,
+        activity::v1_activity_list_count_handler,
         auth::v1_auth_nonce_handler,
         auth::v1_auth_session_handler,
         auth::v1_auth_logout_handler,
