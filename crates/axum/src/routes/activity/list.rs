@@ -35,8 +35,10 @@ pub struct ListQuery {
     pub offset: Option<i64>,
     /// The maximum number of activities to return.
     pub limit: Option<i64>,
-    /// The sender address to filter by.
-    pub address: Option<String>,
+    /// The user id to filter by.
+    pub user_id: Option<String>,
+    /// The wallet address to filter by.
+    pub wallet_address: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
@@ -130,10 +132,16 @@ pub(crate) async fn v1_activity_list_count_handler(
 
 /// Constructs a query for activities.
 fn construct_activity_list_query_params(query: &ListQuery) -> Vec<WhereParam> {
-    match &query.address {
+    let mut query_exp = match &query.wallet_address {
         Some(addr) => {
             vec![activity::wallet_address::equals(Some(addr.clone()))]
         }
         None => vec![],
+    };
+
+    if let Some(id) = &query.user_id {
+        query_exp.push(activity::user_id::equals(Some(id.clone())));
     }
+
+    query_exp
 }

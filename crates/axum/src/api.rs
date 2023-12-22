@@ -144,6 +144,7 @@ use utoipa_swagger_ui::SwaggerUi;
         invite_code::v1_invite_code_post_handler,
         notification::v1_notification_get_handler,
         notification::v1_notification_list_handler,
+        notification::v1_notification_list_count_handler,
         notification::v1_notification_read_handler,
         paymaster::v1_paymaster_get_handler,
         paymaster::v1_paymaster_list_handler,
