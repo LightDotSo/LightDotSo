@@ -16,12 +16,13 @@
 // Full complete example from: https://github.com/hqasmei/youtube-tutorials/blob/ee44df8fbf6ab4f4c2f7675f17d67813947a7f61/vercel-animated-tabs/src/hooks/use-tabs.tsx
 // License: MIT
 
-import { getWalletTab } from "@lightdotso/client";
+import { getConfiguration } from "@lightdotso/client";
 import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo } from "react";
 import type { ReactNode } from "react";
 import type { Address } from "viem";
+import type { ConfigurationData } from "@/data";
 import { queries } from "@/queries";
 import { useAuth } from "@/stores";
 
@@ -38,17 +39,6 @@ export type Tab = {
 };
 
 export type RawTab = Omit<Tab, "number">;
-
-// -----------------------------------------------------------------------------
-// Data
-// -----------------------------------------------------------------------------
-
-type TabData = {
-  owner_count: number;
-  transaction_count: number;
-  user_operation_count: number;
-};
-
 // -----------------------------------------------------------------------------
 // Hook
 // -----------------------------------------------------------------------------
@@ -93,19 +83,19 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   const queryClient = useQueryClient();
 
-  const currentData: TabData | undefined = queryClient.getQueryData(
-    queries.wallet.tab({ address: walletAddress as Address }).queryKey,
+  const currentData: ConfigurationData | undefined = queryClient.getQueryData(
+    queries.configuration.get({ address: walletAddress as Address }).queryKey,
   );
 
-  const { data } = useSuspenseQuery<TabData | null>({
-    queryKey: queries.wallet.tab({ address: walletAddress as Address })
+  const { data: configuration } = useSuspenseQuery<ConfigurationData | null>({
+    queryKey: queries.configuration.get({ address: walletAddress as Address })
       .queryKey,
     queryFn: async () => {
       if (!walletAddress) {
         return null;
       }
 
-      const res = await getWalletTab({
+      const res = await getConfiguration({
         params: {
           query: {
             address: walletAddress,
@@ -127,22 +117,23 @@ export function useTabs({ tabs }: { tabs: RawTab[] }) {
 
   // Inside useTabs function
   const transformedTabs: Tab[] = useMemo(() => {
-    if (!data) {
+    if (!configuration) {
       return tabs.map(tab => ({ ...tab, number: 0 }));
     }
 
     return tabs.map(tab => {
       let number = 0;
       if (tab.id === "owners") {
-        number = data.owner_count;
-      } else if (tab.id === "transactions") {
-        number = data.user_operation_count;
-      } else if (tab.id === "activity") {
-        number = data.transaction_count;
+        number = configuration.owners.length;
       }
+      // else if (tab.id === "transactions") {
+      //   number = data.user_operation_count;
+      // } else if (tab.id === "activity") {
+      //   number = data.transaction_count;
+      // }
       return { ...tab, number };
     });
-  }, [tabs, data]);
+  }, [tabs, configuration]);
 
   return {
     tabProps: {
