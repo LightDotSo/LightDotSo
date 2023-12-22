@@ -9,9 +9,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Account
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Account {
   id                 String    @id @default(cuid())
@@ -30,9 +30,9 @@ model Account {
   @@index([userId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Session
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Session {
   id           String   @id @default(cuid())
@@ -48,9 +48,9 @@ model Session {
   @@index([userId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // User
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model User {
   id            String    @id @default(cuid())
@@ -65,6 +65,7 @@ model User {
   accounts Account[]
   sessions Session[]
 
+  activities    Activity[]
   owners        Owner[]
   wallets       Wallet[]
   feedbacks     Feedback[]
@@ -72,9 +73,9 @@ model User {
   inviteCodes   InviteCode[]
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // VerificationRequest
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model VerificationRequest {
   id         String   @id @default(cuid())
@@ -87,9 +88,9 @@ model VerificationRequest {
   @@unique([identifier, token])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Wallet
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Wallet {
   address        String   @id
@@ -111,9 +112,9 @@ model Wallet {
   walletSettings     WalletSettings?
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Configuration
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Configuration {
   id         String @id @default(cuid())
@@ -128,9 +129,9 @@ model Configuration {
   @@unique([address, checkpoint])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Owner
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Owner {
   id        String   @id @default(cuid())
@@ -152,9 +153,9 @@ model Owner {
   @@index([userId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Log
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 /// ethers-rs Log struct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/log.rs#L6-L62
@@ -218,9 +219,9 @@ model LogTopic {
   @@index([id])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Receipt
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 /// ethers-rs TransactionReceipt struct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L388-440
@@ -282,9 +283,9 @@ model Receipt {
   @@index([transactionHash])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Transaction
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 /// ethers-rs Transactionstruct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L17-L123
@@ -371,10 +372,16 @@ model Transaction {
 
   receipt Receipt?
 
+  // ---------------------------------------------------------------------------
+  // Metadata
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
-  activity       Activity[]
   category       Category[]
   userOperations UserOperation[]
 
@@ -382,9 +389,9 @@ model Transaction {
   @@index([notificationId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // UserOperation
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
 model UserOperation {
@@ -446,10 +453,16 @@ model UserOperation {
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
+  // ---------------------------------------------------------------------------
+  // Metadata
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
-  activities Activity[]
   category   Category[]
   signatures Signature[]
 
@@ -469,9 +482,9 @@ enum UserOperationStatus {
   INVALID
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Paymaster
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Paymaster {
   id        String   @id @default(cuid())
@@ -505,9 +518,9 @@ model PaymasterOperation {
   @@index([sender, senderNonce])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Signature
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Signature {
   id            String             @id @default(cuid())
@@ -523,6 +536,10 @@ model Signature {
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String        @unique
 
+  // ---------------------------------------------------------------------------
+  // Metadata
+  // ---------------------------------------------------------------------------
+
   notification   Notification? @relation(fields: [notificationId], references: [id])
   notificationId String?
 
@@ -537,44 +554,63 @@ enum SignatureProcedure {
   ERC_1271
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Activity
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Activity {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   timestamp DateTime @default(now())
 
+  entity    ActivityEntity
   procedure ActivityProcedure
 
-  transaction     Transaction? @relation(fields: [transactionHash], references: [hash])
-  transactionHash String?
-
-  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String?
-
-  wnviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
-  inviteCodeId String?
-
-  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
-  walletSettingsId String?
-
-  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
-  supportRequestId String?
-
-  feedback   Feedback? @relation(fields: [feedbackId], references: [id])
-  feedbackId String?
+  // ---------------------------------------------------------------------------
+  // Relations
+  // ---------------------------------------------------------------------------
 
   wallet        Wallet? @relation(fields: [walletAddress], references: [address])
   walletAddress String?
 
-  @@index([transactionHash])
-  @@index([userOperationHash])
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  // ---------------------------------------------------------------------------
+  // Mutable Relations
+  // ---------------------------------------------------------------------------
+
+  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
+  inviteCodeId String?
+
+  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
+  supportRequestId String?
+
+  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
+  walletSettingsId String?
+
+  // ---------------------------------------------------------------------------
+  // Immutable Relations
+  // ---------------------------------------------------------------------------
+  feedback      Feedback?
+  userOperation UserOperation?
+  transaction   Transaction?
+
   @@index([inviteCodeId])
-  @@index([walletSettingsId])
   @@index([supportRequestId])
-  @@index([feedbackId])
+  @@index([walletSettingsId])
+  @@index([userId])
   @@index([walletAddress])
+}
+
+enum ActivityEntity {
+  USER
+  WALLET
+  INVITE_CODE
+  WALLET_SETTINGS
+  FEEDBACK
+  USER_OPERATION
+  TRANSACTION
+  SUPPORT_REQUEST
 }
 
 enum ActivityProcedure {
@@ -583,9 +619,9 @@ enum ActivityProcedure {
   DELETE
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Notification
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Notification {
   id           String    @id @default(cuid())
@@ -608,9 +644,9 @@ model Notification {
   @@index([userId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Feedback
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Feedback {
   id        String   @id @default(cuid())
@@ -622,14 +658,16 @@ model Feedback {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  activities Activity[]
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   @@index([userId])
+  @@index([activityId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // SupportRequest
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model SupportRequest {
   id          String               @id @default(cuid())
@@ -655,9 +693,9 @@ enum SupportRequestStatus {
   CLOSED
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Token
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Token {
   id       String  @id @default(cuid())
@@ -684,9 +722,9 @@ model TokenPrice {
   @@index([tokenId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // WalletBalance
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
 // License: GPL-3.0
@@ -733,9 +771,9 @@ model WalletBalance {
   @@index([chainId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // WalletSettings
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model WalletSettings {
   id        String   @id @default(cuid())
@@ -752,9 +790,9 @@ model WalletSettings {
   @@index([walletAddress])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // InviteCode
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 enum InviteCodeStatus {
   ACTIVE
@@ -777,9 +815,9 @@ model InviteCode {
   @@index([userId])
 }
 
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 // Category
-// ---------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
 
 model Category {
   id     String         @id @default(cuid())
