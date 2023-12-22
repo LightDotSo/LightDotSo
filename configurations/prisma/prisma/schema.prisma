@@ -696,7 +696,7 @@ model Activity {
   timestamp DateTime @default(now())
 
   entity    ActivityEntity
-  procedure ActivityProcedure
+  operation ActivityOperation
   log       Json
 
   // ---------------------------------------------------------------------------
@@ -752,7 +752,7 @@ enum ActivityEntity {
   TRANSACTION
 }
 
-enum ActivityProcedure {
+enum ActivityOperation {
   CREATE
   UPDATE
   DELETE
