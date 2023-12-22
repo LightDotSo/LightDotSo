@@ -173,6 +173,34 @@ model Owner {
 }
 
 // -----------------------------------------------------------------------------
+// Category
+// -----------------------------------------------------------------------------
+
+model Category {
+  id     String         @id @default(cuid())
+  action CategoryAction
+
+  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
+  transactionHash String
+
+  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
+  userOperationHash String
+
+  @@index([transactionHash])
+  @@index([userOperationHash])
+}
+
+enum CategoryAction {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER
+  APPROVE
+  MINT
+  RECEIVE
+  SWAP
+}
+
+// -----------------------------------------------------------------------------
 // Log
 // -----------------------------------------------------------------------------
 
@@ -639,80 +667,6 @@ enum ActivityProcedure {
 }
 
 // -----------------------------------------------------------------------------
-// Notification
-// -----------------------------------------------------------------------------
-
-model Notification {
-  id           String    @id @default(cuid())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  readAt       DateTime?
-  readDeviceId String?
-
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
-
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
-
-  signatures     Signature[]
-  transactions   Transaction[]
-  userOperations UserOperation[]
-
-  @@index([walletAddress])
-  @@index([userId])
-}
-
-// -----------------------------------------------------------------------------
-// Feedback
-// -----------------------------------------------------------------------------
-
-model Feedback {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  text      String
-  emoji     String
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  activity   Activity? @relation(fields: [activityId], references: [id])
-  activityId String?   @unique
-
-  @@index([userId])
-  @@index([activityId])
-}
-
-// -----------------------------------------------------------------------------
-// SupportRequest
-// -----------------------------------------------------------------------------
-
-model SupportRequest {
-  id          String               @id @default(cuid())
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
-  title       String
-  description String
-  area        String
-  severity    Int
-  status      SupportRequestStatus @default(OPEN)
-
-  wallet        Wallet @relation(fields: [walletAddress], references: [address])
-  walletAddress String
-
-  activities Activity[]
-
-  @@index([walletAddress])
-}
-
-enum SupportRequestStatus {
-  OPEN
-  ACTIVE
-  CLOSED
-}
-
-// -----------------------------------------------------------------------------
 // Token
 // -----------------------------------------------------------------------------
 
@@ -835,29 +789,75 @@ model InviteCode {
 }
 
 // -----------------------------------------------------------------------------
-// Category
+// Notification
 // -----------------------------------------------------------------------------
 
-model Category {
-  id     String         @id @default(cuid())
-  action CategoryAction
+model Notification {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  readAt       DateTime?
+  readDeviceId String?
 
-  transaction     Transaction @relation(fields: [transactionHash], references: [hash])
-  transactionHash String
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
 
-  userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
 
-  @@index([transactionHash])
-  @@index([userOperationHash])
+  signatures     Signature[]
+  transactions   Transaction[]
+  userOperations UserOperation[]
+
+  @@index([walletAddress])
+  @@index([userId])
 }
 
-enum CategoryAction {
-  DEPOSIT
-  WITHDRAW
-  TRANSFER
-  APPROVE
-  MINT
-  RECEIVE
-  SWAP
+// -----------------------------------------------------------------------------
+// Feedback
+// -----------------------------------------------------------------------------
+
+model Feedback {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  text      String
+  emoji     String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  @@index([userId])
+  @@index([activityId])
+}
+
+// -----------------------------------------------------------------------------
+// SupportRequest
+// -----------------------------------------------------------------------------
+
+model SupportRequest {
+  id          String               @id @default(cuid())
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  title       String
+  description String
+  area        String
+  severity    Int
+  status      SupportRequestStatus @default(OPEN)
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  activities Activity[]
+
+  @@index([walletAddress])
+}
+
+enum SupportRequestStatus {
+  OPEN
+  ACTIVE
+  CLOSED
 }
