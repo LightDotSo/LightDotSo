@@ -36,10 +36,7 @@ use ethers_providers::StreamExt;
 use eyre::eyre;
 use lightdotso_constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
 use lightdotso_contracts::provider::get_provider;
-use lightdotso_db::{
-    db::{create_transaction_category, upsert_transaction_with_log_receipt},
-    error::DbError,
-};
+use lightdotso_db::{db::upsert_transaction_with_log_receipt, error::DbError};
 use lightdotso_kafka::{
     get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
 };
@@ -555,15 +552,15 @@ impl Indexer {
                                 }
 
                                 // Create the transaction category if wallet exists
-                                if unique_wallet_addreses.contains(addr) {
-                                    let _ = self
-                                        .db_create_transaction_category(
-                                            db_client.clone(),
-                                            category,
-                                            unique_wallet_tx_hash,
-                                        )
-                                        .await;
-                                }
+                                // if unique_wallet_addreses.contains(addr) {
+                                //     let _ = self
+                                //         .db_create_transaction_category(
+                                //             db_client.clone(),
+                                //             category,
+                                //             unique_wallet_tx_hash,
+                                //         )
+                                //         .await;
+                                // }
                             }
                         }
                     }
@@ -790,17 +787,17 @@ impl Indexer {
     // }
 
     /// Creates a new transaction category in the database
-    #[autometrics]
-    pub async fn db_create_transaction_category(
-        &self,
-        db_client: Arc<PrismaClient>,
-        category: &str,
-        tx_hash: ethers::types::H256,
-    ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
-        { || create_transaction_category(db_client.clone(), category.to_string(), tx_hash) }
-            .retry(&ExponentialBuilder::default())
-            .await
-    }
+    // #[autometrics]
+    // pub async fn db_create_transaction_category(
+    //     &self,
+    //     db_client: Arc<PrismaClient>,
+    //     category: &str,
+    //     tx_hash: ethers::types::H256,
+    // ) -> Result<Json<lightdotso_prisma::transaction_category::Data>, DbError> {
+    //     { || create_transaction_category(db_client.clone(), category.to_string(), tx_hash) }
+    //         .retry(&ExponentialBuilder::default())
+    //         .await
+    // }
 
     /// Creates a new transaction with log receipt in the database
     #[autometrics]
