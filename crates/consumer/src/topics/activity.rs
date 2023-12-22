@@ -13,8 +13,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#![allow(clippy::unwrap_used)]
-
 use eyre::{eyre, Result};
 use lightdotso_db::models::activity::{create_activity_with_user_and_wallet, CustomParams};
 use lightdotso_prisma::{ActivityEntity, ActivityOperation, PrismaClient};
@@ -83,11 +81,15 @@ pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
             // Try to deserialize the payload as json
             let payload: Value = serde_json::from_slice(payload.as_bytes())?;
 
-            // If there is an operation field, try to parse it as ActivityOperation
-            if let Some(operation) = payload.get("operation") {
-                // Try to parse the operation as ActivityOperation
-                let operation = ActivityOperation::from_str_ext(operation.as_str().unwrap())?;
+            // Try to parse the operation as ActivityOperation
+            let operation = payload
+                .get("operation")
+                .and_then(|operation| operation.as_str())
+                .map(ActivityOperation::from_str_ext)
+                .transpose()?;
 
+            // If there is an operation field, try to parse it as ActivityOperation
+            if let Some(operation) = operation {
                 // Try to parse the log as Value, if error, then set it to null
                 let log = match payload.get("log") {
                     Some(log) => log,
@@ -95,48 +97,58 @@ pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                 };
 
                 // Try to parse the `user_id` as String, if error, then set it to None
-                let user_id =
-                    payload.get("user_id").map(|user_id| user_id.as_str().unwrap().to_string());
+                let user_id = payload
+                    .get("user_id")
+                    .and_then(|user_id| user_id.as_str())
+                    .map(|user_id| user_id.to_string());
 
                 // Try to parse the `wallet_address` as String, if error, then set it to None
                 let wallet_address = payload
                     .get("wallet_address")
-                    .map(|wallet_address| wallet_address.as_str().unwrap().to_string());
+                    .and_then(|wallet_address| wallet_address.as_str())
+                    .map(|wallet_address| wallet_address.to_string());
 
                 // Try to parse the `invite_code_id` as String, if error, then set it to None
                 let invite_code_id = payload
                     .get("invite_code_id")
-                    .map(|invite_code_id| invite_code_id.as_str().unwrap().to_string());
+                    .and_then(|invite_code_id| invite_code_id.as_str())
+                    .map(|invite_code_id| invite_code_id.to_string());
 
                 // Try to parse the `support_request_id` as String, if error, then set it to None
                 let support_request_id = payload
                     .get("support_request_id")
-                    .map(|support_request_id| support_request_id.as_str().unwrap().to_string());
+                    .and_then(|support_request_id| support_request_id.as_str())
+                    .map(|support_request_id| support_request_id.to_string());
 
                 // Try to parse the `wallet_settings_id` as String, if error, then set it to None
                 let wallet_settings_id = payload
                     .get("wallet_settings_id")
-                    .map(|wallet_settings_id| wallet_settings_id.as_str().unwrap().to_string());
+                    .and_then(|wallet_settings_id| wallet_settings_id.as_str())
+                    .map(|wallet_settings_id| wallet_settings_id.to_string());
 
                 // Try to parse the `feedback_id` as String, if error, then set it to None
                 let feedback_id = payload
                     .get("feedback_id")
-                    .map(|feedback_id| feedback_id.as_str().unwrap().to_string());
+                    .and_then(|feedback_id| feedback_id.as_str())
+                    .map(|feedback_id| feedback_id.to_string());
 
                 // Try to parse the `notification_id` as String, if error, then set it to None
                 let notification_id = payload
                     .get("notification_id")
-                    .map(|notification_id| notification_id.as_str().unwrap().to_string());
+                    .and_then(|notification_id| notification_id.as_str())
+                    .map(|notification_id| notification_id.to_string());
 
                 // Try to parse the `user_operation_hash` as String, if error, then set it to None
                 let user_operation_hash = payload
                     .get("user_operation_hash")
-                    .map(|user_operation_hash| user_operation_hash.as_str().unwrap().to_string());
+                    .and_then(|user_operation_hash| user_operation_hash.as_str())
+                    .map(|user_operation_hash| user_operation_hash.to_string());
 
                 // Try to parse the `transaction_hash` as String, if error, then set it to None
                 let transaction_hash = payload
                     .get("transaction_hash")
-                    .map(|transaction_hash| transaction_hash.as_str().unwrap().to_string());
+                    .and_then(|transaction_hash| transaction_hash.as_str())
+                    .map(|transaction_hash| transaction_hash.to_string());
 
                 // Create custom params
                 let custom_params = CustomParams {
