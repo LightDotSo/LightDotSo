@@ -121,7 +121,6 @@ model Wallet {
 
   activities         Activity[]
   configurations     Configuration[]
-  notifications      Notification[]
   paymasterOperation PaymasterOperation[]
   supportRequests    SupportRequest[]
   transactions       Transaction[]
@@ -129,6 +128,7 @@ model Wallet {
   users              User[]
   walletBalances     WalletBalance[]
   walletSettings     WalletSettings?
+  Notification       Notification[]
 }
 
 // -----------------------------------------------------------------------------
@@ -426,14 +426,10 @@ model Transaction {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  notification   Notification? @relation(fields: [notificationId], references: [id])
-  notificationId String?
-
   category       Category[]
   userOperations UserOperation[]
 
   @@index([walletAddress])
-  @@index([notificationId])
 }
 
 // -----------------------------------------------------------------------------
@@ -507,15 +503,11 @@ model UserOperation {
   activity   Activity? @relation(fields: [activityId], references: [id])
   activityId String?   @unique
 
-  notification   Notification? @relation(fields: [notificationId], references: [id])
-  notificationId String?
-
   category   Category[]
   signatures Signature[]
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])
-  @@index([notificationId])
   @@index([paymasterId])
   @@index([paymasterOperationId])
   @@index([walletAddress])
@@ -587,12 +579,8 @@ model Signature {
   // Metadata
   // ---------------------------------------------------------------------------
 
-  notification   Notification? @relation(fields: [notificationId], references: [id])
-  notificationId String?
-
   @@index([ownerId])
   @@index([userOperationHash])
-  @@index([notificationId])
 }
 
 enum SignatureProcedure {
@@ -638,7 +626,9 @@ model Activity {
   // ---------------------------------------------------------------------------
   // Immutable Relations
   // ---------------------------------------------------------------------------
+
   feedback      Feedback?
+  notification  Notification?
   userOperation UserOperation?
   transaction   Transaction?
 
@@ -799,18 +789,18 @@ model Notification {
   readAt       DateTime?
   readDeviceId String?
 
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
 
-  signatures     Signature[]
-  transactions   Transaction[]
-  userOperations UserOperation[]
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
 
-  @@index([walletAddress])
+  @@index([activityId])
   @@index([userId])
+  @@index([walletAddress])
 }
 
 // -----------------------------------------------------------------------------
