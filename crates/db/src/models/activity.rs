@@ -25,13 +25,13 @@ use serde_json::Value;
 
 #[derive(Default)]
 pub struct CustomParams {
-    invite_code_id: Option<String>,
-    support_request_id: Option<String>,
-    wallet_settings_id: Option<String>,
-    feedback_id: Option<String>,
-    notification_id: Option<String>,
-    user_operation_hash: Option<String>,
-    transaction_hash: Option<String>,
+    pub invite_code_id: Option<String>,
+    pub support_request_id: Option<String>,
+    pub wallet_settings_id: Option<String>,
+    pub feedback_id: Option<String>,
+    pub notification_id: Option<String>,
+    pub user_operation_hash: Option<String>,
+    pub transaction_hash: Option<String>,
 }
 
 /// Create activity with user and wallet w/ optional custom params
@@ -39,19 +39,16 @@ pub struct CustomParams {
 pub async fn create_activity_with_user_and_wallet(
     db: Database,
     entity: ActivityEntity,
-    procedure: ActivityOperation,
+    operation: ActivityOperation,
     log: Value,
-    user: String,
+    user_id: Option<String>,
     wallet_address: Option<String>,
     custom_params: CustomParams,
 ) -> AppJsonResult<activity::Data> {
     info!("Creating activity at entity: {:?}", entity);
 
-    let mut params = vec![activity::user_id::set(Some(user))];
-
-    if let Some(addr) = wallet_address {
-        params.push(activity::wallet_address::set(Some(addr)));
-    }
+    let mut params =
+        vec![activity::user_id::set(user_id), activity::wallet_address::set(wallet_address)];
 
     if let Some(invite_code_id) = custom_params.invite_code_id {
         params.push(activity::invite_code_id::set(Some(invite_code_id)));
@@ -83,7 +80,7 @@ pub async fn create_activity_with_user_and_wallet(
         params.push(activity::transaction::connect(transaction::hash::equals(transaction_hash)));
     }
 
-    let activity = db.activity().create(entity, procedure, log, params).exec().await?;
+    let activity = db.activity().create(entity, operation, log, params).exec().await?;
 
     Ok(Json::from(activity))
 }
