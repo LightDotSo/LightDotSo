@@ -13,6 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod config;
-pub mod consumer;
-pub mod topics;
+use eyre::Result;
+use lightdotso_tracing::tracing::info;
+use rdkafka::{message::BorrowedMessage, Message};
+
+pub fn unknown_consumer(msg: &BorrowedMessage<'_>) -> Result<()> {
+    // Send webhook if exists
+    info!(
+        "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+        msg.key(),
+        msg.payload_view::<str>(),
+        msg.topic(),
+        msg.partition(),
+        msg.offset(),
+        msg.timestamp()
+    );
+
+    // Convert the payload to a string
+    let payload_opt = msg.payload_view::<str>();
+    info!("payload_opt: {:?}", payload_opt);
+
+    Ok(())
+}

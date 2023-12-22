@@ -45,7 +45,7 @@ impl ConsumerArgs {
 
         let consumer = Consumer::new(self).await;
 
-        consumer.run().await;
+        consumer.run().await?;
 
         Ok(())
     }
