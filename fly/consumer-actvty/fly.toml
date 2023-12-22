@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "lightdotso-consumer-activity"
+app = "lightdotso-consumer-actvty"
 primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
