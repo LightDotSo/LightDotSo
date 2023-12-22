@@ -738,14 +738,17 @@ model Activity {
 }
 
 enum ActivityEntity {
-  USER
   WALLET
+  USER
+
   INVITE_CODE
+  SUPPORT_REQUEST
   WALLET_SETTINGS
+
   FEEDBACK
+  NOTIFICATION
   USER_OPERATION
   TRANSACTION
-  SUPPORT_REQUEST
 }
 
 enum ActivityProcedure {

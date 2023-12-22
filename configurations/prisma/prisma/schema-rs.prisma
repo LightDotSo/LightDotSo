@@ -100,16 +100,36 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
+  walletSettings WalletSettings?
+
   activities         Activity[]
   configurations     Configuration[]
   paymasterOperation PaymasterOperation[]
+  notifications      Notification[]
   supportRequests    SupportRequest[]
   transactions       Transaction[]
   userOperations     UserOperation[]
   users              User[]
   walletBalances     WalletBalance[]
-  walletSettings     WalletSettings?
-  Notification       Notification[]
+}
+
+// -----------------------------------------------------------------------------
+// WalletSettings
+// -----------------------------------------------------------------------------
+
+model WalletSettings {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isEnabledTestnet Boolean @default(false)
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String @unique
+
+  activities Activity[]
+
+  @@index([walletAddress])
 }
 
 // -----------------------------------------------------------------------------
@@ -571,73 +591,6 @@ enum SignatureProcedure {
 }
 
 // -----------------------------------------------------------------------------
-// Activity
-// -----------------------------------------------------------------------------
-
-model Activity {
-  id        String   @id @default(cuid())
-  timestamp DateTime @default(now())
-
-  entity    ActivityEntity
-  procedure ActivityProcedure
-
-  // ---------------------------------------------------------------------------
-  // Relations
-  // ---------------------------------------------------------------------------
-
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
-
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
-
-  // ---------------------------------------------------------------------------
-  // Mutable Relations
-  // ---------------------------------------------------------------------------
-
-  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
-  inviteCodeId String?
-
-  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
-  supportRequestId String?
-
-  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
-  walletSettingsId String?
-
-  // ---------------------------------------------------------------------------
-  // Immutable Relations
-  // ---------------------------------------------------------------------------
-
-  feedback      Feedback?
-  notification  Notification?
-  userOperation UserOperation?
-  transaction   Transaction?
-
-  @@index([inviteCodeId])
-  @@index([supportRequestId])
-  @@index([walletSettingsId])
-  @@index([userId])
-  @@index([walletAddress])
-}
-
-enum ActivityEntity {
-  USER
-  WALLET
-  INVITE_CODE
-  WALLET_SETTINGS
-  FEEDBACK
-  USER_OPERATION
-  TRANSACTION
-  SUPPORT_REQUEST
-}
-
-enum ActivityProcedure {
-  CREATE
-  UPDATE
-  DELETE
-}
-
-// -----------------------------------------------------------------------------
 // Token
 // -----------------------------------------------------------------------------
 
@@ -716,47 +669,70 @@ model WalletBalance {
 }
 
 // -----------------------------------------------------------------------------
-// WalletSettings
+// Activity
 // -----------------------------------------------------------------------------
 
-model WalletSettings {
+model Activity {
   id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  timestamp DateTime @default(now())
 
-  isEnabledTestnet Boolean @default(false)
+  entity    ActivityEntity
+  procedure ActivityProcedure
 
-  wallet        Wallet @relation(fields: [walletAddress], references: [address])
-  walletAddress String @unique
+  // ---------------------------------------------------------------------------
+  // Relations
+  // ---------------------------------------------------------------------------
 
-  activities Activity[]
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
 
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  // ---------------------------------------------------------------------------
+  // Mutable Relations
+  // ---------------------------------------------------------------------------
+
+  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
+  inviteCodeId String?
+
+  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
+  supportRequestId String?
+
+  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
+  walletSettingsId String?
+
+  // ---------------------------------------------------------------------------
+  // Immutable Relations
+  // ---------------------------------------------------------------------------
+
+  feedback      Feedback?
+  notification  Notification?
+  userOperation UserOperation?
+  transaction   Transaction?
+
+  @@index([inviteCodeId])
+  @@index([supportRequestId])
+  @@index([walletSettingsId])
+  @@index([userId])
   @@index([walletAddress])
 }
 
-// -----------------------------------------------------------------------------
-// InviteCode
-// -----------------------------------------------------------------------------
-
-enum InviteCodeStatus {
-  ACTIVE
-  USED
+enum ActivityEntity {
+  USER
+  WALLET
+  INVITE_CODE
+  WALLET_SETTINGS
+  FEEDBACK
+  USER_OPERATION
+  TRANSACTION
+  SUPPORT_REQUEST
 }
 
-model InviteCode {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  code   String           @unique
-  status InviteCodeStatus @default(ACTIVE)
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  activities Activity[]
-
-  @@index([userId])
+enum ActivityProcedure {
+  CREATE
+  UPDATE
+  DELETE
 }
 
 // -----------------------------------------------------------------------------
@@ -803,6 +779,31 @@ model Feedback {
 
   @@index([userId])
   @@index([activityId])
+}
+
+// -----------------------------------------------------------------------------
+// InviteCode
+// -----------------------------------------------------------------------------
+
+enum InviteCodeStatus {
+  ACTIVE
+  USED
+}
+
+model InviteCode {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  code   String           @unique
+  status InviteCodeStatus @default(ACTIVE)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  activities Activity[]
+
+  @@index([userId])
 }
 
 // -----------------------------------------------------------------------------
