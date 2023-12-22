@@ -28,6 +28,10 @@ datasource db {
   relationMode = "prisma"
 }
 
+// -----------------------------------------------------------------------------
+// Account
+// -----------------------------------------------------------------------------
+
 model Account {
   id                 String    @id @default(cuid())
   userId             String
@@ -45,6 +49,10 @@ model Account {
   @@index([userId])
 }
 
+// -----------------------------------------------------------------------------
+// Session
+// -----------------------------------------------------------------------------
+
 model Session {
   id           String   @id @default(cuid())
   userId       String
@@ -59,6 +67,10 @@ model Session {
   @@index([userId])
 }
 
+// -----------------------------------------------------------------------------
+// User
+// -----------------------------------------------------------------------------
+
 model User {
   id            String    @id @default(cuid())
   address       String    @unique
@@ -72,12 +84,17 @@ model User {
   accounts Account[]
   sessions Session[]
 
+  activities    Activity[]
   owners        Owner[]
   wallets       Wallet[]
   feedbacks     Feedback[]
   notifications Notification[]
   inviteCodes   InviteCode[]
 }
+
+// -----------------------------------------------------------------------------
+// VerificationRequest
+// -----------------------------------------------------------------------------
 
 model VerificationRequest {
   id         String   @id @default(cuid())
@@ -90,6 +107,10 @@ model VerificationRequest {
   @@unique([identifier, token])
 }
 
+// -----------------------------------------------------------------------------
+// Wallet
+// -----------------------------------------------------------------------------
+
 model Wallet {
   address        String   @id
   salt           String
@@ -98,16 +119,41 @@ model Wallet {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
+  walletSettings WalletSettings?
+
+  activities         Activity[]
   configurations     Configuration[]
-  notifications      Notification[]
   paymasterOperation PaymasterOperation[]
+  notifications      Notification[]
   supportRequests    SupportRequest[]
   transactions       Transaction[]
   userOperations     UserOperation[]
   users              User[]
   walletBalances     WalletBalance[]
-  walletSettings     WalletSettings?
 }
+
+// -----------------------------------------------------------------------------
+// WalletSettings
+// -----------------------------------------------------------------------------
+
+model WalletSettings {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  isEnabledTestnet Boolean @default(false)
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String @unique
+
+  activities Activity[]
+
+  @@index([walletAddress])
+}
+
+// -----------------------------------------------------------------------------
+// Configuration
+// -----------------------------------------------------------------------------
 
 model Configuration {
   id         String @id @default(cuid())
@@ -121,6 +167,34 @@ model Configuration {
 
   @@unique([address, checkpoint])
 }
+
+// -----------------------------------------------------------------------------
+// Owner
+// -----------------------------------------------------------------------------
+
+model Owner {
+  id        String   @id @default(cuid())
+  address   String
+  weight    BigInt
+  index     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  configuration   Configuration @relation(fields: [configurationId], references: [id])
+  configurationId String
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  signatures Signature[]
+
+  @@index([configurationId])
+  @@index([userId])
+}
+
+// -----------------------------------------------------------------------------
+// Category
+// -----------------------------------------------------------------------------
 
 model Category {
   id     String         @id @default(cuid())
@@ -146,25 +220,9 @@ enum CategoryAction {
   SWAP
 }
 
-model Owner {
-  id        String   @id @default(cuid())
-  address   String
-  weight    BigInt
-  index     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  configuration   Configuration @relation(fields: [configurationId], references: [id])
-  configurationId String
-
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
-
-  signatures Signature[]
-
-  @@index([configurationId])
-  @@index([userId])
-}
+// -----------------------------------------------------------------------------
+// Log
+// -----------------------------------------------------------------------------
 
 /// ethers-rs Log struct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/log.rs#L6-L62
@@ -228,6 +286,10 @@ model LogTopic {
   @@index([id])
 }
 
+// -----------------------------------------------------------------------------
+// Receipt
+// -----------------------------------------------------------------------------
+
 /// ethers-rs TransactionReceipt struct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L388-440
 model Receipt {
@@ -287,6 +349,10 @@ model Receipt {
 
   @@index([transactionHash])
 }
+
+// -----------------------------------------------------------------------------
+// Transaction
+// -----------------------------------------------------------------------------
 
 /// ethers-rs Transactionstruct converted to Prisma model.
 /// From: https://github.com/gakonst/ethers-rs/blob/e8514a7bdbe7e05a16c5e6b994cfc5cab22a1076/ethers-core/src/types/transaction/response.rs#L17-L123
@@ -373,15 +439,22 @@ model Transaction {
 
   receipt Receipt?
 
-  notification   Notification? @relation(fields: [notificationId], references: [id])
-  notificationId String?
+  // ---------------------------------------------------------------------------
+  // Metadata
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   category       Category[]
   userOperations UserOperation[]
 
   @@index([walletAddress])
-  @@index([notificationId])
 }
+
+// -----------------------------------------------------------------------------
+// UserOperation
+// -----------------------------------------------------------------------------
 
 /// From the official implementation at: https://eips.ethereum.org/EIPS/eip-4337
 model UserOperation {
@@ -443,20 +516,34 @@ model UserOperation {
   wallet        Wallet @relation(fields: [walletAddress], references: [address])
   walletAddress String
 
-  notification   Notification? @relation(fields: [notificationId], references: [id])
-  notificationId String?
+  // ---------------------------------------------------------------------------
+  // Metadata
+  // ---------------------------------------------------------------------------
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
   category   Category[]
-  history    History[]
   signatures Signature[]
 
   @@index([chainId, walletAddress])
   @@index([transactionHash])
-  @@index([notificationId])
   @@index([paymasterId])
   @@index([paymasterOperationId])
   @@index([walletAddress])
 }
+
+enum UserOperationStatus {
+  PROPOSED
+  PENDING
+  EXECUTED
+  REVERTED
+  INVALID
+}
+
+// -----------------------------------------------------------------------------
+// Paymaster
+// -----------------------------------------------------------------------------
 
 model Paymaster {
   id        String   @id @default(cuid())
@@ -490,13 +577,9 @@ model PaymasterOperation {
   @@index([sender, senderNonce])
 }
 
-enum UserOperationStatus {
-  PROPOSED
-  PENDING
-  EXECUTED
-  REVERTED
-  INVALID
-}
+// -----------------------------------------------------------------------------
+// Signature
+// -----------------------------------------------------------------------------
 
 model Signature {
   id            String             @id @default(cuid())
@@ -512,12 +595,12 @@ model Signature {
   userOperation     UserOperation @relation(fields: [userOperationHash], references: [hash])
   userOperationHash String        @unique
 
-  notification   Notification? @relation(fields: [notificationId], references: [id])
-  notificationId String?
+  // ---------------------------------------------------------------------------
+  // Metadata
+  // ---------------------------------------------------------------------------
 
   @@index([ownerId])
   @@index([userOperationHash])
-  @@index([notificationId])
 }
 
 enum SignatureProcedure {
@@ -526,72 +609,9 @@ enum SignatureProcedure {
   ERC_1271
 }
 
-model History {
-  id        Int      @id @default(autoincrement())
-  timestamp DateTime @default(now())
-  operation String
-
-  userOperation     UserOperation? @relation(fields: [userOperationHash], references: [hash])
-  userOperationHash String?
-
-  @@index([userOperationHash])
-}
-
-model Notification {
-  id           String    @id @default(cuid())
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  readAt       DateTime?
-  readDeviceId String?
-
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
-
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String?
-
-  signatures     Signature[]
-  transactions   Transaction[]
-  userOperations UserOperation[]
-
-  @@index([walletAddress])
-  @@index([userId])
-}
-
-model Feedback {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  text      String
-  emoji     String
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  @@index([userId])
-}
-
-enum SupportRequestStatus {
-  OPEN
-  ACTIVE
-  CLOSED
-}
-
-model SupportRequest {
-  id          String               @id @default(cuid())
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
-  title       String
-  description String
-  area        String
-  severity    Int
-  status      SupportRequestStatus @default(OPEN)
-
-  wallet        Wallet @relation(fields: [walletAddress], references: [address])
-  walletAddress String
-
-  @@index([walletAddress])
-}
+// -----------------------------------------------------------------------------
+// Token
+// -----------------------------------------------------------------------------
 
 model Token {
   id       String  @id @default(cuid())
@@ -617,6 +637,10 @@ model TokenPrice {
 
   @@index([tokenId])
 }
+
+// -----------------------------------------------------------------------------
+// WalletBalance
+// -----------------------------------------------------------------------------
 
 // The wallet balances are from: https://github.com/llamafolio/llamafolio-api
 // License: GPL-3.0
@@ -663,18 +687,125 @@ model WalletBalance {
   @@index([chainId])
 }
 
-model WalletSettings {
+// -----------------------------------------------------------------------------
+// Activity
+// -----------------------------------------------------------------------------
+
+model Activity {
+  id        String   @id @default(cuid())
+  timestamp DateTime @default(now())
+
+  entity    ActivityEntity
+  procedure ActivityProcedure
+
+  // ---------------------------------------------------------------------------
+  // Relations
+  // ---------------------------------------------------------------------------
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
+
+  // ---------------------------------------------------------------------------
+  // Mutable Relations
+  // ---------------------------------------------------------------------------
+
+  inviteCode   InviteCode? @relation(fields: [inviteCodeId], references: [id])
+  inviteCodeId String?
+
+  supportRequest   SupportRequest? @relation(fields: [supportRequestId], references: [id])
+  supportRequestId String?
+
+  walletSettings   WalletSettings? @relation(fields: [walletSettingsId], references: [id])
+  walletSettingsId String?
+
+  // ---------------------------------------------------------------------------
+  // Immutable Relations
+  // ---------------------------------------------------------------------------
+
+  feedback      Feedback?
+  notification  Notification?
+  userOperation UserOperation?
+  transaction   Transaction?
+
+  @@index([inviteCodeId])
+  @@index([supportRequestId])
+  @@index([walletSettingsId])
+  @@index([userId])
+  @@index([walletAddress])
+}
+
+enum ActivityEntity {
+  WALLET
+  USER
+
+  INVITE_CODE
+  SUPPORT_REQUEST
+  WALLET_SETTINGS
+
+  FEEDBACK
+  NOTIFICATION
+  USER_OPERATION
+  TRANSACTION
+}
+
+enum ActivityProcedure {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+// -----------------------------------------------------------------------------
+// Notification
+// -----------------------------------------------------------------------------
+
+model Notification {
+  id           String    @id @default(cuid())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  readAt       DateTime?
+  readDeviceId String?
+
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
+
+  @@index([activityId])
+  @@index([userId])
+  @@index([walletAddress])
+}
+
+// -----------------------------------------------------------------------------
+// Feedback
+// -----------------------------------------------------------------------------
+
+model Feedback {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  text      String
+  emoji     String
 
-  isEnabledTestnet Boolean @default(false)
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
-  wallet        Wallet @relation(fields: [walletAddress], references: [address])
-  walletAddress String @unique
+  activity   Activity? @relation(fields: [activityId], references: [id])
+  activityId String?   @unique
 
-  @@index([walletAddress])
+  @@index([userId])
+  @@index([activityId])
 }
+
+// -----------------------------------------------------------------------------
+// InviteCode
+// -----------------------------------------------------------------------------
 
 enum InviteCodeStatus {
   ACTIVE
@@ -692,5 +823,35 @@ model InviteCode {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
+  activities Activity[]
+
   @@index([userId])
+}
+
+// -----------------------------------------------------------------------------
+// SupportRequest
+// -----------------------------------------------------------------------------
+
+model SupportRequest {
+  id          String               @id @default(cuid())
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  title       String
+  description String
+  area        String
+  severity    Int
+  status      SupportRequestStatus @default(OPEN)
+
+  wallet        Wallet @relation(fields: [walletAddress], references: [address])
+  walletAddress String
+
+  activities Activity[]
+
+  @@index([walletAddress])
+}
+
+enum SupportRequestStatus {
+  OPEN
+  ACTIVE
+  CLOSED
 }
