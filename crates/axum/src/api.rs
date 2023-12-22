@@ -19,7 +19,7 @@ use crate::{
     admin::admin,
     handle_error,
     routes::{
-        auth, check, configuration, feedback, health, invite_code, metrics, notification,
+        activity, auth, check, configuration, feedback, health, invite_code, metrics, notification,
         paymaster, paymaster_operation, portfolio, signature, support_request, token, token_price,
         transaction, user, user_operation, wallet, wallet_settings,
     },
@@ -62,6 +62,8 @@ use utoipa_swagger_ui::SwaggerUi;
 ))]
 #[openapi(
     components(
+        schemas(activity::error::ActivityError),
+        schemas(activity::types::Activity),
         schemas(auth::error::AuthError),
         schemas(auth::nonce::AuthNonce),
         schemas(auth::session::AuthSession),
@@ -125,6 +127,8 @@ use utoipa_swagger_ui::SwaggerUi;
         schemas(wallet_settings::update::WalletSettingsPostRequestParams),
     ),
     paths(
+        activity::v1_activity_get_handler,
+        activity::v1_activity_list_handler,
         auth::v1_auth_nonce_handler,
         auth::v1_auth_session_handler,
         auth::v1_auth_logout_handler,
@@ -174,6 +178,7 @@ use utoipa_swagger_ui::SwaggerUi;
         wallet_settings::v1_wallet_settings_post_handler,
     ),
     tags(
+        (name = "activity", description = "Activity API"),
         (name = "auth", description = "Auth API"),
         (name = "configuration", description = "Configuration API"),
         (name = "check", description = "Check API"),
@@ -277,6 +282,7 @@ pub async fn start_api_server() -> Result<()> {
 
     // Create the API
     let api = Router::new()
+        .merge(activity::router())
         .merge(auth::router())
         .merge(configuration::router())
         .merge(check::router())

@@ -14,14 +14,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use crate::routes::{
-    auth::error::AuthError, configuration::error::ConfigurationError,
-    feedback::error::FeedbackError, invite_code::error::InviteCodeError,
-    notification::error::NotificationError, paymaster::error::PaymasterError,
-    paymaster_operation::error::PaymasterOperationError, portfolio::error::PortfolioError,
-    signature::error::SignatureError, support_request::error::SupportRequestError,
-    token::error::TokenError, token_price::error::TokenPriceError,
-    transaction::error::TransactionError, user::error::UserError,
-    user_operation::error::UserOperationError, wallet::error::WalletError,
+    activity::error::ActivityError, auth::error::AuthError,
+    configuration::error::ConfigurationError, feedback::error::FeedbackError,
+    invite_code::error::InviteCodeError, notification::error::NotificationError,
+    paymaster::error::PaymasterError, paymaster_operation::error::PaymasterOperationError,
+    portfolio::error::PortfolioError, signature::error::SignatureError,
+    support_request::error::SupportRequestError, token::error::TokenError,
+    token_price::error::TokenPriceError, transaction::error::TransactionError,
+    user::error::UserError, user_operation::error::UserOperationError, wallet::error::WalletError,
     wallet_settings::error::WalletSettingsError,
 };
 use http::StatusCode;
@@ -29,6 +29,7 @@ use http::StatusCode;
 #[allow(clippy::enum_variant_names)]
 #[allow(dead_code)]
 pub(crate) enum RouteError {
+    ActivityError(ActivityError),
     AuthError(AuthError),
     ConfigurationError(ConfigurationError),
     FeedbackError(FeedbackError),
@@ -50,6 +51,15 @@ pub(crate) enum RouteError {
 
 pub trait RouteErrorStatusCodeAndMsg {
     fn error_status_code_and_msg(&self) -> (StatusCode, String);
+}
+
+impl RouteErrorStatusCodeAndMsg for ActivityError {
+    fn error_status_code_and_msg(&self) -> (StatusCode, String) {
+        match self {
+            ActivityError::BadRequest(msg) => (StatusCode::BAD_REQUEST, msg.to_string()),
+            ActivityError::NotFound(msg) => (StatusCode::NOT_FOUND, msg.to_string()),
+        }
+    }
 }
 
 impl RouteErrorStatusCodeAndMsg for AuthError {
@@ -211,6 +221,7 @@ impl RouteErrorStatusCodeAndMsg for WalletError {
 impl RouteErrorStatusCodeAndMsg for RouteError {
     fn error_status_code_and_msg(&self) -> (StatusCode, String) {
         match self {
+            RouteError::ActivityError(err) => err.error_status_code_and_msg(),
             RouteError::AuthError(err) => err.error_status_code_and_msg(),
             RouteError::ConfigurationError(err) => err.error_status_code_and_msg(),
             RouteError::FeedbackError(err) => err.error_status_code_and_msg(),
