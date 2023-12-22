@@ -42,6 +42,7 @@ use prisma_client_rust::{
     serde_json::{self, json},
     Direction, NewClientError,
 };
+use serde_json::Value;
 use std::{collections::HashMap, sync::Arc};
 type Database = Arc<PrismaClient>;
 type AppResult<T> = Result<T, DbError>;
@@ -60,6 +61,7 @@ pub async fn create_activity_with_user_and_wallet(
     db: Database,
     entity: ActivityEntity,
     procedure: ActivityProcedure,
+    log: Value,
     user: String,
     wallet_address: Option<String>,
 ) -> AppJsonResult<activity::Data> {
@@ -71,7 +73,7 @@ pub async fn create_activity_with_user_and_wallet(
         params.push(activity::wallet_address::set(Some(addr)));
     }
 
-    let activity = db.activity().create(entity, procedure, json!({}), params).exec().await?;
+    let activity = db.activity().create(entity, procedure, log, params).exec().await?;
 
     Ok(Json::from(activity))
 }
