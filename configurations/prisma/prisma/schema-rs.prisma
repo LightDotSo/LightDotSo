@@ -683,11 +683,11 @@ model Activity {
   // Relations
   // ---------------------------------------------------------------------------
 
-  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
-  walletAddress String?
-
   user   User?   @relation(fields: [userId], references: [id])
   userId String?
+
+  wallet        Wallet? @relation(fields: [walletAddress], references: [address])
+  walletAddress String?
 
   // ---------------------------------------------------------------------------
   // Mutable Relations
@@ -719,14 +719,17 @@ model Activity {
 }
 
 enum ActivityEntity {
-  USER
   WALLET
+  USER
+
   INVITE_CODE
+  SUPPORT_REQUEST
   WALLET_SETTINGS
+
   FEEDBACK
+  NOTIFICATION
   USER_OPERATION
   TRANSACTION
-  SUPPORT_REQUEST
 }
 
 enum ActivityProcedure {
