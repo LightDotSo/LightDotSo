@@ -158,7 +158,7 @@ pub(crate) struct UserOperationCreateSignature {
 #[autometrics]
 pub(crate) async fn v1_user_operation_post_handler(
     post_query: Query<PostQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<UserOperationPostRequestParams>,
 ) -> AppJsonResult<UserOperation> {
     // Get the post query.
@@ -214,7 +214,7 @@ pub(crate) async fn v1_user_operation_post_handler(
 
     // Get the owner from the database.
     let owner =
-        client.client.owner().find_unique(owner::id::equals(sig.clone().owner_id)).exec().await?;
+        state.client.owner().find_unique(owner::id::equals(sig.clone().owner_id)).exec().await?;
     info!(?owner);
 
     // If the owner is not found, return a 404.
@@ -230,7 +230,7 @@ pub(crate) async fn v1_user_operation_post_handler(
     }
 
     // Get the wallet from the database.
-    let wallet = client
+    let wallet = state
         .client
         .wallet()
         .find_unique(wallet::address::equals(user_operation.clone().sender))
@@ -242,7 +242,7 @@ pub(crate) async fn v1_user_operation_post_handler(
     let wallet = wallet.ok_or(AppError::NotFound)?;
 
     // Get the current configuration for the wallet.
-    let configuration = client
+    let configuration = state
         .client
         .configuration()
         .find_first(vec![configuration::address::equals(user_operation.clone().sender)])
@@ -275,8 +275,7 @@ pub(crate) async fn v1_user_operation_post_handler(
         let (decded_paymaster_address, _, valid_after, _msg) =
             decode_paymaster_and_data(paymaster_data)?;
 
-        let paymaster = client
-            .clone()
+        let paymaster = state
             .client
             .paymaster()
             .upsert(
@@ -293,8 +292,7 @@ pub(crate) async fn v1_user_operation_post_handler(
             .push(user_operation::paymaster::connect(paymaster::id::equals(paymaster.clone().id)));
 
         // This could potentially not found (not our paymaster), so we should handle it.
-        let paymaster_operation = client
-            .clone()
+        let paymaster_operation = state
             .client
             .paymaster_operation()
             .find_unique(paymaster_operation::valid_after_paymaster_id(
@@ -318,7 +316,7 @@ pub(crate) async fn v1_user_operation_post_handler(
     }
 
     // Create the user operation in the database w/ the sig.
-    let user_operation: Result<lightdotso_prisma::user_operation::Data> = client
+    let user_operation: Result<lightdotso_prisma::user_operation::Data> = state
         .client
         ._transaction()
         .run(|client| async move {

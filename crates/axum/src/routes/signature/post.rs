@@ -82,7 +82,7 @@ pub struct SignaturePostRequestParams {
 #[autometrics]
 pub(crate) async fn v1_signature_post_handler(
     post_query: Query<PostQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<SignaturePostRequestParams>,
 ) -> AppJsonResult<Signature> {
     // Get the post query.
@@ -105,7 +105,7 @@ pub(crate) async fn v1_signature_post_handler(
     let sig = params.signature;
 
     // Create the signature the database.
-    let signature = client
+    let signature = state
         .client
         .signature()
         .create(

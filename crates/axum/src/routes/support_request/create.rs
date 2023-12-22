@@ -64,7 +64,7 @@ pub struct SupportRequestPostRequestParams {
 #[autometrics]
 pub(crate) async fn v1_support_request_post_handler(
     post_query: Query<PostQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<SupportRequestPostRequestParams>,
 ) -> AppJsonResult<SupportRequest> {
     // Get the post query.
@@ -77,7 +77,7 @@ pub(crate) async fn v1_support_request_post_handler(
     let support_request = params.support_request;
 
     // Create the support_request the database.
-    let support_request = client
+    let support_request = state
         .client
         .support_request()
         .create(

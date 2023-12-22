@@ -34,8 +34,11 @@ use eyre::{eyre, Result};
 use jsonrpsee::core::RpcResult;
 use lightdotso_contracts::constants::LIGHT_PAYMASTER_ADDRESSES;
 // use lightdotso_contracts::{constants::LIGHT_PAYMASTER_ADDRESSES, paymaster::get_paymaster};
-use lightdotso_db::db::{
-    create_client, create_paymaster_operation, get_most_recent_paymaster_operation_with_sender,
+use lightdotso_db::{
+    db::create_client,
+    models::paymaster_operation::{
+        create_paymaster_operation, get_most_recent_paymaster_operation_with_sender,
+    },
 };
 use lightdotso_gas::types::GasEstimation;
 use lightdotso_jsonrpsee::{

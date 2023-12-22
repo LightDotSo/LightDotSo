@@ -63,7 +63,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_configuration_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Configuration> {
     // Get the get query.
     let Query(query) = get_query;
@@ -78,7 +78,7 @@ pub(crate) async fn v1_configuration_get_handler(
     // Get the configurations from the database.
     let configuration = match query.checkpoint {
         Some(checkpoint) => {
-            client
+            state
                 .client
                 .configuration()
                 .find_unique(configuration::address_checkpoint(checksum_address, checkpoint))
@@ -87,7 +87,7 @@ pub(crate) async fn v1_configuration_get_handler(
                 .await?
         }
         None => {
-            client
+            state
                 .client
                 .configuration()
                 .find_first(vec![configuration::address::equals(checksum_address)])

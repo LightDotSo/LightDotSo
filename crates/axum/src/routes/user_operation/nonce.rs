@@ -72,7 +72,7 @@ pub(crate) struct UserOperationNonce {
 #[autometrics]
 pub(crate) async fn v1_user_operation_nonce_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<UserOperationNonce> {
     // Get the get query.
     let Query(query) = get_query;
@@ -81,7 +81,7 @@ pub(crate) async fn v1_user_operation_nonce_handler(
     let address: H160 = query.address.parse()?;
 
     // Get the user operations from the database.
-    let user_operation = client
+    let user_operation = state
         .client
         .user_operation()
         .find_first(vec![

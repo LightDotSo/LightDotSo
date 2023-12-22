@@ -59,7 +59,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_transaction_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Transaction> {
     // Get the get query.
     let Query(query) = get_query;
@@ -67,7 +67,7 @@ pub(crate) async fn v1_transaction_get_handler(
     info!("Get transaction for address: {:?}", query);
 
     // Get the transactions from the database.
-    let transaction = client
+    let transaction = state
         .client
         .transaction()
         .find_unique(transaction::hash::equals(query.transaction_hash))

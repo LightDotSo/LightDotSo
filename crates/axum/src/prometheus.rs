@@ -32,7 +32,7 @@ type Client = hyper::client::Client<HttpsConnector<HttpConnector>, Body>;
 #[autometrics]
 async fn handler(
     Path(path): Path<String>,
-    State(client): State<Client>,
+    State(state): State<Client>,
     mut req: Request<Body>,
 ) -> Response<Body> {
     let org_slug = "lightdotso";
@@ -50,7 +50,7 @@ async fn handler(
 
     *req.headers_mut() = headers;
 
-    client.request(req).await.unwrap()
+    state.request(req).await.unwrap()
 }
 
 #[autometrics]

@@ -60,7 +60,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_wallet_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Wallet> {
     // Get the get query.
     let Query(query) = get_query;
@@ -69,12 +69,8 @@ pub(crate) async fn v1_wallet_get_handler(
     let checksum_address = to_checksum(&parsed_query_address, None);
 
     // Get the wallets from the database.
-    let wallet = client
-        .client
-        .wallet()
-        .find_unique(wallet::address::equals(checksum_address))
-        .exec()
-        .await?;
+    let wallet =
+        state.client.wallet().find_unique(wallet::address::equals(checksum_address)).exec().await?;
 
     // If the wallet is not found, return a 404.
     let wallet = wallet

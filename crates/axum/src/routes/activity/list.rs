@@ -13,15 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::Signature;
+use super::types::Activity;
 use crate::{result::AppJsonResult, state::AppState};
 use autometrics::autometrics;
-use axum::{
-    extract::{Query, State},
-    Json,
-};
-use lightdotso_prisma::signature;
-use prisma_client_rust::Direction;
+use axum::extract::{Query, State};
+use axum::Json;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -33,59 +29,48 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct ListQuery {
-    /// The offset of the first signature to return.
+    /// The offset of the first activity to return.
     pub offset: Option<i64>,
-    /// The maximum number of signatures to return.
+    /// The maximum number of activities to return.
     pub limit: Option<i64>,
-    /// The user operation hash to filter by.
-    pub user_operation_hash: Option<String>,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Returns a list of signatures.
+/// Returns a list of activities.
 #[utoipa::path(
         get,
-        path = "/signature/list",
+        path = "/activity/list",
         params(
             ListQuery
         ),
         responses(
-            (status = 200, description = "Signatures returned successfully", body = [Signature]),
-            (status = 500, description = "Signature bad request", body = SignatureError),
+            (status = 200, description = "Activities returned successfully", body = [Activity]),
+            (status = 500, description = "Activity bad request", body = ActivityError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_signature_list_handler(
+pub(crate) async fn v1_activity_list_handler(
     list_query: Query<ListQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<Vec<Signature>> {
+) -> AppJsonResult<Vec<Activity>> {
     // Get the list query.
     let Query(query) = list_query;
 
-    // Construct the query parameters.
-    let query_params = match query.user_operation_hash {
-        Some(user_operation_hash) => {
-            vec![signature::user_operation_hash::equals(user_operation_hash)]
-        }
-        None => vec![],
-    };
-
-    // Get the signatures from the database.
-    let signatures = state
+    // Get the activities from the database.
+    let activities = state
         .client
-        .signature()
-        .find_many(query_params)
-        .order_by(signature::created_at::order(Direction::Desc))
+        .activity()
+        .find_many(vec![])
         .skip(query.offset.unwrap_or(0))
         .take(query.limit.unwrap_or(10))
         .exec()
         .await?;
 
-    // Change the signatures to the format that the API expects.
-    let signatures: Vec<Signature> = signatures.into_iter().map(Signature::from).collect();
+    // Change the activities to the format that the API expects.
+    let activities: Vec<Activity> = activities.into_iter().map(Activity::from).collect();
 
-    Ok(Json::from(signatures))
+    Ok(Json::from(activities))
 }

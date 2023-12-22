@@ -13,24 +13,25 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod activity;
-pub(crate) mod auth;
-pub(crate) mod check;
-pub(crate) mod configuration;
-pub(crate) mod feedback;
-pub(crate) mod health;
-pub(crate) mod invite_code;
-pub(crate) mod metrics;
-pub(crate) mod notification;
-pub(crate) mod paymaster;
-pub(crate) mod paymaster_operation;
-pub(crate) mod portfolio;
-pub(crate) mod signature;
-pub(crate) mod support_request;
-pub(crate) mod token;
-pub(crate) mod token_price;
-pub(crate) mod transaction;
-pub(crate) mod user;
-pub(crate) mod user_operation;
-pub(crate) mod wallet;
-pub(crate) mod wallet_settings;
+use lightdotso_prisma::activity;
+use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
+
+// -----------------------------------------------------------------------------
+// Types
+// -----------------------------------------------------------------------------
+
+/// Activity root type.
+#[derive(Serialize, Deserialize, ToSchema, Clone)]
+#[serde(rename_all = "snake_case")]
+pub(crate) struct Activity {
+    /// The id of the activity.
+    id: String,
+}
+
+/// Implement From<activity::Data> for Activity.
+impl From<activity::Data> for Activity {
+    fn from(activity: activity::Data) -> Self {
+        Self { id: activity.id }
+    }
+}

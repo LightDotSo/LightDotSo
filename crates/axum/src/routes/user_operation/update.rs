@@ -59,7 +59,7 @@ pub struct PostQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_update_handler(
     post_query: Query<PostQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<UserOperationSuccess> {
     // Get the get query.
     let Query(query) = post_query;
@@ -67,7 +67,7 @@ pub(crate) async fn v1_user_operation_update_handler(
     let address: H160 = query.address.parse()?;
 
     // Get the user operations from the database.
-    let user_operation = client
+    let user_operation = state
         .client
         .user_operation()
         .find_many(vec![
@@ -90,8 +90,7 @@ pub(crate) async fn v1_user_operation_update_handler(
     // For each user operation w/ update many the matching chainId where nonce is equal to or lower
     // than change the status to Invalid.
     for op in unique_user_operations {
-        let _ = client
-            .clone()
+        let _ = state
             .client
             .user_operation()
             .update_many(

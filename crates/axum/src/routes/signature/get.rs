@@ -58,7 +58,7 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_signature_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<Signature> {
     // Get the get query.
     let Query(query) = get_query;
@@ -68,7 +68,7 @@ pub(crate) async fn v1_signature_get_handler(
     let user_operation_hash = query.user_operation_hash;
 
     // Get the signatures from the database.
-    let signature = client
+    let signature = state
         .client
         .signature()
         .find_unique(signature::user_operation_hash::equals(user_operation_hash))

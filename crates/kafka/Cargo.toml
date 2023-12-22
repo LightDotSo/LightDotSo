@@ -11,6 +11,8 @@
 [dependencies]
   eyre = { workspace = true }
   lazy_static = { workspace = true }
+  lightdotso-db = { workspace = true }
+  lightdotso-prisma = { workspace = true }
   lightdotso-tracing = { workspace = true }
   rdkafka = { workspace = true }
   serde_json = { workspace = true }

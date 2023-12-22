@@ -13,9 +13,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use super::types::WalletSettings;
+use super::types::Activity;
 use crate::{
-    error::RouteError, result::AppJsonResult, routes::wallet_settings::error::WalletSettingsError,
+    error::RouteError, result::AppJsonResult, routes::activity::error::ActivityError,
     state::AppState,
 };
 use autometrics::autometrics;
@@ -23,9 +23,7 @@ use axum::{
     extract::{Query, State},
     Json,
 };
-use ethers_main::{types::H160, utils::to_checksum};
-use lightdotso_prisma::wallet_settings;
-use lightdotso_tracing::tracing::info;
+use lightdotso_prisma::activity;
 use serde::Deserialize;
 use utoipa::IntoParams;
 
@@ -37,54 +35,45 @@ use utoipa::IntoParams;
 #[serde(rename_all = "snake_case")]
 #[into_params(parameter_in = Query)]
 pub struct GetQuery {
-    /// The address of the wallet settings.
-    pub address: String,
+    /// The id of the activity.
+    pub id: String,
 }
 
 // -----------------------------------------------------------------------------
 // Handler
 // -----------------------------------------------------------------------------
 
-/// Get a wallet_settings
+/// Get a activity
 #[utoipa::path(
         get,
-        path = "/wallet/settings/get",
+        path = "/activity/get",
         params(
             GetQuery
         ),
         responses(
-            (status = 200, description = "WalletSettings returned successfully", body = WalletSettings),
-            (status = 404, description = "WalletSettings not found", body = WalletSettingsError),
+            (status = 200, description = "Activity returned successfully", body = Activity),
+            (status = 404, description = "Activity not found", body = ActivityError),
         )
     )]
 #[autometrics]
-pub(crate) async fn v1_wallet_settings_get_handler(
+pub(crate) async fn v1_activity_get_handler(
     get_query: Query<GetQuery>,
     State(state): State<AppState>,
-) -> AppJsonResult<WalletSettings> {
+) -> AppJsonResult<Activity> {
     // Get the get query.
     let Query(query) = get_query;
 
-    let parsed_query_address: H160 = query.address.parse()?;
-    let checksum_address = to_checksum(&parsed_query_address, None);
+    // Get the activitys from the database.
+    let activity =
+        state.client.activity().find_unique(activity::id::equals(query.id)).exec().await?;
 
-    info!("Get wallet_settings for address: {:?}", checksum_address);
+    // If the activity is not found, return a 404.
+    let activity = activity.ok_or(RouteError::ActivityError(ActivityError::NotFound(
+        "Activity not found".to_string(),
+    )))?;
 
-    // Get the signatures from the database.
-    let wallet_settings = state
-        .client
-        .wallet_settings()
-        .find_unique(wallet_settings::wallet_address::equals(checksum_address))
-        .exec()
-        .await?;
+    // Change the activity to the format that the API expects.
+    let activity: Activity = activity.into();
 
-    // If the wallet_settings is not found, return a 404.
-    let wallet_settings = wallet_settings.ok_or(RouteError::WalletSettingsError(
-        WalletSettingsError::NotFound("Wallet settings not found".to_string()),
-    ))?;
-
-    // Change the wallet_settings to the format that the API expects.
-    let wallet_settings: WalletSettings = wallet_settings.into();
-
-    Ok(Json::from(wallet_settings))
+    Ok(Json::from(activity))
 }

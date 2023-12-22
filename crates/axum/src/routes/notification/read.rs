@@ -55,14 +55,14 @@ pub(crate) struct NotificationReadRequest {
     )]
 #[autometrics]
 pub(crate) async fn v1_notification_read_handler(
-    State(client): State<AppState>,
+    State(state): State<AppState>,
     Json(params): Json<NotificationReadRequestParams>,
 ) -> AppJsonResult<i64> {
     // Get the notification from the post body.
     let notifications = params.notifications;
 
     // Create the notification the database.
-    let notifications = client
+    let notifications = state
         .client
         .notification()
         .update_many(

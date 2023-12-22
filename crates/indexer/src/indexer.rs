@@ -36,9 +36,10 @@ use ethers_providers::StreamExt;
 use eyre::eyre;
 use lightdotso_constants::{FACTORY_ADDRESSES, RUNNER_CHAIN_IDS, SLEEP_CHAIN_IDS};
 use lightdotso_contracts::provider::get_provider;
-use lightdotso_db::{db::upsert_transaction_with_log_receipt, error::DbError};
+use lightdotso_db::{error::DbError, models::transaction::upsert_transaction_with_log_receipt};
 use lightdotso_kafka::{
-    get_producer, produce_transaction_message, rdkafka::producer::FutureProducer,
+    get_producer, rdkafka::producer::FutureProducer,
+    topics::transaction::produce_transaction_message,
 };
 use lightdotso_prisma::PrismaClient;
 use lightdotso_redis::{

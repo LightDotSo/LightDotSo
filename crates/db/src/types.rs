@@ -13,24 +13,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pub(crate) mod activity;
-pub(crate) mod auth;
-pub(crate) mod check;
-pub(crate) mod configuration;
-pub(crate) mod feedback;
-pub(crate) mod health;
-pub(crate) mod invite_code;
-pub(crate) mod metrics;
-pub(crate) mod notification;
-pub(crate) mod paymaster;
-pub(crate) mod paymaster_operation;
-pub(crate) mod portfolio;
-pub(crate) mod signature;
-pub(crate) mod support_request;
-pub(crate) mod token;
-pub(crate) mod token_price;
-pub(crate) mod transaction;
-pub(crate) mod user;
-pub(crate) mod user_operation;
-pub(crate) mod wallet;
-pub(crate) mod wallet_settings;
+use crate::error::DbError;
+use axum::Json;
+use lightdotso_prisma::PrismaClient;
+use std::sync::Arc;
+
+pub type Database = Arc<PrismaClient>;
+pub type AppResult<T> = Result<T, DbError>;
+pub type AppJsonResult<T> = AppResult<Json<T>>;

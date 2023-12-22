@@ -58,14 +58,14 @@ pub struct GetQuery {
 #[autometrics]
 pub(crate) async fn v1_user_operation_get_handler(
     get_query: Query<GetQuery>,
-    State(client): State<AppState>,
+    State(state): State<AppState>,
 ) -> AppJsonResult<UserOperation> {
     // Get the get query.
     let Query(query) = get_query;
     let user_operation_hash = query.user_operation_hash.clone();
 
     // Get the user operations from the database.
-    let user_operation = client
+    let user_operation = state
         .client
         .user_operation()
         .find_unique(user_operation::hash::equals(query.user_operation_hash))
