@@ -51,7 +51,6 @@ export {
   CardContent,
 } from "./src/components/ui/card";
 export {
-  type CarouselApi,
   Carousel,
   CarouselContent,
   CarouselItem,
