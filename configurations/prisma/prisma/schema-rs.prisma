@@ -678,6 +678,7 @@ model Activity {
 
   entity    ActivityEntity
   procedure ActivityProcedure
+  log       Json
 
   // ---------------------------------------------------------------------------
   // Relations
