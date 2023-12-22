@@ -14,11 +14,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 use eyre::Result;
-use lightdotso_notifier::notifier::Notifier;
+use lightdotso_prisma::PrismaClient;
 use lightdotso_tracing::tracing::info;
 use rdkafka::{message::BorrowedMessage, Message};
+use std::sync::Arc;
 
-pub async fn notification_consumer(msg: &BorrowedMessage<'_>, notifier: &Notifier) -> Result<()> {
+pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>) -> Result<()> {
     // Send webhook if exists
     info!(
         "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
@@ -30,11 +31,24 @@ pub async fn notification_consumer(msg: &BorrowedMessage<'_>, notifier: &Notifie
         msg.timestamp()
     );
 
+    // Convert the key to a string
+    let key = msg.key_view::<str>();
+
     // Convert the payload to a string
     let payload_opt = msg.payload_view::<str>();
     info!("payload_opt: {:?}", payload_opt);
 
-    notifier.run().await;
+    // If the key is not empty, then we can parse it
+    if let Some(Ok(key)) = key {
+        match key {
+            "transaction" => {
+                db.transaction().find_many(vec![]);
+            }
+            _ => {
+                info!("Unknown key: {}", key);
+            }
+        }
+    }
 
     Ok(())
 }
