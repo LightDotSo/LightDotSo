@@ -17,7 +17,6 @@ pub(crate) mod create;
 pub(crate) mod error;
 pub(crate) mod get;
 pub(crate) mod list;
-pub(crate) mod tab;
 pub(crate) mod types;
 pub(crate) mod update;
 
@@ -34,7 +33,6 @@ pub(crate) use list::{
     __path_v1_wallet_list_count_handler, __path_v1_wallet_list_handler,
     v1_wallet_list_count_handler, v1_wallet_list_handler,
 };
-pub(crate) use tab::{__path_v1_wallet_tab_handler, v1_wallet_tab_handler};
 pub(crate) use update::{__path_v1_wallet_update_handler, v1_wallet_update_handler};
 
 // -----------------------------------------------------------------------------
@@ -45,7 +43,6 @@ pub(crate) use update::{__path_v1_wallet_update_handler, v1_wallet_update_handle
 pub(crate) fn router() -> Router<AppState> {
     Router::new()
         .route("/wallet/get", get(v1_wallet_get_handler))
-        .route("/wallet/tab", get(v1_wallet_tab_handler))
         .route("/wallet/list", get(v1_wallet_list_handler))
         .route("/wallet/list/count", get(v1_wallet_list_count_handler))
         .route("/wallet/create", post(v1_wallet_post_handler))
