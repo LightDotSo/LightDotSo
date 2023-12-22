@@ -144,6 +144,7 @@ pub(crate) async fn v1_wallet_update_handler(
         .exec()
         .await?;
 
+    // Produce an activity message.
     produce_activity_message(
         state.producer.clone(),
         ActivityEntity::Wallet,
