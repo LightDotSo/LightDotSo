@@ -96,56 +96,61 @@ pub async fn activity_consumer(msg: &BorrowedMessage<'_>, db: Arc<PrismaClient>)
                     None => return Err(eyre!("log field is required")),
                 };
 
+                let params = match payload.get("params") {
+                    Some(params) => params,
+                    None => return Err(eyre!("params field is required")),
+                };
+
                 // Try to parse the `user_id` as String, if error, then set it to None
-                let user_id = payload
+                let user_id = params
                     .get("user_id")
                     .and_then(|user_id| user_id.as_str())
                     .map(|user_id| user_id.to_string());
 
                 // Try to parse the `wallet_address` as String, if error, then set it to None
-                let wallet_address = payload
+                let wallet_address = params
                     .get("wallet_address")
                     .and_then(|wallet_address| wallet_address.as_str())
                     .map(|wallet_address| wallet_address.to_string());
 
                 // Try to parse the `invite_code_id` as String, if error, then set it to None
-                let invite_code_id = payload
+                let invite_code_id = params
                     .get("invite_code_id")
                     .and_then(|invite_code_id| invite_code_id.as_str())
                     .map(|invite_code_id| invite_code_id.to_string());
 
                 // Try to parse the `support_request_id` as String, if error, then set it to None
-                let support_request_id = payload
+                let support_request_id = params
                     .get("support_request_id")
                     .and_then(|support_request_id| support_request_id.as_str())
                     .map(|support_request_id| support_request_id.to_string());
 
                 // Try to parse the `wallet_settings_id` as String, if error, then set it to None
-                let wallet_settings_id = payload
+                let wallet_settings_id = params
                     .get("wallet_settings_id")
                     .and_then(|wallet_settings_id| wallet_settings_id.as_str())
                     .map(|wallet_settings_id| wallet_settings_id.to_string());
 
                 // Try to parse the `feedback_id` as String, if error, then set it to None
-                let feedback_id = payload
+                let feedback_id = params
                     .get("feedback_id")
                     .and_then(|feedback_id| feedback_id.as_str())
                     .map(|feedback_id| feedback_id.to_string());
 
                 // Try to parse the `notification_id` as String, if error, then set it to None
-                let notification_id = payload
+                let notification_id = params
                     .get("notification_id")
                     .and_then(|notification_id| notification_id.as_str())
                     .map(|notification_id| notification_id.to_string());
 
                 // Try to parse the `user_operation_hash` as String, if error, then set it to None
-                let user_operation_hash = payload
+                let user_operation_hash = params
                     .get("user_operation_hash")
                     .and_then(|user_operation_hash| user_operation_hash.as_str())
                     .map(|user_operation_hash| user_operation_hash.to_string());
 
                 // Try to parse the `transaction_hash` as String, if error, then set it to None
-                let transaction_hash = payload
+                let transaction_hash = params
                     .get("transaction_hash")
                     .and_then(|transaction_hash| transaction_hash.as_str())
                     .map(|transaction_hash| transaction_hash.to_string());

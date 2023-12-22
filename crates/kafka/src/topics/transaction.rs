@@ -30,7 +30,7 @@ pub async fn produce_transaction_message(
     producer: Arc<FutureProducer>,
     message: &str,
 ) -> Result<()> {
-    produce_message(producer, TRANSACTION.as_str(), message).await?;
+    produce_message(producer, TRANSACTION.as_str(), message, None).await?;
     Ok(())
 }
 
@@ -39,7 +39,7 @@ pub async fn produce_retry_transaction_message(
     producer: Arc<FutureProducer>,
     message: &str,
 ) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION.as_str(), message).await?;
+    produce_message(producer, RETRY_TRANSACTION.as_str(), message, None).await?;
     Ok(())
 }
 
@@ -48,7 +48,7 @@ pub async fn produce_retry_transaction_0_message(
     producer: Arc<FutureProducer>,
     message: &str,
 ) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION_0.as_str(), message).await?;
+    produce_message(producer, RETRY_TRANSACTION_0.as_str(), message, None).await?;
     Ok(())
 }
 
@@ -57,7 +57,7 @@ pub async fn produce_retry_transaction_1_message(
     producer: Arc<FutureProducer>,
     message: &str,
 ) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION_1.as_str(), message).await?;
+    produce_message(producer, RETRY_TRANSACTION_1.as_str(), message, None).await?;
     Ok(())
 }
 
@@ -66,7 +66,7 @@ pub async fn produce_retry_transaction_2_message(
     producer: Arc<FutureProducer>,
     message: &str,
 ) -> Result<()> {
-    produce_message(producer, RETRY_TRANSACTION_2.as_str(), message).await?;
+    produce_message(producer, RETRY_TRANSACTION_2.as_str(), message, None).await?;
     Ok(())
 }
 
@@ -75,6 +75,6 @@ pub async fn produce_error_transaction_message(
     producer: Arc<FutureProducer>,
     message: &str,
 ) -> Result<()> {
-    produce_message(producer, ERROR_TRANSACTION.as_str(), message).await?;
+    produce_message(producer, ERROR_TRANSACTION.as_str(), message, None).await?;
     Ok(())
 }

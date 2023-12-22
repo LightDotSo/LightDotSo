@@ -21,9 +21,10 @@ use lightdotso_prisma::{
     ActivityOperation,
 };
 use lightdotso_tracing::tracing::info;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct CustomParams {
     pub invite_code_id: Option<String>,
     pub support_request_id: Option<String>,

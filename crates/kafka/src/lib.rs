@@ -92,8 +92,17 @@ pub async fn produce_message(
     producer: Arc<FutureProducer>,
     topic: &str,
     message: &str,
+    key: Option<&str>,
 ) -> Result<()> {
-    let payload = message.to_string();
-    let _ = producer.send::<Vec<u8>, _, _>(FutureRecord::to(topic).payload(&payload), None).await;
+    let payload = message.as_bytes();
+    let topic = topic.to_string();
+
+    let record = match key {
+        Some(k) => FutureRecord::to(&topic).payload(payload).key(k.as_bytes()),
+        None => FutureRecord::to(&topic).payload(payload),
+    };
+
+    producer.send::<_, _, _>(record, None).await.map_err(|(e, _)| e)?;
+
     Ok(())
 }

@@ -6156,6 +6156,7 @@ dependencies = [
  "lightdotso-prisma",
  "lightdotso-tracing",
  "prisma-client-rust",
+ "serde",
  "serde_json",
  "tokio",
 ]
@@ -6262,6 +6263,8 @@ version = "0.1.0"
 dependencies = [
  "eyre",
  "lazy_static",
+ "lightdotso-db",
+ "lightdotso-prisma",
  "lightdotso-tracing",
  "rdkafka",
  "serde_json",
