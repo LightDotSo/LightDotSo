@@ -28,6 +28,11 @@ pub struct ConsumerArgs {
     #[arg(long, short, num_args = 1.., value_delimiter = ',')]
     #[clap(long, env = "KAFKA_TOPICS")]
     pub topics: Vec<String>,
+    /// The number of consumers to spawn.
+    /// Defaults to 4x the number of CPUs.
+    #[arg(long, short, default_value = "4")]
+    #[clap(long, env = "CONSUMER_CPU_MULTIPLIER")]
+    pub cpu_multiplier: usize,
 }
 
 impl ConsumerArgs {
@@ -40,7 +45,7 @@ impl ConsumerArgs {
 
         let consumer = Consumer::new(self).await;
 
-        consumer.run().await;
+        consumer.run().await?;
 
         Ok(())
     }

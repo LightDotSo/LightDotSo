@@ -15,6 +15,11 @@
 
 use lazy_static::lazy_static;
 
+// The activity namesapce
+lazy_static! {
+    pub static ref ACTIVITY: String = "activity".to_string();
+}
+
 // The transaction namesapce
 lazy_static! {
     pub static ref TRANSACTION: String = "transaction".to_string();

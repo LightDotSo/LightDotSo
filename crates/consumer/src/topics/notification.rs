@@ -13,28 +13,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-use crate::notifier::Notifier;
-use clap::Parser;
 use eyre::Result;
+use lightdotso_notifier::notifier::Notifier;
 use lightdotso_tracing::tracing::info;
+use rdkafka::{message::BorrowedMessage, Message};
 
-#[derive(Debug, Clone, Parser, Default)]
-pub struct NotifierArgs {
-    /// The webhook endpoint to connect to.
-    #[clap(long, env = "DISCORD_WEBHOOK")]
-    pub webhook: Option<String>,
-}
+pub async fn notification_consumer(msg: &BorrowedMessage<'_>, notifier: &Notifier) -> Result<()> {
+    // Send webhook if exists
+    info!(
+        "key: '{:?}', payload: '{:?}',  topic: {}, partition: {}, offset: {}, timestamp: {:?}",
+        msg.key(),
+        msg.payload_view::<str>(),
+        msg.topic(),
+        msg.partition(),
+        msg.offset(),
+        msg.timestamp()
+    );
 
-impl NotifierArgs {
-    pub async fn create(&self) -> Result<Notifier> {
-        // Add info
-        info!("NotifierArgs run, starting...");
+    // Convert the payload to a string
+    let payload_opt = msg.payload_view::<str>();
+    info!("payload_opt: {:?}", payload_opt);
 
-        // Print the config
-        info!("Config: {:?}", self);
+    notifier.run().await;
 
-        let notifier = Notifier::new(self).await;
-
-        Ok(notifier)
-    }
+    Ok(())
 }
