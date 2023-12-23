@@ -32,10 +32,15 @@ pub fn get_pusher() -> Result<Pusher<HttpsConnector<HttpConnector>>> {
     let client: client::Client<_, hyper::Body> = client::Client::builder().build(https);
 
     // Create a Pusher provider
-    let pusher = PusherBuilder::new_with_client(client, "333", "PUSHER_KEY", "PUSHER_SECRET")
-        .host("soketi.light.so")
-        .secure()
-        .finalize();
+    let pusher = PusherBuilder::new_with_client(
+        client,
+        &std::env::var("SOKETI_DEFAULT_APP_ID")?,
+        &std::env::var("SOKETI_DEFAULT_APP_KEY")?,
+        "PUSHER_SECRET",
+    )
+    .host("soketi.light.so")
+    .secure()
+    .finalize();
 
     Ok(pusher)
 }

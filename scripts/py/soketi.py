@@ -10,7 +10,7 @@ def realtime_client():
     return pusher.Pusher(
         app_id=os.getenv("SOKETI_DEFAULT_APP_ID"),
         key=os.getenv("SOKETI_DEFAULT_APP_KEY"),
-        secret=os.getenv("SOKETI_DEFAULT_APP_SECRET"),
+        secret="PUSHER_SECRET",
         host="soketi.light.so",
         port=443,
         ssl=True,

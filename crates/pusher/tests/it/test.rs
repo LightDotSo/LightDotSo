@@ -19,6 +19,8 @@ use std::collections::HashMap;
 
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_test() -> Result<()> {
+    let _ = dotenvy::dotenv();
+
     let pusher = get_pusher()?;
 
     let mut hash_map = HashMap::new();
