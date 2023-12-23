@@ -4,7 +4,7 @@ import pusher
 def realtime_client():
     return pusher.Pusher(
         app_id="333",
-        key="PUSHER_KEY",
+        key="light",
         secret="PUSHER_SECRET",
         host="soketi.light.so",
         port=443,
