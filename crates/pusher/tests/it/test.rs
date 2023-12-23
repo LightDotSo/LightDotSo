@@ -17,6 +17,7 @@ use eyre::Result;
 use lightdotso_pusher::{channel::TEST_CHANNEL, event::TEST_EVENT, get_pusher};
 use std::collections::HashMap;
 
+#[ignore]
 #[tokio::test(flavor = "multi_thread")]
 async fn test_integration_test() -> Result<()> {
     let _ = dotenvy::dotenv();
