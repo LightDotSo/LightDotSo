@@ -16,8 +16,6 @@
 "use client";
 
 import {
-  Button,
-  buttonVariants,
   Form,
   FormControl,
   FormDescription,
@@ -28,13 +26,11 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@lightdotso/ui";
-import { cn } from "@lightdotso/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
 import type { FC } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { successToast } from "@/utils";
 
 // -----------------------------------------------------------------------------
 // Schema
@@ -43,10 +39,6 @@ import { successToast } from "@/utils";
 const appearanceFormSchema = z.object({
   theme: z.enum(["light", "dark"], {
     required_error: "Please select a theme.",
-  }),
-  font: z.enum(["inter", "manrope", "system"], {
-    invalid_type_error: "Select a font",
-    required_error: "Please select a font.",
   }),
 });
 
@@ -63,6 +55,12 @@ const defaultValues: Partial<AppearanceFormValues> = {
 
 export const AppearanceForm: FC = () => {
   // ---------------------------------------------------------------------------
+  // Operation Hooks
+  // ---------------------------------------------------------------------------
+
+  const { setTheme } = useTheme();
+
+  // ---------------------------------------------------------------------------
   // Form
   // ---------------------------------------------------------------------------
 
@@ -72,49 +70,12 @@ export const AppearanceForm: FC = () => {
   });
 
   // ---------------------------------------------------------------------------
-  // Callback Hooks
-  // ---------------------------------------------------------------------------
-
-  function onSubmit(_data: AppearanceFormValues) {
-    successToast("Your preferences have been updated.");
-  }
-
-  // ---------------------------------------------------------------------------
   // Render
   // ---------------------------------------------------------------------------
 
   return (
     <Form {...form}>
-      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="font"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Font</FormLabel>
-              <div className="relative w-max">
-                <FormControl>
-                  <select
-                    className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "w-[200px] appearance-none bg-transparent font-normal",
-                    )}
-                    {...field}
-                  >
-                    <option value="inter">Inter</option>
-                    <option value="manrope">Manrope</option>
-                    <option value="system">System</option>
-                  </select>
-                </FormControl>
-                <ChevronDownIcon className="absolute right-3 top-2.5 h-4 w-4 opacity-50" />
-              </div>
-              <FormDescription>
-                Set the font you want to use in the dashboard.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <form className="space-y-8">
         <FormField
           control={form.control}
           name="theme"
@@ -128,7 +89,7 @@ export const AppearanceForm: FC = () => {
               <RadioGroup
                 defaultValue={field.value}
                 className="grid max-w-md grid-cols-2 gap-8 pt-2"
-                onValueChange={field.onChange}
+                onValueChange={setTheme}
               >
                 <FormItem>
                   <FormLabel className="hover:cursor-pointer [&:has([data-state=checked])>div]:border-border-primary">
@@ -186,8 +147,6 @@ export const AppearanceForm: FC = () => {
             </FormItem>
           )}
         />
-
-        <Button type="submit">Update preferences</Button>
       </form>
     </Form>
   );
