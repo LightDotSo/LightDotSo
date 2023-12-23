@@ -52,6 +52,7 @@ export const useNewForm = create(
       errors: null,
       formValues: {
         type: "multi",
+        inviteCode: "",
         name: "",
       },
       setFormValues: async values => {
@@ -101,7 +102,7 @@ export const useNewForm = create(
             },
           },
           body: {
-            invite_code: "",
+            invite_code: get().formValues.inviteCode!,
             name: get().formValues.name!,
             salt: get().formValues.salt!,
             threshold: get().formValues.threshold!,

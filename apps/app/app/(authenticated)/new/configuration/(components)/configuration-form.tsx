@@ -55,6 +55,7 @@ import * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import {
   ownerParser,
+  useInviteCodeQueryState,
   useNameQueryState,
   useOwnersQueryState,
   useSaltQueryState,
@@ -110,6 +111,7 @@ export const ConfigurationForm: FC = () => {
   // Query State Hooks
   // ---------------------------------------------------------------------------
 
+  const [inviteCode] = useInviteCodeQueryState();
   const [name] = useNameQueryState();
   const [type] = useTypeQueryState();
   const [threshold, setThreshold] = useThresholdQueryState();
@@ -312,6 +314,7 @@ export const ConfigurationForm: FC = () => {
 
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[2].href, window.location.origin);
+    url.searchParams.set("inviteCode", inviteCode);
     url.searchParams.set("name", name);
     url.searchParams.set("type", type);
     url.searchParams.set("threshold", threshold.toString());

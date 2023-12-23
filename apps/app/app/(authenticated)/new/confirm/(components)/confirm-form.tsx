@@ -43,6 +43,7 @@ import { normalize } from "viem/ens";
 import type * as z from "zod";
 import {
   useNameQueryState,
+  useInviteCodeQueryState,
   useOwnersQueryState,
   useSaltQueryState,
   useThresholdQueryState,
@@ -85,6 +86,7 @@ export const ConfirmForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const [name] = useNameQueryState();
+  const [inviteCode] = useInviteCodeQueryState();
   const [type] = useTypeQueryState();
   const [threshold] = useThresholdQueryState();
   const [salt] = useSaltQueryState();
@@ -98,6 +100,7 @@ export const ConfirmForm: FC = () => {
     return {
       check: false,
       name: name ?? "",
+      inviteCode: inviteCode ?? "",
       type:
         type && newFormSchema.shape.type.safeParse(type).success
           ? newFormSchema.shape.type.parse(type)
@@ -114,7 +117,7 @@ export const ConfirmForm: FC = () => {
       // If type is personal, add two owners
       owners: owners,
     };
-  }, [name, type, threshold, salt, owners]);
+  }, [name, inviteCode, type, threshold, salt, owners]);
 
   // ---------------------------------------------------------------------------
   // Form
@@ -179,6 +182,7 @@ export const ConfirmForm: FC = () => {
   // Set the form values on mount
   useEffect(() => {
     form.setValue("name", defaultValues.name);
+    form.setValue("inviteCode", defaultValues.inviteCode);
     form.setValue("type", defaultValues.type);
     form.setValue("threshold", defaultValues.threshold);
     form.setValue("salt", defaultValues.salt);

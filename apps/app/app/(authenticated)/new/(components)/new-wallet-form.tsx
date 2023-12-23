@@ -51,6 +51,7 @@ import { useForm } from "react-hook-form";
 import type * as z from "zod";
 import { steps } from "@/app/(authenticated)/new/(components)/root/root";
 import {
+  useInviteCodeQueryState,
   useNameQueryState,
   useTypeQueryState,
 } from "@/app/(authenticated)/new/(hooks)";
@@ -86,6 +87,7 @@ export const NewWalletForm: FC = () => {
   // ---------------------------------------------------------------------------
 
   const [name, setName] = useNameQueryState();
+  const [inviteCode, setInviteCode] = useInviteCodeQueryState();
   const [type, setType] = useTypeQueryState();
 
   // ---------------------------------------------------------------------------
@@ -95,6 +97,7 @@ export const NewWalletForm: FC = () => {
   const defaultValues: Partial<NewFormValues> = {
     name,
     type,
+    inviteCode,
   };
 
   const form = useForm<NewFormValues>({
@@ -110,6 +113,13 @@ export const NewWalletForm: FC = () => {
           setName(null);
         } else {
           setName(value.name);
+        }
+      }
+      if (name === "inviteCode") {
+        if (value.inviteCode === undefined || value.inviteCode === "") {
+          setInviteCode(null);
+        } else {
+          setInviteCode(value.inviteCode);
         }
       }
       if (name === "type") {
@@ -138,10 +148,11 @@ export const NewWalletForm: FC = () => {
   const navigateToStep = useCallback(() => {
     const url = new URL(steps[1].href, window.location.origin);
     url.searchParams.set("name", name);
+    url.searchParams.set("inviteCode", inviteCode);
     url.searchParams.set("type", type);
     router.push(url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, type]);
+  }, [name, inviteCode, type]);
 
   const onSubmit = useCallback(
     (_data: NewFormValues) => {
@@ -270,6 +281,24 @@ export const NewWalletForm: FC = () => {
                     <FormDescription>
                       Enter a name for your new wallet
                     </FormDescription>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="inviteCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="inviteCode">Invite Code</FormLabel>
+                    <div className="grid gap-3">
+                      <Input
+                        id="inviteCode"
+                        placeholder="Your Invite Code"
+                        defaultValue={field.value}
+                        onChange={field.onChange}
+                      />
+                    </div>
+                    <FormDescription>Enter the invite code</FormDescription>
                   </FormItem>
                 )}
               />
