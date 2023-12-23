@@ -50,6 +50,13 @@ export {
   CardDescription,
   CardContent,
 } from "./src/components/ui/card";
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "./src/components/ui/carousel";
 export { Checkbox } from "./src/components/ui/checkbox";
 export {
   Collapsible,
@@ -95,6 +102,18 @@ export {
   DialogTitle,
   DialogDescription,
 } from "./src/components/ui/dialog";
+export {
+  Drawer,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+} from "./src/components/ui/drawer";
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -166,6 +185,11 @@ export {
 } from "./src/components/ui/popover";
 export { Progress } from "./src/components/ui/progress";
 export { RadioGroup, RadioGroupItem } from "./src/components/ui/radio-group";
+export {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "./src/components/ui/resizable";
 export { ScrollArea, ScrollBar } from "./src/components/ui/scroll-area";
 export {
   Select,
@@ -219,6 +243,7 @@ export {
 export { Textarea } from "./src/components/ui/textarea";
 export { toast, Toaster } from "./src/components/ui/toast";
 export { Toggle, toggleVariants } from "./src/components/ui/toggle";
+export { ToggleGroup, ToggleGroupItem } from "./src/components/ui/toggle-group";
 export {
   Tooltip,
   TooltipTrigger,

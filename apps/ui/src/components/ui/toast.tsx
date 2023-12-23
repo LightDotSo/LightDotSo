@@ -15,9 +15,13 @@
 
 "use client";
 
+import { cn } from "@lightdotso/utils";
 import { cva } from "class-variance-authority";
+import { useTheme } from "next-themes";
 import { toast, Toaster as SonnerToaster } from "sonner";
 import { buttonVariants } from "./button";
+
+type ToasterProps = React.ComponentProps<typeof SonnerToaster>;
 
 const toastVariants = cva(
   "pointer-events-auto relative flex w-full items-center space-x-4 overflow-hidden rounded-md border p-4 shadow-xl transition-all",
@@ -41,8 +45,12 @@ const toastVariants = cva(
 );
 
 const Toaster = () => {
+  const { theme } = useTheme();
+
   return (
     <SonnerToaster
+      theme={theme as ToasterProps["theme"]}
+      className="toaster group"
       toastOptions={{
         unstyled: true,
         classNames: {
@@ -50,9 +58,12 @@ const Toaster = () => {
           title: "text-sm font-semibold text-ellipsis overflow-hidden",
           description: "text-sm opacity-90 text-ellipsis overflow-hidden",
           loader: "text-text",
-          // cancelButton: buttonVariants({ variant: "outline" }),
-          // closeButton: buttonVariants({ variant: "outline" }),
-          actionButton: buttonVariants({ variant: "outline" }),
+          actionButton: cn(
+            "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
+            buttonVariants({ variant: "outline" }),
+          ),
+          cancelButton:
+            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
           success: toastVariants({ intent: "success" }),
           error: toastVariants({ intent: "destructive" }),
           info: toastVariants({ intent: "info" }),
