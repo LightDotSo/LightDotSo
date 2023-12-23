@@ -141,6 +141,7 @@ use utoipa_swagger_ui::SwaggerUi;
         feedback::v1_feedback_post_handler,
         invite_code::v1_invite_code_get_handler,
         invite_code::v1_invite_code_list_handler,
+        invite_code::v1_invite_code_list_count_handler,
         invite_code::v1_invite_code_post_handler,
         notification::v1_notification_get_handler,
         notification::v1_notification_list_handler,
